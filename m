@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-182808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048FEBADDE1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4690DBADB3A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B392816CB03
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5F3B19447FA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC7120468D;
-	Tue, 30 Sep 2025 15:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D934C173;
+	Tue, 30 Sep 2025 15:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5hiwhJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugsHgV2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD9023A995;
-	Tue, 30 Sep 2025 15:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E4729827E;
+	Tue, 30 Sep 2025 15:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246150; cv=none; b=FTofYMBgSQA5ZK/t83mdLLn3QeG8uVz/cSOrFci8QhQRM6o5hkZ/8Gv2AGnzWHMxKOlkMPqvxilOfDVzaKrSxanO7FIoYV5ulrqBIIWVFv5F0UxsMli39ImCFhjKHRQKJz4QfPHDnPof+jKd0bJ06Xv6v4L0K/2WYMF0++AOxBY=
+	t=1759245541; cv=none; b=dRN1dVhlK2+64BOFP8qom9YiVEaryFmlsxHOlwyYrTvWWPw6k+lMYWfaxaex8njbQxTxoh41RobZ8Y+im3sQkp9xeNesOz9Fkyxm/Gcs/aXkbCWqJBmhJcpvpD/h8RDEt3DtSaxkGPS8HPApRbyZ6uarngwiwA1UATAP+MN9V/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246150; c=relaxed/simple;
-	bh=d9VC0li5aGyfQPcWVB3f+9n9ZE0p6HiyuvQbaX4qo/E=;
+	s=arc-20240116; t=1759245541; c=relaxed/simple;
+	bh=Ez2GPXMb2gg6zJ9PeNKgH0jdD+AHcbWz2xVLhWb/UzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7intJ61hQgL6bpmCr62EF9vvpMe4I/v9BOhRHDRc2aAqaeJ1vs+SK4ah/+djLDAixtUjmA4Yd/whTelF1JwBxf/uIYIHzTBWPosRvU905NFtOswSgwnSttEIM1lrV8z+gdR/OwEDgXZh3jaatrXIyMAEmKhfNnhkDNrx9QngM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5hiwhJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ACBC4CEF0;
-	Tue, 30 Sep 2025 15:29:09 +0000 (UTC)
+	 MIME-Version; b=bR7FzVd+Ct3nya5d5wY8OQL368FLKKQ9t8p18HSfyVivc8KNZGyLY+MzeWRKcjpG+iBUMNn8XIGOwCMTqfHjMNSySXSOPvfhVNIncuH8pHUt4UrWLWYmy+eoN8jGDiNLFc7CRhqPAaaHGX9ekU3QWTbid1rUCEMDCKSLhyEbCG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugsHgV2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9583C4CEF0;
+	Tue, 30 Sep 2025 15:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246149;
-	bh=d9VC0li5aGyfQPcWVB3f+9n9ZE0p6HiyuvQbaX4qo/E=;
+	s=korg; t=1759245541;
+	bh=Ez2GPXMb2gg6zJ9PeNKgH0jdD+AHcbWz2xVLhWb/UzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5hiwhJw16k9kE0XEg9zAjnDSr4on5Mi7kVMgU98hRmOqSuCTHpzC/+D8/v1B8sEI
-	 +hdZ8WsnqV4w5+dEdRZV5FGxq0P9goP/eK9HYNrIEDsBT1z/CFUzN4d3ynD0nZp2ob
-	 vE5qa5pSNxgDfr1aOVaF5ZiP62D37zVS3FerpxMI=
+	b=ugsHgV2a+mpfWJpZRdVB1bpfyjJf4v29m4UZXjBxC2jtzLi5pF4d6CLBcPg3Vsc2r
+	 BBxgQcvP0jb6SzjXf+GTvhDXevfoO505EpB2Dgc59sYTo6TNqMkLcBpZieHn6ZC9r+
+	 9bLtxNRAivpRXtLyeZyozMXwBVpBJR1wC6QhZ2SU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 37/89] can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
-Date: Tue, 30 Sep 2025 16:47:51 +0200
-Message-ID: <20250930143823.459262284@linuxfoundation.org>
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 48/73] i40e: add max boundary check for VF filters
+Date: Tue, 30 Sep 2025 16:47:52 +0200
+Message-ID: <20250930143822.612113242@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 5c793afa07da6d2d4595f6c73a2a543a471bb055 ]
+commit cb79fa7118c150c3c76a327894bb2eb878c02619 upstream.
 
-On R-Car Gen3 using PSCI, s2ram powers down the SoC.  After resume, the
-CAN interface no longer works, until it is brought down and up again.
+There is no check for max filters that VF can request. Add it.
 
-Fix this by calling rcar_can_start() from the PM resume callback, to
-fully initialize the controller instead of just restarting it.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/699b2f7fcb60b31b6f976a37f08ce99c5ffccb31.1755165227.git.geert+renesas@glider.be
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/rcar/rcar_can.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index 2b7dd359f27b7..8569178b66df7 100644
---- a/drivers/net/can/rcar/rcar_can.c
-+++ b/drivers/net/can/rcar/rcar_can.c
-@@ -861,7 +861,6 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
- {
- 	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct rcar_can_priv *priv = netdev_priv(ndev);
--	u16 ctlr;
- 	int err;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3823,6 +3823,8 @@ err:
+ 				       aq_ret);
+ }
  
- 	if (!netif_running(ndev))
-@@ -873,12 +872,7 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
- 		return err;
++#define I40E_MAX_VF_CLOUD_FILTER 0xFF00
++
+ /**
+  * i40e_vc_add_cloud_filter
+  * @vf: pointer to the VF info
+@@ -3862,6 +3864,14 @@ static int i40e_vc_add_cloud_filter(stru
+ 		goto err_out;
  	}
  
--	ctlr = readw(&priv->regs->ctlr);
--	ctlr &= ~RCAR_CAN_CTLR_SLPM;
--	writew(ctlr, &priv->regs->ctlr);
--	ctlr &= ~RCAR_CAN_CTLR_CANM;
--	writew(ctlr, &priv->regs->ctlr);
--	priv->can.state = CAN_STATE_ERROR_ACTIVE;
-+	rcar_can_start(ndev);
- 
- 	netif_device_attach(ndev);
- 	netif_start_queue(ndev);
--- 
-2.51.0
-
++	if (vf->num_cloud_filters >= I40E_MAX_VF_CLOUD_FILTER) {
++		dev_warn(&pf->pdev->dev,
++			 "VF %d: Max number of filters reached, can't apply cloud filter\n",
++			 vf->vf_id);
++		aq_ret = -ENOSPC;
++		goto err_out;
++	}
++
+ 	cfilter = kzalloc(sizeof(*cfilter), GFP_KERNEL);
+ 	if (!cfilter) {
+ 		aq_ret = -ENOMEM;
 
 
 
