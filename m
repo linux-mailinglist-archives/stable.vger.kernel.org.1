@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAF8BAD698
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAACBADA04
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1557C18873C6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48EFC327210
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AD42FFDE6;
-	Tue, 30 Sep 2025 14:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62615306D23;
+	Tue, 30 Sep 2025 15:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0ed0Joo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNTpUK43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1001B304989;
-	Tue, 30 Sep 2025 14:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE492236EB;
+	Tue, 30 Sep 2025 15:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244348; cv=none; b=ECRD1zM4YdcOqFIYX9eiOxvVgvnxMO287lDgb41CKCllRdYgKNYZyVaIlCtxbJMs04OxuhBLiHp6haMVB7QOXvUueEwQRp2EGV6Q6D2MBcA0LaJ2A8uum8E6V0mMqvstWaEkEChnr+XB4yQyUTLu1pTnTUs8uF0zuICTwIg2s38=
+	t=1759245220; cv=none; b=jSqEBkgSFeLT18ys+4lPE35wQiPECfpeUUjzkwUTyAx52Ro+xMAprGFs4IPhsSwNO3kGJ7Sv+UHSKjmOG8KaJ9CZ9J2e77jVliKOYRUADLQ/FEcqu1wRrN7WBhkPyecEenkYj5nWhmZ79p1PzxkhNPlxTr6tAMdwoiHBHgcrwAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244348; c=relaxed/simple;
-	bh=W41uSdpbee4bdxcYOoMRRhVlM80OsbaRBRVFN3lrrHc=;
+	s=arc-20240116; t=1759245220; c=relaxed/simple;
+	bh=NI+7K5ppyiZopkFkSfv4imYdRQI3t09RsXNSEiPX+qQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fv0rh4vdxfjyNnxAv/wk2GwdSt+p48B7tUZffCiNy+/HAUdji6qbLQIiRWYViVQ9WqKrHWFljwbaFEt7dA2tnJjVqggCnavgTUwDpXNv8AnSZ8aSSHT58NJYFU2hNuG1h4tUcCgL44BN5CPImGlicnJn35Xy25jWh3NBfuFTvtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0ed0Joo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE66C4CEF0;
-	Tue, 30 Sep 2025 14:59:04 +0000 (UTC)
+	 MIME-Version; b=ngDlKNgPZ93e1upYRULq77QeeSLLcWeehwot08MLnDxPgdjQIFZpt+MBk5XePqOiB1Lq68tHXE3tT0xE4R2tcP2fQAajpO8aEvBn/FDt+ccnw6iSaZ4I/yPzV1MY+G5Yb/AckPZ1U/RKpdz3OoIkPWEB+S8dNFUjaXzfgSZZht4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNTpUK43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED01C4CEF0;
+	Tue, 30 Sep 2025 15:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244345;
-	bh=W41uSdpbee4bdxcYOoMRRhVlM80OsbaRBRVFN3lrrHc=;
+	s=korg; t=1759245220;
+	bh=NI+7K5ppyiZopkFkSfv4imYdRQI3t09RsXNSEiPX+qQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r0ed0Joo4gmJ3WSnEP8byLHfvrjczeCAxr6M0IKz4RMVxR7xsuV42Y4c5GKRoej8n
-	 WKB1HrtFwsw4mREP/g1EqKtgggYZSELED1wAU8HOp5/m/ZwQIOCiOODo7aZZ1TwaI6
-	 zgSYBNPBIEohNud7EMiuYU2OTZGLfkE6UdFxyIMw=
+	b=CNTpUK43Ni9GuLs/lc2ha5w6HpicKGrP98oGD55PpXRK5gupr/+CWjG4i4sfYCNPp
+	 /CU1Kzdqwp4oBtT9ghsiuBWVurhdEuqvMYZgZ4g16bIzvnnSrkufu8cYd9dtRBLO5E
+	 X1lyQELE4fxCV2F8MjngB1RBmNNCnN9wWl8Iq4lM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/122] nexthop: Pass extack to nexthop notifier
+Subject: [PATCH 5.15 103/151] ALSA: usb-audio: Fix block comments in mixer_quirks
 Date: Tue, 30 Sep 2025 16:47:13 +0200
-Message-ID: <20250930143827.159983245@linuxfoundation.org>
+Message-ID: <20250930143831.705627354@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 3578d53dcef152a460a2d560c95dcc4399ff04cd ]
+[ Upstream commit 231225d8a20f8668b4fd6601d54a2fac0e0ab7a5 ]
 
-The next patch will add extack to the notification info. This allows
-listeners to veto notifications and communicate the reason to user space.
+Address a couple of comment formatting issues indicated by
+checkpatch.pl:
 
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 390b3a300d78 ("nexthop: Forbid FDB status change while nexthop is in a group")
+  WARNING: Block comments use a trailing */ on a separate line
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-4-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/usb/mixer_quirks.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index a508fd94b8be0..0653aa518648c 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -38,7 +38,8 @@ static const struct nla_policy rtm_nh_policy[NHA_MAX + 1] = {
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 60269535eb554..0e8cf8b06b8ad 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -76,7 +76,8 @@ static int snd_create_std_mono_ctl_offset(struct usb_mixer_interface *mixer,
+ 	cval->idx_off = idx_off;
  
- static int call_nexthop_notifiers(struct net *net,
- 				  enum nexthop_event_type event_type,
--				  struct nexthop *nh)
-+				  struct nexthop *nh,
-+				  struct netlink_ext_ack *extack)
+ 	/* get_min_max() is called only for integer volumes later,
+-	 * so provide a short-cut for booleans */
++	 * so provide a short-cut for booleans
++	 */
+ 	cval->min = 0;
+ 	cval->max = 1;
+ 	cval->res = 0;
+@@ -3524,7 +3525,8 @@ static void snd_dragonfly_quirk_db_scale(struct usb_mixer_interface *mixer,
+ 					 struct snd_kcontrol *kctl)
  {
- 	int err;
- 
-@@ -908,7 +909,7 @@ static void __remove_nexthop(struct net *net, struct nexthop *nh,
- static void remove_nexthop(struct net *net, struct nexthop *nh,
- 			   struct nl_info *nlinfo)
- {
--	call_nexthop_notifiers(net, NEXTHOP_EVENT_DEL, nh);
-+	call_nexthop_notifiers(net, NEXTHOP_EVENT_DEL, nh, NULL);
- 
- 	/* remove from the tree */
- 	rb_erase(&nh->rb_node, &net->nexthop.rb_root);
+ 	/* Approximation using 10 ranges based on output measurement on hw v1.2.
+-	 * This seems close to the cubic mapping e.g. alsamixer uses. */
++	 * This seems close to the cubic mapping e.g. alsamixer uses.
++	 */
+ 	static const DECLARE_TLV_DB_RANGE(scale,
+ 		 0,  1, TLV_DB_MINMAX_ITEM(-5300, -4970),
+ 		 2,  5, TLV_DB_MINMAX_ITEM(-4710, -4160),
 -- 
 2.51.0
 
