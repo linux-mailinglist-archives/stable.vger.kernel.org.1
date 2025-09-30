@@ -1,100 +1,124 @@
-Return-Path: <stable+bounces-182058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139BFBAC45D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 11:28:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F23BAC608
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 11:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3B27480A9F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 09:28:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 775257A1DCD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 09:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AD62EA170;
-	Tue, 30 Sep 2025 09:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E46B2F7475;
+	Tue, 30 Sep 2025 09:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZRPxRpiH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WoZnNigI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E281F2BE041;
-	Tue, 30 Sep 2025 09:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F762F5335
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 09:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759224493; cv=none; b=es7+qNmOuaApDvyAhT/Nt2BNZPOqVHlyn6LAzWg3KLKQP6wu11IQj3Yo9dFYAOz8sPqvs/WOhyn3DzWbZssxIgsGnUmOeps9RwUzLd3i8snLBnN1Bq3+tUf54DDvJrts0EX1SKh49moGaFkP+/NSXdeN7bNpZcVEIXGRI9S7W/Y=
+	t=1759226235; cv=none; b=gvFHu4yABaJ++8vXsgH9/363z6JKO+7OXrnw2CREbCYEJkNwfao8RqUPnoaD+6/OwlZd6TaNfEjJ4IaWk1xTq5JRSytv9rImLtaeg5SfxRCyp8e+fXdClLutPbIiNAn2n0gcwFv1auExVgh3tsjE4VUpTe0nh2IDKKexdWNNalM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759224493; c=relaxed/simple;
-	bh=x8Wb2+R5Vp8+oLSCVFZXSVkEEpjiAOZ6ebwPO1lk0C4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iDdblwsoz6ZTB5rQeO+OXntTImuFwsXqT7mFCjwhmI+Mcw8O8UlnANJfrha312tf9cMaJjRJFD3PUPH55SGi0c6j6wAIKgX+FqxL0lEc2nBT4mCIb9fJebHf5YcpJWZGxMKVOC6FxI8RZXbuxn1wtTbzBGagpF5VJjtyr1wNMRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZRPxRpiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816DEC4CEF0;
-	Tue, 30 Sep 2025 09:28:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759224492;
-	bh=x8Wb2+R5Vp8+oLSCVFZXSVkEEpjiAOZ6ebwPO1lk0C4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRPxRpiHmerbXwiX2t4DbaH6qmUm/UGsKxOltMyW43uvzMEP4nvQ4CkdpzrOkyrH1
-	 VnwBf71tKFxTtUEqyWgovQYGoQXwOCLEUmXl8dsPSdcHQhRHn1RXO1wDhDhQXnNVgx
-	 YAy8h+6YkihvYWZ9XZB6rTkWHFNscTdBQ1XWecYo4687YP0wt19G4fKIpnF1HtHo0g
-	 C3edxIaCIeoVdQKK2TVKBiaWugpVni2RES6zM3weRE8VZ7BPquZBFGKIYCbniQHw/a
-	 bdZ7Vj0HJn2Z5S+DQYz+n8lot/ITS5AVTIj06tF8Yr/ZuntQqWQaZlCu50KRgKhImr
-	 o3OO7s+SSBfDg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1v3WeY-0000000AUoH-2Arb;
-	Tue, 30 Sep 2025 09:28:10 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Prevent access to vCPU events before init
-Date: Tue, 30 Sep 2025 10:28:06 +0100
-Message-ID: <175922446769.3360577.3691458337936348623.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250930085237.108326-1-oliver.upton@linux.dev>
-References: <20250930085237.108326-1-oliver.upton@linux.dev>
+	s=arc-20240116; t=1759226235; c=relaxed/simple;
+	bh=Iby0dCV1k5FoMaSlf23PqKFSrLsu46FnHbptNvkg3QU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=um6oEgGwdwPrHaujCoicZKdzXfvDugPr2SzHANbQbmjId33hDn+4BCnTWMZ72szI6pg5eIngj3U6Ot3YePvLFsZzDDpDCTRA9uUoIH3n6QylGN+ErGt4EszmL/QN006Rd6DlYyUOEXfU4AsWokGT6hUjn/L9GsUnMYDkh5NKKr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WoZnNigI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759226232;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=srAu9efQeLkOrSNZBhuxJ9qVZjhUw1Qf2FT+xE0jzg8=;
+	b=WoZnNigIx7hI+z5mdBPkrjlB/PRC1MhFZ6OebiAyMBCjIFuCWoIfcjtci4OPsDDXkxssMF
+	d9qdh11eV6T+hCCNOzoH6eLMjsCtc0yGMMQ+NH7QWOBCm2o2LCnIaOVwJT5odXYx401ZkX
+	Jvi79o9Cj9mCIbFyWyK0gD4tL9vXfz4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-256-tc6Re3i8N1W5qb79nNt0gQ-1; Tue, 30 Sep 2025 05:57:11 -0400
+X-MC-Unique: tc6Re3i8N1W5qb79nNt0gQ-1
+X-Mimecast-MFC-AGG-ID: tc6Re3i8N1W5qb79nNt0gQ_1759226230
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ed9557f976so3769783f8f.3
+        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 02:57:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759226229; x=1759831029;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=srAu9efQeLkOrSNZBhuxJ9qVZjhUw1Qf2FT+xE0jzg8=;
+        b=nzY87lP1FyeRUBZYP+1JROdnvFwhOtFroU5gYeXSq9TKohk8dAtZ7mdoYyuBhOqk6p
+         YFW4/ZT/ImxN9zOk/J3ywCmb4oRJt80ouOTEycz5ESMtT3qOo5+dnOwPo/4tyzkWprYg
+         PQmNomznR7y8fx/g83ydxIrbvGy/Id/TGViPSCRz0MCWpN+iap8YrvxsU8k3SsvW1K3L
+         E0giO7bhnM3IfwF6PSbq3gjH0sLdFDF0o4WH8ENQbspI834VoMHLpPbegSm/Y0Pz+bsv
+         lTLQ/cobROuTAUUH1puop5GyEusbPsCHTMATvrHx+bKhVF6kXiSs7J/XqrAC8WrvzBDU
+         wOOA==
+X-Gm-Message-State: AOJu0Yzqt6uahLNJIQVAlTrL92zjW0G3nEIU42e1VIaddLBnMmsq00TK
+	RhJ61I7GG+RQi6d7Veg5BdCIWPNua+QmATnCBIIsxGLwd6n5iXp1gfX6800kD77P10VDBfcJXc4
+	0iOwTbGmVohmPV2EZwjHqjDSpu5TanNNtGOFj0GzUS/SOa4ID6jYKBXTjuQ==
+X-Gm-Gg: ASbGnctLODyUpDlloCHEb4fewl9MgNdNsuGM7o8p4Dw6TTzgQZRS1so/cFwXnaxD3Xo
+	tnGvzb03RWGFuP56sMov+Nlgn2KJKiCNmSvNb52/9TID7p43G7zwLENahaWpy0QZMrSuuz+9Ksx
+	EBtLyXc8FupFDQ+abZDkjvWQUILR3tDoEab+eHVNCZx/wWQ6G41trjZ2anekH9+XsFMaatn55xZ
+	kHGYlvekNShUOrnqam0mHXkPQV2fMhuIa8hlUByOkyqoccyDvoDrC1sc2i02G7Dm298OC1dKyf+
+	vKV04v0iaesvz+GobVnD6vFT6I/CN7J2ml/QWb+H1+ICXLW3VfRTTLJJHM5YUpPlhrSzFStz4HC
+	i9bLzOzkqzD8d3y8WHA==
+X-Received: by 2002:adf:eb8f:0:b0:3e2:4a3e:d3e5 with SMTP id ffacd0b85a97d-41358755409mr11327884f8f.22.1759226229589;
+        Tue, 30 Sep 2025 02:57:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRvdEuxPGd1K1hL6v0AssJUCVO28oQVmR6eHnpL1I8WvLYCEWr5PTILGebhv46wh47Za/SKg==
+X-Received: by 2002:adf:eb8f:0:b0:3e2:4a3e:d3e5 with SMTP id ffacd0b85a97d-41358755409mr11327863f8f.22.1759226229159;
+        Tue, 30 Sep 2025 02:57:09 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb8811946sm21856303f8f.18.2025.09.30.02.57.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Sep 2025 02:57:08 -0700 (PDT)
+Message-ID: <65e53548-2d68-464a-87bd-909f360cdb1c@redhat.com>
+Date: Tue, 30 Sep 2025 11:57:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: wan: hd64572: validate RX length before skb
+ allocation and copy
+To: Guangshuo Li <lgs201920130244@gmail.com>, Krzysztof Halasa
+ <khc@pm.waw.pl>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20250926104941.1990062-1-lgs201920130244@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250926104941.1990062-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 30 Sep 2025 01:52:37 -0700, Oliver Upton wrote:
-> Another day, another syzkaller bug. KVM erroneously allows userspace to
-> pend vCPU events for a vCPU that hasn't been initialized yet, leading to
-> KVM interpreting a bunch of uninitialized garbage for routing /
-> injecting the exception.
-> 
-> In one case the injection code and the hyp disagree on whether the vCPU
-> has a 32bit EL1 and put the vCPU into an illegal mode for AArch64,
-> tripping the BUG() in exception_target_el() during the next injection:
-> 
-> [...]
 
-Applied to fixes, thanks!
 
-[1/1] KVM: arm64: Prevent access to vCPU events before init
-      commit: cc96679f3c0348bf8450a5c84b71bb1351c027f9
+On 9/26/25 12:49 PM, Guangshuo Li wrote:
+> The driver trusts the RX descriptor length and uses it directly for
+> dev_alloc_skb(), memcpy_fromio(), and skb_put() without any bounds
+> checking. If the descriptor gets corrupted or otherwise contains an
+> invalid value, 
 
-Cheers,
+Why/how? Is the H/W known to corrupt the descriptors? If so please point
+that out in the commit message.
+Otherwise, if this is intended to protect vs generic memory corruption
+inside the kernel caused by S/W bug, please look for such corruption
+root cause instead.
 
-	M.
--- 
-Without deviation from the norm, progress is not possible.
+Thanks,
 
+Paolo
 
 
