@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-182321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792E3BAD782
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:04:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7562BAD5A2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B43AB325313
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8B41941E8F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573E630506E;
-	Tue, 30 Sep 2025 15:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8092FFDE6;
+	Tue, 30 Sep 2025 14:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVOM15uP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i66yUgvu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E211173;
-	Tue, 30 Sep 2025 15:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A7A1AB6F1;
+	Tue, 30 Sep 2025 14:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244564; cv=none; b=DEFxI3TjI1Y/XgMjmxQnAXlQdZzaT2l4hkMAWqGXV4+zdZlZ/T5jGbl8StUCsVyt6y6+5HnZuaY6TLqThOLY5cAtdEEU+w1pXDJS0YAmqmqVrG/GItSMH6AO2gYxKaUmiuLUB7O83vU+7aK7Wr6WhSCs6Kfpbwta9GhHEAutSM8=
+	t=1759244137; cv=none; b=GbHX74d4NuJaVBO94u49r4UytBVHGzEI4Lxmwp3GcjiyJmoDiLj1w/SfyvQKt0E50AJXcBVlhsfKz1Rvq3aSt6FI5wIOUBsUC5egYFjl4HcVpXmCzY2C8g/h9ptdHiBD+VEncYkfhGQbL2DHUNFJZnBIHFuWoeecmDS1aSvmeIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244564; c=relaxed/simple;
-	bh=Psp66gXZ2UxLI09zjbhwWleQ2Cg6RflYdzb6E92R2Yw=;
+	s=arc-20240116; t=1759244137; c=relaxed/simple;
+	bh=LmAgm3xMg4Qo72IJPbjVOKm7IFjIrRsYwDX0n8bkvfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPo44kEYGQjf2O+nahDFbCzGBURQfB/d/nYMprGpQhyRH/fte2uRU9CjB4Ax41vJoMMnzcktjaMZe9m9SbaNvm5zvK44PafNUwQXWv35CQ7MrE042ONIfViD9z5ftDklXtS6fpuxsXUuShaEWlNgXGmZ4tu+i91WuJ4mKxICcL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVOM15uP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F58C4CEF0;
-	Tue, 30 Sep 2025 15:02:43 +0000 (UTC)
+	 MIME-Version; b=iNLOACxnIYFDsybg8JM8W7ugg8eGzn76CH7mndkkpz+V4CYsknTa2yoRMAu4fzgLFJRQzjJtYfRThDCX+Q+ZE8FOxv6usYOWeOJ8dRWqRkWPR9b/XJE+fld+pfJv3D31mTcuwwkDEHFEvOd1nyU0ysEehf+OKiT2gPncK9T5U80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i66yUgvu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCA8C113D0;
+	Tue, 30 Sep 2025 14:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244563;
-	bh=Psp66gXZ2UxLI09zjbhwWleQ2Cg6RflYdzb6E92R2Yw=;
+	s=korg; t=1759244137;
+	bh=LmAgm3xMg4Qo72IJPbjVOKm7IFjIrRsYwDX0n8bkvfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kVOM15uPToK6n8VZ14oVv8HQe48enHtRDAmwA/YSESXfiGcioUvI6GHlsdAqkxA+G
-	 l4IILiCu2la9k10pMEoahx2izuv1EMHZyn1yW8fKeqh7EsbOcN/gFNUWE7ruSd5Coq
-	 rR7oen+DCDxysKl8njwItpd7eiH4Rkd0eU7EtG9Q=
+	b=i66yUgvutByTPM2ZwV1tDdXDWGm210gecLE1ZTgcShSQgiChCrOLorFoN36t7ElOc
+	 DIcmIh1O3OSF5rVnuitgBZnvu9fhndnzxndNG+11v2j0HxiwBd7Z/8Sd3QpesuxEsO
+	 eg1muwjJIf/Jv26YK7Tx47IbHNrFr4+/PJu9fg5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 045/143] smb: server: dont use delayed_work for post_recv_credits_work
+Subject: [PATCH 5.10 038/122] can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
 Date: Tue, 30 Sep 2025 16:46:09 +0200
-Message-ID: <20250930143833.032362723@linuxfoundation.org>
+Message-ID: <20250930143824.563772952@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,105 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 1cde0a74a7a8951b3097417847a458e557be0b5b ]
+[ Upstream commit f214744c8a27c3c1da6b538c232da22cd027530e ]
 
-If we are using a hardcoded delay of 0 there's no point in
-using delayed_work it only adds confusion.
+Commit 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct
+callback") expects that a call to j1939_priv_put() can be unconditionally
+delayed until j1939_sk_sock_destruct() is called. But a refcount leak will
+happen when j1939_sk_bind() is called again after j1939_local_ecu_get()
+ from previous j1939_sk_bind() call returned an error. We need to call
+j1939_priv_put() before j1939_sk_bind() returns an error.
 
-The client also uses a normal work_struct and now
-it is easier to move it to the common smbdirect_socket.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct callback")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/4f49a1bc-a528-42ad-86c0-187268ab6535@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ net/can/j1939/socket.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 6550bd9f002c2..10a6b4ed1a037 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -148,7 +148,7 @@ struct smb_direct_transport {
- 	wait_queue_head_t	wait_send_pending;
- 	atomic_t		send_pending;
- 
--	struct delayed_work	post_recv_credits_work;
-+	struct work_struct	post_recv_credits_work;
- 	struct work_struct	send_immediate_work;
- 	struct work_struct	disconnect_work;
- 
-@@ -367,8 +367,8 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
- 
- 	spin_lock_init(&t->lock_new_recv_credits);
- 
--	INIT_DELAYED_WORK(&t->post_recv_credits_work,
--			  smb_direct_post_recv_credits);
-+	INIT_WORK(&t->post_recv_credits_work,
-+		  smb_direct_post_recv_credits);
- 	INIT_WORK(&t->send_immediate_work, smb_direct_send_immediate_work);
- 	INIT_WORK(&t->disconnect_work, smb_direct_disconnect_rdma_work);
- 
-@@ -400,7 +400,7 @@ static void free_transport(struct smb_direct_transport *t)
- 		   atomic_read(&t->send_pending) == 0);
- 
- 	cancel_work_sync(&t->disconnect_work);
--	cancel_delayed_work_sync(&t->post_recv_credits_work);
-+	cancel_work_sync(&t->post_recv_credits_work);
- 	cancel_work_sync(&t->send_immediate_work);
- 
- 	if (t->qp) {
-@@ -615,8 +615,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			wake_up_interruptible(&t->wait_send_credits);
- 
- 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
--			mod_delayed_work(smb_direct_wq,
--					 &t->post_recv_credits_work, 0);
-+			queue_work(smb_direct_wq, &t->post_recv_credits_work);
- 
- 		if (data_length) {
- 			enqueue_reassembly(t, recvmsg, (int)data_length);
-@@ -773,8 +772,7 @@ static int smb_direct_read(struct ksmbd_transport *t, char *buf,
- 		st->count_avail_recvmsg += queue_removed;
- 		if (is_receive_credit_post_required(st->recv_credits, st->count_avail_recvmsg)) {
- 			spin_unlock(&st->receive_credit_lock);
--			mod_delayed_work(smb_direct_wq,
--					 &st->post_recv_credits_work, 0);
-+			queue_work(smb_direct_wq, &st->post_recv_credits_work);
- 		} else {
- 			spin_unlock(&st->receive_credit_lock);
- 		}
-@@ -801,7 +799,7 @@ static int smb_direct_read(struct ksmbd_transport *t, char *buf,
- static void smb_direct_post_recv_credits(struct work_struct *work)
- {
- 	struct smb_direct_transport *t = container_of(work,
--		struct smb_direct_transport, post_recv_credits_work.work);
-+		struct smb_direct_transport, post_recv_credits_work);
- 	struct smb_direct_recvmsg *recvmsg;
- 	int receive_credits, credits = 0;
- 	int ret;
-@@ -1734,7 +1732,7 @@ static int smb_direct_prepare_negotiation(struct smb_direct_transport *t)
- 		goto out_err;
+diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+index 45ae7a235dbff..34cd4792d5d41 100644
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -520,6 +520,9 @@ static int j1939_sk_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 	ret = j1939_local_ecu_get(priv, jsk->addr.src_name, jsk->addr.sa);
+ 	if (ret) {
+ 		j1939_netdev_stop(priv);
++		jsk->priv = NULL;
++		synchronize_rcu();
++		j1939_priv_put(priv);
+ 		goto out_release_sock;
  	}
  
--	smb_direct_post_recv_credits(&t->post_recv_credits_work.work);
-+	smb_direct_post_recv_credits(&t->post_recv_credits_work);
- 	return 0;
- out_err:
- 	put_recvmsg(t, recvmsg);
 -- 
 2.51.0
 
