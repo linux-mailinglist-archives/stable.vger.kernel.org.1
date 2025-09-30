@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-182083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA91BAD43A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09A3BAD812
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C4EC3215C6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:49:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A09F63A8158
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FB03043DA;
-	Tue, 30 Sep 2025 14:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5206130595C;
+	Tue, 30 Sep 2025 15:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYqc6QnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RG+5E6g0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D4F238D3A;
-	Tue, 30 Sep 2025 14:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB151FF1C8;
+	Tue, 30 Sep 2025 15:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243774; cv=none; b=P+aeaCEUFb5wly29Rac1Xtr2B042bTSo2bJqrpaHlEB9D0JmuLW8PFI77gFIPzVk1TER9xW0Jairh56l8qg4Q9IpFiU+r8uK0lDLJU8EwbLpo+ZQQKU+eJ5aNGsppCZfSz6hyO4IvkllqZtwDJqORJaOtyCXgQHh00q6YQa7NhE=
+	t=1759244611; cv=none; b=PyS4eQj1UDUO2pDMRPqdAf6UgYNd13k6+/Am2FUnyfwbR5JH9O/JxeFpMm+10fd2u12ds60cgWlAi10Ual61A6eOQG83A5qj9TDPrqsMky4zr/4GUKdZQ9w6iFpqX9ajsZMX+fbbh7cQCfidJrMuau9l2+MeAELxXtSzqDOrdTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243774; c=relaxed/simple;
-	bh=mGIo1iVK1MX+RDtK5R70pxESSEAHwlZTL3ghZacO0Uo=;
+	s=arc-20240116; t=1759244611; c=relaxed/simple;
+	bh=EnPtj/ddQj5jZBQYLejAubFMoIcTOrTX7JfnXHeQn5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+tgtU1vp75G81ePom/6YmRL039yUBGjxO0nsryKsuugHhVb2JwE1Q2W37g4ycSt+a4y5NN9U1OR2Qlj0/RucX+KUgT0eEoQ0EUZpMQR2yK0kdf9q083+K7k80wU1tUUJkCwiFmgilWxS6X9phVqYGT5wFYtusQqzsHrmr9YIp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYqc6QnK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02294C4CEF0;
-	Tue, 30 Sep 2025 14:49:33 +0000 (UTC)
+	 MIME-Version; b=ihw00BhuQyIe6qQPB5taAUT8s9Ttp+jSIHY2b4MJnHS/D6zwkIj1zT6W81oF52npJWGus/IdVyXSnDIaKbCq912uhAk6ggKY93uulkEi7dAdsQrB3V+e03PV2z7NL4/SGD/gQp6fRWruoLs5yNuizHqPnNFxd/uT5zlILUObXIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RG+5E6g0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721A9C4CEF0;
+	Tue, 30 Sep 2025 15:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243774;
-	bh=mGIo1iVK1MX+RDtK5R70pxESSEAHwlZTL3ghZacO0Uo=;
+	s=korg; t=1759244610;
+	bh=EnPtj/ddQj5jZBQYLejAubFMoIcTOrTX7JfnXHeQn5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eYqc6QnK1yI2FwXATgsw6apUwij0CvlccirK3ThLbQZ4Yeo/KW/BELDQmoYlefQyb
-	 VoeT78iK+xAiLArLdtxREoGX5VjrbkVWoI8hxS6HEWgPeiIS85/+4lzOoEHX0QpxO3
-	 QRo0h7PbRF41Wjym3CA+rBWnb5vMu8cJh8181itA=
+	b=RG+5E6g0y712JjfzLkZJK88+U2ABNLCuVJOeD8yvNkGh7YA9NCNV6pLrXvXdc1t32
+	 FoLMTGx+jH44x+wYy9eSokye0RCnt/00dzFVhjYPFPI5UXnRIEUXEVn/DqN5Lc5Kou
+	 /zbWaQ5cvrYsX24xquImn3XN/4vyHX5nmDCjoyiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabian Vogt <fvogt@suse.de>
-Subject: [PATCH 5.4 14/81] tty: hvc_console: Call hvc_kick in hvc_write unconditionally
-Date: Tue, 30 Sep 2025 16:46:16 +0200
-Message-ID: <20250930143820.267002859@linuxfoundation.org>
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 053/143] amd/amdkfd: correct mem limit calculation for small APUs
+Date: Tue, 30 Sep 2025 16:46:17 +0200
+Message-ID: <20250930143833.346996651@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Vogt <fvogt@suse.de>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-commit cfd956dcb101aa3d25bac321fae923323a47c607 upstream.
+[ Upstream commit 53503556273a5ead8b75534085e2dcb46e96f883 ]
 
-After hvc_write completes, call hvc_kick also in the case the output
-buffer has been drained, to ensure tty_wakeup gets called.
+Current mem limit check leaks some GTT memory (reserved_for_pt
+reserved_for_ras + adev->vram_pin_size) for small APUs.
 
-This fixes that functions which wait for a drained buffer got stuck
-occasionally.
+Since carveout VRAM is tunable on APUs, there are three case
+regarding the carveout VRAM size relative to GTT:
 
-Cc: stable <stable@kernel.org>
-Closes: https://bugzilla.opensuse.org/show_bug.cgi?id=1230062
-Signed-off-by: Fabian Vogt <fvogt@suse.de>
-Link: https://lore.kernel.org/r/2011735.PYKUYFuaPT@fvogt-thinkpad
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. 0 < carveout < gtt
+   apu_prefer_gtt = true, is_app_apu = false
+
+2. carveout > gtt / 2
+   apu_prefer_gtt = false, is_app_apu = false
+
+3. 0 = carveout
+   apu_prefer_gtt = true, is_app_apu = true
+
+It doesn't make sense to check below limitation in case 1
+(default case, small carveout) because the values in the below
+expression are mixed with carveout and gtt.
+
+adev->kfd.vram_used[xcp_id] + vram_needed >
+    vram_size - reserved_for_pt - reserved_for_ras -
+    atomic64_read(&adev->vram_pin_size)
+
+gtt: kfd.vram_used, vram_needed, vram_size
+carveout: reserved_for_pt, reserved_for_ras, adev->vram_pin_size
+
+In case 1, vram allocation will go to gtt domain, skip vram check
+since ttm_mem_limit check already cover this allocation.
+
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fa7c99f04f6dd299388e9282812b14e95558ac8e)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_console.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 44 ++++++++++++++-----
+ 1 file changed, 32 insertions(+), 12 deletions(-)
 
---- a/drivers/tty/hvc/hvc_console.c
-+++ b/drivers/tty/hvc/hvc_console.c
-@@ -543,10 +543,10 @@ static int hvc_write(struct tty_struct *
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index 260165bbe3736..b16cce7c22c37 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -213,19 +213,35 @@ int amdgpu_amdkfd_reserve_mem_limit(struct amdgpu_device *adev,
+ 	spin_lock(&kfd_mem_limit.mem_limit_lock);
+ 
+ 	if (kfd_mem_limit.system_mem_used + system_mem_needed >
+-	    kfd_mem_limit.max_system_mem_limit)
++	    kfd_mem_limit.max_system_mem_limit) {
+ 		pr_debug("Set no_system_mem_limit=1 if using shared memory\n");
++		if (!no_system_mem_limit) {
++			ret = -ENOMEM;
++			goto release;
++		}
++	}
+ 
+-	if ((kfd_mem_limit.system_mem_used + system_mem_needed >
+-	     kfd_mem_limit.max_system_mem_limit && !no_system_mem_limit) ||
+-	    (kfd_mem_limit.ttm_mem_used + ttm_mem_needed >
+-	     kfd_mem_limit.max_ttm_mem_limit) ||
+-	    (adev && xcp_id >= 0 && adev->kfd.vram_used[xcp_id] + vram_needed >
+-	     vram_size - reserved_for_pt - reserved_for_ras - atomic64_read(&adev->vram_pin_size))) {
++	if (kfd_mem_limit.ttm_mem_used + ttm_mem_needed >
++		kfd_mem_limit.max_ttm_mem_limit) {
+ 		ret = -ENOMEM;
+ 		goto release;
  	}
  
- 	/*
--	 * Racy, but harmless, kick thread if there is still pending data.
-+	 * Kick thread to flush if there's still pending data
-+	 * or to wakeup the write queue.
++	/*if is_app_apu is false and apu_prefer_gtt is true, it is an APU with
++	 * carve out < gtt. In that case, VRAM allocation will go to gtt domain, skip
++	 * VRAM check since ttm_mem_limit check already cover this allocation
++	 */
++
++	if (adev && xcp_id >= 0 && (!adev->apu_prefer_gtt || adev->gmc.is_app_apu)) {
++		uint64_t vram_available =
++			vram_size - reserved_for_pt - reserved_for_ras -
++			atomic64_read(&adev->vram_pin_size);
++		if (adev->kfd.vram_used[xcp_id] + vram_needed > vram_available) {
++			ret = -ENOMEM;
++			goto release;
++		}
++	}
++
+ 	/* Update memory accounting by decreasing available system
+ 	 * memory, TTM memory and GPU memory as computed above
  	 */
--	if (hp->n_outbuf)
--		hvc_kick();
-+	hvc_kick();
+@@ -1626,11 +1642,15 @@ size_t amdgpu_amdkfd_get_available_memory(struct amdgpu_device *adev,
+ 	uint64_t vram_available, system_mem_available, ttm_mem_available;
  
- 	return written;
- }
+ 	spin_lock(&kfd_mem_limit.mem_limit_lock);
+-	vram_available = KFD_XCP_MEMORY_SIZE(adev, xcp_id)
+-		- adev->kfd.vram_used_aligned[xcp_id]
+-		- atomic64_read(&adev->vram_pin_size)
+-		- reserved_for_pt
+-		- reserved_for_ras;
++	if (adev->apu_prefer_gtt && !adev->gmc.is_app_apu)
++		vram_available = KFD_XCP_MEMORY_SIZE(adev, xcp_id)
++			- adev->kfd.vram_used_aligned[xcp_id];
++	else
++		vram_available = KFD_XCP_MEMORY_SIZE(adev, xcp_id)
++			- adev->kfd.vram_used_aligned[xcp_id]
++			- atomic64_read(&adev->vram_pin_size)
++			- reserved_for_pt
++			- reserved_for_ras;
+ 
+ 	if (adev->apu_prefer_gtt) {
+ 		system_mem_available = no_system_mem_limit ?
+-- 
+2.51.0
+
 
 
 
