@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-182209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B832DBAD605
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F4FBAD7A3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB25319428EF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4B821882A95
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB3E30505F;
-	Tue, 30 Sep 2025 14:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7555D302CD6;
+	Tue, 30 Sep 2025 15:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7fXPwPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+/J8cKg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A958E303C87;
-	Tue, 30 Sep 2025 14:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314F61EE02F;
+	Tue, 30 Sep 2025 15:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244200; cv=none; b=KnDHKqOSE3mH0XamJCvL3pTKCIww31FoPOcOi7gM0y1c/mcrbWHG/ocD1xDqtibXbdefFCHMXb++HENpOyA8tDvhmmnt+kArdXZVB2W1nLctPvXZXILLg1ntgQl+xLE/Q4YgbnS1ZQwt1cPi2OC1AtaQCEuQ+wtExOkbxJhGejM=
+	t=1759244624; cv=none; b=Vl/woG/kvijPN3VVu7gLbYfAlkmpIggCwsCK7UACYLX7V8hFqVJ4FQxQJHvA3LGJOpzeAD/4MyL06+M7jS81nNQbCDPWxsxXmp7qQJ0RZSAMHBAFiWsicSxu7AYEF5i78Ok4vr1IdLhDQruvScBL86ZNk0gSjXgiudROQBvuM2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244200; c=relaxed/simple;
-	bh=niRXT4lBJTYLqjyURk7nOL9WYssQTNOMqD2wM8nEDU4=;
+	s=arc-20240116; t=1759244624; c=relaxed/simple;
+	bh=rn5DSqe9TVMrErglLhBdGyEyiA1zCxc0vf/pg1Mqvlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgiXsxron5v4XCwdDpDJ0+MoDOIv8t+vrHltwbvX/P8MYjXNFnsiA7LbsWuhI5kumZfZtZ49xt4lzdJoGSlZ+50QEyJNwR2rSF8v2pdBPbMFkEzsiQpVEK8ogw/8FRpkg8Tb9aDX8SPIuCMWmugXmmivFACkGq5P8GnS7X/m3fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7fXPwPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B452C4CEF0;
-	Tue, 30 Sep 2025 14:56:39 +0000 (UTC)
+	 MIME-Version; b=duWVYDieJ5+WHjEVm14lQdV7WH0CfoqOs1OG5As9Opo8aiaBN/DMtRpN7T6p7kkboY0YnWrIlOxqxRfc28iq1Yn1fqcXtyFsXVC4m71BW1OG6sCsQuadhOd7bMTyAb0cZEzjby9ZNREly2XyFJVIZvBsPehQuzy+o4/L5Lt9wWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+/J8cKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8D3C4CEF0;
+	Tue, 30 Sep 2025 15:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244200;
-	bh=niRXT4lBJTYLqjyURk7nOL9WYssQTNOMqD2wM8nEDU4=;
+	s=korg; t=1759244623;
+	bh=rn5DSqe9TVMrErglLhBdGyEyiA1zCxc0vf/pg1Mqvlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7fXPwPwHRVfP9dxVoKiuQq6O6BV0ut4ktxx3JcfBkxl8mR4vPOHUyvyf26hAGzpN
-	 q0Q+CMvvBowy/knHMRYojNwMxYql5gJXlIYNwerO1nUddzLoRNJolISkf71+p4VXEs
-	 XHBuPxe6vb1vDdWXlBD1ObqRGFNG6HK/BvWzhsXU=
+	b=q+/J8cKgxS/ZRM+qDGdG4CVanNsHC3nhyPgaacSUVE6ZOqNO0K+ZQFT2jL3BXpz9F
+	 +dPylM3ZYtp+fcn9G7VhyWssvfLYU+GlvNMZrFiozvK2ep3oe+ET6G0ficMQGam3Fw
+	 rRszoZOQBdZyHQC5GlhJ26Gwqm4hZTtqoi3muDjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 058/122] nilfs2: fix CFI failure when accessing /sys/fs/nilfs2/features/*
+	syzbot+64e24275ad95a915a313@syzkaller.appspotmail.com,
+	Wang Liang <wangliang74@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 065/143] net: tun: Update napi->skb after XDP process
 Date: Tue, 30 Sep 2025 16:46:29 +0200
-Message-ID: <20250930143825.372768032@linuxfoundation.org>
+Message-ID: <20250930143833.826641745@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Wang Liang <wangliang74@huawei.com>
 
-commit 025e87f8ea2ae3a28bf1fe2b052bfa412c27ed4a upstream.
+[ Upstream commit 1091860a16a86ccdd77c09f2b21a5f634f5ab9ec ]
 
-When accessing one of the files under /sys/fs/nilfs2/features when
-CONFIG_CFI_CLANG is enabled, there is a CFI violation:
+The syzbot report a UAF issue:
 
-  CFI failure at kobj_attr_show+0x59/0x80 (target: nilfs_feature_revision_show+0x0/0x30; expected type: 0xfc392c4d)
-  ...
+  BUG: KASAN: slab-use-after-free in skb_reset_mac_header include/linux/skbuff.h:3150 [inline]
+  BUG: KASAN: slab-use-after-free in napi_frags_skb net/core/gro.c:723 [inline]
+  BUG: KASAN: slab-use-after-free in napi_gro_frags+0x6e/0x1030 net/core/gro.c:758
+  Read of size 8 at addr ffff88802ef22c18 by task syz.0.17/6079
+  CPU: 0 UID: 0 PID: 6079 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
   Call Trace:
    <TASK>
-   sysfs_kf_seq_show+0x2a6/0x390
-   ? __cfi_kobj_attr_show+0x10/0x10
-   kernfs_seq_show+0x104/0x15b
-   seq_read_iter+0x580/0xe2b
-  ...
+   dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+   print_address_description mm/kasan/report.c:378 [inline]
+   print_report+0xca/0x240 mm/kasan/report.c:482
+   kasan_report+0x118/0x150 mm/kasan/report.c:595
+   skb_reset_mac_header include/linux/skbuff.h:3150 [inline]
+   napi_frags_skb net/core/gro.c:723 [inline]
+   napi_gro_frags+0x6e/0x1030 net/core/gro.c:758
+   tun_get_user+0x28cb/0x3e20 drivers/net/tun.c:1920
+   tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
+   new_sync_write fs/read_write.c:593 [inline]
+   vfs_write+0x5c9/0xb30 fs/read_write.c:686
+   ksys_write+0x145/0x250 fs/read_write.c:738
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-When the kobject of the kset for /sys/fs/nilfs2 is initialized, its ktype
-is set to kset_ktype, which has a ->sysfs_ops of kobj_sysfs_ops.  When
-nilfs_feature_attr_group is added to that kobject via
-sysfs_create_group(), the kernfs_ops of each files is sysfs_file_kfops_rw,
-which will call sysfs_kf_seq_show() when ->seq_show() is called.
-sysfs_kf_seq_show() in turn calls kobj_attr_show() through
-->sysfs_ops->show().  kobj_attr_show() casts the provided attribute out to
-a 'struct kobj_attribute' via container_of() and calls ->show(), resulting
-in the CFI violation since neither nilfs_feature_revision_show() nor
-nilfs_feature_README_show() match the prototype of ->show() in 'struct
-kobj_attribute'.
+  Allocated by task 6079:
+   kasan_save_stack mm/kasan/common.c:47 [inline]
+   kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+   unpoison_slab_object mm/kasan/common.c:330 [inline]
+   __kasan_mempool_unpoison_object+0xa0/0x170 mm/kasan/common.c:558
+   kasan_mempool_unpoison_object include/linux/kasan.h:388 [inline]
+   napi_skb_cache_get+0x37b/0x6d0 net/core/skbuff.c:295
+   __alloc_skb+0x11e/0x2d0 net/core/skbuff.c:657
+   napi_alloc_skb+0x84/0x7d0 net/core/skbuff.c:811
+   napi_get_frags+0x69/0x140 net/core/gro.c:673
+   tun_napi_alloc_frags drivers/net/tun.c:1404 [inline]
+   tun_get_user+0x77c/0x3e20 drivers/net/tun.c:1784
+   tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
+   new_sync_write fs/read_write.c:593 [inline]
+   vfs_write+0x5c9/0xb30 fs/read_write.c:686
+   ksys_write+0x145/0x250 fs/read_write.c:738
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Resolve the CFI violation by adjusting the second parameter in
-nilfs_feature_{revision,README}_show() from 'struct attribute' to 'struct
-kobj_attribute' to match the expected prototype.
+  Freed by task 6079:
+   kasan_save_stack mm/kasan/common.c:47 [inline]
+   kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+   kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
+   poison_slab_object mm/kasan/common.c:243 [inline]
+   __kasan_slab_free+0x5b/0x80 mm/kasan/common.c:275
+   kasan_slab_free include/linux/kasan.h:233 [inline]
+   slab_free_hook mm/slub.c:2422 [inline]
+   slab_free mm/slub.c:4695 [inline]
+   kmem_cache_free+0x18f/0x400 mm/slub.c:4797
+   skb_pp_cow_data+0xdd8/0x13e0 net/core/skbuff.c:969
+   netif_skb_check_for_xdp net/core/dev.c:5390 [inline]
+   netif_receive_generic_xdp net/core/dev.c:5431 [inline]
+   do_xdp_generic+0x699/0x11a0 net/core/dev.c:5499
+   tun_get_user+0x2523/0x3e20 drivers/net/tun.c:1872
+   tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
+   new_sync_write fs/read_write.c:593 [inline]
+   vfs_write+0x5c9/0xb30 fs/read_write.c:686
+   ksys_write+0x145/0x250 fs/read_write.c:738
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Link: https://lkml.kernel.org/r/20250906144410.22511-1-konishi.ryusuke@gmail.com
-Fixes: aebe17f68444 ("nilfs2: add /sys/fs/nilfs2/features group")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202509021646.bc78d9ef-lkp@intel.com/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After commit e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in
+generic mode"), the original skb may be freed in skb_pp_cow_data() when
+XDP program was attached, which was allocated in tun_napi_alloc_frags().
+However, the napi->skb still point to the original skb, update it after
+XDP process.
+
+Reported-by: syzbot+64e24275ad95a915a313@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=64e24275ad95a915a313
+Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in generic mode")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250917113919.3991267-1-wangliang74@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/sysfs.c |    4 ++--
- fs/nilfs2/sysfs.h |    8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/tun.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nilfs2/sysfs.c
-+++ b/fs/nilfs2/sysfs.c
-@@ -1081,7 +1081,7 @@ void nilfs_sysfs_delete_device_group(str
-  ************************************************************************/
- 
- static ssize_t nilfs_feature_revision_show(struct kobject *kobj,
--					    struct attribute *attr, char *buf)
-+					    struct kobj_attribute *attr, char *buf)
- {
- 	return sysfs_emit(buf, "%d.%d\n",
- 			NILFS_CURRENT_REV, NILFS_MINOR_REV);
-@@ -1093,7 +1093,7 @@ static const char features_readme_str[]
- 	"(1) revision\n\tshow current revision of NILFS file system driver.\n";
- 
- static ssize_t nilfs_feature_README_show(struct kobject *kobj,
--					 struct attribute *attr,
-+					 struct kobj_attribute *attr,
- 					 char *buf)
- {
- 	return sysfs_emit(buf, features_readme_str);
---- a/fs/nilfs2/sysfs.h
-+++ b/fs/nilfs2/sysfs.h
-@@ -50,16 +50,16 @@ struct nilfs_sysfs_dev_subgroups {
- 	struct completion sg_segments_kobj_unregister;
- };
- 
--#define NILFS_COMMON_ATTR_STRUCT(name) \
-+#define NILFS_KOBJ_ATTR_STRUCT(name) \
- struct nilfs_##name##_attr { \
- 	struct attribute attr; \
--	ssize_t (*show)(struct kobject *, struct attribute *, \
-+	ssize_t (*show)(struct kobject *, struct kobj_attribute *, \
- 			char *); \
--	ssize_t (*store)(struct kobject *, struct attribute *, \
-+	ssize_t (*store)(struct kobject *, struct kobj_attribute *, \
- 			 const char *, size_t); \
- }
- 
--NILFS_COMMON_ATTR_STRUCT(feature);
-+NILFS_KOBJ_ATTR_STRUCT(feature);
- 
- #define NILFS_DEV_ATTR_STRUCT(name) \
- struct nilfs_##name##_attr { \
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index f8c5e2fd04dfa..0fffa023cb736 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1863,6 +1863,9 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 				local_bh_enable();
+ 				goto unlock_frags;
+ 			}
++
++			if (frags && skb != tfile->napi.skb)
++				tfile->napi.skb = skb;
+ 		}
+ 		rcu_read_unlock();
+ 		local_bh_enable();
+-- 
+2.51.0
+
 
 
 
