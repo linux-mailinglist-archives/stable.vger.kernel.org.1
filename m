@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-182078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FD0BAD431
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96471BAD593
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:55:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E3354826B6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:49:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1D9A7A2407
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA62302163;
-	Tue, 30 Sep 2025 14:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE813303C87;
+	Tue, 30 Sep 2025 14:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phs1lZbD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnRn9Guq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03802D24AD;
-	Tue, 30 Sep 2025 14:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A7E18CBE1;
+	Tue, 30 Sep 2025 14:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243761; cv=none; b=BVSsd+WdgJgyHHsljAWB3iLuM04URncQOlvrDoyFNyjK+UNLmM9xevc1FHIsVMw3VccZkKrMYk9yQjom1njzHDWcGOUEX5HbqOgkQBmD2sfGJv9yI2MDu906DzyjfsGXojLS0H7FUQJwcJ5g6ilTPmUZ23BiHRek2EwWYdX4K5Q=
+	t=1759244147; cv=none; b=cTSlYuPQU6IrFf7rnGxDTMbaGr3LaPM8AnSssits1tu8ULnMyg7wGQNRuaWmP2eWxdspCyLIg/5CJPHwj2/VSoEXKTf+7dJO2djIod77OvoekTyMbcweRk8uaQ8xH5FIFX4lJhZBPBHNsi3m39aAVZ4FV1D30KAcYB6Edvpa2ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243761; c=relaxed/simple;
-	bh=3beHunAEKOQnGEDXBMIGKChk3RPQ6wHWWa6sN0vFrno=;
+	s=arc-20240116; t=1759244147; c=relaxed/simple;
+	bh=dBPD0EalWTk4kLS9AA/aj6hqxsK2rDOmB9jymgu03jY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8V/TLBzYIs1LECU2yUGhjzi9jULywz6lxG1GajLVtkvodeP3ITlfdTvq7x2NaK5UT52VPzQy6bQJTxJO7JCWgCG4EwhdeKSLUuomqOV+kElFTBygOPsRyl5ZdjH2TouCD6Ba9z/oMygvoH9+88gf30qkHVurbUVz6ErGilUQk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phs1lZbD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84676C4CEF0;
-	Tue, 30 Sep 2025 14:49:20 +0000 (UTC)
+	 MIME-Version; b=U+vH4uexLhenQBi30KXbH0dAMIQe7ZXaN/wFbT1lz4ES+MhBRp8Ob5aV0Ry0BRGd+FRVnaTaVdFfhOmWmR6fP5xPPaFxy4HwAIXS+A38k/29lvZy+5CFE7hGag4Z03INv42zkes0auQud0w/B3KwjKtemkrDSsdtPBNv4rysLV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnRn9Guq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2997C4CEF0;
+	Tue, 30 Sep 2025 14:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243761;
-	bh=3beHunAEKOQnGEDXBMIGKChk3RPQ6wHWWa6sN0vFrno=;
+	s=korg; t=1759244147;
+	bh=dBPD0EalWTk4kLS9AA/aj6hqxsK2rDOmB9jymgu03jY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phs1lZbDIrqI4pcrQVil2Jtn6zpK+aF1LADL09dzxesjHKvIyY/if2/we+Bm7+ls3
-	 jFRfU6M2IAlm0v/vxSpEyb1E9Mj9wDrGthdMGaC2mYIxot32buOZn5IFCqcMkNMv7Y
-	 TwqfG2CLj97F7E4CDxgi1zBoHZ1zjFkWgzAOvPCA=
+	b=EnRn9GuqyFWF60ZIYG8v9mlULZhY1ac/O0nuCm36kXVW0wqTNL+QLPAyHXbhVonQz
+	 KE4zYYlSpWn1aLruI8AYj1uHzzM3PLS8INSMI+bFWNBxHGascm3PMkohfVAWb2Segj
+	 Hc8/GaHHPB9jcH6aDhABvcnE8YggQ9JC5+jdRp+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 10/81] mm/khugepaged: fix the address passed to notifier on testing young
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 041/122] dmaengine: qcom: bam_dma: Fix DT error handling for num-channels/ees
 Date: Tue, 30 Sep 2025 16:46:12 +0200
-Message-ID: <20250930143820.097612469@linuxfoundation.org>
+Message-ID: <20250930143824.682717724@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,52 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 394bfac1c7f7b701c2c93834c5761b9c9ceeebcf upstream.
+commit 5068b5254812433e841a40886e695633148d362d upstream.
 
-Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
-mmu_notifier_test_young(), but we are passing the wrong address.
-In xxx_scan_pmd(), the actual iteration address is "_address" not
-"address".  We seem to misuse the variable on the very beginning.
+When we don't have a clock specified in the device tree, we have no way to
+ensure the BAM is on. This is often the case for remotely-controlled or
+remotely-powered BAM instances. In this case, we need to read num-channels
+from the DT to have all the necessary information to complete probing.
 
-Change it to the right one.
+However, at the moment invalid device trees without clock and without
+num-channels still continue probing, because the error handling is missing
+return statements. The driver will then later try to read the number of
+channels from the registers. This is unsafe, because it relies on boot
+firmware and lucky timing to succeed. Unfortunately, the lack of proper
+error handling here has been abused for several Qualcomm SoCs upstream,
+causing early boot crashes in several situations [1, 2].
 
-[akpm@linux-foundation.org fix whitespace, per everyone]
-Link: https://lkml.kernel.org/r/20250822063318.11644-1-richard.weiyang@gmail.com
-Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Avoid these early crashes by erroring out when any of the required DT
+properties are missing. Note that this will break some of the existing DTs
+upstream (mainly BAM instances related to the crypto engine). However,
+clearly these DTs have never been tested properly, since the error in the
+kernel log was just ignored. It's safer to disable the crypto engine for
+these broken DTBs.
+
+[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
+
+Cc: stable@vger.kernel.org
+Fixes: 48d163b1aa6e ("dmaengine: qcom: bam_dma: get num-channels and num-ees from dt")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-8-f560889e65d8@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/khugepaged.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/qcom/bam_dma.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1227,7 +1227,7 @@ static int khugepaged_scan_pmd(struct mm
- 		}
- 		if (pte_young(pteval) ||
- 		    page_is_young(page) || PageReferenced(page) ||
--		    mmu_notifier_test_young(vma->vm_mm, address))
-+		    mmu_notifier_test_young(vma->vm_mm, _address))
- 			referenced++;
+--- a/drivers/dma/qcom/bam_dma.c
++++ b/drivers/dma/qcom/bam_dma.c
+@@ -1265,13 +1265,17 @@ static int bam_dma_probe(struct platform
+ 	if (bdev->controlled_remotely) {
+ 		ret = of_property_read_u32(pdev->dev.of_node, "num-channels",
+ 					   &bdev->num_channels);
+-		if (ret)
++		if (ret) {
+ 			dev_err(bdev->dev, "num-channels unspecified in dt\n");
++			return ret;
++		}
+ 
+ 		ret = of_property_read_u32(pdev->dev.of_node, "qcom,num-ees",
+ 					   &bdev->num_ees);
+-		if (ret)
++		if (ret) {
+ 			dev_err(bdev->dev, "num-ees unspecified in dt\n");
++			return ret;
++		}
  	}
- 	if (writable) {
+ 
+ 	bdev->bamclk = devm_clk_get(bdev->dev, "bam_clk");
 
 
 
