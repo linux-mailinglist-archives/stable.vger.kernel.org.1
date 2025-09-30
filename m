@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F264BADA37
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18809BAD632
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C8FF3B2B6B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6B604A4A96
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD5230595C;
-	Tue, 30 Sep 2025 15:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFA630594D;
+	Tue, 30 Sep 2025 14:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMnmWRn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCsBhz4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E2A223DD6;
-	Tue, 30 Sep 2025 15:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D2C30505E;
+	Tue, 30 Sep 2025 14:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245085; cv=none; b=q7exF+hVZiKKhL//HLzWUoFB1FOtMdaR0OAIlqMKC8behwQxJGliG5En1u9YIiHBjvGkeYUvICb5mS93PTRU9Td2pXntK+OTmdQLUFUPuwcR3+9a/QSkBQQ+DywocM7n45zZGkfYfYEcHStUsfqKVH71P3lfCvnHAt5Y6K36udA=
+	t=1759244216; cv=none; b=vBVJVwLFzZBs+GxST6uxKEHEe/+JaRyQFUBvUDo2C/+uqwZNFop6E7nKFPQ89FrUs7kVQXcLBMCEcxQvQfsc1dvWerMrGxOlMPAOwCWJnYDWPofRBs1F/kK/qqbDNSA+4h0yaLhismUQ2aXuYeLvJu7Gz+r/Gw+d8XYpTOw8rZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245085; c=relaxed/simple;
-	bh=mjFG1PkENST4NL88dcwuQXbJ752K5OyS9s8hfU/9CF8=;
+	s=arc-20240116; t=1759244216; c=relaxed/simple;
+	bh=0NyEqFh4GGnW02lGcwLSfBPQNHMW5A00YFMJtjkQoQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osx5n+KASiL25N452o2NoBqRIcTsSGJwk9fPQ0RRDUoNdwnky3K2V48wRCNIraPlCBNPwv4xsz/J2l5vQY31FaoptUFAY+nOx79o9AVHiQ1vyLtornaCY42JR8QOcW97AZET4kOEXy4X4fTXR9T0L9tYp/1WF1dpXzGcDrRqSYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMnmWRn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20334C4CEF0;
-	Tue, 30 Sep 2025 15:11:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fGpYuyxJ5f3M3iq4f250Odo6FedKtPPoCYm7byVrDZ9czS7w+UDDLeLlkYPgxcvpdLHHzzeyb9kz9wTHrYBTRzU/i/MR8IRsVo/kY3ZYbEcuKq+vL/0n5+tBEAEbd5yFt/eBVwfXHoUxM9HmuZit5G5TN43io3Nb5Ws00JLYDIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCsBhz4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693C7C116B1;
+	Tue, 30 Sep 2025 14:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245085;
-	bh=mjFG1PkENST4NL88dcwuQXbJ752K5OyS9s8hfU/9CF8=;
+	s=korg; t=1759244215;
+	bh=0NyEqFh4GGnW02lGcwLSfBPQNHMW5A00YFMJtjkQoQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZMnmWRn6iwYjtcmbHWTIHCPamYjjKubV26LU+Xx5VjooMAF79WYnXU5HQLD3HGrLa
-	 VOPNJahPXhy8NnxhSh93oFbLbFBSQSRIv8SfyKnFOZdcFRjWi17GX+nrWTYEwgI+Kj
-	 Oyi8P7R2TjI7bT0pEQ2I93au8oi0md/k//+y0mCw=
+	b=wCsBhz4cODOAUH+rQmyViS4KUPQMeY7QTtJsSNDXoHdmszqmOqD6bhc6udqoyeHOh
+	 ZUDGh9ztlkFnxYAFDLiZa0qoQE8Q20nm2z9wiNfwoCwGm3tv+gfuVY+JfEb4pNoNtc
+	 sOwd/GAiiS8GLcbXsmvInBLMTBGZ6vZWKNHR+Qzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Jiri Pirko <jiri@nvidia.com>,
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 064/151] net: hsr: hsr_slave: Fix the promiscuous mode in offload mode
+Subject: [PATCH 5.10 063/122] rds: ib: Increment i_fastreg_wrs before bailing out
 Date: Tue, 30 Sep 2025 16:46:34 +0200
-Message-ID: <20250930143830.151314447@linuxfoundation.org>
+Message-ID: <20250930143825.582166813@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Gunasekaran <r-gunasekaran@ti.com>
+From: Håkon Bugge <haakon.bugge@oracle.com>
 
-commit b11c81731c810efe592e510bb0110e0db6877419 upstream.
+commit 4351ca3fcb3ffecf12631b4996bf085a2dad0db6 upstream.
 
-commit e748d0fd66ab ("net: hsr: Disable promiscuous mode in
-offload mode") disables promiscuous mode of slave devices
-while creating an HSR interface. But while deleting the
-HSR interface, it does not take care of it. It decreases the
-promiscuous mode count, which eventually enables promiscuous
-mode on the slave devices when creating HSR interface again.
+We need to increment i_fastreg_wrs before we bail out from
+rds_ib_post_reg_frmr().
 
-Fix this by not decrementing the promiscuous mode count while
-deleting the HSR interface when offload is enabled.
+We have a fixed budget of how many FRWR operations that can be
+outstanding using the dedicated QP used for memory registrations and
+de-registrations. This budget is enforced by the atomic_t
+i_fastreg_wrs. If we bail out early in rds_ib_post_reg_frmr(), we will
+"leak" the possibility of posting an FRWR operation, and if that
+accumulates, no FRWR operation can be carried out.
 
-Fixes: e748d0fd66ab ("net: hsr: Disable promiscuous mode in offload mode")
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240322100447.27615-1-r-gunasekaran@ti.com
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
+Cc: stable@vger.kernel.org
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
+Link: https://patch.msgid.link/20250911133336.451212-1-haakon.bugge@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_slave.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/rds/ib_frmr.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -226,7 +226,8 @@ void hsr_del_port(struct hsr_port *port)
- 		netdev_update_features(master->dev);
- 		dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
- 		netdev_rx_handler_unregister(port->dev);
--		dev_set_promiscuity(port->dev, -1);
-+		if (!port->hsr->fwd_offloaded)
-+			dev_set_promiscuity(port->dev, -1);
- 		netdev_upper_dev_unlink(port->dev, master->dev);
+--- a/net/rds/ib_frmr.c
++++ b/net/rds/ib_frmr.c
+@@ -133,12 +133,15 @@ static int rds_ib_post_reg_frmr(struct r
+ 
+ 	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
+ 				&off, PAGE_SIZE);
+-	if (unlikely(ret != ibmr->sg_dma_len))
+-		return ret < 0 ? ret : -EINVAL;
++	if (unlikely(ret != ibmr->sg_dma_len)) {
++		ret = ret < 0 ? ret : -EINVAL;
++		goto out_inc;
++	}
+ 
+-	if (cmpxchg(&frmr->fr_state,
+-		    FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE)
+-		return -EBUSY;
++	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
++		ret = -EBUSY;
++		goto out_inc;
++	}
+ 
+ 	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
+ 
+@@ -166,11 +169,10 @@ static int rds_ib_post_reg_frmr(struct r
+ 		/* Failure here can be because of -ENOMEM as well */
+ 		rds_transition_frwr_state(ibmr, FRMR_IS_INUSE, FRMR_IS_STALE);
+ 
+-		atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 		if (printk_ratelimit())
+ 			pr_warn("RDS/IB: %s returned error(%d)\n",
+ 				__func__, ret);
+-		goto out;
++		goto out_inc;
  	}
+ 
+ 	/* Wait for the registration to complete in order to prevent an invalid
+@@ -179,8 +181,10 @@ static int rds_ib_post_reg_frmr(struct r
+ 	 */
+ 	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
+ 
+-out:
++	return ret;
+ 
++out_inc:
++	atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 	return ret;
+ }
  
 
 
