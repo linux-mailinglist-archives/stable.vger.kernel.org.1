@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52EABBAD7D0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6304BAD5D5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34341164643
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD3A37A4522
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761E027C872;
-	Tue, 30 Sep 2025 15:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8CA3043C4;
+	Tue, 30 Sep 2025 14:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJkUa/hj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HN5We5n6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AC11EE02F;
-	Tue, 30 Sep 2025 15:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25A3199939;
+	Tue, 30 Sep 2025 14:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244643; cv=none; b=nelrgkRfV2oe+Nadphd8UKwpm5ra/vaTjXZMXKyJERjq3uca/Wqzb3boa1mWiFsmQ/Onk/vDbvcaJ2FnKBediRdtX6ezZXCwDct+YcCuK5kagTTzb7N8Vb3bmzd2swiMju3Y7/NLn9iCBuU45Kzukdw3JltFfemDUnyVC8sb4Vo=
+	t=1759244219; cv=none; b=NNzhO4R3ECkkbK4rIytnrpkNhqnD96CfIhUdwUY8nXlexvAqQOnQRM4IZndzJaX0pVL+UqVTS9sXSAZRpByV7Ag0nHS3QtW9vz31e5a0oTLm4DjpxW397547+z8lASlubruVpU2+xPCswf3Un/nQooeVzgJDb40PjxpUAkOeH7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244643; c=relaxed/simple;
-	bh=6C0m5btIEBUMFUj1myMdF9sJ90aF6ztZ0sO/sJ95hHU=;
+	s=arc-20240116; t=1759244219; c=relaxed/simple;
+	bh=dag3PjzXl61fgkz1JCBl0+tWbsHvw9mBdTrhivLouGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8O0gWrs0yK3E6uYx1sfxy4wJULy70cj+UHtyEMp7uMZPf8Ibxtmf7SO9k4W8hQ1uAagTwH6cqqXhUNJv3xn9WulevR6AyZ4QmUtje6LMVzbca7N2U3tg7EkwAKUVckQGTGymGD5CEgBwSKBT3Ff3sOfyb4N040o+Xd/A1ueicE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJkUa/hj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9962C4CEF0;
-	Tue, 30 Sep 2025 15:04:02 +0000 (UTC)
+	 MIME-Version; b=pofa8iLaS7y5KW2jkfcXNnk6oL/Sul66RKe5go52157EOmDSDEvtW0WRoWsmiWs//qEpFoq0n1vdxsnzkr0aR/Rmt/49ElgfDanI+RxTtCM71yove7qN2BRCluimcCX0fpVbANeUm7sVQzk5F+JoS/zERnvItewHO5hIDxiYfEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HN5We5n6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C150FC4CEF0;
+	Tue, 30 Sep 2025 14:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244643;
-	bh=6C0m5btIEBUMFUj1myMdF9sJ90aF6ztZ0sO/sJ95hHU=;
+	s=korg; t=1759244219;
+	bh=dag3PjzXl61fgkz1JCBl0+tWbsHvw9mBdTrhivLouGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJkUa/hjQaQ0kjo0I7EslTVea8Y33Z9gvXb8udM41ImE2ge/n9/mECl2NfszzMTxR
-	 z41Jt6Wa9tY5/QuC350kgxtbJj54uPTyJakai+AkbBOqgzBxavjcsXyfyoDjep/rei
-	 TiL+n3Z3npjKmRIVkbK1Hq/2V70KmjfevrxwEtOo=
+	b=HN5We5n6Xz11jwBKFMFLEdCJZ51Gy4GS3gX6wmaPdruVbCWWrsFLd9RvRx5RjQDC4
+	 VDjX528q5sbTAr5v1Kc4D8HflzvQcYWn9rTqYevtJuzB2dfHv6/cKymVap4thnIc/6
+	 dMWXJ+c3daNNmWOBO0VE2kVzlT6hHFxDPPE+63PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Ankur Tyagi <ankur.tyagi85@gmail.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 071/143] vhost: Take a reference on the task in struct vhost_task.
+Subject: [PATCH 5.10 064/122] ASoC: wm8940: Correct typo in control name
 Date: Tue, 30 Sep 2025 16:46:35 +0200
-Message-ID: <20250930143834.068575454@linuxfoundation.org>
+Message-ID: <20250930143825.624685020@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit afe16653e05db07d658b55245c7a2e0603f136c0 ]
+[ Upstream commit b4799520dcd6fe1e14495cecbbe9975d847cd482 ]
 
-vhost_task_create() creates a task and keeps a reference to its
-task_struct. That task may exit early via a signal and its task_struct
-will be released.
-A pending vhost_task_wake() will then attempt to wake the task and
-access a task_struct which is no longer there.
-
-Acquire a reference on the task_struct while creating the thread and
-release the reference while the struct vhost_task itself is removed.
-If the task exits early due to a signal, then the vhost_task_wake() will
-still access a valid task_struct. The wake is safe and will be skipped
-in this case.
-
-Fixes: f9010dbdce911 ("fork, vhost: Use CLONE_THREAD to fix freezer/ps regression")
-Reported-by: Sean Christopherson <seanjc@google.com>
-Closes: https://lore.kernel.org/all/aKkLEtoDXKxAAWju@google.com/
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Message-Id: <20250918181144.Ygo8BZ-R@linutronix.de>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Sean Christopherson <seanjc@google.com>
+Fixes: 0b5e92c5e020 ("ASoC WM8940 Driver")
+Reported-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Tested-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Link: https://patch.msgid.link/20250821082639.1301453-3-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/vhost_task.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wm8940.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-index 2f844c279a3e0..7f24ccc896c64 100644
---- a/kernel/vhost_task.c
-+++ b/kernel/vhost_task.c
-@@ -100,6 +100,7 @@ void vhost_task_stop(struct vhost_task *vtsk)
- 	 * freeing it below.
- 	 */
- 	wait_for_completion(&vtsk->exited);
-+	put_task_struct(vtsk->task);
- 	kfree(vtsk);
- }
- EXPORT_SYMBOL_GPL(vhost_task_stop);
-@@ -148,7 +149,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *),
- 		return ERR_PTR(PTR_ERR(tsk));
- 	}
- 
--	vtsk->task = tsk;
-+	vtsk->task = get_task_struct(tsk);
- 	return vtsk;
- }
- EXPORT_SYMBOL_GPL(vhost_task_create);
+diff --git a/sound/soc/codecs/wm8940.c b/sound/soc/codecs/wm8940.c
+index 016cd8aeef37c..31234ad14e688 100644
+--- a/sound/soc/codecs/wm8940.c
++++ b/sound/soc/codecs/wm8940.c
+@@ -218,7 +218,7 @@ static const struct snd_kcontrol_new wm8940_snd_controls[] = {
+ 	SOC_SINGLE_TLV("Digital Capture Volume", WM8940_ADCVOL,
+ 		       0, 255, 0, wm8940_adc_tlv),
+ 	SOC_ENUM("Mic Bias Level", wm8940_mic_bias_level_enum),
+-	SOC_SINGLE_TLV("Capture Boost Volue", WM8940_ADCBOOST,
++	SOC_SINGLE_TLV("Capture Boost Volume", WM8940_ADCBOOST,
+ 		       8, 1, 0, wm8940_capture_boost_vol_tlv),
+ 	SOC_SINGLE_TLV("Speaker Playback Volume", WM8940_SPKVOL,
+ 		       0, 63, 0, wm8940_spk_vol_tlv),
 -- 
 2.51.0
 
