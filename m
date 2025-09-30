@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BC6BAD620
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC090BAD9AD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3448A32466C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 767C61888196
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08692305048;
-	Tue, 30 Sep 2025 14:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38568302CD6;
+	Tue, 30 Sep 2025 15:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqTjfI5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEPiTcYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9151F03C5;
-	Tue, 30 Sep 2025 14:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84E12FCBFC;
+	Tue, 30 Sep 2025 15:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244286; cv=none; b=hItQBhA9meYY5c/PbaG/STI6/CrU4QjeTxzuqPa02lkeuekauxQmllVFyAstrDWOdU9xFP14/DXlK1M8m9//uJFt2gOqq/e7HVzFkarQRg9mXHGtXw50nJRaOYdLz5bc6yEP5NWh6yu0MOesIRcSh70P7D6BB6lcAb6zhw7dJBM=
+	t=1759245165; cv=none; b=iAmNDCP5dE02TTJGnoYXHIzkuZ/meHYKdWoK2Q6VAxDEIO89z3rmWnZqveQusLKj/pstU/S7SnHsWGJ7rEcJ1q4aGJdZA0qCAgasfI8h1DKKubRs9q3/cAtPWL2cAexGm0oarbU7JudlUBtWzmh8QiMHVtYH0s4hrIU+mDIjUrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244286; c=relaxed/simple;
-	bh=crxPKSi79onbzGw4oVguT72ya4DJTAdg1O0IhtFoRCQ=;
+	s=arc-20240116; t=1759245165; c=relaxed/simple;
+	bh=pYPcmN7KJ6wHXYQRKHFnWgJn7aBWC3bmerZOJ2WWQXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=orLKLdDg9rE8MfoKkONJfYYG1wxI/I8Tc2TWOKT70PdHX6h5ay5jXBjzj+X1zitR0livMlgRRy7q9+kw65QfcRa9kdK0jqK5t0IYYj8wsd7h8x+ujDUu/BPaGF8t0NWpkbLRRBGxEMymAIS6DbkgjoXxPDY0PH/JqGeQYvUGYIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqTjfI5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A08EC4CEF0;
-	Tue, 30 Sep 2025 14:58:05 +0000 (UTC)
+	 MIME-Version; b=ax/hMUVqE+e5yfnS96Bir9arTnvH/6xyO3FPAIfjmnIS4eBJjqw7GB88mhHKHPdiq+SJBz4TocwLSnNNEmxXPcKqkJW+xwqBQj51fQallrQ+C2qBlkdyz8EZrZDmgk0nops7C9EpSrE+8Tngk1DIf9Y4/XALtTPxwRKBBnJELHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEPiTcYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B19C4CEF0;
+	Tue, 30 Sep 2025 15:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244286;
-	bh=crxPKSi79onbzGw4oVguT72ya4DJTAdg1O0IhtFoRCQ=;
+	s=korg; t=1759245164;
+	bh=pYPcmN7KJ6wHXYQRKHFnWgJn7aBWC3bmerZOJ2WWQXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqTjfI5psOVcfvswjWghuJ2ZIXMOeiHjU0+IFkV0op93BGfMQdlLbKZG3WwsiLfmv
-	 i+b5od0WrSLLsq/n1UAxz8dg9biIXaYFbcQYaZGCiLMXom2dcRQB+sEeC63gA1t5M1
-	 jq/6mLZs6UdLSQ7aKswlWRzzGR2vhqNs6A2sKPSo=
+	b=hEPiTcYpQjmho/N0qWfBju+qqG8GFIsEQXcMj2aetqpum45mt41N8Hayh3oXQ7IG2
+	 VgQCs66o3bp3dBfscQSMv2gXfDf/xxGy5GO0r8ppWkSFYjGwKbJ9LsWnmcPd5BqaMR
+	 7m8HErQ0k8iIDTVcsQjq2n52CGA8XKlvUBD8janw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 082/122] btrfs: tree-checker: fix the incorrect inode ref size check
+	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+	"Naveen N Rao (AMD)" <naveen@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 083/151] KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active
 Date: Tue, 30 Sep 2025 16:46:53 +0200
-Message-ID: <20250930143826.356905778@linuxfoundation.org>
+Message-ID: <20250930143830.901156825@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
-[ Upstream commit 96fa515e70f3e4b98685ef8cac9d737fc62f10e1 ]
+commit d02e48830e3fce9701265f6c5a58d9bdaf906a76 upstream.
 
-[BUG]
-Inside check_inode_ref(), we need to make sure every structure,
-including the btrfs_inode_extref header, is covered by the item.  But
-our code is incorrectly using "sizeof(iref)", where @iref is just a
-pointer.
+Commit 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
+inhibited pre-VMRUN sync of TPR from LAPIC into VMCB::V_TPR in
+sync_lapic_to_cr8() when AVIC is active.
 
-This means "sizeof(iref)" will always be "sizeof(void *)", which is much
-smaller than "sizeof(struct btrfs_inode_extref)".
+AVIC does automatically sync between these two fields, however it does
+so only on explicit guest writes to one of these fields, not on a bare
+VMRUN.
 
-This will allow some bad inode extrefs to sneak in, defeating tree-checker.
+This meant that when AVIC is enabled host changes to TPR in the LAPIC
+state might not get automatically copied into the V_TPR field of VMCB.
 
-[FIX]
-Fix the typo by calling "sizeof(*iref)", which is the same as
-"sizeof(struct btrfs_inode_extref)", and will be the correct behavior we
-want.
+This is especially true when it is the userspace setting LAPIC state via
+KVM_SET_LAPIC ioctl() since userspace does not have access to the guest
+VMCB.
 
-Fixes: 71bf92a9b877 ("btrfs: tree-checker: Add check for INODE_REF")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Added unlikely() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Practice shows that it is the V_TPR that is actually used by the AVIC to
+decide whether to issue pending interrupts to the CPU (not TPR in TASKPRI),
+so any leftover value in V_TPR will cause serious interrupt delivery issues
+in the guest when AVIC is enabled.
+
+Fix this issue by doing pre-VMRUN TPR sync from LAPIC into VMCB::V_TPR
+even when AVIC is enabled.
+
+Fixes: 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Link: https://lore.kernel.org/r/c231be64280b1461e854e1ce3595d70cde3a2e9d.1756139678.git.maciej.szmigiero@oracle.com
+[sean: tag for stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-checker.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/svm.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1545,10 +1545,10 @@ static int check_inode_ref(struct extent
- 	while (ptr < end) {
- 		u16 namelen;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3666,8 +3666,7 @@ static inline void sync_lapic_to_cr8(str
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	u64 cr8;
  
--		if (ptr + sizeof(iref) > end) {
-+		if (unlikely(ptr + sizeof(*iref) > end)) {
- 			inode_ref_err(leaf, slot,
- 			"inode ref overflow, ptr %lu end %lu inode_ref_size %zu",
--				ptr, end, sizeof(iref));
-+				ptr, end, sizeof(*iref));
- 			return -EUCLEAN;
- 		}
+-	if (nested_svm_virtualize_tpr(vcpu) ||
+-	    kvm_vcpu_apicv_active(vcpu))
++	if (nested_svm_virtualize_tpr(vcpu))
+ 		return;
  
+ 	cr8 = kvm_get_cr8(vcpu);
 
 
 
