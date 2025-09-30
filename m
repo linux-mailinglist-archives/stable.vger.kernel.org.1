@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0939FBAD45B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4698BADA6A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97D0319412A1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A0A83ACED1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CD32FC881;
-	Tue, 30 Sep 2025 14:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379702F5301;
+	Tue, 30 Sep 2025 15:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjCVWkgF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqLmf1ip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137D23C465;
-	Tue, 30 Sep 2025 14:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80DE2236EB;
+	Tue, 30 Sep 2025 15:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243805; cv=none; b=i98GS0nJqLskEsEotEfOu6Q6CUxL8HwwAxwrneshNWpA7v/hTAyP/I2ulr3zMY3AqyPaT19VQR6rZQy2dqQO0UPUQXvRWSUXs7kZBT/ELu0Vo9NXCxrz3ZtGXkgLrmH7vX1MRcc3zaufZoxn7CiytEs9tKgxWm73fcFFAf8KwjM=
+	t=1759245156; cv=none; b=sFo4ACMEx4c5HcCxYtmgA8VXhiGc6IGOrroDKJvWxvCFXJNV/ZxPB6bVvQxolmLkcmEZyU0+RBMmeoaxV2jJjdt49AB+S0E06HI2U+0zPN+7M79MZ7DZk8QCoenPN/G2FI5nSKWN8YgtjTXrasEECvLYMo8xU4wEBSoDO8Yx3ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243805; c=relaxed/simple;
-	bh=xV4N1z1rKYpLmx7nXgpO10taXfzHAsZVrIGWaQOs8QQ=;
+	s=arc-20240116; t=1759245156; c=relaxed/simple;
+	bh=CXDinBqWpp4MToYbEOjsPy+eN+lRrKGVyy4OvfD3Js8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P26hv8vpkh6XJIkRlBjGIpTcd0jAPTIJ1cEzdG9SUeKEbq4LbWLn9AokLVYEcamD+KK/LwRIGPIyAPU1RSZbCHvija755wqJRk1tgFUPpu7VsGU/iwe1xB3EVKp6tSGAWY76fXFMMQ2VYZ1zsKjF3Qid6hAfdJQwJuMwz3iaPs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjCVWkgF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBBCC4CEF0;
-	Tue, 30 Sep 2025 14:50:04 +0000 (UTC)
+	 MIME-Version; b=oAGBKg4AuQUF95qdfhteIhcsNLDYUgVzGk1LAu8ADa9uT5mRQGD7EiILkBAuUe8khHGLJxjXa1gZzEBLnHLS3bc2T2NfqNgHkEYAoYkXA2ldHhADH30r/t65nqvjGLc/5ssulNvUQxeYc1obI6bqtBNJPbOZVDbP5F5Kg4uMqHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqLmf1ip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D91CC4CEF0;
+	Tue, 30 Sep 2025 15:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243804;
-	bh=xV4N1z1rKYpLmx7nXgpO10taXfzHAsZVrIGWaQOs8QQ=;
+	s=korg; t=1759245155;
+	bh=CXDinBqWpp4MToYbEOjsPy+eN+lRrKGVyy4OvfD3Js8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjCVWkgFdfhP5T7PqarpHzOqMSZR7GUCoRHf39n46K6vnpdOsA+vhFZhqMo/Neecb
-	 EJpFBE5E3+SepKH2VDKfuDgM3qJJUSQ0ajac092elAYOKG5P1JRRdCGJ+/ivMjg0/W
-	 9m5ir+QZtLfA69xoYSf/mnbojTobCTHqouiiJYXs=
+	b=fqLmf1ipQ7qshQSfIlxi4xVVljkI6ffHtusilZOROynmCyXi/+OWxqnWxGU6X5Uru
+	 Z+mPzxQMWo8SsnyD+aJbnWr9bKGwgN2r+CMX9dZOUn2LFuBJ8KxoHhIq/HVB3WBNxA
+	 7Cgmlh5ZCKSNSjdQx0A6Q9ywijzoGmGY7cWsfMGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitesh Narayan Lal <nitesh@redhat.com>,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 22/81] i40e: Use irq_update_affinity_hint()
+Subject: [PATCH 5.15 054/151] hrtimer: Remove unused function
 Date: Tue, 30 Sep 2025 16:46:24 +0200
-Message-ID: <20250930143820.595251032@linuxfoundation.org>
+Message-ID: <20250930143829.757309921@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitesh Narayan Lal <nitesh@redhat.com>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-[ Upstream commit d34c54d1739c2cdf2e4437b74e6da269147f4987 ]
+[ Upstream commit 82ccdf062a64f3c4ac575c16179ce68edbbbe8e4 ]
 
-The driver uses irq_set_affinity_hint() for two purposes:
+The function is defined, but not called anywhere:
 
- - To set the affinity_hint which is consumed by the userspace for
-   distributing the interrupts
+  kernel/time/hrtimer.c:1880:20: warning: unused function '__hrtimer_peek_ahead_timers'.
 
- - To apply an affinity that it provides for the i40e interrupts
+Remove it.
 
-The latter is done to ensure that all the interrupts are evenly spread
-across all available CPUs. However, since commit a0c9259dc4e1 ("irq/matrix:
-Spread interrupts on allocation") the spreading of interrupts is
-dynamically performed at the time of allocation. Hence, there is no need
-for the drivers to enforce their own affinity for the spreading of
-interrupts.
-
-Also, irq_set_affinity_hint() applying the provided cpumask as an affinity
-for the interrupt is an undocumented side effect. To remove this side
-effect irq_set_affinity_hint() has been marked as deprecated and new
-interfaces have been introduced. Hence, replace the irq_set_affinity_hint()
-with the new interface irq_update_affinity_hint() that only sets the
-pointer for the affinity_hint.
-
-Signed-off-by: Nitesh Narayan Lal <nitesh@redhat.com>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Link: https://lore.kernel.org/r/20210903152430.244937-4-nitesh@redhat.com
-Stable-dep-of: 915470e1b44e ("i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path")
+Link: https://lore.kernel.org/r/20240322070441.29646-1-jiapeng.chong@linux.alibaba.com
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=8611
+Stable-dep-of: e895f8e29119 ("hrtimers: Unconditionally update target CPU base after offline timer migration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/time/hrtimer.c | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index dfa06737ff05e..13d92c378957f 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -3882,10 +3882,10 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
- 		 *
- 		 * get_cpu_mask returns a static constant mask with
- 		 * a permanent lifetime so it's ok to pass to
--		 * irq_set_affinity_hint without making a copy.
-+		 * irq_update_affinity_hint without making a copy.
- 		 */
- 		cpu = cpumask_local_spread(q_vector->v_idx, -1);
--		irq_set_affinity_hint(irq_num, get_cpu_mask(cpu));
-+		irq_update_affinity_hint(irq_num, get_cpu_mask(cpu));
- 	}
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 2e4b63f3c6dda..a8fbf4b1ea197 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1873,25 +1873,7 @@ void hrtimer_interrupt(struct clock_event_device *dev)
+ 	tick_program_event(expires_next, 1);
+ 	pr_warn_once("hrtimer: interrupt took %llu ns\n", ktime_to_ns(delta));
+ }
+-
+-/* called with interrupts disabled */
+-static inline void __hrtimer_peek_ahead_timers(void)
+-{
+-	struct tick_device *td;
+-
+-	if (!hrtimer_hres_active())
+-		return;
+-
+-	td = this_cpu_ptr(&tick_cpu_device);
+-	if (td && td->evtdev)
+-		hrtimer_interrupt(td->evtdev);
+-}
+-
+-#else /* CONFIG_HIGH_RES_TIMERS */
+-
+-static inline void __hrtimer_peek_ahead_timers(void) { }
+-
+-#endif	/* !CONFIG_HIGH_RES_TIMERS */
++#endif /* !CONFIG_HIGH_RES_TIMERS */
  
- 	vsi->irqs_ready = true;
-@@ -3896,7 +3896,7 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
- 		vector--;
- 		irq_num = pf->msix_entries[base + vector].vector;
- 		irq_set_affinity_notifier(irq_num, NULL);
--		irq_set_affinity_hint(irq_num, NULL);
-+		irq_update_affinity_hint(irq_num, NULL);
- 		free_irq(irq_num, &vsi->q_vectors[vector]);
- 	}
- 	return err;
-@@ -4714,7 +4714,7 @@ static void i40e_vsi_free_irq(struct i40e_vsi *vsi)
- 			/* clear the affinity notifier in the IRQ descriptor */
- 			irq_set_affinity_notifier(irq_num, NULL);
- 			/* remove our suggested affinity mask for this IRQ */
--			irq_set_affinity_hint(irq_num, NULL);
-+			irq_update_affinity_hint(irq_num, NULL);
- 			synchronize_irq(irq_num);
- 			free_irq(irq_num, vsi->q_vectors[i]);
- 
+ /*
+  * Called from run_local_timers in hardirq context every jiffy
 -- 
 2.51.0
 
