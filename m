@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-182793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FE8BADDAD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14503BADB8E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A2117AD42D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E4221944BA6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A82316A956;
-	Tue, 30 Sep 2025 15:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A46237163;
+	Tue, 30 Sep 2025 15:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgmNGEzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5Xd0r/H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B1725FA0F;
-	Tue, 30 Sep 2025 15:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA20205E3B;
+	Tue, 30 Sep 2025 15:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246106; cv=none; b=Cr/le4mGzVPqHoTjvWDO5q1/50jmrcm7bLD6pMeEZ5vxR48WcdHqZZjARac/VfaHpB734tP1kJSpuN3ge0iAlhJTJvUyB0X4++U5FpJpgUTjiW1G+jImqOpqztL3UuQtO5kV6uiVyZALZOZOQw+vmTzwf1JsGMAuRB+UQ95fMW4=
+	t=1759245621; cv=none; b=Sot/hYrq06vwiJXZcH7iC/bGWkocIHJrvmgBY9krzhCMi0DrgJy9kSSMjPmt/9kk9LErkY/ZP5h8HCK7jMPaMV9JzTlKY5O1F+HRIki0illGx4sPBYE2k9VUW63PwUvCwediCRrh2UQd+ef5IWSuFTVWCuLjbU44vkIkZmh1//M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246106; c=relaxed/simple;
-	bh=0JA+TVolojIbN4FXt4fxWu4N+wr3ysGenDAYOdr0biw=;
+	s=arc-20240116; t=1759245621; c=relaxed/simple;
+	bh=JDg7Zy2L03bKwncjgXU3zknAurcadDcSczXagGXPsoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aA00CzY2UumB+bODQnYxZkMAlUZj8frdoRtNHWmda1iCWVtv/GcKj2dSxXw7OEnyQGmc4rnspNrbIqH0HqCACya6Xr4LZGgoViir0iSTAo+0rg2uJsmX5VpYSkTPLbLCn7zeJm7MMXwcbKFDdoPwDZfcnwKbWUtjXdyBfvAm2m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgmNGEzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C006C113D0;
-	Tue, 30 Sep 2025 15:28:25 +0000 (UTC)
+	 MIME-Version; b=bN7THg6WgBh8jNVhPoJs6BTGU1dOjHWZodmz7szlyKmSiBQSviRSu3nCCFJadWfZa5kGmlO8RifyBBuFU1yXg5YJ1JbH2ADlUFusEIjKcIY1M4UqZRwJI5nnUATrkF7irD6pjElfeG1243DyLfLs2PXWC2BnM0/saGcBGZ616SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5Xd0r/H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A44C4CEF0;
+	Tue, 30 Sep 2025 15:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246106;
-	bh=0JA+TVolojIbN4FXt4fxWu4N+wr3ysGenDAYOdr0biw=;
+	s=korg; t=1759245621;
+	bh=JDg7Zy2L03bKwncjgXU3zknAurcadDcSczXagGXPsoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hgmNGEzFKb94zQtDELEMUEQflHhTnMqGWF4tIQmoMzTb38CZc/qhXH5r7B+VSeFpU
-	 /gUHxhaZIL9XWL/P51cpCgXueRLOxXJEmt+1gwkN+pbdFb0Y4AlpOvfnd+bHd44BYF
-	 50PrRGMfOLcUL31cnQhqMfzQKx1htrlgiMYcoX5U=
+	b=s5Xd0r/HVNvQfCN/P0rfCc0zedgS/dZJu+QNJ0tjmgLwIoSL761dkbyJDJ/nGGuUK
+	 k9lNTPq8EfL0yFCMxWIOwnK4ylzhmMdB7tpamnnJmGt7h8vbe8ni9FMXfpOCnGLYEY
+	 uWDLO1xF/DCVOOQXczPZI/B4wUrWfPPJ1Ue51t/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 53/89] nexthop: Forbid FDB status change while nexthop is in a group
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.1 63/73] minmax: fix indentation of __cmp_once() and __clamp_once()
 Date: Tue, 30 Sep 2025 16:48:07 +0200
-Message-ID: <20250930143824.119430169@linuxfoundation.org>
+Message-ID: <20250930143823.280846741@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +67,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 390b3a300d7872cef9588f003b204398be69ce08 ]
+[ Upstream commit f4b84b2ff851f01d0fac619eadef47eb41648534 ]
 
-The kernel forbids the creation of non-FDB nexthop groups with FDB
-nexthops:
+Remove the extra indentation and align continuation markers.
 
- # ip nexthop add id 1 via 192.0.2.1 fdb
- # ip nexthop add id 2 group 1
- Error: Non FDB nexthop group cannot have fdb nexthops.
-
-And vice versa:
-
- # ip nexthop add id 3 via 192.0.2.2 dev dummy1
- # ip nexthop add id 4 group 3 fdb
- Error: FDB nexthop group can only have fdb nexthops.
-
-However, as long as no routes are pointing to a non-FDB nexthop group,
-the kernel allows changing the type of a nexthop from FDB to non-FDB and
-vice versa:
-
- # ip nexthop add id 5 via 192.0.2.2 dev dummy1
- # ip nexthop add id 6 group 5
- # ip nexthop replace id 5 via 192.0.2.2 fdb
- # echo $?
- 0
-
-This configuration is invalid and can result in a NPD [1] since FDB
-nexthops are not associated with a nexthop device:
-
- # ip route add 198.51.100.1/32 nhid 6
- # ping 198.51.100.1
-
-Fix by preventing nexthop FDB status change while the nexthop is in a
-group:
-
- # ip nexthop add id 7 via 192.0.2.2 dev dummy1
- # ip nexthop add id 8 group 7
- # ip nexthop replace id 7 via 192.0.2.2 fdb
- Error: Cannot change nexthop FDB status while in a group.
-
-[1]
-BUG: kernel NULL pointer dereference, address: 00000000000003c0
-[...]
-Oops: Oops: 0000 [#1] SMP
-CPU: 6 UID: 0 PID: 367 Comm: ping Not tainted 6.17.0-rc6-virtme-gb65678cacc03 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
-RIP: 0010:fib_lookup_good_nhc+0x1e/0x80
-[...]
-Call Trace:
- <TASK>
- fib_table_lookup+0x541/0x650
- ip_route_output_key_hash_rcu+0x2ea/0x970
- ip_route_output_key_hash+0x55/0x80
- __ip4_datagram_connect+0x250/0x330
- udp_connect+0x2b/0x60
- __sys_connect+0x9c/0xd0
- __x64_sys_connect+0x18/0x20
- do_syscall_64+0xa4/0x2a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: 38428d68719c ("nexthop: support for fdb ecmp nexthops")
-Reported-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68c9a4d2.050a0220.3c6139.0e63.GAE@google.com/
-Tested-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250921150824.149157-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/bed41317a05c498ea0209eafbcab45a5@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/nexthop.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/minmax.h |   30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 93aaea0006ba7..c52ff9364ae8d 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -2375,6 +2375,13 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 		return -EINVAL;
- 	}
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -46,11 +46,11 @@
+ #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
  
-+	if (!list_empty(&old->grp_list) &&
-+	    rtnl_dereference(new->nh_info)->fdb_nh !=
-+	    rtnl_dereference(old->nh_info)->fdb_nh) {
-+		NL_SET_ERR_MSG(extack, "Cannot change nexthop FDB status while in a group");
-+		return -EINVAL;
-+	}
-+
- 	err = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new, extack);
- 	if (err)
- 		return err;
--- 
-2.51.0
-
+ #define __cmp_once(op, x, y, unique_x, unique_y) ({	\
+-		typeof(x) unique_x = (x);		\
+-		typeof(y) unique_y = (y);		\
+-		static_assert(__types_ok(x, y),		\
+-			#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
+-		__cmp(op, unique_x, unique_y); })
++	typeof(x) unique_x = (x);			\
++	typeof(y) unique_y = (y);			\
++	static_assert(__types_ok(x, y),			\
++		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
++	__cmp(op, unique_x, unique_y); })
+ 
+ #define __careful_cmp(op, x, y)					\
+ 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
+@@ -60,16 +60,16 @@
+ #define __clamp(val, lo, hi)	\
+ 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+ 
+-#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
+-		typeof(val) unique_val = (val);				\
+-		typeof(lo) unique_lo = (lo);				\
+-		typeof(hi) unique_hi = (hi);				\
+-		static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+-				(lo) <= (hi), true),					\
+-			"clamp() low limit " #lo " greater than high limit " #hi);	\
+-		static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
+-		static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
+-		__clamp(unique_val, unique_lo, unique_hi); })
++#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
++	typeof(val) unique_val = (val);						\
++	typeof(lo) unique_lo = (lo);						\
++	typeof(hi) unique_hi = (hi);						\
++	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
++			(lo) <= (hi), true),					\
++		"clamp() low limit " #lo " greater than high limit " #hi);	\
++	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
++	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
++	__clamp(unique_val, unique_lo, unique_hi); })
+ 
+ #define __careful_clamp(val, lo, hi) ({					\
+ 	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
 
 
 
