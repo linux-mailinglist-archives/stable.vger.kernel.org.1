@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-182131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CECBBAD4C7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD32BAD98C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 175771883210
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21242172D5C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C3F2F60D8;
-	Tue, 30 Sep 2025 14:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993A82236EB;
+	Tue, 30 Sep 2025 15:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNxY9a+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKqhmscy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B83A4D8CE;
-	Tue, 30 Sep 2025 14:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538261EE02F;
+	Tue, 30 Sep 2025 15:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243937; cv=none; b=CWLYjC70+q5DPZWl1ITcz591SGkMVsw7NvbEEDvP7KDmIULj27whwpZ1c08aaoepr0y+AfBFlEHmPPOycvkaWZSVIRLNHvpO9wCzt+HIRAX9n8B39NEr1WhZrsPGiNNW6BM83rxs3Q05+Qiuz6YZtj+9dD6eNxIne/txWkVT7yU=
+	t=1759245082; cv=none; b=W3yKmCN5qbcFiV6U2zqdOtEh3l/8zN1XLCfpRGPA0lq3GHAoKI7XUOg2UbGzDl5hGrMQgbwpZslSmlA+cbIDs0BYB1SsPF/iJpusEfqqniQqp5QeTck5iuRLDzYKy3veb5SZXpSIA9i9kXcnsxATlMWHesnL4RMdN7Auk6ICw0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243937; c=relaxed/simple;
-	bh=wafWAn49hK+DHJmClqd5Tuy3Val+h4UBJmCWBmjc5Do=;
+	s=arc-20240116; t=1759245082; c=relaxed/simple;
+	bh=xDxzcJkEU8QqLEYOJFuCDap79UXZ5OR9jIxALuWyEyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofsI7ee5BFmznxEW4kruRlE0kc+J9PDEv+ImMxisrdSxFSix5mdwpcHeBNPrTyU6f80J03qQ31/1sO2L8Y8oC8SqeHkf5liDu5AnrDkhwd6c1fd2yJQp8I2RVyf10nb2q8jGRjhsK2DbpsCvm5/lD5UZdmGgrdbAnecjaQNrn5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNxY9a+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE7BC4CEF0;
-	Tue, 30 Sep 2025 14:52:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uVrCUGnuazObwwsTYxDb42v2xbeW0I339CMCr+TGVNBRxhziZyJw7PLg60WVhWaH7UGU08bhnwjijLndbDKLyQHdtPrz3IreOy2vZIMwm8DEMjly2RTTC1kVb7I7g2TOVcJqZU4/VuucUvjZ8g5ElJJFGqZPQxxBFSJGLc9RMR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKqhmscy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7561FC4CEF0;
+	Tue, 30 Sep 2025 15:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243937;
-	bh=wafWAn49hK+DHJmClqd5Tuy3Val+h4UBJmCWBmjc5Do=;
+	s=korg; t=1759245079;
+	bh=xDxzcJkEU8QqLEYOJFuCDap79UXZ5OR9jIxALuWyEyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNxY9a+FwKVb8tk/Dc9scu5m+dfQeY3oesropQztQUPUG+klypVgQoh7XjHyp7dDk
-	 e30gRnA+W68DvOfWJuFjDjJ5KE3RdIDXkl5JfP96CJQzYrQ/01DZQtoUmhX1TGoNUL
-	 RG8UtKuCLkf9hPkFONwdR/U0ZxdTwb4RhSgrXi+E=
+	b=JKqhmscyg5Em9SuXJBqV6doAucgOi5Hn8+63iYm1SmxlhHXk+ajqRdfXlOCkG+TDF
+	 sC/m9PYqVxAiJInPS26uZLhv7+oI3MKGy7HqaZffGI56NlukiCnvWxcRi2uOLw06K3
+	 N2NUqIUzQAxk96CO9B9B02+juahgK8CDIHBpZKyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 30/81] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+Subject: [PATCH 5.15 062/151] drm/i915/power: fix size for for_each_set_bit() in abox iteration
 Date: Tue, 30 Sep 2025 16:46:32 +0200
-Message-ID: <20250930143820.928129957@linuxfoundation.org>
+Message-ID: <20250930143830.071553812@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit d613f53c83ec47089c4e25859d5e8e0359f6f8da ]
+[ Upstream commit cfa7b7659757f8d0fc4914429efa90d0d2577dd7 ]
 
-When I did memory failure tests, below panic occurs:
+for_each_set_bit() expects size to be in bits, not bytes. The abox mask
+iteration uses bytes, but it works by coincidence, because the local
+variable holding the mask is unsigned long, and the mask only ever has
+bit 2 as the highest bit. Using a smaller type could lead to subtle and
+very hard to track bugs.
 
-page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
-kernel BUG at include/linux/page-flags.h:616!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- unpoison_memory+0x2f3/0x590
- simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
- debugfs_attr_write+0x42/0x60
- full_proxy_write+0x5b/0x80
- vfs_write+0xd5/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xb9/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f08f0314887
-RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
-RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
-RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
-R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
- </TASK>
-Modules linked in: hwpoison_inject
----[ end trace 0000000000000000 ]---
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Kernel panic - not syncing: Fatal exception
-Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
----[ end Kernel panic - not syncing: Fatal exception ]---
-
-The root cause is that unpoison_memory() tries to check the PG_HWPoison
-flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
-triggered.  This can be reproduced by below steps:
-
-1.Offline memory block:
-
- echo offline > /sys/devices/system/memory/memory12/state
-
-2.Get offlined memory pfn:
-
- page-types -b n -rlN
-
-3.Write pfn to unpoison-pfn
-
- echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
-
-This scenario can be identified by pfn_to_online_page() returning NULL.
-And ZONE_DEVICE pages are never expected, so we can simply fail if
-pfn_to_online_page() == NULL to fix the bug.
-
-Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
-Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context ]
+Fixes: 62afef2811e4 ("drm/i915/rkl: RKL uses ABOX0 for pixel transfers")
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: stable@vger.kernel.org # v5.9+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://lore.kernel.org/r/20250905104149.1144751-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 7ea3baa6efe4bb93d11e1c0e6528b1468d7debf6)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+[ adapted struct intel_display *display parameters to struct drm_i915_private *dev_priv ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display_power.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1543,10 +1543,9 @@ int unpoison_memory(unsigned long pfn)
- 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
- 					DEFAULT_RATELIMIT_BURST);
+--- a/drivers/gpu/drm/i915/display/intel_display_power.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power.c
+@@ -5293,7 +5293,7 @@ static void icl_mbus_init(struct drm_i91
+ 	if (DISPLAY_VER(dev_priv) == 12)
+ 		abox_regs |= BIT(0);
  
--	if (!pfn_valid(pfn))
--		return -ENXIO;
--
--	p = pfn_to_page(pfn);
-+	p = pfn_to_online_page(pfn);
-+	if (!p)
-+		return -EIO;
- 	page = compound_head(p);
+-	for_each_set_bit(i, &abox_regs, sizeof(abox_regs))
++	for_each_set_bit(i, &abox_regs, BITS_PER_TYPE(abox_regs))
+ 		intel_de_rmw(dev_priv, MBUS_ABOX_CTL(i), mask, val);
+ }
  
- 	if (!PageHWPoison(p)) {
+@@ -5754,11 +5754,11 @@ static void tgl_bw_buddy_init(struct drm
+ 	if (table[config].page_mask == 0) {
+ 		drm_dbg(&dev_priv->drm,
+ 			"Unknown memory configuration; disabling address buddy logic.\n");
+-		for_each_set_bit(i, &abox_mask, sizeof(abox_mask))
++		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask))
+ 			intel_de_write(dev_priv, BW_BUDDY_CTL(i),
+ 				       BW_BUDDY_DISABLE);
+ 	} else {
+-		for_each_set_bit(i, &abox_mask, sizeof(abox_mask)) {
++		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask)) {
+ 			intel_de_write(dev_priv, BW_BUDDY_PAGE_MASK(i),
+ 				       table[config].page_mask);
+ 
 
 
 
