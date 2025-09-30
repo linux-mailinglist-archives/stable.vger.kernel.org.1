@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-182392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CFDBAD8DE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94C9BAD6AA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C45D3ACF9E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDDEA1897AF5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C168B266B65;
-	Tue, 30 Sep 2025 15:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BC230595D;
+	Tue, 30 Sep 2025 14:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBPfqJ3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QA17LruM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE051487F4;
-	Tue, 30 Sep 2025 15:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E1C304989;
+	Tue, 30 Sep 2025 14:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244797; cv=none; b=pxU71VIHT5OgUw14kS4k+FRO2zCCMlFXZdYTMpMzfb06vnBFkjpjK7gxqx6DgYiOPoFjEsok76nMRuaVhePu11L96/E2IeFwiokBHOAPzCORCyZ5Owv7l3BNBQA78cZFD1OyBsxcIihrLHYtZs8pufPSONudrIU91S13Gl/qP6Y=
+	t=1759244372; cv=none; b=a+ek9mFJwZFkADE0HKX/st6qgwc6IQvaMnWXmUB2oyE0/MipIhrPbRz41CcgQDf7uuWtJjIz24/mZfDbc5JZoCsmlg0vC0TpX6a58Zw8LP1E5cUhftNOJOsygiTE5mAw4vS4jCAJQnvWQe+zBhF5TW+vT6yKcmYPDsM311Oh6MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244797; c=relaxed/simple;
-	bh=PbPoiT0gEnRxgy5pXeFipt6ejA0tfyyBPbOzcGtQg24=;
+	s=arc-20240116; t=1759244372; c=relaxed/simple;
+	bh=Z7exjtIzi3KLBAxA9exneNpyYQ6K93A/Ccn5izeQXHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWe/4RdIrvfRkGsQMbARIsaGj5oopUNIcASUA4zJd5M/d0PgQZf8+/mvn99eX7nbosCt9u2pZhXVO3RwnWdoiN3EL1nyPXJdHBESCzbLnMrgC7ioE8BjX0SBlWHKVPQNTxQjLsvIvcOTXfcWlm/tvfamxcfeQXYs5lLaKFepzoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBPfqJ3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4962DC4CEF0;
-	Tue, 30 Sep 2025 15:06:36 +0000 (UTC)
+	 MIME-Version; b=BPJyc3J/cbxaUg9r8V+9Zm/9F/p+e5C40qPvzbZMVe5SJHfH2gyCjC3HkfgVWNREVF0Gd0ieL4VLvwxhr3tZzKhEXE1AYk3WlFRJKBhrJdRxVlOwJWE6Oqf+oZOZN0B3R8ZauHfppM2+PdhpLhxh2g05oO14vaq2ItSN+kgKysE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QA17LruM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8DFC116B1;
+	Tue, 30 Sep 2025 14:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244796;
-	bh=PbPoiT0gEnRxgy5pXeFipt6ejA0tfyyBPbOzcGtQg24=;
+	s=korg; t=1759244372;
+	bh=Z7exjtIzi3KLBAxA9exneNpyYQ6K93A/Ccn5izeQXHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBPfqJ3MV8PDlrLZ4BKmnWHI3G4rwYhnkb2AotawhEUqd1vNQbnxvkkcKhBU0Zw4K
-	 1rBDyynZwDdUxgA+R6MTsNbOnW3D2nIoj2KqDnh82RIUPCIONQzzftgrsFSzCXHE8T
-	 eZEHR1tiw5JLLdS26FcxktGK1rEPl4sJQrJMyggk=
+	b=QA17LruM8DzgjH38lHpXiEXSsQOIRWBJJYd6wGUsrwPr62yv30OM6+fDP4lCYTor+
+	 DPE/t9PqqO9ZIM8bvuapa0kurYHopSLMlLOfY/50Gy8Q253popZtwQ9MlvLD82HPQ2
+	 Tu7GKm+pzQypFrtD/PoI2juTCCNXucmZ3yjwi3nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH 6.16 116/143] arm64: dts: marvell: cn9132-clearfog: disable eMMC high-speed modes
+	Eric Biggers <ebiggers@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 109/122] crypto: af_alg - Fix incorrect boolean values in af_alg_ctx
 Date: Tue, 30 Sep 2025 16:47:20 +0200
-Message-ID: <20250930143835.855007681@linuxfoundation.org>
+Message-ID: <20250930143827.432567384@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 48b51799a5461707705454568453618cdd7307f4 upstream.
+[ Upstream commit d0ca0df179c4b21e2a6c4a4fb637aa8fa14575cb ]
 
-Similar to MacchiatoBIN the high-speed modes are unstable on the CN9132
-CEX-7 module, leading to failed transactions under normal use.
+Commit 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in
+af_alg_sendmsg") changed some fields from bool to 1-bit bitfields of
+type u32.
 
-Disable all high-speed modes including UHS.
+However, some assignments to these fields, specifically 'more' and
+'merge', assign values greater than 1.  These relied on C's implicit
+conversion to bool, such that zero becomes false and nonzero becomes
+true.
 
-Additionally add no-sdio and non-removable properties as appropriate for
-eMMC.
+With a 1-bit bitfields of type u32 instead, mod 2 of the value is taken
+instead, resulting in 0 being assigned in some cases when 1 was intended.
 
-Fixes: e9ff907f4076 ("arm64: dts: add description for solidrun cn9132 cex7 module and clearfog board")
+Fix this by restoring the bool type.
+
+Fixes: 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/marvell/cn9132-sr-cex7.dtsi |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/crypto/if_alg.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/marvell/cn9132-sr-cex7.dtsi
-+++ b/arch/arm64/boot/dts/marvell/cn9132-sr-cex7.dtsi
-@@ -137,6 +137,14 @@
- 	pinctrl-0 = <&ap_mmc0_pins>;
- 	pinctrl-names = "default";
- 	vqmmc-supply = <&v_1_8>;
-+	/*
-+	 * Not stable in HS modes - phy needs "more calibration", so disable
-+	 * UHS (by preventing voltage switch), SDR104, SDR50 and DDR50 modes.
-+	 */
-+	no-1-8-v;
-+	no-sd;
-+	no-sdio;
-+	non-removable;
- 	status = "okay";
- };
+diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
+index 1424200fe88cf..9af84cad92e93 100644
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -152,7 +152,7 @@ struct af_alg_ctx {
+ 	size_t used;
+ 	atomic_t rcvused;
  
+-	u32		more:1,
++	bool		more:1,
+ 			merge:1,
+ 			enc:1,
+ 			write:1,
+-- 
+2.51.0
+
 
 
 
