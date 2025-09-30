@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A89BADB49
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B496BADCCF
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FF8519448FA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF31119455B9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E654627B328;
-	Tue, 30 Sep 2025 15:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59752FD1DD;
+	Tue, 30 Sep 2025 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGODR+SI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ID6D58hX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B41173;
-	Tue, 30 Sep 2025 15:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E6D1F3FED;
+	Tue, 30 Sep 2025 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245557; cv=none; b=rLCR1xHKhDW4rPbismc+xVT7kjCMuF+iRfJgrlj47b6HeEpXAz4jrSDuO14uG0z9ug15krDRUSAq21yEhYjLlS/fOfGedAjn5mQFcyDn+piyePXoiCR8dx6JDvBo0Fvn+gb/HhwGm6kREZriKdtyAB8CmR5WEWusBYVWSGFq0yo=
+	t=1759245918; cv=none; b=tgyyQtXVC/HCmRnpZ2e77wr+k4ra8dLQuIClaCLihDTY6tYbw7kqlWKul2pkjUkRabQIHZomAlD8ronPbaqYPJLKEYosreDwtuvtdRB9NObnavUg29BsZ1IFXYjq+sELabmtaSNuoI6AMhyXJfxD37SXaHocHj9lMNSrrzGHjHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245557; c=relaxed/simple;
-	bh=2MDL3/VA/L/B6yJ1HBODPZRZLds2B6m9OQKNfuhHpRE=;
+	s=arc-20240116; t=1759245918; c=relaxed/simple;
+	bh=E40aEd+Kuvp+M3QpLiY1SKH3o+U71A8LVy0OeVqFRvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9dUMCogglqBIrDuiOzZ0Ljma6rkjEM3MuIhcMQItwWNPczVJMNXYOg1+NsD4e7Tk/vHMu0LTfVK0uvy3vdY1dEt8js+wvUv0hdoKqJR/iDWFAjMmRwywyhx3HBK+1W/L1mQEQn/SjgvVEuBINyXrA+RwmdNi7PYL/39g3hQ2W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGODR+SI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DA8C4CEF0;
-	Tue, 30 Sep 2025 15:19:16 +0000 (UTC)
+	 MIME-Version; b=rxdYjhdkEvrng8BIB4yU1trH7T/VI2mWPsDSPvZ3XoFX784mpCvIZWGbFBPWEUdtk5c7PjXnRHs3A+nqci3YUWxUhMzBAT5jiBM+lLNIel2Tn/FKRQF8tCijNO8jDahlvS8lEaDXQ4jVOB2lB5mim/wf6PMdM6svBO629O+8DHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ID6D58hX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC676C4CEF0;
+	Tue, 30 Sep 2025 15:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245557;
-	bh=2MDL3/VA/L/B6yJ1HBODPZRZLds2B6m9OQKNfuhHpRE=;
+	s=korg; t=1759245918;
+	bh=E40aEd+Kuvp+M3QpLiY1SKH3o+U71A8LVy0OeVqFRvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGODR+SI45tIVlJh0V3LzvKHmHyV93cNAp/oElox684di0SAjZjm782mvSbAo2Fx8
-	 n/X+YFGtGFq/R27CMZoSHRneVrRb9wzXLG50xYjpNrOc2ihm9T7r3Z7TgNKXC6VYQw
-	 haZ8P2HB2eKqwaSxgISYMtrRqz1fQkSxWWVrIykk=
+	b=ID6D58hXNnhtrn9RMBdUH1oHD+0ciOSwSHbDxRfCBSfNzTL2V0aZnwBNj6KANkfIJ
+	 DZCVawcWDDv5ItyGiFGcktjnBT5/G8I+magPk2Bd4M1lgse6TZpz4mqRSej59nZ89N
+	 kBStPIEx9KtnZLi1cdzzcEUIeZE9+JvcEj1Azd8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 53/73] afs: Fix potential null pointer dereference in afs_put_server
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.6 58/91] i40e: fix input validation logic for action_meta
 Date: Tue, 30 Sep 2025 16:47:57 +0200
-Message-ID: <20250930143822.844722836@linuxfoundation.org>
+Message-ID: <20250930143823.601786969@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +65,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-commit 9158c6bb245113d4966df9b2ba602197a379412e upstream.
+commit 9739d5830497812b0bdeaee356ddefbe60830b88 upstream.
 
-afs_put_server() accessed server->debug_id before the NULL check, which
-could lead to a null pointer dereference. Move the debug_id assignment,
-ensuring we never dereference a NULL server pointer.
+Fix condition to check 'greater or equal' to prevent OOB dereference.
 
-Fixes: 2757a4dc1849 ("afs: Fix access after dec in put functions")
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Acked-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/server.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/afs/server.c
-+++ b/fs/afs/server.c
-@@ -401,13 +401,14 @@ struct afs_server *afs_use_server(struct
- void afs_put_server(struct afs_net *net, struct afs_server *server,
- 		    enum afs_server_trace reason)
- {
--	unsigned int a, debug_id = server->debug_id;
-+	unsigned int a, debug_id;
- 	bool zero;
- 	int r;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3595,7 +3595,7 @@ static int i40e_validate_cloud_filter(st
  
- 	if (!server)
- 		return;
- 
-+	debug_id = server->debug_id;
- 	a = atomic_read(&server->active);
- 	zero = __refcount_dec_and_test(&server->ref, &r);
- 	trace_afs_server(debug_id, r - 1, a, reason);
+ 	/* action_meta is TC number here to which the filter is applied */
+ 	if (!tc_filter->action_meta ||
+-	    tc_filter->action_meta > vf->num_tc) {
++	    tc_filter->action_meta >= vf->num_tc) {
+ 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
+ 			 vf->vf_id, tc_filter->action_meta);
+ 		goto err;
 
 
 
