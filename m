@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCA6BADC6C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A5CBADAA7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A83237ACFE8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30C771944431
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE9927056D;
-	Tue, 30 Sep 2025 15:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A340C2F39C0;
+	Tue, 30 Sep 2025 15:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0fkbLkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQ2UX2vN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D2920E334;
-	Tue, 30 Sep 2025 15:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60966265CCD;
+	Tue, 30 Sep 2025 15:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245819; cv=none; b=a7dg/zQjE3yVL4vo8hs7p6u08DQwsTvgZEBOVURFI0tkp4lfR7fSGa1l7gz1Cc8T9CuSdZoVEBFE5hu9+8y3IUkn9YVejFKQPzVgKAQDLsP6S0vt4z5LXTr1fmjH3EEzIk3qqpeqXuZjyiDFVEXXWzc7a5nvMwbkY6Tx2MzFGzM=
+	t=1759245456; cv=none; b=PddvAQqVNfixojP4PxRFx/6ETXqxde2mEL8O5ihOXHh9St9YJEzY64imi2pC7YhJtHKFnvk5BOGTgIi8xlA+9RVra7lJmGkZhhFNSLI9EII1MOAFS45qF1pHNeQKtkBpeDG0WEVa+mWp7UkoVcNQ+jOX1C6BPhxcIXMGqot4V1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245819; c=relaxed/simple;
-	bh=ruSeDk8QAKnhmBorPitDalZCWmHWc6Nk/j7gx7BV87k=;
+	s=arc-20240116; t=1759245456; c=relaxed/simple;
+	bh=gUoGuxa7/F7orGHQ85dDQB3VjVnucFxO5q5IJL0QzzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iP8axPT2q6lqAskJarMvd+jZtVvyVKuvBdCOEVohUNauWQ3V/aT64L6rauYclGLjJTe2eQNNwAxzYh5e/ocxW+BVCl+mYeWuJYzV8vf6UAfF3poJz87wZ0mhzKkbHQVrG1HoeOaqT097FP4K99hVL9Ck8sYRHbdHxkAbpEeFCbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0fkbLkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAC0C4CEF0;
-	Tue, 30 Sep 2025 15:23:38 +0000 (UTC)
+	 MIME-Version; b=EV00VCL204tDVkFRqtxMTWAZLKgZg63yJf3Uv8YAGv279EWJdMq0KBP8+cP3Y3ogKcaugpxAUw13OG7fV7XnwpGMhpDZ26toU2dUfvCDKooJxwkB4beYmnHt78co6rz03+Ams2/hcAFinDHarValeu8kLfhcO8epyEwNMJpU854=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQ2UX2vN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33A1C4CEF0;
+	Tue, 30 Sep 2025 15:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245819;
-	bh=ruSeDk8QAKnhmBorPitDalZCWmHWc6Nk/j7gx7BV87k=;
+	s=korg; t=1759245456;
+	bh=gUoGuxa7/F7orGHQ85dDQB3VjVnucFxO5q5IJL0QzzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0fkbLkX++Y2eMjBh+0iA8nIkuRc7Y+O5DReXb192i2a/QC/nKUhEQ2vvidJqp3fn
-	 3VU4QFl8EV5CWrtD63L4bVd6Xy4erHjb3oBHI2R/WRqelyUoYQ+3pPZE4Q/884ToRo
-	 6GT+kc7yyOJbnBibiBy+uX7KYxAxZcFUApXVnuWY=
+	b=GQ2UX2vNMAmL8Y4PA+of8dQP7/XkT3ca0FQb8FZa4a/6w/v/kxAm7aLvhEun1Dyp4
+	 wUOwlJTiCqPMuGOCbr+OuZfV3/VjEsVyjowZj1VDpDLOnmmzcfRAKZQ4a+u/izdPBM
+	 rpli6n0LRcjihkOlDDdgA9PO78VHpi1atWQodHKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 28/91] ARM: dts: kirkwood: Fix sound DAI cells for OpenRD clients
+Subject: [PATCH 6.1 23/73] arm64: dts: imx8mp: Correct thermal sensor index
 Date: Tue, 30 Sep 2025 16:47:27 +0200
-Message-ID: <20250930143822.315134172@linuxfoundation.org>
+Message-ID: <20250930143821.532521798@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 29341c6c18b8ad2a9a4a68a61be7e1272d842f21 ]
+[ Upstream commit a50342f976d25aace73ff551845ce89406f48f35 ]
 
-A previous commit changed the '#sound-dai-cells' property for the
-kirkwood audio controller from 1 to 0 in the kirkwood.dtsi file,
-but did not update the corresponding 'sound-dai' property in the
-kirkwood-openrd-client.dts file.
+The TMU has two temperature measurement sites located on the chip. The
+probe 0 is located inside of the ANAMIX, while the probe 1 is located near
+the ARM core. This has been confirmed by checking with HW design team and
+checking RTL code.
 
-This created a mismatch, causing a dtbs_check validation error where
-the dts provides one cell (<&audio0 0>) while the .dtsi expects zero.
+So correct the {cpu,soc}-thermal sensor index.
 
-Remove the extraneous cell from the 'sound-dai' property to fix the
-schema validation warning and align with the updated binding.
-
-Fixes: e662e70fa419 ("arm: dts: kirkwood: fix error in #sound-dai-cells size")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Fixes: 30cdd62dce6b ("arm64: dts: imx8mp: Add thermal zones support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
-index d4e0b8150a84c..cf26e2ceaaa07 100644
---- a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
-+++ b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
-@@ -38,7 +38,7 @@
- 		simple-audio-card,mclk-fs = <256>;
- 
- 		simple-audio-card,cpu {
--			sound-dai = <&audio0 0>;
-+			sound-dai = <&audio0>;
- 		};
- 
- 		simple-audio-card,codec {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 86af7115ac60c..e05a1029975af 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -227,7 +227,7 @@
+ 		cpu-thermal {
+ 			polling-delay-passive = <250>;
+ 			polling-delay = <2000>;
+-			thermal-sensors = <&tmu 0>;
++			thermal-sensors = <&tmu 1>;
+ 			trips {
+ 				cpu_alert0: trip0 {
+ 					temperature = <85000>;
+@@ -257,7 +257,7 @@
+ 		soc-thermal {
+ 			polling-delay-passive = <250>;
+ 			polling-delay = <2000>;
+-			thermal-sensors = <&tmu 1>;
++			thermal-sensors = <&tmu 0>;
+ 			trips {
+ 				soc_alert0: trip0 {
+ 					temperature = <85000>;
 -- 
 2.51.0
 
