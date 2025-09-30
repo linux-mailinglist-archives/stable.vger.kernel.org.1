@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32775BAD779
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43B6BAD47F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D64C5163C04
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1C413A3CD1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFBF1FF1C8;
-	Tue, 30 Sep 2025 15:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAEE2253FC;
+	Tue, 30 Sep 2025 14:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfmHrlXY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9M9/t8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC53173;
-	Tue, 30 Sep 2025 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA00925D1F7;
+	Tue, 30 Sep 2025 14:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244560; cv=none; b=ieuP0PKb9FAwArMP8jEVrnfHdnEkcMkrwFmzfdFfm4Eh4OHLX/LYd+lGuxiOocAHiyTrWFw6N7If9PIx8YlXEK8idrpsP9jbKWnQiHgzm5+70gZMWDy9tN0jAJQ4RjwzTqF/XFO5cu0Wjge1xnBzTEiihao6qWCwsfeqQ1py6EA=
+	t=1759243822; cv=none; b=eg5xDy7f6XJCsrsmLct2BEQ4S9LYRK7eFsNR8CAm8Ka0PIpkW3QB75aIIcnqwiAlZc2GW4vdRfokCiS+LSiLUhx3NB0Iy2pMRxsXHxGEksIyHCvMG5B++9DhADRhCItWkILsbBoyuEBsd3+cjASAoxI1s7Ix0k3LchBUFYOu5Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244560; c=relaxed/simple;
-	bh=lxin8/TFbNd/TVqmUTUG4PucwPt5V1Gi6768aWmMqJQ=;
+	s=arc-20240116; t=1759243822; c=relaxed/simple;
+	bh=AIqmhS8zJvIU+7cfpmxekhBP3/TeGln9FDN6JOzpUFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bXSIDsuN6Vy7drC1d54mXDqFDWS/j0WQoJGm+0SEa+QAXkHN6ORcnPN6vbSz4CP1iGjn7NtwiD0SWyw7iX5werfKxEwvDe3h93gcoRZq1+35llTROCvRxGAhP06TV6T7NLaQz6oMpG43jNYQ/CUfk1BsbykYI3WIIf4lCv5Xqm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfmHrlXY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317CCC4CEF0;
-	Tue, 30 Sep 2025 15:02:37 +0000 (UTC)
+	 MIME-Version; b=dqWpl7DU7DB/HeS1AcGVf+rmPPnV+BYSnKyZ4LOHuvW3RYlfJHqvc8jzcjoqdaX+PFkkLdpzorp5LLYQMhmoMwHWiAVdQbsQoAGlIIoMpgwJPZMGOlnfddFrOBVeyteA0pWpcGPPb8WH/XLvdfvHvOr0i3ooFFbjX2SgSgl4N5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9M9/t8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F81AC4CEF0;
+	Tue, 30 Sep 2025 14:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244557;
-	bh=lxin8/TFbNd/TVqmUTUG4PucwPt5V1Gi6768aWmMqJQ=;
+	s=korg; t=1759243822;
+	bh=AIqmhS8zJvIU+7cfpmxekhBP3/TeGln9FDN6JOzpUFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TfmHrlXYuFx9ddUoI3Q7OppyCLjw44GoEbwEiZyOOMGyUMs8t280A4K4HmMRCzQGn
-	 PM2o4UEUcu0VXu/WplqkHz2R/LwwL31Lst6K89REBtcoGTy6vXRWUWa+QYFzqdJGn9
-	 iRIoBDyB7TlYZOg311R+918YzdKGuzK3qEs3zqQQ=
+	b=p9M9/t8NhSkpQ2a01uUywuFBD3Hhu1fE+GJdnjT8HNaN3WkzPGZ5cKCwG8pU6hJqN
+	 JntrzgaP30263ydgatFZxfFPMu33crGCdECkZn342NhC6cFc57sQ3Stbsp0zpfYHVQ
+	 TWY0PwiFbw6bYglz60RrGiUtIippu/ziaRYL7H28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 043/143] ARM: dts: kirkwood: Fix sound DAI cells for OpenRD clients
+	Salah Triki <salah.triki@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 5.4 05/81] EDAC/altera: Delete an inappropriate dma_free_coherent() call
 Date: Tue, 30 Sep 2025 16:46:07 +0200
-Message-ID: <20250930143832.952530719@linuxfoundation.org>
+Message-ID: <20250930143819.882475094@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Salah Triki <salah.triki@gmail.com>
 
-[ Upstream commit 29341c6c18b8ad2a9a4a68a61be7e1272d842f21 ]
+commit ff2a66d21fd2364ed9396d151115eec59612b200 upstream.
 
-A previous commit changed the '#sound-dai-cells' property for the
-kirkwood audio controller from 1 to 0 in the kirkwood.dtsi file,
-but did not update the corresponding 'sound-dai' property in the
-kirkwood-openrd-client.dts file.
+dma_free_coherent() must only be called if the corresponding
+dma_alloc_coherent() call has succeeded. Calling it when the allocation fails
+leads to undefined behavior.
 
-This created a mismatch, causing a dtbs_check validation error where
-the dts provides one cell (<&audio0 0>) while the .dtsi expects zero.
+Delete the wrong call.
 
-Remove the extraneous cell from the 'sound-dai' property to fix the
-schema validation warning and align with the updated binding.
+  [ bp: Massage commit message. ]
 
-Fixes: e662e70fa419 ("arm: dts: kirkwood: fix error in #sound-dai-cells size")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 71bcada88b0f3 ("edac: altera: Add Altera SDRAM EDAC support")
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/aIrfzzqh4IzYtDVC@pc
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/altera_edac.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
-index d4e0b8150a84c..cf26e2ceaaa07 100644
---- a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
-+++ b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
-@@ -38,7 +38,7 @@
- 		simple-audio-card,mclk-fs = <256>;
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -125,7 +125,6 @@ static ssize_t altr_sdr_mc_err_inject_wr
  
- 		simple-audio-card,cpu {
--			sound-dai = <&audio0 0>;
-+			sound-dai = <&audio0>;
- 		};
- 
- 		simple-audio-card,codec {
--- 
-2.51.0
-
+ 	ptemp = dma_alloc_coherent(mci->pdev, 16, &dma_handle, GFP_KERNEL);
+ 	if (!ptemp) {
+-		dma_free_coherent(mci->pdev, 16, ptemp, dma_handle);
+ 		edac_printk(KERN_ERR, EDAC_MC,
+ 			    "Inject: Buffer Allocation error\n");
+ 		return -ENOMEM;
 
 
 
