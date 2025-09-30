@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF1FBADB76
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E20BADC6D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C0193A373C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0B53C3A7E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21763081A6;
-	Tue, 30 Sep 2025 15:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37D8173;
+	Tue, 30 Sep 2025 15:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DRh4lF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="penPheFw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB212505AA;
-	Tue, 30 Sep 2025 15:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915B22F39C0;
+	Tue, 30 Sep 2025 15:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245306; cv=none; b=P18NG37Jab2E28dc1S0ijwnzult/Wo45imew5GRi4CV54/LMMo/7bY+yQYSpJqL2b7zFB2q4HhI4I0EPT51uxIljNm2C3+5EO3PBBkDlNXDodKsg2zckFx2uVuMHB2hk5SGvAw8qwgmrv1PO+0JObgDM6uA5BunQRQ/LWTW5obc=
+	t=1759245605; cv=none; b=eNnEf4tgBJxPYijMCC40WEgHXm69mYOt1kSmcKkqowWfgJvT31D4e77oWVYqhDeIt6xThJqagNDVILb9FZWbq1f45joFgtircZKL+gpM63SxQ7dr3Rmj6cdnVEIOpBK/cRXOvE0Ek8C2ZbMzd2m4K62Wv1YI5b5NwASvkYPz5QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245306; c=relaxed/simple;
-	bh=2VMD5UT1EApDyzpvib1Az4NUa+wwIl5b775PwlZdSFo=;
+	s=arc-20240116; t=1759245605; c=relaxed/simple;
+	bh=MDsDu5QOW4IjeK8MZ6rKK7fruiHlwkVRgCCjHIy7ca4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=feNZluNRJES0DwQRJ+/zsI0eHEX0jmkJgnsq9A9xijM0bo5p4poDAK6+geiBztQ0oDIcsoD1mlC5US4jCAWLjnggG5iVRIRj5Nro2JEbmUHnYgkQGrzPEwcIamjTOTsEGdZFLELyVN+mHAV1dL4r2hPzLF3TxFxZWtafitXTAPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DRh4lF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0579C4CEF0;
-	Tue, 30 Sep 2025 15:15:05 +0000 (UTC)
+	 MIME-Version; b=Z+yZCQHnIwgn2ZCrD8TEdAb40fu+XzDkY2lFWGvBeArR/F1sPvtPO9hS8/sApsKnKwyba9cEpLK+yhrz1WYy9nsoHs5srQjY1UYlMEK41pygd6a4I4/DNBDWpr0Fl2LG4Avrg77+/85w8/h7mygyFL3sSisRO73MFPLaDbh27zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=penPheFw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5401C4CEF0;
+	Tue, 30 Sep 2025 15:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245306;
-	bh=2VMD5UT1EApDyzpvib1Az4NUa+wwIl5b775PwlZdSFo=;
+	s=korg; t=1759245602;
+	bh=MDsDu5QOW4IjeK8MZ6rKK7fruiHlwkVRgCCjHIy7ca4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0DRh4lF2NYrHA5fny3ERnlyFHlbp/psXrmt7SvKPMQdavC4HN3bOMZE96+qIoHfO7
-	 FpbyWZeQoWYKd7i1n/jlsa5dzJd64p/OjwP06HARm0zJzw3uPjG8lZ20mvrL/TGBW0
-	 wpqKfi8YkbMREn5iYSsI1BKqY53C67yK1o+Op0vA=
+	b=penPheFwHHAIhdmeLTagGCNUH+h4OfUeZEeR8mzRFLbi8pm0tea+FLe8bAiMBEr8t
+	 4SA3Uvfotl9POw5DS90EqDhrY6OwuHZ5RRYguwwfroSytwBEsBY+Ul+2yYqpixBpJu
+	 uo5A5YIUhPqOiHwLmOZFWUVjYyvp7QQRgTVgqy0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/151] nexthop: Forbid FDB status change while nexthop is in a group
+Subject: [PATCH 6.1 36/73] Bluetooth: hci_event: Fix UAF in hci_acl_create_conn_sync
 Date: Tue, 30 Sep 2025 16:47:40 +0200
-Message-ID: <20250930143832.780288937@linuxfoundation.org>
+Message-ID: <20250930143822.092467434@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +62,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 390b3a300d7872cef9588f003b204398be69ce08 ]
+[ Upstream commit 9e622804d57e2d08f0271200606bd1270f75126f ]
 
-The kernel forbids the creation of non-FDB nexthop groups with FDB
-nexthops:
+This fixes the following UFA in hci_acl_create_conn_sync where a
+connection still pending is command submission (conn->state == BT_OPEN)
+maybe freed, also since this also can happen with the likes of
+hci_le_create_conn_sync fix it as well:
 
- # ip nexthop add id 1 via 192.0.2.1 fdb
- # ip nexthop add id 2 group 1
- Error: Non FDB nexthop group cannot have fdb nexthops.
+BUG: KASAN: slab-use-after-free in hci_acl_create_conn_sync+0x5ef/0x790 net/bluetooth/hci_sync.c:6861
+Write of size 2 at addr ffff88805ffcc038 by task kworker/u11:2/9541
 
-And vice versa:
-
- # ip nexthop add id 3 via 192.0.2.2 dev dummy1
- # ip nexthop add id 4 group 3 fdb
- Error: FDB nexthop group can only have fdb nexthops.
-
-However, as long as no routes are pointing to a non-FDB nexthop group,
-the kernel allows changing the type of a nexthop from FDB to non-FDB and
-vice versa:
-
- # ip nexthop add id 5 via 192.0.2.2 dev dummy1
- # ip nexthop add id 6 group 5
- # ip nexthop replace id 5 via 192.0.2.2 fdb
- # echo $?
- 0
-
-This configuration is invalid and can result in a NPD [1] since FDB
-nexthops are not associated with a nexthop device:
-
- # ip route add 198.51.100.1/32 nhid 6
- # ping 198.51.100.1
-
-Fix by preventing nexthop FDB status change while the nexthop is in a
-group:
-
- # ip nexthop add id 7 via 192.0.2.2 dev dummy1
- # ip nexthop add id 8 group 7
- # ip nexthop replace id 7 via 192.0.2.2 fdb
- Error: Cannot change nexthop FDB status while in a group.
-
-[1]
-BUG: kernel NULL pointer dereference, address: 00000000000003c0
-[...]
-Oops: Oops: 0000 [#1] SMP
-CPU: 6 UID: 0 PID: 367 Comm: ping Not tainted 6.17.0-rc6-virtme-gb65678cacc03 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
-RIP: 0010:fib_lookup_good_nhc+0x1e/0x80
-[...]
+CPU: 1 UID: 0 PID: 9541 Comm: kworker/u11:2 Not tainted 6.16.0-rc7 #3 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
+Workqueue: hci3 hci_cmd_sync_work
 Call Trace:
  <TASK>
- fib_table_lookup+0x541/0x650
- ip_route_output_key_hash_rcu+0x2ea/0x970
- ip_route_output_key_hash+0x55/0x80
- __ip4_datagram_connect+0x250/0x330
- udp_connect+0x2b/0x60
- __sys_connect+0x9c/0xd0
- __x64_sys_connect+0x18/0x20
- do_syscall_64+0xa4/0x2a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x230 mm/kasan/report.c:480
+ kasan_report+0x118/0x150 mm/kasan/report.c:593
+ hci_acl_create_conn_sync+0x5ef/0x790 net/bluetooth/hci_sync.c:6861
+ hci_cmd_sync_work+0x210/0x3a0 net/bluetooth/hci_sync.c:332
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
+ kthread+0x70e/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
+ </TASK>
 
-Fixes: 38428d68719c ("nexthop: support for fdb ecmp nexthops")
-Reported-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68c9a4d2.050a0220.3c6139.0e63.GAE@google.com/
-Tested-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250921150824.149157-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Allocated by task 123736:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __kmalloc_cache_noprof+0x230/0x3d0 mm/slub.c:4359
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ kzalloc_noprof include/linux/slab.h:1039 [inline]
+ __hci_conn_add+0x233/0x1b30 net/bluetooth/hci_conn.c:939
+ hci_conn_add_unset net/bluetooth/hci_conn.c:1051 [inline]
+ hci_connect_acl+0x16c/0x4e0 net/bluetooth/hci_conn.c:1634
+ pair_device+0x418/0xa70 net/bluetooth/mgmt.c:3556
+ hci_mgmt_cmd+0x9c9/0xef0 net/bluetooth/hci_sock.c:1719
+ hci_sock_sendmsg+0x6ca/0xef0 net/bluetooth/hci_sock.c:1839
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg+0x219/0x270 net/socket.c:727
+ sock_write_iter+0x258/0x330 net/socket.c:1131
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x54b/0xa90 fs/read_write.c:686
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 103680:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x62/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2381 [inline]
+ slab_free mm/slub.c:4643 [inline]
+ kfree+0x18e/0x440 mm/slub.c:4842
+ device_release+0x9c/0x1c0
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x22b/0x480 lib/kobject.c:737
+ hci_conn_cleanup net/bluetooth/hci_conn.c:175 [inline]
+ hci_conn_del+0x8ff/0xcb0 net/bluetooth/hci_conn.c:1173
+ hci_conn_complete_evt+0x3c7/0x1040 net/bluetooth/hci_event.c:3199
+ hci_event_func net/bluetooth/hci_event.c:7477 [inline]
+ hci_event_packet+0x7e0/0x1200 net/bluetooth/hci_event.c:7531
+ hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
+ kthread+0x70e/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
+
+Last potentially related work creation:
+ kasan_save_stack+0x3e/0x60 mm/kasan/common.c:47
+ kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:548
+ insert_work+0x3d/0x330 kernel/workqueue.c:2183
+ __queue_work+0xbd9/0xfe0 kernel/workqueue.c:2345
+ queue_delayed_work_on+0x18b/0x280 kernel/workqueue.c:2561
+ pairing_complete+0x1e7/0x2b0 net/bluetooth/mgmt.c:3451
+ pairing_complete_cb+0x1ac/0x230 net/bluetooth/mgmt.c:3487
+ hci_connect_cfm include/net/bluetooth/hci_core.h:2064 [inline]
+ hci_conn_failed+0x24d/0x310 net/bluetooth/hci_conn.c:1275
+ hci_conn_complete_evt+0x3c7/0x1040 net/bluetooth/hci_event.c:3199
+ hci_event_func net/bluetooth/hci_event.c:7477 [inline]
+ hci_event_packet+0x7e0/0x1200 net/bluetooth/hci_event.c:7531
+ hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
+ kthread+0x70e/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
+
+Fixes: aef2aa4fa98e ("Bluetooth: hci_event: Fix creating hci_conn object on error status")
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/net/bluetooth/hci_core.h | 21 +++++++++++++++++++++
+ net/bluetooth/hci_event.c        | 26 +++++++++++++++++++++++---
+ 2 files changed, 44 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 633eab6ff55dd..4a8fdaae6bf21 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -2114,6 +2114,13 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 		return -EINVAL;
- 	}
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 97cde23f56ecd..4a1faf11785f4 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1140,6 +1140,27 @@ static inline struct hci_conn *hci_conn_hash_lookup_ba(struct hci_dev *hdev,
+ 	return NULL;
+ }
  
-+	if (!list_empty(&old->grp_list) &&
-+	    rtnl_dereference(new->nh_info)->fdb_nh !=
-+	    rtnl_dereference(old->nh_info)->fdb_nh) {
-+		NL_SET_ERR_MSG(extack, "Cannot change nexthop FDB status while in a group");
-+		return -EINVAL;
++static inline struct hci_conn *hci_conn_hash_lookup_role(struct hci_dev *hdev,
++							 __u8 type, __u8 role,
++							 bdaddr_t *ba)
++{
++	struct hci_conn_hash *h = &hdev->conn_hash;
++	struct hci_conn  *c;
++
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(c, &h->list, list) {
++		if (c->type == type && c->role == role && !bacmp(&c->dst, ba)) {
++			rcu_read_unlock();
++			return c;
++		}
 +	}
 +
- 	err = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new, extack);
- 	if (err)
- 		return err;
++	rcu_read_unlock();
++
++	return NULL;
++}
++
+ static inline struct hci_conn *hci_conn_hash_lookup_le(struct hci_dev *hdev,
+ 						       bdaddr_t *ba,
+ 						       __u8 ba_type)
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 3d81afcccff8b..a0ce0a1e3258e 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3125,8 +3125,18 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
+ 
+ 	hci_dev_lock(hdev);
+ 
++	/* Check for existing connection:
++	 *
++	 * 1. If it doesn't exist then it must be receiver/slave role.
++	 * 2. If it does exist confirm that it is connecting/BT_CONNECT in case
++	 *    of initiator/master role since there could be a collision where
++	 *    either side is attempting to connect or something like a fuzzing
++	 *    testing is trying to play tricks to destroy the hcon object before
++	 *    it even attempts to connect (e.g. hcon->state == BT_OPEN).
++	 */
+ 	conn = hci_conn_hash_lookup_ba(hdev, ev->link_type, &ev->bdaddr);
+-	if (!conn) {
++	if (!conn ||
++	    (conn->role == HCI_ROLE_MASTER && conn->state != BT_CONNECT)) {
+ 		/* In case of error status and there is no connection pending
+ 		 * just unlock as there is nothing to cleanup.
+ 		 */
+@@ -5706,8 +5716,18 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
+ 	 */
+ 	hci_dev_clear_flag(hdev, HCI_LE_ADV);
+ 
+-	conn = hci_conn_hash_lookup_ba(hdev, LE_LINK, bdaddr);
+-	if (!conn) {
++	/* Check for existing connection:
++	 *
++	 * 1. If it doesn't exist then use the role to create a new object.
++	 * 2. If it does exist confirm that it is connecting/BT_CONNECT in case
++	 *    of initiator/master role since there could be a collision where
++	 *    either side is attempting to connect or something like a fuzzing
++	 *    testing is trying to play tricks to destroy the hcon object before
++	 *    it even attempts to connect (e.g. hcon->state == BT_OPEN).
++	 */
++	conn = hci_conn_hash_lookup_role(hdev, LE_LINK, role, bdaddr);
++	if (!conn ||
++	    (conn->role == HCI_ROLE_MASTER && conn->state != BT_CONNECT)) {
+ 		/* In case of error status and there is no connection pending
+ 		 * just unlock as there is nothing to cleanup.
+ 		 */
 -- 
 2.51.0
 
