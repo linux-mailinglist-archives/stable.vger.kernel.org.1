@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE662BAD4B6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB579BAD659
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7715E1883D65
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9AD3324ECE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E6B3043C4;
-	Tue, 30 Sep 2025 14:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3E730594A;
+	Tue, 30 Sep 2025 14:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3WUipNZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yj5i4FII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A772FFDE6;
-	Tue, 30 Sep 2025 14:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088B5201017;
+	Tue, 30 Sep 2025 14:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243910; cv=none; b=fnqi1/9/YXs1mhN0gl3u8nHcM7srmGZbF3fHvXe5WYCrCLPTmZSwp4af7ZbRARz0cAg+RS8aQxqqlR9vLLdYXI2nP/RkJTlbgktPqG6R0bP2i9nPNcvmri0wgtM2FgQzFKaOV8IB2nW2D3q5tK0MYWfhx+uVuplI+UCaPJhz53s=
+	t=1759244312; cv=none; b=G5St207CTMUBDjZ44CrUs50KbzdckfSdHZAxsZcA4M0rjd8SjlL/CqtL/ilAVj7+h1WwGQjonfILAX2YckcU+5djYpoUNRNWQeBMY2V0JxGQQm5wHcNVAlw7VZ65Qr4WuuKPNAgIysZKmdE4rQAJqfFY10YIx75wq56eL+fmuKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243910; c=relaxed/simple;
-	bh=J0tQTzMBF6Hk4elaZP0RkNTsuh20t4ZsopXulkJYOgs=;
+	s=arc-20240116; t=1759244312; c=relaxed/simple;
+	bh=jWtywtrJqpqpb/qIkNNLU93OTBTiJImUzkHvpJZtLV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOLmq0GpcAslFvYM+m42xz0fHKDc7uFQRB4F5RbkgL/mB+lWVlX3ZiE3wAxXRLnDjAQD5wyfSKh4vqMhPQeDypyqpL8ekORaZYNUxXnSH8MlrxrHB0dQfVEz6RBRq/GCqGNqFjkUtsHcfhIKHaViuGK7rc8CI8oO2Xy/9alUUsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3WUipNZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DC2C4CEF0;
-	Tue, 30 Sep 2025 14:51:49 +0000 (UTC)
+	 MIME-Version; b=XrP9Ms1tEuEvgSvoknXFV9FJCgWawIjD9LvOT4GE444zJKqaDQu97LL2sBTh4tPdpx46tWi5ckGUBPUV5mLESpXIuNMROrGaUAemK7PhY5+hRz28JykNrI4wQ1iSVeCQlfkSo827bkfiW+7oBM4iVVHZA7GjWYaTS4b1Gzm9yiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yj5i4FII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF6DC4CEF0;
+	Tue, 30 Sep 2025 14:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243910;
-	bh=J0tQTzMBF6Hk4elaZP0RkNTsuh20t4ZsopXulkJYOgs=;
+	s=korg; t=1759244311;
+	bh=jWtywtrJqpqpb/qIkNNLU93OTBTiJImUzkHvpJZtLV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w3WUipNZts/U2qyX7Oh/LqNMBAMIya64zhHqgyMeP+BQf0KVhN79MVLzOhKHpSA+R
-	 aLzuPvlAn8FX9f14bT//hTivYVkThTftpdRFdM45w/QM1GH3FNMHCJ5y3OLj0AlW9M
-	 RwdA9NzUtpc4nUqr0FfY12O0f1R3xH6BpW5tfYJY=
+	b=Yj5i4FIIK0O8WnT++D0UU/l2Sy3RQl2uOALi28r2ouST34kYriEM/bRn2lGDkPgK+
+	 50pCEcNuXQKg/4tlAp8QZiVyBdqAFOCmiiM6eOiTFuuhAW+xroQCoGlgpwXbaXFOfe
+	 PUn2E3l+Am4ChLlfK3R6VAj2wHlDa8uxeEmVtsoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 53/81] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
+Subject: [PATCH 5.10 084/122] ALSA: usb-audio: Fix block comments in mixer_quirks
 Date: Tue, 30 Sep 2025 16:46:55 +0200
-Message-ID: <20250930143821.900029307@linuxfoundation.org>
+Message-ID: <20250930143826.440626198@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit b6f56a44e4c1014b08859dcf04ed246500e310e5 ]
+[ Upstream commit 231225d8a20f8668b4fd6601d54a2fac0e0ab7a5 ]
 
-Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
-device property") rfkill_find_type() gets called with the possibly
-uninitialized "const char *type_name;" local variable.
+Address a couple of comment formatting issues indicated by
+checkpatch.pl:
 
-On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
-acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
+  WARNING: Block comments use a trailing */ on a separate line
 
-        rfkill->type = (unsigned)id->driver_data;
-
-and there is no "type" property so device_property_read_string() will fail
-and leave type_name uninitialized, leading to a potential crash.
-
-rfkill_find_type() does accept a NULL pointer, fix the potential crash
-by initializing type_name to NULL.
-
-Note likely sofar this has not been caught because:
-
-1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
-2. The stack happened to contain NULL where type_name is stored
-
-Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
-Cc: stable@vger.kernel.org
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-4-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/rfkill-gpio.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/mixer_quirks.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -78,10 +78,10 @@ static int rfkill_gpio_acpi_probe(struct
- static int rfkill_gpio_probe(struct platform_device *pdev)
- {
- 	struct rfkill_gpio_data *rfkill;
--	struct gpio_desc *gpio;
-+	const char *type_name = NULL;
- 	const char *name_property;
- 	const char *type_property;
--	const char *type_name;
-+	struct gpio_desc *gpio;
- 	int ret;
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 866b5470f84bd..14b0a91c19d34 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -76,7 +76,8 @@ static int snd_create_std_mono_ctl_offset(struct usb_mixer_interface *mixer,
+ 	cval->idx_off = idx_off;
  
- 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
+ 	/* get_min_max() is called only for integer volumes later,
+-	 * so provide a short-cut for booleans */
++	 * so provide a short-cut for booleans
++	 */
+ 	cval->min = 0;
+ 	cval->max = 1;
+ 	cval->res = 0;
+@@ -3267,7 +3268,8 @@ static void snd_dragonfly_quirk_db_scale(struct usb_mixer_interface *mixer,
+ 					 struct snd_kcontrol *kctl)
+ {
+ 	/* Approximation using 10 ranges based on output measurement on hw v1.2.
+-	 * This seems close to the cubic mapping e.g. alsamixer uses. */
++	 * This seems close to the cubic mapping e.g. alsamixer uses.
++	 */
+ 	static const DECLARE_TLV_DB_RANGE(scale,
+ 		 0,  1, TLV_DB_MINMAX_ITEM(-5300, -4970),
+ 		 2,  5, TLV_DB_MINMAX_ITEM(-4710, -4160),
+-- 
+2.51.0
+
 
 
 
