@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A323BADBCD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F8BBAD545
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C7341886ACF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B26A3ADE89
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FD4306B05;
-	Tue, 30 Sep 2025 15:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C1E1AB6F1;
+	Tue, 30 Sep 2025 14:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCWaj8yO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTZBmn2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9C130594A;
-	Tue, 30 Sep 2025 15:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D58226CF7;
+	Tue, 30 Sep 2025 14:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245657; cv=none; b=Mx9RP/urLvFxhI6T1D7hIIkGNoJ2qvsr5iToM395Bw0CyRu5QNVpRvZWGsGkSTy5RC8Ia+KakRiex0JpGcCf8zOXLN0oO9WAbKS4thvPQGuogtjZXCzhmTv+BmM5xkyTDOZEtuJThrLS8McADWfecgWMva2TZEqOn6vimB5iKIk=
+	t=1759244028; cv=none; b=Xuh9axPgS8C1CHI2jnvwHMcE/11G6jogn7rws53aTxAPgFCwq4EZGRkdt/vNZQMwsJXL4E0Jk/GcpHjyU6OuokLmDM+Auhpz8ThAeo1BnNEtDeBi+xvncbp91PB0Kd6iwgDcT/bo819rmKRPdjjVyLQ6zYrltCwvN+BQRojNB7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245657; c=relaxed/simple;
-	bh=93EFQK4Bt29HojdrMczV2MvVBCfzuN/2QzLrQGECE3g=;
+	s=arc-20240116; t=1759244028; c=relaxed/simple;
+	bh=vf3cOISipHGwYuo+sROoR5ZjjYPA89mOcrITUihpRFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aU3+RYNc3Fkr3KkbfHNiAmQAXApZFxqCkrnc7WSHW/1U6ZhHtN9tgxvDrXWTZ6rGPUBnTm3NPs9Ak09ZmjsTHRBifjWA4Igta8qFHPpeTjANE09Qzamzrxe3rQS8CxFjPIWogQaeBHgTFD3INHOyDroJhJjKt/s62uUsA+9yjGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCWaj8yO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBCEC4CEF0;
-	Tue, 30 Sep 2025 15:20:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nSoO6ORcrWL29x8iPvT3egb9TNmbcpkuVQbar30IM+9yMgheeJBm1gzQ5UMVziZX/bAez4q3XEq3QT3PnTwuj2B1Y8uAaPlsgzJzUwfFXAWGrj0gKu76wrp+IwPah/RYQJm/cCUPPja7YusVK7HCFJjmr6xQHqB4upCpXRuikSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTZBmn2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6351C4CEF0;
+	Tue, 30 Sep 2025 14:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245657;
-	bh=93EFQK4Bt29HojdrMczV2MvVBCfzuN/2QzLrQGECE3g=;
+	s=korg; t=1759244028;
+	bh=vf3cOISipHGwYuo+sROoR5ZjjYPA89mOcrITUihpRFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UCWaj8yOlB5SW5uUXFvSvKFw2aeUXry189WkIadBy7OoEqyNlWG+1nEpyFt1tSS/L
-	 kSFM3UvTxA7A6jy6OvyQYiNezKB6czpb+nr7DrRD0oEM6Z3JH1eMA08rn4Io/laiR4
-	 2Rht/tITb2yZVJJttFTMtnU+v/rzhxQYnWhLl/a4=
+	b=lTZBmn2tMDZD0DTfqCWTlpwGh0JNNX42inLbLua5rH92K1/H6JL6M0tgtX6/AUqpo
+	 1/EXtpqHDbFbNh/tCTUbhbT3DsL5vK9iQHbriBFnifLe3PORxQGfi77yKTl97bYahK
+	 uOM+dCXFFdbeYk2rSH8mZZ9WrsP1foRf6HptE76w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Kerem Karabay <kekrby@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	=?UTF-8?q?St=C3=A9phane=20Grosjean?= <stephane.grosjean@hms-networks.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 11/91] HID: multitouch: take cls->maxcontacts into account for Apple Touch Bar even without a HID_DG_CONTACTMAX field
+Subject: [PATCH 5.4 68/81] can: peak_usb: fix shift-out-of-bounds issue
 Date: Tue, 30 Sep 2025 16:47:10 +0200
-Message-ID: <20250930143821.590021310@linuxfoundation.org>
+Message-ID: <20250930143822.534941809@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kerem Karabay <kekrby@gmail.com>
+From: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
 
-[ Upstream commit 7dfe48bdc9d38db46283f2e0281bc1626277b8bf ]
+[ Upstream commit c443be70aaee42c2d1d251e0329e0a69dd96ae54 ]
 
-In Apple Touch Bar, the HID_DG_CONTACTMAX is not present, but the maximum
-contact count is still greater than the default. Add quirks for the same.
+Explicitly uses a 64-bit constant when the number of bits used for its
+shifting is 32 (which is the case for PC CAN FD interfaces supported by
+this driver).
 
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Kerem Karabay <kekrby@gmail.com>
-Co-developed-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
+Link: https://patch.msgid.link/20250918132413.30071-1-stephane.grosjean@free.fr
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/20250917-aboriginal-refined-honeybee-82b1aa-mkl@pengutronix.de
+Fixes: bb4785551f64 ("can: usb: PEAK-System Technik USB adapters driver core")
+[mkl: update subject, apply manually]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index d0b2e866dadaf..8e9f71e69dd8c 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1322,6 +1322,13 @@ static int mt_touch_input_configured(struct hid_device *hdev,
- 	struct input_dev *input = hi->input;
- 	int ret;
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_core.c b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+index 4b18f37beb4c5..14e9b1052c5c6 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_core.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+@@ -84,7 +84,7 @@ void peak_usb_update_ts_now(struct peak_time_ref *time_ref, u32 ts_now)
+ 		u32 delta_ts = time_ref->ts_dev_2 - time_ref->ts_dev_1;
  
-+	/*
-+	 * HID_DG_CONTACTMAX field is not present on Apple Touch Bars,
-+	 * but the maximum contact count is greater than the default.
-+	 */
-+	if (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR && cls->maxcontacts)
-+		td->maxcontacts = cls->maxcontacts;
-+
- 	if (!td->maxcontacts)
- 		td->maxcontacts = MT_DEFAULT_MAXCONTACT;
+ 		if (time_ref->ts_dev_2 < time_ref->ts_dev_1)
+-			delta_ts &= (1 << time_ref->adapter->ts_used_bits) - 1;
++			delta_ts &= (1ULL << time_ref->adapter->ts_used_bits) - 1;
  
+ 		time_ref->ts_total += delta_ts;
+ 	}
 -- 
 2.51.0
 
