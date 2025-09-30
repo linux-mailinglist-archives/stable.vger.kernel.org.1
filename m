@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A6DBAD548
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E10BAD6D1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A88A83BC171
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8919188E24A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0846A304BC7;
-	Tue, 30 Sep 2025 14:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845E3306D54;
+	Tue, 30 Sep 2025 15:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vy1irs7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l291Cj7U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5BC1EF38E;
-	Tue, 30 Sep 2025 14:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC5621ABD0;
+	Tue, 30 Sep 2025 15:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244031; cv=none; b=OBt3yyDIPFWTYKINjFDCJfG3j8xzzyoNinOoiNCUeW9g1pu7lNPebE4thzAsF1i3heUYp/SEm212lA2WPG3NUGvKQzpL+YD1z02IK82ghVbwy+ImiQY7GPyhxtCwUYRmulpqhTPgwe5sMnSBCf++nQmO57smeBCiCzVaELItvbI=
+	t=1759244415; cv=none; b=cd5l2QFXfiY5GG4VE48pWNSFRXFQJJJi3nilBQrFjpaSdyYkz+jsudaA2jCmUj/O3B3ahavoO6nTjiGxpMBYgw4HckpUuW+nYwz5a0vIzoNkkdHEr4YppxR0oGDxdMmbU0iRlR9VMZPE9YGJu9xxTlu+mGDxWqlHWHOzNOU5BrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244031; c=relaxed/simple;
-	bh=ExkoymeBni/GX7Ieb56a9Ph3reagNF7yGn0DU1pglCo=;
+	s=arc-20240116; t=1759244415; c=relaxed/simple;
+	bh=lBk3wrZh0Xt/9D0hapALG7vdDEgw5j01KH6OKMtKoEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8jg3cvSDCnu0lfoN7R3k9wIjKCLzTNa6bCEc4vL9wit+cxlK0W8AACoN5Sc4qbtlyET6QVY4mue2/a+WnpypLMLzpYnAGu5AxXGh80KoHUtPwvxgEdkFxDBzJTswHkVr4lpBcjYEeKzS+k3eBb2h+w+5HDz8jaYK/nEobmqEz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vy1irs7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADF8C4CEF0;
-	Tue, 30 Sep 2025 14:53:50 +0000 (UTC)
+	 MIME-Version; b=Bix7APRO72Wv6i3zdRGqIJybKpjRSHJ6+ZkotVVKu4Ql35cKROdbo4Pyp/xNz+Pzk4pg5HQWhir7z/XriL7ZrfwfyMLRbgk/RdA5UPfXQ93EY1OQORgIYKbEwy0hl/QkY05Ad8RLKmUKToSX0Q4GysCrZupI1LMyvD6m9RyLubs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l291Cj7U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4477C4CEF0;
+	Tue, 30 Sep 2025 15:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244031;
-	bh=ExkoymeBni/GX7Ieb56a9Ph3reagNF7yGn0DU1pglCo=;
+	s=korg; t=1759244415;
+	bh=lBk3wrZh0Xt/9D0hapALG7vdDEgw5j01KH6OKMtKoEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vy1irs7r4lI4/VcfnVz/rTr33WH3/2F/fv1HEoLy1N4RDcA6YBA6FogBJhyE2+r7x
-	 8WCwGPqwBoAYI0stZTGyLBdRaWbRWmGPrkeCcU4C1OeurqYoUrFYz7+/9BW6T2lkHQ
-	 +Jsj27A8+2fF2EgrAjDx7igeRVxlQgCDHsTUAKWw=
+	b=l291Cj7UYOicWJbNQ8o6/jgHC52YzMEWLScAF54Likx/WuN/01b3HcLEkfg/YIB0h
+	 BEQwzTQEPqMP05tqhghmTddEgMqX4zAA/O73/w/T/VSNs8ZbjrLCeIkkH8gYEJ2qM1
+	 Gq2PDfo7VkXSLTKe9Z8Y4pyUDOCbAfsQcpl3Goj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	kernel test robot <lkp@intel.com>,
 	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 59/81] ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5
-Date: Tue, 30 Sep 2025 16:47:01 +0200
-Message-ID: <20250930143822.149076492@linuxfoundation.org>
+Subject: [PATCH 5.10 091/122] ALSA: usb-audio: Fix build with CONFIG_INPUT=n
+Date: Tue, 30 Sep 2025 16:47:02 +0200
+Message-ID: <20250930143826.725806488@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,323 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 79d561c4ec0497669f19a9550cfb74812f60938b ]
+[ Upstream commit d0630a0b80c08530857146e3bf183a7d6b743847 ]
 
-The Sony DualSense wireless controller (PS5) features an internal mono
-speaker, but it also provides a 3.5mm jack socket for headphone output
-and headset microphone input.
+The recent addition of DualSense mixer quirk relies on the input
+device handle, and the build can fail if CONFIG_INPUT isn't set.
+Put (rather ugly) workarounds to wrap with IS_REACHABLE() for avoiding
+the build error.
 
-Since this is a UAC1 device, it doesn't advertise any jack detection
-capability.  However, the controller is able to report HP & MIC insert
-events via HID, i.e. through a dedicated input device managed by the
-hid-playstation driver.
-
-Add a quirk to create the jack controls for headphone and headset mic,
-respectively, and setup an input handler for each of them in order to
-intercept the related hotplug events.
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506130733.gnPKw2l3-lkp@intel.com/
+Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20250613081543.7404-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-9-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 263 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 263 insertions(+)
+ sound/usb/mixer_quirks.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 03d49d4c5141d..cea1c970359c1 100644
+index b3afa7b26b9cd..7a4d449182d65 100644
 --- a/sound/usb/mixer_quirks.c
 +++ b/sound/usb/mixer_quirks.c
-@@ -16,6 +16,7 @@
- 
- #include <linux/hid.h>
- #include <linux/init.h>
-+#include <linux/input.h>
- #include <linux/math64.h>
- #include <linux/slab.h>
- #include <linux/usb.h>
-@@ -526,6 +527,263 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
+@@ -528,6 +528,7 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
  					  &snd_emu0204_control, NULL);
  }
  
-+/*
-+ * Sony DualSense controller (PS5) jack detection
-+ *
-+ * Since this is an UAC 1 device, it doesn't support jack detection.
-+ * However, the controller hid-playstation driver reports HP & MIC
-+ * insert events through a dedicated input device.
-+ */
-+
-+#define SND_DUALSENSE_JACK_OUT_TERM_ID 3
-+#define SND_DUALSENSE_JACK_IN_TERM_ID 4
-+
-+struct dualsense_mixer_elem_info {
-+	struct usb_mixer_elem_info info;
-+	struct input_handler ih;
-+	struct input_device_id id_table[2];
-+	bool connected;
-+};
-+
-+static void snd_dualsense_ih_event(struct input_handle *handle,
-+				   unsigned int type, unsigned int code,
-+				   int value)
-+{
-+	struct dualsense_mixer_elem_info *mei;
-+	struct usb_mixer_elem_list *me;
-+
-+	if (type != EV_SW)
-+		return;
-+
-+	mei = container_of(handle->handler, struct dualsense_mixer_elem_info, ih);
-+	me = &mei->info.head;
-+
-+	if ((me->id == SND_DUALSENSE_JACK_OUT_TERM_ID && code == SW_HEADPHONE_INSERT) ||
-+	    (me->id == SND_DUALSENSE_JACK_IN_TERM_ID && code == SW_MICROPHONE_INSERT)) {
-+		mei->connected = !!value;
-+		snd_ctl_notify(me->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
-+			       &me->kctl->id);
-+	}
-+}
-+
-+static bool snd_dualsense_ih_match(struct input_handler *handler,
-+				   struct input_dev *dev)
-+{
-+	struct dualsense_mixer_elem_info *mei;
-+	struct usb_device *snd_dev;
-+	char *input_dev_path, *usb_dev_path;
-+	size_t usb_dev_path_len;
-+	bool match = false;
-+
-+	mei = container_of(handler, struct dualsense_mixer_elem_info, ih);
-+	snd_dev = mei->info.head.mixer->chip->dev;
-+
-+	input_dev_path = kobject_get_path(&dev->dev.kobj, GFP_KERNEL);
-+	if (!input_dev_path) {
-+		dev_warn(&snd_dev->dev, "Failed to get input dev path\n");
-+		return false;
-+	}
-+
-+	usb_dev_path = kobject_get_path(&snd_dev->dev.kobj, GFP_KERNEL);
-+	if (!usb_dev_path) {
-+		dev_warn(&snd_dev->dev, "Failed to get USB dev path\n");
-+		goto free_paths;
-+	}
-+
-+	/*
-+	 * Ensure the VID:PID matched input device supposedly owned by the
-+	 * hid-playstation driver belongs to the actual hardware handled by
-+	 * the current USB audio device, which implies input_dev_path being
-+	 * a subpath of usb_dev_path.
-+	 *
-+	 * This verification is necessary when there is more than one identical
-+	 * controller attached to the host system.
-+	 */
-+	usb_dev_path_len = strlen(usb_dev_path);
-+	if (usb_dev_path_len >= strlen(input_dev_path))
-+		goto free_paths;
-+
-+	usb_dev_path[usb_dev_path_len] = '/';
-+	match = !memcmp(input_dev_path, usb_dev_path, usb_dev_path_len + 1);
-+
-+free_paths:
-+	kfree(input_dev_path);
-+	kfree(usb_dev_path);
-+
-+	return match;
-+}
-+
-+static int snd_dualsense_ih_connect(struct input_handler *handler,
-+				    struct input_dev *dev,
-+				    const struct input_device_id *id)
-+{
-+	struct input_handle *handle;
-+	int err;
-+
-+	handle = kzalloc(sizeof(*handle), GFP_KERNEL);
-+	if (!handle)
-+		return -ENOMEM;
-+
-+	handle->dev = dev;
-+	handle->handler = handler;
-+	handle->name = handler->name;
-+
-+	err = input_register_handle(handle);
-+	if (err)
-+		goto err_free;
-+
-+	err = input_open_device(handle);
-+	if (err)
-+		goto err_unregister;
-+
-+	return 0;
-+
-+err_unregister:
-+	input_unregister_handle(handle);
-+err_free:
-+	kfree(handle);
-+	return err;
-+}
-+
-+static void snd_dualsense_ih_disconnect(struct input_handle *handle)
-+{
-+	input_close_device(handle);
-+	input_unregister_handle(handle);
-+	kfree(handle);
-+}
-+
-+static void snd_dualsense_ih_start(struct input_handle *handle)
-+{
-+	struct dualsense_mixer_elem_info *mei;
-+	struct usb_mixer_elem_list *me;
-+	int status = -1;
-+
-+	mei = container_of(handle->handler, struct dualsense_mixer_elem_info, ih);
-+	me = &mei->info.head;
-+
-+	if (me->id == SND_DUALSENSE_JACK_OUT_TERM_ID &&
-+	    test_bit(SW_HEADPHONE_INSERT, handle->dev->swbit))
-+		status = test_bit(SW_HEADPHONE_INSERT, handle->dev->sw);
-+	else if (me->id == SND_DUALSENSE_JACK_IN_TERM_ID &&
-+		 test_bit(SW_MICROPHONE_INSERT, handle->dev->swbit))
-+		status = test_bit(SW_MICROPHONE_INSERT, handle->dev->sw);
-+
-+	if (status >= 0) {
-+		mei->connected = !!status;
-+		snd_ctl_notify(me->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
-+			       &me->kctl->id);
-+	}
-+}
-+
-+static int snd_dualsense_jack_get(struct snd_kcontrol *kctl,
-+				  struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct dualsense_mixer_elem_info *mei = snd_kcontrol_chip(kctl);
-+
-+	ucontrol->value.integer.value[0] = mei->connected;
-+
-+	return 0;
-+}
-+
-+static const struct snd_kcontrol_new snd_dualsense_jack_control = {
-+	.iface = SNDRV_CTL_ELEM_IFACE_CARD,
-+	.access = SNDRV_CTL_ELEM_ACCESS_READ,
-+	.info = snd_ctl_boolean_mono_info,
-+	.get = snd_dualsense_jack_get,
-+};
-+
-+static int snd_dualsense_resume_jack(struct usb_mixer_elem_list *list)
-+{
-+	snd_ctl_notify(list->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
-+		       &list->kctl->id);
-+	return 0;
-+}
-+
-+static void snd_dualsense_mixer_elem_free(struct snd_kcontrol *kctl)
-+{
-+	struct dualsense_mixer_elem_info *mei = snd_kcontrol_chip(kctl);
-+
-+	if (mei->ih.event)
-+		input_unregister_handler(&mei->ih);
-+
-+	snd_usb_mixer_elem_free(kctl);
-+}
-+
-+static int snd_dualsense_jack_create(struct usb_mixer_interface *mixer,
-+				     const char *name, bool is_output)
-+{
-+	struct dualsense_mixer_elem_info *mei;
-+	struct input_device_id *idev_id;
-+	struct snd_kcontrol *kctl;
-+	int err;
-+
-+	mei = kzalloc(sizeof(*mei), GFP_KERNEL);
-+	if (!mei)
-+		return -ENOMEM;
-+
-+	snd_usb_mixer_elem_init_std(&mei->info.head, mixer,
-+				    is_output ? SND_DUALSENSE_JACK_OUT_TERM_ID :
-+						SND_DUALSENSE_JACK_IN_TERM_ID);
-+
-+	mei->info.head.resume = snd_dualsense_resume_jack;
-+	mei->info.val_type = USB_MIXER_BOOLEAN;
-+	mei->info.channels = 1;
-+	mei->info.min = 0;
-+	mei->info.max = 1;
-+
-+	kctl = snd_ctl_new1(&snd_dualsense_jack_control, mei);
-+	if (!kctl) {
-+		kfree(mei);
-+		return -ENOMEM;
-+	}
-+
-+	strscpy(kctl->id.name, name, sizeof(kctl->id.name));
-+	kctl->private_free = snd_dualsense_mixer_elem_free;
-+
-+	err = snd_usb_mixer_add_control(&mei->info.head, kctl);
-+	if (err)
-+		return err;
-+
-+	idev_id = &mei->id_table[0];
-+	idev_id->flags = INPUT_DEVICE_ID_MATCH_VENDOR | INPUT_DEVICE_ID_MATCH_PRODUCT |
-+			 INPUT_DEVICE_ID_MATCH_EVBIT | INPUT_DEVICE_ID_MATCH_SWBIT;
-+	idev_id->vendor = USB_ID_VENDOR(mixer->chip->usb_id);
-+	idev_id->product = USB_ID_PRODUCT(mixer->chip->usb_id);
-+	idev_id->evbit[BIT_WORD(EV_SW)] = BIT_MASK(EV_SW);
-+	if (is_output)
-+		idev_id->swbit[BIT_WORD(SW_HEADPHONE_INSERT)] = BIT_MASK(SW_HEADPHONE_INSERT);
-+	else
-+		idev_id->swbit[BIT_WORD(SW_MICROPHONE_INSERT)] = BIT_MASK(SW_MICROPHONE_INSERT);
-+
-+	mei->ih.event = snd_dualsense_ih_event;
-+	mei->ih.match = snd_dualsense_ih_match;
-+	mei->ih.connect = snd_dualsense_ih_connect,
-+	mei->ih.disconnect = snd_dualsense_ih_disconnect,
-+	mei->ih.start = snd_dualsense_ih_start,
-+	mei->ih.name = name;
-+	mei->ih.id_table = mei->id_table;
-+
-+	err = input_register_handler(&mei->ih);
-+	if (err) {
-+		dev_warn(&mixer->chip->dev->dev,
-+			 "Could not register input handler: %d\n", err);
-+		mei->ih.event = NULL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
-+{
-+	int err;
-+
-+	err = snd_dualsense_jack_create(mixer, "Headphone Jack", true);
-+	if (err < 0)
-+		return err;
-+
-+	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
-+}
-+
++#if IS_REACHABLE(CONFIG_INPUT)
+ /*
+  * Sony DualSense controller (PS5) jack detection
+  *
+@@ -784,6 +785,7 @@ static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
+ 
+ 	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
+ }
++#endif /* IS_REACHABLE(CONFIG_INPUT) */
+ 
  /* ASUS Xonar U1 / U3 controls */
  
- static int snd_xonar_u1_switch_get(struct snd_kcontrol *kcontrol,
-@@ -2381,6 +2639,11 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
+@@ -3388,10 +3390,12 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
  		err = snd_emu0204_controls_create(mixer);
  		break;
  
-+	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
-+	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
-+		err = snd_dualsense_controls_create(mixer);
-+		break;
-+
++#if IS_REACHABLE(CONFIG_INPUT)
+ 	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
+ 	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
+ 		err = snd_dualsense_controls_create(mixer);
+ 		break;
++#endif /* IS_REACHABLE(CONFIG_INPUT) */
+ 
  	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
  	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C400 */
- 		err = snd_c400_create_mixer(mixer);
 -- 
 2.51.0
 
