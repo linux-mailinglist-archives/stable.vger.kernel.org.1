@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-182388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8630DBAD821
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF708BAD518
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DDD71890A31
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C39C3C6DF6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0D0846F;
-	Tue, 30 Sep 2025 15:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDA03043DA;
+	Tue, 30 Sep 2025 14:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYxLYEy3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3C1frmC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA792236EB;
-	Tue, 30 Sep 2025 15:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07A4303A16;
+	Tue, 30 Sep 2025 14:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244783; cv=none; b=FinELvBUnvF3Xm1GoxeZHiye6t8oA7BkB0HV3sU5yHwGakO4BZT+/iKPMCxrFe9osnIhHSAHLw+PdFU6QcEpV6/BABJZyOwzJ06SaLdPBub9DsJoy1qDjPve/8bxyHfN2aCLgvvquACC/yG4lw+0qq7FO6UaJ6BUjg02PpY2zJU=
+	t=1759243978; cv=none; b=d0kVjQ8YhtX9bqmxY+7e0krw/G4b4TZwcXKk0ScLo9mggiSKfM0gpv4wSdUlx2ylNV96L7MLaahBqo+jzP2MTxRIbItBnuRSkWgqCyu6XX9X/gRvPTA5OlCn2bW3PJwA4hhPBORmfQLISazPwbd8DFwD34TzGY0rtgQdeYpu15k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244783; c=relaxed/simple;
-	bh=ADhR/vhgyLzbBLUNCbUCZ6+FpVc9C4Gt0slLtsZMuR4=;
+	s=arc-20240116; t=1759243978; c=relaxed/simple;
+	bh=/iETv8s4/dysVgthExeGhnEx4d3T/hkkV68XAAVrQLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LhSq7U6fFoxeNqfH8MKFDlxw6WwpZPqncsYM/+ncIL4QSEs9hFtDXL9AuBCXNeQ6QuXSVahxKxOkcbf41iYGLHyb5uhkOiQWL8Gth4cNeqDBccQhiHfZfWZxk4rW+yy9uyneTSTlW81yw2AULjWRKWu8dQNQa8gl4sjs1DJxgUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYxLYEy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43506C4CEF0;
-	Tue, 30 Sep 2025 15:06:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D8y2+xRyC7HrzwZIMA+pfR/EXrCT9JpgSI8V0Tdcrb5s+QAZZIDbNezcJ9NCD6ofvDgxxA1T9BepXkfIAw+q2FvGtqVmJcY/6CoT3SrBC8wx8O16Pz1NbkBrl9wM7qI6VT5zapGIz1EEBy37IC9TOEre2v8iR5BjIhYfQ4velqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3C1frmC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6C8C4CEF0;
+	Tue, 30 Sep 2025 14:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244783;
-	bh=ADhR/vhgyLzbBLUNCbUCZ6+FpVc9C4Gt0slLtsZMuR4=;
+	s=korg; t=1759243977;
+	bh=/iETv8s4/dysVgthExeGhnEx4d3T/hkkV68XAAVrQLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYxLYEy3DvezKPCSkOS8tzCgOJoqD6UBShTcX4l/QIsVHVDbRcHMp75/eU7eWL2bB
-	 qTKonYsAJ5KT1He19iAohXC+Hk96HcnoAizUuEL37Lydjh5Cjy3NLKG0TYLNLvpam0
-	 MotBtt3WGw8Wmoi4a94dMHF7Xa0KAPVp/z6dwUKo=
+	b=t3C1frmCxfuSuIFXtgzuXxdS3TPbiwOEQ6NrS3HEs6dOFQ2yT7rEvO9gxtHjaeBFw
+	 MiUUw9qBCm6vXI5RkzjHy8DSiqMF/uniHG+8BZ2AeyCsncrMY+I5bA1KtIrg8mFqEr
+	 U81XEOGE/cEueKk6S+BYJqf+7Jb6VL2katBcLLHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.16 112/143] tracing: fgraph: Protect return handler from recursion loop
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	George Kennedy <george.kennedy@oracle.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Qianqiang Liu <qianqiang.liu@163.com>,
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Kees Cook <kees@kernel.org>,
+	Zsolt Kajtar <soci@c64.rulez.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 5.4 74/81] fbcon: Fix OOB access in font allocation
 Date: Tue, 30 Sep 2025 16:47:16 +0200
-Message-ID: <20250930143835.696918822@linuxfoundation.org>
+Message-ID: <20250930143822.802613888@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +70,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 0db0934e7f9bb624ed98a665890dbe249f65b8fd upstream.
+commit 9b2f5ef00e852f8e8902a4d4f73aeedc60220c12 upstream.
 
-function_graph_enter_regs() prevents itself from recursion by
-ftrace_test_recursion_trylock(), but __ftrace_return_to_handler(),
-which is called at the exit, does not prevent such recursion.
-Therefore, while it can prevent recursive calls from
-fgraph_ops::entryfunc(), it is not able to prevent recursive calls
-to fgraph from fgraph_ops::retfunc(), resulting in a recursive loop.
-This can lead an unexpected recursion bug reported by Menglong.
+Commit 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
+introduced an out-of-bounds access by storing data and allocation sizes
+in the same variable. Restore the old size calculation and use the new
+variable 'alloc_size' for the allocation.
 
- is_endbr() is called in __ftrace_return_to_handler -> fprobe_return
-  -> kprobe_multi_link_exit_handler -> is_endbr.
-
-To fix this issue, acquire ftrace_test_recursion_trylock() in the
-__ftrace_return_to_handler() after unwind the shadow stack to mark
-this section must prevent recursive call of fgraph inside user-defined
-fgraph_ops::retfunc().
-
-This is essentially a fix to commit 4346ba160409 ("fprobe: Rewrite
-fprobe on function-graph tracer"), because before that fgraph was
-only used from the function graph tracer. Fprobe allowed user to run
-any callbacks from fgraph after that commit.
-
-Reported-by: Menglong Dong <menglong8.dong@gmail.com>
-Closes: https://lore.kernel.org/all/20250918120939.1706585-1-dongml2@chinatelecom.cn/
-Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
-Cc: stable@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/175852292275.307379.9040117316112640553.stgit@devnote2
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Menglong Dong <menglong8.dong@gmail.com>
-Acked-by: Menglong Dong <menglong8.dong@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
+Reported-by: Jani Nikula <jani.nikula@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6201
+Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: George Kennedy <george.kennedy@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Qianqiang Liu <qianqiang.liu@163.com>
+Cc: Shixiong Ou <oushixiong@kylinos.cn>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.9+
+Cc: Zsolt Kajtar <soci@c64.rulez.org>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Qianqiang Liu <qianqiang.liu@163.com>
+Link: https://lore.kernel.org/r/20250922134619.257684-1-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fgraph.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/video/fbdev/core/fbcon.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/fgraph.c
-+++ b/kernel/trace/fgraph.c
-@@ -815,6 +815,7 @@ __ftrace_return_to_handler(struct ftrace
- 	unsigned long bitmap;
- 	unsigned long ret;
- 	int offset;
-+	int bit;
- 	int i;
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2482,7 +2482,7 @@ static int fbcon_set_font(struct vc_data
+ 	unsigned charcount = font->charcount;
+ 	int w = font->width;
+ 	int h = font->height;
+-	int size;
++	int size, alloc_size;
+ 	int i, csum;
+ 	u8 *new_data, *data = font->data;
+ 	int pitch = PITCH(font->width);
+@@ -2515,10 +2515,10 @@ static int fbcon_set_font(struct vc_data
+ 		return -EINVAL;
  
- 	ret_stack = ftrace_pop_return_trace(&trace, &ret, frame_pointer, &offset);
-@@ -829,6 +830,15 @@ __ftrace_return_to_handler(struct ftrace
- 	if (fregs)
- 		ftrace_regs_set_instruction_pointer(fregs, ret);
+ 	/* Check for overflow in allocation size calculation */
+-	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
++	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &alloc_size))
+ 		return -EINVAL;
  
-+	bit = ftrace_test_recursion_trylock(trace.func, ret);
-+	/*
-+	 * This can fail because ftrace_test_recursion_trylock() allows one nest
-+	 * call. If we are already in a nested call, then we don't probe this and
-+	 * just return the original return address.
-+	 */
-+	if (unlikely(bit < 0))
-+		goto out;
-+
- #ifdef CONFIG_FUNCTION_GRAPH_RETVAL
- 	trace.retval = ftrace_regs_get_return_value(fregs);
- #endif
-@@ -852,6 +862,8 @@ __ftrace_return_to_handler(struct ftrace
- 		}
- 	}
+-	new_data = kmalloc(size, GFP_USER);
++	new_data = kmalloc(alloc_size, GFP_USER);
  
-+	ftrace_test_recursion_unlock(bit);
-+out:
- 	/*
- 	 * The ftrace_graph_return() may still access the current
- 	 * ret_stack structure, we need to make sure the update of
+ 	if (!new_data)
+ 		return -ENOMEM;
 
 
 
