@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-182654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19921BADCA2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0765BAD4EE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1343A4A08A7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED1F63A65E3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA995307ADD;
-	Tue, 30 Sep 2025 15:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CECC3043DA;
+	Tue, 30 Sep 2025 14:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOHom88J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vF/G7cKk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A594303CBF;
-	Tue, 30 Sep 2025 15:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F4372617;
+	Tue, 30 Sep 2025 14:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245651; cv=none; b=HQoJxGbTjHBoNPWQNzazhy+zdhmZfVi8e/C0PQ0YhTNJw309gaN88w41CI/OGEv04/yRqAH3ksHwfuK/FT3CvqDMsJZEWa6iD8r8GVj9sikRzMBgDtSgT0IP+vNsTgLAPXThCeZeBUxbwTUGw8NP7yIds7+9y6bRnOS5oRoDOEE=
+	t=1759243932; cv=none; b=XlhO+C6+Jb7KQMfovdOSPcc+TgVdYqyWRIo9A3t6zPQRFDahgReb/KLFduJ9xFKIbVUzd4yNY7zBGCqlTN4byNk3T1f8RiSuQRUTnq4D8kFCoK5FXlIIeQi0GhEFn8VpGcg8cBRwHhxioytzd6IIeVWCX3wjDqWiyeiFOkUIl7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245651; c=relaxed/simple;
-	bh=de0tEuzZZRzU5Bl6B/5u/+H0ewRaNBD7L9C7dhNxVpE=;
+	s=arc-20240116; t=1759243932; c=relaxed/simple;
+	bh=PB/HDRzaatK5VQDBI/W20iP1WNGjeaX/6cYTxExFOnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNI2H0NWe5nsc+vpHJdoByi25ZTBYQbNzTn3DZdMDEzPex5W2y2F3WP76BF43Igjcb6AQ7QN+SGEBmFQi8w2Z0TQXXTRmewSxEekTbPQ6UQu+f8O7BLISYg3+0Xt58zZPBs+1iRQRAKfKR7W/Q685u4kpGJSpCgJ4AxXU3ILrBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOHom88J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130CCC4CEF0;
-	Tue, 30 Sep 2025 15:20:50 +0000 (UTC)
+	 MIME-Version; b=ZlVUOtGr4mCRbdMwCKN6fnpXMJcTSG6OGIcxL1kSDsyOgpyeKI3hru3ax2JWdVwVtmtOBBjjwktmBo0zl4JueKSPUEHZDuV/jjxYUP7P8L5fDY3KEQRTQOnlZXoD5bHCdeRi+fvYcp+qLwvNS8EKzidvxMSTVZXh6lvEWkKASL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vF/G7cKk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514FAC4CEF0;
+	Tue, 30 Sep 2025 14:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245651;
-	bh=de0tEuzZZRzU5Bl6B/5u/+H0ewRaNBD7L9C7dhNxVpE=;
+	s=korg; t=1759243930;
+	bh=PB/HDRzaatK5VQDBI/W20iP1WNGjeaX/6cYTxExFOnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOHom88JvhNeToefyW034UOAJ8HXv9jtWeRCB8JWe6N31T+sGwvvSw9JHB6mpE0VR
-	 4uGEaBojKbwO+MkWah8RKFFWSKsEv76qGSd1b1GYZ/1PPKtI/aK8wFALkN8AtIn1iD
-	 r9opv0iSSIZiJKA46eMtOAZFeO+Z5gbM1n++/2uU=
+	b=vF/G7cKkH9xazv1KdVz0CZYdAkVNBFfPxK9aqDGOCLqftx2E+GwpeM+pfLNkp0QXw
+	 xJyZ/6t3QTcTB7FKqtPGWbQ6pHvtMjrR8DrUVux3lh/rmOcN0ZFxuELyQrqF9kLgWO
+	 ajNRKrJFkvxYx8mYB6VlSPVfP4B3y0u2ehBSgbe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 01/91] scsi: ufs: mcq: Fix memory allocation checks for SQE and CQE
+Subject: [PATCH 5.4 58/81] ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
 Date: Tue, 30 Sep 2025 16:47:00 +0200
-Message-ID: <20250930143821.179898015@linuxfoundation.org>
+Message-ID: <20250930143822.104103451@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 5cb782ff3c62c837e4984b6ae9f5d9a423cd5088 ]
+[ Upstream commit 9cea7425595697802e8d55a322a251999554b8b1 ]
 
-Previous checks incorrectly tested the DMA addresses (dma_handle) for
-NULL. Since dma_alloc_coherent() returns the CPU (virtual) address, the
-NULL check should be performed on the *_base_addr pointer to correctly
-detect allocation failures.
+Adding a memory barrier before wake_up() in
+snd_usb_soundblaster_remote_complete() is supposed to ensure the write
+to mixer->rc_code is visible in wait_event_interruptible() from
+snd_usb_sbrc_hwdep_read().
 
-Update the checks to validate sqe_base_addr and cqe_base_addr instead of
-sqe_dma_addr and cqe_dma_addr.
+However, this is not really necessary, since wake_up() is just a wrapper
+over __wake_up() which already executes a full memory barrier before
+accessing the state of the task to be waken up.
 
-Fixes: 4682abfae2eb ("scsi: ufs: core: mcq: Allocate memory for MCQ mode")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Drop the redundant call to wmb() and implicitly fix the checkpatch
+complaint:
+
+  WARNING: memory barrier without comment
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-8-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/mixer_quirks.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index 14864cfc24223..cb8f0652a4bee 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -209,7 +209,7 @@ int ufshcd_mcq_memory_alloc(struct ufs_hba *hba)
- 		hwq->sqe_base_addr = dmam_alloc_coherent(hba->dev, utrdl_size,
- 							 &hwq->sqe_dma_addr,
- 							 GFP_KERNEL);
--		if (!hwq->sqe_dma_addr) {
-+		if (!hwq->sqe_base_addr) {
- 			dev_err(hba->dev, "SQE allocation failed\n");
- 			return -ENOMEM;
- 		}
-@@ -218,7 +218,7 @@ int ufshcd_mcq_memory_alloc(struct ufs_hba *hba)
- 		hwq->cqe_base_addr = dmam_alloc_coherent(hba->dev, cqe_size,
- 							 &hwq->cqe_dma_addr,
- 							 GFP_KERNEL);
--		if (!hwq->cqe_dma_addr) {
-+		if (!hwq->cqe_base_addr) {
- 			dev_err(hba->dev, "CQE allocation failed\n");
- 			return -ENOMEM;
- 		}
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index f318b80d646d5..03d49d4c5141d 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -207,7 +207,6 @@ static void snd_usb_soundblaster_remote_complete(struct urb *urb)
+ 	if (code == rc->mute_code)
+ 		snd_usb_mixer_notify_id(mixer, rc->mute_mixer_id);
+ 	mixer->rc_code = code;
+-	wmb();
+ 	wake_up(&mixer->rc_waitq);
+ }
+ 
 -- 
 2.51.0
 
