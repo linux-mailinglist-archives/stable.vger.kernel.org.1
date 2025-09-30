@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-182634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C88BADB95
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 709E9BAD881
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37555167448
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6396016C35B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEDC2FD1DD;
-	Tue, 30 Sep 2025 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2412FFDE6;
+	Tue, 30 Sep 2025 15:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7i93Bpr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUsuiBTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABD0205E3B;
-	Tue, 30 Sep 2025 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9F1266B65;
+	Tue, 30 Sep 2025 15:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245587; cv=none; b=WNB1GP+qatvNdkyUxy1AWIypAL36eeP1nbjh+XB9c44p1WLjfnPijcfJ7ZHugJNl7wZk1rh8iWIK/3+bWaiaJH2p5QaY9mqZ8r2Exl42TMg0CgINj13uCzuuvTQYJTM1xzG6ZcYDwkJZK1+q3eyToK7WKF+941xFHk19+XBvY+w=
+	t=1759244846; cv=none; b=GAy/ZwzHRmPGUZhDj2UZdV9gk9yOpRpuIBu9Hhqp70O4Vvr7mqPZCSE1rrxJ2Vgn/JRvh8dLrUC15+kocpT8NcmYWG4rVfom7yExfXJ6WHQrQDZv1CeTp666YzNW2FywzWDy+9p2D0Z8l0Z56U7GZW7Wi9o2pkrpfj7HmeSiMpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245587; c=relaxed/simple;
-	bh=oJS/cR30zicDRZJqWd3ww8Si8lFEBaZFE5zdrGLKCRo=;
+	s=arc-20240116; t=1759244846; c=relaxed/simple;
+	bh=a4tlshXUwxUSkc5zkxRtjEqpU0cFgn966Nc6NwvuvhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqqZBAu4/cc3/e9zi9r+D6RdiW0RrQv92k2Pyj2KmpZeRPTCa/52PXFwYkpzy262TWht8DYJBdbGxqsZxJ42TCySfIdcqeDq6sITYy/HtN/qweECeAlPsbRbbHhcF+A/72bQ2ohJQFxSnq+3rR13uktC3nLlmFb50GghDOHtbE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7i93Bpr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F161AC4CEF0;
-	Tue, 30 Sep 2025 15:19:46 +0000 (UTC)
+	 MIME-Version; b=DBrYlEroY0lz1aWDoZlgKBy1FUOyrcfNeo0wAQ5V2PTLAfqxIsuHraXB6Wc3krrzEY62HeuiTPCd25EeNsulQ7WEPehUzNQ/8ebglqO45XsVWrxyYvi4/w952bG7tEbRWw9/5F8hUf2e7WrpHdPp97nMExHegx/jFWq4WNR0RLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUsuiBTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60178C4CEF0;
+	Tue, 30 Sep 2025 15:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245587;
-	bh=oJS/cR30zicDRZJqWd3ww8Si8lFEBaZFE5zdrGLKCRo=;
+	s=korg; t=1759244845;
+	bh=a4tlshXUwxUSkc5zkxRtjEqpU0cFgn966Nc6NwvuvhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7i93Bpri3I2EIE9Tld4XD+Zc19MzokZqZ25gtzjiShh7liX7Ib4MltFWu3ED81Ki
-	 PjXYNgl78U7niBIRdummkXRzt3mfPZbI16D4f7f+q5ciUdj1vHQc7TcC6xCs46P2jv
-	 EF0F+fFbwH2HpaRk+Ws5jUPeNlLfCyjL8ZaBgdxU=
+	b=IUsuiBTSSmZrg1zCOXWN2Ri3OB8IHDl/f+YCw028QDeUf47+Ll71jQFliFlrNF3vc
+	 XqpliGHsKECTKUG8DtmWQhAJirqOdPkm8tzKRaTba6mI5lrQ80r4gi2oOrIjj2+VDg
+	 EVXmkZO47SxbBA7x9DbNCEQ9a2EaSnAlVPSfyhK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 31/73] can: sun4i_can: populate ndo_change_mtu() to prevent buffer overflow
-Date: Tue, 30 Sep 2025 16:47:35 +0200
-Message-ID: <20250930143821.874255297@linuxfoundation.org>
+	Alexander Popov <alex.popov@linux.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.16 132/143] x86/Kconfig: Reenable PTDUMP on i386
+Date: Tue, 30 Sep 2025 16:47:36 +0200
+Message-ID: <20250930143836.491626092@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Alexander Popov <alex.popov@linux.com>
 
-[ Upstream commit 61da0bd4102c459823fbe6b8b43b01fb6ace4a22 ]
+commit 4f115596133fa168bac06bb34c6efd8f4d84c22e upstream.
 
-Sending an PF_PACKET allows to bypass the CAN framework logic and to
-directly reach the xmit() function of a CAN driver. The only check
-which is performed by the PF_PACKET framework is to make sure that
-skb->len fits the interface's MTU.
+The commit
 
-Unfortunately, because the sun4i_can driver does not populate its
-net_device_ops->ndo_change_mtu(), it is possible for an attacker to
-configure an invalid MTU by doing, for example:
+  f9aad622006bd64c ("mm: rename GENERIC_PTDUMP and PTDUMP_CORE")
 
-  $ ip link set can0 mtu 9999
+has broken PTDUMP and the Kconfig options that use it on ARCH=i386, including
+CONFIG_DEBUG_WX.
 
-After doing so, the attacker could open a PF_PACKET socket using the
-ETH_P_CANXL protocol:
+CONFIG_GENERIC_PTDUMP was renamed into CONFIG_ARCH_HAS_PTDUMP, but it was
+mistakenly moved from "config X86" to "config X86_64". That made PTDUMP
+unavailable for i386.
 
-	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
+Move CONFIG_ARCH_HAS_PTDUMP back to "config X86" to fix it.
 
-to inject a malicious CAN XL frames. For example:
+  [ bp: Massage commit message. ]
 
-	struct canxl_frame frame = {
-		.flags = 0xff,
-		.len = 2048,
-	};
-
-The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
-check that the skb is valid, unfortunately under above conditions, the
-malicious packet is able to go through can_dev_dropped_skb() checks:
-
-  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
-     function does not check the actual device capabilities).
-
-  2. the length is a valid CAN XL length.
-
-And so, sun4ican_start_xmit() receives a CAN XL frame which it is not
-able to correctly handle and will thus misinterpret it as a CAN frame.
-
-This can result in a buffer overflow. The driver will consume cf->len
-as-is with no further checks on this line:
-
-	dlc = cf->len;
-
-Here, cf->len corresponds to the flags field of the CAN XL frame. In
-our previous example, we set canxl_frame->flags to 0xff. Because the
-maximum expected length is 8, a buffer overflow of 247 bytes occurs a
-couple line below when doing:
-
-	for (i = 0; i < dlc; i++)
-		writel(cf->data[i], priv->base + (dreg + i * 4));
-
-Populate net_device_ops->ndo_change_mtu() to ensure that the
-interface's MTU can not be set to anything bigger than CAN_MTU. By
-fixing the root cause, this prevents the buffer overflow.
-
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-3-0d1cada9393b@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f9aad622006bd64c ("mm: rename GENERIC_PTDUMP and PTDUMP_CORE")
+Signed-off-by: Alexander Popov <alex.popov@linux.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sun4i_can.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index 4bec1e7e7b3e3..380f90bc7a422 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -769,6 +769,7 @@ static const struct net_device_ops sun4ican_netdev_ops = {
- 	.ndo_open = sun4ican_open,
- 	.ndo_stop = sun4ican_close,
- 	.ndo_start_xmit = sun4ican_start_xmit,
-+	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops sun4ican_ethtool_ops = {
--- 
-2.51.0
-
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -26,7 +26,6 @@ config X86_64
+ 	depends on 64BIT
+ 	# Options that are inherently 64-bit kernel only:
+ 	select ARCH_HAS_GIGANTIC_PAGE
+-	select ARCH_HAS_PTDUMP
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+ 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
+@@ -101,6 +100,7 @@ config X86
+ 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	select ARCH_HAS_PMEM_API		if X86_64
+ 	select ARCH_HAS_PREEMPT_LAZY
++	select ARCH_HAS_PTDUMP
+ 	select ARCH_HAS_PTE_DEVMAP		if X86_64
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_HW_PTE_YOUNG
 
 
 
