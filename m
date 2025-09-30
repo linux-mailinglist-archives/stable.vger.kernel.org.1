@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-182662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D19BADBD9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8630DBAD821
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE5E4188EB7B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DDD71890A31
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A7530597A;
-	Tue, 30 Sep 2025 15:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0D0846F;
+	Tue, 30 Sep 2025 15:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMXcaYcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYxLYEy3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E8C2FD1DD;
-	Tue, 30 Sep 2025 15:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA792236EB;
+	Tue, 30 Sep 2025 15:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245676; cv=none; b=Xh71WX/JGjIl34rGfOPNOECVlE4Wu1yCWnlfmAn59c6wGCdN3HfRPZs9tZVDuIC9grsMJhMSnJjslNWMKmdgYs2sUP86TIBfXFJoTy07xFVdqAwh9fG+JLaUjbpFKtZ2mVjCuNaljaYuX8T98swOTuQK4KbW3PtCyhLhoDGXbT8=
+	t=1759244783; cv=none; b=FinELvBUnvF3Xm1GoxeZHiye6t8oA7BkB0HV3sU5yHwGakO4BZT+/iKPMCxrFe9osnIhHSAHLw+PdFU6QcEpV6/BABJZyOwzJ06SaLdPBub9DsJoy1qDjPve/8bxyHfN2aCLgvvquACC/yG4lw+0qq7FO6UaJ6BUjg02PpY2zJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245676; c=relaxed/simple;
-	bh=5H5OnDikkDQ2xb5SKy6oAPowDZp5rhABR8r6zmodoZQ=;
+	s=arc-20240116; t=1759244783; c=relaxed/simple;
+	bh=ADhR/vhgyLzbBLUNCbUCZ6+FpVc9C4Gt0slLtsZMuR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rCwcN0z2c+eNMMylW1EsA58s0ihllioxsKDH4T4oRox8vp1C0v70kVGlRK77E7uywgExTsGP3R439JTKQe7XqIHUiBVb/Ms3cDGywugRyrdKTDIETU/ar7GnNq0lEytxrd18VTi11mznWyV7z8MEWTEHWpmkEwoGwEZL5GDcO3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMXcaYcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AB7C4CEF0;
-	Tue, 30 Sep 2025 15:21:15 +0000 (UTC)
+	 MIME-Version; b=LhSq7U6fFoxeNqfH8MKFDlxw6WwpZPqncsYM/+ncIL4QSEs9hFtDXL9AuBCXNeQ6QuXSVahxKxOkcbf41iYGLHyb5uhkOiQWL8Gth4cNeqDBccQhiHfZfWZxk4rW+yy9uyneTSTlW81yw2AULjWRKWu8dQNQa8gl4sjs1DJxgUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYxLYEy3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43506C4CEF0;
+	Tue, 30 Sep 2025 15:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245676;
-	bh=5H5OnDikkDQ2xb5SKy6oAPowDZp5rhABR8r6zmodoZQ=;
+	s=korg; t=1759244783;
+	bh=ADhR/vhgyLzbBLUNCbUCZ6+FpVc9C4Gt0slLtsZMuR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMXcaYcv0Dt3Xe8U2X6N6iyYHLrL+aYKkaojSmmoFGbJnB9fzU0amneF0qw824sKS
-	 lxLSPKLvSo2XhUgJhFyc/jUagajrvmj7tyj4EsRboIIw4jfcdIOcNG116E9oeNE/zQ
-	 YKXy5pmvKv8rQuKD3SJKmLw4mhJAIWTliQdDJakk=
+	b=sYxLYEy3DvezKPCSkOS8tzCgOJoqD6UBShTcX4l/QIsVHVDbRcHMp75/eU7eWL2bB
+	 qTKonYsAJ5KT1He19iAohXC+Hk96HcnoAizUuEL37Lydjh5Cjy3NLKG0TYLNLvpam0
+	 MotBtt3WGw8Wmoi4a94dMHF7Xa0KAPVp/z6dwUKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 17/91] i2c: designware: Add quirk for Intel Xe
+	Menglong Dong <menglong8.dong@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.16 112/143] tracing: fgraph: Protect return handler from recursion loop
 Date: Tue, 30 Sep 2025 16:47:16 +0200
-Message-ID: <20250930143821.846364460@linuxfoundation.org>
+Message-ID: <20250930143835.696918822@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit f6a8e9f3de4567c71ef9f5f13719df69a8b96081 ]
+commit 0db0934e7f9bb624ed98a665890dbe249f65b8fd upstream.
 
-The regmap is coming from the parent also in case of Xe
-GPUs. Reusing the Wangxun quirk for that.
+function_graph_enter_regs() prevents itself from recursion by
+ftrace_test_recursion_trylock(), but __ftrace_return_to_handler(),
+which is called at the exit, does not prevent such recursion.
+Therefore, while it can prevent recursive calls from
+fgraph_ops::entryfunc(), it is not able to prevent recursive calls
+to fgraph from fgraph_ops::retfunc(), resulting in a recursive loop.
+This can lead an unexpected recursion bug reported by Menglong.
 
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Co-developed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250701122252.2590230-3-heikki.krogerus@linux.intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[Rodrigo fixed the co-developed tags while merging]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ is_endbr() is called in __ftrace_return_to_handler -> fprobe_return
+  -> kprobe_multi_link_exit_handler -> is_endbr.
+
+To fix this issue, acquire ftrace_test_recursion_trylock() in the
+__ftrace_return_to_handler() after unwind the shadow stack to mark
+this section must prevent recursive call of fgraph inside user-defined
+fgraph_ops::retfunc().
+
+This is essentially a fix to commit 4346ba160409 ("fprobe: Rewrite
+fprobe on function-graph tracer"), because before that fgraph was
+only used from the function graph tracer. Fprobe allowed user to run
+any callbacks from fgraph after that commit.
+
+Reported-by: Menglong Dong <menglong8.dong@gmail.com>
+Closes: https://lore.kernel.org/all/20250918120939.1706585-1-dongml2@chinatelecom.cn/
+Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
+Cc: stable@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/175852292275.307379.9040117316112640553.stgit@devnote2
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: Menglong Dong <menglong8.dong@gmail.com>
+Acked-by: Menglong Dong <menglong8.dong@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-platdrv.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/trace/fgraph.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index f3245a6856309..1ebcf5673a06b 100644
---- a/drivers/i2c/busses/i2c-designware-platdrv.c
-+++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -168,7 +168,7 @@ static inline int dw_i2c_of_configure(struct platform_device *pdev)
- }
- #endif
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -815,6 +815,7 @@ __ftrace_return_to_handler(struct ftrace
+ 	unsigned long bitmap;
+ 	unsigned long ret;
+ 	int offset;
++	int bit;
+ 	int i;
  
--static int txgbe_i2c_request_regs(struct dw_i2c_dev *dev)
-+static int dw_i2c_get_parent_regmap(struct dw_i2c_dev *dev)
- {
- 	dev->map = dev_get_regmap(dev->dev->parent, NULL);
- 	if (!dev->map)
-@@ -190,12 +190,15 @@ static int dw_i2c_plat_request_regs(struct dw_i2c_dev *dev)
- 	struct platform_device *pdev = to_platform_device(dev->dev);
- 	int ret;
+ 	ret_stack = ftrace_pop_return_trace(&trace, &ret, frame_pointer, &offset);
+@@ -829,6 +830,15 @@ __ftrace_return_to_handler(struct ftrace
+ 	if (fregs)
+ 		ftrace_regs_set_instruction_pointer(fregs, ret);
  
-+	if (device_is_compatible(dev->dev, "intel,xe-i2c"))
-+		return dw_i2c_get_parent_regmap(dev);
++	bit = ftrace_test_recursion_trylock(trace.func, ret);
++	/*
++	 * This can fail because ftrace_test_recursion_trylock() allows one nest
++	 * call. If we are already in a nested call, then we don't probe this and
++	 * just return the original return address.
++	 */
++	if (unlikely(bit < 0))
++		goto out;
 +
- 	switch (dev->flags & MODEL_MASK) {
- 	case MODEL_BAIKAL_BT1:
- 		ret = bt1_i2c_request_regs(dev);
- 		break;
- 	case MODEL_WANGXUN_SP:
--		ret = txgbe_i2c_request_regs(dev);
-+		ret = dw_i2c_get_parent_regmap(dev);
- 		break;
- 	default:
- 		dev->base = devm_platform_ioremap_resource(pdev, 0);
--- 
-2.51.0
-
+ #ifdef CONFIG_FUNCTION_GRAPH_RETVAL
+ 	trace.retval = ftrace_regs_get_return_value(fregs);
+ #endif
+@@ -852,6 +862,8 @@ __ftrace_return_to_handler(struct ftrace
+ 		}
+ 	}
+ 
++	ftrace_test_recursion_unlock(bit);
++out:
+ 	/*
+ 	 * The ftrace_graph_return() may still access the current
+ 	 * ret_stack structure, we need to make sure the update of
 
 
 
