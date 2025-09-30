@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BE4BAD66E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0F0BAD461
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA6C43BAB8B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56C1E4826D1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E5B199939;
-	Tue, 30 Sep 2025 14:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0563F2FB622;
+	Tue, 30 Sep 2025 14:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkqFg3GO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPTjUSKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3101F03C5;
-	Tue, 30 Sep 2025 14:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11D2199939;
+	Tue, 30 Sep 2025 14:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244270; cv=none; b=lbbHVQJQhM74tAPuIhTne73SIpWvG6tQT879u2xyZjk4aEGh+DeWEefsb5o4Yg3IkHAMnatA9PFtpAE+AqO+yaxwJ7R0clZ9XdHV2pvfjMq3tcYc/EMzkIw0aN/T/nXlQSed4+TYvpR4F8xm9rRarg4twlZEMUQUS6b4gjWORHY=
+	t=1759243801; cv=none; b=fF0gXY/MHPF1PXgx2yygYWO54Xl9Zo0XWy+GmAmHR/EWxjWw1M4RxavxRS4K3ofIIpdS4hYHOO8SMcZVnS/ktrrVMB9AhPQM3vdAZnrTxq0S29YxvyoyVG9BR0x1fCnX5pTKY1MP/1qjX5imyFdGX/FT3/yffRWT54oY1eAo1eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244270; c=relaxed/simple;
-	bh=j8Vm4X1DoMyyD0NiA/FffDJRgAPprceb21A1lsUAnLk=;
+	s=arc-20240116; t=1759243801; c=relaxed/simple;
+	bh=BnrGFrI3wpHR297IEV4jvW2GUn+A0f8jL0+pmeidA8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OYkplNLPa2lwjU8xsGyKnnzxjy5xs1acqFxN3I9qUy6QGVHmK9K2xH6v8LfGjLcQs8yBJYmCJY5CIK2KSylJIaM6lfEKaph3n8+0QYohmhVPvPYlq3CpwfyyPDCHJ53Znr3revnms7Ig3BbcJ5OpFFIxAtly8cb0OeQnAvXjhus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkqFg3GO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE114C4CEF0;
-	Tue, 30 Sep 2025 14:57:49 +0000 (UTC)
+	 MIME-Version; b=PoBqD7kvrYREXgVraKBZ3Ns+qFRA2V/aeFlndjsC4J56UP0RzwN8Q4TOQcjc2CaZQp7mMXGMSP65cpCzsi8Lw+tBzWDcieHNfZxjdJEhaLq9dSRLzsWkOnTRX0td35fVUlhzSj2LfoBd+xKyBziFJJZnrAToGK1t0pIilYSQKy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPTjUSKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE80CC4CEF0;
+	Tue, 30 Sep 2025 14:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244270;
-	bh=j8Vm4X1DoMyyD0NiA/FffDJRgAPprceb21A1lsUAnLk=;
+	s=korg; t=1759243801;
+	bh=BnrGFrI3wpHR297IEV4jvW2GUn+A0f8jL0+pmeidA8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WkqFg3GOipp92zFHrq5KZCrmVnZhNX5Sla/qN9fOe3KtlsIfNTSZY/KKh6vtLGvuS
-	 oq+w8YedRoownPcjBP+j209oVuqFn3HVudZA7zgucHFzz01OrTHy7K+W7oHjBw81dy
-	 HgKn1NkqVywLRye87cCx/OoJ/ruSdyu9oqC+WDtk=
+	b=mPTjUSKxH00XsSDJmKRIGc1crRcPcr3qmIh1HbvHFHGEbMAb90FMQN0fclXKeCtF6
+	 qCCWi4sR5NZL3nwEDaU4pOLShX7LBHJrnlshDiZH17F3YVwx2cKDmmZ5nQTXROFJGh
+	 Q7MhXvFaq5pCHlQqAg9ApBAB63rWooAeeBq37+bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nitesh Narayan Lal <nitesh@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/122] qed: Dont collect too many protection override GRC elements
-Date: Tue, 30 Sep 2025 16:46:22 +0200
-Message-ID: <20250930143825.091649586@linuxfoundation.org>
+Subject: [PATCH 5.4 21/81] genirq: Provide new interfaces for affinity hints
+Date: Tue, 30 Sep 2025 16:46:23 +0200
+Message-ID: <20250930143820.554277816@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 56c0a2a9ddc2f5b5078c5fb0f81ab76bbc3d4c37 ]
+[ Upstream commit 65c7cdedeb3026fabcc967a7aae2f755ad4d0783 ]
 
-In the protection override dump path, the firmware can return far too
-many GRC elements, resulting in attempting to write past the end of the
-previously-kmalloc'ed dump buffer.
+The discussion about removing the side effect of irq_set_affinity_hint() of
+actually applying the cpumask (if not NULL) as affinity to the interrupt,
+unearthed a few unpleasantries:
 
-This will result in a kernel panic with reason:
+  1) The modular perf drivers rely on the current behaviour for the very
+     wrong reasons.
 
- BUG: unable to handle kernel paging request at ADDRESS
+  2) While none of the other drivers prevents user space from changing
+     the affinity, a cursorily inspection shows that there are at least
+     expectations in some drivers.
 
-where "ADDRESS" is just past the end of the protection override dump
-buffer. The start address of the buffer is:
- p_hwfn->cdev->dbg_features[DBG_FEATURE_PROTECTION_OVERRIDE].dump_buf
-and the size of the buffer is buf_size in the same data structure.
+#1 needs to be cleaned up anyway, so that's not a problem
 
-The panic can be arrived at from either the qede Ethernet driver path:
+#2 might result in subtle regressions especially when irqbalanced (which
+   nowadays ignores the affinity hint) is disabled.
 
-    [exception RIP: qed_grc_dump_addr_range+0x108]
- qed_protection_override_dump at ffffffffc02662ed [qed]
- qed_dbg_protection_override_dump at ffffffffc0267792 [qed]
- qed_dbg_feature at ffffffffc026aa8f [qed]
- qed_dbg_all_data at ffffffffc026b211 [qed]
- qed_fw_fatal_reporter_dump at ffffffffc027298a [qed]
- devlink_health_do_dump at ffffffff82497f61
- devlink_health_report at ffffffff8249cf29
- qed_report_fatal_error at ffffffffc0272baf [qed]
- qede_sp_task at ffffffffc045ed32 [qede]
- process_one_work at ffffffff81d19783
+Provide new interfaces:
 
-or the qedf storage driver path:
+  irq_update_affinity_hint()  - Only sets the affinity hint pointer
+  irq_set_affinity_and_hint() - Set the pointer and apply the affinity to
+                                the interrupt
 
-    [exception RIP: qed_grc_dump_addr_range+0x108]
- qed_protection_override_dump at ffffffffc068b2ed [qed]
- qed_dbg_protection_override_dump at ffffffffc068c792 [qed]
- qed_dbg_feature at ffffffffc068fa8f [qed]
- qed_dbg_all_data at ffffffffc0690211 [qed]
- qed_fw_fatal_reporter_dump at ffffffffc069798a [qed]
- devlink_health_do_dump at ffffffff8aa95e51
- devlink_health_report at ffffffff8aa9ae19
- qed_report_fatal_error at ffffffffc0697baf [qed]
- qed_hw_err_notify at ffffffffc06d32d7 [qed]
- qed_spq_post at ffffffffc06b1011 [qed]
- qed_fcoe_destroy_conn at ffffffffc06b2e91 [qed]
- qedf_cleanup_fcport at ffffffffc05e7597 [qedf]
- qedf_rport_event_handler at ffffffffc05e7bf7 [qedf]
- fc_rport_work at ffffffffc02da715 [libfc]
- process_one_work at ffffffff8a319663
+Make irq_set_affinity_hint() a wrapper around irq_apply_affinity_hint() and
+document it to be phased out.
 
-Resolve this by clamping the firmware's return value to the maximum
-number of legal elements the firmware should return.
-
-Fixes: d52c89f120de8 ("qed*: Utilize FW 8.37.2.0")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Link: https://patch.msgid.link/f8e1182934aa274c18d0682a12dbaf347595469c.1757485536.git.jamie.bainbridge@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Nitesh Narayan Lal <nitesh@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20210501021832.743094-1-jesse.brandeburg@intel.com
+Link: https://lore.kernel.org/r/20210903152430.244937-2-nitesh@redhat.com
+Stable-dep-of: 915470e1b44e ("i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_debug.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/interrupt.h | 53 ++++++++++++++++++++++++++++++++++++++-
+ kernel/irq/manage.c       |  8 +++---
+ 2 files changed, 56 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_debug.c b/drivers/net/ethernet/qlogic/qed/qed_debug.c
-index 4b4077cf2d266..b4e108d3ec945 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_debug.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_debug.c
-@@ -4374,10 +4374,11 @@ static enum dbg_status qed_protection_override_dump(struct qed_hwfn *p_hwfn,
- 		goto out;
- 	}
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index 85a5d13a7dc9c..7c06e33ad05ec 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -309,7 +309,46 @@ extern int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask);
+ extern int irq_can_set_affinity(unsigned int irq);
+ extern int irq_select_affinity(unsigned int irq);
  
--	/* Add override window info to buffer */
-+	/* Add override window info to buffer, preventing buffer overflow */
- 	override_window_dwords =
--		qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
--		PROTECTION_OVERRIDE_ELEMENT_DWORDS;
-+		min(qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
-+		PROTECTION_OVERRIDE_ELEMENT_DWORDS,
-+		PROTECTION_OVERRIDE_DEPTH_DWORDS);
- 	if (override_window_dwords) {
- 		addr = BYTES_TO_DWORDS(GRC_REG_PROTECTION_OVERRIDE_WINDOW);
- 		offset += qed_grc_dump_addr_range(p_hwfn,
+-extern int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m);
++extern int __irq_apply_affinity_hint(unsigned int irq, const struct cpumask *m,
++				     bool setaffinity);
++
++/**
++ * irq_update_affinity_hint - Update the affinity hint
++ * @irq:	Interrupt to update
++ * @m:		cpumask pointer (NULL to clear the hint)
++ *
++ * Updates the affinity hint, but does not change the affinity of the interrupt.
++ */
++static inline int
++irq_update_affinity_hint(unsigned int irq, const struct cpumask *m)
++{
++	return __irq_apply_affinity_hint(irq, m, false);
++}
++
++/**
++ * irq_set_affinity_and_hint - Update the affinity hint and apply the provided
++ *			     cpumask to the interrupt
++ * @irq:	Interrupt to update
++ * @m:		cpumask pointer (NULL to clear the hint)
++ *
++ * Updates the affinity hint and if @m is not NULL it applies it as the
++ * affinity of that interrupt.
++ */
++static inline int
++irq_set_affinity_and_hint(unsigned int irq, const struct cpumask *m)
++{
++	return __irq_apply_affinity_hint(irq, m, true);
++}
++
++/*
++ * Deprecated. Use irq_update_affinity_hint() or irq_set_affinity_and_hint()
++ * instead.
++ */
++static inline int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
++{
++	return irq_set_affinity_and_hint(irq, m);
++}
++
+ extern int irq_update_affinity_desc(unsigned int irq,
+ 				    struct irq_affinity_desc *affinity);
+ 
+@@ -341,6 +380,18 @@ static inline int irq_can_set_affinity(unsigned int irq)
+ 
+ static inline int irq_select_affinity(unsigned int irq)  { return 0; }
+ 
++static inline int irq_update_affinity_hint(unsigned int irq,
++					   const struct cpumask *m)
++{
++	return -EINVAL;
++}
++
++static inline int irq_set_affinity_and_hint(unsigned int irq,
++					    const struct cpumask *m)
++{
++	return -EINVAL;
++}
++
+ static inline int irq_set_affinity_hint(unsigned int irq,
+ 					const struct cpumask *m)
+ {
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index 05601bcd30118..32513a2e26eb0 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -448,7 +448,8 @@ int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask)
+ }
+ EXPORT_SYMBOL_GPL(irq_force_affinity);
+ 
+-int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
++int __irq_apply_affinity_hint(unsigned int irq, const struct cpumask *m,
++			      bool setaffinity)
+ {
+ 	unsigned long flags;
+ 	struct irq_desc *desc = irq_get_desc_lock(irq, &flags, IRQ_GET_DESC_CHECK_GLOBAL);
+@@ -457,12 +458,11 @@ int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
+ 		return -EINVAL;
+ 	desc->affinity_hint = m;
+ 	irq_put_desc_unlock(desc, flags);
+-	/* set the initial affinity to prevent every interrupt being on CPU0 */
+-	if (m)
++	if (m && setaffinity)
+ 		__irq_set_affinity(irq, m, false);
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(irq_set_affinity_hint);
++EXPORT_SYMBOL_GPL(__irq_apply_affinity_hint);
+ 
+ static void irq_affinity_notify(struct work_struct *work)
+ {
 -- 
 2.51.0
 
