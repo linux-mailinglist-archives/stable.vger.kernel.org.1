@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-182756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D95CBADD0E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD681BADC15
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2135327AFD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 387BC194522C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3141F3FED;
-	Tue, 30 Sep 2025 15:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFCA20E334;
+	Tue, 30 Sep 2025 15:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFVuCR74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TR+eGbnd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC438245010;
-	Tue, 30 Sep 2025 15:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFC3846F;
+	Tue, 30 Sep 2025 15:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245986; cv=none; b=OStIDVPqzAhx6Q5B2o5rHY3cF7w6DFVBCNLvsmNxeXL1e57dBvBdok3vjgd5VEU0mm4smK9U7csnnx2p2NkBEZpUXjatgOXjjWjnxcM4+CV8HvtYtU7rGmWqaUIzyHbWX5h9cU3/Ot7Ajk2iF+C640anNAYE3LCYKBcoEDQK+7Y=
+	t=1759245729; cv=none; b=loVtOwfpZjRAESTwuWph80wzKBU668PI5WtgMZvQoEC8bux2jL3AGoPM0lVrsq+yVYdYAOI30kRPd4OfUyINFQ/xI2MOIC2cSyYdvfqWFr4C6xyHAkovhzPOQsm4nRE8cu30rXeRIdP+PgA4DQM8AUIdT9tcWYWE6hEFJqBX9lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245986; c=relaxed/simple;
-	bh=iAFis5c6jRyjJGcFIsVxOxMPFAKIfFLkIqT8KuPIz94=;
+	s=arc-20240116; t=1759245729; c=relaxed/simple;
+	bh=tTSH8rvrUUA51JY+CpDHGNd0ZDu0wR7aQkZzi0oHlPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlrNxct/tqEmvjxuT7kQe8gnqsHu+4p/A0gZyrfmi1YcRdzlD58n6eWVP05zshUqSwwELfGIG4H4a2x3EEv5Ymp5/rXZTvpM4uBiA8+UrPAzoMB5AuNWSYOeUvM+RC0yh4gtd9nPVdSWr8goI+m4PGrT3CwYUBdKK8BZWykSZSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFVuCR74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380E1C4CEF0;
-	Tue, 30 Sep 2025 15:26:26 +0000 (UTC)
+	 MIME-Version; b=VLQBciVrf8mX0hD9UaabB3M2X40raDJFkYSP7ZfbH5M2mBrEFgLuhHQg/QJyBtZ7VZBikgHN3cRslQDsJB9GyZTHi+cNFhqgSgDhiDFZVKwgQLcIiGe0VFZwTlEVjeog0+n1hWO/8M35jUKN8qKfs8nULYZiI8EDLNxpll1G0bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TR+eGbnd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CD1C4CEF0;
+	Tue, 30 Sep 2025 15:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245986;
-	bh=iAFis5c6jRyjJGcFIsVxOxMPFAKIfFLkIqT8KuPIz94=;
+	s=korg; t=1759245729;
+	bh=tTSH8rvrUUA51JY+CpDHGNd0ZDu0wR7aQkZzi0oHlPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFVuCR740/OBE7aS/KFfS1GzGIvCkftT1Vc8REqGUqM3Lbk8BoUdlouMzYQIT7fSf
-	 ZNVNkED5QTIMHU6Afd4I3lUpyKNeK2vpJfpHfiGjn5Gv+WLMo5xg6L0wajkKmT+C5W
-	 peGJwB+NnUKJQQkGohsM0dHnqK+2JH77mGNjfVbc=
+	b=TR+eGbndtzEjGREHelPu0G3u3l1pDYbXEGWcoSQvBm2wZ6N+250U2dETn9CB3SPtT
+	 EFnesYAnd2YXK0ycdu4ICNZZE4DXxGXge+Bw3MEcxO9XeWaHSpklZX21hJ3lHQ0THP
+	 xsSyr5BupLWh9WGB9Wvha0VyHpG4BuUIkdhl2YKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 18/89] net: fec: rename struct fec_devinfo fec_imx6x_info -> fec_imx6sx_info
+Subject: [PATCH 6.6 33/91] bpf: Reject bpf_timer for PREEMPT_RT
 Date: Tue, 30 Sep 2025 16:47:32 +0200
-Message-ID: <20250930143822.630566918@linuxfoundation.org>
+Message-ID: <20250930143822.526166893@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Leon Hwang <leon.hwang@linux.dev>
 
-[ Upstream commit 4e8594a88656fa86a9d2b1e72770432470b6dc0c ]
+[ Upstream commit e25ddfb388c8b7e5f20e3bf38d627fb485003781 ]
 
-In da722186f654 ("net: fec: set GPR bit on suspend by DT
-configuration.") the platform_device_id fec_devtype::driver_data was
-converted from holding the quirks to a pointing to struct fec_devinfo.
+When enable CONFIG_PREEMPT_RT, the kernel will warn when run timer
+selftests by './test_progs -t timer':
 
-The struct fec_devinfo holding the information for the i.MX6SX was
-named fec_imx6x_info.
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
 
-Rename fec_imx6x_info to fec_imx6sx_info to align with the SoC's name.
+In order to avoid such warning, reject bpf_timer in verifier when
+PREEMPT_RT is enabled.
 
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://patch.msgid.link/20250618-fec-cleanups-v4-5-c16f9a1af124@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Link: https://lore.kernel.org/r/20250910125740.52172-2-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 0bd814251d56e..d144494f97e91 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -131,7 +131,7 @@ static const struct fec_devinfo fec_mvf600_info = {
- 		  FEC_QUIRK_HAS_MDIO_C45,
- };
- 
--static const struct fec_devinfo fec_imx6x_info = {
-+static const struct fec_devinfo fec_imx6sx_info = {
- 	.quirks = FEC_QUIRK_ENET_MAC | FEC_QUIRK_HAS_GBIT |
- 		  FEC_QUIRK_HAS_BUFDESC_EX | FEC_QUIRK_HAS_CSUM |
- 		  FEC_QUIRK_HAS_VLAN | FEC_QUIRK_HAS_AVB |
-@@ -196,7 +196,7 @@ static const struct of_device_id fec_dt_ids[] = {
- 	{ .compatible = "fsl,imx28-fec", .data = &fec_imx28_info, },
- 	{ .compatible = "fsl,imx6q-fec", .data = &fec_imx6q_info, },
- 	{ .compatible = "fsl,mvf600-fec", .data = &fec_mvf600_info, },
--	{ .compatible = "fsl,imx6sx-fec", .data = &fec_imx6x_info, },
-+	{ .compatible = "fsl,imx6sx-fec", .data = &fec_imx6sx_info, },
- 	{ .compatible = "fsl,imx6ul-fec", .data = &fec_imx6ul_info, },
- 	{ .compatible = "fsl,imx8mq-fec", .data = &fec_imx8mq_info, },
- 	{ .compatible = "fsl,imx8qm-fec", .data = &fec_imx8qm_info, },
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 7d6ee41f4b4f4..a6f825b7fbe6c 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7546,6 +7546,10 @@ static int process_timer_func(struct bpf_verifier_env *env, int regno,
+ 		verbose(env, "verifier bug. Two map pointers in a timer helper\n");
+ 		return -EFAULT;
+ 	}
++	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
++		verbose(env, "bpf_timer cannot be used for PREEMPT_RT.\n");
++		return -EOPNOTSUPP;
++	}
+ 	meta->map_uid = reg->map_uid;
+ 	meta->map_ptr = map;
+ 	return 0;
 -- 
 2.51.0
 
