@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667C6BAD96E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C2FBAD4AF
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFE3E7A9824
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8F163A100B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FAA3081A4;
-	Tue, 30 Sep 2025 15:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DF52FB622;
+	Tue, 30 Sep 2025 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EML0QkaP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeE0G2Qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D33F2FD1DD;
-	Tue, 30 Sep 2025 15:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A183C465;
+	Tue, 30 Sep 2025 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245103; cv=none; b=TDMFep1c0XieR/0hTlXsI+P3tb079L65oC2ki5fJTjCdlCFOJlLIgAnHNGnJGEUyTLQmuJA3ZM3VYAUgt2iDZLLgL+7FEYTbfIfKSwC/gyrkHHXi4gQYlu3lFQAzZuqiR1+3x88O3gBgpfDlCZj92QwPCIrepMhu08BU5rDsC8I=
+	t=1759243857; cv=none; b=PQwG+tVe/FYQ+3/cU4Ck615zEIpnKnb9KoKmZaHxLyz0sgpr9ZJzSh70c8CPwuAROzzeFEfxxKC07Kl+63lIg1KqyCc1Ix1DWZv3IagiL6cSOFfoYu1gZhVPIQDWjOhhzY0jp7VxgWveUQXn7xMp2C1hDTZAhPiplWdJ/bEB8Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245103; c=relaxed/simple;
-	bh=LpH7Atfa1HyxORtKkPswUHIj5ZVMESq2ZgWb1DkqAuQ=;
+	s=arc-20240116; t=1759243857; c=relaxed/simple;
+	bh=z9p5kl1cqf1HolKJNVzf0VcELEnJvvwAaDvKHQb5caw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kn++NA1Q1uzPcrhW4Q7EOR6+0ux4i7lbt49+Ok/SB6YSZmYyNSiuAfjS0WXEhVcOCKgHmBScsXTkMSVJobl0s4F01yhUkcIvesDUW/2maoA2rj/mYyHtcTrkk70QQZBNj+8XyxFAIShk/eiDRf/amwwkqQ80i+vyRt1FQXRr5eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EML0QkaP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7605C113D0;
-	Tue, 30 Sep 2025 15:11:42 +0000 (UTC)
+	 MIME-Version; b=ZdWQi7Iefxsw5s8rRVS1wZA5uhOR/eG294x7JfAJYVgyC859U3KhAmzkioDnlVkF4wpCySctGT39vo+YGAzM9CiP9hfDTVY3RMYPTbtCipXBtLl9FYhOsjAzaZDU7GeKV0EKpOIbn3e56WR6BZM+u6PTv5CZdI2TE/P07xwsmW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeE0G2Qf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77409C4CEF0;
+	Tue, 30 Sep 2025 14:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245103;
-	bh=LpH7Atfa1HyxORtKkPswUHIj5ZVMESq2ZgWb1DkqAuQ=;
+	s=korg; t=1759243857;
+	bh=z9p5kl1cqf1HolKJNVzf0VcELEnJvvwAaDvKHQb5caw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EML0QkaPFU0cqyZ35Z2PeIWf0tjup8pkoa21vFjg+xldoY/xbSj0M+Ars9Ts5A4hi
-	 B7vnD7EPcMycEPADqheI8Se6TlQnBYhtve1ldkAMm8CwZv68R5j8QPoEF+n1VNW5nf
-	 C251nxGw8apDPIepXhdoQxmPpMymaLJ5Sd0m7vPM=
+	b=CeE0G2Qf9xZtLbqcFQE6uqpl52gja6OiqBzN1szF2WKvRsNLcGrXbGtw21cTdI9D2
+	 N6Eh5g9M9PbAeCkbY6SYNmjqi56AKENBjMmFT4ymyMD5E7pL5iSKoq5ymcgCdsF72F
+	 EYBl4KPnhfase6incU4wRMYij7ECNru8T8q/zQm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/151] dpaa2-switch: fix buffer pool seeding for control traffic
+Subject: [PATCH 5.4 38/81] Revert "net/mlx5e: Update and set Xon/Xoff upon port speed set"
 Date: Tue, 30 Sep 2025 16:46:40 +0200
-Message-ID: <20250930143830.386428778@linuxfoundation.org>
+Message-ID: <20250930143821.268808804@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Tariq Toukan <tariqt@nvidia.com>
 
-[ Upstream commit 2690cb089502b80b905f2abdafd1bf2d54e1abef ]
+[ Upstream commit 3fbfe251cc9f6d391944282cdb9bcf0bd02e01f8 ]
 
-Starting with commit c50e7475961c ("dpaa2-switch: Fix error checking in
-dpaa2_switch_seed_bp()"), the probing of a second DPSW object errors out
-like below.
+This reverts commit d24341740fe48add8a227a753e68b6eedf4b385a.
+It causes errors when trying to configure QoS, as well as
+loss of L2 connectivity (on multi-host devices).
 
-fsl_dpaa2_switch dpsw.1: fsl_mc_driver_probe failed: -12
-fsl_dpaa2_switch dpsw.1: probe with driver fsl_dpaa2_switch failed with error -12
-
-The aforementioned commit brought to the surface the fact that seeding
-buffers into the buffer pool destined for control traffic is not
-successful and an access violation recoverable error can be seen in the
-MC firmware log:
-
-[E, qbman_rec_isr:391, QBMAN]  QBMAN recoverable event 0x1000000
-
-This happens because the driver incorrectly used the ID of the DPBP
-object instead of the hardware buffer pool ID when trying to release
-buffers into it.
-
-This is because any DPSW object uses two buffer pools, one managed by
-the Linux driver and destined for control traffic packet buffers and the
-other one managed by the MC firmware and destined only for offloaded
-traffic. And since the buffer pool managed by the MC firmware does not
-have an external facing DPBP equivalent, any subsequent DPBP objects
-created after the first DPSW will have a DPBP id different to the
-underlying hardware buffer ID.
-
-The issue was not caught earlier because these two numbers can be
-identical when all DPBP objects are created before the DPSW objects are.
-This is the case when the DPL file is used to describe the entire DPAA2
-object layout and objects are created at boot time and it's also true
-for the first DPSW being created dynamically using ls-addsw.
-
-Fix this by using the buffer pool ID instead of the DPBP id when
-releasing buffers into the pool.
-
-Fixes: 2877e4f7e189 ("staging: dpaa2-switch: setup buffer pool and RX path rings")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://patch.msgid.link/20250910144825.2416019-1-ioana.ciornei@nxp.com
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/20250910170011.70528106@kernel.org
+Fixes: d24341740fe4 ("net/mlx5e: Update and set Xon/Xoff upon port speed set")
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index 6448e06dcf826..1e6b29c047710 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -2682,7 +2682,7 @@ static int dpaa2_switch_setup_dpbp(struct ethsw_core *ethsw)
- 		dev_err(dev, "dpsw_ctrl_if_set_pools() failed\n");
- 		goto err_get_attr;
- 	}
--	ethsw->bpid = dpbp_attrs.id;
-+	ethsw->bpid = dpbp_attrs.bpid;
- 
- 	return 0;
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index b8d0b68befcb9..41bd16cc9d0f6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -141,8 +141,6 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
+ 	if (port_state == VPORT_STATE_UP) {
+ 		netdev_info(priv->netdev, "Link up\n");
+ 		netif_carrier_on(priv->netdev);
+-		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
+-						NULL, NULL, NULL);
+ 	} else {
+ 		netdev_info(priv->netdev, "Link down\n");
+ 		netif_carrier_off(priv->netdev);
 -- 
 2.51.0
 
