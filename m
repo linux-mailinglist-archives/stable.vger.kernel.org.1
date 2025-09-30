@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-182580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F055BADA78
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A8BBAD830
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8828B7A762E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16C0332561B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645A729827E;
-	Tue, 30 Sep 2025 15:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE55302CD6;
+	Tue, 30 Sep 2025 15:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ll1+F9AW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swcO5vW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ACC1F1302;
-	Tue, 30 Sep 2025 15:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7A4846F;
+	Tue, 30 Sep 2025 15:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245407; cv=none; b=mMwxcGZHHa/1mQIYfHguZhFRD+ttAgbSgdJvExsYXtpqGm83aL2a8S8Qfo6Y2ineY7RrcitpbqwMsCW6zEMB/sGhGo/EM95czeJ/jPDWe4YJdN7l0LU8qkJakMWsYGASDmZa1UDVXCxT1sUd4r+Ctfvy5gtS8bj5HfKCNcNCF4o=
+	t=1759244743; cv=none; b=YfM0/Lqy/+LZTU1358P/IhWFrumlZYq99jmKOFEBaXRbnwh20ztwKrUWTLlO8ovE+BRichC6L0mC8obmI0p48JWgC84y+NHXJvhBhIchxB4+NVM21NkuZyZV/v38l2lxDTiP6LYhaIiIOsoxLxcTkPG66dyDTc1BSbS8KRiDQzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245407; c=relaxed/simple;
-	bh=bZM9y2c975G3WjsTpZi5nBejqpDGGv3DoAA7b734G8M=;
+	s=arc-20240116; t=1759244743; c=relaxed/simple;
+	bh=v46G2i8mW3ubDqeqNe7estlChvr33r5eJr11oqMDNfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfkoU6FjBMgpemzgD5rRHCJsf171W1k4JH9cVgZuuQlVcC6FN+m3RRU6ZP6cfL0EDc+tahr/B2cwxhNKr3Ot6XBhKb0i4ZVaanPaSX7mnT2QSXyAugDatSNk52O9BGY04y4hESs7/UliWBCU5w8WbO0y/vjhGBbmgGp+OBaPXVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ll1+F9AW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C32C4CEF0;
-	Tue, 30 Sep 2025 15:16:46 +0000 (UTC)
+	 MIME-Version; b=Lb64VWiDq23ViYo/BrwMrjLdJzAqke4qLbPa11Vmy8IV/toS+7rCShqcin8DTPChDwOCEIyeqfkZFoqKyfcQKeGtXh44btUK5LIkpkf3E7W0z1Z6OImIt7XaDjOU6LnUom2C/dfk/TGXI5/hKFiclJ4+0SmKDeUdNCNxDO6hZSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swcO5vW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16934C4CEF0;
+	Tue, 30 Sep 2025 15:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245407;
-	bh=bZM9y2c975G3WjsTpZi5nBejqpDGGv3DoAA7b734G8M=;
+	s=korg; t=1759244743;
+	bh=v46G2i8mW3ubDqeqNe7estlChvr33r5eJr11oqMDNfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ll1+F9AWFO/4vgk21XW3SCg7uEm4dh+1T7gWjnp4HMvc48eYt6/QNOTAYNHdXv9yy
-	 GToK5Xy2qrvEpvAulLwYSVEy4bhk5aekEi7jcXiRYHvQgp07Ul9Bop85qN5YlvBMil
-	 SLD6taOJyqJCnXbYDJICgWMHCGqSMREXLuiDFCpg=
+	b=swcO5vW9aOFmUGCAEwhc71jZ5vmaa7omozufawSrM+MAKnNm8ecx5L646HFGGdMe3
+	 g2JnjMlY/U97ZOLRryma6b5gnS/nOEBp6/1trU+pi7aMLARWFAb9IvSOXtdsLvkSly
+	 t21tizeg6eVC8UxMxrS4svAwFNUIluU5zhrJ5fjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 01/73] ALSA: usb-audio: Fix block comments in mixer_quirks
+	Amit Chaudhari <amitchaudhari@mac.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.16 101/143] HID: asus: add support for missing PX series fn keys
 Date: Tue, 30 Sep 2025 16:47:05 +0200
-Message-ID: <20250930143820.601749242@linuxfoundation.org>
+Message-ID: <20250930143835.253353014@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Amit Chaudhari <amitchaudhari@mac.com>
 
-[ Upstream commit 231225d8a20f8668b4fd6601d54a2fac0e0ab7a5 ]
+commit 831f70a5b93bd2d9e858ced2c12fab5766ede5e7 upstream.
 
-Address a couple of comment formatting issues indicated by
-checkpatch.pl:
+Add support for missing hotkey keycodes affecting Asus PX13 and PX16 families
+so userspace can use them.
 
-  WARNING: Block comments use a trailing */ on a separate line
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-4-1a821463b632@collabora.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Amit Chaudhari <amitchaudhari@mac.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hid/hid-asus.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 68c82e344d3ba..4ce470e291b25 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -76,7 +76,8 @@ static int snd_create_std_mono_ctl_offset(struct usb_mixer_interface *mixer,
- 	cval->idx_off = idx_off;
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -974,7 +974,10 @@ static int asus_input_mapping(struct hid
+ 		case 0xc4: asus_map_key_clear(KEY_KBDILLUMUP);		break;
+ 		case 0xc5: asus_map_key_clear(KEY_KBDILLUMDOWN);		break;
+ 		case 0xc7: asus_map_key_clear(KEY_KBDILLUMTOGGLE);	break;
++		case 0x4e: asus_map_key_clear(KEY_FN_ESC);		break;
++		case 0x7e: asus_map_key_clear(KEY_EMOJI_PICKER);	break;
  
- 	/* get_min_max() is called only for integer volumes later,
--	 * so provide a short-cut for booleans */
-+	 * so provide a short-cut for booleans
-+	 */
- 	cval->min = 0;
- 	cval->max = 1;
- 	cval->res = 0;
-@@ -3546,7 +3547,8 @@ static void snd_dragonfly_quirk_db_scale(struct usb_mixer_interface *mixer,
- 					 struct snd_kcontrol *kctl)
- {
- 	/* Approximation using 10 ranges based on output measurement on hw v1.2.
--	 * This seems close to the cubic mapping e.g. alsamixer uses. */
-+	 * This seems close to the cubic mapping e.g. alsamixer uses.
-+	 */
- 	static const DECLARE_TLV_DB_RANGE(scale,
- 		 0,  1, TLV_DB_MINMAX_ITEM(-5300, -4970),
- 		 2,  5, TLV_DB_MINMAX_ITEM(-4710, -4160),
--- 
-2.51.0
-
++		case 0x8b: asus_map_key_clear(KEY_PROG1);	break; /* ProArt Creator Hub key */
+ 		case 0x6b: asus_map_key_clear(KEY_F21);		break; /* ASUS touchpad toggle */
+ 		case 0x38: asus_map_key_clear(KEY_PROG1);	break; /* ROG key */
+ 		case 0xba: asus_map_key_clear(KEY_PROG2);	break; /* Fn+C ASUS Splendid */
 
 
 
