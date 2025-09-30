@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-182335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5CECBAD80F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 172DDBAD94E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9295B4A45A3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D42D3C6703
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4175F302CD6;
-	Tue, 30 Sep 2025 15:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA492FCBFC;
+	Tue, 30 Sep 2025 15:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6mjlDt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkKHcknm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F367A1EE02F;
-	Tue, 30 Sep 2025 15:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F041487F4;
+	Tue, 30 Sep 2025 15:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244608; cv=none; b=s1LNFe2jlQS9M5sZH/DZYoQDhA5nkupis5JXoTYwIqmPicdpk2vKQ+hBtusTptmVGQ1GPW4e5TqqOTVpPtyKyEfUlHsD1VoX3Zhr1sul7GOXfYcqSqZMqBP8G+m3DDAgoWPScfpcSbFCvdLbU5F/mERnZ/n9gsIHvJi2zFUm0vY=
+	t=1759244929; cv=none; b=Z5dyh5wy4WOKMgyuyDmekL3FS+XCpCls6pqRmypYyLSafxOgXi94GKMV1VeC4LJCcaE8IlamarE8hZk0VkXjsVslDv9hZ0wUt/yqTJ5+PNvt9ivrDWt+4cwjp94Jbg/gn2Z5Ilz9aIBaSqcxkwem7xPEzOZCMV5wfq0zayVKtfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244608; c=relaxed/simple;
-	bh=3Rnrdf6RqMkbWCmnSRgspBQORXYYvLmMaYuwYjlRIsk=;
+	s=arc-20240116; t=1759244929; c=relaxed/simple;
+	bh=0R2j3m7cEXdX+/Kt4jQ5V3G6N6h//VALZPoJ1NcHB74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C86Z6nqV2ysbYeG2OJhb/jqZdu3qaWyBvHTUjCB3dgQehgwu/GAQojS7oPxATTCWrrCi04Dw8ac9LyoQr555i0su04bfgAix3WrBjxA8eJ3TlMy+XsCiw+JhPwHHmeJdLhjq7+9zRiWXy0NWGIsymG4EUdkTR+gRxwCqVo7I5EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6mjlDt6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650C9C4CEF0;
-	Tue, 30 Sep 2025 15:03:27 +0000 (UTC)
+	 MIME-Version; b=c/uecT9dffqAJV576NV5arFlJX65itkr6cwIk6se70edVximYAymNf9wp++CF72il93AHTrLEbQnzBe59zjqFEzoAwuZSNqg2ZH2CFxD7E8+7esWyy1EycJ0jxt+o2LARZCqXhBztm8//fLLdR5vMBzWQ2FkTWoQYOo4BkVsMEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkKHcknm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4E1C4CEF0;
+	Tue, 30 Sep 2025 15:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244607;
-	bh=3Rnrdf6RqMkbWCmnSRgspBQORXYYvLmMaYuwYjlRIsk=;
+	s=korg; t=1759244928;
+	bh=0R2j3m7cEXdX+/Kt4jQ5V3G6N6h//VALZPoJ1NcHB74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6mjlDt6v8pJvhnQfNfxpfaUw0F4A8mRqiIqw5GoM6Rn3zS0Qw72FkP4NXE2FuWAv
-	 5dlM1i1NIszzBdHSSazA2q1Ju7Tx+iVEyFi5n+5Z/tcdzcQlNRGs3tbsQD6athvWWV
-	 F+RcUKsxk4GRmYZkbhn0VC1ep+f3vRnUetVWsc3w=
+	b=vkKHcknmUe5WaMH8bvjX+HbzNMavnZPsj74jJmzNyahNg+THe4qRhcNGjaJkjMbBW
+	 fWEJNUfQR8TN7E68F/SZkzEMdiv4p7V3fzbq1JWCuaQOXzZJTSgbIcbLDwi1Kmh3ix
+	 vQMPNfk26PADS2TcQeZAdcZGzcoMuzXC+zYek4ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 018/143] usb: core: Add 0x prefix to quirks debug output
-Date: Tue, 30 Sep 2025 16:45:42 +0200
-Message-ID: <20250930143831.971150687@linuxfoundation.org>
+Subject: [PATCH 5.15 013/151] NFSv4: Clear the NFS_CAP_XATTR flag if not supported by the server
+Date: Tue, 30 Sep 2025 16:45:43 +0200
+Message-ID: <20250930143828.133159967@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 47c428fce0b41b15ab321d8ede871f780ccd038f ]
+[ Upstream commit 4fb2b677fc1f70ee642c0beecc3cabf226ef5707 ]
 
-Use "0x%x" format for quirks debug print to clarify it's a hexadecimal
-value. Improves readability and consistency with other hex outputs.
+nfs_server_set_fsinfo() shouldn't assume that NFS_CAP_XATTR is unset
+on entry to the function.
 
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://lore.kernel.org/r/20250603071045.3243699-1-lijiayi@kylinos.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b78ef845c35d ("NFSv4.2: query the server for extended attribute support")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/client.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
-index d6daad39491b7..f5bc538753301 100644
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -737,7 +737,7 @@ void usb_detect_quirks(struct usb_device *udev)
- 	udev->quirks ^= usb_detect_dynamic_quirks(udev);
+diff --git a/fs/nfs/client.c b/fs/nfs/client.c
+index 443b67beec376..c29bc0a30dd75 100644
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -862,6 +862,8 @@ static void nfs_server_set_fsinfo(struct nfs_server *server,
  
- 	if (udev->quirks)
--		dev_dbg(&udev->dev, "USB quirks for this device: %x\n",
-+		dev_dbg(&udev->dev, "USB quirks for this device: 0x%x\n",
- 			udev->quirks);
+ 	if (fsinfo->xattr_support)
+ 		server->caps |= NFS_CAP_XATTR;
++	else
++		server->caps &= ~NFS_CAP_XATTR;
+ #endif
+ }
  
- #ifdef CONFIG_USB_DEFAULT_PERSIST
 -- 
 2.51.0
 
