@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-182347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBF5BAD831
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 222F8BAD458
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F9B4A63FF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE683482789
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8284427056D;
-	Tue, 30 Sep 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDD72253FC;
+	Tue, 30 Sep 2025 14:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lH5nLem"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFB/9MIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40ACD1F152D;
-	Tue, 30 Sep 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F11265CCD;
+	Tue, 30 Sep 2025 14:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244646; cv=none; b=O68PSb5yyfRcJg+4MFo7joA84UyeF4ZWB2lTRA02zoGJiStaVdnODLCnEdS6mciRiFONu7MiTWm9f4MpVBesx51MChku+mIRORK6lchl1NKvDetYYu1Ff7iACg21G1D1MpXT9du/FPEkxoozy87v6JvNYban6gIWgM9N8TMpgk4=
+	t=1759243785; cv=none; b=D1x79C8D8fsLTXlKGhs9q5fhsDBjgxGx/5g0zkX4mdgAGNiTTNZyiuN5tm+Cdt14paK2/UgYbbh7pRm6hUsBqUegQ0+DR8vkezKYAiBwtAbXfefpJve4Id8T6pRg5fLFHbFAJNzGCSBIPgKMvF6wDtAwFe2FQtRdYD+GK4VfskE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244646; c=relaxed/simple;
-	bh=kdlxmMJ8evGWLsAGqBorR8bsldVJ6ZNnUmUxP4+T+uM=;
+	s=arc-20240116; t=1759243785; c=relaxed/simple;
+	bh=Ge6TIYYL2JIMOAeg7hBQdP1vy7mwhd4X5c5KdIcxz0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRoZRprjpBsyn9FM4Vtzy6d/3kGDWTsZSZ5Ky/xIVtewzL0WJGXMDdbJzxJFX/1M9uFJaiBXdk3nQG9MMeVpwnO/Ax6jGTmyGX4N4tmSYgT2Qn1WdDCvOPy0DMDytQBgb/NMBMZbimAVrjXtQtWdxomWt8EHv1lyZifbU5JRhlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lH5nLem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0874C4CEF0;
-	Tue, 30 Sep 2025 15:04:05 +0000 (UTC)
+	 MIME-Version; b=ho0CZ47tQxX0YgMhtnPwNCTcCNAPHETH3kA6sv245+vLy+AAhbtmx0gI3c8PMP0FwtoUQ5th7bX+9TdUmXMTFzscZKF1rSBm7AbhAXIujktpsEcwVpUeF3BKss6sDVfSEhxwM0vUlrR249Z6BnJ9PuwcKwUjofd7fRhBXvQPRwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFB/9MIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3190EC4CEF0;
+	Tue, 30 Sep 2025 14:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244646;
-	bh=kdlxmMJ8evGWLsAGqBorR8bsldVJ6ZNnUmUxP4+T+uM=;
+	s=korg; t=1759243784;
+	bh=Ge6TIYYL2JIMOAeg7hBQdP1vy7mwhd4X5c5KdIcxz0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1lH5nLemb9NfcLA47enrK7omxs8Iu4pOSuvqngl4w7fWYp/KuxmZ2sgX/mPO1SWg7
-	 sA2rmfbpGSikKUAQbrJ0sTGlJZOCioJxW+18bmlJuz6ld6lvStIOWv1lsuGZEH6LU9
-	 q99PHJ/T0k/7NkBbKKluxFppm7cRXqpEiwFcq3Xw=
+	b=nFB/9MICWEQjhQgbWnXF2NGc53SedPfQi6Quzhk6mm3NbS3JpO4DMXk7v5ksdLWeD
+	 4q5Bx3X4hJvwO8Z3GOgk53Sm1pMFiDbWWYA9aWHAZAJ/uRdLzCo0gfpwnCQfaHCzLp
+	 wz0Eh9D+HXxU3hlq7wjNtUfKzSMfAoUEE1dDKa4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Guan <guan_yufei@163.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Richard Leitner <richard.leitner@skidata.com>,
+	Simon Horman <horms@kernel.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 054/143] wifi: virt_wifi: Fix page fault on connect
-Date: Tue, 30 Sep 2025 16:46:18 +0200
-Message-ID: <20250930143833.387645699@linuxfoundation.org>
+Subject: [PATCH 5.4 17/81] net: fec: Fix possible NPD in fec_enet_phy_reset_after_clk_enable()
+Date: Tue, 30 Sep 2025 16:46:19 +0200
+Message-ID: <20250930143820.389214130@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +66,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Guan <guan_yufei@163.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 9c600589e14f5fc01b8be9a5d0ad1f094b8b304b ]
+[ Upstream commit 03e79de4608bdd48ad6eec272e196124cefaf798 ]
 
-This patch prevents page fault in __cfg80211_connect_result()[1]
-when connecting a virt_wifi device, while ensuring that virt_wifi
-can connect properly.
+The function of_phy_find_device may return NULL, so we need to take
+care before dereferencing phy_dev.
 
-[1] https://lore.kernel.org/linux-wireless/20250909063213.1055024-1-guan_yufei@163.com/
-
-Closes: https://lore.kernel.org/linux-wireless/20250909063213.1055024-1-guan_yufei@163.com/
-Signed-off-by: James Guan <guan_yufei@163.com>
-Link: https://patch.msgid.link/20250910111929.137049-1-guan_yufei@163.com
-[remove irrelevant network-manager instructions]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 64a632da538a ("net: fec: Fix phy_device lookup for phy_reset_after_clk_enable()")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Cc: Richard Leitner <richard.leitner@skidata.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250904091334.53965-1-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virtual/virt_wifi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
-index 1fffeff2190ca..4eae89376feb5 100644
---- a/drivers/net/wireless/virtual/virt_wifi.c
-+++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -277,7 +277,9 @@ static void virt_wifi_connect_complete(struct work_struct *work)
- 		priv->is_connected = true;
- 
- 	/* Schedules an event that acquires the rtnl lock. */
--	cfg80211_connect_result(priv->upperdev, requested_bss, NULL, 0, NULL, 0,
-+	cfg80211_connect_result(priv->upperdev,
-+				priv->is_connected ? fake_router_bssid : NULL,
-+				NULL, 0, NULL, 0,
- 				status, GFP_KERNEL);
- 	netif_carrier_on(priv->upperdev);
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index f8a0966332805..7b2ab0cc562cc 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -2018,7 +2018,8 @@ static void fec_enet_phy_reset_after_clk_enable(struct net_device *ndev)
+ 		 */
+ 		phy_dev = of_phy_find_device(fep->phy_node);
+ 		phy_reset_after_clk_enable(phy_dev);
+-		put_device(&phy_dev->mdio.dev);
++		if (phy_dev)
++			put_device(&phy_dev->mdio.dev);
+ 	}
  }
+ 
 -- 
 2.51.0
 
