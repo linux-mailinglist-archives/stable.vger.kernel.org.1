@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-182704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17A8BADD08
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8BCBAD6C8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 302F33C03EF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559B91942D65
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20601C862F;
-	Tue, 30 Sep 2025 15:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C86306496;
+	Tue, 30 Sep 2025 14:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1alCqjz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyzgJ3Dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC0320E334;
-	Tue, 30 Sep 2025 15:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CBA30649C;
+	Tue, 30 Sep 2025 14:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245816; cv=none; b=kJxQSSMzv84n9Q+JDW5VUUxdm360CQeHSCVcrmzvbS9TcatSQ4lSzDTUgPDnPl4rlh4MrcXu+YqHv67OAqJRIkBYd9ol7gBpC+RUwbSqMKavhtL4l6IN5eI1jW9kqinTsm98Npk6sorwkCfFBKYgctiaHUBNV0VPQvNgqWxVWg0=
+	t=1759244397; cv=none; b=pfHp66r0IUtRJk3G2BUZYyWDKXMCoxpedf2VrJpHliEyY4hTnhkBrGj4tU2YFh5nt0oqQWhx8c2wy8IiBY6/6fY62fAWvtVxgQ2A5/ZtgWJD2E651gRgfPnMQTFLjttATYdjvvniA2WqBt0zJPv/J2iQ0MOjS++e3udzNg0JeFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245816; c=relaxed/simple;
-	bh=6Qni5WkzTCvVsqq4hLQtDQpgjfxlULmxB85Jh1yBhvg=;
+	s=arc-20240116; t=1759244397; c=relaxed/simple;
+	bh=j8qh9tidLSkh6h3LgNohnLlbU5UxfUScTniWHXGFjvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ur+Q56mvg6jRGrmqVHQ9vp/TYqDl+8GiDK2ppCLxsVXaeSh7EwwXayeRAUxwDLqu3pJAvrOVu95H8plCXi157W7mnu819Nab8lw7b8nIB8zYK2cM/jUIG9mYjXz3S/te181gECzEebngeExj1nihWgGGffWS8DI2zajJ2F6nbLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1alCqjz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0216CC4CEF0;
-	Tue, 30 Sep 2025 15:23:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L/cRiuPfPmUbB95udhU1JwzPvyHaDBi39itOUtPVSil0OmalDHUdIYGA1xqPtGPUjPITd0zncDxCflB4+I3P+3dZ06Zoc/XiJ554iepBXzQPGpEK37TDxmCiDHH9ABNjmOI3P81fsqeR9DomZjfs7RDawElkayKgalOje+ixtrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyzgJ3Dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C5CC4CEF0;
+	Tue, 30 Sep 2025 14:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245816;
-	bh=6Qni5WkzTCvVsqq4hLQtDQpgjfxlULmxB85Jh1yBhvg=;
+	s=korg; t=1759244396;
+	bh=j8qh9tidLSkh6h3LgNohnLlbU5UxfUScTniWHXGFjvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I1alCqjzYT+4gaej5we6ie32IU+64S6nCla/rs72quyOeCVmsHnEDRk82hjHtt5FX
-	 gsBuTYq73QG8ikUc6ogJracnZgWTo7x6clBEV9B/B7xz5s6epyPH8HBAjaU7j1ocY7
-	 pfirYpTgeo8nrGIsGssHZx7ltmJiw+D7TQtPfIR0=
+	b=RyzgJ3DvziFSKbxDQdi8wrgRvecIKJ8eOTGxYB4herfQi6wY6iZOAZuf2HFGROLQs
+	 DMIsE6rDKVM4YIpUrmrcsnMBPM2Wgxd5Lq4r6cgCimOoo5ZB8BLYZ4gJ1oeNwOkv79
+	 dlThZa+ZrCLulSDs3rjcPLl1WHYgbULzt0jTMW3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 27/91] arm64: dts: imx8mp: Correct thermal sensor index
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	George Kennedy <george.kennedy@oracle.com>,
+	syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com,
+	Simona Vetter <simona@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Qianqiang Liu <qianqiang.liu@163.com>,
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 5.10 115/122] fbcon: fix integer overflow in fbcon_do_set_font
 Date: Tue, 30 Sep 2025 16:47:26 +0200
-Message-ID: <20250930143822.271256124@linuxfoundation.org>
+Message-ID: <20250930143827.670452598@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +68,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit a50342f976d25aace73ff551845ce89406f48f35 ]
+commit 1a194e6c8e1ee745e914b0b7f50fa86c89ed13fe upstream.
 
-The TMU has two temperature measurement sites located on the chip. The
-probe 0 is located inside of the ANAMIX, while the probe 1 is located near
-the ARM core. This has been confirmed by checking with HW design team and
-checking RTL code.
+Fix integer overflow vulnerabilities in fbcon_do_set_font() where font
+size calculations could overflow when handling user-controlled font
+parameters.
 
-So correct the {cpu,soc}-thermal sensor index.
+The vulnerabilities occur when:
+1. CALC_FONTSZ(h, pitch, charcount) performs h * pith * charcount
+   multiplication with user-controlled values that can overflow.
+2. FONT_EXTRA_WORDS * sizeof(int) + size addition can also overflow
+3. This results in smaller allocations than expected, leading to buffer
+   overflows during font data copying.
 
-Fixes: 30cdd62dce6b ("arm64: dts: imx8mp: Add thermal zones support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add explicit overflow checking using check_mul_overflow() and
+check_add_overflow() kernel helpers to safety validate all size
+calculations before allocation.
+
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 39b3cffb8cf3 ("fbcon: prevent user font height or width change from causing potential out-of-bounds access")
+Cc: George Kennedy <george.kennedy@oracle.com>
+Cc: stable <stable@vger.kernel.org>
+Cc: syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Qianqiang Liu <qianqiang.liu@163.com>
+Cc: Shixiong Ou <oushixiong@kylinos.cn>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.9+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250912170023.3931881-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/core/fbcon.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 69b213ed7a594..7f7bd8477efde 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -228,7 +228,7 @@
- 		cpu-thermal {
- 			polling-delay-passive = <250>;
- 			polling-delay = <2000>;
--			thermal-sensors = <&tmu 0>;
-+			thermal-sensors = <&tmu 1>;
- 			trips {
- 				cpu_alert0: trip0 {
- 					temperature = <85000>;
-@@ -258,7 +258,7 @@
- 		soc-thermal {
- 			polling-delay-passive = <250>;
- 			polling-delay = <2000>;
--			thermal-sensors = <&tmu 1>;
-+			thermal-sensors = <&tmu 0>;
- 			trips {
- 				soc_alert0: trip0 {
- 					temperature = <85000>;
--- 
-2.51.0
-
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2527,9 +2527,16 @@ static int fbcon_set_font(struct vc_data
+ 	if (fbcon_invalid_charcount(info, charcount))
+ 		return -EINVAL;
+ 
+-	size = CALC_FONTSZ(h, pitch, charcount);
++	/* Check for integer overflow in font size calculation */
++	if (check_mul_overflow(h, pitch, &size) ||
++	    check_mul_overflow(size, charcount, &size))
++		return -EINVAL;
++
++	/* Check for overflow in allocation size calculation */
++	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
++		return -EINVAL;
+ 
+-	new_data = kmalloc(FONT_EXTRA_WORDS * sizeof(int) + size, GFP_USER);
++	new_data = kmalloc(size, GFP_USER);
+ 
+ 	if (!new_data)
+ 		return -ENOMEM;
 
 
 
