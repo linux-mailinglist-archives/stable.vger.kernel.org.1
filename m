@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51800BAD446
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6877BAD875
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5426E16BAF6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F3C3B0C56
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C61265CCD;
-	Tue, 30 Sep 2025 14:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D60630595C;
+	Tue, 30 Sep 2025 15:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFQ6dnci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLC7ZDW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D9F2253FC;
-	Tue, 30 Sep 2025 14:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA3D1F152D;
+	Tue, 30 Sep 2025 15:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243797; cv=none; b=kKksSWC05oBE2ohJNIFHPkMfQ0GZx5+QpqzyEn/Y0jj9QTA+txzy0Q+JZaQtzsiwAJJgDsV1Yx0dy/BXdd4bHwWvkGoNbkRzFG8pG34tD4s6C83ftw8YfxbjfJEuHXUl23bnVY6/MRk8EnDjA4lnmRXHqY8SkF0oIdQnIWbgDx4=
+	t=1759244710; cv=none; b=QKiY+IQ7fNHy5J1LUYsknDvhrQ/kbCXtL3Q7tD5vAkQD5LKQ+aXYJ9JvPXqYyWNYS5PfgOQA0dlipT8HnbeOxix6SgDTftyQPAOpFE79GCKPzNimfaln7GZJuzU6SKtTSS7awDkrBkBN45ZNKuwQUAFnDl1G3FMxxxNCQ9Fx+vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243797; c=relaxed/simple;
-	bh=VvvAbIuOz+RDh5b2cY0PmcEvlbMimq95dIqGryxyVus=;
+	s=arc-20240116; t=1759244710; c=relaxed/simple;
+	bh=ydZ2E5Xye4n0LVRgsIzQG9/xkaZ54mPN0fAN2LgcGBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZu22sT1tW1olkBLX5uBhv3dCrGcTKD4AVPwMCnV2DQfkDtXBD8htHNL/GlR62Cx3FKaKyt5YXeBKKVmJdCbefOPHF4D4GBZH906Z/LldWMIIZrZ0Nay5A8d9hCg2A7WsRBIXRF2U6fllMMeA+jXVWHrze62SKDMOW5Y472Sgqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFQ6dnci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC73C4CEF0;
-	Tue, 30 Sep 2025 14:49:57 +0000 (UTC)
+	 MIME-Version; b=Qk7j2aLvx7zOj3Kds757aQUF9Y+wNM3KX8KpLkiJcJmFQae6In3QP2qd4IHyDs8bRuXJIH6pUt2GrdmtlpNfHDt9a8rGXTQWzWV6dzXwj/5/X0II+GkfHuCHx7rEt+Lif4BFnp9A//Wt4iM1ZYwFBEyHzUUH5Vm7/AL8il29m3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLC7ZDW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47567C4CEF0;
+	Tue, 30 Sep 2025 15:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243797;
-	bh=VvvAbIuOz+RDh5b2cY0PmcEvlbMimq95dIqGryxyVus=;
+	s=korg; t=1759244709;
+	bh=ydZ2E5Xye4n0LVRgsIzQG9/xkaZ54mPN0fAN2LgcGBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFQ6dncilWkru3k63jy/nzeW8ZBZwbzqQR8BGrOgxu2Ec3unao6acJMj7kj0j+0Hj
-	 17UvOJ6layea15yoCywXbJZ7RL/Z04VDi7WBzuLH/2KPnY/8TKzYQKhT/NnXDjavZE
-	 qZ6ZjSG+5PhsULSy36dgpq8I9vHqIGWBUP2F/UAY=
+	b=pLC7ZDW+005zPufT0mucbSq0VNAWu7oEJgYgCN/RpefrcQibpTb/jeijcWm35TrFO
+	 91dFKwv3JVNhYwAL4xs2criuK3b5WFt0Gumq0VC0p900FdYVCd0Rv9T0BRdxI5dcn5
+	 MLVe+yYyYg5hBxya8XtAL2rttiHRvR8HrmDypCC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Mark Rutland <mark.rutland@arm.com>,
+	syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 20/81] genirq: Export affinity setter for modules
+Subject: [PATCH 6.16 058/143] xfrm: xfrm_alloc_spi shouldnt use 0 as SPI
 Date: Tue, 30 Sep 2025 16:46:22 +0200
-Message-ID: <20250930143820.513768797@linuxfoundation.org>
+Message-ID: <20250930143833.541305076@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 4d80d6ca5d77fde9880da8466e5b64f250e5bf82 ]
+[ Upstream commit cd8ae32e4e4652db55bce6b9c79267d8946765a9 ]
 
-Perf modules abuse irq_set_affinity_hint() to set the affinity of system
-PMU interrupts just because irq_set_affinity() was not exported.
+x->id.spi == 0 means "no SPI assigned", but since commit
+94f39804d891 ("xfrm: Duplicate SPI Handling"), we now create states
+and add them to the byspi list with this value.
 
-The fact that irq_set_affinity_hint() actually sets the affinity is a
-non-documented side effect and the name is clearly saying it's a hint.
+__xfrm_state_delete doesn't remove those states from the byspi list,
+since they shouldn't be there, and this shows up as a UAF the next
+time we go through the byspi list.
 
-To clean this up, export the real affinity setter.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20210518093117.968251441@linutronix.de
-Stable-dep-of: 915470e1b44e ("i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path")
+Reported-by: syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a25ee9d20d31e483ba7b
+Fixes: 94f39804d891 ("xfrm: Duplicate SPI Handling")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/interrupt.h | 35 ++---------------------------------
- kernel/irq/manage.c       | 33 ++++++++++++++++++++++++++++++++-
- 2 files changed, 34 insertions(+), 34 deletions(-)
+ net/xfrm/xfrm_state.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index a601715279f50..85a5d13a7dc9c 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -303,39 +303,8 @@ struct irq_affinity_desc {
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 86337453709ba..4b2eb260f5c2e 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2578,6 +2578,8 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
  
- extern cpumask_var_t irq_default_affinity;
+ 	for (h = 0; h < range; h++) {
+ 		u32 spi = (low == high) ? low : get_random_u32_inclusive(low, high);
++		if (spi == 0)
++			goto next;
+ 		newspi = htonl(spi);
  
--/* Internal implementation. Use the helpers below */
--extern int __irq_set_affinity(unsigned int irq, const struct cpumask *cpumask,
--			      bool force);
--
--/**
-- * irq_set_affinity - Set the irq affinity of a given irq
-- * @irq:	Interrupt to set affinity
-- * @cpumask:	cpumask
-- *
-- * Fails if cpumask does not contain an online CPU
-- */
--static inline int
--irq_set_affinity(unsigned int irq, const struct cpumask *cpumask)
--{
--	return __irq_set_affinity(irq, cpumask, false);
--}
--
--/**
-- * irq_force_affinity - Force the irq affinity of a given irq
-- * @irq:	Interrupt to set affinity
-- * @cpumask:	cpumask
-- *
-- * Same as irq_set_affinity, but without checking the mask against
-- * online cpus.
-- *
-- * Solely for low level cpu hotplug code, where we need to make per
-- * cpu interrupts affine before the cpu becomes online.
-- */
--static inline int
--irq_force_affinity(unsigned int irq, const struct cpumask *cpumask)
--{
--	return __irq_set_affinity(irq, cpumask, true);
--}
-+extern int irq_set_affinity(unsigned int irq, const struct cpumask *cpumask);
-+extern int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask);
+ 		spin_lock_bh(&net->xfrm.xfrm_state_lock);
+@@ -2593,6 +2595,7 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
+ 		xfrm_state_put(x0);
+ 		spin_unlock_bh(&net->xfrm.xfrm_state_lock);
  
- extern int irq_can_set_affinity(unsigned int irq);
- extern int irq_select_affinity(unsigned int irq);
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 44d77e834c229..05601bcd30118 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -402,7 +402,8 @@ int irq_update_affinity_desc(unsigned int irq,
- 	return ret;
- }
- 
--int __irq_set_affinity(unsigned int irq, const struct cpumask *mask, bool force)
-+static int __irq_set_affinity(unsigned int irq, const struct cpumask *mask,
-+			      bool force)
- {
- 	struct irq_desc *desc = irq_to_desc(irq);
- 	unsigned long flags;
-@@ -417,6 +418,36 @@ int __irq_set_affinity(unsigned int irq, const struct cpumask *mask, bool force)
- 	return ret;
- }
- 
-+/**
-+ * irq_set_affinity - Set the irq affinity of a given irq
-+ * @irq:	Interrupt to set affinity
-+ * @cpumask:	cpumask
-+ *
-+ * Fails if cpumask does not contain an online CPU
-+ */
-+int irq_set_affinity(unsigned int irq, const struct cpumask *cpumask)
-+{
-+	return __irq_set_affinity(irq, cpumask, false);
-+}
-+EXPORT_SYMBOL_GPL(irq_set_affinity);
-+
-+/**
-+ * irq_force_affinity - Force the irq affinity of a given irq
-+ * @irq:	Interrupt to set affinity
-+ * @cpumask:	cpumask
-+ *
-+ * Same as irq_set_affinity, but without checking the mask against
-+ * online cpus.
-+ *
-+ * Solely for low level cpu hotplug code, where we need to make per
-+ * cpu interrupts affine before the cpu becomes online.
-+ */
-+int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask)
-+{
-+	return __irq_set_affinity(irq, cpumask, true);
-+}
-+EXPORT_SYMBOL_GPL(irq_force_affinity);
-+
- int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
- {
- 	unsigned long flags;
++next:
+ 		if (signal_pending(current)) {
+ 			err = -ERESTARTSYS;
+ 			goto unlock;
 -- 
 2.51.0
 
