@@ -1,422 +1,201 @@
-Return-Path: <stable+bounces-182102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B70BAD473
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518C3BAD93B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8C6A17E20E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95D67164DAD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE45F2FB622;
-	Tue, 30 Sep 2025 14:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBF03081B5;
+	Tue, 30 Sep 2025 15:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHyPXMpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHH7PwFT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6487125D1F7;
-	Tue, 30 Sep 2025 14:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB34C23506A;
+	Tue, 30 Sep 2025 15:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243841; cv=none; b=M+R/pNduWviCuwHTtt4floJL9mRaYLck6cvuvV5CGSliqn3FF4y3CDAr2avFXp2nuxpijfEOLTW0ISg0XcrFBeDno7cplYgQj2Iu6ZdlMx7Yf/h95dC0rkcANNDj51bEFWM4Ty64mDAjBytXMFnyeUNUQ+s7yx6TGHUkf9UMVkc=
+	t=1759244990; cv=none; b=iOzceqXG/PsCi/qMUutx/tsI8Tt8+6k/APZhl3WDTFqWngUU+i6owz5npeQeCSCgf0Ymk8qd+pUvCFJZEmHG9amDaXpZDmTUo/LIb0pboSqBbHo2sSnqTa4tvvNyZVGBr7cIaY+u3KnG3+NpD07BqpkZBKZP99vxbOtMSWtB9JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243841; c=relaxed/simple;
-	bh=gw+WLp65zmGfsyoflL1FHMsmTwVGN6yACr8ZD0DSG+c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n7pgFzIrTXR3s/hGffQslGOKmeBkxHIgkRuBgl/ljEoIybzuTWoFZ66ayYAev4IdzLXCQLUoWe4qsz2kAXgUE5GfS9LjOUUzNvKpxblSymWfjGTKjMjscIwsac4fVObP1eMrnO8RoNUTF4LDEKNZhC1skajyUgMfdb//VFjEGJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHyPXMpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE3CC4CEF0;
-	Tue, 30 Sep 2025 14:50:40 +0000 (UTC)
+	s=arc-20240116; t=1759244990; c=relaxed/simple;
+	bh=LpaTWkb1Kquc7sehME4LNh+EJ5lLGcFtyU7ef7W4d7M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U5ZSijn1g8HBNXmFGYhmrgbLoHEi7Hy4pu28O2oMznbjiCvw99OL+03dd+OGilhdFVMfO8ZaeFQXopCqjdp/ZYPLaA3gVeIbIAeYd+bb3WxwDSg5UCTeQ7U+TcPKkeevuacatpY9fK/gwRgn8U3tU75XZAwsu1V62RbPFvsdxx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHH7PwFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2596C4CEF0;
+	Tue, 30 Sep 2025 15:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243841;
-	bh=gw+WLp65zmGfsyoflL1FHMsmTwVGN6yACr8ZD0DSG+c=;
-	h=From:To:Cc:Subject:Date:From;
-	b=xHyPXMpVrGRRtEsneN3Uve2yiAWQ+QotPYz4PQM/ZSEmXCC+MQ7AwOGoRWZ6qQi4b
-	 5XkPo+7Tg8bqzWuZ/zVce0Wcbm1a7oBxImNi+7+gwTEJSz8g2D13BO7FL2KRWvueb7
-	 X34xIWZpU8J6ld+QwP79yOOMzuvnrcl/hFpB/9K4=
+	s=korg; t=1759244989;
+	bh=LpaTWkb1Kquc7sehME4LNh+EJ5lLGcFtyU7ef7W4d7M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aHH7PwFTjLx6UrzOgzPurQpmuzCArwPwBcPpMtPqhOuHfCJ8R1k3Jn4jXQObrJgU4
+	 petEOd6aX7mcbgC3AOP3jZywZSyUAopbQNtRColpFBP7iPzxrmvuwTPAAwrwb2UbXV
+	 zwMYBt9kQgUl35Fq2OHccy1Im1gCwu5A91GIdROM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org
-Subject: [PATCH 5.4 00/81] 5.4.300-rc1 review
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 032/151] mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer
 Date: Tue, 30 Sep 2025 16:46:02 +0200
-Message-ID: <20250930143819.654157320@linuxfoundation.org>
+Message-ID: <20250930143828.896935560@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.300-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.4.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.4.300-rc1
-X-KernelTest-Deadline: 2025-10-02T14:38+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 5.4.300 release.
-There are 81 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.300-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.4.300-rc1
-
-Jinjiang Tu <tujinjiang@huawei.com>
-    mm/hugetlb: fix folio is still mapped when deleted
-
-Lukasz Czapnik <lukasz.czapnik@intel.com>
-    i40e: add mask to apply valid bits for itr_idx
-
-Lukasz Czapnik <lukasz.czapnik@intel.com>
-    i40e: fix validation of VF state in get resources
-
-Lukasz Czapnik <lukasz.czapnik@intel.com>
-    i40e: fix idx validation in config queues msg
-
-Lukasz Czapnik <lukasz.czapnik@intel.com>
-    i40e: add validation for ring_len param
-
-Justin Bronder <jsbronder@cold-front.org>
-    i40e: increase max descriptors for XL710
-
-David Hildenbrand <david@redhat.com>
-    mm/migrate_device: don't add folio to be freed to LRU in migrate_device_finalize()
-
-Thomas Zimmermann <tzimmermann@suse.de>
-    fbcon: Fix OOB access in font allocation
-
-Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-    fbcon: fix integer overflow in fbcon_do_set_font
-
-Lukasz Czapnik <lukasz.czapnik@intel.com>
-    i40e: add max boundary check for VF filters
-
-Lukasz Czapnik <lukasz.czapnik@intel.com>
-    i40e: fix input validation logic for action_meta
-
-Lukasz Czapnik <lukasz.czapnik@intel.com>
-    i40e: fix idx validation in i40e_validate_queue_map
-
-Zabelin Nikita <n.zabelin@mt-integration.ru>
-    drm/gma500: Fix null dereference in hdmi teardown
-
-Stéphane Grosjean <stephane.grosjean@hms-networks.com>
-    can: peak_usb: fix shift-out-of-bounds issue
-
-Vincent Mailhol <mailhol@kernel.org>
-    can: mcba_usb: populate ndo_change_mtu() to prevent buffer overflow
-
-Vincent Mailhol <mailhol@kernel.org>
-    can: sun4i_can: populate ndo_change_mtu() to prevent buffer overflow
-
-Vincent Mailhol <mailhol@kernel.org>
-    can: hi311x: populate ndo_change_mtu() to prevent buffer overflow
-
-Geert Uytterhoeven <geert+renesas@glider.be>
-    can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
-
-Or Har-Toov <ohartoov@nvidia.com>
-    IB/mlx5: Fix obj_type mismatch for SRQ event subscriptions
-
-Jiayi Li <lijiayi@kylinos.cn>
-    usb: core: Add 0x prefix to quirks debug output
-
-Takashi Iwai <tiwai@suse.de>
-    ALSA: usb-audio: Fix build with CONFIG_INPUT=n
-
-Chen Ni <nichen@iscas.ac.cn>
-    ALSA: usb-audio: Convert comma to semicolon
-
-Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-    ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5
-
-Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-    ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
-
-Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-    ALSA: usb-audio: Simplify NULL comparison in mixer_quirks
-
-Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-    ALSA: usb-audio: Avoid multiple assignments in mixer_quirks
-
-Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-    ALSA: usb-audio: Fix block comments in mixer_quirks
-
-Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-    KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active
-
-Hans de Goede <hansg@kernel.org>
-    net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
-
-Philipp Zabel <p.zabel@pengutronix.de>
-    net: rfkill: gpio: add DT support
-
-Hugo Villeneuve <hvilleneuve@dimonoff.com>
-    serial: sc16is7xx: fix bug in flow control levels init
-
-Alan Stern <stern@rowland.harvard.edu>
-    USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
-
-Jakob Koschel <jakobkoschel@gmail.com>
-    usb: gadget: dummy_hcd: remove usage of list iterator past the loop body
-
-Colin Ian King <colin.i.king@gmail.com>
-    ASoC: SOF: Intel: hda-stream: Fix incorrect variable used in error message
-
-Charles Keepax <ckeepax@opensource.cirrus.com>
-    ASoC: wm8974: Correct PLL rate rounding
-
-Charles Keepax <ckeepax@opensource.cirrus.com>
-    ASoC: wm8940: Correct typo in control name
-
-Håkon Bugge <haakon.bugge@oracle.com>
-    rds: ib: Increment i_fastreg_wrs before bailing out
-
-Thomas Fourier <fourier.thomas@gmail.com>
-    mmc: mvsdio: Fix dma_unmap_sg() nents value
-
-H. Nikolaus Schaller <hns@goldelico.com>
-    power: supply: bq27xxx: restrict no-battery detection to bq27000
-
-H. Nikolaus Schaller <hns@goldelico.com>
-    power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
-
-Nathan Chancellor <nathan@kernel.org>
-    nilfs2: fix CFI failure when accessing /sys/fs/nilfs2/features/*
-
-Duoming Zhou <duoming@zju.edu.cn>
-    cnic: Fix use-after-free bugs in cnic_delete_task
-
-Alexey Nepomnyashih <sdl@nppct.ru>
-    net: liquidio: fix overflow in octeon_init_instr_queue()
-
-Tariq Toukan <tariqt@nvidia.com>
-    Revert "net/mlx5e: Update and set Xon/Xoff upon port speed set"
-
-Kuniyuki Iwashima <kuniyu@google.com>
-    tcp: Clear tcp_sk(sk)->fastopen_rsk in tcp_disconnect().
-
-Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-    i40e: remove redundant memory barrier when cleaning Tx descs
-
-Yeounsu Moon <yyyynoom@gmail.com>
-    net: natsemi: fix `rx_dropped` double accounting on `netif_rx()` failure
-
-Chen Ridong <chenridong@huawei.com>
-    cgroup: split cgroup_destroy_wq into 3 workqueues
-
-Geert Uytterhoeven <geert+renesas@glider.be>
-    pcmcia: omap_cf: Mark driver struct with __refdata to prevent section mismatch
-
-Liao Yuanhong <liaoyuanhong@vivo.com>
-    wifi: mac80211: fix incorrect type for ret
-
-Takashi Sakamoto <o-takashi@sakamocchi.jp>
-    ALSA: firewire-motu: drop EPOLLOUT from poll return values as write is not supported
-
-Miaohe Lin <linmiaohe@huawei.com>
-    mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
-
-Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-    soc: qcom: mdt_loader: Deal with zero e_shentsize
-
-Johan Hovold <johan@kernel.org>
-    phy: ti-pipe3: fix device leak at unbind
-
-Stephan Gerhold <stephan.gerhold@linaro.org>
-    dmaengine: qcom: bam_dma: Fix DT error handling for num-channels/ees
-
-Anders Roxell <anders.roxell@linaro.org>
-    dmaengine: ti: edma: Fix memory allocation size for queue_priority_map
-
-Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-    can: j1939: j1939_local_ecu_get(): undo increment when j1939_local_ecu_get() fails
-
-Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-    can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
-
-Michal Schmidt <mschmidt@redhat.com>
-    i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path
-
-Nitesh Narayan Lal <nitesh@redhat.com>
-    i40e: Use irq_update_affinity_hint()
-
-Thomas Gleixner <tglx@linutronix.de>
-    genirq: Provide new interfaces for affinity hints
-
-Thomas Gleixner <tglx@linutronix.de>
-    genirq: Export affinity setter for modules
-
-John Garry <john.garry@huawei.com>
-    genirq/affinity: Add irq_update_affinity_desc()
-
-Kohei Enju <enjuk@amazon.com>
-    igb: fix link test skipping when interface is admin down
-
-Stefan Wahren <wahrenst@gmx.net>
-    net: fec: Fix possible NPD in fec_enet_phy_reset_after_clk_enable()
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    USB: serial: option: add Telit Cinterion LE910C4-WWX new compositions
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    USB: serial: option: add Telit Cinterion FN990A w/audio compositions
-
-Fabian Vogt <fvogt@suse.de>
-    tty: hvc_console: Call hvc_kick in hvc_write unconditionally
-
-Alexander Sverdlin <alexander.sverdlin@siemens.com>
-    mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
-
-Alexander Dahl <ada@thorsis.com>
-    mtd: nand: raw: atmel: Fix comment in timings preparation
-
-Christophe Kerello <christophe.kerello@foss.st.com>
-    mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer
-
-Wei Yang <richard.weiyang@gmail.com>
-    mm/khugepaged: fix the address passed to notifier on testing young
-
-Miklos Szeredi <mszeredi@redhat.com>
-    fuse: prevent overflow in copy_file_range return value
-
-Miklos Szeredi <mszeredi@redhat.com>
-    fuse: check if copy_file_range() returns larger than requested size
-
-Christophe Kerello <christophe.kerello@foss.st.com>
-    mtd: rawnand: stm32_fmc2: fix ECC overwrite
-
-Mark Tinguely <mark.tinguely@oracle.com>
-    ocfs2: fix recursive semaphore deadlock in fiemap call
-
-Salah Triki <salah.triki@gmail.com>
-    EDAC/altera: Delete an inappropriate dma_free_coherent() call
-
-Kuniyuki Iwashima <kuniyu@google.com>
-    tcp_bpf: Call sk_msg_free() when tcp_bpf_send_verdict() fails to allocate psock->cork.
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    NFSv4: Don't clear capabilities that won't be reset
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
-
-Mathias Nyman <mathias.nyman@linux.intel.com>
-    usb: hub: Fix flushing of delayed work used for post resume purposes
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- arch/x86/kvm/svm.c                                 |   3 +-
- drivers/dma/qcom/bam_dma.c                         |   8 +-
- drivers/dma/ti/edma.c                              |   4 +-
- drivers/edac/altera_edac.c                         |   1 -
- drivers/gpu/drm/gma500/oaktrail_hdmi.c             |   2 +-
- drivers/infiniband/hw/mlx5/devx.c                  |   1 +
- drivers/mmc/host/mvsdio.c                          |   2 +-
- drivers/mtd/nand/raw/atmel/nand-controller.c       |  18 +-
- drivers/mtd/nand/raw/stm32_fmc2_nand.c             |  45 ++--
- drivers/net/can/rcar/rcar_can.c                    |   8 +-
- drivers/net/can/spi/hi311x.c                       |   1 +
- drivers/net/can/sun4i_can.c                        |   1 +
- drivers/net/can/usb/mcba_usb.c                     |   1 +
- drivers/net/can/usb/peak_usb/pcan_usb_core.c       |   2 +-
- drivers/net/ethernet/broadcom/cnic.c               |   3 +-
- .../net/ethernet/cavium/liquidio/request_manager.c |   2 +-
- drivers/net/ethernet/freescale/fec_main.c          |   3 +-
- drivers/net/ethernet/intel/i40e/i40e.h             |   1 +
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c     |  25 +-
- drivers/net/ethernet/intel/i40e/i40e_main.c        |  10 +-
- drivers/net/ethernet/intel/i40e/i40e_txrx.c        |   3 -
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  46 +++-
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h |   3 +-
- drivers/net/ethernet/intel/igb/igb_ethtool.c       |   5 +-
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c  |   2 -
- drivers/net/ethernet/natsemi/ns83820.c             |  13 +-
- drivers/pcmcia/omap_cf.c                           |   8 +-
- drivers/phy/ti/phy-ti-pipe3.c                      |  13 +
- drivers/power/supply/bq27xxx_battery.c             |   4 +-
- drivers/soc/qcom/mdt_loader.c                      |  12 +-
- drivers/tty/hvc/hvc_console.c                      |   6 +-
- drivers/tty/serial/sc16is7xx.c                     |  13 +-
- drivers/usb/core/hub.c                             |  21 +-
- drivers/usb/core/hub.h                             |   1 +
- drivers/usb/core/quirks.c                          |   2 +-
- drivers/usb/gadget/udc/dummy_hcd.c                 |  25 +-
- drivers/usb/serial/option.c                        |  17 ++
- drivers/video/fbdev/core/fbcon.c                   |  13 +-
- fs/fuse/file.c                                     |   5 +-
- fs/hugetlbfs/inode.c                               |  14 +-
- fs/nfs/nfs4proc.c                                  |   1 -
- fs/nilfs2/sysfs.c                                  |   4 +-
- fs/nilfs2/sysfs.h                                  |   8 +-
- fs/ocfs2/extent_map.c                              |  10 +-
- include/linux/interrupt.h                          |  96 ++++---
- include/net/sock.h                                 |  40 ++-
- kernel/cgroup/cgroup.c                             |  43 +++-
- kernel/irq/manage.c                                | 111 +++++++-
- mm/khugepaged.c                                    |   2 +-
- mm/memory-failure.c                                |   7 +-
- mm/migrate.c                                       |  12 +-
- net/can/j1939/bus.c                                |   5 +-
- net/can/j1939/socket.c                             |   3 +
- net/core/sock.c                                    |   5 +
- net/ipv4/tcp.c                                     |   5 +
- net/ipv4/tcp_bpf.c                                 |   5 +-
- net/mac80211/driver-ops.h                          |   2 +-
- net/rds/ib_frmr.c                                  |  20 +-
- net/rfkill/rfkill-gpio.c                           |  22 +-
- sound/firewire/motu/motu-hwdep.c                   |   2 +-
- sound/soc/codecs/wm8940.c                          |   2 +-
- sound/soc/codecs/wm8974.c                          |   8 +-
- sound/soc/sof/intel/hda-stream.c                   |   2 +-
- sound/usb/mixer_quirks.c                           | 279 ++++++++++++++++++++-
- 65 files changed, 829 insertions(+), 236 deletions(-)
+5.15-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Christophe Kerello <christophe.kerello@foss.st.com>
+
+[ Upstream commit 513c40e59d5a414ab763a9c84797534b5e8c208d ]
+
+Avoid below overlapping mappings by using a contiguous
+non-cacheable buffer.
+
+[    4.077708] DMA-API: stm32_fmc2_nfc 48810000.nand-controller: cacheline tracking EEXIST,
+overlapping mappings aren't supported
+[    4.089103] WARNING: CPU: 1 PID: 44 at kernel/dma/debug.c:568 add_dma_entry+0x23c/0x300
+[    4.097071] Modules linked in:
+[    4.100101] CPU: 1 PID: 44 Comm: kworker/u4:2 Not tainted 6.1.82 #1
+[    4.106346] Hardware name: STMicroelectronics STM32MP257F VALID1 SNOR / MB1704 (LPDDR4 Power discrete) + MB1703 + MB1708 (SNOR MB1730) (DT)
+[    4.118824] Workqueue: events_unbound deferred_probe_work_func
+[    4.124674] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    4.131624] pc : add_dma_entry+0x23c/0x300
+[    4.135658] lr : add_dma_entry+0x23c/0x300
+[    4.139792] sp : ffff800009dbb490
+[    4.143016] x29: ffff800009dbb4a0 x28: 0000000004008022 x27: ffff8000098a6000
+[    4.150174] x26: 0000000000000000 x25: ffff8000099e7000 x24: ffff8000099e7de8
+[    4.157231] x23: 00000000ffffffff x22: 0000000000000000 x21: ffff8000098a6a20
+[    4.164388] x20: ffff000080964180 x19: ffff800009819ba0 x18: 0000000000000006
+[    4.171545] x17: 6361727420656e69 x16: 6c6568636163203a x15: 72656c6c6f72746e
+[    4.178602] x14: 6f632d646e616e2e x13: ffff800009832f58 x12: 00000000000004ec
+[    4.185759] x11: 00000000000001a4 x10: ffff80000988af58 x9 : ffff800009832f58
+[    4.192916] x8 : 00000000ffffefff x7 : ffff80000988af58 x6 : 80000000fffff000
+[    4.199972] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 0000000000000000
+[    4.207128] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000812d2c40
+[    4.214185] Call trace:
+[    4.216605]  add_dma_entry+0x23c/0x300
+[    4.220338]  debug_dma_map_sg+0x198/0x350
+[    4.224373]  __dma_map_sg_attrs+0xa0/0x110
+[    4.228411]  dma_map_sg_attrs+0x10/0x2c
+[    4.232247]  stm32_fmc2_nfc_xfer.isra.0+0x1c8/0x3fc
+[    4.237088]  stm32_fmc2_nfc_seq_read_page+0xc8/0x174
+[    4.242127]  nand_read_oob+0x1d4/0x8e0
+[    4.245861]  mtd_read_oob_std+0x58/0x84
+[    4.249596]  mtd_read_oob+0x90/0x150
+[    4.253231]  mtd_read+0x68/0xac
+
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Cc: stable@vger.kernel.org
+Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/mtd/nand/raw/stm32_fmc2_nand.c |   28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
+
+--- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
++++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+@@ -261,6 +261,7 @@ struct stm32_fmc2_nfc {
+ 	struct sg_table dma_data_sg;
+ 	struct sg_table dma_ecc_sg;
+ 	u8 *ecc_buf;
++	dma_addr_t dma_ecc_addr;
+ 	int dma_ecc_len;
+ 
+ 	struct completion complete;
+@@ -883,17 +884,10 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 
+ 	if (!write_data && !raw) {
+ 		/* Configure DMA ECC status */
+-		p = nfc->ecc_buf;
+ 		for_each_sg(nfc->dma_ecc_sg.sgl, sg, eccsteps, s) {
+-			sg_set_buf(sg, p, nfc->dma_ecc_len);
+-			p += nfc->dma_ecc_len;
+-		}
+-
+-		ret = dma_map_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
+-				 eccsteps, dma_data_dir);
+-		if (!ret) {
+-			ret = -EIO;
+-			goto err_unmap_data;
++			sg_dma_address(sg) = nfc->dma_ecc_addr +
++					     s * nfc->dma_ecc_len;
++			sg_dma_len(sg) = nfc->dma_ecc_len;
+ 		}
+ 
+ 		desc_ecc = dmaengine_prep_slave_sg(nfc->dma_ecc_ch,
+@@ -902,7 +896,7 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 						   DMA_PREP_INTERRUPT);
+ 		if (!desc_ecc) {
+ 			ret = -ENOMEM;
+-			goto err_unmap_ecc;
++			goto err_unmap_data;
+ 		}
+ 
+ 		reinit_completion(&nfc->dma_ecc_complete);
+@@ -910,7 +904,7 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 		desc_ecc->callback_param = &nfc->dma_ecc_complete;
+ 		ret = dma_submit_error(dmaengine_submit(desc_ecc));
+ 		if (ret)
+-			goto err_unmap_ecc;
++			goto err_unmap_data;
+ 
+ 		dma_async_issue_pending(nfc->dma_ecc_ch);
+ 	}
+@@ -930,7 +924,7 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 		if (!write_data && !raw)
+ 			dmaengine_terminate_all(nfc->dma_ecc_ch);
+ 		ret = -ETIMEDOUT;
+-		goto err_unmap_ecc;
++		goto err_unmap_data;
+ 	}
+ 
+ 	/* Wait DMA data transfer completion */
+@@ -950,11 +944,6 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 		}
+ 	}
+ 
+-err_unmap_ecc:
+-	if (!write_data && !raw)
+-		dma_unmap_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
+-			     eccsteps, dma_data_dir);
+-
+ err_unmap_data:
+ 	dma_unmap_sg(nfc->dev, nfc->dma_data_sg.sgl, eccsteps, dma_data_dir);
+ 
+@@ -1592,7 +1581,8 @@ static int stm32_fmc2_nfc_dma_setup(stru
+ 		return ret;
+ 
+ 	/* Allocate a buffer to store ECC status registers */
+-	nfc->ecc_buf = devm_kzalloc(nfc->dev, FMC2_MAX_ECC_BUF_LEN, GFP_KERNEL);
++	nfc->ecc_buf = dmam_alloc_coherent(nfc->dev, FMC2_MAX_ECC_BUF_LEN,
++					   &nfc->dma_ecc_addr, GFP_KERNEL);
+ 	if (!nfc->ecc_buf)
+ 		return -ENOMEM;
+ 
 
 
 
