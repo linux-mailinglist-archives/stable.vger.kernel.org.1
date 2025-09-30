@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F0DBAD701
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E34BAD536
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AFF418832C3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:01:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEACB7A05C3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD9531F1302;
-	Tue, 30 Sep 2025 15:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0E13043C4;
+	Tue, 30 Sep 2025 14:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJZ3kZop"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yakPw515"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0F02FCBFC;
-	Tue, 30 Sep 2025 15:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85447260569;
+	Tue, 30 Sep 2025 14:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244470; cv=none; b=fK2uHgqLw8bUoTfjJksNIT0cRatXS+YE8aFFniIa+5xHbVNtO1pMz2azw0chd1kQpiTDHrMz6LCAsfbL0jmGb7EgmFVykvEQEHHEnXZIgM+zIqBQkRr1V1ky2vN0OiipmlEm7xjZwPi+sIrLHdwPp/0Eyjkvx0QXC/9YAOe3Jyw=
+	t=1759244038; cv=none; b=g68M1rUZeN2Uh43LxDt9fvsdu/A15JitGW6YArmvNf+5/xK39Ou3bXnUYrijKskt6I6BoAtRdfJi42/5rFNzL3Xx3uqQqMz67U458kWK88vXcJ6IIbjiZ99yHxUZtHin0ZtU40gXVemvdTkGlMu8azc5RGCvGH1UoM3CI30k6BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244470; c=relaxed/simple;
-	bh=lEeSfcxaqqWnETevTAzbUmmo5DnwR7afZbhyD7sIhGk=;
+	s=arc-20240116; t=1759244038; c=relaxed/simple;
+	bh=JIqyHYtVRnyw7AAY1dJSewte4PQGOO+Jk+SnO2SZzEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMEHJTgd2joZaZjr16v57SWc8BpqmyB02ivW3R1IdmhRaQ9KFBAPMeZ+PMK6y88zJ6C58ovYneE76/WNxVQkbPSKP8alD4Eg/14FvM+SavB9h/C49fyXg5HdIZ7hz4a/nLp3v96SokslWffJcFrfwkTPoWOGjLZXJlnisSaeSwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJZ3kZop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13F9C4CEF0;
-	Tue, 30 Sep 2025 15:01:09 +0000 (UTC)
+	 MIME-Version; b=D6nr5/BHUrOFOiGd044cZZI5h6Xklib65YE8GhVQjy+ZLlpFf3gAfrzWLcwceEcwD7k3B3s1KFJ+yXLU99jGEDXi8GMrQL5+gL98ZDzKY2PGPPq3fRT7Sr4pmcV86BrGe/aQH73bGdmzZJgoyiUd01akZi4b5NxduRCn3SgWO4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yakPw515; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E886DC4CEF0;
+	Tue, 30 Sep 2025 14:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244470;
-	bh=lEeSfcxaqqWnETevTAzbUmmo5DnwR7afZbhyD7sIhGk=;
+	s=korg; t=1759244038;
+	bh=JIqyHYtVRnyw7AAY1dJSewte4PQGOO+Jk+SnO2SZzEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LJZ3kZopIlvtYU+23b5rLpRXNmK1FN6b7AsalKtBfzM/WDvzgtrq4MN8iJgSmx3/1
-	 kQ6/Bx63JWItcoKjdfvZRhs1t6jY7T+DwCtTkfs9S5ilvYc4XhzobKSvYkQrdjwQ43
-	 p/sKRbiF7qxdvdHqfatYjAstfUQRlsNvbG2ULCDo=
+	b=yakPw515U0bVaYZEDrhkY2uJroJhINTJBxwjMsc/Ve5j73jbPA+EnBDIeYM1h7sYm
+	 ytUnGbK0iv9OtzeuXQy74gJqcVpPaLgeZ+XVyjNYZrS5Egc3TCuh2aZdTcIReIquAG
+	 4iYAfxdSLDEBMmHUX6o07sDPoxHT0gRgdLlspQQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jonathan Curley <jcurley@purestorage.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 017/143] ALSA: usb-audio: Fix build with CONFIG_INPUT=n
+Subject: [PATCH 5.10 010/122] NFSv4/flexfiles: Fix layout merge mirror check.
 Date: Tue, 30 Sep 2025 16:45:41 +0200
-Message-ID: <20250930143831.932351457@linuxfoundation.org>
+Message-ID: <20250930143823.400347939@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jonathan Curley <jcurley@purestorage.com>
 
-[ Upstream commit d0630a0b80c08530857146e3bf183a7d6b743847 ]
+[ Upstream commit dd2fa82473453661d12723c46c9f43d9876a7efd ]
 
-The recent addition of DualSense mixer quirk relies on the input
-device handle, and the build can fail if CONFIG_INPUT isn't set.
-Put (rather ugly) workarounds to wrap with IS_REACHABLE() for avoiding
-the build error.
+Typo in ff_lseg_match_mirrors makes the diff ineffective. This results
+in merge happening all the time. Merge happening all the time is
+problematic because it marks lsegs invalid. Marking lsegs invalid
+causes all outstanding IO to get restarted with EAGAIN and connections
+to get closed.
 
-Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506130733.gnPKw2l3-lkp@intel.com/
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250613081543.7404-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Closing connections constantly triggers race conditions in the RDMA
+implementation...
+
+Fixes: 660d1eb22301c ("pNFS/flexfile: Don't merge layout segments if the mirrors don't match")
+Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 8cb98b5d31124..6b47b3145d2cf 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -532,6 +532,7 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
- 					  &snd_emu0204_control, NULL);
- }
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 43aefff2e6b06..ee103cde19cdf 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -270,7 +270,7 @@ ff_lseg_match_mirrors(struct pnfs_layout_segment *l1,
+ 		struct pnfs_layout_segment *l2)
+ {
+ 	const struct nfs4_ff_layout_segment *fl1 = FF_LAYOUT_LSEG(l1);
+-	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l1);
++	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l2);
+ 	u32 i;
  
-+#if IS_REACHABLE(CONFIG_INPUT)
- /*
-  * Sony DualSense controller (PS5) jack detection
-  *
-@@ -788,6 +789,7 @@ static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
- 
- 	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
- }
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- /* ASUS Xonar U1 / U3 controls */
- 
-@@ -4331,10 +4333,12 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 		err = snd_emu0204_controls_create(mixer);
- 		break;
- 
-+#if IS_REACHABLE(CONFIG_INPUT)
- 	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
- 	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
- 		err = snd_dualsense_controls_create(mixer);
- 		break;
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- 	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
- 	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C400 */
+ 	if (fl1->mirror_array_cnt != fl2->mirror_array_cnt)
 -- 
 2.51.0
 
