@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813FEBADDDA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CE9BADC58
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EB1A16AE88
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9596C325F3B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70382264AB;
-	Tue, 30 Sep 2025 15:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6F720E334;
+	Tue, 30 Sep 2025 15:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFVYeEyP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMXrhL7e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F0016A956;
-	Tue, 30 Sep 2025 15:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4952FD1DD;
+	Tue, 30 Sep 2025 15:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246145; cv=none; b=r/SJYapoZfPcsPmOp2HjVW7RX+ni+QUsOYUwwUCogTxr2x/F0qYarlVIsGPUjEzewrKicjwVxTQt9pVIzMhHgPfaEVPJMGbnL20HsJr5LxckywDTNi2IDYE2PsFe+7eOuup6lG77Z+ELxoV3Q8tTYBxKP3KWeOjkdnUcD7Z9qTs=
+	t=1759245796; cv=none; b=KsnZiSGaaTejpiPHkC55Q4O6y19QvAwiBbgMFgQLQhmzYwwl1sgRbz2mho+tSNAYm+FrifDYZ6pEIUB8zkPT4mxwZvnQjLOXu0Fx2+Q53gKrjY8O5DPgyg6SERr2VN7HGDem0DqgM6PGIW4gLIBMN9koOMu2/MI930Hs54t+LFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246145; c=relaxed/simple;
-	bh=SpqlaYcQ1sFznTFXQRF5VJNInP8n/54dHZXqqBRzo3c=;
+	s=arc-20240116; t=1759245796; c=relaxed/simple;
+	bh=OaML9MWwHuLo1pp4jiI9zYTOs1f+mxGHblojGl6Rces=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=psNu3B11sNSDD/RbIxkC+RezZ2H2DnxHFhbyZZ90Ck94qY3b1Cycm2wHwZnB0ygBneYls8u2tb9Trkc33YRo3J1qFw+nShl/dUrnY82vAo+R3TUeUqTUjFn04XPEOByhieTDq+UqBNVGpcxUV+GGOdJ9ZQTFadP7GiKF5g2/DgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFVYeEyP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6BCC4CEF0;
-	Tue, 30 Sep 2025 15:29:03 +0000 (UTC)
+	 MIME-Version; b=bM4mbDHRIn9wUuMBIE4foRjKPJN6UfVKxlTs7hDd9xf3dP1hc+q+k59oLyNiTdxwoEIap1glvJ0QiTUjwG9GcIYQXkZrJznivNXj5NSI+MKM896s2NAQxTaV/YpkUvE04ENpZpTXKw+rRcomc3/bA2QANwqK4GJqGFtV+roWWJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMXrhL7e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4A2C4CEF0;
+	Tue, 30 Sep 2025 15:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246143;
-	bh=SpqlaYcQ1sFznTFXQRF5VJNInP8n/54dHZXqqBRzo3c=;
+	s=korg; t=1759245796;
+	bh=OaML9MWwHuLo1pp4jiI9zYTOs1f+mxGHblojGl6Rces=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFVYeEyP9oGemv969aeb9b1358upu5EoGi9FGvHlNRHgp3smqNJOzF56WrTlRIL3T
-	 uh9kKYtJkozRG5DNkEhufM5StjT1WfQUKZNrFZa1dzomcG4CqJ8k3/dYFnNxowug8L
-	 cEkqfVNJAGZXajJPRwFp+Yopq0jzRrGST0F24ids=
+	b=HMXrhL7edvUASIS+kP5+ApUjSApGoBummvLaMsboZcFhyDxt8vcPtcOegaDGiIc1U
+	 juJFkA4gg/cdpGI1Z7f2dyNJcQV6tIwCsmNVkF7koNAjBmo24qhtV1CL2rHAIFXc+x
+	 itMMb9eSwxNxhWZU9UNDTCsCWzjLLxRd/icUeUoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <mark@harmstone.com>,
-	David Sterba <dsterba@suse.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 35/89] btrfs: dont allow adding block device of less than 1 MB
-Date: Tue, 30 Sep 2025 16:47:49 +0200
-Message-ID: <20250930143823.374860018@linuxfoundation.org>
+Subject: [PATCH 6.6 51/91] octeontx2-pf: Fix potential use after free in otx2_tc_add_flow()
+Date: Tue, 30 Sep 2025 16:47:50 +0200
+Message-ID: <20250930143823.302970654@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <mark@harmstone.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 3d1267475b94b3df7a61e4ea6788c7c5d9e473c4 ]
+[ Upstream commit d9c70e93ec5988ab07ad2a92d9f9d12867f02c56 ]
 
-Commit 15ae0410c37a79 ("btrfs-progs: add error handling for
-device_get_partition_size_fd_stat()") in btrfs-progs inadvertently
-changed it so that if the BLKGETSIZE64 ioctl on a block device returned
-a size of 0, this was no longer seen as an error condition.
+This code calls kfree_rcu(new_node, rcu) and then dereferences "new_node"
+and then dereferences it on the next line.  Two lines later, we take
+a mutex so I don't think this is an RCU safe region.  Re-order it to do
+the dereferences before queuing up the free.
 
-Unfortunately this is how disconnected NBD devices behave, meaning that
-with btrfs-progs 6.16 it's now possible to add a device you can't
-remove:
-
-  # btrfs device add /dev/nbd0 /root/temp
-  # btrfs device remove /dev/nbd0 /root/temp
-  ERROR: error removing device '/dev/nbd0': Invalid argument
-
-This check should always have been done kernel-side anyway, so add a
-check in btrfs_init_new_device() that the new device doesn't have a size
-less than BTRFS_DEVICE_RANGE_RESERVED (i.e. 1 MB).
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <mark@harmstone.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 68fbff68dbea ("octeontx2-pf: Add police action for TC flower")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/aNKCL1jKwK8GRJHh@stanley.mountain
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 58e0cac5779dd..ce991a8390466 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -2699,6 +2699,11 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
- 		goto error;
- 	}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+index 46bdbee9d38ad..635cfb9a3e2c5 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+@@ -1116,7 +1116,6 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
  
-+	if (bdev_nr_bytes(file_bdev(bdev_file)) <= BTRFS_DEVICE_RANGE_RESERVED) {
-+		ret = -EINVAL;
-+		goto error;
-+	}
-+
- 	if (fs_devices->seeding) {
- 		seeding_dev = true;
- 		down_write(&sb->s_umount);
+ free_leaf:
+ 	otx2_tc_del_from_flow_list(flow_cfg, new_node);
+-	kfree_rcu(new_node, rcu);
+ 	if (new_node->is_act_police) {
+ 		mutex_lock(&nic->mbox.lock);
+ 
+@@ -1136,6 +1135,7 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
+ 
+ 		mutex_unlock(&nic->mbox.lock);
+ 	}
++	kfree_rcu(new_node, rcu);
+ 
+ 	return rc;
+ }
 -- 
 2.51.0
 
