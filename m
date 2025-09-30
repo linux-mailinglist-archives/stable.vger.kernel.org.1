@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3839BAD63E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 019A0BAD9A4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D76318829D6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0333188326A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC5D1EF38E;
-	Tue, 30 Sep 2025 14:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49572FCBFC;
+	Tue, 30 Sep 2025 15:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eW3iYFMZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1bZYbbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FD6262FF3;
-	Tue, 30 Sep 2025 14:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934CB2236EB;
+	Tue, 30 Sep 2025 15:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244269; cv=none; b=djVGQ0H7UUu0ZvHIPidxxMs60mVPDzfcLla7r0+Wr9gPKukI/JGDDxoYLWn3rNAdFPXh6Fbn/vJAb2315R7+ck47VMM9FH2iNPacWXA3VPSwP6xeF7swIBYb80NHy5QM/WJ6hvXK7uCi4yL9MOyMavKlXyFmWgZFIZ1rXBfvWg0=
+	t=1759245150; cv=none; b=AAxSq080tC0v0e+52QhS+ErbVBtmgkDwKqSqbYKWaxBVgL2ORYnzJHj6ivnOIJ6HPqcKKp5jXOLaTnyhc3MEmyz5DAc3P+aDkRvv1qOhUndqF9Btgat/yKWz9XvLOykFpBca2P103beOUWswTbiHBcdOMmaJFBEUk9JrlBawWec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244269; c=relaxed/simple;
-	bh=r3/Zb73f+fAzRm7lX0Gem9wUiiwA54howe4J1V7iEjI=;
+	s=arc-20240116; t=1759245150; c=relaxed/simple;
+	bh=1LaO4BwljlRwAk43xzUaStEkVITr7CsoNb1qQeewhRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JmOPZZd5B1ViMl0JRpsxNb6e72dXJeXQpw2PyyUYD77ul7q5qR1ZP9mQl6I2ax1Q3uEc0IDMPpV112mGle+dIZ8eLnEBln1NVhf0Wyq1hXefA0C4UlpvazegW6ZXK8lpD9Gm1LLrsyIy+9/tZbVgsGmZ15lmjBp7lcr2VDN7TQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eW3iYFMZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BC5C4CEF0;
-	Tue, 30 Sep 2025 14:57:46 +0000 (UTC)
+	 MIME-Version; b=IZgpFJ2O7XadG3Qt5WOeA2pJTBtHxtFmdRZzhbznpRyXw60r7gqwCSO1N4qUTjPpjdHicfHSgHZMARAuPmQQ4K+smxFo7g77eY69J7kxVgRR2WfPq56h2fvf6X4lqKXE/sAfYfZxjG30Xdp27g2gDxlONsKnLIgkRbq5STJYPGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1bZYbbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F203C4CEF0;
+	Tue, 30 Sep 2025 15:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244267;
-	bh=r3/Zb73f+fAzRm7lX0Gem9wUiiwA54howe4J1V7iEjI=;
+	s=korg; t=1759245150;
+	bh=1LaO4BwljlRwAk43xzUaStEkVITr7CsoNb1qQeewhRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eW3iYFMZ4LtL/eQ0pda41MGauzELiCtKK4yUeInv3fhXq8dUxE7woap3amXfW56XT
-	 TgT7BvDBA+pqB28UXgIPlcu4bCb9XmYEMBhtoNtDi6Pi4LDimTY5flDM1vckril50R
-	 i+ydtpBtVZ72YEbcMXcAtp37i5lzYn49ddowIEWc=
+	b=q1bZYbbAP6jE/59fpv8anQeprNKPmjSiPFSfNENCX+cNRvnf3LjHbr8ka7mOEG6p2
+	 z75ZAVHH+7No2/HHZn7WPOAyqSrqu20ocbstQ+A0VF2qNPISE39dPLMRmVLCP6tkkS
+	 gPoitX69hSNpqwybatloAJltlARB7rre2V7x39hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/122] phy: broadcom: ns-usb3: fix Wvoid-pointer-to-enum-cast warning
-Date: Tue, 30 Sep 2025 16:46:48 +0200
-Message-ID: <20250930143826.152234477@linuxfoundation.org>
+	Jerry Lv <Jerry.Lv@axis.com>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.15 079/151] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
+Date: Tue, 30 Sep 2025 16:46:49 +0200
+Message-ID: <20250930143830.739604928@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-[ Upstream commit bd6e74a2f0a0c76dda8e44d26f9b91a797586c3b ]
+commit 2c334d038466ac509468fbe06905a32d202117db upstream.
 
-'family' is an enum, thus cast of pointer on 64-bit compile test with
-W=1 causes:
+Since commit
 
-  drivers/phy/broadcom/phy-bcm-ns-usb3.c:209:17: error: cast to smaller integer type 'enum bcm_ns_family' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230810111958.205705-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 64961557efa1 ("phy: ti: omap-usb2: fix device leak at unbind")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+the console log of some devices with hdq enabled but no bq27000 battery
+(like e.g. the Pandaboard) is flooded with messages like:
+
+[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
+
+as soon as user-space is finding a /sys entry and trying to read the
+"status" property.
+
+It turns out that the offending commit changes the logic to now return the
+value of cache.flags if it is <0. This is likely under the assumption that
+it is an error number. In normal errors from bq27xxx_read() this is indeed
+the case.
+
+But there is special code to detect if no bq27000 is installed or accessible
+through hdq/1wire and wants to report this. In that case, the cache.flags
+are set historically by
+
+	commit 3dd843e1c26a ("bq27000: report missing device better.")
+
+to constant -1 which did make reading properties return -ENODEV. So everything
+appeared to be fine before the return value was passed upwards.
+
+Now the -1 is returned as -EPERM instead of -ENODEV, triggering the error
+condition in power_supply_format_property() which then floods the console log.
+
+So we change the detection of missing bq27000 battery to simply set
+
+	cache.flags = -ENODEV
+
+instead of -1.
+
+Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+Cc: Jerry Lv <Jerry.Lv@axis.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Link: https://lore.kernel.org/r/692f79eb6fd541adb397038ea6e750d4de2deddf.1755945297.git.hns@goldelico.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/broadcom/phy-bcm-ns-usb3.c |    2 +-
+ drivers/power/supply/bq27xxx_battery.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-+++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-@@ -206,7 +206,7 @@ static int bcm_ns_usb3_mdio_probe(struct
- 	of_id = of_match_device(bcm_ns_usb3_id_table, dev);
- 	if (!of_id)
- 		return -EINVAL;
--	usb3->family = (enum bcm_ns_family)of_id->data;
-+	usb3->family = (uintptr_t)of_id->data;
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1873,7 +1873,7 @@ static void bq27xxx_battery_update_unloc
  
- 	syscon_np = of_parse_phandle(dev->of_node, "usb3-dmp-syscon", 0);
- 	err = of_address_to_resource(syscon_np, 0, &res);
+ 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
+ 	if ((cache.flags & 0xff) == 0xff)
+-		cache.flags = -1; /* read error */
++		cache.flags = -ENODEV; /* read error */
+ 	if (cache.flags >= 0) {
+ 		cache.temperature = bq27xxx_battery_read_temperature(di);
+ 		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
 
 
 
