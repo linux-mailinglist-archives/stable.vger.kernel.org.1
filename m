@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-182387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26163BAD851
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59143BAD6A1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47FF316B4CB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9681188CF61
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CCB3043C4;
-	Tue, 30 Sep 2025 15:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42808305070;
+	Tue, 30 Sep 2025 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogjxp0wY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzjMzVTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE1C846F;
-	Tue, 30 Sep 2025 15:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C2E304989;
+	Tue, 30 Sep 2025 14:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244780; cv=none; b=TtDQoWb43c4j421mGK2elKFHukPTUmEO6fxGWteweqvLZN/xZMSeqLtQ58ump7guTwQ9Obc1NsIHX2+UhMNwaJRRRu+nCKp/kfMUtnaK9JSQfTVnFPqa9oJSxfbN/hvW5F1SztmD2QdqmC3drHJRQakxz6rsp5PxOCi4lpJoHYw=
+	t=1759244356; cv=none; b=q77d4IWbOmDS9+06vfS12RX34FO2Ntivv6nFMMQtlnxq/zK1Sv43oDNJvfQdqqsupxeAVzgvYOfm8TQ9G5oGXaXvjGAN9KNT9i2c6BwB+JGGdRnmbfX1l48BuvQAC6JVXcO0S/+Z/xpyDq+KHaMlqYb7OzhXdH/qcfPrJixd+eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244780; c=relaxed/simple;
-	bh=JeD6GkkkPgjSmSb2n0g5DZhWRrq6w/+9pczmmYKVWrM=;
+	s=arc-20240116; t=1759244356; c=relaxed/simple;
+	bh=cdJgmf+YTU/dno3+gxBofMsouAZPffTmU3IKTg5sgrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvR2WPOa1xwQz6knjL1DC0IOoZRW48wp8EDYynlcWmufo5ChEVv67ZPrus+r0DuyBM7Aur6nIrVK6KB++Y8timK5TBk+E7iXDfT0+BaNQ+MFp7d6sQZuLIw9JTlqPqD9FpCXfZDjZqshpObZh0wAoYEKCmxQNjNP2MWDnXVGvKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogjxp0wY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1880BC4CEF0;
-	Tue, 30 Sep 2025 15:06:19 +0000 (UTC)
+	 MIME-Version; b=ocSV0XiEESXV8bwJcS+I2tC8DWI1MPmRBo2Nqv1wgqv19eIYojvB0g+9UtkQBNp+FA8Q2dr4FJ1Dy8nHf3yiTxeK61Ufz6/CWPgPyOVuKDuAX3DDxc3NVv0I4ASn5grbCgXYizGkZEXwzh8qdchWog7pykZ0jZ8q/tfjFgzCg0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzjMzVTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6092EC4CEF0;
+	Tue, 30 Sep 2025 14:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244780;
-	bh=JeD6GkkkPgjSmSb2n0g5DZhWRrq6w/+9pczmmYKVWrM=;
+	s=korg; t=1759244355;
+	bh=cdJgmf+YTU/dno3+gxBofMsouAZPffTmU3IKTg5sgrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogjxp0wY162UH/toPXC1cOSxT5DI3vBgJDhCLwT4+RpWfxuRbeH96FCDmksXatEqZ
-	 6yuzW2j8hV/cumQpI/dPLPvT94dgbNbsDEJtIpwtV3BMtMwgadNtZdSZZ9m5C1VYu2
-	 4PRy6KsW8dNAXO8PIWZh2pJ2LNoSyWXpaBXcQAH4=
+	b=WzjMzVTEwRfJGY1ht+jR7RpAQfvtKBACNSGZUXoRbJaadpumTXq+eFHxYWZjI8Dmi
+	 kZY3EbhU7vmuIb7KRG16wc4GRaNJGNhhzyxi2feiqZ5iPIAr5Qti4UUyOCDLhE2V3q
+	 /qmSWzs9HdrPNHcmo0VJsuDKj0ySE9rgcf4WzCo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.16 111/143] tracing: dynevent: Add a missing lockdown check on dynevent
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 104/122] nexthop: Emit a notification when a nexthop is added
 Date: Tue, 30 Sep 2025 16:47:15 +0200
-Message-ID: <20250930143835.657750305@linuxfoundation.org>
+Message-ID: <20250930143827.238279309@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 456c32e3c4316654f95f9d49c12cbecfb77d5660 upstream.
+[ Upstream commit 732d167bf5f53a8c1e8c53cf7dbffe2a13f63752 ]
 
-Since dynamic_events interface on tracefs is compatible with
-kprobe_events and uprobe_events, it should also check the lockdown
-status and reject if it is set.
+Emit a notification in the nexthop notification chain when a new nexthop
+is added (not replaced). The nexthop can either be a new group or a
+single nexthop.
 
-Link: https://lore.kernel.org/all/175824455687.45175.3734166065458520748.stgit@devnote2/
+The notification is sent after the nexthop is inserted into the
+red-black tree, as listeners might need to callback into the nexthop
+code with the nexthop ID in order to mark the nexthop as offloaded.
 
-Fixes: 17911ff38aa5 ("tracing: Add locked_down checks to the open calls of files created for tracefs")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A 'REPLACE' notification is emitted instead of 'ADD' as the distinction
+between the two is not important for in-kernel listeners. In case the
+listener is not familiar with the encoded nexthop ID, it can simply
+treat it as a new one. This is also consistent with the route offload
+API.
+
+Changes since RFC:
+* Reword commit message
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 390b3a300d78 ("nexthop: Forbid FDB status change while nexthop is in a group")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_dynevent.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/nexthop.h | 3 ++-
+ net/ipv4/nexthop.c    | 6 +++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace_dynevent.c
-+++ b/kernel/trace/trace_dynevent.c
-@@ -230,6 +230,10 @@ static int dyn_event_open(struct inode *
- {
- 	int ret;
+diff --git a/include/net/nexthop.h b/include/net/nexthop.h
+index fd87d727aa217..aa19809bfd733 100644
+--- a/include/net/nexthop.h
++++ b/include/net/nexthop.h
+@@ -105,7 +105,8 @@ struct nexthop {
+ };
  
-+	ret = security_locked_down(LOCKDOWN_TRACEFS);
-+	if (ret)
-+		return ret;
+ enum nexthop_event_type {
+-	NEXTHOP_EVENT_DEL
++	NEXTHOP_EVENT_DEL,
++	NEXTHOP_EVENT_REPLACE,
+ };
+ 
+ int register_nexthop_notifier(struct net *net, struct notifier_block *nb);
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 0653aa518648c..3063aa1914b1f 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -1191,7 +1191,11 @@ static int insert_nexthop(struct net *net, struct nexthop *new_nh,
+ 
+ 	rb_link_node_rcu(&new_nh->rb_node, parent, pp);
+ 	rb_insert_color(&new_nh->rb_node, root);
+-	rc = 0;
 +
- 	ret = tracing_check_open_get_tr(NULL);
- 	if (ret)
- 		return ret;
++	rc = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new_nh, extack);
++	if (rc)
++		rb_erase(&new_nh->rb_node, &net->nexthop.rb_root);
++
+ out:
+ 	if (!rc) {
+ 		nh_base_seq_inc(net);
+-- 
+2.51.0
+
 
 
 
