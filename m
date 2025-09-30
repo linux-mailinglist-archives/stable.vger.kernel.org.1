@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-182411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB92BAD91A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 029C8BADCF3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CDB3AFC76
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9738E3BC042
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B6B302CD6;
-	Tue, 30 Sep 2025 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BC31C862F;
+	Tue, 30 Sep 2025 15:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmV+IQ3l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJG1sFE3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454562FD1DD;
-	Tue, 30 Sep 2025 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D9D205E3B;
+	Tue, 30 Sep 2025 15:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244859; cv=none; b=IEUtJs5KWI2GIHdLzL/89q2gb/ggOpLJAre32NaAiR+W97qQQu1IHmlCy5Fp2oaQN7P7yW3FfRq++/c2HAB3Qa0VaBHjkZh2g0fWOVMdA7CX5aiz23Nfv0R2cGkQWfpZYwcV3YZm2tNyTT3PHfD//jgSIhUbnDdwc/70Ou/8pis=
+	t=1759245760; cv=none; b=VVv/TJ8j/bFf9NliS+Ma1Zw1X/B2T2WHASyEzWvI32HDZ6cdo35updkCF8vu4iuN4m5uwuIzPwPiW4Flq1DW5gBForuT4h/6gj3+cEbPvsU/HWJapvnyWNpJzbP2WUWmvGSFueIGJwaim/R/C5Pd0pZbOk8bp/Dg4BoeCO1R8+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244859; c=relaxed/simple;
-	bh=8rNlWu6EdwbLqiCpOCndoh87oqkX6PoPtdmxWm7sDNw=;
+	s=arc-20240116; t=1759245760; c=relaxed/simple;
+	bh=E8OX3ozDvUSznXiYp8CRxd9yj/lk5Y72lEfIjE5vNEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fdhh/1e7JaukChtWKOzeRSVSucr5B8JqeARDq931GVpVHA2NcI/QwVRviYIh7+9oru5DWrITL7d6uBSf4Z3ERRD+aQSeFQmqNUK6umQzm2EmDdSZTgbhrrlr+m73dErX/9AepmGL7OY2AaI0tEVqCuvMrtsxgkkKVOQBT1kChGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmV+IQ3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FFEC4CEF0;
-	Tue, 30 Sep 2025 15:07:38 +0000 (UTC)
+	 MIME-Version; b=VfrpzhmLvacCl+ZHTL6YqlDBQx5AFvQSF6st+BuqGsL+IiYBLLOSdpFWzgz0ED1FZMef3NZzXDMBkWhBCxOOHzPhGH7v5Ze9j5A0irVCV6Uc/0zqeBJmpMp5YtZDZlW1jKnlbbAXcUK8ibhAXpGP4lXk/XC6v0nLkNep0Kd2W1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJG1sFE3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627CCC4CEF0;
+	Tue, 30 Sep 2025 15:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244859;
-	bh=8rNlWu6EdwbLqiCpOCndoh87oqkX6PoPtdmxWm7sDNw=;
+	s=korg; t=1759245759;
+	bh=E8OX3ozDvUSznXiYp8CRxd9yj/lk5Y72lEfIjE5vNEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PmV+IQ3lKfCIKNFXuV83JWHf/KVmf4AAeQ85k9NO+cBKOIDNnnAHwmvdWIgVSDeIh
-	 9+5tIbqtpEZcLZ1bJHMUr+ksvZcYHFi2cNo0XL/HgMnedI5JHnBnVpDfAxkGlJO/f1
-	 Irgp1qKqaK2cb0vze83/qQwXj1zJuDVcpjFd5RWY=
+	b=ZJG1sFE3J0/j2YI2+bRbb9U9ercgU8euT9rcRtprG/+K/47JBlwj4+J/7wIEvCdPD
+	 aNzq/gTV/eHnZkoevfZbyS8Lj0Hpl+w9HJ89P7x2AUYWG+kMoxgQNFxco+65Wr4Yn9
+	 JzhSKjkAKwDZXZaiPlx0LZa9PzxkCZxPQQd3Xq+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	George Kennedy <george.kennedy@oracle.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Qianqiang Liu <qianqiang.liu@163.com>,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Kees Cook <kees@kernel.org>,
-	Zsolt Kajtar <soci@c64.rulez.org>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.16 136/143] fbcon: Fix OOB access in font allocation
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 41/91] Bluetooth: hci_sync: Fix hci_resume_advertising_sync
 Date: Tue, 30 Sep 2025 16:47:40 +0200
-Message-ID: <20250930143836.654193853@linuxfoundation.org>
+Message-ID: <20250930143822.877157085@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,72 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 9b2f5ef00e852f8e8902a4d4f73aeedc60220c12 upstream.
+[ Upstream commit 1488af7b8b5f9896ea88ee35aa3301713f72737c ]
 
-Commit 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-introduced an out-of-bounds access by storing data and allocation sizes
-in the same variable. Restore the old size calculation and use the new
-variable 'alloc_size' for the allocation.
+hci_resume_advertising_sync is suppose to resume all instance paused by
+hci_pause_advertising_sync, this logic is used for procedures are only
+allowed when not advertising, but instance 0x00 was not being
+re-enabled.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-Reported-by: Jani Nikula <jani.nikula@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6201
-Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: George Kennedy <george.kennedy@oracle.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Qianqiang Liu <qianqiang.liu@163.com>
-Cc: Shixiong Ou <oushixiong@kylinos.cn>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org> # v5.9+
-Cc: Zsolt Kajtar <soci@c64.rulez.org>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Qianqiang Liu <qianqiang.liu@163.com>
-Link: https://lore.kernel.org/r/20250922134619.257684-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/bluetooth/hci_sync.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2491,7 +2491,7 @@ static int fbcon_set_font(struct vc_data
- 	unsigned charcount = font->charcount;
- 	int w = font->width;
- 	int h = font->height;
--	int size;
-+	int size, alloc_size;
- 	int i, csum;
- 	u8 *new_data, *data = font->data;
- 	int pitch = PITCH(font->width);
-@@ -2524,10 +2524,10 @@ static int fbcon_set_font(struct vc_data
- 		return -EINVAL;
- 
- 	/* Check for overflow in allocation size calculation */
--	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &alloc_size))
- 		return -EINVAL;
- 
--	new_data = kmalloc(size, GFP_USER);
-+	new_data = kmalloc(alloc_size, GFP_USER);
- 
- 	if (!new_data)
- 		return -ENOMEM;
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 7f3f700faebc2..dc9209f9f1a6a 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2639,6 +2639,13 @@ static int hci_resume_advertising_sync(struct hci_dev *hdev)
+ 			hci_remove_ext_adv_instance_sync(hdev, adv->instance,
+ 							 NULL);
+ 		}
++
++		/* If current advertising instance is set to instance 0x00
++		 * then we need to re-enable it.
++		 */
++		if (!hdev->cur_adv_instance)
++			err = hci_enable_ext_advertising_sync(hdev,
++							      hdev->cur_adv_instance);
+ 	} else {
+ 		/* Schedule for most recent instance to be restarted and begin
+ 		 * the software rotation loop
+-- 
+2.51.0
+
 
 
 
