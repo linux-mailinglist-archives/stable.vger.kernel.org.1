@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-182303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D91DBAD73E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 409DEBAD5F6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221F11888BBC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E89618816F7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C76D307AD5;
-	Tue, 30 Sep 2025 15:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C0D305070;
+	Tue, 30 Sep 2025 14:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ahdecxrd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcBoGkhq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39878306B08;
-	Tue, 30 Sep 2025 15:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13D0303C9B;
+	Tue, 30 Sep 2025 14:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244505; cv=none; b=EHu6u/U4uePDmUBzQjWW6TICaJqpZA1d3okjJfRq79IjQ1ndm88to0KjJfgQ3kI5+Htb7cMI0YgtTVJ6TEPXO2IE9gvSSF3IIeQO/wRBN5w0cXLSpgtv27zQ3Fi2GwoT6AOPovb2xhz0dvLBmpec3y4Zcgs5JRinoWCouloojTk=
+	t=1759244187; cv=none; b=T8idQrTONBS4+7tIYL1SRa29vimjvoChEdcyBSCOkMpAMaWvgLLGggWoiJy5uByHEuwDQ7apb1XZFIF32dvDz5JhYCJh0k0ZjeKcoDA5qu0sOHHwRDNkhzyIf7VG/t7YElae/A2PsLA+lxMKUfTdHI1iCSpatPf8u4jGSvREHbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244505; c=relaxed/simple;
-	bh=7HrMW2tW7czg5MqY+NNGAGCxiezZ4ZVLlGnX/7VJMYw=;
+	s=arc-20240116; t=1759244187; c=relaxed/simple;
+	bh=Z5d0b5DGcSBbhhIKTZeyvPJji5Ji+ULzzLR+8R5C37M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3KEUr1PfmD99u9D4gr9yQCi5Uj68v7ghx4UZu6Zo31XkQewbJM10dD/S4K5jXyt/PGnYoBa7kyGwq+RiHk2raouuQt/XJcpL8bm+G2jEN7vuUXRsEgxzSueKcZYR7oq/4ZWHBSLgev7iYHRI4A2CEes6wxlQBdcLaVDXQtz2iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ahdecxrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80592C4CEF0;
-	Tue, 30 Sep 2025 15:01:44 +0000 (UTC)
+	 MIME-Version; b=p0nA9lM9ZBrpfnSPg3Ir92OFS2OZqs190KQDEyFZsWlAdpqHSkcocKxLle/+q6VgAqlkAQhoyYKIBxzm8PdmX7SP3jxvYQYJQAonJIQdEnwjKtwMsEtB3k68V28qyaFJ+lvns0bAk58hQ8nZvALxGe2KJ6BhtNJ3mihlgPMGWB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcBoGkhq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360C6C113D0;
+	Tue, 30 Sep 2025 14:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244504;
-	bh=7HrMW2tW7czg5MqY+NNGAGCxiezZ4ZVLlGnX/7VJMYw=;
+	s=korg; t=1759244186;
+	bh=Z5d0b5DGcSBbhhIKTZeyvPJji5Ji+ULzzLR+8R5C37M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AhdecxrdZ6Xass/iG3ArpmMOwfKFTjRsWea/pxjk4fDX16AGl3gcg/dTk21c82+ma
-	 DvDQ7W3WyZ9l2KzBboJPlnQFOIAEhqYO848SJJbt21bZvQOjOWBK22ksWumNO1qhYZ
-	 stSaD+SRn0xcKTf+gRPtwDmZDA3zP+r7fufVAjkE=
+	b=YcBoGkhq258ECAMb1o6jiyeSS/SUuq+mAN/fwi/5XZIpPUDzOJc3be9hDjD2g4ivo
+	 +NeU5vD+Z3jdpPBMxTpDxb2hnxY5JXIdT4trYrqPZjMkN+u3zdFPMkm4X0DrDR8O6l
+	 GHZlJ6F7yS+sjB8Wg6Dkc86+78l6P6vAR6Y2anAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Balamurugan C <balamurugan.c@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Cai Huoqing <cai.huoqing@linux.dev>,
+	linux-mtd@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jack Wang <jinpu.wang@ionos.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 028/143] ASoC: Intel: sof_rt5682: Add HDMI-In capture with rt5682 support for PTL.
-Date: Tue, 30 Sep 2025 16:45:52 +0200
-Message-ID: <20250930143832.365762838@linuxfoundation.org>
+Subject: [PATCH 5.10 022/122] mtd: rawnand: stm32_fmc2: Fix dma_map_sg error check
+Date: Tue, 30 Sep 2025 16:45:53 +0200
+Message-ID: <20250930143823.902488364@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +73,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balamurugan C <balamurugan.c@intel.com>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit 03aa2ed9e187e42f25b3871b691d535fc19156c4 ]
+[ Upstream commit 43b81c2a3e6e07915151045aa13a6e8a9bd64419 ]
 
-Added match table entry on ptl machines to support HDMI-In capture
-with rt5682 I2S audio codec. also added the respective quirk
-configuration in rt5682 machine driver.
+dma_map_sg return 0 on error, in case of error return -EIO.
 
-Signed-off-by: Balamurugan C <balamurugan.c@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250716082300.1810352-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Christophe Kerello <christophe.kerello@foss.st.com>
+Cc: Cai Huoqing <cai.huoqing@linux.dev>
+Cc: linux-mtd@lists.infradead.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Reviewed-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20220819060801.10443-5-jinpu.wang@ionos.com
+Stable-dep-of: 513c40e59d5a ("mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_rt5682.c               | 7 +++++++
- sound/soc/intel/common/soc-acpi-intel-ptl-match.c | 7 +++++++
- 2 files changed, 14 insertions(+)
+ drivers/mtd/nand/raw/stm32_fmc2_nand.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_rt5682.c b/sound/soc/intel/boards/sof_rt5682.c
-index f5925bd0a3fc6..4994aaccc583a 100644
---- a/sound/soc/intel/boards/sof_rt5682.c
-+++ b/sound/soc/intel/boards/sof_rt5682.c
-@@ -892,6 +892,13 @@ static const struct platform_device_id board_ids[] = {
- 					SOF_SSP_PORT_BT_OFFLOAD(2) |
- 					SOF_BT_OFFLOAD_PRESENT),
- 	},
-+	{
-+		.name = "ptl_rt5682_c1_h02",
-+		.driver_data = (kernel_ulong_t)(SOF_RT5682_MCLK_EN |
-+					SOF_SSP_PORT_CODEC(1) |
-+					/* SSP 0 and SSP 2 are used for HDMI IN */
-+					SOF_SSP_MASK_HDMI_CAPTURE(0x5)),
-+	},
- 	{ }
- };
- MODULE_DEVICE_TABLE(platform, board_ids);
-diff --git a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
-index 67f1091483dce..d90d8672ab77d 100644
---- a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
-@@ -32,6 +32,13 @@ static const struct snd_soc_acpi_codecs ptl_lt6911_hdmi = {
- };
+--- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
++++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+@@ -858,8 +858,8 @@ static int stm32_fmc2_nfc_xfer(struct na
  
- struct snd_soc_acpi_mach snd_soc_acpi_intel_ptl_machines[] = {
-+	{
-+		.comp_ids = &ptl_rt5682_rt5682s_hp,
-+		.drv_name = "ptl_rt5682_c1_h02",
-+		.machine_quirk = snd_soc_acpi_codec_list,
-+		.quirk_data = &ptl_lt6911_hdmi,
-+		.sof_tplg_filename = "sof-ptl-rt5682-ssp1-hdmi-ssp02.tplg",
-+	},
- 	{
- 		.comp_ids = &ptl_rt5682_rt5682s_hp,
- 		.drv_name = "ptl_rt5682_def",
--- 
-2.51.0
-
+ 	ret = dma_map_sg(nfc->dev, nfc->dma_data_sg.sgl,
+ 			 eccsteps, dma_data_dir);
+-	if (ret < 0)
+-		return ret;
++	if (!ret)
++		return -EIO;
+ 
+ 	desc_data = dmaengine_prep_slave_sg(dma_ch, nfc->dma_data_sg.sgl,
+ 					    eccsteps, dma_transfer_dir,
+@@ -889,8 +889,10 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 
+ 		ret = dma_map_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
+ 				 eccsteps, dma_data_dir);
+-		if (ret < 0)
++		if (!ret) {
++			ret = -EIO;
+ 			goto err_unmap_data;
++		}
+ 
+ 		desc_ecc = dmaengine_prep_slave_sg(nfc->dma_ecc_ch,
+ 						   nfc->dma_ecc_sg.sgl,
 
 
 
