@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFC6BADB91
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B586DBADC48
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06DA93A7B7B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E8B932578D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76228223DD6;
-	Tue, 30 Sep 2025 15:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4464627056D;
+	Tue, 30 Sep 2025 15:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gV9cC2KU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynEVY7ug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3405F1F4C8E;
-	Tue, 30 Sep 2025 15:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010C4846F;
+	Tue, 30 Sep 2025 15:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245330; cv=none; b=C/lhjWGq+dxhlUxyNRnbx8FsuU9SY/7rj5KyuKp1YUWmK0Wqn4xLS0ccq0d38Y/pOUQ72WuHCB9gVrGRNdAZSGMqbzw71lk219t827H/F//FuaUcjcr+nm1NqLncEzcZbLllwQHhvHt5k9fmGebBrulkQMOzN5LqehHA+EcEYxY=
+	t=1759245790; cv=none; b=RoxoslF+Ak0zAl1uFFuMRquq6G4jtqnAgdxdmrlOEcC6fvZ4L6fqUR3fxL3rd05lHWCt3LbxlY/ZrzlVAZTX2ZMTavhecRhNj9jt9iRtIxaqqkRk/3TXLDie1nrOr4EiNV9oCNlYVp0n+Y8cU1FrQhvGIgCjQ3AtL0e0uHpy9Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245330; c=relaxed/simple;
-	bh=72X6PSkU0rVgeHi+Lk9c3lue2gX7biLN5XBClS7Rh1U=;
+	s=arc-20240116; t=1759245790; c=relaxed/simple;
+	bh=Ybu9OOkephaWQyeTZOSTHEKNeyPcj04+442kR/4V3f0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fgS6QE5u+IKcHYRbcqcybaSbpg+s3cZkjor9p8Qo3DTaaFEIV1xeE8EMS/3WR3LH70r0OFnhotsWKtEzU0clhVoSQpXk0hQDkg6L9TQv+aiV5CmeDZrIlSshWjJxZUTxiqNL5l4xEoNwMiOGWvol283mvNNhHa/5aUpP9VAHH48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gV9cC2KU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF6CC113D0;
-	Tue, 30 Sep 2025 15:15:29 +0000 (UTC)
+	 MIME-Version; b=gHb53qVHLI0q3Zqt4Rzs+f6WJA0QejqXH9otGLFxm4iM5ru+4TuHmMCEm42BwtCYUHAF31jeDDQdJjSQahr3RHf5aQ2BXYwJrhWt97jT71PhaSA66hFP+X1OGU4/DxLcXLXhGP1Vpi9XpREM5NO8bnEBzuDuDrTEEuqI2F2BDvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynEVY7ug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CC3C4CEF0;
+	Tue, 30 Sep 2025 15:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245329;
-	bh=72X6PSkU0rVgeHi+Lk9c3lue2gX7biLN5XBClS7Rh1U=;
+	s=korg; t=1759245789;
+	bh=Ybu9OOkephaWQyeTZOSTHEKNeyPcj04+442kR/4V3f0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gV9cC2KUWNhgfBURZNNyC0jzQAPJriPxC5bq5qdzn6WjxraVWmhWIn2OBoTIdCTnB
-	 rKAUML+F7w1Ei3ZE0CZICUWQaQNABKjjZP+wSk/ZEpx9rm+BftH58BF0qSgAMGHwkC
-	 PVFXVkTC2+qm1G0MYn4G2hq7MJ20aFU8uJEQ6kc4=
+	b=ynEVY7ugNfr4gFCZkSKk9FpnlYp2PI5Nbiks5+AlwAbVJdVwTl/u17UapILtkhZEA
+	 K1BORSYuoEd5uN2JxpMzCKifks68XqDp3iVG8mdM+5O2Qf+1pirAVJ4gqOnBbnKTzG
+	 QSFfVQKI+vxBuGIs1/YFlBgg4YuWjUq8EMo4eYtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/151] crypto: af_alg - Fix incorrect boolean values in af_alg_ctx
-Date: Tue, 30 Sep 2025 16:47:47 +0200
-Message-ID: <20250930143833.055000362@linuxfoundation.org>
+Subject: [PATCH 6.6 49/91] net: dsa: lantiq_gswip: move gswip_add_single_port_br() call to port_setup()
+Date: Tue, 30 Sep 2025 16:47:48 +0200
+Message-ID: <20250930143823.213724157@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit d0ca0df179c4b21e2a6c4a4fb637aa8fa14575cb ]
+[ Upstream commit c0054b25e2f1045f47b4954cf13a539e5e6047df ]
 
-Commit 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in
-af_alg_sendmsg") changed some fields from bool to 1-bit bitfields of
-type u32.
+A port added to a "single port bridge" operates as standalone, and this
+is mutually exclusive to being part of a Linux bridge. In fact,
+gswip_port_bridge_join() calls gswip_add_single_port_br() with
+add=false, i.e. removes the port from the "single port bridge" to enable
+autonomous forwarding.
 
-However, some assignments to these fields, specifically 'more' and
-'merge', assign values greater than 1.  These relied on C's implicit
-conversion to bool, such that zero becomes false and nonzero becomes
-true.
+The blamed commit seems to have incorrectly thought that ds->ops->port_enable()
+is called one time per port, during the setup phase of the switch.
 
-With a 1-bit bitfields of type u32 instead, mod 2 of the value is taken
-instead, resulting in 0 being assigned in some cases when 1 was intended.
+However, it is actually called during the ndo_open() implementation of
+DSA user ports, which is to say that this sequence of events:
 
-Fix this by restoring the bool type.
+1. ip link set swp0 down
+2. ip link add br0 type bridge
+3. ip link set swp0 master br0
+4. ip link set swp0 up
 
-Fixes: 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+would cause swp0 to join back the "single port bridge" which step 3 had
+just removed it from.
+
+The correct DSA hook for one-time actions per port at switch init time
+is ds->ops->port_setup(). This is what seems to match the coder's
+intention; also see the comment at the beginning of the file:
+
+ * At the initialization the driver allocates one bridge table entry for
+   ~~~~~~~~~~~~~~~~~~~~~
+ * each switch port which is used when the port is used without an
+ * explicit bridge.
+
+Fixes: 8206e0ce96b3 ("net: dsa: lantiq: Add VLAN unaware bridge offloading")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250918072142.894692-2-vladimir.oltean@nxp.com
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/crypto/if_alg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/lantiq_gswip.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index 1424200fe88cf..9af84cad92e93 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -152,7 +152,7 @@ struct af_alg_ctx {
- 	size_t used;
- 	atomic_t rcvused;
+diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
+index a2b10b28c11fa..054548294f039 100644
+--- a/drivers/net/dsa/lantiq_gswip.c
++++ b/drivers/net/dsa/lantiq_gswip.c
+@@ -682,18 +682,27 @@ static int gswip_add_single_port_br(struct gswip_priv *priv, int port, bool add)
+ 	return 0;
+ }
  
--	u32		more:1,
-+	bool		more:1,
- 			merge:1,
- 			enc:1,
- 			write:1,
+-static int gswip_port_enable(struct dsa_switch *ds, int port,
+-			     struct phy_device *phydev)
++static int gswip_port_setup(struct dsa_switch *ds, int port)
+ {
+ 	struct gswip_priv *priv = ds->priv;
+ 	int err;
+ 
+ 	if (!dsa_is_cpu_port(ds, port)) {
+-		u32 mdio_phy = 0;
+-
+ 		err = gswip_add_single_port_br(priv, port, true);
+ 		if (err)
+ 			return err;
++	}
++
++	return 0;
++}
++
++static int gswip_port_enable(struct dsa_switch *ds, int port,
++			     struct phy_device *phydev)
++{
++	struct gswip_priv *priv = ds->priv;
++
++	if (!dsa_is_cpu_port(ds, port)) {
++		u32 mdio_phy = 0;
+ 
+ 		if (phydev)
+ 			mdio_phy = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
+@@ -1813,6 +1822,7 @@ static int gswip_get_sset_count(struct dsa_switch *ds, int port, int sset)
+ static const struct dsa_switch_ops gswip_xrx200_switch_ops = {
+ 	.get_tag_protocol	= gswip_get_tag_protocol,
+ 	.setup			= gswip_setup,
++	.port_setup		= gswip_port_setup,
+ 	.port_enable		= gswip_port_enable,
+ 	.port_disable		= gswip_port_disable,
+ 	.port_bridge_join	= gswip_port_bridge_join,
 -- 
 2.51.0
 
