@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-182559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F97BADA58
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA63BADB01
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 334F71943EEE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6F867AB168
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F88E2FD1DD;
-	Tue, 30 Sep 2025 15:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859823074BB;
+	Tue, 30 Sep 2025 15:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tn1BGW7K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfB30+Z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00A31F4C8E;
-	Tue, 30 Sep 2025 15:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434523064B9;
+	Tue, 30 Sep 2025 15:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245340; cv=none; b=IdgqAwerQdqdfvyIu9hv0beTt07J9ngNQ03iHgyZPwKMmwElnV5KACWhX3Rx8EVmtwhzaIL+MzYBDw/JphOSLQQTMklNCbmgdixH22IrwJkcSdA613MAvBrdoonGAIEg02TnPY357cyovH+EGBpZYxX6daaofr7y53AkTr5lUds=
+	t=1759245498; cv=none; b=uFXsxbFmkB/I16dY7Qzycj24v4X9xKzI704kxRG400T0RbVhz7tLhgUC+68KSxLLsHQh+mc3QxqCZkIL9DdYrWmCXlNtzCvpJwe65O73dMy4OE1AvaIwhBsNKzv2izbVLJN/0Xmzs/24RAtiYmgz1IUJslmlViLid37ClLYWkzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245340; c=relaxed/simple;
-	bh=ROPy0QOwiieVW4qkgQSkAop0VxBpjxIlT57yz97/Ou8=;
+	s=arc-20240116; t=1759245498; c=relaxed/simple;
+	bh=JY4DDcqzxSdRQ1oyw4cm0jqPwKWie/ei3c5EmNOtlx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIfO/6vWW5ozLoVmbi9GjQKTLdeVqsvLKI2yp2A+d0bbI6753nDXDvsjVTs7GQWD9P2NLhwZ6yqD2tiRzgr3y25t/V6hViI/P93GEts3IzTVxW83QxsoF1ncA6ufpsVjiUMsYPnopVmeiB+Y8Yyg+mBVXjeToklcIW+9CeMkJ6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tn1BGW7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F4EC4CEF0;
-	Tue, 30 Sep 2025 15:15:39 +0000 (UTC)
+	 MIME-Version; b=AHCO/gVjYWrpJ8KWJknZwX70Co+e0eLYgkdXYDd9J1itoiuLhw5Zg8pUSBPyXYXAi9yudmjGtfywpjmOVs/9hFCCr9JN1cdXP/ohndyc0JouwctkS4mImpzhZsJwRmlsV3y/DRZemHKFaSY25cW73Qa0sPnj195cQXc5Xd+QY3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfB30+Z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8484C4CEF0;
+	Tue, 30 Sep 2025 15:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245340;
-	bh=ROPy0QOwiieVW4qkgQSkAop0VxBpjxIlT57yz97/Ou8=;
+	s=korg; t=1759245498;
+	bh=JY4DDcqzxSdRQ1oyw4cm0jqPwKWie/ei3c5EmNOtlx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tn1BGW7KywUpa9AMVrdnONEaNp/P7tcaR7yuRrVygSMnj/xgtJ5WejsPwbmWV+D7E
-	 IGpug4f88Ag3sjwZFiuaMPYEPyo8MrkfVMtmRAoOybWp/pgl+vjTpbn79InkhaoV6d
-	 aAmaqR8fDJg6tQF3nANUWQiBplpwEvmro3hxYzhI=
+	b=dfB30+Z11VMTHW9Ls2gQB4EGRMI0mm260nlRhNO6dq89x4iCnLvMxzgariJEH5Q5A
+	 5bM2h5ml7h/wtmGuL6JjrVkakrNzhxFKZEOYWatEoluaNu/fn8JIzauc28YPqmr74g
+	 NOWdZ2/fGoxC3SelvHd2U0qsnXu83jcAI/jkkn4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 122/151] can: etas_es58x: sort the includes by alphabetic order
+Subject: [PATCH 6.1 28/73] can: etas_es58x: sort the includes by alphabetic order
 Date: Tue, 30 Sep 2025 16:47:32 +0200
-Message-ID: <20250930143832.467539887@linuxfoundation.org>
+Message-ID: <20250930143821.747148906@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -106,7 +106,7 @@ index 1bcdcece5ec72..4151b18fd045d 100644
  #include "es58x_core.h"
  #include "es581_4.h"
 diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
-index 0c0e2363f674b..b6ee532977734 100644
+index ddb7c5735c9ac..5aba168496037 100644
 --- a/drivers/net/can/usb/etas_es58x/es58x_core.c
 +++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
 @@ -7,15 +7,15 @@
@@ -129,7 +129,7 @@ index 0c0e2363f674b..b6ee532977734 100644
  #include "es58x_core.h"
  
 diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.h b/drivers/net/can/usb/etas_es58x/es58x_core.h
-index e5033cb5e6959..3d4fd068c8faf 100644
+index 640fe0a1df636..4a082fd69e6ff 100644
 --- a/drivers/net/can/usb/etas_es58x/es58x_core.h
 +++ b/drivers/net/can/usb/etas_es58x/es58x_core.h
 @@ -6,17 +6,17 @@
@@ -155,7 +155,7 @@ index e5033cb5e6959..3d4fd068c8faf 100644
  #include "es581_4.h"
  #include "es58x_fd.h"
 diff --git a/drivers/net/can/usb/etas_es58x/es58x_fd.c b/drivers/net/can/usb/etas_es58x/es58x_fd.c
-index 8ccda748fd084..3693851b36008 100644
+index c97ffa71fd758..fa87b0b78e3eb 100644
 --- a/drivers/net/can/usb/etas_es58x/es58x_fd.c
 +++ b/drivers/net/can/usb/etas_es58x/es58x_fd.c
 @@ -8,12 +8,12 @@
