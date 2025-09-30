@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28588BAD9FB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC5FBAD434
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80FBD3A874E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446D6320F12
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007D83043B8;
-	Tue, 30 Sep 2025 15:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C501B279DA2;
+	Tue, 30 Sep 2025 14:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OM6mzx/H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/x5SkTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B074F1487F4;
-	Tue, 30 Sep 2025 15:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBA22D24AD;
+	Tue, 30 Sep 2025 14:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245032; cv=none; b=hh2svEpb/fitCcxaA9fdqhrvMN20wNDSf9XlhfgTyRokGw56Rvs/btYEjidtXCZuWO+luANg1gwfiQsiENPqTszS4DHDPlcKxEHTLB/O+VAMP1gzv2w89iDRidY80XrDzlqIBhWKWw0eryB7IPVoV+0wL/8MepWxgKYmMOoHBtA=
+	t=1759243771; cv=none; b=bGLMt4hAaReRDEpT6qGGllkYT3gP1g/IE3PxC0ttHif2nkinXwq/O/AaKztab7vIovZUH7UW11tutt6Xt1BPZgmU0tu4NJNBuVmdIexZtpWxmJyKqLBh+kQZAsL3WbG5yq344m96Os4DU6U0vSEEEmkVwl24Dpxezbllg8qzGvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245032; c=relaxed/simple;
-	bh=p+jl7LPnFODa1Zuvs0OBMM3JivFZbMAgyeegqy3DrUY=;
+	s=arc-20240116; t=1759243771; c=relaxed/simple;
+	bh=eMbwBaakxhTTsQTk/h1TVb4rB2unph9ffenU2Fd1JyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xv9txcRrjRZpfrexONyR55k9II6Bt/TO0m8Tq7vvu+maKEyGvMAtXrDDG29Z3uqqdrMFzHMo7Zc0HKBZEK5ZyAfAaFRNRENXAO9NNNiox4moTwZcw6evu1xYd6RsBleCs7liGkqAvzVRvH7c/M1m/Vaoyp31AKzrHAAa82WNA6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OM6mzx/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D92C4CEF0;
-	Tue, 30 Sep 2025 15:10:31 +0000 (UTC)
+	 MIME-Version; b=G2zpMz1Ndzi5JwvcJCwJqnXdFv71UsKqWdIEFEEHk1b1GUajBKpUzhxreXrFNaLMCF64JHSzgTHS7y9o2ju0DzoOERBRIjxlr5Dlajw5YbOwQDel7vJrb/Ei2Pp2jy94Fvrjm6uNcbDx23FN8JlL1yfh3CUrlIpxXRejVavkiWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/x5SkTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57BBC4CEF0;
+	Tue, 30 Sep 2025 14:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245032;
-	bh=p+jl7LPnFODa1Zuvs0OBMM3JivFZbMAgyeegqy3DrUY=;
+	s=korg; t=1759243771;
+	bh=eMbwBaakxhTTsQTk/h1TVb4rB2unph9ffenU2Fd1JyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OM6mzx/HUfyVADJI/Sp8XBRMKHjSXscHSVHdTwqWbStdqcslUmdDJxDZDOHAd4TB6
-	 mBJaBjH+ORyvkv9Uuul8qhYRvtB6x/1IXng+ry+S7Cxqbw9XzwXwmlDli+DmXBnnjr
-	 YNes2whtDhY0W/dENXh7ThNPAYHqaGbPQDtDFbbM=
+	b=I/x5SkTINpBPztJg50irQFnEcNd4n7BjmUvdFz23klcE/3UE19jujNTzch2xXW9dM
+	 9BN8EQRi6dCghKR1EaFQa1Qt4MPv0Np6hMsekHxurlzTjcncnrDcjGxC1HOhC4ZERe
+	 I///oUq66U+jI8TG7tygbJcfgwyucKhyu6G60XRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Alexander Dahl <ada@thorsis.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 045/151] can: j1939: j1939_local_ecu_get(): undo increment when j1939_local_ecu_get() fails
+Subject: [PATCH 5.4 13/81] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
 Date: Tue, 30 Sep 2025 16:46:15 +0200
-Message-ID: <20250930143829.402247914@linuxfoundation.org>
+Message-ID: <20250930143820.223742407@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 06e02da29f6f1a45fc07bd60c7eaf172dc21e334 ]
+[ Upstream commit fd779eac2d659668be4d3dbdac0710afd5d6db12 ]
 
-Since j1939_sk_bind() and j1939_sk_release() call j1939_local_ecu_put()
-when J1939_SOCK_BOUND was already set, but the error handling path for
-j1939_sk_bind() will not set J1939_SOCK_BOUND when j1939_local_ecu_get()
-fails, j1939_local_ecu_get() needs to undo priv->ents[sa].nusers++ when
-j1939_local_ecu_get() returns an error.
+Having setup time 0 violates tAR, tCLR of some chips, for instance
+TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
+being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
+98 dc 90 15 76 ...).
 
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/e7f80046-4ff7-4ce2-8ad8-7c3c678a42c9@I-love.SAKURA.ne.jp
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
+[1], but it looks more appropriate to just calculate setup time properly.
+
+[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
+
+Cc: stable@vger.kernel.org
+Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Tested-by: Alexander Dahl <ada@thorsis.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/bus.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/atmel/nand-controller.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/net/can/j1939/bus.c b/net/can/j1939/bus.c
-index 4866879016021..e0b966c2517cf 100644
---- a/net/can/j1939/bus.c
-+++ b/net/can/j1939/bus.c
-@@ -290,8 +290,11 @@ int j1939_local_ecu_get(struct j1939_priv *priv, name_t name, u8 sa)
- 	if (!ecu)
- 		ecu = j1939_ecu_create_locked(priv, name);
- 	err = PTR_ERR_OR_ZERO(ecu);
--	if (err)
-+	if (err) {
-+		if (j1939_address_is_unicast(sa))
-+			priv->ents[sa].nusers--;
- 		goto done;
-+	}
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1312,13 +1312,23 @@ static int atmel_smc_nand_prepare_smccon
+ 		return ret;
  
- 	ecu->nusers++;
- 	/* TODO: do we care if ecu->addr != sa? */
--- 
-2.51.0
-
+ 	/*
++	 * Read setup timing depends on the operation done on the NAND:
++	 *
++	 * NRD_SETUP = max(tAR, tCLR)
++	 */
++	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
++	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
++	totalcycles += ncycles;
++	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
++	if (ret)
++		return ret;
++
++	/*
+ 	 * The read cycle timing is directly matching tRC, but is also
+ 	 * dependent on the setup and hold timings we calculated earlier,
+ 	 * which gives:
+ 	 *
+-	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
+-	 *
+-	 * NRD_SETUP is always 0.
++	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
+ 	 */
+ 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
+ 	ncycles = max(totalcycles, ncycles);
 
 
 
