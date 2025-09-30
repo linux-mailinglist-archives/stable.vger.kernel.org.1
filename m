@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A95BADD1A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2058BADA75
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5F84327BA4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 282CB1942A03
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D04530505F;
-	Tue, 30 Sep 2025 15:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA8E7640E;
+	Tue, 30 Sep 2025 15:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgzVejD0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/WraTdu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EA61F3FED;
-	Tue, 30 Sep 2025 15:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F571F4C8E;
+	Tue, 30 Sep 2025 15:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245996; cv=none; b=EOIMdXpx7m+A8+imD9FbCMrRl4WUHbk6Do3hlQLrqKOj++kcCE8U3JLRUPUSvNN8pinZGtyZZj8+rNurEBYR3OMdxAWwP0tLgKh7sQdt+wf9i43pWwJ7Cnn0ayHi/J31UtISGoE/sdwx2a06AMNMa+BnNBVJKcHvXzmf7FjlXFY=
+	t=1759245385; cv=none; b=blGhquya13uKA1NUgZTWyqMXk/+IVkv7DVbRxQHa4tj0o7f+6PCzJC0aPoPKmAoXZg/9eNOzttLB+Ihu2ZisL4/8JqeJNO9597bnt+yTHKFNOFbpBzsWsAb8XbnJjfNIQLmIFjc41Zl9b4QgG/9g1JAqezkTsnry9ot8rsULCFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245996; c=relaxed/simple;
-	bh=D7RHVwTT3GViuNNwawXYyWl/IFOz/KmdrqWT26fxOHM=;
+	s=arc-20240116; t=1759245385; c=relaxed/simple;
+	bh=Dy0mwlNXp9SSrK95iSQVpDy4ykUgUX0LWPDiavD5Y0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hDdY4PBBDvf4nmJObtJGeXQgPnpGJ5/vAPY29Op8Z/i4BPOPkf00/SZW/m2zSMkWa6thRJd757NynFegmhOuK6iU+yAA12WRC0NpfxdRB2lQxY/X01U04lLDIlul7KcX30GfjwUxWeIpFOV0lTpqi2llDbglhUj8EoCAAWqZdTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgzVejD0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D215DC113D0;
-	Tue, 30 Sep 2025 15:26:35 +0000 (UTC)
+	 MIME-Version; b=XURlwGYVC7fNEMtbgUdw5eM6fAbGlCAjS4hCVV78PArNNL67AeCIkynltzg8PnaPQyDYpyQiiXKEvlC/C9K8la7+GR5NMdvFBxAQ+28PEbap9YTRfnmIFOxw2J4h0MsQkb59/9pvZIMAmZyjMKgRanLK6VadUwryxANTAjm6JcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/WraTdu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94922C116B1;
+	Tue, 30 Sep 2025 15:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245996;
-	bh=D7RHVwTT3GViuNNwawXYyWl/IFOz/KmdrqWT26fxOHM=;
+	s=korg; t=1759245385;
+	bh=Dy0mwlNXp9SSrK95iSQVpDy4ykUgUX0LWPDiavD5Y0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kgzVejD0jZJSvWlajXj9Ustxg1GrOrCenWTXcinRgjBF+/VQ035D5h8cOya2BTWp7
-	 aveCpPr61VTdLZUT4qg46CKpkHnHLPPpeBeBKsQi+I0osfYKpTq90LpD5olL8PrIat
-	 1KfOBTASruytePeS7UQ33UCYgmg+2PycV0h1uabA=
+	b=k/WraTdu4bioH8JOAdCwAEhk2gsz2fCoQKFUpqa7Y6jC+yp3sEBDc84OYkV5Pp0SI
+	 ke3N38O4M69Fvz714ysM+lHrNZj92xMh/GZ9EjNje4yz+CJx+j8iU+BXG3qsf8HeJA
+	 DJIvM4aeMtLIM1eJd++0gDzYjwsmqeb4oQyG5vnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 20/89] mmc: sdhci-cadence: add Mobileye eyeQ support
+Subject: [PATCH 5.15 124/151] can: hi311x: populate ndo_change_mtu() to prevent buffer overflow
 Date: Tue, 30 Sep 2025 16:47:34 +0200
-Message-ID: <20250930143822.727545393@linuxfoundation.org>
+Message-ID: <20250930143832.545060806@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@bootlin.com>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-[ Upstream commit 120ffe250dd95b5089d032f582c5be9e3a04b94b ]
+[ Upstream commit ac1c7656fa717f29fac3ea073af63f0b9919ec9a ]
 
-The MMC/SDHCI controller implemented by Mobileye needs the preset value
-quirks to configure the clock properly at speed slower than HS200.
-It otherwise works as a standard sd4hc controller.
+Sending an PF_PACKET allows to bypass the CAN framework logic and to
+directly reach the xmit() function of a CAN driver. The only check
+which is performed by the PF_PACKET framework is to make sure that
+skb->len fits the interface's MTU.
 
-Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
-Link: https://lore.kernel.org/r/e97f409650495791e07484589e1666ead570fa12.1750156323.git.benoit.monin@bootlin.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Unfortunately, because the sun4i_can driver does not populate its
+net_device_ops->ndo_change_mtu(), it is possible for an attacker to
+configure an invalid MTU by doing, for example:
+
+  $ ip link set can0 mtu 9999
+
+After doing so, the attacker could open a PF_PACKET socket using the
+ETH_P_CANXL protocol:
+
+	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
+
+to inject a malicious CAN XL frames. For example:
+
+	struct canxl_frame frame = {
+		.flags = 0xff,
+		.len = 2048,
+	};
+
+The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
+check that the skb is valid, unfortunately under above conditions, the
+malicious packet is able to go through can_dev_dropped_skb() checks:
+
+  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
+     function does not check the actual device capabilities).
+
+  2. the length is a valid CAN XL length.
+
+And so, hi3110_hard_start_xmit() receives a CAN XL frame which it is
+not able to correctly handle and will thus misinterpret it as a CAN
+frame. The driver will consume frame->len as-is with no further
+checks.
+
+This can result in a buffer overflow later on in hi3110_hw_tx() on
+this line:
+
+	memcpy(buf + HI3110_FIFO_EXT_DATA_OFF,
+	       frame->data, frame->len);
+
+Here, frame->len corresponds to the flags field of the CAN XL frame.
+In our previous example, we set canxl_frame->flags to 0xff. Because
+the maximum expected length is 8, a buffer overflow of 247 bytes
+occurs!
+
+Populate net_device_ops->ndo_change_mtu() to ensure that the
+interface's MTU can not be set to anything bigger than CAN_MTU. By
+fixing the root cause, this prevents the buffer overflow.
+
+Fixes: 57e83fb9b746 ("can: hi311x: Add Holt HI-311x CAN driver")
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-2-0d1cada9393b@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-cadence.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/can/spi/hi311x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mmc/host/sdhci-cadence.c b/drivers/mmc/host/sdhci-cadence.c
-index be1505e8c536e..7759531ccca70 100644
---- a/drivers/mmc/host/sdhci-cadence.c
-+++ b/drivers/mmc/host/sdhci-cadence.c
-@@ -433,6 +433,13 @@ static const struct sdhci_cdns_drv_data sdhci_elba_drv_data = {
- 	},
+diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
+index b08b98e6ad1c9..6df2e6fae2687 100644
+--- a/drivers/net/can/spi/hi311x.c
++++ b/drivers/net/can/spi/hi311x.c
+@@ -807,6 +807,7 @@ static const struct net_device_ops hi3110_netdev_ops = {
+ 	.ndo_open = hi3110_open,
+ 	.ndo_stop = hi3110_stop,
+ 	.ndo_start_xmit = hi3110_hard_start_xmit,
++	.ndo_change_mtu = can_change_mtu,
  };
  
-+static const struct sdhci_cdns_drv_data sdhci_eyeq_drv_data = {
-+	.pltfm_data = {
-+		.ops = &sdhci_cdns_ops,
-+		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-+	},
-+};
-+
- static const struct sdhci_cdns_drv_data sdhci_cdns_drv_data = {
- 	.pltfm_data = {
- 		.ops = &sdhci_cdns_ops,
-@@ -595,6 +602,10 @@ static const struct of_device_id sdhci_cdns_match[] = {
- 		.compatible = "amd,pensando-elba-sd4hc",
- 		.data = &sdhci_elba_drv_data,
- 	},
-+	{
-+		.compatible = "mobileye,eyeq-sd4hc",
-+		.data = &sdhci_eyeq_drv_data,
-+	},
- 	{ .compatible = "cdns,sd4hc" },
- 	{ /* sentinel */ }
- };
+ static const struct of_device_id hi3110_of_match[] = {
 -- 
 2.51.0
 
