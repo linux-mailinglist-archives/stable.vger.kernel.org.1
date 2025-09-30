@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-182461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9986FBAD9ED
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E476BAD785
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 657E43A3740
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AC941941B49
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71261487F4;
-	Tue, 30 Sep 2025 15:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD8827056D;
+	Tue, 30 Sep 2025 15:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aj+u08Dq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jn64usJX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB352522A1;
-	Tue, 30 Sep 2025 15:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE9A1EE02F;
+	Tue, 30 Sep 2025 15:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245020; cv=none; b=tILivH8iOvcZs+DLvFN7d4fuz6JkRA1yLbmm0EKKH96Sib+hjuiWexm17VpRECYKYkCGgFJwLOczp/XKAXGvuvcLQ3dLl1t1rKTMSErL2ED3e5Kea9UW/WrqhcRZcqWI/kpAT+w6ftC/kXmlfhWfTwlNjKr9gDNKhWPQW9mZLRo=
+	t=1759244572; cv=none; b=XscjVdTj9GLsf2tH/npRSclqQEd/NhTwJGfNSAxc9HODkgJHd8Fp5k5ZE/xasmYG8/l2VKqvSSulPgM5PlX8aRaLUMYb9sdeE+LIilgvHIm/q/qi9450uPFYSH/va/3wJAmAeBozlOKWgfmSP2x84xW9pBy3qUcl57zCQWaqHDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245020; c=relaxed/simple;
-	bh=9Qsw40meEoQDj9fVpaVAdysRYJbLzfU4Na+kGa97lZI=;
+	s=arc-20240116; t=1759244572; c=relaxed/simple;
+	bh=C4OKM1C5rHsxADLL5v3RRt48DXmhniIfmZsAotuQO4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=miAv1I7yqky4U6MdbWaRGqxl37i518MeziVzFa+oU/p5Y/NTyzWlNZqoUcifdCnEwz7VYdAA2pTSRZeAd++2yG/XkbwRrdAcFVCqVzQZVHiYX4ffhF8SnB67SbkshWAUesPiuOadb5o/BCwW/uND0yDCJgXqMD5B/qSX3A/hADk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aj+u08Dq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3BEC4CEF0;
-	Tue, 30 Sep 2025 15:10:19 +0000 (UTC)
+	 MIME-Version; b=t0bjg3+ht33QDiUKi2MTYAiMVsSeju4aZAb4x7C2gOiNJKfwv4Xv0RP0lDLGqtEYN1q03mj1n2Kt7X9xAKyegwkOi9clw3/xZ12nhSpqIozRgzCgOFY1sSPqetBGnyv7qAEBpX+4hFpLodcDkxUgc0GV+eo3pvrtvPfJb+/Cbc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jn64usJX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4EDC4CEF0;
+	Tue, 30 Sep 2025 15:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245020;
-	bh=9Qsw40meEoQDj9fVpaVAdysRYJbLzfU4Na+kGa97lZI=;
+	s=korg; t=1759244570;
+	bh=C4OKM1C5rHsxADLL5v3RRt48DXmhniIfmZsAotuQO4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aj+u08Dqhb1Z6ewPLMT+azInamNbBPF66XnARvEBxwNJ3AwdjSl+wUE84+8HVg+CD
-	 kMFB3qSVi5QLDzX5T9ov8JHFudSfZf1c4Zz2VamdszJE8TnVoME7kAJB4jIg5FyzB+
-	 mkHmSwMvyCwMh+ElmlrLTtlq2n07X9qqIkbrjbXg=
+	b=Jn64usJXQgAseAmOenBRsCrrehmS75W6FkCgIcfGFq7Ew3xkEh6wZBGoPmbJwQqSS
+	 lBe2yA8bAg89vEHlPqkg1QqNTKWPeX0eIxxJ7DBpSWfUQDz1/JUNRvrlCfSfS3xs8z
+	 f5q8+pdUmvhygjVPc6rMZR3r36ezh2TiCv/daKCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Nitesh Narayan Lal <nitesh@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	syzbot+a9ed3d9132939852d0df@syzkaller.appspotmail.com,
+	Alexei Starovoitov <ast@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 041/151] genirq: Provide new interfaces for affinity hints
+Subject: [PATCH 6.16 047/143] bpf: Check the helper function is valid in get_helper_proto
 Date: Tue, 30 Sep 2025 16:46:11 +0200
-Message-ID: <20250930143829.246912938@linuxfoundation.org>
+Message-ID: <20250930143833.110037491@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +66,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Jiri Olsa <olsajiri@gmail.com>
 
-[ Upstream commit 65c7cdedeb3026fabcc967a7aae2f755ad4d0783 ]
+[ Upstream commit e4414b01c1cd9887bbde92f946c1ba94e40d6d64 ]
 
-The discussion about removing the side effect of irq_set_affinity_hint() of
-actually applying the cpumask (if not NULL) as affinity to the interrupt,
-unearthed a few unpleasantries:
+kernel test robot reported verifier bug [1] where the helper func
+pointer could be NULL due to disabled config option.
 
-  1) The modular perf drivers rely on the current behaviour for the very
-     wrong reasons.
+As Alexei suggested we could check on that in get_helper_proto
+directly. Marking tail_call helper func with BPF_PTR_POISON,
+because it is unused by design.
 
-  2) While none of the other drivers prevents user space from changing
-     the affinity, a cursorily inspection shows that there are at least
-     expectations in some drivers.
+  [1] https://lore.kernel.org/oe-lkp/202507160818.68358831-lkp@intel.com
 
-#1 needs to be cleaned up anyway, so that's not a problem
-
-#2 might result in subtle regressions especially when irqbalanced (which
-   nowadays ignores the affinity hint) is disabled.
-
-Provide new interfaces:
-
-  irq_update_affinity_hint()  - Only sets the affinity hint pointer
-  irq_set_affinity_and_hint() - Set the pointer and apply the affinity to
-                                the interrupt
-
-Make irq_set_affinity_hint() a wrapper around irq_apply_affinity_hint() and
-document it to be phased out.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Nitesh Narayan Lal <nitesh@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20210501021832.743094-1-jesse.brandeburg@intel.com
-Link: https://lore.kernel.org/r/20210903152430.244937-2-nitesh@redhat.com
-Stable-dep-of: 915470e1b44e ("i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Reported-by: syzbot+a9ed3d9132939852d0df@syzkaller.appspotmail.com
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20250814200655.945632-1-jolsa@kernel.org
+Closes: https://lore.kernel.org/oe-lkp/202507160818.68358831-lkp@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/interrupt.h | 53 ++++++++++++++++++++++++++++++++++++++-
- kernel/irq/manage.c       |  8 +++---
- 2 files changed, 56 insertions(+), 5 deletions(-)
+ kernel/bpf/core.c     | 5 ++++-
+ kernel/bpf/verifier.c | 2 +-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 976bca44bae0c..5c4ba2ee582a9 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -329,7 +329,46 @@ extern int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask);
- extern int irq_can_set_affinity(unsigned int irq);
- extern int irq_select_affinity(unsigned int irq);
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 829f0792d8d83..17e5cf18da1ef 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -3013,7 +3013,10 @@ EXPORT_SYMBOL_GPL(bpf_event_output);
  
--extern int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m);
-+extern int __irq_apply_affinity_hint(unsigned int irq, const struct cpumask *m,
-+				     bool setaffinity);
-+
-+/**
-+ * irq_update_affinity_hint - Update the affinity hint
-+ * @irq:	Interrupt to update
-+ * @m:		cpumask pointer (NULL to clear the hint)
-+ *
-+ * Updates the affinity hint, but does not change the affinity of the interrupt.
-+ */
-+static inline int
-+irq_update_affinity_hint(unsigned int irq, const struct cpumask *m)
-+{
-+	return __irq_apply_affinity_hint(irq, m, false);
-+}
-+
-+/**
-+ * irq_set_affinity_and_hint - Update the affinity hint and apply the provided
-+ *			     cpumask to the interrupt
-+ * @irq:	Interrupt to update
-+ * @m:		cpumask pointer (NULL to clear the hint)
-+ *
-+ * Updates the affinity hint and if @m is not NULL it applies it as the
-+ * affinity of that interrupt.
-+ */
-+static inline int
-+irq_set_affinity_and_hint(unsigned int irq, const struct cpumask *m)
-+{
-+	return __irq_apply_affinity_hint(irq, m, true);
-+}
-+
-+/*
-+ * Deprecated. Use irq_update_affinity_hint() or irq_set_affinity_and_hint()
-+ * instead.
-+ */
-+static inline int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
-+{
-+	return irq_set_affinity_and_hint(irq, m);
-+}
-+
- extern int irq_update_affinity_desc(unsigned int irq,
- 				    struct irq_affinity_desc *affinity);
- 
-@@ -361,6 +400,18 @@ static inline int irq_can_set_affinity(unsigned int irq)
- 
- static inline int irq_select_affinity(unsigned int irq)  { return 0; }
- 
-+static inline int irq_update_affinity_hint(unsigned int irq,
-+					   const struct cpumask *m)
-+{
-+	return -EINVAL;
-+}
-+
-+static inline int irq_set_affinity_and_hint(unsigned int irq,
-+					    const struct cpumask *m)
-+{
-+	return -EINVAL;
-+}
-+
- static inline int irq_set_affinity_hint(unsigned int irq,
- 					const struct cpumask *m)
- {
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index b46fbfbb929f1..ce0433446a8ed 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -501,7 +501,8 @@ int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask)
- }
- EXPORT_SYMBOL_GPL(irq_force_affinity);
- 
--int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
-+int __irq_apply_affinity_hint(unsigned int irq, const struct cpumask *m,
-+			      bool setaffinity)
- {
- 	unsigned long flags;
- 	struct irq_desc *desc = irq_get_desc_lock(irq, &flags, IRQ_GET_DESC_CHECK_GLOBAL);
-@@ -510,12 +511,11 @@ int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
+ /* Always built-in helper functions. */
+ const struct bpf_func_proto bpf_tail_call_proto = {
+-	.func		= NULL,
++	/* func is unused for tail_call, we set it to pass the
++	 * get_helper_proto check
++	 */
++	.func		= BPF_PTR_POISON,
+ 	.gpl_only	= false,
+ 	.ret_type	= RET_VOID,
+ 	.arg1_type	= ARG_PTR_TO_CTX,
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 4fd89659750b2..d6782efd25734 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -11206,7 +11206,7 @@ static int get_helper_proto(struct bpf_verifier_env *env, int func_id,
  		return -EINVAL;
- 	desc->affinity_hint = m;
- 	irq_put_desc_unlock(desc, flags);
--	/* set the initial affinity to prevent every interrupt being on CPU0 */
--	if (m)
-+	if (m && setaffinity)
- 		__irq_set_affinity(irq, m, false);
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(irq_set_affinity_hint);
-+EXPORT_SYMBOL_GPL(__irq_apply_affinity_hint);
  
- static void irq_affinity_notify(struct work_struct *work)
- {
+ 	*ptr = env->ops->get_func_proto(func_id, env->prog);
+-	return *ptr ? 0 : -EINVAL;
++	return *ptr && (*ptr)->func ? 0 : -EINVAL;
+ }
+ 
+ static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
 -- 
 2.51.0
 
