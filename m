@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-182677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0780BADCE1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C53AFBAD6E0
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDC443B2B51
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B97F17110D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477D127056D;
-	Tue, 30 Sep 2025 15:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E18027056D;
+	Tue, 30 Sep 2025 15:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1m08cZoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OneWuxn6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0423F846F;
-	Tue, 30 Sep 2025 15:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0D71D61B7;
+	Tue, 30 Sep 2025 15:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245726; cv=none; b=h4b/uPAHr32xXnt5Q70MwRY7b+2S20qZYoQodq+SL1AnQAa1KcA4isq2dGKftmhRFHe1QKTLUUudO27V7Axs1pjIgMDxxhU6vA7jonqaF2/n1XOkWDcCw/Es1ic4odSAQfKKNVLBbgbFlrzoY7LFyqmjklZoYQ8rAFG+S5+FGoU=
+	t=1759244432; cv=none; b=moabIk7xqkLV4DqrGLbBApwdi/dfhlXNmUe5Oh6/t+ON+E/HB7Hj3nLo1QvlgLkudSjHR5ZNHUwFxJxMjRXMzmjRouXgyDO5nMG9BzaMo5g2kIvlwjOtoZk+ISwh7yrLu2vP+xC/GHwqzieJIs7XXnmPPEPnMfKW5YvVcR9kMi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245726; c=relaxed/simple;
-	bh=cyNeyF2x50e1fOlOyU94DBJNsCvdPNfEoeMIQnV4Eqs=;
+	s=arc-20240116; t=1759244432; c=relaxed/simple;
+	bh=T7AU73MIs/S3r/HkMKATErldhK3ofWWJK6IH2VIsxvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzSI+dR3xnmPp2cxo3tsAenT8CEYNJzBaiQ4c9q+f153ykNORu1XF7fYhtCA4G5VoBbVA9ZcPNKFHRcJ+Owo+v0Y8U2vobfejkywZZTDWyQ0Q4Bd0G/Mz6VgqE2mj1/v2jht8PbL28TYY38zs8Ag78MZQFSz/HVvLHkt6ugX4AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1m08cZoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DCEC4CEF0;
-	Tue, 30 Sep 2025 15:22:04 +0000 (UTC)
+	 MIME-Version; b=O2jcz9v6P+lumHiTSxlseTRMNlMjDBb7BsC/Sn+xxrbd/J1HWgUk0ea/4E74LdN5o/0T6xG5y17OfHa/CmX1xHswzNgPBLHhGMsHuwkk8SqYPLpopkjoMAwqjBjusdUz05aJj2MtUVTogiivv5mXheY33KWsTdW76XRoJmKHMIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OneWuxn6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3E7C4CEF0;
+	Tue, 30 Sep 2025 15:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245725;
-	bh=cyNeyF2x50e1fOlOyU94DBJNsCvdPNfEoeMIQnV4Eqs=;
+	s=korg; t=1759244432;
+	bh=T7AU73MIs/S3r/HkMKATErldhK3ofWWJK6IH2VIsxvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1m08cZoAMs1ySdr7oabqq6uZQE+6uFFGj2UpdLOZuspFmBiErXBwrmFqXlNEQ/Rhl
-	 QMPDW3qqklH/0n+y/5dHqj6P8zbDIEW27B562kqWKmXv4OyLL8cKKm5LwMEVXi233P
-	 HgJuFP/JaKkTH9tQVb9nF7I6iAEWTjYxDhP9oS2Y=
+	b=OneWuxn6WzZCFWDhLxz3Uc6KXSKTO+0U7Qf5b3gFNwUzgjmLB02E/EMOhMnMqhInw
+	 WGv7fuqzZ0dCWwJ/QyarbNzGtDHD7sV38PndsR5nvrJFtXTYNv1d8keaMR4JuMyvy6
+	 6l5kgKKuarSQZrSTBpIHnWySa+8+1awhTuPrzIo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 32/91] can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Kamakshi Nellore <nellorex.kamakshi@intel.com>
+Subject: [PATCH 5.10 120/122] i40e: fix idx validation in config queues msg
 Date: Tue, 30 Sep 2025 16:47:31 +0200
-Message-ID: <20250930143822.486103781@linuxfoundation.org>
+Message-ID: <20250930143827.874036325@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +66,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 5c793afa07da6d2d4595f6c73a2a543a471bb055 ]
+[ Upstream commit f1ad24c5abe1eaef69158bac1405a74b3c365115 ]
 
-On R-Car Gen3 using PSCI, s2ram powers down the SoC.  After resume, the
-CAN interface no longer works, until it is brought down and up again.
+Ensure idx is within range of active/initialized TCs when iterating over
+vf->ch[idx] in i40e_vc_config_queues_msg().
 
-Fix this by calling rcar_can_start() from the PM resume callback, to
-fully initialize the controller instead of just restarting it.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/699b2f7fcb60b31b6f976a37f08ce99c5ffccb31.1755165227.git.geert+renesas@glider.be
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/rcar/rcar_can.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index f5aa5dbacaf21..1f26aba620b98 100644
---- a/drivers/net/can/rcar/rcar_can.c
-+++ b/drivers/net/can/rcar/rcar_can.c
-@@ -861,7 +861,6 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
- {
- 	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct rcar_can_priv *priv = netdev_priv(ndev);
--	u16 ctlr;
- 	int err;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2340,7 +2340,7 @@ static int i40e_vc_config_queues_msg(str
+ 		}
  
- 	if (!netif_running(ndev))
-@@ -873,12 +872,7 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
- 		return err;
- 	}
- 
--	ctlr = readw(&priv->regs->ctlr);
--	ctlr &= ~RCAR_CAN_CTLR_SLPM;
--	writew(ctlr, &priv->regs->ctlr);
--	ctlr &= ~RCAR_CAN_CTLR_CANM;
--	writew(ctlr, &priv->regs->ctlr);
--	priv->can.state = CAN_STATE_ERROR_ACTIVE;
-+	rcar_can_start(ndev);
- 
- 	netif_device_attach(ndev);
- 	netif_start_queue(ndev);
--- 
-2.51.0
-
+ 		if (vf->adq_enabled) {
+-			if (idx >= ARRAY_SIZE(vf->ch)) {
++			if (idx >= vf->num_tc) {
+ 				aq_ret = I40E_ERR_NO_AVAILABLE_VSI;
+ 				goto error_param;
+ 			}
+@@ -2361,7 +2361,7 @@ static int i40e_vc_config_queues_msg(str
+ 		 * to its appropriate VSIs based on TC mapping
+ 		 */
+ 		if (vf->adq_enabled) {
+-			if (idx >= ARRAY_SIZE(vf->ch)) {
++			if (idx >= vf->num_tc) {
+ 				aq_ret = I40E_ERR_NO_AVAILABLE_VSI;
+ 				goto error_param;
+ 			}
 
 
 
