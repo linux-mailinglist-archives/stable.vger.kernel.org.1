@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-182334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EF1BAD806
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03434BAD5ED
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C714A43BA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D2E31941F41
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503C02FCBFC;
-	Tue, 30 Sep 2025 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B054030507E;
+	Tue, 30 Sep 2025 14:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T338kGJJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glzq+TQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEFD1EE02F;
-	Tue, 30 Sep 2025 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF3C3043C4;
+	Tue, 30 Sep 2025 14:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244605; cv=none; b=MMLMLFT2wChAS90JwC4JdvWzMcmRyGYIRdlBtJ6GZYHeezoasrCiri+zLNijHs/8pSch5gzDCeJC13StwaXY18RQ1w4hhtovf7larCF+Yv37WpUv7dcJKvuj3X+PzteAgaL3q54m7LldyF8I51X9Ir+ONLFw2MvbhcDcljMHO+I=
+	t=1759244183; cv=none; b=SMdr6vLjbSxepA5mKUFTyFpKGDKZV8ipV+KscC1SMgF+rM7J7PwxNyYsfnQXhr6+yW8avmnT3N1mT4z+6uxh6RDFfrDmXCq7xBCZzp9NkCbTJBXxrcCX0TzXc2O6RC3UCHz5UYtkdz9oABfMpyJf0/lz96B9uWsZPoH7sfn6dhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244605; c=relaxed/simple;
-	bh=9DO1Uj1IlTI0QrCo2CbLr3ezWwVr4r3uttdGi2/E2tQ=;
+	s=arc-20240116; t=1759244183; c=relaxed/simple;
+	bh=4KThQDOKk+OtsNiz/EZexfiAKyyZmsDfzooZliTeqTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QnrmFgNBwDpw6JBG6RVPqjjrM4QFCVddPp0OdWQFUNT57cTmeG2NAuhLoeVsfimit11il7DCFHKT/8Owh+0RfMoyAp5X0HZ/yHYQHeQadhwHy/rFG5O8d++94CYYFv2tHP6Cn0utRk/y5aR+6l1axyhxrOIFW79m49aCy3QhfSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T338kGJJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87202C4CEF0;
-	Tue, 30 Sep 2025 15:03:24 +0000 (UTC)
+	 MIME-Version; b=X8j9XGBx2DHyJQejyofcXPPeASos+gznoCDCzgMVV79/T4IUfj13yUxo6Sui4+dhGhU1OYby+LilobcUiBug7RASlkSrCp9l+eqlCS8usLMsA/QQp/hRzV68K+uhwH6Znk0KRXqCV9zoHqb3qzDnwZKXJb6OwqRnBUbfwI66fzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glzq+TQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D486C113D0;
+	Tue, 30 Sep 2025 14:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244604;
-	bh=9DO1Uj1IlTI0QrCo2CbLr3ezWwVr4r3uttdGi2/E2tQ=;
+	s=korg; t=1759244183;
+	bh=4KThQDOKk+OtsNiz/EZexfiAKyyZmsDfzooZliTeqTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T338kGJJDOHXZAp/Zi3Yd+d7YYRAirsqOJ2Ps5glQF1J6BJsNrMOiN1wcH7BS7lDL
-	 c0qSaDUQoRFmiAvrkeEVFBzqcXwPswf8jmwc3eYTPMXodBwL+FDHKv3EhBNIaOEYPW
-	 Tw4B6o12so/4CkXmfr5VHiiDiBnJEee6hjnKf15U=
+	b=glzq+TQ6ZTr0DVwzgyl6FgUBRseli484YdAg8ZZAf2nF3wQI6U++Y7IERfp3y7sJE
+	 qd+DkIjg9qP+S6S23UNqYtlMYO5YryYXU3rSWFCIfTgjjAkkvv0st/X8jnTrnVxDwd
+	 OKJupg/tT7UpUKUHPTlfQBXILGSjSg1RDUvIaJkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Balamurugan C <balamurugan.c@intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 027/143] ASoC: Intel: soc-acpi: Add entry for HDMI_In capture support in PTL match table
-Date: Tue, 30 Sep 2025 16:45:51 +0200
-Message-ID: <20250930143832.325884366@linuxfoundation.org>
+	Wei Yang <richard.weiyang@gmail.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 021/122] mm/khugepaged: fix the address passed to notifier on testing young
+Date: Tue, 30 Sep 2025 16:45:52 +0200
+Message-ID: <20250930143823.862145945@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +70,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balamurugan C <balamurugan.c@intel.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit fb00ab1f39369e49d25c74f0d41e4c1ec2f12576 ]
+commit 394bfac1c7f7b701c2c93834c5761b9c9ceeebcf upstream.
 
-Adding HDMI-In capture via I2S feature support in PTL platform.
+Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
+mmu_notifier_test_young(), but we are passing the wrong address.
+In xxx_scan_pmd(), the actual iteration address is "_address" not
+"address".  We seem to misuse the variable on the very beginning.
 
-Signed-off-by: Balamurugan C <balamurugan.c@intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250708080030.1257790-3-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 03aa2ed9e187 ("ASoC: Intel: sof_rt5682: Add HDMI-In capture with rt5682 support for PTL.")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Change it to the right one.
+
+[akpm@linux-foundation.org fix whitespace, per everyone]
+Link: https://lkml.kernel.org/r/20250822063318.11644-1-richard.weiyang@gmail.com
+Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_es8336.c               | 10 ++++++++++
- sound/soc/intel/common/soc-acpi-intel-ptl-match.c | 12 ++++++++++++
- 2 files changed, 22 insertions(+)
+ mm/khugepaged.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
-index a0b3679b17b42..1211a2b8a2a2c 100644
---- a/sound/soc/intel/boards/sof_es8336.c
-+++ b/sound/soc/intel/boards/sof_es8336.c
-@@ -826,6 +826,16 @@ static const struct platform_device_id board_ids[] = {
- 					SOF_ES8336_SPEAKERS_EN_GPIO1_QUIRK |
- 					SOF_ES8336_JD_INVERTED),
- 	},
-+	{
-+		.name = "ptl_es83x6_c1_h02",
-+		.driver_data = (kernel_ulong_t)(SOF_ES8336_SSP_CODEC(1) |
-+					SOF_NO_OF_HDMI_CAPTURE_SSP(2) |
-+					SOF_HDMI_CAPTURE_1_SSP(0) |
-+					SOF_HDMI_CAPTURE_2_SSP(2) |
-+					SOF_SSP_HDMI_CAPTURE_PRESENT |
-+					SOF_ES8336_SPEAKERS_EN_GPIO1_QUIRK |
-+					SOF_ES8336_JD_INVERTED),
-+	},
- 	{ }
- };
- MODULE_DEVICE_TABLE(platform, board_ids);
-diff --git a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
-index ff4f2fbf9271d..67f1091483dce 100644
---- a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
-@@ -26,6 +26,11 @@ static const struct snd_soc_acpi_codecs ptl_essx_83x6 = {
- 	.codecs = { "ESSX8316", "ESSX8326", "ESSX8336"},
- };
- 
-+static const struct snd_soc_acpi_codecs ptl_lt6911_hdmi = {
-+	.num_codecs = 1,
-+	.codecs = {"INTC10B0"}
-+};
-+
- struct snd_soc_acpi_mach snd_soc_acpi_intel_ptl_machines[] = {
- 	{
- 		.comp_ids = &ptl_rt5682_rt5682s_hp,
-@@ -34,6 +39,13 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_ptl_machines[] = {
- 		.tplg_quirk_mask = SND_SOC_ACPI_TPLG_INTEL_AMP_NAME |
- 					SND_SOC_ACPI_TPLG_INTEL_CODEC_NAME,
- 	},
-+	{
-+		.comp_ids = &ptl_essx_83x6,
-+		.drv_name = "ptl_es83x6_c1_h02",
-+		.machine_quirk = snd_soc_acpi_codec_list,
-+		.quirk_data = &ptl_lt6911_hdmi,
-+		.sof_tplg_filename = "sof-ptl-es83x6-ssp1-hdmi-ssp02.tplg",
-+	},
- 	{
- 		.comp_ids = &ptl_essx_83x6,
- 		.drv_name = "sof-essx8336",
--- 
-2.51.0
-
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1363,7 +1363,7 @@ static int khugepaged_scan_pmd(struct mm
+ 		}
+ 		if (pte_young(pteval) ||
+ 		    page_is_young(page) || PageReferenced(page) ||
+-		    mmu_notifier_test_young(vma->vm_mm, address))
++		    mmu_notifier_test_young(vma->vm_mm, _address))
+ 			referenced++;
+ 	}
+ 	if (!writable) {
 
 
 
