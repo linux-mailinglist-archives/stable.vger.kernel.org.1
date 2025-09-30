@@ -1,124 +1,133 @@
-Return-Path: <stable+bounces-182059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F23BAC608
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 11:57:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60452BAC73D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 12:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 775257A1DCD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 09:55:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4047C3B1089
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 10:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E46B2F7475;
-	Tue, 30 Sep 2025 09:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WoZnNigI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363E92F9C38;
+	Tue, 30 Sep 2025 10:21:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F762F5335
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 09:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD782F99A4
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 10:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759226235; cv=none; b=gvFHu4yABaJ++8vXsgH9/363z6JKO+7OXrnw2CREbCYEJkNwfao8RqUPnoaD+6/OwlZd6TaNfEjJ4IaWk1xTq5JRSytv9rImLtaeg5SfxRCyp8e+fXdClLutPbIiNAn2n0gcwFv1auExVgh3tsjE4VUpTe0nh2IDKKexdWNNalM=
+	t=1759227673; cv=none; b=WlrYaJu0LKIb+l3Tzg4dwpiUpcN1BbBPkY77TBOPn8FRhq9RNWVVEqUXnl7UOUhAn6HtG9vaG8qqG/bliE+p6jGycEXUuNvWJ6Wrao9XMTyo6QGMiBZfGkYWhaz9ysBWO7zMIl36+9iynsL9LrxCEtrEJ8rVG3G0GWA5SpGWjCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759226235; c=relaxed/simple;
-	bh=Iby0dCV1k5FoMaSlf23PqKFSrLsu46FnHbptNvkg3QU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=um6oEgGwdwPrHaujCoicZKdzXfvDugPr2SzHANbQbmjId33hDn+4BCnTWMZ72szI6pg5eIngj3U6Ot3YePvLFsZzDDpDCTRA9uUoIH3n6QylGN+ErGt4EszmL/QN006Rd6DlYyUOEXfU4AsWokGT6hUjn/L9GsUnMYDkh5NKKr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WoZnNigI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759226232;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=srAu9efQeLkOrSNZBhuxJ9qVZjhUw1Qf2FT+xE0jzg8=;
-	b=WoZnNigIx7hI+z5mdBPkrjlB/PRC1MhFZ6OebiAyMBCjIFuCWoIfcjtci4OPsDDXkxssMF
-	d9qdh11eV6T+hCCNOzoH6eLMjsCtc0yGMMQ+NH7QWOBCm2o2LCnIaOVwJT5odXYx401ZkX
-	Jvi79o9Cj9mCIbFyWyK0gD4tL9vXfz4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-256-tc6Re3i8N1W5qb79nNt0gQ-1; Tue, 30 Sep 2025 05:57:11 -0400
-X-MC-Unique: tc6Re3i8N1W5qb79nNt0gQ-1
-X-Mimecast-MFC-AGG-ID: tc6Re3i8N1W5qb79nNt0gQ_1759226230
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ed9557f976so3769783f8f.3
-        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 02:57:10 -0700 (PDT)
+	s=arc-20240116; t=1759227673; c=relaxed/simple;
+	bh=WQLYqqeVFTfkVzqoUMVRfNAxbGpfZXqrGeHdXR29J2U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g0wPaDfiruoOpaMJB5WAj9SvR9zv8KCuiCyHCG+y0vMqE3WO48bFfC4elO4NtbXg9W/G6xBqMEbwFNIDPg/YYMSAZQE4McA/cJ9PcTeTacWYyYeiyBRiP3FXrYWtPVwz0IcltsTRjHVkZuzU0wtih4Hm4uf2xBFEspcNBv87DM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-92cbfab6c0dso760362241.3
+        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 03:21:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759226229; x=1759831029;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=srAu9efQeLkOrSNZBhuxJ9qVZjhUw1Qf2FT+xE0jzg8=;
-        b=nzY87lP1FyeRUBZYP+1JROdnvFwhOtFroU5gYeXSq9TKohk8dAtZ7mdoYyuBhOqk6p
-         YFW4/ZT/ImxN9zOk/J3ywCmb4oRJt80ouOTEycz5ESMtT3qOo5+dnOwPo/4tyzkWprYg
-         PQmNomznR7y8fx/g83ydxIrbvGy/Id/TGViPSCRz0MCWpN+iap8YrvxsU8k3SsvW1K3L
-         E0giO7bhnM3IfwF6PSbq3gjH0sLdFDF0o4WH8ENQbspI834VoMHLpPbegSm/Y0Pz+bsv
-         lTLQ/cobROuTAUUH1puop5GyEusbPsCHTMATvrHx+bKhVF6kXiSs7J/XqrAC8WrvzBDU
-         wOOA==
-X-Gm-Message-State: AOJu0Yzqt6uahLNJIQVAlTrL92zjW0G3nEIU42e1VIaddLBnMmsq00TK
-	RhJ61I7GG+RQi6d7Veg5BdCIWPNua+QmATnCBIIsxGLwd6n5iXp1gfX6800kD77P10VDBfcJXc4
-	0iOwTbGmVohmPV2EZwjHqjDSpu5TanNNtGOFj0GzUS/SOa4ID6jYKBXTjuQ==
-X-Gm-Gg: ASbGnctLODyUpDlloCHEb4fewl9MgNdNsuGM7o8p4Dw6TTzgQZRS1so/cFwXnaxD3Xo
-	tnGvzb03RWGFuP56sMov+Nlgn2KJKiCNmSvNb52/9TID7p43G7zwLENahaWpy0QZMrSuuz+9Ksx
-	EBtLyXc8FupFDQ+abZDkjvWQUILR3tDoEab+eHVNCZx/wWQ6G41trjZ2anekH9+XsFMaatn55xZ
-	kHGYlvekNShUOrnqam0mHXkPQV2fMhuIa8hlUByOkyqoccyDvoDrC1sc2i02G7Dm298OC1dKyf+
-	vKV04v0iaesvz+GobVnD6vFT6I/CN7J2ml/QWb+H1+ICXLW3VfRTTLJJHM5YUpPlhrSzFStz4HC
-	i9bLzOzkqzD8d3y8WHA==
-X-Received: by 2002:adf:eb8f:0:b0:3e2:4a3e:d3e5 with SMTP id ffacd0b85a97d-41358755409mr11327884f8f.22.1759226229589;
-        Tue, 30 Sep 2025 02:57:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHRvdEuxPGd1K1hL6v0AssJUCVO28oQVmR6eHnpL1I8WvLYCEWr5PTILGebhv46wh47Za/SKg==
-X-Received: by 2002:adf:eb8f:0:b0:3e2:4a3e:d3e5 with SMTP id ffacd0b85a97d-41358755409mr11327863f8f.22.1759226229159;
-        Tue, 30 Sep 2025 02:57:09 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb8811946sm21856303f8f.18.2025.09.30.02.57.07
+        d=1e100.net; s=20230601; t=1759227670; x=1759832470;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=auZnMEhGQ1qbaDugOLJ3H3dc2TwXmOwQEh+fyQy4fvU=;
+        b=bM+NQXcdT/Avb7bDXujjzdd3BIl+iczAG2EqTeSCdGpfFb6HeHTsm+VWlowYRvk9az
+         IknhcRfLuVIILBLu50hwLSREJYz9qG6XAsGl5bAfxmkIR2QgBYGekNdZPx95WRf1m3qu
+         ONZqz6CMMvu7VqqZXO9k9KEFduzEX46THQYqpDj321mYcD0pNClVCXsYED9ame4CXpZS
+         ur2Y3uDkSMgB+YL1UCVZUEHpmGOW7HgA1h+GnME+NJDulc+nycXgmjRmd/THJynQBMrF
+         81mGlF7JhdBx5h3bUP51d1I4mmPe7v/L+UzdwX1SkOAZaSjKfSvwRxKd7mhsodNBwl+m
+         gJiw==
+X-Forwarded-Encrypted: i=1; AJvYcCW162xI/PGSrG2N90u0ENtZE/r6iznD/uO63/Eft/JAUiBt3ctBBt2tNl9jhAN0NJPLLa6D4wM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywzeu1+OuncZTOn2RreBlnSESFXuQwEMYWR4b1jjGDFixm6EnFL
+	p2L4MQ0yXlM1Npj36KF7dm919YJXVicCQWKrrIAvoMS3x4DyOsHWqyDglEG9GySK
+X-Gm-Gg: ASbGncvNihUK3qjevzy+p2M5zazrpdWCte8DHRhy9i2xc5ghKEvtq9KgY+laLZ2zi4S
+	MxsylRLKehayr4QMtarLudDI6zKAfhvE5+CgJm5g809YrTFEjrF7FnA0rnj/UUDCwwfNqlcTslw
+	T/oXxfKUPsiVErzVs9Poyp6xiNqVy0XZlpLPUZ/XjFa8Kwg4pUFLd7CMbRN5gsACsf6JoOZUmS/
+	mqTvIJs17LlqC0iOC3ModI8MJyeLQFjtiRokRk+ZazaL5BbOM2kCOyGfr5y5dm3UI3iBK4+2pmV
+	k53EIAiDTLTi0vAmcxux4UwfdrEvN2deYAzg3arjDVh15DzM4Iy6xXwXgMxeavbIo9DvreTbmbc
+	YlbevGnjx65i3Cw+f1PPHVYwD4fGV4wpLHkk86s/bAj8tV9Lc94k5TGuFiP7x7pwz4FNGwM82Vs
+	2zPtfeSuSl5Zi9a30xjBY=
+X-Google-Smtp-Source: AGHT+IGpL7KeOHh9iDVOCKOfBYGqnag6ogHiI4F9VakTPOoVMPKWhMWc9SzSclTaWrA3ZmbNRQ+Rgw==
+X-Received: by 2002:a05:6102:b03:b0:5a8:4256:1f14 with SMTP id ada2fe7eead31-5acd94bd965mr7973434137.35.1759227669649;
+        Tue, 30 Sep 2025 03:21:09 -0700 (PDT)
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5ae3182b293sm4476580137.6.2025.09.30.03.21.09
+        for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 02:57:08 -0700 (PDT)
-Message-ID: <65e53548-2d68-464a-87bd-909f360cdb1c@redhat.com>
-Date: Tue, 30 Sep 2025 11:57:07 +0200
+        Tue, 30 Sep 2025 03:21:09 -0700 (PDT)
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-5a218470faaso4395348137.2
+        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 03:21:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWq8CZBXDxp3ZPJU4GsvdoyH2rV+ACnyRegNdoL+AZ/ryXMx6CZUHIZnBersyVgqRt4SVJ/mdU=@vger.kernel.org
+X-Received: by 2002:a05:6102:a4e:b0:520:ec03:32e9 with SMTP id
+ ada2fe7eead31-5accb9fe470mr8731133137.3.1759227669064; Tue, 30 Sep 2025
+ 03:21:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: wan: hd64572: validate RX length before skb
- allocation and copy
-To: Guangshuo Li <lgs201920130244@gmail.com>, Krzysztof Halasa
- <khc@pm.waw.pl>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20250926104941.1990062-1-lgs201920130244@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250926104941.1990062-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250912095308.3603704-1-claudiu.beznea.uj@bp.renesas.com>
+ <CAMuHMdXv1-w0SE7FZy5k3jg2FO-a-RB2w1WB=VM_UFEA9zjWDw@mail.gmail.com>
+ <ef82c610-0571-4665-a5d1-07a9ed9fb8d3@tuxon.dev> <2bd09757-cd66-4a2a-8801-0f62dc99b9c8@tuxon.dev>
+In-Reply-To: <2bd09757-cd66-4a2a-8801-0f62dc99b9c8@tuxon.dev>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 30 Sep 2025 12:20:57 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdW6TQFZJ_r+XZOuh7yTUKwZxQRCr4Ps-xZ8U702xMd1=w@mail.gmail.com>
+X-Gm-Features: AS18NWCkJPBMZWKc2yUGwPw-vQOHjjVBBvrCu5QO61We_9-kmpWet2XbZ5yLDKI
+Message-ID: <CAMuHMdW6TQFZJ_r+XZOuh7yTUKwZxQRCr4Ps-xZ8U702xMd1=w@mail.gmail.com>
+Subject: Re: [PATCH v2] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
+To: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: linus.walleij@linaro.org, biju.das.jz@bp.renesas.com, 
+	linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Hi Claudiu,
 
+On Tue, 30 Sept 2025 at 07:33, Claudiu Beznea <claudiu.beznea@tuxon.dev> wrote:
+> On 9/29/25 15:10, Claudiu Beznea wrote:
+> >> This conflicts with commit d57183d06851bae4 ("pinctrl: renesas: rzg2l:
+> >> Drop unnecessary pin configurations"), which I have already queued
+> >> in renesas-drivers/renesas-pinctrl-for-v6.19.  Hence I am replacing
+> >> the above hunk by:
+> >>
+> >>             /* Switching to GPIO is not required if reset value is
+> >> same as func */
+> >>             reg = readb(pctrl->base + PMC(off));
+> >>     -       spin_lock_irqsave(&pctrl->lock, flags);
+> >>     +       raw_spin_lock_irqsave(&pctrl->lock, flags);
+> >>             pfc = readl(pctrl->base + PFC(off));
+> >>             if ((reg & BIT(pin)) && (((pfc >> (pin * 4)) & PFC_MASK) == func)) {
+> >>     -               spin_unlock_irqrestore(&pctrl->lock, flags);
+> >>     +               raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+> >>                     return;
+> >>             }
+> >>
+> >> while applying.
+> > This is right. Thank you! I'm going to give it also a try (on actual HW) a
+> > bit later. I'll let you know.
+>
+> Sorry for the delay, all looks good to me (checked on RZ/G3S).
 
-On 9/26/25 12:49 PM, Guangshuo Li wrote:
-> The driver trusts the RX descriptor length and uses it directly for
-> dev_alloc_skb(), memcpy_fromio(), and skb_put() without any bounds
-> checking. If the descriptor gets corrupted or otherwise contains an
-> invalid value, 
+Given this is a fix which will be backported, I will reshuffle both
+commits, so your fix is first, and the above no longer applies (here).
 
-Why/how? Is the H/W known to corrupt the descriptors? If so please point
-that out in the commit message.
-Otherwise, if this is intended to protect vs generic memory corruption
-inside the kernel caused by S/W bug, please look for such corruption
-root cause instead.
+Gr{oetje,eeting}s,
 
-Thanks,
+                        Geert
 
-Paolo
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
