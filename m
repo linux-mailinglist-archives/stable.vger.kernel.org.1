@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1BBBADA1A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:14:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D76BAD857
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C80619400EB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C9CA1924A7A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D615307AD2;
-	Tue, 30 Sep 2025 15:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FEF302CD6;
+	Tue, 30 Sep 2025 15:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsSc+RbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGxTn+NT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8EC2F6167;
-	Tue, 30 Sep 2025 15:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8015B2F9D9E;
+	Tue, 30 Sep 2025 15:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245268; cv=none; b=nmUH+9qkQHulp2MlCG/P5+Lv873evTkZvroUZvwocizGKPpDvQLbj+H79Rtm1TGpHSKHmlvpDt0lIX7ULFYPBeIxbPrQyUJN3cLLpgUNOFLyD+xMqmtjkCSphbogXWy3VpKzjKc5fKeWDeNU5IBvWV8ZGcnoMjcYtH9D2/1ADSs=
+	t=1759244839; cv=none; b=joUvL/V9ZGyE44NnSO14TgoEtlXjDEm8nAkIM0kRb4X4JFqcHQcLSKoRtgAkg9xUQDItLz9AHuc+HjmHaKE19DDF03E3Bdki9yjCnu7KpI0H8c05bdn/cqeRQFhFRUvc4yzqb+kwqXvRvWPakt0JPamiMu6kCJ3vO+Z4G1G/amw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245268; c=relaxed/simple;
-	bh=a456hYY0xl7NYpwZNS5UMyHykqmZlK8FW9XHD0Tk3nw=;
+	s=arc-20240116; t=1759244839; c=relaxed/simple;
+	bh=c/5pYdg/pFhkcFkCI4AGk85O1Y1K8khGVrQjNQgegeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKMLbUB6Wl9zwzAuzrAOaUNS/vQe9OF+zT3CWgsj3Wfqh1xVjqkY7FQosyntxQqihgVGGKdqsqqj5Wy78U8d1LI6hhgutss/IZY6DLnLAth2mq5FnZt4Oq95aPmXqvdikVFk6/xE1QMxo2grYCqosuq3Hq66uHRrSj6LSszkh9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsSc+RbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB81FC4CEF0;
-	Tue, 30 Sep 2025 15:14:27 +0000 (UTC)
+	 MIME-Version; b=l5W6SZsIMAqbGh4UdcOo2BHWDUHe77jMWlGWu7JarMnd5T0+NwtbQA7bs2yhAFEFzV0nGuta200t58OKjucXFKgpmr8pIodhqmRyD4wo6HxhuoFdFdXY3WJOf2QxEOfAmvnLTL4veZNyxYEBsuvJamlbH5+ASu9CaGrKFn20EYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGxTn+NT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CF6C116B1;
+	Tue, 30 Sep 2025 15:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245268;
-	bh=a456hYY0xl7NYpwZNS5UMyHykqmZlK8FW9XHD0Tk3nw=;
+	s=korg; t=1759244839;
+	bh=c/5pYdg/pFhkcFkCI4AGk85O1Y1K8khGVrQjNQgegeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DsSc+RbKlOpH9BFVf+JB0/4bNKOJqY8eJ3iomlJnwzZVKSiE5eWnUs+SbDkuYka59
-	 Qm+Qr6zzVnp5V2/zCa6sRPSootP564yIu51o2bGWsShERfJ2TRuvB3zauC3MMujOzV
-	 TCXrPzStN+5wJM6J231GVhm+XcCIP55OaTQfjsNk=
+	b=cGxTn+NTxCcf87UPIff3tVLSuNuhZj+68QD1JeYBhiwsLwFjb/RWppUOZVdWIcPtU
+	 iYESRO98WQALEYbxkSeEMJs+vS6mWLN23mZC7ABWOd2GaiQBvvOF3oUyJuvsIUJZ1m
+	 hQjhB7bPEPALxhvNWpSQGocYtGeZCL2ESeyMmDh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 116/151] bpf: Reject bpf_timer for PREEMPT_RT
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.16 122/143] pinctrl: airoha: fix wrong MDIO function bitmaks
 Date: Tue, 30 Sep 2025 16:47:26 +0200
-Message-ID: <20250930143832.228868098@linuxfoundation.org>
+Message-ID: <20250930143836.094685115@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Hwang <leon.hwang@linux.dev>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit e25ddfb388c8b7e5f20e3bf38d627fb485003781 ]
+commit a061e739d36220c002da8b2429d5f16f637eb59a upstream.
 
-When enable CONFIG_PREEMPT_RT, the kernel will warn when run timer
-selftests by './test_progs -t timer':
+With further testing with an attached Aeonsemi it was discovered that
+the pinctrl MDIO function applied the wrong bitmask. The error was
+probably caused by the confusing documentation related to these bits.
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+Inspecting what the bootloader actually configure, the SGMII_MDIO_MODE
+is never actually set but instead it's set force enable to the 2 GPIO
+(gpio 1-2) for MDC and MDIO pin.
 
-In order to avoid such warning, reject bpf_timer in verifier when
-PREEMPT_RT is enabled.
+The usage of GPIO might be confusing but this is just to instruct the
+SoC to not mess with those 2 PIN and as Benjamin reported it's also an
+Errata of 7581. The FORCE_GPIO_EN doesn't set them as GPIO function
+(that is configured by a different register) but it's really to actually
+""enable"" those lines.
 
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-Link: https://lore.kernel.org/r/20250910125740.52172-2-leon.hwang@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Normally the SoC should autodetect this by HW but it seems AN7581 have
+problem with this and require this workaround to force enable the 2 pin.
+
+Applying this configuration permits correct functionality of any
+externally attached PHY.
+
+Cc: stable@vger.kernel.org
+Fixes: 1c8ace2d0725 ("pinctrl: airoha: Add support for EN7581 SoC")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Acked-by: Benjamin Larsson <benjamin.larsson@genexis.eu>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pinctrl/mediatek/pinctrl-airoha.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 89b4fa815a9ba..4b7c9a60a7352 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -5071,6 +5071,10 @@ static int process_timer_func(struct bpf_verifier_env *env, int regno,
- 		verbose(env, "verifier bug. Two map pointers in a timer helper\n");
- 		return -EFAULT;
- 	}
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
-+		verbose(env, "bpf_timer cannot be used for PREEMPT_RT.\n");
-+		return -EOPNOTSUPP;
-+	}
- 	meta->map_uid = reg->map_uid;
- 	meta->map_ptr = map;
- 	return 0;
+diff --git a/drivers/pinctrl/mediatek/pinctrl-airoha.c b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+index ee5b9bab4552..b405dfa20891 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-airoha.c
++++ b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+@@ -108,6 +108,9 @@
+ #define JTAG_UDI_EN_MASK			BIT(4)
+ #define JTAG_DFD_EN_MASK			BIT(3)
+ 
++#define REG_FORCE_GPIO_EN			0x0228
++#define FORCE_GPIO_EN(n)			BIT(n)
++
+ /* LED MAP */
+ #define REG_LAN_LED0_MAPPING			0x027c
+ #define REG_LAN_LED1_MAPPING			0x0280
+@@ -718,17 +721,17 @@ static const struct airoha_pinctrl_func_group mdio_func_group[] = {
+ 	{
+ 		.name = "mdio",
+ 		.regmap[0] = {
+-			AIROHA_FUNC_MUX,
+-			REG_GPIO_PON_MODE,
+-			GPIO_SGMII_MDIO_MODE_MASK,
+-			GPIO_SGMII_MDIO_MODE_MASK
+-		},
+-		.regmap[1] = {
+ 			AIROHA_FUNC_MUX,
+ 			REG_GPIO_2ND_I2C_MODE,
+ 			GPIO_MDC_IO_MASTER_MODE_MODE,
+ 			GPIO_MDC_IO_MASTER_MODE_MODE
+ 		},
++		.regmap[1] = {
++			AIROHA_FUNC_MUX,
++			REG_FORCE_GPIO_EN,
++			FORCE_GPIO_EN(1) | FORCE_GPIO_EN(2),
++			FORCE_GPIO_EN(1) | FORCE_GPIO_EN(2)
++		},
+ 		.regmap_size = 2,
+ 	},
+ };
 -- 
 2.51.0
 
