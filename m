@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-182760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C8A3BADD26
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F28BADC0F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28696327CD7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3388D324196
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F079725FA0F;
-	Tue, 30 Sep 2025 15:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62E5223DD6;
+	Tue, 30 Sep 2025 15:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3iJP0Il"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10G57EZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE49D1F3FED;
-	Tue, 30 Sep 2025 15:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16FA846F;
+	Tue, 30 Sep 2025 15:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245999; cv=none; b=Jk1z9Rri9vfFRtDp+WYNyereVsRpUwsnS1Wb1bQmxaRjIv/2uUw/TUhq/1uokIrA6OU/LE2zHMAYJRr7T+d/3Lg4/gNSsxLhbeOcwvlUkyUebZMNhpY42hvfEnhhbaOcOoH8VZISfkFhXrBzx1UDj3pJqXwzLVFVjLaQYlwpGuw=
+	t=1759245740; cv=none; b=ONWu1+K6Ce31btuUJ9Z973jefQDEYQsrXVSlQcP0bUyuBopLvjoIp54rfBurOJArVxjAumS4a/yCuojTiUgiE8y++rKy8hmc3DvIvyIPdEjVvGVnNg4LDzdaJ6ao+Xn/7MAHMeBsZhtXmBDQz7EeSbU2/FH7U5cH+38bVFZy8Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245999; c=relaxed/simple;
-	bh=J3NuxUzIDu+RlU87PWWPTVXHKMdCKM8qt22PaUX2vO0=;
+	s=arc-20240116; t=1759245740; c=relaxed/simple;
+	bh=e3HjIcHh6FWv+7LJ3Mc/8PZjAmhy0kHu2gNiyMUeCTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mrt0sNkwMRZxG9ALGjSpABNqQnfLqzPHK7HWo3WWm3ze/VF5yGhsKcDiinNBUPEqNrGQwO3pemeZ+LqomcmIJG3fEI/hf6SViF6Y2psukFE+cAejkuqdQ3qiX0qyOVLlhQEEUvuBeDy07nGz1eqs5UZXsACqUAE6+YFMgPNANaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3iJP0Il; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31611C4CEF0;
-	Tue, 30 Sep 2025 15:26:38 +0000 (UTC)
+	 MIME-Version; b=Sr+BUiGNtul0JusxSkQ+00nj+BocfrgajiqE3OTrjyL7+xktK3mueWXJVQ0IcO3qAocd8C3sbI9OPVrrLiHZtflADTzmSopS2BTJ5Dj8KSswDDQNPq0dWBWUB7ebFHmp5Imya+OvQ7zgNbYfhY2WNVdGWCzESqHaCspg20Wy4KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10G57EZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5553C4CEF0;
+	Tue, 30 Sep 2025 15:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245999;
-	bh=J3NuxUzIDu+RlU87PWWPTVXHKMdCKM8qt22PaUX2vO0=;
+	s=korg; t=1759245739;
+	bh=e3HjIcHh6FWv+7LJ3Mc/8PZjAmhy0kHu2gNiyMUeCTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3iJP0IlDeuPZka+V6SLs5ky37UfadYutCMngW79TonT3cYc/Gp1Yod5E7VqZaVD+
-	 O2ZYlA2FrBmMLKbWqoknN15fLKN7tfySt/0upAgIHX5L8255S72Bs3dZ+L+wQkAYVQ
-	 qd6l9VR90dor6HwDYard5+IalEF/EvC7+lfRaGNk=
+	b=10G57EZcHvYF4UYVK4ZCkYazIJOHVa7nYKPrIYs5NioxZ7OKnXWaaJxTDJiqffGKo
+	 99S71Zk4MtPjYK0QTRFel1AxkCEMWytUgta86Qsdpo8iXwrEpwxorbknTiKf40Z9oA
+	 D0+ZvunJ8/neR4cwUqFW1E/61dvBySDgXeo1BBTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 21/89] i2c: designware: Add quirk for Intel Xe
+Subject: [PATCH 6.6 36/91] can: hi311x: populate ndo_change_mtu() to prevent buffer overflow
 Date: Tue, 30 Sep 2025 16:47:35 +0200
-Message-ID: <20250930143822.771030193@linuxfoundation.org>
+Message-ID: <20250930143822.662917494@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-[ Upstream commit f6a8e9f3de4567c71ef9f5f13719df69a8b96081 ]
+[ Upstream commit ac1c7656fa717f29fac3ea073af63f0b9919ec9a ]
 
-The regmap is coming from the parent also in case of Xe
-GPUs. Reusing the Wangxun quirk for that.
+Sending an PF_PACKET allows to bypass the CAN framework logic and to
+directly reach the xmit() function of a CAN driver. The only check
+which is performed by the PF_PACKET framework is to make sure that
+skb->len fits the interface's MTU.
 
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Co-developed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250701122252.2590230-3-heikki.krogerus@linux.intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[Rodrigo fixed the co-developed tags while merging]
+Unfortunately, because the sun4i_can driver does not populate its
+net_device_ops->ndo_change_mtu(), it is possible for an attacker to
+configure an invalid MTU by doing, for example:
+
+  $ ip link set can0 mtu 9999
+
+After doing so, the attacker could open a PF_PACKET socket using the
+ETH_P_CANXL protocol:
+
+	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
+
+to inject a malicious CAN XL frames. For example:
+
+	struct canxl_frame frame = {
+		.flags = 0xff,
+		.len = 2048,
+	};
+
+The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
+check that the skb is valid, unfortunately under above conditions, the
+malicious packet is able to go through can_dev_dropped_skb() checks:
+
+  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
+     function does not check the actual device capabilities).
+
+  2. the length is a valid CAN XL length.
+
+And so, hi3110_hard_start_xmit() receives a CAN XL frame which it is
+not able to correctly handle and will thus misinterpret it as a CAN
+frame. The driver will consume frame->len as-is with no further
+checks.
+
+This can result in a buffer overflow later on in hi3110_hw_tx() on
+this line:
+
+	memcpy(buf + HI3110_FIFO_EXT_DATA_OFF,
+	       frame->data, frame->len);
+
+Here, frame->len corresponds to the flags field of the CAN XL frame.
+In our previous example, we set canxl_frame->flags to 0xff. Because
+the maximum expected length is 8, a buffer overflow of 247 bytes
+occurs!
+
+Populate net_device_ops->ndo_change_mtu() to ensure that the
+interface's MTU can not be set to anything bigger than CAN_MTU. By
+fixing the root cause, this prevents the buffer overflow.
+
+Fixes: 57e83fb9b746 ("can: hi311x: Add Holt HI-311x CAN driver")
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-2-0d1cada9393b@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-platdrv.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/can/spi/hi311x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index a3e86930bf418..ef9bed2f2dccb 100644
---- a/drivers/i2c/busses/i2c-designware-platdrv.c
-+++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -101,7 +101,7 @@ static int bt1_i2c_request_regs(struct dw_i2c_dev *dev)
- }
- #endif
+diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
+index b757555ed4c4f..57ea7dfe8a596 100644
+--- a/drivers/net/can/spi/hi311x.c
++++ b/drivers/net/can/spi/hi311x.c
+@@ -813,6 +813,7 @@ static const struct net_device_ops hi3110_netdev_ops = {
+ 	.ndo_open = hi3110_open,
+ 	.ndo_stop = hi3110_stop,
+ 	.ndo_start_xmit = hi3110_hard_start_xmit,
++	.ndo_change_mtu = can_change_mtu,
+ };
  
--static int txgbe_i2c_request_regs(struct dw_i2c_dev *dev)
-+static int dw_i2c_get_parent_regmap(struct dw_i2c_dev *dev)
- {
- 	dev->map = dev_get_regmap(dev->dev->parent, NULL);
- 	if (!dev->map)
-@@ -123,12 +123,15 @@ static int dw_i2c_plat_request_regs(struct dw_i2c_dev *dev)
- 	struct platform_device *pdev = to_platform_device(dev->dev);
- 	int ret;
- 
-+	if (device_is_compatible(dev->dev, "intel,xe-i2c"))
-+		return dw_i2c_get_parent_regmap(dev);
-+
- 	switch (dev->flags & MODEL_MASK) {
- 	case MODEL_BAIKAL_BT1:
- 		ret = bt1_i2c_request_regs(dev);
- 		break;
- 	case MODEL_WANGXUN_SP:
--		ret = txgbe_i2c_request_regs(dev);
-+		ret = dw_i2c_get_parent_regmap(dev);
- 		break;
- 	default:
- 		dev->base = devm_platform_ioremap_resource(pdev, 0);
+ static const struct ethtool_ops hi3110_ethtool_ops = {
 -- 
 2.51.0
 
