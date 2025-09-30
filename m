@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164E4BADA79
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B832DBAD605
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444883B08A1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB25319428EF
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4242FCBFC;
-	Tue, 30 Sep 2025 15:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB3E30505F;
+	Tue, 30 Sep 2025 14:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YTx5Gaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7fXPwPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661162236EB;
-	Tue, 30 Sep 2025 15:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A958E303C87;
+	Tue, 30 Sep 2025 14:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245179; cv=none; b=nRGn1HPx8TaDLudzbq239vMZbYUm3w4HR7CqM6iePEEAZM1c0XWjfn1oyDb3uZet9po32wTQ+JL39Ww1OmLUVDhayyYePNzmaz6r0WxewLu516wQSxZVUcEeX1DroiPbW+/O23NY65SDUg9eJfPZIXbZAmttS1C956JHAbkIXEs=
+	t=1759244200; cv=none; b=KnDHKqOSE3mH0XamJCvL3pTKCIww31FoPOcOi7gM0y1c/mcrbWHG/ocD1xDqtibXbdefFCHMXb++HENpOyA8tDvhmmnt+kArdXZVB2W1nLctPvXZXILLg1ntgQl+xLE/Q4YgbnS1ZQwt1cPi2OC1AtaQCEuQ+wtExOkbxJhGejM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245179; c=relaxed/simple;
-	bh=F71B4EjoD6UCYnaMUeFEiSrZiLRlWW2W0xy/79gic78=;
+	s=arc-20240116; t=1759244200; c=relaxed/simple;
+	bh=niRXT4lBJTYLqjyURk7nOL9WYssQTNOMqD2wM8nEDU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNN4P2hONkvtQNEfsv4CDgWr4SrF9rhehqCTSRBp+6++wp63fcho9vNS+k3SKtbhKZRgBanWFR65cJvMxIkxj094961PhMEwZ1HJVT+5omrKCiq3lkG0cSFcPvjUL2X/lOiMIEeYVE4nGWEdUJogPBJTxD0OW3oqVcRBd8aSnGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YTx5Gaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4495C4CEF0;
-	Tue, 30 Sep 2025 15:12:58 +0000 (UTC)
+	 MIME-Version; b=sgiXsxron5v4XCwdDpDJ0+MoDOIv8t+vrHltwbvX/P8MYjXNFnsiA7LbsWuhI5kumZfZtZ49xt4lzdJoGSlZ+50QEyJNwR2rSF8v2pdBPbMFkEzsiQpVEK8ogw/8FRpkg8Tb9aDX8SPIuCMWmugXmmivFACkGq5P8GnS7X/m3fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7fXPwPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B452C4CEF0;
+	Tue, 30 Sep 2025 14:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245179;
-	bh=F71B4EjoD6UCYnaMUeFEiSrZiLRlWW2W0xy/79gic78=;
+	s=korg; t=1759244200;
+	bh=niRXT4lBJTYLqjyURk7nOL9WYssQTNOMqD2wM8nEDU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YTx5Gaz48BgZgNeMHEsyqnSH2wpNvRBk7wyrP41eXq+fUpxpHRfy9T0wDFeszwFs
-	 7/p+qYkwK7c8ZRwFPCJhgxyePk4Ghrx2BDjnmGR9avtQzHnZtDuJEGVF9mkbVJzhVc
-	 KRCTUdYFh4tcfCMAENRmQro4WcQwAWRtjuKtY+oE=
+	b=i7fXPwPwHRVfP9dxVoKiuQq6O6BV0ut4ktxx3JcfBkxl8mR4vPOHUyvyf26hAGzpN
+	 q0Q+CMvvBowy/knHMRYojNwMxYql5gJXlIYNwerO1nUddzLoRNJolISkf71+p4VXEs
+	 XHBuPxe6vb1vDdWXlBD1ObqRGFNG6HK/BvWzhsXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JC Kuo <jckuo@nvidia.com>,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 058/151] phy: tegra: xusb: fix device and OF node leak at probe
-Date: Tue, 30 Sep 2025 16:46:28 +0200
-Message-ID: <20250930143829.913178905@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 058/122] nilfs2: fix CFI failure when accessing /sys/fs/nilfs2/features/*
+Date: Tue, 30 Sep 2025 16:46:29 +0200
+Message-ID: <20250930143825.372768032@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit bca065733afd1e3a89a02f05ffe14e966cd5f78e upstream.
+commit 025e87f8ea2ae3a28bf1fe2b052bfa412c27ed4a upstream.
 
-Make sure to drop the references taken to the PMC OF node and device by
-of_parse_phandle() and of_find_device_by_node() during probe.
+When accessing one of the files under /sys/fs/nilfs2/features when
+CONFIG_CFI_CLANG is enabled, there is a CFI violation:
 
-Note the holding a reference to the PMC device does not prevent the
-PMC regmap from going away (e.g. if the PMC driver is unbound) so there
-is no need to keep the reference.
+  CFI failure at kobj_attr_show+0x59/0x80 (target: nilfs_feature_revision_show+0x0/0x30; expected type: 0xfc392c4d)
+  ...
+  Call Trace:
+   <TASK>
+   sysfs_kf_seq_show+0x2a6/0x390
+   ? __cfi_kobj_attr_show+0x10/0x10
+   kernfs_seq_show+0x104/0x15b
+   seq_read_iter+0x580/0xe2b
+  ...
 
-Fixes: 2d1021487273 ("phy: tegra: xusb: Add wake/sleepwalk for Tegra210")
-Cc: stable@vger.kernel.org	# 5.14
-Cc: JC Kuo <jckuo@nvidia.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-2-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+When the kobject of the kset for /sys/fs/nilfs2 is initialized, its ktype
+is set to kset_ktype, which has a ->sysfs_ops of kobj_sysfs_ops.  When
+nilfs_feature_attr_group is added to that kobject via
+sysfs_create_group(), the kernfs_ops of each files is sysfs_file_kfops_rw,
+which will call sysfs_kf_seq_show() when ->seq_show() is called.
+sysfs_kf_seq_show() in turn calls kobj_attr_show() through
+->sysfs_ops->show().  kobj_attr_show() casts the provided attribute out to
+a 'struct kobj_attribute' via container_of() and calls ->show(), resulting
+in the CFI violation since neither nilfs_feature_revision_show() nor
+nilfs_feature_README_show() match the prototype of ->show() in 'struct
+kobj_attribute'.
+
+Resolve the CFI violation by adjusting the second parameter in
+nilfs_feature_{revision,README}_show() from 'struct attribute' to 'struct
+kobj_attribute' to match the expected prototype.
+
+Link: https://lkml.kernel.org/r/20250906144410.22511-1-konishi.ryusuke@gmail.com
+Fixes: aebe17f68444 ("nilfs2: add /sys/fs/nilfs2/features group")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202509021646.bc78d9ef-lkp@intel.com/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra210.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/nilfs2/sysfs.c |    4 ++--
+ fs/nilfs2/sysfs.h |    8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/phy/tegra/xusb-tegra210.c
-+++ b/drivers/phy/tegra/xusb-tegra210.c
-@@ -3165,18 +3165,22 @@ tegra210_xusb_padctl_probe(struct device
- 	}
+--- a/fs/nilfs2/sysfs.c
++++ b/fs/nilfs2/sysfs.c
+@@ -1081,7 +1081,7 @@ void nilfs_sysfs_delete_device_group(str
+  ************************************************************************/
  
- 	pdev = of_find_device_by_node(np);
-+	of_node_put(np);
- 	if (!pdev) {
- 		dev_warn(dev, "PMC device is not available\n");
- 		goto out;
- 	}
+ static ssize_t nilfs_feature_revision_show(struct kobject *kobj,
+-					    struct attribute *attr, char *buf)
++					    struct kobj_attribute *attr, char *buf)
+ {
+ 	return sysfs_emit(buf, "%d.%d\n",
+ 			NILFS_CURRENT_REV, NILFS_MINOR_REV);
+@@ -1093,7 +1093,7 @@ static const char features_readme_str[]
+ 	"(1) revision\n\tshow current revision of NILFS file system driver.\n";
  
--	if (!platform_get_drvdata(pdev))
-+	if (!platform_get_drvdata(pdev)) {
-+		put_device(&pdev->dev);
- 		return ERR_PTR(-EPROBE_DEFER);
-+	}
+ static ssize_t nilfs_feature_README_show(struct kobject *kobj,
+-					 struct attribute *attr,
++					 struct kobj_attribute *attr,
+ 					 char *buf)
+ {
+ 	return sysfs_emit(buf, features_readme_str);
+--- a/fs/nilfs2/sysfs.h
++++ b/fs/nilfs2/sysfs.h
+@@ -50,16 +50,16 @@ struct nilfs_sysfs_dev_subgroups {
+ 	struct completion sg_segments_kobj_unregister;
+ };
  
- 	padctl->regmap = dev_get_regmap(&pdev->dev, "usb_sleepwalk");
- 	if (!padctl->regmap)
- 		dev_info(dev, "failed to find PMC regmap\n");
- 
-+	put_device(&pdev->dev);
- out:
- 	return &padctl->base;
+-#define NILFS_COMMON_ATTR_STRUCT(name) \
++#define NILFS_KOBJ_ATTR_STRUCT(name) \
+ struct nilfs_##name##_attr { \
+ 	struct attribute attr; \
+-	ssize_t (*show)(struct kobject *, struct attribute *, \
++	ssize_t (*show)(struct kobject *, struct kobj_attribute *, \
+ 			char *); \
+-	ssize_t (*store)(struct kobject *, struct attribute *, \
++	ssize_t (*store)(struct kobject *, struct kobj_attribute *, \
+ 			 const char *, size_t); \
  }
+ 
+-NILFS_COMMON_ATTR_STRUCT(feature);
++NILFS_KOBJ_ATTR_STRUCT(feature);
+ 
+ #define NILFS_DEV_ATTR_STRUCT(name) \
+ struct nilfs_##name##_attr { \
 
 
 
