@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8A2BAD629
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347F3BAD99E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AB271880605
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9904F326AC1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E6E304989;
-	Tue, 30 Sep 2025 14:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8332FD1DD;
+	Tue, 30 Sep 2025 15:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqbKSjHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOs/3TM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78583043A1;
-	Tue, 30 Sep 2025 14:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0511F1302;
+	Tue, 30 Sep 2025 15:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244236; cv=none; b=gUJd3XQQ0clQFW+E4atyJd/Vj551tGGXNFw1cKBNhAv2pK0axbp4r+iyBvYYvXSB1+0wqkcQduN3Pyjuiw9pw+CX4pVKCcJGJFu4q5/PkHAPH9w02wMjjrFlLTB2tnuPBjpcBD7vvOF9YY93DoyUBu+8nyEGKKSgnU00Vu1WdY8=
+	t=1759245100; cv=none; b=EgxU/6TRUSVtb2j/0cQebdwQCrDQiui2T8qjsHlKkASKat3vnGad6bwzA1LSabqKscNaoBiFGn20e8Flu8uhBu+4/5Fqpp826MQOQ0KK3yU2ohm8GpuTWT8jHsFK86QIcDAGcNoXmLCMTBdbo4SrvI3H8wFwkFmnCdbWht+uaEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244236; c=relaxed/simple;
-	bh=vWE47KaveSguapjj4gr9z5Csp1hkzpHT4hgRKj9kVH4=;
+	s=arc-20240116; t=1759245100; c=relaxed/simple;
+	bh=xbi1RPjKFnHvErpnjW+fpHx6aT6e3dnELsd71S9wy9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B12uFIrevlWPGC52Tm5aRJBiqSvKS5xhcfmc0kN2k7aKMF7exj/HNmcZ03XsxDOhvUDm4sX9eBvGiMuOhZYb7Pg6L/lnXPCb5/6fzYmwTg5r5HmBpgg45wCSkb4zcBF8eaSupyr3x3CFm0QbnwRgcS9pX+EPDcFjhJG6MaC+qQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqbKSjHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B33C4CEF0;
-	Tue, 30 Sep 2025 14:57:15 +0000 (UTC)
+	 MIME-Version; b=aYWQ6oEgVOqzu9AJgnUkvkZN/53RiGaGXvaPh5+7M/lUHbS5liiDH6kEMEMXzTYz4tamCRSRHT8U6+SauVzbmVPuK6vn/NJzJi9SXcCTebZ21W9cZIroMLGnVY+sVm0MpxFsoybUnSCBPAImrcUXhWAym6tbv/Bnrl5FujpEAM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOs/3TM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3C9C4CEF0;
+	Tue, 30 Sep 2025 15:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244236;
-	bh=vWE47KaveSguapjj4gr9z5Csp1hkzpHT4hgRKj9kVH4=;
+	s=korg; t=1759245100;
+	bh=xbi1RPjKFnHvErpnjW+fpHx6aT6e3dnELsd71S9wy9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gqbKSjHbRnbExzIVv2/0zP26w8B/BCJQKfK6/IPVdjIiDFNiXfQlKYX4XLpMH545A
-	 zptsdVwL+UPEp0QvjkzBF0sUy8LWWs3UcpGiVcHGSeQN8ij0b1ucYo2jqK09rN1wns
-	 kHb1jF0o5tob4CKSf9qIcOU/KuvQf/E+fOXbso28=
+	b=dOs/3TM5vSXACNxu++wQDjzTJ3//XwKgJi90c61juCbAcOfCU2FI8iqcYQwuy/d2M
+	 l45Z/9dpYeB2ZY+Fx7XvjNMAV96BAs0JEP7YGX2X321pwCZMRA2BuCZ6xerwmk6/0g
+	 cZ/zyLcfwLYgC0YFdcw/lN+U77ZJx2OaKreqy8Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 068/122] crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg
+Subject: [PATCH 5.15 069/151] um: virtio_uml: Fix use-after-free after put_device in probe
 Date: Tue, 30 Sep 2025 16:46:39 +0200
-Message-ID: <20250930143825.786356827@linuxfoundation.org>
+Message-ID: <20250930143830.346376897@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 1b34cbbf4f011a121ef7b2d7d6e6920a036d5285 ]
+[ Upstream commit 7ebf70cf181651fe3f2e44e95e7e5073d594c9c0 ]
 
-Issuing two writes to the same af_alg socket is bogus as the
-data will be interleaved in an unpredictable fashion.  Furthermore,
-concurrent writes may create inconsistencies in the internal
-socket state.
+When register_virtio_device() fails in virtio_uml_probe(),
+the code sets vu_dev->registered = 1 even though
+the device was not successfully registered.
+This can lead to use-after-free or other issues.
 
-Disallow this by adding a new ctx->write field that indiciates
-exclusive ownership for writing.
-
-Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 04e5b1fb0183 ("um: virtio: Remove device on disconnect")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c         |  7 +++++++
- include/crypto/if_alg.h | 10 ++++++----
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ arch/um/drivers/virtio_uml.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 755e6caf18d28..25cf2fa3dde75 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -862,6 +862,12 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 	}
+diff --git a/arch/um/drivers/virtio_uml.c b/arch/um/drivers/virtio_uml.c
+index 204e9dfbff1a0..8edc218ce21fd 100644
+--- a/arch/um/drivers/virtio_uml.c
++++ b/arch/um/drivers/virtio_uml.c
+@@ -1225,10 +1225,12 @@ static int virtio_uml_probe(struct platform_device *pdev)
+ 	device_set_wakeup_capable(&vu_dev->vdev.dev, true);
  
- 	lock_sock(sk);
-+	if (ctx->write) {
-+		release_sock(sk);
-+		return -EBUSY;
+ 	rc = register_virtio_device(&vu_dev->vdev);
+-	if (rc)
++	if (rc) {
+ 		put_device(&vu_dev->vdev.dev);
++		return rc;
 +	}
-+	ctx->write = true;
-+
- 	if (ctx->init && !ctx->more) {
- 		if (ctx->used) {
- 			err = -EINVAL;
-@@ -969,6 +975,7 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 	vu_dev->registered = 1;
+-	return rc;
++	return 0;
  
- unlock:
- 	af_alg_data_wakeup(sk);
-+	ctx->write = false;
- 	release_sock(sk);
- 
- 	return copied ?: err;
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index a406e281ae571..1424200fe88cf 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -136,6 +136,7 @@ struct af_alg_async_req {
-  *			SG?
-  * @enc:		Cryptographic operation to be performed when
-  *			recvmsg is invoked.
-+ * @write:		True if we are in the middle of a write.
-  * @init:		True if metadata has been sent.
-  * @len:		Length of memory allocated for this data structure.
-  * @inflight:		Non-zero when AIO requests are in flight.
-@@ -151,10 +152,11 @@ struct af_alg_ctx {
- 	size_t used;
- 	atomic_t rcvused;
- 
--	bool more;
--	bool merge;
--	bool enc;
--	bool init;
-+	u32		more:1,
-+			merge:1,
-+			enc:1,
-+			write:1,
-+			init:1;
- 
- 	unsigned int len;
- 
+ error_init:
+ 	os_close_file(vu_dev->sock);
 -- 
 2.51.0
 
