@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954EBBAD47C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:51:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 164E4BADA79
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37C8A174275
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444883B08A1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51932FB622;
-	Tue, 30 Sep 2025 14:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4242FCBFC;
+	Tue, 30 Sep 2025 15:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xEJcfoNz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YTx5Gaz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A2C2D24AD;
-	Tue, 30 Sep 2025 14:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661162236EB;
+	Tue, 30 Sep 2025 15:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243844; cv=none; b=llMGAIS4sjow3q3nv8Xj1l44JQz+pbDM7pCsCJW/WIy5azGEpHhtclvI96gfgNLio50wo7mUilUCBed9dqC+BXsdDgMeARwRAmg6z2vFbSTq8P0u+K8VLXM2XwHeDbZqTjVl5YUi4whhrWXFLzec9Pqa7kj3Accoi8OTlzkWbSQ=
+	t=1759245179; cv=none; b=nRGn1HPx8TaDLudzbq239vMZbYUm3w4HR7CqM6iePEEAZM1c0XWjfn1oyDb3uZet9po32wTQ+JL39Ww1OmLUVDhayyYePNzmaz6r0WxewLu516wQSxZVUcEeX1DroiPbW+/O23NY65SDUg9eJfPZIXbZAmttS1C956JHAbkIXEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243844; c=relaxed/simple;
-	bh=JmjRPzjq5rCCh2DqgOUSmIu1JoLLfrRr4dEKHcqzhU8=;
+	s=arc-20240116; t=1759245179; c=relaxed/simple;
+	bh=F71B4EjoD6UCYnaMUeFEiSrZiLRlWW2W0xy/79gic78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PRzVMlXxceqgd6Sn59ymaBdkdGN4tvOUfw4ri8bIaJnbbVjdhdmbSEIDM69/hVcUsLg9kMo1Mks69aZdyKfG/wCRMRipCKAGluj6oUkgI4QDGnD/EXaeuzX2dlHVC5FeoyrhyngL7AjQc10TP7IFcItaWA4mAh+x8DqQfPku7MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xEJcfoNz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D380C116B1;
-	Tue, 30 Sep 2025 14:50:43 +0000 (UTC)
+	 MIME-Version; b=nNN4P2hONkvtQNEfsv4CDgWr4SrF9rhehqCTSRBp+6++wp63fcho9vNS+k3SKtbhKZRgBanWFR65cJvMxIkxj094961PhMEwZ1HJVT+5omrKCiq3lkG0cSFcPvjUL2X/lOiMIEeYVE4nGWEdUJogPBJTxD0OW3oqVcRBd8aSnGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YTx5Gaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4495C4CEF0;
+	Tue, 30 Sep 2025 15:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243844;
-	bh=JmjRPzjq5rCCh2DqgOUSmIu1JoLLfrRr4dEKHcqzhU8=;
+	s=korg; t=1759245179;
+	bh=F71B4EjoD6UCYnaMUeFEiSrZiLRlWW2W0xy/79gic78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xEJcfoNz4dmsNp49/2kmTJ5bmO0q6j43M/OAk0Zeuw1ozAgBgeJPZDraYYlsBAZEN
-	 TG7mQiASnUKd92pei89396LV3PDVece/JT0EmZEJgrm37QIc/4M9IMGNR9xPxNF7OM
-	 cHUz9DWltfcu767DfnqLWBoMrZ/rcMPml25yjhh0=
+	b=0YTx5Gaz48BgZgNeMHEsyqnSH2wpNvRBk7wyrP41eXq+fUpxpHRfy9T0wDFeszwFs
+	 7/p+qYkwK7c8ZRwFPCJhgxyePk4Ghrx2BDjnmGR9avtQzHnZtDuJEGVF9mkbVJzhVc
+	 KRCTUdYFh4tcfCMAENRmQro4WcQwAWRtjuKtY+oE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 26/81] dmaengine: ti: edma: Fix memory allocation size for queue_priority_map
+	JC Kuo <jckuo@nvidia.com>,
+	Johan Hovold <johan@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 058/151] phy: tegra: xusb: fix device and OF node leak at probe
 Date: Tue, 30 Sep 2025 16:46:28 +0200
-Message-ID: <20250930143820.758977866@linuxfoundation.org>
+Message-ID: <20250930143829.913178905@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anders Roxell <anders.roxell@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit e63419dbf2ceb083c1651852209c7f048089ac0f ]
+commit bca065733afd1e3a89a02f05ffe14e966cd5f78e upstream.
 
-Fix a critical memory allocation bug in edma_setup_from_hw() where
-queue_priority_map was allocated with insufficient memory. The code
-declared queue_priority_map as s8 (*)[2] (pointer to array of 2 s8),
-but allocated memory using sizeof(s8) instead of the correct size.
+Make sure to drop the references taken to the PMC OF node and device by
+of_parse_phandle() and of_find_device_by_node() during probe.
 
-This caused out-of-bounds memory writes when accessing:
-  queue_priority_map[i][0] = i;
-  queue_priority_map[i][1] = i;
+Note the holding a reference to the PMC device does not prevent the
+PMC regmap from going away (e.g. if the PMC driver is unbound) so there
+is no need to keep the reference.
 
-The bug manifested as kernel crashes with "Oops - undefined instruction"
-on ARM platforms (BeagleBoard-X15) during EDMA driver probe, as the
-memory corruption triggered kernel hardening features on Clang.
-
-Change the allocation to use sizeof(*queue_priority_map) which
-automatically gets the correct size for the 2D array structure.
-
-Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-Link: https://lore.kernel.org/r/20250830094953.3038012-1-anders.roxell@linaro.org
+Fixes: 2d1021487273 ("phy: tegra: xusb: Add wake/sleepwalk for Tegra210")
+Cc: stable@vger.kernel.org	# 5.14
+Cc: JC Kuo <jckuo@nvidia.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250724131206.2211-2-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/edma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/tegra/xusb-tegra210.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index 01089e5c565f3..7a0f188fb43c5 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -2029,8 +2029,8 @@ static int edma_setup_from_hw(struct device *dev, struct edma_soc_info *pdata,
- 	 * priority. So Q0 is the highest priority queue and the last queue has
- 	 * the lowest priority.
- 	 */
--	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1, sizeof(s8),
--					  GFP_KERNEL);
-+	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1,
-+					  sizeof(*queue_priority_map), GFP_KERNEL);
- 	if (!queue_priority_map)
- 		return -ENOMEM;
+--- a/drivers/phy/tegra/xusb-tegra210.c
++++ b/drivers/phy/tegra/xusb-tegra210.c
+@@ -3165,18 +3165,22 @@ tegra210_xusb_padctl_probe(struct device
+ 	}
  
--- 
-2.51.0
-
+ 	pdev = of_find_device_by_node(np);
++	of_node_put(np);
+ 	if (!pdev) {
+ 		dev_warn(dev, "PMC device is not available\n");
+ 		goto out;
+ 	}
+ 
+-	if (!platform_get_drvdata(pdev))
++	if (!platform_get_drvdata(pdev)) {
++		put_device(&pdev->dev);
+ 		return ERR_PTR(-EPROBE_DEFER);
++	}
+ 
+ 	padctl->regmap = dev_get_regmap(&pdev->dev, "usb_sleepwalk");
+ 	if (!padctl->regmap)
+ 		dev_info(dev, "failed to find PMC regmap\n");
+ 
++	put_device(&pdev->dev);
+ out:
+ 	return &padctl->base;
+ }
 
 
 
