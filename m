@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-182544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C257BADB52
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5BBBAD506
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA2164C0FC6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FB903BDAEA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9867C306486;
-	Tue, 30 Sep 2025 15:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818012264AB;
+	Tue, 30 Sep 2025 14:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xjip2Bf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="de7StS3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5617A223DD6;
-	Tue, 30 Sep 2025 15:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7404D8CE;
+	Tue, 30 Sep 2025 14:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245291; cv=none; b=c84aGTaEV1TaVK8CQFiD0KE6Gb5ImQsRGhRMiNlpKL9eJ630OCQEF1EFPe6mX47evBYcG1NnECGp1OTufEmpU+Z754v9fF0loaEo7uKgMSxTVRu647swppqpbrjHTCcpPiD7699mHqxjL/ph+IxgHfc/yNdA0oyOvIpZOP9TdqM=
+	t=1759243958; cv=none; b=duIos/UNUcBp5SjhlsauTMVeHqujZj1yojNzJCKzIMrPwTOKVunJhfEKg3Si91cpPFNbc4O2hG+pZH37kV9jnH9+3yaspBWDPhYgoB77YHiU+4ohJC5GY2/tsp28d9PmgUbdhihjCmKrBX5eg7HhevJlnBPFB5GPr16arOYjUhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245291; c=relaxed/simple;
-	bh=zoLZkceUPnJ1r5nBR8BfHyrquz58Sx+JwILlEE/cY9k=;
+	s=arc-20240116; t=1759243958; c=relaxed/simple;
+	bh=OIoKhL1Wzr9Sp1G6J6H01naF9G0gTZwt1/hws7VrXRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELpp9k077IYN/ffhlKgK1yL1w4dP4ew4isHVrMPO9lfTon63vMfhhWzCGvLVmIglJ88O9BQBr24Dlu9I3tykx5FQGC6VQ7gyj6CfpRJQ0AVO0C+vrdqkb14UVkfT32Tcz8a9K+a/Xd8NEkPqBSpnmy+ub+tS9GALwV6jZKECNVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xjip2Bf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15A1C4CEF0;
-	Tue, 30 Sep 2025 15:14:50 +0000 (UTC)
+	 MIME-Version; b=MCQGDqe9DbLS1pC24afyKlyp++88zOgukDAx0CN6SIn1VZ6wiYb7k5EcngCKNnBQbCBcLRLSCRB77rO/K78I6UMHz0hGA+UdXjU3cWUusKWBCsQ46lWsRS5pZARZ8gMznMmNbmptALUCIq/gv/UmqorC5wEQEIvZJNB8vu57dKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=de7StS3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5291BC4CEF0;
+	Tue, 30 Sep 2025 14:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245291;
-	bh=zoLZkceUPnJ1r5nBR8BfHyrquz58Sx+JwILlEE/cY9k=;
+	s=korg; t=1759243957;
+	bh=OIoKhL1Wzr9Sp1G6J6H01naF9G0gTZwt1/hws7VrXRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xjip2Bf+JL7+eH1oEZmVgxfPggi2bnskxokPkkqDiTc7NCX4fkxf5F9AxVj23ytkq
-	 1rdQjdAQ47HPu+GgBIgH0u71D9vcDhI+xDoVEAxZmszaWHopZ8nFAiXkQhw/oYD4ip
-	 uYv7WjqI4qXjgxruUPUecbEBb+FtcXTH9vgFUYgE=
+	b=de7StS3yRbStwLJCWLE4OPClL280IonnGd/PBK80oGVrhC8jQ9IJBk7c8hOes8lsR
+	 xPRosjnSuJm0ycDNwOSn6XpoNMH+9kxtD5DdiNaTW46/6oHczNJlhVUw0SgAwsf3Ch
+	 +WvLdxmOnYk5iuFAsCz1FMIaUs2HVehaHjVCuing=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/151] xhci: dbc: Fix full DbC transfer ring after several reconnects
+Subject: [PATCH 5.4 60/81] ALSA: usb-audio: Convert comma to semicolon
 Date: Tue, 30 Sep 2025 16:47:02 +0200
-Message-ID: <20250930143831.260690914@linuxfoundation.org>
+Message-ID: <20250930143822.191841587@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit a5c98e8b1398534ae1feb6e95e2d3ee5215538ed ]
+[ Upstream commit 9ca30a1b007d5fefb5752428f852a2d8d7219c1c ]
 
-Pending requests will be flushed on disconnect, and the corresponding
-TRBs will be turned into No-op TRBs, which are ignored by the xHC
-controller once it starts processing the ring.
+Replace comma between expressions with semicolons.
 
-If the USB debug cable repeatedly disconnects before ring is started
-then the ring will eventually be filled with No-op TRBs.
-No new transfers can be queued when the ring is full, and driver will
-print the following error message:
+Using a ',' in place of a ';' can have unintended side effects.
+Although that is not the case here, it is seems best to use ';'
+unless ',' is intended.
 
-    "xhci_hcd 0000:00:14.0: failed to queue trbs"
+Found by inspection.
+No functional change intended.
+Compile tested only.
 
-This is a normal case for 'in' transfers where TRBs are always enqueued
-in advance, ready to take on incoming data. If no data arrives, and
-device is disconnected, then ring dequeue will remain at beginning of
-the ring while enqueue points to first free TRB after last cancelled
-No-op TRB.
-s
-Solve this by reinitializing the rings when the debug cable disconnects
-and DbC is leaving the configured state.
-Clear the whole ring buffer and set enqueue and dequeue to the beginning
-of ring, and set cycle bit to its initial state.
-
-Cc: stable@vger.kernel.org
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20250612060228.1518028-1-nichen@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |   23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ sound/usb/mixer_quirks.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -447,6 +447,25 @@ static void xhci_dbc_ring_init(struct xh
- 	xhci_initialize_ring_info(ring, 1);
- }
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index cea1c970359c1..833f894a692c7 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -757,9 +757,9 @@ static int snd_dualsense_jack_create(struct usb_mixer_interface *mixer,
  
-+static int xhci_dbc_reinit_ep_rings(struct xhci_dbc *dbc)
-+{
-+	struct xhci_ring *in_ring = dbc->eps[BULK_IN].ring;
-+	struct xhci_ring *out_ring = dbc->eps[BULK_OUT].ring;
-+
-+	if (!in_ring || !out_ring || !dbc->ctx) {
-+		dev_warn(dbc->dev, "Can't re-init unallocated endpoints\n");
-+		return -ENODEV;
-+	}
-+
-+	xhci_dbc_ring_init(in_ring);
-+	xhci_dbc_ring_init(out_ring);
-+
-+	/* set ep context enqueue, dequeue, and cycle to initial values */
-+	xhci_dbc_init_ep_contexts(dbc);
-+
-+	return 0;
-+}
-+
- static struct xhci_ring *
- xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
- {
-@@ -871,7 +890,7 @@ static enum evtreturn xhci_dbc_do_handle
- 			dev_info(dbc->dev, "DbC cable unplugged\n");
- 			dbc->state = DS_ENABLED;
- 			xhci_dbc_flush_requests(dbc);
--
-+			xhci_dbc_reinit_ep_rings(dbc);
- 			return EVT_DISC;
- 		}
+ 	mei->ih.event = snd_dualsense_ih_event;
+ 	mei->ih.match = snd_dualsense_ih_match;
+-	mei->ih.connect = snd_dualsense_ih_connect,
+-	mei->ih.disconnect = snd_dualsense_ih_disconnect,
+-	mei->ih.start = snd_dualsense_ih_start,
++	mei->ih.connect = snd_dualsense_ih_connect;
++	mei->ih.disconnect = snd_dualsense_ih_disconnect;
++	mei->ih.start = snd_dualsense_ih_start;
+ 	mei->ih.name = name;
+ 	mei->ih.id_table = mei->id_table;
  
-@@ -881,7 +900,7 @@ static enum evtreturn xhci_dbc_do_handle
- 			writel(portsc, &dbc->regs->portsc);
- 			dbc->state = DS_ENABLED;
- 			xhci_dbc_flush_requests(dbc);
--
-+			xhci_dbc_reinit_ep_rings(dbc);
- 			return EVT_DISC;
- 		}
- 
+-- 
+2.51.0
+
 
 
 
