@@ -1,209 +1,261 @@
-Return-Path: <stable+bounces-182066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7395BACAB8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 13:20:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E20EBACB1C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 13:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3898D3B5DD6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 11:20:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAC1E1660B1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 11:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79406242D97;
-	Tue, 30 Sep 2025 11:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E2A25D21A;
+	Tue, 30 Sep 2025 11:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NwR4r4Y0"
+	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="RZoAkK0y";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NRQLRm54"
 X-Original-To: stable@vger.kernel.org
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547F827B328
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 11:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E7525C82E;
+	Tue, 30 Sep 2025 11:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759231242; cv=none; b=tse+zlgRFHYDNCGMazn4NkG7MeI3ujUbNFiayCEWasGntbDXwy2yq8Z1ZRP3YkJqTJuJ0dxy5yB/gOuIK0f+21w622uQt2iOFfPNJ2Ey7T9dSvzj1dXcr0o+netRtD29hGAh3llILWVH8cP1kUD06czCP3Lx3hzmrD6yhKwKAgU=
+	t=1759232085; cv=none; b=P6joSTx/nsUq/kv+2gE3QoR9a9eIexeLQrysTyQixIZ/whAdXvI+DRKdupKAPXD/omAiEwGafBj6ofM70Rj80Bqy7mLp3nhIPVt2xzqoj+vCKokI3GuwXL60Qxo5992KIt4sL0YvlzF0j9u3dpwk1dAmO0C6XUO593WNeDQiE3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759231242; c=relaxed/simple;
-	bh=4XN0NYoPtAzx19N0avneoLlVcPYM9dOyssM9uDjtj7A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UkhFPTSzp3eD7vV56E6kV8mQn8myb1TqxwOE6D6khJIJ5c9362wvT0V+nb9wc0sH0UniWEpPsBA8QjpSFuaWbi6CDK/yEAan8Hx84hf22ZlJd6N/7Y8mfBP8wHYqiAV4+lXCgS07mo1o9YPXLej5kZhbmSFjker2iwB4tthrz50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NwR4r4Y0; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <fd30aff2-fbe3-4228-a38f-08b242ef33a2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759231237;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FwItMkCXdMaYwI2Rw03q5KkFnMdZIJjcXXc+fJQ+dcM=;
-	b=NwR4r4Y01p8bjyaYC2Cb+KDyNJfvm65DPlrkQwIIuK4GySHW+teXi5V/VZoIQmwBsOF9QJ
-	195hhGBcC5XcbY0uotAldgCMQ6LUsRE4r23TXSNBmr0fD4APWT38tyPtxjFNFlgSMUo8+E
-	y+U25NBfb7aXWLuuFxytFy9omxROj9s=
-Date: Tue, 30 Sep 2025 19:20:23 +0800
+	s=arc-20240116; t=1759232085; c=relaxed/simple;
+	bh=iKF972freU2WK3d86MrwzDv4ZOGu/rXvo4kqRTZxEdk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AjtOEdR4b9TCfvGRYDi9FjFHFNKdto0VW/gK0GQcY6rC/qKqEAxoNLgnV8lC+HQdG4B/hakDjFZHe2CVciUf7XLtkVTv7XIE3CRlo9giuSEAfj2//BSTYwJB3AQGgLxoiFtOKGQKrLS5J0qMbB7PH4V7zcm0wP2CDu45wMikLBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=RZoAkK0y; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NRQLRm54; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 6804F7A0093;
+	Tue, 30 Sep 2025 07:34:41 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Tue, 30 Sep 2025 07:34:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	coelacanthus.name; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:message-id:mime-version:reply-to:subject:subject:to:to; s=fm3;
+	 t=1759232081; x=1759318481; bh=eybtdOVK+vTAmRCYicSe7Uey/Y/LUrU7
+	ciW87ZmzgN8=; b=RZoAkK0yb3TBAgefAlsfJwWZJkHc8peiG+v4/q2mTI210ivl
+	8Ho/4GL/gDRm1vGOxBD9c5LUBa2sXdolqUq+qkCdn5tnRzV3XJAOcVitUfBXoYaW
+	18RT1PzB9h/iLrjNMRh1WFJY03s+/QbkMh9vaYouZ1rcsRdvpOntY8gMgTv2Zf9/
+	8l+kd29e08wm1/IiriJCCScoeI4kTmpZ3etiOfNMqM/kHNuCA/I97LkgaNdMPnvF
+	vASGLWAcXHCHZkO9XPsTSBpEOUWr5hXNuYKA6aU6ooHUanJ1lMrCMzcjbpuho1OK
+	bsNy8Kdc8CYV3aa6N6M0P3AxlSrffuoOqPB8kg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1759232081; x=1759318481; bh=eybtdOVK+vTAmRCYicSe7Uey/Y/L
+	UrU7ciW87ZmzgN8=; b=NRQLRm54ur1cIs42Sot7ahfiVae1oJ74zA0BaVRQxsaN
+	DHWrb3l+S1uKAPuSeHQQg432RrlfwRukUuXMipXpVTut7IVmwANajxdjUojOA1Mj
+	k3aGVL6zPnpL5kfvx9ZQQSXSzWLYIzQgpiBlfqlU/vRpDAZ26zyj8jJsNU50opj/
+	TXK0mL684un+tddOA01bx32jKyXIHp1Ghukb9C9F4MaFb3T9ryTzP8EtlzCn8ftl
+	sxQUaTYLp8VBwztlaW6L8GpOuKNNnmXNJBfeRTsFW/7AhJxGmxOvA1io3E7PIOre
+	geEQH8MOT16Ojg1dyrxiwWNKVcNTmP5kdPsjoGwACw==
+X-ME-Sender: <xms:T8DbaH33bcHdF5klCMqXpS7ZdGMc0hz4-XfAE-3C_1HCMQson7r3LQ>
+    <xme:T8DbaCz6EsMNFXBXbtnhdpR_-jrkjyjP5sQYhVBZ8dlr0wFE9RQl5jHRvPUPYZQut
+    shPO1cJYdwH0esoYr0F0X4Ngf_qHyR4Czl2LTtoQUu49U8hL7V2pd0>
+X-ME-Received: <xmr:T8DbaLzvVV7empd_nUWq67PeynjhzpJ4uKA16ZB3MuV18ao3qR6CpIGR3J6nHA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdektdejiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomhepvegvlhgvshhtvgcu
+    nfhiuhcuoehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvqeenucggtffrrghtth
+    gvrhhnpedtgfehkeeuveekvdeuueeiteehgfeitdekudekgeeiteduudeufeelheejgeei
+    ueenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkvghrnhgvlhdrohhrghenucevlh
+    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehufihusegtohgv
+    lhgrtggrnhhthhhushdrnhgrmhgvpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmh
+    htphhouhhtpdhrtghpthhtohepfihgsehgrhgrnhguvghgghgvrhdrtghomhdprhgtphht
+    thhopehruhhntghhvghnghdrlhhusehhphhmihgtrhhordgtohhmpdhrtghpthhtohepkh
+    gvvghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehufihusegtohgvlhgrtggrnhht
+    hhhushdrnhgrmhgvpdhrtghpthhtohephhgvnhhrihhksegsrhhigigrnhguvghrshgvnh
+    drughkpdhrtghpthhtohepmhgrihhlhhholhdrvhhinhgtvghnthesfigrnhgrughoohdr
+    fhhrpdhrtghpthhtohepmhgrgiesshgthhhnvghiuggvrhhsohhfthdrnhgvthdprhgtph
+    htthhopehmkhhlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhig
+    qdgtrghnsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:T8DbaG_uDwcio5vCk2cZK9DI9Hkl4dLhL7wQhZJcGDGdVrqrVFKuFw>
+    <xmx:T8DbaN-MyylTaIU9gsnibQvXHOuWiQyy7rT3x4TdfLEzolwtpU4zwg>
+    <xmx:T8DbaG6cTxznaiZpUBlt3FH1dIvfxwlNB4sEaRKeAkbOF_ur6DzDiQ>
+    <xmx:T8DbaOb2Qk1eGziXYJPk2VqcLLWlrrSfS3HU3OtdOxhtjGi05LYtlg>
+    <xmx:UcDbaN83L39SOhMRnIlliJV9twTVrB2b-odmb57-e79IAl4XH_moIO6i>
+Feedback-ID: i95c648bc:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 30 Sep 2025 07:34:38 -0400 (EDT)
+From: Celeste Liu <uwu@coelacanthus.name>
+Date: Tue, 30 Sep 2025 19:34:28 +0800
+Subject: [PATCH v5] net/can/gs_usb: increase max interface to U8_MAX
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [syzbot ci] Re: mm/rmap: fix soft-dirty and uffd-wp bit loss when
- remapping zero-filled mTHP subpage to shared zeropage
-Content-Language: en-US
-To: syzbot ci <syzbot+ci4a5736baef02a97d@syzkaller.appspotmail.com>
-Cc: syzbot@lists.linux.dev, liam.howlett@oracle.com, usamaarif642@gmail.com,
- rakie.kim@sk.com, david@redhat.com, dev.jain@arm.com, ioworker0@gmail.com,
- syzkaller-bugs@googlegroups.com, ziy@nvidia.com, byungchul@sk.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- apopple@nvidia.com, vbabka@suse.cz, joshua.hahnjy@gmail.com,
- gourry@gourry.net, linux-mm@kvack.org, matthew.brost@intel.com,
- lorenzo.stoakes@oracle.com, ying.huang@linux.alibaba.com,
- linux-kernel@vger.kernel.org, baohua@kernel.org, npache@redhat.com,
- yuzhao@google.com, ryan.roberts@arm.com, riel@surriel.com,
- stable@vger.kernel.org, peterx@redhat.com, jannh@google.com,
- harry.yoo@oracle.com
-References: <68dbbc27.a00a0220.102ee.0047.GAE@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <68dbbc27.a00a0220.102ee.0047.GAE@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Message-Id: <20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name>
+X-B4-Tracking: v=1; b=H4sIAEPA22gC/33PQQ6CMBCF4auYrq3pdFqgrryHcVHKIE0ETItEQ
+ 7i7hZUx4vJ/yXzJTCxS8BTZcTexQKOPvu9S6P2OucZ2V+K+Ss2kkFoYafg18kcseWuf3NfcolC
+ uQKmQNEs390C1f67e+ZK68XHow2vlR1jWLWkEDpwUlNoJA4j25Hq6WWe7oXnEQ2dbYos4yg8Fx
+ bcikyJdbaxSlBUZbCn4V8FFgcrkVV6DQ7WlqL+KSkpBkCGVusDq50fzPL8BXSJSNIQBAAA=
+X-Change-ID: 20250929-gs-usb-max-if-a304c83243e5
+To: Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Cc: Maximilian Schneider <max@schneidersoft.net>, 
+ Henrik Brix Andersen <henrik@brixandersen.dk>, 
+ Wolfgang Grandegger <wg@grandegger.com>, Kees Cook <kees@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-can@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Runcheng Lu <runcheng.lu@hpmicro.com>, 
+ stable@vger.kernel.org, Vincent Mailhol <mailhol@kernel.org>, 
+ Celeste Liu <uwu@coelacanthus.name>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4499; i=uwu@coelacanthus.name;
+ h=from:subject:message-id; bh=iKF972freU2WK3d86MrwzDv4ZOGu/rXvo4kqRTZxEdk=;
+ b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGjNsHPMun3C6vF3bQzP0/fVvfjo4vr+/k696LM1ncc
+ vi1hdnc/p8dpSwMYlwMsmKKLHklLD85L53t3tuxvQtmDisTyBAGLk4BmIj4NkaGmwl373c4TQjY
+ cCX43KXfrJ2fZsW7LFmZeV65VbNZ6WVDCSPDl5bj21795Vr7eIrV7OJFDz/c/Mpy30ZwrvRK3ow
+ u1u0FTADvYE9C
+X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp;
+ fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
 
+This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
+converter[1]. The original developers may have only 3 interfaces device to
+test so they write 3 here and wait for future change.
 
+During the HSCanT development, we actually used 4 interfaces, so the
+limitation of 3 is not enough now. But just increase one is not
+future-proofed. Since the channel index type in gs_host_frame is u8, just
+make canch[] become a flexible array with a u8 index, so it naturally
+constraint by U8_MAX and avoid statically allocate 256 pointer for
+every gs_usb device.
 
-On 2025/9/30 19:16, syzbot ci wrote:
-> syzbot ci has tested the following series
-> 
-> [v4] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
-> https://lore.kernel.org/all/20250930071053.36158-1-lance.yang@linux.dev
-> * [PATCH v4 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
-> 
-> and found the following issue:
-> general protection fault in remove_migration_pte
-> 
-> Full report is available here:
-> https://ci.syzbot.org/series/8cc7e52f-a859-4251-bd08-9787cdaf7928
-> 
-> ***
-> 
-> general protection fault in remove_migration_pte
-> 
-> tree:      linux-next
-> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
-> base:      262858079afde6d367ce3db183c74d8a43a0e83f
-> arch:      amd64
-> compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> config:    https://ci.syzbot.org/builds/97ee4826-5d29-472d-a85d-51543b0e45de/config
-> C repro:   https://ci.syzbot.org/findings/f4819db2-21f2-4280-8bc4-942445398953/c_repro
-> syz repro: https://ci.syzbot.org/findings/f4819db2-21f2-4280-8bc4-942445398953/syz_repro
-> 
-> Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
-> KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+[1]: https://github.com/cherry-embedded/HSCanT-hardware
 
-This is a known issue that I introduced in the v3 patch. I spotted
-this exact NULL pointer dereference bug[1] myself and have already
-sent out a v5 version[2] with the fix.
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+---
+Changes in v5:
+- Reword commit message to match the code better.
+- Link to v4: https://lore.kernel.org/r/20250930-gs-usb-max-if-v4-1-8e163eb583da@coelacanthus.name
 
-The root cause is that ptep_get() is called before the !pwmw.pte
-check, which handles PMD-mapped THP migration entries.
+Changes in v4:
+- Remove redudant typeof().
+- Fix type: inteface -> interface.
+- Link to v3: https://lore.kernel.org/r/20250930-gs-usb-max-if-v3-1-21d97d7f1c34@coelacanthus.name
 
-[1] 
-https://lore.kernel.org/linux-mm/2d21c9bc-e299-4ca6-85ba-b01a1f346d9d@linux.dev
-[2] 
-https://lore.kernel.org/linux-mm/20250930081040.80926-1-lance.yang@linux.dev
+Changes in v3:
+- Cc stable should in patch instead of cover letter.
+- Link to v2: https://lore.kernel.org/r/20250930-gs-usb-max-if-v2-1-2cf9a44e6861@coelacanthus.name
 
-Thanks,
-Lance
+Changes in v2:
+- Use flexible array member instead of fixed array.
+- Link to v1: https://lore.kernel.org/r/20250929-gs-usb-max-if-v1-1-e41b5c09133a@coelacanthus.name
+---
+ drivers/net/can/usb/gs_usb.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-> CPU: 0 UID: 0 PID: 6025 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-> RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
-> RIP: 0010:remove_migration_pte+0x369/0x2320 mm/migrate.c:352
-> Code: 00 48 8d 43 20 48 89 44 24 68 49 8d 47 40 48 89 84 24 e8 00 00 00 4c 89 64 24 48 4c 8b b4 24 50 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 f8 3e ff ff 49 8b 06 48 89 44 24
-> RSP: 0018:ffffc90002fb73e0 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff88802957e300 RCX: 1ffffd40008c9006
-> RDX: 0000000000000000 RSI: 0000000000030dff RDI: 0000000000030c00
-> RBP: ffffc90002fb75d0 R08: 0000000000000003 R09: 0000000000000004
-> R10: dffffc0000000000 R11: fffff520005f6e34 R12: ffffea0004648008
-> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004648000
-> FS:  00005555624de500(0000) GS:ffff8880b83fc000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000200000000300 CR3: 000000010d8b8000 CR4: 00000000000006f0
-> Call Trace:
->   <TASK>
->   rmap_walk_anon+0x553/0x730 mm/rmap.c:2855
->   remove_migration_ptes mm/migrate.c:469 [inline]
->   migrate_folio_move mm/migrate.c:1381 [inline]
->   migrate_folios_move mm/migrate.c:1711 [inline]
->   migrate_pages_batch+0x202e/0x35e0 mm/migrate.c:1967
->   migrate_pages_sync mm/migrate.c:1997 [inline]
->   migrate_pages+0x1bcc/0x2930 mm/migrate.c:2106
->   migrate_to_node mm/mempolicy.c:1244 [inline]
->   do_migrate_pages+0x5ee/0x800 mm/mempolicy.c:1343
->   kernel_migrate_pages mm/mempolicy.c:1858 [inline]
->   __do_sys_migrate_pages mm/mempolicy.c:1876 [inline]
->   __se_sys_migrate_pages+0x544/0x650 mm/mempolicy.c:1872
->   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->   do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7fb18e18ec29
-> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007ffdca5c9838 EFLAGS: 00000246 ORIG_RAX: 0000000000000100
-> RAX: ffffffffffffffda RBX: 00007fb18e3d5fa0 RCX: 00007fb18e18ec29
-> RDX: 0000200000000300 RSI: 0000000000000003 RDI: 0000000000000000
-> RBP: 00007fb18e211e41 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000200000000040 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007fb18e3d5fa0 R14: 00007fb18e3d5fa0 R15: 0000000000000004
->   </TASK>
-> Modules linked in:
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
-> RIP: 0010:remove_migration_pte+0x369/0x2320 mm/migrate.c:352
-> Code: 00 48 8d 43 20 48 89 44 24 68 49 8d 47 40 48 89 84 24 e8 00 00 00 4c 89 64 24 48 4c 8b b4 24 50 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 f8 3e ff ff 49 8b 06 48 89 44 24
-> RSP: 0018:ffffc90002fb73e0 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff88802957e300 RCX: 1ffffd40008c9006
-> RDX: 0000000000000000 RSI: 0000000000030dff RDI: 0000000000030c00
-> RBP: ffffc90002fb75d0 R08: 0000000000000003 R09: 0000000000000004
-> R10: dffffc0000000000 R11: fffff520005f6e34 R12: ffffea0004648008
-> R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004648000
-> FS:  00005555624de500(0000) GS:ffff8880b83fc000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000200000000300 CR3: 000000010d8b8000 CR4: 00000000000006f0
-> ----------------
-> Code disassembly (best guess):
->     0:	00 48 8d             	add    %cl,-0x73(%rax)
->     3:	43 20 48 89          	rex.XB and %cl,-0x77(%r8)
->     7:	44 24 68             	rex.R and $0x68,%al
->     a:	49 8d 47 40          	lea    0x40(%r15),%rax
->     e:	48 89 84 24 e8 00 00 	mov    %rax,0xe8(%rsp)
->    15:	00
->    16:	4c 89 64 24 48       	mov    %r12,0x48(%rsp)
->    1b:	4c 8b b4 24 50 01 00 	mov    0x150(%rsp),%r14
->    22:	00
->    23:	4c 89 f0             	mov    %r14,%rax
->    26:	48 c1 e8 03          	shr    $0x3,%rax
-> * 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
->    2f:	74 08                	je     0x39
->    31:	4c 89 f7             	mov    %r14,%rdi
->    34:	e8 f8 3e ff ff       	call   0xffff3f31
->    39:	49 8b 06             	mov    (%r14),%rax
->    3c:	48                   	rex.W
->    3d:	89                   	.byte 0x89
->    3e:	44                   	rex.R
->    3f:	24                   	.byte 0x24
-> 
-> 
-> ***
-> 
-> If these findings have caused you to resend the series or submit a
-> separate fix, please add the following tag to your commit message:
->    Tested-by: syzbot@syzkaller.appspotmail.com
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index c9482d6e947b0c7b033dc4f0c35f5b111e1bfd92..9fb4cbbd6d6dc88f433020eb0417ea53cd0c4d5f 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -289,11 +289,6 @@ struct gs_host_frame {
+ #define GS_MAX_RX_URBS 30
+ #define GS_NAPI_WEIGHT 32
+ 
+-/* Maximum number of interfaces the driver supports per device.
+- * Current hardware only supports 3 interfaces. The future may vary.
+- */
+-#define GS_MAX_INTF 3
+-
+ struct gs_tx_context {
+ 	struct gs_can *dev;
+ 	unsigned int echo_id;
+@@ -324,7 +319,6 @@ struct gs_can {
+ 
+ /* usb interface struct */
+ struct gs_usb {
+-	struct gs_can *canch[GS_MAX_INTF];
+ 	struct usb_anchor rx_submitted;
+ 	struct usb_device *udev;
+ 
+@@ -336,9 +330,11 @@ struct gs_usb {
+ 
+ 	unsigned int hf_size_rx;
+ 	u8 active_channels;
++	u8 channel_cnt;
+ 
+ 	unsigned int pipe_in;
+ 	unsigned int pipe_out;
++	struct gs_can *canch[] __counted_by(channel_cnt);
+ };
+ 
+ /* 'allocate' a tx context.
+@@ -599,7 +595,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	}
+ 
+ 	/* device reports out of range channel id */
+-	if (hf->channel >= GS_MAX_INTF)
++	if (hf->channel >= parent->channel_cnt)
+ 		goto device_detach;
+ 
+ 	dev = parent->canch[hf->channel];
+@@ -699,7 +695,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	/* USB failure take down all interfaces */
+ 	if (rc == -ENODEV) {
+ device_detach:
+-		for (rc = 0; rc < GS_MAX_INTF; rc++) {
++		for (rc = 0; rc < parent->channel_cnt; rc++) {
+ 			if (parent->canch[rc])
+ 				netif_device_detach(parent->canch[rc]->netdev);
+ 		}
+@@ -1460,17 +1456,19 @@ static int gs_usb_probe(struct usb_interface *intf,
+ 	icount = dconf.icount + 1;
+ 	dev_info(&intf->dev, "Configuring for %u interfaces\n", icount);
+ 
+-	if (icount > GS_MAX_INTF) {
++	if (icount > type_max(parent->channel_cnt)) {
+ 		dev_err(&intf->dev,
+ 			"Driver cannot handle more that %u CAN interfaces\n",
+-			GS_MAX_INTF);
++			type_max(parent->channel_cnt));
+ 		return -EINVAL;
+ 	}
+ 
+-	parent = kzalloc(sizeof(*parent), GFP_KERNEL);
++	parent = kzalloc(struct_size(parent, canch, icount), GFP_KERNEL);
+ 	if (!parent)
+ 		return -ENOMEM;
+ 
++	parent->channel_cnt = icount;
++
+ 	init_usb_anchor(&parent->rx_submitted);
+ 
+ 	usb_set_intfdata(intf, parent);
+@@ -1531,7 +1529,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
+ 		return;
+ 	}
+ 
+-	for (i = 0; i < GS_MAX_INTF; i++)
++	for (i = 0; i < parent->channel_cnt; i++)
+ 		if (parent->canch[i])
+ 			gs_destroy_candev(parent->canch[i]);
+ 
+
+---
+base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
+change-id: 20250929-gs-usb-max-if-a304c83243e5
+
+Best regards,
+-- 
+Celeste Liu <uwu@coelacanthus.name>
 
 
