@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-182121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F20BAD4DC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BC6BAD620
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9F664A2C50
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3448A32466C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590AD303A16;
-	Tue, 30 Sep 2025 14:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08692305048;
+	Tue, 30 Sep 2025 14:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FasAHRaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqTjfI5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153DD35940;
-	Tue, 30 Sep 2025 14:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9151F03C5;
+	Tue, 30 Sep 2025 14:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243904; cv=none; b=I8t+JSQRy6JL9ufv9kt45PKGC/3nhJVJNCLmg0KRpkMxnKqD9x+UwHtsYcV0eHfVlwOjqqDnIZJVUMKOIXVa53TMYIMz/X9DUGX8eU5HKNnGuM9QN4ceV4tU5Yun4O0dQMuVtl7ei5ehd8VXu54K6N3u9ME/H9W3QOx7RfsfPaY=
+	t=1759244286; cv=none; b=hItQBhA9meYY5c/PbaG/STI6/CrU4QjeTxzuqPa02lkeuekauxQmllVFyAstrDWOdU9xFP14/DXlK1M8m9//uJFt2gOqq/e7HVzFkarQRg9mXHGtXw50nJRaOYdLz5bc6yEP5NWh6yu0MOesIRcSh70P7D6BB6lcAb6zhw7dJBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243904; c=relaxed/simple;
-	bh=tkxrZh4npqODUqQB/qMqxjkg5YW7c67DTtPHUvDnXLY=;
+	s=arc-20240116; t=1759244286; c=relaxed/simple;
+	bh=crxPKSi79onbzGw4oVguT72ya4DJTAdg1O0IhtFoRCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFsdtLBP6n/9pRFJLpVcs/lKFZj+RZBTWCPR7k/ePs0kisPpqUZqKrJ8Dk34UCma2fpqM6xas6tvJWbOYkOPSq4MWvr0OD1J1InxO+wDxr9OqlhNfiQIL8nGIEw80Xz1BARlJ+JEGf5behoH5Nq1DyPwXpEd+06OeIn9oYrChIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FasAHRaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F82C4CEF0;
-	Tue, 30 Sep 2025 14:51:43 +0000 (UTC)
+	 MIME-Version; b=orLKLdDg9rE8MfoKkONJfYYG1wxI/I8Tc2TWOKT70PdHX6h5ay5jXBjzj+X1zitR0livMlgRRy7q9+kw65QfcRa9kdK0jqK5t0IYYj8wsd7h8x+ujDUu/BPaGF8t0NWpkbLRRBGxEMymAIS6DbkgjoXxPDY0PH/JqGeQYvUGYIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqTjfI5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A08EC4CEF0;
+	Tue, 30 Sep 2025 14:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243904;
-	bh=tkxrZh4npqODUqQB/qMqxjkg5YW7c67DTtPHUvDnXLY=;
+	s=korg; t=1759244286;
+	bh=crxPKSi79onbzGw4oVguT72ya4DJTAdg1O0IhtFoRCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FasAHRaz+Uw2e4N/MjbE2C42MWfNRETJaYggMKko5bjy2fO0CHyy32apDkR76g90O
-	 g351o2Dipt5+x1GCOOCgqH2CO7THJymvis+fGtM3yEMFrkbf9xkCmDNmgOfEuxn2yA
-	 xCwbxA1GfKAoi2EAzNN4SYdeQnxxKv69sBNwyf8M=
+	b=KqTjfI5psOVcfvswjWghuJ2ZIXMOeiHjU0+IFkV0op93BGfMQdlLbKZG3WwsiLfmv
+	 i+b5od0WrSLLsq/n1UAxz8dg9biIXaYFbcQYaZGCiLMXom2dcRQB+sEeC63gA1t5M1
+	 jq/6mLZs6UdLSQ7aKswlWRzzGR2vhqNs6A2sKPSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 51/81] serial: sc16is7xx: fix bug in flow control levels init
+Subject: [PATCH 5.10 082/122] btrfs: tree-checker: fix the incorrect inode ref size check
 Date: Tue, 30 Sep 2025 16:46:53 +0200
-Message-ID: <20250930143821.819835585@linuxfoundation.org>
+Message-ID: <20250930143826.356905778@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 535fd4c98452c87537a40610abba45daf5761ec6 ]
+[ Upstream commit 96fa515e70f3e4b98685ef8cac9d737fc62f10e1 ]
 
-When trying to set MCR[2], XON1 is incorrectly accessed instead. And when
-writing to the TCR register to configure flow control levels, we are
-incorrectly writing to the MSR register. The default value of $00 is then
-used for TCR, which means that selectable trigger levels in FCR are used
-in place of TCR.
+[BUG]
+Inside check_inode_ref(), we need to make sure every structure,
+including the btrfs_inode_extref header, is covered by the item.  But
+our code is incorrectly using "sizeof(iref)", where @iref is just a
+pointer.
 
-TCR/TLR access requires EFR[4] (enable enhanced functions) and MCR[2]
-to be set. EFR[4] is already set in probe().
+This means "sizeof(iref)" will always be "sizeof(void *)", which is much
+smaller than "sizeof(struct btrfs_inode_extref)".
 
-MCR access requires LCR[7] to be zero.
+This will allow some bad inode extrefs to sneak in, defeating tree-checker.
 
-Since LCR is set to $BF when trying to set MCR[2], XON1 is incorrectly
-accessed instead because MCR shares the same address space as XON1.
+[FIX]
+Fix the typo by calling "sizeof(*iref)", which is the same as
+"sizeof(struct btrfs_inode_extref)", and will be the correct behavior we
+want.
 
-Since MCR[2] is unmodified and still zero, when writing to TCR we are in
-fact writing to MSR because TCR/TLR registers share the same address space
-as MSR/SPR.
-
-Fix by first removing useless reconfiguration of EFR[4] (enable enhanced
-functions), as it is already enabled in sc16is7xx_probe() since commit
-43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed").
-Now LCR is $00, which means that MCR access is enabled.
-
-Also remove regcache_cache_bypass() calls since we no longer access the
-enhanced registers set, and TCR is already declared as volatile (in fact
-by declaring MSR as volatile, which shares the same address).
-
-Finally disable access to TCR/TLR registers after modifying them by
-clearing MCR[2].
-
-Note: the comment about "... and internal clock div" is wrong and can be
-      ignored/removed as access to internal clock div registers (DLL/DLH)
-      is permitted only when LCR[7] is logic 1, not when enhanced features
-      is enabled. And DLL/DLH access is not needed in sc16is7xx_startup().
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20250731124451.1108864-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ s->regmap renames + context ]
+Fixes: 71bf92a9b877 ("btrfs: tree-checker: Add check for INODE_REF")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Added unlikely() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ fs/btrfs/tree-checker.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1032,16 +1032,6 @@ static int sc16is7xx_startup(struct uart
- 	sc16is7xx_port_write(port, SC16IS7XX_FCR_REG,
- 			     SC16IS7XX_FCR_FIFO_BIT);
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1545,10 +1545,10 @@ static int check_inode_ref(struct extent
+ 	while (ptr < end) {
+ 		u16 namelen;
  
--	/* Enable EFR */
--	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
--			     SC16IS7XX_LCR_CONF_MODE_B);
--
--	regcache_cache_bypass(s->regmap, true);
--
--	/* Enable write access to enhanced features and internal clock div */
--	sc16is7xx_port_write(port, SC16IS7XX_EFR_REG,
--			     SC16IS7XX_EFR_ENABLE_BIT);
--
- 	/* Enable TCR/TLR */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_TCRTLR_BIT,
-@@ -1053,7 +1043,8 @@ static int sc16is7xx_startup(struct uart
- 			     SC16IS7XX_TCR_RX_RESUME(24) |
- 			     SC16IS7XX_TCR_RX_HALT(48));
+-		if (ptr + sizeof(iref) > end) {
++		if (unlikely(ptr + sizeof(*iref) > end)) {
+ 			inode_ref_err(leaf, slot,
+ 			"inode ref overflow, ptr %lu end %lu inode_ref_size %zu",
+-				ptr, end, sizeof(iref));
++				ptr, end, sizeof(*iref));
+ 			return -EUCLEAN;
+ 		}
  
--	regcache_cache_bypass(s->regmap, false);
-+	/* Disable TCR/TLR access */
-+	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG, SC16IS7XX_MCR_TCRTLR_BIT, 0);
- 
- 	/* Now, initialize the UART */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
 
 
 
