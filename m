@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-182473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB17BADA16
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2EF1BAD806
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E57283AFB93
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C714A43BA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B972FCBFC;
-	Tue, 30 Sep 2025 15:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503C02FCBFC;
+	Tue, 30 Sep 2025 15:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuNBU6eA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T338kGJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408D530594A;
-	Tue, 30 Sep 2025 15:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEFD1EE02F;
+	Tue, 30 Sep 2025 15:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245056; cv=none; b=TYwNfBlA9969YGe36fiaxHerEtp+RCaf6v1QWgtttHo7b9FVs0KAT9+Gp3uLUa4Iq3/03bltSu+lwe6l+gOG6EAC9fusrB/Du22K1yOuVGJ+xpzXUW8siR+eN69L5rHd2pgcxYDqI4dp9Xk0urwMDlBbEtYS4tejcpGjsMNcHsc=
+	t=1759244605; cv=none; b=MMLMLFT2wChAS90JwC4JdvWzMcmRyGYIRdlBtJ6GZYHeezoasrCiri+zLNijHs/8pSch5gzDCeJC13StwaXY18RQ1w4hhtovf7larCF+Yv37WpUv7dcJKvuj3X+PzteAgaL3q54m7LldyF8I51X9Ir+ONLFw2MvbhcDcljMHO+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245056; c=relaxed/simple;
-	bh=/YuPo65rL/vr7/4DEoqOk6fdpi5uqET2XKVRxrBXAE0=;
+	s=arc-20240116; t=1759244605; c=relaxed/simple;
+	bh=9DO1Uj1IlTI0QrCo2CbLr3ezWwVr4r3uttdGi2/E2tQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzFP9LYR954Pb6ZUGvilWVhsYy78OLZkpV4cx91wBSem6buBXTb9QXMkPXJLCGADq+qwcjpx4/VSH/wJo7i2cKPLNavO+gQKz3kcGYZaRGpZDgpUg82ZTvvHIHX+sNOG0IWQMoZRfOQotIFv9vEdbXIMN4tgr5N4Dj/CO+1AZ7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuNBU6eA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B06C4CEF0;
-	Tue, 30 Sep 2025 15:10:55 +0000 (UTC)
+	 MIME-Version; b=QnrmFgNBwDpw6JBG6RVPqjjrM4QFCVddPp0OdWQFUNT57cTmeG2NAuhLoeVsfimit11il7DCFHKT/8Owh+0RfMoyAp5X0HZ/yHYQHeQadhwHy/rFG5O8d++94CYYFv2tHP6Cn0utRk/y5aR+6l1axyhxrOIFW79m49aCy3QhfSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T338kGJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87202C4CEF0;
+	Tue, 30 Sep 2025 15:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245056;
-	bh=/YuPo65rL/vr7/4DEoqOk6fdpi5uqET2XKVRxrBXAE0=;
+	s=korg; t=1759244604;
+	bh=9DO1Uj1IlTI0QrCo2CbLr3ezWwVr4r3uttdGi2/E2tQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuNBU6eA2vCjzndInrkUJUFDSNXJTMTopm++vpNBeCJcXngYx4q5yP3B5pzDojdUj
-	 Pmqjegl+ljjmCcK0G0y9ba9fqyD7NvGzSadIQ0XeWhtyrTQmVMSmIBbMJkTi4+JX8W
-	 EFg4JN2tRvrvNN8OlwEr5UcvjTCGGC/7OXoSjFbg=
+	b=T338kGJJDOHXZAp/Zi3Yd+d7YYRAirsqOJ2Ps5glQF1J6BJsNrMOiN1wcH7BS7lDL
+	 c0qSaDUQoRFmiAvrkeEVFBzqcXwPswf8jmwc3eYTPMXodBwL+FDHKv3EhBNIaOEYPW
+	 Tw4B6o12so/4CkXmfr5VHiiDiBnJEee6hjnKf15U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 021/151] compiler-clang.h: define __SANITIZE_*__ macros only when undefined
+	Balamurugan C <balamurugan.c@intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 027/143] ASoC: Intel: soc-acpi: Add entry for HDMI_In capture support in PTL match table
 Date: Tue, 30 Sep 2025 16:45:51 +0200
-Message-ID: <20250930143828.457361386@linuxfoundation.org>
+Message-ID: <20250930143832.325884366@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Balamurugan C <balamurugan.c@intel.com>
 
-commit 3fac212fe489aa0dbe8d80a42a7809840ca7b0f9 upstream.
+[ Upstream commit fb00ab1f39369e49d25c74f0d41e4c1ec2f12576 ]
 
-Clang 22 recently added support for defining __SANITIZE__ macros similar
-to GCC [1], which causes warnings (or errors with CONFIG_WERROR=y or W=e)
-with the existing defines that the kernel creates to emulate this behavior
-with existing clang versions.
+Adding HDMI-In capture via I2S feature support in PTL platform.
 
-  In file included from <built-in>:3:
-  In file included from include/linux/compiler_types.h:171:
-  include/linux/compiler-clang.h:37:9: error: '__SANITIZE_THREAD__' macro redefined [-Werror,-Wmacro-redefined]
-     37 | #define __SANITIZE_THREAD__
-        |         ^
-  <built-in>:352:9: note: previous definition is here
-    352 | #define __SANITIZE_THREAD__ 1
-        |         ^
-
-Refactor compiler-clang.h to only define the sanitizer macros when they
-are undefined and adjust the rest of the code to use these macros for
-checking if the sanitizers are enabled, clearing up the warnings and
-allowing the kernel to easily drop these defines when the minimum
-supported version of LLVM for building the kernel becomes 22.0.0 or newer.
-
-Link: https://lkml.kernel.org/r/20250902-clang-update-sanitize-defines-v1-1-cf3702ca3d92@kernel.org
-Link: https://github.com/llvm/llvm-project/commit/568c23bbd3303518c5056d7f03444dae4fdc8a9c [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Balamurugan C <balamurugan.c@intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250708080030.1257790-3-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 03aa2ed9e187 ("ASoC: Intel: sof_rt5682: Add HDMI-In capture with rt5682 support for PTL.")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler-clang.h |   29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ sound/soc/intel/boards/sof_es8336.c               | 10 ++++++++++
+ sound/soc/intel/common/soc-acpi-intel-ptl-match.c | 12 ++++++++++++
+ 2 files changed, 22 insertions(+)
 
---- a/include/linux/compiler-clang.h
-+++ b/include/linux/compiler-clang.h
-@@ -14,23 +14,42 @@
- #define KASAN_ABI_VERSION 5
+diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
+index a0b3679b17b42..1211a2b8a2a2c 100644
+--- a/sound/soc/intel/boards/sof_es8336.c
++++ b/sound/soc/intel/boards/sof_es8336.c
+@@ -826,6 +826,16 @@ static const struct platform_device_id board_ids[] = {
+ 					SOF_ES8336_SPEAKERS_EN_GPIO1_QUIRK |
+ 					SOF_ES8336_JD_INVERTED),
+ 	},
++	{
++		.name = "ptl_es83x6_c1_h02",
++		.driver_data = (kernel_ulong_t)(SOF_ES8336_SSP_CODEC(1) |
++					SOF_NO_OF_HDMI_CAPTURE_SSP(2) |
++					SOF_HDMI_CAPTURE_1_SSP(0) |
++					SOF_HDMI_CAPTURE_2_SSP(2) |
++					SOF_SSP_HDMI_CAPTURE_PRESENT |
++					SOF_ES8336_SPEAKERS_EN_GPIO1_QUIRK |
++					SOF_ES8336_JD_INVERTED),
++	},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(platform, board_ids);
+diff --git a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
+index ff4f2fbf9271d..67f1091483dce 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
+@@ -26,6 +26,11 @@ static const struct snd_soc_acpi_codecs ptl_essx_83x6 = {
+ 	.codecs = { "ESSX8316", "ESSX8326", "ESSX8336"},
+ };
  
- /*
-+ * Clang 22 added preprocessor macros to match GCC, in hopes of eventually
-+ * dropping __has_feature support for sanitizers:
-+ * https://github.com/llvm/llvm-project/commit/568c23bbd3303518c5056d7f03444dae4fdc8a9c
-+ * Create these macros for older versions of clang so that it is easy to clean
-+ * up once the minimum supported version of LLVM for building the kernel always
-+ * creates these macros.
-+ *
-  * Note: Checking __has_feature(*_sanitizer) is only true if the feature is
-  * enabled. Therefore it is not required to additionally check defined(CONFIG_*)
-  * to avoid adding redundant attributes in other configurations.
-  */
-+#if __has_feature(address_sanitizer) && !defined(__SANITIZE_ADDRESS__)
-+#define __SANITIZE_ADDRESS__
-+#endif
-+#if __has_feature(hwaddress_sanitizer) && !defined(__SANITIZE_HWADDRESS__)
-+#define __SANITIZE_HWADDRESS__
-+#endif
-+#if __has_feature(thread_sanitizer) && !defined(__SANITIZE_THREAD__)
-+#define __SANITIZE_THREAD__
-+#endif
- 
--#if __has_feature(address_sanitizer) || __has_feature(hwaddress_sanitizer)
--/* Emulate GCC's __SANITIZE_ADDRESS__ flag */
-+/*
-+ * Treat __SANITIZE_HWADDRESS__ the same as __SANITIZE_ADDRESS__ in the kernel.
-+ */
-+#ifdef __SANITIZE_HWADDRESS__
- #define __SANITIZE_ADDRESS__
-+#endif
++static const struct snd_soc_acpi_codecs ptl_lt6911_hdmi = {
++	.num_codecs = 1,
++	.codecs = {"INTC10B0"}
++};
 +
-+#ifdef __SANITIZE_ADDRESS__
- #define __no_sanitize_address \
- 		__attribute__((no_sanitize("address", "hwaddress")))
- #else
- #define __no_sanitize_address
- #endif
- 
--#if __has_feature(thread_sanitizer)
--/* emulate gcc's __SANITIZE_THREAD__ flag */
--#define __SANITIZE_THREAD__
-+#ifdef __SANITIZE_THREAD__
- #define __no_sanitize_thread \
- 		__attribute__((no_sanitize("thread")))
- #else
+ struct snd_soc_acpi_mach snd_soc_acpi_intel_ptl_machines[] = {
+ 	{
+ 		.comp_ids = &ptl_rt5682_rt5682s_hp,
+@@ -34,6 +39,13 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_ptl_machines[] = {
+ 		.tplg_quirk_mask = SND_SOC_ACPI_TPLG_INTEL_AMP_NAME |
+ 					SND_SOC_ACPI_TPLG_INTEL_CODEC_NAME,
+ 	},
++	{
++		.comp_ids = &ptl_essx_83x6,
++		.drv_name = "ptl_es83x6_c1_h02",
++		.machine_quirk = snd_soc_acpi_codec_list,
++		.quirk_data = &ptl_lt6911_hdmi,
++		.sof_tplg_filename = "sof-ptl-es83x6-ssp1-hdmi-ssp02.tplg",
++	},
+ 	{
+ 		.comp_ids = &ptl_essx_83x6,
+ 		.drv_name = "sof-essx8336",
+-- 
+2.51.0
+
 
 
 
