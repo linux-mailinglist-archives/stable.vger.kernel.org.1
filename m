@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F2CBADAF3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8E4BADD50
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF245169E9A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8561945BCE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2E7302CD6;
-	Tue, 30 Sep 2025 15:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584D43043B8;
+	Tue, 30 Sep 2025 15:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVDmP4Q3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu33rZma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579BE29827E;
-	Tue, 30 Sep 2025 15:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146213C465;
+	Tue, 30 Sep 2025 15:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245401; cv=none; b=SYFvgUzUaPSXE1aZtVI6WaED0w+WjzUW7Id/zxtrHKVZT/JKmRZs5/7R9jPmSbWYQGMH2IsZ3aEsfQVMLCbkTdheMN0+AjDt5xXx/73vbodZ62jDcjfJ6SWgcC8h8De4YGrQsAzpKU2E+9fac+C9xlPWt7ooSs6bax1WKa+Dpbw=
+	t=1759246013; cv=none; b=WBaokLjCsgzfVNjc+B49RJsVU6XMbF2qpaowHnm300u9348feNqGNjj86gO0LiaHZg54CGNByMSl+5jyA9/aas56JE4xvUsE35TkgId3OJRrfuYESzIjMK8LhXf3mnYEtrYtFLS+8ImF8IQwC9JMw6I6lZvQN1R5RRjBunV5htI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245401; c=relaxed/simple;
-	bh=FGpYr5jFf4+KCRFp4zS8v2WKJxQNlE6/8FcT6j4CI7s=;
+	s=arc-20240116; t=1759246013; c=relaxed/simple;
+	bh=OtBSJVkDmHuEBgrpUa0m7JyZJjyslrZEocHsXBcCvuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFLJN/3A37kcqIwPvVkdanJODbhrzz3gnsrW4nS4hNS87Vx8a5bJVtPbNSzW/dmQUMLsq3gT2GuvTyN1twesSWheLeQNCbMteGdZ4HzDuaXsI6EQdCfZqGMMoyJWNnqg4qYJwnt3deqTX0FhzLl7xzbtKTPiUJVJ43F7WVgr1Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVDmP4Q3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841D3C113D0;
-	Tue, 30 Sep 2025 15:16:40 +0000 (UTC)
+	 MIME-Version; b=AUb7GtB9D9e7wItZEekU/V9VmVidoPbW9xc9yTDGKl2YWJzsTYmRp6S4BDNH3TZ4kc42JyeFMNdqvC17U3QVoGllIGAUzCJxivslDXkMEhzoGbM1H62bCZbZ+s/oxnsOsxs44vELuHbigoA5c7+/IprVKMAVLps0d+BYjNedLXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu33rZma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1976AC4CEF0;
+	Tue, 30 Sep 2025 15:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245400;
-	bh=FGpYr5jFf4+KCRFp4zS8v2WKJxQNlE6/8FcT6j4CI7s=;
+	s=korg; t=1759246012;
+	bh=OtBSJVkDmHuEBgrpUa0m7JyZJjyslrZEocHsXBcCvuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bVDmP4Q3s0P41iXJJTNjnB4crtOHmo01fx5ihqxoOdwCqUfo4i41hv8ORdsaO02zg
-	 zgQspz627ju4TSuk7UOYqE9O0Dr2/utyRs9x72qbmPHq077LDAwtExk2EeKlGnOoD+
-	 fcgXhVldM67SQ4RtVnYhTH+BlNMGgiiK0jGhAVrw=
+	b=nu33rZmaE68TBr16wKFNDcdD1oO0vmf6Z2x7Hri2rVWSxx5JpmG8qBvZG8zlwTZn6
+	 IH7r3HqR7aOUREZLUpNydBhNXsV/kLpuPSLfO7llhoaUvV5+d+MSfd6K8uNyYhvwr0
+	 6ZMUBZmVgNFUbTSvUC6xd30DsLafr7gs4i5WOPD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/151] bnxt_en: correct offset handling for IPv6 destination address
+Subject: [PATCH 6.12 25/89] net: sfp: add quirk for FLYPRO copper SFP+ module
 Date: Tue, 30 Sep 2025 16:47:39 +0200
-Message-ID: <20250930143832.741346289@linuxfoundation.org>
+Message-ID: <20250930143822.943468004@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 3d3aa9472c6dd0704e9961ed4769caac5b1c8d52 ]
+[ Upstream commit ddbf0e78a8b20ec18d314d31336a0230fdc9b394 ]
 
-In bnxt_tc_parse_pedit(), the code incorrectly writes IPv6
-destination values to the source address field (saddr) when
-processing pedit offsets within the destination address range.
+Add quirk for a copper SFP that identifies itself as "FLYPRO"
+"SFP-10GT-CS-30M". It uses RollBall protocol to talk to the PHY.
 
-This patch corrects the assignment to use daddr instead of saddr,
-ensuring that pedit operations on IPv6 destination addresses are
-applied correctly.
-
-Fixes: 9b9eb518e338 ("bnxt_en: Add support for NAT(L3/L4 rewrite)")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Link: https://patch.msgid.link/20250920121157.351921-1-alok.a.tiwari@oracle.com
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20250831105910.3174-1-olek2@wp.pl
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/sfp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-index b3473883eae6b..0dd393a4fa80c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-@@ -244,7 +244,7 @@ bnxt_tc_parse_pedit(struct bnxt *bp, struct bnxt_tc_actions *actions,
- 			   offset < offset_of_ip6_daddr + 16) {
- 			actions->nat.src_xlate = false;
- 			idx = (offset - offset_of_ip6_daddr) / 4;
--			actions->nat.l3.ipv6.saddr.s6_addr32[idx] = htonl(val);
-+			actions->nat.l3.ipv6.daddr.s6_addr32[idx] = htonl(val);
- 		} else {
- 			netdev_err(bp->dev,
- 				   "%s: IPv6_hdr: Invalid pedit field\n",
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index e8670249d32c1..f1827a1bd7a59 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -491,6 +491,9 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
+ 		  sfp_fixup_nokia),
+ 
++	// FLYPRO SFP-10GT-CS-30M uses Rollball protocol to talk to the PHY.
++	SFP_QUIRK_F("FLYPRO", "SFP-10GT-CS-30M", sfp_fixup_rollball),
++
+ 	// Fiberstore SFP-10G-T doesn't identify as copper, uses the Rollball
+ 	// protocol to talk to the PHY and needs 4 sec wait before probing the
+ 	// PHY.
 -- 
 2.51.0
 
