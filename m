@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A99BADAE3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0072BAD9F8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0D7E19445BE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5346719437D8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89D22FD1DD;
-	Tue, 30 Sep 2025 15:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8163043B8;
+	Tue, 30 Sep 2025 15:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjI9othN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymY0heIm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6403B27B328;
-	Tue, 30 Sep 2025 15:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CB42236EB;
+	Tue, 30 Sep 2025 15:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245491; cv=none; b=bbKEks0Q4MOXr7Wb9rcuFWU5NqLYXkqV2x1YOLNkajEYQuQ2dtQaxl8toULHuYeYEnIV++3Dx8kWeTPoqDr9U4l3fMLRyBqTYXD26djpL+ru6kj9/TlHZ9qYTHg0TcKFNKMyScrAG4FF6dIl2XcLn7MIhckNlDmrfVPvK7n/DOc=
+	t=1759245224; cv=none; b=uDcLIaLgbjuZVZv5tAZI8kOGu8+CaK2oJoXHoKgT4A1ZBz8SD21yVhSOLfOBOyGtfHQKHkNFsEdDeO7lc8/31m/cf0IZOvVkoa+5G0XQT7ze0imuCjoaQA6yW3f0pRpH/F3tsGD2zJpwtHeQOKhwQ5Qoz6joDuHHWvbeF3GmoZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245491; c=relaxed/simple;
-	bh=wmrFloTB65uWCWG+AX6D48EoEOQ61Q90TI+akZC0y3s=;
+	s=arc-20240116; t=1759245224; c=relaxed/simple;
+	bh=pQtLG+y5tVNNOONFJnU1Pm2X/ImJN8/gWrASx5ybz34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1hKCz3CSSd7TXuNgk/zkvEJoZ3q3iUPjXnetxdDFWz327+zt39dzvXxTvwG3E8/jK/GwD2NEi0jgea7UOWSpd1RXTIwugnAmgi50qYGBxy/BEyN4JvvKhFgP2da/9WeVHhALiQHwaRnBP/dFdJKwENrG8VSPBGRbDAK9nwmfYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjI9othN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2945C4CEF0;
-	Tue, 30 Sep 2025 15:18:10 +0000 (UTC)
+	 MIME-Version; b=Pc/cE9UhSgsKJATYvaBs8Mrnn7DLhfwwJwkpT2OS/FYK1WY8ejmIIDZqVpnuTwTuLyuwJJ6LdmgN3YVqKcjc7d1cvnyzdvfs7CxsOLLMc3U9U671jmm5ZoRSB4hVRYmMnXLxAVf30P+BwrVj7GgglWr6cztdrMaVKUcbJFUChpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymY0heIm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FA1C4CEF0;
+	Tue, 30 Sep 2025 15:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245491;
-	bh=wmrFloTB65uWCWG+AX6D48EoEOQ61Q90TI+akZC0y3s=;
+	s=korg; t=1759245223;
+	bh=pQtLG+y5tVNNOONFJnU1Pm2X/ImJN8/gWrASx5ybz34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjI9othNPi4V1kCJvEnC8RNx5sTUC3HrJ1nC1V8GaWaxruGWgr30Ui/Mnr3mdXU6Z
-	 y944cjyH9iKttNh7ZdFd4Eop5WsSoDmI5Oov+f5r4jBv1LyZZsImZVr34GCTlHMUwG
-	 I9SU/Qm3k9IZo25FPmryG9v/cKSBXqPMO/7jZB7Q=
+	b=ymY0heImEPdgXCKmI88QweMi2+UTGTgp2/bKt1actCtFCxmd4O1SgfIgL6PeVO1XV
+	 Wa1cYiQxezpTOvGbFDVeU/9HJgTsH7fcga+mUOz7866v7d5qub7K7wUDFtgmzdMARg
+	 yq1wFFDDOx0kG6eaawqClTOBwvCk9yTEL8cMsMJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Kerem Karabay <kekrby@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 09/73] HID: multitouch: take cls->maxcontacts into account for Apple Touch Bar even without a HID_DG_CONTACTMAX field
-Date: Tue, 30 Sep 2025 16:47:13 +0200
-Message-ID: <20250930143820.948254301@linuxfoundation.org>
+Subject: [PATCH 5.15 104/151] ALSA: usb-audio: Drop unnecessary parentheses in mixer_quirks
+Date: Tue, 30 Sep 2025 16:47:14 +0200
+Message-ID: <20250930143831.745289048@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kerem Karabay <kekrby@gmail.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 7dfe48bdc9d38db46283f2e0281bc1626277b8bf ]
+[ Upstream commit c0495cef8b43ad61efbd4019e3573742e0e63c67 ]
 
-In Apple Touch Bar, the HID_DG_CONTACTMAX is not present, but the maximum
-contact count is still greater than the default. Add quirks for the same.
+Fix multiple 'CHECK: Unnecessary parentheses around ...' reports from
+checkpatch.pl.
 
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Kerem Karabay <kekrby@gmail.com>
-Co-developed-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-5-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/usb/mixer_quirks.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index d0b2e866dadaf..8e9f71e69dd8c 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1322,6 +1322,13 @@ static int mt_touch_input_configured(struct hid_device *hdev,
- 	struct input_dev *input = hi->input;
- 	int ret;
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 0e8cf8b06b8ad..866d309454aa3 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -376,10 +376,10 @@ static int snd_audigy2nx_controls_create(struct usb_mixer_interface *mixer)
+ 		struct snd_kcontrol_new knew;
  
-+	/*
-+	 * HID_DG_CONTACTMAX field is not present on Apple Touch Bars,
-+	 * but the maximum contact count is greater than the default.
-+	 */
-+	if (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR && cls->maxcontacts)
-+		td->maxcontacts = cls->maxcontacts;
-+
- 	if (!td->maxcontacts)
- 		td->maxcontacts = MT_DEFAULT_MAXCONTACT;
+ 		/* USB X-Fi S51 doesn't have a CMSS LED */
+-		if ((mixer->chip->usb_id == USB_ID(0x041e, 0x3042)) && i == 0)
++		if (mixer->chip->usb_id == USB_ID(0x041e, 0x3042) && i == 0)
+ 			continue;
+ 		/* USB X-Fi S51 Pro doesn't have one either */
+-		if ((mixer->chip->usb_id == USB_ID(0x041e, 0x30df)) && i == 0)
++		if (mixer->chip->usb_id == USB_ID(0x041e, 0x30df) && i == 0)
+ 			continue;
+ 		if (i > 1 && /* Live24ext has 2 LEDs only */
+ 			(mixer->chip->usb_id == USB_ID(0x041e, 0x3040) ||
+@@ -3254,7 +3254,7 @@ static int snd_djm_controls_update(struct usb_mixer_interface *mixer,
+ 	int err;
+ 	const struct snd_djm_device *device = &snd_djm_devices[device_idx];
  
+-	if ((group >= device->ncontrols) || value >= device->controls[group].noptions)
++	if (group >= device->ncontrols || value >= device->controls[group].noptions)
+ 		return -EINVAL;
+ 
+ 	err = snd_usb_lock_shutdown(mixer->chip);
 -- 
 2.51.0
 
