@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB579BAD659
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C08BAD86C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9AD3324ECE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F8D31C5E9F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3E730594A;
-	Tue, 30 Sep 2025 14:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CCC266B65;
+	Tue, 30 Sep 2025 15:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yj5i4FII"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w071OgUR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088B5201017;
-	Tue, 30 Sep 2025 14:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3392F9D9E;
+	Tue, 30 Sep 2025 15:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244312; cv=none; b=G5St207CTMUBDjZ44CrUs50KbzdckfSdHZAxsZcA4M0rjd8SjlL/CqtL/ilAVj7+h1WwGQjonfILAX2YckcU+5djYpoUNRNWQeBMY2V0JxGQQm5wHcNVAlw7VZ65Qr4WuuKPNAgIysZKmdE4rQAJqfFY10YIx75wq56eL+fmuKc=
+	t=1759244816; cv=none; b=hPHmki6VNAODOOJF9l6DDxKy2RXN7KubAv4ODfAbQgnEg9xkgJ/L+2UJwKJNy70Zz7yAqorKUGZ92TL47qWD2nqmP5llMkpoaCtASYONwUo6tFrgrPCZnhmUGEpnPLHp1t3EoYlAkRyl8cj9N+QYWAli/rBXklfU7kpYnojgz4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244312; c=relaxed/simple;
-	bh=jWtywtrJqpqpb/qIkNNLU93OTBTiJImUzkHvpJZtLV4=;
+	s=arc-20240116; t=1759244816; c=relaxed/simple;
+	bh=Ib7EsOT7P/yp/UoGfNXwlJOdz643++wO6DOV6qQvX6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XrP9Ms1tEuEvgSvoknXFV9FJCgWawIjD9LvOT4GE444zJKqaDQu97LL2sBTh4tPdpx46tWi5ckGUBPUV5mLESpXIuNMROrGaUAemK7PhY5+hRz28JykNrI4wQ1iSVeCQlfkSo827bkfiW+7oBM4iVVHZA7GjWYaTS4b1Gzm9yiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yj5i4FII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF6DC4CEF0;
-	Tue, 30 Sep 2025 14:58:31 +0000 (UTC)
+	 MIME-Version; b=OClteLatNfxvhpGScD1Az7RYL2ZYmS6exLURRajUtBGUMuM3UdYLBFpX8e10R1wdynD5sg7lPNO41sRDNHxNXiErEOB3ftCg1NTWMy4BNueCA6VMXiUu+QacJ/4Zp/cv+ah0427OPkiabJlQsJ5eudU0iZbFtjSm6qL6BsyOhoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w071OgUR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BA0C116B1;
+	Tue, 30 Sep 2025 15:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244311;
-	bh=jWtywtrJqpqpb/qIkNNLU93OTBTiJImUzkHvpJZtLV4=;
+	s=korg; t=1759244815;
+	bh=Ib7EsOT7P/yp/UoGfNXwlJOdz643++wO6DOV6qQvX6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yj5i4FIIK0O8WnT++D0UU/l2Sy3RQl2uOALi28r2ouST34kYriEM/bRn2lGDkPgK+
-	 50pCEcNuXQKg/4tlAp8QZiVyBdqAFOCmiiM6eOiTFuuhAW+xroQCoGlgpwXbaXFOfe
-	 PUn2E3l+Am4ChLlfK3R6VAj2wHlDa8uxeEmVtsoU=
+	b=w071OgURaumAWxZAaC3b1wa2iZBHLLw3fO1p8ET+pmBVlUEs7ad6qMeKf1128A3PZ
+	 /Xn+lPQyjF+yVH9Fy/vXwUQSViVmLmfz2N3KTvN1MiYlJz+xxcL3yfUgV8kn8o+DLy
+	 WjESDzlZmeHXorVGu/BSRqmdVay3+bobR1Gj/Oq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 084/122] ALSA: usb-audio: Fix block comments in mixer_quirks
+Subject: [PATCH 6.16 091/143] drm/i915/ddi: Guard reg_val against a INVALID_TRANSCODER
 Date: Tue, 30 Sep 2025 16:46:55 +0200
-Message-ID: <20250930143826.440626198@linuxfoundation.org>
+Message-ID: <20250930143834.855878350@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Suraj Kandpal <suraj.kandpal@intel.com>
 
-[ Upstream commit 231225d8a20f8668b4fd6601d54a2fac0e0ab7a5 ]
+[ Upstream commit 7f97a0a871d9532f2e1a5ee7d16d0e364215bcac ]
 
-Address a couple of comment formatting issues indicated by
-checkpatch.pl:
+Currently we check if the encoder is INVALID or -1 and throw a
+WARN_ON but we still end up writing the temp value which will
+overflow and corrupt the whole programmed value.
 
-  WARNING: Block comments use a trailing */ on a separate line
+--v2
+-Assign a bogus transcoder to master in case we get a INVALID
+TRANSCODER [Jani]
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-4-1a821463b632@collabora.com
+Fixes: 6671c367a9bea ("drm/i915/tgl: Select master transcoder for MST stream")
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lore.kernel.org/r/20250908042208.1011144-1-suraj.kandpal@intel.com
+(cherry picked from commit c8e8e9ab14a6ea926641d161768e1e3ef286a853)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_ddi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 866b5470f84bd..14b0a91c19d34 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -76,7 +76,8 @@ static int snd_create_std_mono_ctl_offset(struct usb_mixer_interface *mixer,
- 	cval->idx_off = idx_off;
+diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
+index d58f8fc373265..55b8bfcf364ae 100644
+--- a/drivers/gpu/drm/i915/display/intel_ddi.c
++++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+@@ -593,8 +593,9 @@ intel_ddi_transcoder_func_reg_val_get(struct intel_encoder *encoder,
+ 			enum transcoder master;
  
- 	/* get_min_max() is called only for integer volumes later,
--	 * so provide a short-cut for booleans */
-+	 * so provide a short-cut for booleans
-+	 */
- 	cval->min = 0;
- 	cval->max = 1;
- 	cval->res = 0;
-@@ -3267,7 +3268,8 @@ static void snd_dragonfly_quirk_db_scale(struct usb_mixer_interface *mixer,
- 					 struct snd_kcontrol *kctl)
- {
- 	/* Approximation using 10 ranges based on output measurement on hw v1.2.
--	 * This seems close to the cubic mapping e.g. alsamixer uses. */
-+	 * This seems close to the cubic mapping e.g. alsamixer uses.
-+	 */
- 	static const DECLARE_TLV_DB_RANGE(scale,
- 		 0,  1, TLV_DB_MINMAX_ITEM(-5300, -4970),
- 		 2,  5, TLV_DB_MINMAX_ITEM(-4710, -4160),
+ 			master = crtc_state->mst_master_transcoder;
+-			drm_WARN_ON(display->drm,
+-				    master == INVALID_TRANSCODER);
++			if (drm_WARN_ON(display->drm,
++					master == INVALID_TRANSCODER))
++				master = TRANSCODER_A;
+ 			temp |= TRANS_DDI_MST_TRANSPORT_SELECT(master);
+ 		}
+ 	} else {
 -- 
 2.51.0
 
