@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C747BAD98F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52EABBAD7D0
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CB67320A6D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34341164643
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9A12236EB;
-	Tue, 30 Sep 2025 15:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761E027C872;
+	Tue, 30 Sep 2025 15:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zY233k00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJkUa/hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880111EE02F;
-	Tue, 30 Sep 2025 15:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AC11EE02F;
+	Tue, 30 Sep 2025 15:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245088; cv=none; b=eu6sQulbeOB5iOeIyCFQXn8NSZd+gXbnYnPCRzdqgnJ05uX0EhJ0JIdyWO7r738RUoJpYJ/buM2S0FZW/bKjPJTyMCnl6FvQCSSji96sLcpBEC5x6rNoeAICNjfNiXAlA5tE3bk6urQ2H2Zf0Hp8dmegFx6HI4a3QI+oSxZMP74=
+	t=1759244643; cv=none; b=nelrgkRfV2oe+Nadphd8UKwpm5ra/vaTjXZMXKyJERjq3uca/Wqzb3boa1mWiFsmQ/Onk/vDbvcaJ2FnKBediRdtX6ezZXCwDct+YcCuK5kagTTzb7N8Vb3bmzd2swiMju3Y7/NLn9iCBuU45Kzukdw3JltFfemDUnyVC8sb4Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245088; c=relaxed/simple;
-	bh=ZDGvTmtT2CypzGnX8AaGWAhl+F45ZiSTGIV1JoDsVkk=;
+	s=arc-20240116; t=1759244643; c=relaxed/simple;
+	bh=6C0m5btIEBUMFUj1myMdF9sJ90aF6ztZ0sO/sJ95hHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPillc5veIuEBe+JNMj/zUjP8oUafKYWguef5DOeWB4mwZ8HbqltYGNyfrfvvt3IpEoCrFEWNJrriE7nfGDWzBdbgWvc1gEC2UNNQ+bxMCsZ3+Jc9DMlrxz33uX/OQ8nU7tAOeIXkPf2Lz9JjYhTKudsSUa/3DW+/37mOE/PUAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY233k00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF4AC4CEF0;
-	Tue, 30 Sep 2025 15:11:27 +0000 (UTC)
+	 MIME-Version; b=V8O0gWrs0yK3E6uYx1sfxy4wJULy70cj+UHtyEMp7uMZPf8Ibxtmf7SO9k4W8hQ1uAagTwH6cqqXhUNJv3xn9WulevR6AyZ4QmUtje6LMVzbca7N2U3tg7EkwAKUVckQGTGymGD5CEgBwSKBT3Ff3sOfyb4N040o+Xd/A1ueicE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJkUa/hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9962C4CEF0;
+	Tue, 30 Sep 2025 15:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245088;
-	bh=ZDGvTmtT2CypzGnX8AaGWAhl+F45ZiSTGIV1JoDsVkk=;
+	s=korg; t=1759244643;
+	bh=6C0m5btIEBUMFUj1myMdF9sJ90aF6ztZ0sO/sJ95hHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zY233k00CmQqqsMjuz8C9miLAUP/l/NINh3RdsfwoBNalCI5KKifGKCWtRGt1YXN3
-	 pO6+x6jw1lsNKqMTriwA+JJq4cOYkEOg7iZeBAcm5gghk6E+3svBe+q/fK5ciMr48d
-	 UTI4FnHP5bp/D++EpePoSKRZN1OiZ2vHckgVNGh8=
+	b=cJkUa/hjQaQ0kjo0I7EslTVea8Y33Z9gvXb8udM41ImE2ge/n9/mECl2NfszzMTxR
+	 z41Jt6Wa9tY5/QuC350kgxtbJj54uPTyJakai+AkbBOqgzBxavjcsXyfyoDjep/rei
+	 TiL+n3Z3npjKmRIVkbK1Hq/2V70KmjfevrxwEtOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/151] ALSA: firewire-motu: drop EPOLLOUT from poll return values as write is not supported
+Subject: [PATCH 6.16 071/143] vhost: Take a reference on the task in struct vhost_task.
 Date: Tue, 30 Sep 2025 16:46:35 +0200
-Message-ID: <20250930143830.190089067@linuxfoundation.org>
+Message-ID: <20250930143834.068575454@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit aea3493246c474bc917d124d6fb627663ab6bef0 ]
+[ Upstream commit afe16653e05db07d658b55245c7a2e0603f136c0 ]
 
-The ALSA HwDep character device of the firewire-motu driver incorrectly
-returns EPOLLOUT in poll(2), even though the driver implements no operation
-for write(2). This misleads userspace applications to believe write() is
-allowed, potentially resulting in unnecessarily wakeups.
+vhost_task_create() creates a task and keeps a reference to its
+task_struct. That task may exit early via a signal and its task_struct
+will be released.
+A pending vhost_task_wake() will then attempt to wake the task and
+access a task_struct which is no longer there.
 
-This issue dates back to the driver's initial code added by a commit
-71c3797779d3 ("ALSA: firewire-motu: add hwdep interface"), and persisted
-when POLLOUT was updated to EPOLLOUT by a commit a9a08845e9ac ('vfs: do
-bulk POLL* -> EPOLL* replacement("").').
+Acquire a reference on the task_struct while creating the thread and
+release the reference while the struct vhost_task itself is removed.
+If the task exits early due to a signal, then the vhost_task_wake() will
+still access a valid task_struct. The wake is safe and will be skipped
+in this case.
 
-This commit fixes the bug.
-
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://patch.msgid.link/20250829233749.366222-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: f9010dbdce911 ("fork, vhost: Use CLONE_THREAD to fix freezer/ps regression")
+Reported-by: Sean Christopherson <seanjc@google.com>
+Closes: https://lore.kernel.org/all/aKkLEtoDXKxAAWju@google.com/
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Message-Id: <20250918181144.Ygo8BZ-R@linutronix.de>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/motu/motu-hwdep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/vhost_task.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/firewire/motu/motu-hwdep.c b/sound/firewire/motu/motu-hwdep.c
-index b5ced5d27758b..364fecf8d2867 100644
---- a/sound/firewire/motu/motu-hwdep.c
-+++ b/sound/firewire/motu/motu-hwdep.c
-@@ -73,7 +73,7 @@ static __poll_t hwdep_poll(struct snd_hwdep *hwdep, struct file *file,
- 		events = 0;
- 	spin_unlock_irq(&motu->lock);
- 
--	return events | EPOLLOUT;
-+	return events;
+diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+index 2f844c279a3e0..7f24ccc896c64 100644
+--- a/kernel/vhost_task.c
++++ b/kernel/vhost_task.c
+@@ -100,6 +100,7 @@ void vhost_task_stop(struct vhost_task *vtsk)
+ 	 * freeing it below.
+ 	 */
+ 	wait_for_completion(&vtsk->exited);
++	put_task_struct(vtsk->task);
+ 	kfree(vtsk);
  }
+ EXPORT_SYMBOL_GPL(vhost_task_stop);
+@@ -148,7 +149,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *),
+ 		return ERR_PTR(PTR_ERR(tsk));
+ 	}
  
- static int hwdep_get_info(struct snd_motu *motu, void __user *arg)
+-	vtsk->task = tsk;
++	vtsk->task = get_task_struct(tsk);
+ 	return vtsk;
+ }
+ EXPORT_SYMBOL_GPL(vhost_task_create);
 -- 
 2.51.0
 
