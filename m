@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-182183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06448BAD5BA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:56:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53DB6BAD428
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:49:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7083F3A9299
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2121D322E6D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1868B304BA2;
-	Tue, 30 Sep 2025 14:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8748B72617;
+	Tue, 30 Sep 2025 14:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMc4QxAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrm6hza7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D2D306489;
-	Tue, 30 Sep 2025 14:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B3C2D24AD;
+	Tue, 30 Sep 2025 14:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244114; cv=none; b=aSp5ypTNCeeaXeWlzqRoTff4/n0bGMhxilyoSH3JHVzDlOSQrPzujJ2g39xUhcEEIF0irpR+jJQS5BJolqkRGCcNOdiwAhryLfZ5AuWRDFst/dJBsvDZiRv/JUeRcUMuhKc9O8LHjJwAhX9t55j89Nr3wZPymDGoW/hx+4DbmJU=
+	t=1759243759; cv=none; b=WPC4kUcdB0/stMAXNg5oyhbVws3VMajW4r+QxKPNtuLfvgXxCwr42MyROxKknjcWZ/Hc1Bgib1bmfRrvCibNyCsD9xBaDkTtJy5sr7gXgnIuLsxzXdCVs6BhXD5pVVMakCdpvvMlHxUjMmDo6fw/z0cGhVA2rJbBVMusYovbe0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244114; c=relaxed/simple;
-	bh=VVhDAaKpc6t6nLnvgwX/43zxuJ1Yg58Q5w3VAQOAfks=;
+	s=arc-20240116; t=1759243759; c=relaxed/simple;
+	bh=5BD4u/LtVCexcNkbyx1eRxxxrP6t+0MGEJ5cqUwzSi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOfJcxUCs1NSVsyvhRX4dxrwQPWuLVEfMos4e6BbvotBzw/nSl3aUvSMDQ0u/mcBYYVvgdlZFOj2i8xw1534bbZykq6eDuZ89ts7sDT6syC8lNb7A+w3Sunk2WsPQr6CN93ReL3jAXWK2mRATZ+V+WGn4IQjtzBqGaF0/h0UtEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMc4QxAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BD0C4CEF0;
-	Tue, 30 Sep 2025 14:55:14 +0000 (UTC)
+	 MIME-Version; b=QDBkWROaa4LqVDQdkBS/Cdc2YRWG5Z73enBkBmlcLtWyMUDVLIRBi0d/IR15N3EC6AfI1FYj1zHckE14fxrtKn9dVWLvi/o2If6aD95AejmFisBlb7kt3u9xKMfgJNWlyZNzVN4T9vkMgp99qj7qyYbJ2TdA8Xg1kpLEBoKLhYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrm6hza7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23EBEC4CEF0;
+	Tue, 30 Sep 2025 14:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244114;
-	bh=VVhDAaKpc6t6nLnvgwX/43zxuJ1Yg58Q5w3VAQOAfks=;
+	s=korg; t=1759243757;
+	bh=5BD4u/LtVCexcNkbyx1eRxxxrP6t+0MGEJ5cqUwzSi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMc4QxAASm4aarN/IBXrW/fdhVO5bIwwG4otRRhnHRKMrmIk6s4clDLBu7xbjX0Mf
-	 Y04sOWfUhC8wnlZkip63cWw15tZ/n6u0b/80qhUK32p5N1nH6WNqE//x6ZBqjXYG97
-	 nSr3yO6N/xA8YCMikZFlevqKHcjZ8HK3wTCsAFoA=
+	b=nrm6hza7BT+9YJDqYBRGZTJxlXnclRy0gsiTh8yKg92YxpsCqJ4HdY1z2RA9XAX5V
+	 V/84n+RblP89fA0+0E6gjvFaNWJ38FHe6SWKw2Id5fjmlAme/ERp5Daxgv/x8px/05
+	 qDrNnm6Cjq0v3h3qIvS7rB2iNxDcGsCR8O4No+vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 5.10 032/122] igb: fix link test skipping when interface is admin down
+	stable <stable@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: [PATCH 5.4 01/81] usb: hub: Fix flushing of delayed work used for post resume purposes
 Date: Tue, 30 Sep 2025 16:46:03 +0200
-Message-ID: <20250930143824.319274299@linuxfoundation.org>
+Message-ID: <20250930143819.718239053@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit d709f178abca22a4d3642513df29afe4323a594b ]
+commit 9bd9c8026341f75f25c53104eb7e656e357ca1a2 upstream.
 
-The igb driver incorrectly skips the link test when the network
-interface is admin down (if_running == false), causing the test to
-always report PASS regardless of the actual physical link state.
+Delayed work that prevents USB3 hubs from runtime-suspending too early
+needed to be flushed in hub_quiesce() to resolve issues detected on
+QC SC8280XP CRD board during suspend resume testing.
 
-This behavior is inconsistent with other drivers (e.g. i40e, ice, ixgbe,
-etc.) which correctly test the physical link state regardless of admin
-state.
-Remove the if_running check to ensure link test always reflects the
-physical link state.
+This flushing did however trigger new issues on Raspberry Pi 3B+, which
+doesn't have USB3 ports, and doesn't queue any post resume delayed work.
 
-Fixes: 8d420a1b3ea6 ("igb: correct link test not being run when link is down")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The flushed 'hub->init_work' item is used for several purposes, and
+is originally initialized with a 'NULL' work function. The work function
+is also changed on the fly, which may contribute to the issue.
+
+Solve this by creating a dedicated delayed work item for post resume work,
+and flush that delayed work in hub_quiesce()
+
+Cc: stable <stable@kernel.org>
+Fixes: a49e1e2e785f ("usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm")
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/linux-usb/aF5rNp1l0LWITnEB@finisterre.sirena.org.uk
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # SC8280XP CRD
+Tested-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250627164348.3982628-2-mathias.nyman@linux.intel.com
+[florian: adjust for lack of hub_{get,put} and timer_delete_sync]
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/usb/core/hub.c |   21 ++++++++-------------
+ drivers/usb/core/hub.h |    1 +
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index 2d1d9090f2cbf..d472e01c2c996 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -2081,11 +2081,8 @@ static void igb_diag_test(struct net_device *netdev,
- 	} else {
- 		dev_info(&adapter->pdev->dev, "online testing starting\n");
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1030,12 +1030,11 @@ int usb_remove_device(struct usb_device
  
--		/* PHY is powered down when interface is down */
--		if (if_running && igb_link_test(adapter, &data[TEST_LINK]))
-+		if (igb_link_test(adapter, &data[TEST_LINK]))
- 			eth_test->flags |= ETH_TEST_FL_FAILED;
--		else
--			data[TEST_LINK] = 0;
+ enum hub_activation_type {
+ 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
+-	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
++	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
+ };
  
- 		/* Online tests aren't run; pass by default */
- 		data[TEST_REG] = 0;
--- 
-2.51.0
-
+ static void hub_init_func2(struct work_struct *ws);
+ static void hub_init_func3(struct work_struct *ws);
+-static void hub_post_resume(struct work_struct *ws);
+ 
+ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+ {
+@@ -1059,12 +1058,6 @@ static void hub_activate(struct usb_hub
+ 		goto init3;
+ 	}
+ 
+-	if (type == HUB_POST_RESUME) {
+-		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
+-		kref_put(&hub->kref, hub_release);
+-		return;
+-	}
+-
+ 	kref_get(&hub->kref);
+ 
+ 	/* The superspeed hub except for root hub has to use Hub Depth
+@@ -1318,8 +1311,8 @@ static void hub_activate(struct usb_hub
+ 		usb_autopm_get_interface_no_resume(
+ 			to_usb_interface(hub->intfdev));
+ 
+-		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
+-		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
++		queue_delayed_work(system_power_efficient_wq,
++				   &hub->post_resume_work,
+ 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
+ 		return;
+ 	}
+@@ -1344,9 +1337,10 @@ static void hub_init_func3(struct work_s
+ 
+ static void hub_post_resume(struct work_struct *ws)
+ {
+-	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
++	struct usb_hub *hub = container_of(ws, struct usb_hub, post_resume_work.work);
+ 
+-	hub_activate(hub, HUB_POST_RESUME);
++	usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
++	kref_put(&hub->kref, hub_release);
+ }
+ 
+ enum hub_quiescing_type {
+@@ -1374,7 +1368,7 @@ static void hub_quiesce(struct usb_hub *
+ 
+ 	/* Stop hub_wq and related activity */
+ 	del_timer_sync(&hub->irq_urb_retry);
+-	flush_delayed_work(&hub->init_work);
++	flush_delayed_work(&hub->post_resume_work);
+ 	usb_kill_urb(hub->urb);
+ 	if (hub->has_indicators)
+ 		cancel_delayed_work_sync(&hub->leds);
+@@ -1921,6 +1915,7 @@ static int hub_probe(struct usb_interfac
+ 	hub->hdev = hdev;
+ 	INIT_DELAYED_WORK(&hub->leds, led_work);
+ 	INIT_DELAYED_WORK(&hub->init_work, NULL);
++	INIT_DELAYED_WORK(&hub->post_resume_work, hub_post_resume);
+ 	INIT_WORK(&hub->events, hub_event);
+ 	spin_lock_init(&hub->irq_urb_lock);
+ 	timer_setup(&hub->irq_urb_retry, hub_retry_irq_urb, 0);
+--- a/drivers/usb/core/hub.h
++++ b/drivers/usb/core/hub.h
+@@ -69,6 +69,7 @@ struct usb_hub {
+ 	u8			indicator[USB_MAXCHILDREN];
+ 	struct delayed_work	leds;
+ 	struct delayed_work	init_work;
++	struct delayed_work	post_resume_work;
+ 	struct work_struct      events;
+ 	spinlock_t		irq_urb_lock;
+ 	struct timer_list	irq_urb_retry;
 
 
 
