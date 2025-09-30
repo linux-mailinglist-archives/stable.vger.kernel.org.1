@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D065BAD8AB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BCABAD6FE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54D627A7BD5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36DB01883195
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2BA2FCBFC;
-	Tue, 30 Sep 2025 15:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B72330749E;
+	Tue, 30 Sep 2025 15:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmwVQVTX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Txr2TM+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183EF2236EB;
-	Tue, 30 Sep 2025 15:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C94306B08;
+	Tue, 30 Sep 2025 15:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244919; cv=none; b=rB7hw4DkTW+Ia0Ot0Bjmc62hTQw9zjz3+sVy9xMFIbDu/3DfURzL0q/wX4mbWjFfFxutKIfoQD+kv7rGcOpEzNmuTqrgxrBxhlpxvhmIiWeIQk/3CShfktOlqoRaUhRHDMaC9Vei06GxAVdn1NOF1kXitUpkj16zI80cTE539EI=
+	t=1759244467; cv=none; b=dg+Yy028Axo8dcZ8Eyk5cK8H3FAHBgtqiCDDj51ppvG/Am0PnIfAIqUZxGFlu+gaJCGhaCOTdvE0NJj5edVqHWmSigMA69Z3nWQ4V7uf3Im22YaLYBwbtdw7wllza2Z2K9xBoAuEyOrMPi6nLMGo3mwahLRQ9hMLZL2/ofSAVMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244919; c=relaxed/simple;
-	bh=GmDLFnqZ1a+A3ZklGIVL/k3CyNTr+RbsxUZoUOgG2vo=;
+	s=arc-20240116; t=1759244467; c=relaxed/simple;
+	bh=cjS4TuywVrPVWO+yzivs5T6P9Bwyxw8HFOOQAYpenHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8dqtjdwl1lCBtt3KVQ6DaaJ+qWIA+QFEoieOff6b4U4JlXAZdmq1mV+bJI/lA5MLYqKqB+X+XeHhw4cmYxD+zoOTs9eArhCOOgBQ0gGFt6UAeuxNxrsveVoVLkfilLQtiSGYUomBipoT5bzcFIBZ0vCSa4J+kReRAa+o/XW2H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmwVQVTX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A689C4CEF0;
-	Tue, 30 Sep 2025 15:08:38 +0000 (UTC)
+	 MIME-Version; b=HO78tpM0dcatr3G2EqHBE2OoDzpV8p010iu1roTOYXkAMkAx4K6qoWey+cRpGxZAQfV6PQvKvLSkU0kjjnbG/1ql4vepy2riEVon3kS+OTLZ3cNI0s2lqLvTMeUTzu23DDpDVNuehBZXCFrkqL0rppL5WoFs9sJB48S8V2vz/8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Txr2TM+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E63C4CEF0;
+	Tue, 30 Sep 2025 15:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244919;
-	bh=GmDLFnqZ1a+A3ZklGIVL/k3CyNTr+RbsxUZoUOgG2vo=;
+	s=korg; t=1759244467;
+	bh=cjS4TuywVrPVWO+yzivs5T6P9Bwyxw8HFOOQAYpenHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UmwVQVTXa7qX6E/HddSJpvz+wUVh0CHix5uJgv9V5Xpjn6fVjSWTPgSOFLn85nM+2
-	 hNbubrS9Bk30Dkwg/4Oga6NL9tgqv7uQ46hHILz98cMys89mmhPwcbWyuqDgI6AqV3
-	 QRPyrtGmrIDMyvYaSnMPGiDx+1LaJuO5u+KscDPM=
+	b=Txr2TM+Wz52/CNrAcBizprMXKSXd6IY8G2O4JWxD9BblWV4F358Flu0xpAOPUIRrb
+	 FpuifH8FyaqOu4cyz0LTn44ZOcVIy37YCLc6ntoIhuycqidJuakXjjlaQXuvo2dSgw
+	 pKIQ/1H8fbDvDEco/9iJXaF0RU/zOFC9xqo+FCiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/151] flexfiles/pNFS: fix NULL checks on result of ff_layout_choose_ds_for_read
+Subject: [PATCH 6.16 016/143] ALSA: hda/realtek: Add support for ASUS NUC using CS35L41 HDA
 Date: Tue, 30 Sep 2025 16:45:40 +0200
-Message-ID: <20250930143828.008348162@linuxfoundation.org>
+Message-ID: <20250930143831.892578455@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 5a46d2339a5ae268ede53a221f20433d8ea4f2f9 ]
+[ Upstream commit 84fc8896f0d9d1c075e0e08a416faedbd73907fa ]
 
-Recent commit f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS
-errors") has changed the error return type of ff_layout_choose_ds_for_read() from
-NULL to an error pointer. However, not all code paths have been updated
-to match the change. Thus, some non-NULL checks will accept error pointers
-as a valid return value.
+Add support for ASUS NUC14LNS.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS errors")
-Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+This NUC uses a single CS35L41 Amp in using Internal Boost with SPI.
+To support the Single Amp, a new quirk is required.
+
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250612160029.848104-3-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ sound/pci/hda/patch_realtek.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 14c7de8fd7812..798e2e32b3fb6 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -750,8 +750,11 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
- 			continue;
- 
- 		if (check_device &&
--		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node))
-+		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node)) {
-+			// reinitialize the error state in case if this is the last iteration
-+			ds = ERR_PTR(-EINVAL);
- 			continue;
-+		}
- 
- 		*best_idx = idx;
- 		break;
-@@ -781,7 +784,7 @@ ff_layout_choose_best_ds_for_read(struct pnfs_layout_segment *lseg,
- 	struct nfs4_pnfs_ds *ds;
- 
- 	ds = ff_layout_choose_valid_ds_for_read(lseg, start_idx, best_idx);
--	if (ds)
-+	if (!IS_ERR(ds))
- 		return ds;
- 	return ff_layout_choose_any_ds_for_read(lseg, start_idx, best_idx);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 4819bd332f039..fa28e3e85861c 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7298,6 +7298,11 @@ static void cs35l41_fixup_spi_two(struct hda_codec *codec, const struct hda_fixu
+ 	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 2);
  }
-@@ -795,7 +798,7 @@ ff_layout_get_ds_for_read(struct nfs_pageio_descriptor *pgio,
  
- 	ds = ff_layout_choose_best_ds_for_read(lseg, pgio->pg_mirror_idx,
- 					       best_idx);
--	if (ds || !pgio->pg_mirror_idx)
-+	if (!IS_ERR(ds) || !pgio->pg_mirror_idx)
- 		return ds;
- 	return ff_layout_choose_best_ds_for_read(lseg, 0, best_idx);
- }
-@@ -856,7 +859,7 @@ ff_layout_pg_init_read(struct nfs_pageio_descriptor *pgio,
- 	req->wb_nio = 0;
- 
- 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
--	if (!ds) {
-+	if (IS_ERR(ds)) {
- 		if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
- 			goto out_mds;
- 		pnfs_generic_pg_cleanup(pgio);
-@@ -1066,11 +1069,13 @@ static void ff_layout_resend_pnfs_read(struct nfs_pgio_header *hdr)
++static void cs35l41_fixup_spi_one(struct hda_codec *codec, const struct hda_fixup *fix, int action)
++{
++	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 1);
++}
++
+ static void cs35l41_fixup_spi_four(struct hda_codec *codec, const struct hda_fixup *fix, int action)
  {
- 	u32 idx = hdr->pgio_mirror_idx + 1;
- 	u32 new_idx = 0;
-+	struct nfs4_pnfs_ds *ds;
- 
--	if (ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx))
--		ff_layout_send_layouterror(hdr->lseg);
--	else
-+	ds = ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx);
-+	if (IS_ERR(ds))
- 		pnfs_error_mark_layout_for_return(hdr->inode, hdr->lseg);
-+	else
-+		ff_layout_send_layouterror(hdr->lseg);
- 	pnfs_read_resend_pnfs(hdr, new_idx);
- }
- 
+ 	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 4);
+@@ -7991,6 +7996,7 @@ enum {
+ 	ALC287_FIXUP_CS35L41_I2C_2,
+ 	ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED,
+ 	ALC287_FIXUP_CS35L41_I2C_4,
++	ALC245_FIXUP_CS35L41_SPI_1,
+ 	ALC245_FIXUP_CS35L41_SPI_2,
+ 	ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED,
+ 	ALC245_FIXUP_CS35L41_SPI_4,
+@@ -10120,6 +10126,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cs35l41_fixup_spi_two,
+ 	},
++	[ALC245_FIXUP_CS35L41_SPI_1] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cs35l41_fixup_spi_one,
++	},
+ 	[ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cs35l41_fixup_spi_two,
+@@ -11099,6 +11109,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x8398, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x83ce, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x8516, "ASUS X101CH", ALC269_FIXUP_ASUS_X101),
++	SND_PCI_QUIRK(0x1043, 0x88f4, "ASUS NUC14LNS", ALC245_FIXUP_CS35L41_SPI_1),
+ 	SND_PCI_QUIRK(0x104d, 0x9073, "Sony VAIO", ALC275_FIXUP_SONY_VAIO_GPIO2),
+ 	SND_PCI_QUIRK(0x104d, 0x907b, "Sony VAIO", ALC275_FIXUP_SONY_HWEQ),
+ 	SND_PCI_QUIRK(0x104d, 0x9084, "Sony VAIO", ALC275_FIXUP_SONY_HWEQ),
 -- 
 2.51.0
 
