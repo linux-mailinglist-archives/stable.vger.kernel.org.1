@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E185BBADD56
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24B0BADB0A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A183B327DBE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EA211C41B7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721092FD1DD;
-	Tue, 30 Sep 2025 15:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B401D2FFDE6;
+	Tue, 30 Sep 2025 15:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/nesOpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPTrHEMa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB623C465;
-	Tue, 30 Sep 2025 15:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB6727B328;
+	Tue, 30 Sep 2025 15:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246036; cv=none; b=ADMmDcciJLy7Ce3VXjiG32CqjLAnOAOA/R7VGnO4uatwoNsskSvjR1U8xoVP0kEOWNg1uJHLdP8ezJo8Y9VD1O/5pKiss9er3IqTCBg7q0+EyT2l8gEZfhAnvDYr+VvlQgaCk9efLFz3vhQZsWLS6yqsyPY2XTh4BNAfncmAUmo=
+	t=1759245423; cv=none; b=kYMKizdOL5ZeG137o805ZNU2l8dqPK0GRLKxzFh5xBlyYXq+rKlg8IhGHRjaTZ2Iurwe3GKrPj785/P84mCrNI0kfkhDYv2Md25iVahMoFcSGt17pquMsl3V0myXeXJh1c0eEJJtg8i0LRbbxq81bymMbWjQPFk+hmyPNNSHRmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246036; c=relaxed/simple;
-	bh=ofU7ik3BF6BtvhmA+/HYayIjQZTfgaq4lSaJ2ViF2Lw=;
+	s=arc-20240116; t=1759245423; c=relaxed/simple;
+	bh=vVKn9H3vUKqv5xIm3kHt7INwuucmrun3+fyqYgYC0LA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7vVDLqVWZMKBYmbsaHmY5W3we1Ihj+yU8A4lnWOY/LQJMrw/9LgfyGd/fiIrZVeXwcSi87dwqHBPBqnZfo2OwDJ6G82X/LZsByjVicTk/MPKqA7oJT2o8vOubaHyQLek48B8OPX8nYu383XVm3eVTOtp2WUMO7IMU7HHRGm7II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/nesOpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E549C4CEF0;
-	Tue, 30 Sep 2025 15:27:15 +0000 (UTC)
+	 MIME-Version; b=Uzt+f/+JMYwpL0BWW0mCxPXBpNO/LWhJEPv1btaP1p1uYWwqdytAFTjg109oEVRjiZMOxDjjY4IZPFNcLX1UQhya2AKFf7wkfP7B2PKSDgHqx5xp8qZC6aeAFj8vC5rJH1YNFK4lN1F1jN2P6z8MSm3/onqOBEF4MZ86HPgllxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPTrHEMa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A62C4CEF0;
+	Tue, 30 Sep 2025 15:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246036;
-	bh=ofU7ik3BF6BtvhmA+/HYayIjQZTfgaq4lSaJ2ViF2Lw=;
+	s=korg; t=1759245422;
+	bh=vVKn9H3vUKqv5xIm3kHt7INwuucmrun3+fyqYgYC0LA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/nesOpMF7LLRQKjaUzSULFSxVTKv7AbEy6k+HvovSCZE4KGy6uq7E6Y7COmOoRAP
-	 3RKfyYAj488sWYrBaHlNfVJ/Qe+kGjwxkvy+eHR1zuxSWhX0/KDgp2Oiy5zCVnEt7r
-	 +BiewMkoOfaHDDsI9R8QOrGel6DBAlkfHGIHap7I=
+	b=mPTrHEMa4VR47eR1fosRXl3trSWcwzTUlOa2AxAX3twP4O1coqSvtuQL8mMkgR0Fp
+	 T16rAq9ccxYFD1F5D1FoxYqchtq/hvmM3uF4RmWdi77JlsB3SjSt//7EALwsmEJjAj
+	 CRoIJ3aB/5O2keTdoFMq7AukR5uy7AkEWCmitF2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	"noble.yang" <noble.yang@comtrue-inc.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 04/89] ALSA: usb-audio: Fix block comments in mixer_quirks
+Subject: [PATCH 6.1 14/73] ALSA: usb-audio: Add DSD support for Comtrue USB Audio device
 Date: Tue, 30 Sep 2025 16:47:18 +0200
-Message-ID: <20250930143822.046430370@linuxfoundation.org>
+Message-ID: <20250930143821.151703090@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: noble.yang <noble.yang@comtrue-inc.com>
 
-[ Upstream commit 231225d8a20f8668b4fd6601d54a2fac0e0ab7a5 ]
+[ Upstream commit e9df1755485dd90a89656e8a21ec4d71c909fa30 ]
 
-Address a couple of comment formatting issues indicated by
-checkpatch.pl:
+The vendor Comtrue Inc. (0x2fc6) produces USB audio chipsets like
+the CT7601 which are capable of Native DSD playback.
 
-  WARNING: Block comments use a trailing */ on a separate line
+This patch adds QUIRK_FLAG_DSD_RAW for Comtrue (VID 0x2fc6), which enables
+native DSD playback (DSD_U32_LE) on their USB Audio device. This has been
+verified under Ubuntu 25.04 with JRiver.
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: noble.yang <noble.yang@comtrue-inc.com>
+Link: https://patch.msgid.link/20250731110614.4070-1-noble228@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-4-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/usb/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 4d2232bef600d..a97d1ca8443ca 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -77,7 +77,8 @@ static int snd_create_std_mono_ctl_offset(struct usb_mixer_interface *mixer,
- 	cval->idx_off = idx_off;
- 
- 	/* get_min_max() is called only for integer volumes later,
--	 * so provide a short-cut for booleans */
-+	 * so provide a short-cut for booleans
-+	 */
- 	cval->min = 0;
- 	cval->max = 1;
- 	cval->res = 0;
-@@ -4131,7 +4132,8 @@ static void snd_dragonfly_quirk_db_scale(struct usb_mixer_interface *mixer,
- 					 struct snd_kcontrol *kctl)
- {
- 	/* Approximation using 10 ranges based on output measurement on hw v1.2.
--	 * This seems close to the cubic mapping e.g. alsamixer uses. */
-+	 * This seems close to the cubic mapping e.g. alsamixer uses.
-+	 */
- 	static const DECLARE_TLV_DB_RANGE(scale,
- 		 0,  1, TLV_DB_MINMAX_ITEM(-5300, -4970),
- 		 2,  5, TLV_DB_MINMAX_ITEM(-4710, -4160),
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index ac43bdf6e9ca6..d4f4466b028c8 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2303,6 +2303,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x2d87, /* Cayin device */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x2fc6, /* Comture-inc devices */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x3336, /* HEM devices */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x3353, /* Khadas devices */
 -- 
 2.51.0
 
