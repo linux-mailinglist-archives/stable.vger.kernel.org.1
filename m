@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-182322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B24BAD7EB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747C1BAD92C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5846F3BC047
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1762C1942EED
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC3A2FCBFC;
-	Tue, 30 Sep 2025 15:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01242FCBFC;
+	Tue, 30 Sep 2025 15:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+a48hW7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17rw0iYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FA81EE02F;
-	Tue, 30 Sep 2025 15:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9CC2236EB;
+	Tue, 30 Sep 2025 15:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244567; cv=none; b=H61vYjOwWh6mLglNYoRZsFxAdQ/5QFjr1HVYOM6eII/Vv5LSc+CI2jkHfWGpM7SFSIRlxs0hYan2dnKwv4QWyP3rWbf5Fice95Po89aaXg2ahDJa3sbfKOcMO95D5BqWZLZRwvQQvGoviZEVL9ossoDt3FrTzhsSEec4v8u57l0=
+	t=1759245017; cv=none; b=UH743X6nbpXvrdsQEbusmD4mJM40iZOrFZhxQ0ODGAhXRMHbbGn6KGDm9EGeCMrixxY1wHPIcDKfvVxSjBZp4S9Dnl3uVcYngZ+WLKHYp8Zaw2pHaxMw5b45vVsD3Ew4fjjhJkmgElJTPgnxvhAaT+94jSnIIHp3Ym98h1qbTbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244567; c=relaxed/simple;
-	bh=I3W7/Df49uVwZz6Z7ZncJ5VHdMHgyXW8xHTN0A9RPdk=;
+	s=arc-20240116; t=1759245017; c=relaxed/simple;
+	bh=kzKjjhq1pu5vKj9lQzqyIQcVNCdHEy3ANUmRLuHKYvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CsyulwT1PvWdZdnnt+GDwjOmI0mHzvNj9j7DH0YSm+xBNDX+wG42D/t/0RxuLr9vp42DoxCh9mICTsOqRuMeNNe22nFKDklo0SxBtG+mmTZagbDbCAHfyvLg28QUi9/K6o9WIuQmAfx7D3kCpBX/cpkv6NdSjUlVfEk4UrsFJCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+a48hW7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16A9C4CEF0;
-	Tue, 30 Sep 2025 15:02:46 +0000 (UTC)
+	 MIME-Version; b=hUl9KzWGBVh8rNhPFE5RCCTN6YPvAm82MO/cQVbc5tPOmtako5Gf144t+SNaKuDno/jqMglSBVBTFX4dTNzmDz34yxyjiSEwH1JethpEZB53BuutozlBoiguJXzT/o9hy4+PxbatClghXDwEHDmVfAR1lxVEgBSOcvxxKQCI8K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17rw0iYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14769C4CEF0;
+	Tue, 30 Sep 2025 15:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244567;
-	bh=I3W7/Df49uVwZz6Z7ZncJ5VHdMHgyXW8xHTN0A9RPdk=;
+	s=korg; t=1759245017;
+	bh=kzKjjhq1pu5vKj9lQzqyIQcVNCdHEy3ANUmRLuHKYvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+a48hW7HBokoW/BjowyohutJwQhhtimbamhxotyJu7V+b2W21h+9brzbsSAvL+zG
-	 DM4rbGFeT5OoDpOQ3aXIhsP03okMH4QmzPQwFQhzp+fqs9S9WhDP0rjdsR+Or/rcHL
-	 7qb9S7SyawtPnjnj1rt3XluXW2CAFJ4go5C7HQGs=
+	b=17rw0iYzVB9NbBpllYcEvK1B9aLqoufwxK/XluZk/KoiFXodAJgQoqrEOQp75MGRl
+	 6zjT+oyB+qOkRX540UJWgGjwOH98v2txs1EZ9X0PuuU/2XzTm/Sc9O3edsW6Se7pDl
+	 Taw1LpG4keH/W08nEBQPBcKTRP+Gj+hmsN2gpRXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 046/143] smb: server: use disable_work_sync in transport_rdma.c
+	Kohei Enju <enjuk@amazon.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 5.15 040/151] igb: fix link test skipping when interface is admin down
 Date: Tue, 30 Sep 2025 16:46:10 +0200
-Message-ID: <20250930143833.071844499@linuxfoundation.org>
+Message-ID: <20250930143829.206836246@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,50 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit f7f89250175e0a82e99ed66da7012e869c36497d ]
+[ Upstream commit d709f178abca22a4d3642513df29afe4323a594b ]
 
-This makes it safer during the disconnect and avoids
-requeueing.
+The igb driver incorrectly skips the link test when the network
+interface is admin down (if_running == false), causing the test to
+always report PASS regardless of the actual physical link state.
 
-It's ok to call disable_work[_sync]() more than once.
+This behavior is inconsistent with other drivers (e.g. i40e, ice, ixgbe,
+etc.) which correctly test the physical link state regardless of admin
+state.
+Remove the if_running check to ensure link test always reflects the
+physical link state.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 8d420a1b3ea6 ("igb: correct link test not being run when link is down")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_ethtool.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 10a6b4ed1a037..74dfb6496095d 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -399,9 +399,9 @@ static void free_transport(struct smb_direct_transport *t)
- 	wait_event(t->wait_send_pending,
- 		   atomic_read(&t->send_pending) == 0);
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index 39c7bdf8c0e2d..a35e4a54b6e3e 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -2077,11 +2077,8 @@ static void igb_diag_test(struct net_device *netdev,
+ 	} else {
+ 		dev_info(&adapter->pdev->dev, "online testing starting\n");
  
--	cancel_work_sync(&t->disconnect_work);
--	cancel_work_sync(&t->post_recv_credits_work);
--	cancel_work_sync(&t->send_immediate_work);
-+	disable_work_sync(&t->disconnect_work);
-+	disable_work_sync(&t->post_recv_credits_work);
-+	disable_work_sync(&t->send_immediate_work);
+-		/* PHY is powered down when interface is down */
+-		if (if_running && igb_link_test(adapter, &data[TEST_LINK]))
++		if (igb_link_test(adapter, &data[TEST_LINK]))
+ 			eth_test->flags |= ETH_TEST_FL_FAILED;
+-		else
+-			data[TEST_LINK] = 0;
  
- 	if (t->qp) {
- 		ib_drain_qp(t->qp);
+ 		/* Online tests aren't run; pass by default */
+ 		data[TEST_REG] = 0;
 -- 
 2.51.0
 
