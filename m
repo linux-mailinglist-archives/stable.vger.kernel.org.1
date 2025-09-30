@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B883BAD491
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:51:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4901DBAD641
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2942319411ED
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21C64A4F9D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA283043A1;
-	Tue, 30 Sep 2025 14:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9F6199939;
+	Tue, 30 Sep 2025 14:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4+eF+GI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEJ5nPuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1AF265CCD;
-	Tue, 30 Sep 2025 14:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D951AB6F1;
+	Tue, 30 Sep 2025 14:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243847; cv=none; b=WcGoYAMYfaPWbC2EJ5lvvfTSuB9l/TFwtWDnWx6FLNjlx3RFZwp8Yw0xWMKG8qCJ1MNDnbrLSF4ciEeHYbcB1vzkITcIC/9/NEgzwG9aIDpk+K4ypKrSvb9jfjLNSsELQ7I7XihUYYH8t/Rjeob4B5gc99HWbhjt+szdKl5JklE=
+	t=1759244226; cv=none; b=NQmNtDxPq6uk7jzYkEnluMtCG6Ma/gU6T8H+ewlZlAF9VkBznIkrsT800hE64yIjIYomadSIgYhiQH+XxEHoeGNaVsxreCnGVs/Xop+IBFR6BCOK7oar0viYQyCavXYxKzSFSzah6AY19pQLN+dc4/YaQ8EA5saWqA3KkgnTwXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243847; c=relaxed/simple;
-	bh=2C8inwZrlr7C8nSeILa71RxPjBTIlMjGSwAtZSykb5w=;
+	s=arc-20240116; t=1759244226; c=relaxed/simple;
+	bh=eb7A6ZGXb3vx2+bqWwab4r5i62caa5ILHvJiqDjpIxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIxgO7sL8t0+V6FQsGy9Ariwwlp7cGtXpa3JTlVgq2lhxen9kNhuwCRLiqX2xZX2LCTxpNBBNe2oIiSddSsWDa72yJ9QDAD14i9V8V7WDfpo/kU50vtWlm7rsCvu2xJ+tkEAhrgTJcdY2FRkglAeRsp6r7VDNiby5Ghr0md5hxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4+eF+GI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC8CC4CEF0;
-	Tue, 30 Sep 2025 14:50:46 +0000 (UTC)
+	 MIME-Version; b=BSRvqX5YKC2QoGfnWD+twKKItqxC44XpYgH8WDURveqETyrWnKNnf4qXVRHHnRTZldyzZ4/rlfYsVqs2Uj/Mdd9VutZ2xngpeBFSLur82bYMqQxsPlkJgWCZNdd6nlKWUh8JA2b2mad6ETFiPtdoujuthP5SKs34CSBgpXo8Z9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEJ5nPuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBF7C4CEF0;
+	Tue, 30 Sep 2025 14:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243847;
-	bh=2C8inwZrlr7C8nSeILa71RxPjBTIlMjGSwAtZSykb5w=;
+	s=korg; t=1759244226;
+	bh=eb7A6ZGXb3vx2+bqWwab4r5i62caa5ILHvJiqDjpIxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I4+eF+GITz6S7JQ824KZqobKyj/itL+n8QcAgQSvAlumR7h6kwNWaTXZBkLj9OZWD
-	 iUtH5oDHBVtxlzUsbG5cSoc0xQBOYpksew/iwmKSp5Q0+P0T6akWESCIDTA/oLSifN
-	 xOvEmW6FeOCirGOMaA0dt9wD06+uxn+RByoDO2L8=
+	b=lEJ5nPuSeT1+aaTNIMVBtIhz++F6cwKJrKmtWqbPdYdrzAjnuH1t3huSxRYCbKy56
+	 syrVj7zYQslZMSXzk1f7w0ArsZZS48rd3e1CsfV+ud4h3En1Nx3DyNT/LcVykEDrni
+	 b70Xhmwo78366P9cl9UhBv4v22WFOXDq/zjWDFSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 35/81] net: natsemi: fix `rx_dropped` double accounting on `netif_rx()` failure
+Subject: [PATCH 5.10 066/122] ASoC: SOF: Intel: hda-stream: Fix incorrect variable used in error message
 Date: Tue, 30 Sep 2025 16:46:37 +0200
-Message-ID: <20250930143821.145482038@linuxfoundation.org>
+Message-ID: <20250930143825.708407410@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeounsu Moon <yyyynoom@gmail.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 93ab4881a4e2b9657bdce4b8940073bfb4ed5eab ]
+[ Upstream commit 35fc531a59694f24a2456569cf7d1a9c6436841c ]
 
-`netif_rx()` already increments `rx_dropped` core stat when it fails.
-The driver was also updating `ndev->stats.rx_dropped` in the same path.
-Since both are reported together via `ip -s -s` command, this resulted
-in drops being counted twice in user-visible stats.
+The dev_err message is reporting an error about capture streams however
+it is using the incorrect variable num_playback instead of num_capture.
+Fix this by using the correct variable num_capture.
 
-Keep the driver update on `if (unlikely(!skb))`, but skip it after
-`netif_rx()` errors.
-
-Fixes: caf586e5f23c ("net: add a core netdev->rx_dropped counter")
-Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250913060135.35282-3-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a1d1e266b445 ("ASoC: SOF: Intel: Add Intel specific HDA stream operations")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250902120639.2626861-1-colin.i.king@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/natsemi/ns83820.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ sound/soc/sof/intel/hda-stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/natsemi/ns83820.c b/drivers/net/ethernet/natsemi/ns83820.c
-index 6af9a7eee1149..ded37141683a9 100644
---- a/drivers/net/ethernet/natsemi/ns83820.c
-+++ b/drivers/net/ethernet/natsemi/ns83820.c
-@@ -818,7 +818,7 @@ static void rx_irq(struct net_device *ndev)
- 	struct ns83820 *dev = PRIV(ndev);
- 	struct rx_info *info = &dev->rx_info;
- 	unsigned next_rx;
--	int rx_rc, len;
-+	int len;
- 	u32 cmdsts;
- 	__le32 *desc;
- 	unsigned long flags;
-@@ -879,8 +879,10 @@ static void rx_irq(struct net_device *ndev)
- 		if (likely(CMDSTS_OK & cmdsts)) {
- #endif
- 			skb_put(skb, len);
--			if (unlikely(!skb))
-+			if (unlikely(!skb)) {
-+				ndev->stats.rx_dropped++;
- 				goto netdev_mangle_me_harder_failed;
-+			}
- 			if (cmdsts & CMDSTS_DEST_MULTI)
- 				ndev->stats.multicast++;
- 			ndev->stats.rx_packets++;
-@@ -899,15 +901,12 @@ static void rx_irq(struct net_device *ndev)
- 				__vlan_hwaccel_put_tag(skb, htons(ETH_P_IPV6), tag);
- 			}
- #endif
--			rx_rc = netif_rx(skb);
--			if (NET_RX_DROP == rx_rc) {
--netdev_mangle_me_harder_failed:
--				ndev->stats.rx_dropped++;
--			}
-+			netif_rx(skb);
- 		} else {
- 			dev_kfree_skb_irq(skb);
- 		}
+diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
+index 0e09ede922c7a..ea4fe28cbdace 100644
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -771,7 +771,7 @@ int hda_dsp_stream_init(struct snd_sof_dev *sdev)
  
-+netdev_mangle_me_harder_failed:
- 		nr++;
- 		next_rx = info->next_rx;
- 		desc = info->descs + (DESC_SIZE * next_rx);
+ 	if (num_capture >= SOF_HDA_CAPTURE_STREAMS) {
+ 		dev_err(sdev->dev, "error: too many capture streams %d\n",
+-			num_playback);
++			num_capture);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.51.0
 
