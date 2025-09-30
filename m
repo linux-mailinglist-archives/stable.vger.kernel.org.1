@@ -1,235 +1,185 @@
-Return-Path: <stable+bounces-182275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51180BAD722
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710CFBADD2B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2850A3A2D4E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D09F3BC3F3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0ED27056D;
-	Tue, 30 Sep 2025 15:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7C130649C;
+	Tue, 30 Sep 2025 15:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OWwsqzxm"
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="PrQ1c1uD"
 X-Original-To: stable@vger.kernel.org
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011011.outbound.protection.outlook.com [52.101.62.11])
+Received: from MA0PR01CU009.outbound.protection.outlook.com (mail-southindiaazolkn19010007.outbound.protection.outlook.com [52.103.67.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD2A306D23;
-	Tue, 30 Sep 2025 15:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D36416A956
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 15:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.67.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244417; cv=fail; b=gMQ76LT/fdCch3x6K6Hj/BlUx0IIGwZykW3cCd0eqsUWBZT+MePwdUONeHnTxW1NPBV4A2/6i4GTmxd4CMUey4qxMoxatnk3IrbOTifZgnkzU/GFpMjfYpGVuMAxDN4OPWK5w3pFeufrEjRzI9LU98OyUjJklRiydoUA0RUTrwI=
+	t=1759245858; cv=fail; b=tptqhXnWNWqwKBe7RjWBS7mrb/OjaR946Zd9avKzfQVUwr6XDu9ucxMoyRZNYW8et5sxSMtZVl1FodImXW7NIVtSKeqDHY0zbWPrMJ8/mvjoi1iGC1UopYcJ/Em11cO5Jq4OONhKWiIB2lBvqqA+L3ivxURaMGcyHvpKsd5lL5M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244417; c=relaxed/simple;
-	bh=l4MGMYrn3wEde7zBYtgYGD+sjKXcNB7moQoEPTWqbII=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O9gROAA1OnfX4S34Cbt3gKd1xVUNKaau0J2UI8iU8z2onBdWc+J+X7eK5Szxzl7XKtn66VBJZZnoU+IOTJ4b9Kb5juCwWaFd3nmPF2ht5LUx6FDV0DNZ1wwJa8kGLWlmR1r2NvUkmiyXEEepBnmZx+AESaGKA+jwJ6GtTbMWMcg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OWwsqzxm; arc=fail smtp.client-ip=52.101.62.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1759245858; c=relaxed/simple;
+	bh=AGZlqO9cdHu/FBLZl6KsMgY1QWmTwpwNPkdpILhGgo8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=e+W08oTifAcokHdJh8Yzky8L8R0+gKfQcP7GwDPAh/WYXTIKOHHvR6RggT1WCiBekJN0SFp3GxqYSKwtvrShD4e79NUq4kFV0kOmIBFZ+PlwC9KJea5iqP+r/PVxQ9ybRTj+pHwl347k+/kjLZbwnTGMlZldlIDezXm1sa9Mmmk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=PrQ1c1uD; arc=fail smtp.client-ip=52.103.67.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JIsorty8JLbiKAX2aCIV1JqNQxsYcW8Z6gnUrkn4AXxQja6IfWdQ0iVhWZ6tz/8u9NjuaLptzYQkR5J76nQ1pJM4F5sG8kWRK61JQdaZyTlx1zaFwVPZ8IAuPDzt/cBCmPMVbinEp63YfFUuoILHqAwzUS4KilkW4hrApMaihnGoiZPTul7LXOdrGNTCOKSVx97x6kdoRYBaTARwHU6NafsT50SgWJboRELVDn4Rl7xpgWSVrQKrd3Yn+0Bcs8Xu999eP8MeZZW3EsoQmmThbVae0UkRD2fGtTCNlboiwVLv6Wctewqq+5wrRHt+0SkRrtiq8u5uQE1FoDBSOa9/Tw==
+ b=U4NseJ6mymKWzkxd2MZeWBFvHNY9ZeawvHFGiuMxHUjHHD3rf/HAA+fS/pDszJwCA+PA/LQaV58h71eY/5Jywg5BDzDlqldGBKPODEt9OGscmAAQNawaVrsvzKnRb6Eh1heCzwa78QHhrROwT1ze1IhY06zcogDHQHNxdr9ZoqEX7Nf8D0viUKWkryXLNoqEBOJYPZuGvFvOeLbYBkLE9JtSLjtRABnUcM7Q8oNOZ9NKzdDqvXGuCa8stwERGRKl5mLf1CQ6Pk2m8wnNxlGufgQegS3U30+Kqrxor4poy3nIVkzxTVJyGVbteIfuANelDVeB0xpcTIYB9cos91FsUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=045mX67bklqMXTDBLbye5fsIt7Y0nLGzq1LXUiyTojI=;
- b=bEbWZDSWIJ2bGxIGetJwMkYtd6BhDJq1ZTs33tOpWLCEcjpf4EpuQR4eo0vkQG5n5xmT1M6uzPkdfuXqmrNWmAGF6v0SM0swQjpbZ4vObGnYo2MJbD6Z6VSO56xfQ9+gY92tnY2XYbC4agAkvnWI/42BaGzCvgTk43p4E5NEcvilbRYvMgq/cAqsI41Dfze+WtmAP9uhhdkbWUfr7F9TGFJq5G1XJFQGrus4ohQNMo/rb3r8vj+QM1dlRkRz0EQa9o18LrPLIvEa7emCt9Td06aHtax5FDpnWm4ZBpLgC16L0gnp4tAfDp81BQ/hOFhrjO4ReU9wMXhgUSWaZ4lpDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=wLj9+cBuYuojD78cZ7hkD+GfMsZTKtv5Ij0wUlDHg4w=;
+ b=R0QmSY/UP466m/x9wViyZ3FRHqm0HKglEaqxYlvjnuI2z+hm5Cbzth1fFSgWO+iWaia3ese01hml5gfyOu8kLASWbug5Ll+dM2gRE/MTKKGr6D78auhD1UbUAijcRNWtkuGqrO2DEfQ9e8S9u0Mw8h8GuomUwuLA/VuDZu+ycTUqPuwJAy/rzmObSptp4wMgxFu+ZUqvuRBx9qcOig8Wh1XVqqEvTJldPMfqzBrrEiIv0HECShf0R2Rgeti0JS1H//Fjr0CkE1wuo9e+dLCzFSjohF8pTFh978EvK/ikq9zph2vsYFL6mnAyO1I5VYTc0iUFQG2oRpMiFrhW4Mpy7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=045mX67bklqMXTDBLbye5fsIt7Y0nLGzq1LXUiyTojI=;
- b=OWwsqzxmlWE9wxUMn8KJlZXCq1szN+h4bRnKmio/+e0bHMJiADLhaBY0Wd51H0Nc05iSXB4VA0X2pSBDDpHvEkhxR21YLlmf6haoKeRtjvZY4BjIjNKUtvTF+erE31PtiN70wttqdMHNzEHkLoz41NJGOQhE+kDEBSdbCUpdOSYgsWnXb5ZAecIdpzqhoNGThb4gd0h4D6ZREEESzLaoGtYoxp7JfqUcdTtJGkLWs3QjUPbLvPjN0r8hi889fwweyrWsbGlHdOhAFF33Di4WHfiCrBoJvDWTCW9St6T+X3qR1E8jRxNoGWFNhMYKt6wSbzD6aL7Va74Cq17CMf2Uhw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS2PR12MB9711.namprd12.prod.outlook.com (2603:10b6:8:275::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.18; Tue, 30 Sep 2025 15:00:08 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9160.015; Tue, 30 Sep 2025
- 15:00:07 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- peterx@redhat.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
- ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, usamaarif642@gmail.com,
- yuzhao@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ioworker0@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
- remapping zero-filled mTHP subpage to shared zeropage
-Date: Tue, 30 Sep 2025 11:00:03 -0400
-X-Mailer: MailMate (2.0r6283)
-Message-ID: <98A8D177-A476-4D97-B6C4-DC3F34E91126@nvidia.com>
-In-Reply-To: <20250930081040.80926-1-lance.yang@linux.dev>
-References: <20250930081040.80926-1-lance.yang@linux.dev>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BN9PR03CA0506.namprd03.prod.outlook.com
- (2603:10b6:408:130::31) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+ bh=wLj9+cBuYuojD78cZ7hkD+GfMsZTKtv5Ij0wUlDHg4w=;
+ b=PrQ1c1uDiNPjjsfZAy2uh9DNu+99hQHqDdeeBxvQj6YlDerji/QwjlxvrDpGZW2DwlElhdhGPSaIbIryNpnOeUR4atyy88/7vZU2A5CvjsLZ6HIToHfqRCKLQp2Gi6btSF7KERsUDCWKzQBKhME2/Zdm+bzWrxkjqFWhyx/7ZknR96WtO3HZm3bPQ4TNubsUYk4Fr+ZPvbtACFVLeFKw4VKH4QotyoR2Yz8EqefYJ5vaXRDeWDta3MiscGASTuCd3o7EEkdcUN6fsM8RUxxWGBwNUDhqfTxUOe+C5BQOiK/J9y+87qSNnb9mjzdMHKmn/ctoR3jTSzSPhIPebfSFSw==
+Received: from MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:19c::18) by PNZPR01MB10908.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:27c::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.14; Tue, 30 Sep
+ 2025 15:24:11 +0000
+Received: from MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::418:72df:21ec:64ff]) by MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::418:72df:21ec:64ff%6]) with mapi id 15.20.9160.008; Tue, 30 Sep 2025
+ 15:24:11 +0000
+Message-ID:
+ <MAUPR01MB11546CD5BF3C073E67FEE70BCB81AA@MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM>
+Date: Tue, 30 Sep 2025 20:53:35 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 07/73] HID: multitouch: Get the contact ID from
+ HID_DG_TRANSDUCER_INDEX fields in case of Apple Touch Bar
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Benjamin Tissoires <bentiss@kernel.org>,
+ Kerem Karabay <kekrby@gmail.com>, Jiri Kosina <jkosina@suse.com>,
+ Sasha Levin <sashal@kernel.org>
+References: <20250930143820.537407601@linuxfoundation.org>
+ <20250930143820.858284690@linuxfoundation.org>
+Content-Language: en-US
+From: Aditya Garg <gargaditya08@live.com>
+In-Reply-To: <20250930143820.858284690@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4P287CA0074.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:26b::10) To MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:19c::18)
+X-Microsoft-Original-Message-ID:
+ <5d241189-79ce-4b67-90f6-3d1a62b91e19@live.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS2PR12MB9711:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14888aa3-0d40-4cc5-fe94-08de00320b76
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
+X-MS-TrafficTypeDiagnostic: MAUPR01MB11546:EE_|PNZPR01MB10908:EE_
+X-MS-Office365-Filtering-Correlation-Id: a471b6e5-4456-4e72-a64c-08de003567cf
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|7053199007;
+	BCL:0;ARA:14566002|8060799015|6090799003|19110799012|15080799012|23021999003|461199028|5072599009|51005399003|440099028|40105399003|3412199025;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BUA5L6qR9Q9kZ0O0Wsp2N3T2lvkAlTono+EdQtDcpGUpnul8CEHvfZ21OPrG?=
- =?us-ascii?Q?Tv43LPp9jkO2JvsWg/pfk2o8FXeYICtc4d9cm0AF4d87ZaksK0gUGPZcjySY?=
- =?us-ascii?Q?2gSh4QOio6NNHSf4dwnj3jC/aymoyFHyKInxwsGXxdJwv9hL8fuvmudperCT?=
- =?us-ascii?Q?RqsmGuD/XRJQhH8H45/NSmr32BDH47uWDLu5iqn3AdwQMUJJg+IcD9dcKB82?=
- =?us-ascii?Q?zi4Q6PPyNwhAWnpRIl92/wGpMFMMemuZRf95bOrmJBbBDd9dWku+djrrTQa8?=
- =?us-ascii?Q?djGEGfmvcqXjZqR0AP3pNHfW0RX0Fv5n1aR/9tEuIHrrxY/EmX85st5ksCuj?=
- =?us-ascii?Q?HUxVvb0eSuZYEylgGwGxN7fQbmIs7zMiWS9eqhXM4P2yB7DOJsCMFZYFqrKk?=
- =?us-ascii?Q?z5lBgDeSLScHgA6PqWuJgCjg9/TEOvCmplGeGRa/LQSi/1YkMkZjyEqpPT8e?=
- =?us-ascii?Q?d4bW7bI1fME76PLaZF2cJeMlCRfH852IzoD9bh+HWuXxCBNebvJG1A+bBei1?=
- =?us-ascii?Q?LUvZu37SlAcJpsW1kavTvRiPdRgPIf6xQbctGZZOG0DhUYvEjxWlygho7qXy?=
- =?us-ascii?Q?EfTyR562huYPraNFl6ciNjhBPvdtujT5C83Yy6DLatAuTKwnJV0qWLybHVyj?=
- =?us-ascii?Q?i2acKAv9KzgtjsiPzPU6hKa5M9a+2cxdZc4oEpj4yuBE+NMwoc0sKWZrzPM9?=
- =?us-ascii?Q?oIpYMEfMtqemMEYM3R5IOwXy665ZrgI2f95haZEmMpuBG1WM6FYUDNeKINYl?=
- =?us-ascii?Q?azb579AgwE7b4gh+E4SPTcJ1bO+dLTjf7KGmvqqFU/F4dtdkfzxS5aRoH9uO?=
- =?us-ascii?Q?3Gpdy5QYuK3FViFJqVQltmogukLQXQWNzIxjM7aVCSG5CG2MXhpO+dnNudCi?=
- =?us-ascii?Q?12wfyVqzMmmDpbMVxJevQ2h7zn7t9V0YZBSapys7yMamxyScmfMST7mBcsMQ?=
- =?us-ascii?Q?fxn6dLSE+2n7GCnA3pC0gcu8SLR27Jj95U4+kFLr/R5yjG9C8Whk1k5/pZdc?=
- =?us-ascii?Q?uTzoQICOGHxhJ7pjXf8OfSIXp4wVfhn3pZJ/ZgAmeVJV8b+vVnkst7I7VaPr?=
- =?us-ascii?Q?CBB+0xHXQEsuDcHHERJVTL3DlwNWGVtvnsN12bdrMmOCnKI5iTq/DJH5Kumt?=
- =?us-ascii?Q?xV+hoixBYG1F5lBsK209D32vHf7KbPvCEBxLH13UP15ySrXK/vr6T5VnV5ib?=
- =?us-ascii?Q?JMVzSLutj31sPICiOJlwdl8cHMAtCykhAIbv9nSORULta+FlYeDFVO/qcVMN?=
- =?us-ascii?Q?XUT4cH5psYbVab04I/gYt5QKKnhSv/cF3iHDgjl4x5oWjppHhVFUnF/Y2O+A?=
- =?us-ascii?Q?n9ynP+ytuKYxO515aOpmFH9LMl9eEuV8Q1JaXMeejTsX8wTkgM59IWcLEkMY?=
- =?us-ascii?Q?UWykbw6+ImbEQL4PHv9H69xEhvUnogqf4W1HpNs1BRVFHaNBzII4ioAqLraU?=
- =?us-ascii?Q?zn9mqgDfqRN0UUxKQ9gwD+RVHbcgO7q5Ir0NT/W2Bq+GLELwrl5oGQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	=?utf-8?B?TU1neXJKdTZBa2gwVVBmUmM0UmxqMC9SU28renBLU3JTWWpBTDhYRVl0K0c5?=
+ =?utf-8?B?d25XVE9RUTMwVXIyQVQ5TlNPcHhNYThFVFdBTHRoQXhWRCt1dFUzd3hMM052?=
+ =?utf-8?B?UXpwWk02dk1pU3NlVU5xNDY2NWcxdE42UjVGS2d1aTdPaTl2bERnUmhyWGhP?=
+ =?utf-8?B?OTBpMTJCNWlaRWthR0JNRWthSngrd0sxYndCNHRiaVlLSFlwMlBaRkdYT2hq?=
+ =?utf-8?B?U3JHMTdHd2FPaUpxRnZTS3hDYTcxend2c0lRTEhtMnY1MTQ5THV3SjB2bTRR?=
+ =?utf-8?B?YXNHUlJxZkNOb0Y0WVA0ZmlKUE1PcmdkOFg1R0IyVFJqVHFtVTljQUIvL3Ix?=
+ =?utf-8?B?MGF3QXA1NFN6NkdHcUpSMW5hOERXeGRwVVBjZXZrRzgzSWVOby9mNktSTkVV?=
+ =?utf-8?B?V01kTXNSdEZIUWZmM1JNTEVmVHdicWMreFdRZDlzNGNFOVFWU2FNdTg5WVY5?=
+ =?utf-8?B?MHZ1dytuT2c5ZWw3NmsvUkdMMnkyNzNRT3F2R2NkR2tkYm9xSXcvMXQ4WjJx?=
+ =?utf-8?B?dmpUMnVzcVFHMXN0dEtyN0dCL3ZybkhSZWVkdDFwWlQ3bjdxODR1T2QyQVox?=
+ =?utf-8?B?Z3RLa1hOQ01CUDNyRmhSSWxwaWtUeUFsZG5hV1FCYlhTVGJwWWw5UEZ2Q3JT?=
+ =?utf-8?B?ZGRKTHZQemFFUjcwS0FlUWJhTFRNdjh3NFFHVmQ3UDU4YlNtWjFLS0NmRlFD?=
+ =?utf-8?B?Zk9NekhGc2ZxZkRmT3pmVFlMc3VkUHNkUElxRlU4QVMzL3F2Qnd2QkFKSzFu?=
+ =?utf-8?B?WjVJME1yR1JlM3dFU3FzVjc2WG56VGlHVnlXWG1uSkx1czE0dFl6RVR4U0xK?=
+ =?utf-8?B?S0x1TEs5a28xQjJhZll6V0o4VXd2QTc4NlpEa0FDcmJhc3dnSFBITkdRdy9u?=
+ =?utf-8?B?TGtRWEdzdW1vVFlNTUV5TWwzQzBjOVZOTm5FK1RqaDYxYkdwOGhrSVppa2I1?=
+ =?utf-8?B?MG42UmhVZGtRYW14QzNkeHlXNUluWUE2ZTNuUGxWQTIzL2JjcGFhUGlLZ2VG?=
+ =?utf-8?B?L1FNM2tRV0plU2xLcXVJNitKeUpkOGpZTzI0TTJBbG9HZHlKK0lHL3ZPWTdk?=
+ =?utf-8?B?bVdYZXBKT213YmxLR21qOE80L3NHY0hFL0ZtMFBhYjNnT2JEMmgydGVKWURx?=
+ =?utf-8?B?cjYxRU5rMjQxQkZ3a1Z3VUk4ZzdOMzJxbVdPb0JEVmFBeStpY3VFTHRPN1FO?=
+ =?utf-8?B?SGtBN09mUytsRHJDcmVtOGZlSmh4UGFVZjIxT0ptbnh6UlRseU9iRFBFbVEr?=
+ =?utf-8?B?b3h0dzQyS2hmdTk2OWZ5bG9uRXAvSjAwYmVyM0I2Y1RDZHJ2SzhOR2tmemht?=
+ =?utf-8?B?WFpYY21lbjA0disrVnQwN1gweFBJNzRNa2tabnVLMkIvUGF1Z0djVEFQUzZT?=
+ =?utf-8?B?S2liMjdDTEEyS0J4SHV1NmVWZnFSUldJTnhvb2lKUkVEemhjZEowdi95YVVs?=
+ =?utf-8?B?Tm1aZ3FjeU9JNDhZUUlJUytHSjJ2NGEyVm0yRWxodVlmL2RVUUVCNFlhcjBv?=
+ =?utf-8?B?cjBKRVZ3ZXZVeWZrS0d3RVFXWUVTRUlMQkpyanN3eE5rb2xNTnhVb2VjVWhz?=
+ =?utf-8?B?U3BmT0kxaE5xSWhmTkVmMEVJZFBUb0VBYnpOMm1pb1Y4WWE0NVVGR0NsZWRi?=
+ =?utf-8?B?K0l6ZS91Wk5aN3ZtLzBBbHZVWFdhUUE9PQ==?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NOA29DnCULw+bA0QYSz+tzFnXgnxPXUK/7gEGd7S64654sjFBNpaOPS8sA5d?=
- =?us-ascii?Q?uJ8oGkLtyS7D9OhkZCi2Vcs3b02h8eXFjv2Tw1UI4U90p0EyIxRhN/rueZiQ?=
- =?us-ascii?Q?14YyzJbI7QiO4wEo3opWz31HVeQCTvN6xJR7gn435WvBV0bFJAShA26hJAds?=
- =?us-ascii?Q?oYm1hnWZ7aIkIoxx+3YfMnbZx8oXNFxGYamk2tksS5SyPWGomEoq5N5tgUTy?=
- =?us-ascii?Q?N/Hz5xwQZuqIKMgXg5hhSwjJeNDcBZwIwJXeKRJtBqgWO00mqUX7Mr9vQbLw?=
- =?us-ascii?Q?I3jCSBlhvB1+Cjr6tRKg2ZhsJR00qeSj+24p0/bHH5PHzxQau05qANH6SLoF?=
- =?us-ascii?Q?MBKciTccpXqwxuMGIvvg3MQNAjfAErsNp5Zp+7BZymMFxXZGkjhzhu25Xhac?=
- =?us-ascii?Q?eTji1VgXNUstWa00xAmk7GDKne2FnwHHHllMyI2N6zVZdgI8/F068WBEemDr?=
- =?us-ascii?Q?FrusPIXJjmdfMl2yU/KSCHvCto213VfQgRIb7zF/lko+Kb+4YOzejo9CJNtg?=
- =?us-ascii?Q?sdKuaYF86GmrqSYbyK0YGfQGTYPUk7BESgSqE7QwjQl1GBNK6cb/hmTM72v9?=
- =?us-ascii?Q?vOBgRmSp9WhpvLJaznOfgPYgqpNHHOK02nPUOpmqribzlZwYxAQ4m8JiOdAU?=
- =?us-ascii?Q?C6MFK+bLrNP09S6hSnu4njdPJffMTtKZmkwWAI3U/iVa+rRNX56d015nd7D2?=
- =?us-ascii?Q?MhriP/FzCOm4jPPa/2Glkw0E3WL3gJtaE1cOuB/AC7TD32D7X6Nci/Vz1hIr?=
- =?us-ascii?Q?weaWtUvn9E+jqr23Drv74puo1HSy4wA+A15TkuzMcmaE8pBRIqUi37oOJufC?=
- =?us-ascii?Q?GzI3sPNaw0nB3RJWmbxWIfirptBDVipJJncmJ4x3BAiHQNphOz6KrjrQos2G?=
- =?us-ascii?Q?PLQWkKrsygi3dlvNh5chqv5TTeVGoJsar+z8FPf4nA1vLRNOgLpvJ+76Sc9s?=
- =?us-ascii?Q?7Nf/7aK9PxryEKc60Qb6NdnF8Bq3bse4/c+iIV6MFX8VB7cg5du6/fpt1KzH?=
- =?us-ascii?Q?YLl1EmZubSeWV0Hsv5Cbphqs45Gh9dT2qbxCxgodQ1sfBsK5XF5G//u16zhD?=
- =?us-ascii?Q?HDUtUHdIMCFzLYlnW/rJatMD1Gzs4HIBGL8ZPGPGTfkkDXlbxdKFfDs6vO9J?=
- =?us-ascii?Q?jDZYdeH1W8u+KWvSKHaQWVb/D7x0A3W1Be7nZl8a4+9hc/kX3Ny/Fakp0lf/?=
- =?us-ascii?Q?gjIv949qt2cpozSR8/4fm3zOE5YNrpRlyMNJ1IpePKTc5MrnEt3QkmGzol1p?=
- =?us-ascii?Q?+9RgBmRuAQqCSxS6+KNv/4/XPH3z3LnmQw8pKHYE6602hVNLiARgR5VJ6psN?=
- =?us-ascii?Q?JfEnWRd9UKlmsaPuWIT8L0FmFboC6IRIjMOVVPvK4JlMQnoNC9etEiiLe76L?=
- =?us-ascii?Q?lzilcW72d454CblN9TEjSHGdZncIJXv14mU1k2vLK6gIhwsSbOHP0CPHaeaq?=
- =?us-ascii?Q?cjxmri4+LE9OmWougMI+gLUF/CPZIdEzNLOlLayGzLWJBNL74PZ6tUx11Bn8?=
- =?us-ascii?Q?hrh1eoP76FFrOxTRNf4QxMJyIo3NN8qjhwZKFWH3WyEU/g1ShoXhZvIxw8Za?=
- =?us-ascii?Q?FztzNHoVSAqxmP2Fk93hOsueW8essPumiTe0IKnQ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14888aa3-0d40-4cc5-fe94-08de00320b76
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+	=?utf-8?B?WEw1QjZZZUVaampTTW5vOWJMU2RTVWx5elRSVmlkeDBtYU9jalFGT2FETkFB?=
+ =?utf-8?B?Q3FuN3BqK2RjWjkxS1BnM1dLaGxubjlkZHJYTGlwM1BaNTRPUWNYWTFlZmM1?=
+ =?utf-8?B?b1hZTWpCb28xQ2pjQ3EyYmN4eVlRMFZUQnhQckJxR1YxeVJld1h4NHRkSzJ0?=
+ =?utf-8?B?WERCRGhCMEQxejFnM2ZLRGRuZVJYNTZ3WFBRSEVYdlpVNUZjUExsNVlQUUxs?=
+ =?utf-8?B?L3pVZE1RT0ZMZXZUdzRsTENFNktPTVFJL1N3LzhwWjdhSDkvQWlNOUtVMmpw?=
+ =?utf-8?B?YllvNUp4czBDNzVhZHpZdktlMzVVWi9LV1hWV3ZjWUp6aHcxMGcvOHhlaW1E?=
+ =?utf-8?B?b1Z1VFk1Uy9CUUZZQklOZEVjYjFHeGk3eFEzWDZNaWM3ajI3MmxEaU50T05S?=
+ =?utf-8?B?TGR3RVB5UHZiQVM0eTlNdmhwYzNiZmhRb0xnZ2JSL0ZyZ0pDaVpqSkNtMzV4?=
+ =?utf-8?B?cXNDUmRFK2QxTzh0L01vaENrSVNERGcyM0F5OGxSZUFDc2QxUDczb0RvRXlV?=
+ =?utf-8?B?enR1YW5sVkJMNkV2V3oyeks3NWtZZ0p2Sm84T1BCWlhybUs2d1c3aFVmR09x?=
+ =?utf-8?B?amRqYnpKNlRJSkdoUVdUN0IwWVg2cXlYa1AvRmJwTXJwKzRyODN6VWNrYldB?=
+ =?utf-8?B?dkVTU09Tb3EzZ0lSbUlac014VHFWK2pRaDlDN0ltY2RFTGxwc0EwdFlXUDdi?=
+ =?utf-8?B?dU81b3JrbWt1YzFPU2R6OU80T0cxTmQvMHRoNUpNaEgvanF6L1FzN2w5bEEy?=
+ =?utf-8?B?alBnVEFNOGxPLzJkV2FCYWlXME5QTlc2bTdZa3F5UFJRSFdzNW5SZWZlcjZZ?=
+ =?utf-8?B?Uk9XeDViZGxQb1JxcXFxMG0yVm55cnFRbWZHNUlCcElaeU14dWxISUhYVVhD?=
+ =?utf-8?B?QkhQclhRbkVkUTM3dXd6dE1ESnZzdE44eHNYK25ZOUQ4WkRGYnVVdVE3d0Rs?=
+ =?utf-8?B?MFJLNzRvRU15eEUvaVJ5NkhQWVJmK1NSRzBkY2QrZkZURm5DRGxhWVZ6ZG1x?=
+ =?utf-8?B?QU0vaEJQUVJSamcvNUI1VUpNbDNLMVJZdEZLa2JqVTF0TmM0SVl6cGJvTm5n?=
+ =?utf-8?B?eWcvdUxVc29FbXRJRUtCM0Z6bzFjdXY1NmpBZFc0eGdPL2wwbTJSYXp3UnFG?=
+ =?utf-8?B?enBkWWFZZURRdWd1alNQZFRQazAvcDlXbWhTd3VsMkgxSmNWTXZLOGtNN0xJ?=
+ =?utf-8?B?QU9oN2c5WWVqL1hGbG1nRk9hUHVpSDRzUlJLcWJBL0tBRjFHVWVVUVJ5TGxs?=
+ =?utf-8?B?cjgyWjJwZ2JPc1ZRMHV0RC80T3B1Q0tMb0ZEME5mNEVROFJpOVNHYlIrWVRK?=
+ =?utf-8?B?TXozeFY5NW0vcnNxVzA4OUI1T1Z3NVQyekdpZkVRU3p6dDdVOHBwejVKU1dy?=
+ =?utf-8?B?aWFtdzIzUzdDYkRxY3B3NjNUVWpJeDZZcWxhSnB4UlcrUDFXU2wvNmxFbFNH?=
+ =?utf-8?B?clRGV1JnS2IyQVpTTXFTNUVVdEpKSjAxRWgzWFcvZmc3VWcyazdnUWM2ZVRJ?=
+ =?utf-8?B?TU91QWlGK0l4RXE5SWdidTFyamU0R3V5dkJwSGFKOU9haUNRb0I0U2dhK2p0?=
+ =?utf-8?B?NS9GcFJYOHJYWkREZjdjcXc3R0ZjdzNQaGdxaVI2b01Wb005SjdINlBDV1E5?=
+ =?utf-8?B?em5ZMWJSVmMwcVRubzRRaTVvWmZDd2RQWU12clJCN3h1dkZUL3I3M3RpUEJU?=
+ =?utf-8?B?eE1seDhqWXBrUjg3eVJ4YlhvcHllNXNGVzVuUzdjbi9rY3FWbFJpVGN0YTFN?=
+ =?utf-8?Q?jv9D2IpjPqvzzCbSLeTnUIXmAzJINvc7UYEARLZ?=
+X-OriginatorOrg: sct-15-20-9052-0-msonline-outlook-6aa33.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: a471b6e5-4456-4e72-a64c-08de003567cf
+X-MS-Exchange-CrossTenant-AuthSource: MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2025 15:00:07.5810
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2025 15:24:11.0613
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: biGW8kX16xvGISVPjPRl4U1c893kdEPBzqTviBWyokpgSFu2JuQ7St9tCZbNSsAt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9711
-
-On 30 Sep 2025, at 4:10, Lance Yang wrote:
-
-> From: Lance Yang <lance.yang@linux.dev>
->
-> When splitting an mTHP and replacing a zero-filled subpage with the sha=
-red
-> zeropage, try_to_map_unused_to_zeropage() currently drops several impor=
-tant
-> PTE bits.
->
-> For userspace tools like CRIU, which rely on the soft-dirty mechanism f=
-or
-> incremental snapshots, losing the soft-dirty bit means modified pages a=
-re
-> missed, leading to inconsistent memory state after restore.
->
-> As pointed out by David, the more critical uffd-wp bit is also dropped.=
-
-> This breaks the userfaultfd write-protection mechanism, causing writes
-> to be silently missed by monitoring applications, which can lead to dat=
-a
-> corruption.
->
-> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
-> creating the new zeropage mapping to ensure they are correctly tracked.=
-
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when=
- splitting isolated thp")
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Suggested-by: Dev Jain <dev.jain@arm.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
-> v4 -> v5:
->  - Move ptep_get() call after the !pvmw.pte check, which handles PMD-ma=
-pped
->    THP migration entries.
->  - https://lore.kernel.org/linux-mm/20250930071053.36158-1-lance.yang@l=
-inux.dev/
->
-> v3 -> v4:
->  - Minor formatting tweak in try_to_map_unused_to_zeropage() function
->    signature (per David and Dev)
->  - Collect Reviewed-by from Dev - thanks!
->  - https://lore.kernel.org/linux-mm/20250930060557.85133-1-lance.yang@l=
-inux.dev/
->
-> v2 -> v3:
->  - ptep_get() gets called only once per iteration (per Dev)
->  - https://lore.kernel.org/linux-mm/20250930043351.34927-1-lance.yang@l=
-inux.dev/
->
-> v1 -> v2:
->  - Avoid calling ptep_get() multiple times (per Dev)
->  - Double-check the uffd-wp bit (per David)
->  - Collect Acked-by from David - thanks!
->  - https://lore.kernel.org/linux-mm/20250928044855.76359-1-lance.yang@l=
-inux.dev/
->
->  mm/migrate.c | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
->
-
-Acked-by: Zi Yan <ziy@nvidia.com>
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PNZPR01MB10908
 
 
-Best Regards,
-Yan, Zi
+
+On 30/09/25 8:17 pm, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Kerem Karabay <kekrby@gmail.com>
+> 
+> [ Upstream commit f41d736acc039d86512951f4e874b0f5e666babf ]
+> 
+> In Apple Touch Bar, the contact ID is contained in fields with the
+> HID_DG_TRANSDUCER_INDEX usage rather than HID_DG_CONTACTID, thus differing
+> from the HID spec. Add a quirk for the same.
+> 
+
+All these hid-multitouch patches were a part of appletbdrm driver upstreamed since kernel 6.15.
+
+Due to 2 different trees, and some delay in review by hid maintainers, these got upstreamed in 6.17.
+
+So, in case you wish to backport to stable, IMO, backport only till 6.15, which in practicality is just 6.16 as of today.
+
 
