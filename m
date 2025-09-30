@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-182273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC9EBAD719
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DFBBADCB7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA16B4A5E54
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 698FF3AB3A0
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F05246BB0;
-	Tue, 30 Sep 2025 15:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1761F29827E;
+	Tue, 30 Sep 2025 15:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lax3D8cP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewSO5mAC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18BA303A29;
-	Tue, 30 Sep 2025 15:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91E120E334;
+	Tue, 30 Sep 2025 15:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244412; cv=none; b=gFLt+ZslZhYwufvxRFAa/iPNObYbEaV4dM/6XDJKZOLxt4dDp7DTlYxe57FS8Kn2tu/D59IIGUNrNh2hP1vh3705Z6mgTcpvvbDu13katuWY4tFyCwIK9lZJKf6bzTcl5MjAWy+P5ROJzy91VXT/QG7KKZgChFTExvXelKXqX4Q=
+	t=1759245682; cv=none; b=bD2AUaopPHNdDgWHb7gBMghaTWYSVJWc+2mvigwA+ZBMRaxQhxAoBir0I19idZ5OqsXzNjcOutbAtXyMqyG4Qe9LxozrjF5Vj8sy0JT90QMkIk2gcAhTKgRNg5m0P26tgatr4sPk/Q+KrSpI2/FodR5q7ZEl+fkZcx8w0t8af/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244412; c=relaxed/simple;
-	bh=zmIjEtSVRVJZ9rOj4EvF7p9Xuvpoy3Mra6vengHEhMg=;
+	s=arc-20240116; t=1759245682; c=relaxed/simple;
+	bh=lnAuQUWIiIH4IqkwDrrKrtzZ50x6WIuW9GSWB0IqbD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XI4ib2UvNaTA680PtxmoWR84/omIcC5KTsICvXrlv8h79n894Qnc+Kppx82QZBVkUEkEoSdT3KaFaeOrLYTBkouOgSsFQTtrAwAvN8PbM/ISgDbgqtM5i9wlT5bQIaNNEkjAe867ZSbiAipWWQGw/osJSl4nwUty0ziYz3LE2Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lax3D8cP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6409BC4CEF0;
-	Tue, 30 Sep 2025 15:00:11 +0000 (UTC)
+	 MIME-Version; b=CK6gCj2YKbCAt4Xd346Q9DxmP0R06IAOXlwC5tCW2Tyg1EL3Qu+uujY+TWBWdM2ft90RayLwVMmO4VPQ7vpwqNjboMnitN0GiY9vqDBX6F5bnc8ghlPs9gHGWp7yU4tNypruzk0qz68mtrYI1bqMQJJR+H4n/N0WBdgOA73R59Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewSO5mAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCD0C4CEF0;
+	Tue, 30 Sep 2025 15:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244411;
-	bh=zmIjEtSVRVJZ9rOj4EvF7p9Xuvpoy3Mra6vengHEhMg=;
+	s=korg; t=1759245682;
+	bh=lnAuQUWIiIH4IqkwDrrKrtzZ50x6WIuW9GSWB0IqbD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lax3D8cPCjl8qMZ/9X5woK9tWYqlFUTV6Oi0nvE2Yd10Rr8PW4Rm1qSq0bPqKsuyf
-	 3+nkm7DB1bsClhz6VyntuO9cnEn+dahNZ2kKk0kpQ1YN7ix/QUBvs3SqAjPy/HeXCS
-	 jXNjd69FgblaWAk1VEzQ4LPeogZFdMpOzIa3u0so=
+	b=ewSO5mAC5vDK1FFB2tuK1v5vrMf9fBwoRJrDbPfllFT+fBtFP3owBsF5GOo+PuP4A
+	 5TeOfzcpg4z0579OXw4tRjZb8wui5eJd4Ts+n9WSugKQK70uf7MqfY02B2ub3QlzBA
+	 t9bjM6+Zy4vwzmK4PtyLWm71i21V4a1uehd8ranI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/122] ALSA: usb-audio: Convert comma to semicolon
+Subject: [PATCH 6.6 02/91] firewire: core: fix overlooked update of subsystem ABI version
 Date: Tue, 30 Sep 2025 16:47:01 +0200
-Message-ID: <20250930143826.685713107@linuxfoundation.org>
+Message-ID: <20250930143821.219790888@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit 9ca30a1b007d5fefb5752428f852a2d8d7219c1c ]
+[ Upstream commit 853a57ba263adfecf4430b936d6862bc475b4bb5 ]
 
-Replace comma between expressions with semicolons.
+In kernel v6.5, several functions were added to the cdev layer. This
+required updating the default version of subsystem ABI up to 6, but
+this requirement was overlooked.
 
-Using a ',' in place of a ';' can have unintended side effects.
-Although that is not the case here, it is seems best to use ';'
-unless ',' is intended.
+This commit updates the version accordingly.
 
-Found by inspection.
-No functional change intended.
-Compile tested only.
-
-Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250612060228.1518028-1-nichen@iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 6add87e9764d ("firewire: cdev: add new version of ABI to notify time stamp at request/response subaction of transaction#")
+Link: https://lore.kernel.org/r/20250920025148.163402-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/firewire/core-cdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index ec338a85f3ec4..b3afa7b26b9cd 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -758,9 +758,9 @@ static int snd_dualsense_jack_create(struct usb_mixer_interface *mixer,
- 
- 	mei->ih.event = snd_dualsense_ih_event;
- 	mei->ih.match = snd_dualsense_ih_match;
--	mei->ih.connect = snd_dualsense_ih_connect,
--	mei->ih.disconnect = snd_dualsense_ih_disconnect,
--	mei->ih.start = snd_dualsense_ih_start,
-+	mei->ih.connect = snd_dualsense_ih_connect;
-+	mei->ih.disconnect = snd_dualsense_ih_disconnect;
-+	mei->ih.start = snd_dualsense_ih_start;
- 	mei->ih.name = name;
- 	mei->ih.id_table = mei->id_table;
- 
+diff --git a/drivers/firewire/core-cdev.c b/drivers/firewire/core-cdev.c
+index 73cc2f2dcbf92..bdf4b035325e9 100644
+--- a/drivers/firewire/core-cdev.c
++++ b/drivers/firewire/core-cdev.c
+@@ -39,7 +39,7 @@
+ /*
+  * ABI version history is documented in linux/firewire-cdev.h.
+  */
+-#define FW_CDEV_KERNEL_VERSION			5
++#define FW_CDEV_KERNEL_VERSION			6
+ #define FW_CDEV_VERSION_EVENT_REQUEST2		4
+ #define FW_CDEV_VERSION_ALLOCATE_REGION_END	4
+ #define FW_CDEV_VERSION_AUTO_FLUSH_ISO_OVERFLOW	5
 -- 
 2.51.0
 
