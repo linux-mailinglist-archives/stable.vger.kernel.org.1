@@ -1,205 +1,480 @@
-Return-Path: <stable+bounces-182402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A175ABAD84B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE7EBADC00
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C37B19252CA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20E1818840D5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA7E2FD1DD;
-	Tue, 30 Sep 2025 15:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAAC2F5333;
+	Tue, 30 Sep 2025 15:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlPDYrn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tP4QyKPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE23266B65;
-	Tue, 30 Sep 2025 15:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7779B16A956;
+	Tue, 30 Sep 2025 15:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244830; cv=none; b=j6Nbpv2vqjL1xHPCbWGpRmZ1SXslbMQejmFCBip9HAUsKdL9Efpn6dAkib7cnhnkpdr834Xgp25FwdV/VML00N+8otEQ99g4s0f+PgDr0u5Jg8+nJhandNWrid+to1rK3a00w2vhzYt2aGWp12aJPReduUpDieAUXy3Kl7kF9Ek=
+	t=1759245708; cv=none; b=cyTEzIeNsfmpYx/IFM67Xwup4+8zOaTi5hZQjXpOBlf6ro8JaT4YCGb/PSn133ONz+IdsAiOoV8NJqXPzz/D4Lzago3MWMaT2QCsyJsgtC8wsON9XC7fs+DXZ6VoPqYoF8QjX1a4HOScCPMM9VXoqxg8wckQm79cUxeDYrsa0IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244830; c=relaxed/simple;
-	bh=Tr++jJKBcqMghUM5qkZEX4+zh6nVNfGbiwEqkINYaCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b2UlX5o7ZHzI8DeEpdoPDAPUUyudbZSN40tYB0510XYnuFDm4EkC0wqTH9Fp9FKASSLdmFp0l8rXvgKWqDIOiSXvqQ3aaPiN5QfEbQLyb4xwbJ8ZSqWxCKhdMMozQxuGadcpxPFrm7PtKUaZT6JEG6ICkV4XRRJkRbfcCsUjJaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlPDYrn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EA6C4CEF0;
-	Tue, 30 Sep 2025 15:07:08 +0000 (UTC)
+	s=arc-20240116; t=1759245708; c=relaxed/simple;
+	bh=5W35ecsu9fpZQ2WKKjdhG3S6eyGyqlGndR4ehZ8pNmE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H+0emo0cBxBDfvwJnz2RG9X4T8EPDRWMvr948O+2re94QXjoKLq+lj9YkXNtsLTRS54lX05w4nhggg+mHj1wUsn+StRKSNJHdWyNhDMKX5EWJ6GIViHRrTW+4UWTaLpQQTMQuBKTjxdysZNs3XlmrR6pRWcM/S7A821FrH2JwaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tP4QyKPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6B8C4CEF0;
+	Tue, 30 Sep 2025 15:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244829;
-	bh=Tr++jJKBcqMghUM5qkZEX4+zh6nVNfGbiwEqkINYaCs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OlPDYrn4m5UC2g8E1E/5jEE3Zg+MfoNwI71bIR+zcNSiVj0fT3zCckAKgE0wuT9vO
-	 cfkCzyv9Vse0vJPdWM2heDlarfxylcuCxVaRREnCmRXNMtA9HaVMq9xrMO9h+O08L6
-	 /6TD/t2SqrbHZ4Z+eLY0DU8v4rEPDVQ//vHuT//k=
+	s=korg; t=1759245708;
+	bh=5W35ecsu9fpZQ2WKKjdhG3S6eyGyqlGndR4ehZ8pNmE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tP4QyKPCECF4LrZXTrr9Opp7ySudJJ6ZtZmX/EOsRFcxsHNXkIu8puhvZcLw11RFl
+	 8Z06XePNvbGTXcP/ywe4L1NCwmuX0EZBqZ92VKzb7J8PFhY0p9e0CX2UYK+supPW0I
+	 8ufF+Df9eUnSLcCBvwLr9wvZGqj80oAo0BHpcrzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lee <dany97@live.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 095/143] platform/x86: lg-laptop: Fix WMAB call in fan_mode_store()
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org
+Subject: [PATCH 6.6 00/91] 6.6.109-rc1 review
 Date: Tue, 30 Sep 2025 16:46:59 +0200
-Message-ID: <20250930143835.014741344@linuxfoundation.org>
+Message-ID: <20250930143821.118938523@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.109-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.6.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.6.109-rc1
+X-KernelTest-Deadline: 2025-10-02T14:38+00:00
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.6.109 release.
+There are 91 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
+Anything received after that time might be too late.
 
-From: Daniel Lee <dany97@live.ca>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.109-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+and the diffstat can be found below.
 
-[ Upstream commit 3ed17349f18774c24505b0c21dfbd3cc4f126518 ]
+thanks,
 
-When WMAB is called to set the fan mode, the new mode is read from either
-bits 0-1 or bits 4-5 (depending on the value of some other EC register).
-Thus when WMAB is called with bits 4-5 zeroed and called again with
-bits 0-1 zeroed, the second call undoes the effect of the first call.
-This causes writes to /sys/devices/platform/lg-laptop/fan_mode to have
-no effect (and causes reads to always report a status of zero).
+greg k-h
 
-Fix this by calling WMAB once, with the mode set in bits 0,1 and 4,5.
-When the fan mode is returned from WMAB it always has this form, so
-there is no need to preserve the other bits.  As a bonus, the driver
-now supports the "Performance" fan mode seen in the LG-provided Windows
-control app, which provides less aggressive CPU throttling but louder
-fan noise and shorter battery life.
+-------------
+Pseudo-Shortlog of commits:
 
-Also, correct the documentation to reflect that 0 corresponds to the
-default mode (what the Windows app calls "Optimal") and 1 corresponds
-to the silent mode.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.6.109-rc1
 
-Fixes: dbf0c5a6b1f8 ("platform/x86: Add LG Gram laptop special features driver")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=204913#c4
-Signed-off-by: Daniel Lee <dany97@live.ca>
-Link: https://patch.msgid.link/MN2PR06MB55989CB10E91C8DA00EE868DDC1CA@MN2PR06MB5598.namprd06.prod.outlook.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../admin-guide/laptops/lg-laptop.rst         |  4 +--
- drivers/platform/x86/lg-laptop.c              | 34 ++++++++-----------
- 2 files changed, 16 insertions(+), 22 deletions(-)
+David Laight <David.Laight@ACULAB.COM>
+    minmax.h: remove some #defines that are only expanded once
 
-diff --git a/Documentation/admin-guide/laptops/lg-laptop.rst b/Documentation/admin-guide/laptops/lg-laptop.rst
-index 67fd6932cef4f..c4dd534f91edd 100644
---- a/Documentation/admin-guide/laptops/lg-laptop.rst
-+++ b/Documentation/admin-guide/laptops/lg-laptop.rst
-@@ -48,8 +48,8 @@ This value is reset to 100 when the kernel boots.
- Fan mode
- --------
- 
--Writing 1/0 to /sys/devices/platform/lg-laptop/fan_mode disables/enables
--the fan silent mode.
-+Writing 0/1/2 to /sys/devices/platform/lg-laptop/fan_mode sets fan mode to
-+Optimal/Silent/Performance respectively.
- 
- 
- USB charge
-diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
-index 4b57102c7f627..6af6cf477c5b5 100644
---- a/drivers/platform/x86/lg-laptop.c
-+++ b/drivers/platform/x86/lg-laptop.c
-@@ -8,6 +8,7 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #include <linux/acpi.h>
-+#include <linux/bitfield.h>
- #include <linux/bits.h>
- #include <linux/device.h>
- #include <linux/dev_printk.h>
-@@ -75,6 +76,9 @@ MODULE_PARM_DESC(fw_debug, "Enable printing of firmware debug messages");
- #define WMBB_USB_CHARGE 0x10B
- #define WMBB_BATT_LIMIT 0x10C
- 
-+#define FAN_MODE_LOWER GENMASK(1, 0)
-+#define FAN_MODE_UPPER GENMASK(5, 4)
-+
- #define PLATFORM_NAME   "lg-laptop"
- 
- MODULE_ALIAS("wmi:" WMI_EVENT_GUID0);
-@@ -274,29 +278,19 @@ static ssize_t fan_mode_store(struct device *dev,
- 			      struct device_attribute *attr,
- 			      const char *buffer, size_t count)
- {
--	bool value;
-+	unsigned long value;
- 	union acpi_object *r;
--	u32 m;
- 	int ret;
- 
--	ret = kstrtobool(buffer, &value);
-+	ret = kstrtoul(buffer, 10, &value);
- 	if (ret)
- 		return ret;
-+	if (value >= 3)
-+		return -EINVAL;
- 
--	r = lg_wmab(dev, WM_FAN_MODE, WM_GET, 0);
--	if (!r)
--		return -EIO;
--
--	if (r->type != ACPI_TYPE_INTEGER) {
--		kfree(r);
--		return -EIO;
--	}
--
--	m = r->integer.value;
--	kfree(r);
--	r = lg_wmab(dev, WM_FAN_MODE, WM_SET, (m & 0xffffff0f) | (value << 4));
--	kfree(r);
--	r = lg_wmab(dev, WM_FAN_MODE, WM_SET, (m & 0xfffffff0) | value);
-+	r = lg_wmab(dev, WM_FAN_MODE, WM_SET,
-+		FIELD_PREP(FAN_MODE_LOWER, value) |
-+		FIELD_PREP(FAN_MODE_UPPER, value));
- 	kfree(r);
- 
- 	return count;
-@@ -305,7 +299,7 @@ static ssize_t fan_mode_store(struct device *dev,
- static ssize_t fan_mode_show(struct device *dev,
- 			     struct device_attribute *attr, char *buffer)
- {
--	unsigned int status;
-+	unsigned int mode;
- 	union acpi_object *r;
- 
- 	r = lg_wmab(dev, WM_FAN_MODE, WM_GET, 0);
-@@ -317,10 +311,10 @@ static ssize_t fan_mode_show(struct device *dev,
- 		return -EIO;
- 	}
- 
--	status = r->integer.value & 0x01;
-+	mode = FIELD_GET(FAN_MODE_LOWER, r->integer.value);
- 	kfree(r);
- 
--	return sysfs_emit(buffer, "%d\n", status);
-+	return sysfs_emit(buffer, "%d\n", mode);
- }
- 
- static ssize_t usb_charge_store(struct device *dev,
--- 
-2.51.0
+David Laight <David.Laight@ACULAB.COM>
+    minmax.h: simplify the variants of clamp()
 
+David Laight <David.Laight@ACULAB.COM>
+    minmax.h: move all the clamp() definitions after the min/max() ones
+
+David Laight <David.Laight@ACULAB.COM>
+    minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
+
+David Laight <David.Laight@ACULAB.COM>
+    minmax.h: reduce the #define expansion of min(), max() and clamp()
+
+David Laight <David.Laight@ACULAB.COM>
+    minmax.h: update some comments
+
+David Laight <David.Laight@ACULAB.COM>
+    minmax.h: add whitespace around operators and after commas
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    minmax: fix up min3() and max3() too
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    minmax: improve macro expansion and type checking
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    minmax: don't use max() in situations that want a C constant expression
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    minmax: simplify min()/max()/clamp() implementation
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    minmax: make generic MIN() and MAX() macros available everywhere
+
+Lukasz Czapnik <lukasz.czapnik@intel.com>
+    i40e: add validation for ring_len param
+
+Justin Bronder <jsbronder@cold-front.org>
+    i40e: increase max descriptors for XL710
+
+Nirmoy Das <nirmoyd@nvidia.com>
+    drm/ast: Use msleep instead of mdelay for edid read
+
+Hans de Goede <hansg@kernel.org>
+    gpiolib: Extend software-node support to support secondary software-nodes
+
+Jan Kara <jack@suse.cz>
+    loop: Avoid updating block size under exclusive owner
+
+David Hildenbrand <david@redhat.com>
+    mm/migrate_device: don't add folio to be freed to LRU in migrate_device_finalize()
+
+Kefeng Wang <wangkefeng.wang@huawei.com>
+    mm: migrate_device: use more folio in migrate_device_finalize()
+
+Florian Fainelli <florian.fainelli@broadcom.com>
+    ARM: bcm: Select ARM_GIC_V3 for ARCH_BRCMSTB
+
+Nathan Chancellor <nathan@kernel.org>
+    s390/cpum_cf: Fix uninitialized warning after backport of ce971233242b
+
+Thomas Zimmermann <tzimmermann@suse.de>
+    fbcon: Fix OOB access in font allocation
+
+Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+    fbcon: fix integer overflow in fbcon_do_set_font
+
+Jinjiang Tu <tujinjiang@huawei.com>
+    mm/hugetlb: fix folio is still mapped when deleted
+
+Eric Biggers <ebiggers@kernel.org>
+    kmsan: fix out-of-bounds access to shadow memory
+
+Zhen Ni <zhen.ni@easystack.cn>
+    afs: Fix potential null pointer dereference in afs_put_server
+
+Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+    ARM: dts: socfpga: sodia: Fix mdio bus probe and PHY address
+
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
+    tracing: dynevent: Add a missing lockdown check on dynevent
+
+Eric Biggers <ebiggers@kernel.org>
+    crypto: af_alg - Fix incorrect boolean values in af_alg_ctx
+
+Lukasz Czapnik <lukasz.czapnik@intel.com>
+    i40e: improve VF MAC filters accounting
+
+Lukasz Czapnik <lukasz.czapnik@intel.com>
+    i40e: add mask to apply valid bits for itr_idx
+
+Lukasz Czapnik <lukasz.czapnik@intel.com>
+    i40e: add max boundary check for VF filters
+
+Lukasz Czapnik <lukasz.czapnik@intel.com>
+    i40e: fix validation of VF state in get resources
+
+Lukasz Czapnik <lukasz.czapnik@intel.com>
+    i40e: fix input validation logic for action_meta
+
+Lukasz Czapnik <lukasz.czapnik@intel.com>
+    i40e: fix idx validation in config queues msg
+
+Lukasz Czapnik <lukasz.czapnik@intel.com>
+    i40e: fix idx validation in i40e_validate_queue_map
+
+Amit Chaudhari <amitchaudhari@mac.com>
+    HID: asus: add support for missing PX series fn keys
+
+Sang-Heon Jeon <ekffu200098@gmail.com>
+    smb: client: fix wrong index reference in smb2_compound_op()
+
+Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+    futex: Prevent use-after-free during requeue-PI
+
+Zabelin Nikita <n.zabelin@mt-integration.ru>
+    drm/gma500: Fix null dereference in hdmi teardown
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    octeontx2-pf: Fix potential use after free in otx2_tc_add_flow()
+
+Vladimir Oltean <vladimir.oltean@nxp.com>
+    net: dsa: lantiq_gswip: suppress -EINVAL errors for bridge FDB entries added to the CPU port
+
+Vladimir Oltean <vladimir.oltean@nxp.com>
+    net: dsa: lantiq_gswip: move gswip_add_single_port_br() call to port_setup()
+
+Martin Schiller <ms@dev.tdt.de>
+    net: dsa: lantiq_gswip: do also enable or disable cpu port
+
+Ido Schimmel <idosch@nvidia.com>
+    selftests: fib_nexthops: Fix creation of non-FDB nexthops
+
+Ido Schimmel <idosch@nvidia.com>
+    nexthop: Forbid FDB status change while nexthop is in a group
+
+Jason Baron <jbaron@akamai.com>
+    net: allow alloc_skb_with_frags() to use MAX_SKB_FRAGS
+
+Alok Tiwari <alok.a.tiwari@oracle.com>
+    bnxt_en: correct offset handling for IPv6 destination address
+
+Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+    vhost: Take a reference on the task in struct vhost_task.
+
+Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+    Bluetooth: hci_event: Fix UAF in hci_acl_create_conn_sync
+
+Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+    Bluetooth: hci_sync: Fix hci_resume_advertising_sync
+
+Petr Malat <oss@malat.biz>
+    ethernet: rvu-af: Remove slash from the driver name
+
+Stéphane Grosjean <stephane.grosjean@hms-networks.com>
+    can: peak_usb: fix shift-out-of-bounds issue
+
+Vincent Mailhol <mailhol@kernel.org>
+    can: mcba_usb: populate ndo_change_mtu() to prevent buffer overflow
+
+Vincent Mailhol <mailhol@kernel.org>
+    can: sun4i_can: populate ndo_change_mtu() to prevent buffer overflow
+
+Vincent Mailhol <mailhol@kernel.org>
+    can: hi311x: populate ndo_change_mtu() to prevent buffer overflow
+
+Vincent Mailhol <mailhol@kernel.org>
+    can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow
+
+Sabrina Dubroca <sd@queasysnail.net>
+    xfrm: xfrm_alloc_spi shouldn't use 0 as SPI
+
+Leon Hwang <leon.hwang@linux.dev>
+    bpf: Reject bpf_timer for PREEMPT_RT
+
+Geert Uytterhoeven <geert+renesas@glider.be>
+    can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
+
+James Guan <guan_yufei@163.com>
+    wifi: virt_wifi: Fix page fault on connect
+
+Stefan Metzmacher <metze@samba.org>
+    smb: server: don't use delayed_work for post_recv_credits_work
+
+Christian Loehle <christian.loehle@arm.com>
+    cpufreq: Initialize cpufreq-based invariance before subsys
+
+Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+    ARM: dts: kirkwood: Fix sound DAI cells for OpenRD clients
+
+Peng Fan <peng.fan@nxp.com>
+    arm64: dts: imx8mp: Correct thermal sensor index
+
+Hugh Dickins <hughd@google.com>
+    mm: folio_may_be_lru_cached() unless folio_test_large()
+
+Hugh Dickins <hughd@google.com>
+    mm/gup: local lru_add_drain() to avoid lru_add_drain_all()
+
+Hugh Dickins <hughd@google.com>
+    mm/gup: check ref_count instead of lru before migration
+
+Shivank Garg <shivankg@amd.com>
+    mm: add folio_expected_ref_count() for reference count calculation
+
+David Hildenbrand <david@redhat.com>
+    mm/gup: revert "mm: gup: fix infinite loop within __get_longterm_locked"
+
+Or Har-Toov <ohartoov@nvidia.com>
+    IB/mlx5: Fix obj_type mismatch for SRQ event subscriptions
+
+qaqland <anguoli@uniontech.com>
+    ALSA: usb-audio: Add mute TLV for playback volumes on more devices
+
+Cryolitia PukNgae <cryolitia@uniontech.com>
+    ALSA: usb-audio: move mixer_quirks' min_mute into common quirk
+
+noble.yang <noble.yang@comtrue-inc.com>
+    ALSA: usb-audio: Add DSD support for Comtrue USB Audio device
+
+Heikki Krogerus <heikki.krogerus@linux.intel.com>
+    i2c: designware: Add quirk for Intel Xe
+
+Benoît Monin <benoit.monin@bootlin.com>
+    mmc: sdhci-cadence: add Mobileye eyeQ support
+
+Jiayi Li <lijiayi@kylinos.cn>
+    usb: core: Add 0x prefix to quirks debug output
+
+Takashi Iwai <tiwai@suse.de>
+    ALSA: usb-audio: Fix build with CONFIG_INPUT=n
+
+Chen Ni <nichen@iscas.ac.cn>
+    ALSA: usb-audio: Convert comma to semicolon
+
+Kerem Karabay <kekrby@gmail.com>
+    HID: multitouch: specify that Apple Touch Bar is direct
+
+Kerem Karabay <kekrby@gmail.com>
+    HID: multitouch: take cls->maxcontacts into account for Apple Touch Bar even without a HID_DG_CONTACTMAX field
+
+Kerem Karabay <kekrby@gmail.com>
+    HID: multitouch: support getting the tip state from HID_DG_TOUCH fields in Apple Touch Bar
+
+Kerem Karabay <kekrby@gmail.com>
+    HID: multitouch: Get the contact ID from HID_DG_TRANSDUCER_INDEX fields in case of Apple Touch Bar
+
+Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+    ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5
+
+Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+    ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
+
+Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+    ALSA: usb-audio: Simplify NULL comparison in mixer_quirks
+
+Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+    ALSA: usb-audio: Avoid multiple assignments in mixer_quirks
+
+Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+    ALSA: usb-audio: Drop unnecessary parentheses in mixer_quirks
+
+Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+    ALSA: usb-audio: Fix block comments in mixer_quirks
+
+Takashi Sakamoto <o-takashi@sakamocchi.jp>
+    firewire: core: fix overlooked update of subsystem ABI version
+
+Alok Tiwari <alok.a.tiwari@oracle.com>
+    scsi: ufs: mcq: Fix memory allocation checks for SQE and CQE
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ .../dts/intel/socfpga/socfpga_cyclone5_sodia.dts   |   6 +-
+ .../boot/dts/marvell/kirkwood-openrd-client.dts    |   2 +-
+ arch/arm/mach-bcm/Kconfig                          |   1 +
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi          |   4 +-
+ arch/s390/kernel/perf_cpum_cf.c                    |   4 +-
+ arch/um/drivers/mconsole_user.c                    |   2 +
+ drivers/block/loop.c                               |  40 ++-
+ drivers/cpufreq/cpufreq.c                          |  20 +-
+ drivers/edac/skx_common.h                          |   1 -
+ drivers/firewire/core-cdev.c                       |   2 +-
+ drivers/gpio/gpiolib.c                             |  19 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h                |   2 +
+ .../gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c    |   2 +
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h |  14 +-
+ .../drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c    |   2 +
+ .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c   |   3 +
+ .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c   |   3 +
+ drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c             |   2 +-
+ drivers/gpu/drm/ast/ast_dp.c                       |   2 +-
+ drivers/gpu/drm/gma500/oaktrail_hdmi.c             |   2 +-
+ drivers/gpu/drm/radeon/evergreen_cs.c              |   2 +
+ drivers/hid/hid-asus.c                             |   3 +
+ drivers/hid/hid-multitouch.c                       |  45 +++-
+ drivers/hwmon/adt7475.c                            |  24 +-
+ drivers/i2c/busses/i2c-designware-platdrv.c        |   7 +-
+ drivers/infiniband/hw/mlx5/devx.c                  |   1 +
+ drivers/input/touchscreen/cyttsp4_core.c           |   2 +-
+ drivers/irqchip/irq-sun6i-r.c                      |   2 +-
+ drivers/media/dvb-frontends/stv0367_priv.h         |   3 +
+ drivers/mmc/host/sdhci-cadence.c                   |  11 +
+ drivers/net/can/rcar/rcar_can.c                    |   8 +-
+ drivers/net/can/spi/hi311x.c                       |   1 +
+ drivers/net/can/sun4i_can.c                        |   1 +
+ drivers/net/can/usb/etas_es58x/es58x_core.c        |   3 +-
+ drivers/net/can/usb/etas_es58x/es58x_devlink.c     |   2 +-
+ drivers/net/can/usb/mcba_usb.c                     |   1 +
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c       |   2 +-
+ drivers/net/dsa/lantiq_gswip.c                     |  41 +--
+ drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c       |   2 +-
+ drivers/net/ethernet/intel/i40e/i40e.h             |   4 +-
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c     |  25 +-
+ drivers/net/ethernet/intel/i40e/i40e_main.c        |  26 +-
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 110 ++++----
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h |   3 +-
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c    |   3 +-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_tc.c   |   2 +-
+ drivers/net/fjes/fjes_main.c                       |   4 +-
+ drivers/net/wireless/virtual/virt_wifi.c           |   4 +-
+ drivers/nfc/pn544/i2c.c                            |   2 -
+ drivers/platform/x86/sony-laptop.c                 |   1 -
+ drivers/scsi/isci/init.c                           |   6 +-
+ .../pci/hive_isp_css_include/math_support.h        |   5 -
+ drivers/ufs/core/ufs-mcq.c                         |   4 +-
+ drivers/usb/core/quirks.c                          |   2 +-
+ drivers/video/fbdev/core/fbcon.c                   |  13 +-
+ fs/afs/server.c                                    |   3 +-
+ fs/btrfs/tree-checker.c                            |   2 +-
+ fs/hugetlbfs/inode.c                               |  10 +-
+ fs/smb/client/smb2inode.c                          |   2 +-
+ fs/smb/server/transport_rdma.c                     |  18 +-
+ include/crypto/if_alg.h                            |   2 +-
+ include/linux/compiler.h                           |   9 +
+ include/linux/minmax.h                             | 234 +++++++++-------
+ include/linux/mm.h                                 |  55 ++++
+ include/linux/swap.h                               |  10 +
+ include/net/bluetooth/hci_core.h                   |  21 ++
+ kernel/bpf/verifier.c                              |   4 +
+ kernel/futex/requeue.c                             |   6 +-
+ kernel/trace/preemptirq_delay_test.c               |   2 -
+ kernel/trace/trace_dynevent.c                      |   4 +
+ kernel/vhost_task.c                                |   3 +-
+ lib/btree.c                                        |   1 -
+ lib/decompress_unlzma.c                            |   2 +
+ lib/vsprintf.c                                     |   2 +-
+ mm/gup.c                                           |  28 +-
+ mm/kmsan/core.c                                    |  10 +-
+ mm/kmsan/kmsan_test.c                              |  16 ++
+ mm/migrate_device.c                                |  42 ++-
+ mm/mlock.c                                         |   6 +-
+ mm/swap.c                                          |   4 +-
+ mm/zsmalloc.c                                      |   2 -
+ net/bluetooth/hci_event.c                          |  26 +-
+ net/bluetooth/hci_sync.c                           |   7 +
+ net/core/skbuff.c                                  |   2 +-
+ net/ipv4/nexthop.c                                 |   7 +
+ net/xfrm/xfrm_state.c                              |   3 +
+ sound/usb/mixer_quirks.c                           | 295 +++++++++++++++++++--
+ sound/usb/quirks.c                                 |  24 +-
+ sound/usb/usbaudio.h                               |   4 +
+ tools/testing/selftests/mm/mremap_test.c           |   2 +
+ tools/testing/selftests/net/fib_nexthops.sh        |  12 +-
+ tools/testing/selftests/seccomp/seccomp_bpf.c      |   2 +
+ 93 files changed, 1031 insertions(+), 363 deletions(-)
 
 
 
