@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FEB9BADD23
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1BBBADA1A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:14:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F065189B517
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C80619400EB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B764525FA0F;
-	Tue, 30 Sep 2025 15:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D615307AD2;
+	Tue, 30 Sep 2025 15:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jbc4YaGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsSc+RbK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73037245010;
-	Tue, 30 Sep 2025 15:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8EC2F6167;
+	Tue, 30 Sep 2025 15:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245967; cv=none; b=LfagV+tzdAABVRMVa3Pq4y+Y2eMLH7cdAuF13CiTO8Cz41t4Jscv7O8SPbrXuPzYAOxX67rFrR4LxuoaYXVj1/Au3vMFZgStgonq42rIWBhxx/Lc3orxn9Sq8Udok6kxbBmSuRGdZd6LUei4vqBw6MKvN87TxGmK3bO4NkAWkPA=
+	t=1759245268; cv=none; b=nmUH+9qkQHulp2MlCG/P5+Lv873evTkZvroUZvwocizGKPpDvQLbj+H79Rtm1TGpHSKHmlvpDt0lIX7ULFYPBeIxbPrQyUJN3cLLpgUNOFLyD+xMqmtjkCSphbogXWy3VpKzjKc5fKeWDeNU5IBvWV8ZGcnoMjcYtH9D2/1ADSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245967; c=relaxed/simple;
-	bh=M2IDzM3LgnZhhoMERKs+EgcMGMkcAyp+P+wT1FB329w=;
+	s=arc-20240116; t=1759245268; c=relaxed/simple;
+	bh=a456hYY0xl7NYpwZNS5UMyHykqmZlK8FW9XHD0Tk3nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENr2KMxGeypS/EX9vTO5cd49Jxe4Zb4zhbx4fzMAS7KD/0/Fme6DrfqiN3Kkw2aAV3pk2115JQCQKGv4o7pFLY70UW7Hp66Lnxcri6n1nnGyn0bGCj+IUi6KGFoLomMVY1gqndTGXayk18yNIR6pzyH1gHx4bRhefFHTkpu9ASU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jbc4YaGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF95AC4CEF0;
-	Tue, 30 Sep 2025 15:26:06 +0000 (UTC)
+	 MIME-Version; b=iKMLbUB6Wl9zwzAuzrAOaUNS/vQe9OF+zT3CWgsj3Wfqh1xVjqkY7FQosyntxQqihgVGGKdqsqqj5Wy78U8d1LI6hhgutss/IZY6DLnLAth2mq5FnZt4Oq95aPmXqvdikVFk6/xE1QMxo2grYCqosuq3Hq66uHRrSj6LSszkh9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsSc+RbK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB81FC4CEF0;
+	Tue, 30 Sep 2025 15:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245967;
-	bh=M2IDzM3LgnZhhoMERKs+EgcMGMkcAyp+P+wT1FB329w=;
+	s=korg; t=1759245268;
+	bh=a456hYY0xl7NYpwZNS5UMyHykqmZlK8FW9XHD0Tk3nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jbc4YaGzn5J+Ju1t1bvTzTak7oRbE2pAiOcT2bBbsafqt/63Z7qHbZuU8xdVHMf/F
-	 /IxYQ+d/wSTDSAOmmokD9GQM08c/EnxGn8QxHgAMDGcMrP914TSSHo1ZOk6NUyPfH0
-	 +hdBb5d0ZdemV5QCPWT6wNPk5pPCHu0wl2JDsJAY=
+	b=DsSc+RbKlOpH9BFVf+JB0/4bNKOJqY8eJ3iomlJnwzZVKSiE5eWnUs+SbDkuYka59
+	 Qm+Qr6zzVnp5V2/zCa6sRPSootP564yIu51o2bGWsShERfJ2TRuvB3zauC3MMujOzV
+	 TCXrPzStN+5wJM6J231GVhm+XcCIP55OaTQfjsNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Kerem Karabay <kekrby@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 12/89] HID: multitouch: take cls->maxcontacts into account for Apple Touch Bar even without a HID_DG_CONTACTMAX field
+Subject: [PATCH 5.15 116/151] bpf: Reject bpf_timer for PREEMPT_RT
 Date: Tue, 30 Sep 2025 16:47:26 +0200
-Message-ID: <20250930143822.378962516@linuxfoundation.org>
+Message-ID: <20250930143832.228868098@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kerem Karabay <kekrby@gmail.com>
+From: Leon Hwang <leon.hwang@linux.dev>
 
-[ Upstream commit 7dfe48bdc9d38db46283f2e0281bc1626277b8bf ]
+[ Upstream commit e25ddfb388c8b7e5f20e3bf38d627fb485003781 ]
 
-In Apple Touch Bar, the HID_DG_CONTACTMAX is not present, but the maximum
-contact count is still greater than the default. Add quirks for the same.
+When enable CONFIG_PREEMPT_RT, the kernel will warn when run timer
+selftests by './test_progs -t timer':
 
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Kerem Karabay <kekrby@gmail.com>
-Co-developed-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+
+In order to avoid such warning, reject bpf_timer in verifier when
+PREEMPT_RT is enabled.
+
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Link: https://lore.kernel.org/r/20250910125740.52172-2-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 39a8c6619876b..ec676f26800ea 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1327,6 +1327,13 @@ static int mt_touch_input_configured(struct hid_device *hdev,
- 	struct input_dev *input = hi->input;
- 	int ret;
- 
-+	/*
-+	 * HID_DG_CONTACTMAX field is not present on Apple Touch Bars,
-+	 * but the maximum contact count is greater than the default.
-+	 */
-+	if (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR && cls->maxcontacts)
-+		td->maxcontacts = cls->maxcontacts;
-+
- 	if (!td->maxcontacts)
- 		td->maxcontacts = MT_DEFAULT_MAXCONTACT;
- 
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 89b4fa815a9ba..4b7c9a60a7352 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5071,6 +5071,10 @@ static int process_timer_func(struct bpf_verifier_env *env, int regno,
+ 		verbose(env, "verifier bug. Two map pointers in a timer helper\n");
+ 		return -EFAULT;
+ 	}
++	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
++		verbose(env, "bpf_timer cannot be used for PREEMPT_RT.\n");
++		return -EOPNOTSUPP;
++	}
+ 	meta->map_uid = reg->map_uid;
+ 	meta->map_ptr = map;
+ 	return 0;
 -- 
 2.51.0
 
