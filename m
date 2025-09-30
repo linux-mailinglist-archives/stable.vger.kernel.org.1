@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C204ABAD9F5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDC3BAD8CF
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE5E19401C6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:14:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FF093A8290
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E81B306486;
-	Tue, 30 Sep 2025 15:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010E1302CD6;
+	Tue, 30 Sep 2025 15:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGasKrEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pn/xdDp1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1472236EB;
-	Tue, 30 Sep 2025 15:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF59E217F55;
+	Tue, 30 Sep 2025 15:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245217; cv=none; b=h/n2k2TMqVW8yQArg9SWv0HzuzSlYQraruAGdMt/3xAIXjHt0+4g7+/W8Yg2X+sHfi/pFwc72nnna1A1hqSQ65Tqln/kd7zVUsz55L4j43jBt/nozqyORKDbTHHHxBXTfN8a7snxWPe7UF/4hwAQgYyrhjnhU+AG/omMQwlM2d4=
+	t=1759244769; cv=none; b=OYIKMhncegRBvQUZYzc4+Vw5gQo8CsSaHn2FBCNuALOyh4KvZFu2snxtMNDiwcqZd+WlCP2kyCOd1qQulxAa1qScwru9F8eoNPeCK1LQsaYn80EGp9g4G3/xbY+D7nkG/fflSV059TMhkQ76oQ/PELEFcZkyvgyNcTuqVqJ9DSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245217; c=relaxed/simple;
-	bh=dePl+uUNDGOmZ1D2J5HAyCpTKbeydAQ5KAaJwZJISks=;
+	s=arc-20240116; t=1759244769; c=relaxed/simple;
+	bh=+HYUXWKHt68cHzhldUrPmt8vAql7ptLMRd4TI3DDYQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWh1CVu+fVvtYLDfbyf5A2uvA03aarFJqZqlQ38wUa8gwZQTFJJr5766p2IK4X6TomtlrRqCEIim1yWTfTT+r+XwfeJtNTe6wfRaP4X0eN7F6fXKFQKcwiD7Kizw7D6HnUuNp0SQPiJS9ruz7FHfi0v0PiP+/lLqw0B9v4NBD0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGasKrEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FB8C4CEF0;
-	Tue, 30 Sep 2025 15:13:36 +0000 (UTC)
+	 MIME-Version; b=d9QCgyHz3bVBcFmShKnn2MChtWTfMtPi6XqfHTiDoVVStPBKNOaWX4dum0LuHgaN7sagj4N8i+Z4BeuSBncvfaFjwNbZJMYvoIGjvW9wmdHVWzXICXCe/YI5HWSLetFFHOyPUmv50Q6ydw4g/yG5PRFnHNZnLwp8mtqWeC2NTFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pn/xdDp1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBACC4CEF0;
+	Tue, 30 Sep 2025 15:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245217;
-	bh=dePl+uUNDGOmZ1D2J5HAyCpTKbeydAQ5KAaJwZJISks=;
+	s=korg; t=1759244769;
+	bh=+HYUXWKHt68cHzhldUrPmt8vAql7ptLMRd4TI3DDYQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGasKrEkUYaucJu7xGK1jPkW7sNL3jF0my7yfGgGekDGOVuZaxcCPrYNJwyshQZTo
-	 K4CYO+C4sn2/Hx4Mw8bjHfm4z6rMEQpbcBblYP37QclIIUGeVKJvhL74qQQyMiFb7c
-	 8+rOB7hg1IGs6uPdiFflDGLK6si862CPgNy+oFoo=
+	b=Pn/xdDp1oNqrr0f90jBtgWugmAwO4E1PhjU5zLGOi4QfTI/yqWdA59hd+l526LM1o
+	 xLt4K8olhCDYpnZLoJNYlE0B8O/t4xyV14gAAlaasAwtCDp9dJxCBJ7VwBZHK14Iib
+	 Rd0NXCOhKXu6zMxPYNMV7ie2CvIhm7ueVvL9oeho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/151] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.16 108/143] i40e: add mask to apply valid bits for itr_idx
 Date: Tue, 30 Sep 2025 16:47:12 +0200
-Message-ID: <20250930143831.663965393@linuxfoundation.org>
+Message-ID: <20250930143835.537399802@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit b6f56a44e4c1014b08859dcf04ed246500e310e5 ]
+commit eac04428abe9f9cb203ffae4600791ea1d24eb18 upstream.
 
-Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
-device property") rfkill_find_type() gets called with the possibly
-uninitialized "const char *type_name;" local variable.
+The ITR index (itr_idx) is only 2 bits wide. When constructing the
+register value for QINT_RQCTL, all fields are ORed together. Without
+masking, higher bits from itr_idx may overwrite adjacent fields in the
+register.
 
-On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
-acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
+Apply I40E_QINT_RQCTL_ITR_INDX_MASK to ensure only the intended bits are
+set.
 
-        rfkill->type = (unsigned)id->driver_data;
-
-and there is no "type" property so device_property_read_string() will fail
-and leave type_name uninitialized, leading to a potential crash.
-
-rfkill_find_type() does accept a NULL pointer, fix the potential crash
-by initializing type_name to NULL.
-
-Note likely sofar this has not been caught because:
-
-1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
-2. The stack happened to contain NULL where type_name is stored
-
-Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
+Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
 Cc: stable@vger.kernel.org
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/rfkill-gpio.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -78,10 +78,10 @@ static int rfkill_gpio_acpi_probe(struct
- static int rfkill_gpio_probe(struct platform_device *pdev)
- {
- 	struct rfkill_gpio_data *rfkill;
--	struct gpio_desc *gpio;
-+	const char *type_name = NULL;
- 	const char *name_property;
- 	const char *type_property;
--	const char *type_name;
-+	struct gpio_desc *gpio;
- 	int ret;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -448,7 +448,7 @@ static void i40e_config_irq_link_list(st
+ 		    (qtype << I40E_QINT_RQCTL_NEXTQ_TYPE_SHIFT) |
+ 		    (pf_queue_id << I40E_QINT_RQCTL_NEXTQ_INDX_SHIFT) |
+ 		    BIT(I40E_QINT_RQCTL_CAUSE_ENA_SHIFT) |
+-		    (itr_idx << I40E_QINT_RQCTL_ITR_INDX_SHIFT);
++		    FIELD_PREP(I40E_QINT_RQCTL_ITR_INDX_MASK, itr_idx);
+ 		wr32(hw, reg_idx, reg);
+ 	}
  
- 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
 
 
 
