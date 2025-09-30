@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19CCBAD4BE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE7ABADA0A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DC7718852AE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603163272A7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5601304BB2;
-	Tue, 30 Sep 2025 14:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BC9304964;
+	Tue, 30 Sep 2025 15:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZ5NhiUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0T8nRg0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91832303A16;
-	Tue, 30 Sep 2025 14:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029772FD1DD;
+	Tue, 30 Sep 2025 15:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243921; cv=none; b=bsoNZ3tDl2JgE/jOG/2RXTOEPOtftua2D7iX6kZmc8Lms0cnarDOVYftcVYTogHC+eEC62EKTJUlVzmsmgB8PkZ44LyNGS3Ahyz80nFfQSt2d3Xq+3Fg8SOWfxFmJHZy9ZALdnoB5Ii4RnLbJrzVWEdGcxql+ySKXI9azxfQ3vA=
+	t=1759245227; cv=none; b=Pi492GqcRpmTHOaiNy1zNwIq1LLko1nue0sRPADfXidQRI57CbLPqoOkTn87idCM2lMk6cV7FBh8mGwkMuVV7dI/sxp6U04IT6rZHyNPyeAHW9l0J5MJvDLAQYdBgP3lK1aZKTLW9A9oR70yFK7L78X/dmCiSkYZgcymagYDBrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243921; c=relaxed/simple;
-	bh=R62ovpQ4Tp3yNzeFvypmestYq9WAsMcFSBmgqNvbEpQ=;
+	s=arc-20240116; t=1759245227; c=relaxed/simple;
+	bh=S38bVnM6Mxeg02kYSXXIN6ORKn2Yemz5bjQ0Fy/IO50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oKdqixvdB9dZnaVPFxaDzI5T743LLD6GJPOT/M18QYAHoI5WAnX5yA2b9XFZV37AmsKf1TmHRKw7np7tlw32MpyDSQ4flQYy0YuS+wi3Fa38OHyxGDT0FZOQfFQicCZpby9CDG1dwk7cLcOrrQxL99QuAK+y6HXfmBsGLAPf1C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZ5NhiUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96B8C4CEF0;
-	Tue, 30 Sep 2025 14:52:00 +0000 (UTC)
+	 MIME-Version; b=QaTi/HOl+UHb8rXEGxCXaAvFQxv380lcgE3W+LcLKW27706BR+6XT4yQsJhR+ZyXc1kHMSeuFxFvYSefzmx8oNrXnwLs5YiEpr9OhAryGPM5mDOdYS63Ql5QC0pG1siXgQlezGIY38+JoIShNvzVUBAUmFEaV9+NQd9ZBh0B54I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0T8nRg0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FC8C4CEF0;
+	Tue, 30 Sep 2025 15:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243921;
-	bh=R62ovpQ4Tp3yNzeFvypmestYq9WAsMcFSBmgqNvbEpQ=;
+	s=korg; t=1759245226;
+	bh=S38bVnM6Mxeg02kYSXXIN6ORKn2Yemz5bjQ0Fy/IO50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZ5NhiUfNzuEi4FUzKuY9sjVQmdpbTCeFjY7Xxs6qSBnii705lbD8MgoQ0ZBCKNZN
-	 vAUtqu56I+KHYevM5AxtSYk1CEXQ8vgxGN3pI97xrCj/Cx9VWbt7nP48IZV7uJgwZk
-	 W0scNj4UfNuIx29jSwJARKFWE/bo4jmranjefIo4=
+	b=0T8nRg0fW/yaA9arLTywVsnXGvRsmXvA1wrG08lT2C1xmi6fbSxdWbHrdjw88Vadq
+	 fa6vH7GB+JlehswbxsTutABIaJtQeok0uEGq5lOEAjz5R3AGW3Tx46/Xm3Pwoxh9iw
+	 V8Ehirefgwf7fahehdFjHlib/SziGrlPowuEZCzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 55/81] ALSA: usb-audio: Fix block comments in mixer_quirks
+Subject: [PATCH 5.15 087/151] ASoC: SOF: Intel: hda-stream: Fix incorrect variable used in error message
 Date: Tue, 30 Sep 2025 16:46:57 +0200
-Message-ID: <20250930143821.984112575@linuxfoundation.org>
+Message-ID: <20250930143831.063587157@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 231225d8a20f8668b4fd6601d54a2fac0e0ab7a5 ]
+[ Upstream commit 35fc531a59694f24a2456569cf7d1a9c6436841c ]
 
-Address a couple of comment formatting issues indicated by
-checkpatch.pl:
+The dev_err message is reporting an error about capture streams however
+it is using the incorrect variable num_playback instead of num_capture.
+Fix this by using the correct variable num_capture.
 
-  WARNING: Block comments use a trailing */ on a separate line
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-4-1a821463b632@collabora.com
+Fixes: a1d1e266b445 ("ASoC: SOF: Intel: Add Intel specific HDA stream operations")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250902120639.2626861-1-colin.i.king@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/sof/intel/hda-stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index bc065ec997f39..96397a4fdf873 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -75,7 +75,8 @@ static int snd_create_std_mono_ctl_offset(struct usb_mixer_interface *mixer,
- 	cval->idx_off = idx_off;
+diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
+index 63c367478f1c9..bf91ac39af1c7 100644
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -776,7 +776,7 @@ int hda_dsp_stream_init(struct snd_sof_dev *sdev)
  
- 	/* get_min_max() is called only for integer volumes later,
--	 * so provide a short-cut for booleans */
-+	 * so provide a short-cut for booleans
-+	 */
- 	cval->min = 0;
- 	cval->max = 1;
- 	cval->res = 0;
-@@ -2502,7 +2503,8 @@ static void snd_dragonfly_quirk_db_scale(struct usb_mixer_interface *mixer,
- 					 struct snd_kcontrol *kctl)
- {
- 	/* Approximation using 10 ranges based on output measurement on hw v1.2.
--	 * This seems close to the cubic mapping e.g. alsamixer uses. */
-+	 * This seems close to the cubic mapping e.g. alsamixer uses.
-+	 */
- 	static const DECLARE_TLV_DB_RANGE(scale,
- 		 0,  1, TLV_DB_MINMAX_ITEM(-5300, -4970),
- 		 2,  5, TLV_DB_MINMAX_ITEM(-4710, -4160),
+ 	if (num_capture >= SOF_HDA_CAPTURE_STREAMS) {
+ 		dev_err(sdev->dev, "error: too many capture streams %d\n",
+-			num_playback);
++			num_capture);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.51.0
 
