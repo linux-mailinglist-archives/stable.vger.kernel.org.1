@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-182150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F8CBAD52D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DC2BADC60
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62A083AFAC8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C4F189C955
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5319C226CF7;
-	Tue, 30 Sep 2025 14:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E412FFDE6;
+	Tue, 30 Sep 2025 15:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pi31opYi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+4FHcNx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112192F60D8;
-	Tue, 30 Sep 2025 14:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F2E223DD6;
+	Tue, 30 Sep 2025 15:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244002; cv=none; b=uu/isRmHJGFUlomW27vzPmquapxdQ+Z7eEpYbyXdOAyZhdh20HnG53z8Gg6dDz25zxsee1yBouik158jNSDUMcRkHgocOOLJDF6SBH6+7AySLCpKiWhcN3r5CXGE7Lg1aA+wA3HY89CwgAaXEE5a+K+RUBBrl6yu+6f7ZiGSIKc=
+	t=1759245803; cv=none; b=Q3A+hT4WfjeJYUvWwiIZkCcWndwAOd57rwuOYQcsLuIsU9fqulmfAUKm5qGvDsWI6kNWtGaPyPdqkP9MzGU+1P1tGKaBQpmrhJ/En/QKvL3OriPhw7D+DqSldEsvaGS6jphpSY73n2JnKeKJYMsN1EllX7mF+nxGK5bU+EtO0W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244002; c=relaxed/simple;
-	bh=fqLDKpp0Vw7zdu4wfRl6QbwaGPHkD+i39SMJmlPyUAs=;
+	s=arc-20240116; t=1759245803; c=relaxed/simple;
+	bh=QRGUz8TIhvj8Wk+rhRoUeR+4h8dgGxrlQ+bnEYpFfic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j5bLi00pku8f+NEOeA04QBznt54RiTrLeTpByB/aiOeNJNhgXlqvd8uTYOW7dMtPtiXiOb1h5Ykn3yTG4CkSv9rEvG5IARwCc/F8jaMsi6JuFab6He/muKhsnJWYmgTOqO2kTWnUY6YaZHdBaP3lordU9W1ReA/riOIAzgcbPWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pi31opYi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B4EC116B1;
-	Tue, 30 Sep 2025 14:53:21 +0000 (UTC)
+	 MIME-Version; b=X/jyz5do4BZNNzA9TOv9rpoNGdfq3D8VUDCJp21zlQUASNkgn0xfNHACpNkqgpYaoxxgO1no2vkugGinK1LWZDMOQ46YUlIj+Ts1QoH2PyZJXs7+gRNffMAH8Tx7D1x+40XfX6cWv9SMR/Xah+aVESzT9576ms/LwEajDDGsuhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+4FHcNx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDE7C4CEF0;
+	Tue, 30 Sep 2025 15:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244001;
-	bh=fqLDKpp0Vw7zdu4wfRl6QbwaGPHkD+i39SMJmlPyUAs=;
+	s=korg; t=1759245802;
+	bh=QRGUz8TIhvj8Wk+rhRoUeR+4h8dgGxrlQ+bnEYpFfic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pi31opYiH+o+g+xNfh9ZZ3XEFhXbdZQ9WBsJfMaQWVR2/gWOuRfO8Xyq1YZzTBIir
-	 O4wSHxMQayUIbz7sgUEHheGbYquKnTcWBU1w8OyQupmPnJZ28BMBpzUVhK2KLkh25q
-	 K9N849yGl+YWiF/Qyg64pIv/wPycXmRu94KWGN2U=
+	b=B+4FHcNx1hcZMmayKhP9hLbXdKrqhcNnXYq3e3DOL3oAQxD4DlsPEpOXyvaxge9rf
+	 CMjWca420UYrTi61YkJIFWkeeDDacTAoPd0QDViKpilQ/bnigg/CLRKjBv9bRz31iM
+	 VkJGbIAzUk1VytGdv0vATsjHeA1cWefWoboOFJRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Shivank Garg <shivankg@amd.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 80/81] i40e: add mask to apply valid bits for itr_idx
+Subject: [PATCH 6.6 23/91] mm: add folio_expected_ref_count() for reference count calculation
 Date: Tue, 30 Sep 2025 16:47:22 +0200
-Message-ID: <20250930143823.070824403@linuxfoundation.org>
+Message-ID: <20250930143822.098219618@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +71,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Shivank Garg <shivankg@amd.com>
 
-[ Upstream commit eac04428abe9f9cb203ffae4600791ea1d24eb18 ]
+[ Upstream commit 86ebd50224c0734d965843260d0dc057a9431c61 ]
 
-The ITR index (itr_idx) is only 2 bits wide. When constructing the
-register value for QINT_RQCTL, all fields are ORed together. Without
-masking, higher bits from itr_idx may overwrite adjacent fields in the
-register.
+Patch series " JFS: Implement migrate_folio for jfs_metapage_aops" v5.
 
-Apply I40E_QINT_RQCTL_ITR_INDX_MASK to ensure only the intended bits are
-set.
+This patchset addresses a warning that occurs during memory compaction due
+to JFS's missing migrate_folio operation.  The warning was introduced by
+commit 7ee3647243e5 ("migrate: Remove call to ->writepage") which added
+explicit warnings when filesystem don't implement migrate_folio.
 
-Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ Added missing linux/bitfield.h header for FIELD_PREP macro ]
+The syzbot reported following [1]:
+  jfs_metapage_aops does not implement migrate_folio
+  WARNING: CPU: 1 PID: 5861 at mm/migrate.c:955 fallback_migrate_folio mm/migrate.c:953 [inline]
+  WARNING: CPU: 1 PID: 5861 at mm/migrate.c:955 move_to_new_folio+0x70e/0x840 mm/migrate.c:1007
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 5861 Comm: syz-executor280 Not tainted 6.15.0-rc1-next-20250411-syzkaller #0 PREEMPT(full)
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+  RIP: 0010:fallback_migrate_folio mm/migrate.c:953 [inline]
+  RIP: 0010:move_to_new_folio+0x70e/0x840 mm/migrate.c:1007
+
+To fix this issue, this series implement metapage_migrate_folio() for JFS
+which handles both single and multiple metapages per page configurations.
+
+While most filesystems leverage existing migration implementations like
+filemap_migrate_folio(), buffer_migrate_folio_norefs() or
+buffer_migrate_folio() (which internally used folio_expected_refs()),
+JFS's metapage architecture requires special handling of its private data
+during migration.  To support this, this series introduce the
+folio_expected_ref_count(), which calculates external references to a
+folio from page/swap cache, private data, and page table mappings.
+
+This standardized implementation replaces the previous ad-hoc
+folio_expected_refs() function and enables JFS to accurately determine
+whether a folio has unexpected references before attempting migration.
+
+Implement folio_expected_ref_count() to calculate expected folio reference
+counts from:
+- Page/swap cache (1 per page)
+- Private data (1)
+- Page table mappings (1 per map)
+
+While originally needed for page migration operations, this improved
+implementation standardizes reference counting by consolidating all
+refcount contributors into a single, reusable function that can benefit
+any subsystem needing to detect unexpected references to folios.
+
+The folio_expected_ref_count() returns the sum of these external
+references without including any reference the caller itself might hold.
+Callers comparing against the actual folio_ref_count() must account for
+their own references separately.
+
+Link: https://syzkaller.appspot.com/bug?extid=8bb6fd945af4e0ad9299 [1]
+Link: https://lkml.kernel.org/r/20250430100150.279751-1-shivankg@amd.com
+Link: https://lkml.kernel.org/r/20250430100150.279751-2-shivankg@amd.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+Suggested-by: Matthew Wilcox <willy@infradead.org>
+Co-developed-by: David Hildenbrand <david@redhat.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Dave Kleikamp <shaggy@kernel.org>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 98c6d259319e ("mm/gup: check ref_count instead of lru before migration")
+[ Take the new function in mm.h, removing "const" from its parameter to stop
+  build warnings; but avoid all the conflicts of using it in mm/migrate.c. ]
+Signed-off-by: Hugh Dickins <hughd@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/mm.h | 55 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright(c) 2013 - 2018 Intel Corporation. */
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index b97d8a691b28b..ba77f08900ca2 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2156,6 +2156,61 @@ static inline int folio_estimated_sharers(struct folio *folio)
+ 	return page_mapcount(folio_page(folio, 0));
+ }
  
-+#include <linux/bitfield.h>
- #include "i40e.h"
- 
- /*********************notification routines***********************/
-@@ -393,7 +394,7 @@ static void i40e_config_irq_link_list(st
- 		    (qtype << I40E_QINT_RQCTL_NEXTQ_TYPE_SHIFT) |
- 		    (pf_queue_id << I40E_QINT_RQCTL_NEXTQ_INDX_SHIFT) |
- 		    BIT(I40E_QINT_RQCTL_CAUSE_ENA_SHIFT) |
--		    (itr_idx << I40E_QINT_RQCTL_ITR_INDX_SHIFT);
-+		    FIELD_PREP(I40E_QINT_RQCTL_ITR_INDX_MASK, itr_idx);
- 		wr32(hw, reg_idx, reg);
- 	}
- 
++/**
++ * folio_expected_ref_count - calculate the expected folio refcount
++ * @folio: the folio
++ *
++ * Calculate the expected folio refcount, taking references from the pagecache,
++ * swapcache, PG_private and page table mappings into account. Useful in
++ * combination with folio_ref_count() to detect unexpected references (e.g.,
++ * GUP or other temporary references).
++ *
++ * Does currently not consider references from the LRU cache. If the folio
++ * was isolated from the LRU (which is the case during migration or split),
++ * the LRU cache does not apply.
++ *
++ * Calling this function on an unmapped folio -- !folio_mapped() -- that is
++ * locked will return a stable result.
++ *
++ * Calling this function on a mapped folio will not result in a stable result,
++ * because nothing stops additional page table mappings from coming (e.g.,
++ * fork()) or going (e.g., munmap()).
++ *
++ * Calling this function without the folio lock will also not result in a
++ * stable result: for example, the folio might get dropped from the swapcache
++ * concurrently.
++ *
++ * However, even when called without the folio lock or on a mapped folio,
++ * this function can be used to detect unexpected references early (for example,
++ * if it makes sense to even lock the folio and unmap it).
++ *
++ * The caller must add any reference (e.g., from folio_try_get()) it might be
++ * holding itself to the result.
++ *
++ * Returns the expected folio refcount.
++ */
++static inline int folio_expected_ref_count(struct folio *folio)
++{
++	const int order = folio_order(folio);
++	int ref_count = 0;
++
++	if (WARN_ON_ONCE(folio_test_slab(folio)))
++		return 0;
++
++	if (folio_test_anon(folio)) {
++		/* One reference per page from the swapcache. */
++		ref_count += folio_test_swapcache(folio) << order;
++	} else if (!((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS)) {
++		/* One reference per page from the pagecache. */
++		ref_count += !!folio->mapping << order;
++		/* One reference from PG_private. */
++		ref_count += folio_test_private(folio);
++	}
++
++	/* One reference per page table mapping. */
++	return ref_count + folio_mapcount(folio);
++}
++
+ #ifndef HAVE_ARCH_MAKE_PAGE_ACCESSIBLE
+ static inline int arch_make_page_accessible(struct page *page)
+ {
+-- 
+2.51.0
+
 
 
 
