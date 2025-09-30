@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-182417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A617EBAD88A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE11BADC33
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46E1F1941837
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A5B81888251
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC452FD1DD;
-	Tue, 30 Sep 2025 15:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5A527056D;
+	Tue, 30 Sep 2025 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZ4Dn1zP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFaLh7iy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894E8266B65;
-	Tue, 30 Sep 2025 15:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3FC846F;
+	Tue, 30 Sep 2025 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244879; cv=none; b=XexXqtS4LYdIcrcjfY+JmmOTnKWA0z3EtVYmJrozVqcllQ4e4c2aqxbZ2WIfjkGYNXUSbMLwABb2mVjdIAjHiREEffKDUib975kFs1xiqK7LTFryJpLfWiIhDxB881v3MHoqSideHyWg2CDq/bbjv9pTy1Cm3UaTbnlYnnnpGGs=
+	t=1759245776; cv=none; b=UXzuwxWNjsF3nHN1x8BrMbWqKpAS0l/CfU/I8kpDI8getDpJVxRHjqSt1ckGSvKSGFRMFdveQaj3VvuGYzTdCfrBx3J6TCoNKj7lEugCkFGZM7kA1AGPBP9HAp/lIpq9He8Fho39YmLCv/m2he7QD6S8NffbKJ/DedFYk99wqDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244879; c=relaxed/simple;
-	bh=CTvkEcnnPIG0dG0HHBkXpJe4ctpGCkjQxUk3EUe1M44=;
+	s=arc-20240116; t=1759245776; c=relaxed/simple;
+	bh=K/MEkCMjc1wKGYm9qvpFNLcPISYXJrxHu1iV30vhp1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h26dN3eWU5X7P4eRsYRaXRLmLPvUvFWEp2CekDGbU+yMY0cRX4dz18VT/Wc4eBx9B0AP5EnlN2GUB9N+56MlQhJagm6bIea3tuzGQ0Fne+2ZdCZvbQiTFKpLep4MBLZDCR8WztMmXBEut1fdzjfPXObSkFDQoZJVXS+MiPdBPn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZ4Dn1zP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD73C4CEF0;
-	Tue, 30 Sep 2025 15:07:58 +0000 (UTC)
+	 MIME-Version; b=AHkTCDHfQJ7aM6qCJr3mMGzU6ImUqNbpSYf3O5GC1foe5MC+MzrMyMeFwQWKlWRKvOpA91KWXFBAS1ez692WRbh4akwcUKGnvkCcdJeBIOD+decioqWeMjn66ukWo3tGrid/KmQcEI+WJL0k7+KAbDJ0MODZEDTu7phg2ObLSjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFaLh7iy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB0CC4CEF0;
+	Tue, 30 Sep 2025 15:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244879;
-	bh=CTvkEcnnPIG0dG0HHBkXpJe4ctpGCkjQxUk3EUe1M44=;
+	s=korg; t=1759245776;
+	bh=K/MEkCMjc1wKGYm9qvpFNLcPISYXJrxHu1iV30vhp1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZ4Dn1zPzy+8e5B+rv3Q6Y25shufSqKd9ZO9uRpgr6oq6/QF6fRXwJ8surQ0GEfjq
-	 1U4zlgwlkpmkqhUqCbhGyqPXqthhnfZWmWVNrz9FvpQatIOvlFB+tU7oGqXyfp3UwV
-	 VvtVd9b7/VBo4R/VZRJ140+QOj16+uoPrDr/b7DU=
+	b=QFaLh7iyegQu/TARM6GmhCiA+zACoz/cs5KhoAcH09ZISrWvfejvZhHdxFDv8vorm
+	 LmIwdi81Pi8omeGhy5VEtPTvBLGNxEPR6SJh2LkpoogZh/fa2gujloJ3GK7RgDdhBt
+	 bXwwooDT2Toglf6S43GLCbqC+8pn2XXK8UiCngVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Niravkumar L Rabara <nirav.rabara@altera.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 141/143] spi: cadence-quadspi: Implement refcount to handle unbind during busy
+Subject: [PATCH 6.6 46/91] nexthop: Forbid FDB status change while nexthop is in a group
 Date: Tue, 30 Sep 2025 16:47:45 +0200
-Message-ID: <20250930143836.859176831@linuxfoundation.org>
+Message-ID: <20250930143823.087377841@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 7446284023e8ef694fb392348185349c773eefb3 ]
+[ Upstream commit 390b3a300d7872cef9588f003b204398be69ce08 ]
 
-driver support indirect read and indirect write operation with
-assumption no force device removal(unbind) operation. However
-force device removal(removal) is still available to root superuser.
+The kernel forbids the creation of non-FDB nexthop groups with FDB
+nexthops:
 
-Unbinding driver during operation causes kernel crash. This changes
-ensure driver able to handle such operation for indirect read and
-indirect write by implementing refcount to track attached devices
-to the controller and gracefully wait and until attached devices
-remove operation completed before proceed with removal operation.
+ # ip nexthop add id 1 via 192.0.2.1 fdb
+ # ip nexthop add id 2 group 1
+ Error: Non FDB nexthop group cannot have fdb nexthops.
 
-Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Reviewed-by: Niravkumar L Rabara <nirav.rabara@altera.com>
-Link: https://patch.msgid.link/8704fd6bd2ff4d37bba4a0eacf5eba3ba001079e.1756168074.git.khairul.anuar.romli@altera.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 30dbc1c8d50f ("spi: cadence-qspi: defer runtime support on socfpga if reset bit is enabled")
+And vice versa:
+
+ # ip nexthop add id 3 via 192.0.2.2 dev dummy1
+ # ip nexthop add id 4 group 3 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+
+However, as long as no routes are pointing to a non-FDB nexthop group,
+the kernel allows changing the type of a nexthop from FDB to non-FDB and
+vice versa:
+
+ # ip nexthop add id 5 via 192.0.2.2 dev dummy1
+ # ip nexthop add id 6 group 5
+ # ip nexthop replace id 5 via 192.0.2.2 fdb
+ # echo $?
+ 0
+
+This configuration is invalid and can result in a NPD [1] since FDB
+nexthops are not associated with a nexthop device:
+
+ # ip route add 198.51.100.1/32 nhid 6
+ # ping 198.51.100.1
+
+Fix by preventing nexthop FDB status change while the nexthop is in a
+group:
+
+ # ip nexthop add id 7 via 192.0.2.2 dev dummy1
+ # ip nexthop add id 8 group 7
+ # ip nexthop replace id 7 via 192.0.2.2 fdb
+ Error: Cannot change nexthop FDB status while in a group.
+
+[1]
+BUG: kernel NULL pointer dereference, address: 00000000000003c0
+[...]
+Oops: Oops: 0000 [#1] SMP
+CPU: 6 UID: 0 PID: 367 Comm: ping Not tainted 6.17.0-rc6-virtme-gb65678cacc03 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
+RIP: 0010:fib_lookup_good_nhc+0x1e/0x80
+[...]
+Call Trace:
+ <TASK>
+ fib_table_lookup+0x541/0x650
+ ip_route_output_key_hash_rcu+0x2ea/0x970
+ ip_route_output_key_hash+0x55/0x80
+ __ip4_datagram_connect+0x250/0x330
+ udp_connect+0x2b/0x60
+ __sys_connect+0x9c/0xd0
+ __x64_sys_connect+0x18/0x20
+ do_syscall_64+0xa4/0x2a0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: 38428d68719c ("nexthop: support for fdb ecmp nexthops")
+Reported-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68c9a4d2.050a0220.3c6139.0e63.GAE@google.com/
+Tested-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250921150824.149157-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |   33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ net/ipv4/nexthop.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -108,6 +108,8 @@ struct cqspi_st {
- 
- 	bool			is_jh7110; /* Flag for StarFive JH7110 SoC */
- 	bool			disable_stig_mode;
-+	refcount_t		refcount;
-+	refcount_t		inflight_ops;
- 
- 	const struct cqspi_driver_platdata *ddata;
- };
-@@ -735,6 +737,9 @@ static int cqspi_indirect_read_execute(s
- 	u8 *rxbuf_end = rxbuf + n_rx;
- 	int ret = 0;
- 
-+	if (!refcount_read(&cqspi->refcount))
-+		return -ENODEV;
-+
- 	writel(from_addr, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
- 	writel(remaining, reg_base + CQSPI_REG_INDIRECTRDBYTES);
- 
-@@ -1071,6 +1076,9 @@ static int cqspi_indirect_write_execute(
- 	unsigned int write_bytes;
- 	int ret;
- 
-+	if (!refcount_read(&cqspi->refcount))
-+		return -ENODEV;
-+
- 	writel(to_addr, reg_base + CQSPI_REG_INDIRECTWRSTARTADDR);
- 	writel(remaining, reg_base + CQSPI_REG_INDIRECTWRBYTES);
- 
-@@ -1461,12 +1469,26 @@ static int cqspi_exec_mem_op(struct spi_
- 	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
- 	struct device *dev = &cqspi->pdev->dev;
- 
-+	if (refcount_read(&cqspi->inflight_ops) == 0)
-+		return -ENODEV;
-+
- 	ret = pm_runtime_resume_and_get(dev);
- 	if (ret) {
- 		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
- 		return ret;
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 8d41b03942197..fab550633ec9f 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -2136,6 +2136,13 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
+ 		return -EINVAL;
  	}
  
-+	if (!refcount_read(&cqspi->refcount))
-+		return -EBUSY;
-+
-+	refcount_inc(&cqspi->inflight_ops);
-+
-+	if (!refcount_read(&cqspi->refcount)) {
-+		if (refcount_read(&cqspi->inflight_ops))
-+			refcount_dec(&cqspi->inflight_ops);
-+		return -EBUSY;
++	if (!list_empty(&old->grp_list) &&
++	    rtnl_dereference(new->nh_info)->fdb_nh !=
++	    rtnl_dereference(old->nh_info)->fdb_nh) {
++		NL_SET_ERR_MSG(extack, "Cannot change nexthop FDB status while in a group");
++		return -EINVAL;
 +	}
 +
- 	ret = cqspi_mem_process(mem, op);
- 
- 	pm_runtime_mark_last_busy(dev);
-@@ -1475,6 +1497,9 @@ static int cqspi_exec_mem_op(struct spi_
- 	if (ret)
- 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
- 
-+	if (refcount_read(&cqspi->inflight_ops) > 1)
-+		refcount_dec(&cqspi->inflight_ops);
-+
- 	return ret;
- }
- 
-@@ -1926,6 +1951,9 @@ static int cqspi_probe(struct platform_d
- 		}
- 	}
- 
-+	refcount_set(&cqspi->refcount, 1);
-+	refcount_set(&cqspi->inflight_ops, 1);
-+
- 	ret = devm_request_irq(dev, irq, cqspi_irq_handler, 0,
- 			       pdev->name, cqspi);
- 	if (ret) {
-@@ -1989,6 +2017,11 @@ static void cqspi_remove(struct platform
- {
- 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
- 
-+	refcount_set(&cqspi->refcount, 0);
-+
-+	if (!refcount_dec_and_test(&cqspi->inflight_ops))
-+		cqspi_wait_idle(cqspi);
-+
- 	spi_unregister_controller(cqspi->host);
- 	cqspi_controller_enable(cqspi, 0);
- 
+ 	err = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new, extack);
+ 	if (err)
+ 		return err;
+-- 
+2.51.0
+
 
 
 
