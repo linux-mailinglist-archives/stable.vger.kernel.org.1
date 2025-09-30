@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-182257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8044BBAD67B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7907BADDA4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD6BA169762
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF1703A1F23
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A742430594A;
-	Tue, 30 Sep 2025 14:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DFC2F6167;
+	Tue, 30 Sep 2025 15:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjXmu9Yp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7FEDJUi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E3C2FFDE6;
-	Tue, 30 Sep 2025 14:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2472264AB;
+	Tue, 30 Sep 2025 15:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244359; cv=none; b=AM1c0IezeDVtuco71xfNeubLymJRIRtYepwoawBT9V3Eu2VW7NaYyD5jQEA9yesqIye5dbdrt2BOK5XB+1G1gZIfTW3qZuuAHZgIXdmQVj6oG7nhEas6PkJFDHfWhV2sengLXlTdeyt7hLD1ZzNckU89dFS8U23uNxHRFid+XUc=
+	t=1759245993; cv=none; b=fyqtjcIIDaRGwJcd76UkvSx0+auiqgepPDw6JoaAwmgMy5hFeImBWMYnljRdZeRaIs/XILSxTk+uu5zbqpscZ2TbLhsmzwMlMT6xswFkLO6uDI/RRwNx/wr8i0prOk0hTlmU6nYMswfqxYTQ8j+gWmiZLE/3B0AuSJZfYmEgVys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244359; c=relaxed/simple;
-	bh=6tfGCj5qLArekWJOjC7aWi5jJSO3wbRQ+9qfJs7uij8=;
+	s=arc-20240116; t=1759245993; c=relaxed/simple;
+	bh=5kXv3iE7Hb/IIhtFe4TS0rgwRDvyhDVsjoAlKW3EZ18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXlKKnIuJTY4x24SkgGyKt4pnXInVhZw621Db60mBsFKRzGhesWIQJjhM8fsf7Il1YoAuMOxjaHm6RDLcYCZ2xA2fBQYRT5D6mxbn9G4y0X0umMFffcnZ9NBzk3S4BBgpuz7GLwL/hE7BBX8laRkzvzmE4Mij7HQyQTqpw+/aQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjXmu9Yp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A54C4CEF0;
-	Tue, 30 Sep 2025 14:59:18 +0000 (UTC)
+	 MIME-Version; b=cIh8ARYz64KzxFzdoJE2REbCOS3hYbsEhW9CS3L3N5s0lcG2TF+NJ3QP84vgy6NJ9z6Cu9gzEeRMnWgjTG5UUOhu9lKnKF+wELcVfQ8UeZmk1Z6zRypdpJtIqluHqwMp/s8Rbkx6E1puCgHA8FVi6Q/v4EQEN03yKsMPqCR5G2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7FEDJUi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9930C4CEF0;
+	Tue, 30 Sep 2025 15:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244359;
-	bh=6tfGCj5qLArekWJOjC7aWi5jJSO3wbRQ+9qfJs7uij8=;
+	s=korg; t=1759245993;
+	bh=5kXv3iE7Hb/IIhtFe4TS0rgwRDvyhDVsjoAlKW3EZ18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjXmu9YpTzvK8l1y8Kz7kVyfFQYQXEREN138ywQOtfwnZrY4yoqpJpCvqLkdwW2Qd
-	 ORYq7wY3GZyIYUEpkYKvVRP1RF+dC2J/LnI3LOwcTPavUKzXY208vT1Pnyq9j+WpDB
-	 kZp4C1fplXK3C9UAGCCemTbAWrP++czRCTaypZC8=
+	b=G7FEDJUi75iJHiMcAiW77Oito/L+OGc91tnsyJ8hvkDpf6RDXjq94N/EjEkXeVQLi
+	 CG7JkMV72NVQYD8E0E23zSjqmakXsWMsd/LHtjXFI1PMiIEEE6sASbg02+ZKIxcXNZ
+	 7Uv2LuCVEUWS0LcGNac1/2eLfe68C8GD/tMehsso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/122] nexthop: Emit a notification when a single nexthop is replaced
+Subject: [PATCH 6.12 02/89] firewire: core: fix overlooked update of subsystem ABI version
 Date: Tue, 30 Sep 2025 16:47:16 +0200
-Message-ID: <20250930143827.276860040@linuxfoundation.org>
+Message-ID: <20250930143821.964180779@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit 8c09c9f9d846cdd8a92604c591132985b04fd1d6 ]
+[ Upstream commit 853a57ba263adfecf4430b936d6862bc475b4bb5 ]
 
-The notification is emitted after all the validation checks were
-performed, but before the new configuration (i.e., 'struct nh_info') is
-pointed at by the old shell (i.e., 'struct nexthop'). This prevents the
-need to perform rollback in case the notification is vetoed.
+In kernel v6.5, several functions were added to the cdev layer. This
+required updating the default version of subsystem ABI up to 6, but
+this requirement was overlooked.
 
-The next patch will also emit a replace notification for all the nexthop
-groups in which the nexthop is used.
+This commit updates the version accordingly.
 
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 390b3a300d78 ("nexthop: Forbid FDB status change while nexthop is in a group")
+Fixes: 6add87e9764d ("firewire: cdev: add new version of ABI to notify time stamp at request/response subaction of transaction#")
+Link: https://lore.kernel.org/r/20250920025148.163402-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/firewire/core-cdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 3063aa1914b1f..d2b338b357220 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -1009,12 +1009,22 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 				  struct netlink_ext_ack *extack)
- {
- 	struct nh_info *oldi, *newi;
-+	int err;
- 
- 	if (new->is_group) {
- 		NL_SET_ERR_MSG(extack, "Can not replace a nexthop with a nexthop group.");
- 		return -EINVAL;
- 	}
- 
-+	err = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new, extack);
-+	if (err)
-+		return err;
-+
-+	/* Hardware flags were set on 'old' as 'new' is not in the red-black
-+	 * tree. Therefore, inherit the flags from 'old' to 'new'.
-+	 */
-+	new->nh_flags |= old->nh_flags & (RTNH_F_OFFLOAD | RTNH_F_TRAP);
-+
- 	oldi = rtnl_dereference(old->nh_info);
- 	newi = rtnl_dereference(new->nh_info);
- 
+diff --git a/drivers/firewire/core-cdev.c b/drivers/firewire/core-cdev.c
+index b360dca2c69e8..cc9731c3616c1 100644
+--- a/drivers/firewire/core-cdev.c
++++ b/drivers/firewire/core-cdev.c
+@@ -41,7 +41,7 @@
+ /*
+  * ABI version history is documented in linux/firewire-cdev.h.
+  */
+-#define FW_CDEV_KERNEL_VERSION			5
++#define FW_CDEV_KERNEL_VERSION			6
+ #define FW_CDEV_VERSION_EVENT_REQUEST2		4
+ #define FW_CDEV_VERSION_ALLOCATE_REGION_END	4
+ #define FW_CDEV_VERSION_AUTO_FLUSH_ISO_OVERFLOW	5
 -- 
 2.51.0
 
