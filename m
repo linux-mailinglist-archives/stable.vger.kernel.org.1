@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4DD7BADB37
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29570BAD52A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352C7326E95
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CE0C323AA2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C82F39C0;
-	Tue, 30 Sep 2025 15:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E3130507F;
+	Tue, 30 Sep 2025 14:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4mLLSdK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cLR0NPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864D0217F55;
-	Tue, 30 Sep 2025 15:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA96530505F;
+	Tue, 30 Sep 2025 14:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245471; cv=none; b=Dcf19sHJsyTrJtGfimpyCg8wys7fiKjqp0b1nPoYxMnTSJ10zrQ4m8PqcPE7ptpR6wC0uVpA4RfX/rQqhcq99D66XLr5YIrt+zgq60EuiV90FiDWszTeRmRB1/iYhwhQ07kYf7qhjLdl4tbrBvUm0LDsguDaW91O/STNmEFOeU4=
+	t=1759244021; cv=none; b=Kgb/pgPxJN4x2h+KD6AiJ/tDgfMHLIUv/bbIKNM+crC1B7SC505fpFex4+VU+OqBxd/H3XZ3EK/xji0nfrpyH4BiuKp6amEyGk+9bsOHkvFjdjEtRZi5Kv2Jgm1PlY40+4B0DfJRcH2VjqC1xV4LNhX7pAf6PjnpjyhdtYpwhRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245471; c=relaxed/simple;
-	bh=VELBvQ0lcTioq3cOcEkULi35E/Z1+3R+NBp2u8b1N1k=;
+	s=arc-20240116; t=1759244021; c=relaxed/simple;
+	bh=VQCXwephyS9v1H/D3n3Kl2YnGDHVJ7Ko0LmTZY74pY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iz2br4n6Zm7+X1Mx8YAOhSjQPy8aHcmViuBlOo8JlqaoE/FLjQKoO55b6d/q53v+GK/6frMtgKN9JeXv/TQ0gqGseh8fyodHYvsD9ZQuzrr1avFf6op9m/Wgn+snW5schM5fh3YoQuiFR7WOxnHQptDhOUP8dRH+YVu1OvTsN6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4mLLSdK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DC7C4CEF0;
-	Tue, 30 Sep 2025 15:17:50 +0000 (UTC)
+	 MIME-Version; b=XbYRYYvDG/+ylAj14DR/YX1aBdgcPzPRrYL/iwcNyvI8+ZWC4ndiuYeWLIJK5zk3g6gYJlC0iGlNFdx+f+RzkK9bHWi8o3dczncN/3lty28Xbgsaz3Y8cPe0EQEWbQZfbOWsz+AW/kAfxhWJAg6Gn1uWMna8USJ0c7YFpO+foCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cLR0NPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B69FC4CEF0;
+	Tue, 30 Sep 2025 14:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245471;
-	bh=VELBvQ0lcTioq3cOcEkULi35E/Z1+3R+NBp2u8b1N1k=;
+	s=korg; t=1759244021;
+	bh=VQCXwephyS9v1H/D3n3Kl2YnGDHVJ7Ko0LmTZY74pY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4mLLSdKHY2CbMnor9TORHHd0Covynn6ebkbsKGkrE4W4BttECu7U5ntmkuZDIECU
-	 991zAvGE80CAsD7Wq2v09hUTbJA/T13RFUAJuFfBFiF7/fQbmjoLIHhsAlliswrY5o
-	 7zfPi74l4cwoLQqbpHmnF60Pk79lUhGrDb4pvwiY=
+	b=2cLR0NPAG+V5liLCv0Fa1c6z3VpTjdDOIEMUUkCDBjo61Z1WKkJ9roCTzyPZMr3NY
+	 u2I3DYTho8f1Kx1nQLZc3IzbEUR7HHdDDOvvBUsC9YQ5sUkEmEYFUTRwLjJJPJAPOm
+	 H2nWKQQ4Stp1O/6EdCiqTk1qRHCCDqD22UiUYQPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 03/73] ALSA: usb-audio: Avoid multiple assignments in mixer_quirks
-Date: Tue, 30 Sep 2025 16:47:07 +0200
-Message-ID: <20250930143820.681641036@linuxfoundation.org>
+Subject: [PATCH 5.4 66/81] can: sun4i_can: populate ndo_change_mtu() to prevent buffer overflow
+Date: Tue, 30 Sep 2025 16:47:08 +0200
+Message-ID: <20250930143822.446635566@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-[ Upstream commit 03ddd3bdb94df3edb1f2408b57cfb00b3d92a208 ]
+[ Upstream commit 61da0bd4102c459823fbe6b8b43b01fb6ace4a22 ]
 
-Handle report from checkpatch.pl:
+Sending an PF_PACKET allows to bypass the CAN framework logic and to
+directly reach the xmit() function of a CAN driver. The only check
+which is performed by the PF_PACKET framework is to make sure that
+skb->len fits the interface's MTU.
 
-  CHECK: multiple assignments should be avoided
+Unfortunately, because the sun4i_can driver does not populate its
+net_device_ops->ndo_change_mtu(), it is possible for an attacker to
+configure an invalid MTU by doing, for example:
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-6-1a821463b632@collabora.com
+  $ ip link set can0 mtu 9999
+
+After doing so, the attacker could open a PF_PACKET socket using the
+ETH_P_CANXL protocol:
+
+	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
+
+to inject a malicious CAN XL frames. For example:
+
+	struct canxl_frame frame = {
+		.flags = 0xff,
+		.len = 2048,
+	};
+
+The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
+check that the skb is valid, unfortunately under above conditions, the
+malicious packet is able to go through can_dev_dropped_skb() checks:
+
+  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
+     function does not check the actual device capabilities).
+
+  2. the length is a valid CAN XL length.
+
+And so, sun4ican_start_xmit() receives a CAN XL frame which it is not
+able to correctly handle and will thus misinterpret it as a CAN frame.
+
+This can result in a buffer overflow. The driver will consume cf->len
+as-is with no further checks on this line:
+
+	dlc = cf->len;
+
+Here, cf->len corresponds to the flags field of the CAN XL frame. In
+our previous example, we set canxl_frame->flags to 0xff. Because the
+maximum expected length is 8, a buffer overflow of 247 bytes occurs a
+couple line below when doing:
+
+	for (i = 0; i < dlc; i++)
+		writel(cf->data[i], priv->base + (dreg + i * 4));
+
+Populate net_device_ops->ndo_change_mtu() to ensure that the
+interface's MTU can not be set to anything bigger than CAN_MTU. By
+fixing the root cause, this prevents the buffer overflow.
+
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-3-0d1cada9393b@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/sun4i_can.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index a1ab517e26b36..f91dbc9255f12 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -1734,7 +1734,8 @@ static int snd_microii_spdif_default_put(struct snd_kcontrol *kcontrol,
- 	unsigned int pval, pval_old;
- 	int err;
+diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
+index 0eddd5779e5a2..a1e151d373597 100644
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -752,6 +752,7 @@ static const struct net_device_ops sun4ican_netdev_ops = {
+ 	.ndo_open = sun4ican_open,
+ 	.ndo_stop = sun4ican_close,
+ 	.ndo_start_xmit = sun4ican_start_xmit,
++	.ndo_change_mtu = can_change_mtu,
+ };
  
--	pval = pval_old = kcontrol->private_value;
-+	pval = kcontrol->private_value;
-+	pval_old = pval;
- 	pval &= 0xfffff0f0;
- 	pval |= (ucontrol->value.iec958.status[1] & 0x0f) << 8;
- 	pval |= (ucontrol->value.iec958.status[0] & 0x0f);
+ static const struct of_device_id sun4ican_of_match[] = {
 -- 
 2.51.0
 
