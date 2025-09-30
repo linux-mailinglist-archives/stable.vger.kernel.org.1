@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-182263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99ACABAD6A7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB26BADA26
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A35C11C1266
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CE6016415E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DF730595D;
-	Tue, 30 Sep 2025 14:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF143054C5;
+	Tue, 30 Sep 2025 15:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6PWHG/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsErOW6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD06E30506C;
-	Tue, 30 Sep 2025 14:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A978223DD6;
+	Tue, 30 Sep 2025 15:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244380; cv=none; b=O46GZTbMh3sToMdQFm/wHdueqq8P5YBStkgjAc6gHgkzjFwSthJM0hoq79dWWXati3Nb6xSYY0kN8EagYj1d4FPJAaSkIu69F370AL5p5H/qM3wHz6R+CcphadS68gWNbW+bqJ/lbWmJNi3D/4+3H4qwBIXxWcfQcvFYrRpF0iY=
+	t=1759245251; cv=none; b=lGC8TnDQHhvc8iilQZwg4sasxmhjRxgqMQBm+z8IDqhPSZQy/07xpiT1xp3asNjQwefUwBiwWWSmi2aKBtO2x3MyltsF8IRQkQ7T/+9DNy8lvdDAAbxs0Y5580oj2YsFtUBrmgZrivWUeYKtjWR/5EbWE9otSXFA9DRChr9I0So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244380; c=relaxed/simple;
-	bh=eE7ynYRS3/7/NchgVsWnsEZb0NcCAw92PJSbxfwW70E=;
+	s=arc-20240116; t=1759245251; c=relaxed/simple;
+	bh=p6ifjwVa30wCtKHMggI6MtGu4gbnXE/9jw+dzb++vIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IkyCrUTLkmX+m+q9WBPMFnfrf+kVRyYLCTk6tl4jkKZy27egSQKoGYt72IsB+dA6MB0+G4XpG/9FN+C2fjLvVkcFB6eleAYcmq+Kwi8UkmJMLLDqKvKt5oCq1VrLs0Y/ezg4647d2rCK2YT2uaO1t5KdTVWT0mPwBoPGpjV7HYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6PWHG/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22A6C4CEF0;
-	Tue, 30 Sep 2025 14:59:38 +0000 (UTC)
+	 MIME-Version; b=ujQ/3VlY7idxwc1WbhDnTBDIASRHqp9oOo8cJoSwDi68n/GVgbidHqQ3v4vgtXHjdnrTHRHg0LtuoY6eHimWxj/PeNqwuTgcCAsNLqE495wzhgew7CBduNFrWOa1OsHWhmjezZibTuEFkubUuvKmS6qLxK5ZeJMG666im47oK1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsErOW6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00F1C4CEF0;
+	Tue, 30 Sep 2025 15:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244379;
-	bh=eE7ynYRS3/7/NchgVsWnsEZb0NcCAw92PJSbxfwW70E=;
+	s=korg; t=1759245251;
+	bh=p6ifjwVa30wCtKHMggI6MtGu4gbnXE/9jw+dzb++vIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6PWHG/NfWoxGAXmAA7EQA2Fa3W872n8t/el1YisM3XPvz7Y9YfCBvwEzi30utlot
-	 9Nk9DS1lJzKVl0+m2qxNStDzKiv4qYdxAogeTYdT5ksnYvC/zakfQH8vDY45iosL0u
-	 jNvyzSDBEwoJ/wm6NhIyx0fgUZh6pkGLbeootxQg=
+	b=LsErOW6iRyGGUsnmyG59N97gjurdY/oJalrrTJDKSyTPwwZT40+JzjNFR9tCahAF+
+	 fSN4R2oMFcI/ABtFGcC0hWQyRTHo5FFUPk1EcvTbDvF9eNWr/+CzTCjLtgvDVXEHiP
+	 ufjfx7iKeQnAUEzha9JJfXkQVMLHH9WHT2ooR/g8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.10 111/122] i40e: fix input validation logic for action_meta
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 112/151] IB/mlx5: Fix obj_type mismatch for SRQ event subscriptions
 Date: Tue, 30 Sep 2025 16:47:22 +0200
-Message-ID: <20250930143827.513762170@linuxfoundation.org>
+Message-ID: <20250930143832.069097300@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-commit 9739d5830497812b0bdeaee356ddefbe60830b88 upstream.
+[ Upstream commit 85fe9f565d2d5af95ac2bbaa5082b8ce62b039f5 ]
 
-Fix condition to check 'greater or equal' to prevent OOB dereference.
+Fix a bug where the driver's event subscription logic for SRQ-related
+events incorrectly sets obj_type for RMP objects.
 
-Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When subscribing to SRQ events, get_legacy_obj_type() did not handle
+the MLX5_CMD_OP_CREATE_RMP case, which caused obj_type to be 0
+(default).
+This led to a mismatch between the obj_type used during subscription
+(0) and the value used during notification (1, taken from the event's
+type field). As a result, event mapping for SRQ objects could fail and
+event notification would not be delivered correctly.
+
+This fix adds handling for MLX5_CMD_OP_CREATE_RMP in get_legacy_obj_type,
+returning MLX5_EVENT_QUEUE_TYPE_RQ so obj_type is consistent between
+subscription and notification.
+
+Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
+Link: https://patch.msgid.link/r/8f1048e3fdd1fde6b90607ce0ed251afaf8a148c.1755088962.git.leon@kernel.org
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Edward Srouji <edwards@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/devx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3412,7 +3412,7 @@ static int i40e_validate_cloud_filter(st
- 
- 	/* action_meta is TC number here to which the filter is applied */
- 	if (!tc_filter->action_meta ||
--	    tc_filter->action_meta > vf->num_tc) {
-+	    tc_filter->action_meta >= vf->num_tc) {
- 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
- 			 vf->vf_id, tc_filter->action_meta);
- 		goto err;
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index cc351390b568c..b2d5e21dba26c 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -191,6 +191,7 @@ static u16 get_legacy_obj_type(u16 opcode)
+ {
+ 	switch (opcode) {
+ 	case MLX5_CMD_OP_CREATE_RQ:
++	case MLX5_CMD_OP_CREATE_RMP:
+ 		return MLX5_EVENT_QUEUE_TYPE_RQ;
+ 	case MLX5_CMD_OP_CREATE_QP:
+ 		return MLX5_EVENT_QUEUE_TYPE_QP;
+-- 
+2.51.0
+
 
 
 
