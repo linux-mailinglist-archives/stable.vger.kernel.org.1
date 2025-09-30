@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18998BAD64D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08F6BAD500
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82CC8324040
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817E43BBF38
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9238E306B01;
-	Tue, 30 Sep 2025 14:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5FF304BBF;
+	Tue, 30 Sep 2025 14:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzMp3XlL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpzkNjXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4753064B9;
-	Tue, 30 Sep 2025 14:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73485305040;
+	Tue, 30 Sep 2025 14:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244302; cv=none; b=Opw995i96AUKQPlwzJjokpYVvN1SgBVBfphxc82V/8c+MY7L2u9/q47mhmEOaV3crbp9KRKbehExBk8fh3J5+5tggeXxnxK4t457GZywqq8/FQfmy7N4wIgAx80ipA63LLfLyv8YhFxt1zMa90nx/HYZ+AM9FomPDq4oP58+W0o=
+	t=1759243954; cv=none; b=KGuKacdVISudTU2sHM3lAtB5GGIZ2pSzLeSIfwCFO/ffkJAb7hDTgjEUKbrq7X+ZE1NXvosluCBdVVe3UQUKRjSKQLXZOSH6pRJ7S/AfR77xekIbWVPl1+M35g17Z7pFpNxef3yowcH14ET+67U4PbpQ1oIOY4uMXxhZRm245CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244302; c=relaxed/simple;
-	bh=3snmnjtEO8y8nh3EJEykjOEw2nwG2oodR96TOnN6nxA=;
+	s=arc-20240116; t=1759243954; c=relaxed/simple;
+	bh=4mXsbAL2c6esJpAH4N21fIKdLTu6M6r5xSOOYP0l808=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkH7kp61/onOyKAcXNnG39yFkb9JTePdgGw1/lr0lO8UWpQQdjBc5UPE5vkEUu6Qd6UiGNpC9f9VDgmtTQvpcTS7gWQoyI7J5yYAVJgDT5nzQ913pfOHBLgWKH5BDZHK4tQRAK8sPRqzodU/kx7FKMBp3G6hASaucaDKlsnwFG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzMp3XlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21C8C4CEF0;
-	Tue, 30 Sep 2025 14:58:21 +0000 (UTC)
+	 MIME-Version; b=gr07JWqhQubs6+cpRrWGeWrPLcA47dgzsAHgGpD6g11K+qm9ga3XvgmNTJXM0oMt/QUq2nlGM0g2kqRJaVaccq+/bCH2Z7WCkUrbftN55G70voDdY/Xf+VbVAwfSbPLUwC84YMnmkG7KcOFZ2f0rxpEBc8RUmbn4pS0ZwKISVTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpzkNjXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5368C113D0;
+	Tue, 30 Sep 2025 14:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244302;
-	bh=3snmnjtEO8y8nh3EJEykjOEw2nwG2oodR96TOnN6nxA=;
+	s=korg; t=1759243954;
+	bh=4mXsbAL2c6esJpAH4N21fIKdLTu6M6r5xSOOYP0l808=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yzMp3XlLRtD/Ax2jCGoU06oS3EqQulPmQUiXMjx3dBpYf8Nr8DJsNNLCZbjSmXnag
-	 1DWKZlxFI5AgZRYhUE61ho3BRmROyUBqMbnvT4cirRaXak3F/tiBY5IrfOrq1hhn6E
-	 3dR5f/gbGCfYQE6rqQdhzoHzEkQyjOjAA9FAoX+Y=
+	b=DpzkNjXLieYgXrHHXU2sc8kZYzbY/EzxgkhzL4l1tQmiUdE32mv2l85asHwE2jfBh
+	 39UlM+fHz8gsfLuhpmi7DTz0c8ih1WhcXgVkzAJ27kzJAgd+by+zsYrGtZWlQI9FUR
+	 LKwvwOiQer4FvtMqdFPVAg+ElUc7oP5F4suEP7qU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/122] net: liquidio: fix overflow in octeon_init_instr_queue()
+Subject: [PATCH 5.4 25/81] can: j1939: j1939_local_ecu_get(): undo increment when j1939_local_ecu_get() fails
 Date: Tue, 30 Sep 2025 16:46:27 +0200
-Message-ID: <20250930143825.291247698@linuxfoundation.org>
+Message-ID: <20250930143820.717421824@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit cca7b1cfd7b8a0eff2a3510c5e0f10efe8fa3758 ]
+[ Upstream commit 06e02da29f6f1a45fc07bd60c7eaf172dc21e334 ]
 
-The expression `(conf->instr_type == 64) << iq_no` can overflow because
-`iq_no` may be as high as 64 (`CN23XX_MAX_RINGS_PER_PF`). Casting the
-operand to `u64` ensures correct 64-bit arithmetic.
+Since j1939_sk_bind() and j1939_sk_release() call j1939_local_ecu_put()
+when J1939_SOCK_BOUND was already set, but the error handling path for
+j1939_sk_bind() will not set J1939_SOCK_BOUND when j1939_local_ecu_get()
+fails, j1939_local_ecu_get() needs to undo priv->ents[sa].nusers++ when
+j1939_local_ecu_get() returns an error.
 
-Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/e7f80046-4ff7-4ce2-8ad8-7c3c678a42c9@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cavium/liquidio/request_manager.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/can/j1939/bus.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cavium/liquidio/request_manager.c b/drivers/net/ethernet/cavium/liquidio/request_manager.c
-index 8e59c2825533a..2a066f193bca1 100644
---- a/drivers/net/ethernet/cavium/liquidio/request_manager.c
-+++ b/drivers/net/ethernet/cavium/liquidio/request_manager.c
-@@ -135,7 +135,7 @@ int octeon_init_instr_queue(struct octeon_device *oct,
- 	oct->io_qmask.iq |= BIT_ULL(iq_no);
+diff --git a/net/can/j1939/bus.c b/net/can/j1939/bus.c
+index 4866879016021..e0b966c2517cf 100644
+--- a/net/can/j1939/bus.c
++++ b/net/can/j1939/bus.c
+@@ -290,8 +290,11 @@ int j1939_local_ecu_get(struct j1939_priv *priv, name_t name, u8 sa)
+ 	if (!ecu)
+ 		ecu = j1939_ecu_create_locked(priv, name);
+ 	err = PTR_ERR_OR_ZERO(ecu);
+-	if (err)
++	if (err) {
++		if (j1939_address_is_unicast(sa))
++			priv->ents[sa].nusers--;
+ 		goto done;
++	}
  
- 	/* Set the 32B/64B mode for each input queue */
--	oct->io_qmask.iq64B |= ((conf->instr_type == 64) << iq_no);
-+	oct->io_qmask.iq64B |= ((u64)(conf->instr_type == 64) << iq_no);
- 	iq->iqcmd_64B = (conf->instr_type == 64);
- 
- 	oct->fn_list.setup_iq_regs(oct, iq_no);
+ 	ecu->nusers++;
+ 	/* TODO: do we care if ecu->addr != sa? */
 -- 
 2.51.0
 
