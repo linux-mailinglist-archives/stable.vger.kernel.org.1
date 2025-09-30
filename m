@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974A7BADDE6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D60BADBAF
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 892774C0469
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 082D53AE463
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5C42F6167;
-	Tue, 30 Sep 2025 15:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA04C29827E;
+	Tue, 30 Sep 2025 15:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03BEScfF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Rrcjrqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DA61F3FED;
-	Tue, 30 Sep 2025 15:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6563D1D6188;
+	Tue, 30 Sep 2025 15:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246065; cv=none; b=jYB4e/s3JFSwrvRZBLtgGNgxywT3nsS4sRP7+d/bsgmhKAFgMtfJVWvYj2vrn0BGMj1t91J5vQxsd02e+fFQTAm03nusHNFTAge8Y8hHZHK2lLK4iCg5i28itVgecyNHnuGUPnb8hkWhVPifMHJvYHIBMup8PqKVq/krAP4zhKQ=
+	t=1759245363; cv=none; b=IzVw7q8Jgboy8N1pDeTEYCWQoofpip7NNa10RfgWQFWsKUkW8r8itJYYlbNyYlAMA+rEYPyvz9srVi6CysToAy1OgA/auS0kbOi77PVyqlhu3NdSh4cybziC2O861EbpjjBw9NFJxsfz4dNoVZnle9jmBQ1Mh57S5qxD3Biy5hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246065; c=relaxed/simple;
-	bh=9Q4NochpvzBTKu62yfwOk6ef6UN4+dKxCJ6/oZBaeCg=;
+	s=arc-20240116; t=1759245363; c=relaxed/simple;
+	bh=1cGCg7fJAyWaEX3m+sHybbuWqyUTTni8QC3toFpAf+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcKIGRp+E6nFcrWlGeyxdtyCgXI8S/3QghU2QqdksLZonbm9Nebb191k1F5LhTsXI1ZA1tQQdw7sB2Wm3OFnjgmW4EFaF8uL0SNhNk6I/chdzjFtuam12NNXW2XOQgnRMc3QN/wHm1xQwmHiVRmwkxWFf+ap8awjDvnxQXAgPTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03BEScfF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D304C4CEF0;
-	Tue, 30 Sep 2025 15:27:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pzGo454JQUnTAjSiCpA2HD+rY9y0xhmRl5kiTpjVALoRrqU4F9ljNdxbswB63ZDPwRnDwx9Vfgg/lXjKlgEwxdKK4rvJF/QarDVo8ey+FRqIy5HpkPgdWtFVDuTNoP2lEVduEagQbEFVh4C/GDJ97C11kzECTQws0ngKpobAc5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Rrcjrqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB4BC4CEF0;
+	Tue, 30 Sep 2025 15:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246065;
-	bh=9Q4NochpvzBTKu62yfwOk6ef6UN4+dKxCJ6/oZBaeCg=;
+	s=korg; t=1759245363;
+	bh=1cGCg7fJAyWaEX3m+sHybbuWqyUTTni8QC3toFpAf+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=03BEScfF3b6bsB8du4FZJ4a0QIwB9r1JLyWq5viMiv8wusM3RqXCCoUdgb/WsKQoL
-	 F8Ti44sck360Z5ZCUqMNqURklMLXn4iCBIKjOg0nqtiWNtfZAYrKenjYUHEn5eNdee
-	 drD+GEvoapFVczlEal/TwMK9y+coC79kgZhgWNAk=
+	b=2RrcjrqiAltTgg5uONTUBd+A/qExHoQKjtbAeZtUBWrU/sUCUY0dqyhmtCAnyRqGR
+	 zMVffHJXFxOL1zjEnV28OXxT5cZL3Tyxk1d8Gf/5PqGCfyPk/uS6csDATl6Z2mVGcZ
+	 gcR1Jlq9w8QXNpRv4wiJkSE6AEuKz0ouJaVi0QsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 42/89] can: sun4i_can: populate ndo_change_mtu() to prevent buffer overflow
+	David Hildenbrand <david@redhat.com>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 146/151] mm/migrate_device: dont add folio to be freed to LRU in migrate_device_finalize()
 Date: Tue, 30 Sep 2025 16:47:56 +0200
-Message-ID: <20250930143823.664003953@linuxfoundation.org>
+Message-ID: <20250930143833.411055544@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +62,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 61da0bd4102c459823fbe6b8b43b01fb6ace4a22 ]
+commit 41cddf83d8b00f29fd105e7a0777366edc69a5cf upstream.
 
-Sending an PF_PACKET allows to bypass the CAN framework logic and to
-directly reach the xmit() function of a CAN driver. The only check
-which is performed by the PF_PACKET framework is to make sure that
-skb->len fits the interface's MTU.
+If migration succeeded, we called
+folio_migrate_flags()->mem_cgroup_migrate() to migrate the memcg from the
+old to the new folio.  This will set memcg_data of the old folio to 0.
 
-Unfortunately, because the sun4i_can driver does not populate its
-net_device_ops->ndo_change_mtu(), it is possible for an attacker to
-configure an invalid MTU by doing, for example:
+Similarly, if migration failed, memcg_data of the dst folio is left unset.
 
-  $ ip link set can0 mtu 9999
+If we call folio_putback_lru() on such folios (memcg_data == 0), we will
+add the folio to be freed to the LRU, making memcg code unhappy.  Running
+the hmm selftests:
 
-After doing so, the attacker could open a PF_PACKET socket using the
-ETH_P_CANXL protocol:
+  # ./hmm-tests
+  ...
+  #  RUN           hmm.hmm_device_private.migrate ...
+  [  102.078007][T14893] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7ff27d200 pfn:0x13cc00
+  [  102.079974][T14893] anon flags: 0x17ff00000020018(uptodate|dirty|swapbacked|node=0|zone=2|lastcpupid=0x7ff)
+  [  102.082037][T14893] raw: 017ff00000020018 dead000000000100 dead000000000122 ffff8881353896c9
+  [  102.083687][T14893] raw: 00000007ff27d200 0000000000000000 00000001ffffffff 0000000000000000
+  [  102.085331][T14893] page dumped because: VM_WARN_ON_ONCE_FOLIO(!memcg && !mem_cgroup_disabled())
+  [  102.087230][T14893] ------------[ cut here ]------------
+  [  102.088279][T14893] WARNING: CPU: 0 PID: 14893 at ./include/linux/memcontrol.h:726 folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.090478][T14893] Modules linked in:
+  [  102.091244][T14893] CPU: 0 UID: 0 PID: 14893 Comm: hmm-tests Not tainted 6.13.0-09623-g6c216bc522fd #151
+  [  102.093089][T14893] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+  [  102.094848][T14893] RIP: 0010:folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.096104][T14893] Code: ...
+  [  102.099908][T14893] RSP: 0018:ffffc900236c37b0 EFLAGS: 00010293
+  [  102.101152][T14893] RAX: 0000000000000000 RBX: ffffea0004f30000 RCX: ffffffff8183f426
+  [  102.102684][T14893] RDX: ffff8881063cb880 RSI: ffffffff81b8117f RDI: ffff8881063cb880
+  [  102.104227][T14893] RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
+  [  102.105757][T14893] R10: 0000000000000001 R11: 0000000000000002 R12: ffffc900236c37d8
+  [  102.107296][T14893] R13: ffff888277a2bcb0 R14: 000000000000001f R15: 0000000000000000
+  [  102.108830][T14893] FS:  00007ff27dbdd740(0000) GS:ffff888277a00000(0000) knlGS:0000000000000000
+  [  102.110643][T14893] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [  102.111924][T14893] CR2: 00007ff27d400000 CR3: 000000010866e000 CR4: 0000000000750ef0
+  [  102.113478][T14893] PKRU: 55555554
+  [  102.114172][T14893] Call Trace:
+  [  102.114805][T14893]  <TASK>
+  [  102.115397][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.116547][T14893]  ? __warn.cold+0x110/0x210
+  [  102.117461][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.118667][T14893]  ? report_bug+0x1b9/0x320
+  [  102.119571][T14893]  ? handle_bug+0x54/0x90
+  [  102.120494][T14893]  ? exc_invalid_op+0x17/0x50
+  [  102.121433][T14893]  ? asm_exc_invalid_op+0x1a/0x20
+  [  102.122435][T14893]  ? __wake_up_klogd.part.0+0x76/0xd0
+  [  102.123506][T14893]  ? dump_page+0x4f/0x60
+  [  102.124352][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.125500][T14893]  folio_batch_move_lru+0xd4/0x200
+  [  102.126577][T14893]  ? __pfx_lru_add+0x10/0x10
+  [  102.127505][T14893]  __folio_batch_add_and_move+0x391/0x720
+  [  102.128633][T14893]  ? __pfx_lru_add+0x10/0x10
+  [  102.129550][T14893]  folio_putback_lru+0x16/0x80
+  [  102.130564][T14893]  migrate_device_finalize+0x9b/0x530
+  [  102.131640][T14893]  dmirror_migrate_to_device.constprop.0+0x7c5/0xad0
+  [  102.133047][T14893]  dmirror_fops_unlocked_ioctl+0x89b/0xc80
 
-	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
+Likely, nothing else goes wrong: putting the last folio reference will
+remove the folio from the LRU again.  So besides memcg complaining, adding
+the folio to be freed to the LRU is just an unnecessary step.
 
-to inject a malicious CAN XL frames. For example:
+The new flow resembles what we have in migrate_folio_move(): add the dst
+to the lru, remove migration ptes, unlock and unref dst.
 
-	struct canxl_frame frame = {
-		.flags = 0xff,
-		.len = 2048,
-	};
+Link: https://lkml.kernel.org/r/20250210161317.717936-1-david@redhat.com
+Fixes: 8763cb45ab96 ("mm/migrate: new memory migration helper for use with device memory")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Cc: Jérôme Glisse <jglisse@redhat.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+--
+ mm/migrate.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
-check that the skb is valid, unfortunately under above conditions, the
-malicious packet is able to go through can_dev_dropped_skb() checks:
-
-  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
-     function does not check the actual device capabilities).
-
-  2. the length is a valid CAN XL length.
-
-And so, sun4ican_start_xmit() receives a CAN XL frame which it is not
-able to correctly handle and will thus misinterpret it as a CAN frame.
-
-This can result in a buffer overflow. The driver will consume cf->len
-as-is with no further checks on this line:
-
-	dlc = cf->len;
-
-Here, cf->len corresponds to the flags field of the CAN XL frame. In
-our previous example, we set canxl_frame->flags to 0xff. Because the
-maximum expected length is 8, a buffer overflow of 247 bytes occurs a
-couple line below when doing:
-
-	for (i = 0; i < dlc; i++)
-		writel(cf->data[i], priv->base + (dreg + i * 4));
-
-Populate net_device_ops->ndo_change_mtu() to ensure that the
-interface's MTU can not be set to anything bigger than CAN_MTU. By
-fixing the root cause, this prevents the buffer overflow.
-
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-3-0d1cada9393b@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/can/sun4i_can.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index 4311c1f0eafd8..30b30fdbcae9c 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -768,6 +768,7 @@ static const struct net_device_ops sun4ican_netdev_ops = {
- 	.ndo_open = sun4ican_open,
- 	.ndo_stop = sun4ican_close,
- 	.ndo_start_xmit = sun4ican_start_xmit,
-+	.ndo_change_mtu = can_change_mtu,
- };
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -3065,20 +3065,16 @@ void migrate_vma_finalize(struct migrate
+ 			newpage = page;
+ 		}
  
- static const struct ethtool_ops sun4ican_ethtool_ops = {
--- 
-2.51.0
-
++		if (!is_zone_device_page(newpage))
++			lru_cache_add(newpage);
+ 		remove_migration_ptes(page, newpage, false);
+ 		unlock_page(page);
+ 
+-		if (is_zone_device_page(page))
+-			put_page(page);
+-		else
+-			putback_lru_page(page);
++		put_page(page);
+ 
+ 		if (newpage != page) {
+ 			unlock_page(newpage);
+-			if (is_zone_device_page(newpage))
+-				put_page(newpage);
+-			else
+-				putback_lru_page(newpage);
++			put_page(newpage);
+ 		}
+ 	}
+ }
 
 
 
