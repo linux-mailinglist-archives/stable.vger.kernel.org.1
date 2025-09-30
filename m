@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA0CBAD4D6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7947BAD65F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7A7321FF7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D6DB7A3F48
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDE0238D3A;
-	Tue, 30 Sep 2025 14:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE00302163;
+	Tue, 30 Sep 2025 14:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X26SRy6m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEi8WKa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1A61B4156;
-	Tue, 30 Sep 2025 14:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA324D8CE;
+	Tue, 30 Sep 2025 14:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243961; cv=none; b=XerEQLtQ0xrX98b2w1Slsy1+Z+FV4Udg9nQrfRfaJuib1YGBttjrZE5Ulx9B0dy6Vd/Yf9/Emel9afznFccbv7YShcMTUzunjKIBYPHhTJtKFzOyldIy4+XBBnakb7mwp3MHNZ7UoKm0FngTjVvNDyNryDOTlYRbqMZxJAZ8sfc=
+	t=1759244339; cv=none; b=nWj6vFXIXy7YfA36F9X2Spt8e8eXJ0IEZ1Xh8x2TJhuuWhrdbQWkoIrDjuKQXvLkGFRiosycDsihjCsZXdT6LFHqyIFGNKKJ1htdA7EuYi4xPJEVhPQ219LCoD626GNgQ98uNaXLSegSubuq4jGqN7SiXFR7gTJbhJzyAdUWRV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243961; c=relaxed/simple;
-	bh=6lk2+qi1SxMk0xyDU19CoIwKhswamFgBfVnxzG6TDzg=;
+	s=arc-20240116; t=1759244339; c=relaxed/simple;
+	bh=NzuoVBbAkfg4topSFWbr4fj7tGLMZzjql4qTBIu45+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kb/ARaHHx2oe/l6eqfD2vafX4UMy0w6T7DpWLCemIDccqfWiMw9a05XTG/Ewmykua3zmF4zmM1KlK/YmBuNnm8Cz2mnIqcMPibEsXs0BzCwoPRBJlLT0esdLaZu91ctFaCv90SMC3WR2iP+aijzFUjVdMfBh6DOjiLq8bMAKjKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X26SRy6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E803C4CEF0;
-	Tue, 30 Sep 2025 14:52:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WlhISCUeiUK0ian96uqMroFy0lYAIr0fvao5CBONrLECzwSRtwWWGLaMNeIFdlX5Hk5rSfxyJ8zlZSEub6IgUEyXyOaWJ6i1+YoL3AlME3QbEgGNm1WZhtSdKuSndIyUfPM41oaUVZ761Xl7mc3zcOzELZeihe0OtQdcvM/eE6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEi8WKa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE3FC4CEF0;
+	Tue, 30 Sep 2025 14:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243961;
-	bh=6lk2+qi1SxMk0xyDU19CoIwKhswamFgBfVnxzG6TDzg=;
+	s=korg; t=1759244338;
+	bh=NzuoVBbAkfg4topSFWbr4fj7tGLMZzjql4qTBIu45+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X26SRy6myqgDr0uYbuNl3GShWJmqxf5o/P6rZD1AnWSQAs0uw8qLmbcjdYnf2z3Og
-	 stUKs6FY/oDrJxxilb+3/DF7+e40XLo1Brb7MJTQUNiU4E2CEkyGFS5j16FQpOHeJo
-	 CGuXF/vIswmWhegG84D0r0ZkxI31xTiBfqWq1q9o=
+	b=DEi8WKa1dLl9yLR8It7FoFzAsqCPlnCveuSbkLRLX+3pZo0VMfbohWPElUiVQ0ns2
+	 iUhvl67Aj88uf9VHILFlbtUoRLMpIWgwUYbBlO4PjXYa8H7H/qMu5S7W13l4AlUh0A
+	 gfLfo0y+i4HhRr9p8hb7zdf3DixDW+jfrbJnwt6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zabelin Nikita <n.zabelin@mt-integration.ru>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	=?UTF-8?q?St=C3=A9phane=20Grosjean?= <stephane.grosjean@hms-networks.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 69/81] drm/gma500: Fix null dereference in hdmi teardown
+Subject: [PATCH 5.10 100/122] can: peak_usb: fix shift-out-of-bounds issue
 Date: Tue, 30 Sep 2025 16:47:11 +0200
-Message-ID: <20250930143822.578974675@linuxfoundation.org>
+Message-ID: <20250930143827.080727097@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zabelin Nikita <n.zabelin@mt-integration.ru>
+From: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
 
-[ Upstream commit 352e66900cde63f3dadb142364d3c35170bbaaff ]
+[ Upstream commit c443be70aaee42c2d1d251e0329e0a69dd96ae54 ]
 
-pci_set_drvdata sets the value of pdev->driver_data to NULL,
-after which the driver_data obtained from the same dev is
-dereferenced in oaktrail_hdmi_i2c_exit, and the i2c_dev is
-extracted from it. To prevent this, swap these calls.
+Explicitly uses a 64-bit constant when the number of bits used for its
+shifting is 32 (which is the case for PC CAN FD interfaces supported by
+this driver).
 
-Found by Linux Verification Center (linuxtesting.org) with Svacer.
-
-Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
-Signed-off-by: Zabelin Nikita <n.zabelin@mt-integration.ru>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://lore.kernel.org/r/20250918150703.2562604-1-n.zabelin@mt-integration.ru
+Signed-off-by: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
+Link: https://patch.msgid.link/20250918132413.30071-1-stephane.grosjean@free.fr
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/20250917-aboriginal-refined-honeybee-82b1aa-mkl@pengutronix.de
+Fixes: bb4785551f64 ("can: usb: PEAK-System Technik USB adapters driver core")
+[mkl: update subject, apply manually]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/oaktrail_hdmi.c | 2 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/gma500/oaktrail_hdmi.c b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-index f4c520893ceb6..93a0a791b8c38 100644
---- a/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-+++ b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-@@ -741,8 +741,8 @@ void oaktrail_hdmi_teardown(struct drm_device *dev)
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_core.c b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+index 73c1bc3cb70d3..3a963f2a8c441 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_core.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+@@ -84,7 +84,7 @@ void peak_usb_update_ts_now(struct peak_time_ref *time_ref, u32 ts_now)
+ 		u32 delta_ts = time_ref->ts_dev_2 - time_ref->ts_dev_1;
  
- 	if (hdmi_dev) {
- 		pdev = hdmi_dev->dev;
--		pci_set_drvdata(pdev, NULL);
- 		oaktrail_hdmi_i2c_exit(pdev);
-+		pci_set_drvdata(pdev, NULL);
- 		iounmap(hdmi_dev->regs);
- 		kfree(hdmi_dev);
- 		pci_dev_put(pdev);
+ 		if (time_ref->ts_dev_2 < time_ref->ts_dev_1)
+-			delta_ts &= (1 << time_ref->adapter->ts_used_bits) - 1;
++			delta_ts &= (1ULL << time_ref->adapter->ts_used_bits) - 1;
+ 
+ 		time_ref->ts_total += delta_ts;
+ 	}
 -- 
 2.51.0
 
