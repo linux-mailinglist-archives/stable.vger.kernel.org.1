@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5560EBADA70
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C07D9BADD98
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36B0E320672
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:14:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EDC93B9589
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622C3308F31;
-	Tue, 30 Sep 2025 15:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547BE296BD0;
+	Tue, 30 Sep 2025 15:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhPwRucL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHazV7to"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A29F3081B5;
-	Tue, 30 Sep 2025 15:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102A625D1F7;
+	Tue, 30 Sep 2025 15:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245278; cv=none; b=JhE3Yqnrb/vYtsFV0bUeDwrtklXkp8sQjfNreiY7woXwPrmaTj8jB2HrqbsZI+lV7N2mQmqlWx+3DxGAAKxqqeIdDETAjLY7WPfgfSqOc7zaD/YMcQE2kRj0RWyInp2sXuzPqofJyT+0/G0vYbYrCkDdDh/iFNFYeK9vzWAUdgk=
+	t=1759245977; cv=none; b=JKnmbTCjmRwM3bLOSMOX1qrWpIYkN5rA5cKDSI31eHDZOuKUJ8kQLcoWbsCkYXxhpV8ogeeLE1ZdmIT3B1iACDxplXzSS+yVf/76CG7x+nfbICPr855o9SQ7FhEmYvmhbtVlQCFYgCU3nbxqOIZgWoAWED2LNwSzXqSi27rTBiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245278; c=relaxed/simple;
-	bh=vRZ7KGBklrsgtSNygl2oFBSkAvSDzPo8vQojysVSbjs=;
+	s=arc-20240116; t=1759245977; c=relaxed/simple;
+	bh=Uq5ozdFwyteRSOrRrAYkx0lqgwBqvbQ/ZRWHEGvWH3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odB5KFuJHEViW23BuuWXUn9Msz7Nx4Ow6q/bkkqnQmDbsV/cwz8C6qBKl3pz/SqRoX524/dacSPeRivE2FYDMKrYko7wlbh6T/DMe1Qai4gj0P9zekp4n5XEvddLMw9S7KVhLcd+Qhgmvg523IjDxeHdI88luEtjT8eP0c9nqz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhPwRucL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E22C116B1;
-	Tue, 30 Sep 2025 15:14:37 +0000 (UTC)
+	 MIME-Version; b=a9QHjjyMuH03XI++gxXCoAOm3hftoS6gGGl4wu1Urk5+tLa+SROGU+VTWmtU2PQrwV4qj6vHf6QfqUzC3t9QEqdcbGRT8pX/ScHr54wEi3J5/WZ/7ImOyCLTaBgtokCGHdLc7WLXZj+safSv5c0Qi6PUTkR86Ci9WMrfFrX99Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHazV7to; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CDAC113D0;
+	Tue, 30 Sep 2025 15:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245278;
-	bh=vRZ7KGBklrsgtSNygl2oFBSkAvSDzPo8vQojysVSbjs=;
+	s=korg; t=1759245976;
+	bh=Uq5ozdFwyteRSOrRrAYkx0lqgwBqvbQ/ZRWHEGvWH3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhPwRucLsujMOCMzEjoZAEj8vHJVd97xmdqpELGzHu9v2xPIHko9r7qZtO7dDt3E9
-	 WXTactKcZWRoOtD0NnGhDalgBhwvn0a6XlGf1jhjMfCmv5uzsaLEXcShlQvz3PZ7sA
-	 cDP/FdTK+u68Db5hnpUH8mOUrNS0iuMcG1dHT5IM=
+	b=jHazV7toyWR7kghUFkBcMN1h/9SezoReCBroywk0k7sQbYPWMJ1HnC6G8AX2Y7UMW
+	 mL/eIeBjI+87MylTZheWZ06IGMk2q9bUbxzSQoTEvAS9hn0wP3rX5SoIILKkxFolzR
+	 ubkinFLJ3Tr9Cz3AakDLpm5s3HVj9HeAaUncux7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 119/151] can: dev: add generic function can_ethtool_op_get_ts_info_hwts()
+Subject: [PATCH 6.12 15/89] ALSA: hda/realtek: Add support for ASUS NUC using CS35L41 HDA
 Date: Tue, 30 Sep 2025 16:47:29 +0200
-Message-ID: <20250930143832.346987376@linuxfoundation.org>
+Message-ID: <20250930143822.502017013@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 7fb48d25b5ce3bc488dbb019bf1736248181de9a ]
+[ Upstream commit 84fc8896f0d9d1c075e0e08a416faedbd73907fa ]
 
-Add function can_ethtool_op_get_ts_info_hwts(). This function will be
-used by CAN devices with hardware TX/RX timestamping support to
-implement ethtool_ops::get_ts_info. This function does not offer
-support to activate/deactivate hardware timestamps at device level nor
-support the filter options (which is currently the case for all CAN
-devices with hardware timestamping support).
+Add support for ASUS NUC14LNS.
 
-The fact that hardware timestamp can not be deactivated at hardware
-level does not impact the userland. As long as the user do not set
-SO_TIMESTAMPING using a setsockopt() or ioctl(), the kernel will not
-emit TX timestamps (RX timestamps will still be reproted as it is the
-case currently).
+This NUC uses a single CS35L41 Amp in using Internal Boost with SPI.
+To support the Single Amp, a new quirk is required.
 
-Drivers which need more fine grained control remains free to implement
-their own function, but we foresee that the generic function
-introduced here will be sufficient for the majority.
-
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/all/20220727101641.198847-8-mailhol.vincent@wanadoo.fr
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: 38c0abad45b1 ("can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow")
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250612160029.848104-3-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/dev/dev.c | 21 +++++++++++++++++++++
- include/linux/can/dev.h   |  3 +++
- 2 files changed, 24 insertions(+)
+ sound/pci/hda/patch_realtek.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 641f84e5beb0c..d429a2940e83f 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -331,6 +331,27 @@ int can_change_mtu(struct net_device *dev, int new_mtu)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 5f061d2d9fc96..a41df821e15f7 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7272,6 +7272,11 @@ static void cs35l41_fixup_spi_two(struct hda_codec *codec, const struct hda_fixu
+ 	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 2);
  }
- EXPORT_SYMBOL_GPL(can_change_mtu);
  
-+/* generic implementation of ethtool_ops::get_ts_info for CAN devices
-+ * supporting hardware timestamps
-+ */
-+int can_ethtool_op_get_ts_info_hwts(struct net_device *dev,
-+				    struct ethtool_ts_info *info)
++static void cs35l41_fixup_spi_one(struct hda_codec *codec, const struct hda_fixup *fix, int action)
 +{
-+	info->so_timestamping =
-+		SOF_TIMESTAMPING_TX_SOFTWARE |
-+		SOF_TIMESTAMPING_RX_SOFTWARE |
-+		SOF_TIMESTAMPING_SOFTWARE |
-+		SOF_TIMESTAMPING_TX_HARDWARE |
-+		SOF_TIMESTAMPING_RX_HARDWARE |
-+		SOF_TIMESTAMPING_RAW_HARDWARE;
-+	info->phc_index = -1;
-+	info->tx_types = BIT(HWTSTAMP_TX_ON);
-+	info->rx_filters = BIT(HWTSTAMP_FILTER_ALL);
-+
-+	return 0;
++	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 1);
 +}
-+EXPORT_SYMBOL(can_ethtool_op_get_ts_info_hwts);
 +
- /* Common open function when the device gets opened.
-  *
-  * This function should be called in the open function of the device
-diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
-index 6dacbbb41e68c..23f1c9f0109d7 100644
---- a/include/linux/can/dev.h
-+++ b/include/linux/can/dev.h
-@@ -21,6 +21,7 @@
- #include <linux/can/length.h>
- #include <linux/can/netlink.h>
- #include <linux/can/skb.h>
-+#include <linux/ethtool.h>
- #include <linux/netdevice.h>
- 
- /*
-@@ -132,6 +133,8 @@ struct can_priv *safe_candev_priv(struct net_device *dev);
- int open_candev(struct net_device *dev);
- void close_candev(struct net_device *dev);
- int can_change_mtu(struct net_device *dev, int new_mtu);
-+int can_ethtool_op_get_ts_info_hwts(struct net_device *dev,
-+				    struct ethtool_ts_info *info);
- 
- int register_candev(struct net_device *dev);
- void unregister_candev(struct net_device *dev);
+ static void cs35l41_fixup_spi_four(struct hda_codec *codec, const struct hda_fixup *fix, int action)
+ {
+ 	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 4);
+@@ -7956,6 +7961,7 @@ enum {
+ 	ALC287_FIXUP_CS35L41_I2C_2,
+ 	ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED,
+ 	ALC287_FIXUP_CS35L41_I2C_4,
++	ALC245_FIXUP_CS35L41_SPI_1,
+ 	ALC245_FIXUP_CS35L41_SPI_2,
+ 	ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED,
+ 	ALC245_FIXUP_CS35L41_SPI_4,
+@@ -10067,6 +10073,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cs35l41_fixup_spi_two,
+ 	},
++	[ALC245_FIXUP_CS35L41_SPI_1] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cs35l41_fixup_spi_one,
++	},
+ 	[ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cs35l41_fixup_spi_two,
+@@ -11001,6 +11011,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x8398, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x83ce, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x8516, "ASUS X101CH", ALC269_FIXUP_ASUS_X101),
++	SND_PCI_QUIRK(0x1043, 0x88f4, "ASUS NUC14LNS", ALC245_FIXUP_CS35L41_SPI_1),
+ 	SND_PCI_QUIRK(0x104d, 0x9073, "Sony VAIO", ALC275_FIXUP_SONY_VAIO_GPIO2),
+ 	SND_PCI_QUIRK(0x104d, 0x907b, "Sony VAIO", ALC275_FIXUP_SONY_HWEQ),
+ 	SND_PCI_QUIRK(0x104d, 0x9084, "Sony VAIO", ALC275_FIXUP_SONY_HWEQ),
 -- 
 2.51.0
 
