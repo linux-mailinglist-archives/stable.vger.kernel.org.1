@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64912BADB64
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5B4BADD9B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C845C19448E1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6CD354E0F75
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5CA2F39C0;
-	Tue, 30 Sep 2025 15:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84AB30594A;
+	Tue, 30 Sep 2025 15:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/fiUwMm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sb7Gslke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4832E1EB5E3;
-	Tue, 30 Sep 2025 15:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736071F3FED;
+	Tue, 30 Sep 2025 15:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245581; cv=none; b=kMDuXxqR3LMXBb6furUxbdrG4MyK7+d3rr7BmHkoTBkFSnE6FVpjMB4IWRKirD99DJcQsARxGS0kEFk3Sz7zPPaomgiHF91Z/oVZu9gwrkB+3ZEQeI2CdmYyS+ntDe6UXiTmHrUZ0wWIuf35qjG9JRalhAQCxKk6M70n+IcYWi8=
+	t=1759246090; cv=none; b=CbsAl5UR67YrZaevs9GAjfwaMGgjeqq5sw9JgmG77QIiy0c+fmi5vJKOZR9XXve2Q990NtrFdvtno0peBqY8NRRbYhifGBOp9z+HydSF9Bb4tAY6H/sIJK9X4/oSaFkTIGF0ppCBcfSMax7pc8+al1yK0b4r6SXDMSAbwZk6By4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245581; c=relaxed/simple;
-	bh=Q6yI0k6bpg05C7rYIhJhovWBCdOqCt+qq/Z/64mlLX4=;
+	s=arc-20240116; t=1759246090; c=relaxed/simple;
+	bh=ewHOhOzq+nP4BTsO/sxNvz92nJRwoM36ZnYTRvkAyCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KJlhNIUxVc5ds2g+CvzCa9OvL4p/RusHPmdSMq/nHugjcvs8sY9nBo0YIyhXR8a1VM0Ub2MPOFVnSpEiq6OcQSqBc7ZtPRC845qFDiZG9V+fByE7MFNzI+ij/OFlG2H642obY6hBRy+hZGB7p9eSnEN/hLxg8f0Zrw6o9kYKzw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/fiUwMm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF1FC4CEF0;
-	Tue, 30 Sep 2025 15:19:40 +0000 (UTC)
+	 MIME-Version; b=KwFyNzOsXLrJ5RpWhSCX9lCRzbfRzbGNzR5ySsj/I7mPwJGaokwxn3W0AfYmO/Nj0kKcgsRTCtFOxXnXMhA51J1Abqe8Vc/aHHUqcejmASeG7yz55g5JpSIdCTrBVdvzTzmrBEy7hqcBKEFo9hUcQ0Hd5SncKbGlBkc1KvMyOFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sb7Gslke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C83C4CEF0;
+	Tue, 30 Sep 2025 15:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245581;
-	bh=Q6yI0k6bpg05C7rYIhJhovWBCdOqCt+qq/Z/64mlLX4=;
+	s=korg; t=1759246089;
+	bh=ewHOhOzq+nP4BTsO/sxNvz92nJRwoM36ZnYTRvkAyCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/fiUwMmR0zJVd/VhP2dKrEwXXtoOfJ1SqXEuXk/bLtzndH3VHfEnMYkDb74tYdlG
-	 pc5yWMhXKaYQ+F1skxaY6fYe11pswr3gmZMVXz4nwg6RUVHMy1OmPYLzPpgZygm4mr
-	 rp9Ctz/+Ats8pOhi7YIp2Om1tZpPFKYBiWqA7udQ=
+	b=sb7Gslker4brxb9Aj/YC+L3adJ4xVkQxCryv1Oj/h8Ru/s65tvRbccnGYsKtfq/70
+	 fk6ekt/WxYy9p4lwMJgqSfSUHgjZ7BQrY74WYit6V0pMuq5SN1mWWWfERKYm4dKGAf
+	 tyRp/gM0FuWmXDQZx9NbF+43imKNftPpZ/xIvlPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 59/73] mm/migrate_device: dont add folio to be freed to LRU in migrate_device_finalize()
+	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 49/89] Bluetooth: hci_event: Fix UAF in hci_acl_create_conn_sync
 Date: Tue, 30 Sep 2025 16:48:03 +0200
-Message-ID: <20250930143823.105601698@linuxfoundation.org>
+Message-ID: <20250930143823.950475886@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +60,206 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 41cddf83d8b00f29fd105e7a0777366edc69a5cf upstream.
+[ Upstream commit 9e622804d57e2d08f0271200606bd1270f75126f ]
 
-If migration succeeded, we called
-folio_migrate_flags()->mem_cgroup_migrate() to migrate the memcg from the
-old to the new folio.  This will set memcg_data of the old folio to 0.
+This fixes the following UFA in hci_acl_create_conn_sync where a
+connection still pending is command submission (conn->state == BT_OPEN)
+maybe freed, also since this also can happen with the likes of
+hci_le_create_conn_sync fix it as well:
 
-Similarly, if migration failed, memcg_data of the dst folio is left unset.
+BUG: KASAN: slab-use-after-free in hci_acl_create_conn_sync+0x5ef/0x790 net/bluetooth/hci_sync.c:6861
+Write of size 2 at addr ffff88805ffcc038 by task kworker/u11:2/9541
 
-If we call folio_putback_lru() on such folios (memcg_data == 0), we will
-add the folio to be freed to the LRU, making memcg code unhappy.  Running
-the hmm selftests:
+CPU: 1 UID: 0 PID: 9541 Comm: kworker/u11:2 Not tainted 6.16.0-rc7 #3 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
+Workqueue: hci3 hci_cmd_sync_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x230 mm/kasan/report.c:480
+ kasan_report+0x118/0x150 mm/kasan/report.c:593
+ hci_acl_create_conn_sync+0x5ef/0x790 net/bluetooth/hci_sync.c:6861
+ hci_cmd_sync_work+0x210/0x3a0 net/bluetooth/hci_sync.c:332
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
+ kthread+0x70e/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
+ </TASK>
 
-  # ./hmm-tests
-  ...
-  #  RUN           hmm.hmm_device_private.migrate ...
-  [  102.078007][T14893] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7ff27d200 pfn:0x13cc00
-  [  102.079974][T14893] anon flags: 0x17ff00000020018(uptodate|dirty|swapbacked|node=0|zone=2|lastcpupid=0x7ff)
-  [  102.082037][T14893] raw: 017ff00000020018 dead000000000100 dead000000000122 ffff8881353896c9
-  [  102.083687][T14893] raw: 00000007ff27d200 0000000000000000 00000001ffffffff 0000000000000000
-  [  102.085331][T14893] page dumped because: VM_WARN_ON_ONCE_FOLIO(!memcg && !mem_cgroup_disabled())
-  [  102.087230][T14893] ------------[ cut here ]------------
-  [  102.088279][T14893] WARNING: CPU: 0 PID: 14893 at ./include/linux/memcontrol.h:726 folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.090478][T14893] Modules linked in:
-  [  102.091244][T14893] CPU: 0 UID: 0 PID: 14893 Comm: hmm-tests Not tainted 6.13.0-09623-g6c216bc522fd #151
-  [  102.093089][T14893] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
-  [  102.094848][T14893] RIP: 0010:folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.096104][T14893] Code: ...
-  [  102.099908][T14893] RSP: 0018:ffffc900236c37b0 EFLAGS: 00010293
-  [  102.101152][T14893] RAX: 0000000000000000 RBX: ffffea0004f30000 RCX: ffffffff8183f426
-  [  102.102684][T14893] RDX: ffff8881063cb880 RSI: ffffffff81b8117f RDI: ffff8881063cb880
-  [  102.104227][T14893] RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-  [  102.105757][T14893] R10: 0000000000000001 R11: 0000000000000002 R12: ffffc900236c37d8
-  [  102.107296][T14893] R13: ffff888277a2bcb0 R14: 000000000000001f R15: 0000000000000000
-  [  102.108830][T14893] FS:  00007ff27dbdd740(0000) GS:ffff888277a00000(0000) knlGS:0000000000000000
-  [  102.110643][T14893] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [  102.111924][T14893] CR2: 00007ff27d400000 CR3: 000000010866e000 CR4: 0000000000750ef0
-  [  102.113478][T14893] PKRU: 55555554
-  [  102.114172][T14893] Call Trace:
-  [  102.114805][T14893]  <TASK>
-  [  102.115397][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.116547][T14893]  ? __warn.cold+0x110/0x210
-  [  102.117461][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.118667][T14893]  ? report_bug+0x1b9/0x320
-  [  102.119571][T14893]  ? handle_bug+0x54/0x90
-  [  102.120494][T14893]  ? exc_invalid_op+0x17/0x50
-  [  102.121433][T14893]  ? asm_exc_invalid_op+0x1a/0x20
-  [  102.122435][T14893]  ? __wake_up_klogd.part.0+0x76/0xd0
-  [  102.123506][T14893]  ? dump_page+0x4f/0x60
-  [  102.124352][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.125500][T14893]  folio_batch_move_lru+0xd4/0x200
-  [  102.126577][T14893]  ? __pfx_lru_add+0x10/0x10
-  [  102.127505][T14893]  __folio_batch_add_and_move+0x391/0x720
-  [  102.128633][T14893]  ? __pfx_lru_add+0x10/0x10
-  [  102.129550][T14893]  folio_putback_lru+0x16/0x80
-  [  102.130564][T14893]  migrate_device_finalize+0x9b/0x530
-  [  102.131640][T14893]  dmirror_migrate_to_device.constprop.0+0x7c5/0xad0
-  [  102.133047][T14893]  dmirror_fops_unlocked_ioctl+0x89b/0xc80
+Allocated by task 123736:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __kmalloc_cache_noprof+0x230/0x3d0 mm/slub.c:4359
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ kzalloc_noprof include/linux/slab.h:1039 [inline]
+ __hci_conn_add+0x233/0x1b30 net/bluetooth/hci_conn.c:939
+ hci_conn_add_unset net/bluetooth/hci_conn.c:1051 [inline]
+ hci_connect_acl+0x16c/0x4e0 net/bluetooth/hci_conn.c:1634
+ pair_device+0x418/0xa70 net/bluetooth/mgmt.c:3556
+ hci_mgmt_cmd+0x9c9/0xef0 net/bluetooth/hci_sock.c:1719
+ hci_sock_sendmsg+0x6ca/0xef0 net/bluetooth/hci_sock.c:1839
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg+0x219/0x270 net/socket.c:727
+ sock_write_iter+0x258/0x330 net/socket.c:1131
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x54b/0xa90 fs/read_write.c:686
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Likely, nothing else goes wrong: putting the last folio reference will
-remove the folio from the LRU again.  So besides memcg complaining, adding
-the folio to be freed to the LRU is just an unnecessary step.
+Freed by task 103680:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x62/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2381 [inline]
+ slab_free mm/slub.c:4643 [inline]
+ kfree+0x18e/0x440 mm/slub.c:4842
+ device_release+0x9c/0x1c0
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x22b/0x480 lib/kobject.c:737
+ hci_conn_cleanup net/bluetooth/hci_conn.c:175 [inline]
+ hci_conn_del+0x8ff/0xcb0 net/bluetooth/hci_conn.c:1173
+ hci_conn_complete_evt+0x3c7/0x1040 net/bluetooth/hci_event.c:3199
+ hci_event_func net/bluetooth/hci_event.c:7477 [inline]
+ hci_event_packet+0x7e0/0x1200 net/bluetooth/hci_event.c:7531
+ hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
+ kthread+0x70e/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
 
-The new flow resembles what we have in migrate_folio_move(): add the dst
-to the lru, remove migration ptes, unlock and unref dst.
+Last potentially related work creation:
+ kasan_save_stack+0x3e/0x60 mm/kasan/common.c:47
+ kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:548
+ insert_work+0x3d/0x330 kernel/workqueue.c:2183
+ __queue_work+0xbd9/0xfe0 kernel/workqueue.c:2345
+ queue_delayed_work_on+0x18b/0x280 kernel/workqueue.c:2561
+ pairing_complete+0x1e7/0x2b0 net/bluetooth/mgmt.c:3451
+ pairing_complete_cb+0x1ac/0x230 net/bluetooth/mgmt.c:3487
+ hci_connect_cfm include/net/bluetooth/hci_core.h:2064 [inline]
+ hci_conn_failed+0x24d/0x310 net/bluetooth/hci_conn.c:1275
+ hci_conn_complete_evt+0x3c7/0x1040 net/bluetooth/hci_event.c:3199
+ hci_event_func net/bluetooth/hci_event.c:7477 [inline]
+ hci_event_packet+0x7e0/0x1200 net/bluetooth/hci_event.c:7531
+ hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
+ kthread+0x70e/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
 
-Link: https://lkml.kernel.org/r/20250210161317.717936-1-david@redhat.com
-Fixes: 8763cb45ab96 ("mm/migrate: new memory migration helper for use with device memory")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Jérôme Glisse <jglisse@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aef2aa4fa98e ("Bluetooth: hci_event: Fix creating hci_conn object on error status")
+Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate_device.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ include/net/bluetooth/hci_core.h | 21 +++++++++++++++++++++
+ net/bluetooth/hci_event.c        | 26 +++++++++++++++++++++++---
+ 2 files changed, 44 insertions(+), 3 deletions(-)
 
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -854,20 +854,15 @@ void migrate_device_finalize(unsigned lo
- 			dst = src;
- 		}
- 
-+		if (!folio_is_zone_device(dst))
-+			folio_add_lru(dst);
- 		remove_migration_ptes(src, dst, false);
- 		folio_unlock(src);
--
--		if (folio_is_zone_device(src))
--			folio_put(src);
--		else
--			folio_putback_lru(src);
-+		folio_put(src);
- 
- 		if (dst != src) {
- 			folio_unlock(dst);
--			if (folio_is_zone_device(dst))
--				folio_put(dst);
--			else
--				folio_putback_lru(dst);
-+			folio_put(dst);
- 		}
- 	}
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index df4af45f8603c..69a1d8b12beff 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1203,6 +1203,27 @@ static inline struct hci_conn *hci_conn_hash_lookup_ba(struct hci_dev *hdev,
+ 	return NULL;
  }
+ 
++static inline struct hci_conn *hci_conn_hash_lookup_role(struct hci_dev *hdev,
++							 __u8 type, __u8 role,
++							 bdaddr_t *ba)
++{
++	struct hci_conn_hash *h = &hdev->conn_hash;
++	struct hci_conn  *c;
++
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(c, &h->list, list) {
++		if (c->type == type && c->role == role && !bacmp(&c->dst, ba)) {
++			rcu_read_unlock();
++			return c;
++		}
++	}
++
++	rcu_read_unlock();
++
++	return NULL;
++}
++
+ static inline struct hci_conn *hci_conn_hash_lookup_le(struct hci_dev *hdev,
+ 						       bdaddr_t *ba,
+ 						       __u8 ba_type)
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 262ff30261d67..1e537ed83ba4b 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3050,8 +3050,18 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
+ 
+ 	hci_dev_lock(hdev);
+ 
++	/* Check for existing connection:
++	 *
++	 * 1. If it doesn't exist then it must be receiver/slave role.
++	 * 2. If it does exist confirm that it is connecting/BT_CONNECT in case
++	 *    of initiator/master role since there could be a collision where
++	 *    either side is attempting to connect or something like a fuzzing
++	 *    testing is trying to play tricks to destroy the hcon object before
++	 *    it even attempts to connect (e.g. hcon->state == BT_OPEN).
++	 */
+ 	conn = hci_conn_hash_lookup_ba(hdev, ev->link_type, &ev->bdaddr);
+-	if (!conn) {
++	if (!conn ||
++	    (conn->role == HCI_ROLE_MASTER && conn->state != BT_CONNECT)) {
+ 		/* In case of error status and there is no connection pending
+ 		 * just unlock as there is nothing to cleanup.
+ 		 */
+@@ -5618,8 +5628,18 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
+ 	 */
+ 	hci_dev_clear_flag(hdev, HCI_LE_ADV);
+ 
+-	conn = hci_conn_hash_lookup_ba(hdev, LE_LINK, bdaddr);
+-	if (!conn) {
++	/* Check for existing connection:
++	 *
++	 * 1. If it doesn't exist then use the role to create a new object.
++	 * 2. If it does exist confirm that it is connecting/BT_CONNECT in case
++	 *    of initiator/master role since there could be a collision where
++	 *    either side is attempting to connect or something like a fuzzing
++	 *    testing is trying to play tricks to destroy the hcon object before
++	 *    it even attempts to connect (e.g. hcon->state == BT_OPEN).
++	 */
++	conn = hci_conn_hash_lookup_role(hdev, LE_LINK, role, bdaddr);
++	if (!conn ||
++	    (conn->role == HCI_ROLE_MASTER && conn->state != BT_CONNECT)) {
+ 		/* In case of error status and there is no connection pending
+ 		 * just unlock as there is nothing to cleanup.
+ 		 */
+-- 
+2.51.0
+
 
 
 
