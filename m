@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-182728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DEDBADCB4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBFFBADE13
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F05DB19454F9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BBE21946044
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826563043CC;
-	Tue, 30 Sep 2025 15:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3292D662F;
+	Tue, 30 Sep 2025 15:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJwel/WG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsNcEb6W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB8116A956;
-	Tue, 30 Sep 2025 15:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0DC1F4C8E;
+	Tue, 30 Sep 2025 15:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245894; cv=none; b=pNNBL9gE18OPTgtNiCmtiL9wF3TXvgWvB/9Cfzh3Jbnc5spCfSf57JXyxj5zjgZGgi7shYNvPTVB3KbKFpv3aRy2gEB1m70sHV+jP4Ms5LqbrAapkoZpp5FbwtAa294N0BD1wEHARzthmBAJPeKumqXHTWD1s0fz7SN91T2hQKo=
+	t=1759246200; cv=none; b=H8SdFKtUr8d/elXmMlBKgf7EqNQjW+prKaRI/1BsPj1nC6Ple+e8dUtnTc8B09YDr8NIbEQvVtVgumBkbAsfJpBOBsMv6fsDM9eNm/OmP3XSn/rgV5fxbd1KCEgc/PiPp7DzF55PPxe5A9A5+QM6qiLEpx0Vq3CG3IqrYKgabzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245894; c=relaxed/simple;
-	bh=PI34sMbhjuLakeb11cWG68B3fDlsuQ+QmA8rUyQOoaY=;
+	s=arc-20240116; t=1759246200; c=relaxed/simple;
+	bh=Rg/FOSYD9bqtsy6jSy3Yj4XI32apbqT/xoalnqZBERo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=egq5VgfiuVMOIRnTJ9/IiXZtT0YHIc+DXR5HUs6rM/Drp3O+qbObXOFhjfUlgYB1t7hcFp9c3gq+TiiJYyeYuBGnqVrRFhHTDnEvmUTvrAuv6fjGUTSJxndELu7pkr42vQdGzjEX7OsNj9byzl1/yDDme0Rzj9mIyjVY5nqjXp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJwel/WG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A341EC4CEF0;
-	Tue, 30 Sep 2025 15:24:53 +0000 (UTC)
+	 MIME-Version; b=IuzWOEO0VUlItAKr19TL7d9mGt3s6CWgBTv6Az9dsenpSuO/FMnvuh0IxG4ycuHXT9LP3a4TUrxjv4xo7Vhl1U/ySRAYbU6AEnMWF+wJAuQrsokyvgNq3UlyT6lElqwFZoKT8tzlAE/g3DqhOBL7S7PJF8+3OSDIVYEs9QyQ9HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsNcEb6W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD28C4CEF0;
+	Tue, 30 Sep 2025 15:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245894;
-	bh=PI34sMbhjuLakeb11cWG68B3fDlsuQ+QmA8rUyQOoaY=;
+	s=korg; t=1759246199;
+	bh=Rg/FOSYD9bqtsy6jSy3Yj4XI32apbqT/xoalnqZBERo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJwel/WGT9Mz46ou2E/sLbAoJw7G9f0ZPpONkQ7jVqhWDlYufYYrgmv1KS3pUQr/T
-	 ZwbJqGe5NhaTX/tzdyjt3SkKeefCd+e1KouJ46xd7FDEcY5jhrDINsUKrpiPvV7J7f
-	 rDvfC4xbxmka4/c2fyWfndB61rGLJC/3SRpqxzjk=
+	b=XsNcEb6WEL3SjEJP5jsvhif52bn4iAicWZPJhelxzreGnZsHbwYKHQe0k2Ur2BpXx
+	 Mv7GlqwbjT9M3/ZNlVlmJgNE5BM7QwxYMtuYPZgURjO3JQlMb9tra4Y6ihVxrt3wB8
+	 0dWi5IvDMldD7E0FPZmCE6W92rg4letpQmpE0Ifo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <David.Laight@aculab.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.6 81/91] minmax: simplify min()/max()/clamp() implementation
+	Amit Chaudhari <amitchaudhari@mac.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12 66/89] HID: asus: add support for missing PX series fn keys
 Date: Tue, 30 Sep 2025 16:48:20 +0200
-Message-ID: <20250930143824.543989424@linuxfoundation.org>
+Message-ID: <20250930143824.641223171@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Amit Chaudhari <amitchaudhari@mac.com>
 
-[ Upstream commit dc1c8034e31b14a2e5e212104ec508aec44ce1b9 ]
+commit 831f70a5b93bd2d9e858ced2c12fab5766ede5e7 upstream.
 
-Now that we no longer have any C constant expression contexts (ie array
-size declarations or static initializers) that use min() or max(), we
-can simpify the implementation by not having to worry about the result
-staying as a C constant expression.
+Add support for missing hotkey keycodes affecting Asus PX13 and PX16 families
+so userspace can use them.
 
-So now we can unconditionally just use temporary variables of the right
-type, and get rid of the excessive expansion that used to come from the
-use of
-
-   __builtin_choose_expr(__is_constexpr(...), ..
-
-to pick the specialized code for constant expressions.
-
-Another expansion simplification is to pass the temporary variables (in
-addition to the original expression) to our __types_ok() macro.  That
-may superficially look like it complicates the macro, but when we only
-want the type of the expression, expanding the temporary variable names
-is much simpler and smaller than expanding the potentially complicated
-original expression.
-
-As a result, on my machine, doing a
-
-  $ time make drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.i
-
-goes from
-
-	real	0m16.621s
-	user	0m15.360s
-	sys	0m1.221s
-
-to
-
-	real	0m2.532s
-	user	0m2.091s
-	sys	0m0.452s
-
-because the token expansion goes down dramatically.
-
-In particular, the longest line expansion (which was line 71 of that
-'ia_css_ynr.host.c' file) shrinks from 23,338kB (yes, 23MB for one
-single line) to "just" 1,444kB (now "only" 1.4MB).
-
-And yes, that line is still the line from hell, because it's doing
-multiple levels of "min()/max()" expansion thanks to some of them being
-hidden inside the uDIGIT_FITTING() macro.
-
-Lorenzo has a nice cleanup patch that makes that driver use inline
-functions instead of macros for sDIGIT_FITTING() and uDIGIT_FITTING(),
-which will fix that line once and for all, but the 16-fold reduction in
-this case does show why we need to simplify these helpers.
-
-Cc: David Laight <David.Laight@aculab.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Amit Chaudhari <amitchaudhari@mac.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   43 ++++++++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
+ drivers/hid/hid-asus.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -35,10 +35,10 @@
- #define __is_noneg_int(x)	\
- 	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -971,7 +971,10 @@ static int asus_input_mapping(struct hid
+ 		case 0xc4: asus_map_key_clear(KEY_KBDILLUMUP);		break;
+ 		case 0xc5: asus_map_key_clear(KEY_KBDILLUMDOWN);		break;
+ 		case 0xc7: asus_map_key_clear(KEY_KBDILLUMTOGGLE);	break;
++		case 0x4e: asus_map_key_clear(KEY_FN_ESC);		break;
++		case 0x7e: asus_map_key_clear(KEY_EMOJI_PICKER);	break;
  
--#define __types_ok(x, y) 					\
--	(__is_signed(x) == __is_signed(y) ||			\
--		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
--		__is_noneg_int(x) || __is_noneg_int(y))
-+#define __types_ok(x, y, ux, uy) 				\
-+	(__is_signed(ux) == __is_signed(uy) ||			\
-+	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
-+	 __is_noneg_int(x) || __is_noneg_int(y))
- 
- #define __cmp_op_min <
- #define __cmp_op_max >
-@@ -51,34 +51,31 @@
- #define __cmp_once(op, type, x, y) \
- 	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
- 
--#define __careful_cmp_once(op, x, y) ({			\
--	static_assert(__types_ok(x, y),			\
-+#define __careful_cmp_once(op, x, y, ux, uy) ({		\
-+	__auto_type ux = (x); __auto_type uy = (y);	\
-+	static_assert(__types_ok(x, y, ux, uy),		\
- 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
--	__cmp_once(op, __auto_type, x, y); })
-+	__cmp(op, ux, uy); })
- 
--#define __careful_cmp(op, x, y)					\
--	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
--		__cmp(op, x, y), __careful_cmp_once(op, x, y))
-+#define __careful_cmp(op, x, y) \
-+	__careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
- 
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
- 
--#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
--	typeof(val) unique_val = (val);						\
--	typeof(lo) unique_lo = (lo);						\
--	typeof(hi) unique_hi = (hi);						\
-+#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
-+	__auto_type uval = (val);						\
-+	__auto_type ulo = (lo);							\
-+	__auto_type uhi = (hi);							\
- 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
- 			(lo) <= (hi), true),					\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
--	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
--	__clamp(unique_val, unique_lo, unique_hi); })
--
--#define __careful_clamp(val, lo, hi) ({					\
--	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
--		__clamp(val, lo, hi),					\
--		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
--			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
-+	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
-+	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
-+	__clamp(uval, ulo, uhi); })
-+
-+#define __careful_clamp(val, lo, hi) \
-+	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
- 
- /**
-  * min - return minimum of two values of the same or compatible types
++		case 0x8b: asus_map_key_clear(KEY_PROG1);	break; /* ProArt Creator Hub key */
+ 		case 0x6b: asus_map_key_clear(KEY_F21);		break; /* ASUS touchpad toggle */
+ 		case 0x38: asus_map_key_clear(KEY_PROG1);	break; /* ROG key */
+ 		case 0xba: asus_map_key_clear(KEY_PROG2);	break; /* Fn+C ASUS Splendid */
 
 
 
