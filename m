@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679CCBAD644
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C83BAD7CB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B237F1884FE7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4617E18916E3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192E23054C5;
-	Tue, 30 Sep 2025 14:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0631623506A;
+	Tue, 30 Sep 2025 15:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZihZBD5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZhTQuvb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87982F616B;
-	Tue, 30 Sep 2025 14:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51E6304964;
+	Tue, 30 Sep 2025 15:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244276; cv=none; b=rDQlXPgLTPzcDwPU0aV/IcLU72sN+YhA8+TGWx3pgnhYo8jeHngpinqUNtU+715bcI1S50gizMyR1ovz0k8LfDo77ya3jnhUCuFtLUFZNiJ4XclfN3eBecUjlVd3JGtOAWKcK15BuXnnofuJpJvzJ4LD6uQISNU+2QmeRMeQ+Gk=
+	t=1759244699; cv=none; b=IhHVVqz072LUo8hV495vc6F805+yU8OiEJD9r+wlbnAIVAC+Cj0HbiGw/KW/LCWXet/h1LlgOlWn86yjBUcNc4oml40uVLPY8tQNzbJNowSHJblA6fTTbw1bPiCv8vAkQVdnATQQtlZ1CeTn7gxtytMRQ7hgvLIbDF0OUnsguak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244276; c=relaxed/simple;
-	bh=+Z3dSjvzvv5RfY23eJAG1l3VSvBfdBlqig736i+zg94=;
+	s=arc-20240116; t=1759244699; c=relaxed/simple;
+	bh=OxSepol2nO7gkJbnV0onDbe1tHKv6GmVJs177wCz62M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VM82bCCYjDpejC+rEZRJ1KKgKgUF5iHeOnqHAq+WnYSv+RqZHYCdpE/n8vtqVGcLTZX9cqiCvAMK50hZ1/ELzA1Pta3MxSL1lLk3zFLQSfyHwl2vB69e0yIlWEbAtatSXIexFaeagWouaWp+mKtqFsjoXS+BYPXFBgIkQYvZwWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZihZBD5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215E9C4CEF0;
-	Tue, 30 Sep 2025 14:57:55 +0000 (UTC)
+	 MIME-Version; b=ucJCfcXueR4Fq30rNngCvFfZApNfKNCgGXAiUU1OSE0sBwa3SjMrgb6LRnp1cSqSlUJW/olDFwXA0RQvCJ7UOGGKAVx29/BCP+sGsDvC/OuDfRBAOFSHrx/RFBCWT+ArtjWtuG5OBO8BVPAAxncdtOgUB++4WuXfqVZIOeqOmBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZhTQuvb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3EBC4CEF0;
+	Tue, 30 Sep 2025 15:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244276;
-	bh=+Z3dSjvzvv5RfY23eJAG1l3VSvBfdBlqig736i+zg94=;
+	s=korg; t=1759244699;
+	bh=OxSepol2nO7gkJbnV0onDbe1tHKv6GmVJs177wCz62M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZihZBD5oILY7E+p9zLfEvphRFj/mNa/M19HPgV/DHjT6HPC63YaT7y5Ji86h2pBdh
-	 kVnZZJCkgMWTfR3b1r70TiCd8UgdoSufRR+8wYxvOQaHoxhEvxjxMiD0fQRz1DXIE5
-	 YZb+UhScxU+nhp3Dv/mniVmk8/IaKBUgCDKMylts=
+	b=iZhTQuvb+kIH1lXMSnitBThNR+wc5akOPdNhWRYl4AU7z+0oHLO9UXC6N3PXeMSGS
+	 UUGURRJLgDE5nltyn/DDUoJc8J5S8/yCJOHGxUGAy5QDzn5cgZ2Ga/e6g4kBTLktjv
+	 nw7/1ih1vNER+jJxDNclyYVbgrWcGxwqwH/dyDiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Zabelin Nikita <n.zabelin@mt-integration.ru>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/122] phy: ti: omap-usb2: fix device leak at unbind
+Subject: [PATCH 6.16 086/143] drm/gma500: Fix null dereference in hdmi teardown
 Date: Tue, 30 Sep 2025 16:46:50 +0200
-Message-ID: <20250930143826.232622378@linuxfoundation.org>
+Message-ID: <20250930143834.658640574@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Zabelin Nikita <n.zabelin@mt-integration.ru>
 
-[ Upstream commit 64961557efa1b98f375c0579779e7eeda1a02c42 ]
+[ Upstream commit 352e66900cde63f3dadb142364d3c35170bbaaff ]
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+pci_set_drvdata sets the value of pdev->driver_data to NULL,
+after which the driver_data obtained from the same dev is
+dereferenced in oaktrail_hdmi_i2c_exit, and the i2c_dev is
+extracted from it. To prevent this, swap these calls.
 
-Fixes: 478b6c7436c2 ("usb: phy: omap-usb2: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-3-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Svacer.
+
+Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
+Signed-off-by: Zabelin Nikita <n.zabelin@mt-integration.ru>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://lore.kernel.org/r/20250918150703.2562604-1-n.zabelin@mt-integration.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-omap-usb2.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/gma500/oaktrail_hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -363,6 +363,13 @@ static void omap_usb2_init_errata(struct
- 		phy->flags |= OMAP_USB2_DISABLE_CHRG_DET;
- }
+diff --git a/drivers/gpu/drm/gma500/oaktrail_hdmi.c b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
+index 1cf3943691277..c0feca58511df 100644
+--- a/drivers/gpu/drm/gma500/oaktrail_hdmi.c
++++ b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
+@@ -726,8 +726,8 @@ void oaktrail_hdmi_teardown(struct drm_device *dev)
  
-+static void omap_usb2_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int omap_usb2_probe(struct platform_device *pdev)
- {
- 	struct omap_usb	*phy;
-@@ -373,6 +380,7 @@ static int omap_usb2_probe(struct platfo
- 	struct device_node *control_node;
- 	struct platform_device *control_pdev;
- 	const struct usb_phy_data *phy_data;
-+	int ret;
- 
- 	phy_data = device_get_match_data(&pdev->dev);
- 	if (!phy_data)
-@@ -423,6 +431,11 @@ static int omap_usb2_probe(struct platfo
- 			return -EINVAL;
- 		}
- 		phy->control_dev = &control_pdev->dev;
-+
-+		ret = devm_add_action_or_reset(&pdev->dev, omap_usb2_put_device,
-+					       phy->control_dev);
-+		if (ret)
-+			return ret;
- 	} else {
- 		if (of_property_read_u32_index(node,
- 					       "syscon-phy-power", 1,
+ 	if (hdmi_dev) {
+ 		pdev = hdmi_dev->dev;
+-		pci_set_drvdata(pdev, NULL);
+ 		oaktrail_hdmi_i2c_exit(pdev);
++		pci_set_drvdata(pdev, NULL);
+ 		iounmap(hdmi_dev->regs);
+ 		kfree(hdmi_dev);
+ 		pci_dev_put(pdev);
+-- 
+2.51.0
+
 
 
 
