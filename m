@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D780BAD575
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:55:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8EABAD758
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C71677A1DEC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CEC1178BF6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EF7305040;
-	Tue, 30 Sep 2025 14:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0C1202C48;
+	Tue, 30 Sep 2025 15:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuFeL3Wq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCryxWKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F0B303C9B;
-	Tue, 30 Sep 2025 14:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8751EE02F;
+	Tue, 30 Sep 2025 15:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244094; cv=none; b=rI1PdVIsxFmM6lVN0iuof+zEyXWPA2Qz/RzasMgdWBv8OaWJaL/i0XsqCC0Ct6mJgEUUCmx2VoTP4HqqgSfU7UBhkojjrkle8TkPG+753gS9sBhsa4rbfQSMoJsW0DjrUu0m8zuvY3jjv3xs5jmiWOeq+lxhiONF4TmSm0Bm6uc=
+	t=1759244524; cv=none; b=Y1Mm4M2TpcGlSSKxCUwcjeW2OkCSrnw+uXXq4GKjAoNwDuPEAMnczYlZEI3s68wqe5+bd0z6M0f07X2gVlhD4iwAhZl/zUmWr1j3EyfDPuVmbeg43R1GvATPg8sXvjSBRpLLGhk0/r1QFiBg3KIx2PaIwgQUuhFLIKTZm4IGTiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244094; c=relaxed/simple;
-	bh=XsNXMEjKoi511JPvaHu3JLF8w+TxE3iHQgflQA2+mN4=;
+	s=arc-20240116; t=1759244524; c=relaxed/simple;
+	bh=oZIHfvlOtEjIHBUfePXny7msNNJ1IDeM0b5tj+xyBH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7o6+I7GjhKVWrlKyeM8t2FsYS6Gdcn1C7MYdGcealPAXo4cng5+hDTqWW0DKRe4EJ3q7je+Sswlvk5S/loob+QPlvb/yLZK03SiF6+axGOmwp4w2J13xCM0SUmKRBAxhCbBhv4ypd8BL9r8Uf9j0ANMIYopViLP2CPlPCXJ6h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuFeL3Wq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D652C4CEF0;
-	Tue, 30 Sep 2025 14:54:53 +0000 (UTC)
+	 MIME-Version; b=JbNKwKiJn4ANR6Ok5ToE0jmP43/322PCZQvkRFbTL2qrNzCFmeS4ZdiZ4N5MJU3tNnJ/P/q7c0Zoar4Ie2cbWz9z8EhajtVsw7KLJ0bGbDFUlfbVaEdyGSxCP0FUmjWzlPZVcqiGuqs1QKrP4cqISDfLzY5TgBY7NDY54VpgTJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCryxWKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C60DC4CEF0;
+	Tue, 30 Sep 2025 15:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244093;
-	bh=XsNXMEjKoi511JPvaHu3JLF8w+TxE3iHQgflQA2+mN4=;
+	s=korg; t=1759244524;
+	bh=oZIHfvlOtEjIHBUfePXny7msNNJ1IDeM0b5tj+xyBH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuFeL3WqPLK5uS3CX3z0nFIRVSZ8LiCByquQOlWMtyE1LCdVXQmEWHSJgYJKIHxJ7
-	 36Uf1rJtX1NZ7BK+6+2spRTo3VgGk6DqJ8NhubUbaNSC9hZrgKhW9FILdtFE7GKz+W
-	 ialdXbvw+QrV/sIqNckQOVnzOI1umW1LvQruHiLk=
+	b=rCryxWKK2BnsgxmCbI+JuEe5rY4Yy3bZA4VywTFgkX8YSREZrk2Q40l9DO5kEgvJc
+	 CVspaPWH3+BNusGxOOhn01xlzpBtPNxGYjNFxA7FXRrz4OS/W5h6HDYKn5P3UgVQ3t
+	 qEJuej/qBbKQmb0L1fmYxP4w5htoMapZsm+seAok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.10 026/122] Input: i8042 - add TUXEDO InfinityBook Pro Gen10 AMD to i8042 quirk table
-Date: Tue, 30 Sep 2025 16:45:57 +0200
-Message-ID: <20250930143824.073785732@linuxfoundation.org>
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 034/143] net: sfp: add quirk for FLYPRO copper SFP+ module
+Date: Tue, 30 Sep 2025 16:45:58 +0200
+Message-ID: <20250930143832.602316552@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-commit 1939a9fcb80353dd8b111aa1e79c691afbde08b4 upstream.
+[ Upstream commit ddbf0e78a8b20ec18d314d31336a0230fdc9b394 ]
 
-Occasionally wakes up from suspend with missing input on the internal
-keyboard. Setting the quirks appears to fix the issue for this device as
-well.
+Add quirk for a copper SFP that identifies itself as "FLYPRO"
+"SFP-10GT-CS-30M". It uses RollBall protocol to talk to the PHY.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250826142646.13516-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20250831105910.3174-1-olek2@wp.pl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/phy/sfp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1155,6 +1155,20 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "XxHP4NAx"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
- 	/*
- 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
- 	 * after suspend fixable with nomux + reset + noloop + nopnp. Luckily,
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 5347c95d1e772..4cd1d6c51dc2a 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -492,6 +492,9 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
+ 		  sfp_fixup_nokia),
+ 
++	// FLYPRO SFP-10GT-CS-30M uses Rollball protocol to talk to the PHY.
++	SFP_QUIRK_F("FLYPRO", "SFP-10GT-CS-30M", sfp_fixup_rollball),
++
+ 	// Fiberstore SFP-10G-T doesn't identify as copper, uses the Rollball
+ 	// protocol to talk to the PHY and needs 4 sec wait before probing the
+ 	// PHY.
+-- 
+2.51.0
+
 
 
 
