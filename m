@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B586DBADC48
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 646CDBADA9E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E8B932578D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 625F0327859
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4464627056D;
-	Tue, 30 Sep 2025 15:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8D027B328;
+	Tue, 30 Sep 2025 15:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynEVY7ug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSaa0aaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010C4846F;
-	Tue, 30 Sep 2025 15:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A24205E3B;
+	Tue, 30 Sep 2025 15:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245790; cv=none; b=RoxoslF+Ak0zAl1uFFuMRquq6G4jtqnAgdxdmrlOEcC6fvZ4L6fqUR3fxL3rd05lHWCt3LbxlY/ZrzlVAZTX2ZMTavhecRhNj9jt9iRtIxaqqkRk/3TXLDie1nrOr4EiNV9oCNlYVp0n+Y8cU1FrQhvGIgCjQ3AtL0e0uHpy9Eg=
+	t=1759245334; cv=none; b=rOh7VtLo8UYeMS1BYsPhXDFUGWarR17yFD2KmTpM8UEnLHNYPZuUOI+BhDjk8MGH7JRQjHVfW+B0kJtOkxtTmU7PJLn6ECGLTzyybvNukwlaJf710J056T+H3giJh4txKdfvRqQ7fjR2jGGiWFso/q3GpL0npbreg31+OglIYKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245790; c=relaxed/simple;
-	bh=Ybu9OOkephaWQyeTZOSTHEKNeyPcj04+442kR/4V3f0=;
+	s=arc-20240116; t=1759245334; c=relaxed/simple;
+	bh=E3KgQfwXM9LzHhEsuM3x/LyuMYUUJ8qAQZ1PiMSUfqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gHb53qVHLI0q3Zqt4Rzs+f6WJA0QejqXH9otGLFxm4iM5ru+4TuHmMCEm42BwtCYUHAF31jeDDQdJjSQahr3RHf5aQ2BXYwJrhWt97jT71PhaSA66hFP+X1OGU4/DxLcXLXhGP1Vpi9XpREM5NO8bnEBzuDuDrTEEuqI2F2BDvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynEVY7ug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CC3C4CEF0;
-	Tue, 30 Sep 2025 15:23:09 +0000 (UTC)
+	 MIME-Version; b=lT3dwrvIeci5Q2YBOkW133CQxVHw1V6+XenTZILOR9oJUOG2RCiAwn6FYjHYzNxWFwpbbLUg8DP2k0eA34NEuYH4TC+zZuymldTqgY7WcqBz/nStaVubipXXDTL6kN99DIFHOyebLfWRbBRrBF0kPsz/V4zfCN1uMBmPWGlqU0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSaa0aaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE219C4CEF0;
+	Tue, 30 Sep 2025 15:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245789;
-	bh=Ybu9OOkephaWQyeTZOSTHEKNeyPcj04+442kR/4V3f0=;
+	s=korg; t=1759245333;
+	bh=E3KgQfwXM9LzHhEsuM3x/LyuMYUUJ8qAQZ1PiMSUfqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ynEVY7ugNfr4gFCZkSKk9FpnlYp2PI5Nbiks5+AlwAbVJdVwTl/u17UapILtkhZEA
-	 K1BORSYuoEd5uN2JxpMzCKifks68XqDp3iVG8mdM+5O2Qf+1pirAVJ4gqOnBbnKTzG
-	 QSFfVQKI+vxBuGIs1/YFlBgg4YuWjUq8EMo4eYtk=
+	b=cSaa0aaRL+gTluc+IGaPB8bFi0PHIAPOt8+4QcsQUbEEW68ozB29scY4bAVNfWK9E
+	 pRkycbVzM8HB/pXHjMlU6vbdmL9M0DCye13M463fFWbkAK+RyrKYfPpC75CBnBxBjc
+	 /SIUJ9NJLObbn1Wp/lk9x6xF1CXnpY/O1ayaFQJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 49/91] net: dsa: lantiq_gswip: move gswip_add_single_port_br() call to port_setup()
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Kamakshi Nellore <nellorex.kamakshi@intel.com>
+Subject: [PATCH 5.15 138/151] i40e: fix idx validation in i40e_validate_queue_map
 Date: Tue, 30 Sep 2025 16:47:48 +0200
-Message-ID: <20250930143823.213724157@linuxfoundation.org>
+Message-ID: <20250930143833.094107061@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit c0054b25e2f1045f47b4954cf13a539e5e6047df ]
+commit aa68d3c3ac8d1dcec40d52ae27e39f6d32207009 upstream.
 
-A port added to a "single port bridge" operates as standalone, and this
-is mutually exclusive to being part of a Linux bridge. In fact,
-gswip_port_bridge_join() calls gswip_add_single_port_br() with
-add=false, i.e. removes the port from the "single port bridge" to enable
-autonomous forwarding.
+Ensure idx is within range of active/initialized TCs when iterating over
+vf->ch[idx] in i40e_validate_queue_map().
 
-The blamed commit seems to have incorrectly thought that ds->ops->port_enable()
-is called one time per port, during the setup phase of the switch.
-
-However, it is actually called during the ndo_open() implementation of
-DSA user ports, which is to say that this sequence of events:
-
-1. ip link set swp0 down
-2. ip link add br0 type bridge
-3. ip link set swp0 master br0
-4. ip link set swp0 up
-
-would cause swp0 to join back the "single port bridge" which step 3 had
-just removed it from.
-
-The correct DSA hook for one-time actions per port at switch init time
-is ds->ops->port_setup(). This is what seems to match the coder's
-intention; also see the comment at the beginning of the file:
-
- * At the initialization the driver allocates one bridge table entry for
-   ~~~~~~~~~~~~~~~~~~~~~
- * each switch port which is used when the port is used without an
- * explicit bridge.
-
-Fixes: 8206e0ce96b3 ("net: dsa: lantiq: Add VLAN unaware bridge offloading")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250918072142.894692-2-vladimir.oltean@nxp.com
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/lantiq_gswip.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
-index a2b10b28c11fa..054548294f039 100644
---- a/drivers/net/dsa/lantiq_gswip.c
-+++ b/drivers/net/dsa/lantiq_gswip.c
-@@ -682,18 +682,27 @@ static int gswip_add_single_port_br(struct gswip_priv *priv, int port, bool add)
- 	return 0;
- }
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2457,8 +2457,10 @@ static int i40e_validate_queue_map(struc
+ 	u16 vsi_queue_id, queue_id;
  
--static int gswip_port_enable(struct dsa_switch *ds, int port,
--			     struct phy_device *phydev)
-+static int gswip_port_setup(struct dsa_switch *ds, int port)
- {
- 	struct gswip_priv *priv = ds->priv;
- 	int err;
- 
- 	if (!dsa_is_cpu_port(ds, port)) {
--		u32 mdio_phy = 0;
--
- 		err = gswip_add_single_port_br(priv, port, true);
- 		if (err)
- 			return err;
-+	}
+ 	for_each_set_bit(vsi_queue_id, &queuemap, I40E_MAX_VSI_QP) {
+-		if (vf->adq_enabled) {
+-			vsi_id = vf->ch[vsi_queue_id / I40E_MAX_VF_VSI].vsi_id;
++		u16 idx = vsi_queue_id / I40E_MAX_VF_VSI;
 +
-+	return 0;
-+}
-+
-+static int gswip_port_enable(struct dsa_switch *ds, int port,
-+			     struct phy_device *phydev)
-+{
-+	struct gswip_priv *priv = ds->priv;
-+
-+	if (!dsa_is_cpu_port(ds, port)) {
-+		u32 mdio_phy = 0;
- 
- 		if (phydev)
- 			mdio_phy = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
-@@ -1813,6 +1822,7 @@ static int gswip_get_sset_count(struct dsa_switch *ds, int port, int sset)
- static const struct dsa_switch_ops gswip_xrx200_switch_ops = {
- 	.get_tag_protocol	= gswip_get_tag_protocol,
- 	.setup			= gswip_setup,
-+	.port_setup		= gswip_port_setup,
- 	.port_enable		= gswip_port_enable,
- 	.port_disable		= gswip_port_disable,
- 	.port_bridge_join	= gswip_port_bridge_join,
--- 
-2.51.0
-
++		if (vf->adq_enabled && idx < vf->num_tc) {
++			vsi_id = vf->ch[idx].vsi_id;
+ 			queue_id = (vsi_queue_id % I40E_DEFAULT_QUEUES_PER_VF);
+ 		} else {
+ 			queue_id = vsi_queue_id;
 
 
 
