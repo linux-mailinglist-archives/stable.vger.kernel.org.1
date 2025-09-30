@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-182687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029C8BADCF3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF1FBADB76
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9738E3BC042
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C0193A373C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BC31C862F;
-	Tue, 30 Sep 2025 15:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21763081A6;
+	Tue, 30 Sep 2025 15:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJG1sFE3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DRh4lF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D9D205E3B;
-	Tue, 30 Sep 2025 15:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB212505AA;
+	Tue, 30 Sep 2025 15:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245760; cv=none; b=VVv/TJ8j/bFf9NliS+Ma1Zw1X/B2T2WHASyEzWvI32HDZ6cdo35updkCF8vu4iuN4m5uwuIzPwPiW4Flq1DW5gBForuT4h/6gj3+cEbPvsU/HWJapvnyWNpJzbP2WUWmvGSFueIGJwaim/R/C5Pd0pZbOk8bp/Dg4BoeCO1R8+E=
+	t=1759245306; cv=none; b=P18NG37Jab2E28dc1S0ijwnzult/Wo45imew5GRi4CV54/LMMo/7bY+yQYSpJqL2b7zFB2q4HhI4I0EPT51uxIljNm2C3+5EO3PBBkDlNXDodKsg2zckFx2uVuMHB2hk5SGvAw8qwgmrv1PO+0JObgDM6uA5BunQRQ/LWTW5obc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245760; c=relaxed/simple;
-	bh=E8OX3ozDvUSznXiYp8CRxd9yj/lk5Y72lEfIjE5vNEs=;
+	s=arc-20240116; t=1759245306; c=relaxed/simple;
+	bh=2VMD5UT1EApDyzpvib1Az4NUa+wwIl5b775PwlZdSFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfrpzhmLvacCl+ZHTL6YqlDBQx5AFvQSF6st+BuqGsL+IiYBLLOSdpFWzgz0ED1FZMef3NZzXDMBkWhBCxOOHzPhGH7v5Ze9j5A0irVCV6Uc/0zqeBJmpMp5YtZDZlW1jKnlbbAXcUK8ibhAXpGP4lXk/XC6v0nLkNep0Kd2W1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJG1sFE3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627CCC4CEF0;
-	Tue, 30 Sep 2025 15:22:39 +0000 (UTC)
+	 MIME-Version; b=feNZluNRJES0DwQRJ+/zsI0eHEX0jmkJgnsq9A9xijM0bo5p4poDAK6+geiBztQ0oDIcsoD1mlC5US4jCAWLjnggG5iVRIRj5Nro2JEbmUHnYgkQGrzPEwcIamjTOTsEGdZFLELyVN+mHAV1dL4r2hPzLF3TxFxZWtafitXTAPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DRh4lF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0579C4CEF0;
+	Tue, 30 Sep 2025 15:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245759;
-	bh=E8OX3ozDvUSznXiYp8CRxd9yj/lk5Y72lEfIjE5vNEs=;
+	s=korg; t=1759245306;
+	bh=2VMD5UT1EApDyzpvib1Az4NUa+wwIl5b775PwlZdSFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJG1sFE3J0/j2YI2+bRbb9U9ercgU8euT9rcRtprG/+K/47JBlwj4+J/7wIEvCdPD
-	 aNzq/gTV/eHnZkoevfZbyS8Lj0Hpl+w9HJ89P7x2AUYWG+kMoxgQNFxco+65Wr4Yn9
-	 JzhSKjkAKwDZXZaiPlx0LZa9PzxkCZxPQQd3Xq+I=
+	b=0DRh4lF2NYrHA5fny3ERnlyFHlbp/psXrmt7SvKPMQdavC4HN3bOMZE96+qIoHfO7
+	 FpbyWZeQoWYKd7i1n/jlsa5dzJd64p/OjwP06HARm0zJzw3uPjG8lZ20mvrL/TGBW0
+	 wpqKfi8YkbMREn5iYSsI1BKqY53C67yK1o+Op0vA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 41/91] Bluetooth: hci_sync: Fix hci_resume_advertising_sync
+Subject: [PATCH 5.15 130/151] nexthop: Forbid FDB status change while nexthop is in a group
 Date: Tue, 30 Sep 2025 16:47:40 +0200
-Message-ID: <20250930143822.877157085@linuxfoundation.org>
+Message-ID: <20250930143832.780288937@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 1488af7b8b5f9896ea88ee35aa3301713f72737c ]
+[ Upstream commit 390b3a300d7872cef9588f003b204398be69ce08 ]
 
-hci_resume_advertising_sync is suppose to resume all instance paused by
-hci_pause_advertising_sync, this logic is used for procedures are only
-allowed when not advertising, but instance 0x00 was not being
-re-enabled.
+The kernel forbids the creation of non-FDB nexthop groups with FDB
+nexthops:
 
-Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+ # ip nexthop add id 1 via 192.0.2.1 fdb
+ # ip nexthop add id 2 group 1
+ Error: Non FDB nexthop group cannot have fdb nexthops.
+
+And vice versa:
+
+ # ip nexthop add id 3 via 192.0.2.2 dev dummy1
+ # ip nexthop add id 4 group 3 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+
+However, as long as no routes are pointing to a non-FDB nexthop group,
+the kernel allows changing the type of a nexthop from FDB to non-FDB and
+vice versa:
+
+ # ip nexthop add id 5 via 192.0.2.2 dev dummy1
+ # ip nexthop add id 6 group 5
+ # ip nexthop replace id 5 via 192.0.2.2 fdb
+ # echo $?
+ 0
+
+This configuration is invalid and can result in a NPD [1] since FDB
+nexthops are not associated with a nexthop device:
+
+ # ip route add 198.51.100.1/32 nhid 6
+ # ping 198.51.100.1
+
+Fix by preventing nexthop FDB status change while the nexthop is in a
+group:
+
+ # ip nexthop add id 7 via 192.0.2.2 dev dummy1
+ # ip nexthop add id 8 group 7
+ # ip nexthop replace id 7 via 192.0.2.2 fdb
+ Error: Cannot change nexthop FDB status while in a group.
+
+[1]
+BUG: kernel NULL pointer dereference, address: 00000000000003c0
+[...]
+Oops: Oops: 0000 [#1] SMP
+CPU: 6 UID: 0 PID: 367 Comm: ping Not tainted 6.17.0-rc6-virtme-gb65678cacc03 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
+RIP: 0010:fib_lookup_good_nhc+0x1e/0x80
+[...]
+Call Trace:
+ <TASK>
+ fib_table_lookup+0x541/0x650
+ ip_route_output_key_hash_rcu+0x2ea/0x970
+ ip_route_output_key_hash+0x55/0x80
+ __ip4_datagram_connect+0x250/0x330
+ udp_connect+0x2b/0x60
+ __sys_connect+0x9c/0xd0
+ __x64_sys_connect+0x18/0x20
+ do_syscall_64+0xa4/0x2a0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: 38428d68719c ("nexthop: support for fdb ecmp nexthops")
+Reported-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68c9a4d2.050a0220.3c6139.0e63.GAE@google.com/
+Tested-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250921150824.149157-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 7 +++++++
+ net/ipv4/nexthop.c | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 7f3f700faebc2..dc9209f9f1a6a 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -2639,6 +2639,13 @@ static int hci_resume_advertising_sync(struct hci_dev *hdev)
- 			hci_remove_ext_adv_instance_sync(hdev, adv->instance,
- 							 NULL);
- 		}
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 633eab6ff55dd..4a8fdaae6bf21 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -2114,6 +2114,13 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
+ 		return -EINVAL;
+ 	}
+ 
++	if (!list_empty(&old->grp_list) &&
++	    rtnl_dereference(new->nh_info)->fdb_nh !=
++	    rtnl_dereference(old->nh_info)->fdb_nh) {
++		NL_SET_ERR_MSG(extack, "Cannot change nexthop FDB status while in a group");
++		return -EINVAL;
++	}
 +
-+		/* If current advertising instance is set to instance 0x00
-+		 * then we need to re-enable it.
-+		 */
-+		if (!hdev->cur_adv_instance)
-+			err = hci_enable_ext_advertising_sync(hdev,
-+							      hdev->cur_adv_instance);
- 	} else {
- 		/* Schedule for most recent instance to be restarted and begin
- 		 * the software rotation loop
+ 	err = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new, extack);
+ 	if (err)
+ 		return err;
 -- 
 2.51.0
 
