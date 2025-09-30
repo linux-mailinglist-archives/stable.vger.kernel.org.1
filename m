@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2720FBADD31
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEF2BADDD4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FEAF3A9273
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3150D16505B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA1C3043CC;
-	Tue, 30 Sep 2025 15:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B8D30505F;
+	Tue, 30 Sep 2025 15:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gXeLZNR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jl3Zfj1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD7B20E334;
-	Tue, 30 Sep 2025 15:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43391DF73C;
+	Tue, 30 Sep 2025 15:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245876; cv=none; b=fHPiF79rhhCpGwWdC6Sp9TmJgUvImkzGEpr5jo6p5GuhUFd2LXKxpneLsP38TX9qS2w8g2Zxu1QiHH2Qmf40OTEOSvXgDFVDGU+FoM9G//sDdtvhFJ/4ntXP1DMxrByG1iBXBeDQ+wvsEiDqFNillEDWZxOccXwRFqA6pximWQU=
+	t=1759246134; cv=none; b=CdzWKGdr/nmhGFsApY3TSQHQnJFSN0KT3fyvGE0i2oOb/mJbRP7B77h01wh/6cnyot/ZgAoJaONcorhYzD15oCv50w263VyGT4Y5e+8dyTS0Xa39jgXU3m1VqXaCfxNZAkCne60y+8s2V/+O6fN6AHR2CeZoOaI7u/KkKgH/MSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245876; c=relaxed/simple;
-	bh=041/KGUWUvK9wqQk0jXmczkv7LHetDlAuKv5pPxAS8U=;
+	s=arc-20240116; t=1759246134; c=relaxed/simple;
+	bh=Fvd34rEcS884F41YWLfGqFsiOMiFo9OLRaCK1kUASUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lv9Wf5ur0qZLN3aYl4vpRQ2W4UoqikxFRV3oa+wCgNTKkyobvID5zzj7/4w4u4d9IKXUzA71fK9YdWAFawkmf9kj4qRwbJO8ERwzm904iEeZJRlf7bQdkslKFzeB5j/wemDFxpGQ5Q97ys64zqZFK2yRKSWgIBmq+KINnCaeFZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gXeLZNR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58503C4CEF0;
-	Tue, 30 Sep 2025 15:24:36 +0000 (UTC)
+	 MIME-Version; b=BclIICzJyZ67iBOkyP8AUhcWoIc5KoYzniMxDLFaVy3gKR4V1t2w8SobEVVMaGY7/HbD7vQh+g4+92yWPhL0AY5300u/uSRyeOWWQGbzL9ogyTpJpiBLTzif7nf0EaXNmI4AV4soblKEFOxtpFB+cdqEFN81BDzxHgWbwEJyCl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jl3Zfj1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43461C4CEF0;
+	Tue, 30 Sep 2025 15:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245876;
-	bh=041/KGUWUvK9wqQk0jXmczkv7LHetDlAuKv5pPxAS8U=;
+	s=korg; t=1759246134;
+	bh=Fvd34rEcS884F41YWLfGqFsiOMiFo9OLRaCK1kUASUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2gXeLZNR0zd0QDLbmihriwU8BTkqMjFOmiNVrT7a870f+FxPPN6suMPY32VSZAjp+
-	 /jyVVYg4uGjYoQZIMdUAPfuL2Mua6CKMk9FhrmwDN1/9MczhI/fmmbkFAROkkPVIQI
-	 FHNjTuHGMcA0Z4v+YPBwNalCeOTnOlge8r0Le/7U=
+	b=jl3Zfj1xh75mNtFlPfzqkjWiTKhYGsu9/WrTtq3WCPKmTgH7agMvxzxCMHAdIaaVk
+	 ZiysUqW0W639E8W85JGxVfvmQfqHkkX9+z/PTGZU+deNlVQXLtQKW3DiXPS+4tmVLZ
+	 OxNhaJJTH2a5AAbQQ04YugxKT2dNRgerfqW2vxAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Zabelin Nikita <n.zabelin@mt-integration.ru>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 76/91] gpiolib: Extend software-node support to support secondary software-nodes
+Subject: [PATCH 6.12 61/89] drm/gma500: Fix null dereference in hdmi teardown
 Date: Tue, 30 Sep 2025 16:48:15 +0200
-Message-ID: <20250930143824.337223287@linuxfoundation.org>
+Message-ID: <20250930143824.443887605@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Zabelin Nikita <n.zabelin@mt-integration.ru>
 
-[ Upstream commit c6ccc4dde17676dfe617b9a37bd9ba19a8fc87ee ]
+[ Upstream commit 352e66900cde63f3dadb142364d3c35170bbaaff ]
 
-When a software-node gets added to a device which already has another
-fwnode as primary node it will become the secondary fwnode for that
-device.
+pci_set_drvdata sets the value of pdev->driver_data to NULL,
+after which the driver_data obtained from the same dev is
+dereferenced in oaktrail_hdmi_i2c_exit, and the i2c_dev is
+extracted from it. To prevent this, swap these calls.
 
-Currently if a software-node with GPIO properties ends up as the secondary
-fwnode then gpiod_find_by_fwnode() will fail to find the GPIOs.
+Found by Linux Verification Center (linuxtesting.org) with Svacer.
 
-Add a new gpiod_fwnode_lookup() helper which falls back to calling
-gpiod_find_by_fwnode() with the secondary fwnode if the GPIO was not
-found in the primary fwnode.
-
-Fixes: e7f9ff5dc90c ("gpiolib: add support for software nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20250920200955.20403-1-hansg@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-[ Adjust context ]
+Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
+Signed-off-by: Zabelin Nikita <n.zabelin@mt-integration.ru>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://lore.kernel.org/r/20250918150703.2562604-1-n.zabelin@mt-integration.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c |   19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/gma500/oaktrail_hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -4022,6 +4022,23 @@ static struct gpio_desc *gpiod_find_by_f
- 	return desc;
- }
+diff --git a/drivers/gpu/drm/gma500/oaktrail_hdmi.c b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
+index ed8626c73541c..f0ae675581d9a 100644
+--- a/drivers/gpu/drm/gma500/oaktrail_hdmi.c
++++ b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
+@@ -726,8 +726,8 @@ void oaktrail_hdmi_teardown(struct drm_device *dev)
  
-+static struct gpio_desc *gpiod_fwnode_lookup(struct fwnode_handle *fwnode,
-+					     struct device *consumer,
-+					     const char *con_id,
-+					     unsigned int idx,
-+					     enum gpiod_flags *flags,
-+					     unsigned long *lookupflags)
-+{
-+	struct gpio_desc *desc;
-+
-+	desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx, flags, lookupflags);
-+	if (gpiod_not_found(desc) && !IS_ERR_OR_NULL(fwnode))
-+		desc = gpiod_find_by_fwnode(fwnode->secondary, consumer, con_id,
-+					    idx, flags, lookupflags);
-+
-+	return desc;
-+}
-+
- struct gpio_desc *gpiod_find_and_request(struct device *consumer,
- 					 struct fwnode_handle *fwnode,
- 					 const char *con_id,
-@@ -4034,7 +4051,7 @@ struct gpio_desc *gpiod_find_and_request
- 	struct gpio_desc *desc;
- 	int ret;
- 
--	desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx, &flags, &lookupflags);
-+	desc = gpiod_fwnode_lookup(fwnode, consumer, con_id, idx, &flags, &lookupflags);
- 	if (gpiod_not_found(desc) && platform_lookup_allowed) {
- 		/*
- 		 * Either we are not using DT or ACPI, or their lookup did not
+ 	if (hdmi_dev) {
+ 		pdev = hdmi_dev->dev;
+-		pci_set_drvdata(pdev, NULL);
+ 		oaktrail_hdmi_i2c_exit(pdev);
++		pci_set_drvdata(pdev, NULL);
+ 		iounmap(hdmi_dev->regs);
+ 		kfree(hdmi_dev);
+ 		pci_dev_put(pdev);
+-- 
+2.51.0
+
 
 
 
