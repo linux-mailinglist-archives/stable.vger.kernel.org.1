@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-182619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3244BADB31
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDC7BADC5D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568781944844
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4C5E188D2C8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAED2FD1DD;
-	Tue, 30 Sep 2025 15:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A802F39C0;
+	Tue, 30 Sep 2025 15:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4eaT4SQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCzAy8E4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C79C1EB5E3;
-	Tue, 30 Sep 2025 15:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E7D27056D;
+	Tue, 30 Sep 2025 15:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245537; cv=none; b=qO0V3uGB1yH4DtshL+YAEiecrAbKOOHszAvSfG1XXjrV88gNlBGud8bcLy0eCJHq2PH/RlxMWJrld2wgPFd8lLr8zpaiJTvkXryzii9dFQGSA6lv8NC2Cs0lumbIFUwYIUEjQ+58FXQpFqsCf1NY3tYlwOhySLamRgMGQ32lwO4=
+	t=1759245800; cv=none; b=do6f0E7EkqTeZ/vIR5/qFPiAu3ffrjt9JZS3SDuh/Ir3YP3Bo6L6teIFP1lWGidYCmcJasYWwB1kFy9w4+iE78cW0pVdNv0i8tVo9OiCF2iqtdu80KMZOujdD7TN3BDsLki8IJmmMQ4i6tUnexqqd5uOcupk43xbiKkrBnOeF5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245537; c=relaxed/simple;
-	bh=c22Q9c5/bAQWP0crl7owqRlFTFqDSOnzpCw5q2b0xA8=;
+	s=arc-20240116; t=1759245800; c=relaxed/simple;
+	bh=7//x2NvAvgbljN05Ks6r4it1DpagUQppYEhj8ydA+9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPxiO97L1hc/+XH8zS85LoX6hIS9jZPrNieQ0PA1z92ycjta8ydFRRBb4oG+r9dsg2+vcLt1cLxFG4HMRMWqGvZf1kLP8skjv+dyiwyl1kprCENgTtgUnhy1zRFWqK5TQ7AGtbt5e40Fgxna+1LaO1rWcp8cNxnS0/bBZHfX9zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4eaT4SQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BB1C4CEF0;
-	Tue, 30 Sep 2025 15:18:56 +0000 (UTC)
+	 MIME-Version; b=C8A+VPvga0vR1YdWA25q6p0PcBwIyUPoCkmWsIMA7Xhe1eVsADOawSKt7CwbO53qX9VnwsQiXrvmvFVIITlgzRj04tXnesVSqPfqu2L6IC4m9/4oktp7RJ85flrnMzpW6zeK6SsPB0QRvitCACyb8tk97yVGijwRebL86ZQhwAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCzAy8E4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA92C4CEF0;
+	Tue, 30 Sep 2025 15:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245537;
-	bh=c22Q9c5/bAQWP0crl7owqRlFTFqDSOnzpCw5q2b0xA8=;
+	s=korg; t=1759245799;
+	bh=7//x2NvAvgbljN05Ks6r4it1DpagUQppYEhj8ydA+9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4eaT4SQQT6IOxuoRw8sRy/CcdbrxMin18OtQIiq9elJDgrhX97402pwQlcD2uHo1
-	 zO8L8s60gtLzoOFUSYPnO7KuI7u8Yjg6QWS8l1x+qpOO1vjcz+xCf0oIvhiQok1BV9
-	 W7a6hLYD2XYuLlvpXtU5qxdygtM6BTMP7j55cduw=
+	b=kCzAy8E4cUL9k+Qnxzc1qJlpsVApUZApabExgS314lSwe1qrdgiwy1ZQDt1apWmRZ
+	 vor6yx134Mxos4sUdZs++gmslqScCAR8bISw86J19NzPbO4av/TxnPNCVYYJsKvMfV
+	 eVK0S7Vx512HiJxXAP1VQKr+djkebWIIfitOgSfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.1 47/73] i40e: fix input validation logic for action_meta
+	Zabelin Nikita <n.zabelin@mt-integration.ru>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 52/91] drm/gma500: Fix null dereference in hdmi teardown
 Date: Tue, 30 Sep 2025 16:47:51 +0200
-Message-ID: <20250930143822.569327786@linuxfoundation.org>
+Message-ID: <20250930143823.350408140@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Zabelin Nikita <n.zabelin@mt-integration.ru>
 
-commit 9739d5830497812b0bdeaee356ddefbe60830b88 upstream.
+[ Upstream commit 352e66900cde63f3dadb142364d3c35170bbaaff ]
 
-Fix condition to check 'greater or equal' to prevent OOB dereference.
+pci_set_drvdata sets the value of pdev->driver_data to NULL,
+after which the driver_data obtained from the same dev is
+dereferenced in oaktrail_hdmi_i2c_exit, and the i2c_dev is
+extracted from it. To prevent this, swap these calls.
 
-Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with Svacer.
+
+Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
+Signed-off-by: Zabelin Nikita <n.zabelin@mt-integration.ru>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://lore.kernel.org/r/20250918150703.2562604-1-n.zabelin@mt-integration.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
+ drivers/gpu/drm/gma500/oaktrail_hdmi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3525,7 +3525,7 @@ static int i40e_validate_cloud_filter(st
+diff --git a/drivers/gpu/drm/gma500/oaktrail_hdmi.c b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
+index ed8626c73541c..f0ae675581d9a 100644
+--- a/drivers/gpu/drm/gma500/oaktrail_hdmi.c
++++ b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
+@@ -726,8 +726,8 @@ void oaktrail_hdmi_teardown(struct drm_device *dev)
  
- 	/* action_meta is TC number here to which the filter is applied */
- 	if (!tc_filter->action_meta ||
--	    tc_filter->action_meta > vf->num_tc) {
-+	    tc_filter->action_meta >= vf->num_tc) {
- 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
- 			 vf->vf_id, tc_filter->action_meta);
- 		goto err;
+ 	if (hdmi_dev) {
+ 		pdev = hdmi_dev->dev;
+-		pci_set_drvdata(pdev, NULL);
+ 		oaktrail_hdmi_i2c_exit(pdev);
++		pci_set_drvdata(pdev, NULL);
+ 		iounmap(hdmi_dev->regs);
+ 		kfree(hdmi_dev);
+ 		pci_dev_put(pdev);
+-- 
+2.51.0
+
 
 
 
