@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004CEBAD51B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA1BBADB1C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADE7932392D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A334320FF5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BDE302755;
-	Tue, 30 Sep 2025 14:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CA42FD1DD;
+	Tue, 30 Sep 2025 15:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skWCodF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYlOrWGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D261AB6F1;
-	Tue, 30 Sep 2025 14:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E19217F55;
+	Tue, 30 Sep 2025 15:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244015; cv=none; b=qSTVT9V2UUSUTgDqmHCi6WzKrgonkLuPBff5YZg8fZ57a/H105xkHxjU5ugJhIKAb1Ljq42jCTonqMOv19+1jsvs+qEUeM+nyJ0UaTpEfcmgr74Z6TcLrP7ylY5EydCKjep+HzXy1JFoQgYPf3rgD1TzrxDuHRWL5DXmJ9sdGXw=
+	t=1759245442; cv=none; b=u4laIR2oNXHKBiJDXn7/qKitIfGx5lSyz394UuTJAvLIZWUhiB1sgGbF22hj1C+rpr89gEWQS/Xb2Mx5IO8dxctMhwMX2wiHVciVG+8lt5n2LZzl08UYRcMjL5PrH4VpFcwodJNmH0XUZcm96ygTR803FQLdg6RLKXY8GuIxw18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244015; c=relaxed/simple;
-	bh=nBQsmbDu8p8Eeb73SelSWqfTavG8xPo9+0RIqb4qPYg=;
+	s=arc-20240116; t=1759245442; c=relaxed/simple;
+	bh=5/Xu8fWm6ZXxatMmOACjnrrfyt5nX4t6Kr3rnthXyis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1ZmcG6zoHxzhlLjRkQRBMtBURWn++zO9sKMiq5phqeIde+6lHUgQODmcQ/fX149DddvcE6TTc9PZyDeDT0q12t4vYp2Q9WL/OI9iY6/ebs6b8rawRrU5TK4hbMPJplVV/E/+BhiQ2h08mwKLdfavsPt4eSpuQg0+3cwYGwY/Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skWCodF9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A00C4CEF0;
-	Tue, 30 Sep 2025 14:53:34 +0000 (UTC)
+	 MIME-Version; b=sDcwo7xwYyt898Qjd5S6on1psLd00hK04i3nXzA8fCF4obRlOq+M6FzyDGfuYAGv8w5dudrpgyBG1sAxlOfWWBVRwVVSziSEhGPi1J6G56BQlOPy4b1FIONLsOlIvlllStha9fsPJYPwSxZglZqd1oObwpypLCuaMqY3LVv/pEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYlOrWGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40958C4CEF0;
+	Tue, 30 Sep 2025 15:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244015;
-	bh=nBQsmbDu8p8Eeb73SelSWqfTavG8xPo9+0RIqb4qPYg=;
+	s=korg; t=1759245442;
+	bh=5/Xu8fWm6ZXxatMmOACjnrrfyt5nX4t6Kr3rnthXyis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skWCodF931sYfBPcmsiVx51IbysZnkjDrb/kei8V6FpKP3hqEosBE3raUisbcV5PJ
-	 0CrztNGIUVS8IQjgUgYmld3IRl4DzbpS1vnJeK8g9vGUAdJM+oaWq65t6MJFAE9OfO
-	 bBGb5DnhHvnPHE0bJH/HEapRvlVYXE9H9TsQLf/4=
+	b=oYlOrWGIKrjZscHZC+NBVKJs+q4QvmRSytxCldi5MpXRqDU+GnyBK6I7rSgvjP9yI
+	 FTa45wXqpAhgUK/Z1uyziRLN41+vFeu5KhPEZ/kvLGn6Tqj8zQgnUUbJ3lhaP6+8pb
+	 LjDDo8IRPftSEOuwhrsn24Blgr+tZcxD7wMFyKWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 64/81] can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
+Subject: [PATCH 6.1 02/73] ALSA: usb-audio: Drop unnecessary parentheses in mixer_quirks
 Date: Tue, 30 Sep 2025 16:47:06 +0200
-Message-ID: <20250930143822.360352832@linuxfoundation.org>
+Message-ID: <20250930143820.642304120@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 5c793afa07da6d2d4595f6c73a2a543a471bb055 ]
+[ Upstream commit c0495cef8b43ad61efbd4019e3573742e0e63c67 ]
 
-On R-Car Gen3 using PSCI, s2ram powers down the SoC.  After resume, the
-CAN interface no longer works, until it is brought down and up again.
+Fix multiple 'CHECK: Unnecessary parentheses around ...' reports from
+checkpatch.pl.
 
-Fix this by calling rcar_can_start() from the PM resume callback, to
-fully initialize the controller instead of just restarting it.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/699b2f7fcb60b31b6f976a37f08ce99c5ffccb31.1755165227.git.geert+renesas@glider.be
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-5-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/rcar/rcar_can.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ sound/usb/mixer_quirks.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index b99b1b235348c..087c9d16118b5 100644
---- a/drivers/net/can/rcar/rcar_can.c
-+++ b/drivers/net/can/rcar/rcar_can.c
-@@ -869,7 +869,6 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
- {
- 	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct rcar_can_priv *priv = netdev_priv(ndev);
--	u16 ctlr;
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 4ce470e291b25..a1ab517e26b36 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -376,10 +376,10 @@ static int snd_audigy2nx_controls_create(struct usb_mixer_interface *mixer)
+ 		struct snd_kcontrol_new knew;
+ 
+ 		/* USB X-Fi S51 doesn't have a CMSS LED */
+-		if ((mixer->chip->usb_id == USB_ID(0x041e, 0x3042)) && i == 0)
++		if (mixer->chip->usb_id == USB_ID(0x041e, 0x3042) && i == 0)
+ 			continue;
+ 		/* USB X-Fi S51 Pro doesn't have one either */
+-		if ((mixer->chip->usb_id == USB_ID(0x041e, 0x30df)) && i == 0)
++		if (mixer->chip->usb_id == USB_ID(0x041e, 0x30df) && i == 0)
+ 			continue;
+ 		if (i > 1 && /* Live24ext has 2 LEDs only */
+ 			(mixer->chip->usb_id == USB_ID(0x041e, 0x3040) ||
+@@ -3272,7 +3272,7 @@ static int snd_djm_controls_update(struct usb_mixer_interface *mixer,
  	int err;
+ 	const struct snd_djm_device *device = &snd_djm_devices[device_idx];
  
- 	if (!netif_running(ndev))
-@@ -881,12 +880,7 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
- 		return err;
- 	}
+-	if ((group >= device->ncontrols) || value >= device->controls[group].noptions)
++	if (group >= device->ncontrols || value >= device->controls[group].noptions)
+ 		return -EINVAL;
  
--	ctlr = readw(&priv->regs->ctlr);
--	ctlr &= ~RCAR_CAN_CTLR_SLPM;
--	writew(ctlr, &priv->regs->ctlr);
--	ctlr &= ~RCAR_CAN_CTLR_CANM;
--	writew(ctlr, &priv->regs->ctlr);
--	priv->can.state = CAN_STATE_ERROR_ACTIVE;
-+	rcar_can_start(ndev);
- 
- 	netif_device_attach(ndev);
- 	netif_start_queue(ndev);
+ 	err = snd_usb_lock_shutdown(mixer->chip);
 -- 
 2.51.0
 
