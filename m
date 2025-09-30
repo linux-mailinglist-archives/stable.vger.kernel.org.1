@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-182786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED87BADD89
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4767CBADADA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FA49380447
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA30F380469
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA78825FA0F;
-	Tue, 30 Sep 2025 15:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B29029827E;
+	Tue, 30 Sep 2025 15:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUily12u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RE+JkU6C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B811F3FED;
-	Tue, 30 Sep 2025 15:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365AA1F4C8E;
+	Tue, 30 Sep 2025 15:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246082; cv=none; b=ilRIPCjSHEX7uSl1df/O45LzSJ9j3aHYaXT8N07o/kH0SWXgpy1cRix3Bs2M15rax2OPOKPmUzRhDD5F4rA+nok+GDREQ4qTqS+pDls7iLyCmPQ4wteI+S6PWG6E0urqq4hO6UZCn9/c1fZWT9gsn03K4YyrhFT7bijX0CB78Xg=
+	t=1759245383; cv=none; b=Dzp04VyF3JPaZTijAMsFeOapHOaVPfbzqfR+wQJgblgQaxwHp/n/5Ka1eY2OtRdPgL3G7gTKs030zg7ZIhMu60fi1cI828mOXMAZKLoTvL6kPS4ZdrMW4MehapqWRuastmIYPqiF7oq8BBZM5ulMwgNeeMtY0+wptyZ8mBmLvq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246082; c=relaxed/simple;
-	bh=dchsmDKZpYhTylZVKyZTYTDya5w+4qQiVvzY3JNdNUw=;
+	s=arc-20240116; t=1759245383; c=relaxed/simple;
+	bh=BkQq4JPJHJyKnvS0yoiy+psgbaaLdUzIJYLs+4Is9LA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUiqw0UJ5w3x1bfJlShcW1SM99mzAk+Fwonpte/PVuwGYzadXP65CwmLZVpu1pWnU9A9C0HaoGhL/cTTjmAY99aHXYO87BiObn001bJpUzIrNGBgU0zRa6LUHD6aVpH3jCwh9J2tWloyh4kEkJXrgbLSGRqGiyBxVjs0byW0o7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUily12u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDFEC4CEF0;
-	Tue, 30 Sep 2025 15:28:01 +0000 (UTC)
+	 MIME-Version; b=hD/iU3+SLBT3pvJglZft7ddsuNm6wyX73cXjqKsMr7X8K3cIyvr9quiG2P6q0RVqagDoSQXwq0x7Ju9QAhfjycvM9pmXT5lO0G2zYltHflZINzP4KyK/LvQYgWADSVmMBXPtYnu/w/8qTxUEEP5GNfYP5Zwtg2mVnnAAhPK9cGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RE+JkU6C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5948AC4CEF0;
+	Tue, 30 Sep 2025 15:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246082;
-	bh=dchsmDKZpYhTylZVKyZTYTDya5w+4qQiVvzY3JNdNUw=;
+	s=korg; t=1759245381;
+	bh=BkQq4JPJHJyKnvS0yoiy+psgbaaLdUzIJYLs+4Is9LA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUily12uLHMJxpQTDJJ1eFtJubJo4ta1YFX5UXtzWK4jix0F20h7DUF1q24mZWfc4
-	 JuukaXsL/Btg+jY6/0gzylpcqRePcB7yrleXdC5Tuo/P1EVgqppan5kSSQsH2hSGmC
-	 wQRCvV1bAw0Z0AO2C68fIO6U9a+1m79Nk4NPbcdI=
+	b=RE+JkU6CD0t25pfCjqVfclF6qV6QMnJgrM+4DPP19LFanrF9SQ5OlGHgbV4V38D5H
+	 0DZSBb3Tyg8fh5FFSyDxZtuo0RkXNLd/oEN51O2aC+k7jq8g/6QwXj0Oe4eKgoaklk
+	 Fr//7kNFB3p69XIUAzu+uoVp+1jm25u4IfA2ni3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Malat <oss@malat.biz>,
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 47/89] ethernet: rvu-af: Remove slash from the driver name
+Subject: [PATCH 5.15 151/151] i40e: add validation for ring_len param
 Date: Tue, 30 Sep 2025 16:48:01 +0200
-Message-ID: <20250930143823.870950179@linuxfoundation.org>
+Message-ID: <20250930143833.624226171@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +66,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Malat <oss@malat.biz>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit b65678cacc030efd53c38c089fb9b741a2ee34c8 ]
+[ Upstream commit 55d225670def06b01af2e7a5e0446fbe946289e8 ]
 
-Having a slash in the driver name leads to EIO being returned while
-reading /sys/module/rvu_af/drivers content.
+The `ring_len` parameter provided by the virtual function (VF)
+is assigned directly to the hardware memory context (HMC) without
+any validation.
 
-Remove DRV_STRING as it's not used anywhere.
+To address this, introduce an upper boundary check for both Tx and Rx
+queue lengths. The maximum number of descriptors supported by the
+hardware is 8k-32.
+Additionally, enforce alignment constraints: Tx rings must be a multiple
+of 8, and Rx rings must be a multiple of 32.
 
-Fixes: 91c6945ea1f9 ("octeontx2-af: cn10k: Add RPM MAC support")
-Signed-off-by: Petr Malat <oss@malat.biz>
+Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250918152106.1798299-1-oss@malat.biz
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index 971993586fb49..ca74bf6843369 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -21,8 +21,7 @@
- #include "rvu.h"
- #include "lmac_common.h"
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -653,6 +653,13 @@ static int i40e_config_vsi_tx_queue(stru
  
--#define DRV_NAME	"Marvell-CGX/RPM"
--#define DRV_STRING      "Marvell CGX/RPM Driver"
-+#define DRV_NAME	"Marvell-CGX-RPM"
+ 	/* only set the required fields */
+ 	tx_ctx.base = info->dma_ring_addr / 128;
++
++	/* ring_len has to be multiple of 8 */
++	if (!IS_ALIGNED(info->ring_len, 8) ||
++	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++		ret = -EINVAL;
++		goto error_context;
++	}
+ 	tx_ctx.qlen = info->ring_len;
+ 	tx_ctx.rdylist = le16_to_cpu(vsi->info.qs_handle[0]);
+ 	tx_ctx.rdylist_act = 0;
+@@ -718,6 +725,13 @@ static int i40e_config_vsi_rx_queue(stru
  
- #define CGX_RX_STAT_GLOBAL_INDEX	9
+ 	/* only set the required fields */
+ 	rx_ctx.base = info->dma_ring_addr / 128;
++
++	/* ring_len has to be multiple of 32 */
++	if (!IS_ALIGNED(info->ring_len, 32) ||
++	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++		ret = -EINVAL;
++		goto error_param;
++	}
+ 	rx_ctx.qlen = info->ring_len;
  
--- 
-2.51.0
-
+ 	if (info->splithdr_enabled) {
 
 
 
