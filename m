@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-182101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A13E0BAD482
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:51:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DBBBAD953
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6312F1940D60
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D39F317BF2B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B9A2FC881;
-	Tue, 30 Sep 2025 14:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417293043B8;
+	Tue, 30 Sep 2025 15:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHFDy6tQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POXFA3L1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DD93C465;
-	Tue, 30 Sep 2025 14:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CE61487F4;
+	Tue, 30 Sep 2025 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243837; cv=none; b=CA0O3LeeHx4mbrmk5NZ50LacAEdMkVnn7S+7zX/N9Kkpl2vQFxSD0N9nc9ED/f4DZElB8CD3rG/MS/qKEnAgzTnVjPSx3KTuLOo0rXZpPwOIlz4QDIdT8kQa7CwbBXxXQ9LyCg7ErjCFOYxnLMrVLocWWF/wtEojuPP/V4PuUfk=
+	t=1759245024; cv=none; b=NMibChgXgD+W2h/XS/KKoWr4S/jEPp17eSs9m40/8moJMc/vvmPzrwe3vPEbPHIH5ENxcIS9foVBiLXmTMwINhh86Z9ooSECllbyPZorFHKvf1Yho3SXl9/HYwLq1gumjMg1+7KXMbEb9fGw/+6/5s6ws/dY8bQpR9t5J7gPg1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243837; c=relaxed/simple;
-	bh=0ZYbf/fvePnYKGKewrruYxvbQk+LtybnH6DssbYoPQs=;
+	s=arc-20240116; t=1759245024; c=relaxed/simple;
+	bh=7IwALrQeTBHtVekRRyaV1DhUK3XniLGCYqnQ8AtWnY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCOA9Ob5/YJGEAJveDGSFyOFpxbWGypoJEWzgtFBK3vqhjy7i0GBkov4fAiFlszoJ6zffRUzk6m6nFIZQ3GTRiYwapGb34+floyeugz8LPsRNGYIksY4JrvNyru/a2B0N+O8nY/vetdtoemmI6dwzjjnZxYoLqFFw38QT9OMmAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHFDy6tQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159A6C4CEF0;
-	Tue, 30 Sep 2025 14:50:35 +0000 (UTC)
+	 MIME-Version; b=RxFOpUK620OT3+qyTBYIJUJg1kYrhPkmAXkgrahnHj45wfqYIHB19IsR/3b0zX4WBraxpfuRX61Yi4v8p6bQP09S46Hysws0UpYI1bePIlF3XnJ9kv6Jpsud7e+V3RbHsFZuERj+d+pu6QKowcuZEj1aEbartHq5Oy7tevlhrLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POXFA3L1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22502C4CEF0;
+	Tue, 30 Sep 2025 15:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243836;
-	bh=0ZYbf/fvePnYKGKewrruYxvbQk+LtybnH6DssbYoPQs=;
+	s=korg; t=1759245023;
+	bh=7IwALrQeTBHtVekRRyaV1DhUK3XniLGCYqnQ8AtWnY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHFDy6tQjp9Cne6mhVqYBC9M6HCRszyG8+25o0xgCENhpRv7MqxcCYO7HgKYniyXW
-	 WEXsvcV0hHgw5Q6/8aAJXwbp9q5N1AjHfBAOZJIyMqGc2TDcmLKo9+OC7a3GvpEw5m
-	 18sYONWmrjMzCgQ+lPMavg2d84x+JdQZYh5NejIg=
+	b=POXFA3L1+2Ydhjnf3i6EpNW2VJQ9Zo3zOh2t6lkzKcDAdqnCgh/daWNhXdI8Nr4Ks
+	 Khw0RZhfw8i0HRu4pSb3dyGGzeF+5/8GR1+smwmCRzX9unFvOC9XSvp5qzz53aqeVM
+	 clpOt/8iiBEtAnkqkBlxtaO5/DQzli1mBlbDwGIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Weimer <fweimer@redhat.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 5.4 09/81] fuse: prevent overflow in copy_file_range return value
-Date: Tue, 30 Sep 2025 16:46:11 +0200
-Message-ID: <20250930143820.056086307@linuxfoundation.org>
+	Nitesh Narayan Lal <nitesh@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 042/151] i40e: Use irq_update_affinity_hint()
+Date: Tue, 30 Sep 2025 16:46:12 +0200
+Message-ID: <20250930143829.284976762@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Nitesh Narayan Lal <nitesh@redhat.com>
 
-commit 1e08938c3694f707bb165535df352ac97a8c75c9 upstream.
+[ Upstream commit d34c54d1739c2cdf2e4437b74e6da269147f4987 ]
 
-The FUSE protocol uses struct fuse_write_out to convey the return value of
-copy_file_range, which is restricted to uint32_t.  But the COPY_FILE_RANGE
-interface supports a 64-bit size copies.
+The driver uses irq_set_affinity_hint() for two purposes:
 
-Currently the number of bytes copied is silently truncated to 32-bit, which
-may result in poor performance or even failure to copy in case of
-truncation to zero.
+ - To set the affinity_hint which is consumed by the userspace for
+   distributing the interrupts
 
-Reported-by: Florian Weimer <fweimer@redhat.com>
-Closes: https://lore.kernel.org/all/lhuh5ynl8z5.fsf@oldenburg.str.redhat.com/
-Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
-Cc: <stable@vger.kernel.org> # v4.20
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ - To apply an affinity that it provides for the i40e interrupts
+
+The latter is done to ensure that all the interrupts are evenly spread
+across all available CPUs. However, since commit a0c9259dc4e1 ("irq/matrix:
+Spread interrupts on allocation") the spreading of interrupts is
+dynamically performed at the time of allocation. Hence, there is no need
+for the drivers to enforce their own affinity for the spreading of
+interrupts.
+
+Also, irq_set_affinity_hint() applying the provided cpumask as an affinity
+for the interrupt is an undocumented side effect. To remove this side
+effect irq_set_affinity_hint() has been marked as deprecated and new
+interfaces have been introduced. Hence, replace the irq_set_affinity_hint()
+with the new interface irq_update_affinity_hint() that only sets the
+pointer for the affinity_hint.
+
+Signed-off-by: Nitesh Narayan Lal <nitesh@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Link: https://lore.kernel.org/r/20210903152430.244937-4-nitesh@redhat.com
+Stable-dep-of: 915470e1b44e ("i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3299,7 +3299,7 @@ static ssize_t __fuse_copy_file_range(st
- 		.nodeid_out = ff_out->nodeid,
- 		.fh_out = ff_out->fh,
- 		.off_out = pos_out,
--		.len = len,
-+		.len = min_t(size_t, len, UINT_MAX & PAGE_MASK),
- 		.flags = flags
- 	};
- 	struct fuse_write_out outarg;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 2a3b8dd72686d..9fb598f56be4a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -4152,10 +4152,10 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
+ 		 *
+ 		 * get_cpu_mask returns a static constant mask with
+ 		 * a permanent lifetime so it's ok to pass to
+-		 * irq_set_affinity_hint without making a copy.
++		 * irq_update_affinity_hint without making a copy.
+ 		 */
+ 		cpu = cpumask_local_spread(q_vector->v_idx, -1);
+-		irq_set_affinity_hint(irq_num, get_cpu_mask(cpu));
++		irq_update_affinity_hint(irq_num, get_cpu_mask(cpu));
+ 	}
+ 
+ 	vsi->irqs_ready = true;
+@@ -4166,7 +4166,7 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
+ 		vector--;
+ 		irq_num = pf->msix_entries[base + vector].vector;
+ 		irq_set_affinity_notifier(irq_num, NULL);
+-		irq_set_affinity_hint(irq_num, NULL);
++		irq_update_affinity_hint(irq_num, NULL);
+ 		free_irq(irq_num, &vsi->q_vectors[vector]);
+ 	}
+ 	return err;
+@@ -4987,7 +4987,7 @@ static void i40e_vsi_free_irq(struct i40e_vsi *vsi)
+ 			/* clear the affinity notifier in the IRQ descriptor */
+ 			irq_set_affinity_notifier(irq_num, NULL);
+ 			/* remove our suggested affinity mask for this IRQ */
+-			irq_set_affinity_hint(irq_num, NULL);
++			irq_update_affinity_hint(irq_num, NULL);
+ 			synchronize_irq(irq_num);
+ 			free_irq(irq_num, vsi->q_vectors[i]);
+ 
+-- 
+2.51.0
+
 
 
 
