@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-182829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE7CBADE35
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE77BADE53
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52E357A96F1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E56BB194615F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8A723771E;
-	Tue, 30 Sep 2025 15:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C002343B6;
+	Tue, 30 Sep 2025 15:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9p8ve+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EcYm1kjz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BA91EE02F;
-	Tue, 30 Sep 2025 15:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EA7FBF6;
+	Tue, 30 Sep 2025 15:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246215; cv=none; b=hFBKfKYm1VEA0BvSHvm/VdkVZnJ9Hc6KRZ5Q1o6NA/Dr91S2HXFz4/NBMaKob5iULzs4PERxoRdigw84gWgH3liWEW4/fVOBbxTzc76qrxAwiJ9X3MaNay7NkClpH4UdBhnkIvZVMMPkSjHNF0oHeHMvuzWWzoX+wx2glKjowEI=
+	t=1759246242; cv=none; b=D8hjGXvNzh+mC/lmYmkceE5kMUHDaN9xDO4qwXo4zG5Q142WA7/hZ/JxCHZTIwrUV/soosMCJl6kaT74L4neaQdYtbmvAV08iverbHIGy9ouzs9V3e7rGPy7PvAwqU658HPZ/dWGhLN7WzMReqWmZhXejZ2W7RbpNw+P/KScEVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246215; c=relaxed/simple;
-	bh=NPd5PBVGepgZes8u/6T+CUWPOKI5c/C9ePv95hXUlYw=;
+	s=arc-20240116; t=1759246242; c=relaxed/simple;
+	bh=YELj6FiV9fJV+jD6GiMHnJ+VNyN2RGFb3vhUuqf48nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMa+Q/mJxS+9IdkeC2kKMGJDM+LePJSKDHVZuo2zxQ0YuN48wSHO8fY33FUFSdnLVEcMvPBow1NicHfnTIMYOdiV/WeyvT5o8W4z6YYAlQ9gOAQqJeTY9ULd2te+HTwX+57923CO+Ck6BMpxSxflC0/Bnl4i9XA0yXAePGpkGco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9p8ve+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B12C4CEF0;
-	Tue, 30 Sep 2025 15:30:14 +0000 (UTC)
+	 MIME-Version; b=fWuBtDt5wkg7DFQrleLGhKetTmPvE622lNVP5cGxMIlQsAMaN/Eybmn7P68WJvI6yUcRET5v7IDdKZW11pwweyS/J5EDkNAyE3hTbP1U7ylxKNW/gx1jiEFopUxNQrDr10FKXoYBG6DzxMksJhhl+4fcVCzqsJyc9LRNNs8sTww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EcYm1kjz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A26C4CEF0;
+	Tue, 30 Sep 2025 15:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246215;
-	bh=NPd5PBVGepgZes8u/6T+CUWPOKI5c/C9ePv95hXUlYw=;
+	s=korg; t=1759246242;
+	bh=YELj6FiV9fJV+jD6GiMHnJ+VNyN2RGFb3vhUuqf48nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9p8ve+Kkymik67q/TolXYIzMlP7sD4ctmC6GB5fqmhJo/X1yuj1NoidX5od/DASV
-	 G6PnegTsywH2Er0VTukBZ79ExAnCZ3s/eqFb+YjqZsrbP9XBB7VmCEt3NB+qJ5wNH7
-	 A01RXIvWdOvrdlpk6w+PBkVwPRY0/kF7a4kM8Yfc=
+	b=EcYm1kjz5dZGA0puLw5rueQmZ1zMSu0CBJWIk9VefMccdFr1xI4aFxVKjFn8SN1Rb
+	 161YkEMPY/JM4BE+EAX0AHG0eY4gw9xB717TOSwX32EkbFI+mx4yjzyQlGTl65wy86
+	 t3jF6le+uoY3/9Fe6E5IuPLYYKapjkZ7zCjNa8CA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Nirmoy Das <nirmoyd@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	syzbot+80620e2d0d0a33b09f93@syzkaller.appspotmail.com,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 88/89] iommufd: Fix race during abort for file descriptors
-Date: Tue, 30 Sep 2025 16:48:42 +0200
-Message-ID: <20250930143825.535612772@linuxfoundation.org>
+	Wolfgang Walter <linux@stwm.de>,
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 89/89] Revert "usb: xhci: remove option to change a default rings TRB cycle bit"
+Date: Tue, 30 Sep 2025 16:48:43 +0200
+Message-ID: <20250930143825.577020516@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
 References: <20250930143821.852512002@linuxfoundation.org>
@@ -69,169 +66,257 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit 4e034bf045b12852a24d5d33f2451850818ba0c1 ]
+Revert commit 9b28ef1e4cc07cdb35da257aa4358d0127168b68 which is upstream
+commit e1b0fa863907a61e86acc19ce2d0633941907c8e
 
-fput() doesn't actually call file_operations release() synchronously, it
-puts the file on a work queue and it will be released eventually.
+It causes regression in 6.12.49 stable, no issues in upstream.
 
-This is normally fine, except for iommufd the file and the iommufd_object
-are tied to gether. The file has the object as it's private_data and holds
-a users refcount, while the object is expected to remain alive as long as
-the file is.
+Commit 9b28ef1e4cc0 ("usb: xhci: remove option to change a default
+ring's TRB cycle bit") introduced a regression in 6.12.49 stable kernel.
+The original commit was never intended for stable kernels, but was added
+as a dependency for commit a5c98e8b1398 ("xhci: dbc: Fix full DbC
+transfer ring after several reconnects").
 
-When the allocation of a new object aborts before installing the file it
-will fput() the file and then go on to immediately kfree() the obj. This
-causes a UAF once the workqueue completes the fput() and tries to
-decrement the users refcount.
+Since this commit is more of an optimization, revert it and solve the
+dependecy by modifying one line in xhci_dbc_ring_init(). Specifically,
+commit a5c98e8b1398 ("xhci: dbc: Fix full DbC transfer ring after
+several reconnects") moved function call xhci_initialize_ring_info()
+into a separate function. To resolve the dependency, the arguments for
+this function call are also reverted.
 
-Fix this by putting the core code in charge of the file lifetime, and call
-__fput_sync() during abort to ensure that release() is called before
-kfree. __fput_sync() is a bit too tricky to open code in all the object
-implementations. Instead the objects tell the core code where the file
-pointer is and the core will take care of the life cycle.
-
-If the object is successfully allocated then the file will hold a users
-refcount and the iommufd_object cannot be destroyed.
-
-It is worth noting that close(); ioctl(IOMMU_DESTROY); doesn't have an
-issue because close() is already using a synchronous version of fput().
-
-The UAF looks like this:
-
-    BUG: KASAN: slab-use-after-free in iommufd_eventq_fops_release+0x45/0xc0 drivers/iommu/iommufd/eventq.c:376
-    Write of size 4 at addr ffff888059c97804 by task syz.0.46/6164
-
-    CPU: 0 UID: 0 PID: 6164 Comm: syz.0.46 Not tainted syzkaller #0 PREEMPT(full)
-    Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-    Call Trace:
-     <TASK>
-     __dump_stack lib/dump_stack.c:94 [inline]
-     dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-     print_address_description mm/kasan/report.c:378 [inline]
-     print_report+0xcd/0x630 mm/kasan/report.c:482
-     kasan_report+0xe0/0x110 mm/kasan/report.c:595
-     check_region_inline mm/kasan/generic.c:183 [inline]
-     kasan_check_range+0x100/0x1b0 mm/kasan/generic.c:189
-     instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
-     atomic_fetch_sub_release include/linux/atomic/atomic-instrumented.h:400 [inline]
-     __refcount_dec include/linux/refcount.h:455 [inline]
-     refcount_dec include/linux/refcount.h:476 [inline]
-     iommufd_eventq_fops_release+0x45/0xc0 drivers/iommu/iommufd/eventq.c:376
-     __fput+0x402/0xb70 fs/file_table.c:468
-     task_work_run+0x14d/0x240 kernel/task_work.c:227
-     resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
-     exit_to_user_mode_loop+0xeb/0x110 kernel/entry/common.c:43
-     exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
-     syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
-     syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
-     do_syscall_64+0x41c/0x4c0 arch/x86/entry/syscall_64.c:100
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Link: https://patch.msgid.link/r/1-v1-02cd136829df+31-iommufd_syz_fput_jgg@nvidia.com
-Cc: stable@vger.kernel.org
-Fixes: 07838f7fd529 ("iommufd: Add iommufd fault object")
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Nirmoy Das <nirmoyd@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Reported-by: syzbot+80620e2d0d0a33b09f93@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/68c8583d.050a0220.2ff435.03a2.GAE@google.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-[ applied eventq.c changes to fault.c, drop veventq bits ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://lore.kernel.org/stable/01b8c8de46251cfaad1329a46b7e3738@stwm.de/
+Tested-by: Wolfgang Walter <linux@stwm.de>
+Cc: stable@vger.kernel.org # v6.12.49
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/fault.c |    4 +---
- drivers/iommu/iommufd/main.c  |   34 +++++++++++++++++++++++++++++++---
- 2 files changed, 32 insertions(+), 6 deletions(-)
+ drivers/usb/host/xhci-dbgcap.c |    2 -
+ drivers/usb/host/xhci-mem.c    |   50 ++++++++++++++++++++++-------------------
+ drivers/usb/host/xhci.c        |    2 -
+ drivers/usb/host/xhci.h        |    6 +++-
+ 4 files changed, 33 insertions(+), 27 deletions(-)
 
---- a/drivers/iommu/iommufd/fault.c
-+++ b/drivers/iommu/iommufd/fault.c
-@@ -415,7 +415,7 @@ int iommufd_fault_alloc(struct iommufd_u
- 	fdno = get_unused_fd_flags(O_CLOEXEC);
- 	if (fdno < 0) {
- 		rc = fdno;
--		goto out_fput;
-+		goto out_abort;
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -458,7 +458,7 @@ static void xhci_dbc_ring_init(struct xh
+ 		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
+ 		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
+ 	}
+-	xhci_initialize_ring_info(ring);
++	xhci_initialize_ring_info(ring, 1);
+ }
+ 
+ static int xhci_dbc_reinit_ep_rings(struct xhci_dbc *dbc)
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -27,12 +27,14 @@
+  * "All components of all Command and Transfer TRBs shall be initialized to '0'"
+  */
+ static struct xhci_segment *xhci_segment_alloc(struct xhci_hcd *xhci,
++					       unsigned int cycle_state,
+ 					       unsigned int max_packet,
+ 					       unsigned int num,
+ 					       gfp_t flags)
+ {
+ 	struct xhci_segment *seg;
+ 	dma_addr_t	dma;
++	int		i;
+ 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 
+ 	seg = kzalloc_node(sizeof(*seg), flags, dev_to_node(dev));
+@@ -54,6 +56,11 @@ static struct xhci_segment *xhci_segment
+ 			return NULL;
+ 		}
+ 	}
++	/* If the cycle state is 0, set the cycle bit to 1 for all the TRBs */
++	if (cycle_state == 0) {
++		for (i = 0; i < TRBS_PER_SEGMENT; i++)
++			seg->trbs[i].link.control = cpu_to_le32(TRB_CYCLE);
++	}
+ 	seg->num = num;
+ 	seg->dma = dma;
+ 	seg->next = NULL;
+@@ -131,14 +138,6 @@ static void xhci_link_rings(struct xhci_
+ 
+ 	chain_links = xhci_link_chain_quirk(xhci, ring->type);
+ 
+-	/* If the cycle state is 0, set the cycle bit to 1 for all the TRBs */
+-	if (ring->cycle_state == 0) {
+-		xhci_for_each_ring_seg(ring->first_seg, seg) {
+-			for (int i = 0; i < TRBS_PER_SEGMENT; i++)
+-				seg->trbs[i].link.control |= cpu_to_le32(TRB_CYCLE);
+-		}
+-	}
+-
+ 	next = ring->enq_seg->next;
+ 	xhci_link_segments(ring->enq_seg, first, ring->type, chain_links);
+ 	xhci_link_segments(last, next, ring->type, chain_links);
+@@ -288,7 +287,8 @@ void xhci_ring_free(struct xhci_hcd *xhc
+ 	kfree(ring);
+ }
+ 
+-void xhci_initialize_ring_info(struct xhci_ring *ring)
++void xhci_initialize_ring_info(struct xhci_ring *ring,
++			       unsigned int cycle_state)
+ {
+ 	/* The ring is empty, so the enqueue pointer == dequeue pointer */
+ 	ring->enqueue = ring->first_seg->trbs;
+@@ -302,7 +302,7 @@ void xhci_initialize_ring_info(struct xh
+ 	 * New rings are initialized with cycle state equal to 1; if we are
+ 	 * handling ring expansion, set the cycle state equal to the old ring.
+ 	 */
+-	ring->cycle_state = 1;
++	ring->cycle_state = cycle_state;
+ 
+ 	/*
+ 	 * Each segment has a link TRB, and leave an extra TRB for SW
+@@ -317,6 +317,7 @@ static int xhci_alloc_segments_for_ring(
+ 					struct xhci_segment **first,
+ 					struct xhci_segment **last,
+ 					unsigned int num_segs,
++					unsigned int cycle_state,
+ 					enum xhci_ring_type type,
+ 					unsigned int max_packet,
+ 					gfp_t flags)
+@@ -327,7 +328,7 @@ static int xhci_alloc_segments_for_ring(
+ 
+ 	chain_links = xhci_link_chain_quirk(xhci, type);
+ 
+-	prev = xhci_segment_alloc(xhci, max_packet, num, flags);
++	prev = xhci_segment_alloc(xhci, cycle_state, max_packet, num, flags);
+ 	if (!prev)
+ 		return -ENOMEM;
+ 	num++;
+@@ -336,7 +337,8 @@ static int xhci_alloc_segments_for_ring(
+ 	while (num < num_segs) {
+ 		struct xhci_segment	*next;
+ 
+-		next = xhci_segment_alloc(xhci, max_packet, num, flags);
++		next = xhci_segment_alloc(xhci, cycle_state, max_packet, num,
++					  flags);
+ 		if (!next)
+ 			goto free_segments;
+ 
+@@ -361,8 +363,9 @@ free_segments:
+  * Set the end flag and the cycle toggle bit on the last segment.
+  * See section 4.9.1 and figures 15 and 16.
+  */
+-struct xhci_ring *xhci_ring_alloc(struct xhci_hcd *xhci, unsigned int num_segs,
+-				  enum xhci_ring_type type, unsigned int max_packet, gfp_t flags)
++struct xhci_ring *xhci_ring_alloc(struct xhci_hcd *xhci,
++		unsigned int num_segs, unsigned int cycle_state,
++		enum xhci_ring_type type, unsigned int max_packet, gfp_t flags)
+ {
+ 	struct xhci_ring	*ring;
+ 	int ret;
+@@ -380,7 +383,7 @@ struct xhci_ring *xhci_ring_alloc(struct
+ 		return ring;
+ 
+ 	ret = xhci_alloc_segments_for_ring(xhci, &ring->first_seg, &ring->last_seg, num_segs,
+-					   type, max_packet, flags);
++					   cycle_state, type, max_packet, flags);
+ 	if (ret)
+ 		goto fail;
+ 
+@@ -390,7 +393,7 @@ struct xhci_ring *xhci_ring_alloc(struct
+ 		ring->last_seg->trbs[TRBS_PER_SEGMENT - 1].link.control |=
+ 			cpu_to_le32(LINK_TOGGLE);
+ 	}
+-	xhci_initialize_ring_info(ring);
++	xhci_initialize_ring_info(ring, cycle_state);
+ 	trace_xhci_ring_alloc(ring);
+ 	return ring;
+ 
+@@ -418,8 +421,8 @@ int xhci_ring_expansion(struct xhci_hcd
+ 	struct xhci_segment	*last;
+ 	int			ret;
+ 
+-	ret = xhci_alloc_segments_for_ring(xhci, &first, &last, num_new_segs, ring->type,
+-					   ring->bounce_buf_len, flags);
++	ret = xhci_alloc_segments_for_ring(xhci, &first, &last, num_new_segs, ring->cycle_state,
++					   ring->type, ring->bounce_buf_len, flags);
+ 	if (ret)
+ 		return -ENOMEM;
+ 
+@@ -629,7 +632,8 @@ struct xhci_stream_info *xhci_alloc_stre
+ 
+ 	for (cur_stream = 1; cur_stream < num_streams; cur_stream++) {
+ 		stream_info->stream_rings[cur_stream] =
+-			xhci_ring_alloc(xhci, 2, TYPE_STREAM, max_packet, mem_flags);
++			xhci_ring_alloc(xhci, 2, 1, TYPE_STREAM, max_packet,
++					mem_flags);
+ 		cur_ring = stream_info->stream_rings[cur_stream];
+ 		if (!cur_ring)
+ 			goto cleanup_rings;
+@@ -970,7 +974,7 @@ int xhci_alloc_virt_device(struct xhci_h
  	}
  
- 	cmd->out_fault_id = fault->obj.id;
-@@ -431,8 +431,6 @@ int iommufd_fault_alloc(struct iommufd_u
- 	return 0;
- out_put_fdno:
- 	put_unused_fd(fdno);
--out_fput:
--	fput(filep);
- out_abort:
- 	iommufd_object_abort_and_destroy(ucmd->ictx, &fault->obj);
+ 	/* Allocate endpoint 0 ring */
+-	dev->eps[0].ring = xhci_ring_alloc(xhci, 2, TYPE_CTRL, 0, flags);
++	dev->eps[0].ring = xhci_ring_alloc(xhci, 2, 1, TYPE_CTRL, 0, flags);
+ 	if (!dev->eps[0].ring)
+ 		goto fail;
  
---- a/drivers/iommu/iommufd/main.c
-+++ b/drivers/iommu/iommufd/main.c
-@@ -23,6 +23,7 @@
- #include "iommufd_test.h"
+@@ -1453,7 +1457,7 @@ int xhci_endpoint_init(struct xhci_hcd *
  
- struct iommufd_object_ops {
-+	size_t file_offset;
- 	void (*destroy)(struct iommufd_object *obj);
- 	void (*abort)(struct iommufd_object *obj);
- };
-@@ -97,10 +98,30 @@ void iommufd_object_abort(struct iommufd
- void iommufd_object_abort_and_destroy(struct iommufd_ctx *ictx,
- 				      struct iommufd_object *obj)
- {
--	if (iommufd_object_ops[obj->type].abort)
--		iommufd_object_ops[obj->type].abort(obj);
-+	const struct iommufd_object_ops *ops = &iommufd_object_ops[obj->type];
-+
-+	if (ops->file_offset) {
-+		struct file **filep = ((void *)obj) + ops->file_offset;
-+
-+		/*
-+		 * A file should hold a users refcount while the file is open
-+		 * and put it back in its release. The file should hold a
-+		 * pointer to obj in their private data. Normal fput() is
-+		 * deferred to a workqueue and can get out of order with the
-+		 * following kfree(obj). Using the sync version ensures the
-+		 * release happens immediately. During abort we require the file
-+		 * refcount is one at this point - meaning the object alloc
-+		 * function cannot do anything to allow another thread to take a
-+		 * refcount prior to a guaranteed success.
-+		 */
-+		if (*filep)
-+			__fput_sync(*filep);
-+	}
-+
-+	if (ops->abort)
-+		ops->abort(obj);
- 	else
--		iommufd_object_ops[obj->type].destroy(obj);
-+		ops->destroy(obj);
- 	iommufd_object_abort(ictx, obj);
- }
+ 	/* Set up the endpoint ring */
+ 	virt_dev->eps[ep_index].new_ring =
+-		xhci_ring_alloc(xhci, 2, ring_type, max_packet, mem_flags);
++		xhci_ring_alloc(xhci, 2, 1, ring_type, max_packet, mem_flags);
+ 	if (!virt_dev->eps[ep_index].new_ring)
+ 		return -ENOMEM;
  
-@@ -498,6 +519,12 @@ void iommufd_ctx_put(struct iommufd_ctx
- }
- EXPORT_SYMBOL_NS_GPL(iommufd_ctx_put, IOMMUFD);
+@@ -2262,7 +2266,7 @@ xhci_alloc_interrupter(struct xhci_hcd *
+ 	if (!ir)
+ 		return NULL;
  
-+#define IOMMUFD_FILE_OFFSET(_struct, _filep, _obj)                           \
-+	.file_offset = (offsetof(_struct, _filep) +                          \
-+			BUILD_BUG_ON_ZERO(!__same_type(                      \
-+				struct file *, ((_struct *)NULL)->_filep)) + \
-+			BUILD_BUG_ON_ZERO(offsetof(_struct, _obj)))
-+
- static const struct iommufd_object_ops iommufd_object_ops[] = {
- 	[IOMMUFD_OBJ_ACCESS] = {
- 		.destroy = iommufd_access_destroy_object,
-@@ -518,6 +545,7 @@ static const struct iommufd_object_ops i
- 	},
- 	[IOMMUFD_OBJ_FAULT] = {
- 		.destroy = iommufd_fault_destroy,
-+		IOMMUFD_FILE_OFFSET(struct iommufd_fault, filep, obj),
- 	},
- #ifdef CONFIG_IOMMUFD_TEST
- 	[IOMMUFD_OBJ_SELFTEST] = {
+-	ir->event_ring = xhci_ring_alloc(xhci, segs, TYPE_EVENT, 0, flags);
++	ir->event_ring = xhci_ring_alloc(xhci, segs, 1, TYPE_EVENT, 0, flags);
+ 	if (!ir->event_ring) {
+ 		xhci_warn(xhci, "Failed to allocate interrupter event ring\n");
+ 		kfree(ir);
+@@ -2468,7 +2472,7 @@ int xhci_mem_init(struct xhci_hcd *xhci,
+ 		goto fail;
+ 
+ 	/* Set up the command ring to have one segments for now. */
+-	xhci->cmd_ring = xhci_ring_alloc(xhci, 1, TYPE_COMMAND, 0, flags);
++	xhci->cmd_ring = xhci_ring_alloc(xhci, 1, 1, TYPE_COMMAND, 0, flags);
+ 	if (!xhci->cmd_ring)
+ 		goto fail;
+ 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -769,7 +769,7 @@ static void xhci_clear_command_ring(stru
+ 		seg->trbs[TRBS_PER_SEGMENT - 1].link.control &= cpu_to_le32(~TRB_CYCLE);
+ 	}
+ 
+-	xhci_initialize_ring_info(ring);
++	xhci_initialize_ring_info(ring, 1);
+ 	/*
+ 	 * Reset the hardware dequeue pointer.
+ 	 * Yes, this will need to be re-written after resume, but we're paranoid
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1803,12 +1803,14 @@ void xhci_slot_copy(struct xhci_hcd *xhc
+ int xhci_endpoint_init(struct xhci_hcd *xhci, struct xhci_virt_device *virt_dev,
+ 		struct usb_device *udev, struct usb_host_endpoint *ep,
+ 		gfp_t mem_flags);
+-struct xhci_ring *xhci_ring_alloc(struct xhci_hcd *xhci, unsigned int num_segs,
++struct xhci_ring *xhci_ring_alloc(struct xhci_hcd *xhci,
++		unsigned int num_segs, unsigned int cycle_state,
+ 		enum xhci_ring_type type, unsigned int max_packet, gfp_t flags);
+ void xhci_ring_free(struct xhci_hcd *xhci, struct xhci_ring *ring);
+ int xhci_ring_expansion(struct xhci_hcd *xhci, struct xhci_ring *ring,
+ 		unsigned int num_trbs, gfp_t flags);
+-void xhci_initialize_ring_info(struct xhci_ring *ring);
++void xhci_initialize_ring_info(struct xhci_ring *ring,
++			unsigned int cycle_state);
+ void xhci_free_endpoint_ring(struct xhci_hcd *xhci,
+ 		struct xhci_virt_device *virt_dev,
+ 		unsigned int ep_index);
 
 
 
