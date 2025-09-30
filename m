@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A49BAD9B3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B59BAD67C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF83189482A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2075A3AC986
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42302F5301;
-	Tue, 30 Sep 2025 15:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C94305070;
+	Tue, 30 Sep 2025 14:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUNpReZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+gPC19d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A077E2236EB;
-	Tue, 30 Sep 2025 15:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C67A201017;
+	Tue, 30 Sep 2025 14:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245173; cv=none; b=B7uHBtecbmsBl4DckGrOD9Zyoq3x6INzTVaKyyNXcUdA+tvs5bpzLKgqUn3nEJD2/EsGSfYYosPYWkGjP9wIuwjC9C2IMmtaStkyxibO0B4Ydaf7dNMoPRsjbsltDx85umnhAojNcwjYd5I9k9908bsG9bOYmk+SJiBcjcNIcQ0=
+	t=1759244299; cv=none; b=YNxokdURyGFW2hENfigruuMLKDFMeUmlsaagubFM9Ldwi2YX9XOASufy/KR6j8s97Vtz2dMadx8rWMOXPD2ivpOWvW97UuYaJaSxk+2qClmpuZTshycw4+qtNwmmz/QUlVSzvbU3VOJuBLOuEc0HYNyR0RuhPHZp3CL/djEFZwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245173; c=relaxed/simple;
-	bh=o37CWvNHrDv6Bt9iF4tsMJQvSMLmlmtIyBi5tHkTkrg=;
+	s=arc-20240116; t=1759244299; c=relaxed/simple;
+	bh=Ia0+YI/a8Px20OqBPujKWpYnDkYsRyPd8eo/N34qFMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsTadaBrV04B7js1jEBN4VhVgM44dAvYbexN0DPZ5st8H4Z4dGNeLQ/DlE64MXG7IyHDpFcsuEGwDZUNK5Mse0oUEtnz8xr+7jNSIDY809Csr/Jh3l0qv35/1VdnThAs2rkAZjQ0YpNCKNX2wJ5S6w0oMv3J6HbcNqKnz601P9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUNpReZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274DEC4CEF0;
-	Tue, 30 Sep 2025 15:12:52 +0000 (UTC)
+	 MIME-Version; b=Jg/KtaLr29enswXdHHzcPeLjchCbEo/ydPk52TtzNZlSHlyPDYWvXg4a3WTVLiTrqPYle6OTjChJgnRrypxqNu+tptFtUkgi467cIYx7kziW5pDa7jJF+ToyMMUrCWlF6GwAtquNx2I7hXg+qVP3LHljFYCzh8WgZi+Fkw1X8aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+gPC19d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C9FC4CEF0;
+	Tue, 30 Sep 2025 14:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245173;
-	bh=o37CWvNHrDv6Bt9iF4tsMJQvSMLmlmtIyBi5tHkTkrg=;
+	s=korg; t=1759244298;
+	bh=Ia0+YI/a8Px20OqBPujKWpYnDkYsRyPd8eo/N34qFMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUNpReZCXu9wiiEcPJlAEBWRU+CKAJtU8s0X+sB5faQafHjkcGi5yf5XABDYQCUIb
-	 WypLZn8qomC/YXwMyeYnzK0BKpLZP+TXwKT2wMWC6yqHyWkNI4XN4L0SCl3EdKQR3F
-	 /7ym47+Lh5SP3+BQOCcNduIWyXvNHCk7qCg0KkR0=
+	b=t+gPC19dTBWCrs15ijNXSrByxpfwSl8vqcvJeEDXaaTzAbf9CPzy1o+TyeTcOmKwO
+	 sKXNiN+8zdwAULkbHry6aPnbo90BlussBNpNOewAqmwYZINl9J/BkDGTBrBM3W6wJ9
+	 uALHpX8sW9bbHW8ZunX5/Kz1o4aMi+oh1CjlAYF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/151] hrtimers: Unconditionally update target CPU base after offline timer migration
+Subject: [PATCH 5.10 055/122] Revert "net/mlx5e: Update and set Xon/Xoff upon port speed set"
 Date: Tue, 30 Sep 2025 16:46:26 +0200
-Message-ID: <20250930143829.834409093@linuxfoundation.org>
+Message-ID: <20250930143825.249734376@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+From: Tariq Toukan <tariqt@nvidia.com>
 
-[ Upstream commit e895f8e29119c8c966ea794af9e9100b10becb88 ]
+[ Upstream commit 3fbfe251cc9f6d391944282cdb9bcf0bd02e01f8 ]
 
-When testing softirq based hrtimers on an ARM32 board, with high resolution
-mode and NOHZ inactive, softirq based hrtimers fail to expire after being
-moved away from an offline CPU:
+This reverts commit d24341740fe48add8a227a753e68b6eedf4b385a.
+It causes errors when trying to configure QoS, as well as
+loss of L2 connectivity (on multi-host devices).
 
-CPU0				CPU1
-				hrtimer_start(..., HRTIMER_MODE_SOFT);
-cpu_down(CPU1)			...
-				hrtimers_cpu_dying()
-				  // Migrate timers to CPU0
-				  smp_call_function_single(CPU0, returgger_next_event);
-  retrigger_next_event()
-    if (!highres && !nohz)
-        return;
-
-As retrigger_next_event() is a NOOP when both high resolution timers and
-NOHZ are inactive CPU0's hrtimer_cpu_base::softirq_expires_next is not
-updated and the migrated softirq timers never expire unless there is a
-softirq based hrtimer queued on CPU0 later.
-
-Fix this by removing the hrtimer_hres_active() and tick_nohz_active() check
-in retrigger_next_event(), which enforces a full update of the CPU base.
-As this is not a fast path the extra cost does not matter.
-
-[ tglx: Massaged change log ]
-
-Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-Co-developed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250805081025.54235-1-wangxiongfeng2@huawei.com
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/20250910170011.70528106@kernel.org
+Fixes: d24341740fe4 ("net/mlx5e: Update and set Xon/Xoff upon port speed set")
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 74a71b3a064dc..7e2ed34e9803b 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -770,10 +770,10 @@ static void retrigger_next_event(void *arg)
- 	 * of the next expiring timer is enough. The return from the SMP
- 	 * function call will take care of the reprogramming in case the
- 	 * CPU was in a NOHZ idle sleep.
-+	 *
-+	 * In periodic low resolution mode, the next softirq expiration
-+	 * must also be updated.
- 	 */
--	if (!hrtimer_hres_active(base) && !tick_nohz_active)
--		return;
--
- 	raw_spin_lock(&base->lock);
- 	hrtimer_update_base(base);
- 	if (hrtimer_hres_active(base))
-@@ -2229,11 +2229,6 @@ int hrtimers_cpu_dying(unsigned int dying_cpu)
- 				     &new_base->clock_base[i]);
- 	}
- 
--	/*
--	 * The migration might have changed the first expiring softirq
--	 * timer on this CPU. Update it.
--	 */
--	__hrtimer_get_next_event(new_base, HRTIMER_ACTIVE_SOFT);
- 	/* Tell the other CPU to retrigger the next event */
- 	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index cc93c503984a1..cef60bc2589cc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -141,8 +141,6 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
+ 	if (port_state == VPORT_STATE_UP) {
+ 		netdev_info(priv->netdev, "Link up\n");
+ 		netif_carrier_on(priv->netdev);
+-		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
+-						NULL, NULL, NULL);
+ 	} else {
+ 		netdev_info(priv->netdev, "Link down\n");
+ 		netif_carrier_off(priv->netdev);
 -- 
 2.51.0
 
