@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-182552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DBABADB82
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6385CBAD890
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A3803A522D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 362A9168BFF
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50F93081A9;
-	Tue, 30 Sep 2025 15:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C654A2FD1DD;
+	Tue, 30 Sep 2025 15:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vn6djIUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hszIv1Y9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A88307AD2;
-	Tue, 30 Sep 2025 15:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80843266B65;
+	Tue, 30 Sep 2025 15:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245315; cv=none; b=a5/WGCuq5p/auU69r2Fs6MlshZzwOHSzNxHQKGjxDYEpKlVUNnP0KVhUQ22dlr77ULj/0XKKzl/pWVywTibN9rhrSrlpvE9SPg576OJoKLrVkOpxdcf/xcRJMaJrc3B9JmILpb+iThfll0rEJEQrSWc7zYElIKVOBFV/GYsNIXk=
+	t=1759244869; cv=none; b=EQa4x4tqVvpn4+vSzQWi9IhrYmiz30glOcMGAN6HPb6aeTMyS7ore36E2/YFvEEe8WsrXBDvIMsmHqyx+oFVRrgu5NYslCzg0GYUC3O1qiBJ2LwseWql1eFGr5RFlyrkDCkbYTaVRjB0kQ/RK6g59wQk1oqxLZDXLH1mISMwE5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245315; c=relaxed/simple;
-	bh=dKtb9YfC1+5H5VOdlizcardYxO77Ohdq/S1yHrPXESc=;
+	s=arc-20240116; t=1759244869; c=relaxed/simple;
+	bh=26pTV9+udUh+5IffRCCUFK4TvBLfWZB6V7t0z7Y/wNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5wkb/bgcfSqC5nutmVrAUkNEyoyNirpt1dTrT023jBy199DYBGNu2Mc4N9pMVm1CVGQxaCNp41WGWphwc/6vcT9LlPP/ycagZki8pHnbG7SpgQSN4F5xt6TqVk6IYIEf32WZkjNf/wQQwyY/TEvR3onmIRgVy0HKbOa/0LHkHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vn6djIUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A5AC113D0;
-	Tue, 30 Sep 2025 15:15:14 +0000 (UTC)
+	 MIME-Version; b=XC7grSTZAeRDGWtSKHWBgE+QK5Xu4upEGrbrqOewP5VXsnJ3yO5cGArP0txAunjPYFVQ7Hts9dPcnshBw2u/t4SkJmX1lXISM7FVBErG7VyC/+ltcpiAJGYkG6h3aSTxHg4aLoJjNBsUos+Ny4VpojrRoutkA80VnLZzwBQs/iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hszIv1Y9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB140C4CEF0;
+	Tue, 30 Sep 2025 15:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245315;
-	bh=dKtb9YfC1+5H5VOdlizcardYxO77Ohdq/S1yHrPXESc=;
+	s=korg; t=1759244869;
+	bh=26pTV9+udUh+5IffRCCUFK4TvBLfWZB6V7t0z7Y/wNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vn6djIUgY9WaWOC6R5CGINArlBjq5P6FjfKcJzhDolTIabeU7girsZ6CMusTzRPXr
-	 hQ7zs1V21oUimSn2cXNvlxAjM/J/ejr+LGY7pRGA35jWZiuIp4zfmnNgLxNpgLgytH
-	 QbjCZ7SMtYJLi9cYRD+LKeYD9PgYEPm5XzlVTJ4Y=
+	b=hszIv1Y9mG8yzu4gsbWHdpK0f7K0cXg/nflaKP15ST0NVSw8uWxkH/YFhALq34HB1
+	 DntGHNTSXZtceYUyYYfmhilq+8SIZ9BaVMOQy4SIzLlRKJzyiwQpP/6EcaeFiJoIOZ
+	 UqN+0hgt0f2+5y/WmXTbYE4xRF65UbEy3RpC+ui4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 133/151] net: dsa: lantiq_gswip: move gswip_add_single_port_br() call to port_setup()
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.16 139/143] sched_ext: idle: Make local functions static in ext_idle.c
 Date: Tue, 30 Sep 2025 16:47:43 +0200
-Message-ID: <20250930143832.897933137@linuxfoundation.org>
+Message-ID: <20250930143836.777200570@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +61,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Andrea Righi <arighi@nvidia.com>
 
-[ Upstream commit c0054b25e2f1045f47b4954cf13a539e5e6047df ]
+commit 353656eb84fef8ffece3b1be4345cbacbbb5267f upstream.
 
-A port added to a "single port bridge" operates as standalone, and this
-is mutually exclusive to being part of a Linux bridge. In fact,
-gswip_port_bridge_join() calls gswip_add_single_port_br() with
-add=false, i.e. removes the port from the "single port bridge" to enable
-autonomous forwarding.
+Functions that are only used within ext_idle.c can be marked as static
+to limit their scope.
 
-The blamed commit seems to have incorrectly thought that ds->ops->port_enable()
-is called one time per port, during the setup phase of the switch.
+No functional changes.
 
-However, it is actually called during the ndo_open() implementation of
-DSA user ports, which is to say that this sequence of events:
-
-1. ip link set swp0 down
-2. ip link add br0 type bridge
-3. ip link set swp0 master br0
-4. ip link set swp0 up
-
-would cause swp0 to join back the "single port bridge" which step 3 had
-just removed it from.
-
-The correct DSA hook for one-time actions per port at switch init time
-is ds->ops->port_setup(). This is what seems to match the coder's
-intention; also see the comment at the beginning of the file:
-
- * At the initialization the driver allocates one bridge table entry for
-   ~~~~~~~~~~~~~~~~~~~~~
- * each switch port which is used when the port is used without an
- * explicit bridge.
-
-Fixes: 8206e0ce96b3 ("net: dsa: lantiq: Add VLAN unaware bridge offloading")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250918072142.894692-2-vladimir.oltean@nxp.com
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/lantiq_gswip.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ kernel/sched/ext_idle.c |   24 +++++++++++++++++-------
+ kernel/sched/ext_idle.h |    7 -------
+ 2 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
-index f1ed7fff23e27..97d88c25fc992 100644
---- a/drivers/net/dsa/lantiq_gswip.c
-+++ b/drivers/net/dsa/lantiq_gswip.c
-@@ -655,18 +655,27 @@ static int gswip_add_single_port_br(struct gswip_priv *priv, int port, bool add)
- 	return 0;
+--- a/kernel/sched/ext_idle.c
++++ b/kernel/sched/ext_idle.c
+@@ -75,7 +75,7 @@ static int scx_cpu_node_if_enabled(int c
+ 	return cpu_to_node(cpu);
  }
  
--static int gswip_port_enable(struct dsa_switch *ds, int port,
--			     struct phy_device *phydev)
-+static int gswip_port_setup(struct dsa_switch *ds, int port)
+-bool scx_idle_test_and_clear_cpu(int cpu)
++static bool scx_idle_test_and_clear_cpu(int cpu)
  {
- 	struct gswip_priv *priv = ds->priv;
- 	int err;
+ 	int node = scx_cpu_node_if_enabled(cpu);
+ 	struct cpumask *idle_cpus = idle_cpumask(node)->cpu;
+@@ -198,7 +198,7 @@ pick_idle_cpu_from_online_nodes(const st
+ /*
+  * Find an idle CPU in the system, starting from @node.
+  */
+-s32 scx_pick_idle_cpu(const struct cpumask *cpus_allowed, int node, u64 flags)
++static s32 scx_pick_idle_cpu(const struct cpumask *cpus_allowed, int node, u64 flags)
+ {
+ 	s32 cpu;
  
- 	if (!dsa_is_cpu_port(ds, port)) {
--		u32 mdio_phy = 0;
--
- 		err = gswip_add_single_port_br(priv, port, true);
- 		if (err)
- 			return err;
-+	}
-+
-+	return 0;
+@@ -794,6 +794,16 @@ static void reset_idle_masks(struct sche
+ 		cpumask_and(idle_cpumask(node)->smt, cpu_online_mask, node_mask);
+ 	}
+ }
++#else	/* !CONFIG_SMP */
++static bool scx_idle_test_and_clear_cpu(int cpu)
++{
++	return -EBUSY;
 +}
 +
-+static int gswip_port_enable(struct dsa_switch *ds, int port,
-+			     struct phy_device *phydev)
++static s32 scx_pick_idle_cpu(const struct cpumask *cpus_allowed, int node, u64 flags)
 +{
-+	struct gswip_priv *priv = ds->priv;
-+
-+	if (!dsa_is_cpu_port(ds, port)) {
-+		u32 mdio_phy = 0;
++	return -EBUSY;
++}
+ #endif	/* CONFIG_SMP */
  
- 		if (phydev)
- 			mdio_phy = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
-@@ -1794,6 +1803,7 @@ static int gswip_get_sset_count(struct dsa_switch *ds, int port, int sset)
- static const struct dsa_switch_ops gswip_xrx200_switch_ops = {
- 	.get_tag_protocol	= gswip_get_tag_protocol,
- 	.setup			= gswip_setup,
-+	.port_setup		= gswip_port_setup,
- 	.port_enable		= gswip_port_enable,
- 	.port_disable		= gswip_port_disable,
- 	.port_bridge_join	= gswip_port_bridge_join,
--- 
-2.51.0
-
+ void scx_idle_enable(struct sched_ext_ops *ops)
+@@ -860,8 +870,8 @@ static bool check_builtin_idle_enabled(v
+ 	return false;
+ }
+ 
+-s32 select_cpu_from_kfunc(struct task_struct *p, s32 prev_cpu, u64 wake_flags,
+-			  const struct cpumask *allowed, u64 flags)
++static s32 select_cpu_from_kfunc(struct task_struct *p, s32 prev_cpu, u64 wake_flags,
++				 const struct cpumask *allowed, u64 flags)
+ {
+ 	struct rq *rq;
+ 	struct rq_flags rf;
+@@ -1125,10 +1135,10 @@ __bpf_kfunc bool scx_bpf_test_and_clear_
+ 	if (!check_builtin_idle_enabled())
+ 		return false;
+ 
+-	if (kf_cpu_valid(cpu, NULL))
+-		return scx_idle_test_and_clear_cpu(cpu);
+-	else
++	if (!kf_cpu_valid(cpu, NULL))
+ 		return false;
++
++	return scx_idle_test_and_clear_cpu(cpu);
+ }
+ 
+ /**
+--- a/kernel/sched/ext_idle.h
++++ b/kernel/sched/ext_idle.h
+@@ -15,16 +15,9 @@ struct sched_ext_ops;
+ #ifdef CONFIG_SMP
+ void scx_idle_update_selcpu_topology(struct sched_ext_ops *ops);
+ void scx_idle_init_masks(void);
+-bool scx_idle_test_and_clear_cpu(int cpu);
+-s32 scx_pick_idle_cpu(const struct cpumask *cpus_allowed, int node, u64 flags);
+ #else /* !CONFIG_SMP */
+ static inline void scx_idle_update_selcpu_topology(struct sched_ext_ops *ops) {}
+ static inline void scx_idle_init_masks(void) {}
+-static inline bool scx_idle_test_and_clear_cpu(int cpu) { return false; }
+-static inline s32 scx_pick_idle_cpu(const struct cpumask *cpus_allowed, int node, u64 flags)
+-{
+-	return -EBUSY;
+-}
+ #endif /* CONFIG_SMP */
+ 
+ s32 scx_select_cpu_dfl(struct task_struct *p, s32 prev_cpu, u64 wake_flags,
 
 
 
