@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38315BADA6D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB47ABAD90E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A5BD3ADAFC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5A23A8E49
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE882FD1DD;
-	Tue, 30 Sep 2025 15:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6842FFDE6;
+	Tue, 30 Sep 2025 15:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXAnPTj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVnAWhT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE99C2F9D88;
-	Tue, 30 Sep 2025 15:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4E2266B65;
+	Tue, 30 Sep 2025 15:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245159; cv=none; b=GRdgYJHQh9EQ9A9nfYx1xLjae05Wr9nL3WFi2V2/PnstGC9XsOiNXNd0zUCWJQL/mQCknTxfbWgvFkTPijs3rdz+R9KNgRk91HGA+JjbX5wjgDV1qVFVbPHZx6+G8uRdSKhic0mUUJLmOYI/90ICUMo+h2hOdEtvOAPz+Ezw6jM=
+	t=1759244836; cv=none; b=Hik/+MpyB+7b9x8qErrE5ByqC/N9vmCZDxqlujmwbOn6tcQqZUZJqE8dHKy/40RxnNhHNlZ7IQQK/Rf1+EyEAxH1xGKMj+EMzou3vch3Qmjb/W336a3pbodcncvNpVFDNcDqRfhPoRQcOC6j62RZECiMpmXrYEwcDmOS/KZtNGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245159; c=relaxed/simple;
-	bh=TuoxS7gvonhSGv9OaUhGqRgPVhJliINhjD5VnwGbOVM=;
+	s=arc-20240116; t=1759244836; c=relaxed/simple;
+	bh=WFT4vWF/dGfLZhnHFePq3u7whD+7AxDNILCC9xMwut4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GJknpWkJtPlbZgXK8bIEmjf8aXAYEjjF8jhj4kEoKBNwwrlHbRbO8JPFqutIRbU1zHfu4u3KPeLHrEJ2tWeWQhPuqpT3wxaUqUc5d+/pKn/nufMkKQ/X3cGSQ/3R+UbyFIclNRRKmrJVibcN00WiFXPRsDn4V+mBuIKU/vCWitA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXAnPTj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73602C4CEF0;
-	Tue, 30 Sep 2025 15:12:38 +0000 (UTC)
+	 MIME-Version; b=lpnmMRPQpMQPytnFTKeEoglPfkgOno+Veg0hZimMqCL6FffSan4ZMeH3R2Z+YqdGRGjWzCm88NWw69nYyXXt3SlcAcd2xdsviqvWYKtH/rwklQSanIdEYpnvzc2GXAjRx45Vq7nrzBkSY9qV6xixbkYdkMEm4fEtl72dQtTooZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVnAWhT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52767C4CEF0;
+	Tue, 30 Sep 2025 15:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245158;
-	bh=TuoxS7gvonhSGv9OaUhGqRgPVhJliINhjD5VnwGbOVM=;
+	s=korg; t=1759244835;
+	bh=WFT4vWF/dGfLZhnHFePq3u7whD+7AxDNILCC9xMwut4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rXAnPTj9PjPe5VYa75obNtQnBEw/Xlg9A0LKOHCq+dt5bBVVtnHVaKG9hJDJL3dxQ
-	 lPpDYr+bvKmJ+irH3lCnGMhzbwQTkx0uuyfVAuQ/RssIPiUEIukGaLjhUev8qnFQeR
-	 D1tEn08wZid9OLUeiWsu6ZN2E8z450EfN9dPkDLo=
+	b=FVnAWhT3M1we88hsNpREwEWttq+RBhlDLdAK2KNsGdIWha3m8JQTK5etNXbR9ZtWP
+	 +VtklLDOyZuPkNFb1vDQkuC20eWEl4GMtSXxnc2jyl5Y/gnYEh0VnKOK9aPT+1QlMJ
+	 DSqw9k/FjdKkGuBsAlmswX7Na+WqAsNkUK3LcpWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 081/151] btrfs: tree-checker: fix the incorrect inode ref size check
+	syzbot+034246a838a10d181e78@syzkaller.appspotmail.com,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 087/143] futex: Prevent use-after-free during requeue-PI
 Date: Tue, 30 Sep 2025 16:46:51 +0200
-Message-ID: <20250930143830.817215196@linuxfoundation.org>
+Message-ID: <20250930143834.697535572@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 96fa515e70f3e4b98685ef8cac9d737fc62f10e1 upstream.
+[ Upstream commit b549113738e8c751b613118032a724b772aa83f2 ]
 
-[BUG]
-Inside check_inode_ref(), we need to make sure every structure,
-including the btrfs_inode_extref header, is covered by the item.  But
-our code is incorrectly using "sizeof(iref)", where @iref is just a
-pointer.
+syzbot managed to trigger the following race:
 
-This means "sizeof(iref)" will always be "sizeof(void *)", which is much
-smaller than "sizeof(struct btrfs_inode_extref)".
+   T1                               T2
 
-This will allow some bad inode extrefs to sneak in, defeating tree-checker.
+ futex_wait_requeue_pi()
+   futex_do_wait()
+     schedule()
+                               futex_requeue()
+                                 futex_proxy_trylock_atomic()
+                                   futex_requeue_pi_prepare()
+                                   requeue_pi_wake_futex()
+                                     futex_requeue_pi_complete()
+                                      /* preempt */
 
-[FIX]
-Fix the typo by calling "sizeof(*iref)", which is the same as
-"sizeof(struct btrfs_inode_extref)", and will be the correct behavior we
-want.
+         * timeout/ signal wakes T1 *
 
-Fixes: 71bf92a9b877 ("btrfs: tree-checker: Add check for INODE_REF")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   futex_requeue_pi_wakeup_sync() // Q_REQUEUE_PI_LOCKED
+   futex_hash_put()
+  // back to userland, on stack futex_q is garbage
+
+                                      /* back */
+                                     wake_up_state(q->task, TASK_NORMAL);
+
+In this scenario futex_wait_requeue_pi() is able to leave without using
+futex_q::lock_ptr for synchronization.
+
+This can be prevented by reading futex_q::task before updating the
+futex_q::requeue_state. A reference on the task_struct is not needed
+because requeue_pi_wake_futex() is invoked with a spinlock_t held which
+implies a RCU read section.
+
+Even if T1 terminates immediately after, the task_struct will remain valid
+during T2's wake_up_state().  A READ_ONCE on futex_q::task before
+futex_requeue_pi_complete() is enough because it ensures that the variable
+is read before the state is updated.
+
+Read futex_q::task before updating the requeue state, use it for the
+following wakeup.
+
+Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
+Reported-by: syzbot+034246a838a10d181e78@syzkaller.appspotmail.com
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Closes: https://lore.kernel.org/all/68b75989.050a0220.3db4df.01dd.GAE@google.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/futex/requeue.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1595,10 +1595,10 @@ static int check_inode_ref(struct extent
- 	while (ptr < end) {
- 		u16 namelen;
+diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
+index c716a66f86929..d818b4d47f1ba 100644
+--- a/kernel/futex/requeue.c
++++ b/kernel/futex/requeue.c
+@@ -230,8 +230,9 @@ static inline
+ void requeue_pi_wake_futex(struct futex_q *q, union futex_key *key,
+ 			   struct futex_hash_bucket *hb)
+ {
+-	q->key = *key;
++	struct task_struct *task;
  
--		if (unlikely(ptr + sizeof(iref) > end)) {
-+		if (unlikely(ptr + sizeof(*iref) > end)) {
- 			inode_ref_err(leaf, slot,
- 			"inode ref overflow, ptr %lu end %lu inode_ref_size %zu",
--				ptr, end, sizeof(iref));
-+				ptr, end, sizeof(*iref));
- 			return -EUCLEAN;
- 		}
++	q->key = *key;
+ 	__futex_unqueue(q);
  
+ 	WARN_ON(!q->rt_waiter);
+@@ -243,10 +244,11 @@ void requeue_pi_wake_futex(struct futex_q *q, union futex_key *key,
+ 	futex_hash_get(hb);
+ 	q->drop_hb_ref = true;
+ 	q->lock_ptr = &hb->lock;
++	task = READ_ONCE(q->task);
+ 
+ 	/* Signal locked state to the waiter */
+ 	futex_requeue_pi_complete(q, 1);
+-	wake_up_state(q->task, TASK_NORMAL);
++	wake_up_state(task, TASK_NORMAL);
+ }
+ 
+ /**
+-- 
+2.51.0
+
 
 
 
