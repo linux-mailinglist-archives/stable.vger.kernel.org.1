@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5B4BADD9B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53074BADB8B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6CD354E0F75
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AF1C16A20B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84AB30594A;
-	Tue, 30 Sep 2025 15:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E094D237163;
+	Tue, 30 Sep 2025 15:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sb7Gslke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDs5bAFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736071F3FED;
-	Tue, 30 Sep 2025 15:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9EB1EB5E3;
+	Tue, 30 Sep 2025 15:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246090; cv=none; b=CbsAl5UR67YrZaevs9GAjfwaMGgjeqq5sw9JgmG77QIiy0c+fmi5vJKOZR9XXve2Q990NtrFdvtno0peBqY8NRRbYhifGBOp9z+HydSF9Bb4tAY6H/sIJK9X4/oSaFkTIGF0ppCBcfSMax7pc8+al1yK0b4r6SXDMSAbwZk6By4=
+	t=1759245584; cv=none; b=Q61RXuH9tCgSBCNhJJfesqnmLZ7JznTpbsN8TQF6SNGSH5lknv7o4d1+hGzR1c+/rA9zpKz0JG+IFCloJYcZkJY37PYbj7IhKhIwTcFgShU4/qtWRUPLEjZsxV80le8nUmT77h2fEQv8CHmqaE5AbQ702IaXyd6b5Ukr5+VerMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246090; c=relaxed/simple;
-	bh=ewHOhOzq+nP4BTsO/sxNvz92nJRwoM36ZnYTRvkAyCs=;
+	s=arc-20240116; t=1759245584; c=relaxed/simple;
+	bh=g+fbn5vL+XeBkLC71jMdSI/2mAz+eXSKW18RK9pmJMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwFyNzOsXLrJ5RpWhSCX9lCRzbfRzbGNzR5ySsj/I7mPwJGaokwxn3W0AfYmO/Nj0kKcgsRTCtFOxXnXMhA51J1Abqe8Vc/aHHUqcejmASeG7yz55g5JpSIdCTrBVdvzTzmrBEy7hqcBKEFo9hUcQ0Hd5SncKbGlBkc1KvMyOFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sb7Gslke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C83C4CEF0;
-	Tue, 30 Sep 2025 15:28:08 +0000 (UTC)
+	 MIME-Version; b=SYHjEIYtZwhEly+QosTeEsQH90Y70WgYbJnspY3Nn+Q1saOVDxOtLy+OaAHYmjTeY5nXe5QmMlIqBQso0izkUJVhbhibh+wPnwt8uxrPM3LEj0eQ7qs3rhdfRlyx8209RNsqSR6jd3fwJ0VCibW443p5DykJ8VKKxsy7Iu2va4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDs5bAFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C810BC113D0;
+	Tue, 30 Sep 2025 15:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246089;
-	bh=ewHOhOzq+nP4BTsO/sxNvz92nJRwoM36ZnYTRvkAyCs=;
+	s=korg; t=1759245584;
+	bh=g+fbn5vL+XeBkLC71jMdSI/2mAz+eXSKW18RK9pmJMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sb7Gslker4brxb9Aj/YC+L3adJ4xVkQxCryv1Oj/h8Ru/s65tvRbccnGYsKtfq/70
-	 fk6ekt/WxYy9p4lwMJgqSfSUHgjZ7BQrY74WYit6V0pMuq5SN1mWWWfERKYm4dKGAf
-	 tyRp/gM0FuWmXDQZx9NbF+43imKNftPpZ/xIvlPQ=
+	b=aDs5bAFKtKW6CI/zGKtnf/6dlszH+6MST+k5uD9d/xrGrHuCymqVIIk2DgZs5IvFr
+	 JpEjvP6gS5pXVNUeUX2yekLUtDvEZ2Y+TsAke3FJni+o3vQ14/kIQOzFWb8AYGos/e
+	 p57Z/TLqCoXc17nX+bnIe7YjY59p6lX3d6ZsfLw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 49/89] Bluetooth: hci_event: Fix UAF in hci_acl_create_conn_sync
-Date: Tue, 30 Sep 2025 16:48:03 +0200
-Message-ID: <20250930143823.950475886@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.1 60/73] minmax: add in_range() macro
+Date: Tue, 30 Sep 2025 16:48:04 +0200
+Message-ID: <20250930143823.148505071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,204 +62,477 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 
-[ Upstream commit 9e622804d57e2d08f0271200606bd1270f75126f ]
+[ Upstream commit f9bff0e31881d03badf191d3b0005839391f5f2b ]
 
-This fixes the following UFA in hci_acl_create_conn_sync where a
-connection still pending is command submission (conn->state == BT_OPEN)
-maybe freed, also since this also can happen with the likes of
-hci_le_create_conn_sync fix it as well:
+Patch series "New page table range API", v6.
 
-BUG: KASAN: slab-use-after-free in hci_acl_create_conn_sync+0x5ef/0x790 net/bluetooth/hci_sync.c:6861
-Write of size 2 at addr ffff88805ffcc038 by task kworker/u11:2/9541
+This patchset changes the API used by the MM to set up page table entries.
+The four APIs are:
 
-CPU: 1 UID: 0 PID: 9541 Comm: kworker/u11:2 Not tainted 6.16.0-rc7 #3 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
-Workqueue: hci3 hci_cmd_sync_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x230 mm/kasan/report.c:480
- kasan_report+0x118/0x150 mm/kasan/report.c:593
- hci_acl_create_conn_sync+0x5ef/0x790 net/bluetooth/hci_sync.c:6861
- hci_cmd_sync_work+0x210/0x3a0 net/bluetooth/hci_sync.c:332
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
- </TASK>
+    set_ptes(mm, addr, ptep, pte, nr)
+    update_mmu_cache_range(vma, addr, ptep, nr)
+    flush_dcache_folio(folio)
+    flush_icache_pages(vma, page, nr)
 
-Allocated by task 123736:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __kmalloc_cache_noprof+0x230/0x3d0 mm/slub.c:4359
- kmalloc_noprof include/linux/slab.h:905 [inline]
- kzalloc_noprof include/linux/slab.h:1039 [inline]
- __hci_conn_add+0x233/0x1b30 net/bluetooth/hci_conn.c:939
- hci_conn_add_unset net/bluetooth/hci_conn.c:1051 [inline]
- hci_connect_acl+0x16c/0x4e0 net/bluetooth/hci_conn.c:1634
- pair_device+0x418/0xa70 net/bluetooth/mgmt.c:3556
- hci_mgmt_cmd+0x9c9/0xef0 net/bluetooth/hci_sock.c:1719
- hci_sock_sendmsg+0x6ca/0xef0 net/bluetooth/hci_sock.c:1839
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x219/0x270 net/socket.c:727
- sock_write_iter+0x258/0x330 net/socket.c:1131
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x54b/0xa90 fs/read_write.c:686
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+flush_dcache_folio() isn't technically new, but no architecture
+implemented it, so I've done that for them.  The old APIs remain around
+but are mostly implemented by calling the new interfaces.
 
-Freed by task 103680:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:247 [inline]
- __kasan_slab_free+0x62/0x70 mm/kasan/common.c:264
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2381 [inline]
- slab_free mm/slub.c:4643 [inline]
- kfree+0x18e/0x440 mm/slub.c:4842
- device_release+0x9c/0x1c0
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x22b/0x480 lib/kobject.c:737
- hci_conn_cleanup net/bluetooth/hci_conn.c:175 [inline]
- hci_conn_del+0x8ff/0xcb0 net/bluetooth/hci_conn.c:1173
- hci_conn_complete_evt+0x3c7/0x1040 net/bluetooth/hci_event.c:3199
- hci_event_func net/bluetooth/hci_event.c:7477 [inline]
- hci_event_packet+0x7e0/0x1200 net/bluetooth/hci_event.c:7531
- hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
+The new APIs are based around setting up N page table entries at once.
+The N entries belong to the same PMD, the same folio and the same VMA, so
+ptep++ is a legitimate operation, and locking is taken care of for you.
+Some architectures can do a better job of it than just a loop, but I have
+hesitated to make too deep a change to architectures I don't understand
+well.
 
-Last potentially related work creation:
- kasan_save_stack+0x3e/0x60 mm/kasan/common.c:47
- kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:548
- insert_work+0x3d/0x330 kernel/workqueue.c:2183
- __queue_work+0xbd9/0xfe0 kernel/workqueue.c:2345
- queue_delayed_work_on+0x18b/0x280 kernel/workqueue.c:2561
- pairing_complete+0x1e7/0x2b0 net/bluetooth/mgmt.c:3451
- pairing_complete_cb+0x1ac/0x230 net/bluetooth/mgmt.c:3487
- hci_connect_cfm include/net/bluetooth/hci_core.h:2064 [inline]
- hci_conn_failed+0x24d/0x310 net/bluetooth/hci_conn.c:1275
- hci_conn_complete_evt+0x3c7/0x1040 net/bluetooth/hci_event.c:3199
- hci_event_func net/bluetooth/hci_event.c:7477 [inline]
- hci_event_packet+0x7e0/0x1200 net/bluetooth/hci_event.c:7531
- hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
+One thing I have changed in every architecture is that PG_arch_1 is now a
+per-folio bit instead of a per-page bit when used for dcache clean/dirty
+tracking.  This was something that would have to happen eventually, and it
+makes sense to do it now rather than iterate over every page involved in a
+cache flush and figure out if it needs to happen.
 
-Fixes: aef2aa4fa98e ("Bluetooth: hci_event: Fix creating hci_conn object on error status")
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The point of all this is better performance, and Fengwei Yin has measured
+improvement on x86.  I suspect you'll see improvement on your architecture
+too.  Try the new will-it-scale test mentioned here:
+https://lore.kernel.org/linux-mm/20230206140639.538867-5-fengwei.yin@intel.com/
+You'll need to run it on an XFS filesystem and have
+CONFIG_TRANSPARENT_HUGEPAGE set.
+
+This patchset is the basis for much of the anonymous large folio work
+being done by Ryan, so it's received quite a lot of testing over the last
+few months.
+
+This patch (of 38):
+
+Determine if a value lies within a range more efficiently (subtraction +
+comparison vs two comparisons and an AND).  It also has useful (under some
+circumstances) behaviour if the range exceeds the maximum value of the
+type.  Convert all the conflicting definitions of in_range() within the
+kernel; some can use the generic definition while others need their own
+definition.
+
+Link: https://lkml.kernel.org/r/20230802151406.3735276-1-willy@infradead.org
+Link: https://lkml.kernel.org/r/20230802151406.3735276-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_core.h | 21 +++++++++++++++++++++
- net/bluetooth/hci_event.c        | 26 +++++++++++++++++++++++---
- 2 files changed, 44 insertions(+), 3 deletions(-)
+ arch/arm/mm/pageattr.c                                     |    6 +-
+ drivers/gpu/drm/arm/display/include/malidp_utils.h         |    2 
+ drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c |   24 +++++------
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c                      |    6 --
+ drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c            |   18 ++++----
+ drivers/virt/acrn/ioreq.c                                  |    4 -
+ fs/btrfs/misc.h                                            |    2 
+ fs/ext2/balloc.c                                           |    2 
+ fs/ext4/ext4.h                                             |    2 
+ fs/ufs/util.h                                              |    6 --
+ include/linux/minmax.h                                     |   27 +++++++++++++
+ lib/logic_pio.c                                            |    3 -
+ net/netfilter/nf_nat_core.c                                |    6 +-
+ net/tipc/core.h                                            |    2 
+ net/tipc/link.c                                            |   10 ++--
+ tools/testing/selftests/bpf/progs/get_branch_snapshot.c    |    4 -
+ 16 files changed, 65 insertions(+), 59 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index df4af45f8603c..69a1d8b12beff 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1203,6 +1203,27 @@ static inline struct hci_conn *hci_conn_hash_lookup_ba(struct hci_dev *hdev,
- 	return NULL;
+--- a/arch/arm/mm/pageattr.c
++++ b/arch/arm/mm/pageattr.c
+@@ -25,7 +25,7 @@ static int change_page_range(pte_t *ptep
+ 	return 0;
  }
  
-+static inline struct hci_conn *hci_conn_hash_lookup_role(struct hci_dev *hdev,
-+							 __u8 type, __u8 role,
-+							 bdaddr_t *ba)
+-static bool in_range(unsigned long start, unsigned long size,
++static bool range_in_range(unsigned long start, unsigned long size,
+ 	unsigned long range_start, unsigned long range_end)
+ {
+ 	return start >= range_start && start < range_end &&
+@@ -63,8 +63,8 @@ static int change_memory_common(unsigned
+ 	if (!size)
+ 		return 0;
+ 
+-	if (!in_range(start, size, MODULES_VADDR, MODULES_END) &&
+-	    !in_range(start, size, VMALLOC_START, VMALLOC_END))
++	if (!range_in_range(start, size, MODULES_VADDR, MODULES_END) &&
++	    !range_in_range(start, size, VMALLOC_START, VMALLOC_END))
+ 		return -EINVAL;
+ 
+ 	return __change_memory_common(start, size, set_mask, clear_mask);
+--- a/drivers/gpu/drm/arm/display/include/malidp_utils.h
++++ b/drivers/gpu/drm/arm/display/include/malidp_utils.h
+@@ -35,7 +35,7 @@ static inline void set_range(struct mali
+ 	rg->end   = end;
+ }
+ 
+-static inline bool in_range(struct malidp_range *rg, u32 v)
++static inline bool malidp_in_range(struct malidp_range *rg, u32 v)
+ {
+ 	return (v >= rg->start) && (v <= rg->end);
+ }
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+@@ -305,12 +305,12 @@ komeda_layer_check_cfg(struct komeda_lay
+ 	if (komeda_fb_check_src_coords(kfb, src_x, src_y, src_w, src_h))
+ 		return -EINVAL;
+ 
+-	if (!in_range(&layer->hsize_in, src_w)) {
++	if (!malidp_in_range(&layer->hsize_in, src_w)) {
+ 		DRM_DEBUG_ATOMIC("invalidate src_w %d.\n", src_w);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&layer->vsize_in, src_h)) {
++	if (!malidp_in_range(&layer->vsize_in, src_h)) {
+ 		DRM_DEBUG_ATOMIC("invalidate src_h %d.\n", src_h);
+ 		return -EINVAL;
+ 	}
+@@ -452,14 +452,14 @@ komeda_scaler_check_cfg(struct komeda_sc
+ 	hsize_out = dflow->out_w;
+ 	vsize_out = dflow->out_h;
+ 
+-	if (!in_range(&scaler->hsize, hsize_in) ||
+-	    !in_range(&scaler->hsize, hsize_out)) {
++	if (!malidp_in_range(&scaler->hsize, hsize_in) ||
++	    !malidp_in_range(&scaler->hsize, hsize_out)) {
+ 		DRM_DEBUG_ATOMIC("Invalid horizontal sizes");
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&scaler->vsize, vsize_in) ||
+-	    !in_range(&scaler->vsize, vsize_out)) {
++	if (!malidp_in_range(&scaler->vsize, vsize_in) ||
++	    !malidp_in_range(&scaler->vsize, vsize_out)) {
+ 		DRM_DEBUG_ATOMIC("Invalid vertical sizes");
+ 		return -EINVAL;
+ 	}
+@@ -574,13 +574,13 @@ komeda_splitter_validate(struct komeda_s
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&splitter->hsize, dflow->in_w)) {
++	if (!malidp_in_range(&splitter->hsize, dflow->in_w)) {
+ 		DRM_DEBUG_ATOMIC("split in_w:%d is out of the acceptable range.\n",
+ 				 dflow->in_w);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&splitter->vsize, dflow->in_h)) {
++	if (!malidp_in_range(&splitter->vsize, dflow->in_h)) {
+ 		DRM_DEBUG_ATOMIC("split in_h: %d exceeds the acceptable range.\n",
+ 				 dflow->in_h);
+ 		return -EINVAL;
+@@ -624,13 +624,13 @@ komeda_merger_validate(struct komeda_mer
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&merger->hsize_merged, output->out_w)) {
++	if (!malidp_in_range(&merger->hsize_merged, output->out_w)) {
+ 		DRM_DEBUG_ATOMIC("merged_w: %d is out of the accepted range.\n",
+ 				 output->out_w);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&merger->vsize_merged, output->out_h)) {
++	if (!malidp_in_range(&merger->vsize_merged, output->out_h)) {
+ 		DRM_DEBUG_ATOMIC("merged_h: %d is out of the accepted range.\n",
+ 				 output->out_h);
+ 		return -EINVAL;
+@@ -866,8 +866,8 @@ void komeda_complete_data_flow_cfg(struc
+ 	 * input/output range.
+ 	 */
+ 	if (dflow->en_scaling && scaler)
+-		dflow->en_split = !in_range(&scaler->hsize, dflow->in_w) ||
+-				  !in_range(&scaler->hsize, dflow->out_w);
++		dflow->en_split = !malidp_in_range(&scaler->hsize, dflow->in_w) ||
++				  !malidp_in_range(&scaler->hsize, dflow->out_w);
+ }
+ 
+ static bool merger_is_available(struct komeda_pipeline *pipe,
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -680,12 +680,6 @@ struct block_header {
+ 	u32 data[];
+ };
+ 
+-/* this should be a general kernel helper */
+-static int in_range(u32 addr, u32 start, u32 size)
+-{
+-	return addr >= start && addr < start + size;
+-}
+-
+ static bool fw_block_mem(struct a6xx_gmu_bo *bo, const struct block_header *blk)
+ {
+ 	if (!in_range(blk->addr, bo->iova, bo->size))
+--- a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+@@ -2126,7 +2126,7 @@ static const struct ethtool_ops cxgb_eth
+ 	.set_link_ksettings = set_link_ksettings,
+ };
+ 
+-static int in_range(int val, int lo, int hi)
++static int cxgb_in_range(int val, int lo, int hi)
+ {
+ 	return val < 0 || (val <= hi && val >= lo);
+ }
+@@ -2162,19 +2162,19 @@ static int cxgb_siocdevprivate(struct ne
+ 			return -EINVAL;
+ 		if (t.qset_idx >= SGE_QSETS)
+ 			return -EINVAL;
+-		if (!in_range(t.intr_lat, 0, M_NEWTIMER) ||
+-		    !in_range(t.cong_thres, 0, 255) ||
+-		    !in_range(t.txq_size[0], MIN_TXQ_ENTRIES,
++		if (!cxgb_in_range(t.intr_lat, 0, M_NEWTIMER) ||
++		    !cxgb_in_range(t.cong_thres, 0, 255) ||
++		    !cxgb_in_range(t.txq_size[0], MIN_TXQ_ENTRIES,
+ 			      MAX_TXQ_ENTRIES) ||
+-		    !in_range(t.txq_size[1], MIN_TXQ_ENTRIES,
++		    !cxgb_in_range(t.txq_size[1], MIN_TXQ_ENTRIES,
+ 			      MAX_TXQ_ENTRIES) ||
+-		    !in_range(t.txq_size[2], MIN_CTRL_TXQ_ENTRIES,
++		    !cxgb_in_range(t.txq_size[2], MIN_CTRL_TXQ_ENTRIES,
+ 			      MAX_CTRL_TXQ_ENTRIES) ||
+-		    !in_range(t.fl_size[0], MIN_FL_ENTRIES,
++		    !cxgb_in_range(t.fl_size[0], MIN_FL_ENTRIES,
+ 			      MAX_RX_BUFFERS) ||
+-		    !in_range(t.fl_size[1], MIN_FL_ENTRIES,
++		    !cxgb_in_range(t.fl_size[1], MIN_FL_ENTRIES,
+ 			      MAX_RX_JUMBO_BUFFERS) ||
+-		    !in_range(t.rspq_size, MIN_RSPQ_ENTRIES,
++		    !cxgb_in_range(t.rspq_size, MIN_RSPQ_ENTRIES,
+ 			      MAX_RSPQ_ENTRIES))
+ 			return -EINVAL;
+ 
+--- a/drivers/virt/acrn/ioreq.c
++++ b/drivers/virt/acrn/ioreq.c
+@@ -351,7 +351,7 @@ static bool handle_cf8cfc(struct acrn_vm
+ 	return is_handled;
+ }
+ 
+-static bool in_range(struct acrn_ioreq_range *range,
++static bool acrn_in_range(struct acrn_ioreq_range *range,
+ 		     struct acrn_io_request *req)
+ {
+ 	bool ret = false;
+@@ -389,7 +389,7 @@ static struct acrn_ioreq_client *find_io
+ 	list_for_each_entry(client, &vm->ioreq_clients, list) {
+ 		read_lock_bh(&client->range_lock);
+ 		list_for_each_entry(range, &client->range_list, list) {
+-			if (in_range(range, req)) {
++			if (acrn_in_range(range, req)) {
+ 				found = client;
+ 				break;
+ 			}
+--- a/fs/btrfs/misc.h
++++ b/fs/btrfs/misc.h
+@@ -8,8 +8,6 @@
+ #include <linux/math64.h>
+ #include <linux/rbtree.h>
+ 
+-#define in_range(b, first, len) ((b) >= (first) && (b) < (first) + (len))
+-
+ static inline void cond_wake_up(struct wait_queue_head *wq)
+ {
+ 	/*
+--- a/fs/ext2/balloc.c
++++ b/fs/ext2/balloc.c
+@@ -36,8 +36,6 @@
+  */
+ 
+ 
+-#define in_range(b, first, len)	((b) >= (first) && (b) <= (first) + (len) - 1)
+-
+ struct ext2_group_desc * ext2_get_group_desc(struct super_block * sb,
+ 					     unsigned int block_group,
+ 					     struct buffer_head ** bh)
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3804,8 +3804,6 @@ static inline void set_bitmap_uptodate(s
+ 	set_bit(BH_BITMAP_UPTODATE, &(bh)->b_state);
+ }
+ 
+-#define in_range(b, first, len)	((b) >= (first) && (b) <= (first) + (len) - 1)
+-
+ /* For ioend & aio unwritten conversion wait queues */
+ #define EXT4_WQ_HASH_SZ		37
+ #define ext4_ioend_wq(v)   (&ext4__ioend_wq[((unsigned long)(v)) %\
+--- a/fs/ufs/util.h
++++ b/fs/ufs/util.h
+@@ -11,12 +11,6 @@
+ #include <linux/fs.h>
+ #include "swab.h"
+ 
+-
+-/*
+- * some useful macros
+- */
+-#define in_range(b,first,len)	((b)>=(first)&&(b)<(first)+(len))
+-
+ /*
+  * functions used for retyping
+  */
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -5,6 +5,7 @@
+ #include <linux/build_bug.h>
+ #include <linux/compiler.h>
+ #include <linux/const.h>
++#include <linux/types.h>
+ 
+ /*
+  * min()/max()/clamp() macros must accomplish three things:
+@@ -192,6 +193,32 @@
+  */
+ #define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
+ 
++static inline bool in_range64(u64 val, u64 start, u64 len)
 +{
-+	struct hci_conn_hash *h = &hdev->conn_hash;
-+	struct hci_conn  *c;
-+
-+	rcu_read_lock();
-+
-+	list_for_each_entry_rcu(c, &h->list, list) {
-+		if (c->type == type && c->role == role && !bacmp(&c->dst, ba)) {
-+			rcu_read_unlock();
-+			return c;
-+		}
-+	}
-+
-+	rcu_read_unlock();
-+
-+	return NULL;
++	return (val - start) < len;
 +}
 +
- static inline struct hci_conn *hci_conn_hash_lookup_le(struct hci_dev *hdev,
- 						       bdaddr_t *ba,
- 						       __u8 ba_type)
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 262ff30261d67..1e537ed83ba4b 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3050,8 +3050,18 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
++static inline bool in_range32(u32 val, u32 start, u32 len)
++{
++	return (val - start) < len;
++}
++
++/**
++ * in_range - Determine if a value lies within a range.
++ * @val: Value to test.
++ * @start: First value in range.
++ * @len: Number of values in range.
++ *
++ * This is more efficient than "if (start <= val && val < (start + len))".
++ * It also gives a different answer if @start + @len overflows the size of
++ * the type by a sufficient amount to encompass @val.  Decide for yourself
++ * which behaviour you want, or prove that start + len never overflow.
++ * Do not blindly replace one form with the other.
++ */
++#define in_range(val, start, len)					\
++	((sizeof(start) | sizeof(len) | sizeof(val)) <= sizeof(u32) ?	\
++		in_range32(val, start, len) : in_range64(val, start, len))
++
+ /**
+  * swap - swap values of @a and @b
+  * @a: first value
+--- a/lib/logic_pio.c
++++ b/lib/logic_pio.c
+@@ -20,9 +20,6 @@
+ static LIST_HEAD(io_range_list);
+ static DEFINE_MUTEX(io_range_mutex);
  
- 	hci_dev_lock(hdev);
+-/* Consider a kernel general helper for this */
+-#define in_range(b, first, len)        ((b) >= (first) && (b) < (first) + (len))
+-
+ /**
+  * logic_pio_register_range - register logical PIO range for a host
+  * @new_range: pointer to the IO range to be registered.
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -242,7 +242,7 @@ static bool l4proto_in_range(const struc
+ /* If we source map this tuple so reply looks like reply_tuple, will
+  * that meet the constraints of range.
+  */
+-static int in_range(const struct nf_conntrack_tuple *tuple,
++static int nf_in_range(const struct nf_conntrack_tuple *tuple,
+ 		    const struct nf_nat_range2 *range)
+ {
+ 	/* If we are supposed to map IPs, then we must be in the
+@@ -291,7 +291,7 @@ find_appropriate_src(struct net *net,
+ 				       &ct->tuplehash[IP_CT_DIR_REPLY].tuple);
+ 			result->dst = tuple->dst;
  
-+	/* Check for existing connection:
-+	 *
-+	 * 1. If it doesn't exist then it must be receiver/slave role.
-+	 * 2. If it does exist confirm that it is connecting/BT_CONNECT in case
-+	 *    of initiator/master role since there could be a collision where
-+	 *    either side is attempting to connect or something like a fuzzing
-+	 *    testing is trying to play tricks to destroy the hcon object before
-+	 *    it even attempts to connect (e.g. hcon->state == BT_OPEN).
-+	 */
- 	conn = hci_conn_hash_lookup_ba(hdev, ev->link_type, &ev->bdaddr);
--	if (!conn) {
-+	if (!conn ||
-+	    (conn->role == HCI_ROLE_MASTER && conn->state != BT_CONNECT)) {
- 		/* In case of error status and there is no connection pending
- 		 * just unlock as there is nothing to cleanup.
- 		 */
-@@ -5618,8 +5628,18 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
- 	 */
- 	hci_dev_clear_flag(hdev, HCI_LE_ADV);
+-			if (in_range(result, range))
++			if (nf_in_range(result, range))
+ 				return 1;
+ 		}
+ 	}
+@@ -523,7 +523,7 @@ get_unique_tuple(struct nf_conntrack_tup
+ 	if (maniptype == NF_NAT_MANIP_SRC &&
+ 	    !(range->flags & NF_NAT_RANGE_PROTO_RANDOM_ALL)) {
+ 		/* try the original tuple first */
+-		if (in_range(orig_tuple, range)) {
++		if (nf_in_range(orig_tuple, range)) {
+ 			if (!nf_nat_used_tuple(orig_tuple, ct)) {
+ 				*tuple = *orig_tuple;
+ 				return;
+--- a/net/tipc/core.h
++++ b/net/tipc/core.h
+@@ -197,7 +197,7 @@ static inline int less(u16 left, u16 rig
+ 	return less_eq(left, right) && (mod(right) != mod(left));
+ }
  
--	conn = hci_conn_hash_lookup_ba(hdev, LE_LINK, bdaddr);
--	if (!conn) {
-+	/* Check for existing connection:
-+	 *
-+	 * 1. If it doesn't exist then use the role to create a new object.
-+	 * 2. If it does exist confirm that it is connecting/BT_CONNECT in case
-+	 *    of initiator/master role since there could be a collision where
-+	 *    either side is attempting to connect or something like a fuzzing
-+	 *    testing is trying to play tricks to destroy the hcon object before
-+	 *    it even attempts to connect (e.g. hcon->state == BT_OPEN).
-+	 */
-+	conn = hci_conn_hash_lookup_role(hdev, LE_LINK, role, bdaddr);
-+	if (!conn ||
-+	    (conn->role == HCI_ROLE_MASTER && conn->state != BT_CONNECT)) {
- 		/* In case of error status and there is no connection pending
- 		 * just unlock as there is nothing to cleanup.
- 		 */
--- 
-2.51.0
-
+-static inline int in_range(u16 val, u16 min, u16 max)
++static inline int tipc_in_range(u16 val, u16 min, u16 max)
+ {
+ 	return !less(val, min) && !more(val, max);
+ }
+--- a/net/tipc/link.c
++++ b/net/tipc/link.c
+@@ -1624,7 +1624,7 @@ next_gap_ack:
+ 					  last_ga->bgack_cnt);
+ 			}
+ 			/* Check against the last Gap ACK block */
+-			if (in_range(seqno, start, end))
++			if (tipc_in_range(seqno, start, end))
+ 				continue;
+ 			/* Update/release the packet peer is acking */
+ 			bc_has_acked = true;
+@@ -2252,12 +2252,12 @@ static int tipc_link_proto_rcv(struct ti
+ 		strncpy(if_name, data, TIPC_MAX_IF_NAME);
+ 
+ 		/* Update own tolerance if peer indicates a non-zero value */
+-		if (in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
++		if (tipc_in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
+ 			l->tolerance = peers_tol;
+ 			l->bc_rcvlink->tolerance = peers_tol;
+ 		}
+ 		/* Update own priority if peer's priority is higher */
+-		if (in_range(peers_prio, l->priority + 1, TIPC_MAX_LINK_PRI))
++		if (tipc_in_range(peers_prio, l->priority + 1, TIPC_MAX_LINK_PRI))
+ 			l->priority = peers_prio;
+ 
+ 		/* If peer is going down we want full re-establish cycle */
+@@ -2300,13 +2300,13 @@ static int tipc_link_proto_rcv(struct ti
+ 		l->rcv_nxt_state = msg_seqno(hdr) + 1;
+ 
+ 		/* Update own tolerance if peer indicates a non-zero value */
+-		if (in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
++		if (tipc_in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
+ 			l->tolerance = peers_tol;
+ 			l->bc_rcvlink->tolerance = peers_tol;
+ 		}
+ 		/* Update own prio if peer indicates a different value */
+ 		if ((peers_prio != l->priority) &&
+-		    in_range(peers_prio, 1, TIPC_MAX_LINK_PRI)) {
++		    tipc_in_range(peers_prio, 1, TIPC_MAX_LINK_PRI)) {
+ 			l->priority = peers_prio;
+ 			rc = tipc_link_fsm_evt(l, LINK_FAILURE_EVT);
+ 		}
+--- a/tools/testing/selftests/bpf/progs/get_branch_snapshot.c
++++ b/tools/testing/selftests/bpf/progs/get_branch_snapshot.c
+@@ -15,7 +15,7 @@ long total_entries = 0;
+ #define ENTRY_CNT 32
+ struct perf_branch_entry entries[ENTRY_CNT] = {};
+ 
+-static inline bool in_range(__u64 val)
++static inline bool gbs_in_range(__u64 val)
+ {
+ 	return (val >= address_low) && (val < address_high);
+ }
+@@ -31,7 +31,7 @@ int BPF_PROG(test1, int n, int ret)
+ 	for (i = 0; i < ENTRY_CNT; i++) {
+ 		if (i >= total_entries)
+ 			break;
+-		if (in_range(entries[i].from) && in_range(entries[i].to))
++		if (gbs_in_range(entries[i].from) && gbs_in_range(entries[i].to))
+ 			test1_hits++;
+ 		else if (!test1_hits)
+ 			wasted_entries++;
 
 
 
