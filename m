@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11BE8BAD7FD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16885BAD986
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A5EC4A35E0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3015D3A15DE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF7D2FC881;
-	Tue, 30 Sep 2025 15:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A23306D23;
+	Tue, 30 Sep 2025 15:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZt29UJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mq8P40Pe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AB91EE02F;
-	Tue, 30 Sep 2025 15:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8152236EB;
+	Tue, 30 Sep 2025 15:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244589; cv=none; b=Ktbyn4dhAgWCJfCFu0odUwnKp1DESm9dM+1ajmBTFHbpJuOF6SizXHapjaZUMh+cb4QNG80s0TZbSnzyRzoT6SjpZLxJP344kFik2+cLHmFM7v8PMqixcgRyTOF+zZLpJY/cQf+h9ioM6UdkW98vNaafzaUIIymavAojvhdAA7A=
+	t=1759244968; cv=none; b=btcG8N5NR5Mn+VWoNW6XF/JBhDOSKzg4nmunl03/qfNzQZidoQv0t4lMQb0AWyYCzV17NeZqJKflnoLHj15lDRrG++8uh6ja2/klJMF4LOKQbgQHZwgpAjI0WOO3Chp6VaGTwkFUk7cWvtn/Op035MGraYv3tnqqq4U5ka0aggw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244589; c=relaxed/simple;
-	bh=78eZ4mxdgmehVafubClEtVhhhlrTeTYx9cHUZWP98Yg=;
+	s=arc-20240116; t=1759244968; c=relaxed/simple;
+	bh=9cESZ3gP1naczoReln+oz5TYJUjfWKLuAOs8uy7QABQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6NNVeC6SaNjQq6NZg+k9Nj9y0D5KrsoBkk28/2QhnfLMtV0KJqoFootKZjwNXeI1+wYD01Ovq7lvnueaCk4jP+9jUDhRcRwbdKbOdQWA0VBl1ABicfRalFJpfcZMjYyof0rB8gtyKxFQvBTDlDBLr0bNDgyQ3S8Ret6UudVMs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZt29UJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A1FC4CEF0;
-	Tue, 30 Sep 2025 15:03:08 +0000 (UTC)
+	 MIME-Version; b=Im1e2YDa1mnfMgshlnclHazXb0qGvZ3vLToN3fhDAS2etPmjrfdxEbKPWRlKYK2eTMB4i/9FuYcKUf2u8s9SVu3hcxK9DXQhQVzAWt19C0UqA9AG/11J1/JmBxtF7fGBY8q0ILMFwkwx/VdKjiFJGJpreD7txhePM9IbMP9LARA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mq8P40Pe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D93AC113D0;
+	Tue, 30 Sep 2025 15:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244589;
-	bh=78eZ4mxdgmehVafubClEtVhhhlrTeTYx9cHUZWP98Yg=;
+	s=korg; t=1759244967;
+	bh=9cESZ3gP1naczoReln+oz5TYJUjfWKLuAOs8uy7QABQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZt29UJfQMYbni657XZBjynBNYbnWDQ38hSr6Zr6NKQ45F2QWA3e70NE6wWb9YKLg
-	 Ru5kkUEIzvQbC1HaFGrlLgInoN6GyYzC/jqk+HGcKOmIe/FfLOTOy1JdUcqaNVtmUz
-	 D2E3HMXug1IAIhX5Ilh4KmT6yMIb0OCt84Yotc10=
+	b=mq8P40PedKxb3ObXGvtZ2wv6vixipGlq+KQ56JmiVQBpmKVLGQcmnws9xUWFAVow5
+	 i3FaUW90ZUxjWKKWVNiSOvMcK2iXOqidzCoP0I+Aq84qdaQ3eaBbQaYmqYcnGce8Ps
+	 xfheJbR3SR3QDi4xFTMFcd/6nliJBAKO+kvj4J5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 022/143] drm/panfrost: Commonize Mediatek power domain array definitions
-Date: Tue, 30 Sep 2025 16:45:46 +0200
-Message-ID: <20250930143832.126827981@linuxfoundation.org>
+	Kim Phillips <kim.phillips@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Subject: [PATCH 5.15 017/151] KVM: x86: Move open-coded CPUID leaf 0x80000021 EAX bit propagation code
+Date: Tue, 30 Sep 2025 16:45:47 +0200
+Message-ID: <20250930143828.294600776@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+From: Kim Phillips <kim.phillips@amd.com>
 
-[ Upstream commit bd77b870eb190c9cf5d9b7208625513e99e5be2d ]
+Commit c35ac8c4bf600ee23bacb20f863aa7830efb23fb upstream
 
-In the panfrost driver, the platform data of several Mediatek SoC
-declares and uses several different power domains arrays according to
-GPU core number present in the SoC:
-- mediatek_mt8186_pm_domains (2 cores)
-- mediatek_mt8183_pm_domains (3 cores)
-- mediatek_mt8192_pm_domains (5 cores)
+Move code from __do_cpuid_func() to kvm_set_cpu_caps() in preparation for adding
+the features in their native leaf.
 
-As they all are fixed arrays, starting with the same entries and the
-platform data also has a power domains array length field
-(num_pm_domains), they can be replaced by a single array, containing
-all entries, if the num_pm_domains field of the platform data is also
-set to the matching core number.
+Also drop the bit description comments as it will be more self-describing once
+the individual features are added.
 
-So, create a generic power domain array (mediatek_pm_domains) and use
-it in the mt8183(b), mt8186, mt8188 and mt8192 platform data instead.
+Whilst there, switch to using the more efficient cpu_feature_enabled() instead
+of static_cpu_has().
 
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250509-mt8370-enable-gpu-v6-3-2833888cb1d3@collabora.com
-Stable-dep-of: 81645377c231 ("drm/panfrost: Add support for Mali on the MT8370 SoC")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note, LFENCE_RDTSC and "NULL selector clears base" are currently synthetic,
+Linux-defined feature flags as Linux tracking of the features predates AMD's
+definition.  Keep the manual propagation of the flags from their synthetic
+counterparts until the kernel fully converts to AMD's definition, otherwise KVM
+would stop synthesizing the flags as intended.
+
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20230124163319.2277355-3-kim.phillips@amd.com
+
+Move setting of VERW_CLEAR bit to the new
+kvm_cpu_cap_mask(CPUID_8000_0021_EAX, ...) site.
+
+Cc: <stable@vger.kernel.org> # 5.15.y
+Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_drv.c | 27 +++++++++++--------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ arch/x86/kvm/cpuid.c |   25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c b/drivers/gpu/drm/panfrost/panfrost_drv.c
-index 7b899a9b2120c..21b28bef84015 100644
---- a/drivers/gpu/drm/panfrost/panfrost_drv.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
-@@ -789,6 +789,8 @@ static const struct panfrost_compatible amlogic_data = {
- 	.vendor_quirk = panfrost_gpu_amlogic_quirk,
- };
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -544,6 +544,17 @@ void kvm_set_cpu_caps(void)
+ 		0 /* SME */ | F(SEV) | 0 /* VM_PAGE_FLUSH */ | F(SEV_ES) |
+ 		F(SME_COHERENT));
  
-+static const char * const mediatek_pm_domains[] = { "core0", "core1", "core2",
-+						    "core3", "core4" };
- /*
-  * The old data with two power supplies for MT8183 is here only to
-  * keep retro-compatibility with older devicetrees, as DVFS will
-@@ -798,48 +800,43 @@ static const struct panfrost_compatible amlogic_data = {
-  * coupled regulators instead.
-  */
- static const char * const legacy_supplies[] = { "mali", "sram", NULL };
--static const char * const mediatek_mt8183_pm_domains[] = { "core0", "core1", "core2" };
- static const struct panfrost_compatible mediatek_mt8183_data = {
- 	.num_supplies = ARRAY_SIZE(legacy_supplies) - 1,
- 	.supply_names = legacy_supplies,
--	.num_pm_domains = ARRAY_SIZE(mediatek_mt8183_pm_domains),
--	.pm_domain_names = mediatek_mt8183_pm_domains,
-+	.num_pm_domains = 3,
-+	.pm_domain_names = mediatek_pm_domains,
- };
++	kvm_cpu_cap_mask(CPUID_8000_0021_EAX,
++		BIT(0) /* NO_NESTED_DATA_BP */ |
++		BIT(2) /* LFENCE Always serializing */ | 0 /* SmmPgCfgLock */ |
++		BIT(5) /* The memory form of VERW mitigates TSA */ |
++		BIT(6) /* NULL_SEL_CLR_BASE */ | 0 /* PrefetchCtlMsr */
++	);
++	if (cpu_feature_enabled(X86_FEATURE_LFENCE_RDTSC))
++		kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(2) /* LFENCE Always serializing */;
++	if (!static_cpu_has_bug(X86_BUG_NULL_SEG))
++		kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(6) /* NULL_SEL_CLR_BASE */;
++
+ 	kvm_cpu_cap_mask(CPUID_C000_0001_EDX,
+ 		F(XSTORE) | F(XSTORE_EN) | F(XCRYPT) | F(XCRYPT_EN) |
+ 		F(ACE2) | F(ACE2_EN) | F(PHE) | F(PHE_EN) |
+@@ -553,8 +564,6 @@ void kvm_set_cpu_caps(void)
+ 	if (cpu_feature_enabled(X86_FEATURE_SRSO_NO))
+ 		kvm_cpu_cap_set(X86_FEATURE_SRSO_NO);
  
- static const struct panfrost_compatible mediatek_mt8183_b_data = {
- 	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
- 	.supply_names = default_supplies,
--	.num_pm_domains = ARRAY_SIZE(mediatek_mt8183_pm_domains),
--	.pm_domain_names = mediatek_mt8183_pm_domains,
-+	.num_pm_domains = 3,
-+	.pm_domain_names = mediatek_pm_domains,
- 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
- };
- 
--static const char * const mediatek_mt8186_pm_domains[] = { "core0", "core1" };
- static const struct panfrost_compatible mediatek_mt8186_data = {
- 	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
- 	.supply_names = default_supplies,
--	.num_pm_domains = ARRAY_SIZE(mediatek_mt8186_pm_domains),
--	.pm_domain_names = mediatek_mt8186_pm_domains,
-+	.num_pm_domains = 2,
-+	.pm_domain_names = mediatek_pm_domains,
- 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
- };
- 
--/* MT8188 uses the same power domains and power supplies as MT8183 */
- static const struct panfrost_compatible mediatek_mt8188_data = {
- 	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
- 	.supply_names = default_supplies,
--	.num_pm_domains = ARRAY_SIZE(mediatek_mt8183_pm_domains),
--	.pm_domain_names = mediatek_mt8183_pm_domains,
-+	.num_pm_domains = 3,
-+	.pm_domain_names = mediatek_pm_domains,
- 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
- 	.gpu_quirks = BIT(GPU_QUIRK_FORCE_AARCH64_PGTABLE),
- };
- 
--static const char * const mediatek_mt8192_pm_domains[] = { "core0", "core1", "core2",
--							   "core3", "core4" };
- static const struct panfrost_compatible mediatek_mt8192_data = {
- 	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
- 	.supply_names = default_supplies,
--	.num_pm_domains = ARRAY_SIZE(mediatek_mt8192_pm_domains),
--	.pm_domain_names = mediatek_mt8192_pm_domains,
-+	.num_pm_domains = 5,
-+	.pm_domain_names = mediatek_pm_domains,
- 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
- 	.gpu_quirks = BIT(GPU_QUIRK_FORCE_AARCH64_PGTABLE),
- };
--- 
-2.51.0
-
+-	kvm_cpu_cap_mask(CPUID_8000_0021_EAX, F(VERW_CLEAR));
+-
+ 	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0021_ECX,
+ 		F(TSA_SQ_NO) | F(TSA_L1_NO)
+ 	);
+@@ -1006,17 +1015,7 @@ static inline int __do_cpuid_func(struct
+ 		break;
+ 	case 0x80000021:
+ 		entry->ebx = entry->ecx = entry->edx = 0;
+-		/*
+-		 * Pass down these bits:
+-		 *    EAX      0      NNDBP, Processor ignores nested data breakpoints
+-		 *    EAX      2      LAS, LFENCE always serializing
+-		 *    EAX      6      NSCB, Null selector clear base
+-		 *
+-		 * Other defined bits are for MSRs that KVM does not expose:
+-		 *   EAX      3      SPCL, SMM page configuration lock
+-		 *   EAX      13     PCMSR, Prefetch control MSR
+-		 */
+-		entry->eax &= BIT(0) | BIT(2) | BIT(6);
++		cpuid_entry_override(entry, CPUID_8000_0021_EAX);
+ 		break;
+ 	/*Add support for Centaur's CPUID instruction*/
+ 	case 0xC0000000:
 
 
 
