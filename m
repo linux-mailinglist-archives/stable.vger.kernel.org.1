@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F645BAD9BF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7EB2BAD4A6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C542E16ED80
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9E4D1886136
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807F0223DD6;
-	Tue, 30 Sep 2025 15:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CFD22FB622;
+	Tue, 30 Sep 2025 14:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ufQq1dZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+PSrFMX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDA32236EB;
-	Tue, 30 Sep 2025 15:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5DC1E3DF2;
+	Tue, 30 Sep 2025 14:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245144; cv=none; b=tOx2lC/eJuP2ruj8zGUiVO4xICK+9j9KJ6pTVohK/EnSlSCaqatrYMmaA8HodtQ9Bxh7adPSJGcrytwMaGVURi51ksmOLnjQ2b1X2kPRP35gxqFhivk0fsuNX8qNL6au5vUtMrFiu0NgI8xbWgLHAyUi4HQ97GjqG9iddB3waoQ=
+	t=1759243884; cv=none; b=pK4Llh7oCqgwy0UXI+kYCX4y0gCvsR1OmeYR2ohCfSQDGMPk58ct/B4xZOW/spfZbfI7Splx759BxG78o5ci16EX8eVBDmH0Nhoci4GChNdIxMA16iUpx6/RzgQMkmb9ZtBS11r98kiM14AHTeMIdfO76TtGIJVLJeZt7TiOfRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245144; c=relaxed/simple;
-	bh=LI+dEIPXIb5kGF5OamSEPX8ChkSgshNM1v+WGUpnlMc=;
+	s=arc-20240116; t=1759243884; c=relaxed/simple;
+	bh=C8oX14rncySQ24zJKKm1uDj4Aeg4XaPyP0fwwDxdo00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JHLRnHaadMv7Qvv7f0e/HxLGICIcucKVEkMF2CY1lvBWR7zc5vzt3ktGEUw7Lsqlt028QjQCziQGSQYT7D29/UqDq0ab9bqVPob2w/OtPiD+ZP2iOMd9MuGCkcgFqkYH5GsHxsEnwibm8Giq3/GYMbGBa8OwsstHWFQn2hqNsvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ufQq1dZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D0BC4CEF0;
-	Tue, 30 Sep 2025 15:12:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=de69kdoNH66jyb/q7B4zIeVEML5yaHWNxZktZb0iEaupJ47/1raGdH12ZhNMZG1LYnZ1Xmm4h0p+6oIevN0KdFjb5MrRRHfHP2FqvuLPrUzgjx+zY22UNQKwekj2aV9BlZFJAS3zDmml8ay2CDJEQFB15rsAx6Karn+Z2tHIYoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+PSrFMX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3E2C4CEF0;
+	Tue, 30 Sep 2025 14:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245143;
-	bh=LI+dEIPXIb5kGF5OamSEPX8ChkSgshNM1v+WGUpnlMc=;
+	s=korg; t=1759243884;
+	bh=C8oX14rncySQ24zJKKm1uDj4Aeg4XaPyP0fwwDxdo00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ufQq1dZemidDwg+NTIF7Io8JsD1sdHK755o1D+IP1ehbgmFjE7lOnTuNu2tvDrYB
-	 HIVDisFhCJ3dQo6ZPxFOTVIkbmau+eMsFOR+nfiMkq3r/pltphyNivuMzAzXg6DixC
-	 x5rqWA3XB+raLAU9W23C4behkn57bH4AImrKV4h0=
+	b=y+PSrFMXLfM9IJ8mIHH1Pt8CASBV8HuqRRCBCPAWM5od6JulART/7pHMaJEIMJH+V
+	 90UGp5bgAHIhkP43s58Z1768zX+dix/8ZqWKo85o4HoeglhxeJH35ocJWCeQ8KKONe
+	 cpMbHdlW6FpDqHOnHePNRUNKc2c19RAb3Edifqdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/151] cnic: Fix use-after-free bugs in cnic_delete_task
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 45/81] rds: ib: Increment i_fastreg_wrs before bailing out
 Date: Tue, 30 Sep 2025 16:46:47 +0200
-Message-ID: <20250930143830.661723350@linuxfoundation.org>
+Message-ID: <20250930143821.562108824@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,84 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Håkon Bugge <haakon.bugge@oracle.com>
 
-[ Upstream commit cfa7d9b1e3a8604afc84e9e51d789c29574fb216 ]
+commit 4351ca3fcb3ffecf12631b4996bf085a2dad0db6 upstream.
 
-The original code uses cancel_delayed_work() in cnic_cm_stop_bnx2x_hw(),
-which does not guarantee that the delayed work item 'delete_task' has
-fully completed if it was already running. Additionally, the delayed work
-item is cyclic, the flush_workqueue() in cnic_cm_stop_bnx2x_hw() only
-blocks and waits for work items that were already queued to the
-workqueue prior to its invocation. Any work items submitted after
-flush_workqueue() is called are not included in the set of tasks that the
-flush operation awaits. This means that after the cyclic work items have
-finished executing, a delayed work item may still exist in the workqueue.
-This leads to use-after-free scenarios where the cnic_dev is deallocated
-by cnic_free_dev(), while delete_task remains active and attempt to
-dereference cnic_dev in cnic_delete_task().
+We need to increment i_fastreg_wrs before we bail out from
+rds_ib_post_reg_frmr().
 
-A typical race condition is illustrated below:
+We have a fixed budget of how many FRWR operations that can be
+outstanding using the dedicated QP used for memory registrations and
+de-registrations. This budget is enforced by the atomic_t
+i_fastreg_wrs. If we bail out early in rds_ib_post_reg_frmr(), we will
+"leak" the possibility of posting an FRWR operation, and if that
+accumulates, no FRWR operation can be carried out.
 
-CPU 0 (cleanup)              | CPU 1 (delayed work callback)
-cnic_netdev_event()          |
-  cnic_stop_hw()             | cnic_delete_task()
-    cnic_cm_stop_bnx2x_hw()  | ...
-      cancel_delayed_work()  | /* the queue_delayed_work()
-      flush_workqueue()      |    executes after flush_workqueue()*/
-                             | queue_delayed_work()
-  cnic_free_dev(dev)//free   | cnic_delete_task() //new instance
-                             |   dev = cp->dev; //use
-
-Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
-that the cyclic delayed work item is properly canceled and that any
-ongoing execution of the work item completes before the cnic_dev is
-deallocated. Furthermore, since cancel_delayed_work_sync() uses
-__flush_work(work, true) to synchronously wait for any currently
-executing instance of the work item to finish, the flush_workqueue()
-becomes redundant and should be removed.
-
-This bug was identified through static analysis. To reproduce the issue
-and validate the fix, I simulated the cnic PCI device in QEMU and
-introduced intentional delays — such as inserting calls to ssleep()
-within the cnic_delete_task() function — to increase the likelihood
-of triggering the bug.
-
-Fixes: fdf24086f475 ("cnic: Defer iscsi connection cleanup")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
+Cc: stable@vger.kernel.org
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
+Link: https://patch.msgid.link/20250911133336.451212-1-haakon.bugge@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/cnic.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/rds/ib_frmr.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/cnic.c b/drivers/net/ethernet/broadcom/cnic.c
-index f7f10cfb3476e..582ca97532868 100644
---- a/drivers/net/ethernet/broadcom/cnic.c
-+++ b/drivers/net/ethernet/broadcom/cnic.c
-@@ -4223,8 +4223,7 @@ static void cnic_cm_stop_bnx2x_hw(struct cnic_dev *dev)
+--- a/net/rds/ib_frmr.c
++++ b/net/rds/ib_frmr.c
+@@ -133,12 +133,15 @@ static int rds_ib_post_reg_frmr(struct r
  
- 	cnic_bnx2x_delete_wait(dev, 0);
+ 	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
+ 				&off, PAGE_SIZE);
+-	if (unlikely(ret != ibmr->sg_dma_len))
+-		return ret < 0 ? ret : -EINVAL;
++	if (unlikely(ret != ibmr->sg_dma_len)) {
++		ret = ret < 0 ? ret : -EINVAL;
++		goto out_inc;
++	}
  
--	cancel_delayed_work(&cp->delete_task);
--	flush_workqueue(cnic_wq);
-+	cancel_delayed_work_sync(&cp->delete_task);
+-	if (cmpxchg(&frmr->fr_state,
+-		    FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE)
+-		return -EBUSY;
++	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
++		ret = -EBUSY;
++		goto out_inc;
++	}
  
- 	if (atomic_read(&cp->iscsi_conn) != 0)
- 		netdev_warn(dev->netdev, "%d iSCSI connections not destroyed\n",
--- 
-2.51.0
-
+ 	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
+ 
+@@ -166,11 +169,10 @@ static int rds_ib_post_reg_frmr(struct r
+ 		/* Failure here can be because of -ENOMEM as well */
+ 		rds_transition_frwr_state(ibmr, FRMR_IS_INUSE, FRMR_IS_STALE);
+ 
+-		atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 		if (printk_ratelimit())
+ 			pr_warn("RDS/IB: %s returned error(%d)\n",
+ 				__func__, ret);
+-		goto out;
++		goto out_inc;
+ 	}
+ 
+ 	/* Wait for the registration to complete in order to prevent an invalid
+@@ -179,8 +181,10 @@ static int rds_ib_post_reg_frmr(struct r
+ 	 */
+ 	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
+ 
+-out:
++	return ret;
+ 
++out_inc:
++	atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 	return ret;
+ }
+ 
 
 
 
