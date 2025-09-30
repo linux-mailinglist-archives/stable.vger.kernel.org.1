@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-182570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7EDBADAC9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AD5BADB58
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10ABB32837D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68B56194499A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43BC2FD1DD;
-	Tue, 30 Sep 2025 15:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285672F39C0;
+	Tue, 30 Sep 2025 15:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MA8ZxNH7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykM8VXG+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC85265CCD;
-	Tue, 30 Sep 2025 15:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EED223DD6;
+	Tue, 30 Sep 2025 15:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245375; cv=none; b=LQdY1wLkXaRXwmoLTXGfQVKZbxN4nCO/YWZkZUU2eFBJbKIhkgsmGVTMwvPbHOtirDrMaVUXI/uh3YnsgCUU9KWPMbbmmTG9lM2Llfpc1ABUgpcklT+5GfEeEfdxGVURKU1tjixGfiEKWo8NFtgu1Y4WCCyiVALgKdlnSnPCulc=
+	t=1759245570; cv=none; b=Qcz5V9fCrTW7U8ytnbXayADk7VUjlNUt52K7r/NTodD7zWU8o8ekkeDv3rTIdi4oQkcb5/307pRQ/y7afGbp9vbyLOgRf0yil4o9O4lNI+hL5j0pDl50NdMcirsULm9iK7DRT0GB4wh6gFaRxt2iIuJjGvFdGQbghMXs6z0ixlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245375; c=relaxed/simple;
-	bh=tPDhm4bBrRJiYDUn7jPSP69RkkmOrPksydUW5TqHPeQ=;
+	s=arc-20240116; t=1759245570; c=relaxed/simple;
+	bh=ZffQflqysoIE+QNUxuYAYG6D+I4cvO3xCM/IhMrzwlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BiGYs0wdETKdsTpS5mjF4xsdI1y0h8KE9959xMonb4lfMqcxjyqGYK4ttctwbWLpBjXycXgC3agrZbn3W2sxqTtn51KjNT34OVUrL6ryobprzFVmMWyaSoN9/ZVwEmTTiafrba0Htqk625gMzRZIU7V5gRSTOn4UsH87FTxwMFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MA8ZxNH7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E73C4CEF0;
-	Tue, 30 Sep 2025 15:16:14 +0000 (UTC)
+	 MIME-Version; b=gpS9UVusD/lH96QPo17CyGVS7IA8T+xjY4YWItLsvFCq1qHL2E68tdrvXlcRTjQCsorcfQ2DbKxzK5OEZZ8LIVJyMz7Woj7oqvUTLTxKzLoAU8CN/ahXxm0G+SB78wCX6tm9K+f18dR1F0Z1xskqJLs5e5D3v72Fev8DydzgNEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykM8VXG+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C32C4CEF0;
+	Tue, 30 Sep 2025 15:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245375;
-	bh=tPDhm4bBrRJiYDUn7jPSP69RkkmOrPksydUW5TqHPeQ=;
+	s=korg; t=1759245570;
+	bh=ZffQflqysoIE+QNUxuYAYG6D+I4cvO3xCM/IhMrzwlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MA8ZxNH7LVrYQRYzWuMxu1mOBo8wyEwQB1iAbD2V3qLvdFTQgm7v4bKhjAIxkyeNg
-	 Ux56uGa5fknJWgjkHmqQfSfDRrytY2fN8krp5PF0raTfbgklkeyY768lgxtdJ75EDF
-	 EKilaDu1I7sbGryeSwoPuxwGKavD7O6GjqxcZXf0=
+	b=ykM8VXG+/LzsvSkZWfeV7MWeR4hh3R+dfonjQAaqA1bIgTU4E5pamA20xeZ6pG2Gb
+	 mQWn891Ww6me9L6EVsHF6QGXEUggV5T4fO0uYBlmKWefuR3lQ28re1v0fmi4ERJut5
+	 amhDFV+naoyK5uMrSdPzosqYvl0FiR0t89+YoZuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/151] can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow
-Date: Tue, 30 Sep 2025 16:47:33 +0200
-Message-ID: <20250930143832.506185857@linuxfoundation.org>
+Subject: [PATCH 6.1 30/73] can: hi311x: populate ndo_change_mtu() to prevent buffer overflow
+Date: Tue, 30 Sep 2025 16:47:34 +0200
+Message-ID: <20250930143821.832537566@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,20 +62,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-[ Upstream commit 38c0abad45b190a30d8284a37264d2127a6ec303 ]
+[ Upstream commit ac1c7656fa717f29fac3ea073af63f0b9919ec9a ]
 
 Sending an PF_PACKET allows to bypass the CAN framework logic and to
 directly reach the xmit() function of a CAN driver. The only check
 which is performed by the PF_PACKET framework is to make sure that
 skb->len fits the interface's MTU.
 
-Unfortunately, because the etas_es58x driver does not populate its
+Unfortunately, because the sun4i_can driver does not populate its
 net_device_ops->ndo_change_mtu(), it is possible for an attacker to
 configure an invalid MTU by doing, for example:
 
@@ -84,7 +84,7 @@ configure an invalid MTU by doing, for example:
 After doing so, the attacker could open a PF_PACKET socket using the
 ETH_P_CANXL protocol:
 
-	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL));
+	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
 
 to inject a malicious CAN XL frames. For example:
 
@@ -102,60 +102,47 @@ malicious packet is able to go through can_dev_dropped_skb() checks:
 
   2. the length is a valid CAN XL length.
 
-And so, es58x_start_xmit() receives a CAN XL frame which it is not
-able to correctly handle and will thus misinterpret it as a CAN(FD)
-frame.
+And so, hi3110_hard_start_xmit() receives a CAN XL frame which it is
+not able to correctly handle and will thus misinterpret it as a CAN
+frame. The driver will consume frame->len as-is with no further
+checks.
 
-This can result in a buffer overflow. For example, using the es581.4
-variant, the frame will be dispatched to es581_4_tx_can_msg(), go
-through the last check at the beginning of this function:
+This can result in a buffer overflow later on in hi3110_hw_tx() on
+this line:
 
-	if (can_is_canfd_skb(skb))
-		return -EMSGSIZE;
+	memcpy(buf + HI3110_FIFO_EXT_DATA_OFF,
+	       frame->data, frame->len);
 
-and reach this line:
-
-	memcpy(tx_can_msg->data, cf->data, cf->len);
-
-Here, cf->len corresponds to the flags field of the CAN XL frame. In
-our previous example, we set canxl_frame->flags to 0xff. Because the
-maximum expected length is 8, a buffer overflow of 247 bytes occurs!
+Here, frame->len corresponds to the flags field of the CAN XL frame.
+In our previous example, we set canxl_frame->flags to 0xff. Because
+the maximum expected length is 8, a buffer overflow of 247 bytes
+occurs!
 
 Populate net_device_ops->ndo_change_mtu() to ensure that the
-interface's MTU can not be set to anything bigger than CAN_MTU or
-CANFD_MTU (depending on the device capabilities). By fixing the root
-cause, this prevents the buffer overflow.
+interface's MTU can not be set to anything bigger than CAN_MTU. By
+fixing the root cause, this prevents the buffer overflow.
 
-Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
+Fixes: 57e83fb9b746 ("can: hi311x: Add Holt HI-311x CAN driver")
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-1-0d1cada9393b@kernel.org
+Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-2-0d1cada9393b@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/etas_es58x/es58x_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/spi/hi311x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
-index b6ee532977734..a8273ad5dd9e0 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_core.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
-@@ -7,7 +7,7 @@
-  *
-  * Copyright (c) 2019 Robert Bosch Engineering and Business Solutions. All rights reserved.
-  * Copyright (c) 2020 ETAS K.K.. All rights reserved.
-- * Copyright (c) 2020-2022 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-+ * Copyright (c) 2020-2025 Vincent Mailhol <mailhol@kernel.org>
-  */
- 
- #include <asm/unaligned.h>
-@@ -1984,6 +1984,7 @@ static const struct net_device_ops es58x_netdev_ops = {
- 	.ndo_stop = es58x_stop,
- 	.ndo_start_xmit = es58x_start_xmit,
- 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
+diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
+index b757555ed4c4f..57ea7dfe8a596 100644
+--- a/drivers/net/can/spi/hi311x.c
++++ b/drivers/net/can/spi/hi311x.c
+@@ -813,6 +813,7 @@ static const struct net_device_ops hi3110_netdev_ops = {
+ 	.ndo_open = hi3110_open,
+ 	.ndo_stop = hi3110_stop,
+ 	.ndo_start_xmit = hi3110_hard_start_xmit,
 +	.ndo_change_mtu = can_change_mtu,
  };
  
- static const struct ethtool_ops es58x_ethtool_ops = {
+ static const struct ethtool_ops hi3110_ethtool_ops = {
 -- 
 2.51.0
 
