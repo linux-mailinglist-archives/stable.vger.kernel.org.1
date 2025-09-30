@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-182561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A60BADAAA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 048FEBADDE1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD31F165725
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B392816CB03
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1E327B328;
-	Tue, 30 Sep 2025 15:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC7120468D;
+	Tue, 30 Sep 2025 15:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09e2e1U0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5hiwhJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280F07640E;
-	Tue, 30 Sep 2025 15:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD9023A995;
+	Tue, 30 Sep 2025 15:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245347; cv=none; b=ILgNhFpQrO4Nyk+hyoaZ6W01ApLJiKZIz7c7WdeScVlYZHcb9PxpgUv8T+T+695CeDVZcSof+3uSQjFijNF/z9jV7s2XgEk4Cid9aXcAR+LvKwdqcd6lTAdrpecxPTU99ydugigwFCwISthrb8bhAREPbpono3qmCkP+eaSgJIg=
+	t=1759246150; cv=none; b=FTofYMBgSQA5ZK/t83mdLLn3QeG8uVz/cSOrFci8QhQRM6o5hkZ/8Gv2AGnzWHMxKOlkMPqvxilOfDVzaKrSxanO7FIoYV5ulrqBIIWVFv5F0UxsMli39ImCFhjKHRQKJz4QfPHDnPof+jKd0bJ06Xv6v4L0K/2WYMF0++AOxBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245347; c=relaxed/simple;
-	bh=XCMFTE9tf/e4DIdOIPmbvXxCs5KAQFFiWoTVwNHY2lI=;
+	s=arc-20240116; t=1759246150; c=relaxed/simple;
+	bh=d9VC0li5aGyfQPcWVB3f+9n9ZE0p6HiyuvQbaX4qo/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRG0Bu/4vzRKrCoTzBIO3+9WKdU5ebXC7xdKSRzL3rWpBL51aGdJfHINIHPpFSmKg81bKLvalrZkuK/xiWPKhuaR7C0TGuWLg0E1fu1qc0Zq+Qc1uhqo4PBr9nisFpMrUGbDwTWJ2WeIKN3w/I5K5aRcSfWVCudv08uus6y6ams=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09e2e1U0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A69C4CEF0;
-	Tue, 30 Sep 2025 15:15:46 +0000 (UTC)
+	 MIME-Version; b=O7intJ61hQgL6bpmCr62EF9vvpMe4I/v9BOhRHDRc2aAqaeJ1vs+SK4ah/+djLDAixtUjmA4Yd/whTelF1JwBxf/uIYIHzTBWPosRvU905NFtOswSgwnSttEIM1lrV8z+gdR/OwEDgXZh3jaatrXIyMAEmKhfNnhkDNrx9QngM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5hiwhJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ACBC4CEF0;
+	Tue, 30 Sep 2025 15:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245347;
-	bh=XCMFTE9tf/e4DIdOIPmbvXxCs5KAQFFiWoTVwNHY2lI=;
+	s=korg; t=1759246149;
+	bh=d9VC0li5aGyfQPcWVB3f+9n9ZE0p6HiyuvQbaX4qo/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09e2e1U0FJZP5T9KXr2tsweHU3mOTWV6NgrAXcqJKtHoZb8kGXk3F01vTsTT3AMHQ
-	 UbR+rZgtH2JhDp5svyI+H+d/WtzDTfd17Uqx9dX15JcG8+cLNLOnrm6yQTonn43W29
-	 QdKJoCY9DxVRqlyZ4ttF/gPlsxO5qj6mnWImO3lA=
+	b=r5hiwhJw16k9kE0XEg9zAjnDSr4on5Mi7kVMgU98hRmOqSuCTHpzC/+D8/v1B8sEI
+	 +hdZ8WsnqV4w5+dEdRZV5FGxq0P9goP/eK9HYNrIEDsBT1z/CFUzN4d3ynD0nZp2ob
+	 vE5qa5pSNxgDfr1aOVaF5ZiP62D37zVS3FerpxMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.15 141/151] i40e: add mask to apply valid bits for itr_idx
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 37/89] can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
 Date: Tue, 30 Sep 2025 16:47:51 +0200
-Message-ID: <20250930143833.208576160@linuxfoundation.org>
+Message-ID: <20250930143823.459262284@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit eac04428abe9f9cb203ffae4600791ea1d24eb18 upstream.
+[ Upstream commit 5c793afa07da6d2d4595f6c73a2a543a471bb055 ]
 
-The ITR index (itr_idx) is only 2 bits wide. When constructing the
-register value for QINT_RQCTL, all fields are ORed together. Without
-masking, higher bits from itr_idx may overwrite adjacent fields in the
-register.
+On R-Car Gen3 using PSCI, s2ram powers down the SoC.  After resume, the
+CAN interface no longer works, until it is brought down and up again.
 
-Apply I40E_QINT_RQCTL_ITR_INDX_MASK to ensure only the intended bits are
-set.
+Fix this by calling rcar_can_start() from the PM resume callback, to
+fully initialize the controller instead of just restarting it.
 
-Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/699b2f7fcb60b31b6f976a37f08ce99c5ffccb31.1755165227.git.geert+renesas@glider.be
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/rcar/rcar_can.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -446,7 +446,7 @@ static void i40e_config_irq_link_list(st
- 		    (qtype << I40E_QINT_RQCTL_NEXTQ_TYPE_SHIFT) |
- 		    (pf_queue_id << I40E_QINT_RQCTL_NEXTQ_INDX_SHIFT) |
- 		    BIT(I40E_QINT_RQCTL_CAUSE_ENA_SHIFT) |
--		    (itr_idx << I40E_QINT_RQCTL_ITR_INDX_SHIFT);
-+		    FIELD_PREP(I40E_QINT_RQCTL_ITR_INDX_MASK, itr_idx);
- 		wr32(hw, reg_idx, reg);
+diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
+index 2b7dd359f27b7..8569178b66df7 100644
+--- a/drivers/net/can/rcar/rcar_can.c
++++ b/drivers/net/can/rcar/rcar_can.c
+@@ -861,7 +861,6 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
+ {
+ 	struct net_device *ndev = dev_get_drvdata(dev);
+ 	struct rcar_can_priv *priv = netdev_priv(ndev);
+-	u16 ctlr;
+ 	int err;
+ 
+ 	if (!netif_running(ndev))
+@@ -873,12 +872,7 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
+ 		return err;
  	}
  
+-	ctlr = readw(&priv->regs->ctlr);
+-	ctlr &= ~RCAR_CAN_CTLR_SLPM;
+-	writew(ctlr, &priv->regs->ctlr);
+-	ctlr &= ~RCAR_CAN_CTLR_CANM;
+-	writew(ctlr, &priv->regs->ctlr);
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
++	rcar_can_start(ndev);
+ 
+ 	netif_device_attach(ndev);
+ 	netif_start_queue(ndev);
+-- 
+2.51.0
+
 
 
 
