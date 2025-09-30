@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-182251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7947BAD65F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0EBBAD8CC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D6DB7A3F48
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46DFC3A7CC5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE00302163;
-	Tue, 30 Sep 2025 14:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC83E3043A1;
+	Tue, 30 Sep 2025 15:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEi8WKa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvvuCE1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA324D8CE;
-	Tue, 30 Sep 2025 14:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EA1846F;
+	Tue, 30 Sep 2025 15:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244339; cv=none; b=nWj6vFXIXy7YfA36F9X2Spt8e8eXJ0IEZ1Xh8x2TJhuuWhrdbQWkoIrDjuKQXvLkGFRiosycDsihjCsZXdT6LFHqyIFGNKKJ1htdA7EuYi4xPJEVhPQ219LCoD626GNgQ98uNaXLSegSubuq4jGqN7SiXFR7gTJbhJzyAdUWRV0=
+	t=1759244765; cv=none; b=FCxN3LfZYOLugE2UoBc0SQ7GWMDuqQY3CiiH10AeVbFVKTvtIe4wi+iitgsrRivCUt5z6FaF1wFMcjDMtLZ/4wBwKxZsodjII5FYItIna+L8yiAHsofN3ZSbaH763wN3xNSu7wDvs93oJ9QvHOxpsOOozGksaaeBDOOsBqCRCH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244339; c=relaxed/simple;
-	bh=NzuoVBbAkfg4topSFWbr4fj7tGLMZzjql4qTBIu45+Q=;
+	s=arc-20240116; t=1759244765; c=relaxed/simple;
+	bh=/8gJ1YE9DZFzWi2fdL7R5ul1dEPx0z2iiKYmVU8J6tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WlhISCUeiUK0ian96uqMroFy0lYAIr0fvao5CBONrLECzwSRtwWWGLaMNeIFdlX5Hk5rSfxyJ8zlZSEub6IgUEyXyOaWJ6i1+YoL3AlME3QbEgGNm1WZhtSdKuSndIyUfPM41oaUVZ761Xl7mc3zcOzELZeihe0OtQdcvM/eE6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEi8WKa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE3FC4CEF0;
-	Tue, 30 Sep 2025 14:58:58 +0000 (UTC)
+	 MIME-Version; b=vA41xdDCDIUZ5GQ4/XUJEzVY60NoTNoucSS9ngxGO4AOhCexmAE8TCkJEW7MEzQOFGbcO7zr+ejHd3NZ8eJX04R8Sl51FkLr+jnCyS31SLVPUbFEfBW9CcYee0rSsxZXfsVjJfzML6R6xJZfk11rPeBwjqPeRDLCJawxaXq+uoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvvuCE1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22634C4CEF0;
+	Tue, 30 Sep 2025 15:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244338;
-	bh=NzuoVBbAkfg4topSFWbr4fj7tGLMZzjql4qTBIu45+Q=;
+	s=korg; t=1759244765;
+	bh=/8gJ1YE9DZFzWi2fdL7R5ul1dEPx0z2iiKYmVU8J6tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEi8WKa1dLl9yLR8It7FoFzAsqCPlnCveuSbkLRLX+3pZo0VMfbohWPElUiVQ0ns2
-	 iUhvl67Aj88uf9VHILFlbtUoRLMpIWgwUYbBlO4PjXYa8H7H/qMu5S7W13l4AlUh0A
-	 gfLfo0y+i4HhRr9p8hb7zdf3DixDW+jfrbJnwt6Q=
+	b=vvvuCE1FMoZ9NhqrCDo8BpJLODt7whU3Su6s+STSDmU5AV3HcF+69dFG+QqBH7Ohg
+	 KyVW5cg/nBh/W0jHk+keQW5gyOuBJHqiPkjFUDGutvB2/ir5ps2hTnpMGvvJOwaT+e
+	 a+frjL66lO20Y7cvRtoHr96fMPR9/gCqtGEjPcb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?St=C3=A9phane=20Grosjean?= <stephane.grosjean@hms-networks.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/122] can: peak_usb: fix shift-out-of-bounds issue
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.16 107/143] i40e: add max boundary check for VF filters
 Date: Tue, 30 Sep 2025 16:47:11 +0200
-Message-ID: <20250930143827.080727097@linuxfoundation.org>
+Message-ID: <20250930143835.497094332@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +63,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit c443be70aaee42c2d1d251e0329e0a69dd96ae54 ]
+commit cb79fa7118c150c3c76a327894bb2eb878c02619 upstream.
 
-Explicitly uses a 64-bit constant when the number of bits used for its
-shifting is 32 (which is the case for PC CAN FD interfaces supported by
-this driver).
+There is no check for max filters that VF can request. Add it.
 
-Signed-off-by: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
-Link: https://patch.msgid.link/20250918132413.30071-1-stephane.grosjean@free.fr
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/20250917-aboriginal-refined-honeybee-82b1aa-mkl@pengutronix.de
-Fixes: bb4785551f64 ("can: usb: PEAK-System Technik USB adapters driver core")
-[mkl: update subject, apply manually]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/peak_usb/pcan_usb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_core.c b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
-index 73c1bc3cb70d3..3a963f2a8c441 100644
---- a/drivers/net/can/usb/peak_usb/pcan_usb_core.c
-+++ b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
-@@ -84,7 +84,7 @@ void peak_usb_update_ts_now(struct peak_time_ref *time_ref, u32 ts_now)
- 		u32 delta_ts = time_ref->ts_dev_2 - time_ref->ts_dev_1;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3908,6 +3908,8 @@ err:
+ 				       aq_ret);
+ }
  
- 		if (time_ref->ts_dev_2 < time_ref->ts_dev_1)
--			delta_ts &= (1 << time_ref->adapter->ts_used_bits) - 1;
-+			delta_ts &= (1ULL << time_ref->adapter->ts_used_bits) - 1;
- 
- 		time_ref->ts_total += delta_ts;
++#define I40E_MAX_VF_CLOUD_FILTER 0xFF00
++
+ /**
+  * i40e_vc_add_cloud_filter
+  * @vf: pointer to the VF info
+@@ -3947,6 +3949,14 @@ static int i40e_vc_add_cloud_filter(stru
+ 		goto err_out;
  	}
--- 
-2.51.0
-
+ 
++	if (vf->num_cloud_filters >= I40E_MAX_VF_CLOUD_FILTER) {
++		dev_warn(&pf->pdev->dev,
++			 "VF %d: Max number of filters reached, can't apply cloud filter\n",
++			 vf->vf_id);
++		aq_ret = -ENOSPC;
++		goto err_out;
++	}
++
+ 	cfilter = kzalloc(sizeof(*cfilter), GFP_KERNEL);
+ 	if (!cfilter) {
+ 		aq_ret = -ENOMEM;
 
 
 
