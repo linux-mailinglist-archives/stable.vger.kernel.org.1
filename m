@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-182276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0491BAD6DD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4903BADBE8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CDFB18876C9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D7FF17B202
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53050202C48;
-	Tue, 30 Sep 2025 15:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3408B29827E;
+	Tue, 30 Sep 2025 15:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYcBRCbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCJSoX8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBC0303A05;
-	Tue, 30 Sep 2025 15:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E566D173;
+	Tue, 30 Sep 2025 15:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244419; cv=none; b=Y5hao6WStfoqdTs9SyKnypQvdr7kBrK9bNG/u8u3qox/Nt20YPcunmIaMDM2EtvcNfoBypMi9TdCBgYomLEfqhgRxVbG5EU5xQJKJuSbbQN6CJ+uCY1dY8cnl51/5aka3ghoXq2OUV27urvtr63Ualfc/Q30TG5UvKjmr05LPBg=
+	t=1759245689; cv=none; b=Bum0l5IstK8cHJ3xlABr1TfpoETp1oxCPvR8rOvmveT+e+dI9y7k3mKY/SXo4wGdFnbq93h177IBbWQCE9UM58zaQrWFOhxHrhlDoniEk8Hhq9GQxn/Z0wexHvQWRI+wd60wCu7vzkwpvAq9f+SrA8A4ohe1AOKtjUYVExdUC1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244419; c=relaxed/simple;
-	bh=5hYtZLI/8QOs/6O6w+/OPvA2THcW7qU8eJLl9rocw1Y=;
+	s=arc-20240116; t=1759245689; c=relaxed/simple;
+	bh=W6GPPyYVR6k09fyPa/M9XK6F3mEwZBcMPDJ55KQ5pPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIlLlvUSGji4ca7USzwA8p9U7zlkxRKzWVg7CkAacmOjUBt7p6tWuQUU4AaZEsKKMtf1+j6v536huUWJ8hlXCxoKKTo63Wq5XX+lBt+mFWoSLOqZn/qFFbP8cL5PUcQonft9y1ofeT7jlDe8aUnEqWFVSY0H0WPvMtAcgvhIaqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYcBRCbZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDEDC4CEF0;
-	Tue, 30 Sep 2025 15:00:18 +0000 (UTC)
+	 MIME-Version; b=RoYIN4v1zJ3xM6pzl1No+yur/N/fy5MJvp+4ugWVLoeq6SyQ8UuQk/hzTfqPdVjl2PB3OOkmXOFxldTXxX6kIs2ax8QagVzoRnell4KwlUrXQaRY5+cXLfKH9Ifb8om9QotE+oIQ2EIpOnTrvNqSct/r4yT50HAqsLm32BeZpc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCJSoX8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62617C4CEF0;
+	Tue, 30 Sep 2025 15:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244418;
-	bh=5hYtZLI/8QOs/6O6w+/OPvA2THcW7qU8eJLl9rocw1Y=;
+	s=korg; t=1759245688;
+	bh=W6GPPyYVR6k09fyPa/M9XK6F3mEwZBcMPDJ55KQ5pPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYcBRCbZdEQDRPg08foyrQd+E3qW8UIUYTN+zxVpEXOEUY5yFA9So6NMsxQ8ox5qD
-	 7E4d54z8q47olQbqs2CfLP8kILr40U4AuHCrC5xazdglNtSuo39Mo3AidD5fOv3urK
-	 nO+A1h3WMBjVD9EGmR73AJwT6eEnZCwONRIfsHoY=
+	b=BCJSoX8W4qtAEg1n81QmQufaQ3WrYgNlGOb9/giBfxos7PO5vaGLxj3ZMqvflymSE
+	 YuTAKZmeBwWiZJej1dPg2w4zthK1vpyUhFnqsdxhZvBC6ci8bYCscyhvKyXZ+7z78L
+	 q2ov6jkZjRjS1Ionw7I5EqcMnfhIwdk3dqE8Ar5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/122] usb: core: Add 0x prefix to quirks debug output
+Subject: [PATCH 6.6 04/91] ALSA: usb-audio: Drop unnecessary parentheses in mixer_quirks
 Date: Tue, 30 Sep 2025 16:47:03 +0200
-Message-ID: <20250930143826.764190381@linuxfoundation.org>
+Message-ID: <20250930143821.300453877@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 47c428fce0b41b15ab321d8ede871f780ccd038f ]
+[ Upstream commit c0495cef8b43ad61efbd4019e3573742e0e63c67 ]
 
-Use "0x%x" format for quirks debug print to clarify it's a hexadecimal
-value. Improves readability and consistency with other hex outputs.
+Fix multiple 'CHECK: Unnecessary parentheses around ...' reports from
+checkpatch.pl.
 
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://lore.kernel.org/r/20250603071045.3243699-1-lijiayi@kylinos.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-5-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
-index f5894cb166867..55efefc5d702a 100644
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -728,7 +728,7 @@ void usb_detect_quirks(struct usb_device *udev)
- 	udev->quirks ^= usb_detect_dynamic_quirks(udev);
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 4ce470e291b25..a1ab517e26b36 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -376,10 +376,10 @@ static int snd_audigy2nx_controls_create(struct usb_mixer_interface *mixer)
+ 		struct snd_kcontrol_new knew;
  
- 	if (udev->quirks)
--		dev_dbg(&udev->dev, "USB quirks for this device: %x\n",
-+		dev_dbg(&udev->dev, "USB quirks for this device: 0x%x\n",
- 			udev->quirks);
+ 		/* USB X-Fi S51 doesn't have a CMSS LED */
+-		if ((mixer->chip->usb_id == USB_ID(0x041e, 0x3042)) && i == 0)
++		if (mixer->chip->usb_id == USB_ID(0x041e, 0x3042) && i == 0)
+ 			continue;
+ 		/* USB X-Fi S51 Pro doesn't have one either */
+-		if ((mixer->chip->usb_id == USB_ID(0x041e, 0x30df)) && i == 0)
++		if (mixer->chip->usb_id == USB_ID(0x041e, 0x30df) && i == 0)
+ 			continue;
+ 		if (i > 1 && /* Live24ext has 2 LEDs only */
+ 			(mixer->chip->usb_id == USB_ID(0x041e, 0x3040) ||
+@@ -3272,7 +3272,7 @@ static int snd_djm_controls_update(struct usb_mixer_interface *mixer,
+ 	int err;
+ 	const struct snd_djm_device *device = &snd_djm_devices[device_idx];
  
- #ifdef CONFIG_USB_DEFAULT_PERSIST
+-	if ((group >= device->ncontrols) || value >= device->controls[group].noptions)
++	if (group >= device->ncontrols || value >= device->controls[group].noptions)
+ 		return -EINVAL;
+ 
+ 	err = snd_usb_lock_shutdown(mixer->chip);
 -- 
 2.51.0
 
