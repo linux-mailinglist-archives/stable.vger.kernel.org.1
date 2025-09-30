@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-182376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A8BBAD830
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 004CEBAD51B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16C0332561B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADE7932392D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE55302CD6;
-	Tue, 30 Sep 2025 15:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BDE302755;
+	Tue, 30 Sep 2025 14:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swcO5vW9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skWCodF9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7A4846F;
-	Tue, 30 Sep 2025 15:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D261AB6F1;
+	Tue, 30 Sep 2025 14:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244743; cv=none; b=YfM0/Lqy/+LZTU1358P/IhWFrumlZYq99jmKOFEBaXRbnwh20ztwKrUWTLlO8ovE+BRichC6L0mC8obmI0p48JWgC84y+NHXJvhBhIchxB4+NVM21NkuZyZV/v38l2lxDTiP6LYhaIiIOsoxLxcTkPG66dyDTc1BSbS8KRiDQzQ=
+	t=1759244015; cv=none; b=qSTVT9V2UUSUTgDqmHCi6WzKrgonkLuPBff5YZg8fZ57a/H105xkHxjU5ugJhIKAb1Ljq42jCTonqMOv19+1jsvs+qEUeM+nyJ0UaTpEfcmgr74Z6TcLrP7ylY5EydCKjep+HzXy1JFoQgYPf3rgD1TzrxDuHRWL5DXmJ9sdGXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244743; c=relaxed/simple;
-	bh=v46G2i8mW3ubDqeqNe7estlChvr33r5eJr11oqMDNfo=;
+	s=arc-20240116; t=1759244015; c=relaxed/simple;
+	bh=nBQsmbDu8p8Eeb73SelSWqfTavG8xPo9+0RIqb4qPYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lb64VWiDq23ViYo/BrwMrjLdJzAqke4qLbPa11Vmy8IV/toS+7rCShqcin8DTPChDwOCEIyeqfkZFoqKyfcQKeGtXh44btUK5LIkpkf3E7W0z1Z6OImIt7XaDjOU6LnUom2C/dfk/TGXI5/hKFiclJ4+0SmKDeUdNCNxDO6hZSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swcO5vW9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16934C4CEF0;
-	Tue, 30 Sep 2025 15:05:42 +0000 (UTC)
+	 MIME-Version; b=h1ZmcG6zoHxzhlLjRkQRBMtBURWn++zO9sKMiq5phqeIde+6lHUgQODmcQ/fX149DddvcE6TTc9PZyDeDT0q12t4vYp2Q9WL/OI9iY6/ebs6b8rawRrU5TK4hbMPJplVV/E/+BhiQ2h08mwKLdfavsPt4eSpuQg0+3cwYGwY/Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skWCodF9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A00C4CEF0;
+	Tue, 30 Sep 2025 14:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244743;
-	bh=v46G2i8mW3ubDqeqNe7estlChvr33r5eJr11oqMDNfo=;
+	s=korg; t=1759244015;
+	bh=nBQsmbDu8p8Eeb73SelSWqfTavG8xPo9+0RIqb4qPYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swcO5vW9aOFmUGCAEwhc71jZ5vmaa7omozufawSrM+MAKnNm8ecx5L646HFGGdMe3
-	 g2JnjMlY/U97ZOLRryma6b5gnS/nOEBp6/1trU+pi7aMLARWFAb9IvSOXtdsLvkSly
-	 t21tizeg6eVC8UxMxrS4svAwFNUIluU5zhrJ5fjE=
+	b=skWCodF931sYfBPcmsiVx51IbysZnkjDrb/kei8V6FpKP3hqEosBE3raUisbcV5PJ
+	 0CrztNGIUVS8IQjgUgYmld3IRl4DzbpS1vnJeK8g9vGUAdJM+oaWq65t6MJFAE9OfO
+	 bBGb5DnhHvnPHE0bJH/HEapRvlVYXE9H9TsQLf/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Chaudhari <amitchaudhari@mac.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.16 101/143] HID: asus: add support for missing PX series fn keys
-Date: Tue, 30 Sep 2025 16:47:05 +0200
-Message-ID: <20250930143835.253353014@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 64/81] can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
+Date: Tue, 30 Sep 2025 16:47:06 +0200
+Message-ID: <20250930143822.360352832@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Chaudhari <amitchaudhari@mac.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 831f70a5b93bd2d9e858ced2c12fab5766ede5e7 upstream.
+[ Upstream commit 5c793afa07da6d2d4595f6c73a2a543a471bb055 ]
 
-Add support for missing hotkey keycodes affecting Asus PX13 and PX16 families
-so userspace can use them.
+On R-Car Gen3 using PSCI, s2ram powers down the SoC.  After resume, the
+CAN interface no longer works, until it is brought down and up again.
 
-Signed-off-by: Amit Chaudhari <amitchaudhari@mac.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by calling rcar_can_start() from the PM resume callback, to
+fully initialize the controller instead of just restarting it.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/699b2f7fcb60b31b6f976a37f08ce99c5ffccb31.1755165227.git.geert+renesas@glider.be
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/can/rcar/rcar_can.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -974,7 +974,10 @@ static int asus_input_mapping(struct hid
- 		case 0xc4: asus_map_key_clear(KEY_KBDILLUMUP);		break;
- 		case 0xc5: asus_map_key_clear(KEY_KBDILLUMDOWN);		break;
- 		case 0xc7: asus_map_key_clear(KEY_KBDILLUMTOGGLE);	break;
-+		case 0x4e: asus_map_key_clear(KEY_FN_ESC);		break;
-+		case 0x7e: asus_map_key_clear(KEY_EMOJI_PICKER);	break;
+diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
+index b99b1b235348c..087c9d16118b5 100644
+--- a/drivers/net/can/rcar/rcar_can.c
++++ b/drivers/net/can/rcar/rcar_can.c
+@@ -869,7 +869,6 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
+ {
+ 	struct net_device *ndev = dev_get_drvdata(dev);
+ 	struct rcar_can_priv *priv = netdev_priv(ndev);
+-	u16 ctlr;
+ 	int err;
  
-+		case 0x8b: asus_map_key_clear(KEY_PROG1);	break; /* ProArt Creator Hub key */
- 		case 0x6b: asus_map_key_clear(KEY_F21);		break; /* ASUS touchpad toggle */
- 		case 0x38: asus_map_key_clear(KEY_PROG1);	break; /* ROG key */
- 		case 0xba: asus_map_key_clear(KEY_PROG2);	break; /* Fn+C ASUS Splendid */
+ 	if (!netif_running(ndev))
+@@ -881,12 +880,7 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
+ 		return err;
+ 	}
+ 
+-	ctlr = readw(&priv->regs->ctlr);
+-	ctlr &= ~RCAR_CAN_CTLR_SLPM;
+-	writew(ctlr, &priv->regs->ctlr);
+-	ctlr &= ~RCAR_CAN_CTLR_CANM;
+-	writew(ctlr, &priv->regs->ctlr);
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
++	rcar_can_start(ndev);
+ 
+ 	netif_device_attach(ndev);
+ 	netif_start_queue(ndev);
+-- 
+2.51.0
+
 
 
 
