@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518C3BAD93B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6819BBAD5AB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:56:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95D67164DAD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 036E23A36F7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBF03081B5;
-	Tue, 30 Sep 2025 15:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3004305E09;
+	Tue, 30 Sep 2025 14:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHH7PwFT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8lVbYG1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB34C23506A;
-	Tue, 30 Sep 2025 15:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C941305048;
+	Tue, 30 Sep 2025 14:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244990; cv=none; b=iOzceqXG/PsCi/qMUutx/tsI8Tt8+6k/APZhl3WDTFqWngUU+i6owz5npeQeCSCgf0Ymk8qd+pUvCFJZEmHG9amDaXpZDmTUo/LIb0pboSqBbHo2sSnqTa4tvvNyZVGBr7cIaY+u3KnG3+NpD07BqpkZBKZP99vxbOtMSWtB9JQ=
+	t=1759244111; cv=none; b=BPUnAHVCtvOMvx5PE4evD14ttLo+UC2/7Um4dCcyDTzRRJO3zInLxO/+OrK+dX7cFBn/hW5VNj4fq59MN1++bi+sZ6yiXH0MSDRiVONNTDiG15sm9eOSq6104rduXeS1XowYk+6s7xz5kW2KpVRJnpRh9VWEjrlThgvrGNr50wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244990; c=relaxed/simple;
-	bh=LpaTWkb1Kquc7sehME4LNh+EJ5lLGcFtyU7ef7W4d7M=;
+	s=arc-20240116; t=1759244111; c=relaxed/simple;
+	bh=ZH0wZ5Yai6RKvDDnrbEHn0nwOWnld3+na/l85xoLIP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5ZSijn1g8HBNXmFGYhmrgbLoHEi7Hy4pu28O2oMznbjiCvw99OL+03dd+OGilhdFVMfO8ZaeFQXopCqjdp/ZYPLaA3gVeIbIAeYd+bb3WxwDSg5UCTeQ7U+TcPKkeevuacatpY9fK/gwRgn8U3tU75XZAwsu1V62RbPFvsdxx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHH7PwFT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2596C4CEF0;
-	Tue, 30 Sep 2025 15:09:48 +0000 (UTC)
+	 MIME-Version; b=GT34OeWm9DHFGo5ucUbzs8JfivBpoXj6W7FfoIzYElBKIUohhoZo8ExLp3pK1i6spvOGcjWUXxx7MJ+UYWr4ulzrEOmeUkJIdLMwuiOntxqGKEkPpIsjIMmdigzjui0SyLJ6PazaflUGv0vUmnjmdHTPgK3HWurYLrKwqT9efLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8lVbYG1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE714C4CEF0;
+	Tue, 30 Sep 2025 14:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244989;
-	bh=LpaTWkb1Kquc7sehME4LNh+EJ5lLGcFtyU7ef7W4d7M=;
+	s=korg; t=1759244111;
+	bh=ZH0wZ5Yai6RKvDDnrbEHn0nwOWnld3+na/l85xoLIP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHH7PwFTjLx6UrzOgzPurQpmuzCArwPwBcPpMtPqhOuHfCJ8R1k3Jn4jXQObrJgU4
-	 petEOd6aX7mcbgC3AOP3jZywZSyUAopbQNtRColpFBP7iPzxrmvuwTPAAwrwb2UbXV
-	 zwMYBt9kQgUl35Fq2OHccy1Im1gCwu5A91GIdROM=
+	b=E8lVbYG1OIpVtXKKe+h7qfUF/s/8J0zJalBxBFVjxK22F1brD76YwXoa2bkMT5dmj
+	 bDWtprIl12I0cAg3FbULLSYyeBM+YhLM8bw5qIDIja4Q/wn41i6qbxCXhmTVJiMxbR
+	 BE054PpS3Qw40NQifN6dwMSdWcGcirLJkB+Gh3xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Adrian Moreno <amorenoz@redhat.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/151] mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer
+Subject: [PATCH 5.10 031/122] tunnels: reset the GSO metadata before reusing the skb
 Date: Tue, 30 Sep 2025 16:46:02 +0200
-Message-ID: <20250930143828.896935560@linuxfoundation.org>
+Message-ID: <20250930143824.280060021@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit 513c40e59d5a414ab763a9c84797534b5e8c208d ]
+[ Upstream commit e3c674db356c4303804b2415e7c2b11776cdd8c3 ]
 
-Avoid below overlapping mappings by using a contiguous
-non-cacheable buffer.
+If a GSO skb is sent through a Geneve tunnel and if Geneve options are
+added, the split GSO skb might not fit in the MTU anymore and an ICMP
+frag needed packet can be generated. In such case the ICMP packet might
+go through the segmentation logic (and dropped) later if it reaches a
+path were the GSO status is checked and segmentation is required.
 
-[    4.077708] DMA-API: stm32_fmc2_nfc 48810000.nand-controller: cacheline tracking EEXIST,
-overlapping mappings aren't supported
-[    4.089103] WARNING: CPU: 1 PID: 44 at kernel/dma/debug.c:568 add_dma_entry+0x23c/0x300
-[    4.097071] Modules linked in:
-[    4.100101] CPU: 1 PID: 44 Comm: kworker/u4:2 Not tainted 6.1.82 #1
-[    4.106346] Hardware name: STMicroelectronics STM32MP257F VALID1 SNOR / MB1704 (LPDDR4 Power discrete) + MB1703 + MB1708 (SNOR MB1730) (DT)
-[    4.118824] Workqueue: events_unbound deferred_probe_work_func
-[    4.124674] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.131624] pc : add_dma_entry+0x23c/0x300
-[    4.135658] lr : add_dma_entry+0x23c/0x300
-[    4.139792] sp : ffff800009dbb490
-[    4.143016] x29: ffff800009dbb4a0 x28: 0000000004008022 x27: ffff8000098a6000
-[    4.150174] x26: 0000000000000000 x25: ffff8000099e7000 x24: ffff8000099e7de8
-[    4.157231] x23: 00000000ffffffff x22: 0000000000000000 x21: ffff8000098a6a20
-[    4.164388] x20: ffff000080964180 x19: ffff800009819ba0 x18: 0000000000000006
-[    4.171545] x17: 6361727420656e69 x16: 6c6568636163203a x15: 72656c6c6f72746e
-[    4.178602] x14: 6f632d646e616e2e x13: ffff800009832f58 x12: 00000000000004ec
-[    4.185759] x11: 00000000000001a4 x10: ffff80000988af58 x9 : ffff800009832f58
-[    4.192916] x8 : 00000000ffffefff x7 : ffff80000988af58 x6 : 80000000fffff000
-[    4.199972] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 0000000000000000
-[    4.207128] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000812d2c40
-[    4.214185] Call trace:
-[    4.216605]  add_dma_entry+0x23c/0x300
-[    4.220338]  debug_dma_map_sg+0x198/0x350
-[    4.224373]  __dma_map_sg_attrs+0xa0/0x110
-[    4.228411]  dma_map_sg_attrs+0x10/0x2c
-[    4.232247]  stm32_fmc2_nfc_xfer.isra.0+0x1c8/0x3fc
-[    4.237088]  stm32_fmc2_nfc_seq_read_page+0xc8/0x174
-[    4.242127]  nand_read_oob+0x1d4/0x8e0
-[    4.245861]  mtd_read_oob_std+0x58/0x84
-[    4.249596]  mtd_read_oob+0x90/0x150
-[    4.253231]  mtd_read+0x68/0xac
+This is especially true when an OvS bridge is used with a Geneve tunnel
+attached to it. The following set of actions could lead to the ICMP
+packet being wrongfully segmented:
 
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Cc: stable@vger.kernel.org
-Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+1. An skb is constructed by the TCP layer (e.g. gso_type SKB_GSO_TCPV4,
+   segs >= 2).
+
+2. The skb hits the OvS bridge where Geneve options are added by an OvS
+   action before being sent through the tunnel.
+
+3. When the skb is xmited in the tunnel, the split skb does not fit
+   anymore in the MTU and iptunnel_pmtud_build_icmp is called to
+   generate an ICMP fragmentation needed packet. This is done by reusing
+   the original (GSO!) skb. The GSO metadata is not cleared.
+
+4. The ICMP packet being sent back hits the OvS bridge again and because
+   skb_is_gso returns true, it goes through queue_gso_packets...
+
+5. ...where __skb_gso_segment is called. The skb is then dropped.
+
+6. Note that in the above example on re-transmission the skb won't be a
+   GSO one as it would be segmented (len > MSS) and the ICMP packet
+   should go through.
+
+Fix this by resetting the GSO information before reusing an skb in
+iptunnel_pmtud_build_icmp and iptunnel_pmtud_build_icmpv6.
+
+Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
+Reported-by: Adrian Moreno <amorenoz@redhat.com>
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Link: https://patch.msgid.link/20250904125351.159740-1-atenart@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/stm32_fmc2_nand.c |   28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ net/ipv4/ip_tunnel_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-+++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-@@ -261,6 +261,7 @@ struct stm32_fmc2_nfc {
- 	struct sg_table dma_data_sg;
- 	struct sg_table dma_ecc_sg;
- 	u8 *ecc_buf;
-+	dma_addr_t dma_ecc_addr;
- 	int dma_ecc_len;
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index 01d362b5b8826..3cdb546dbc8d7 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -203,6 +203,9 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
+ 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct iphdr)))
+ 		return -EINVAL;
  
- 	struct completion complete;
-@@ -883,17 +884,10 @@ static int stm32_fmc2_nfc_xfer(struct na
++	if (skb_is_gso(skb))
++		skb_gso_reset(skb);
++
+ 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
+ 	pskb_pull(skb, ETH_HLEN);
+ 	skb_reset_network_header(skb);
+@@ -297,6 +300,9 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct ipv6hdr)))
+ 		return -EINVAL;
  
- 	if (!write_data && !raw) {
- 		/* Configure DMA ECC status */
--		p = nfc->ecc_buf;
- 		for_each_sg(nfc->dma_ecc_sg.sgl, sg, eccsteps, s) {
--			sg_set_buf(sg, p, nfc->dma_ecc_len);
--			p += nfc->dma_ecc_len;
--		}
--
--		ret = dma_map_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
--				 eccsteps, dma_data_dir);
--		if (!ret) {
--			ret = -EIO;
--			goto err_unmap_data;
-+			sg_dma_address(sg) = nfc->dma_ecc_addr +
-+					     s * nfc->dma_ecc_len;
-+			sg_dma_len(sg) = nfc->dma_ecc_len;
- 		}
- 
- 		desc_ecc = dmaengine_prep_slave_sg(nfc->dma_ecc_ch,
-@@ -902,7 +896,7 @@ static int stm32_fmc2_nfc_xfer(struct na
- 						   DMA_PREP_INTERRUPT);
- 		if (!desc_ecc) {
- 			ret = -ENOMEM;
--			goto err_unmap_ecc;
-+			goto err_unmap_data;
- 		}
- 
- 		reinit_completion(&nfc->dma_ecc_complete);
-@@ -910,7 +904,7 @@ static int stm32_fmc2_nfc_xfer(struct na
- 		desc_ecc->callback_param = &nfc->dma_ecc_complete;
- 		ret = dma_submit_error(dmaengine_submit(desc_ecc));
- 		if (ret)
--			goto err_unmap_ecc;
-+			goto err_unmap_data;
- 
- 		dma_async_issue_pending(nfc->dma_ecc_ch);
- 	}
-@@ -930,7 +924,7 @@ static int stm32_fmc2_nfc_xfer(struct na
- 		if (!write_data && !raw)
- 			dmaengine_terminate_all(nfc->dma_ecc_ch);
- 		ret = -ETIMEDOUT;
--		goto err_unmap_ecc;
-+		goto err_unmap_data;
- 	}
- 
- 	/* Wait DMA data transfer completion */
-@@ -950,11 +944,6 @@ static int stm32_fmc2_nfc_xfer(struct na
- 		}
- 	}
- 
--err_unmap_ecc:
--	if (!write_data && !raw)
--		dma_unmap_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
--			     eccsteps, dma_data_dir);
--
- err_unmap_data:
- 	dma_unmap_sg(nfc->dev, nfc->dma_data_sg.sgl, eccsteps, dma_data_dir);
- 
-@@ -1592,7 +1581,8 @@ static int stm32_fmc2_nfc_dma_setup(stru
- 		return ret;
- 
- 	/* Allocate a buffer to store ECC status registers */
--	nfc->ecc_buf = devm_kzalloc(nfc->dev, FMC2_MAX_ECC_BUF_LEN, GFP_KERNEL);
-+	nfc->ecc_buf = dmam_alloc_coherent(nfc->dev, FMC2_MAX_ECC_BUF_LEN,
-+					   &nfc->dma_ecc_addr, GFP_KERNEL);
- 	if (!nfc->ecc_buf)
- 		return -ENOMEM;
- 
++	if (skb_is_gso(skb))
++		skb_gso_reset(skb);
++
+ 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
+ 	pskb_pull(skb, ETH_HLEN);
+ 	skb_reset_network_header(skb);
+-- 
+2.51.0
+
 
 
 
