@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-182680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4C3BADCEA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A668BAD938
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DB3E3AF0A4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06CF43C1A36
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5300B237163;
-	Tue, 30 Sep 2025 15:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D17C302CD6;
+	Tue, 30 Sep 2025 15:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2USlke9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNGedoAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD771C862F;
-	Tue, 30 Sep 2025 15:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2951C2236EB;
+	Tue, 30 Sep 2025 15:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245736; cv=none; b=lMPBPOpTtwHHjdP1YQ4Ianfa/s+hpjTZ3mD9zNwehOoV4UCs7yNAwOT71QVao6lM5qqYMIzLlJoEJipOQ8KEhhq96TRnxBncoaa0awX05LGYlblnIKnfMs4CJhD/4rdftZlEcYg+Yu6o9yFKpdePhrxU2UPhAmk5Pyo4f3wOAAI=
+	t=1759244909; cv=none; b=i7DqjGQV84kwavaKfAbZ/M3WEc35HVzBdEFoqIYEPihTisLbdvNVPuVDXbsEaZBKn04bziORzvIh/dsA0/VENc2KRegSiLliw0LRZuAiiURbO9MuiZjJteGDzt/MAmQK4PYETA4rORuyHWiRiFTE9ggAi9+znr6B4bO5th35RbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245736; c=relaxed/simple;
-	bh=7VblKmalQnyOa/sBgnHlwI3cVoby93lRW3Kl7zNyY1c=;
+	s=arc-20240116; t=1759244909; c=relaxed/simple;
+	bh=itPbgRsdqLs+kEAkk19pyrIgKXzyQk2ae7r8yI2XYrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REKwT/0HrKiX9WhHCcvUVJ/khNw+Ckts1j+IeS+EEb0H18v1akpBIbWo/i7hy26qq1e1ITjR9+Oz0NZJhOG3vZf3ZiFGUahaZv3pSvBCS3OZGBpd1oNrSv2L7xjPDkTcd565GX07z4o3Nl4OzwsSnlfJgTz+76JsYKGy3Ui4HAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2USlke9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE0DC4CEF0;
-	Tue, 30 Sep 2025 15:22:15 +0000 (UTC)
+	 MIME-Version; b=CoBCx0kpcqQ+S20W9YqiTR/X6aMSGZYK19v+AF89wgHi8QBNao/T9S+SkJXt85iKosvtGk0vA/6cRXVp+/lEYEFTlVN1OR7lsZJ/5kHrDGkr44DIXMges0FwRSFoQrxVr5gfEDX0QdGkqpJbLnVk2xEucXCHK2C4CSI8k1yIkeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNGedoAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5C4C4CEF0;
+	Tue, 30 Sep 2025 15:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245735;
-	bh=7VblKmalQnyOa/sBgnHlwI3cVoby93lRW3Kl7zNyY1c=;
+	s=korg; t=1759244909;
+	bh=itPbgRsdqLs+kEAkk19pyrIgKXzyQk2ae7r8yI2XYrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2USlke9sb3KCxV1YihiVw7rpePfO8pEiHGRzwgPY/j6QH7P6NMGziWYhGX1aNCQp
-	 tKdwKftQd2owQHm1MMsrrmIGT/Oj99VZ619aGMImO8aBZZuEELITi7l1F+opq14FQE
-	 3N5EJkG/Nig5bsNLelKnOR7cvHPdFsDn7rdNH8RA=
+	b=fNGedoAO4qwm9qe3F7EfIPGZo2sZ33FilMhrJCslFRnEV3YNBPGSa+Qt3W9p1FKLq
+	 LrUPbCV+KMEUijtaUDXmX5JcI4l6xqVfvlc8pHcdZlQNDUXTErcCiiojGm5NyntUpI
+	 1JAxYSz9+ZD6h/kS3WIkFuCipygCLQgHJjOFrwkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 35/91] can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 6.16 130/143] riscv: Use an atomic xchg in pudp_huge_get_and_clear()
 Date: Tue, 30 Sep 2025 16:47:34 +0200
-Message-ID: <20250930143822.613921721@linuxfoundation.org>
+Message-ID: <20250930143836.411138061@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 38c0abad45b190a30d8284a37264d2127a6ec303 ]
+commit 546e42c8c6d9498d5eac14bf2aca0383a11b145a upstream.
 
-Sending an PF_PACKET allows to bypass the CAN framework logic and to
-directly reach the xmit() function of a CAN driver. The only check
-which is performed by the PF_PACKET framework is to make sure that
-skb->len fits the interface's MTU.
+Make sure we return the right pud value and not a value that could
+have been overwritten in between by a different core.
 
-Unfortunately, because the etas_es58x driver does not populate its
-net_device_ops->ndo_change_mtu(), it is possible for an attacker to
-configure an invalid MTU by doing, for example:
-
-  $ ip link set can0 mtu 9999
-
-After doing so, the attacker could open a PF_PACKET socket using the
-ETH_P_CANXL protocol:
-
-	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL));
-
-to inject a malicious CAN XL frames. For example:
-
-	struct canxl_frame frame = {
-		.flags = 0xff,
-		.len = 2048,
-	};
-
-The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
-check that the skb is valid, unfortunately under above conditions, the
-malicious packet is able to go through can_dev_dropped_skb() checks:
-
-  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
-     function does not check the actual device capabilities).
-
-  2. the length is a valid CAN XL length.
-
-And so, es58x_start_xmit() receives a CAN XL frame which it is not
-able to correctly handle and will thus misinterpret it as a CAN(FD)
-frame.
-
-This can result in a buffer overflow. For example, using the es581.4
-variant, the frame will be dispatched to es581_4_tx_can_msg(), go
-through the last check at the beginning of this function:
-
-	if (can_is_canfd_skb(skb))
-		return -EMSGSIZE;
-
-and reach this line:
-
-	memcpy(tx_can_msg->data, cf->data, cf->len);
-
-Here, cf->len corresponds to the flags field of the CAN XL frame. In
-our previous example, we set canxl_frame->flags to 0xff. Because the
-maximum expected length is 8, a buffer overflow of 247 bytes occurs!
-
-Populate net_device_ops->ndo_change_mtu() to ensure that the
-interface's MTU can not be set to anything bigger than CAN_MTU or
-CANFD_MTU (depending on the device capabilities). By fixing the root
-cause, this prevents the buffer overflow.
-
-Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-1-0d1cada9393b@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c3cc2a4a3a23 ("riscv: Add support for PUD THP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20250814-dev-alex-thp_pud_xchg-v1-1-b4704dfae206@rivosinc.com
+[pjw@kernel.org: use xchg rather than atomic_long_xchg; avoid atomic op for !CONFIG_SMP like x86]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/etas_es58x/es58x_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/include/asm/pgtable.h |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
-index 5e3a72b7c4691..bb49a2c0a9a5c 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_core.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
-@@ -7,7 +7,7 @@
-  *
-  * Copyright (c) 2019 Robert Bosch Engineering and Business Solutions. All rights reserved.
-  * Copyright (c) 2020 ETAS K.K.. All rights reserved.
-- * Copyright (c) 2020-2022 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-+ * Copyright (c) 2020-2025 Vincent Mailhol <mailhol@kernel.org>
-  */
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -964,6 +964,23 @@ static inline int pudp_test_and_clear_yo
+ 	return ptep_test_and_clear_young(vma, address, (pte_t *)pudp);
+ }
  
- #include <asm/unaligned.h>
-@@ -1977,6 +1977,7 @@ static const struct net_device_ops es58x_netdev_ops = {
- 	.ndo_stop = es58x_stop,
- 	.ndo_start_xmit = es58x_start_xmit,
- 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
-+	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops es58x_ethtool_ops = {
--- 
-2.51.0
-
++#define __HAVE_ARCH_PUDP_HUGE_GET_AND_CLEAR
++static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
++					    unsigned long address,  pud_t *pudp)
++{
++#ifdef CONFIG_SMP
++	pud_t pud = __pud(xchg(&pudp->pud, 0));
++#else
++	pud_t pud = *pudp;
++
++	pud_clear(pudp);
++#endif
++
++	page_table_check_pud_clear(mm, pud);
++
++	return pud;
++}
++
+ static inline int pud_young(pud_t pud)
+ {
+ 	return pte_young(pud_pte(pud));
 
 
 
