@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-182120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09F0BAD4B0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59477BAD650
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 466681882D4D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD361885903
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0937D2FD1DD;
-	Tue, 30 Sep 2025 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B556730505F;
+	Tue, 30 Sep 2025 14:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duzVuUFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrxAjvYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91291E3DF2;
-	Tue, 30 Sep 2025 14:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733F4199939;
+	Tue, 30 Sep 2025 14:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243900; cv=none; b=bCtztw/lfaiz56+yOVouiTHguBhqqBZGfwQDTaTvsjJK6Pbxjt3QuAH/V9YGipWlGbD/VLUuhAaig+XQZs/WEp8WjXNNJQs0EuoHNIBRLVQo3fiNtARmbK4Blua7Znx6mRVaSCFTEMyE+MsmjNmmGd/nhGuAozrcKEmossOqunM=
+	t=1759244283; cv=none; b=EJZpa380NUtgDpoR7f3YGN/2LVyPGzLarNKZallsbsJBCW7AwrNjSu6jJwKSVZqdVIwdba0JdHrGkCkIXd7/+WHTTeXIVQQdXlofYkECX3ETcO5R3kxp3TGh7NGUWeV/UZFRHWbhUJyhvxncKway/dqrIDxMng5KQuVOZzpa0+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243900; c=relaxed/simple;
-	bh=bc0qDpzHA0wkhhE4INKxc8FeAuaF4i4nqrWI/9Cohp8=;
+	s=arc-20240116; t=1759244283; c=relaxed/simple;
+	bh=wfPgoISDa/ppZkz83P+8lSO8zkvtu8+u+uEfcZ+PX0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uyIP5Sn7GhYxdjw4rlbpDYv0b+QINN5x1uUom2BVtfncbzUAmuYRxCBwtNvF+rz1cUXnOPQEsLsVfXnm7tIUfRSXt2b/jWc5NAQqfEPbD460gM9JtAGAd6gKgtfb5mUwcq6fdbGsqNs/gapYpB9mzLIT9X0cWCWElW7bwx5d8R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duzVuUFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E863C4CEF0;
-	Tue, 30 Sep 2025 14:51:40 +0000 (UTC)
+	 MIME-Version; b=o8emBxfy0NP5WzyP0HVDWFMvtem2c6Lns1ChBpb9et0kzPfUGSGN/nnzvSPJlVpMgTYKz0QB1ItqAw0lvvqDGCTaTwep2tw85CJYL3fhArEkmTv9J8ilcrp9Xs6k+OrLr0e0K5tTALtRyJ8cU6P3I2ng28B+7PUUhYHS5am3irc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrxAjvYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBC2C4CEF0;
+	Tue, 30 Sep 2025 14:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243900;
-	bh=bc0qDpzHA0wkhhE4INKxc8FeAuaF4i4nqrWI/9Cohp8=;
+	s=korg; t=1759244283;
+	bh=wfPgoISDa/ppZkz83P+8lSO8zkvtu8+u+uEfcZ+PX0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duzVuUFYOXv070BPAj0axILHxxv2I99aqGWfvnRqwJo5EYLD4Pa+wK89JShbIhrKU
-	 J4TBbkdDHVMb393RmcScl1fYqsG4jtKiZ875QPKaWN//1N+sY5zthK3Bw0mRCdRrai
-	 wXRpNAj8vO+xYv3uTeDrJUBjdk36nb8qrwZa3fBM=
+	b=FrxAjvYiqAQ984kFhDLy8otXAt905v+UAcSDhMnc1OGRNoBtl5+s/fhoqYEmJNeec
+	 wSNYAfxMzuHCThcb9hISpZ2f280mNx9CStQEPXenFRaB/CBe9JWcOjhISbQkySP021
+	 tZ/o9akWj8YXH1xxZ4d5/YxqrEATLSUQuDU5Pd4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 50/81] USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
+Subject: [PATCH 5.10 081/122] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
 Date: Tue, 30 Sep 2025 16:46:52 +0200
-Message-ID: <20250930143821.777451418@linuxfoundation.org>
+Message-ID: <20250930143826.315748572@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 8d63c83d8eb922f6c316320f50c82fa88d099bea ]
+[ Upstream commit b6f56a44e4c1014b08859dcf04ed246500e310e5 ]
 
-Yunseong Kim and the syzbot fuzzer both reported a problem in
-RT-enabled kernels caused by the way dummy-hcd mixes interrupt
-management and spin-locking.  The pattern was:
+Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
+device property") rfkill_find_type() gets called with the possibly
+uninitialized "const char *type_name;" local variable.
 
-	local_irq_save(flags);
-	spin_lock(&dum->lock);
-	...
-	spin_unlock(&dum->lock);
-	...		// calls usb_gadget_giveback_request()
-	local_irq_restore(flags);
+On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
+acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
 
-The code was written this way because usb_gadget_giveback_request()
-needs to be called with interrupts disabled and the private lock not
-held.
+        rfkill->type = (unsigned)id->driver_data;
 
-While this pattern works fine in non-RT kernels, it's not good when RT
-is enabled.  RT kernels handle spinlocks much like mutexes; in particular,
-spin_lock() may sleep.  But sleeping is not allowed while local
-interrupts are disabled.
+and there is no "type" property so device_property_read_string() will fail
+and leave type_name uninitialized, leading to a potential crash.
 
-To fix the problem, rewrite the code to conform to the pattern used
-elsewhere in dummy-hcd and other UDC drivers:
+rfkill_find_type() does accept a NULL pointer, fix the potential crash
+by initializing type_name to NULL.
 
-	spin_lock_irqsave(&dum->lock, flags);
-	...
-	spin_unlock(&dum->lock);
-	usb_gadget_giveback_request(...);
-	spin_lock(&dum->lock);
-	...
-	spin_unlock_irqrestore(&dum->lock, flags);
+Note likely sofar this has not been caught because:
 
-This approach satisfies the RT requirements.
+1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
+2. The stack happened to contain NULL where type_name is stored
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Fixes: b4dbda1a22d2 ("USB: dummy-hcd: disable interrupts during req->complete")
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
-Closes: <https://lore.kernel.org/linux-usb/5b337389-73b9-4ee4-a83e-7e82bf5af87a@kzalloc.com/>
-Reported-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
-Closes: <https://lore.kernel.org/linux-usb/68ac2411.050a0220.37038e.0087.GAE@google.com/>
-Tested-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
-CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC: stable@vger.kernel.org
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/bb192ae2-4eee-48ee-981f-3efdbbd0d8f0@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
+Cc: stable@vger.kernel.org
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/rfkill/rfkill-gpio.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -758,8 +758,7 @@ static int dummy_dequeue(struct usb_ep *
- 	if (!dum->driver)
- 		return -ESHUTDOWN;
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -78,10 +78,10 @@ static int rfkill_gpio_acpi_probe(struct
+ static int rfkill_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct rfkill_gpio_data *rfkill;
+-	struct gpio_desc *gpio;
++	const char *type_name = NULL;
+ 	const char *name_property;
+ 	const char *type_property;
+-	const char *type_name;
++	struct gpio_desc *gpio;
+ 	int ret;
  
--	local_irq_save(flags);
--	spin_lock(&dum->lock);
-+	spin_lock_irqsave(&dum->lock, flags);
- 	list_for_each_entry(iter, &ep->queue, queue) {
- 		if (&iter->req != _req)
- 			continue;
-@@ -769,15 +768,16 @@ static int dummy_dequeue(struct usb_ep *
- 		retval = 0;
- 		break;
- 	}
--	spin_unlock(&dum->lock);
- 
- 	if (retval == 0) {
- 		dev_dbg(udc_dev(dum),
- 				"dequeued req %p from %s, len %d buf %p\n",
- 				req, _ep->name, _req->length, _req->buf);
-+		spin_unlock(&dum->lock);
- 		usb_gadget_giveback_request(_ep, _req);
-+		spin_lock(&dum->lock);
- 	}
--	local_irq_restore(flags);
-+	spin_unlock_irqrestore(&dum->lock, flags);
- 	return retval;
- }
- 
+ 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
 
 
 
