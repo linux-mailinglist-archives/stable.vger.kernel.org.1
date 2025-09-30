@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-182733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796D9BADCC9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EC7BADE40
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03F54194553B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43B2738075D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71103043B8;
-	Tue, 30 Sep 2025 15:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D541EE02F;
+	Tue, 30 Sep 2025 15:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2RuaMD8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDHNd7Yd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73122245010;
-	Tue, 30 Sep 2025 15:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5E9FBF6;
+	Tue, 30 Sep 2025 15:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245911; cv=none; b=AnSGze1QLGuHKCkW0fIHi48Mh2SwCdFKWo9imHnyR4XcKZKFRHqIAeifPQFaIQfM39yBUQPgO/0s0D3VVHdPvPXAVK9dT1mt1laj0XbmGkI7tKOD6KCG+FuFD7dRl/tu7QwJXHDf0ZtkqH3B3LlAW8DJAoJPDQQ/fQ6VNO4ftbM=
+	t=1759246226; cv=none; b=mIdwtUiHa9qFP3G12U67zNDyJiVSmYykSp4U4JZhfAQr8S87ADS6lUcM94a81GBi0WuRhn5k0exkNhb/B+5nhO3ycWsAgWiR3TClT2c5kYLm3VFnLqAQDXDKPPe7x/vY9CnrCxqR1rxqf8VGC8AougrASZYB7YOV6SdFsaqpn2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245911; c=relaxed/simple;
-	bh=4KbRH5p0K2HfLSLXoCXijIGL4lgUF9p0pzvfGqg1s5A=;
+	s=arc-20240116; t=1759246226; c=relaxed/simple;
+	bh=rZ3yiCnLqML2YCFmrxeoNhJNNDIvOhRrL7FFVrxEP4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMVTNPBKgFMXhgDGkEUN4VvwgcD3ZnmrSrpJX8BRDHUK94zPBANItyYvipTXXvU/qPqUSkhowpO2tS0sidmJFKvA3j3dWAvLtpowWA8ji+LBfobcniCdPK0a9uNULp4EgIOV/6Ea9czFxskT5Ha9UyAFRFEffIVZLpCqB2Lz8g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2RuaMD8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3388C4CEF0;
-	Tue, 30 Sep 2025 15:25:10 +0000 (UTC)
+	 MIME-Version; b=pZ+toKdFZZjJ0k51b+JXFfRDJmTI7zVYB7+TlVzNXwYR/gTgyIKESNEPo4PAyj+o+Ur3vE8RoaXhZQd64Z8K6ZFeDWqSr7BEppOR2NQgQh8H1h+ZQV0hbnIhknzbbhvwnXn5fquM3olVcZoHjdoLluYGQ8Nw2q6pOFqSre6EeKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDHNd7Yd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58416C4CEF0;
+	Tue, 30 Sep 2025 15:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245911;
-	bh=4KbRH5p0K2HfLSLXoCXijIGL4lgUF9p0pzvfGqg1s5A=;
+	s=korg; t=1759246226;
+	bh=rZ3yiCnLqML2YCFmrxeoNhJNNDIvOhRrL7FFVrxEP4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2RuaMD8IuWisK3wnebvLW5wLzalFBFKzan7wrdnnQIIoz828Sb7q2DlvRKFsE+ig
-	 YrGbZ3qdihffnalCymnMN5GUVBqyyBtUjDY4HuYMKysdz1DdIdgQew3IGEr2ux+9g9
-	 vrHYMm7ZI0R90Oc/8SnBIYdjrDvhiX5ZoX2GBgg4=
+	b=mDHNd7YdaIcZbpDvQhH7fi4uT6xkivNCR2OC9L/qmmGi7HAMG76GaiY97FzcS/4pC
+	 1yFD9sqO73eMVxgg3DFQewQF9HGgulSngTdZ4V6Ve/b3h+EeKP6TyNABiyF0ZRTSMF
+	 5SRCSOZ0UgZCYNErlcvO6ogL2HsxILZNL2+9QHBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arnd Bergmann <arnd@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.6 85/91] minmax.h: add whitespace around operators and after commas
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 70/89] i40e: fix input validation logic for action_meta
 Date: Tue, 30 Sep 2025 16:48:24 +0200
-Message-ID: <20250930143824.710109673@linuxfoundation.org>
+Message-ID: <20250930143824.805568432@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,120 +65,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 71ee9b16251ea4bf7c1fe222517c82bdb3220acc ]
+commit 9739d5830497812b0bdeaee356ddefbe60830b88 upstream.
 
-Patch series "minmax.h: Cleanups and minor optimisations".
+Fix condition to check 'greater or equal' to prevent OOB dereference.
 
-Some tidyups and minor changes to minmax.h.
-
-This patch (of 7):
-
-Link: https://lkml.kernel.org/r/c50365d214e04f9ba256d417c8bebbc0@AcuMS.aculab.com
-Link: https://lkml.kernel.org/r/f04b2e1310244f62826267346fde0553@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -51,10 +51,10 @@
-  * only need to be careful to not cause warnings for
-  * pointer use.
-  */
--#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
--#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
--#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
--	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
-+#define __signed_type_use(x, ux) (2 + __is_nonneg(x, ux))
-+#define __unsigned_type_use(x, ux) (1 + 2 * (sizeof(ux) < 4))
-+#define __sign_use(x, ux) (is_signed_type(typeof(ux)) ? \
-+	__signed_type_use(x, ux) : __unsigned_type_use(x, ux))
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3605,7 +3605,7 @@ static int i40e_validate_cloud_filter(st
  
- /*
-  * To avoid warnings about casting pointers to integers
-@@ -74,15 +74,15 @@
- #ifdef CONFIG_64BIT
-   #define __signed_type(ux) long
- #else
--  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
-+  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
- #endif
--#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
-+#define __is_nonneg(x, ux) statically_true((__signed_type(ux))(x) >= 0)
- 
--#define __types_ok(x,y,ux,uy) \
--	(__sign_use(x,ux) & __sign_use(y,uy))
-+#define __types_ok(x, y, ux, uy) \
-+	(__sign_use(x, ux) & __sign_use(y, uy))
- 
--#define __types_ok3(x,y,z,ux,uy,uz) \
--	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
-+#define __types_ok3(x, y, z, ux, uy, uz) \
-+	(__sign_use(x, ux) & __sign_use(y, uy) & __sign_use(z, uz))
- 
- #define __cmp_op_min <
- #define __cmp_op_max >
-@@ -97,7 +97,7 @@
- 
- #define __careful_cmp_once(op, x, y, ux, uy) ({		\
- 	__auto_type ux = (x); __auto_type uy = (y);	\
--	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
-+	BUILD_BUG_ON_MSG(!__types_ok(x, y, ux, uy),	\
- 		#op"("#x", "#y") signedness error");	\
- 	__cmp(op, ux, uy); })
- 
-@@ -114,7 +114,7 @@
- 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
- 			(lo) <= (hi), true),					\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
-+	BUILD_BUG_ON_MSG(!__types_ok3(val, lo, hi, uval, ulo, uhi),		\
- 		"clamp("#val", "#lo", "#hi") signedness error");		\
- 	__clamp(uval, ulo, uhi); })
- 
-@@ -154,7 +154,7 @@
- 
- #define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
- 	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
--	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
-+	BUILD_BUG_ON_MSG(!__types_ok3(x, y, z, ux, uy, uz),		\
- 		#op"3("#x", "#y", "#z") signedness error");		\
- 	__cmp(op, ux, __cmp(op, uy, uz)); })
- 
-@@ -326,9 +326,9 @@ static inline bool in_range32(u32 val, u
-  * Use these carefully: no type checking, and uses the arguments
-  * multiple times. Use for obvious constants only.
-  */
--#define MIN(a,b) __cmp(min,a,b)
--#define MAX(a,b) __cmp(max,a,b)
--#define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
--#define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
-+#define MIN(a, b) __cmp(min, a, b)
-+#define MAX(a, b) __cmp(max, a, b)
-+#define MIN_T(type, a, b) __cmp(min, (type)(a), (type)(b))
-+#define MAX_T(type, a, b) __cmp(max, (type)(a), (type)(b))
- 
- #endif	/* _LINUX_MINMAX_H */
+ 	/* action_meta is TC number here to which the filter is applied */
+ 	if (!tc_filter->action_meta ||
+-	    tc_filter->action_meta > vf->num_tc) {
++	    tc_filter->action_meta >= vf->num_tc) {
+ 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
+ 			 vf->vf_id, tc_filter->action_meta);
+ 		goto err;
 
 
 
