@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-182403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A244BAD90B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1104BADA3D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17CD3A6996
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 953EA194291E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5400302CD6;
-	Tue, 30 Sep 2025 15:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32276306D47;
+	Tue, 30 Sep 2025 15:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fx1U1h4W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DcE8OQqe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A138C266B65;
-	Tue, 30 Sep 2025 15:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3497223DD6;
+	Tue, 30 Sep 2025 15:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244832; cv=none; b=ttTsuUJIIYDpKTJdhIwaL1+zixEN04vN811+/zeJoOQL6gSLbwQqX12jF6b8VWAZMvEDLH8O7zEmY7550bwu4fPhB085cCfv9VGTc7QEv7fTWpI08H0YJmDzY85zfVocVzpBdEU54QjMU/2rMRjZGj5x3JQ+kfc2r7TATaYMHcQ=
+	t=1759245288; cv=none; b=J9i+LLzAoIcgDt2mXhKFjThFqPCwPTiHHK8272r4YEpS0TB6PlH7HY3+EhiEHpEEBu3M8Ykp+aaRSONUoFVQKW0ZabrMf84PQGXz1EGPuiUG02d3zC288INWpMxE5iE41QhYzoEiblEBrl9+gr6cV5vswg26vrHt3pxaosfFjNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244832; c=relaxed/simple;
-	bh=Hy+5Ia2L29R/I1bicQ8HlHNDReawFVR15YRSRb0Dfkw=;
+	s=arc-20240116; t=1759245288; c=relaxed/simple;
+	bh=aP/QiS6fd9V7GWY0j83Dg+8EgxGjBZ1seLzdwykvxUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HzedlJfMulEZPm1Pt+7FPlrmUjlCbUuYFwa/hJEBdagPzVs8YW0WSxfsAgp1l6I41QCTp7qpoZK+kcRYx8Uq6wu7KE3zDQznuVHmYFpVpvgxxFN11nEuM5TUHWnofZvldBVTrOuaZ/E30D/PNtNePO4MSyzxEfmlgbh7mkdHzMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fx1U1h4W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255B5C4CEF0;
-	Tue, 30 Sep 2025 15:07:11 +0000 (UTC)
+	 MIME-Version; b=PGcFSLksolq3y4KZfUegptTpiNNWxBp44n3MlqchM/ljQ7bewUDBg35se3+3p2vuEntAfPRt9+m0UtoZA+E3UwyWavykWp2gIsir/eVgt0FEl2q6n/HKM0afGBq/kKGR+7ffmbn9IQQUc5vmQcZlfv+o9QyVlKinAsF5nj1OWTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DcE8OQqe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E4CC4CEF0;
+	Tue, 30 Sep 2025 15:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244832;
-	bh=Hy+5Ia2L29R/I1bicQ8HlHNDReawFVR15YRSRb0Dfkw=;
+	s=korg; t=1759245287;
+	bh=aP/QiS6fd9V7GWY0j83Dg+8EgxGjBZ1seLzdwykvxUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fx1U1h4W9f9a0nSxXBxD1HRe8WK5TEWSwO7Q6msdm0Dm3ntHSM4KXZEaOkGK6L3tJ
-	 LYA4Bc/wgd5SdB02qK/kam7fIWWa+frQ8Es/75JYTD7olt0VbE69jeW+VpwjcuwRzI
-	 xhWi82CNtkhAcgmGzO1/8kPAYmO/HkXH6w8IKVAU=
+	b=DcE8OQqegKludCxFWsi64VYRbrLOOyKUG4wMVzjKFBYJixVrvRzGbfohLUd4lWMBo
+	 zfAlMwPS71QOqW9llZMXxt3EqT/ko+iuhLwVbifOpniuAW1ILZ5i96FWxbKzBiSNrI
+	 MZSXoywX6eDXcpi+fskL3gd6I7Fo+YPWG59fslHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 096/143] smb: client: fix wrong index reference in smb2_compound_op()
-Date: Tue, 30 Sep 2025 16:47:00 +0200
-Message-ID: <20250930143835.053595874@linuxfoundation.org>
+Subject: [PATCH 5.15 091/151] xhci: dbc: decouple endpoint allocation from initialization
+Date: Tue, 30 Sep 2025 16:47:01 +0200
+Message-ID: <20250930143831.222628070@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit fbe2dc6a9c7318f7263f5e4d50f6272b931c5756 ]
+[ Upstream commit 220a0ffde02f962c13bc752b01aa570b8c65a37b ]
 
-In smb2_compound_op(), the loop that processes each command's response
-uses wrong indices when accessing response bufferes.
+Decouple allocation of endpoint ring buffer from initialization
+of the buffer, and initialization of endpoint context parts from
+from the rest of the contexts.
 
-This incorrect indexing leads to improper handling of command results.
-Also, if incorrectly computed index is greather than or equal to
-MAX_COMPOUND, it can cause out-of-bounds accesses.
+It allows driver to clear up and reinitialize endpoint rings
+after disconnect without reallocating everything.
 
-Fixes: 3681c74d342d ("smb: client: handle lack of EA support in smb2_query_path_info()") # 6.14
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This is a prerequisite for the next patch that prevents the transfer
+ring from filling up with cancelled (no-op) TRBs if a debug cable is
+reconnected several times without transferring anything.
+
+Cc: stable@vger.kernel.org
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250902105306.877476-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-dbgcap.c |   71 ++++++++++++++++++++++++++---------------
+ 1 file changed, 46 insertions(+), 25 deletions(-)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 86cad8ee8e6f3..ac3ce183bd59a 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -687,7 +687,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 	}
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -86,13 +86,34 @@ static u32 xhci_dbc_populate_strings(str
+ 	return string_length;
+ }
  
- 	for (i = 0; i < num_cmds; i++) {
--		char *buf = rsp_iov[i + i].iov_base;
-+		char *buf = rsp_iov[i + 1].iov_base;
++static void xhci_dbc_init_ep_contexts(struct xhci_dbc *dbc)
++{
++	struct xhci_ep_ctx      *ep_ctx;
++	unsigned int		max_burst;
++	dma_addr_t		deq;
++
++	max_burst               = DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
++
++	/* Populate bulk out endpoint context: */
++	ep_ctx                  = dbc_bulkout_ctx(dbc);
++	deq                     = dbc_bulkout_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_out->cycle_state);
++
++	/* Populate bulk in endpoint context: */
++	ep_ctx                  = dbc_bulkin_ctx(dbc);
++	deq                     = dbc_bulkin_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_in->cycle_state);
++}
++
+ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
+ {
+ 	struct dbc_info_context	*info;
+-	struct xhci_ep_ctx	*ep_ctx;
+ 	u32			dev_info;
+-	dma_addr_t		deq, dma;
+-	unsigned int		max_burst;
++	dma_addr_t		dma;
  
- 		if (buf && resp_buftype[i + 1] != CIFS_NO_BUFFER)
- 			rc = server->ops->map_error(buf, false);
--- 
-2.51.0
-
+ 	if (!dbc)
+ 		return;
+@@ -106,20 +127,8 @@ static void xhci_dbc_init_contexts(struc
+ 	info->serial		= cpu_to_le64(dma + DBC_MAX_STRING_LENGTH * 3);
+ 	info->length		= cpu_to_le32(string_length);
+ 
+-	/* Populate bulk out endpoint context: */
+-	ep_ctx			= dbc_bulkout_ctx(dbc);
+-	max_burst		= DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
+-	deq			= dbc_bulkout_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_out->cycle_state);
+-
+-	/* Populate bulk in endpoint context: */
+-	ep_ctx			= dbc_bulkin_ctx(dbc);
+-	deq			= dbc_bulkin_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_in->cycle_state);
++	/* Populate bulk in and out endpoint contexts: */
++	xhci_dbc_init_ep_contexts(dbc);
+ 
+ 	/* Set DbC context and info registers: */
+ 	lo_hi_writeq(dbc->ctx->dma, &dbc->regs->dccp);
+@@ -421,6 +430,23 @@ dbc_alloc_ctx(struct device *dev, gfp_t
+ 	return ctx;
+ }
+ 
++static void xhci_dbc_ring_init(struct xhci_ring *ring)
++{
++	struct xhci_segment *seg = ring->first_seg;
++
++	/* clear all trbs on ring in case of old ring */
++	memset(seg->trbs, 0, TRB_SEGMENT_SIZE);
++
++	/* Only event ring does not use link TRB */
++	if (ring->type != TYPE_EVENT) {
++		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
++
++		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
++		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
++	}
++	xhci_initialize_ring_info(ring, 1);
++}
++
+ static struct xhci_ring *
+ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ {
+@@ -449,15 +475,10 @@ xhci_dbc_ring_alloc(struct device *dev,
+ 
+ 	seg->dma = dma;
+ 
+-	/* Only event ring does not use link TRB */
+-	if (type != TYPE_EVENT) {
+-		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
+-
+-		trb->link.segment_ptr = cpu_to_le64(dma);
+-		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
+-	}
+ 	INIT_LIST_HEAD(&ring->td_list);
+-	xhci_initialize_ring_info(ring, 1);
++
++	xhci_dbc_ring_init(ring);
++
+ 	return ring;
+ dma_fail:
+ 	kfree(seg);
 
 
 
