@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-182127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4840BAD4E8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AE6BAD6CB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AB104A3491
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B46C325318
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5AD3043DA;
-	Tue, 30 Sep 2025 14:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C43306D4A;
+	Tue, 30 Sep 2025 15:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ynu+XoWe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7lfbye9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8880D3C465;
-	Tue, 30 Sep 2025 14:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6605306B3B;
+	Tue, 30 Sep 2025 15:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243924; cv=none; b=o+nCkV3k/9bKXWg+l8oRcMcOq9ghIHOJ6syP4WWBebsFY/IpkshbUDJVpAzZml4Y0+FlqMDy6y5c/WVBvnk+nsU6aQoxZEaKb+9OJuPVQ5KodaMYeNssEGE6v/f9O3W0/XvgtQ6Sv/nCByjdeakGlMwpbax0oexuMeU1K6jDr3E=
+	t=1759244403; cv=none; b=Az/ugeUZtAjI6zNcnnPPRw18noCuPgiN29AbggF0FNmfper8XaNiZjQ6QQOK+v9vzPcYsJOzaMrUzCsZvZBgeeRDNTTzuhhRGpC2dZmBTkmToXfOAN43Hk7XdGLegIU+vfRpgxZ1wFot4DKFOejagNjSBI8XedLJHRPNrarRsRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243924; c=relaxed/simple;
-	bh=l/HgeIS/O1J7a7/baoEZF1HEhpSW9euSvIUC8ii8Uog=;
+	s=arc-20240116; t=1759244403; c=relaxed/simple;
+	bh=UwC2tjoWZ6u8Ime2UwaOuA2kEP//oibDcLBrJXWMnmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IyOODLclTDzCU13g6BC4lqvTlPqG/9zhji8PY+AnS9vpC7JH0m49LYGqS+jcrs5y5Vvy5PM5NDhNd1xpupqzOmv4jEmkNoMk4GVc7QQ+rd30W4B00gkqPmpaE0fVB9bR4nqRqTBwUQm6TU/tTeSH3u/Vo+hmALPqgWzovnJ957o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ynu+XoWe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4FBC4CEF0;
-	Tue, 30 Sep 2025 14:52:03 +0000 (UTC)
+	 MIME-Version; b=erW2BC/wy2ydw0m/6At/TC/k10rdKvShrQ6QlPODydWUqxA3zscWznrMJKpwsrKWN95NJPfdoF/7Clj7kNaZyxgTOHXKYRHtwTPmkCRgLeb0tC+XKYLZ9W4749GEfJ7OE0L2wzQ24lSlNYkwJvvcsQrSxFaaqCdkmF+F9JJXJWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7lfbye9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3824C4CEF0;
+	Tue, 30 Sep 2025 15:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243924;
-	bh=l/HgeIS/O1J7a7/baoEZF1HEhpSW9euSvIUC8ii8Uog=;
+	s=korg; t=1759244402;
+	bh=UwC2tjoWZ6u8Ime2UwaOuA2kEP//oibDcLBrJXWMnmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ynu+XoWeZmPGayVcnDFSgKxDiEMRZn0UBGVIQDUaaMbxNHREmz1A2LYSF/yteZa3I
-	 a1NjCGmtYl5Ayi5LjrCkdG2D5DgpuueeAvKo3lTZy5bLuIpwOlvkj6kZ63IK+e/ZjJ
-	 c0oS/yZ2cae88exDy+cwHwN8zDjVHZZRVfXgyAZA=
+	b=Y7lfbye9LAYBa4VFcyIh+hK5zwKxwLl7Bw5Qy3xRS0QqEHWwRpk/Uxk8zQyE6U/Uz
+	 6AXsQvphv/1yL2DZOQIpUB2cRyYmcLUgnJWRebrO0G8uNbKBMHMX03XOfWObhBeu3j
+	 ReR/Z6lD/htB23xf5qwInxepUP+q2wL1hV3LEGl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 56/81] ALSA: usb-audio: Avoid multiple assignments in mixer_quirks
+Subject: [PATCH 5.10 087/122] ALSA: usb-audio: Simplify NULL comparison in mixer_quirks
 Date: Tue, 30 Sep 2025 16:46:58 +0200
-Message-ID: <20250930143822.024231027@linuxfoundation.org>
+Message-ID: <20250930143826.556799157@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 03ddd3bdb94df3edb1f2408b57cfb00b3d92a208 ]
+[ Upstream commit f2d6d660e8fd5f4467e80743f82119201e67fa9c ]
 
 Handle report from checkpatch.pl:
 
-  CHECK: multiple assignments should be avoided
+  CHECK: Comparison to NULL could be written "t->name"
 
 Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-6-1a821463b632@collabora.com
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-7-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 96397a4fdf873..22f483fee5f8c 100644
+index 715b0922243c1..9243094cc0637 100644
 --- a/sound/usb/mixer_quirks.c
 +++ b/sound/usb/mixer_quirks.c
-@@ -1592,7 +1592,8 @@ static int snd_microii_spdif_default_put(struct snd_kcontrol *kcontrol,
- 	unsigned int pval, pval_old;
+@@ -126,7 +126,7 @@ static int snd_create_std_mono_table(struct usb_mixer_interface *mixer,
+ {
  	int err;
  
--	pval = pval_old = kcontrol->private_value;
-+	pval = kcontrol->private_value;
-+	pval_old = pval;
- 	pval &= 0xfffff0f0;
- 	pval |= (ucontrol->value.iec958.status[1] & 0x0f) << 8;
- 	pval |= (ucontrol->value.iec958.status[0] & 0x0f);
+-	while (t->name != NULL) {
++	while (t->name) {
+ 		err = snd_create_std_mono_ctl(mixer, t->unitid, t->control,
+ 				t->cmask, t->val_type, t->name, t->tlv_callback);
+ 		if (err < 0)
 -- 
 2.51.0
 
