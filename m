@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-182299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DFABAD71F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2FDBAD965
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568011885079
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:01:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5514A5746
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B749305E2F;
-	Tue, 30 Sep 2025 15:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B02307AF8;
+	Tue, 30 Sep 2025 15:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snzBpEu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckoxWOS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82491F152D;
-	Tue, 30 Sep 2025 15:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A7030595C;
+	Tue, 30 Sep 2025 15:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244492; cv=none; b=owQKWFih0OnziahjkmSH3+BmPo8VonIlk6jMg36VHmbF5K8C/enJGTq3+ciq3fnaAnUHtrA9yu8s7H7DfvYjxniQB+3+DnuVMLQk/ZMAOOw3VQ5zJP89igV79txRPgexEZ3M24oTS4aDWAviCcgjqFBhd1UDNPHBg83jElg98q4=
+	t=1759244941; cv=none; b=HO0zR0SW+TZJWcfDGw6uinTkYRNmC5cAzMAJX2BeWMpzaYtEMKJP4H3esIh8CTtt4nCkTWIr0UEBVlAuqDLCOgGPl6wy++E1+W///zQJamf7IlFqrI/tOQoxyaSrNrXa1XTJxv5qqmefjWSewJBnOJUY4J4LV1Vus2Bs3reTiXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244492; c=relaxed/simple;
-	bh=C2/p7bATVKeqGQCYu32hYJQlRN2U/SaMZVLeTnsszMo=;
+	s=arc-20240116; t=1759244941; c=relaxed/simple;
+	bh=rggnYdwocH3XaxN4ASJ3ZI84uMCnaN1E1KaX4PrPUoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJrMR3Fcc2BNVBJJx8tVKAx/DlQHKUcHEW3eD4I7xTHjIJF0scp8LXemkU/mVpNAHOYNTEdOS4cmUM02eDRNloH6DuCEuZ4hqCGtgGnlReCIXgs1kMPEvJ0U8gVdnRfmcISyY1pKPFMK4QMmGgSR18BZZUQsemVIRLXgs7QuudU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snzBpEu3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F99CC4CEF0;
-	Tue, 30 Sep 2025 15:01:32 +0000 (UTC)
+	 MIME-Version; b=pB3XKdAC1Ss2bCugLllxm4QZWwLMRge71//9cBRX37jfqC3wCwWyXzwvA8wb7hom/SFzctuY4x8iaXNHKeYeRG8qpdFXEMQbJ3FyKLhgstf/ePDRjuFqPiPEZgPAMXKqkFyrvkZFJt4sO4atbrESt/ADjVvqO1HkqUFdmqflJUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckoxWOS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431D7C116B1;
+	Tue, 30 Sep 2025 15:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244492;
-	bh=C2/p7bATVKeqGQCYu32hYJQlRN2U/SaMZVLeTnsszMo=;
+	s=korg; t=1759244941;
+	bh=rggnYdwocH3XaxN4ASJ3ZI84uMCnaN1E1KaX4PrPUoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snzBpEu337IP6fFck/g2oghw7+eim8Uz0l3KTyQFI+m61+C60j1WvlqMSJ9PIokTf
-	 91MZxMgSBl2vlBT7QH5uaaHBFEi6Ifg3t6mp8VC8zxotcLQ/GvhvvYJU6J7APNYy6y
-	 owDsHtDjjVrZbD7VsGc45NyzQgtxnGQGfiQg/VDE=
+	b=ckoxWOS1zEH9XZX1nvfrcQtOzt1OLwT0jiHaV5rkFZ3zFvzZJRuEvPJ/ghf+wwCqQ
+	 XW0QVkMWqYT6CKhrEmFqSClF6RnQVGLwBE6AAWxHprI5K1DbavzSV8/UyCj16fe9sE
+	 zt4W/QPbpMxEAkJd7GLYADJebRJbg093WJMWbAG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 008/143] ALSA: usb-audio: Simplify NULL comparison in mixer_quirks
-Date: Tue, 30 Sep 2025 16:45:32 +0200
-Message-ID: <20250930143831.577354010@linuxfoundation.org>
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 003/151] kunit: kasan_test: disable fortify string checker on kasan_strings() test
+Date: Tue, 30 Sep 2025 16:45:33 +0200
+Message-ID: <20250930143827.724145165@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit f2d6d660e8fd5f4467e80743f82119201e67fa9c ]
+commit 7a19afee6fb39df63ddea7ce78976d8c521178c6 upstream.
 
-Handle report from checkpatch.pl:
+Similar to commit 09c6304e38e4 ("kasan: test: fix compatibility with
+FORTIFY_SOURCE") the kernel is panicing in kasan_string().
 
-  CHECK: Comparison to NULL could be written "t->name"
+This is due to the `src` and `ptr` not being hidden from the optimizer
+which would disable the runtime fortify string checker.
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-7-1a821463b632@collabora.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call trace:
+  __fortify_panic+0x10/0x20 (P)
+  kasan_strings+0x980/0x9b0
+  kunit_try_run_case+0x68/0x190
+  kunit_generic_run_threadfn_adapter+0x34/0x68
+  kthread+0x1c4/0x228
+  ret_from_fork+0x10/0x20
+ Code: d503233f a9bf7bfd 910003fd 9424b243 (d4210000)
+ ---[ end trace 0000000000000000 ]---
+ note: kunit_try_catch[128] exited with irqs disabled
+ note: kunit_try_catch[128] exited with preempt_count 1
+     # kasan_strings: try faulted: last
+** replaying previous printk message **
+     # kasan_strings: try faulted: last line seen mm/kasan/kasan_test_c.c:1600
+     # kasan_strings: internal error occurred preventing test case from running: -4
+
+Link: https://lkml.kernel.org/r/20250801120236.2962642-1-yeoreum.yun@arm.com
+Fixes: 73228c7ecc5e ("KASAN: port KASAN Tests to KUnit")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/test_kasan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 741a70d0816cc..dab6d461cf8cd 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -129,7 +129,7 @@ static int snd_create_std_mono_table(struct usb_mixer_interface *mixer,
- {
- 	int err;
+--- a/lib/test_kasan.c
++++ b/lib/test_kasan.c
+@@ -917,6 +917,7 @@ static void kasan_strings(struct kunit *
  
--	while (t->name != NULL) {
-+	while (t->name) {
- 		err = snd_create_std_mono_ctl(mixer, t->unitid, t->control,
- 					      t->cmask, t->val_type, t->name,
- 					      t->tlv_callback);
--- 
-2.51.0
-
+ 	ptr = kmalloc(size, GFP_KERNEL | __GFP_ZERO);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
++	OPTIMIZER_HIDE_VAR(ptr);
+ 
+ 	kfree(ptr);
+ 
 
 
 
