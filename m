@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441B6BAD65C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A49BAD9B3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DCFF1886C79
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF83189482A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3AC2F616B;
-	Tue, 30 Sep 2025 14:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42302F5301;
+	Tue, 30 Sep 2025 15:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKV+6ltq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUNpReZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5821EF38E;
-	Tue, 30 Sep 2025 14:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A077E2236EB;
+	Tue, 30 Sep 2025 15:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244295; cv=none; b=u0EV7DRDwCzaeRV2gk0cuiqt/7Dmm9WccE81DOpQWDmxUlDLCe271+CHXYbQhD9YEavAF/GFQJyIG+hs861cT1bPEOtkJ6vSO1/h7Kb/ox3xraGLRQv07hPK9elwMfHF2opsDLFZpIM7OcVzUsDLbiB0Wc8KcPWOKe5uJmba08Q=
+	t=1759245173; cv=none; b=B7uHBtecbmsBl4DckGrOD9Zyoq3x6INzTVaKyyNXcUdA+tvs5bpzLKgqUn3nEJD2/EsGSfYYosPYWkGjP9wIuwjC9C2IMmtaStkyxibO0B4Ydaf7dNMoPRsjbsltDx85umnhAojNcwjYd5I9k9908bsG9bOYmk+SJiBcjcNIcQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244295; c=relaxed/simple;
-	bh=lMOvLqurNvUk0i0vcylDh1vgfcKuBbnbKC2+MX1p4pc=;
+	s=arc-20240116; t=1759245173; c=relaxed/simple;
+	bh=o37CWvNHrDv6Bt9iF4tsMJQvSMLmlmtIyBi5tHkTkrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGhCyMxIy8f1VcjarsP8kdbSzlztTgOJhqo0XD17syrFYKI4zDZBYqOe/yg+cY4LA5gb1M1co6ExMvIJA2jPLQgeqyCtzPejqPsdhCbwBruZS8wX67bejOU4rN6Mnh0FLN5/QmCYhdopcDQ1Q7S7KgDJtPv4zOYx8002qCEzdfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKV+6ltq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BB3C4CEF0;
-	Tue, 30 Sep 2025 14:58:15 +0000 (UTC)
+	 MIME-Version; b=GsTadaBrV04B7js1jEBN4VhVgM44dAvYbexN0DPZ5st8H4Z4dGNeLQ/DlE64MXG7IyHDpFcsuEGwDZUNK5Mse0oUEtnz8xr+7jNSIDY809Csr/Jh3l0qv35/1VdnThAs2rkAZjQ0YpNCKNX2wJ5S6w0oMv3J6HbcNqKnz601P9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUNpReZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274DEC4CEF0;
+	Tue, 30 Sep 2025 15:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244295;
-	bh=lMOvLqurNvUk0i0vcylDh1vgfcKuBbnbKC2+MX1p4pc=;
+	s=korg; t=1759245173;
+	bh=o37CWvNHrDv6Bt9iF4tsMJQvSMLmlmtIyBi5tHkTkrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKV+6ltqZrK+PJq55NZNVfX9C+oD+8L2olvsiF8E4kJue2+v3vvO7EDCC3U7uD0sk
-	 luy1Wvmlw9GPbWn383/cGaCazK4gfZWK8SgKVVmJ8BcmJP/9ozllo9WX6x2SJySMTz
-	 H6F3l9+WJa2TMvKqASEEaIxCO62Hf8gOitJvRZrk=
+	b=vUNpReZCXu9wiiEcPJlAEBWRU+CKAJtU8s0X+sB5faQafHjkcGi5yf5XABDYQCUIb
+	 WypLZn8qomC/YXwMyeYnzK0BKpLZP+TXwKT2wMWC6yqHyWkNI4XN4L0SCl3EdKQR3F
+	 /7ym47+Lh5SP3+BQOCcNduIWyXvNHCk7qCg0KkR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 054/122] tcp: Clear tcp_sk(sk)->fastopen_rsk in tcp_disconnect().
-Date: Tue, 30 Sep 2025 16:46:25 +0200
-Message-ID: <20250930143825.210091041@linuxfoundation.org>
+Subject: [PATCH 5.15 056/151] hrtimers: Unconditionally update target CPU base after offline timer migration
+Date: Tue, 30 Sep 2025 16:46:26 +0200
+Message-ID: <20250930143829.834409093@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 
-[ Upstream commit 45c8a6cc2bcd780e634a6ba8e46bffbdf1fc5c01 ]
+[ Upstream commit e895f8e29119c8c966ea794af9e9100b10becb88 ]
 
-syzbot reported the splat below where a socket had tcp_sk(sk)->fastopen_rsk
-in the TCP_ESTABLISHED state. [0]
+When testing softirq based hrtimers on an ARM32 board, with high resolution
+mode and NOHZ inactive, softirq based hrtimers fail to expire after being
+moved away from an offline CPU:
 
-syzbot reused the server-side TCP Fast Open socket as a new client before
-the TFO socket completes 3WHS:
+CPU0				CPU1
+				hrtimer_start(..., HRTIMER_MODE_SOFT);
+cpu_down(CPU1)			...
+				hrtimers_cpu_dying()
+				  // Migrate timers to CPU0
+				  smp_call_function_single(CPU0, returgger_next_event);
+  retrigger_next_event()
+    if (!highres && !nohz)
+        return;
 
-  1. accept()
-  2. connect(AF_UNSPEC)
-  3. connect() to another destination
+As retrigger_next_event() is a NOOP when both high resolution timers and
+NOHZ are inactive CPU0's hrtimer_cpu_base::softirq_expires_next is not
+updated and the migrated softirq timers never expire unless there is a
+softirq based hrtimer queued on CPU0 later.
 
-As of accept(), sk->sk_state is TCP_SYN_RECV, and tcp_disconnect() changes
-it to TCP_CLOSE and makes connect() possible, which restarts timers.
+Fix this by removing the hrtimer_hres_active() and tick_nohz_active() check
+in retrigger_next_event(), which enforces a full update of the CPU base.
+As this is not a fast path the extra cost does not matter.
 
-Since tcp_disconnect() forgot to clear tcp_sk(sk)->fastopen_rsk, the
-retransmit timer triggered the warning and the intended packet was not
-retransmitted.
+[ tglx: Massaged change log ]
 
-Let's call reqsk_fastopen_remove() in tcp_disconnect().
-
-[0]:
-WARNING: CPU: 2 PID: 0 at net/ipv4/tcp_timer.c:542 tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
-Modules linked in:
-CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 6.17.0-rc5-g201825fb4278 #62 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
-Code: 41 55 41 54 55 53 48 8b af b8 08 00 00 48 89 fb 48 85 ed 0f 84 55 01 00 00 0f b6 47 12 3c 03 74 0c 0f b6 47 12 3c 04 74 04 90 <0f> 0b 90 48 8b 85 c0 00 00 00 48 89 ef 48 8b 40 30 e8 6a 4f 06 3e
-RSP: 0018:ffffc900002f8d40 EFLAGS: 00010293
-RAX: 0000000000000002 RBX: ffff888106911400 RCX: 0000000000000017
-RDX: 0000000002517619 RSI: ffffffff83764080 RDI: ffff888106911400
-RBP: ffff888106d5c000 R08: 0000000000000001 R09: ffffc900002f8de8
-R10: 00000000000000c2 R11: ffffc900002f8ff8 R12: ffff888106911540
-R13: ffff888106911480 R14: ffff888106911840 R15: ffffc900002f8de0
-FS:  0000000000000000(0000) GS:ffff88907b768000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8044d69d90 CR3: 0000000002c30003 CR4: 0000000000370ef0
-Call Trace:
- <IRQ>
- tcp_write_timer (net/ipv4/tcp_timer.c:738)
- call_timer_fn (kernel/time/timer.c:1747)
- __run_timers (kernel/time/timer.c:1799 kernel/time/timer.c:2372)
- timer_expire_remote (kernel/time/timer.c:2385 kernel/time/timer.c:2376 kernel/time/timer.c:2135)
- tmigr_handle_remote_up (kernel/time/timer_migration.c:944 kernel/time/timer_migration.c:1035)
- __walk_groups.isra.0 (kernel/time/timer_migration.c:533 (discriminator 1))
- tmigr_handle_remote (kernel/time/timer_migration.c:1096)
- handle_softirqs (./arch/x86/include/asm/jump_label.h:36 ./include/trace/events/irq.h:142 kernel/softirq.c:580)
- irq_exit_rcu (kernel/softirq.c:614 kernel/softirq.c:453 kernel/softirq.c:680 kernel/softirq.c:696)
- sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1050 (discriminator 35) arch/x86/kernel/apic/apic.c:1050 (discriminator 35))
- </IRQ>
-
-Fixes: 8336886f786f ("tcp: TCP Fast Open Server - support TFO listeners")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250915175800.118793-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+Co-developed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250805081025.54235-1-wangxiongfeng2@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/time/hrtimer.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 2d870d5e31cfb..afc31f1def760 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2770,6 +2770,7 @@ int tcp_disconnect(struct sock *sk, int flags)
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	int old_state = sk->sk_state;
-+	struct request_sock *req;
- 	u32 seq;
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 74a71b3a064dc..7e2ed34e9803b 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -770,10 +770,10 @@ static void retrigger_next_event(void *arg)
+ 	 * of the next expiring timer is enough. The return from the SMP
+ 	 * function call will take care of the reprogramming in case the
+ 	 * CPU was in a NOHZ idle sleep.
++	 *
++	 * In periodic low resolution mode, the next softirq expiration
++	 * must also be updated.
+ 	 */
+-	if (!hrtimer_hres_active(base) && !tick_nohz_active)
+-		return;
+-
+ 	raw_spin_lock(&base->lock);
+ 	hrtimer_update_base(base);
+ 	if (hrtimer_hres_active(base))
+@@ -2229,11 +2229,6 @@ int hrtimers_cpu_dying(unsigned int dying_cpu)
+ 				     &new_base->clock_base[i]);
+ 	}
  
- 	/* Deny disconnect if other threads are blocked in sk_wait_event()
-@@ -2890,6 +2891,10 @@ int tcp_disconnect(struct sock *sk, int flags)
+-	/*
+-	 * The migration might have changed the first expiring softirq
+-	 * timer on this CPU. Update it.
+-	 */
+-	__hrtimer_get_next_event(new_base, HRTIMER_ACTIVE_SOFT);
+ 	/* Tell the other CPU to retrigger the next event */
+ 	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
  
- 
- 	/* Clean up fastopen related fields */
-+	req = rcu_dereference_protected(tp->fastopen_rsk,
-+					lockdep_sock_is_held(sk));
-+	if (req)
-+		reqsk_fastopen_remove(sk, req, false);
- 	tcp_free_fastopen_req(tp);
- 	inet->defer_connect = 0;
- 	tp->fastopen_client_fail = 0;
 -- 
 2.51.0
 
