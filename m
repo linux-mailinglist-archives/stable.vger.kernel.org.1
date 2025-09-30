@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-182801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BF4BADDC9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D7EBADC39
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7370E1945E16
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4F0F3A6DF5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C912FD1DD;
-	Tue, 30 Sep 2025 15:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68258173;
+	Tue, 30 Sep 2025 15:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djDzfiPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aczaLcD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221A83C465;
-	Tue, 30 Sep 2025 15:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DC129827E;
+	Tue, 30 Sep 2025 15:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246132; cv=none; b=RdPcrW8CDnjW3PIy5b7XJ9siZ2khlyHJw3XQpC6uVQAybsvZlNfLcvLObjP8pYL6g3HV9hGjHvG8HvRjSqHt0xbmzJoIZVMRLHpOvhpuJVzDjZblbcx98JRhZntz/iBRRl2joN6E+EYr2kQI1CXkUuqEe+70MI1tVPK1DroN9Uo=
+	t=1759245525; cv=none; b=J2U3CbZYIUv5VH3XYU5Qm6gqg8nfm0czsULMt+YhA6NTzYxRcYzRboL4YwfWS5kOi+B0tyEC+502338+cLd6Dpl7Ckz/U1sYM57gHe/UUuRzs8F5v7kilg8zsk39PyH5GbeuHu0EHYg6yB0/IFt1gOrSTxhBph0TMxYMQIoorsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246132; c=relaxed/simple;
-	bh=Z0huMTC1EBQm4jf0JufU2I1LHit+R1qfdBGNK7XoMYY=;
+	s=arc-20240116; t=1759245525; c=relaxed/simple;
+	bh=cbKe0aW4diWOXRj4nRKZhfustMY1uIz9+iFCEkOEg6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbUwdZNg9hEsOF4zD3UNqaVVcrYfvvWf47UYWvSJfRltVj5G+ygEUuVb1cKECYsjwGibtupxn/tl5PeWc+2SSeAdF6W7PfdGhaHRuRsJxO3rYYWbfipSCcGtf8FBUH1l3nWxr5TmVNKeDHrjZhkZYLUKgqiz6G2/sCyfFIHpvHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djDzfiPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52927C4CEF0;
-	Tue, 30 Sep 2025 15:28:51 +0000 (UTC)
+	 MIME-Version; b=lQqwC9rrdflWPqgROjxkvLx0uU1fcpbFxXOQLumAT7OapgEAdbe2d/4Z+BkxgA1esgNLaVfGtMbqLmbSGLwTgqrYtqKC+gtGdOV81RI46AD6daJhsR4amCA11wKI0ZsTD0VszbZks0SMNg2GicxdGwdjQw8frI8oGQCNNggFq+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aczaLcD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566A1C4CEF0;
+	Tue, 30 Sep 2025 15:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246131;
-	bh=Z0huMTC1EBQm4jf0JufU2I1LHit+R1qfdBGNK7XoMYY=;
+	s=korg; t=1759245524;
+	bh=cbKe0aW4diWOXRj4nRKZhfustMY1uIz9+iFCEkOEg6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djDzfiPubhcie6ZNqabsa4kO4KHgoW8OniRAwz69VllQklU49ex/oyHEKcIjQQiw/
-	 CqOtyZEDCAJwGiOus4F6ATbkM3biLlRv3cgxcsdXWbBPkYL4T0oVZp0XuJ5niP4BOT
-	 XJH4snUZqui+TIzFOirK3oZi/bSOxooDPzAmtYsM=
+	b=2aczaLcDT60/xz9OLzyfugSDIaclFITGayCVVFCBQKLoo9KuM/Oh4Us8aqlePR9LJ
+	 Qzbqse45NnXquBWLeePS2Lr42HCvw1qPLtQZayr8ennN79BL8w/rWdlPLbfkgmUKHX
+	 WCGFs/4C8NkdKpWm/CgXVOgwREdvB3EIn+OgHH/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	syzbot+a9ed3d9132939852d0df@syzkaller.appspotmail.com,
-	Alexei Starovoitov <ast@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
+	Zabelin Nikita <n.zabelin@mt-integration.ru>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 34/89] bpf: Check the helper function is valid in get_helper_proto
+Subject: [PATCH 6.1 44/73] drm/gma500: Fix null dereference in hdmi teardown
 Date: Tue, 30 Sep 2025 16:47:48 +0200
-Message-ID: <20250930143823.331350367@linuxfoundation.org>
+Message-ID: <20250930143822.431915598@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,67 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <olsajiri@gmail.com>
+From: Zabelin Nikita <n.zabelin@mt-integration.ru>
 
-[ Upstream commit e4414b01c1cd9887bbde92f946c1ba94e40d6d64 ]
+[ Upstream commit 352e66900cde63f3dadb142364d3c35170bbaaff ]
 
-kernel test robot reported verifier bug [1] where the helper func
-pointer could be NULL due to disabled config option.
+pci_set_drvdata sets the value of pdev->driver_data to NULL,
+after which the driver_data obtained from the same dev is
+dereferenced in oaktrail_hdmi_i2c_exit, and the i2c_dev is
+extracted from it. To prevent this, swap these calls.
 
-As Alexei suggested we could check on that in get_helper_proto
-directly. Marking tail_call helper func with BPF_PTR_POISON,
-because it is unused by design.
+Found by Linux Verification Center (linuxtesting.org) with Svacer.
 
-  [1] https://lore.kernel.org/oe-lkp/202507160818.68358831-lkp@intel.com
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Reported-by: syzbot+a9ed3d9132939852d0df@syzkaller.appspotmail.com
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20250814200655.945632-1-jolsa@kernel.org
-Closes: https://lore.kernel.org/oe-lkp/202507160818.68358831-lkp@intel.com
+Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
+Signed-off-by: Zabelin Nikita <n.zabelin@mt-integration.ru>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://lore.kernel.org/r/20250918150703.2562604-1-n.zabelin@mt-integration.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c     | 5 ++++-
- kernel/bpf/verifier.c | 2 +-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/gma500/oaktrail_hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 9380e0fd5e4af..1f51c8f20722e 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2953,7 +2953,10 @@ EXPORT_SYMBOL_GPL(bpf_event_output);
+diff --git a/drivers/gpu/drm/gma500/oaktrail_hdmi.c b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
+index 95b7cb099e638..9c7d9584aac7f 100644
+--- a/drivers/gpu/drm/gma500/oaktrail_hdmi.c
++++ b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
+@@ -724,8 +724,8 @@ void oaktrail_hdmi_teardown(struct drm_device *dev)
  
- /* Always built-in helper functions. */
- const struct bpf_func_proto bpf_tail_call_proto = {
--	.func		= NULL,
-+	/* func is unused for tail_call, we set it to pass the
-+	 * get_helper_proto check
-+	 */
-+	.func		= BPF_PTR_POISON,
- 	.gpl_only	= false,
- 	.ret_type	= RET_VOID,
- 	.arg1_type	= ARG_PTR_TO_CTX,
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 24ae8f33e5d76..6e22abf3326b6 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -10465,7 +10465,7 @@ static int get_helper_proto(struct bpf_verifier_env *env, int func_id,
- 		return -EINVAL;
- 
- 	*ptr = env->ops->get_func_proto(func_id, env->prog);
--	return *ptr ? 0 : -EINVAL;
-+	return *ptr && (*ptr)->func ? 0 : -EINVAL;
- }
- 
- static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+ 	if (hdmi_dev) {
+ 		pdev = hdmi_dev->dev;
+-		pci_set_drvdata(pdev, NULL);
+ 		oaktrail_hdmi_i2c_exit(pdev);
++		pci_set_drvdata(pdev, NULL);
+ 		iounmap(hdmi_dev->regs);
+ 		kfree(hdmi_dev);
+ 		pci_dev_put(pdev);
 -- 
 2.51.0
 
