@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-182391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC96BAD860
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49EFDBAD4F2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7968316E410
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEB67322EA6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512062FFDE6;
-	Tue, 30 Sep 2025 15:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F81F304989;
+	Tue, 30 Sep 2025 14:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsR2noiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AH4kTXXb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1CB1FC7C5;
-	Tue, 30 Sep 2025 15:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4C08F7D;
+	Tue, 30 Sep 2025 14:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244794; cv=none; b=UkSrfmdbBr7rOgfklOPABj3ezicPx71xWZODHBJDTt/z3x//gjquS0LS+eqEmvSgiKMv+rdNiAAvoMuaE9oYAIcqfwvEMZZFP5NCB2SJe0XkzjdCOQZ9KACize+/rTUs+Yj7qyPu3xwKavDHKoOfa1YERIxOy6A+F2yciXno0aQ=
+	t=1759243988; cv=none; b=jtidP5KOiYq0WfYFOtZEvbjX3VXkdmyFf3F0UIdhkQ6Ak1xIDJt1JR9v+KTJmjeOqOXMfUQQmmX+LihHTq4EvYHe+LTSnK+qhqDO00qr85myrRjqCS5nty4PYjM4P9EgYDUo87y4+9suM+smD3rAmxh5aid9x/LKsJKlrMuCKTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244794; c=relaxed/simple;
-	bh=e5FFKuUC1YHm/GsR4Fll/+keDJKFCCzorA9hWQJyjrE=;
+	s=arc-20240116; t=1759243988; c=relaxed/simple;
+	bh=mTJ89jED1q2TDqQPDsoCDnj0LCB7iyyvzZWkntBzPgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gd6ACC/N1jWfiEjX5+p02KCtcskPdI9a/ggvXO5EqLV3gEJN+fd8wMEJeGcKIKEn0aiaCFf8pzMiTWsWHMpIGcLuA8bSEXEs2VC46byHZrXZlDcADDlP9YnylcgvnLmvGS4KC0dj/V0Er6mky/21Kom36MupJwgCH3zYcXpZumk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsR2noiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C87FC4CEF0;
-	Tue, 30 Sep 2025 15:06:32 +0000 (UTC)
+	 MIME-Version; b=XlRgWueXqpYThzfE9QdlR7fPkY2a9N+t5RDmBsTM7kk5nySbGxj7FsoHPgzfjL4IrhEVjGLjScYKPYBqOFnV+14YI8gN+io++wbSJ7mGxQl9VNBF+XU5x1Q7iWcNnn4iVoNJ9HBv3+TawgjYgmCBA7Q2eXCJeLUH5rabLWyjCFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AH4kTXXb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22A8C113D0;
+	Tue, 30 Sep 2025 14:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244793;
-	bh=e5FFKuUC1YHm/GsR4Fll/+keDJKFCCzorA9hWQJyjrE=;
+	s=korg; t=1759243988;
+	bh=mTJ89jED1q2TDqQPDsoCDnj0LCB7iyyvzZWkntBzPgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wsR2noiJAL65v0f/IvGGUI97/tTvYiRMbpWpLVGNZ4CwciW7nliolYkyKJP2KEdMS
-	 FUccCGdJw5yT1LDHbKAkPNZPv4RdSZqq9FIsHzbp669wYDcY5jeheShwID7pw7z1Jt
-	 dFHA4Jz60k6eeWFvZ3123+omSZKgqpyjeLNL8tio=
+	b=AH4kTXXbJ/dwPLklmBrYIYE7eYE5nMVwrmGLLq93WMVoPGZvfIvxJYuUp9iuSmreg
+	 Xqe0+CkqNlu5S3zYTuVQBLQQkiWS7KE9hlDk2Rof2kfAR2Vm9b1KC3DcK+yDcuGIoR
+	 WC3OWF5UMA9+Ms66+Sd0d6qWHs+K+G0RriKdKSj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH 6.16 115/143] arm64: dts: marvell: cn913x-solidrun: fix sata ports status
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 77/81] i40e: add validation for ring_len param
 Date: Tue, 30 Sep 2025 16:47:19 +0200
-Message-ID: <20250930143835.817174646@linuxfoundation.org>
+Message-ID: <20250930143822.936233678@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +66,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-commit d3021e6aa11fecdafa85038a037c04d5bfeda9d5 upstream.
+[ Upstream commit 55d225670def06b01af2e7a5e0446fbe946289e8 ]
 
-Commit "arm64: dts: marvell: only enable complete sata nodes" changed
-armada-cp11x.dtsi disabling all sata ports status by default.
+The `ring_len` parameter provided by the virtual function (VF)
+is assigned directly to the hardware memory context (HMC) without
+any validation.
 
-The author missed some dts which relied on the dtsi enabling all ports,
-and just disabled unused ones instead.
+To address this, introduce an upper boundary check for both Tx and Rx
+queue lengths. The maximum number of descriptors supported by the
+hardware is 8k-32.
+Additionally, enforce alignment constraints: Tx rings must be a multiple
+of 8, and Rx rings must be a multiple of 32.
 
-Update dts for SolidRun cn913x based boards to enable the available
-ports, rather than disabling the unvavailable one.
-
-Further according to dt bindings the serdes phys are to be specified in
-the port node, not the controller node.
-Move those phys properties accordingly in clearfog base/pro/solidwan.
-
-Fixes: 30023876aef4 ("arm64: dts: marvell: only enable complete sata nodes")
+Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/marvell/cn9130-cf.dtsi         | 7 ++++---
- arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts | 6 ++++--
- arch/arm64/boot/dts/marvell/cn9132-clearfog.dts    | 6 ++----
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi b/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi
-index ad0ab34b6602..bd42bfbe408b 100644
---- a/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi
-+++ b/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi
-@@ -152,11 +152,12 @@ expander0_pins: cp0-expander0-pins {
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -600,6 +600,13 @@ static int i40e_config_vsi_tx_queue(stru
  
- /* SRDS #0 - SATA on M.2 connector */
- &cp0_sata0 {
--	phys = <&cp0_comphy0 1>;
- 	status = "okay";
+ 	/* only set the required fields */
+ 	tx_ctx.base = info->dma_ring_addr / 128;
++
++	/* ring_len has to be multiple of 8 */
++	if (!IS_ALIGNED(info->ring_len, 8) ||
++	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++		ret = -EINVAL;
++		goto error_context;
++	}
+ 	tx_ctx.qlen = info->ring_len;
+ 	tx_ctx.rdylist = le16_to_cpu(vsi->info.qs_handle[0]);
+ 	tx_ctx.rdylist_act = 0;
+@@ -665,6 +672,13 @@ static int i40e_config_vsi_rx_queue(stru
  
--	/* only port 1 is available */
--	/delete-node/ sata-port@0;
-+	sata-port@1 {
-+		phys = <&cp0_comphy0 1>;
-+		status = "okay";
-+	};
- };
+ 	/* only set the required fields */
+ 	rx_ctx.base = info->dma_ring_addr / 128;
++
++	/* ring_len has to be multiple of 32 */
++	if (!IS_ALIGNED(info->ring_len, 32) ||
++	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++		ret = -EINVAL;
++		goto error_param;
++	}
+ 	rx_ctx.qlen = info->ring_len;
  
- /* microSD */
-diff --git a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
-index 47234d0858dd..338853d3b179 100644
---- a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
-+++ b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
-@@ -563,11 +563,13 @@ &cp1_rtc {
- 
- /* SRDS #1 - SATA on M.2 (J44) */
- &cp1_sata0 {
--	phys = <&cp1_comphy1 0>;
- 	status = "okay";
- 
- 	/* only port 0 is available */
--	/delete-node/ sata-port@1;
-+	sata-port@0 {
-+		phys = <&cp1_comphy1 0>;
-+		status = "okay";
-+	};
- };
- 
- &cp1_syscon0 {
-diff --git a/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts b/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
-index 0f53745a6fa0..115c55d73786 100644
---- a/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
-+++ b/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
-@@ -512,10 +512,9 @@ &cp1_sata0 {
- 	status = "okay";
- 
- 	/* only port 1 is available */
--	/delete-node/ sata-port@0;
--
- 	sata-port@1 {
- 		phys = <&cp1_comphy3 1>;
-+		status = "okay";
- 	};
- };
- 
-@@ -631,9 +630,8 @@ &cp2_sata0 {
- 	status = "okay";
- 
- 	/* only port 1 is available */
--	/delete-node/ sata-port@0;
--
- 	sata-port@1 {
-+		status = "okay";
- 		phys = <&cp2_comphy3 1>;
- 	};
- };
--- 
-2.51.0
-
+ 	if (info->splithdr_enabled) {
 
 
 
