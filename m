@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3B3BAD7BE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C58BADA64
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 239BF1885439
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED8573B96C8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E78127C872;
-	Tue, 30 Sep 2025 15:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBA030595C;
+	Tue, 30 Sep 2025 15:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmyQ1OYK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KADOQSUV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B54D1F152D;
-	Tue, 30 Sep 2025 15:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9F2223DD6;
+	Tue, 30 Sep 2025 15:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244667; cv=none; b=I9cuA7Qf2guplrjL+OEmxQUE1GB4Gqqebfdr4eQsIW4WjAXey6HIrrCssMNGw23klRbSpxPA8fmMyhL411nyYPzUCdPaVQRlwB2jwtYfkU9ucsrCzsHGDcV3elTDQbis2ov/S1V459RQp//Uv7iFd6P4mFOjK/xVwYnyXMzNzMs=
+	t=1759245109; cv=none; b=Nf9Ux+URePyqE3qHZ5/UFdrTSgNMH45fRD+il8wfgnJzL0KUHH5yWbGMSaQsBrHfx/YfyHoU8g88CKJYVbtBhedkcwjSfmoFnksad1B38NOOMQ2k2sZCiel6mLeg97ThVDnH+TMgFzceaCEU5yGYpju9Y6dBkD7QNe9Z23YQvDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244667; c=relaxed/simple;
-	bh=ZWyy0SxSaOPgW0G9mK1qAFIDoyTXHwF7raUGF6K2Rl8=;
+	s=arc-20240116; t=1759245109; c=relaxed/simple;
+	bh=ZGXgjI9AOfpUSInHqUygFVpaBDz6U9fRE+AGdMi7BrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FburXO8M8DU5t6SQu9UrRm2KL/DuAOrTbAYw2iUL5DE23LhQMppLtrPWRPDYgGumwUIRGyvByLfJ2xg9TMwurCtTC81biSRr5Nt9BC4T6JdJlWTLiU2oj9zHBNd0PZooq/6ufvn43m8iZKpdx09anROGO7L70mKczFUhc9li8R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmyQ1OYK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DF0C4CEF0;
-	Tue, 30 Sep 2025 15:04:26 +0000 (UTC)
+	 MIME-Version; b=AkYX6dkZ/4DnC1sjNjmdIszEZ63GH56lds0nrn7NNJQbxgjUsWMs9pScTz3UJgRLu9YUYg7fdijIBzcHgeIeZrSkVqDtOfM/Wr9JmK0T54kjvreuV9IqFblBMba33mvW2Mfh1PHnvXjv4FZrCkfyJ2L9UbEf2KeLhJPXd33Hn60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KADOQSUV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7F2C4CEF0;
+	Tue, 30 Sep 2025 15:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244666;
-	bh=ZWyy0SxSaOPgW0G9mK1qAFIDoyTXHwF7raUGF6K2Rl8=;
+	s=korg; t=1759245108;
+	bh=ZGXgjI9AOfpUSInHqUygFVpaBDz6U9fRE+AGdMi7BrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmyQ1OYKsVnOPMjB7RhG9E6SxrYjbuGKwaAK+XAbxcqZjCqxONtcWhlTVgrODbygv
-	 kWovBKZnntwAY1ZHQmqBW+wr8/gNFO31Tz+ydRN57DTdmXLIn2CIDPc0u723q81eNg
-	 ADRKc8mSSS6MAI2p6jLDhTSdHgK/AFJEZ1dcQmCg=
+	b=KADOQSUVDMOBfzvh65ZhQxa0VJSpQ0ScE0lLj+jlDVQBFGIA3WkAg77dYyN8Q8xQw
+	 Zl2kJi6fJvq01+K7ZaWaJ/2rYVCQ4072gptN5j/CagQpN+CS5DJYPlp6gBrHInQ3f7
+	 oIQ6AZLR8Hk+55d6XZsGVYoxWgvpSJtLIeG2kxyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 077/143] nexthop: Forbid FDB status change while nexthop is in a group
+Subject: [PATCH 5.15 071/151] qed: Dont collect too many protection override GRC elements
 Date: Tue, 30 Sep 2025 16:46:41 +0200
-Message-ID: <20250930143834.309043923@linuxfoundation.org>
+Message-ID: <20250930143830.426081303@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 
-[ Upstream commit 390b3a300d7872cef9588f003b204398be69ce08 ]
+[ Upstream commit 56c0a2a9ddc2f5b5078c5fb0f81ab76bbc3d4c37 ]
 
-The kernel forbids the creation of non-FDB nexthop groups with FDB
-nexthops:
+In the protection override dump path, the firmware can return far too
+many GRC elements, resulting in attempting to write past the end of the
+previously-kmalloc'ed dump buffer.
 
- # ip nexthop add id 1 via 192.0.2.1 fdb
- # ip nexthop add id 2 group 1
- Error: Non FDB nexthop group cannot have fdb nexthops.
+This will result in a kernel panic with reason:
 
-And vice versa:
+ BUG: unable to handle kernel paging request at ADDRESS
 
- # ip nexthop add id 3 via 192.0.2.2 dev dummy1
- # ip nexthop add id 4 group 3 fdb
- Error: FDB nexthop group can only have fdb nexthops.
+where "ADDRESS" is just past the end of the protection override dump
+buffer. The start address of the buffer is:
+ p_hwfn->cdev->dbg_features[DBG_FEATURE_PROTECTION_OVERRIDE].dump_buf
+and the size of the buffer is buf_size in the same data structure.
 
-However, as long as no routes are pointing to a non-FDB nexthop group,
-the kernel allows changing the type of a nexthop from FDB to non-FDB and
-vice versa:
+The panic can be arrived at from either the qede Ethernet driver path:
 
- # ip nexthop add id 5 via 192.0.2.2 dev dummy1
- # ip nexthop add id 6 group 5
- # ip nexthop replace id 5 via 192.0.2.2 fdb
- # echo $?
- 0
+    [exception RIP: qed_grc_dump_addr_range+0x108]
+ qed_protection_override_dump at ffffffffc02662ed [qed]
+ qed_dbg_protection_override_dump at ffffffffc0267792 [qed]
+ qed_dbg_feature at ffffffffc026aa8f [qed]
+ qed_dbg_all_data at ffffffffc026b211 [qed]
+ qed_fw_fatal_reporter_dump at ffffffffc027298a [qed]
+ devlink_health_do_dump at ffffffff82497f61
+ devlink_health_report at ffffffff8249cf29
+ qed_report_fatal_error at ffffffffc0272baf [qed]
+ qede_sp_task at ffffffffc045ed32 [qede]
+ process_one_work at ffffffff81d19783
 
-This configuration is invalid and can result in a NPD [1] since FDB
-nexthops are not associated with a nexthop device:
+or the qedf storage driver path:
 
- # ip route add 198.51.100.1/32 nhid 6
- # ping 198.51.100.1
+    [exception RIP: qed_grc_dump_addr_range+0x108]
+ qed_protection_override_dump at ffffffffc068b2ed [qed]
+ qed_dbg_protection_override_dump at ffffffffc068c792 [qed]
+ qed_dbg_feature at ffffffffc068fa8f [qed]
+ qed_dbg_all_data at ffffffffc0690211 [qed]
+ qed_fw_fatal_reporter_dump at ffffffffc069798a [qed]
+ devlink_health_do_dump at ffffffff8aa95e51
+ devlink_health_report at ffffffff8aa9ae19
+ qed_report_fatal_error at ffffffffc0697baf [qed]
+ qed_hw_err_notify at ffffffffc06d32d7 [qed]
+ qed_spq_post at ffffffffc06b1011 [qed]
+ qed_fcoe_destroy_conn at ffffffffc06b2e91 [qed]
+ qedf_cleanup_fcport at ffffffffc05e7597 [qedf]
+ qedf_rport_event_handler at ffffffffc05e7bf7 [qedf]
+ fc_rport_work at ffffffffc02da715 [libfc]
+ process_one_work at ffffffff8a319663
 
-Fix by preventing nexthop FDB status change while the nexthop is in a
-group:
+Resolve this by clamping the firmware's return value to the maximum
+number of legal elements the firmware should return.
 
- # ip nexthop add id 7 via 192.0.2.2 dev dummy1
- # ip nexthop add id 8 group 7
- # ip nexthop replace id 7 via 192.0.2.2 fdb
- Error: Cannot change nexthop FDB status while in a group.
-
-[1]
-BUG: kernel NULL pointer dereference, address: 00000000000003c0
-[...]
-Oops: Oops: 0000 [#1] SMP
-CPU: 6 UID: 0 PID: 367 Comm: ping Not tainted 6.17.0-rc6-virtme-gb65678cacc03 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
-RIP: 0010:fib_lookup_good_nhc+0x1e/0x80
-[...]
-Call Trace:
- <TASK>
- fib_table_lookup+0x541/0x650
- ip_route_output_key_hash_rcu+0x2ea/0x970
- ip_route_output_key_hash+0x55/0x80
- __ip4_datagram_connect+0x250/0x330
- udp_connect+0x2b/0x60
- __sys_connect+0x9c/0xd0
- __x64_sys_connect+0x18/0x20
- do_syscall_64+0xa4/0x2a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: 38428d68719c ("nexthop: support for fdb ecmp nexthops")
-Reported-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68c9a4d2.050a0220.3c6139.0e63.GAE@google.com/
-Tested-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250921150824.149157-2-idosch@nvidia.com
+Fixes: d52c89f120de8 ("qed*: Utilize FW 8.37.2.0")
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Link: https://patch.msgid.link/f8e1182934aa274c18d0682a12dbaf347595469c.1757485536.git.jamie.bainbridge@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/qlogic/qed/qed_debug.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 4397e89d3123a..423f876d14c6a 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -2400,6 +2400,13 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_debug.c b/drivers/net/ethernet/qlogic/qed/qed_debug.c
+index 4b4077cf2d266..b4e108d3ec945 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_debug.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_debug.c
+@@ -4374,10 +4374,11 @@ static enum dbg_status qed_protection_override_dump(struct qed_hwfn *p_hwfn,
+ 		goto out;
  	}
  
-+	if (!list_empty(&old->grp_list) &&
-+	    rtnl_dereference(new->nh_info)->fdb_nh !=
-+	    rtnl_dereference(old->nh_info)->fdb_nh) {
-+		NL_SET_ERR_MSG(extack, "Cannot change nexthop FDB status while in a group");
-+		return -EINVAL;
-+	}
-+
- 	err = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new, extack);
- 	if (err)
- 		return err;
+-	/* Add override window info to buffer */
++	/* Add override window info to buffer, preventing buffer overflow */
+ 	override_window_dwords =
+-		qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
+-		PROTECTION_OVERRIDE_ELEMENT_DWORDS;
++		min(qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
++		PROTECTION_OVERRIDE_ELEMENT_DWORDS,
++		PROTECTION_OVERRIDE_DEPTH_DWORDS);
+ 	if (override_window_dwords) {
+ 		addr = BYTES_TO_DWORDS(GRC_REG_PROTECTION_OVERRIDE_WINDOW);
+ 		offset += qed_grc_dump_addr_range(p_hwfn,
 -- 
 2.51.0
 
