@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-182693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC40BADC36
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8399ABADD74
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 820AA3248EC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44E463801F0
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5797B296BD0;
-	Tue, 30 Sep 2025 15:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C983307AD0;
+	Tue, 30 Sep 2025 15:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eA3G2W01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5I6/R40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C74846F;
-	Tue, 30 Sep 2025 15:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052A3306B0C;
+	Tue, 30 Sep 2025 15:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245780; cv=none; b=AOm5qKCj0JbsZIKS/9T3TBKsrfcpdBJ8XRN8sBdaHzLdsLjETaS90IjMIYNkzbhqxmo7AdCTedAtnjNTVFOO8GtPQurrhAPnKGgvgn7zveWyuvTrKes0QZglAfOsW64T8aWntXxM/KuA6ENJSO5+615NcaA9FJFOtU+1FgslxFw=
+	t=1759246059; cv=none; b=psEm9ZBNHUDeY4rJg2HPZVX7n1kpVJwhhsNkdAu2Xb9a6au6TYI/HKkwr5j1dsa72R5hVa7fu0hiQ59odFfqf1bPggKh6QPT/1K5cevGAjITQaxMcPPjXA9BTbcCnH5rI4fwNlwt9fAMmfMgGdzvX6RJ1ko8TKM7x4F0w/XYFcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245780; c=relaxed/simple;
-	bh=Mdj1OOpcx7aVJ3WaMEiH1PAAlz3M9ptyKOvv1YRa6AI=;
+	s=arc-20240116; t=1759246059; c=relaxed/simple;
+	bh=BSk4Kj7pKCJ+Lsf4bYAxMNhsMeCYf6iDGbRDWUlnm/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enHxHzfUdoAyijB5yGPQoNGElkhlwm9dtV3L0gTSR41SenStf17f9aUyTe0qLVKtn7KhQHXqtlNqitQohrgMHiymRtqrWWKsVa1L6iymBTW/+qOEahMOlOwP0ji+TxWN3V2H3N6QjGIhh1JYVp8lo188insxQUlts+v/mmBueio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eA3G2W01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76926C4CEF0;
-	Tue, 30 Sep 2025 15:22:59 +0000 (UTC)
+	 MIME-Version; b=t4XNtl99fGchemHCppnxr4cC1Ilj2lGWKfliui1lbvGSxn0UyIyZtpHrH9BuBJZlok2txaV0/vtc1XC0jKZn+TjTvnH4jyBNS3Gm+s6mJtRNxPpsEH5qAB43vpVix2Z0xc7Sc0M+ie3DehpeXI6C2JioM8uHXl1gOuBs6HBEg9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5I6/R40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69244C4CEF0;
+	Tue, 30 Sep 2025 15:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245779;
-	bh=Mdj1OOpcx7aVJ3WaMEiH1PAAlz3M9ptyKOvv1YRa6AI=;
+	s=korg; t=1759246058;
+	bh=BSk4Kj7pKCJ+Lsf4bYAxMNhsMeCYf6iDGbRDWUlnm/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eA3G2W01hYhrvTJq3Z2liKUtS0qc0iVkQf6+DhW4OCNAQ1MgVg/FjC4SCWR75yWQA
-	 5c9oKivY++Dhw0WhBwH6Qd4Ingj7YxUD0ZSBfckWf/o++TftIvQo8Sw2QWDJAJLQ7H
-	 nY0B8IGzIqiwFiwI87qopMTVvisur6bRMt95fRWU=
+	b=A5I6/R403HU3dpo9Pa+ZzaDC4zJxedvTFYXV2kQoeHQqvepPYLQsnicPZxNcEy0in
+	 awzD61E8NpWYtWwidFgzjEXhvOyggdP34pKGN0rWJe51viKenhU1NfPwIWMJNq/x1v
+	 CDvxV/8VbewC+M80j81R5VmoUMEvr86i6sXkHx+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 47/91] selftests: fib_nexthops: Fix creation of non-FDB nexthops
+Subject: [PATCH 6.12 32/89] smb: server: dont use delayed_work for post_recv_credits_work
 Date: Tue, 30 Sep 2025 16:47:46 +0200
-Message-ID: <20250930143823.129837218@linuxfoundation.org>
+Message-ID: <20250930143823.242736576@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,151 +67,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit c29913109c70383cdf90b6fc792353e1009f24f5 ]
+[ Upstream commit 1cde0a74a7a8951b3097417847a458e557be0b5b ]
 
-The test creates non-FDB nexthops without a nexthop device which leads
-to the expected failure, but for the wrong reason:
+If we are using a hardcoded delay of 0 there's no point in
+using delayed_work it only adds confusion.
 
- # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
+The client also uses a normal work_struct and now
+it is easier to move it to the common smbdirect_socket.
 
- IPv6 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-nRsN3E nexthop add id 63 via 2001:db8:91::4
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 64 via 2001:db8:91::5
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 63/64 fdb
- Error: Invalid nexthop id.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
- [...]
-
- IPv4 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-nRsN3E nexthop add id 14 via 172.16.1.2
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 15 via 172.16.1.3
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 14/15 fdb
- Error: Invalid nexthop id.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
-
- COMMAND: ip -netns me-nRsN3E nexthop add id 16 via 172.16.1.2 fdb
- COMMAND: ip -netns me-nRsN3E nexthop add id 17 via 172.16.1.3 fdb
- COMMAND: ip -netns me-nRsN3E nexthop add id 104 group 14/15
- Error: Invalid nexthop id.
- TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
- [...]
- COMMAND: ip -netns me-0dlhyd ro add 172.16.0.0/22 nhid 15
- Error: Nexthop id does not exist.
- TEST: Route add with fdb nexthop                                    [ OK ]
-
-In addition, as can be seen in the above output, a couple of IPv4 test
-cases used the non-FDB nexthops (14 and 15) when they intended to use
-the FDB nexthops (16 and 17). These test cases only passed because
-failure was expected, but they failed for the wrong reason.
-
-Fix the test to create the non-FDB nexthops with a nexthop device and
-adjust the IPv4 test cases to use the FDB nexthops instead of the
-non-FDB nexthops.
-
-Output after the fix:
-
- # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
-
- IPv6 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-lNzfHP nexthop add id 63 via 2001:db8:91::4 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 64 via 2001:db8:91::5 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 63/64 fdb
- Error: FDB nexthop group can only have fdb nexthops.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
- [...]
-
- IPv4 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-lNzfHP nexthop add id 14 via 172.16.1.2 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 15 via 172.16.1.3 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 14/15 fdb
- Error: FDB nexthop group can only have fdb nexthops.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
-
- COMMAND: ip -netns me-lNzfHP nexthop add id 16 via 172.16.1.2 fdb
- COMMAND: ip -netns me-lNzfHP nexthop add id 17 via 172.16.1.3 fdb
- COMMAND: ip -netns me-lNzfHP nexthop add id 104 group 16/17
- Error: Non FDB nexthop group cannot have fdb nexthops.
- TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
- [...]
- COMMAND: ip -netns me-lNzfHP ro add 172.16.0.0/22 nhid 16
- Error: Route cannot point to a fdb nexthop.
- TEST: Route add with fdb nexthop                                    [ OK ]
- [...]
- Tests passed:  30
- Tests failed:   0
- Tests skipped:  0
-
-Fixes: 0534c5489c11 ("selftests: net: add fdb nexthop tests")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250921150824.149157-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fib_nexthops.sh | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/smb/server/transport_rdma.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
-index a6f2c0b9555d1..e2e4fffd87e39 100755
---- a/tools/testing/selftests/net/fib_nexthops.sh
-+++ b/tools/testing/selftests/net/fib_nexthops.sh
-@@ -464,8 +464,8 @@ ipv6_fdb_grp_fcnal()
- 	log_test $? 0 "Get Fdb nexthop group by id"
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 2fc689f99997e..8f5a393828065 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -147,7 +147,7 @@ struct smb_direct_transport {
+ 	wait_queue_head_t	wait_send_pending;
+ 	atomic_t		send_pending;
  
- 	# fdb nexthop group can only contain fdb nexthops
--	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4"
--	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5"
-+	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4 dev veth1"
-+	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5 dev veth1"
- 	run_cmd "$IP nexthop add id 103 group 63/64 fdb"
- 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
+-	struct delayed_work	post_recv_credits_work;
++	struct work_struct	post_recv_credits_work;
+ 	struct work_struct	send_immediate_work;
+ 	struct work_struct	disconnect_work;
  
-@@ -544,15 +544,15 @@ ipv4_fdb_grp_fcnal()
- 	log_test $? 0 "Get Fdb nexthop group by id"
+@@ -366,8 +366,8 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
  
- 	# fdb nexthop group can only contain fdb nexthops
--	run_cmd "$IP nexthop add id 14 via 172.16.1.2"
--	run_cmd "$IP nexthop add id 15 via 172.16.1.3"
-+	run_cmd "$IP nexthop add id 14 via 172.16.1.2 dev veth1"
-+	run_cmd "$IP nexthop add id 15 via 172.16.1.3 dev veth1"
- 	run_cmd "$IP nexthop add id 103 group 14/15 fdb"
- 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
+ 	spin_lock_init(&t->lock_new_recv_credits);
  
- 	# Non fdb nexthop group can not contain fdb nexthops
- 	run_cmd "$IP nexthop add id 16 via 172.16.1.2 fdb"
- 	run_cmd "$IP nexthop add id 17 via 172.16.1.3 fdb"
--	run_cmd "$IP nexthop add id 104 group 14/15"
-+	run_cmd "$IP nexthop add id 104 group 16/17"
- 	log_test $? 2 "Non-Fdb Nexthop group with fdb nexthops"
+-	INIT_DELAYED_WORK(&t->post_recv_credits_work,
+-			  smb_direct_post_recv_credits);
++	INIT_WORK(&t->post_recv_credits_work,
++		  smb_direct_post_recv_credits);
+ 	INIT_WORK(&t->send_immediate_work, smb_direct_send_immediate_work);
+ 	INIT_WORK(&t->disconnect_work, smb_direct_disconnect_rdma_work);
  
- 	# fdb nexthop cannot have blackhole
-@@ -579,7 +579,7 @@ ipv4_fdb_grp_fcnal()
- 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:14 dev vx10 nhid 12 self"
- 	log_test $? 255 "Fdb mac add with nexthop"
+@@ -399,7 +399,7 @@ static void free_transport(struct smb_direct_transport *t)
+ 		   atomic_read(&t->send_pending) == 0);
  
--	run_cmd "$IP ro add 172.16.0.0/22 nhid 15"
-+	run_cmd "$IP ro add 172.16.0.0/22 nhid 16"
- 	log_test $? 2 "Route add with fdb nexthop"
+ 	cancel_work_sync(&t->disconnect_work);
+-	cancel_delayed_work_sync(&t->post_recv_credits_work);
++	cancel_work_sync(&t->post_recv_credits_work);
+ 	cancel_work_sync(&t->send_immediate_work);
  
- 	run_cmd "$IP ro add 172.16.0.0/22 nhid 103"
+ 	if (t->qp) {
+@@ -614,8 +614,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			wake_up_interruptible(&t->wait_send_credits);
+ 
+ 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
+-			mod_delayed_work(smb_direct_wq,
+-					 &t->post_recv_credits_work, 0);
++			queue_work(smb_direct_wq, &t->post_recv_credits_work);
+ 
+ 		if (data_length) {
+ 			enqueue_reassembly(t, recvmsg, (int)data_length);
+@@ -772,8 +771,7 @@ static int smb_direct_read(struct ksmbd_transport *t, char *buf,
+ 		st->count_avail_recvmsg += queue_removed;
+ 		if (is_receive_credit_post_required(st->recv_credits, st->count_avail_recvmsg)) {
+ 			spin_unlock(&st->receive_credit_lock);
+-			mod_delayed_work(smb_direct_wq,
+-					 &st->post_recv_credits_work, 0);
++			queue_work(smb_direct_wq, &st->post_recv_credits_work);
+ 		} else {
+ 			spin_unlock(&st->receive_credit_lock);
+ 		}
+@@ -800,7 +798,7 @@ static int smb_direct_read(struct ksmbd_transport *t, char *buf,
+ static void smb_direct_post_recv_credits(struct work_struct *work)
+ {
+ 	struct smb_direct_transport *t = container_of(work,
+-		struct smb_direct_transport, post_recv_credits_work.work);
++		struct smb_direct_transport, post_recv_credits_work);
+ 	struct smb_direct_recvmsg *recvmsg;
+ 	int receive_credits, credits = 0;
+ 	int ret;
+@@ -1681,7 +1679,7 @@ static int smb_direct_prepare_negotiation(struct smb_direct_transport *t)
+ 		goto out_err;
+ 	}
+ 
+-	smb_direct_post_recv_credits(&t->post_recv_credits_work.work);
++	smb_direct_post_recv_credits(&t->post_recv_credits_work);
+ 	return 0;
+ out_err:
+ 	put_recvmsg(t, recvmsg);
 -- 
 2.51.0
 
