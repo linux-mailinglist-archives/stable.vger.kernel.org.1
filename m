@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-182660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A17ABADBD6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A638BADBC7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 767D8188BE23
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1F923B48DE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3138E2FFDE6;
-	Tue, 30 Sep 2025 15:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929B9302CD6;
+	Tue, 30 Sep 2025 15:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnkMngBD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnTZ0Sv3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDC71C862F;
-	Tue, 30 Sep 2025 15:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB2127B328;
+	Tue, 30 Sep 2025 15:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245670; cv=none; b=BFnBFAjk6BGBUtXlbJquOKYeUEw/crrq7sXUGbqkrIvgaiNh1MQn3DVbLRCyGVZouVOvcUY/EWGI90BT2MDSdDiO0WJlBfGS9naWJgGlT5LRjnrEv1sEU7aqswjhvBy6ttBPBOFVWmpu2I51lO+FYeeXAB3Fg/wA90jEzlPsI0E=
+	t=1759245410; cv=none; b=iULJiRDXJceS4K6HbNJT+ALekHks44bb+wjokY62VXLlNggdoNcaLH71130a6aklS9DscoOD8fEOmfR1JtK0cSG/97XPCpLbzg3UViVz+t2luq7hhMpak0uAEE2j45Vj5QqfpECdfqrErVIKbsQYZgg6q8WvHSKqfap3j3pmZ2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245670; c=relaxed/simple;
-	bh=pxK/BksZTISZiEKfeUo/y8D+1AxPpvsglu1njZ24+YQ=;
+	s=arc-20240116; t=1759245410; c=relaxed/simple;
+	bh=nnGQywPJarlwpFNQ5I8qur3M1IOW4SRvC7qskJD7hoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YK/Q8jWtGcQXcKMksOt12fs9jePhWtMeH7z36Oxcswu3hhLXtfexazzjDrpdru9+sClGVs+tsgJooqmRjAg5pBV5sO1oOAbRmBJAupKOuAg0LLrmfF0U5gTXRPw5Lsei3kE7WJN6DFnY0OMIEKa7ybw8PKVqZIMUVL5LH8PP8cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnkMngBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4863FC4CEF0;
-	Tue, 30 Sep 2025 15:21:09 +0000 (UTC)
+	 MIME-Version; b=PYlDNtx4E3dDFdlaDUCi4ZbtzMDq0o+xNKnCxIi5WtmBf+uuvcaAZ+S8nZR/e5Bnd5oZQUguaSoHDCx3IZLZWO1vIj+uFR5i3W6YEiYv8j8n8/pw+Rf/HDhBtDFh2JYzKQEI/mES+UAmP414jKkjvbT0qvQ9P9v6OdojjeokrIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnTZ0Sv3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F36C4CEF0;
+	Tue, 30 Sep 2025 15:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245669;
-	bh=pxK/BksZTISZiEKfeUo/y8D+1AxPpvsglu1njZ24+YQ=;
+	s=korg; t=1759245410;
+	bh=nnGQywPJarlwpFNQ5I8qur3M1IOW4SRvC7qskJD7hoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnkMngBDtVnvxaIS9wknIq3GMn5Az9slukNGHZ+N4Hj7375pkVYOwvlze/iFM/iBA
-	 OmtxgBQUqrmI7uCcZWCqKn3p4be24nYelyW/j5o+rpjPsYFtwb73S6R9MUz3IGPK70
-	 8tx1jTesGKI1CKxjTHkQjkQev/oU7biGIQF7BqO0=
+	b=XnTZ0Sv3Y9BgHhFUm9n55eDdANMW36CJ6viX9Xj3W3tnlM5i9w3wut6St9ThfaNdN
+	 7V8zOcfr6Irti7s21lTDql7EzJnX02fw+YkYV26tc8zeii4VMIRPbDMNB3DGpmgi83
+	 PnQvKHcypkzP82em0oUgX7rTDDuYjowcQKAMVL4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 15/91] usb: core: Add 0x prefix to quirks debug output
+Subject: [PATCH 6.1 10/73] HID: multitouch: specify that Apple Touch Bar is direct
 Date: Tue, 30 Sep 2025 16:47:14 +0200
-Message-ID: <20250930143821.764160180@linuxfoundation.org>
+Message-ID: <20250930143820.987116031@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Kerem Karabay <kekrby@gmail.com>
 
-[ Upstream commit 47c428fce0b41b15ab321d8ede871f780ccd038f ]
+[ Upstream commit 45ca23c5ee8b2b3074377fecc92fa72aa595f7c9 ]
 
-Use "0x%x" format for quirks debug print to clarify it's a hexadecimal
-value. Improves readability and consistency with other hex outputs.
+Currently the driver determines the device type based on the
+application, but this value is not reliable on Apple Touch Bar, where
+the application is HID_DG_TOUCHPAD even though this device is direct,
+so add a quirk for the same.
 
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://lore.kernel.org/r/20250603071045.3243699-1-lijiayi@kylinos.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Kerem Karabay <kekrby@gmail.com>
+Co-developed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-multitouch.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
-index bfd97cad8aa4d..c0fd8ab3fe8fc 100644
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -734,7 +734,7 @@ void usb_detect_quirks(struct usb_device *udev)
- 	udev->quirks ^= usb_detect_dynamic_quirks(udev);
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 8e9f71e69dd8c..d8fee341c096e 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1336,6 +1336,13 @@ static int mt_touch_input_configured(struct hid_device *hdev,
+ 	if (td->serial_maybe)
+ 		mt_post_parse_default_settings(td, app);
  
- 	if (udev->quirks)
--		dev_dbg(&udev->dev, "USB quirks for this device: %x\n",
-+		dev_dbg(&udev->dev, "USB quirks for this device: 0x%x\n",
- 			udev->quirks);
++	/*
++	 * The application for Apple Touch Bars is HID_DG_TOUCHPAD,
++	 * but these devices are direct.
++	 */
++	if (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR)
++		app->mt_flags |= INPUT_MT_DIRECT;
++
+ 	if (cls->is_indirect)
+ 		app->mt_flags |= INPUT_MT_POINTER;
  
- #ifdef CONFIG_USB_DEFAULT_PERSIST
 -- 
 2.51.0
 
