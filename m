@@ -1,58 +1,78 @@
-Return-Path: <stable+bounces-182748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2276FBADD02
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC3EBADB23
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83C353279C7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100F73213FB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7052FB0BE;
-	Tue, 30 Sep 2025 15:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FE5303C93;
+	Tue, 30 Sep 2025 15:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hag/H/Ve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9gd2qOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2554725FA0F;
-	Tue, 30 Sep 2025 15:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5881F1302;
+	Tue, 30 Sep 2025 15:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245961; cv=none; b=GywlWEZGvtePk97sEpvUKWlKr6j+zAI17Zn5law9Ph5ns4AWvf5ggSh9Zb1hmdumCo02591SOhN/f8XT7mxWR8ppj9WyNztPvPlsqgYo/awJdAl6kIGkvBaH0+T+juhAMgj05Up4jE1DjgwC7an5IMaUF34r3t9frV4CdPoUsyc=
+	t=1759245446; cv=none; b=fbe7icuGeeIdD3whIWzbTTxJFsddg0Yic6vJBp02NeCvUyf5HxVR4WTwkv18+eor/0sFBr3ZFGDBU5fFLaBdXQDWdTNky8n5Yrr7V0/VsHIvOXlRlZPBYj1XwEQzLN0kepdfqlJ+Ejd1riynh7dAoX2PBWGKNloLCKJ4GltfhRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245961; c=relaxed/simple;
-	bh=vevNe6J88zNHLwa8BSGzeH1M2jnUh35N376OA4qfw+E=;
+	s=arc-20240116; t=1759245446; c=relaxed/simple;
+	bh=uON+FXtLevrKt9ikxO9qovqQnGlqfeBM2bCN3TN060A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWJp3ggVmL95G6U5i8TH7L58I0SKYv3x/CYnTwAhVOqtzxFboKlXfb6RBieXPhCgmGJ5XoTsTkKjAqFirthvIUl4zo16PGmvUgj2Sqc/zxBcecfiGv3Q1u7iIOsTLUaT5CvbpLSyWoBnGCRX97wN8G/drQhJtLFx1qAulc4TU7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hag/H/Ve; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBE7C4CEF0;
-	Tue, 30 Sep 2025 15:26:00 +0000 (UTC)
+	 MIME-Version; b=M5+dYmGotFPo51WoWvhi3l/iKE/UFcF1T4WheJhli9SsecdhboDWnuBFG1RQ4J+sRh8xDW7fuNJM6vO4dQy0OalxQMNBWqEAFG5MMKaEc2QRSZ1QJsLadMHJmSMytXR4+5FxmZGNZKajl85qq9K566EFd6nU7+0Q9vh/YzdSN/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9gd2qOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B664C4CEF0;
+	Tue, 30 Sep 2025 15:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245961;
-	bh=vevNe6J88zNHLwa8BSGzeH1M2jnUh35N376OA4qfw+E=;
+	s=korg; t=1759245446;
+	bh=uON+FXtLevrKt9ikxO9qovqQnGlqfeBM2bCN3TN060A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hag/H/VeB3gMhx1PKH9k8i5mfYRP2A+myvMBGG60C1I1Y7na4ijhC/Xh7iG5Uyfrm
-	 pAgf2H5v2iBQDQic2wvi9EwbUL+iakx8FVOTG86Jj9VTu0jyUcB9p/WjRdHqYcGmIF
-	 avS7SHHLV9cOEgURlMf5zLShlksFGVfZgjy8kxPs=
+	b=O9gd2qOKoHgS4JfUThUYK519ME2OnN8KRL1XYhLnqJMfklXMsL5GeqFI1ySUooytz
+	 vYIYL4yjvzVJyZ52FVXQkyznDidBotF7fBFl43ara/UiNSzRjyRlX7LJIJ1fVmGeGV
+	 QrmM96r4jX7o19QvD4ejDbVbnMB8B4rUyrJCTD88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Kerem Karabay <kekrby@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Hugh Dickins <hughd@google.com>,
+	Will Deacon <will@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Keir Fraser <keirf@google.com>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Li Zhe <lizhe.67@bytedance.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Peter Xu <peterx@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	Shivank Garg <shivankg@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Wei Xu <weixugc@google.com>,
+	yangge <yangge1116@126.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 10/89] HID: multitouch: Get the contact ID from HID_DG_TRANSDUCER_INDEX fields in case of Apple Touch Bar
+Subject: [PATCH 6.1 20/73] mm/gup: check ref_count instead of lru before migration
 Date: Tue, 30 Sep 2025 16:47:24 +0200
-Message-ID: <20250930143822.292446193@linuxfoundation.org>
+Message-ID: <20250930143821.404421202@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +84,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kerem Karabay <kekrby@gmail.com>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit f41d736acc039d86512951f4e874b0f5e666babf ]
+[ Upstream commit 98c6d259319ecf6e8d027abd3f14b81324b8c0ad ]
 
-In Apple Touch Bar, the contact ID is contained in fields with the
-HID_DG_TRANSDUCER_INDEX usage rather than HID_DG_CONTACTID, thus differing
-from the HID spec. Add a quirk for the same.
+Patch series "mm: better GUP pin lru_add_drain_all()", v2.
 
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Kerem Karabay <kekrby@gmail.com>
-Co-developed-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Series of lru_add_drain_all()-related patches, arising from recent mm/gup
+migration report from Will Deacon.
+
+This patch (of 5):
+
+Will Deacon reports:-
+
+When taking a longterm GUP pin via pin_user_pages(),
+__gup_longterm_locked() tries to migrate target folios that should not be
+longterm pinned, for example because they reside in a CMA region or
+movable zone.  This is done by first pinning all of the target folios
+anyway, collecting all of the longterm-unpinnable target folios into a
+list, dropping the pins that were just taken and finally handing the list
+off to migrate_pages() for the actual migration.
+
+It is critically important that no unexpected references are held on the
+folios being migrated, otherwise the migration will fail and
+pin_user_pages() will return -ENOMEM to its caller.  Unfortunately, it is
+relatively easy to observe migration failures when running pKVM (which
+uses pin_user_pages() on crosvm's virtual address space to resolve stage-2
+page faults from the guest) on a 6.15-based Pixel 6 device and this
+results in the VM terminating prematurely.
+
+In the failure case, 'crosvm' has called mlock(MLOCK_ONFAULT) on its
+mapping of guest memory prior to the pinning.  Subsequently, when
+pin_user_pages() walks the page-table, the relevant 'pte' is not present
+and so the faulting logic allocates a new folio, mlocks it with
+mlock_folio() and maps it in the page-table.
+
+Since commit 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch
+by pagevec"), mlock/munlock operations on a folio (formerly page), are
+deferred.  For example, mlock_folio() takes an additional reference on the
+target folio before placing it into a per-cpu 'folio_batch' for later
+processing by mlock_folio_batch(), which drops the refcount once the
+operation is complete.  Processing of the batches is coupled with the LRU
+batch logic and can be forcefully drained with lru_add_drain_all() but as
+long as a folio remains unprocessed on the batch, its refcount will be
+elevated.
+
+This deferred batching therefore interacts poorly with the pKVM pinning
+scenario as we can find ourselves in a situation where the migration code
+fails to migrate a folio due to the elevated refcount from the pending
+mlock operation.
+
+Hugh Dickins adds:-
+
+!folio_test_lru() has never been a very reliable way to tell if an
+lru_add_drain_all() is worth calling, to remove LRU cache references to
+make the folio migratable: the LRU flag may be set even while the folio is
+held with an extra reference in a per-CPU LRU cache.
+
+5.18 commit 2fbb0c10d1e8 may have made it more unreliable.  Then 6.11
+commit 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding
+to LRU batch") tried to make it reliable, by moving LRU flag clearing; but
+missed the mlock/munlock batches, so still unreliable as reported.
+
+And it turns out to be difficult to extend 33dfe9204f29's LRU flag
+clearing to the mlock/munlock batches: if they do benefit from batching,
+mlock/munlock cannot be so effective when easily suppressed while !LRU.
+
+Instead, switch to an expected ref_count check, which was more reliable
+all along: some more false positives (unhelpful drains) than before, and
+never a guarantee that the folio will prove migratable, but better.
+
+Note on PG_private_2: ceph and nfs are still using the deprecated
+PG_private_2 flag, with the aid of netfs and filemap support functions.
+Although it is consistently matched by an increment of folio ref_count,
+folio_expected_ref_count() intentionally does not recognize it, and ceph
+folio migration currently depends on that for PG_private_2 folios to be
+rejected.  New references to the deprecated flag are discouraged, so do
+not add it into the collect_longterm_unpinnable_folios() calculation: but
+longterm pinning of transiently PG_private_2 ceph and nfs folios (an
+uncommon case) may invoke a redundant lru_add_drain_all().  And this makes
+easy the backport to earlier releases: up to and including 6.12, btrfs
+also used PG_private_2, but without a ref_count increment.
+
+Note for stable backports: requires 6.16 commit 86ebd50224c0 ("mm:
+add folio_expected_ref_count() for reference count calculation").
+
+Link: https://lkml.kernel.org/r/41395944-b0e3-c3ac-d648-8ddd70451d28@google.com
+Link: https://lkml.kernel.org/r/bd1f314a-fca1-8f19-cac0-b936c9614557@google.com
+Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reported-by: Will Deacon <will@kernel.org>
+Closes: https://lore.kernel.org/linux-mm/20250815101858.24352-1-will@kernel.org/
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Keir Fraser <keirf@google.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: yangge <yangge1116@126.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Clean cherry-pick now into this tree ]
+Signed-off-by: Hugh Dickins <hughd@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ mm/gup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 5c424010bc025..be2bbce25b3df 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -72,6 +72,7 @@ MODULE_LICENSE("GPL");
- #define MT_QUIRK_FORCE_MULTI_INPUT	BIT(20)
- #define MT_QUIRK_DISABLE_WAKEUP		BIT(21)
- #define MT_QUIRK_ORIENTATION_INVERT	BIT(22)
-+#define MT_QUIRK_APPLE_TOUCHBAR		BIT(23)
+diff --git a/mm/gup.c b/mm/gup.c
+index 599c6b9453166..44e5fe2535d0e 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1990,7 +1990,8 @@ static unsigned long collect_longterm_unpinnable_pages(
+ 			continue;
+ 		}
  
- #define MT_INPUTMODE_TOUCHSCREEN	0x02
- #define MT_INPUTMODE_TOUCHPAD		0x03
-@@ -617,6 +618,7 @@ static struct mt_application *mt_find_application(struct mt_device *td,
- static struct mt_report_data *mt_allocate_report_data(struct mt_device *td,
- 						      struct hid_report *report)
- {
-+	struct mt_class *cls = &td->mtclass;
- 	struct mt_report_data *rdata;
- 	struct hid_field *field;
- 	int r, n;
-@@ -641,7 +643,11 @@ static struct mt_report_data *mt_allocate_report_data(struct mt_device *td,
- 
- 		if (field->logical == HID_DG_FINGER || td->hdev->group != HID_GROUP_MULTITOUCH_WIN_8) {
- 			for (n = 0; n < field->report_count; n++) {
--				if (field->usage[n].hid == HID_DG_CONTACTID) {
-+				unsigned int hid = field->usage[n].hid;
-+
-+				if (hid == HID_DG_CONTACTID ||
-+				   (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR &&
-+				   hid == HID_DG_TRANSDUCER_INDEX)) {
- 					rdata->is_mt_collection = true;
- 					break;
- 				}
-@@ -819,6 +825,14 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
- 						     EV_KEY, BTN_TOUCH);
- 			MT_STORE_FIELD(tip_state);
- 			return 1;
-+		case HID_DG_TRANSDUCER_INDEX:
-+			/*
-+			 * Contact ID in case of Apple Touch Bars is contained
-+			 * in fields with HID_DG_TRANSDUCER_INDEX usage.
-+			 */
-+			if (!(cls->quirks & MT_QUIRK_APPLE_TOUCHBAR))
-+				return 0;
-+			fallthrough;
- 		case HID_DG_CONTACTID:
- 			MT_STORE_FIELD(contactid);
- 			app->touches_by_report++;
+-		if (!folio_test_lru(folio) && drain_allow) {
++		if (drain_allow && folio_ref_count(folio) !=
++				   folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain_all();
+ 			drain_allow = false;
+ 		}
 -- 
 2.51.0
 
