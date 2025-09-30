@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-182217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4901DBAD641
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C00FBAD992
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21C64A4F9D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21FF2323262
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9F6199939;
-	Tue, 30 Sep 2025 14:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58DB2FD1DD;
+	Tue, 30 Sep 2025 15:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEJ5nPuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcWOO8dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D951AB6F1;
-	Tue, 30 Sep 2025 14:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73246217F55;
+	Tue, 30 Sep 2025 15:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244226; cv=none; b=NQmNtDxPq6uk7jzYkEnluMtCG6Ma/gU6T8H+ewlZlAF9VkBznIkrsT800hE64yIjIYomadSIgYhiQH+XxEHoeGNaVsxreCnGVs/Xop+IBFR6BCOK7oar0viYQyCavXYxKzSFSzah6AY19pQLN+dc4/YaQ8EA5saWqA3KkgnTwXs=
+	t=1759245094; cv=none; b=YvaiuTnur3b3DlKs8M8KCeVuHctAM1+XX//018fV47SERiq29l1Kj3i80nqS2YlosMqc0YXDKtJcD4+RI4CuW7HlX2CBBNn/HNsHsB16za0UmXdOm4dJk2GQL4o+Q49TV/ltM+d8nGQcSVZwcpfKzmwkN6YrGQvEoPUSHH0SFw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244226; c=relaxed/simple;
-	bh=eb7A6ZGXb3vx2+bqWwab4r5i62caa5ILHvJiqDjpIxs=;
+	s=arc-20240116; t=1759245094; c=relaxed/simple;
+	bh=SARIV/MC2B1AQcA0KpijJ6Iba4zFJE6aBubEbk1n48Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSRvqX5YKC2QoGfnWD+twKKItqxC44XpYgH8WDURveqETyrWnKNnf4qXVRHHnRTZldyzZ4/rlfYsVqs2Uj/Mdd9VutZ2xngpeBFSLur82bYMqQxsPlkJgWCZNdd6nlKWUh8JA2b2mad6ETFiPtdoujuthP5SKs34CSBgpXo8Z9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEJ5nPuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBF7C4CEF0;
-	Tue, 30 Sep 2025 14:57:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BqurhxdSfDOw7w486E0Q31a9KLtIqH6CuJPdX9ShXlUqs/QddgrIs7BpMaNwkeiORwOeD2i/ddHh/nlGZOK3LsUDxVMW3tEi+39cyPBu2thAIz5abu9Cd7RC3WaUXA6tpZ+ynKXZzuc6+PNXIVWhgB4XB/ffu51m6zSnwjxfMjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcWOO8dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC20C4CEF0;
+	Tue, 30 Sep 2025 15:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244226;
-	bh=eb7A6ZGXb3vx2+bqWwab4r5i62caa5ILHvJiqDjpIxs=;
+	s=korg; t=1759245094;
+	bh=SARIV/MC2B1AQcA0KpijJ6Iba4zFJE6aBubEbk1n48Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEJ5nPuSeT1+aaTNIMVBtIhz++F6cwKJrKmtWqbPdYdrzAjnuH1t3huSxRYCbKy56
-	 syrVj7zYQslZMSXzk1f7w0ArsZZS48rd3e1CsfV+ud4h3En1Nx3DyNT/LcVykEDrni
-	 b70Xhmwo78366P9cl9UhBv4v22WFOXDq/zjWDFSo=
+	b=JcWOO8dvhdLcBtIej5GDpO7HwqDkkb7S62lhn3qKHK8UXZOuR0m+XKy4gHuy+HDBf
+	 OgetYYvgpxUV+uvmRCs4Yx3QjiP7eu+lxaBIuK0tKRGQv9Ukw9uzf/cu3TZJyUk6n0
+	 3RgoI+kpCn+CcrIc/XTbPOjlWAXZSpREps4Yo5e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 066/122] ASoC: SOF: Intel: hda-stream: Fix incorrect variable used in error message
+Subject: [PATCH 5.15 067/151] pcmcia: omap_cf: Mark driver struct with __refdata to prevent section mismatch
 Date: Tue, 30 Sep 2025 16:46:37 +0200
-Message-ID: <20250930143825.708407410@linuxfoundation.org>
+Message-ID: <20250930143830.267134608@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 35fc531a59694f24a2456569cf7d1a9c6436841c ]
+[ Upstream commit d1dfcdd30140c031ae091868fb5bed084132bca1 ]
 
-The dev_err message is reporting an error about capture streams however
-it is using the incorrect variable num_playback instead of num_capture.
-Fix this by using the correct variable num_capture.
+As described in the added code comment, a reference to .exit.text is ok
+for drivers registered via platform_driver_probe().  Make this explicit
+to prevent the following section mismatch warning
 
-Fixes: a1d1e266b445 ("ASoC: SOF: Intel: Add Intel specific HDA stream operations")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250902120639.2626861-1-colin.i.king@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in reference: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.text)
+
+that triggers on an omap1_defconfig + CONFIG_OMAP_CF=m build.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pcmcia/omap_cf.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
-index 0e09ede922c7a..ea4fe28cbdace 100644
---- a/sound/soc/sof/intel/hda-stream.c
-+++ b/sound/soc/sof/intel/hda-stream.c
-@@ -771,7 +771,7 @@ int hda_dsp_stream_init(struct snd_sof_dev *sdev)
+diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
+index f0b2c2d034695..ca88c75f04277 100644
+--- a/drivers/pcmcia/omap_cf.c
++++ b/drivers/pcmcia/omap_cf.c
+@@ -331,7 +331,13 @@ static int __exit omap_cf_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
- 	if (num_capture >= SOF_HDA_CAPTURE_STREAMS) {
- 		dev_err(sdev->dev, "error: too many capture streams %d\n",
--			num_playback);
-+			num_capture);
- 		return -EINVAL;
- 	}
- 
+-static struct platform_driver omap_cf_driver = {
++/*
++ * omap_cf_remove() lives in .exit.text. For drivers registered via
++ * platform_driver_probe() this is ok because they cannot get unbound at
++ * runtime. So mark the driver struct with __refdata to prevent modpost
++ * triggering a section mismatch warning.
++ */
++static struct platform_driver omap_cf_driver __refdata = {
+ 	.driver = {
+ 		.name	= driver_name,
+ 	},
 -- 
 2.51.0
 
