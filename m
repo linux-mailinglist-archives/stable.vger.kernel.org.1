@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05512BAD863
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4BBBAD63B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98C363A62D1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2C721941E36
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E6830594A;
-	Tue, 30 Sep 2025 15:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF52302163;
+	Tue, 30 Sep 2025 14:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swRYsQXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN9nqQTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96461F152D;
-	Tue, 30 Sep 2025 15:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED49201017;
+	Tue, 30 Sep 2025 14:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244689; cv=none; b=HLh1DXqzBBDd1TAUjSsieaIrFTBUnS7RPJ6/7KL5AxiSotXYo7K8Cj2ReqRWAYu59G+ekgNft/AphlTif9yLb9PIAKZIv3x6001AvHXmRx1F3QyR8nKVDqXva0ZOcIir31dCije6qxpykIXp4hC5lYT0BYB7rKB5XXrFtCezbi8=
+	t=1759244263; cv=none; b=BOsBe87F+5WvFZJoYK5syYr1KVAOlhStEEGZNbZKgT40vPXuTbLvvRMY9h/q+i0bfebcNr9CfgYu25KaoBithpH1ou3RQ1H/R7Ff80QCDcExfpIrPCjlh0Qvex/4j1MB7ZE6pTalxspwrOTIrQ/bv0NFprmrrIzgHje6aKY4p6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244689; c=relaxed/simple;
-	bh=wZbQKnaanteGfp8G4TLJ2BThy6HeyhVRqtQjQgr/sqI=;
+	s=arc-20240116; t=1759244263; c=relaxed/simple;
+	bh=zYq6DK6WfDOSeF7NQIWmYFK32A2N7wKO625nBBCkaOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5kmI5YY8ajlFbLOpzY14D2LBmzIVt2JNDiuH8TilGi4FyBBU4iHXuZI41wRwVA3RdrcFNDcitjt4Zq7z2uN6Flw0d3G/qV7qy0sIexahFObf0FgTo/jM61Qxpo3jTrnzpzIv8FG4WGAmvgbOdXZRFK+ooOsZHlkCKjyjMnt/xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swRYsQXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32987C4CEF0;
-	Tue, 30 Sep 2025 15:04:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jh6sahyu+waXDBeNWT8MjfPYNYR4lPzrL/L9ZwzydplfQQ//8RDJqIBa1wrEGvgntZ0Ec4qxYKcKzzU4sHXU0kP2kBxNYFKihsgUi0mEj28q+jCZFSbDhFpGPekCIvECqNZ6CKk6BEsyzTMLQqH6k7Nn/MuRnp3cPqcMR7HjVsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN9nqQTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379D6C4CEF0;
+	Tue, 30 Sep 2025 14:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244689;
-	bh=wZbQKnaanteGfp8G4TLJ2BThy6HeyhVRqtQjQgr/sqI=;
+	s=korg; t=1759244263;
+	bh=zYq6DK6WfDOSeF7NQIWmYFK32A2N7wKO625nBBCkaOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swRYsQXMeo/+FcQ44l3rkiTlnXvF4d3OO9QExf5+xvaVyGoqUv+T1t9jBJox74dd/
-	 hNNN9cn2S0kj3HWMCZnzQ28aG2MThxaxDpocoTVgHklpJ5b36OBEvtUR3ajH5XKTRW
-	 q5IIq81dkVp41AmCilBHo/pssu8rbP8x3lUKkSXk=
+	b=ZN9nqQTSJTeO0/iNotrPhhGSTo8wdXgKvWMaCUuqyabDUfHd5BOocWs/8/drPz8vv
+	 2rKPw7XlU1/E2W23JL6vNWXKRhPMcGCFzdeAg/PbdtnERBbJqTtkxnkUKiKZ56crOm
+	 UOubErhgBuzorj66TAyaBYPMEl2CpGl22ul1Er4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 083/143] net: dsa: lantiq_gswip: move gswip_add_single_port_br() call to port_setup()
+Subject: [PATCH 5.10 076/122] phy: phy-bcm-ns-usb3: drop support for deprecated DT binding
 Date: Tue, 30 Sep 2025 16:46:47 +0200
-Message-ID: <20250930143834.544361423@linuxfoundation.org>
+Message-ID: <20250930143826.111104292@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +61,241 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit c0054b25e2f1045f47b4954cf13a539e5e6047df ]
+[ Upstream commit 36a94760c98954e50ea621f7a9603fee3621deb7 ]
 
-A port added to a "single port bridge" operates as standalone, and this
-is mutually exclusive to being part of a Linux bridge. In fact,
-gswip_port_bridge_join() calls gswip_add_single_port_br() with
-add=false, i.e. removes the port from the "single port bridge" to enable
-autonomous forwarding.
+Initially this PHY driver was implementing MDIO access on its own. It
+was caused by lack of proper hardware design understanding.
 
-The blamed commit seems to have incorrectly thought that ds->ops->port_enable()
-is called one time per port, during the setup phase of the switch.
+It has been changed back in 2017. DT bindings were changed and driver
+was updated to use MDIO layer.
 
-However, it is actually called during the ndo_open() implementation of
-DSA user ports, which is to say that this sequence of events:
+It should be really safe now to drop the old deprecated code. All Linux
+stored DT files don't use it for 3,5 year. There is close to 0 chance
+there is any bootloader with its own DTB using old the binding.
 
-1. ip link set swp0 down
-2. ip link add br0 type bridge
-3. ip link set swp0 master br0
-4. ip link set swp0 up
-
-would cause swp0 to join back the "single port bridge" which step 3 had
-just removed it from.
-
-The correct DSA hook for one-time actions per port at switch init time
-is ds->ops->port_setup(). This is what seems to match the coder's
-intention; also see the comment at the beginning of the file:
-
- * At the initialization the driver allocates one bridge table entry for
-   ~~~~~~~~~~~~~~~~~~~~~
- * each switch port which is used when the port is used without an
- * explicit bridge.
-
-Fixes: 8206e0ce96b3 ("net: dsa: lantiq: Add VLAN unaware bridge offloading")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250918072142.894692-2-vladimir.oltean@nxp.com
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Link: https://lore.kernel.org/r/20201113113423.9466-1-zajec5@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 64961557efa1 ("phy: ti: omap-usb2: fix device leak at unbind")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/lantiq_gswip.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/phy/broadcom/phy-bcm-ns-usb3.c |  156 +--------------------------------
+ 1 file changed, 5 insertions(+), 151 deletions(-)
 
-diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
-index 6eb3140d40444..d416c072dd28c 100644
---- a/drivers/net/dsa/lantiq_gswip.c
-+++ b/drivers/net/dsa/lantiq_gswip.c
-@@ -685,18 +685,27 @@ static int gswip_add_single_port_br(struct gswip_priv *priv, int port, bool add)
- 	return 0;
- }
+--- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
++++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
+@@ -22,8 +22,6 @@
+ #include <linux/phy/phy.h>
+ #include <linux/slab.h>
  
--static int gswip_port_enable(struct dsa_switch *ds, int port,
--			     struct phy_device *phydev)
-+static int gswip_port_setup(struct dsa_switch *ds, int port)
- {
- 	struct gswip_priv *priv = ds->priv;
- 	int err;
- 
- 	if (!dsa_is_cpu_port(ds, port)) {
--		u32 mdio_phy = 0;
+-#define BCM_NS_USB3_MII_MNG_TIMEOUT_US	1000	/* usecs */
 -
- 		err = gswip_add_single_port_br(priv, port, true);
- 		if (err)
- 			return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static int gswip_port_enable(struct dsa_switch *ds, int port,
-+			     struct phy_device *phydev)
-+{
-+	struct gswip_priv *priv = ds->priv;
-+
-+	if (!dsa_is_cpu_port(ds, port)) {
-+		u32 mdio_phy = 0;
+ #define BCM_NS_USB3_PHY_BASE_ADDR_REG	0x1f
+ #define BCM_NS_USB3_PHY_PLL30_BLOCK	0x8000
+ #define BCM_NS_USB3_PHY_TX_PMD_BLOCK	0x8040
+@@ -51,11 +49,8 @@ struct bcm_ns_usb3 {
+ 	struct device *dev;
+ 	enum bcm_ns_family family;
+ 	void __iomem *dmp;
+-	void __iomem *ccb_mii;
+ 	struct mdio_device *mdiodev;
+ 	struct phy *phy;
+-
+-	int (*phy_write)(struct bcm_ns_usb3 *usb3, u16 reg, u16 value);
+ };
  
- 		if (phydev)
- 			mdio_phy = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
-@@ -1829,6 +1838,7 @@ static const struct phylink_mac_ops gswip_phylink_mac_ops = {
- static const struct dsa_switch_ops gswip_xrx200_switch_ops = {
- 	.get_tag_protocol	= gswip_get_tag_protocol,
- 	.setup			= gswip_setup,
-+	.port_setup		= gswip_port_setup,
- 	.port_enable		= gswip_port_enable,
- 	.port_disable		= gswip_port_disable,
- 	.port_bridge_join	= gswip_port_bridge_join,
--- 
-2.51.0
-
+ static const struct of_device_id bcm_ns_usb3_id_table[] = {
+@@ -69,13 +64,9 @@ static const struct of_device_id bcm_ns_
+ 	},
+ 	{},
+ };
+-MODULE_DEVICE_TABLE(of, bcm_ns_usb3_id_table);
+ 
+ static int bcm_ns_usb3_mdio_phy_write(struct bcm_ns_usb3 *usb3, u16 reg,
+-				      u16 value)
+-{
+-	return usb3->phy_write(usb3, reg, value);
+-}
++				      u16 value);
+ 
+ static int bcm_ns_usb3_phy_init_ns_bx(struct bcm_ns_usb3 *usb3)
+ {
+@@ -187,8 +178,8 @@ static const struct phy_ops ops = {
+  * MDIO driver code
+  **************************************************/
+ 
+-static int bcm_ns_usb3_mdiodev_phy_write(struct bcm_ns_usb3 *usb3, u16 reg,
+-					 u16 value)
++static int bcm_ns_usb3_mdio_phy_write(struct bcm_ns_usb3 *usb3, u16 reg,
++				      u16 value)
+ {
+ 	struct mdio_device *mdiodev = usb3->mdiodev;
+ 
+@@ -229,8 +220,6 @@ static int bcm_ns_usb3_mdio_probe(struct
+ 		return PTR_ERR(usb3->dmp);
+ 	}
+ 
+-	usb3->phy_write = bcm_ns_usb3_mdiodev_phy_write;
+-
+ 	usb3->phy = devm_phy_create(dev, NULL, &ops);
+ 	if (IS_ERR(usb3->phy)) {
+ 		dev_err(dev, "Failed to create PHY\n");
+@@ -254,142 +243,7 @@ static struct mdio_driver bcm_ns_usb3_md
+ 	.probe = bcm_ns_usb3_mdio_probe,
+ };
+ 
+-/**************************************************
+- * Platform driver code
+- **************************************************/
+-
+-static int bcm_ns_usb3_wait_reg(struct bcm_ns_usb3 *usb3, void __iomem *addr,
+-				u32 mask, u32 value, int usec)
+-{
+-	u32 val;
+-	int ret;
+-
+-	ret = readl_poll_timeout_atomic(addr, val, ((val & mask) == value),
+-					10, usec);
+-	if (ret)
+-		dev_err(usb3->dev, "Timeout waiting for register %p\n", addr);
+-
+-	return ret;
+-}
+-
+-static inline int bcm_ns_usb3_mii_mng_wait_idle(struct bcm_ns_usb3 *usb3)
+-{
+-	return bcm_ns_usb3_wait_reg(usb3, usb3->ccb_mii + BCMA_CCB_MII_MNG_CTL,
+-				    0x0100, 0x0000,
+-				    BCM_NS_USB3_MII_MNG_TIMEOUT_US);
+-}
+-
+-static int bcm_ns_usb3_platform_phy_write(struct bcm_ns_usb3 *usb3, u16 reg,
+-					  u16 value)
+-{
+-	u32 tmp = 0;
+-	int err;
+-
+-	err = bcm_ns_usb3_mii_mng_wait_idle(usb3);
+-	if (err < 0) {
+-		dev_err(usb3->dev, "Couldn't write 0x%08x value\n", value);
+-		return err;
+-	}
+-
+-	/* TODO: Use a proper MDIO bus layer */
+-	tmp |= 0x58020000; /* Magic value for MDIO PHY write */
+-	tmp |= reg << 18;
+-	tmp |= value;
+-	writel(tmp, usb3->ccb_mii + BCMA_CCB_MII_MNG_CMD_DATA);
+-
+-	return bcm_ns_usb3_mii_mng_wait_idle(usb3);
+-}
+-
+-static int bcm_ns_usb3_probe(struct platform_device *pdev)
+-{
+-	struct device *dev = &pdev->dev;
+-	const struct of_device_id *of_id;
+-	struct bcm_ns_usb3 *usb3;
+-	struct phy_provider *phy_provider;
+-
+-	usb3 = devm_kzalloc(dev, sizeof(*usb3), GFP_KERNEL);
+-	if (!usb3)
+-		return -ENOMEM;
+-
+-	usb3->dev = dev;
+-
+-	of_id = of_match_device(bcm_ns_usb3_id_table, dev);
+-	if (!of_id)
+-		return -EINVAL;
+-	usb3->family = (enum bcm_ns_family)of_id->data;
+-
+-	usb3->dmp = devm_platform_ioremap_resource_byname(pdev, "dmp");
+-	if (IS_ERR(usb3->dmp)) {
+-		dev_err(dev, "Failed to map DMP regs\n");
+-		return PTR_ERR(usb3->dmp);
+-	}
+-
+-	usb3->ccb_mii = devm_platform_ioremap_resource_byname(pdev, "ccb-mii");
+-	if (IS_ERR(usb3->ccb_mii)) {
+-		dev_err(dev, "Failed to map ChipCommon B MII regs\n");
+-		return PTR_ERR(usb3->ccb_mii);
+-	}
+-
+-	/* Enable MDIO. Setting MDCDIV as 26  */
+-	writel(0x0000009a, usb3->ccb_mii + BCMA_CCB_MII_MNG_CTL);
+-
+-	/* Wait for MDIO? */
+-	udelay(2);
+-
+-	usb3->phy_write = bcm_ns_usb3_platform_phy_write;
+-
+-	usb3->phy = devm_phy_create(dev, NULL, &ops);
+-	if (IS_ERR(usb3->phy)) {
+-		dev_err(dev, "Failed to create PHY\n");
+-		return PTR_ERR(usb3->phy);
+-	}
+-
+-	phy_set_drvdata(usb3->phy, usb3);
+-	platform_set_drvdata(pdev, usb3);
+-
+-	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+-	if (!IS_ERR(phy_provider))
+-		dev_info(dev, "Registered Broadcom Northstar USB 3.0 PHY driver\n");
+-
+-	return PTR_ERR_OR_ZERO(phy_provider);
+-}
+-
+-static struct platform_driver bcm_ns_usb3_driver = {
+-	.probe		= bcm_ns_usb3_probe,
+-	.driver = {
+-		.name = "bcm_ns_usb3",
+-		.of_match_table = bcm_ns_usb3_id_table,
+-	},
+-};
+-
+-static int __init bcm_ns_usb3_module_init(void)
+-{
+-	int err;
+-
+-	/*
+-	 * For backward compatibility we register as MDIO and platform driver.
+-	 * After getting MDIO binding commonly used (e.g. switching all DT files
+-	 * to use it) we should deprecate the old binding and eventually drop
+-	 * support for it.
+-	 */
+-
+-	err = mdio_driver_register(&bcm_ns_usb3_mdio_driver);
+-	if (err)
+-		return err;
+-
+-	err = platform_driver_register(&bcm_ns_usb3_driver);
+-	if (err)
+-		mdio_driver_unregister(&bcm_ns_usb3_mdio_driver);
+-
+-	return err;
+-}
+-module_init(bcm_ns_usb3_module_init);
+-
+-static void __exit bcm_ns_usb3_module_exit(void)
+-{
+-	platform_driver_unregister(&bcm_ns_usb3_driver);
+-	mdio_driver_unregister(&bcm_ns_usb3_mdio_driver);
+-}
+-module_exit(bcm_ns_usb3_module_exit)
++mdio_module_driver(bcm_ns_usb3_mdio_driver);
+ 
+ MODULE_LICENSE("GPL v2");
++MODULE_DEVICE_TABLE(of, bcm_ns_usb3_id_table);
 
 
 
