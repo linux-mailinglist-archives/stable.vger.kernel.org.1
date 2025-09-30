@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D659BADD2A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84707BADA7B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABACB1945703
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 330B11944275
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9E425FA0F;
-	Tue, 30 Sep 2025 15:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FDB2F39C0;
+	Tue, 30 Sep 2025 15:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbT9TZlI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dh1eZzEw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7A51F3FED;
-	Tue, 30 Sep 2025 15:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F32E217F55;
+	Tue, 30 Sep 2025 15:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245980; cv=none; b=P6awONgJzJ2L7n0RQ7hFy8Ylhj+K+9sqF3J/hnN0IanHJn9ejobHkwyWSw91feQJBd2jIqrD1i/j2GcUstxoWKugGGq86Qy/cVYuXVXId8wU5ZzxeXsfMknN3xv72qGKqxUHuWV+HlvBjkxN69uYYs8gg7oaxvcOSVwLPzFWsEc=
+	t=1759245404; cv=none; b=Tkt8lI/fzWiynqqzlPhfMB3ZYRREAT+7csiCzje6aCgY/GJEsPamO1KlBb6Ly9HkzsQrSuKtOeORoyn1IoKUboaTaJdtH0lQthQDvQqbuO/5VCQYvCD+HqYNMqdi6Ijvas52UGbTFKbgvqJ5Eqn+XM6q/ERNF/bhTaKUslEEp1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245980; c=relaxed/simple;
-	bh=jCyNTj+CGLSGgQoCiK0p1vegiw8iREFD19yXSP+UeD4=;
+	s=arc-20240116; t=1759245404; c=relaxed/simple;
+	bh=hvzPtjosgf9uvB/G/J2/w1+WxgHzvjPjXy7ItL9HU5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqxHhoXRdp7a/oHNmJwlq3DqcwjrQzdDA109OX3auP47F6c92HMkOBeFyxxKpj/c6D1PiRVVk9+rPy7w0DTSGEBK2thNMHxaNNGkCNmN+6o87h6cQ3YchNVr9wD2GiCsRv1IDTIRvRNH0YQs57TW/wA+LUhezXUCN9AoAtOVo2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbT9TZlI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2F4C4CEF0;
-	Tue, 30 Sep 2025 15:26:19 +0000 (UTC)
+	 MIME-Version; b=K6aVanDCalZ+eOOomtt/lnZRBpEZwbKiltTVqHz1P9QrX0T0Cqra9CaUL10+B8wSc+UbCPb5pSp2EjqvU2X5hpq0REBLVJxmMS2rrzsaL8MhZ5T119QKDkW0+N+tR2bjH8oHi63X+2FenomlSLyczIWjA1MiJ6wkMdEfaj6ROr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dh1eZzEw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA9DC4CEF0;
+	Tue, 30 Sep 2025 15:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245980;
-	bh=jCyNTj+CGLSGgQoCiK0p1vegiw8iREFD19yXSP+UeD4=;
+	s=korg; t=1759245403;
+	bh=hvzPtjosgf9uvB/G/J2/w1+WxgHzvjPjXy7ItL9HU5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbT9TZlI1fiC1ZpmFXnUu6QlZCkHbuGofhwqeWjr+eQ9NHo3Ju2xhMC1yUXnNfMrK
-	 en9AI758ocreE2fgUTShb8SUldJ1KCmo9WoN1NqZUCWD0jE6reqLDVhVvntlmOH2Ut
-	 mJTOqGgiR1I83+TcSgbJN1IvkNsaI+j2nTNuOfPQ=
+	b=Dh1eZzEwpiLy5usHFcgSg/xu+6eVg51MMU3mIrpJBNmsXqr0gCaZRDhtx+RZ7kf1I
+	 C8dZDdTRHKQeSkzzVrPw530A/Shvok/xnXyz5n/Yo1VDMCreiAMPhlsVFItctZjjdW
+	 kM1Z6gFiXp+V+miHTWnpPx+L2z8pi5CW0jIry+zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 16/89] ALSA: usb-audio: Fix build with CONFIG_INPUT=n
+Subject: [PATCH 5.15 120/151] can: dev: add generic function can_eth_ioctl_hwts()
 Date: Tue, 30 Sep 2025 16:47:30 +0200
-Message-ID: <20250930143822.540555584@linuxfoundation.org>
+Message-ID: <20250930143832.386675419@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit d0630a0b80c08530857146e3bf183a7d6b743847 ]
+[ Upstream commit 90f942c5a6d775bad1be33ba214755314105da4a ]
 
-The recent addition of DualSense mixer quirk relies on the input
-device handle, and the build can fail if CONFIG_INPUT isn't set.
-Put (rather ugly) workarounds to wrap with IS_REACHABLE() for avoiding
-the build error.
+Tools based on libpcap (such as tcpdump) expect the SIOCSHWTSTAMP
+ioctl call to be supported. This is also specified in the kernel doc
+[1]. The purpose of this ioctl is to toggle the hardware timestamps.
 
-Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506130733.gnPKw2l3-lkp@intel.com/
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250613081543.7404-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Currently, CAN devices which support hardware timestamping have those
+always activated. can_eth_ioctl_hwts() is a dumb function that will
+always succeed when requested to set tx_type to HWTSTAMP_TX_ON or
+rx_filter to HWTSTAMP_FILTER_ALL.
+
+[1] Kernel doc: Timestamping, section 3.1 "Hardware Timestamping
+Implementation: Device Drivers"
+Link: https://docs.kernel.org/networking/timestamping.html#hardware-timestamping-implementation-device-drivers
+
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://lore.kernel.org/all/20220727101641.198847-9-mailhol.vincent@wanadoo.fr
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: 38c0abad45b1 ("can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/can/dev/dev.c | 29 +++++++++++++++++++++++++++++
+ include/linux/can/dev.h   |  1 +
+ 2 files changed, 30 insertions(+)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 2ee91469e6f73..8d7fc6edc8c79 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -531,6 +531,7 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
- 					  &snd_emu0204_control, NULL);
+diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
+index d429a2940e83f..645564b9bff00 100644
+--- a/drivers/net/can/dev/dev.c
++++ b/drivers/net/can/dev/dev.c
+@@ -331,6 +331,35 @@ int can_change_mtu(struct net_device *dev, int new_mtu)
  }
+ EXPORT_SYMBOL_GPL(can_change_mtu);
  
-+#if IS_REACHABLE(CONFIG_INPUT)
- /*
-  * Sony DualSense controller (PS5) jack detection
-  *
-@@ -787,6 +788,7 @@ static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
++/* generic implementation of netdev_ops::ndo_eth_ioctl for CAN devices
++ * supporting hardware timestamps
++ */
++int can_eth_ioctl_hwts(struct net_device *netdev, struct ifreq *ifr, int cmd)
++{
++	struct hwtstamp_config hwts_cfg = { 0 };
++
++	switch (cmd) {
++	case SIOCSHWTSTAMP: /* set */
++		if (copy_from_user(&hwts_cfg, ifr->ifr_data, sizeof(hwts_cfg)))
++			return -EFAULT;
++		if (hwts_cfg.tx_type == HWTSTAMP_TX_ON &&
++		    hwts_cfg.rx_filter == HWTSTAMP_FILTER_ALL)
++			return 0;
++		return -ERANGE;
++
++	case SIOCGHWTSTAMP: /* get */
++		hwts_cfg.tx_type = HWTSTAMP_TX_ON;
++		hwts_cfg.rx_filter = HWTSTAMP_FILTER_ALL;
++		if (copy_to_user(ifr->ifr_data, &hwts_cfg, sizeof(hwts_cfg)))
++			return -EFAULT;
++		return 0;
++
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++EXPORT_SYMBOL(can_eth_ioctl_hwts);
++
+ /* generic implementation of ethtool_ops::get_ts_info for CAN devices
+  * supporting hardware timestamps
+  */
+diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
+index 23f1c9f0109d7..c439735dce6a7 100644
+--- a/include/linux/can/dev.h
++++ b/include/linux/can/dev.h
+@@ -133,6 +133,7 @@ struct can_priv *safe_candev_priv(struct net_device *dev);
+ int open_candev(struct net_device *dev);
+ void close_candev(struct net_device *dev);
+ int can_change_mtu(struct net_device *dev, int new_mtu);
++int can_eth_ioctl_hwts(struct net_device *netdev, struct ifreq *ifr, int cmd);
+ int can_ethtool_op_get_ts_info_hwts(struct net_device *dev,
+ 				    struct ethtool_ts_info *info);
  
- 	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
- }
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- /* ASUS Xonar U1 / U3 controls */
- 
-@@ -4222,10 +4224,12 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 		err = snd_emu0204_controls_create(mixer);
- 		break;
- 
-+#if IS_REACHABLE(CONFIG_INPUT)
- 	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
- 	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
- 		err = snd_dualsense_controls_create(mixer);
- 		break;
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- 	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
- 	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C400 */
 -- 
 2.51.0
 
