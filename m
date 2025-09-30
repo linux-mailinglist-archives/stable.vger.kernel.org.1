@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE615BADC1E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8CDBADA43
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 198877AC163
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DA647A773A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E03237163;
-	Tue, 30 Sep 2025 15:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95A130649C;
+	Tue, 30 Sep 2025 15:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmYqwXdJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4127M5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DD1846F;
-	Tue, 30 Sep 2025 15:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B1F22256F;
+	Tue, 30 Sep 2025 15:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245763; cv=none; b=MIis+23SxvRJMJpJKtSBoznyEUNH7Cy3UtxYVfCVTZATw0yjAiTFhGdWPTbS/YrU09c3E194kziV/YrfITCQU6rlXzgO6BO8dkOkm7bVm8AMpOobEF2aFm7lEj3bkgHG/cpl/n2huJiTYCYc2tb6rYY5MXahxvJ695q187Vm9Dw=
+	t=1759245309; cv=none; b=LlzgoPambebMEKat0FqCsrTk8vkz4kYHj3KWOjxdr87U8ZP205PRPV4mDfV9YGEbBKOR1LOnZ+0tv0s33IFU95t4z6iR0rczwUIs6VE5wfyfuDlcCZPjrHvFClaLrYzO7Z9ee8b8K6OWFTOD8Y21zrGcUMZC9NjZ+bUg08EmTTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245763; c=relaxed/simple;
-	bh=/YGrGvT2o2nJSBu/1niqwaSiIo4+6gH738slDWEp0RY=;
+	s=arc-20240116; t=1759245309; c=relaxed/simple;
+	bh=9YgSqxc0TzEZWy9yfkStMaxWtChVm0MoIxhdPZUvSRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2Hsw8S1rx9DFAm2U8RCvfkv9ZwbPDGBnb9I3Xs2pTwNL26Cd0+YD9czmLNXpTqX3jobBiWyME2NS9N71WduVVxp7gNbbN4Lv3bp1S7XS5TfrwJ96J6wpn0UhEX1FP/Jyfuzsw5jR/tDyUQTM65lj2uNtvHkN8CB2X9+prL+Xks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmYqwXdJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00C3C4CEF0;
-	Tue, 30 Sep 2025 15:22:42 +0000 (UTC)
+	 MIME-Version; b=TtmnZ9UPtccgT7kLuRppFXDkJ1fL0994Nb4zLTXT0FzaUdFnQArFlYvKBQ2Ed5lGXBcdaXrVu4STsqYBUEE/U6vXpA4IvONAeYj/Hn0MAp8Kseik1QuAB+xknhQU1kUwagiI3lZUn/0c5LtOl21/Fy6uOXqMLGGod5HJJQ0P3Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4127M5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06FDC4CEF0;
+	Tue, 30 Sep 2025 15:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245763;
-	bh=/YGrGvT2o2nJSBu/1niqwaSiIo4+6gH738slDWEp0RY=;
+	s=korg; t=1759245309;
+	bh=9YgSqxc0TzEZWy9yfkStMaxWtChVm0MoIxhdPZUvSRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmYqwXdJRgkt/LZI1YJfnK94X3zIfdagu3EW3G9vNto7oTP0PgQ1ddhnxzoIxSwJ5
-	 gQOobRUIendb4ZnafrK+F3uqT/TwM96h/Xvj+PvlGWkbMXpukYq2ztz+V34SpmatvT
-	 IOTMekLYqbq3AHOW99cvS5b6kyW+qRnPnWRdZqcU=
+	b=g4127M5jwhKcv0P+gWOt+8nUFLNJalqtpACPA8w+rOwILW7QTRDJ33J0vSGlw4gyR
+	 TXfgzKdUlkjcmLMP+EOayTW06xLRN6/dy9clraFpM3YU7ojd2XeCKUyuKmEeaDitHE
+	 JzZh5OdOGI5uYDSJpDDJQzD2rXU0mGBX0Yr7+d0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 42/91] Bluetooth: hci_event: Fix UAF in hci_acl_create_conn_sync
+Subject: [PATCH 5.15 131/151] selftests: fib_nexthops: Fix creation of non-FDB nexthops
 Date: Tue, 30 Sep 2025 16:47:41 +0200
-Message-ID: <20250930143822.918733067@linuxfoundation.org>
+Message-ID: <20250930143832.819116896@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,201 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 9e622804d57e2d08f0271200606bd1270f75126f ]
+[ Upstream commit c29913109c70383cdf90b6fc792353e1009f24f5 ]
 
-This fixes the following UFA in hci_acl_create_conn_sync where a
-connection still pending is command submission (conn->state == BT_OPEN)
-maybe freed, also since this also can happen with the likes of
-hci_le_create_conn_sync fix it as well:
+The test creates non-FDB nexthops without a nexthop device which leads
+to the expected failure, but for the wrong reason:
 
-BUG: KASAN: slab-use-after-free in hci_acl_create_conn_sync+0x5ef/0x790 net/bluetooth/hci_sync.c:6861
-Write of size 2 at addr ffff88805ffcc038 by task kworker/u11:2/9541
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
 
-CPU: 1 UID: 0 PID: 9541 Comm: kworker/u11:2 Not tainted 6.16.0-rc7 #3 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
-Workqueue: hci3 hci_cmd_sync_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x230 mm/kasan/report.c:480
- kasan_report+0x118/0x150 mm/kasan/report.c:593
- hci_acl_create_conn_sync+0x5ef/0x790 net/bluetooth/hci_sync.c:6861
- hci_cmd_sync_work+0x210/0x3a0 net/bluetooth/hci_sync.c:332
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
- </TASK>
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-nRsN3E nexthop add id 63 via 2001:db8:91::4
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 64 via 2001:db8:91::5
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 63/64 fdb
+ Error: Invalid nexthop id.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+ [...]
 
-Allocated by task 123736:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __kmalloc_cache_noprof+0x230/0x3d0 mm/slub.c:4359
- kmalloc_noprof include/linux/slab.h:905 [inline]
- kzalloc_noprof include/linux/slab.h:1039 [inline]
- __hci_conn_add+0x233/0x1b30 net/bluetooth/hci_conn.c:939
- hci_conn_add_unset net/bluetooth/hci_conn.c:1051 [inline]
- hci_connect_acl+0x16c/0x4e0 net/bluetooth/hci_conn.c:1634
- pair_device+0x418/0xa70 net/bluetooth/mgmt.c:3556
- hci_mgmt_cmd+0x9c9/0xef0 net/bluetooth/hci_sock.c:1719
- hci_sock_sendmsg+0x6ca/0xef0 net/bluetooth/hci_sock.c:1839
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x219/0x270 net/socket.c:727
- sock_write_iter+0x258/0x330 net/socket.c:1131
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x54b/0xa90 fs/read_write.c:686
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-nRsN3E nexthop add id 14 via 172.16.1.2
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 15 via 172.16.1.3
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 14/15 fdb
+ Error: Invalid nexthop id.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
 
-Freed by task 103680:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:247 [inline]
- __kasan_slab_free+0x62/0x70 mm/kasan/common.c:264
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2381 [inline]
- slab_free mm/slub.c:4643 [inline]
- kfree+0x18e/0x440 mm/slub.c:4842
- device_release+0x9c/0x1c0
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x22b/0x480 lib/kobject.c:737
- hci_conn_cleanup net/bluetooth/hci_conn.c:175 [inline]
- hci_conn_del+0x8ff/0xcb0 net/bluetooth/hci_conn.c:1173
- hci_conn_complete_evt+0x3c7/0x1040 net/bluetooth/hci_event.c:3199
- hci_event_func net/bluetooth/hci_event.c:7477 [inline]
- hci_event_packet+0x7e0/0x1200 net/bluetooth/hci_event.c:7531
- hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
+ COMMAND: ip -netns me-nRsN3E nexthop add id 16 via 172.16.1.2 fdb
+ COMMAND: ip -netns me-nRsN3E nexthop add id 17 via 172.16.1.3 fdb
+ COMMAND: ip -netns me-nRsN3E nexthop add id 104 group 14/15
+ Error: Invalid nexthop id.
+ TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
+ [...]
+ COMMAND: ip -netns me-0dlhyd ro add 172.16.0.0/22 nhid 15
+ Error: Nexthop id does not exist.
+ TEST: Route add with fdb nexthop                                    [ OK ]
 
-Last potentially related work creation:
- kasan_save_stack+0x3e/0x60 mm/kasan/common.c:47
- kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:548
- insert_work+0x3d/0x330 kernel/workqueue.c:2183
- __queue_work+0xbd9/0xfe0 kernel/workqueue.c:2345
- queue_delayed_work_on+0x18b/0x280 kernel/workqueue.c:2561
- pairing_complete+0x1e7/0x2b0 net/bluetooth/mgmt.c:3451
- pairing_complete_cb+0x1ac/0x230 net/bluetooth/mgmt.c:3487
- hci_connect_cfm include/net/bluetooth/hci_core.h:2064 [inline]
- hci_conn_failed+0x24d/0x310 net/bluetooth/hci_conn.c:1275
- hci_conn_complete_evt+0x3c7/0x1040 net/bluetooth/hci_event.c:3199
- hci_event_func net/bluetooth/hci_event.c:7477 [inline]
- hci_event_packet+0x7e0/0x1200 net/bluetooth/hci_event.c:7531
- hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
+In addition, as can be seen in the above output, a couple of IPv4 test
+cases used the non-FDB nexthops (14 and 15) when they intended to use
+the FDB nexthops (16 and 17). These test cases only passed because
+failure was expected, but they failed for the wrong reason.
 
-Fixes: aef2aa4fa98e ("Bluetooth: hci_event: Fix creating hci_conn object on error status")
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix the test to create the non-FDB nexthops with a nexthop device and
+adjust the IPv4 test cases to use the FDB nexthops instead of the
+non-FDB nexthops.
+
+Output after the fix:
+
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
+
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-lNzfHP nexthop add id 63 via 2001:db8:91::4 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 64 via 2001:db8:91::5 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 63/64 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+ [...]
+
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-lNzfHP nexthop add id 14 via 172.16.1.2 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 15 via 172.16.1.3 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 14/15 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+
+ COMMAND: ip -netns me-lNzfHP nexthop add id 16 via 172.16.1.2 fdb
+ COMMAND: ip -netns me-lNzfHP nexthop add id 17 via 172.16.1.3 fdb
+ COMMAND: ip -netns me-lNzfHP nexthop add id 104 group 16/17
+ Error: Non FDB nexthop group cannot have fdb nexthops.
+ TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
+ [...]
+ COMMAND: ip -netns me-lNzfHP ro add 172.16.0.0/22 nhid 16
+ Error: Route cannot point to a fdb nexthop.
+ TEST: Route add with fdb nexthop                                    [ OK ]
+ [...]
+ Tests passed:  30
+ Tests failed:   0
+ Tests skipped:  0
+
+Fixes: 0534c5489c11 ("selftests: net: add fdb nexthop tests")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250921150824.149157-3-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h | 21 +++++++++++++++++++++
- net/bluetooth/hci_event.c        | 26 +++++++++++++++++++++++---
- 2 files changed, 44 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/fib_nexthops.sh | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 4f067599e6e9e..62135b7782f5b 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1169,6 +1169,27 @@ static inline struct hci_conn *hci_conn_hash_lookup_ba(struct hci_dev *hdev,
- 	return NULL;
- }
+diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
+index a194dbcb405ae..97c553182e0c5 100755
+--- a/tools/testing/selftests/net/fib_nexthops.sh
++++ b/tools/testing/selftests/net/fib_nexthops.sh
+@@ -440,8 +440,8 @@ ipv6_fdb_grp_fcnal()
+ 	log_test $? 0 "Get Fdb nexthop group by id"
  
-+static inline struct hci_conn *hci_conn_hash_lookup_role(struct hci_dev *hdev,
-+							 __u8 type, __u8 role,
-+							 bdaddr_t *ba)
-+{
-+	struct hci_conn_hash *h = &hdev->conn_hash;
-+	struct hci_conn  *c;
-+
-+	rcu_read_lock();
-+
-+	list_for_each_entry_rcu(c, &h->list, list) {
-+		if (c->type == type && c->role == role && !bacmp(&c->dst, ba)) {
-+			rcu_read_unlock();
-+			return c;
-+		}
-+	}
-+
-+	rcu_read_unlock();
-+
-+	return NULL;
-+}
-+
- static inline struct hci_conn *hci_conn_hash_lookup_le(struct hci_dev *hdev,
- 						       bdaddr_t *ba,
- 						       __u8 ba_type)
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 5eed23b8d6c33..7bda00dcb0b2f 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3048,8 +3048,18 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
+ 	# fdb nexthop group can only contain fdb nexthops
+-	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4"
+-	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5"
++	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4 dev veth1"
++	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5 dev veth1"
+ 	run_cmd "$IP nexthop add id 103 group 63/64 fdb"
+ 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
  
- 	hci_dev_lock(hdev);
+@@ -520,15 +520,15 @@ ipv4_fdb_grp_fcnal()
+ 	log_test $? 0 "Get Fdb nexthop group by id"
  
-+	/* Check for existing connection:
-+	 *
-+	 * 1. If it doesn't exist then it must be receiver/slave role.
-+	 * 2. If it does exist confirm that it is connecting/BT_CONNECT in case
-+	 *    of initiator/master role since there could be a collision where
-+	 *    either side is attempting to connect or something like a fuzzing
-+	 *    testing is trying to play tricks to destroy the hcon object before
-+	 *    it even attempts to connect (e.g. hcon->state == BT_OPEN).
-+	 */
- 	conn = hci_conn_hash_lookup_ba(hdev, ev->link_type, &ev->bdaddr);
--	if (!conn) {
-+	if (!conn ||
-+	    (conn->role == HCI_ROLE_MASTER && conn->state != BT_CONNECT)) {
- 		/* In case of error status and there is no connection pending
- 		 * just unlock as there is nothing to cleanup.
- 		 */
-@@ -5615,8 +5625,18 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
- 	 */
- 	hci_dev_clear_flag(hdev, HCI_LE_ADV);
+ 	# fdb nexthop group can only contain fdb nexthops
+-	run_cmd "$IP nexthop add id 14 via 172.16.1.2"
+-	run_cmd "$IP nexthop add id 15 via 172.16.1.3"
++	run_cmd "$IP nexthop add id 14 via 172.16.1.2 dev veth1"
++	run_cmd "$IP nexthop add id 15 via 172.16.1.3 dev veth1"
+ 	run_cmd "$IP nexthop add id 103 group 14/15 fdb"
+ 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
  
--	conn = hci_conn_hash_lookup_ba(hdev, LE_LINK, bdaddr);
--	if (!conn) {
-+	/* Check for existing connection:
-+	 *
-+	 * 1. If it doesn't exist then use the role to create a new object.
-+	 * 2. If it does exist confirm that it is connecting/BT_CONNECT in case
-+	 *    of initiator/master role since there could be a collision where
-+	 *    either side is attempting to connect or something like a fuzzing
-+	 *    testing is trying to play tricks to destroy the hcon object before
-+	 *    it even attempts to connect (e.g. hcon->state == BT_OPEN).
-+	 */
-+	conn = hci_conn_hash_lookup_role(hdev, LE_LINK, role, bdaddr);
-+	if (!conn ||
-+	    (conn->role == HCI_ROLE_MASTER && conn->state != BT_CONNECT)) {
- 		/* In case of error status and there is no connection pending
- 		 * just unlock as there is nothing to cleanup.
- 		 */
+ 	# Non fdb nexthop group can not contain fdb nexthops
+ 	run_cmd "$IP nexthop add id 16 via 172.16.1.2 fdb"
+ 	run_cmd "$IP nexthop add id 17 via 172.16.1.3 fdb"
+-	run_cmd "$IP nexthop add id 104 group 14/15"
++	run_cmd "$IP nexthop add id 104 group 16/17"
+ 	log_test $? 2 "Non-Fdb Nexthop group with fdb nexthops"
+ 
+ 	# fdb nexthop cannot have blackhole
+@@ -555,7 +555,7 @@ ipv4_fdb_grp_fcnal()
+ 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:14 dev vx10 nhid 12 self"
+ 	log_test $? 255 "Fdb mac add with nexthop"
+ 
+-	run_cmd "$IP ro add 172.16.0.0/22 nhid 15"
++	run_cmd "$IP ro add 172.16.0.0/22 nhid 16"
+ 	log_test $? 2 "Route add with fdb nexthop"
+ 
+ 	run_cmd "$IP ro add 172.16.0.0/22 nhid 103"
 -- 
 2.51.0
 
