@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B98BAD674
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C204ABAD9F5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DAD51654B4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE5E19401C6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A3630506E;
-	Tue, 30 Sep 2025 14:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E81B306486;
+	Tue, 30 Sep 2025 15:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+91pr/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGasKrEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9F94D8CE;
-	Tue, 30 Sep 2025 14:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1472236EB;
+	Tue, 30 Sep 2025 15:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244342; cv=none; b=aNWjE+8Z74bU7KEFkEBK9+uXb5REzfj18IYlkojFL+ImRmg5dyF9P/WFlsNr2ogjMNCKnxPI0tY6IZpFbAWiBI3iULntP+v2OGqrxqiJncKCn+7Hqo+/te7tVm3TOUx+Ywd6r/c6czdDx0lioLJFuUmJ+vznYlFhC0SLxXMFuEA=
+	t=1759245217; cv=none; b=h/n2k2TMqVW8yQArg9SWv0HzuzSlYQraruAGdMt/3xAIXjHt0+4g7+/W8Yg2X+sHfi/pFwc72nnna1A1hqSQ65Tqln/kd7zVUsz55L4j43jBt/nozqyORKDbTHHHxBXTfN8a7snxWPe7UF/4hwAQgYyrhjnhU+AG/omMQwlM2d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244342; c=relaxed/simple;
-	bh=3BXU2vEiBL1d7SVcnGJBPMHQyFQEyC00bOgM1JLAnqU=;
+	s=arc-20240116; t=1759245217; c=relaxed/simple;
+	bh=dePl+uUNDGOmZ1D2J5HAyCpTKbeydAQ5KAaJwZJISks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTyErsBWnncKV9Dkkt4rs9BV23Akd/RbX7+qQq8I3bB/BPCUNZQLSw9AgvKEVwPn4Z8SRkulwaQM+sH6iIPNonX9+mz1XKSp3oscJ/a1L/VTe8eTW1e1RcKWzwsbsLZTS6Vk8lGMYynbfaMKRzc/yl03Xhq1hDG1nZ9pyS3PmH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+91pr/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BF7C4CEF0;
-	Tue, 30 Sep 2025 14:59:01 +0000 (UTC)
+	 MIME-Version; b=BWh1CVu+fVvtYLDfbyf5A2uvA03aarFJqZqlQ38wUa8gwZQTFJJr5766p2IK4X6TomtlrRqCEIim1yWTfTT+r+XwfeJtNTe6wfRaP4X0eN7F6fXKFQKcwiD7Kizw7D6HnUuNp0SQPiJS9ruz7FHfi0v0PiP+/lLqw0B9v4NBD0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGasKrEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FB8C4CEF0;
+	Tue, 30 Sep 2025 15:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244342;
-	bh=3BXU2vEiBL1d7SVcnGJBPMHQyFQEyC00bOgM1JLAnqU=;
+	s=korg; t=1759245217;
+	bh=dePl+uUNDGOmZ1D2J5HAyCpTKbeydAQ5KAaJwZJISks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+91pr/JAAws70/oCNpO0BqY4J++fVHS1k5NhkYbUevGGimuA5UwJw6V6SmBqGRGw
-	 0Arj2Xb++ooeYrQuslnCmFhCiBGrAXKQc3SDC4tHtrBojH0TQsYOTFwp5Vtk9Dv3Yx
-	 /EDU97Gh32s2FGUCdCZw7uVIBKhDbdeagFNb9ujo=
+	b=iGasKrEkUYaucJu7xGK1jPkW7sNL3jF0my7yfGgGekDGOVuZaxcCPrYNJwyshQZTo
+	 K4CYO+C4sn2/Hx4Mw8bjHfm4z6rMEQpbcBblYP37QclIIUGeVKJvhL74qQQyMiFb7c
+	 8+rOB7hg1IGs6uPdiFflDGLK6si862CPgNy+oFoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/122] bnxt_en: correct offset handling for IPv6 destination address
+Subject: [PATCH 5.15 102/151] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
 Date: Tue, 30 Sep 2025 16:47:12 +0200
-Message-ID: <20250930143827.120564199@linuxfoundation.org>
+Message-ID: <20250930143831.663965393@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 3d3aa9472c6dd0704e9961ed4769caac5b1c8d52 ]
+[ Upstream commit b6f56a44e4c1014b08859dcf04ed246500e310e5 ]
 
-In bnxt_tc_parse_pedit(), the code incorrectly writes IPv6
-destination values to the source address field (saddr) when
-processing pedit offsets within the destination address range.
+Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
+device property") rfkill_find_type() gets called with the possibly
+uninitialized "const char *type_name;" local variable.
 
-This patch corrects the assignment to use daddr instead of saddr,
-ensuring that pedit operations on IPv6 destination addresses are
-applied correctly.
+On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
+acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
 
-Fixes: 9b9eb518e338 ("bnxt_en: Add support for NAT(L3/L4 rewrite)")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Link: https://patch.msgid.link/20250920121157.351921-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+        rfkill->type = (unsigned)id->driver_data;
+
+and there is no "type" property so device_property_read_string() will fail
+and leave type_name uninitialized, leading to a potential crash.
+
+rfkill_find_type() does accept a NULL pointer, fix the potential crash
+by initializing type_name to NULL.
+
+Note likely sofar this has not been caught because:
+
+1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
+2. The stack happened to contain NULL where type_name is stored
+
+Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
+Cc: stable@vger.kernel.org
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rfkill/rfkill-gpio.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-index 775d0b7521ca0..ef2bd84c55ff5 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-@@ -243,7 +243,7 @@ bnxt_tc_parse_pedit(struct bnxt *bp, struct bnxt_tc_actions *actions,
- 			   offset < offset_of_ip6_daddr + 16) {
- 			actions->nat.src_xlate = false;
- 			idx = (offset - offset_of_ip6_daddr) / 4;
--			actions->nat.l3.ipv6.saddr.s6_addr32[idx] = htonl(val);
-+			actions->nat.l3.ipv6.daddr.s6_addr32[idx] = htonl(val);
- 		} else {
- 			netdev_err(bp->dev,
- 				   "%s: IPv6_hdr: Invalid pedit field\n",
--- 
-2.51.0
-
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -78,10 +78,10 @@ static int rfkill_gpio_acpi_probe(struct
+ static int rfkill_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct rfkill_gpio_data *rfkill;
+-	struct gpio_desc *gpio;
++	const char *type_name = NULL;
+ 	const char *name_property;
+ 	const char *type_property;
+-	const char *type_name;
++	struct gpio_desc *gpio;
+ 	int ret;
+ 
+ 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
 
 
 
