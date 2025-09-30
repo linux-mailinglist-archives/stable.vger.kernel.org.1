@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-182459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823E5BAD9C8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9728FBAD497
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8554F3B1924
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 622383A907C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043B53043B8;
-	Tue, 30 Sep 2025 15:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EB630505F;
+	Tue, 30 Sep 2025 14:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3wT1iwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icIGPYsw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B412E2236EB;
-	Tue, 30 Sep 2025 15:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3163304BBF;
+	Tue, 30 Sep 2025 14:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245014; cv=none; b=fvODr86NRJJgmLy+PkTe1iyBdKpKhwG58xa1HfEjrvbRnGqANSbQ417qGNgWPwadHuIcp72R4WWntBFS3eMhiAXD0SEsD4MCMIPAAlrHJgs5g7qEVycuN7kWBGuODMfZhkGax806P8VYdxgqvG+70nZNKb8s7GuyuuvOM2Ta5Jc=
+	t=1759243829; cv=none; b=WqQlqRDW7pNMtAEDIImJCjBAPGmSHVm1qTtAeY63h78+w4B32BNbq0/AsKVRNPLO46OHqIEAVZ1Hz/hyUV32btV/Q4DhZ+E8QDWW1LHmmVChiIyPPuYakRRoswzW/0/5G8Hyr7YvauxnxnBQvoDNfxjl4YoquhXp7/mIHXsmyrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245014; c=relaxed/simple;
-	bh=KgBD5ttHqAOXDNa/v0gKy35kK3M+OOBLrRzoxA4pgR4=;
+	s=arc-20240116; t=1759243829; c=relaxed/simple;
+	bh=NMDoufS/QkGyJFlI1ZpdR0Z8OLSkXvJ29rBSmAPnkV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=roJLtczSZZ+YHLGvw3nZehXQEzCKovYQnxWTVA/iFptMsTOjxmSL3m5vVq4EZZXySy0V1Kki2PXH2SdC3Si7UmgSBXX4cxyQt25hmBbz8IrLw3uw/Mgc9rwRwIfkKp2OI4IUszFyY7pne3GFVCtqtDrkSHME9B9tVM7fLAWFmwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3wT1iwl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37708C113D0;
-	Tue, 30 Sep 2025 15:10:14 +0000 (UTC)
+	 MIME-Version; b=QGwDH9/cFG5UOOzoFZNjJsR44D8tpBIF53IMF7V/5Y4gsbkhjxIcMYBSvR8qawUPbXDrQQhhB9jhpjg93X6ejQFfWfaj1RY949xU5rXdXn6Rzlc5ZkvuvvjM4DqRk7M+xEjn2bYf/I8nHE8xi1qeS6ukNMLNzlERWhf/nGDxKNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icIGPYsw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22414C4CEF0;
+	Tue, 30 Sep 2025 14:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245014;
-	bh=KgBD5ttHqAOXDNa/v0gKy35kK3M+OOBLrRzoxA4pgR4=;
+	s=korg; t=1759243829;
+	bh=NMDoufS/QkGyJFlI1ZpdR0Z8OLSkXvJ29rBSmAPnkV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3wT1iwlZJCNFa751FEmQHxeaW/Rqw95rxsHbH8mfi84lOsHZN499Y3rbKfxSkL77
-	 bjAEKySMSj8xrCCPSnWnv2avshVOctlngHqTjKcZLWCpZBKC+dCDC12SELWCUHTMaj
-	 lX5K3CYB+QY0h+XCv+0e4KiqIwtb1btOBILTC5Nw=
+	b=icIGPYswW4hM675D0enlJoi+UZcZnT2/11SMcj1v62Ix758dVJQkQIKglV0spi6qy
+	 SbK0BT6UQO9pC0ReuWlqLSlM/qBGqYRh36+i0s1tZScPdrbTo7tUtDoRK/7v7kntnS
+	 qYIevY7+GiKu5xcnQUXAMO1Xk20gfMy1EpU3XWAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Moreno <amorenoz@redhat.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 039/151] tunnels: reset the GSO metadata before reusing the skb
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.4 07/81] mtd: rawnand: stm32_fmc2: fix ECC overwrite
 Date: Tue, 30 Sep 2025 16:46:09 +0200
-Message-ID: <20250930143829.167488471@linuxfoundation.org>
+Message-ID: <20250930143819.966712071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Christophe Kerello <christophe.kerello@foss.st.com>
 
-[ Upstream commit e3c674db356c4303804b2415e7c2b11776cdd8c3 ]
+commit 811c0da4542df3c065f6cb843ced68780e27bb44 upstream.
 
-If a GSO skb is sent through a Geneve tunnel and if Geneve options are
-added, the split GSO skb might not fit in the MTU anymore and an ICMP
-frag needed packet can be generated. In such case the ICMP packet might
-go through the segmentation logic (and dropped) later if it reaches a
-path were the GSO status is checked and segmentation is required.
+In case OOB write is requested during a data write, ECC is currently
+lost. Avoid this issue by only writing in the free spare area.
+This issue has been seen with a YAFFS2 file system.
 
-This is especially true when an OvS bridge is used with a Geneve tunnel
-attached to it. The following set of actions could lead to the ICMP
-packet being wrongfully segmented:
-
-1. An skb is constructed by the TCP layer (e.g. gso_type SKB_GSO_TCPV4,
-   segs >= 2).
-
-2. The skb hits the OvS bridge where Geneve options are added by an OvS
-   action before being sent through the tunnel.
-
-3. When the skb is xmited in the tunnel, the split skb does not fit
-   anymore in the MTU and iptunnel_pmtud_build_icmp is called to
-   generate an ICMP fragmentation needed packet. This is done by reusing
-   the original (GSO!) skb. The GSO metadata is not cleared.
-
-4. The ICMP packet being sent back hits the OvS bridge again and because
-   skb_is_gso returns true, it goes through queue_gso_packets...
-
-5. ...where __skb_gso_segment is called. The skb is then dropped.
-
-6. Note that in the above example on re-transmission the skb won't be a
-   GSO one as it would be segmented (len > MSS) and the ICMP packet
-   should go through.
-
-Fix this by resetting the GSO information before reusing an skb in
-iptunnel_pmtud_build_icmp and iptunnel_pmtud_build_icmpv6.
-
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Reported-by: Adrian Moreno <amorenoz@redhat.com>
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Link: https://patch.msgid.link/20250904125351.159740-1-atenart@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Cc: stable@vger.kernel.org
+Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_tunnel_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mtd/nand/raw/stm32_fmc2_nand.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index 35189f1b361ea..3737188ba4e1e 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -203,6 +203,9 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
- 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct iphdr)))
- 		return -EINVAL;
+--- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
++++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+@@ -1037,9 +1037,21 @@ static int stm32_fmc2_sequencer_write(st
  
-+	if (skb_is_gso(skb))
-+		skb_gso_reset(skb);
+ 	/* Write oob */
+ 	if (oob_required) {
+-		ret = nand_change_write_column_op(chip, mtd->writesize,
+-						  chip->oob_poi, mtd->oobsize,
+-						  false);
++		unsigned int offset_in_page = mtd->writesize;
++		const void *buf = chip->oob_poi;
++		unsigned int len = mtd->oobsize;
 +
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
- 	skb_reset_network_header(skb);
-@@ -297,6 +300,9 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
- 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct ipv6hdr)))
- 		return -EINVAL;
- 
-+	if (skb_is_gso(skb))
-+		skb_gso_reset(skb);
++		if (!raw) {
++			struct mtd_oob_region oob_free;
 +
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
- 	skb_reset_network_header(skb);
--- 
-2.51.0
-
++			mtd_ooblayout_free(mtd, 0, &oob_free);
++			offset_in_page += oob_free.offset;
++			buf += oob_free.offset;
++			len = oob_free.length;
++		}
++
++		ret = nand_change_write_column_op(chip, offset_in_page,
++						  buf, len, false);
+ 		if (ret)
+ 			return ret;
+ 	}
 
 
 
