@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-182204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03434BAD5ED
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC40BAD97A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D2E31941F41
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96EBC168C42
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B054030507E;
-	Tue, 30 Sep 2025 14:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09122FD1DD;
+	Tue, 30 Sep 2025 15:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glzq+TQ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxGB/9FN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF3C3043C4;
-	Tue, 30 Sep 2025 14:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4771F1302;
+	Tue, 30 Sep 2025 15:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244183; cv=none; b=SMdr6vLjbSxepA5mKUFTyFpKGDKZV8ipV+KscC1SMgF+rM7J7PwxNyYsfnQXhr6+yW8avmnT3N1mT4z+6uxh6RDFfrDmXCq7xBCZzp9NkCbTJBXxrcCX0TzXc2O6RC3UCHz5UYtkdz9oABfMpyJf0/lz96B9uWsZPoH7sfn6dhk=
+	t=1759245059; cv=none; b=J3WlEsmR1m6VS6Sv4oplR/M7CdHDUJHnRHIgDi5T+zx7jlgolVmmiqVDQqzWR4W8DFHrghuVeb1OH+LXAVlCGTkvlb8sN6PjKpKpIe8ha8aQzpTNdg2P+90/zmle4cUQZ7TrxJxNUqsRo4byXuWYlLNsrbsVdDVCR7Wo3oQC82o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244183; c=relaxed/simple;
-	bh=4KThQDOKk+OtsNiz/EZexfiAKyyZmsDfzooZliTeqTo=;
+	s=arc-20240116; t=1759245059; c=relaxed/simple;
+	bh=Hold27qQKMlPcCs2uM1p4Qf0BHSByDjg0V7Jfd0DshU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X8j9XGBx2DHyJQejyofcXPPeASos+gznoCDCzgMVV79/T4IUfj13yUxo6Sui4+dhGhU1OYby+LilobcUiBug7RASlkSrCp9l+eqlCS8usLMsA/QQp/hRzV68K+uhwH6Znk0KRXqCV9zoHqb3qzDnwZKXJb6OwqRnBUbfwI66fzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glzq+TQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D486C113D0;
-	Tue, 30 Sep 2025 14:56:22 +0000 (UTC)
+	 MIME-Version; b=CYzp5whPI4nL2LWQ24OtwbxFKy3vnd2bRsBMpJO+9yrCaiftXwL5gHD8TQYeDo7I3WJQze+FnUWLOcofWXquHt41Z7wQaPEy0edL9QJXgmZ4abSzr0D4tpxK5E8BgWs/ymtVwIYffQgAIFZmcoFC2To+PiUVd2pcDHaJqnvfri4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxGB/9FN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C7BC4CEF0;
+	Tue, 30 Sep 2025 15:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244183;
-	bh=4KThQDOKk+OtsNiz/EZexfiAKyyZmsDfzooZliTeqTo=;
+	s=korg; t=1759245059;
+	bh=Hold27qQKMlPcCs2uM1p4Qf0BHSByDjg0V7Jfd0DshU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glzq+TQ6ZTr0DVwzgyl6FgUBRseli484YdAg8ZZAf2nF3wQI6U++Y7IERfp3y7sJE
-	 qd+DkIjg9qP+S6S23UNqYtlMYO5YryYXU3rSWFCIfTgjjAkkvv0st/X8jnTrnVxDwd
-	 OKJupg/tT7UpUKUHPTlfQBXILGSjSg1RDUvIaJkI=
+	b=fxGB/9FNIVGCuWd9stfVmqYP04qhjpXKFQBIzAHxptMPWhZakgWHkwD+gpFq+a28m
+	 wmCFINJcsN4XMLo87sEpJO29OwV37YUIcBMEhzfcKcmQXA01Y8W4Eeai5Dh21Duvsz
+	 v2GWE0kxTZ2syGPOjJFNYfnh1HFZcxfEz4bZx5Ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 021/122] mm/khugepaged: fix the address passed to notifier on testing young
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 022/151] mptcp: sockopt: make sync_socket_options propagate SOCK_KEEPOPEN
 Date: Tue, 30 Sep 2025 16:45:52 +0200
-Message-ID: <20250930143823.862145945@linuxfoundation.org>
+Message-ID: <20250930143828.496527683@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,52 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-commit 394bfac1c7f7b701c2c93834c5761b9c9ceeebcf upstream.
+commit 648de37416b301f046f62f1b65715c7fa8ebaa67 upstream.
 
-Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
-mmu_notifier_test_young(), but we are passing the wrong address.
-In xxx_scan_pmd(), the actual iteration address is "_address" not
-"address".  We seem to misuse the variable on the very beginning.
+Users reported a scenario where MPTCP connections that were configured
+with SO_KEEPALIVE prior to connect would fail to enable their keepalives
+if MTPCP fell back to TCP mode.
 
-Change it to the right one.
+After investigating, this affects keepalives for any connection where
+sync_socket_options is called on a socket that is in the closed or
+listening state.  Joins are handled properly. For connects,
+sync_socket_options is called when the socket is still in the closed
+state.  The tcp_set_keepalive() function does not act on sockets that
+are closed or listening, hence keepalive is not immediately enabled.
+Since the SO_KEEPOPEN flag is absent, it is not enabled later in the
+connect sequence via tcp_finish_connect.  Setting the keepalive via
+sockopt after connect does work, but would not address any subsequently
+created flows.
 
-[akpm@linux-foundation.org fix whitespace, per everyone]
-Link: https://lkml.kernel.org/r/20250822063318.11644-1-richard.weiyang@gmail.com
-Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fortunately, the fix here is straight-forward: set SOCK_KEEPOPEN on the
+subflow when calling sync_socket_options.
+
+The fix was valdidated both by using tcpdump to observe keepalive
+packets not being sent before the fix, and being sent after the fix.  It
+was also possible to observe via ss that the keepalive timer was not
+enabled on these sockets before the fix, but was enabled afterwards.
+
+Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/aL8dYfPZrwedCIh9@templeofstupid.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/khugepaged.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/sockopt.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1363,7 +1363,7 @@ static int khugepaged_scan_pmd(struct mm
- 		}
- 		if (pte_young(pteval) ||
- 		    page_is_young(page) || PageReferenced(page) ||
--		    mmu_notifier_test_young(vma->vm_mm, address))
-+		    mmu_notifier_test_young(vma->vm_mm, _address))
- 			referenced++;
- 	}
- 	if (!writable) {
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -838,13 +838,12 @@ static void sync_socket_options(struct m
+ {
+ 	static const unsigned int tx_rx_locks = SOCK_RCVBUF_LOCK | SOCK_SNDBUF_LOCK;
+ 	struct sock *sk = (struct sock *)msk;
++	bool keep_open;
+ 
+-	if (ssk->sk_prot->keepalive) {
+-		if (sock_flag(sk, SOCK_KEEPOPEN))
+-			ssk->sk_prot->keepalive(ssk, 1);
+-		else
+-			ssk->sk_prot->keepalive(ssk, 0);
+-	}
++	keep_open = sock_flag(sk, SOCK_KEEPOPEN);
++	if (ssk->sk_prot->keepalive)
++		ssk->sk_prot->keepalive(ssk, keep_open);
++	sock_valbool_flag(ssk, SOCK_KEEPOPEN, keep_open);
+ 
+ 	ssk->sk_priority = sk->sk_priority;
+ 	ssk->sk_bound_dev_if = sk->sk_bound_dev_if;
 
 
 
