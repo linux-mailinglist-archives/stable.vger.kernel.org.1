@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-182714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A08DBADC8A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D06FBADC81
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E917119452A1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CD7C3B1768
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C432FC87A;
-	Tue, 30 Sep 2025 15:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC302FD1DD;
+	Tue, 30 Sep 2025 15:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jstqFTUd"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNz5AnRN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0C716A956;
-	Tue, 30 Sep 2025 15:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEF6173;
+	Tue, 30 Sep 2025 15:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245853; cv=none; b=OOwsGN/NbnBljGMMfFy2a0dcURHgOuDtxoOUfNk5k95LCDS+PeC/mD9mNeBc/g2YnsyhH5n1OFc1lvNWLYq0T9GtqNuEmZxPmthBJ/i6KMYcUD1ZnCMjRNJDN0uA9ltkI77qSwhV/K470OxLbUoIWIXarmFPkKdCtOW+fGnqhR4=
+	t=1759245628; cv=none; b=NRufUF+PNvNBvor/vqCCOuBDFaYn6SFvxUp+vpfbbetUy+f9CC9JN8bCC0esLdZhFjaZnexbKr54GJD47JbWO1ScvduAdViAZRhIfJouene/leJdGIqOf0zaqTdIrjh+LBwegLTrV0sfTgu4Sr3/n/7AHBFdGgc3AI8AxHEI8Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245853; c=relaxed/simple;
-	bh=fzF81w2NBWRKQfaro8xtwpdLF6fmhXtNrWoC/bfSBTQ=;
+	s=arc-20240116; t=1759245628; c=relaxed/simple;
+	bh=8/3DhC5onrZs2Umkjp8b9fSWM/L4JsvuXQeNMFDvABI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XDKDWELVCKOuP5YyktxxLU2+mbZKV0lJhPJO2SLy2fuYwzY+plL75c2ikSmmrwtGL7+8TWy8bD/mJRu2Zw9Zl/l82fK3PQXr4vRAq1LHHz2VHq67BlBEdYXsU9SeeMTh6x6rtMBIwdwHDeFD8sNjD4HATP0Ur5RhvpHqM+72TZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jstqFTUd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDC1C4CEF0;
-	Tue, 30 Sep 2025 15:24:09 +0000 (UTC)
+	 MIME-Version; b=TMdpDUZQra06yR9SbF0h+rXKuHdCtYtZA9bJWD/Nhp/5yzl5Bn93LTOjrL5QtDzMfqoCe/U7UG3jLXZMtU45mZ9Acfie+tCIc1lk/QskGbKpYHr05L0xxLtT2Xx042c76uCD3sUL2JE6jlZwvvv0ZywuxdGgoehE5WX54BUO67E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNz5AnRN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082E6C4CEF0;
+	Tue, 30 Sep 2025 15:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245849;
-	bh=fzF81w2NBWRKQfaro8xtwpdLF6fmhXtNrWoC/bfSBTQ=;
+	s=korg; t=1759245628;
+	bh=8/3DhC5onrZs2Umkjp8b9fSWM/L4JsvuXQeNMFDvABI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jstqFTUdGb3zDY3HMRMvKIknr5xJLIuEAmCFMMbs03iv6e/NBl0BgPMTu0xw2clIz
-	 D7G1fyI5fwSvKjlR7aJW36s3sn6SpAVYLKGWIZ+pCRTMRF/TzGKkDBxdh33SpaxeqO
-	 gtFO+9GezNKGIdOGZOCZ5X9eFcdxlZYqPxNIdefg=
+	b=pNz5AnRNP5KyUjEJtoR2V7ToP1bFRhtyBdd3gURj0tou0qGN2LHhYHeinjKVgqcmM
+	 Y4Kjl5uO++QZeAQPJq7Fh11+Gsurdu46UaRNFox5ymiR74k6+MBIP+bxweySvtrUOh
+	 un8vLg88vr3Q6aKrOL+60D9I51sTPz/GcYnWi9sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	patches@lists.linux.dev, Nirmoy Das <nirmoyd@nvidia.com>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
-	George Kennedy <george.kennedy@oracle.com>,
-	syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com,
-	Simona Vetter <simona@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Qianqiang Liu <qianqiang.liu@163.com>,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.6 69/91] fbcon: fix integer overflow in fbcon_do_set_font
-Date: Tue, 30 Sep 2025 16:48:08 +0200
-Message-ID: <20250930143824.050293077@linuxfoundation.org>
+	KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	dri-devel@lists.freedesktop.org, Sasha Levin <sashal@kernel.org>,
+	"Carol L Soto csoto@nvidia.com" <"mailto:csoto"@nvidia.com>
+Subject: [PATCH 6.1 65/73] drm/ast: Use msleep instead of mdelay for edid read
+Date: Tue, 30 Sep 2025 16:48:09 +0200
+Message-ID: <20250930143823.368711315@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +63,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Nirmoy Das <nirmoyd@nvidia.com>
 
-commit 1a194e6c8e1ee745e914b0b7f50fa86c89ed13fe upstream.
+[ Upstream commit c7c31f8dc54aa3c9b2c994b5f1ff7e740a654e97 ]
 
-Fix integer overflow vulnerabilities in fbcon_do_set_font() where font
-size calculations could overflow when handling user-controlled font
-parameters.
+The busy-waiting in `mdelay()` can cause CPU stalls and kernel timeouts
+during boot.
 
-The vulnerabilities occur when:
-1. CALC_FONTSZ(h, pitch, charcount) performs h * pith * charcount
-   multiplication with user-controlled values that can overflow.
-2. FONT_EXTRA_WORDS * sizeof(int) + size addition can also overflow
-3. This results in smaller allocations than expected, leading to buffer
-   overflows during font data copying.
-
-Add explicit overflow checking using check_mul_overflow() and
-check_add_overflow() kernel helpers to safety validate all size
-calculations before allocation.
-
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
 Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 39b3cffb8cf3 ("fbcon: prevent user font height or width change from causing potential out-of-bounds access")
-Cc: George Kennedy <george.kennedy@oracle.com>
-Cc: stable <stable@vger.kernel.org>
-Cc: syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
+Tested-by: Carol L Soto csoto@nvidia.com<mailto:csoto@nvidia.com>
+Fixes: 594e9c04b586 ("drm/ast: Create the driver for ASPEED proprietory Display-Port")
+Cc: KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>
 Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Qianqiang Liu <qianqiang.liu@163.com>
-Cc: Shixiong Ou <oushixiong@kylinos.cn>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org> # v5.9+
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.19+
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250912170023.3931881-1-samasth.norway.ananda@oracle.com
+Link: https://lore.kernel.org/r/20250917194346.2905522-1-nirmoyd@nvidia.com
+[ Applied change to ast_astdp_read_edid() instead of ast_astdp_read_edid_block() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbcon.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ast/ast_dp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2510,9 +2510,16 @@ static int fbcon_set_font(struct vc_data
- 	if (fbcon_invalid_charcount(info, charcount))
- 		return -EINVAL;
+--- a/drivers/gpu/drm/ast/ast_dp.c
++++ b/drivers/gpu/drm/ast/ast_dp.c
+@@ -51,7 +51,7 @@ int ast_astdp_read_edid(struct drm_devic
+ 			 *	  of right-click of mouse.
+ 			 * 2. The Delays are often longer a lot when system resume from S3/S4.
+ 			 */
+-			mdelay(j+1);
++			msleep(j + 1);
  
--	size = CALC_FONTSZ(h, pitch, charcount);
-+	/* Check for integer overflow in font size calculation */
-+	if (check_mul_overflow(h, pitch, &size) ||
-+	    check_mul_overflow(size, charcount, &size))
-+		return -EINVAL;
-+
-+	/* Check for overflow in allocation size calculation */
-+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-+		return -EINVAL;
- 
--	new_data = kmalloc(FONT_EXTRA_WORDS * sizeof(int) + size, GFP_USER);
-+	new_data = kmalloc(size, GFP_USER);
- 
- 	if (!new_data)
- 		return -ENOMEM;
+ 			if (!(ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xD1,
+ 							ASTDP_MCU_FW_EXECUTING) &&
 
 
 
