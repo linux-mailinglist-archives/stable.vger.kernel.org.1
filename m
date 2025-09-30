@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-182511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD217BAD9DA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DED4BAD4E2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C201616EA53
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA6B4A3236
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDAE2FCBFC;
-	Tue, 30 Sep 2025 15:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170062FFDE6;
+	Tue, 30 Sep 2025 14:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUmFBsVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SxfY3b1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DBB2F9D88;
-	Tue, 30 Sep 2025 15:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75531E3DF2;
+	Tue, 30 Sep 2025 14:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245186; cv=none; b=MS9xP5ul2SrHMXsvx5DpWt7zTKqDfcEqOQOaEw1kMSW2fbxUGsY0zHdspjZBMRLGchyRAOJiNpKLmU+lxNAvsUryjMNGHDftmTm0e/l54ESQgk6ItvZQXkHnF5syzruVk3UxBQBSx6UcJ7yiS9nUwtEZOCMDozoGgmBhY2/u5ZA=
+	t=1759243917; cv=none; b=FuX4EBhuGKccC/82bPh6wgLSlACMC0DZaj8OoDNrVNoy+VJDScvpd65QHvF1LFg/nzMF/BdMZH3Vhu9w8L7dmA0UNCenGh09xlhcP2ylOb4nbGwRuODHnakbl2QDwjFMdnv+McJHbsAIYrxgM0hbnItGGtt2f3HboOP0NN/bScY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245186; c=relaxed/simple;
-	bh=5bbP9VQDoMexk3/4EHXtur82VfTZ85Y9phsLKhuMvRo=;
+	s=arc-20240116; t=1759243917; c=relaxed/simple;
+	bh=SEQEP4OGeglMRHA2OXXcsrWpiNY6y6hqI6Qq5zLZbRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtPbu7dR/B7nnvKMTHfwnmQI1yqRLj664Prea2AaYWtXTU8N/wb8CgfpiTFqmD9dtY4CAj2wshDYS0cGsXqQcgPsjSaBu6TRbiffqVV39Vf75VoJauR7JoqUE/C4sT937Y28LqP63WqZjnO4tlO1gUskuv8W14fVEIcI49KStlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUmFBsVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562B3C4CEF0;
-	Tue, 30 Sep 2025 15:13:05 +0000 (UTC)
+	 MIME-Version; b=NE180E2TFs8q+8mwSh7SyWM6gXhqKqhtRBvOG+TbzJ30WZcfiYHeXiVbdL+Aq33r+RuINi4ucdSehFslNyf9TKbRNd7F1qdeMhLlGZPMUovueRH52K3nhjL23egWX7RWad9l8nnL0xxIZs0pWD4D+hXQbFnbJoNBFJI8KeFWjwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SxfY3b1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36018C4CEF0;
+	Tue, 30 Sep 2025 14:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245185;
-	bh=5bbP9VQDoMexk3/4EHXtur82VfTZ85Y9phsLKhuMvRo=;
+	s=korg; t=1759243917;
+	bh=SEQEP4OGeglMRHA2OXXcsrWpiNY6y6hqI6Qq5zLZbRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UUmFBsVkkZgpJ4zrM2iK0xnsbY6ifOl4v3wFS83ofiKjH60cRjqPWVrWv0TdL4aRs
-	 jhpSImRhKm00htdOAmK+tvGnB92mnYSTGfuUaPkyeCHGUSz6li/Kqvvvk+Ho2aueQo
-	 BIwY2MQNU4XTJ6Cw4zGeXDP1J+Ss4u3Q/m/6TnN0=
+	b=1SxfY3b1jcrOTbWsHoUw4Hr4VcAD0pU/NdirvGKA8293KRXjiTAUrzurbBRbGBVf6
+	 4M+KtGXbiX/cK3WysapBoK705tCckEtJSutSd3G8m/HqQbpSfQqgXQeADVb6yQ/6sl
+	 uCHSDVNAIJnLYLZFxYoabagCvWNh2rCiW/cRfFf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Yongqin Liu <yongqin.liu@linaro.org>
-Subject: [PATCH 5.15 060/151] soc: qcom: mdt_loader: Deal with zero e_shentsize
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 28/81] phy: ti-pipe3: fix device leak at unbind
 Date: Tue, 30 Sep 2025 16:46:30 +0200
-Message-ID: <20250930143829.991965126@linuxfoundation.org>
+Message-ID: <20250930143820.840678019@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 25daf9af0ac1bf12490b723b5efaf8dcc85980bc upstream.
+commit e19bcea99749ce8e8f1d359f68ae03210694ad56 upstream.
 
-Firmware that doesn't provide section headers leave both e_shentsize and
-e_shnum 0, which obvious isn't compatible with the newly introduced
-stricter checks.
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-Make the section-related checks conditional on either of these values
-being non-zero.
-
-Fixes: 9f9967fed9d0 ("soc: qcom: mdt_loader: Ensure we don't read past the ELF header")
-Reported-by: Val Packett <val@packett.cool>
-Closes: https://lore.kernel.org/all/ece307c3-7d65-440f-babd-88cf9705b908@packett.cool/
-Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
-Closes: https://lore.kernel.org/all/aec9cd03-6fc2-4dc8-b937-8b7cf7bf4128@linaro.org/
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Fixes: 9f35ab0e53cc ("soc: qcom: mdt_loader: Fix error return values in mdt_header_valid()")
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250730-mdt-loader-shentsize-zero-v1-1-04f43186229c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Cc: Yongqin Liu <yongqin.liu@linaro.org>
+Fixes: 918ee0d21ba4 ("usb: phy: omap-usb3: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724131206.2211-4-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/mdt_loader.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/phy/ti/phy-ti-pipe3.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/soc/qcom/mdt_loader.c
-+++ b/drivers/soc/qcom/mdt_loader.c
-@@ -39,12 +39,14 @@ static bool mdt_header_valid(const struc
- 	if (phend > fw->size)
- 		return false;
- 
--	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
--		return false;
-+	if (ehdr->e_shentsize || ehdr->e_shnum) {
-+		if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
-+			return false;
- 
--	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
--	if (shend > fw->size)
--		return false;
-+		shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
-+		if (shend > fw->size)
-+			return false;
-+	}
- 
- 	return true;
+--- a/drivers/phy/ti/phy-ti-pipe3.c
++++ b/drivers/phy/ti/phy-ti-pipe3.c
+@@ -667,12 +667,20 @@ static int ti_pipe3_get_clk(struct ti_pi
+ 	return 0;
  }
+ 
++static void ti_pipe3_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int ti_pipe3_get_sysctrl(struct ti_pipe3 *phy)
+ {
+ 	struct device *dev = phy->dev;
+ 	struct device_node *node = dev->of_node;
+ 	struct device_node *control_node;
+ 	struct platform_device *control_pdev;
++	int ret;
+ 
+ 	phy->phy_power_syscon = syscon_regmap_lookup_by_phandle(node,
+ 							"syscon-phy-power");
+@@ -703,6 +711,11 @@ static int ti_pipe3_get_sysctrl(struct t
+ 		}
+ 
+ 		phy->control_dev = &control_pdev->dev;
++
++		ret = devm_add_action_or_reset(dev, ti_pipe3_put_device,
++					       phy->control_dev);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	if (phy->mode == PIPE3_MODE_PCIE) {
 
 
 
