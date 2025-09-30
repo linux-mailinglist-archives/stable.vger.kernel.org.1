@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-182667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CEABADBEB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78449BAD50F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E724163305
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3438732394D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620EA237163;
-	Tue, 30 Sep 2025 15:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060CA303C9B;
+	Tue, 30 Sep 2025 14:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUJB0ux1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSNvqaYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4EB1C862F;
-	Tue, 30 Sep 2025 15:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DDA1AB6F1;
+	Tue, 30 Sep 2025 14:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245692; cv=none; b=jPsBWZF7WxNgjcvZBicUyCE89Vyo/3NHEqddd2tFssEuHxcHhUdOW8DpcMOQzCwpBTGgs/A/JyhAurUghrtYNSN6cgj0wFT+n/8SybVksgFFU2Lo69PdU9bUTIZS9lDEaut6pyYQDci1hpcjzqOPlOU/7wA+fcZhPkxBSm8S3yc=
+	t=1759244008; cv=none; b=VmySbB3vazgdCesAIUp9uokCQLgA2mU33l3tUO+SqD3uZrP4lbZtq6HdgsGxMQ8Yr1vRiC26SP3iV7BCelCS2EK8sBsAzvnJGdMX9EpgvQvbKJF4IXjGy+ZVBxQ8amDE17sn7d2fnstveYwgDQzit4SQskH+fCJuuqQoAEKUyi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245692; c=relaxed/simple;
-	bh=1a9ozyIMJQmjZufgn9fC5JVs9ANP+qsx+HV6BxvF9Mw=;
+	s=arc-20240116; t=1759244008; c=relaxed/simple;
+	bh=RDY6PLaWXWFIoeHZVDyVy+DknTWWRMK/Qn/biRLP57M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2eAq4+NlTu7pvPDK55LutvGNRgIk+JSrzzxG7PMNez5fuV2OkZ8lLlD4FaGVdTEYsoR9TVk3Q8TMU1DWsH3fmF9jwTei1GJUr5DHQHAtNjZPCdpgRRlEyIxZMzlujpKYkwTeyrFPufyKsdlAxUHhjvBJp8o5qwMo6gD9HugKNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUJB0ux1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE20C4CEF0;
-	Tue, 30 Sep 2025 15:21:31 +0000 (UTC)
+	 MIME-Version; b=GJDfuMnVF1iBdhtGgx14sbOSzugSlyjrMChkf6rMfSD0UsVppQJAIpvjheOnsmeTn0XpG3JbpprnNBrWwAo8aeiTRecoNEV2QNUFYFwdsyh0GegT6k2glUJrQW/btoOsNHBUa8gLbCOsxJj1AFDuQyeTvY7KqWLJ/EcEaLyALbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSNvqaYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AF9C116D0;
+	Tue, 30 Sep 2025 14:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245692;
-	bh=1a9ozyIMJQmjZufgn9fC5JVs9ANP+qsx+HV6BxvF9Mw=;
+	s=korg; t=1759244008;
+	bh=RDY6PLaWXWFIoeHZVDyVy+DknTWWRMK/Qn/biRLP57M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rUJB0ux1BPgLNY0d20cTAIl4g/skgEYIb6AOoNevZL71Do0X33kaHXWnMILMVQF+h
-	 R9p9n6OvO+GxoA26C1LA81bS6lzaTVwjc0emBRdtwzFGQqcEc0lEtNpiKNbKXwZnMn
-	 41/geYzNpNhlNUiwDI2VBbhtOxLTlCUbdclOpXpE=
+	b=lSNvqaYiVlTA3kktT/ySFtcF3xmc6vq9YDy66Z9ApHv1OMOz/YP4wvG0DizMtWSjW
+	 7G67llY3FhQRi3Rly35sjGGbYqr/HaNOwyNyIH4mJWZI0gr7/qf+hOItPuA9wKCUxJ
+	 p4WupZ/yM6QV/wDbW3IeYWlKv7HkpYI5wNnJ266Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jiayi Li <lijiayi@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 05/91] ALSA: usb-audio: Avoid multiple assignments in mixer_quirks
+Subject: [PATCH 5.4 62/81] usb: core: Add 0x prefix to quirks debug output
 Date: Tue, 30 Sep 2025 16:47:04 +0200
-Message-ID: <20250930143821.341869590@linuxfoundation.org>
+Message-ID: <20250930143822.273745659@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit 03ddd3bdb94df3edb1f2408b57cfb00b3d92a208 ]
+[ Upstream commit 47c428fce0b41b15ab321d8ede871f780ccd038f ]
 
-Handle report from checkpatch.pl:
+Use "0x%x" format for quirks debug print to clarify it's a hexadecimal
+value. Improves readability and consistency with other hex outputs.
 
-  CHECK: multiple assignments should be avoided
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-6-1a821463b632@collabora.com
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://lore.kernel.org/r/20250603071045.3243699-1-lijiayi@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/core/quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index a1ab517e26b36..f91dbc9255f12 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -1734,7 +1734,8 @@ static int snd_microii_spdif_default_put(struct snd_kcontrol *kcontrol,
- 	unsigned int pval, pval_old;
- 	int err;
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index 75a4d162c58b3..716bcf9f4d347 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -728,7 +728,7 @@ void usb_detect_quirks(struct usb_device *udev)
+ 	udev->quirks ^= usb_detect_dynamic_quirks(udev);
  
--	pval = pval_old = kcontrol->private_value;
-+	pval = kcontrol->private_value;
-+	pval_old = pval;
- 	pval &= 0xfffff0f0;
- 	pval |= (ucontrol->value.iec958.status[1] & 0x0f) << 8;
- 	pval |= (ucontrol->value.iec958.status[0] & 0x0f);
+ 	if (udev->quirks)
+-		dev_dbg(&udev->dev, "USB quirks for this device: %x\n",
++		dev_dbg(&udev->dev, "USB quirks for this device: 0x%x\n",
+ 			udev->quirks);
+ 
+ #ifdef CONFIG_USB_DEFAULT_PERSIST
 -- 
 2.51.0
 
