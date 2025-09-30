@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD681BADC15
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBD1BADD2E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 387BC194522C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12E6F188B007
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFCA20E334;
-	Tue, 30 Sep 2025 15:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F2C3043B8;
+	Tue, 30 Sep 2025 15:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TR+eGbnd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMY3D8n/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFC3846F;
-	Tue, 30 Sep 2025 15:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E2B23507C;
+	Tue, 30 Sep 2025 15:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245729; cv=none; b=loVtOwfpZjRAESTwuWph80wzKBU668PI5WtgMZvQoEC8bux2jL3AGoPM0lVrsq+yVYdYAOI30kRPd4OfUyINFQ/xI2MOIC2cSyYdvfqWFr4C6xyHAkovhzPOQsm4nRE8cu30rXeRIdP+PgA4DQM8AUIdT9tcWYWE6hEFJqBX9lo=
+	t=1759245990; cv=none; b=ICauAum6rJVVHE3ngYGm422PvC4dp5uiOzn3wkqkDE5Dyiywx+xXIf5OAehMcyvqLPl+pqZoP/6EBVsa6LAraDpjTTR/N1cwzl2ma6WJ3XFjxNGHuV1t9dHIjNwQvMxWu4b73FJA+O3nt82TppNlcw0t9pJ5699TCvYoLVJWlY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245729; c=relaxed/simple;
-	bh=tTSH8rvrUUA51JY+CpDHGNd0ZDu0wR7aQkZzi0oHlPU=;
+	s=arc-20240116; t=1759245990; c=relaxed/simple;
+	bh=qQsVJu1yErt0cvBsmxL6eAJcAujZHkpZfZvqhj19vfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLQBciVrf8mX0hD9UaabB3M2X40raDJFkYSP7ZfbH5M2mBrEFgLuhHQg/QJyBtZ7VZBikgHN3cRslQDsJB9GyZTHi+cNFhqgSgDhiDFZVKwgQLcIiGe0VFZwTlEVjeog0+n1hWO/8M35jUKN8qKfs8nULYZiI8EDLNxpll1G0bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TR+eGbnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CD1C4CEF0;
-	Tue, 30 Sep 2025 15:22:08 +0000 (UTC)
+	 MIME-Version; b=X4i1xBrituz35NFOEMxBV6mWPp02k1JVcKhwVYtHa8A8wKnDZWJIraBefjYuWFFNdViRudhMjsMeS0pKYQI5MK45+LSmI3KH8/MSCc1w4seLWTxb27wClYWlsJnh6jcOt9eK6UgoAEs/Phn1h6FKWUGCu7XOYx0iEVkSSdbEthQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMY3D8n/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCA3C4CEF0;
+	Tue, 30 Sep 2025 15:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245729;
-	bh=tTSH8rvrUUA51JY+CpDHGNd0ZDu0wR7aQkZzi0oHlPU=;
+	s=korg; t=1759245989;
+	bh=qQsVJu1yErt0cvBsmxL6eAJcAujZHkpZfZvqhj19vfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TR+eGbndtzEjGREHelPu0G3u3l1pDYbXEGWcoSQvBm2wZ6N+250U2dETn9CB3SPtT
-	 EFnesYAnd2YXK0ycdu4ICNZZE4DXxGXge+Bw3MEcxO9XeWaHSpklZX21hJ3lHQ0THP
-	 xsSyr5BupLWh9WGB9Wvha0VyHpG4BuUIkdhl2YKI=
+	b=uMY3D8n/ApQkVRzaJ1rwF3bsoE3A3WdBQBzX00isH/1zOZzR9o94hvaqoqZiHlLwb
+	 ZYiGFt5DQyQ2rkKOzWDn62lIZ+7DPIxLCRdKRndVlGD0th6WK6bxs3pedwMcdoe09Z
+	 gO1yXO6qUUevff2ZuO7otFzGH5u2oiflkciUt/UE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 33/91] bpf: Reject bpf_timer for PREEMPT_RT
-Date: Tue, 30 Sep 2025 16:47:32 +0200
-Message-ID: <20250930143822.526166893@linuxfoundation.org>
+Subject: [PATCH 6.12 19/89] net: sfp: add quirk for Potron SFP+ XGSPON ONU Stick
+Date: Tue, 30 Sep 2025 16:47:33 +0200
+Message-ID: <20250930143822.673558478@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Hwang <leon.hwang@linux.dev>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit e25ddfb388c8b7e5f20e3bf38d627fb485003781 ]
+[ Upstream commit dfec1c14aecee6813f9bafc7b560cc3a31d24079 ]
 
-When enable CONFIG_PREEMPT_RT, the kernel will warn when run timer
-selftests by './test_progs -t timer':
+Add quirk for Potron SFP+ XGSPON ONU Stick (YV SFP+ONT-XGSPON).
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+This device uses pins 2 and 7 for UART communication, so disable
+TX_FAULT and LOS. Additionally as it is an embedded system in an
+SFP+ form factor provide it enough time to fully boot before we
+attempt to use it.
 
-In order to avoid such warning, reject bpf_timer in verifier when
-PREEMPT_RT is enabled.
+https://www.potrontec.com/index/index/list/cat_id/2.html#11-83
+https://pon.wiki/xgs-pon/ont/potron-technology/x-onu-sfpp/
 
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-Link: https://lore.kernel.org/r/20250910125740.52172-2-leon.hwang@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Link: https://patch.msgid.link/20250617180324.229487-1-macroalpha82@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/phy/sfp.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 7d6ee41f4b4f4..a6f825b7fbe6c 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7546,6 +7546,10 @@ static int process_timer_func(struct bpf_verifier_env *env, int regno,
- 		verbose(env, "verifier bug. Two map pointers in a timer helper\n");
- 		return -EFAULT;
- 	}
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
-+		verbose(env, "bpf_timer cannot be used for PREEMPT_RT.\n");
-+		return -EOPNOTSUPP;
-+	}
- 	meta->map_uid = reg->map_uid;
- 	meta->map_ptr = map;
- 	return 0;
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 7b33993f7001e..e8670249d32c1 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -360,6 +360,11 @@ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
+ 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
+ }
+ 
++static void sfp_fixup_ignore_hw(struct sfp *sfp, unsigned int mask)
++{
++	sfp->state_hw_mask &= ~mask;
++}
++
+ static void sfp_fixup_nokia(struct sfp *sfp)
+ {
+ 	sfp_fixup_long_startup(sfp);
+@@ -408,7 +413,19 @@ static void sfp_fixup_halny_gsfp(struct sfp *sfp)
+ 	 * these are possibly used for other purposes on this
+ 	 * module, e.g. a serial port.
+ 	 */
+-	sfp->state_hw_mask &= ~(SFP_F_TX_FAULT | SFP_F_LOS);
++	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
++}
++
++static void sfp_fixup_potron(struct sfp *sfp)
++{
++	/*
++	 * The TX_FAULT and LOS pins on this device are used for serial
++	 * communication, so ignore them. Additionally, provide extra
++	 * time for this device to fully start up.
++	 */
++
++	sfp_fixup_long_startup(sfp);
++	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
+ }
+ 
+ static void sfp_fixup_rollball_cc(struct sfp *sfp)
+@@ -511,6 +528,8 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRC-1", sfp_fixup_fs_10gt),
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRI-1", sfp_fixup_fs_10gt),
+ 
++	SFP_QUIRK_F("YV", "SFP+ONU-XGSPON", sfp_fixup_potron),
++
+ 	// OEM SFP-GE-T is a 1000Base-T module with broken TX_FAULT indicator
+ 	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
+ 
 -- 
 2.51.0
 
