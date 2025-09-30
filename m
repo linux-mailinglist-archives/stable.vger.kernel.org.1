@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6F5BADBF1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E24D4BADA7D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D77C18824F6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71353BF3D3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14FE223DD6;
-	Tue, 30 Sep 2025 15:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436A12236EB;
+	Tue, 30 Sep 2025 15:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4ZWH2yL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RT/O7qEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1E7173;
-	Tue, 30 Sep 2025 15:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CF0223DD6;
+	Tue, 30 Sep 2025 15:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245695; cv=none; b=fIopkB7RpHbpczaWamdaOlUvpfqZN8/Svtbal9Yrf7oUlqf67LyW+VWGvgSRM8Gp18sgafLcIYLXBaJcM/eaRn5xVceBXcZ4XVkIcvwLLS1xLF0uqnxzwF/yyRhv+agTbLF79HvQgHjKNiDJIZK9syA41QF3e8jnm1fmN1+VQ+4=
+	t=1759245197; cv=none; b=o5qJJwYDI2q7iUAeQ9QVrYRP05Gvvn+reokBwPL8xYXOE+EJqrfRpK5boXkx6P5dKHDZ6fHxnqk9Qr+k+8ZJf6nDUJiFpC8eP0nLg93b64uVb182wewL1pz1qwP2TbkUiErb0oTxhliqyc8Yxqpmb8DGxKvmT85G4CdFbzcU1c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245695; c=relaxed/simple;
-	bh=WRASG/Hf5+tgH3LVrM9mRFT59u/ZhopYHV72TRV672Q=;
+	s=arc-20240116; t=1759245197; c=relaxed/simple;
+	bh=zoty6v551NW4OImh+Qv75Pu9lPJJUJyT/Ho62B91glg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyaeQJaYJ6poIthd4wltMIc/5qDV1Ri4ZMUGvuEufrA0G/DPY3jKpMqr956NknBuLa/1idHFxT4Jst8+S2AWDxPENXhZv4j56llR2fxWYelpperS4RRBUqKzZ3+o5Xlqs3i6qSzd2A3wdKVo6Y9cZqbnkrdXcHQdYTWe/plc3j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4ZWH2yL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C6CC4CEF0;
-	Tue, 30 Sep 2025 15:21:34 +0000 (UTC)
+	 MIME-Version; b=f4FEuTRLVfPnl5tN34AQjwXj1ZtJesiqe3IaRWT9TK0KuM+WVqgt1gsQSMLFrKZCmrItwhcPMd7YqgxtEB6QxAnNkrvXMDiZzfhOXHIl9uhhk9qAfs3tG2AWyJydWa7EJdeo2r6h7VL3pSQEilo7ztchAoTxqf7F3/LU84q0HZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RT/O7qEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FCFC4CEF0;
+	Tue, 30 Sep 2025 15:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245695;
-	bh=WRASG/Hf5+tgH3LVrM9mRFT59u/ZhopYHV72TRV672Q=;
+	s=korg; t=1759245195;
+	bh=zoty6v551NW4OImh+Qv75Pu9lPJJUJyT/Ho62B91glg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G4ZWH2yLHTnhgTq97DlQ+yUXcXk1Wg3JjlbadBAG4oJd+jmF0uf0/qgjvMhRnhegJ
-	 u3y4vA3cXuUt4VjqsqJPXUuxW+wDGtP735Tc7W1hQ6KrJ6BKQP8wrLHkuEUCDQCCxf
-	 vaYxgK9UNktoQ1P8URGqm1LL/7LAgHbiyQaBrQDg=
+	b=RT/O7qEyj8+T7UGphzLZryXXZlBC8NKRXpNaak6IKupXR+FQDOeSgs/wMOja94mj5
+	 yfU9DKSClyscx4x/6Jnmm3tQcJKQmwJlj3C4zv9eUbGCsDpu+4aB0Bkq8ZmsqL8mQ8
+	 75Q1icJqiP+/cQZzJ4O24aCXPTMt/3neir6pXAxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 06/91] ALSA: usb-audio: Simplify NULL comparison in mixer_quirks
+Subject: [PATCH 5.15 095/151] phy: broadcom: ns-usb3: fix Wvoid-pointer-to-enum-cast warning
 Date: Tue, 30 Sep 2025 16:47:05 +0200
-Message-ID: <20250930143821.382569138@linuxfoundation.org>
+Message-ID: <20250930143831.379909315@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit f2d6d660e8fd5f4467e80743f82119201e67fa9c ]
+[ Upstream commit bd6e74a2f0a0c76dda8e44d26f9b91a797586c3b ]
 
-Handle report from checkpatch.pl:
+'family' is an enum, thus cast of pointer on 64-bit compile test with
+W=1 causes:
 
-  CHECK: Comparison to NULL could be written "t->name"
+  drivers/phy/broadcom/phy-bcm-ns-usb3.c:209:17: error: cast to smaller integer type 'enum bcm_ns_family' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-7-1a821463b632@collabora.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230810111958.205705-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 64961557efa1 ("phy: ti: omap-usb2: fix device leak at unbind")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 2 +-
+ drivers/phy/broadcom/phy-bcm-ns-usb3.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index f91dbc9255f12..9a5e8c47ce0d2 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -126,7 +126,7 @@ static int snd_create_std_mono_table(struct usb_mixer_interface *mixer,
- {
- 	int err;
+--- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
++++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
+@@ -206,7 +206,7 @@ static int bcm_ns_usb3_mdio_probe(struct
+ 	of_id = of_match_device(bcm_ns_usb3_id_table, dev);
+ 	if (!of_id)
+ 		return -EINVAL;
+-	usb3->family = (enum bcm_ns_family)of_id->data;
++	usb3->family = (uintptr_t)of_id->data;
  
--	while (t->name != NULL) {
-+	while (t->name) {
- 		err = snd_create_std_mono_ctl(mixer, t->unitid, t->control,
- 				t->cmask, t->val_type, t->name, t->tlv_callback);
- 		if (err < 0)
--- 
-2.51.0
-
+ 	syscon_np = of_parse_phandle(dev->of_node, "usb3-dmp-syscon", 0);
+ 	err = of_address_to_resource(syscon_np, 0, &res);
 
 
 
