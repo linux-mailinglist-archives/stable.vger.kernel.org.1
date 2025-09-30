@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881E5BADD2F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C15EBADAEC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 436E63278D5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 143CE167D1A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CD130595D;
-	Tue, 30 Sep 2025 15:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CF7217F55;
+	Tue, 30 Sep 2025 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inlo/RM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaQlNJCO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64D32FD1DD;
-	Tue, 30 Sep 2025 15:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B902FFDE6;
+	Tue, 30 Sep 2025 15:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246010; cv=none; b=TMs/yYz5uNgDG0rckn3RbHiMwZJTz7uX5KnigeJDdT0gTrDuqPe51bbQRsmtRmuMoFVzIm40l/K40GRc9bokwb2dvhSaMz+nyjbnZxIjGVQdEV7HpxkCMFh/cGdHPBJCBxiOo2nC9V9DswuOZjqWSn+0p/pdSerNZ6T/anYdkCo=
+	t=1759245398; cv=none; b=M8ExGYc2R24YC8oPcNFqq6qRccsDWA8dJjjTpGgstyNgZaPWfKekg22UO9qrCG0TizNGBuuvzq5NwFRyB6HXJ9Ucpeo+eOiGVRXXaYB7oYbgWA1bD6rI2V35Ne5ssaXbg4/S7kllKGLsLZI0PWeH7G7lASb/1QNLpP1WeZseDP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246010; c=relaxed/simple;
-	bh=De4+DVObdvqCMNghhyOWI1NXg5h8OsA2aUDQWYyphVI=;
+	s=arc-20240116; t=1759245398; c=relaxed/simple;
+	bh=mtJqOqb3+xOAKNSPER/ZBEiOheByy5kXVGhBsmX0wGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnitrCAayoRYlOuEgtwPgsidCxxTlq6XXSn7SRhX+1nPH5l5xUi3gP2z/Njf3MyXbVwmH8nG1AKmX7Hf3uQTH0sah/V9tHPCfNxzmz+q2lCrZJRFrv+vn807VcRR7DCc8cdpeeIPems3MNAqrCEQGFZ6FwjUJsjYHBRdha88+tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inlo/RM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1109C4CEF0;
-	Tue, 30 Sep 2025 15:26:48 +0000 (UTC)
+	 MIME-Version; b=UbMd0DBAguDrD4O7GIGEB4U/WoRaejmUz4AwZKlRyL7WKqx15vBNM7pUBxWTLgsmdgXuHpSuH4xEQKPbOTb/r+vzx/1qOY7q2t2tskxslIXafLhlG0oD6xldS9apb91TmjUKWnLP55yRHKespvaXKdgAWLCpbEvpWP5BDgS9wSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaQlNJCO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76728C4CEF0;
+	Tue, 30 Sep 2025 15:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246009;
-	bh=De4+DVObdvqCMNghhyOWI1NXg5h8OsA2aUDQWYyphVI=;
+	s=korg; t=1759245397;
+	bh=mtJqOqb3+xOAKNSPER/ZBEiOheByy5kXVGhBsmX0wGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=inlo/RM8xW4IZLh9ri9qtf8SXplCfDXD/SpC0ghnoiKtY+tUaRbDlq5iV35kpE5C4
-	 nK7cRnnmWG/wqg9AymAmUWzPUHq4Bz8bdR5e7nWAIjkukEuzWnnKCmX+uyclxE1Slr
-	 oY81u4ORALBN84dBfe4H0scoWrHkeOVrl12N2GsI=
+	b=PaQlNJCOI0RSy+yeXwy5yohdqu+PbROynolkCzmS6RvPA84huBh3u7BY7kACNEJLL
+	 8hGQGXgPZuCFbvfjY1NdhiQ19DV/8sZScY6NlZ2zUuBzQc0cPAzqiZ0N2R7D4xYcyk
+	 cq+UQXqWxT3OZu+UxZLO6hFkK0gz16ConA0FV5gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cryolitia PukNgae <cryolitia@uniontech.com>,
-	qaqland <anguoli@uniontech.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Petr Malat <oss@malat.biz>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 24/89] ALSA: usb-audio: Add mute TLV for playback volumes on more devices
+Subject: [PATCH 5.15 128/151] ethernet: rvu-af: Remove slash from the driver name
 Date: Tue, 30 Sep 2025 16:47:38 +0200
-Message-ID: <20250930143822.898384314@linuxfoundation.org>
+Message-ID: <20250930143832.703295364@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: qaqland <anguoli@uniontech.com>
+From: Petr Malat <oss@malat.biz>
 
-[ Upstream commit 2cbe4ac193ed7172cfd825c0cc46ce4a41be4ba1 ]
+[ Upstream commit b65678cacc030efd53c38c089fb9b741a2ee34c8 ]
 
-Applying the quirk of that, the lowest Playback mixer volume setting
-mutes the audio output, on more devices.
+Having a slash in the driver name leads to EIO being returned while
+reading /sys/module/rvu_af/drivers content.
 
-Suggested-by: Cryolitia PukNgae <cryolitia@uniontech.com>
-Signed-off-by: qaqland <anguoli@uniontech.com>
-Link: https://patch.msgid.link/20250829-sound_quirk-v1-1-745529b44440@uniontech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Remove DRV_STRING as it's not used anywhere.
+
+Fixes: 91c6945ea1f9 ("octeontx2-af: cn10k: Add RPM MAC support")
+Signed-off-by: Petr Malat <oss@malat.biz>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250918152106.1798299-1-oss@malat.biz
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 03962b3e3bd58..8a20508e055a3 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2196,6 +2196,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_SET_IFACE_FIRST),
- 	DEVICE_FLG(0x0556, 0x0014, /* Phoenix Audio TMX320VC */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x0572, 0x1b08, /* Conexant Systems (Rockwell), Inc. */
-+		   QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x0572, 0x1b09, /* Conexant Systems (Rockwell), Inc. */
- 		   QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x05a3, 0x9420, /* ELP HD USB Camera */
-@@ -2240,6 +2242,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x0b0e, 0x0349, /* Jabra 550a */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
-+	DEVICE_FLG(0x0bda, 0x498a, /* Realtek Semiconductor Corp. */
-+		   QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x0c45, 0x6340, /* Sonix HD USB Camera */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x0c45, 0x636b, /* Microdia JP001 USB Camera */
-@@ -2256,6 +2260,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
- 	DEVICE_FLG(0x1101, 0x0003, /* Audioengine D1 */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x12d1, 0x3a07, /* Huawei Technologies Co., Ltd. */
-+		   QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x1224, 0x2a25, /* Jieli Technology USB PHY 2.0 */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
- 	DEVICE_FLG(0x1395, 0x740a, /* Sennheiser DECT */
-@@ -2346,6 +2352,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
- 	DEVICE_FLG(0x2912, 0x30c8, /* Audioengine D1 */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x2a70, 0x1881, /* OnePlus Technology (Shenzhen) Co., Ltd. BE02T */
-+		   QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x2b53, 0x0023, /* Fiero SC-01 (firmware v1.0.0 @ 48 kHz) */
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
- 	DEVICE_FLG(0x2b53, 0x0024, /* Fiero SC-01 (firmware v1.0.0 @ 96 kHz) */
-@@ -2362,6 +2370,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
- 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
-+	DEVICE_FLG(0x339b, 0x3a07, /* Synaptics HONOR USB-C HEADSET */
-+		   QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x413c, 0xa506, /* Dell AE515 sound bar */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x534d, 0x0021, /* MacroSilicon MS2100/MS2106 */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 4dec201158956..d97a4123438f0 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -21,8 +21,7 @@
+ #include "rvu.h"
+ #include "lmac_common.h"
+ 
+-#define DRV_NAME	"Marvell-CGX/RPM"
+-#define DRV_STRING      "Marvell CGX/RPM Driver"
++#define DRV_NAME	"Marvell-CGX-RPM"
+ 
+ static LIST_HEAD(cgx_list);
+ 
 -- 
 2.51.0
 
