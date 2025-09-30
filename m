@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1FCBAD93E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC29BADD1E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C2963C2570
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3EAA1897778
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C192FCBFC;
-	Tue, 30 Sep 2025 15:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C407B3043B8;
+	Tue, 30 Sep 2025 15:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4IbJTZq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWzWgZdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817F42236EB;
-	Tue, 30 Sep 2025 15:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEE63074BB;
+	Tue, 30 Sep 2025 15:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244912; cv=none; b=EDBIddTj/Vqjz21wkhxRp1SGVd0HYAT/GC8AyQTKRFFdmkz9ovp/3X1eHSvRLglvd3Q1t7SeDZriX3MM4fjTHgph0prQirMSF7mwGW54ugniuSBwLF0JZKE2VgUEumHwFlI3xloZRQW/BFI9OnBgFX4czqfQtLb+yzwsrckbdi4=
+	t=1759245964; cv=none; b=CrqnL1UAvxDCL0QKDzb3rZlC7I7tsa3UleeKq0ZKNbIpftLrkCtxbw3XqbLiujXNCPji+LTKRIrGL2UUBCL0iTFn5jY6SMn3HyWD9zRToKivKHXGfYnKFIQOBq1ly999NL1fmjsIq0rzRdz0ARdrXtwTJ8JvzU8fa+bFCi9EaUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244912; c=relaxed/simple;
-	bh=U1S67C5Kd8pJXkzkH/YAv5SUYhoIZMq6g6VP29wZOMc=;
+	s=arc-20240116; t=1759245964; c=relaxed/simple;
+	bh=KHnartRliE9v56hxSjVTpSva5mwOa1gOu3CVeLzH+gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmnY2d3n/4cN1Kj0mQa0uqTW1UDDI1aRzVd7xvW+BwlM3orqD+deBkgql3ZRIocfAPWGMOebG4RzWzCfQUeAWv3IWNzCzxHCo69oYDBfhqk1oO6CiuDzkhJrhQaqFLMPYeByIN+jePtdLltYdu8nEq0YUCFsIiFFpCT8Y/lHXP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4IbJTZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A35C4CEF0;
-	Tue, 30 Sep 2025 15:08:31 +0000 (UTC)
+	 MIME-Version; b=sL6cZ5cnYGjx+YsFyLBTtzYU9Hfdd1dgZYwSJps/iS7UpSz0IYpcCZqo576qnl0Iogr7rkWE4ACNzdrVWLkIVqMX8+6uZHP4pATXM+PR5kYnCEYL1t1g7OJJPJHeNsxUE1JE2TnecSPljDEaYUPR7uOOzi+/Xz/g5P0/y7VOC7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWzWgZdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD04EC4CEF0;
+	Tue, 30 Sep 2025 15:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244912;
-	bh=U1S67C5Kd8pJXkzkH/YAv5SUYhoIZMq6g6VP29wZOMc=;
+	s=korg; t=1759245964;
+	bh=KHnartRliE9v56hxSjVTpSva5mwOa1gOu3CVeLzH+gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4IbJTZqDmcYxlSpHHFmYty35/gJg7xTGWxKTy09IZMH+j4rCdSjvy3TziLQFc1Fs
-	 XuMGbVp+D/a8tdv2gvw9rsebzHSQuw3+ii126G9+lp8OoP/8n4PmY5FY11qwNReSSJ
-	 +EDtY40Mttym6C/o9YA0JakmZxsnu/QXPAPze0eg=
+	b=uWzWgZdRiRuH/YU3pGOr9QjGyHuHM/RTTqdr0KhU/k4r2M9gJYM9V97/EqCIod2Oi
+	 gOG61Yj7CpydmDAmiRtjKyVAENsB/JsS7bLoQKHUKcACKhv9a/jlplxcPFX/5Yws6L
+	 nzxTUUq2bHs8WTx/bz/FdL9TidIe1pOxTOxC4CM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.16 121/143] pinctrl: airoha: fix wrong PHY LED mux value for LED1 GPIO46
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 11/89] HID: multitouch: support getting the tip state from HID_DG_TOUCH fields in Apple Touch Bar
 Date: Tue, 30 Sep 2025 16:47:25 +0200
-Message-ID: <20250930143836.055468878@linuxfoundation.org>
+Message-ID: <20250930143822.336923936@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Kerem Karabay <kekrby@gmail.com>
 
-commit 6f9674aa69ad0178ca8fc6995942ba9848c324f4 upstream.
+[ Upstream commit e0976a61a543b5e03bc0d08030a0ea036ee3751d ]
 
-In all the MUX value for LED1 GPIO46 there is a Copy-Paste error where
-the MUX value is set to LED0_MODE_MASK instead of LED1_MODE_MASK.
+In Apple Touch Bar, the tip state is contained in fields with the
+HID_DG_TOUCH usage. This feature is gated by a quirk in order to
+prevent breaking other devices, see commit c2ef8f21ea8f
+("HID: multitouch: add support for trackpads").
 
-This wasn't notice as there were no board that made use of the
-secondary PHY LED but looking at the internal Documentation the actual
-value should be LED1_MODE_MASK similar to the other GPIO entry.
-
-Fix the wrong value to apply the correct MUX configuration.
-
-Cc: stable@vger.kernel.org
-Fixes: 1c8ace2d0725 ("pinctrl: airoha: Add support for EN7581 SoC")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Kerem Karabay <kekrby@gmail.com>
+Co-developed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-airoha.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/hid/hid-multitouch.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-airoha.c b/drivers/pinctrl/mediatek/pinctrl-airoha.c
-index 1b2f132d76f0..ee5b9bab4552 100644
---- a/drivers/pinctrl/mediatek/pinctrl-airoha.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-airoha.c
-@@ -1752,8 +1752,8 @@ static const struct airoha_pinctrl_func_group phy1_led1_func_group[] = {
- 		.regmap[0] = {
- 			AIROHA_FUNC_MUX,
- 			REG_GPIO_2ND_I2C_MODE,
--			GPIO_LAN3_LED0_MODE_MASK,
--			GPIO_LAN3_LED0_MODE_MASK
-+			GPIO_LAN3_LED1_MODE_MASK,
-+			GPIO_LAN3_LED1_MODE_MASK
- 		},
- 		.regmap[1] = {
- 			AIROHA_FUNC_MUX,
-@@ -1816,8 +1816,8 @@ static const struct airoha_pinctrl_func_group phy2_led1_func_group[] = {
- 		.regmap[0] = {
- 			AIROHA_FUNC_MUX,
- 			REG_GPIO_2ND_I2C_MODE,
--			GPIO_LAN3_LED0_MODE_MASK,
--			GPIO_LAN3_LED0_MODE_MASK
-+			GPIO_LAN3_LED1_MODE_MASK,
-+			GPIO_LAN3_LED1_MODE_MASK
- 		},
- 		.regmap[1] = {
- 			AIROHA_FUNC_MUX,
-@@ -1880,8 +1880,8 @@ static const struct airoha_pinctrl_func_group phy3_led1_func_group[] = {
- 		.regmap[0] = {
- 			AIROHA_FUNC_MUX,
- 			REG_GPIO_2ND_I2C_MODE,
--			GPIO_LAN3_LED0_MODE_MASK,
--			GPIO_LAN3_LED0_MODE_MASK
-+			GPIO_LAN3_LED1_MODE_MASK,
-+			GPIO_LAN3_LED1_MODE_MASK
- 		},
- 		.regmap[1] = {
- 			AIROHA_FUNC_MUX,
-@@ -1944,8 +1944,8 @@ static const struct airoha_pinctrl_func_group phy4_led1_func_group[] = {
- 		.regmap[0] = {
- 			AIROHA_FUNC_MUX,
- 			REG_GPIO_2ND_I2C_MODE,
--			GPIO_LAN3_LED0_MODE_MASK,
--			GPIO_LAN3_LED0_MODE_MASK
-+			GPIO_LAN3_LED1_MODE_MASK,
-+			GPIO_LAN3_LED1_MODE_MASK
- 		},
- 		.regmap[1] = {
- 			AIROHA_FUNC_MUX,
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index be2bbce25b3df..39a8c6619876b 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -819,6 +819,17 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
+ 
+ 			MT_STORE_FIELD(confidence_state);
+ 			return 1;
++		case HID_DG_TOUCH:
++			/*
++			 * Legacy devices use TIPSWITCH and not TOUCH.
++			 * One special case here is of the Apple Touch Bars.
++			 * In these devices, the tip state is contained in
++			 * fields with the HID_DG_TOUCH usage.
++			 * Let's just ignore this field for other devices.
++			 */
++			if (!(cls->quirks & MT_QUIRK_APPLE_TOUCHBAR))
++				return -1;
++			fallthrough;
+ 		case HID_DG_TIPSWITCH:
+ 			if (field->application != HID_GD_SYSTEM_MULTIAXIS)
+ 				input_set_capability(hi->input,
+@@ -889,10 +900,6 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
+ 		case HID_DG_CONTACTMAX:
+ 			/* contact max are global to the report */
+ 			return -1;
+-		case HID_DG_TOUCH:
+-			/* Legacy devices use TIPSWITCH and not TOUCH.
+-			 * Let's just ignore this field. */
+-			return -1;
+ 		}
+ 		/* let hid-input decide for the others */
+ 		return 0;
 -- 
 2.51.0
 
