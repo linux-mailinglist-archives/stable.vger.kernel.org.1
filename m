@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557F1BADAED
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81339BAD82E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 476EE4A7E69
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:14:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FC11189EC43
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B879B2FFDE6;
-	Tue, 30 Sep 2025 15:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65D82FD1DD;
+	Tue, 30 Sep 2025 15:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgSDCrRg"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtZ7hV3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760CE223DD6;
-	Tue, 30 Sep 2025 15:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652E52E9EBC;
+	Tue, 30 Sep 2025 15:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245255; cv=none; b=WsR/Nksl/tXJobVCNzSEiVhG4/o4wPB7NM5ovvn/j9alb7rF2ngJKWQLsCjP8uhBbLrENCYJmNfdWINJ8wb47FZRLUs4xrXeXi6In6mx+3L/SljOq2l01B4oqD2q46+si5WWFLTFOA3qCl9H4JE9yp6lIb9b811d7tsMSZKfe4o=
+	t=1759244809; cv=none; b=NE45IMq+GC5HqIUfIsDqIQvPOwRReV1axSl2ujXu4zskV1azUOLKeKgjGAOyShLzhiIbT58InCk/qRkKKhiG1CLCySg/HPIPvXj4L3ETKapvwsz5LbHONRfbeKtDdUvt9HvceGzpXVDusdQKCG9NiHRCfccVWogayhjwrFwHVa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245255; c=relaxed/simple;
-	bh=fkygZY0PKn6XpssPAoW1eeQ0SQpNiWW/u8mGeB9u5n0=;
+	s=arc-20240116; t=1759244809; c=relaxed/simple;
+	bh=ld12mXPsRGA40jH2s9uM6ZyFjAwurvHbaWd7pI9mx+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K57kGXlppOhtAo/XYb38cNrbbCG24SwWdkPRle+gxxzrDbymux+++rj6JlgeBBNIz02cn1YQ/SNDMJEUQ9T3KL5LynFL1m7CwRrF0Lmfkv/Zy2NjIPIjMEVBDaPEE5pWXebbA0ypZkbQ89wE4prsuX+EBIirtZzPgF0HFwn6gl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgSDCrRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61DAC4CEF0;
-	Tue, 30 Sep 2025 15:14:14 +0000 (UTC)
+	 MIME-Version; b=IyaXYYQlFQ8tk0C931DWxJ85kBRDEhLGc/DmfmaCR4ZcBVCNo38hk/zG02OeuItukmPGQpJaxIkCqxrdqc0WW4B6vQ6KYTkE8ywm2lHpe+duRiO8oK6YgIZy35nCj9g+oSsNOMcUmCqVoG/Mme45hBskUirtEoFZhSIjk6ar63Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtZ7hV3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF20C4CEF0;
+	Tue, 30 Sep 2025 15:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245255;
-	bh=fkygZY0PKn6XpssPAoW1eeQ0SQpNiWW/u8mGeB9u5n0=;
+	s=korg; t=1759244809;
+	bh=ld12mXPsRGA40jH2s9uM6ZyFjAwurvHbaWd7pI9mx+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kgSDCrRg1GMhIxOxw1u6bhXFFWfVBzqpFizkoZWH9Aah8Wbr8MMlabdjIeMHj/j+K
-	 n2aXCUupnIvLZVhgMJ0K2TrGWM/cOXWaZVYBFRJiMHMfEa7hNF6n5u+jqVwbTvRAFE
-	 xUUE5n967GP23YWikaBe9gew3fCaV9svyNxrcZg0=
+	b=DtZ7hV3uMdWUQCcXbxt1pB6WWmJwRQ0sTgcch8Ouq4+Uv/1PyvEYTVIynNJ2UguA/
+	 GJ2ylFscjlSTc5x9z4JOerT3GwsaGL4iG0le1FumoZ2fPp06TRL/iwCuR9GPKInwtf
+	 2w2PWSillwTC4sJ2YjfMtfHSZsz7jG7oanuQxbMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/151] arm64: dts: imx8mp: Correct thermal sensor index
+	patches@lists.linux.dev, Nirmoy Das <nirmoyd@nvidia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	dri-devel@lists.freedesktop.org,
+	"Carol L Soto csoto@nvidia.com" <"mailto:csoto"@nvidia.com>
+Subject: [PATCH 6.16 119/143] drm/ast: Use msleep instead of mdelay for edid read
 Date: Tue, 30 Sep 2025 16:47:23 +0200
-Message-ID: <20250930143832.108739573@linuxfoundation.org>
+Message-ID: <20250930143835.972719210@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Nirmoy Das <nirmoyd@nvidia.com>
 
-[ Upstream commit a50342f976d25aace73ff551845ce89406f48f35 ]
+commit c7c31f8dc54aa3c9b2c994b5f1ff7e740a654e97 upstream.
 
-The TMU has two temperature measurement sites located on the chip. The
-probe 0 is located inside of the ANAMIX, while the probe 1 is located near
-the ARM core. This has been confirmed by checking with HW design team and
-checking RTL code.
+The busy-waiting in `mdelay()` can cause CPU stalls and kernel timeouts
+during boot.
 
-So correct the {cpu,soc}-thermal sensor index.
-
-Fixes: 30cdd62dce6b ("arm64: dts: imx8mp: Add thermal zones support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Tested-by: Carol L Soto csoto@nvidia.com<mailto:csoto@nvidia.com>
+Fixes: 594e9c04b586 ("drm/ast: Create the driver for ASPEED proprietory Display-Port")
+Cc: KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.19+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250917194346.2905522-1-nirmoyd@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ast/ast_dp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index b5130e7be8263..4eeef01a5a835 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -161,7 +161,7 @@
- 		cpu-thermal {
- 			polling-delay-passive = <250>;
- 			polling-delay = <2000>;
--			thermal-sensors = <&tmu 0>;
-+			thermal-sensors = <&tmu 1>;
- 			trips {
- 				cpu_alert0: trip0 {
- 					temperature = <85000>;
-@@ -191,7 +191,7 @@
- 		soc-thermal {
- 			polling-delay-passive = <250>;
- 			polling-delay = <2000>;
--			thermal-sensors = <&tmu 1>;
-+			thermal-sensors = <&tmu 0>;
- 			trips {
- 				soc_alert0: trip0 {
- 					temperature = <85000>;
--- 
-2.51.0
-
+--- a/drivers/gpu/drm/ast/ast_dp.c
++++ b/drivers/gpu/drm/ast/ast_dp.c
+@@ -134,7 +134,7 @@ static int ast_astdp_read_edid_block(voi
+ 			 * 3. The Delays are often longer a lot when system resume from S3/S4.
+ 			 */
+ 			if (j)
+-				mdelay(j + 1);
++				msleep(j + 1);
+ 
+ 			/* Wait for EDID offset to show up in mirror register */
+ 			vgacrd7 = ast_get_index_reg(ast, AST_IO_VGACRI, 0xd7);
 
 
 
