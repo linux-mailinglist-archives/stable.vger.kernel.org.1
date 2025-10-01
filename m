@@ -1,97 +1,102 @@
-Return-Path: <stable+bounces-182933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB84BB048A
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 14:10:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85804BB04B4
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 14:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A72C81C7674
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 12:10:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71FA67A4EDA
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 12:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EFC2E973A;
-	Wed,  1 Oct 2025 12:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313C424E4AF;
+	Wed,  1 Oct 2025 12:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IxmtHI7Y"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="tUYyUvKo";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tq6tqG82";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0QUtbbC8";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="+ouw00QD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A492BE036
-	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 12:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DD021CC43
+	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 12:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759320635; cv=none; b=DKvkzX+4G+BULJPi4WiEbvdYekhHM8u3W6k6dxAFdLn6Dhz9bmfQsAYL7ieyjNnwqrjY50jYbnnjSp5AOKY5v9/sFvM36kpHTRpMTzJ2eQRq7LtPvOKBCja6SHBOCOoZJ/5OZ8KVJGpTfHqhM95NjK2uNdQXqk4f2XZ2eLqSHG0=
+	t=1759320946; cv=none; b=UMVD5R2IMTQuqAWcys6WRzfw0R4lMHUdX7/frJCWVAFp1730IHOtrGoU/ujTzb9Ii1k7ecfqn1RTJ98C86LPr2DTE4XX60lTajiOGoBPSSGNPWQBueBuNq6Ku18M26BiDkOkVd61kmGC6YckmsLg6XiRdFYEB25YqsyBJgcAJm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759320635; c=relaxed/simple;
-	bh=pvMGaqY63vMpQ2YYUKa3njQxeuJ6aYGwkhm8mUrKcsE=;
+	s=arc-20240116; t=1759320946; c=relaxed/simple;
+	bh=Ug0SoXvIAOQxVCaHdHL2z7cZsNpGQXTPQ8N5oIwsgyk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TcGo7E+mzuEwXEpZfVTq5SLScnmtySM1q9l4A3lXwYMo6UlGWGyX49mcmBxhOY0P8toPzgqoUNK2jKoqM2PUV+wX6byTbpFOZHtJy5rpmwUHqvaE4/XVdTTCyx2G+zlAmpSRj6Tk+Y+JYjRptMZ4efdZGe8Vm4SXcb/2lodcLLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IxmtHI7Y; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-46e48d6b95fso45430915e9.3
-        for <stable@vger.kernel.org>; Wed, 01 Oct 2025 05:10:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1759320631; x=1759925431; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yt2/RiqsQaPl/L3x5B+o48QDSFj5vHrC7SC05R42/Fw=;
-        b=IxmtHI7Y69zAjJ/ziiSmBhgdrCkeVRXMqEXyJy2a/Ix8jn1NlGTTQRWSKvc0MnQzC2
-         cLtCM559tjNu2ckFN/xBUiBzhD5QQThxV7HwGUFDwrn0GPhE+kCJNBjvH62sJUBtuhDi
-         YbN/4dx9pSOPIb/P+G2iYvnLn3fEVx59So7sMeiH/INXclr8csTh/IB/GwsoUAq5XTDt
-         59D0p/liLSCx32xAXIBK7vqanTk5f2OunXaOHeMaiGItIgq7UDx9UlHe4KY3n2aY1s/R
-         DZcBFsBIa1t1HWuTJZ1lNk+xsfve+rG6IXpClj513KxKybUHANqI9wgL5yrthLhsiTKS
-         DLew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759320631; x=1759925431;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yt2/RiqsQaPl/L3x5B+o48QDSFj5vHrC7SC05R42/Fw=;
-        b=XiOxJTzvF87VKG8qCHIdKrJXAAwl10SGvKNjeHlyxodd+TRjlRcul8jHdKK1zzVNB1
-         0Wn5k1AxBmSznmsALZKCgT5viyVA5ed1LD1muM6clVv8tBYK6CVqhmCsNNlD4kromJTF
-         plnMESQa1KAlyALgCzOyv6su97k2QwkEtfaqDalbNQRt0oIsHKA1s/0QFEx0RatR1MQv
-         qowDuPH1AOYF5jKfNv8TacYEXTaOFUh8eBGjCi2GYlCFqmjazh9TpcynAEt2CKDI45Ii
-         nXCO374JgklXqvJqOC+mnlOWTxqSS3FB4MLWwfRdkOFC6OvGUmDjw+YOuudlTmACZIZs
-         eQ3A==
-X-Forwarded-Encrypted: i=1; AJvYcCW/IUMjas9VL2butWPbLNHqH5Lj2yxKejiYYk9S/xufUMipUbtLvL5dQpj5sZzN2uEtG3pME+8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeWFUps56cGPEASnsNJDCKY6HhRH4mgBcP95HFywqTKq22iz7B
-	DdZkZPDVsOBlyuRK3oSBTdlwAyJ1Aytvn4kbM68viM68F/7T37YkCppzw0BTWWSwDzE=
-X-Gm-Gg: ASbGnctntnwdVii4axQw2UZF8jGW1Pr91bR+sXLW2gT+sK6riJunMunuHMjAKGp0LnX
-	cNkjHNKGRMmE4oaK5Y3ExxHCl4Vec4sm53+FleMVzjWhJgPMh8yW/fo6EBGf5NQTvq4JgUC7sr9
-	Hs/zQZjoful1OKwcDnkDlFxsp4EgZX4/2AM7VmdDvvxOnWxF91yCs+cvTu8Wt2C/lLd8Oe1WX6D
-	KATDyTJmtOB9Skn3mG/4OqMNTkEQBYDJ5pGLUli8/UuHOf+VazKIwzTA7crB1RMaIapIz6G5kSi
-	E7OOPiTlFyCZTOQ77wm1y/FjWhVZ8e5rBwN1ir4APj7CW5szy3uqzVp1FHLLVVVtwWfyDVnV+Do
-	K+x02ukE45VyMqdir7ZqKubJ7CidJb/LX6xRSQJaQ9kjYgGCbNIfnBept4HWY8L4=
-X-Google-Smtp-Source: AGHT+IG4Fv3Ws0T0hfn9FRi9J8Hy8qhXiWqsQ+7mqBAvBUVbcM7w8H1ZOknsFTXOA3cvm76Wrim5lg==
-X-Received: by 2002:a05:600c:8206:b0:45b:88d6:8db5 with SMTP id 5b1f17b1804b1-46e612192d5mr31099915e9.12.1759320630850;
-        Wed, 01 Oct 2025 05:10:30 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-40fb72fb21esm26937295f8f.7.2025.10.01.05.10.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 05:10:30 -0700 (PDT)
-Date: Wed, 1 Oct 2025 15:10:27 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	achill@achill.org, Arnd Bergmann <arnd@arndb.de>,
-	linux-fsdevel@vger.kernel.org,
-	linux-block <linux-block@vger.kernel.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Ben Copeland <benjamin.copeland@linaro.org>
-Subject: Re: [PATCH 5.10 000/122] 5.10.245-rc1 review
-Message-ID: <aN0aMyU1D3N4WQy4@stanley.mountain>
-References: <20250930143822.939301999@linuxfoundation.org>
- <CA+G9fYvhoeNWOsYMvWRh+BA5dKDkoSRRGBuw5aeFTRzR_ofCvg@mail.gmail.com>
- <2025100105-strewn-waving-35de@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=BfgPIEof7VK0zR5URmyz3TWDatn1UInDM0B7+LRggAuNG1w0Za1G3gAXm8SaQomb1rLPd4wRtxXSsyN7n1vT+RZjecMXfqeutrkQo/uC1AIxj0kyZcSEe0Vm7yebDV5K3RUe3mWIsry1otFhbvDMJyU8MY6r7dh0DMjrCTJdZDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=tUYyUvKo; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tq6tqG82; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0QUtbbC8; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=+ouw00QD; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F182A1FD9D;
+	Wed,  1 Oct 2025 12:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759320918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lFi5Fj1xOeCOIglDwmt3tluJPzzYn8OSotgbNMb/9xA=;
+	b=tUYyUvKon9bCy30ai2OGqoJ2Nne1uHiVU23pzSlcdl1vT7kCZDCgtryVdNBffKCpmd4q6k
+	hgMMS3weUDdtB6NaG31/JT41Udjd/lSUWKGRHhW+AQ7x3MFcJUPn4yyw48eqh8Br8nuejr
+	0PAeHo7JKjUDgzdiBnjA+YpF/SeewJI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759320918;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lFi5Fj1xOeCOIglDwmt3tluJPzzYn8OSotgbNMb/9xA=;
+	b=tq6tqG822OuSRE3mAl63Xq1pGTVWsH7FLo+BJ+OxE3WHRc3PVAcxsyjPe3XDcrTuSe/lHe
+	G3b4XPFfSzJDiEDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0QUtbbC8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+ouw00QD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1759320917; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lFi5Fj1xOeCOIglDwmt3tluJPzzYn8OSotgbNMb/9xA=;
+	b=0QUtbbC8n1oGFpQYh7EA3VT7W9wuaeR/wdRwmAYI0flYDp17lpHK38eHdSc0cXj7uIbDQS
+	Nm1b2ZEbEZ8Z2MOCFa4NElZMoLfJT9+n3LOc/w2pGMY9LlO0mzMSeya8LbLQ9WUQXbzGtl
+	+Xa5L7LgRpxSWu2S4QhLuFxMSEkRAAs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1759320917;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lFi5Fj1xOeCOIglDwmt3tluJPzzYn8OSotgbNMb/9xA=;
+	b=+ouw00QDE8qkOcRRVK600666U6Wi+LcgFW4i9Rb1y25jAry0zQ3ddDQdptwORO/q6X/wcB
+	moV2/Ghhph/XjmCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5C7F413A42;
+	Wed,  1 Oct 2025 12:15:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9aeOFlQb3WjDeQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 01 Oct 2025 12:15:16 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 7E898A0A2D; Wed,  1 Oct 2025 14:15:11 +0200 (CEST)
+Date: Wed, 1 Oct 2025 14:15:11 +0200
+From: Jan Kara <jack@suse.cz>
+To: Jakub Acs <acsjakub@amazon.de>
+Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+	Amir Goldstein <amir73il@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Christian Brauner <brauner@kernel.org>, linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs/notify: call exportfs_encode_fid with s_umount
+Message-ID: <e4o5wuh2h7viev2khbr7excdm7xv6ubw3va55e56q4apjno62s@hu3ybnftbhhz>
+References: <20251001100955.59634-1-acsjakub@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,80 +105,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025100105-strewn-waving-35de@gregkh>
+In-Reply-To: <20251001100955.59634-1-acsjakub@amazon.de>
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,suse.cz,gmail.com,szeredi.hu,kernel.org];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email,suse.cz:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,amazon.de:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Queue-Id: F182A1FD9D
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.01
 
-On Wed, Oct 01, 2025 at 12:50:13PM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Oct 01, 2025 at 12:57:27AM +0530, Naresh Kamboju wrote:
-> > On Tue, 30 Sept 2025 at 20:24, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > This is the start of the stable review cycle for the 5.10.245 release.
-> > > There are 122 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > >
-> > > Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
-> > > Anything received after that time might be too late.
-> > >
-> > > The whole patch series can be found in one patch at:
-> > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.245-rc1.gz
-> > > or in the git tree and branch at:
-> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> > > and the diffstat can be found below.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > 
-> > The following LTP syscalls failed on stable-rc 5.10.
-> > Noticed on both 5.10.243-rc1 and 5.10.245-rc1
-> > 
-> > First seen on 5.10.243-rc1.
-> > 
-> >  ltp-syscalls
-> >   - fanotify13
-> >   - fanotify14
-> >   - fanotify15
-> >   - fanotify16
-> >   - fanotify21
-> >   - landlock04
-> >   - ioctl_ficlone02
-> > 
-> > Test regression: LTP syscalls fanotify13/14/15/16/21 TBROK: mkfs.vfat
-> > failed with exit code 1
-> > 
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > 
-> > We are investigating and running bisections.
-> > 
-> > ### Test log
-> > tst_test.c:1888: TINFO: === Testing on vfat ===
-> > tst_test.c:1217: TINFO: Formatting /dev/loop0 with vfat opts='' extra opts=''
-> > mkfs.vfat: Partitions or virtual mappings on device '/dev/loop0', not
-> > making filesystem (use -I to override)
-> > tst_test.c:1217: TBROK: mkfs.vfat failed with exit code 1
-> > HINT: You _MAY_ be missing kernel fixes:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c285a2f01d69
+On Wed 01-10-25 10:09:55, Jakub Acs wrote:
+> Calling intotify_show_fdinfo() on fd watching an overlayfs inode, while
+> the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
 > 
-> You are not missing this "fix".
+> This issue was found by syzkaller.
 > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=bc2473c90fca
+> Race Condition Diagram:
 > 
-> You are missing that one, but why is a overlayfs commit being cared
-> about for vfat?
+> Thread 1                           Thread 2
+> --------                           --------
 > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c45beebfde34a
+> generic_shutdown_super()
+>  shrink_dcache_for_umount
+>   sb->s_root = NULL
 > 
-> Another overlayfs patch that is not backported that far.  Again, why is
-> this a hint for vfat?
+>                     |
+>                     |             vfs_read()
+>                     |              inotify_fdinfo()
+>                     |               * inode get from mark *
+>                     |               show_mark_fhandle(m, inode)
+>                     |                exportfs_encode_fid(inode, ..)
+>                     |                 ovl_encode_fh(inode, ..)
+>                     |                  ovl_check_encode_origin(inode)
+>                     |                   * deref i_sb->s_root *
+>                     |
+>                     |
+>                     v
+>  fsnotify_sb_delete(sb)
+> 
+> Which then leads to:
+> 
+> [   32.133461] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+> [   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+> [   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tainted 6.17.0-rc6 #22 PREEMPT(none)
+> 
+> <snip registers, unreliable trace>
+> 
+> [   32.143353] Call Trace:
+> [   32.143732]  ovl_encode_fh+0xd5/0x170
+> [   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
+> [   32.144425]  show_mark_fhandle+0xbe/0x1f0
+> [   32.145805]  inotify_fdinfo+0x226/0x2d0
+> [   32.146442]  inotify_show_fdinfo+0x1c5/0x350
+> [   32.147168]  seq_show+0x530/0x6f0
+> [   32.147449]  seq_read_iter+0x503/0x12a0
+> [   32.148419]  seq_read+0x31f/0x410
+> [   32.150714]  vfs_read+0x1f0/0x9e0
+> [   32.152297]  ksys_read+0x125/0x240
+> 
+> IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was set
+> to NULL in the unmount path.
+> 
+> Fix it by protecting calling exportfs_encode_fid() from
+> show_mark_fhandle() with s_umount lock.
+> 
+> This form of fix was suggested by Amir in [1].
+> 
+> [1]: https://lore.kernel.org/all/CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com/
+> 
+> Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
+> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: Amir Goldstein <amir73il@gmail.com>
+> Cc: Miklos Szeredi <miklos@szeredi.hu>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: linux-unionfs@vger.kernel.org
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> ---
+> 
+> This issue was already discussed in [1] with no consensus reached on the
+> fix.
+> 
+> This form was suggested as a band-aid fix, without explicity yes/no
+> reaction. Hence reviving the discussion around the band-aid.
 
-That's test output, not something we added.  LTP tests can have a list
-of suggested commits.  LTP doesn't know what kernel you're running, it
-just prints out the list of commits.
+FWIW I'm working on a proper fix. But it's a larger rework so it will take
+some time to settle. For the time being, since this seems to happen in
+practical workloads, I guess we can live with this workaround so I'll pick
+this patch, add some comment about band-aid into the code and push it to
+Linus. Thanks!
 
-https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/syscalls/fanotify/fanotify13.c#L436
+								Honza
 
-regards,
-dan carpenter
-
+> 
+>  fs/notify/fdinfo.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/fs/notify/fdinfo.c b/fs/notify/fdinfo.c
+> index 1161eabf11ee..9cc7eb863643 100644
+> --- a/fs/notify/fdinfo.c
+> +++ b/fs/notify/fdinfo.c
+> @@ -17,6 +17,7 @@
+>  #include "fanotify/fanotify.h"
+>  #include "fdinfo.h"
+>  #include "fsnotify.h"
+> +#include "../internal.h"
+>  
+>  #if defined(CONFIG_PROC_FS)
+>  
+> @@ -46,7 +47,12 @@ static void show_mark_fhandle(struct seq_file *m, struct inode *inode)
+>  
+>  	size = f->handle_bytes >> 2;
+>  
+> +	if (!super_trylock_shared(inode->i_sb))
+> +		return;
+> +
+>  	ret = exportfs_encode_fid(inode, (struct fid *)f->f_handle, &size);
+> +	up_read(&inode->i_sb->s_umount);
+> +
+>  	if ((ret == FILEID_INVALID) || (ret < 0))
+>  		return;
+>  
+> -- 
+> 2.47.3
+> 
+> 
+> 
+> 
+> Amazon Web Services Development Center Germany GmbH
+> Tamara-Danz-Str. 13
+> 10243 Berlin
+> Geschaeftsfuehrung: Christian Schlaeger
+> Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+> Sitz: Berlin
+> Ust-ID: DE 365 538 597
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
