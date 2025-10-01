@@ -1,245 +1,190 @@
-Return-Path: <stable+bounces-182904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336C9BAFBAD
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 10:49:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D90BAFC6D
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 11:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C1AC4E258B
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 08:49:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 255033AA3B2
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 09:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BBE19DF5F;
-	Wed,  1 Oct 2025 08:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE04B2DC797;
+	Wed,  1 Oct 2025 09:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QRlqkMxc"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="P7Kexn1g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FA52494FF
-	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 08:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D062DAFDD;
+	Wed,  1 Oct 2025 09:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759308575; cv=none; b=KryaSMbSJVJGVkA5PGpDzWlj0ILHYb2WquTiP5/l3xSAQrVL4m5poGcvVir+Jrp+CulPQ4XiSQkevIzjogWmqI++cAjptjf09Tp9vlUAjgx3IAyZrvXCxlAGVmSUHj8WUk03YriZ3UlB/2/Fdt+wdkUl4m1mqFy89UTdQq2TP20=
+	t=1759309467; cv=none; b=QUrNKbz22zx/rT8TcFVtbxWjpzi2w8stLGZ8USJ49eS0rcdYAIULiH5UH+oLSz3IsgCMCkPWx2/JwLun9LKwdyChrxXeeXBB6xAk6bl49Sg39snbRKh4ueFdUdKx2aTVsDaTx3MxEUvlMLZX7HrBl8DrxRf1MsnKVqnffVHxEsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759308575; c=relaxed/simple;
-	bh=QRJ9liXxFkfG7M561OyeuFb7bBN/oesi5Tc/NH8DBeY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XbyuoHle1US2Zgy1hG8tlYQ+nk4YPVRshH4mx+SP+h6t0DilR8WBj2IrJwqTX3aAp9BBP+qPaLYxWAIeofKj8+CwM3KtUBRXo68JkMNe+F3+bhbOUDwtRzR7rMJp6SqnOfsSOlnyqRFRZAHoe1WlsXs2rHE6xkE/5gJDUwkEf34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QRlqkMxc; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b551350adfaso6560599a12.3
-        for <stable@vger.kernel.org>; Wed, 01 Oct 2025 01:49:33 -0700 (PDT)
+	s=arc-20240116; t=1759309467; c=relaxed/simple;
+	bh=7HSxwXm+a/QSLPKWcep56Ih/v+0i2+KazMsze1uGMZ8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HgnK/7ca0qyas8z742E8Qk8epg7nsEZcaJ86cK/Eb/OC7EoSJMDtEQZZZnM2jr/iqbH4zGvtnCrfI1Be8G8IrRZwzC1zoA2ghPx5tHN2HlKK0LJYM1KkrJ9Mb6ZSKg3tkcDv0pdtRZLMtu5XyXDIeXuJ9CvKYWPKkZQYFFewx7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=P7Kexn1g; arc=none smtp.client-ip=52.42.203.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1759308573; x=1759913373; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5lUFEDOlwk0GibJmBfeInBIlGX8sUYIM/tZA+M7nygI=;
-        b=QRlqkMxcCSflo5XSydV/qUWSvDiP8n/E5+8n0VGvGurCKoK5xAfgEPxBDyqZhJ19bk
-         S0GxHoeWoItQftkE6VzFDBTmWc/6QwnJLwImDw/0Mtir/i13rqlYPHSn8iGe+YSN61uq
-         /n2C7Qc3MnNz34J0AJPK6mXjwqfvqETazX4aDDRs6FCuFM5GDlqwPkDpY0Y4yD6FWHBb
-         iWWOwErWlnPPKTneEU8gf0HzTgKYWDdkmaQ3sMZqUZu9J0IwQSbrE17L/gsbw+cehYJ8
-         Lvx66TJl/hpOHxuMrgthJGHkofzBmKLPZCirdGTnYqolnFxCBHXfaVbBSVm/hyLcfGt7
-         YnHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759308573; x=1759913373;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5lUFEDOlwk0GibJmBfeInBIlGX8sUYIM/tZA+M7nygI=;
-        b=FMI+xTz+GRmyhGtDMENxre/RY6k8PzwbIGjaV0AOSkUSDctsR5H5Raa+7+Sr+xw6EV
-         Lnx3voZwrfrUt0eJFctnxSbe1wRSGVdTYeNNby57xqOXpQskIlbozuo6LSWiS2uEHZVo
-         TfKFXe2WmR2rjjyEDBP3+8CHXDI8vpDQNYjND53KqtxYcoMyULLOaIU1rzJze75fd9g8
-         3SxCQkze+T0I3xZSqWT0fa9tCSiFwqG5THz3B4g+iLjnjNdBPSCjyVbM67wz8qNDWPHG
-         AhNSraeBnwoMMIJSCt12x2b7abpyP7Ef8KyI8j5t3SXVG2ZUr9VBB/OmgmlJqV0fryQ/
-         IQ+w==
-X-Gm-Message-State: AOJu0YwmvMtJRfvcD8nTatbfwYmr/NOlG8LjfI7FOhA8VhlDhHt8SvWs
-	Qf2BYns7sipo9C7kxQGTkt2m1PK+cXtz1bG5bLXFMokVUbHfxCQAOpL2oAr4qqveqC2k+sGUBnz
-	uqQNZ9bJfUjIx8sQe1qJraq6RkVOVqop+PuKggneJ0w==
-X-Gm-Gg: ASbGncsyTDKVDNo8E42PiG3hpcXLQETzEBd0FvQXTkDOhEghFUYKx4Txk2VzaeW/yQr
-	KI7lPIT8jrPeqMSDTEOj9hNx4cZp+CcP7XrgZ+6389KvG14ZDHGsQ2AIMs1NRwOkwUdbnyIxuEN
-	pvM+TX4+mSp3eZQEDYYP9bJryipww0KuvwheZDRgPCrfSbKkzR7ClHBcpQR6MlrfUB7Duo7uhJH
-	EXSa+2+O1hQA+jtQgmWsy8rKDGRZqGlm+DRMoNT5nos4t/tMTLGEaXODGwFvRe/nPlh7FZtGWCe
-	JRVEBRwb6D01WzK83BBU/UOawdkF/1k=
-X-Google-Smtp-Source: AGHT+IHXdQvGj6eUadzCY2tlzRyfpnMGPewfjVo1faJS14ozece7Ob1BLBpJl8+EOXhQG2U/4x219HPYP7/eaFUDrEs=
-X-Received: by 2002:a17:903:b85:b0:25d:5b09:a201 with SMTP id
- d9443c01a7336-28e7f2c6207mr36488825ad.27.1759308572985; Wed, 01 Oct 2025
- 01:49:32 -0700 (PDT)
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1759309465; x=1790845465;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=OzPLc+IFhXU2hCT/ga3y8QABI/mqNeOmZhS6AUI98bs=;
+  b=P7Kexn1gutVrcl+bBNfXrbUMeg66qNUqO77t4iMoO42bl8CoDRoxikuI
+   6CHIMeFUdwjS2GfvRUQiNbgnRUIEXKsS/TQyJamZCuFnvRG+wYzWb5ViR
+   psvT5StyoNzFVjTxWMKJMdtHxHUo8pCTE4BINvd+QXrZn9uwsZQjMDJA0
+   ZpXTds+W2jDtmtlflKKKdKXQQmY3RtJqWs0S2WKLRR102IPOsFOrztzAT
+   +IpynbmXoIhcLVSuHernbgeRxcFfkDBrVEApl9Am4tJyQ9p2VpNS/Xcsy
+   Y/0dNYLGE2nzGA7VK0XtspcxgqKjBKGcYeMQLfR7IKqunS3+TL3g5mhsc
+   A==;
+X-CSE-ConnectionGUID: FGEcwYeHToCCs/kvg08eTA==
+X-CSE-MsgGUID: fHqXDOd5TZmmQ05DQ2mzkQ==
+X-IronPort-AV: E=Sophos;i="6.18,306,1751241600"; 
+   d="scan'208";a="4058017"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 09:04:25 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:30255]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.32.190:2525] with esmtp (Farcaster)
+ id e9f24429-472f-496a-a05a-30cd931969d7; Wed, 1 Oct 2025 09:04:25 +0000 (UTC)
+X-Farcaster-Flow-ID: e9f24429-472f-496a-a05a-30cd931969d7
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 1 Oct 2025 09:04:25 +0000
+Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
+ (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 1 Oct 2025
+ 09:04:23 +0000
+From: Jakub Acs <acsjakub@amazon.de>
+To: <linux-mm@kvack.org>
+CC: <acsjakub@amazon.de>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>, <peterx@redhat.com>,
+	<axelrasmussen@google.com>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v3 1/2] mm/ksm: fix flag-dropping behavior in ksm_madvise
+Date: Wed, 1 Oct 2025 09:03:52 +0000
+Message-ID: <20251001090353.57523-2-acsjakub@amazon.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251001090353.57523-1-acsjakub@amazon.de>
+References: <20251001090353.57523-1-acsjakub@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250930143831.236060637@linuxfoundation.org>
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 1 Oct 2025 14:19:21 +0530
-X-Gm-Features: AS18NWCvl1H8hhR2E11ihfNR1mldgcGLnS6MK4rJ4AfPqydTb0hfPaefWVGOAA0
-Message-ID: <CA+G9fYvN7QxsZqQhHKqw-K4kn=rby4HmEyn=zhN-M_7uk=qLKA@mail.gmail.com>
-Subject: Re: [PATCH 6.16 000/143] 6.16.10-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: EX19D038UWC002.ant.amazon.com (10.13.139.238) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On Tue, 30 Sept 2025 at 20:31, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.16.10 release.
-> There are 143 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.16.10-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.16.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+syzkaller discovered the following crash: (kernel BUG)
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+[   44.607039] ------------[ cut here ]------------
+[   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+[   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+[   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+<snip other registers, drop unreliable trace>
 
-## Build
-* kernel: 6.16.10-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: e1acc616e91adfbab433eb599e00d88f0bcdb07f
-* git describe: v6.16.9-144-ge1acc616e91a
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.16.y/build/v6.16=
-.9-144-ge1acc616e91a
+[   44.617726] Call Trace:
+[   44.617926]  <TASK>
+[   44.619284]  userfaultfd_release+0xef/0x1b0
+[   44.620976]  __fput+0x3f9/0xb60
+[   44.621240]  fput_close_sync+0x110/0x210
+[   44.622222]  __x64_sys_close+0x8f/0x120
+[   44.622530]  do_syscall_64+0x5b/0x2f0
+[   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   44.623244] RIP: 0033:0x7f365bb3f227
 
-## Test Regressions (compared to v6.16.8-150-gfef8d1e3eca6)
+Kernel panics because it detects UFFD inconsistency during
+userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
 
-## Metric Regressions (compared to v6.16.8-150-gfef8d1e3eca6)
+The inconsistency is caused in ksm_madvise(): when user calls madvise()
+with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+mode, it accidentally clears all flags stored in the upper 32 bits of
+vma->vm_flags.
 
-## Test Fixes (compared to v6.16.8-150-gfef8d1e3eca6)
+Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+and int are 32-bit wide. This setup causes the following mishap during
+the &= ~VM_MERGEABLE assignment.
 
-## Metric Fixes (compared to v6.16.8-150-gfef8d1e3eca6)
+VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+promoted to unsigned long before the & operation. This promotion fills
+upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+even for a signed conversion, this wouldn't help as the leading bit is
+0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+the upper 32-bits of its value.
 
-## Test result summary
-total: 351365, pass: 323894, fail: 6740, skip: 20731, xfail: 0
+Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+BIT() macro.
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 138 passed, 1 failed
-* arm64: 57 total, 56 passed, 1 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 27 passed, 7 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 39 passed, 1 failed
-* riscv: 25 total, 25 passed, 0 failed
-* s390: 22 total, 22 passed, 0 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 47 passed, 2 failed
+Note: other VM_* flags are not affected:
+This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+all constants of type int and after ~ operation, they end up with
+leading 1 and are thus converted to unsigned long with leading 1s.
 
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-rust
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* modules
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
+Note 2:
+After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+no longer a kernel BUG, but a WARNING at the same place:
 
---
-Linaro LKFT
-https://lkft.linaro.org
+[   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+
+but the root-cause (flag-drop) remains the same.
+
+Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+---
+ include/linux/mm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1ae97a0b8ec7..c6794d0e24eb 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -296,7 +296,7 @@ extern unsigned int kobjsize(const void *objp);
+ #define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
+ #define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
+ #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
+-#define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
++#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
+ 
+ #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+ #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
+-- 
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
