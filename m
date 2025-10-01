@@ -1,125 +1,169 @@
-Return-Path: <stable+bounces-182973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD877BB13D5
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 18:21:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63998BB13EA
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 18:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7641890313
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 16:21:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23FA416CF22
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 16:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C27284896;
-	Wed,  1 Oct 2025 16:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EA9284686;
+	Wed,  1 Oct 2025 16:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8au/F/y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZL/3jqA2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D2D2749CF
-	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 16:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F09521579F;
+	Wed,  1 Oct 2025 16:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759335665; cv=none; b=fJKgjPphvRM8+cb5l0rt8s7U/o79nM7DDKf7QE07MzHeOsH8B2TyzDbLWccVdd0WQE+QiXNs4m3qx2EjUXAIOhO1oq6GrDpRyMVtzumDwHM9GomhWnnfYZG2x3vKpW0WKZw4N/hByHRlx8iY4HfpvO5yKhw16mvKmEUaYumhzJs=
+	t=1759335868; cv=none; b=nf5zN+bItdb57T4ekAD2lRozcbkdR8sEbK99OFmXGDHpMBG5s018HMMlsbVz6y2UakHvICfIm6hjJin2XD5Y0KGd4cDTQamVBX19hwbgTetxFBjedXoqu+gA+tgiP3x9vz5uBYr8aco0BOPkaBNeyUyJbCDx/FYxQsVAeZZMRZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759335665; c=relaxed/simple;
-	bh=dQwY8oJbnBTTFC31L8Jg28jquYZBGcZkQ4P0+XW1Rns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QD30IfWdVK34m+slY0z1skShIYD0R3cqXa6bh43Z83G10mDxUNxIkzTGJNgsLuDfprAyfkESlglbGZTIEplBqzDYwjg+as+Imv0LZSHdf1qDG+3nPxjexUwsxaJr/ETzC89Q0DNUaAkIHYuYkLpkaQjzTvjJ6750st2P419TUjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8au/F/y; arc=none smtp.client-ip=209.85.166.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-42791510fe3so4949355ab.0
-        for <stable@vger.kernel.org>; Wed, 01 Oct 2025 09:21:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1759335662; x=1759940462; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I0Bk/1XsHqvwUKw08M8vbOlRk6GNltlYfeCC1qY6aTs=;
-        b=e8au/F/y2X6fLRFel6ap370XESBKRXRqzllUi0I2WONmo6tWiCWtXrSwUCu0UunMlk
-         vLB+z55t2XlXGJVCUIWgiH1Q6gQyCam3b+TavnFIlMvYF8aI6M2xmpJvpdn7N9TIKU2z
-         1Gs5ueS6y6FlQ3rBQmPp3LbH8AanW42ARTthw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759335662; x=1759940462;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I0Bk/1XsHqvwUKw08M8vbOlRk6GNltlYfeCC1qY6aTs=;
-        b=IqwGAyD+RzX4jYeoHwlWQA5TrwQqq9qGt/8JsEN8x8Sa/eDVAVzs+/wyCiCCN8lRb/
-         AoLGiJbHLtAtr4FEn8eUFc7XUVO5g7N7YRswYwtxLGmMXHUiZ3+WDlzjZRLjZUNmX+we
-         4eu4gfB7i76Ls7Y13t3zBP+i9q+kWCfUL+srhyeerhCiachS278U0fQV5R/nXmPNnwSt
-         gYglnFTDdWPTDvu+OL1DTtjE1LJPyLbXigdXQsfAHxXwVNpCOKVW9c3TUz2zF4ontsG0
-         m3QA/rXE+kJFZdbjUzZpYoeYbrOZEEkaK4myDa+TPSyG2hCSCVlydrOZB4w3m23/s90C
-         QJ6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVo3ZIIEXwhDMI0F5bmiSK0YmXIBy0ENGN+Aq/UG40j8ahdMQ8jW5IkB0HYZ/Ft6yxkZEN8SOc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzf3NjuwvSeCaHLyYc6eDy2fSjDtA74YEMrbVGz03IY13IWPGRK
-	9XXERo7y15wVL5IqfkFghBO+DP01ZlxmXnIRAAIL2Q7FQs3A/EcoMQrVRBGv3Kbn8pKBBAUTIrZ
-	SBLXT
-X-Gm-Gg: ASbGncuxIR4j/boi2uA/OpqElGeUcekdY2E3g2UnvP7gAL5zoyL2DHbEB8vTWh4J2aU
-	OMG1aF3v5DDDBz1vIXuvuC7xhjdl2qlYRZHNgYBrh7sKwYZcbKAdwIGltVemeyuuWha7D415JEn
-	FyBJTEEF3TAW7u/4Y9JfcHjZzAjbrILZ+YYpjw14MtmBPGc2SxGFFoSjkbEmvYCVaTaCzvdVPwa
-	YrWYAcIDHDsAL4l2WLdLp/Qi9Pokc0+jBAbW9q4E98/3IPdpNCnlLTGclCUu9wFO80/gJRhA9wp
-	8cFuuchpyVceiKCC175CpXuS/C2eCtHWQmRrMrnX/v4NgOaBlNOPDOtczhIPP6+W5ftR/ED335r
-	tzmiPsiEGdrwDYJJWpk88UmQKrzHhuLqgMVGXxatZX9FBArUpFpf+YBdzJp0=
-X-Google-Smtp-Source: AGHT+IE5vkMaEzImU6yFMmEFTvIP5csOxBViu8ui15pbJItIu0M0O39f8AHeTTk0IGXWIMdNvHoLTA==
-X-Received: by 2002:a05:6e02:214d:b0:423:2666:4687 with SMTP id e9e14a558f8ab-42d8b1e1a49mr2165795ab.15.1759335662156;
-        Wed, 01 Oct 2025 09:21:02 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-42d8b281664sm299785ab.25.2025.10.01.09.21.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Oct 2025 09:21:01 -0700 (PDT)
-Message-ID: <1b7e8b60-faee-418c-ad23-c2e659ffd03c@linuxfoundation.org>
-Date: Wed, 1 Oct 2025 10:21:00 -0600
+	s=arc-20240116; t=1759335868; c=relaxed/simple;
+	bh=01AGB1gdjYvOKf0TM/UPBA1tCLQ+5X4VqqcP/0Bwqw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hFEjxiFLSjawreA1+qRn4GZoPJ168JJ2x3rboSm909P0BzR1Kj/OsZisap1C5kvvb6CXh138oa+gkp4Tu/TSUAPUDb5PGtRkztnuPKnqOwhtUmm6xMd2dCySWOhQkuczIjOyIm47Hl+nCBsVonfE86GfFUjfniZcib0GBTnSyrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZL/3jqA2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A004DC4CEF5;
+	Wed,  1 Oct 2025 16:24:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759335868;
+	bh=01AGB1gdjYvOKf0TM/UPBA1tCLQ+5X4VqqcP/0Bwqw4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZL/3jqA2aka2NqH6Al6isbHvtsnXOZebLu5d8qM8TlwC3ikLyeh7111BkaVlk628A
+	 bSm3KRucyThqtk3VGqnBxFrQ21ZSvqWUHl+xyczKdXMJxZBTs4zarSAr8at2+SQ5t+
+	 f/RCqcYbpVyQtqGGyx17D7582WQ2wwc+3n4VgFSvs5SdgTG58HPd7OUqYBeqPCWLpK
+	 eUIRZWQ0/aFD9H0EUS5oL7m0L7U6retsnfr56hHam3lI3kZzG1RexJHhCyb/yp/Evv
+	 y3ZfJLOT2nMhShedooEm2ntvSUKqjS2tO/gw8AJX9tkUcZATE+sCYyQ+hbgxYLojJ5
+	 tSH7b/U64cHdw==
+Date: Wed, 1 Oct 2025 09:23:05 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ard Biesheuvel <ardb@kernel.org>, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>
+Subject: Re: [PATCH] stable: crypto: sha256 - fix crash at kexec
+Message-ID: <20251001162305.GE1592@sol>
+References: <20251001-stable_crash-v1-1-3071c0bd795e@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 00/81] 5.4.300-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251001-stable_crash-v1-1-3071c0bd795e@debian.org>
 
-On 9/30/25 08:46, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.300 release.
-> There are 81 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Oct 01, 2025 at 09:07:07AM -0700, Breno Leitao wrote:
+> Loading a large (~2.1G) files with kexec crashes the host with when
+> running:
 > 
-> Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
-> Anything received after that time might be too late.
+>   # kexec --load kernel --initrd initrd_with_2G_or_more
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.300-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
+>   UBSAN: signed-integer-overflow in ./include/crypto/sha256_base.h:64:19
+>   34152083 * 64 cannot be represented in type 'int'
+>   ...
+>   BUG: unable to handle page fault for address: ff9fffff83b624c0
+>   sha256_update (lib/crypto/sha256.c:137)
+>   crypto_sha256_update (crypto/sha256_generic.c:40)
+>   kexec_calculate_store_digests (kernel/kexec_file.c:769)
+>   __se_sys_kexec_file_load (kernel/kexec_file.c:397 kernel/kexec_file.c:332)
+>   ...
 > 
-> thanks,
+> (Line numbers based on commit da274362a7bd9 ("Linux 6.12.49")
 > 
-> greg k-h
+> This is not happening upstream (v6.16+), given that `block` type was
+> upgraded from "int" to "size_t" in commit 74a43a2cf5e8 ("crypto:
+> lib/sha256 - Move partial block handling out")
 > 
+> Upgrade the block type similar to the commit above, avoiding hitting the
+> overflow.
+> 
+> This patch is only suitable for the stable tree, and before 6.16, which
+> got commit 74a43a2cf5e8 ("crypto: lib/sha256 - Move partial block
+> handling out")
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Fixes: 11b8d5ef9138 ("crypto: sha256 - implement base layer for SHA-256") # not after v6.16
+> Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+> Reported-by: Tobias Fleig <tfleig@meta.com>
+> ---
+>  include/crypto/sha256_base.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/crypto/sha256_base.h b/include/crypto/sha256_base.h
+> index e0418818d63c8..fa63af10102b2 100644
+> --- a/include/crypto/sha256_base.h
+> +++ b/include/crypto/sha256_base.h
+> @@ -44,7 +44,7 @@ static inline int lib_sha256_base_do_update(struct sha256_state *sctx,
+>  	sctx->count += len;
+>  
+>  	if (unlikely((partial + len) >= SHA256_BLOCK_SIZE)) {
+> -		int blocks;
+> +		size_t blocks;
+>  
+>  		if (partial) {
+>  			int p = SHA256_BLOCK_SIZE - partial;
+> 
+> ---
 
-Compiled and booted on my test system. No dmesg regressions.
+This looks fine, but technically 'unsigned int' would be more
+appropriate here, given the context.  If we look at the whole function
+in 6.12, we can see that it took an 'unsigned int' length:
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+ static inline int lib_sha256_base_do_update(struct sha256_state *sctx,
+ 					    const u8 *data,
+ 					    unsigned int len,
+ 					    sha256_block_fn *block_fn)
+ {
+ 	unsigned int partial = sctx->count % SHA256_BLOCK_SIZE;
+ 
+ 	sctx->count += len;
+ 
+ 	if (unlikely((partial + len) >= SHA256_BLOCK_SIZE)) {
+-		int blocks;
++		size_t blocks;
+ 
+ 		if (partial) {
+ 			int p = SHA256_BLOCK_SIZE - partial;
+ 
+ 			memcpy(sctx->buf + partial, data, p);
+ 			data += p;
+ 			len -= p;
+ 
+ 			block_fn(sctx, sctx->buf, 1);
+ 		}
+ 
+ 		blocks = len / SHA256_BLOCK_SIZE;
+ 		len %= SHA256_BLOCK_SIZE;
+ 
+ 		if (blocks) {
+ 			block_fn(sctx, data, blocks);
+ 			data += blocks * SHA256_BLOCK_SIZE;
+ 		}
+ 		partial = 0;
+ 	}
+ 	if (len)
+ 		memcpy(sctx->buf + partial, data, len);
+ 
+ 	return 0;
+ }
 
-thanks,
--- Shuah
+This also suggests that files with lengths greater than UINT_MAX are
+still broken.  Is that okay?
+
+Anyway, I'm glad that I fixed all these functions to use size_t lengths
+in newer kernels...
+
+- Eric
 
