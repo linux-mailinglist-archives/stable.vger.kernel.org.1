@@ -1,165 +1,99 @@
-Return-Path: <stable+bounces-182959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E80BB0EFE
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 17:06:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB86BB0F64
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 17:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97CCF19C2104
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 15:05:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D4514C7D10
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 15:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990C92765CA;
-	Wed,  1 Oct 2025 15:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4531DD9AD;
+	Wed,  1 Oct 2025 15:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ngL55oMb"
 X-Original-To: stable@vger.kernel.org
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFD1274B2B;
-	Wed,  1 Oct 2025 15:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330EC274B2B
+	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 15:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759330839; cv=none; b=qII56hyguR64DcHbTDcCXuWGS99Za4rDJt3EQp6wwSrkY6VcoWwMUQO27Dd5fTJLHC3uKIyeYsoDb4edWCHX47CBAH/bj69Ur3+XhrCBOtJr7uRX5/iHuX0+FgTD/7J23H9WBmMuG7kFhDOp+DrkIYAmKsElNulb7O15PfF763Y=
+	t=1759330875; cv=none; b=jO5KkpAi/ZzkqtCuuv2OSWpMxfhiAjczXwHeQxL0Fh4J57P1Wfs/xjoZnNJkkKuoKopV1/m1AqNgo6/KojgA1eArVl9Jv+6+sMXM6rA9TRsYWlgGp6ccRvEm3Ws/joy5MxrJcWbM4FypQRwUi92F4kVoCgCVemP4y5g0Hic9uF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759330839; c=relaxed/simple;
-	bh=lgPpTuB3gcB4yBO91fExEFcoqC51GI9wHSTCGPHZhSE=;
-	h=Date:Message-ID:In-Reply-To:References:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=WqE1tljYLwnZfl4bavlqsBkFiarV5A7Ch9vh0+/XEONzSwHa+xOlpemalCE7k4qPeyREHrvE41iOMi9LV/8kjUxSf6Zn+UFO5Ue6/Vg541EmbcNNVY6xRLXB9qOLTIU/aLR59S4Zri56nLxM2SlhMrA6kc2SSfguQOSmvGWFRCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4ccJ5G4dFvz5BNRd;
-	Wed, 01 Oct 2025 23:00:34 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl1.zte.com.cn with SMTP id 591F0NDx015186;
-	Wed, 1 Oct 2025 23:00:23 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Wed, 1 Oct 2025 23:00:27 +0800 (CST)
-Date: Wed, 1 Oct 2025 23:00:27 +0800 (CST)
-X-Zmail-TransId: 2af968dd420b417-08211
-X-Mailer: Zmail v1.0
-Message-ID: <20251001230027125gluddf7-yGz-nXN3gvN6z@zte.com.cn>
-In-Reply-To: <202510012256278259zrhgATlLA2C510DMD3qI@zte.com.cn>
-References: 202510012256278259zrhgATlLA2C510DMD3qI@zte.com.cn
+	s=arc-20240116; t=1759330875; c=relaxed/simple;
+	bh=AJUBybfoJHAkwjyqZioRdryCnb7qBixUgcJAiZUvD04=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=bqySnTVvKdFXyeu8JlxkfmnhLFg7oltsEC+v8DKXtwsb+5uIAT3rQN169bKCQNGsvb+jCJJuTlstDG7vW3gMlcfBffE0VoQ4V0m+vbmSG8+nXmdv0jbrNpVmZPLvmce6ug+NUOxIu0jj8X4jmVY4gvha0DZxRRZgF/qLyxo22jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ngL55oMb; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759330874; x=1790866874;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=AJUBybfoJHAkwjyqZioRdryCnb7qBixUgcJAiZUvD04=;
+  b=ngL55oMbbw1gDy+6qwtaZ7fTlX6KX1klLc0YIx3q8j/9oy1E2t2jBFEU
+   hQkrqZbwGwT2E+tRZUP7NLdJb3gm5Pm/z/KYqAIGUfptrInECNiJzD9e+
+   EHdqpYluMRznxMItjy6Ufmx006xVBN18fx1MfgvdrqTi8Gt2sya5iPC2b
+   lG7C3h9ptVxaGJwfwNJdC5I90Xveiim7p/D0d9pmyXzY0NGr51AjmpW6r
+   T6NcSy29DGXfLuIpmaOkvZmgHmCzLMRF93Pi44sa/Z8Xi0qu4ESNwMQCw
+   CpSFwlKUh/9tLPAIE1BbEz6JNVO7KPnE1z2PRcdb6qMTwGNFe5cVUXccY
+   Q==;
+X-CSE-ConnectionGUID: GVG0O+pXRyK5oVNbS00fAw==
+X-CSE-MsgGUID: HcFySMr1RDa3GhTzP1Nubw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="79028521"
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; 
+   d="scan'208";a="79028521"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 08:01:14 -0700
+X-CSE-ConnectionGUID: Q1ESADMrT9i/JW2oUpAEVw==
+X-CSE-MsgGUID: nSg5cRdiS5W6+uV0Q1KiFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; 
+   d="scan'208";a="178420274"
+Received: from lkp-server01.sh.intel.com (HELO 2f2a1232a4e4) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 01 Oct 2025 08:01:13 -0700
+Received: from kbuild by 2f2a1232a4e4 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v3yKM-000379-1U;
+	Wed, 01 Oct 2025 15:01:10 +0000
+Date: Wed, 1 Oct 2025 23:00:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: xu.xin16@zte.com.cn
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH linux-next 1/2] tools: add ksm-utils tools
+Message-ID: <aN1CEh_NQeBBr5Oj@6acc96db341b>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>, <david@redhat.com>
-Cc: <chengming.zhou@linux.dev>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        <tujinjiang@huawei.com>, <shr@devkernel.io>, <xu.xin16@zte.com.cn>,
-        <wang.yaxin@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHQgMi8yXSBtbS9rc206IGZpeCBleGVjL2ZvcmsgaW5oZXJpdGFuY2Ugc3VwcG9ydCBmb3IgcHJjdGw=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 591F0NDx015186
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Wed, 01 Oct 2025 23:00:34 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 68DD4212.000/4ccJ5G4dFvz5BNRd
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202510012258194755dOoRXl-9afv5zIk0QwO_@zte.com.cn>
 
-From: xu xin <xu.xin16@zte.com.cn>
+Hi,
 
-Background
-==========
-The commit d7597f59d1d33 ("mm: add new api to enable ksm per process") introduce
-MMF_VM_MERGE_ANY for mm->flags, and allow user to set it by prctl() so that the
-process's VMAs are forcely scanned by ksmd. Sequently, the commit 3c6f33b7273a
-("mm/ksm: support fork/exec for prctl") support inheritsingMMF_VM_MERGE_ANY flag
-when a task calls execve(). Lastly, The commit 3a9e567ca45fb
-("mm/ksm: fix ksm exec support for prctl") fixed the issue that ksmd doesn't scan
-the mm_struct with MMF_VM_MERGE_ANY by adding the mm_slot to ksm_mm_head
-in __bprm_mm_init().
+Thanks for your patch.
 
-Problem
-=======
-In some extreme scenarios, however, this inheritance of MMF_VM_MERGE_ANY during
-exec/fork can fail. For example, when the scanning frequency of ksmd is tuned
-extremely high, a process carrying MMF_VM_MERGE_ANY may still fail to pass it to
-the newly exec'd process. This happens because ksm_execve() is executed too early
-in the do_execve flow (prematurely adding the new mm_struct to the ksm_mm_slot list).
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-As a result, before do_execve completes, ksmd may have already performed a scan and
-found that this new mm_struct has no VM_MERGEABLE VMAs, thus clearing its
-MMF_VM_MERGE_ANY flag. Consequently, when the new program executes, the flag
-MMF_VM_MERGE_ANY inheritance fails!
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Reproduce
-========
-Prepare ksm-utils in the prerequisite PATCH, and simply do as follows
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH linux-next 1/2] tools: add ksm-utils tools
+Link: https://lore.kernel.org/stable/202510012258194755dOoRXl-9afv5zIk0QwO_%40zte.com.cn
 
-echo 1 > /sys/kernel/mm/ksm/run;
-echo 2000 > /sys/kernel/mm/ksm/pages_to_scan;
-echo 0 > /sys/kernel/mm/ksm/sleep_millisecs;
-ksm-set -s on [NEW_PROGRAM_BIN] &
-ksm-get -a -e
-
-you can see like this:
-Pid         Comm                Merging_pages  Ksm_zero_pages    Ksm_profit     Ksm_mergeable     Ksm_merge_any
-206         NEW_PROGRAM_BIN     7680           0                 30965760       yes               no
-
-Note:
-If the first time don't reproduce the issue, pkill NEW_PROGRAM_BIN and try run it
-again. Usually, we can reproduce it in 5 times.
-
-Root reason
-===========
-The commit d7597f59d1d33 ("mm: add new api to enable ksm per process") clear the
-flag MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs.
-
-Solution
-========
-Remove the action of clearing MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs.
-because perhaps their mm_struct has just been added to ksm_mm_slot list, and its
-process has not yet officially started running or has not yet performed mmap/brk to
-allocate anonymous VMAS.
-
-Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
-Fixes: d7597f59d1d3 ("mm: add new api to enable ksm per process")
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-Cc: stable@vger.kernel.org
-Cc: Stefan Roesch <shr@devkernel.io>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
----
- mm/ksm.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 04019a15b25d..17c7ed7df700 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2617,8 +2617,14 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 		spin_unlock(&ksm_mmlist_lock);
-
- 		mm_slot_free(mm_slot_cache, mm_slot);
-+		/*
-+		 * Only clear MMF_VM_MERGEABLE. We must not clear
-+		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
-+		 * perhaps their mm_struct has just been added to ksm_mm_slot
-+		 * list, and its process has not yet officially started running
-+		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
-+		 */
- 		mm_flags_clear(MMF_VM_MERGEABLE, mm);
--		mm_flags_clear(MMF_VM_MERGE_ANY, mm);
- 		mmap_read_unlock(mm);
- 		mmdrop(mm);
- 	} else {
 -- 
-2.25.
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
