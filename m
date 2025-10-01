@@ -1,93 +1,116 @@
-Return-Path: <stable+bounces-182983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4C7BB159B
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 19:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E44BB1615
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 19:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42AF94C162B
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 17:20:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C23874C3B17
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 17:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19D12D3737;
-	Wed,  1 Oct 2025 17:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31BE2C033C;
+	Wed,  1 Oct 2025 17:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1WXe76k"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GsEUWvSR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D6D29BDBF;
-	Wed,  1 Oct 2025 17:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEFE24C077
+	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 17:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759339241; cv=none; b=QhPgzzvCvYENNMHks84sRZj0xd/7BhphVGH7RjQK4Y+2+11+NdAXe2i3+jIEZX/q30gBij8hGgRp7JrWgEQ/nnX9uSgI8w7wd8o+krf0knTDeUdwxeihW8XpTom99RArXflUZdAp0B7pLWMQeSFMsSQiH6XDkYZmQPVeqRuVAKQ=
+	t=1759340379; cv=none; b=f4xyg4FHLZj7De8ioPnV2fPcAaTfC2/AL1U8x9IeLOgI79cV3fxZ6fcCG3AVXXdctW9RN9SI96g029ACgKALVuCP8N/E4fvXERW7zCs3A2gFntJQWyvHAZxoH+U8s0MW1J+h1k9U/IMVjhgqXiGlbG6Qxgw+LtRmw3X2V6+RKKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759339241; c=relaxed/simple;
-	bh=27k4ZitPCWfOg29FMBN+dSrTbjY9RbTKmo7R7qvh9Og=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cy+8HcvO6A9apFLuv8ROStaoZ8klYVQ+EPhyP74R+D7McSNKbQ2MLF+M4S0uQ1Ym72DapLx00WYLhKzFjtdevN95iAZXDdZn3bSwyrSSnBcKmzXEzGNVUGHRK9zIZwAN+qHPNlgsY57n15CbHS1AO6rIn3D6Z0mTfMHG9y33Wc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1WXe76k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED59C4CEF1;
-	Wed,  1 Oct 2025 17:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759339241;
-	bh=27k4ZitPCWfOg29FMBN+dSrTbjY9RbTKmo7R7qvh9Og=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1WXe76kPEddCsEYRwHDDDcS4SHbxrINixi8qpfRGd1n/EObyLGpPFX9tXBOiIALY
-	 rRoXt5BLBV3+3cIBUJLaEek+zxAJpr1LvvlgkwofQ9H8TSjFFhNOtBhadqFwrmhyEp
-	 vvOIOtozEFuuP8Xb1eagkIn1PwS+WeNSZ9wfdahN33GQmKwIgNAhktj1oAebgOvaa4
-	 kjPA8SlLUCJvc+ZMfxmHEDwlKxHPFlEXWVH2aC5mRHEEAY2nstPKFKLzOpArsyR3xg
-	 217duJvJ6pJpAn9RE0zAaJurJ3OcYhMZMXyIEhu5nx3nqCXWoI9HLTV2wngFsnoZ7y
-	 +yv3Nl8G5geLQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.6 00/91] 6.6.109-rc1 review
-Date: Wed,  1 Oct 2025 19:20:32 +0200
-Message-ID: <20251001172032.43335-1-ojeda@kernel.org>
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+	s=arc-20240116; t=1759340379; c=relaxed/simple;
+	bh=85ybsFmz254A1jGBcJtvJCoNVq8PIXBF1LySDzHbvOo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LoKhH9PHR7/K9JtGE4kaZ3BYvoIQK4ca3sGF0etthjDntK7bt6M2zRmv32kS3Xu0YrQACsn+GB0vsSejiDTDjDF3bajRs6rbk1m3NcXAX67rHhx1b8B0dsiDDYesb8zgDGUpYVO2FSeYkcsscO2R87QsjgL2tFjLvn0Zf6DNoBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GsEUWvSR; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-269640c2d4bso47485ad.2
+        for <stable@vger.kernel.org>; Wed, 01 Oct 2025 10:39:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759340377; x=1759945177; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wQvakTh55fyV5nLPousva+V7NX5CABwuk1WiUyfWTVI=;
+        b=GsEUWvSRjSdC19PuNmsomHWoivxGs1Bw5l7gq0i1LgHcrRhsAlhfwyFTK35Jj0zoLy
+         DzeMffHTSnFhIVNv0NxovX7zkicaTDqO2DV2zIKJ7Zh18IkC+PDFtUCHFactij14geTO
+         DbulbcaWrViVWkUV2c3GzuII6MU+pZfxAMcfHy3bbT7vGaB1CBLIPiibs0pXfbuowb5I
+         UGrUUs/Jic8VsaJrYWXAeQdSOGnBt3RIikrMi6LPqdIgS4TNYB61zZMBME4GU+51Pl1W
+         oQ3y8q2QU+LVKXk1hdUtK8ON8MKm/xTbRLRDvc6Bz+hbWNDrv/kTtCygnlcZubhYiaLW
+         Elow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759340377; x=1759945177;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wQvakTh55fyV5nLPousva+V7NX5CABwuk1WiUyfWTVI=;
+        b=Qxv02V8zEgTtjGf878EVUXVGzWnSHJjB6sZTt81ts1G/hQ0y1wbHmAvIOiZMlh5t0m
+         YgXvxSMYCldo3a8/03azPlOYVilHHJbzIMwj0iVpt+lt08puaTTMWdJnsI2MsaLe6RWr
+         Xfoys58XDoJ2c0btZroaw1VmeF/JoS1/ZfZ79p0iIBRwEFuHkJfpWkvMOAJn3d0ltrf2
+         Y6rh9DctTVA8I5+aMgPSZJn6423REQGB6+mbnwyuQPiG0den76vMZ0c0edW6BDqcr7/p
+         lwH1J0V54HBNWoGJSxL9FPFkz1Tf1tEoCg/XLJqaSgrAhNrTFiUPi+bOeO7f3f8RIm7F
+         W0bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWde1+btBTXIozK8kLUDu+3hbxDz1JcaVwjnQAC/JeiMvSQE07WwUePJdZYhXGKSsI8cMldM8c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+pmMw7XEmQn/h77UEgYsC1RpHl7qljw0GfvPEtUp6Hw0LnnO3
+	TLnvR0qooNu7FnyMr157lDM6QoBB53zX46/HovdTS3Od+D83Ps08ZCDnY5bCyv+2XHn9zrXLWXP
+	0WRbdox7jY36aQjFWE29qAvFzpaisEv0=
+X-Gm-Gg: ASbGnctnAYfUP3/+Id3TDY4f744cHW36VFLiXp4lejx4plhqloRTRFXr1PNV99tUzYI
+	oKNmlZtI5AfGmdFuN/p/ULELrwkrmpTdYltEGXOG3/f218ZgEIT5vhR3BMQYMxcnoxJIob5vPPT
+	C9kc8+1ira87vfFoK99qxVljoppO8J478jBF/2owJZodQVr+VQS96z3ZlJTVw8m1gLF1QVL/iXv
+	l47UA70TQXW5OVF/m6Rmx545fSKbrJexsLi5yymW4ZyZM+cG/t1oZCaizNxG4tqvjhaUbh/mimX
+	WR+/WRju1ZHzoeePyFpDThskFwNPJPTClwSZfPkaohndTGjqJQ==
+X-Google-Smtp-Source: AGHT+IEAo7MdrES82JI+qedmq0v6ZXfOy0hmBxYLr8FX6CjRdMJwyM1E8v22WT+xn5jumhDRvJY349Nd0KpWQf2nKXo=
+X-Received: by 2002:a17:902:e890:b0:276:76e1:2e78 with SMTP id
+ d9443c01a7336-28e7f448d94mr30508305ad.10.1759340377295; Wed, 01 Oct 2025
+ 10:39:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2025092127-sprint-unwomanly-fc76@gregkh>
+In-Reply-To: <2025092127-sprint-unwomanly-fc76@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 1 Oct 2025 19:39:25 +0200
+X-Gm-Features: AS18NWCqJcoQHUwvuNJjw-a65R82SRhfh70nzMGK2HX0p8yXV9Q9rquWnRWaGkU
+Message-ID: <CANiq72kEzOa60EhLQ2YnBOD6bsAHc7qA9v9-MP2FtxMa04Q5PQ@mail.gmail.com>
+Subject: Re: Patch "LoongArch: Handle jump tables options for RUST" has been
+ added to the 6.16-stable tree
+To: gregkh@linuxfoundation.org
+Cc: chenhuacai@loongson.cn, ojeda@kernel.org, wangrui@loongson.cn, 
+	yangtiezhu@loongson.cn, stable-commits@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 30 Sep 2025 16:46:59 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Sun, Sep 21, 2025 at 3:05=E2=80=AFPM <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.6.109 release.
-> There are 91 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> This is a note to let you know that I've just added the patch titled
 >
-> Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
-> Anything received after that time might be too late.
+>     LoongArch: Handle jump tables options for RUST
+>
+> to the 6.16-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
 
-Boot-tested under QEMU for Rust x86_64:
+...
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+> commit 74f8295c6fb8436bec9995baf6ba463151b6fb68 upstream.
+
+Huacai et al.: I wonder if we could get this one into 6.12.y?
+
+Maybe no one actually cares in practice, so please feel free to ignore
+it, but it is the only `objtool` warning (a lot of instances, but just
+that kind from a quick look) I have in my LoongArch Rust builds I have
+in 6.12.y, and it would be nice to have it clean.
 
 Thanks!
 
