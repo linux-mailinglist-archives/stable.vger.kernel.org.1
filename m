@@ -1,228 +1,130 @@
-Return-Path: <stable+bounces-182887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78EE7BAEC82
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 01:36:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF13BAF065
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 04:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F7274A1325
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 23:36:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C089A1C5A86
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 02:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903632C2365;
-	Tue, 30 Sep 2025 23:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E1A1DE887;
+	Wed,  1 Oct 2025 02:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hIuX6o5a"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="OZ6Raoxg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8021F152D
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 23:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60323149E17
+	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 02:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759275391; cv=none; b=i0JWQOgyZFCRst7whiL89O6FPb3LWwNY5hT/tNv2izFNu/1DMg0YiaVEXUBo1y48eOvcCKb2XdgYKLYGI6jMh6hSrKdLTkUfe4b0M8k3ZX6v7u3U+tWulwHJ3GE0g8SLDf90enpuowAi7yVpK7cWK1BqP4MPEKqEOvWoHaHbPoo=
+	t=1759286826; cv=none; b=UWEZDPpBMzbyEmMieRyWZK5hv54ATbuWf1VtvGSVvCdw8nviR2SINv6aOn96ZpNKYwS3uxcd3cdad4g1U9enO3hhTs42OOAhHW3qR4YKIiwWCslclXtxSsrON2eJ7GKRfjSL3qMlOi+5TBgnm4EuckpSp8fDOjfGwvK47QixH+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759275391; c=relaxed/simple;
-	bh=z0fsIZfnV/2IhN4m/9m2JugiobRrcZVB3Di36W6eJ+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VB66M+xcSSrVILznxvc2B26/Tl2i+RVUHTyoCdvhNYpMj0Vxwf62ZUHnWh+w1cTyO92JfuvvWwxtYdcYRKT9lAiUX7MENeNcsEJj/HE1FZIWOKNmcuJndAOhHiwFZlNmSfycti4EvQYikwvHD1GK0zIy4EfxjBmMiHXfgCo0mzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hIuX6o5a; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-57d97bac755so3711e87.0
-        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 16:36:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759275387; x=1759880187; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BzAGHoC3LCY9BMZcnX+2gQ2YcNS5UVNzJHOD3iXvnng=;
-        b=hIuX6o5aLwQ+qMRFxb1cKkOol8t5j7HItxxl5J0XYuQT4uDF8OhEAcMkiz/Whh04S6
-         PssAcIs24tdi0hkfJpOzYn5K1Qe81WEUPa1+yTKww75Mkx423gJQVTS5tGLqukin/Kh0
-         1zg4lzWOrj1vLK796WrjsQ3XnNONwpVsFzuLXteAEtdqyjWXtSz/LRTAEO4bDaqAL5w0
-         MEHAN65xjMhveRKBKuM7nDIGsJI+LZg7CcQ9vXc6VScGr+aQXwfE2TGTRqGLc750G7KU
-         qxOKjUWqukxsHoZOuKh/wyrm48OCxMI2piCY7IjF2DgweUBfun2/CX+uga+uloDrNVEx
-         AL6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759275387; x=1759880187;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BzAGHoC3LCY9BMZcnX+2gQ2YcNS5UVNzJHOD3iXvnng=;
-        b=DDx9cwSRvBRl32yy5UXiuJcp4hunruvpbbi+XzXTiTWL9zfJu5pYVAbf+RSdaTpCaV
-         odpT4dUcar2TPfqQKCRRMiWsTWC2dywkDHWIocBwa40Y/7DeivBrspF8UiLq9iyw7jun
-         UTqRg+gSAXkkNy2wTU7z9n8uHxHxxa/svVSs1c2t8/HwLR2HhBZHReRErYuBBOVD6NfH
-         oe6w1bPtipV9axtJf5e9ewevHiyRoaKOieNX1yBoUAjPlhiwwA1q9ciKl1WEKwianwWQ
-         gYoT2f5hHQLNBQhZ8lmcAvNIJBX0SWlCK6LczufWeEKOJG/tkDN7xxl6414P97/M33Ac
-         WOhA==
-X-Forwarded-Encrypted: i=1; AJvYcCXty4VF9Sb8ZqCD8/1iGYJHNRGOTDv35hMlSAgcOf/wmI+OU5vLGcGXnn4ZeHWvbjbuiwfy8h8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyG8mEOyiMYblwKaSuP8Mnpz90aqw3yqfY3LkgBl1T9UCKcye62
-	FmompZ4FwE+tEBs9MpHD43OoUgYmipWWCj4WlMuFvYLQUJMsXJZYHNdELf4oWGNTPrUeZg0P6gn
-	NcpfNxdZJ2zxL0UjccWgMby+YkXgEsc6TK/NHOvwV
-X-Gm-Gg: ASbGnctwDecAahLsjO52nmdo8tyKcccCPpS6dopaOTlKIvwp+PnG7m/gj3a345KJua2
-	8+b+KrTZQIZRJaB0Ub3Mfc1BcLhsI8ePkjHlCG6Q4Idx2ET2Vo11m8iiuOFGiqPbKdiiybTaMpx
-	OeM042MaUYfaQ6kCOSkVsRfMSA1xSOlSSm5sc5i6NqaZSRKLW1HUI25mgbtKXvGVXk2Mqbrl/as
-	ceRZWbtHsyWzLAeIoLjJam1Bi6nfgDHWB3RAUoHBtr0hbe+c1Tqfpj4CWoWbl9xhpk7+EEeVls7
-	riU=
-X-Google-Smtp-Source: AGHT+IFkc4IJjLwRN6BK7QqMPx6rU0WejItlxxFNvZ50TdxHWfIXW7DGWHWYtXgj2YsxQvYwGLGM181jyibNLaHKuC8=
-X-Received: by 2002:ac2:490c:0:b0:57b:aa84:8b11 with SMTP id
- 2adb3069b0e04-58afa3eb46emr129851e87.2.1759275386958; Tue, 30 Sep 2025
- 16:36:26 -0700 (PDT)
+	s=arc-20240116; t=1759286826; c=relaxed/simple;
+	bh=uCHXO5w65OPBubrXNoQ/bmxMID/0e0jWMi0sr6HcfK4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NbMMjDj/bn+Fj+gz+S59Jz5p9v5OU1LbWZt4kzUrZkDu/DsB/xNnTuRHuuD+QxnZ6G9k7AYkTdL9NEuId6EpNvysG3Y6NIrN0bZlly7voHOaWMqAiFmJ7u68dB14GnZdqe43PV6Y6pGH4s5Is/fUFGJ7blueYg8hYwzaaz34h0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=OZ6Raoxg; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5001b.ext.cloudfilter.net ([10.0.29.181])
+	by cmsmtp with ESMTPS
+	id 3hS7vc6Fjjzfw3mqOvnquA; Wed, 01 Oct 2025 02:45:28 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id 3mqNvkc6qmCqv3mqNvYDn0; Wed, 01 Oct 2025 02:45:27 +0000
+X-Authority-Analysis: v=2.4 cv=W8Y4VQWk c=1 sm=1 tr=0 ts=68dc95c7
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=Cyuvsrd2OJRF7bCfhtsA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=EpRzvDfGiAFLCYHkBfEtWWthXUdWuLqIcn4910K3kFQ=; b=OZ6Raoxg5S0Qh1S0R4enNZFk0l
+	QnHC3XijhBssvLv7e/14ZV76TrGqIZELC4Rdjs75JX+bxc2XVtZtemUTsTUrrsWIpgMboRtzxlMJW
+	bYFz+hmipwy/F4Ov1DXPdSTjZ0UiYi9CmF84LFyF3RKNiblpiitcIOXOEWi9mcWvOxxTIRwGlQQGu
+	MMqQCkgiFKt+lyP+6kji67ZaEDl1/QbdLWDTcfYQF/C9TEwgbAQyDzAVMjAZUGpwa5JTOmOh5qAnR
+	wLsPlFGnU6W54y77tdvqHFuzt5y5RiVDSYZWFXGURiX/4ZBgVTdrFbHIkJntB3azKSbWMQKDg3ZOR
+	bM6HlhKQ==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:36254 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1v3mqM-00000000V51-2BjB;
+	Tue, 30 Sep 2025 20:45:26 -0600
+Message-ID: <adff8883-25dd-402e-8f3c-a369c2cc8d45@w6rz.net>
+Date: Tue, 30 Sep 2025 19:45:24 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250930114331.675412-1-toke@redhat.com>
-In-Reply-To: <20250930114331.675412-1-toke@redhat.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 30 Sep 2025 16:36:14 -0700
-X-Gm-Features: AS18NWBXmtCuQg-Y2WOs8Fk6rwYNK6cExv_BH5QWhhlqrllaXyqnaMgGll4hTLc
-Message-ID: <CAHS8izPGxvdDu7JwEWK2=fk=qHoYgFzOs1FjOWjmNwqrU2r0kA@mail.gmail.com>
-Subject: Re: [PATCH net v2] page_pool: Fix PP_MAGIC_MASK to avoid crashing on
- some 32-bit arches
-To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Jakub Kicinski <kuba@kernel.org>, stable@vger.kernel.org, 
-	Helge Deller <deller@gmx.de>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-mm@kvack.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.16 000/143] 6.16.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20250930143831.236060637@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1v3mqM-00000000V51-2BjB
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:36254
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 18
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfNDIF803dNIxu/BeTPtXJiJsSLmgPs+OYdSSruLslGqf08PfKS+B0K1EAu1REOUlDZZAmLDNSa8Mj2Xas3097DKVT62VLnO5P8fDswmfDIVgdJ0/g0Wy
+ WKnq/g32yze+axgnmL4XE10Oteq2198TZWMI4KPG1DZoAPjSOrGNgmgNwCQYH6YmKc4eaRwo6ZWuGQ==
 
-On Tue, Sep 30, 2025 at 4:43=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen <t=
-oke@redhat.com> wrote:
+On 9/30/25 07:45, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.16.10 release.
+> There are 143 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Helge reported that the introduction of PP_MAGIC_MASK let to crashes on
-> boot on his 32-bit parisc machine. The cause of this is the mask is set
-> too wide, so the page_pool_page_is_pp() incurs false positives which
-> crashes the machine.
+> Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
+> Anything received after that time might be too late.
 >
-> Just disabling the check in page_pool_is_pp() will lead to the page_pool
-> code itself malfunctioning; so instead of doing this, this patch changes
-> the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
-> pointers for page_pool-tagged pages.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.10-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
+> and the diffstat can be found below.
 >
-> The fix relies on the kernel pointers that alias with the pp_magic field
-> always being above PAGE_OFFSET. With this assumption, we can use the
-> lowest bit of the value of PAGE_OFFSET as the upper bound of the
-> PP_DMA_INDEX_MASK, which should avoid the false positives.
+> thanks,
 >
-> Because we cannot rely on PAGE_OFFSET always being a compile-time
-> constant, nor on it always being >0, we fall back to disabling the
-> dma_index storage when there are not enough bits available. This leaves
-> us in the situation we were in before the patch in the Fixes tag, but
-> only on a subset of architecture configurations. This seems to be the
-> best we can do until the transition to page types in complete for
-> page_pool pages.
->
-> v2:
-> - Make sure there's at least 8 bits available and that the PAGE_OFFSET
->   bit calculation doesn't wrap
->
-> Link: https://lore.kernel.org/all/aMNJMFa5fDalFmtn@p100/
-> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them wh=
-en destroying the pool")
-> Cc: stable@vger.kernel.org # 6.15+
-> Tested-by: Helge Deller <deller@gmx.de>
-> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> ---
->  include/linux/mm.h   | 22 +++++++------
->  net/core/page_pool.c | 76 ++++++++++++++++++++++++++++++--------------
->  2 files changed, 66 insertions(+), 32 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 1ae97a0b8ec7..0905eb6b55ec 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4159,14 +4159,13 @@ int arch_lock_shadow_stack_status(struct task_str=
-uct *t, unsigned long status);
->   * since this value becomes part of PP_SIGNATURE; meaning we can just us=
-e the
->   * space between the PP_SIGNATURE value (without POISON_POINTER_DELTA), =
-and the
->   * lowest bits of POISON_POINTER_DELTA. On arches where POISON_POINTER_D=
-ELTA is
-> - * 0, we make sure that we leave the two topmost bits empty, as that gua=
-rantees
-> - * we won't mistake a valid kernel pointer for a value we set, regardles=
-s of the
-> - * VMSPLIT setting.
-> + * 0, we use the lowest bit of PAGE_OFFSET as the boundary if that value=
- is
-> + * known at compile-time.
->   *
-> - * Altogether, this means that the number of bits available is constrain=
-ed by
-> - * the size of an unsigned long (at the upper end, subtracting two bits =
-per the
-> - * above), and the definition of PP_SIGNATURE (with or without
-> - * POISON_POINTER_DELTA).
-> + * If the value of PAGE_OFFSET is not known at compile time, or if it is=
- too
-> + * small to leave at least 8 bits available above PP_SIGNATURE, we defin=
-e the
-> + * number of bits to be 0, which turns off the DMA index tracking altoge=
-ther
-> + * (see page_pool_register_dma_index()).
->   */
->  #define PP_DMA_INDEX_SHIFT (1 + __fls(PP_SIGNATURE - POISON_POINTER_DELT=
-A))
->  #if POISON_POINTER_DELTA > 0
-> @@ -4175,8 +4174,13 @@ int arch_lock_shadow_stack_status(struct task_stru=
-ct *t, unsigned long status);
->   */
->  #define PP_DMA_INDEX_BITS MIN(32, __ffs(POISON_POINTER_DELTA) - PP_DMA_I=
-NDEX_SHIFT)
->  #else
-> -/* Always leave out the topmost two; see above. */
-> -#define PP_DMA_INDEX_BITS MIN(32, BITS_PER_LONG - PP_DMA_INDEX_SHIFT - 2=
-)
-> +/* Use the lowest bit of PAGE_OFFSET if there's at least 8 bits availabl=
-e; see above */
-> +#define PP_DMA_INDEX_MIN_OFFSET (1 << (PP_DMA_INDEX_SHIFT + 8))
-> +#define PP_DMA_INDEX_BITS ((__builtin_constant_p(PAGE_OFFSET) && \
-> +                           PAGE_OFFSET >=3D PP_DMA_INDEX_MIN_OFFSET && \
-> +                           !(PAGE_OFFSET & (PP_DMA_INDEX_MIN_OFFSET - 1)=
-)) ? \
-> +                             MIN(32, __ffs(PAGE_OFFSET) - PP_DMA_INDEX_S=
-HIFT) : 0)
-> +
->  #endif
+> greg k-h
 
-It took some staring at, but I think I understand this code and it is
-correct. This is the critical check, it's making sure that the bits
-used by PAGE_OFFSET are not shared with the bits used for the
-dma-index:
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-> +                           !(PAGE_OFFSET & (PP_DMA_INDEX_MIN_OFFSET - 1)=
-)) ? \
+Tested-by: Ron Economos <re@w6rz.net>
 
-The following check confused me for a while, but I think I figured it
-out. It's checking that the bits used for PAGE_OFFSET are 'higher'
-than the bits used for PP_DMA_INDEX:
-
-> +                           PAGE_OFFSET >=3D PP_DMA_INDEX_MIN_OFFSET && \
-
-And finally this calculation should indeed be the bits we can use (the
-empty space between the lsb set by PAGE_OFFSET and the msb set by the
-pp magic:
-
-> +                             MIN(32, __ffs(PAGE_OFFSET) - PP_DMA_INDEX_S=
-HIFT) : 0)
-
-AFAIU we should not need the MIN anymore, since that subtraction is
-guaranteed to be positive, but that's a nit.
-
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-
---=20
-Thanks,
-Mina
 
