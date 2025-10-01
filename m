@@ -1,188 +1,204 @@
-Return-Path: <stable+bounces-182915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C01BAFDEB
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 11:33:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDE7BAFF51
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 12:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D41293B550E
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 09:32:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB40E2A1892
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 10:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4573C2D9485;
-	Wed,  1 Oct 2025 09:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF0829C343;
+	Wed,  1 Oct 2025 10:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxJWr6HC"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="XZfMFc6A"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32522765EC;
-	Wed,  1 Oct 2025 09:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FB21BF58;
+	Wed,  1 Oct 2025 10:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.35.192.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759311173; cv=none; b=bIeh41vxEZhaujkOWUZ5J/hEwgYKeVHOSAFRcZoOUcd7usZdsgU78THSCvhc8FjsPmULs7yrlP0MZcdoK+9O4dYsXd2vIVSLPbB+AcVcJg5KrKbuBsx8pv1osK4K9cH2WW3tY3CjX68bmkumOxtKa1QlcWIZkWBGoUa15fWBebk=
+	t=1759313414; cv=none; b=pPypk9g79/OGY4qwWhbg46OswvOT3bcL/i1NzR/hs0GdRi28b8DzixDATRzoVTaku/5HDiRhKc36Rq27NwXdUt0WXTFFrS/cCMblnNS/BOzt3A46xhTPtVZFoeKuHtuy7+0srQRHM6QPL88ntUxWuD7KUJCjK7u0LRG+MO2YWXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759311173; c=relaxed/simple;
-	bh=UJ5Nrj//XI4MYIzbnakq8QPry+1jzsB8A4m7sh8T2gA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X95X0eH3+J2TrAM7E3gSXwI/hA08qNNtK2ziMH1A1a5WWpIc4P1RmBxKTTwMrmZWQ6pbI0RTF2JeD9p1Kg7+pBTv54/y7DQMLcfG8Fp3lFOlZVWF0JlcNQe5Qo+4gSjNxFvXgOu6bEFFC01VPpSLfwXP1m8HeH6o6ZJ2KXIw/ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxJWr6HC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02C5C4CEF4;
-	Wed,  1 Oct 2025 09:32:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759311171;
-	bh=UJ5Nrj//XI4MYIzbnakq8QPry+1jzsB8A4m7sh8T2gA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WxJWr6HCADQ9SHytSVb/WM8rkT5Hl/hXX+JyJIO5LalLr0RzMDHRv1dc0VvekL+D1
-	 23vRK/27KxUmvCPzn3AO2jUDXVCo5nLygHKcOoHwHLW6cqSHs8CHFaol9FD+0CL6l6
-	 fxVhrkzxLSPo8y0CCrlmojDvYL+Rsyge2tm4eLvjdkWCc43WHud7OLkMPhCfAlKTF8
-	 Fmq5grfl9oz2tbArCTErEJ/PpqhGTo6bouJ9LQ+2J/zAU63tM/LMgSFiHg29Buf54C
-	 wcVqHKEFNywNwzSNLS/LLEgGNl66mspsZZQRag8IrTRKGavS6VfvYF0Jm8Q+5DhL+1
-	 OVZQvQPXTM2MQ==
-Date: Wed, 1 Oct 2025 10:32:46 +0100
-From: Will Deacon <will@kernel.org>
-To: Kenneth Van Alstyne <kvanals@kvanals.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
-	catalin.marinas@arm.com, ardb@kernel.org, mark.rutland@arm.com,
-	linux-arm-kernel@lists.infradead.org, maz@kernel.org
-Subject: Re: KVM: arm64: Regression in at least linux-6.1.y tree with recent
- FPSIMD/SVE/SME fix
-Message-ID: <aNz1PnARMC4DPeYb@willie-the-truck>
-References: <010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com>
+	s=arc-20240116; t=1759313414; c=relaxed/simple;
+	bh=9Kdcxe0YU1RDTvXq8oIZkEx4aSa2Moo0guzu6R+eV7I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GGywWPbsZPuk/azPytH6sTXvigqNgSIbDRSgEgm8eW29K2jZ4D4BBw8/2rcwf/pY1LjxuI/S5dpiVDdhTfvLrCNOaQeXZ8xr9IoFLeH0ae0PuKTcbQawHL5bq8yLDZFIuE9xlkdTMfSVn51ev6OGt4yWOZY/4favjJMhIORtmnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=XZfMFc6A; arc=none smtp.client-ip=52.35.192.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1759313412; x=1790849412;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FpE6TyTqiWm2/3R74zOPPEXG4XAaowdakO3HuHcNBGU=;
+  b=XZfMFc6Axk9oLd1mKBsSNKPN7QshEeGFSA4lAEqkJ17TaYdKetzAIRUj
+   P7ZevGCIKLthCvCYRopfgmVwLzJmUZZk1ccQuv72aPB8Me0QMXAsIMBZY
+   kUE/FbsSYFKOJ33UWvJ7tnDwMha7reCfgczk9HcHcjWS2rdDkU+uFWf/9
+   9js4CNTdrl1uhlqUXvSelePayWjewEcR0stHuK48QsZiiAMKk0baYVv5m
+   Ob7psy2cOpmbX2U/NJTjwtckSmcpwx5JZD45Na++5X/B4/0PhBM6K/8AO
+   koD/ggIdm0VrKdam17hccct+LSvcE5RJgebvS/4egbrK+p9VbOStJqX/f
+   A==;
+X-CSE-ConnectionGUID: qpOiKXzMTDGK1E2aKN0MIg==
+X-CSE-MsgGUID: YLfa/iWkQ5C5l6XDURW5UA==
+X-IronPort-AV: E=Sophos;i="6.18,306,1751241600"; 
+   d="scan'208";a="3862601"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 10:10:10 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:30544]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.36.10:2525] with esmtp (Farcaster)
+ id 58df080d-a7e3-408e-bec0-aaf43a4bcc6e; Wed, 1 Oct 2025 10:10:10 +0000 (UTC)
+X-Farcaster-Flow-ID: 58df080d-a7e3-408e-bec0-aaf43a4bcc6e
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 1 Oct 2025 10:10:10 +0000
+Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
+ (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 1 Oct 2025
+ 10:10:08 +0000
+From: Jakub Acs <acsjakub@amazon.de>
+To: <linux-fsdevel@vger.kernel.org>
+CC: <acsjakub@amazon.de>, Jan Kara <jack@suse.cz>, Amir Goldstein
+	<amir73il@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>, Christian Brauner
+	<brauner@kernel.org>, <linux-unionfs@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH] fs/notify: call exportfs_encode_fid with s_umount
+Date: Wed, 1 Oct 2025 10:09:55 +0000
+Message-ID: <20251001100955.59634-1-acsjakub@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com>
+X-ClientProxiedBy: EX19D033UWC002.ant.amazon.com (10.13.139.196) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Hi Kenneth,
+Calling intotify_show_fdinfo() on fd watching an overlayfs inode, while
+the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
 
-Thanks for the report.
+This issue was found by syzkaller.
 
-On Tue, Sep 30, 2025 at 05:31:38PM +0000, Kenneth Van Alstyne wrote:
-> Sending via plain text email -- apologies if you receive this twice.
-> 
-> If this isn't the process for reporting a regression in a LTS kernel per
-> https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html,
-> I'm happy to follow another process.
-> 
-> Kernel 6.1.149 introduced a regression, at least on our ARM Cortex
-> A57-based platforms, via commit 8f4dc4e54eed4bebb18390305eb1f721c00457e1
-> in arch/arm64/kernel/fpsimd.c where booting KVM VMs eventually leads to a
-> spinlock recursion BUG and crash of the box.
-> 
-> Reverting that commit via the below reverts to the old (working) behavior:
-> 
-> diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-> index 837d1937300a57..bc42163a7fd1f0 100644
-> --- a/arch/arm64/kernel/fpsimd.c
-> +++ b/arch/arm64/kernel/fpsimd.c
-> @@ -1851,10 +1851,10 @@ void fpsimd_save_and_flush_cpu_state(void)
->   if (!system_supports_fpsimd())
->   return;
->   WARN_ON(preemptible());
-> - get_cpu_fpsimd_context();
-> + __get_cpu_fpsimd_context();
->   fpsimd_save();
->   fpsimd_flush_cpu_state();
-> - put_cpu_fpsimd_context();
-> + __put_cpu_fpsimd_context();
->  }
->   #ifdef CONFIG_KERNEL_MODE_NEON
+Race Condition Diagram:
 
-Hmm, the problem with doing that is it will reintroduce the bug that
-8f4dc4e54eed ("KVM: arm64: Fix kernel BUG() due to bad backport of
-FPSIMD/SVE/SME fix") was trying to fix (see the backtrace in the commit
-message). So the old behaviour is still broken, just in a slightly
-different way.
+Thread 1                           Thread 2
+--------                           --------
 
-> It's not entirely clear to me if this is specific to our firmware,
-> specific to ARM Cortex A57, or more systemic as we lack sufficiently
-> differentiated hardware to know.  I've tested on the latest 6.1 kernel in
-> addition to the one in the log below and have also tested a number of
-> firmware versions available for these boxes.
-> 
-> Steps to reproduce:
-> 
-> Boot VM in qemu-system-aarch64 with "-accel kvm" and "-cpu host" flags set -- no other arguments seem to matter
-> Generate CPU load in VM
-> 
-> Kernel log:
-> 
-> [sjc1] root@si-compute-kvm-e0fff70016b4:/# [  805.905413] BUG: spinlock recursion on CPU#7, CPU 3/KVM/57616
-> [  805.905452]  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU 3/KVM/57616, .owner_cpu: 7
-> [  805.905477] CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O       6.1.152 #1
-> [  805.905495] Hardware name: SoftIron SoftIron Platform Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
-> [  805.905516] Call trace:
-> [  805.905524]  dump_backtrace+0xe4/0x110
-> [  805.905538]  show_stack+0x20/0x30
-> [  805.905548]  dump_stack_lvl+0x6c/0x88
-> [  805.905561]  dump_stack+0x18/0x34
-> [  805.905571]  spin_dump+0x98/0xac
-> [  805.905583]  do_raw_spin_lock+0x70/0x128
-> [  805.905596]  _raw_spin_lock+0x18/0x28
-> [  805.905607]  raw_spin_rq_lock_nested+0x18/0x28
-> [  805.905620]  update_blocked_averages+0x70/0x550
-> [  805.905634]  run_rebalance_domains+0x50/0x70
-> [  805.905645]  handle_softirqs+0x198/0x328
-> [  805.905659]  __do_softirq+0x1c/0x28
-> [  805.905669]  ____do_softirq+0x18/0x28
-> [  805.905680]  call_on_irq_stack+0x30/0x48
-> [  805.905691]  do_softirq_own_stack+0x24/0x30
-> [  805.905703]  do_softirq+0x74/0x90
-> [  805.905714]  __local_bh_enable_ip+0x64/0x80
+generic_shutdown_super()
+ shrink_dcache_for_umount
+  sb->s_root = NULL
 
-Argh, this is because we can't simply mask/unmask softirqs and so when
-they get re-enabled we process anything pending. I _think_ irqs are
-disabled at this point, so perhaps we should only bother with
-disabling/enabling softirqs if hardirqs are enabled, a bit like the hack
-Ard had in:
+                    |
+                    |             vfs_read()
+                    |              inotify_fdinfo()
+                    |               * inode get from mark *
+                    |               show_mark_fhandle(m, inode)
+                    |                exportfs_encode_fid(inode, ..)
+                    |                 ovl_encode_fh(inode, ..)
+                    |                  ovl_check_encode_origin(inode)
+                    |                   * deref i_sb->s_root *
+                    |
+                    |
+                    v
+ fsnotify_sb_delete(sb)
 
-https://lore.kernel.org/all/20250924152651.3328941-13-ardb+git@google.com/
+Which then leads to:
 
-Hacky diff at the end.
+[   32.133461] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+[   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tainted 6.17.0-rc6 #22 PREEMPT(none)
 
-> [  805.905727]  fpsimd_save_and_flush_cpu_state+0x5c/0x68
-> [  805.905740]  kvm_arch_vcpu_put_fp+0x4c/0x88
-> [  805.905752]  kvm_arch_vcpu_put+0x28/0x88
-> [  805.905764]  kvm_sched_out+0x38/0x58
+<snip registers, unreliable trace>
 
-(I think we run context_switch() => prepare_task_switch() here, so irqs
-are disabled)
+[   32.143353] Call Trace:
+[   32.143732]  ovl_encode_fh+0xd5/0x170
+[   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
+[   32.144425]  show_mark_fhandle+0xbe/0x1f0
+[   32.145805]  inotify_fdinfo+0x226/0x2d0
+[   32.146442]  inotify_show_fdinfo+0x1c5/0x350
+[   32.147168]  seq_show+0x530/0x6f0
+[   32.147449]  seq_read_iter+0x503/0x12a0
+[   32.148419]  seq_read+0x31f/0x410
+[   32.150714]  vfs_read+0x1f0/0x9e0
+[   32.152297]  ksys_read+0x125/0x240
 
-Will
+IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was set
+to NULL in the unmount path.
 
---->8
+Fix it by protecting calling exportfs_encode_fid() from
+show_mark_fhandle() with s_umount lock.
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index fc51cdd5aaa7..a79df0804d67 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -184,7 +184,8 @@ static void __get_cpu_fpsimd_context(void)
-  */
- static void get_cpu_fpsimd_context(void)
- {
--       local_bh_disable();
-+       if (!irqs_disabled())
-+               local_bh_disable();
-        __get_cpu_fpsimd_context();
- }
+This form of fix was suggested by Amir in [1].
+
+[1]: https://lore.kernel.org/all/CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com/
+
+Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+---
+
+This issue was already discussed in [1] with no consensus reached on the
+fix.
+
+This form was suggested as a band-aid fix, without explicity yes/no
+reaction. Hence reviving the discussion around the band-aid.
+
+ fs/notify/fdinfo.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/fs/notify/fdinfo.c b/fs/notify/fdinfo.c
+index 1161eabf11ee..9cc7eb863643 100644
+--- a/fs/notify/fdinfo.c
++++ b/fs/notify/fdinfo.c
+@@ -17,6 +17,7 @@
+ #include "fanotify/fanotify.h"
+ #include "fdinfo.h"
+ #include "fsnotify.h"
++#include "../internal.h"
  
-@@ -205,7 +206,8 @@ static void __put_cpu_fpsimd_context(void)
- static void put_cpu_fpsimd_context(void)
- {
-        __put_cpu_fpsimd_context();
--       local_bh_enable();
-+       if (!irqs_disabled())
-+               local_bh_enable();
- }
+ #if defined(CONFIG_PROC_FS)
  
- static bool have_cpu_fpsimd_context(void)
+@@ -46,7 +47,12 @@ static void show_mark_fhandle(struct seq_file *m, struct inode *inode)
+ 
+ 	size = f->handle_bytes >> 2;
+ 
++	if (!super_trylock_shared(inode->i_sb))
++		return;
++
+ 	ret = exportfs_encode_fid(inode, (struct fid *)f->f_handle, &size);
++	up_read(&inode->i_sb->s_umount);
++
+ 	if ((ret == FILEID_INVALID) || (ret < 0))
+ 		return;
+ 
+-- 
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
