@@ -1,253 +1,193 @@
-Return-Path: <stable+bounces-182901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5624FBAF67E
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 09:31:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A066BAF83D
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 09:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51DA47A7FD6
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 07:29:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81EF07A57C3
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 07:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026CF272E6E;
-	Wed,  1 Oct 2025 07:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80AD277C9F;
+	Wed,  1 Oct 2025 07:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hUvpAq8C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmLqaY8s"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F512701C3
-	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 07:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736A622B594;
+	Wed,  1 Oct 2025 07:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759303874; cv=none; b=nnUQ7SozC5WwfLZjy3aD+gVVc3NbyltwX2xEFU50suWOCX556Mo8FUAtdsJ2czY0115408ecdCeIbzzxuI1vOjsoNqevbNjkk1yn9j4kBBv9VDV+vwKRviWRrh9W/Vo1UAlBot3zAVja4hD3AoE1hEb/q3WLmFNSFyeAAknXqeo=
+	t=1759305382; cv=none; b=ruO6xzYV4YRptXHy1kFzmm5+YU2ukZPMkgMbKGQyOEkCE7YapDkH1lzz3wXe2jGaGJAecfSGf7bVPODaMNykLj8CUAGk6OywkhjsKvRa6LtcwLC3wm8eLhviF2k/1lkymIpbHRfabZq7vJNzWsoPrOHfdRwPMLS0rvRZmjElCas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759303874; c=relaxed/simple;
-	bh=XjdO0jasj3kJDtIuE+ndTHYJCmrbLe5P1/yUmczOEmA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZAmQRvEkSoxpuKd8g892+UjNCAP/izic7WIrlM6xh1gmQpkoW8GAyiPyBuuLqBW/ethCmUoYrtfTnsEIpMEx+3gLiDmljBKqpPsuHLEKGW/1YVn4cWCflxfugu1f8EVMbrRLaziFUZDUz+A6CSxnl/pHMy4i0zqaB5OK8PY/OR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hUvpAq8C; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759303871;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XwqCn0F38LGIwrz+84m4s4y5WBK50BZnma0porbfnQQ=;
-	b=hUvpAq8CXxEajUMCnV0Gj/dofyUTyszpi3dvoWd3i4Ppm5XcSowUQjq2Bfpy3kbih8XLIJ
-	7ocl6TRGqJgAiLanmLdHI7cjlF6iwaosldwbSrGAyNw10CYPeIjfw5thvhMkP9wbacdPTS
-	hfo6samg30sL/BIkdX4Mnq+8kxoQji8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-rGfyNPnRO9G8Nv1vTSzKeQ-1; Wed, 01 Oct 2025 03:31:10 -0400
-X-MC-Unique: rGfyNPnRO9G8Nv1vTSzKeQ-1
-X-Mimecast-MFC-AGG-ID: rGfyNPnRO9G8Nv1vTSzKeQ_1759303869
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-b3cd833e7b5so498673466b.3
-        for <stable@vger.kernel.org>; Wed, 01 Oct 2025 00:31:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759303869; x=1759908669;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XwqCn0F38LGIwrz+84m4s4y5WBK50BZnma0porbfnQQ=;
-        b=h0fne11lNjmt4VZkOtGg4MfpKX/LAADJsIyKuw53oLzld95HOW9qNY82iONbCaqrLs
-         q8AIFr5yPhAArfw2W6/Isc/tR8qtTu8q3FlTLNp4Ir3oyoPk7+iryHnWuwwOVqLM/21Q
-         hom1bVbQ/KYzteFZTyx3CxOG+P8RsFTDdbXBIMNY0oIhRn2sQHbvo9iqHh8nn88443so
-         06Z9rMLj+IBd2FMc7gp84uKdFHYc9xOrJbsGIk3YpmlNNOnJFt1ZyfnOfLZ/42IYyOy7
-         +w7uZX7eUyRR+y1Jh9ABTZesFNQ/I7vVXYGoEm/4jYXFCKVLdOEagvZ2qno1oTTH1QWL
-         X4zA==
-X-Forwarded-Encrypted: i=1; AJvYcCXf+573diAf1HGNMehJaudT3UUQemBbUYq4eARtZbcxtFzYKnxIeopt8jnY3iEib82ux407Ow8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEWIzeruE1/p/f0AQddgWydwBsdo6xrwlzJjtWZjHFumbzPZjM
-	KtFGJ6wT2HFq3rrJpdSNG5YNwUPVHzRRs6MKXKREzBoMBqRuNdAPRb8GFy2EOYkahslU7PNYj0z
-	a/Ym6WWBiamFlZKc9UtfWB/L22+J8It9aisvvZqXjk4AsbD5PAAvXTiWhrg==
-X-Gm-Gg: ASbGncsDOZ6QcBDWhwCrgpqFanOBhLJhJn6RME8dqSUNewCfmwJsGgNN5pcPv7aGIhP
-	xwr149f3xuFT/KIWP6aAye9y1FhqhsHehn/E3faphV1DaZ0InfzSJWxgiOqr5EhKqePmuWck25H
-	JFwj3bAUPMSz9O5rbIkkuZd6KhKG2UZfrhXFtjBdy8XfVGGo3veXg/TSSrBn6RUSZxx1qSsuAwt
-	Zr+gq9cDUZ/ulyXY+lgp2YYp4DLOs6tN98c0zavbWGyUHj+Efo0irFKmDLFe4ebVaMTJ306qj9m
-	mQh3eSLOpxg7V9COBk95M4R2MqGtyFYo9BFPvN8maoZ1hz50x5Lw2kHKU3ibNIB7hghw2/dq
-X-Received: by 2002:a17:907:3f1f:b0:b45:1063:fb65 with SMTP id a640c23a62f3a-b46e82a70a0mr303996266b.39.1759303868646;
-        Wed, 01 Oct 2025 00:31:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGaIeVy1GaiMx10rrLM9SRhGSq3TBVSFud/vfhJoekCF5qafntVq/Ev6Ut7hpUPRh8DghTnmw==
-X-Received: by 2002:a17:907:3f1f:b0:b45:1063:fb65 with SMTP id a640c23a62f3a-b46e82a70a0mr303990066b.39.1759303868123;
-        Wed, 01 Oct 2025 00:31:08 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b3dc2cf61dbsm648421166b.29.2025.10.01.00.31.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 00:31:07 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 455952779A0; Wed, 01 Oct 2025 09:31:06 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Jesper Dangaard Brouer <hawk@kernel.org>, Ilias
- Apalodimas <ilias.apalodimas@linaro.org>, Jakub Kicinski
- <kuba@kernel.org>, stable@vger.kernel.org, Helge Deller <deller@gmx.de>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net v2] page_pool: Fix PP_MAGIC_MASK to avoid crashing
- on some 32-bit arches
-In-Reply-To: <CAHS8izPGxvdDu7JwEWK2=fk=qHoYgFzOs1FjOWjmNwqrU2r0kA@mail.gmail.com>
-References: <20250930114331.675412-1-toke@redhat.com>
- <CAHS8izPGxvdDu7JwEWK2=fk=qHoYgFzOs1FjOWjmNwqrU2r0kA@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Wed, 01 Oct 2025 09:31:06 +0200
-Message-ID: <878qhvm62t.fsf@toke.dk>
+	s=arc-20240116; t=1759305382; c=relaxed/simple;
+	bh=0Xbf6WiI+k8kDkwTVcaVWERAHnUbuj59jlP3WyJSKwU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bA20BaYrV1TRARyLoTmHNh9PzDs5CscR58gDe3ht+vQCSLRVVphYFPcP7SLM+bgV0BbrJQzYe6XG/YBaak7FS5DJnolak5i0S09/fkSLQbiBDF8avRq4VI89bjfCfI0CaoIZ+CbijUXf1ns0tZ5YvKKFQ50iAQSn7kOEufLgpkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmLqaY8s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556D1C4CEF4;
+	Wed,  1 Oct 2025 07:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759305381;
+	bh=0Xbf6WiI+k8kDkwTVcaVWERAHnUbuj59jlP3WyJSKwU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nmLqaY8sDF8OOR3jb9q9JnlRBYxzl9P0+TS0qGdWeKEkbM/eoT1kFLD5Rl5HBxdNf
+	 L9BdrLwWKsYD06MMWtCXzEWOS5MCIc6jsu4rCtPv7RD6TEifuOrmWfS5mbHEcTZLJT
+	 h4bnDPpuvPLFmQQ7mo3B2hgnCPKH6IHHesyeAoS4/f0soht1DBIGiscDPo2ivzPiIO
+	 NUKpEVZOpw+Ru3lKNeXqQoXLBNFhuwXlKkYB1I6j/mG8ZVnAaMOrwkS/h6rdcEs8AU
+	 VI5CUEeqSdP89I81fGCwc3mX+UTJkCB/vLZMmWezdUe9NzJTnuGQBooui3XDqXyJuE
+	 dIzR/8rF6rrSA==
+Message-ID: <292570c0-4aca-4e1a-9ac6-70d377909ecf@kernel.org>
+Date: Wed, 1 Oct 2025 09:56:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 6.1 54/61] selftests: mptcp: connect: catch IO errors on
+ listen side
+Content-Language: en-GB, fr-BE
+To: Kenta Akagi <k@mgml.me>, gregkh@linuxfoundation.org,
+ stable@vger.kernel.org
+Cc: patches@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ kuba@kernel.org, sashal@kernel.org
+References: <010601999b3f8615-c141c142-950c-4eae-8e3f-1fdd001c4568-000000@ap-northeast-1.amazonses.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <010601999b3f8615-c141c142-950c-4eae-8e3f-1fdd001c4568-000000@ap-northeast-1.amazonses.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Mina Almasry <almasrymina@google.com> writes:
+Hi Kenta,
 
-> On Tue, Sep 30, 2025 at 4:43=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen =
-<toke@redhat.com> wrote:
+On 30/09/2025 17:30, Kenta Akagi wrote:
+> Hi,
+> 
+> On 2025/09/23 4:29, Greg Kroah-Hartman wrote:
+>> 6.1-stable review patch.  If anyone has any objections, please let me know.
 >>
->> Helge reported that the introduction of PP_MAGIC_MASK let to crashes on
->> boot on his 32-bit parisc machine. The cause of this is the mask is set
->> too wide, so the page_pool_page_is_pp() incurs false positives which
->> crashes the machine.
+>> ------------------
 >>
->> Just disabling the check in page_pool_is_pp() will lead to the page_pool
->> code itself malfunctioning; so instead of doing this, this patch changes
->> the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
->> pointers for page_pool-tagged pages.
+>> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 >>
->> The fix relies on the kernel pointers that alias with the pp_magic field
->> always being above PAGE_OFFSET. With this assumption, we can use the
->> lowest bit of the value of PAGE_OFFSET as the upper bound of the
->> PP_DMA_INDEX_MASK, which should avoid the false positives.
+>> [ Upstream commit 14e22b43df25dbd4301351b882486ea38892ae4f ]
 >>
->> Because we cannot rely on PAGE_OFFSET always being a compile-time
->> constant, nor on it always being >0, we fall back to disabling the
->> dma_index storage when there are not enough bits available. This leaves
->> us in the situation we were in before the patch in the Fixes tag, but
->> only on a subset of architecture configurations. This seems to be the
->> best we can do until the transition to page types in complete for
->> page_pool pages.
+>> IO errors were correctly printed to stderr, and propagated up to the
+>> main loop for the server side, but the returned value was ignored. As a
+>> consequence, the program for the listener side was no longer exiting
+>> with an error code in case of IO issues.
 >>
->> v2:
->> - Make sure there's at least 8 bits available and that the PAGE_OFFSET
->>   bit calculation doesn't wrap
+>> Because of that, some issues might not have been seen. But very likely,
+>> most issues either had an effect on the client side, or the file
+>> transfer was not the expected one, e.g. the connection got reset before
+>> the end. Still, it is better to fix this.
 >>
->> Link: https://lore.kernel.org/all/aMNJMFa5fDalFmtn@p100/
->> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them w=
-hen destroying the pool")
->> Cc: stable@vger.kernel.org # 6.15+
->> Tested-by: Helge Deller <deller@gmx.de>
->> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>> The main consequence of this issue is the error that was reported by the
+>> selftests: the received and sent files were different, and the MIB
+>> counters were not printed. Also, when such errors happened during the
+>> 'disconnect' tests, the program tried to continue until the timeout.
+>>
+>> Now when an IO error is detected, the program exits directly with an
+>> error.
+>>
+>> Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
+>> Cc: stable@vger.kernel.org
+>> Reviewed-by: Mat Martineau <martineau@kernel.org>
+>> Reviewed-by: Geliang Tang <geliang@kernel.org>
+>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-2-d40e77cbbf02@kernel.org
+>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 >> ---
->>  include/linux/mm.h   | 22 +++++++------
->>  net/core/page_pool.c | 76 ++++++++++++++++++++++++++++++--------------
->>  2 files changed, 66 insertions(+), 32 deletions(-)
+>>  tools/testing/selftests/net/mptcp/mptcp_connect.c |    7 ++++---
+>>  1 file changed, 4 insertions(+), 3 deletions(-)
 >>
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 1ae97a0b8ec7..0905eb6b55ec 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -4159,14 +4159,13 @@ int arch_lock_shadow_stack_status(struct task_st=
-ruct *t, unsigned long status);
->>   * since this value becomes part of PP_SIGNATURE; meaning we can just u=
-se the
->>   * space between the PP_SIGNATURE value (without POISON_POINTER_DELTA),=
- and the
->>   * lowest bits of POISON_POINTER_DELTA. On arches where POISON_POINTER_=
-DELTA is
->> - * 0, we make sure that we leave the two topmost bits empty, as that gu=
-arantees
->> - * we won't mistake a valid kernel pointer for a value we set, regardle=
-ss of the
->> - * VMSPLIT setting.
->> + * 0, we use the lowest bit of PAGE_OFFSET as the boundary if that valu=
-e is
->> + * known at compile-time.
->>   *
->> - * Altogether, this means that the number of bits available is constrai=
-ned by
->> - * the size of an unsigned long (at the upper end, subtracting two bits=
- per the
->> - * above), and the definition of PP_SIGNATURE (with or without
->> - * POISON_POINTER_DELTA).
->> + * If the value of PAGE_OFFSET is not known at compile time, or if it i=
-s too
->> + * small to leave at least 8 bits available above PP_SIGNATURE, we defi=
-ne the
->> + * number of bits to be 0, which turns off the DMA index tracking altog=
-ether
->> + * (see page_pool_register_dma_index()).
->>   */
->>  #define PP_DMA_INDEX_SHIFT (1 + __fls(PP_SIGNATURE - POISON_POINTER_DEL=
-TA))
->>  #if POISON_POINTER_DELTA > 0
->> @@ -4175,8 +4174,13 @@ int arch_lock_shadow_stack_status(struct task_str=
-uct *t, unsigned long status);
->>   */
->>  #define PP_DMA_INDEX_BITS MIN(32, __ffs(POISON_POINTER_DELTA) - PP_DMA_=
-INDEX_SHIFT)
->>  #else
->> -/* Always leave out the topmost two; see above. */
->> -#define PP_DMA_INDEX_BITS MIN(32, BITS_PER_LONG - PP_DMA_INDEX_SHIFT - =
-2)
->> +/* Use the lowest bit of PAGE_OFFSET if there's at least 8 bits availab=
-le; see above */
->> +#define PP_DMA_INDEX_MIN_OFFSET (1 << (PP_DMA_INDEX_SHIFT + 8))
->> +#define PP_DMA_INDEX_BITS ((__builtin_constant_p(PAGE_OFFSET) && \
->> +                           PAGE_OFFSET >=3D PP_DMA_INDEX_MIN_OFFSET && \
->> +                           !(PAGE_OFFSET & (PP_DMA_INDEX_MIN_OFFSET - 1=
-))) ? \
->> +                             MIN(32, __ffs(PAGE_OFFSET) - PP_DMA_INDEX_=
-SHIFT) : 0)
->> +
->>  #endif
->
-> It took some staring at, but I think I understand this code and it is
-> correct. This is the critical check, it's making sure that the bits
-> used by PAGE_OFFSET are not shared with the bits used for the
-> dma-index:
->
->> +                           !(PAGE_OFFSET & (PP_DMA_INDEX_MIN_OFFSET - 1=
-))) ? \
->
-> The following check confused me for a while, but I think I figured it
-> out. It's checking that the bits used for PAGE_OFFSET are 'higher'
-> than the bits used for PP_DMA_INDEX:
->
->> +                           PAGE_OFFSET >=3D PP_DMA_INDEX_MIN_OFFSET && \
->
-> And finally this calculation should indeed be the bits we can use (the
-> empty space between the lsb set by PAGE_OFFSET and the msb set by the
-> pp magic:
->
->> +                             MIN(32, __ffs(PAGE_OFFSET) - PP_DMA_INDEX_=
-SHIFT) : 0)
+>> --- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
+>> +++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+>> @@ -1005,6 +1005,7 @@ int main_loop_s(int listensock)
+>>  	struct pollfd polls;
+>>  	socklen_t salen;
+>>  	int remotesock;
+>> +	int err = 0;
+>>  	int fd = 0;
+>>  
+>>  again:
+>> @@ -1036,7 +1037,7 @@ again:
+>>  
+>>  		SOCK_TEST_TCPULP(remotesock, 0);
+>>  
+>> -		copyfd_io(fd, remotesock, 1, true);
+>> +		err = copyfd_io(fd, remotesock, 1, true, &winfo);
+> 
+> The winfo in function main_loop_s was added in
+> commit ca7ae8916043 ("selftests: mptcp: mptfo Initiator/Listener")
+> but not present in v6.1.y.
+> As a result, mptcp selftests will fail to compile from v6.1.154.
+> I'm not sure whether I should send a revert patch, a patch that removes &winfo,
+> or ask for the prereq patch to be applied. So, I'm reporting it for now.
 
-Yup, exactly! Thanks for walking through it and confirming that the
-logic is sound :)
+Thank you for reporting the error!
 
-> AFAIU we should not need the MIN anymore, since that subtraction is
-> guaranteed to be positive, but that's a nit.
+I think the best is a patch removing "&winfo": the goal of 14e22b43df25
+("selftests: mptcp: connect: catch IO errors on listen side") is to stop
+in case of errors with copyfd_io(). No need to add commit ca7ae8916043
+("selftests: mptcp: mptfo Initiator/Listener") as prereq.
 
-The MIN was originally there to limit how many bits we use for 64-bit
-systems that don't set POISON_POINTER_DELTA, since xarray uses a u32 for
-the size of the limits. Not sure if such a combination exists in the
-real world, but I figure that having it there doesn't hurt in any case.
+Do you plan to send such patch for v6.1, or do you prefer if I do it?
 
-> Reviewed-by: Mina Almasry <almasrymina@google.com>
-
-Thanks!
-
--Toke
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
 
