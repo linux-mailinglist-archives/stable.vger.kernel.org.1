@@ -1,181 +1,128 @@
-Return-Path: <stable+bounces-182905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D90BAFC6D
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 11:05:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3820BAFC91
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 11:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 255033AA3B2
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 09:05:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 158147B10AF
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 09:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE04B2DC797;
-	Wed,  1 Oct 2025 09:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6843279782;
+	Wed,  1 Oct 2025 09:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="P7Kexn1g"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="RXDWkZy1"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D062DAFDD;
-	Wed,  1 Oct 2025 09:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBD0239E67;
+	Wed,  1 Oct 2025 09:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759309467; cv=none; b=QUrNKbz22zx/rT8TcFVtbxWjpzi2w8stLGZ8USJ49eS0rcdYAIULiH5UH+oLSz3IsgCMCkPWx2/JwLun9LKwdyChrxXeeXBB6xAk6bl49Sg39snbRKh4ueFdUdKx2aTVsDaTx3MxEUvlMLZX7HrBl8DrxRf1MsnKVqnffVHxEsY=
+	t=1759309683; cv=none; b=n/cw6bjHKFAQa/p71JPH89bhegq/hfGE1CvANRPjWssjwpAwCp1NR+lJ6BG3jQ8WrZJS2WMnEPcGtHI+l/DTb2D3XOeUUCWWhshjnhwRdtxsu36T/5Wip4BfMVMJmZwSWpQgb9eD0v/bLEF9LW9ffLTcamOWa664vjpSB6x4hCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759309467; c=relaxed/simple;
-	bh=7HSxwXm+a/QSLPKWcep56Ih/v+0i2+KazMsze1uGMZ8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HgnK/7ca0qyas8z742E8Qk8epg7nsEZcaJ86cK/Eb/OC7EoSJMDtEQZZZnM2jr/iqbH4zGvtnCrfI1Be8G8IrRZwzC1zoA2ghPx5tHN2HlKK0LJYM1KkrJ9Mb6ZSKg3tkcDv0pdtRZLMtu5XyXDIeXuJ9CvKYWPKkZQYFFewx7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=P7Kexn1g; arc=none smtp.client-ip=52.42.203.116
+	s=arc-20240116; t=1759309683; c=relaxed/simple;
+	bh=mzA2wfqe4qhLk9P03nBHLrjAgyXRLL77w450Dy43nQk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BMj/tMyC2LbK+FqzF3jzgGhg3J2J81RcaHn6psLRWM/hHmaN7BV0o7iUgBSZa9v+sAp59HDvH2DTXfMU1XOa9PbYUGNyclQ4TGbfND+DprBxyyMxn1gadNZW+2a+8U8zbmBwdmcoQJNZTHvPJhGPhTY8/bJPjy7Qs5VQqdv5bxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=RXDWkZy1; arc=none smtp.client-ip=44.246.77.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1759309465; x=1790845465;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=OzPLc+IFhXU2hCT/ga3y8QABI/mqNeOmZhS6AUI98bs=;
-  b=P7Kexn1gutVrcl+bBNfXrbUMeg66qNUqO77t4iMoO42bl8CoDRoxikuI
-   6CHIMeFUdwjS2GfvRUQiNbgnRUIEXKsS/TQyJamZCuFnvRG+wYzWb5ViR
-   psvT5StyoNzFVjTxWMKJMdtHxHUo8pCTE4BINvd+QXrZn9uwsZQjMDJA0
-   ZpXTds+W2jDtmtlflKKKdKXQQmY3RtJqWs0S2WKLRR102IPOsFOrztzAT
-   +IpynbmXoIhcLVSuHernbgeRxcFfkDBrVEApl9Am4tJyQ9p2VpNS/Xcsy
-   Y/0dNYLGE2nzGA7VK0XtspcxgqKjBKGcYeMQLfR7IKqunS3+TL3g5mhsc
-   A==;
-X-CSE-ConnectionGUID: FGEcwYeHToCCs/kvg08eTA==
-X-CSE-MsgGUID: fHqXDOd5TZmmQ05DQ2mzkQ==
+  t=1759309682; x=1790845682;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6+nXW15w+7dBN6EUXm7aFj+3+vhO7ZTN7faFbVeZpUQ=;
+  b=RXDWkZy1pwJbG1OnCX2sDZl03JGCOiWeWpOpoZQPlLouzidgHWaFYRUG
+   TxQkSmIRUnrNtb18mIVHdVPVXWdqTtu+eioz503/OLma3+8ZyVDpCrbeA
+   uYNHRgrwq/aToo4SklbQVYtBT3nz/aCPk5ABjiPZ1Rk8DAXXZxl+6CUqi
+   GX3m+0HJX8ung+lYW341rdT95LThZ6/4VXvqpq0nA+WfGIWSYakOdKNhH
+   X9HTZWkFaiPf1uaXIJcM5Z6+JfsQno1e2O1GPIarDpsY4/TZn9h2+wziP
+   rFCz0U72+O7rR5h6yKhMfWh7HztaPmR9EyaFpurfix/Iu1rqnMTuvCFEz
+   w==;
+X-CSE-ConnectionGUID: 92LAiI7pQ+aZpl4wa2XNgA==
+X-CSE-MsgGUID: vs7DOnDiQkCkBcYNAumq0Q==
 X-IronPort-AV: E=Sophos;i="6.18,306,1751241600"; 
-   d="scan'208";a="4058017"
+   d="scan'208";a="4068769"
 Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 09:04:25 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:30255]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.32.190:2525] with esmtp (Farcaster)
- id e9f24429-472f-496a-a05a-30cd931969d7; Wed, 1 Oct 2025 09:04:25 +0000 (UTC)
-X-Farcaster-Flow-ID: e9f24429-472f-496a-a05a-30cd931969d7
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 09:08:00 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:7533]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.36.10:2525] with esmtp (Farcaster)
+ id 56bfb667-8496-4537-9162-31c05f1cace1; Wed, 1 Oct 2025 09:08:00 +0000 (UTC)
+X-Farcaster-Flow-ID: 56bfb667-8496-4537-9162-31c05f1cace1
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 1 Oct 2025 09:04:25 +0000
+ Wed, 1 Oct 2025 09:07:59 +0000
 Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
  (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 1 Oct 2025
- 09:04:23 +0000
+ 09:07:58 +0000
+Date: Wed, 1 Oct 2025 09:07:55 +0000
 From: Jakub Acs <acsjakub@amazon.de>
-To: <linux-mm@kvack.org>
-CC: <acsjakub@amazon.de>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>, <peterx@redhat.com>,
-	<axelrasmussen@google.com>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v3 1/2] mm/ksm: fix flag-dropping behavior in ksm_madvise
-Date: Wed, 1 Oct 2025 09:03:52 +0000
-Message-ID: <20251001090353.57523-2-acsjakub@amazon.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251001090353.57523-1-acsjakub@amazon.de>
-References: <20251001090353.57523-1-acsjakub@amazon.de>
+To: David Hildenbrand <david@redhat.com>
+CC: <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, Xu Xin
+	<xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Peter Xu
+	<peterx@redhat.com>, Axel Rasmussen <axelrasmussen@google.com>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] mm/ksm: fix flag-dropping behavior in ksm_madvise
+Message-ID: <20251001090755.GA66706@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
+References: <20250930130023.60106-1-acsjakub@amazon.de>
+ <85f852f9-8577-4230-adc7-c52e7f479454@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D038UWC002.ant.amazon.com (10.13.139.238) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <85f852f9-8577-4230-adc7-c52e7f479454@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-ClientProxiedBy: EX19D040UWA004.ant.amazon.com (10.13.139.93) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-syzkaller discovered the following crash: (kernel BUG)
+On Tue, Sep 30, 2025 at 05:32:25PM +0200, David Hildenbrand wrote:
+> If we want a smaller patch for easier backporting, we could split
+> off the VM_MERGEABLE change into a separate patch and do all the
+> other ones for consistency in another
+> 
+> Reading what we do VM_HIGH_ARCH_BIT_* , we use BIT(), which does
+> 
+> 	#define BIT(nr)		(UL(1) << (nr))
+> 
+> So likely we should just clean it all up an use e.g.,
+> 
+> #define VM_NONE		0
+> #define VM_READ		BIT(0)
+> #define VM_WRITE	BIT(1)
+> 
+> etc.
+> 
+> So likely it's best to do in a first fix
+> 	#define VM_MERGEABLE	BIT(31)
+> 
+> And in a follow-up cleanup patch convert all the other ones.
 
-[   44.607039] ------------[ cut here ]------------
-[   44.607422] kernel BUG at mm/userfaultfd.c:2067!
-[   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
-[   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+Sent in v3: 
+https://lore.kernel.org/all/20251001090353.57523-1-acsjakub@amazon.de/
 
-<snip other registers, drop unreliable trace>
+It's the first time I sent a series, please let me know if I did
+something wrong :)
 
-[   44.617726] Call Trace:
-[   44.617926]  <TASK>
-[   44.619284]  userfaultfd_release+0xef/0x1b0
-[   44.620976]  __fput+0x3f9/0xb60
-[   44.621240]  fput_close_sync+0x110/0x210
-[   44.622222]  __x64_sys_close+0x8f/0x120
-[   44.622530]  do_syscall_64+0x5b/0x2f0
-[   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   44.623244] RIP: 0033:0x7f365bb3f227
+> 
+> Sorry for not thinking about BIT() earlier
+> 
 
-Kernel panics because it detects UFFD inconsistency during
-userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
-to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+No worries :)
 
-The inconsistency is caused in ksm_madvise(): when user calls madvise()
-with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
-mode, it accidentally clears all flags stored in the upper 32 bits of
-vma->vm_flags.
-
-Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
-and int are 32-bit wide. This setup causes the following mishap during
-the &= ~VM_MERGEABLE assignment.
-
-VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
-After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
-promoted to unsigned long before the & operation. This promotion fills
-upper 32 bits with leading 0s, as we're doing unsigned conversion (and
-even for a signed conversion, this wouldn't help as the leading bit is
-0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
-instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
-the upper 32-bits of its value.
-
-Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
-BIT() macro.
-
-Note: other VM_* flags are not affected:
-This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
-all constants of type int and after ~ operation, they end up with
-leading 1 and are thus converted to unsigned long with leading 1s.
-
-Note 2:
-After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
-no longer a kernel BUG, but a WARNING at the same place:
-
-[   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
-
-but the root-cause (flag-drop) remains the same.
-
-Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Xu Xin <xu.xin16@zte.com.cn>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
----
- include/linux/mm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1ae97a0b8ec7..c6794d0e24eb 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -296,7 +296,7 @@ extern unsigned int kobjsize(const void *objp);
- #define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
- #define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
- #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
--#define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
-+#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
- 
- #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
- #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
--- 
-2.47.3
-
+Kind Regards,
+Jakub
 
 
 
