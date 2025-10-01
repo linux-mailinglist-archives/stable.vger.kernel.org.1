@@ -1,83 +1,126 @@
-Return-Path: <stable+bounces-182937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00674BB0744
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 15:20:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF110BB0822
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 15:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95EB12A1A54
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 13:20:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AFCA1883501
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 13:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2552ED860;
-	Wed,  1 Oct 2025 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C7A2EDD6B;
+	Wed,  1 Oct 2025 13:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="XRWN3H2D"
 X-Original-To: stable@vger.kernel.org
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6DC1DA62E;
-	Wed,  1 Oct 2025 13:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F5381AA8
+	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 13:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759324825; cv=none; b=u0onedwJOMT0xigUuP5J14/FPWV68PLtVTCuXO5XslnP4DJ6yUXgjHej/WgfYqJP9kxEL27eqqbQr80GqJB/Ii79UhjwjYPeksqNmWiWNtGYDxgf6HD5+OvpMJ7UwAy5p53oGgDck5giISkZP/Vpt6NYmrHvHXiE/EwfIFWqfvI=
+	t=1759325433; cv=none; b=QVQmOys+9x9FW6+tatY98f/WCqqlKdU3axj+ru7YPs2JEF1szecrWCOTc24jwnN4YevzVlF++uyAaJtVZX0p83Bp5wCgZ4pL7nXykPz2kcms2sI5pIcGOvE+OK4l/eeBiZya8IUTJdUXEMqNDJ4v/64g9yxKT5ufEqofQkN/mA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759324825; c=relaxed/simple;
-	bh=Uctcsfz4nNrfaQk5rKvvDsfcCV9RMgYtVLuLHqiRaLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SjjEXakmwiyeDxSVhhJ1vnQf/HCvVvHX90NddnkrlJx2DUJuSUa/ELynAQz3so7kA4L1lGZ/PU3KXcDHyG93BgrvbZJ86b28Vc/Km5l3qCSYfQKIaIBqTvFRyeBZ6Mq0X/6hOSoJSZ0iuRFAkFU7KSPrngH+ts+hCQEOuGqRi2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 621F82C0A2C6;
-	Wed,  1 Oct 2025 15:10:14 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 4BEE65F82FE; Wed,  1 Oct 2025 15:10:14 +0200 (CEST)
-Date: Wed, 1 Oct 2025 15:10:14 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Hubert Wi??niewski <hubert.wisniewski.25632@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-	Xu Yang <xu.yang_2@nxp.com>, linux-usb@vger.kernel.org
-Subject: Re: [PATCH net v2 1/1] net: usb: asix: hold PM usage ref to avoid
- PM/MDIO + RTNL deadlock
-Message-ID: <aN0oNgEp08BaGeTJ@wunner.de>
-References: <20251001130432.2444863-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1759325433; c=relaxed/simple;
+	bh=SktQ3kOlhBAC2x3vmzqqiWJIKayZPjyxZa2VPO2W95s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=boRQalNEIRxJIgJlAC05yWXqM5KSgLRG2d2xA/dKUv6iLIe9QIIp0N732FuKycAl/MopWrPZAbgON/AuTLTJvzuUuHXWlzScGUeHlRsf3P25ZOKDHIYejzooiNlPy/zTSuqNNxCQp8vurklWEojWV2qU0SR04oW8WS8L0dPFQhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=XRWN3H2D; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8572d7b2457so126022585a.1
+        for <stable@vger.kernel.org>; Wed, 01 Oct 2025 06:30:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ciq.com; s=s1; t=1759325430; x=1759930230; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YCwcUuDlR2HsB5Hk2ZIMgqVF/pdzyf7iXfwKEpkpRxM=;
+        b=XRWN3H2DBctRwacMAgmIgy7S3DPK5sifTGOkdehLWCgX6Xh85EJM4HafWsaiqhmLYD
+         Txh1P5B268DaqKix3HPqNO81gomC1KYvQOUFrMIj6nmzHIPYDkS6RGIsudW372UZ4/u7
+         1siql3blj3BL9vSGyvZqh2cp65N1VPKtMnTbX5QuKthv5vws+qKRxDYWRVCxR+XOrKfh
+         T6dIbnde1KL+9ZLSG5Fqgbo6VD6WTmS3duo2m2K7mptm5YNlUZhBn6/nzyLOmQ9Tl5Fz
+         cQOInFASfxJf+2zOmbMpXWIEsUlHsBUGChLRtL6+wV5VSYxOoyVxqIDlpGjqVa80xV35
+         4FIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759325430; x=1759930230;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YCwcUuDlR2HsB5Hk2ZIMgqVF/pdzyf7iXfwKEpkpRxM=;
+        b=ZsQhQouMvIuYNolZVsBI38jwrXTKohFWyeIDmyB6U03TUveWpG63bt4J8VV9/MulQD
+         i6lUq96gDamf+/8JKG6FJBNvkwLioGPGg2Hp0UF8jaBA3rrcl5BvCCtRI/IZifiFxVvv
+         lbAeb+Ibd7KXWF/RFjjV+2atKpk1jZNi1s6tCMpCUCGtUyy5naZmR+FG1Dfd8zHFhKfF
+         rMLsF5R+rTngcu2KSaD+nIYXWx+MAJPsn7ouWzbulRMmuybWDY4YhBiURw39sZi+tUP6
+         kJBIXU5l/TaQuwieI3fF1FR97wPHO4RnJmIv/On4vuAYn0Gp3pNrZL2duauka3vskOrH
+         SuUA==
+X-Gm-Message-State: AOJu0Yw8QwJvW7h+moq8ibetnJcS+D7nxmq04PrD9E743eGDdyYiGo3L
+	LcUEXe+ZLsr4KFhnHSvhPjca8floZR5CvkIPDCj7+ZRW7YzJVHzyGkHBHCM7a+t8k2zVgjjp+dC
+	qcsJdAi1EYRMUMF3jujDiQPMkv2f8njg0kmHJoXFQLA==
+X-Gm-Gg: ASbGncuMBTsd9BhD3YQF8S+pAMexRmGVS3W9h9RBaSUVErq89y7UGBpleFZ1/3qUsuC
+	3WLetvJU4r6JWr4vVqcefb9l3wbOOm4y7wBfCSUrShpaHxkySlvGGF9QkpAnEiwQFaCSf150kzo
+	ZS0/bblA467vZOQ7KVGRjRlZaHJwzTbUPUyAyb+F52HWgNb70zezHoWcEq75/n1+Ru1l+N02JzX
+	I041yF7dYLuN+y6S4DCBTAIstZz3FLV
+X-Google-Smtp-Source: AGHT+IFMFqctsC/gdxMYa79bTEHX3fAs8ipIL5VVoN11C3E29xDno2ZFwjrwO6xWIEz3lEpIgS6pt5gaKnnHsGAh2P4=
+X-Received: by 2002:a05:620a:4508:b0:84f:8eb3:9648 with SMTP id
+ af79cd13be357-86ee226f9b2mr1216961185a.36.1759325430066; Wed, 01 Oct 2025
+ 06:30:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001130432.2444863-1-o.rempel@pengutronix.de>
+References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Wed, 1 Oct 2025 09:30:18 -0400
+X-Gm-Features: AS18NWDMzWRD62Q2toC84MiLOfA3LeeQx4tD34WUJj7d19lC0jxZJv7F6icp5OE
+Message-ID: <CAOBMUviHCYvHce4qoy_WXNK1tragYg2k5DbgpAxy_1dk3YtD=w@mail.gmail.com>
+Subject: Re: [PATCH 6.12 00/89] 6.12.50-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 01, 2025 at 03:04:32PM +0200, Oleksij Rempel wrote:
-> @@ -1600,6 +1624,10 @@ static struct usb_driver asix_driver = {
->  	.resume =	asix_resume,
->  	.reset_resume =	asix_resume,
->  	.disconnect =	usbnet_disconnect,
-> +	/* usbnet will force supports_autosuspend=1; we explicitly forbid RPM
-> +	 * per-interface in bind to keep autosuspend disabled for this driver
-> +	 * by using pm_runtime_forbid().
-> +	 */
+On Tue, Sep 30, 2025 at 11:27=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.50 release.
+> There are 89 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.50-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Looks like this code comment needs an update, now that you're no longer
-using pm_runtime_forbid()?
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
+
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
 Thanks,
-
-Lukas
+Brett
 
