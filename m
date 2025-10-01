@@ -1,202 +1,188 @@
-Return-Path: <stable+bounces-182914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29AA0BAFD35
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 11:14:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C01BAFDEB
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 11:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D117E3B90A9
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 09:14:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D41293B550E
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 09:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB072DF146;
-	Wed,  1 Oct 2025 09:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4573C2D9485;
+	Wed,  1 Oct 2025 09:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qQflPp1l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxJWr6HC"
 X-Original-To: stable@vger.kernel.org
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010024.outbound.protection.outlook.com [52.101.46.24])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8562D94A8;
-	Wed,  1 Oct 2025 09:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759309952; cv=fail; b=nAC6OQyDnnItdYst5xytKma+eMv2CwSnc/XVdOtDKm/xnqln01AJEk5OfkLJUjlHMStBCgLOLzJRaAtchuMCiN0ncOiPbbgfB3GXpt85sTRR7dtl/X9MsL/yXLNzrqC0lXjZOmkouECv+71vq2wdzwqNh9HPuHFBDyij0PiFvuQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759309952; c=relaxed/simple;
-	bh=EzNGGE3Ma0DzqDh1+a1DhMbeb2mZRsORN5Y3cNnjcic=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=DbgIpaY5NuJZd6zDYSq0jkHHzs6Er3sq9ZYNLKz/b73qSk+wLi7wb9pFmZWRwCAPpBWyQ7u+xP/Moc6AMiPKCNRbqFj2LrSsHXOh9Sm/DXHQZkm0+JRh0saZ7WuRyPqiH1UYGxHXKAvP3CxA6y2rCTcEXVg0Cs88jpfPYNTHhs4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qQflPp1l; arc=fail smtp.client-ip=52.101.46.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G7zBy6r9vqBrs+yFxP1yWYy2cAsZVDhv1NmMAylV19bE/izgWsNjqk8N4qV2ErKQ4N2PZ2JOrLCFFj4Tve7BY8REdHV2hAE3i7reGGpocwdIK3Ltf80VWGibcZOG0KD2k7peKzWA6RUnaFYnjMsoOo1e5vgwL9lfQicir1rr5wLkUkRaKDlBBkd1t+iHE09BYP03qd6L5bQxsCTOTwL5fH6j6HxLLdbSBJ4fsv9SO1KQ7EG4UdY95wB0yDRBkD6g5ZdjpTR2fF905Znx87Cm5bh7rhuAjEG9+5IuMAbfV7fC5BEjeXoOffAW5lPN1ZEOGxL+YYvTrqQhDHTEdS+F+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u8W3qxL5w8p15N/dgivzuvGjsyGcKZEhB5bZfgvTjpQ=;
- b=YXcGIBcGCkykQbRSz7qV0b76Gbu7IpQmQRmKNM4e2rCSEcdqpgQkSJuwxfFRoSdwJnK2Bi1nVOEMJXupPqfIn9t7cY3KWIdSr7Sh/5h5qRZZRwesZzqqCx9abXCG/C9O8XdJDzZEFSYvwC/J9Lj3tEmaqLOh18+7g9nj08v/SSRihfzgWnL7EeC6j0HNPkblIESPk8ILSNO3gpImvxKPRoW9tX+02+4l+cFraprZdZzz+2xBNFLTa1NYkajt8D+uiYIM7C9nrckBXgSiPZYVv3xi5A4Q3Ma7Wdjl4/K+tPw8eYG4yv79y78f1Aim6+LQEjemf4Yi2gNPDowtTk1nNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u8W3qxL5w8p15N/dgivzuvGjsyGcKZEhB5bZfgvTjpQ=;
- b=qQflPp1l7rejK2pcrNmt32NRH9USby2K3O6pAYLwe4yNP11swkiTlAK/TFFwOttdhxh62WRdWMBIOfoaD7cwTUQM9j7kLL5Xbrm9dg1vql9h2gI5JJvwZ9xMG9ihosGBAAOvBF7NQkRp4w9W7We2Bp8RdImTjuHuFz41XuDb7MzeWomtyEZI1tuxKMhEUMazbfrlnw5OQ7fzb910VQ5ewCiwXFfsbyZ1HQZN633jkAUEB+zybgiKJeo8gTUoD33VSlRBCV9NE9C54y9tELj6JFoIC8KmLx8cyzllqoUvsgV+k1bqemsdWmQ+K1gyf+LBEDQDOGfvDC6crhN4NgDlFg==
-Received: from SJ0PR05CA0190.namprd05.prod.outlook.com (2603:10b6:a03:330::15)
- by IA1PR12MB7637.namprd12.prod.outlook.com (2603:10b6:208:427::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Wed, 1 Oct
- 2025 09:12:27 +0000
-Received: from SJ1PEPF00001CE8.namprd03.prod.outlook.com
- (2603:10b6:a03:330:cafe::9a) by SJ0PR05CA0190.outlook.office365.com
- (2603:10b6:a03:330::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9182.10 via Frontend Transport; Wed,
- 1 Oct 2025 09:12:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF00001CE8.mail.protection.outlook.com (10.167.242.24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9182.15 via Frontend Transport; Wed, 1 Oct 2025 09:12:26 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Wed, 1 Oct
- 2025 02:12:11 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 1 Oct
- 2025 02:12:10 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Wed, 1 Oct 2025 02:12:10 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
-	<conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
-	<achill@achill.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.16 000/143] 6.16.10-rc1 review
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32522765EC;
+	Wed,  1 Oct 2025 09:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759311173; cv=none; b=bIeh41vxEZhaujkOWUZ5J/hEwgYKeVHOSAFRcZoOUcd7usZdsgU78THSCvhc8FjsPmULs7yrlP0MZcdoK+9O4dYsXd2vIVSLPbB+AcVcJg5KrKbuBsx8pv1osK4K9cH2WW3tY3CjX68bmkumOxtKa1QlcWIZkWBGoUa15fWBebk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759311173; c=relaxed/simple;
+	bh=UJ5Nrj//XI4MYIzbnakq8QPry+1jzsB8A4m7sh8T2gA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X95X0eH3+J2TrAM7E3gSXwI/hA08qNNtK2ziMH1A1a5WWpIc4P1RmBxKTTwMrmZWQ6pbI0RTF2JeD9p1Kg7+pBTv54/y7DQMLcfG8Fp3lFOlZVWF0JlcNQe5Qo+4gSjNxFvXgOu6bEFFC01VPpSLfwXP1m8HeH6o6ZJ2KXIw/ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxJWr6HC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02C5C4CEF4;
+	Wed,  1 Oct 2025 09:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759311171;
+	bh=UJ5Nrj//XI4MYIzbnakq8QPry+1jzsB8A4m7sh8T2gA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WxJWr6HCADQ9SHytSVb/WM8rkT5Hl/hXX+JyJIO5LalLr0RzMDHRv1dc0VvekL+D1
+	 23vRK/27KxUmvCPzn3AO2jUDXVCo5nLygHKcOoHwHLW6cqSHs8CHFaol9FD+0CL6l6
+	 fxVhrkzxLSPo8y0CCrlmojDvYL+Rsyge2tm4eLvjdkWCc43WHud7OLkMPhCfAlKTF8
+	 Fmq5grfl9oz2tbArCTErEJ/PpqhGTo6bouJ9LQ+2J/zAU63tM/LMgSFiHg29Buf54C
+	 wcVqHKEFNywNwzSNLS/LLEgGNl66mspsZZQRag8IrTRKGavS6VfvYF0Jm8Q+5DhL+1
+	 OVZQvQPXTM2MQ==
+Date: Wed, 1 Oct 2025 10:32:46 +0100
+From: Will Deacon <will@kernel.org>
+To: Kenneth Van Alstyne <kvanals@kvanals.org>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+	catalin.marinas@arm.com, ardb@kernel.org, mark.rutland@arm.com,
+	linux-arm-kernel@lists.infradead.org, maz@kernel.org
+Subject: Re: KVM: arm64: Regression in at least linux-6.1.y tree with recent
+ FPSIMD/SVE/SME fix
+Message-ID: <aNz1PnARMC4DPeYb@willie-the-truck>
+References: <010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <f2e39786-be21-4895-8b69-edbe96562e48@rnnvmail205.nvidia.com>
-Date: Wed, 1 Oct 2025 02:12:10 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE8:EE_|IA1PR12MB7637:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd367353-7b74-4d09-75a8-08de00caa405
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|36860700013|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z2V5a3ludFNQMGU0S0JTS0JRbTdpeEJ3VTcwa0o3M2N2Z2lTbDVYa05WOEgy?=
- =?utf-8?B?bk5LYXF4NGVFZDlIY2J2V3p0R3EyNzdtbHVvcXlQTXg1TTJRalpqc3REZHkx?=
- =?utf-8?B?cGhKdytWVlJHelBqWWtWbWI0WGVZWDVIMXZCVDdzYUY2SDJVWDFxWEZVZGlR?=
- =?utf-8?B?K3F2SklZZGwrRHgrSDFLUTd0T09tcGdGaktHWGhKdEJWSUIxSm0wWW9ybVRB?=
- =?utf-8?B?cTJUWG14d2ErWXpiNWJsb21HNlhudUozTWc4eU1ReXpHbVRTTk11ZEhVQ0M4?=
- =?utf-8?B?UWI3QU1POEdhZ3NkWlVDQ0xNcWRuZDJaa1NiMlRQbTl3cThVVkxVTy8zRWRX?=
- =?utf-8?B?VXh0ZElwL3I5UkVnd25RYld5UzJKRWN2cEtWZjhlUDRhTXAxWEc1YzY1dGN2?=
- =?utf-8?B?eVRhUHJRTzRlRktpVFpLL0xVRDVuVTVHc0RLbGlzT1hHYkt3L1lLTm5QT2dv?=
- =?utf-8?B?TWJMMFFVTXhXY3NOZ2pKRkJNQW9mOTZhSmxFbURQZURzOWNBMU5oelNNR3lI?=
- =?utf-8?B?Z09TbUJRaDBiWlQ2R0NSSk1qV2FrdjhjU3M5VHRZc002Qm9WMG8vNkZoVDBK?=
- =?utf-8?B?MDRlUEhSUnFSQTZmN3JaY3ZyWjB4R0hrZk44NjBRRnlCVCttZE9sR0lPVTZP?=
- =?utf-8?B?RExQQ3ZDQWdxRjhFUVEzbUF1cW8xd0dEY0h5U01HUkZNVEQ0RVYvMnJodjls?=
- =?utf-8?B?dzZkY1BoaG1wbXB4dUJjbjZQa1VIaEl6a0QyWXZZOGs5aWxFSmFHTlRWRlVL?=
- =?utf-8?B?Y00vNlRqWXZGNXM5OXNhaXkwZ005NXlGZzgvTWw3N29mM1MzcnA2YWh2TUFs?=
- =?utf-8?B?Uk5tcVhJMW11d0pIREJIeENBWVFQY1paVy9kT0hQcjdnZGM5Z05mYW9CdVFX?=
- =?utf-8?B?U2dkQk9rdnZRNXhKYXE4ZWJVbGx0WWM2TmQ2S1BML2MvU3V3cGd0U3M5VlJr?=
- =?utf-8?B?cXQ4TG8xM1ZUclRpbU5JVGdqeXk4WlluaE8wcCsrNmdHZDJibFhTcFA1T2lE?=
- =?utf-8?B?VERFUlR5N29JdUNrYnExcnVlYWZxMHBlamdIYWI4WnRYY2g1aTlNZlRPbnhm?=
- =?utf-8?B?OFhzcGtrblJFK1dmbDNTcUF4T3pWZkpHc0dwdnowdkh5MkRJc0lkdHBaak5q?=
- =?utf-8?B?MFUxaExGRlY5KzJob3VPaVpJbVhibklhc3I1OVVPSDZzSUhVVG5Iak4xVHJQ?=
- =?utf-8?B?VjZKN3d5bjdZcDMydHVFS0t4cDhjWStPTktqSytnTGZBaEdiZFVKSlBNcm1a?=
- =?utf-8?B?QkN6cU55N1F2YnJsR3h5bzQxVkhRYUg4ZXI0UXBzbjJlYnFhZjA1Zms2ZHJU?=
- =?utf-8?B?R2U4QXZhdytsNTVJd1ljRHVGa0wvK0F5S1dHRWdzclcrd0Y1TFNkOUlYaVI4?=
- =?utf-8?B?b2xZeVBvbUkvQmJqV0cxanFBRmdQRllJV0VTdkdySUpUd2FuazlVNDdLbTZr?=
- =?utf-8?B?REtkZXVYNHI0ZktVeGtQNmhLNVZBNDdvc3R4ZU9yWi9YdWNKbHdaTURsNDB0?=
- =?utf-8?B?aGR2b0ZtNnBjUjlEQWpUaU1zVEEzaXZUNkVDUjhuRnZxN0tnc0xKOWtIdklK?=
- =?utf-8?B?d3ZNR3VEcjZ6aUd0aXArWFlvUVZBaUtyejQ1MU1XK1RzTm9ReWR5dTA5TCsy?=
- =?utf-8?B?TVFoWmZsZmhEQlloNWJNcnRULzBvRk0wai9YN01wWWdDZzNoRWR4aHkzNVdq?=
- =?utf-8?B?QTdFaVZKL01XaEhRQXY4WGh2WkNzQmg0WlZlRDJUcDZMSUsrUWIrakFKZTRu?=
- =?utf-8?B?aG5TdXZFMDNIOUoyTHVoQ3JYTUVIVXVwS3NCeFB4YmdudVlKTGgyVmZnMmFq?=
- =?utf-8?B?WDdwZkZhM3lONnpvOU1PZlkyNUZ2UWJuMTJuOTdMbi9za2JMc09oalpRcXRD?=
- =?utf-8?B?ZVFqSTIyUFRBczlHVlFtZkl5cnlDN2licE5lWTMvbG1EdUhWTlVDb1VNYjNZ?=
- =?utf-8?B?aDE5WUpJQ1VDNkJhT3ptd2MybzZ2Yk5uWjJhcjNDeDV0ZFJldUZibEpJWkFZ?=
- =?utf-8?B?U3drVkljRklzcTRHNlhZditaM1dtdUl1ZE9ubFRxRlV5WkRDMkxFSVI2cE0v?=
- =?utf-8?B?dTJvZG44SnAvUlFzNGd1d2ZqYmpDN0VnVkdNV2NjZ3NHK1o4TGM5WXRPVUlD?=
- =?utf-8?Q?RJnA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(36860700013)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2025 09:12:26.8089
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd367353-7b74-4d09-75a8-08de00caa405
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE8.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7637
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com>
 
-On Tue, 30 Sep 2025 16:45:24 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.16.10 release.
-> There are 143 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi Kenneth,
+
+Thanks for the report.
+
+On Tue, Sep 30, 2025 at 05:31:38PM +0000, Kenneth Van Alstyne wrote:
+> Sending via plain text email -- apologies if you receive this twice.
 > 
-> Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
-> Anything received after that time might be too late.
+> If this isn't the process for reporting a regression in a LTS kernel per
+> https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html,
+> I'm happy to follow another process.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
-> and the diffstat can be found below.
+> Kernel 6.1.149 introduced a regression, at least on our ARM Cortex
+> A57-based platforms, via commit 8f4dc4e54eed4bebb18390305eb1f721c00457e1
+> in arch/arm64/kernel/fpsimd.c where booting KVM VMs eventually leads to a
+> spinlock recursion BUG and crash of the box.
 > 
-> thanks,
+> Reverting that commit via the below reverts to the old (working) behavior:
 > 
-> greg k-h
+> diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+> index 837d1937300a57..bc42163a7fd1f0 100644
+> --- a/arch/arm64/kernel/fpsimd.c
+> +++ b/arch/arm64/kernel/fpsimd.c
+> @@ -1851,10 +1851,10 @@ void fpsimd_save_and_flush_cpu_state(void)
+>   if (!system_supports_fpsimd())
+>   return;
+>   WARN_ON(preemptible());
+> - get_cpu_fpsimd_context();
+> + __get_cpu_fpsimd_context();
+>   fpsimd_save();
+>   fpsimd_flush_cpu_state();
+> - put_cpu_fpsimd_context();
+> + __put_cpu_fpsimd_context();
+>  }
+>   #ifdef CONFIG_KERNEL_MODE_NEON
 
-All tests passing for Tegra ...
+Hmm, the problem with doing that is it will reintroduce the bug that
+8f4dc4e54eed ("KVM: arm64: Fix kernel BUG() due to bad backport of
+FPSIMD/SVE/SME fix") was trying to fix (see the backtrace in the commit
+message). So the old behaviour is still broken, just in a slightly
+different way.
 
-Test results for stable-v6.16:
-    10 builds:	10 pass, 0 fail
-    28 boots:	28 pass, 0 fail
-    120 tests:	120 pass, 0 fail
+> It's not entirely clear to me if this is specific to our firmware,
+> specific to ARM Cortex A57, or more systemic as we lack sufficiently
+> differentiated hardware to know.  I've tested on the latest 6.1 kernel in
+> addition to the one in the log below and have also tested a number of
+> firmware versions available for these boxes.
+> 
+> Steps to reproduce:
+> 
+> Boot VM in qemu-system-aarch64 with "-accel kvm" and "-cpu host" flags set -- no other arguments seem to matter
+> Generate CPU load in VM
+> 
+> Kernel log:
+> 
+> [sjc1] root@si-compute-kvm-e0fff70016b4:/# [  805.905413] BUG: spinlock recursion on CPU#7, CPU 3/KVM/57616
+> [  805.905452]  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU 3/KVM/57616, .owner_cpu: 7
+> [  805.905477] CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O       6.1.152 #1
+> [  805.905495] Hardware name: SoftIron SoftIron Platform Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
+> [  805.905516] Call trace:
+> [  805.905524]  dump_backtrace+0xe4/0x110
+> [  805.905538]  show_stack+0x20/0x30
+> [  805.905548]  dump_stack_lvl+0x6c/0x88
+> [  805.905561]  dump_stack+0x18/0x34
+> [  805.905571]  spin_dump+0x98/0xac
+> [  805.905583]  do_raw_spin_lock+0x70/0x128
+> [  805.905596]  _raw_spin_lock+0x18/0x28
+> [  805.905607]  raw_spin_rq_lock_nested+0x18/0x28
+> [  805.905620]  update_blocked_averages+0x70/0x550
+> [  805.905634]  run_rebalance_domains+0x50/0x70
+> [  805.905645]  handle_softirqs+0x198/0x328
+> [  805.905659]  __do_softirq+0x1c/0x28
+> [  805.905669]  ____do_softirq+0x18/0x28
+> [  805.905680]  call_on_irq_stack+0x30/0x48
+> [  805.905691]  do_softirq_own_stack+0x24/0x30
+> [  805.905703]  do_softirq+0x74/0x90
+> [  805.905714]  __local_bh_enable_ip+0x64/0x80
 
-Linux version:	6.16.10-rc1-ge1acc616e91a
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
-                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
-                tegra210-p2371-2180, tegra210-p3450-0000,
-                tegra30-cardhu-a04
+Argh, this is because we can't simply mask/unmask softirqs and so when
+they get re-enabled we process anything pending. I _think_ irqs are
+disabled at this point, so perhaps we should only bother with
+disabling/enabling softirqs if hardirqs are enabled, a bit like the hack
+Ard had in:
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+https://lore.kernel.org/all/20250924152651.3328941-13-ardb+git@google.com/
 
-Jon
+Hacky diff at the end.
+
+> [  805.905727]  fpsimd_save_and_flush_cpu_state+0x5c/0x68
+> [  805.905740]  kvm_arch_vcpu_put_fp+0x4c/0x88
+> [  805.905752]  kvm_arch_vcpu_put+0x28/0x88
+> [  805.905764]  kvm_sched_out+0x38/0x58
+
+(I think we run context_switch() => prepare_task_switch() here, so irqs
+are disabled)
+
+Will
+
+--->8
+
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index fc51cdd5aaa7..a79df0804d67 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -184,7 +184,8 @@ static void __get_cpu_fpsimd_context(void)
+  */
+ static void get_cpu_fpsimd_context(void)
+ {
+-       local_bh_disable();
++       if (!irqs_disabled())
++               local_bh_disable();
+        __get_cpu_fpsimd_context();
+ }
+ 
+@@ -205,7 +206,8 @@ static void __put_cpu_fpsimd_context(void)
+ static void put_cpu_fpsimd_context(void)
+ {
+        __put_cpu_fpsimd_context();
+-       local_bh_enable();
++       if (!irqs_disabled())
++               local_bh_enable();
+ }
+ 
+ static bool have_cpu_fpsimd_context(void)
+
 
