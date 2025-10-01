@@ -1,163 +1,245 @@
-Return-Path: <stable+bounces-182903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF53ABAF9E2
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 10:28:59 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336C9BAFBAD
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 10:49:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83F4B3C41B8
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 08:28:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C1AC4E258B
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 08:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2093F28000B;
-	Wed,  1 Oct 2025 08:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BBE19DF5F;
+	Wed,  1 Oct 2025 08:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CV4CTV0X"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QRlqkMxc"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EF327A465
-	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 08:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FA52494FF
+	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 08:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759307334; cv=none; b=AryhoXOa+w2LafcZY2OTWEeuy2ZTJa8dgSzvz1Ks1VMnQKcQBHv2JQ6GQWSZdeSKHn7qprcPwonCTR3MxaMG4ojNPWY4kVtWmcpa/yW0Kqsv7meaYKp32f1mftsjrGUxrKkIL/BBTIC3CLMcThGadEaBt7V0tpfG2OFTrC+tc/o=
+	t=1759308575; cv=none; b=KryaSMbSJVJGVkA5PGpDzWlj0ILHYb2WquTiP5/l3xSAQrVL4m5poGcvVir+Jrp+CulPQ4XiSQkevIzjogWmqI++cAjptjf09Tp9vlUAjgx3IAyZrvXCxlAGVmSUHj8WUk03YriZ3UlB/2/Fdt+wdkUl4m1mqFy89UTdQq2TP20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759307334; c=relaxed/simple;
-	bh=mAs5jC88keGuTS1kfSau2lPlyfOYPIVe4bEKVDeisl8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EWpblH+yQ/PdvDVr3xcX81NyvWX29ISzhvz6Dslo7A05WguROlu5/UsSKI6KJJMXArhmklqtPEb/ua1FmxN/gxuBc7nGuUKpnoMbjGxq9GdMaYclJKXHOrJj58hVoNbBP6lJV7ajh8aG6MCTiFxh7pIwo+PIMpbr5tZ73gEm5BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CV4CTV0X; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759307332;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TH59Sw29O2jzr1UeKiMhScDg0sFiTxNL4gz8DMwSkfs=;
-	b=CV4CTV0X58bYu9fP/YaC+3zEZj6a058H985Prml/CoXCp6vojHQ0je7NOXFdROFJniQLsR
-	WKTfKXdFAZldsNSOUfhixhUAkq9k6W2aNy1wm9TKx+Z3C80QeSuVByOMz/2pl7gmwrXj2S
-	QlpG/RhbKr2D+v5qRsvaC5LLLm/vFCI=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-265-tA3IrJVEMe2CwFkm33EpUw-1; Wed, 01 Oct 2025 04:28:51 -0400
-X-MC-Unique: tA3IrJVEMe2CwFkm33EpUw-1
-X-Mimecast-MFC-AGG-ID: tA3IrJVEMe2CwFkm33EpUw_1759307330
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-633009e440aso763454a12.1
-        for <stable@vger.kernel.org>; Wed, 01 Oct 2025 01:28:50 -0700 (PDT)
+	s=arc-20240116; t=1759308575; c=relaxed/simple;
+	bh=QRJ9liXxFkfG7M561OyeuFb7bBN/oesi5Tc/NH8DBeY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XbyuoHle1US2Zgy1hG8tlYQ+nk4YPVRshH4mx+SP+h6t0DilR8WBj2IrJwqTX3aAp9BBP+qPaLYxWAIeofKj8+CwM3KtUBRXo68JkMNe+F3+bhbOUDwtRzR7rMJp6SqnOfsSOlnyqRFRZAHoe1WlsXs2rHE6xkE/5gJDUwkEf34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QRlqkMxc; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b551350adfaso6560599a12.3
+        for <stable@vger.kernel.org>; Wed, 01 Oct 2025 01:49:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1759308573; x=1759913373; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5lUFEDOlwk0GibJmBfeInBIlGX8sUYIM/tZA+M7nygI=;
+        b=QRlqkMxcCSflo5XSydV/qUWSvDiP8n/E5+8n0VGvGurCKoK5xAfgEPxBDyqZhJ19bk
+         S0GxHoeWoItQftkE6VzFDBTmWc/6QwnJLwImDw/0Mtir/i13rqlYPHSn8iGe+YSN61uq
+         /n2C7Qc3MnNz34J0AJPK6mXjwqfvqETazX4aDDRs6FCuFM5GDlqwPkDpY0Y4yD6FWHBb
+         iWWOwErWlnPPKTneEU8gf0HzTgKYWDdkmaQ3sMZqUZu9J0IwQSbrE17L/gsbw+cehYJ8
+         Lvx66TJl/hpOHxuMrgthJGHkofzBmKLPZCirdGTnYqolnFxCBHXfaVbBSVm/hyLcfGt7
+         YnHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759307330; x=1759912130;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1759308573; x=1759913373;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TH59Sw29O2jzr1UeKiMhScDg0sFiTxNL4gz8DMwSkfs=;
-        b=w//Z8lbzXwTELvghfiy9c+3FcEydn7fEWwJXVquh2C75l4avPXBJGCl6cZskKKLx6k
-         ugugiTzoaNTUwwGNHRL8GN6HTo1w6aiMoK7s6cS4AyA0GvdKAZSq5ZLFWT/ygtPB002l
-         neeDBP4yCXcFpfRs8/yj/auoFS27Jr48XYDLDl9taMJRY39ICS2xuIDO23DF2gHiRGJ/
-         JRZHq2bG78iyFCYOvoDE6mgE/ol7iVt6vbXCITVw3rIGu3fGxRb5LCuzy8nToWEdjs6P
-         YGTN+4UzJkGzdwGIqF+p3M++s0oOeIjSD3cymE6U8ShAB8KhqMw8gF8JtGbDF5N8pau7
-         tC3g==
-X-Gm-Message-State: AOJu0YyP9UWeXe57Q13ecULJuuh+CRVCexNvVHzHoWEhzV0gmYnJ60K+
-	aQJlopKFaHGQfloDGuZZiz6BYGB0XY5V+Jz1Tjg+cbUtCC+kcJWSRtf1G1Ogt7Ss8Sjux2vtT9a
-	vWJTssXsFvrWeoRIvqZ4ip/3NEYBwZtrgpiH1ARjaaffjUOo2+F31TaEk5w==
-X-Gm-Gg: ASbGncsLMkXM1VaLfBkCyViafHGbZ3o5gCVaG2w3TumtJwNnxkpsOsLOBWq5s6lHwfm
-	uICqUJFOhMsKSJYHhJMPusIZ0f9IdyBpRoMyCRdjSIIQ+I+d0Hur9StbrmjDR0xYgWy4okmL+Ui
-	DOmym8Npm9KPw+EjYS2eC8YnFz3++LWFPT1PHfXi5lWxJWzmnHK7jCZNFn4Iqr3n0YUicWZbXqT
-	iUuMjMBMRuLLKf3xVGr4uE5fkC68B9f2SpNL3K4AwjvgXnIc+jyalv+aZIib+cFGdGkq+tNEh6M
-	7ym4N4alVTWMkcbTWJIVD3lbdL7/WKcb4ydy6A7T9HVSQ8mbxX0t7Q02401D/ECo2vvikkqX
-X-Received: by 2002:a05:6402:1e8e:b0:636:6e11:2fd1 with SMTP id 4fb4d7f45d1cf-63678ba63f9mr3429922a12.4.1759307329898;
-        Wed, 01 Oct 2025 01:28:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEj+PdPhsJi8Z+hoZrTRC6U/N/PUjMCvkDv55wnRbOMIuFkZ+Ix/bmpUxPMb7w+6Ds4kpGBRQ==
-X-Received: by 2002:a05:6402:1e8e:b0:636:6e11:2fd1 with SMTP id 4fb4d7f45d1cf-63678ba63f9mr3429889a12.4.1759307329463;
-        Wed, 01 Oct 2025 01:28:49 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63662dc0a3csm2990346a12.48.2025.10.01.01.28.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 01:28:48 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id AF4DF2779AF; Wed, 01 Oct 2025 10:28:47 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Helge Deller <deller@gmx.de>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jesper
- Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, Jakub Kicinski <kuba@kernel.org>, Mina
- Almasry <almasrymina@google.com>, linux-parisc
- <linux-parisc@vger.kernel.org>
-Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net v2] page_pool: Fix PP_MAGIC_MASK to avoid crashing
- on some 32-bit arches
-In-Reply-To: <03029eb0-921a-4e45-ab23-3cb958199085@gmx.de>
-References: <20250930114331.675412-1-toke@redhat.com>
- <03029eb0-921a-4e45-ab23-3cb958199085@gmx.de>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Wed, 01 Oct 2025 10:28:47 +0200
-Message-ID: <873483m3eo.fsf@toke.dk>
+        bh=5lUFEDOlwk0GibJmBfeInBIlGX8sUYIM/tZA+M7nygI=;
+        b=FMI+xTz+GRmyhGtDMENxre/RY6k8PzwbIGjaV0AOSkUSDctsR5H5Raa+7+Sr+xw6EV
+         Lnx3voZwrfrUt0eJFctnxSbe1wRSGVdTYeNNby57xqOXpQskIlbozuo6LSWiS2uEHZVo
+         TfKFXe2WmR2rjjyEDBP3+8CHXDI8vpDQNYjND53KqtxYcoMyULLOaIU1rzJze75fd9g8
+         3SxCQkze+T0I3xZSqWT0fa9tCSiFwqG5THz3B4g+iLjnjNdBPSCjyVbM67wz8qNDWPHG
+         AhNSraeBnwoMMIJSCt12x2b7abpyP7Ef8KyI8j5t3SXVG2ZUr9VBB/OmgmlJqV0fryQ/
+         IQ+w==
+X-Gm-Message-State: AOJu0YwmvMtJRfvcD8nTatbfwYmr/NOlG8LjfI7FOhA8VhlDhHt8SvWs
+	Qf2BYns7sipo9C7kxQGTkt2m1PK+cXtz1bG5bLXFMokVUbHfxCQAOpL2oAr4qqveqC2k+sGUBnz
+	uqQNZ9bJfUjIx8sQe1qJraq6RkVOVqop+PuKggneJ0w==
+X-Gm-Gg: ASbGncsyTDKVDNo8E42PiG3hpcXLQETzEBd0FvQXTkDOhEghFUYKx4Txk2VzaeW/yQr
+	KI7lPIT8jrPeqMSDTEOj9hNx4cZp+CcP7XrgZ+6389KvG14ZDHGsQ2AIMs1NRwOkwUdbnyIxuEN
+	pvM+TX4+mSp3eZQEDYYP9bJryipww0KuvwheZDRgPCrfSbKkzR7ClHBcpQR6MlrfUB7Duo7uhJH
+	EXSa+2+O1hQA+jtQgmWsy8rKDGRZqGlm+DRMoNT5nos4t/tMTLGEaXODGwFvRe/nPlh7FZtGWCe
+	JRVEBRwb6D01WzK83BBU/UOawdkF/1k=
+X-Google-Smtp-Source: AGHT+IHXdQvGj6eUadzCY2tlzRyfpnMGPewfjVo1faJS14ozece7Ob1BLBpJl8+EOXhQG2U/4x219HPYP7/eaFUDrEs=
+X-Received: by 2002:a17:903:b85:b0:25d:5b09:a201 with SMTP id
+ d9443c01a7336-28e7f2c6207mr36488825ad.27.1759308572985; Wed, 01 Oct 2025
+ 01:49:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 1 Oct 2025 14:19:21 +0530
+X-Gm-Features: AS18NWCvl1H8hhR2E11ihfNR1mldgcGLnS6MK4rJ4AfPqydTb0hfPaefWVGOAA0
+Message-ID: <CA+G9fYvN7QxsZqQhHKqw-K4kn=rby4HmEyn=zhN-M_7uk=qLKA@mail.gmail.com>
+Subject: Re: [PATCH 6.16 000/143] 6.16.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Helge Deller <deller@gmx.de> writes:
-
-> On 9/30/25 13:43, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Helge reported that the introduction of PP_MAGIC_MASK let to crashes on
->> boot on his 32-bit parisc machine. The cause of this is the mask is set
->> too wide, so the page_pool_page_is_pp() incurs false positives which
->> crashes the machine.
->>=20
->> Just disabling the check in page_pool_is_pp() will lead to the page_pool
->> code itself malfunctioning; so instead of doing this, this patch changes
->> the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
->> pointers for page_pool-tagged pages.
->>=20
->> The fix relies on the kernel pointers that alias with the pp_magic field
->> always being above PAGE_OFFSET. With this assumption, we can use the
->> lowest bit of the value of PAGE_OFFSET as the upper bound of the
->> PP_DMA_INDEX_MASK, which should avoid the false positives.
->>=20
->> Because we cannot rely on PAGE_OFFSET always being a compile-time
->> constant, nor on it always being >0, we fall back to disabling the
->> dma_index storage when there are not enough bits available. This leaves
->> us in the situation we were in before the patch in the Fixes tag, but
->> only on a subset of architecture configurations. This seems to be the
->> best we can do until the transition to page types in complete for
->> page_pool pages.
->>=20
->> v2:
->> - Make sure there's at least 8 bits available and that the PAGE_OFFSET
->>    bit calculation doesn't wrap
->>=20
->> Link: https://lore.kernel.org/all/aMNJMFa5fDalFmtn@p100/
->> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them w=
-hen destroying the pool")
->> Cc: stable@vger.kernel.org # 6.15+
->> Tested-by: Helge Deller <deller@gmx.de>
->> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->> ---
->>   include/linux/mm.h   | 22 +++++++------
->>   net/core/page_pool.c | 76 ++++++++++++++++++++++++++++++--------------
->>   2 files changed, 66 insertions(+), 32 deletions(-)
+On Tue, 30 Sept 2025 at 20:31, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> I tested this v2 patch (the former tested-by was for v1), and v2
-> works too:
+> This is the start of the stable review cycle for the 6.16.10 release.
+> There are 143 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Tested-by: Helge Deller <deller@gmx.de>
+> Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.16.10-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.16.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Great, thank you for re-testing! :)
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
--Toke
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build
+* kernel: 6.16.10-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: e1acc616e91adfbab433eb599e00d88f0bcdb07f
+* git describe: v6.16.9-144-ge1acc616e91a
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.16.y/build/v6.16=
+.9-144-ge1acc616e91a
+
+## Test Regressions (compared to v6.16.8-150-gfef8d1e3eca6)
+
+## Metric Regressions (compared to v6.16.8-150-gfef8d1e3eca6)
+
+## Test Fixes (compared to v6.16.8-150-gfef8d1e3eca6)
+
+## Metric Fixes (compared to v6.16.8-150-gfef8d1e3eca6)
+
+## Test result summary
+total: 351365, pass: 323894, fail: 6740, skip: 20731, xfail: 0
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 138 passed, 1 failed
+* arm64: 57 total, 56 passed, 1 failed
+* i386: 18 total, 18 passed, 0 failed
+* mips: 34 total, 27 passed, 7 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 40 total, 39 passed, 1 failed
+* riscv: 25 total, 25 passed, 0 failed
+* s390: 22 total, 22 passed, 0 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 49 total, 47 passed, 2 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* modules
+* perf
+* rcutorture
+* rt-tests-cyclicdeadline
+* rt-tests-pi-stress
+* rt-tests-pmqtest
+* rt-tests-rt-migrate-test
+* rt-tests-signaltest
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
