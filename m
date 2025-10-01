@@ -1,146 +1,187 @@
-Return-Path: <stable+bounces-182935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D913FBB0500
-	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 14:23:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E8BBB0683
+	for <lists+stable@lfdr.de>; Wed, 01 Oct 2025 15:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9474E2A22BE
-	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 12:23:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC1961945CDB
+	for <lists+stable@lfdr.de>; Wed,  1 Oct 2025 13:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0647C2BEC45;
-	Wed,  1 Oct 2025 12:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dhAQPDxD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEE21F181F;
+	Wed,  1 Oct 2025 13:05:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD30227EA8
-	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 12:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5C54501A
+	for <stable@vger.kernel.org>; Wed,  1 Oct 2025 13:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759321384; cv=none; b=q571FlHvv+03nSwTcc9pB4+8ksM8A6hikPK2SVajSmi0ZbSvbDAgoarpRGBqtuA55WAIYZZH5ZvbVWgoPwqN5oA0rRJhpDoq+HY2UBnbELwvaC5aHb3meULGGSooAA8hBh/6ULYhStO9vddssx+qKcHPhCx/u+miKn2cVNsqqbQ=
+	t=1759323901; cv=none; b=j+oTt7IdkhDngug04x5iOwP0uJHldyWInoadgrFhCyVLboCOuo+U3slJsxNfbZWow1rMmdxo27if6Yfx9/YoMaqnSSRKSc3OrjQVb3NYVaCKRcj4ZHDdFOTnHGjkd4H7ncfTxiUlsGjs2PvwtPJc7vAN5i4Bd/2i1achLpVoMGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759321384; c=relaxed/simple;
-	bh=jm7QjsEYN3o9NREvDIVoGhoSvlRo/JHErcAuGoWOiRs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pFJR+OoFH//zTKeR/07Zb98h8nirreCnI6t5VUv5A5/WSnbk+zk88H4znW7lJJY+7xPppj5vox2NTOzOiovfa9oDUr36bUrOuIkjtTk+FOKoOwUQGIrIg4wAPGAERJd/9MXJPeXMv+BB8CyVwnFPDqEc0nJ3uFFk3+z3eVrOzOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dhAQPDxD; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-27a6c3f482dso56661005ad.1
-        for <stable@vger.kernel.org>; Wed, 01 Oct 2025 05:23:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1759321383; x=1759926183; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=G6ekdHDmWVv9FcHQZlrQj5iI/vOkg8zYvOska5GK10c=;
-        b=dhAQPDxDfgnqpA2S01DC+hFkGDJRYz3maVwiXV/VKcI5p+YhACTvwHXZLyb5sCHB0I
-         up1nksKL+rcClHSn+vb7AVgYcGHNcYgEI3/cBU959c7+XgA/+yCCoQSyYp/LAVTUExus
-         NsitKrWlltZd/w8x/BnWkyd9a9O+0jgAdpcWeeBdt/lZilo4RZGic1umn6IsN6gnbB7W
-         MWTKrA96PgPf3iSkUWbW8Hz5kNiahCigYvLlU0BTAduyrZXo9sNhPgXTKqhTAoAn6ESY
-         iM/g38tSRaBgdii0dTbqux3RpNyFBQ1cOE0mNh3ki2DAVPS7mbBpVzY3YQNcPs9GTY63
-         0Tqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759321383; x=1759926183;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G6ekdHDmWVv9FcHQZlrQj5iI/vOkg8zYvOska5GK10c=;
-        b=sShn7F1/eCrp77yrCzJOF5buISJP0LnWsVSRPiaGMf+KxYcR8NcixsNDDlf37dxKPU
-         TuFF0q6CSpXRH+ccYLUWr6mvrHekXlKmjOMIRNLeos/bndX/N1FK9YcN/D1WPxJrUFYC
-         oVMiKHJsT+3DF1bvP0IjxvfcdAjIAILHYYuBv1wHMyexKLafKwPs8NGpqIq86pZK4ddZ
-         BAejGBEC8vQPhQKYOBhK+h9Hz/giwDsyul9Zd2qf/exzO+pDOWr06x+DzeXQJ3XJ/bdk
-         l/ikWsaKkc3EOfLTXfTLSUQfM9vquAk/QiPXVRguWHxtRnpt84vWzCSXdmoezE7rIe4R
-         OTQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWuNcTzEtE1g4qbGozA8EXji6jwGqeMsLUL3/b8lO7fp0+RP+mZYFxD3WfcsaEKtBLPeVoKR/8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YziMuNLsLH6uItxiVBmZDwiphYeLG2iZrVtoVV5KKfi9rx7LwYI
-	9EobCF6H2Fm2JfgkB9/+IxzchH538cPgQDw9S2GNgBmiOWzuyEciu1MQ1ixLvPESHwly+T0+3pD
-	hqmPRSPZWy9SMC0EnEUWc+ocSA3iNaLITKSU5w8h0/w==
-X-Gm-Gg: ASbGncveaGmsX4eoRpnjRHVagn+CteNy2h31JUxbvRXRCbr8cTTsmtf/RjuKKk46cEX
-	9UVvh6aGCSqa2Lxr831XiIR7KfxLlvLqGU4deioAoZbAsbu7PbCNCRJykYpNZ1UKA1pbrGTonXJ
-	8H3Oo2lvIz6hG+bS1H+zFlx00Fpk8fwb4tTbuTGVw/GEyNHWGzkfcAPfYIDyVxX6LAmhPOPQj7C
-	wgHTs4kzNfDiMrIpYhi52N+gd2oyQJcNFgamah3FRAYtRvv3aOCvwQO068UJJuviC0Dm1wKsTXa
-	0pfACaQeupC2oj6KoeA8
-X-Google-Smtp-Source: AGHT+IG3y0LpyILSJk25wSg4EzJQnje8BCP0qYej1zbXdtuiF/6h3Ys2FwvbgoPmiH3pc5MHl/M3OJoRN2I5jM7mBd8=
-X-Received: by 2002:a17:903:1b2c:b0:27e:f018:d2fb with SMTP id
- d9443c01a7336-28e7f27db93mr43354285ad.6.1759321382673; Wed, 01 Oct 2025
- 05:23:02 -0700 (PDT)
+	s=arc-20240116; t=1759323901; c=relaxed/simple;
+	bh=lCdM8Ah7f9siwPk1NgsZaY5JPUTlBRBFs0s9yqMejNs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HxtHvhMxeM8WsJmRYFGfChkD+AbzA38qgvK/XRqaMeqqM2Vg09R7xs9D3Rf1Giivlax5nAdUCMijOgMz2pBRj0T/QiWlHLDhKvLasVd9Q8gQsr2A7hVVfAOipQ8HwGvh6CqoUXcnpKo0WnCwL8IcKi3eUOFHZ9IPnOv6DJyBJ0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1v3wVX-0006cN-RX; Wed, 01 Oct 2025 15:04:35 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1v3wVV-001Q4u-1w;
+	Wed, 01 Oct 2025 15:04:33 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1v3wVV-0000000AG1g-27OZ;
+	Wed, 01 Oct 2025 15:04:33 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	stable@vger.kernel.org,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	Russell King <linux@armlinux.org.uk>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	linux-usb@vger.kernel.org
+Subject: [PATCH net v2 1/1] net: usb: asix: hold PM usage ref to avoid PM/MDIO + RTNL deadlock
+Date: Wed,  1 Oct 2025 15:04:32 +0200
+Message-ID: <20251001130432.2444863-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250930143822.939301999@linuxfoundation.org> <CA+G9fYvhoeNWOsYMvWRh+BA5dKDkoSRRGBuw5aeFTRzR_ofCvg@mail.gmail.com>
- <2025100105-strewn-waving-35de@gregkh> <aN0aMyU1D3N4WQy4@stanley.mountain>
-In-Reply-To: <aN0aMyU1D3N4WQy4@stanley.mountain>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 1 Oct 2025 17:52:51 +0530
-X-Gm-Features: AS18NWA6cyT7LVY1PGpPsb3wxOlSJ03i0aRVQJ0RG446XB-O0skidiXBbZlceZU
-Message-ID: <CA+G9fYsRCN8f5n4dsbQAq73t7f5pzbHVT5Hp1rxYQzpxqvLWXA@mail.gmail.com>
-Subject: Re: [PATCH 5.10 000/122] 5.10.245-rc1 review
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
-	Arnd Bergmann <arnd@arndb.de>, linux-fsdevel@vger.kernel.org, 
-	linux-block <linux-block@vger.kernel.org>, Anders Roxell <anders.roxell@linaro.org>, 
-	Ben Copeland <benjamin.copeland@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Wed, 1 Oct 2025 at 17:40, Dan Carpenter <dan.carpenter@linaro.org> wrote:
->
-> On Wed, Oct 01, 2025 at 12:50:13PM +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Oct 01, 2025 at 12:57:27AM +0530, Naresh Kamboju wrote:
-> > > On Tue, 30 Sept 2025 at 20:24, Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > This is the start of the stable review cycle for the 5.10.245 release.
-> > > > There are 122 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > >
-> > > > Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
-> > > > Anything received after that time might be too late.
-> > > >
-> > > > The whole patch series can be found in one patch at:
-> > > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.245-rc1.gz
-> > > > or in the git tree and branch at:
-> > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> > > > and the diffstat can be found below.
-> > > >
-> > > > thanks,
-> > > >
-> > > > greg k-h
-> > >
-> > > The following LTP syscalls failed on stable-rc 5.10.
-> > > Noticed on both 5.10.243-rc1 and 5.10.245-rc1
-> > >
-> > > First seen on 5.10.243-rc1.
-> > >
-> > >  ltp-syscalls
-> > >   - fanotify13
-> > >   - fanotify14
-> > >   - fanotify15
-> > >   - fanotify16
-> > >   - fanotify21
-> > >   - landlock04
-> > >   - ioctl_ficlone02
-> > >
-> > > Test regression: LTP syscalls fanotify13/14/15/16/21 TBROK: mkfs.vfat
-> > > failed with exit code 1
+Prevent USB runtime PM (autosuspend) for AX88772* in bind.
 
-I have re-tested for 12 times and reported test failures are getting
-passed 12 times.
-However, I will keep monitoring test results.
+usbnet enables runtime PM (autosuspend) by default, so disabling it via
+the usb_driver flag is ineffective. On AX88772B, autosuspend shows no
+measurable power saving with current driver (no link partner, admin
+up/down). The ~0.453 W -> ~0.248 W drop on v6.1 comes from phylib powering
+the PHY off on admin-down, not from USB autosuspend.
 
- - Naresh
+The real hazard is that with runtime PM enabled, ndo_open() (under RTNL)
+may synchronously trigger autoresume (usb_autopm_get_interface()) into
+asix_resume() while the USB PM lock is held. Resume paths then invoke
+phylink/phylib and MDIO, which also expect RTNL, leading to possible
+deadlocks or PM lock vs MDIO wake issues.
+
+To avoid this, keep the device runtime-PM active by taking a usage
+reference in ax88772_bind() and dropping it in unbind(). A non-zero PM
+usage count blocks runtime suspend regardless of userspace policy
+(.../power/control - pm_runtime_allow/forbid), making this approach
+robust against sysfs overrides.
+
+System sleep/resume is unchanged.
+
+Fixes: 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC")
+Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Closes: https://lore.kernel.org/all/DCGHG5UJT9G3.2K1GHFZ3H87T0@gmail.com
+Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+Changes in v2:
+- Switch from pm_runtime_forbid()/allow() to pm_runtime_get_noresume()/put()
+  as suggested by Alan Stern, to block autosuspend robustly.
+- Reword commit message to clarify the actual deadlock condition
+  (autoresume under RTNL) as pointed out by Oliver Neukum.
+- Keep explanation in commit message, shorten in-code comment.
+
+Link to the measurement results:
+https://lore.kernel.org/all/aMkPMa650kfKfmF4@pengutronix.de/
+---
+ drivers/net/usb/asix_devices.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 792ddda1ad49..5c939446515b 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -625,6 +625,21 @@ static void ax88772_suspend(struct usbnet *dev)
+ 		   asix_read_medium_status(dev, 1));
+ }
+ 
++/* Notes on PM callbacks and locking context:
++ *
++ * - asix_suspend()/asix_resume() are invoked for both runtime PM and
++ *   system-wide suspend/resume. For struct usb_driver the ->resume()
++ *   callback does not receive pm_message_t, so the resume type cannot
++ *   be distinguished here.
++ *
++ * - The MAC driver must hold RTNL when calling phylink interfaces such as
++ *   phylink_suspend()/resume(). Those calls will also perform MDIO I/O.
++ *
++ * - Taking RTNL and doing MDIO from a runtime-PM resume callback (while
++ *   the USB PM lock is held) is fragile. Since autosuspend brings no
++ *   measurable power saving for this device with current driver version, it is
++ *   disabled below.
++ */
+ static int asix_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct usbnet *dev = usb_get_intfdata(intf);
+@@ -919,6 +934,13 @@ static int ax88772_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	if (ret)
+ 		goto initphy_err;
+ 
++	/* Keep this interface runtime-PM active by taking a usage ref.
++	 * Prevents runtime suspend while bound and avoids resume paths
++	 * that could deadlock (autoresume under RTNL while USB PM lock
++	 * is held, phylink/MDIO wants RTNL).
++	 */
++	pm_runtime_get_noresume(&intf->dev);
++
+ 	return 0;
+ 
+ initphy_err:
+@@ -948,6 +970,8 @@ static void ax88772_unbind(struct usbnet *dev, struct usb_interface *intf)
+ 	phylink_destroy(priv->phylink);
+ 	ax88772_mdio_unregister(priv);
+ 	asix_rx_fixup_common_free(dev->driver_priv);
++	/* Drop the PM usage ref taken in bind() */
++	pm_runtime_put(&intf->dev);
+ }
+ 
+ static void ax88178_unbind(struct usbnet *dev, struct usb_interface *intf)
+@@ -1600,6 +1624,10 @@ static struct usb_driver asix_driver = {
+ 	.resume =	asix_resume,
+ 	.reset_resume =	asix_resume,
+ 	.disconnect =	usbnet_disconnect,
++	/* usbnet will force supports_autosuspend=1; we explicitly forbid RPM
++	 * per-interface in bind to keep autosuspend disabled for this driver
++	 * by using pm_runtime_forbid().
++	 */
+ 	.supports_autosuspend = 1,
+ 	.disable_hub_initiated_lpm = 1,
+ };
+-- 
+2.47.3
+
 
