@@ -1,155 +1,141 @@
-Return-Path: <stable+bounces-183026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED89BB2C45
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 10:05:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5429BB3419
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 10:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FB081C4DF4
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 08:05:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F14854455E
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 08:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4ACA2D2394;
-	Thu,  2 Oct 2025 08:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B222F6194;
+	Thu,  2 Oct 2025 08:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JqQaY9bi"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YREhaQKg";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LGw8F6xx"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EBB27281D;
-	Thu,  2 Oct 2025 08:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520562D8364;
+	Thu,  2 Oct 2025 08:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759392295; cv=none; b=X7+VV8FwiMbDQ6bUy93g5zC5mr6yzrFfCJlA5/Tcy6DtXTi8XFSm+WuIP6BHp7nbnyq2ocAq6hHRYFhde+4pYqRUzX8m++Ju6K3H4gfl9kc0vIUthsZlIpmUbMrL+Nb0fm/MPpQ6rEd+OIVJ9AcfS9XyGa8xBySqCOvr35T/OyQ=
+	t=1759393371; cv=none; b=KbB4o2CcbSB0CTFGFucx+lGtcwORrKmmC6tOCTRtn0FPpXC/JiADIm5QxIYGDzy7MlDGYhcf/LdaSGM2y5091Mg/KYLiycP5JaPJ8ccBxy4lBS62hnnB3N8/Xd7aaRG/wVSQOdVS4skQoa8nBcFT+vgZ2pVbnLjuNiwQcD00804=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759392295; c=relaxed/simple;
-	bh=PCk9ZeVV1UHVtDqXJ82bfijyd7gshesDIpbIkMJurSQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4Zelzr1QuweQIIvciLL5+PZD5OxwsqC7GFhVXPiUGlioZoXoB2/SCxBVZ+RDItQHzvaFl13DcK+k9fj5wFzA7/MvNIS9oLyAnfV2gFO+5nbXQIa23Gv8h62Z62AHz5FzEs303nnND1ww9oavUtkl1rJhIu2kY/LhCokBR9h74Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JqQaY9bi; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759392294; x=1790928294;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PCk9ZeVV1UHVtDqXJ82bfijyd7gshesDIpbIkMJurSQ=;
-  b=JqQaY9bipdTyvP9blv5yZRK1esN0dYvH2r0E7dstaPLg/GyaFaY2Qvfs
-   cI3apMwE4X8t3VOKrTs0q75USIPXR5gnovLe531oJgrQg2mTLd4VKxWiA
-   1Px1MGyYgXFbkbSqgvWp08OPXP3JZDHKjZogWxAwJNDhOAsB1yM8SjBHz
-   LgzVsQZzhNXugmsWNU42b031quGvua5YciZUF98tmxcpWS8/zvJpUbxmQ
-   t+3RNTlIqVA9VKD0GO337DSjrXffYt+EysklTTThmEhS0GN7VS1fBZBxS
-   0Mfsu7k1HKo9Mgby1qK0jICL91U9PK7Wia0AfU8S+5aHtmk2We10PUS2+
-   w==;
-X-CSE-ConnectionGUID: BfGrlP/aRjWpCtRTwDJRGw==
-X-CSE-MsgGUID: ugDfeYY/S4SknMsKFEfQfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="65525014"
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; 
-   d="scan'208";a="65525014"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 01:04:53 -0700
-X-CSE-ConnectionGUID: kev2kcY1TsG5WCcCebR2lg==
-X-CSE-MsgGUID: pqJP4TVxQliQWhPsYp/TUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; 
-   d="scan'208";a="178268548"
-Received: from slindbla-desk.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.246.8])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 01:04:50 -0700
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org
-Cc: linux-sound@vger.kernel.org,
-	kai.vehmanen@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
+	s=arc-20240116; t=1759393371; c=relaxed/simple;
+	bh=Rh+vZsuywxgXT5kbbk7FsSWZPFPS/72Dgvm68jbrNqk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LEpS8RZZLnGm49QilPlEUB8l0v+AGqf8t3jw3hne4/ZLHZ+jRQxszX6eD5U4oZKAm2Z/vTyRn1+ObdqxAcouj8oRFJPqzYazwkyK99flZwRiC9k+VYEhXxr0HDfDWuP+rcEjdx5J0vUn+lyXT22SWwyI4ybjetwp5YMfCFE1qRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YREhaQKg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LGw8F6xx; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1759393367;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rax2zvR/5mLDyta3ww16+HDvwZeDy6hDdlvvfsJS2mc=;
+	b=YREhaQKg5AOghGOkPnK06UEkJxAzxmwqF28HqFI/ZWc2JpJLoNyhPBdCsO3sb6kldKz/7b
+	4hx5Qh8g2elGzTLAMNYsyQomzSWn0LWsbz9IuXBdl3zD73yY2gMxYH6QKvsZbSPiezcO/4
+	QCcrMygpJh15fO+9BATDFOvXFDVoY9ux0EVYI4wu1MVHhpJrShQkROMA40S2oOseNjwqyp
+	I0BEU+T0ceGDs6ocQV5aZEUfPTi6gaiosLsRWvhjipu9bomBRJDJqawmZRo0oRE+ToeLdG
+	HyjHgMNl2g1N49hV7Ay4kPt6OAB0YDmZ9e9kYy7Gf4+QstncP43SbPyIRY+D+w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1759393367;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rax2zvR/5mLDyta3ww16+HDvwZeDy6hDdlvvfsJS2mc=;
+	b=LGw8F6xxLG0bFOq3CIbue8EjHV34+cxiiHA7Y6nPdFGglYp6Khkb/iqzDlHx0aEyinj9ut
+	VBoJSFY3xYWW33Bg==
+To: Gabriele Monaco <gmonaco@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-trace-kernel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nam Cao <namcao@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 3/3] ASoC: SOF: Intel: hda-pcm: Place the constraint on period time instead of buffer time
-Date: Thu,  2 Oct 2025 11:05:38 +0300
-Message-ID: <20251002080538.4418-4-peter.ujfalusi@linux.intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251002080538.4418-1-peter.ujfalusi@linux.intel.com>
-References: <20251002080538.4418-1-peter.ujfalusi@linux.intel.com>
+Subject: [PATCH 1/2] rv: Fully convert enabled_monitors to use list_head as iterator
+Date: Thu,  2 Oct 2025 08:22:35 +0000
+Message-ID: <20251002082235.973099-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-Instead of constraining the ALSA buffer time to be double of the firmware
-host buffer size, it is better to set it for the period time.
-This will implicitly constrain the buffer time to a safe value
-(num_periods is at least 2) and prohibits applications to set smaller
-period size than what will be covered by the initial DMA burst.
+The callbacks in enabled_monitors_seq_ops are inconsistent. Some treat the
+iterator as struct rv_monitor *, while others treat the iterator as struct
+list_head *.
 
-Cc: stable@vger.kernel.org
-Fixes: 02ea2a0364a2 ("ASoC: SOF: Intel: hda-pcm: Use dsp_max_burst_size_in_ms to place constraint")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+This causes a wrong type cast and crashes the system as reported by Nathan.
+
+Convert everything to use struct list_head * as iterator. This also makes
+enabled_monitors consistent with available_monitors.
+
+Fixes: de090d1ccae1 ("rv: Fix wrong type cast in enabled_monitors_next()")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://lore.kernel.org/linux-trace-kernel/20250923002004.GA2836051=
+@ax162/
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org>
 ---
- sound/soc/sof/intel/hda-pcm.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ kernel/trace/rv/rv.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
-index 1dd8d2092c3b..da6c1e7263cd 100644
---- a/sound/soc/sof/intel/hda-pcm.c
-+++ b/sound/soc/sof/intel/hda-pcm.c
-@@ -29,6 +29,8 @@
- #define SDnFMT_BITS(x)	((x) << 4)
- #define SDnFMT_CHAN(x)	((x) << 0)
- 
-+#define HDA_MAX_PERIOD_TIME_HEADROOM	10
-+
- static bool hda_always_enable_dmi_l1;
- module_param_named(always_enable_dmi_l1, hda_always_enable_dmi_l1, bool, 0444);
- MODULE_PARM_DESC(always_enable_dmi_l1, "SOF HDA always enable DMI l1");
-@@ -291,19 +293,30 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
- 	 * On playback start the DMA will transfer dsp_max_burst_size_in_ms
- 	 * amount of data in one initial burst to fill up the host DMA buffer.
- 	 * Consequent DMA burst sizes are shorter and their length can vary.
--	 * To make sure that userspace allocate large enough ALSA buffer we need
--	 * to place a constraint on the buffer time.
-+	 * To avoid immediate xrun by the initial burst we need to place
-+	 * constraint on the period size (via PERIOD_TIME) to cover the size of
-+	 * the host buffer.
-+	 * We need to add headroom of max 10ms as the firmware needs time to
-+	 * settle to the 1ms pacing and initially it can run faster for few
-+	 * internal periods.
- 	 *
- 	 * On capture the DMA will transfer 1ms chunks.
--	 *
--	 * Exact dsp_max_burst_size_in_ms constraint is racy, so set the
--	 * constraint to a minimum of 2x dsp_max_burst_size_in_ms.
- 	 */
--	if (spcm->stream[direction].dsp_max_burst_size_in_ms)
-+	if (spcm->stream[direction].dsp_max_burst_size_in_ms) {
-+		unsigned int period_time = spcm->stream[direction].dsp_max_burst_size_in_ms;
-+
-+		/*
-+		 * add headroom over the maximum burst size to cover the time
-+		 * needed for the DMA pace to settle.
-+		 * Limit the headroom time to HDA_MAX_PERIOD_TIME_HEADROOM
-+		 */
-+		period_time += min(period_time, HDA_MAX_PERIOD_TIME_HEADROOM);
-+
- 		snd_pcm_hw_constraint_minmax(substream->runtime,
--			SNDRV_PCM_HW_PARAM_BUFFER_TIME,
--			spcm->stream[direction].dsp_max_burst_size_in_ms * USEC_PER_MSEC * 2,
-+			SNDRV_PCM_HW_PARAM_PERIOD_TIME,
-+			period_time * USEC_PER_MSEC,
- 			UINT_MAX);
-+	}
- 
- 	/* binding pcm substream to hda stream */
- 	substream->runtime->private_data = &dsp_stream->hstream;
--- 
+diff --git a/kernel/trace/rv/rv.c b/kernel/trace/rv/rv.c
+index 48338520376f..43e9ea473cda 100644
+--- a/kernel/trace/rv/rv.c
++++ b/kernel/trace/rv/rv.c
+@@ -501,7 +501,7 @@ static void *enabled_monitors_next(struct seq_file *m, =
+void *p, loff_t *pos)
+=20
+ 	list_for_each_entry_continue(mon, &rv_monitors_list, list) {
+ 		if (mon->enabled)
+-			return mon;
++			return &mon->list;
+ 	}
+=20
+ 	return NULL;
+@@ -509,7 +509,7 @@ static void *enabled_monitors_next(struct seq_file *m, =
+void *p, loff_t *pos)
+=20
+ static void *enabled_monitors_start(struct seq_file *m, loff_t *pos)
+ {
+-	struct rv_monitor *mon;
++	struct list_head *head;
+ 	loff_t l;
+=20
+ 	mutex_lock(&rv_interface_lock);
+@@ -517,15 +517,15 @@ static void *enabled_monitors_start(struct seq_file *=
+m, loff_t *pos)
+ 	if (list_empty(&rv_monitors_list))
+ 		return NULL;
+=20
+-	mon =3D list_entry(&rv_monitors_list, struct rv_monitor, list);
++	head =3D &rv_monitors_list;
+=20
+ 	for (l =3D 0; l <=3D *pos; ) {
+-		mon =3D enabled_monitors_next(m, mon, &l);
+-		if (!mon)
++		head =3D enabled_monitors_next(m, head, &l);
++		if (!head)
+ 			break;
+ 	}
+=20
+-	return mon;
++	return head;
+ }
+=20
+ /*
+--=20
 2.51.0
 
 
