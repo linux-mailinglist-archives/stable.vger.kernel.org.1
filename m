@@ -1,183 +1,163 @@
-Return-Path: <stable+bounces-183132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1603BB4D58
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 20:06:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46534BB4D86
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 20:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E2C53246E8
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 18:06:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11A607A703B
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 18:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E727829E10F;
-	Thu,  2 Oct 2025 18:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7682750F6;
+	Thu,  2 Oct 2025 18:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="iZzhB/fo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rb2pF6j+"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.132.221])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272B628368A;
-	Thu,  2 Oct 2025 18:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.178.132.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0057919D092;
+	Thu,  2 Oct 2025 18:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759428267; cv=none; b=KZzd/okgcof5v1nAtnePsSNLkk5WeuPfZtIUanDz8Y+wYpvFUvlZ7JPaSO3gIvIFYvn3S5NdIpgFl1ILZZcNyqj7fubYk//tSzrq6YAp7qp7pE0hWQAU9YiuQx3tNW5s99ETj18YZNgPdchXr7Jn9XHBhD2wpfgC1J6wRj/xBAU=
+	t=1759428638; cv=none; b=d/ALX/EWjjEvIOTHfXKjkaVX4b/rhZ4ncuFAYjuLJyvsG2A0crc8G4vnCJC0JN3EtCHRS8GognHlmFzQvi29R63Kh0DkX5Kc9z5/9Cl5jwlFD1GukM2N/1ROrGNQ2TrhBVbMh14EwfI9G6f420Gfus7n2orOzLPv4HiBunJ10Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759428267; c=relaxed/simple;
-	bh=V2L3IilwofpV6SrsfVTvut5ipDXkokIOm+dTBT4i7eQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yc/WX9BOR5s80PDHHJWORcOc2MZ9h6tbS+kT0YTw9pJNWRDRXNAUrQAszw60LYdElCe+HqAv1rTnGfIyS35Oy0bQIM1PoA7WLESeGaSp0R8J6uxChMRKaAHrMCiuz/JkVn86G/TkhhkkF7kkiIZZzlEWdwOlptl+6ymHqwXcWTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=iZzhB/fo; arc=none smtp.client-ip=63.178.132.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1759428266; x=1790964266;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=k0dUe76w+6n5/NfsPbyefGVCom+xh3GGcFcV3Olhmks=;
-  b=iZzhB/foyKosKk4jiCGauA1qJdpICwRbF11rgOn/rcQX9MrvoJABrDPF
-   60nOSCBdm/bu32yH49iUO4733GCoN0WcRiWMWkoz/DKScq8UxovYMA2rb
-   ThKJ/BI/fEpet+erAFS8FmFcEr9FMHcurDHa9piu90yEhmmEeSI1Qp4r9
-   Alipc5XORn+1sj92pOrFzQXR+YwJfO/6lWHwp8uw95gCiRi8UECZy0PzN
-   JZ+jeWLDyorw4vuNUowiBzDNyR9KNKl3f60oo+SveUDYcDPLFqF8fl7RB
-   CmXCT/5rm5a879Oi3v7L7qpvLSQjbmBymYLS6XuJGXPKPUwzcokH6AV4c
-   g==;
-X-CSE-ConnectionGUID: KYP+mIxcS+qh8swRIg8aqg==
-X-CSE-MsgGUID: 3iUG7CuKRNa+UdIi4LLhFw==
-X-IronPort-AV: E=Sophos;i="6.18,310,1751241600"; 
-   d="scan'208";a="2924326"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 18:04:23 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:28750]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.1.16:2525] with esmtp (Farcaster)
- id 50a0473f-3493-43fb-a202-fb586031f523; Thu, 2 Oct 2025 18:04:23 +0000 (UTC)
-X-Farcaster-Flow-ID: 50a0473f-3493-43fb-a202-fb586031f523
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Thu, 2 Oct 2025 18:04:23 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Thu, 2 Oct 2025
- 18:04:10 +0000
-From: Eliav Farber <farbere@amazon.com>
-To: <gregkh@linuxfoundation.org>, <kenneth.feng@amd.com>,
-	<alexander.deucher@amd.com>, <christian.koenig@amd.com>, <airlied@gmail.com>,
-	<simona@ffwll.ch>, <linus.walleij@linaro.org>, <dmitry.torokhov@gmail.com>,
-	<tglx@linutronix.de>, <wens@csie.org>, <jernej.skrabec@gmail.com>,
-	<samuel@sholland.org>, <agk@redhat.com>, <snitzer@kernel.org>,
-	<mpatocka@redhat.com>, <clm@fb.com>, <dsterba@suse.com>,
-	<luc.vanoostenryck@gmail.com>, <pmladek@suse.com>, <rostedt@goodmis.org>,
-	<andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>,
-	<senozhatsky@chromium.org>, <akpm@linux-foundation.org>,
-	<lijo.lazar@amd.com>, <asad.kamal@amd.com>, <kevinyang.wang@amd.com>,
-	<David.Laight@ACULAB.COM>, <amd-gfx@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-	<linux-input@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-sunxi@lists.linux.dev>, <dm-devel@lists.linux.dev>,
-	<linux-btrfs@vger.kernel.org>, <linux-sparse@vger.kernel.org>,
-	<stable@vger.kernel.org>, <farbere@amazon.com>
-CC: Arnd Bergmann <arnd@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>, "Jason A. Donenfeld"
-	<Jason@zx2c4.com>, Jens Axboe <axboe@kernel.dk>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, "Matthew
- Wilcox" <willy@infradead.org>, Pedro Falcato <pedro.falcato@gmail.com>
-Subject: [PATCH v3 11/11 6.1.y] minmax.h: remove some #defines that are only expanded once
-Date: Thu, 2 Oct 2025 18:00:29 +0000
-Message-ID: <20251002180036.33738-12-farbere@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251002180036.33738-1-farbere@amazon.com>
-References: <20251002180036.33738-1-farbere@amazon.com>
+	s=arc-20240116; t=1759428638; c=relaxed/simple;
+	bh=O5wkUwnKgBzNkysEWRRXmGZptZAllZh7UoEkd0clsMk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NKtPiSgUj8zcQOvExRNQoqU3vSdniIVPni5ZjkRechslremAUClQ+LsPfSjbt5nnCFsYv6VxndP1KjuxptJPN0fKz5l3XK7h1tRR1IzgxuRSSKoUYOF5UtEPaipyOuT9Qx5EfCKUJx2wieIXWH2U6LcmOuMtw6euKRyJ9ktt5iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rb2pF6j+; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759428637; x=1790964637;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=O5wkUwnKgBzNkysEWRRXmGZptZAllZh7UoEkd0clsMk=;
+  b=Rb2pF6j+o3I1wRWbRBubBFinjLabGqjdC1Cfl2jjIdRrwz1tAZQi56o0
+   +t4GZ8y+yT358i4/D/L27tDzQreKGZWNZG57RBgHhMr4TlZXjdqjbG4zk
+   BW6AyDBDeDmdGwTzk6enxtlCjMdv/jAcA83i+kvv9xsgBHetOhs1ZyX8v
+   zygBqRRD2Nz+UFaCSXzqs3DR5GffwQqJYNSmwFQJcDNWVSwdPP6430CrH
+   BmukVjc1qxv0Ueqe4kyXe7YivIyMZoiOnAYm3QyVbEhJBIKivkldZYbgK
+   0tylx/DdYFI8vjLUAHU4Wf811XPJdIWJh12Zti57KtM4YrHDXjj4AMMx4
+   A==;
+X-CSE-ConnectionGUID: fwjC+wUmQ1GFaK7PZWlgSQ==
+X-CSE-MsgGUID: EO0FG/QqRv2vk3smmdJbXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84339496"
+X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; 
+   d="scan'208";a="84339496"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 11:10:36 -0700
+X-CSE-ConnectionGUID: A7onqpwtRD2arq6ootLb8w==
+X-CSE-MsgGUID: IW16ttgjTUiSWopAP8kd/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; 
+   d="scan'208";a="184394495"
+Received: from skuppusw-desk2.jf.intel.com (HELO [10.165.154.101]) ([10.165.154.101])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 11:10:34 -0700
+Message-ID: <9c4e25e4-c6c7-4c56-ba0a-006b40e64d78@linux.intel.com>
+Date: Thu, 2 Oct 2025 11:10:34 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] PCI/AER: Check for NULL aer_info before
+ ratelimiting in pci_print_aer()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Breno Leitao <leitao@debian.org>, Mahesh J Salgaonkar
+ <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jon Pan-Doh <pandoh@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
+References: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
+ <7b5c1235-df92-4f18-936c-3d7c0d3a6cb3@linux.intel.com>
+ <a63012d4-0c98-4022-8183-5a3488ca66e9@csgroup.eu>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <a63012d4-0c98-4022-8183-5a3488ca66e9@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D040UWA001.ant.amazon.com (10.13.139.22) To
- EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 2b97aaf74ed534fb838d09867d09a3ca5d795208 ]
+On 10/2/25 03:06, Christophe Leroy wrote:
+>
+>
+> Le 29/09/2025 à 17:10, Sathyanarayanan Kuppuswamy a écrit :
+>>
+>> On 9/29/25 2:15 AM, Breno Leitao wrote:
+>>> Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
+>>> when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
+>>> calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
+>>> does not rate limit, given this is fatal.
+>>>
+>>> This prevents a kernel crash triggered by dereferencing a NULL pointer
+>>> in aer_ratelimit(), ensuring safer handling of PCI devices that lack
+>>> AER info. This change aligns pci_print_aer() with pci_dev_aer_stats_incr()
+>>> which already performs this NULL check.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: a57f2bfb4a5863 ("PCI/AER: Ratelimit correctable and non-fatal error logging")
+>>> Signed-off-by: Breno Leitao <leitao@debian.org>
+>>> ---
+>>> - This problem is still happening in upstream, and unfortunately no action
+>>>    was done in the previous discussion.
+>>> - Link to previous post:
+>>>    https://eur01.safelinks.protection.outlook.com/? url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250804-aer_crash_2-v1-1- fd06562c18a4%40debian.org&data=05%7C02%7Cchristophe.leroy2%40cs- soprasteria.com%7Cfd3d2f1b4e8448a8e67608ddff6a4e70%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638947554250805439%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=6yTN1%2Fq%2Fy0VKX%2BXpE%2BiKxBrn19AkY4IPj01N2ZdxEkg%3D&reserved=0
+>>> ---
+>>
+>> Although we haven't identified the path that triggers this issue, adding this check is harmless.
+>
+> Is it really harmless ?
+>
+> The purpose of the function is to ratelimit logs. Here by returning 1 when dev->aer_info is NULL it says: don't ratelimit. Isn't it an opened door to Denial of Service by overloading with logs ?
 
-The bodies of __signed_type_use() and __unsigned_type_use() are much the
-same size as their names - so put the bodies in the only line that expands
-them.
+We only skip rate limiting when dev->aer_info is NULL, which happens for
+devices without AER capability. In that case, I think the trade-off is reasonable:
+generating more logs is better than triggering a NULL pointer exception.
 
-Similarly __signed_type() is defined separately for 64bit and then used
-exactly once just below.
+Also, this approach is consistent with other functions (for example, the stat
+collection helpers) that already perform similar checks before accessing
+aer_info. So extending the same safeguard here seems acceptable to me.
 
-Change the test for __signed_type from CONFIG_64BIT to one based on gcc
-defined macros so that the code is valid if it gets used outside of a
-kernel build.
-
-Link: https://lkml.kernel.org/r/9386d1ebb8974fbabbed2635160c3975@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
----
- include/linux/minmax.h | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
-
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 2bbdd5b5e07e..eaaf5c008e4d 100644
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -46,10 +46,8 @@
-  * comparison, and these expressions only need to be careful to not cause
-  * warnings for pointer use.
-  */
--#define __signed_type_use(ux) (2 + __is_nonneg(ux))
--#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
- #define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
--	__signed_type_use(ux) : __unsigned_type_use(ux))
-+	(2 + __is_nonneg(ux)) : (1 + 2 * (sizeof(ux) < 4)))
- 
- /*
-  * Check whether a signed value is always non-negative.
-@@ -57,7 +55,7 @@
-  * A cast is needed to avoid any warnings from values that aren't signed
-  * integer types (in which case the result doesn't matter).
-  *
-- * On 64-bit any integer or pointer type can safely be cast to 'long'.
-+ * On 64-bit any integer or pointer type can safely be cast to 'long long'.
-  * But on 32-bit we need to avoid warnings about casting pointers to integers
-  * of different sizes without truncating 64-bit values so 'long' or 'long long'
-  * must be used depending on the size of the value.
-@@ -66,12 +64,12 @@
-  * them, but we do not use s128 types in the kernel (we do use 'u128',
-  * but they are handled by the !is_signed_type() case).
-  */
--#ifdef CONFIG_64BIT
--  #define __signed_type(ux) long
-+#if __SIZEOF_POINTER__ == __SIZEOF_LONG_LONG__
-+#define __is_nonneg(ux) statically_true((long long)(ux) >= 0)
- #else
--  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
-+#define __is_nonneg(ux) statically_true( \
-+	(typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L)))(ux) >= 0)
- #endif
--#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
- 
- #define __types_ok(ux, uy) \
- 	(__sign_use(ux) & __sign_use(uy))
--- 
-2.47.3
-
+>
+> Christophe
+>
+>>
+>> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>>
+>>
+>>
+>>>   drivers/pci/pcie/aer.c | 3 +++
+>>>   1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+>>> index e286c197d7167..55abc5e17b8b1 100644
+>>> --- a/drivers/pci/pcie/aer.c
+>>> +++ b/drivers/pci/pcie/aer.c
+>>> @@ -786,6 +786,9 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
+>>>   static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
+>>>   {
+>>> +    if (!dev->aer_info)
+>>> +        return 1;
+>>> +
+>>>       switch (severity) {
+>>>       case AER_NONFATAL:
+>>>           return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
+>>>
+>>> ---
+>>> base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
+>>> change-id: 20250801-aer_crash_2-b21cc2ef0d00
+>>>
+>>> Best regards,
+>>> -- 
+>>> Breno Leitao <leitao@debian.org>
+>>>
+>
+>
 
