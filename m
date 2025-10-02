@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-183061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01826BB41B3
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 15:57:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F79EBB41BE
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 15:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A29D74E2C37
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 13:57:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E88119E04F1
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 13:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8730311954;
-	Thu,  2 Oct 2025 13:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62160312804;
+	Thu,  2 Oct 2025 13:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BLdB7Dwh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QODcRsHj"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9943310655;
-	Thu,  2 Oct 2025 13:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B0B79CD;
+	Thu,  2 Oct 2025 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759413426; cv=none; b=PQm4ESejXCN0dEFOF19QlFO81VxFUrjayLh2GA0qbOJVUMVOrPqKJ5hXpAp9DmShiKvoHu9Zmgt21/nb6I6pvxd/WSiytnQqRqdtnh4Fmnn+7AZsUCNpU+Fx6ci55TWjj817m+mx2OJiCiD//yCcsv/N6xZdIMWep2aUUo0DJ0c=
+	t=1759413429; cv=none; b=AsH8jNC5XPb1vdYQxm1bnOWQe5k5awRjY3xm4bZdqE00S+oMh2BoxzeY7K9D0JuaSUdxKPBb+ZqZYvI0P8QA94cdpwRMioOrsbZnKOctbDTT9aDUxYjm0BAO34R3iwof9bWv2lspVqVxzXtOK6YZ5EdZhyzyo6eQoN0+WytuRQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759413426; c=relaxed/simple;
-	bh=i30smwRwajTkDI8STXOv3yAHySO/FGPC+2nsfXuSI64=;
+	s=arc-20240116; t=1759413429; c=relaxed/simple;
+	bh=eyDXzoowK29aHblXiqXcGbJd0/Lf6qeO3yHaMKfkXtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCQrFXWDjmOHfqKbfftXVsNl0ljzltmN31u+4gfTQoUTyD/oeb2Y5fTr5xx7npTX9wF7TzezWDArJq979pMaSNMvHUbwAYyADEo2xqGLbat4c8POnHzvPHHE+Nv9/76EsyDQs4PeGw419W8Vq3stqp/dawUqN+KKKFCT/A0lR7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BLdB7Dwh; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=lrw6x0fSsHlbEaGOZjTvhds3SYO8HhG1AOegMRRm3Fwq+9zEMPhZlaTDs0+Z/es61qpqSS7EiQ1TXfXQwaiszjABLo+obpUJEGKpXgi+Kl3lF36r5kidokals7UXVGA2CP6HRRufSTvOTYe9XhGzcuKupKTB6gf1ZZICBfEAjBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QODcRsHj; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759413425; x=1790949425;
+  t=1759413427; x=1790949427;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=i30smwRwajTkDI8STXOv3yAHySO/FGPC+2nsfXuSI64=;
-  b=BLdB7Dwh+Qxsw6zsfdWoY8402UCbOnrLpRDzFljJR+kvlLnLpP9LCSv7
-   ntsiwS4GdfqpaQPUdpvWiXCPydfIeaQPk+lPiqz6oXucpIejZ6T6HNJkg
-   PXgD7f5BuI3hYy17uPIf4T298jaN6oo0+SEcvPPs+2KthuAhFBcXUX4ZB
-   T/UZs+EuhNyNCfvEBkeV2quDzgvXlIpPFloa88MYsgpYLvzM9yDqJ/OkA
-   LzIQFh8IDRTZbqDR3Hua6KaIXhl7zeP+0gZ4mlpN+UrMMY6aOeJSYgppn
-   gDytvE6jnE9g82ticbnb2ZgkozNIaZUubt29FzBspJUqwIlQV7BqZmKix
-   g==;
-X-CSE-ConnectionGUID: SnNS2d0QSuaNPDZV6ufasg==
-X-CSE-MsgGUID: PVgvOYHPRgmgX5ukSO8vcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="49251142"
+  bh=eyDXzoowK29aHblXiqXcGbJd0/Lf6qeO3yHaMKfkXtk=;
+  b=QODcRsHjPTYyCcuSX71sMvgMOr+m8eRnGRl8TSjq+6dzkDCTwytnlNzd
+   sYbY584uBZmDgdBmW+QsnrYFJnfu5ldHjBZIdrRhmj96w7hHleuATWtkv
+   zpQ/cbEx4dW1YcWslSLtzKTJ87krKt7oPs6pUv3tSFjZdf0KJ8nM1Peo4
+   TJytWmFw86JGCQ5vgjwZsPdAjFA87LM5wdw1A1316a3VvCoeGb3mpCdtO
+   EJSLkZfBEVm8DfpmPT9CgOnjOgsiNMaf0dTJw8HybePIX0qAJLSdk8Fj4
+   4EO6KEGok3Z3Fvq1wX+0/8/+AfGhTkw6pnQwXjBWyurCQL1AyvBRnE/Bc
+   Q==;
+X-CSE-ConnectionGUID: OOKCSPVqTyKibzX2Gakvhw==
+X-CSE-MsgGUID: IcdVzYa2S0Kb+1LxmVWOdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="49251151"
 X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; 
-   d="scan'208";a="49251142"
+   d="scan'208";a="49251151"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 06:57:04 -0700
-X-CSE-ConnectionGUID: uv8Dv3NbQuOErYMytx/7cw==
-X-CSE-MsgGUID: 6Jiv4GtGSr2ZLDhA/ojFKA==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 06:57:07 -0700
+X-CSE-ConnectionGUID: KjmF2Q0ZSpe31OAnKHdBOw==
+X-CSE-MsgGUID: nGG2hZFpTHWcmiAFou0o9w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; 
-   d="scan'208";a="179460664"
+   d="scan'208";a="179460671"
 Received: from slindbla-desk.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.246.8])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 06:57:02 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 06:57:05 -0700
 From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 To: lgirdwood@gmail.com,
 	broonie@kernel.org
@@ -67,9 +67,9 @@ Cc: linux-sound@vger.kernel.org,
 	yung-chuan.liao@linux.intel.com,
 	pierre-louis.bossart@linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH v3 2/3] ASoC: SOF: ipc4-topology: Account for different ChainDMA host buffer size
-Date: Thu,  2 Oct 2025 16:57:51 +0300
-Message-ID: <20251002135752.2430-3-peter.ujfalusi@linux.intel.com>
+Subject: [PATCH v3 3/3] ASoC: SOF: Intel: hda-pcm: Place the constraint on period time instead of buffer time
+Date: Thu,  2 Oct 2025 16:57:52 +0300
+Message-ID: <20251002135752.2430-4-peter.ujfalusi@linux.intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251002135752.2430-1-peter.ujfalusi@linux.intel.com>
 References: <20251002135752.2430-1-peter.ujfalusi@linux.intel.com>
@@ -81,54 +81,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For ChainDMA the firmware allocates 5ms host buffer instead of the standard
-4ms which should be taken into account when setting the constraint on the
-buffer size.
+Instead of constraining the ALSA buffer time to be double of the firmware
+host buffer size, it is better to set it for the period time.
+This will implicitly constrain the buffer time to a safe value
+(num_periods is at least 2) and prohibits applications to set smaller
+period size than what will be covered by the initial DMA burst.
 
-Fixes: 842bb8b62cc6 ("ASoC: SOF: ipc4-topology: Save the DMA maximum burst size for PCMs")
+Fixes: fe76d2e75a6d ("ASoC: SOF: Intel: hda-pcm: Use dsp_max_burst_size_in_ms to place constraint")
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
 ---
- sound/soc/sof/ipc4-topology.c | 9 +++++++--
- sound/soc/sof/ipc4-topology.h | 3 +++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ sound/soc/sof/intel/hda-pcm.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
-index b6a732d0adb4..60cd7955e24f 100644
---- a/sound/soc/sof/ipc4-topology.c
-+++ b/sound/soc/sof/ipc4-topology.c
-@@ -666,8 +666,13 @@ static int sof_ipc4_widget_setup_pcm(struct snd_sof_widget *swidget)
- 				      swidget->tuples,
- 				      swidget->num_tuples, sizeof(u32), 1);
- 		/* Set default DMA buffer size if it is not specified in topology */
--		if (!sps->dsp_max_burst_size_in_ms)
--			sps->dsp_max_burst_size_in_ms = SOF_IPC4_MIN_DMA_BUFFER_SIZE;
-+		if (!sps->dsp_max_burst_size_in_ms) {
-+			struct snd_sof_widget *pipe_widget = swidget->spipe->pipe_widget;
-+			struct sof_ipc4_pipeline *pipeline = pipe_widget->private;
-+
-+			sps->dsp_max_burst_size_in_ms = pipeline->use_chain_dma ?
-+				SOF_IPC4_CHAIN_DMA_BUFFER_SIZE : SOF_IPC4_MIN_DMA_BUFFER_SIZE;
-+		}
- 	} else {
- 		/* Capture data is copied from DSP to host in 1ms bursts */
- 		spcm->stream[dir].dsp_max_burst_size_in_ms = 1;
-diff --git a/sound/soc/sof/ipc4-topology.h b/sound/soc/sof/ipc4-topology.h
-index d6894fdd7e1d..fc3b6411b9b2 100644
---- a/sound/soc/sof/ipc4-topology.h
-+++ b/sound/soc/sof/ipc4-topology.h
-@@ -73,6 +73,9 @@
- /* FW requires minimum 4ms DMA buffer size */
- #define SOF_IPC4_MIN_DMA_BUFFER_SIZE	4
+diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
+index 1dd8d2092c3b..da6c1e7263cd 100644
+--- a/sound/soc/sof/intel/hda-pcm.c
++++ b/sound/soc/sof/intel/hda-pcm.c
+@@ -29,6 +29,8 @@
+ #define SDnFMT_BITS(x)	((x) << 4)
+ #define SDnFMT_CHAN(x)	((x) << 0)
  
-+/* ChainDMA in fw uses 5ms DMA buffer */
-+#define SOF_IPC4_CHAIN_DMA_BUFFER_SIZE	5
++#define HDA_MAX_PERIOD_TIME_HEADROOM	10
 +
- /*
-  * The base of multi-gateways. Multi-gateways addressing starts from
-  * ALH_MULTI_GTW_BASE and there are ALH_MULTI_GTW_COUNT multi-sources
+ static bool hda_always_enable_dmi_l1;
+ module_param_named(always_enable_dmi_l1, hda_always_enable_dmi_l1, bool, 0444);
+ MODULE_PARM_DESC(always_enable_dmi_l1, "SOF HDA always enable DMI l1");
+@@ -291,19 +293,30 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
+ 	 * On playback start the DMA will transfer dsp_max_burst_size_in_ms
+ 	 * amount of data in one initial burst to fill up the host DMA buffer.
+ 	 * Consequent DMA burst sizes are shorter and their length can vary.
+-	 * To make sure that userspace allocate large enough ALSA buffer we need
+-	 * to place a constraint on the buffer time.
++	 * To avoid immediate xrun by the initial burst we need to place
++	 * constraint on the period size (via PERIOD_TIME) to cover the size of
++	 * the host buffer.
++	 * We need to add headroom of max 10ms as the firmware needs time to
++	 * settle to the 1ms pacing and initially it can run faster for few
++	 * internal periods.
+ 	 *
+ 	 * On capture the DMA will transfer 1ms chunks.
+-	 *
+-	 * Exact dsp_max_burst_size_in_ms constraint is racy, so set the
+-	 * constraint to a minimum of 2x dsp_max_burst_size_in_ms.
+ 	 */
+-	if (spcm->stream[direction].dsp_max_burst_size_in_ms)
++	if (spcm->stream[direction].dsp_max_burst_size_in_ms) {
++		unsigned int period_time = spcm->stream[direction].dsp_max_burst_size_in_ms;
++
++		/*
++		 * add headroom over the maximum burst size to cover the time
++		 * needed for the DMA pace to settle.
++		 * Limit the headroom time to HDA_MAX_PERIOD_TIME_HEADROOM
++		 */
++		period_time += min(period_time, HDA_MAX_PERIOD_TIME_HEADROOM);
++
+ 		snd_pcm_hw_constraint_minmax(substream->runtime,
+-			SNDRV_PCM_HW_PARAM_BUFFER_TIME,
+-			spcm->stream[direction].dsp_max_burst_size_in_ms * USEC_PER_MSEC * 2,
++			SNDRV_PCM_HW_PARAM_PERIOD_TIME,
++			period_time * USEC_PER_MSEC,
+ 			UINT_MAX);
++	}
+ 
+ 	/* binding pcm substream to hda stream */
+ 	substream->runtime->private_data = &dsp_stream->hstream;
 -- 
 2.51.0
 
