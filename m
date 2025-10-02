@@ -1,123 +1,170 @@
-Return-Path: <stable+bounces-183068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140D4BB4482
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 17:13:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFDBABB450A
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 17:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4D7618986A3
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 15:14:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AB56189CAF5
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 15:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE49B175D53;
-	Thu,  2 Oct 2025 15:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837521B043A;
+	Thu,  2 Oct 2025 15:26:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9112F184540;
-	Thu,  2 Oct 2025 15:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836191A01BF
+	for <stable@vger.kernel.org>; Thu,  2 Oct 2025 15:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759418019; cv=none; b=XTn4o3LGTI636tKMf//QeBrE+IZk86Tr4Rn2K7mgpiCjXhn/U+1CksZfkyYQhb3+8nlocQ6n0izEiu1cRr/q+KDqFosnuScsijGfy07WLfUr61vy7HjRcY3Za7zhPznQv17/y1WeSLFZt37V+V6JTPwuVDlvJbO3cYi9XIPE1ks=
+	t=1759418802; cv=none; b=hvNcbx41RpW47CmmkGNeqnYwQMHa1dq6a9m1oEAsoVbTAFQLYB9kjxCCmjvekJG2oo4IHlMndaboj2AusTyyCudTix5hoVPEMLQIoYtYvFpq9zwyHUR092KqiwHMQBt18DvzIRBgNyMy7+jgooEv7K8NaBfMs1pClWDMObE+7XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759418019; c=relaxed/simple;
-	bh=jnUqkVtqQGG0j0LpBUpBlQXjHhI5qCp0g6JRW363Af8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=VZbISVUs+wARbcPbZaQHAbU7k4tOR5OEicfsv1qiOaIAwIpN+8qc10lCfw7b+HVPsan9TXOlPTFfuFYVD5gxuAxvwIAch1qZ7vCiuUjz3tyZDx2+pRlT0y1HOFIBAR+zjezcY2m2eJcSxjlOfMkk7/n46j5fJZTJTQBnMo5qWFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [49.73.248.151])
-	by gateway (Coremail) with SMTP id _____8AxB9GUlt5oWrYRAA--.37482S3;
-	Thu, 02 Oct 2025 23:13:24 +0800 (CST)
-Received: from chenhuacai$loongson.cn ( [49.73.248.151] ) by
- ajax-webmail-front1 (Coremail) ; Thu, 2 Oct 2025 23:13:22 +0800 (GMT+08:00)
-Date: Thu, 2 Oct 2025 23:13:22 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: gregkh@linuxfoundation.org, ojeda@kernel.org, wangrui@loongson.cn,
-	yangtiezhu@loongson.cn, stable-commits@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: Re: Patch "LoongArch: Handle jump tables options for RUST" has
- been added to the 6.16-stable tree
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250609(354f7833) Copyright (c) 2002-2025 www.mailtech.cn loongson
-In-Reply-To: <CANiq72kEzOa60EhLQ2YnBOD6bsAHc7qA9v9-MP2FtxMa04Q5PQ@mail.gmail.com>
-References: <2025092127-sprint-unwomanly-fc76@gregkh>
- <CANiq72kEzOa60EhLQ2YnBOD6bsAHc7qA9v9-MP2FtxMa04Q5PQ@mail.gmail.com>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: CKU+YWZvb3Rlcl90eHQ9MTQyMDo2MTg=
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1759418802; c=relaxed/simple;
+	bh=o97ssWS1XLnkBDbG8UDuOY3aKVcNvG347gRIilI4pS8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fV9ovMUdRVD6WTZYMmdJMhk698qBC4e29r46YL7oFZAefvybNjxBPJwTJhnpSoe0Swxm5uD90/wWXXaOCDQ51jWVvvD2GgYPXJjtifp/AVKTXftcsBgxtF+pYrZJCsWOskK6pJOcHZs8Qhdwm91fHIhfXOAk5DZzhQ4Z82aeCtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b3d80891c6cso369098166b.1
+        for <stable@vger.kernel.org>; Thu, 02 Oct 2025 08:26:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759418798; x=1760023598;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vbBEdwOKCu0k96xIOmCVZhuXhz2bKiR0OgCLj9FWUXM=;
+        b=WTts2SUqAlKS5oqyue9SiPZFlK5EV81xeg9N//Y6gfJsNw98Jc7TcBHboD3Pz4dwbA
+         +VLSAliJyqGtsF1FnYgV3J2GONIuTorHPEuMPozGLTx3VMOALYHaBT+zSr1Fepo61aoL
+         gRyweX7qbXEFjU5/oLnc9/XKJ+aM31/OHcPCkXnQep89sV/bWnDvT+r2iCv0Rc0QebyC
+         vDpRRqWpURAY8V3nKBj75QdxBn2igD0hYjdrPYJL7E2BtI0KNj6n2MsHNL2uEPF9tCHP
+         rLkcM+j3KiPFMsSZgxB4XH/K6tUpDFko8k0iNDFylQycPoZbZJtyTTgydFsBJN7ShAD7
+         gwjw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfsLNimcqiKCdsYybDFTT18CkSUgPqargY/H15qVM2ReWvRLTaXT7fblL5wF7RnebmDDqBcXQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8cMRdZ5ji0l/9SjeI4TTY4YaCT+95N33sLDlfKGkoXkl4eHJJ
+	kDZg6cvqmx8oDiYJ+exQL47rs/NO5EJvz2q3t8nl6GbQ0vko4FQjN5aY
+X-Gm-Gg: ASbGncvhsmhelavD6fuq1ImJB/YyfocsN67mgDdYzGcwc1rmvphORD+MxtDOChIGisE
+	4eITqu5/I/Eka3zw1fQXMkH5Uk8bz6i/cGZXeSr8SUR4C9pjYId95xiMgeaXr9tyNcdvaMIjjPb
+	Ju5b2Pq37pxkr6TsXci02gJCl0npowebfHpC060cOiZEvoUoeZ/59Hyj0ImGc4EFTNuTaHhdITX
+	I7RvqQHTnr6308oNXhtJ5cscAP0lDEYbYr0hyBLSXnMyYAZFrXcIxbFTtXFEhrWI1JJh61G1cx/
+	QpbF/TYNJ3q8wxOIn2B4QYepX4XRJsRd7XccmRzFRlBB52J1PVq1v8n0g1EVTOSZKvtnroSI7SC
+	kok+IVJDhUbqB/md6ldUurfgfyTWcqUswhkVD
+X-Google-Smtp-Source: AGHT+IHJubONATMqOpM0aphE/8E9mxBxm+qVR6z0xeXhHSIOScfHf6lN7uyPcMlhiwlXUofQ7HBbrg==
+X-Received: by 2002:a17:907:9444:b0:b3c:d31:31d9 with SMTP id a640c23a62f3a-b485b2a6401mr471849866b.20.1759418797676;
+        Thu, 02 Oct 2025 08:26:37 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:6::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b48652aa62csm228377666b.19.2025.10.02.08.26.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Oct 2025 08:26:37 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net v6 0/4] net: netpoll: fix memory leak and add
+ comprehensive selftests
+Date: Thu, 02 Oct 2025 08:26:24 -0700
+Message-Id: <20251002-netconsole_torture-v6-0-543bf52f6b46@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <3495c3d8.1bf35.199a57c2d8f.Coremail.chenhuacai@loongson.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:qMiowJBxI+SSlt5o1czHAA--.16708W
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQECBmjcwqkItAADsk
-X-Coremail-Antispam: 1Uk129KBj93XoW7Cr4rZryfurW8ZFW5Aw17twc_yoW8XFW8pF
-	9rKa9FgFs8Jr48Ww17KayI9FyYqrZ7G3yxKrn8G34qkr98Zr1YqrWxZrWfuFWqyr95Gw4j
-	yws29wn7KFWkAacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
-	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
-	6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACY4xI67k04243AV
-	AKzVAKj4xxM4xvF2IEb7IF0Fy26I8I3I1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
-	z7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
-	AF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4l
-	IxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCw
-	CI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UMVCEFcxC
-	0VAYjxAxZFUvcSsGvfC2KfnxnUUI43ZEXa7IU8ahF3UUUUU==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKCZ3mgC/33OzWqEMBSG4VsJZ+0pJ4n50VXvo5QS43EmUJIhW
+ mkZvPeCK4vS9QfP9z5h5pp4hl48ofKa5lQy9MI2AuI95BtjGqEXoEgZ6khh5iWWPJdP/lhKXb4
+ qo5+i0hOFGLoOGgGPylP63tE3yLzAeyPgnual1J/9aJX79J+5SpRIOlqy1nSeu9eRhxTyS6m33
+ VvV0WgvDYWExjnDoxmjtvZk6KNhLg2NhN6Z6CYeRi3PRnswpLs0WiSkYAY9+MnLyCfDHA1/aRg
+ kdI6VYQotD387tm37BQGrs5TKAQAA
+X-Change-ID: 20250902-netconsole_torture-8fc23f0aca99
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+ david decotigny <decot@googlers.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
+ calvin@wbinvd.org, kernel-team@meta.com, calvin@wbinvd.org, 
+ jv@jvosburgh.net, Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-dd21f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3275; i=leitao@debian.org;
+ h=from:subject:message-id; bh=o97ssWS1XLnkBDbG8UDuOY3aKVcNvG347gRIilI4pS8=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBo3pms6lJKB0FbSWZRJJCtCqNJP88m2CpjoW/J7
+ jG7j5+mRsyJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaN6ZrAAKCRA1o5Of/Hh3
+ bdP2D/9FhhvEn5Y4fs/RB3oFPb9J3lK/v58q3Nj2XkSLehybA33BF0L/qXA7Vccy+BAaVLHj15W
+ GgpzyXp7UeLTA2lOh8BsxkVdbY69nHgJiQy1neHu6zCzCqb2kwE1pOzEz39NDY5or6pDTXVfr0g
+ DjQVyi4+EEfG+fpq1J68wMPzCt8kDNgr0wkGMF502lBjohK5DWRqQ+YhKkdvaJ5RCi2tM2W78mG
+ ellyrqS9wpo/RvCg/ytHcM6xa0MS3W/Vdt5f/Xwx44KA5/Of9pJt500n0dSZpDnihJmeCE4mfBY
+ Ww5O0KEKomUh87ysenyshXN0ZgIQQJtxtx45PiJw1B491oyULAZv50xG8ylUj1+4uibA1CqViqb
+ NWBD1hpHeVoVUxFToltgrCoJUiOqg+peTBihZqiQtz3RSYt94miFBifb2yD7kWaOilM3QmwWEc/
+ F/MTO2Nv7OAmbCZUo/DY5abqfn/Tv3rki5ZAqhLrqZ0ou9XNx+H+xsYOTJvV62f3F0nGRH9Cs46
+ A57Ls8J1IqP4JOlm8Da/ybKWjsO/hAW+VCKnPS1NENhsIGIEOceyPm8e9afiJYCGV0AjLo63jVH
+ OhQFurRrJwuaznF0cqw2IyM/QzDIEvlNVO5sVbUJrMyHufZAI9X7b7CpFJxmAP7vyF1cSeZv+/I
+ BNwHnmFrqGEXZgA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-CgoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiTWlndWVsIE9qZWRhIiA8
-bWlndWVsLm9qZWRhLnNhbmRvbmlzQGdtYWlsLmNvbT4KPiDlj5HpgIHml7bpl7Q6MjAyNS0xMC0w
-MiAwMTozOToyNSAo5pif5pyf5ZubKQo+IOaUtuS7tuS6ujogZ3JlZ2toQGxpbnV4Zm91bmRhdGlv
-bi5vcmcKPiDmioTpgIE6IGNoZW5odWFjYWlAbG9vbmdzb24uY24sIG9qZWRhQGtlcm5lbC5vcmcs
-IHdhbmdydWlAbG9vbmdzb24uY24sIHlhbmd0aWV6aHVAbG9vbmdzb24uY24sIHN0YWJsZS1jb21t
-aXRzQHZnZXIua2VybmVsLm9yZywgc3RhYmxlQHZnZXIua2VybmVsLm9yZwo+IOS4u+mimDogUmU6
-IFBhdGNoICJMb29uZ0FyY2g6IEhhbmRsZSBqdW1wIHRhYmxlcyBvcHRpb25zIGZvciBSVVNUIiBo
-YXMgYmVlbiBhZGRlZCB0byB0aGUgNi4xNi1zdGFibGUgdHJlZQo+IAo+IE9uIFN1biwgU2VwIDIx
-LCAyMDI1IGF0IDM6MDXigK9QTSA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+IHdyb3RlOgo+
-ID4KPiA+IFRoaXMgaXMgYSBub3RlIHRvIGxldCB5b3Uga25vdyB0aGF0IEkndmUganVzdCBhZGRl
-ZCB0aGUgcGF0Y2ggdGl0bGVkCj4gPgo+ID4gICAgIExvb25nQXJjaDogSGFuZGxlIGp1bXAgdGFi
-bGVzIG9wdGlvbnMgZm9yIFJVU1QKPiA+Cj4gPiB0byB0aGUgNi4xNi1zdGFibGUgdHJlZSB3aGlj
-aCBjYW4gYmUgZm91bmQgYXQ6Cj4gPiAgICAgaHR0cDovL3d3dy5rZXJuZWwub3JnL2dpdC8/cD1s
-aW51eC9rZXJuZWwvZ2l0L3N0YWJsZS9zdGFibGUtcXVldWUuZ2l0O2E9c3VtbWFyeQo+IAo+IC4u
-Lgo+IAo+ID4gY29tbWl0IDc0ZjgyOTVjNmZiODQzNmJlYzk5OTViYWY2YmE0NjMxNTFiNmZiNjgg
-dXBzdHJlYW0uCj4gCj4gSHVhY2FpIGV0IGFsLjogSSB3b25kZXIgaWYgd2UgY291bGQgZ2V0IHRo
-aXMgb25lIGludG8gNi4xMi55PwpJIGFncmVlIHdpdGggeW91LCBpdCBpcyBiZXR0ZXIgdG8gYmFj
-a3BvcnQgdG8gNi4xMi55LiBCdXQgaXQgbmVlZHMKIkxvb25nQXJjaDogTWFrZSBMVE8gY2FzZSBp
-bmRlcGVuZGVudCBpbiBNYWtlZmlsZSIgYXMgaXRzIGRlcGVuZGVuY3ksCmFuZCBuZWVkICJMb29u
-Z0FyY2g6IEZpeCBidWlsZCBlcnJvciBmb3IgTFRPIHdpdGggTExWTS0xOCIgYXMgYSBmdXJ0aGVy
-CmZpeC4KCkh1YWNhaQoKPiAKPiBNYXliZSBubyBvbmUgYWN0dWFsbHkgY2FyZXMgaW4gcHJhY3Rp
-Y2UsIHNvIHBsZWFzZSBmZWVsIGZyZWUgdG8gaWdub3JlCj4gaXQsIGJ1dCBpdCBpcyB0aGUgb25s
-eSBgb2JqdG9vbGAgd2FybmluZyAoYSBsb3Qgb2YgaW5zdGFuY2VzLCBidXQganVzdAo+IHRoYXQg
-a2luZCBmcm9tIGEgcXVpY2sgbG9vaykgSSBoYXZlIGluIG15IExvb25nQXJjaCBSdXN0IGJ1aWxk
-cyBJIGhhdmUKPiBpbiA2LjEyLnksIGFuZCBpdCB3b3VsZCBiZSBuaWNlIHRvIGhhdmUgaXQgY2xl
-YW4uCj4gCj4gVGhhbmtzIQo+IAo+IENoZWVycywKPiBNaWd1ZWwKDQoNCuacrOmCruS7tuWPiuWF
-tumZhOS7tuWQq+aciem+meiKr+S4reenkeeahOWVhuS4muenmOWvhuS/oeaBr++8jOS7hemZkOS6
-juWPkemAgee7meS4iumdouWcsOWdgOS4reWIl+WHuueahOS4quS6uuaIlue+pOe7hOOAguemgeat
-ouS7u+S9leWFtuS7luS6uuS7peS7u+S9leW9ouW8j+S9v+eUqO+8iOWMheaLrOS9huS4jemZkOS6
-juWFqOmDqOaIlumDqOWIhuWcsOazhOmcsuOAgeWkjeWItuaIluaVo+WPke+8ieacrOmCruS7tuWP
-iuWFtumZhOS7tuS4reeahOS/oeaBr+OAguWmguaenOaCqOmUmeaUtuacrOmCruS7tu+8jOivt+aC
-qOeri+WNs+eUteivneaIlumCruS7tumAmuefpeWPkeS7tuS6uuW5tuWIoOmZpOacrOmCruS7tuOA
-giANClRoaXMgZW1haWwgYW5kIGl0cyBhdHRhY2htZW50cyBjb250YWluIGNvbmZpZGVudGlhbCBp
-bmZvcm1hdGlvbiBmcm9tIExvb25nc29uIFRlY2hub2xvZ3kgLCB3aGljaCBpcyBpbnRlbmRlZCBv
-bmx5IGZvciB0aGUgcGVyc29uIG9yIGVudGl0eSB3aG9zZSBhZGRyZXNzIGlzIGxpc3RlZCBhYm92
-ZS4gQW55IHVzZSBvZiB0aGUgaW5mb3JtYXRpb24gY29udGFpbmVkIGhlcmVpbiBpbiBhbnkgd2F5
-IChpbmNsdWRpbmcsIGJ1dCBub3QgbGltaXRlZCB0bywgdG90YWwgb3IgcGFydGlhbCBkaXNjbG9z
-dXJlLCByZXByb2R1Y3Rpb24gb3IgZGlzc2VtaW5hdGlvbikgYnkgcGVyc29ucyBvdGhlciB0aGFu
-IHRoZSBpbnRlbmRlZCByZWNpcGllbnQocykgaXMgcHJvaGliaXRlZC4gSWYgeW91IHJlY2VpdmUg
-dGhpcyBlbWFpbCBpbiBlcnJvciwgcGxlYXNlIG5vdGlmeSB0aGUgc2VuZGVyIGJ5IHBob25lIG9y
-IGVtYWlsIGltbWVkaWF0ZWx5IGFuZCBkZWxldGUgaXQuIA0KDQoNCg==
+Fix a memory leak in netpoll and introduce netconsole selftests that
+expose the issue when running with kmemleak detection enabled.
+
+This patchset includes a selftest for netpoll with multiple concurrent
+users (netconsole + bonding), which simulates the scenario from test[1]
+that originally demonstrated the issue allegedly fixed by commit
+efa95b01da18 ("netpoll: fix use after free") - a commit that is now
+being reverted.
+
+Sending this to "net" branch because this is a fix, and the selftest
+might help with the backports validation.
+
+Link: https://lore.kernel.org/lkml/96b940137a50e5c387687bb4f57de8b0435a653f.1404857349.git.decot@googlers.com/ [1]
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v6:
+- Expand the tests even more and some small fixups
+- Moved the test to bonding selftests
+- Link to v5: https://lore.kernel.org/r/20250918-netconsole_torture-v5-0-77e25e0a4eb6@debian.org
+
+Changes in v5:
+- Set CONFIG_BONDING=m in selftests/drivers/net/config.
+- Link to v4: https://lore.kernel.org/r/20250917-netconsole_torture-v4-0-0a5b3b8f81ce@debian.org
+
+Changes in v4:
+- Added an additional selftest to test multiple netpoll users in
+  parallel
+- Link to v3: https://lore.kernel.org/r/20250905-netconsole_torture-v3-0-875c7febd316@debian.org
+
+Changes in v3:
+- This patchset is a merge of the fix and the selftest together as
+  recommended by Jakub.
+
+Changes in v2:
+- Reuse the netconsole creation from lib_netcons.sh. Thus, refactoring
+  the create_dynamic_target() (Jakub)
+- Move the "wait" to after all the messages has been sent.
+- Link to v1: https://lore.kernel.org/r/20250902-netconsole_torture-v1-1-03c6066598e9@debian.org
+
+---
+Breno Leitao (4):
+      net: netpoll: fix incorrect refcount handling causing incorrect cleanup
+      selftest: netcons: refactor target creation
+      selftest: netcons: create a torture test
+      selftest: netcons: add test for netconsole over bonded interfaces
+
+ net/core/netpoll.c                                                  |   7 +++++--
+ tools/testing/selftests/drivers/net/Makefile                        |   1 +
+ tools/testing/selftests/drivers/net/bonding/Makefile                |   2 ++
+ tools/testing/selftests/drivers/net/bonding/config                  |   4 ++++
+ tools/testing/selftests/drivers/net/bonding/netcons_over_bonding.sh | 221 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh           | 189 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------
+ tools/testing/selftests/drivers/net/netcons_torture.sh              | 127 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 7 files changed, 531 insertions(+), 20 deletions(-)
+---
+base-commit: f1455695d2d99894b65db233877acac9a0e120b9
+change-id: 20250902-netconsole_torture-8fc23f0aca99
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
