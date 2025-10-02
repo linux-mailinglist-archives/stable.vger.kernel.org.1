@@ -1,83 +1,297 @@
-Return-Path: <stable+bounces-183113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F64BB4910
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 18:37:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A1DBB492E
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 18:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541CB3BF006
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 16:37:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0605B320A09
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 16:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F023267386;
-	Thu,  2 Oct 2025 16:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Ld+8kkUZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14331265CB2;
+	Thu,  2 Oct 2025 16:43:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FBB26560A;
-	Thu,  2 Oct 2025 16:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB8F264F9F
+	for <stable@vger.kernel.org>; Thu,  2 Oct 2025 16:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759423013; cv=none; b=roC5El7L02/FC2W/W8G+TmGKFO3MbiyZ4FaYgJqM3ks9N1O+RIYktm5cpP5mlBr89h1N24JNnU8xXPINM7RJKrQnYH93bQpsZGAxLsm1WVVlNe7qfPkxwISU339phPEBIIlzokESd+uteY6w+hg/F2zjZZoPjFSOZnZNB8XQFDc=
+	t=1759423404; cv=none; b=oaL00KUfmMkygw1Jsbl6XOFJKpCvKHEy6EA39l9hI8ZY6+Un4MDnhboGblnpYDA/h25M+iVM8e6MW6O8O9aDL85v+t4bLcG8rs9F+2FG04RGj5kiVDsTCkNjBGfKrVCOZQP3n/tRdnbf3zOksr1G81U+I+4wx+nClMI8l51ZVyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759423013; c=relaxed/simple;
-	bh=HPYjs3+DKqm3QLFjB/1aMSh6BHeQhnERuZHceBXD3G8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cxZ1N5MK8zCTNbWPtEAC5A7NnTWWeIJ5lg75DI6eRGtP+9yrS7P7d7QYII/yZf20YukFMTCtGPRpYIIDU8xg+J8465QaJv2g4vOS5K9ppo0V9pupQEtd9epDYFgFFsrjJBxpAatyVLtTGUpjODByv7A6UJZOwm2Js8TCIPeNsm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Ld+8kkUZ; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nRpCP/3Hu8Q00omayx/+TrgJVAUQBO+wNfNVX7hCJAs=; b=Ld+8kkUZOpmhbvcVKRXhKyCVlm
-	lBSNqZkefsYjfwCmtNsWttcOZr8TwEMEsgRNBhc5xR800s82PVblySSLP9x9oRDsdxEkFl6yA0OIS
-	lNRz5HoE2vIpTspToDafLnuzNukm4nqsDl417V8exSr8M5kdy6o6FgZEGWsbLXKYoyMT1IX2vKyY1
-	q5y27jl2bay/cAWCC03JwFXrnV11C0imlWqw0/3E83YkUWjWD4A5DHYxTEFwuv7blkO0GFBLLKZi9
-	mPchaVz0Q+WgpSYzFfberSsAj47SJJXYbIdXDRKzSDDDMkNrPJTiT/ftt7bl+ylnbJR2/RQHxZ3xY
-	1X+ysjGQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v4MIT-00000003TKZ-13UH;
-	Thu, 02 Oct 2025 16:36:49 +0000
-Date: Thu, 2 Oct 2025 17:36:49 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Jan Kara <jack@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] vfs: Don't leak disconnected dentries on umount
-Message-ID: <20251002163649.GO39973@ZenIV>
-References: <20251002155506.10755-2-jack@suse.cz>
+	s=arc-20240116; t=1759423404; c=relaxed/simple;
+	bh=HYxaEfMtws/N8gZt/uBZJZ+9NzkvYoUL1fvuo/x2hns=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TK9lGy4gJmufXKCMHO1PRq4/jL2O4p1Zrz4bOMvim8uVsTUZpHeNNQ8hdMx6S42rMG4yoZP3RJD3QQjGvRy3zNhMOL5ncmapL1HGVaplY7cYX9mLvonTA04jCdJ0kGTTH83dQkXHF6XEtyZZnwJG1bz1TYvE11MI/QRBuq7S1VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6911C1FCD;
+	Thu,  2 Oct 2025 09:43:13 -0700 (PDT)
+Received: from [10.57.3.58] (unknown [10.57.3.58])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 47F683F66E;
+	Thu,  2 Oct 2025 09:43:20 -0700 (PDT)
+Message-ID: <1f47887b-90d5-425c-b80f-9fa8855a6837@arm.com>
+Date: Thu, 2 Oct 2025 17:43:18 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251002155506.10755-2-jack@suse.cz>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.17-6.16] arm64: realm: ioremap: Allow mapping
+ memory as encrypted
+Content-Language: en-GB
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
+ stable@vger.kernel.org
+Cc: Sami Mujawar <sami.mujawar@arm.com>, Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Steven Price <steven.price@arm.com>, Gavin Shan <gshan@redhat.com>
+References: <20251002153025.2209281-1-sashal@kernel.org>
+ <20251002153025.2209281-8-sashal@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20251002153025.2209281-8-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 02, 2025 at 05:55:07PM +0200, Jan Kara wrote:
+Hello !
 
-> diff --git a/fs/dcache.c b/fs/dcache.c
-> index 65cc11939654..3ec21f9cedba 100644
-> --- a/fs/dcache.c
-> +++ b/fs/dcache.c
-> @@ -2557,6 +2557,8 @@ struct dentry *d_alloc_parallel(struct dentry *parent,
->  	spin_lock(&parent->d_lock);
->  	new->d_parent = dget_dlock(parent);
->  	hlist_add_head(&new->d_sib, &parent->d_children);
-> +	if (parent->d_flags & DCACHE_DISCONNECTED)
-> +		new->d_flags |= DCACHE_DISCONNECTED;
->  	spin_unlock(&parent->d_lock);
+On 02/10/2025 16:29, Sasha Levin wrote:
+> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> [ Upstream commit fa84e534c3ec2904d8718a83180294f7b5afecc7 ]
+> 
+> For ioremap(), so far we only checked if it was a device (RIPAS_DEV) to choose
+> an encrypted vs decrypted mapping. However, we may have firmware reserved memory
+> regions exposed to the OS (e.g., EFI Coco Secret Securityfs, ACPI CCEL).
+> We need to make sure that anything that is RIPAS_RAM (i.e., Guest
+> protected memory with RMM guarantees) are also mapped as encrypted.
+> 
+> Rephrasing the above, anything that is not RIPAS_EMPTY is guaranteed to be
+> protected by the RMM. Thus we choose encrypted mapping for anything that is not
+> RIPAS_EMPTY. While at it, rename the helper function
+> 
+>    __arm64_is_protected_mmio => arm64_rsi_is_protected
+> 
+> to clearly indicate that this not an arm64 generic helper, but something to do
+> with Realms.
+> 
+> Cc: Sami Mujawar <sami.mujawar@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+> Cc: Steven Price <steven.price@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Steven Price <steven.price@arm.com>
+> Tested-by: Sami Mujawar <sami.mujawar@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+> 
+> LLM Generated explanations, may be completely bogus:
 
-Not a good place for that |=, IMO...
+Indeed, some are clearly incorrect.
+
+> 
+> Based on my comprehensive analysis of this commit, I can now provide my
+> determination.
+> 
+> ## Analysis Summary
+> 
+> ### Code Change Analysis
+> 
+> The commit makes a **critical logic change** in
+> `arch/arm64/kernel/rsi.c:104`:
+> 
+> **Before**: `if (ripas != RSI_RIPAS_DEV) break;`
+> - Only returns true if **all** regions are RIPAS_DEV (device memory)
+> - Other states (RIPAS_RAM, RIPAS_DESTROYED) cause early exit → mapped as
+>    **decrypted**
+> 
+> **After**: `if (ripas == RSI_RIPAS_EMPTY) break;`
+> - Returns true for RIPAS_RAM, RIPAS_DESTROYED, and RIPAS_DEV
+> - Only RIPAS_EMPTY (unprotected/shared) regions are mapped as
+>    **decrypted**
+> 
+> ### Problem Being Fixed
+> 
+> The original implementation from commit 371589437616f (Oct 2024) only
+> encrypted RIPAS_DEV regions. However, **firmware-reserved memory
+> regions** use RIPAS_RAM state:
+> 
+> - **EFI Coco Secret Securityfs** areas
+> - **ACPI CCEL** (Confidential Computing Event Log) tables
+> 
+> Without this fix, these RIPAS_RAM regions are incorrectly mapped with
+> `pgprot_decrypted()`, which sets `PROT_NS_SHARED`, making them
+
+The Realm would have mapped them as decrypted and might have consumed
+untrusted information from (a malicious) hypervisor
+
+> **accessible to the untrusted hypervisor**.
+
+No, hypervisor doesn't get access to the protected data.
+
+> 
+> ### Security Impact
+> 
+> This is a **security and data integrity bug**:
+> 1. **Confidential data leakage**: Hypervisor can read protected firmware
+>     secrets
+
+Wrong
+
+> 2. **Data corruption**: Hypervisor can modify what should be protected
+>     memory
+
+Absolutely NO
+
+> 3. **Violation of ARM CCA guarantees**: Breaks confidential computing
+>     promises
+
+Not really. The Guest could consume "untrusted" data, thats the only
+violation here.
+
+Suzuki
+
+
+
+
+
+
+> 
+> ### Dependencies
+> 
+> Two related commits were **already backported** (based on "Upstream
+> commit" tags):
+> - `bda90416d53f`: "arm64: Enable EFI secret area Securityfs support"
+> - `09b8e2bf3bf1`: "arm64: acpi: Enable ACPI CCEL support"
+> 
+> Both depend on this fix to function correctly.
+> 
+> ### Risk Assessment
+> 
+> **LOW RISK**:
+> - Isolated to ARM64 Realm subsystem (v6.13+)
+> - Only affects ARM CCA Realm guests
+> - Simple, well-understood logic inversion
+> - Multiple reviewers (Gavin Shan, Steven Price) and testers (Sami
+>    Mujawar)
+> - No follow-up fixes or reverts found
+> - Function rename improves code clarity
+> 
+> ### Stable Tree Rules
+> 
+> ✅ Fixes important security/correctness bug
+> ✅ Small and contained (3 files, ~30 lines)
+> ✅ No new features or architectural changes
+> ✅ Minimal regression risk
+> ✅ Well-tested and reviewed
+> 
+> ---
+> 
+> ## **Answer: YES**
+> 
+> **This commit should be backported to stable kernel trees that include
+> ARM64 Realm support (v6.13+).**
+> 
+> **Rationale**: This fixes a security vulnerability where firmware-
+> reserved protected memory (RIPAS_RAM) is incorrectly mapped as decrypted
+> instead of encrypted, violating ARM CCA confidential computing
+> guarantees. The bug allows the untrusted hypervisor to access or corrupt
+> protected firmware data (EFI secrets, ACPI CCEL tables). The fix is
+> small, contained, well-tested, and has minimal regression risk.
+> Additionally, two dependent features (EFI Secret and ACPI CCEL support)
+> were already backported and require this fix to work correctly.
+> 
+>   arch/arm64/include/asm/io.h  |  2 +-
+>   arch/arm64/include/asm/rsi.h |  2 +-
+>   arch/arm64/kernel/rsi.c      | 26 ++++++++++++++++++++++----
+>   3 files changed, 24 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
+> index 9b96840fb979b..82276282a3c72 100644
+> --- a/arch/arm64/include/asm/io.h
+> +++ b/arch/arm64/include/asm/io.h
+> @@ -311,7 +311,7 @@ extern bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
+>   static inline bool arm64_is_protected_mmio(phys_addr_t phys_addr, size_t size)
+>   {
+>   	if (unlikely(is_realm_world()))
+> -		return __arm64_is_protected_mmio(phys_addr, size);
+> +		return arm64_rsi_is_protected(phys_addr, size);
+>   	return false;
+>   }
+>   
+> diff --git a/arch/arm64/include/asm/rsi.h b/arch/arm64/include/asm/rsi.h
+> index b42aeac05340e..88b50d660e85a 100644
+> --- a/arch/arm64/include/asm/rsi.h
+> +++ b/arch/arm64/include/asm/rsi.h
+> @@ -16,7 +16,7 @@ DECLARE_STATIC_KEY_FALSE(rsi_present);
+>   
+>   void __init arm64_rsi_init(void);
+>   
+> -bool __arm64_is_protected_mmio(phys_addr_t base, size_t size);
+> +bool arm64_rsi_is_protected(phys_addr_t base, size_t size);
+>   
+>   static inline bool is_realm_world(void)
+>   {
+> diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
+> index ce4778141ec7b..c64a06f58c0bc 100644
+> --- a/arch/arm64/kernel/rsi.c
+> +++ b/arch/arm64/kernel/rsi.c
+> @@ -84,7 +84,25 @@ static void __init arm64_rsi_setup_memory(void)
+>   	}
+>   }
+>   
+> -bool __arm64_is_protected_mmio(phys_addr_t base, size_t size)
+> +/*
+> + * Check if a given PA range is Trusted (e.g., Protected memory, a Trusted Device
+> + * mapping, or an MMIO emulated in the Realm world).
+> + *
+> + * We can rely on the RIPAS value of the region to detect if a given region is
+> + * protected.
+> + *
+> + *  RIPAS_DEV - A trusted device memory or a trusted emulated MMIO (in the Realm
+> + *		world
+> + *  RIPAS_RAM - Memory (RAM), protected by the RMM guarantees. (e.g., Firmware
+> + *		reserved regions for data sharing).
+> + *
+> + *  RIPAS_DESTROYED is a special case of one of the above, where the host did
+> + *  something without our permission and as such we can't do anything about it.
+> + *
+> + * The only case where something is emulated by the untrusted hypervisor or is
+> + * backed by shared memory is indicated by RSI_RIPAS_EMPTY.
+> + */
+> +bool arm64_rsi_is_protected(phys_addr_t base, size_t size)
+>   {
+>   	enum ripas ripas;
+>   	phys_addr_t end, top;
+> @@ -101,18 +119,18 @@ bool __arm64_is_protected_mmio(phys_addr_t base, size_t size)
+>   			break;
+>   		if (WARN_ON(top <= base))
+>   			break;
+> -		if (ripas != RSI_RIPAS_DEV)
+> +		if (ripas == RSI_RIPAS_EMPTY)
+>   			break;
+>   		base = top;
+>   	}
+>   
+>   	return base >= end;
+>   }
+> -EXPORT_SYMBOL(__arm64_is_protected_mmio);
+> +EXPORT_SYMBOL(arm64_rsi_is_protected);
+>   
+>   static int realm_ioremap_hook(phys_addr_t phys, size_t size, pgprot_t *prot)
+>   {
+> -	if (__arm64_is_protected_mmio(phys, size))
+> +	if (arm64_rsi_is_protected(phys, size))
+>   		*prot = pgprot_encrypted(*prot);
+>   	else
+>   		*prot = pgprot_decrypted(*prot);
+
 
