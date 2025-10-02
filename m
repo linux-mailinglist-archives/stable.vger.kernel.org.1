@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-183118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E153ABB4B72
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 19:39:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE58DBB4B75
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 19:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A91401C0658
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 17:39:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8237219E594C
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 17:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79258271451;
-	Thu,  2 Oct 2025 17:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C544B2727EA;
+	Thu,  2 Oct 2025 17:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jB+b+D9e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MlLUPLBa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9FB4501A;
-	Thu,  2 Oct 2025 17:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BF94501A;
+	Thu,  2 Oct 2025 17:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759426759; cv=none; b=DZkVs5Y//GMHNsdCl9LDyeV9H2y0RVI7CjdFIp6k2MumDrcUzfT04JO8esyxZl8JWgAzAIa6sR92hW35zTKhvAt2SIFPVw22/JHlc+AqD4gfT+38HHymSBooAcemsCBO+vDEwjETFgkWXHcDfPnZZ/jjirnYmgIWagW9I17eHYQ=
+	t=1759426762; cv=none; b=BlAanXxRij4+Fr4YcUDlnDZvvxJCbI+mtr2Bxte6UvEIvUFJneJVBaJyQybugzuXk8iR+MNYT54Vaqj3tU2ZJ7HexNvUHVYB61oQCusMVWy6TmNEh6E0VQsJbC0Upp+OrlBLtmtJK+8Wh3UAURfrWvYaum/RR6f1q9NyWmx65sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759426759; c=relaxed/simple;
-	bh=eSu7h8gG4CxZG3OKOVHnu6scMj4gMSiYftHvfkr1vNU=;
+	s=arc-20240116; t=1759426762; c=relaxed/simple;
+	bh=Ol9QmzDRQIdGFburmMnhzuufrNXKQBUmjDyAxdEnvGE=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=sTTys/Da1vmgORjy25zq0BIUVtgDTEinXCQNpsZgPY+j4Etgsm87lhfKkF9HNRwPrvNoc3964/O1HAXuZLTsz1MZ8XmLt53JKVUJjcCEXykjs8723JiwmvvA2b/J32qaahGp6gmdaqKq5Ei5AqbIpJ+djhFUPoUcFf8MFwWI8QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jB+b+D9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BF0C4CEF4;
-	Thu,  2 Oct 2025 17:39:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pXLf0eoTM5ocwD0FTDD4OeByqQOCGBSb0UKaTL2V9zIsUoO24176I7u52jpIysgifdeHWrmDWk+CBv9UNBaHqH4fvq1E4kgqCtmNE61CxRBiDzU44n1w7gOfH1UtYLQkEj7yV3idPAUmtdRL/FWNZOsZ6qQBdx+beuvFHcmImgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MlLUPLBa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E687C4CEF4;
+	Thu,  2 Oct 2025 17:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759426758;
-	bh=eSu7h8gG4CxZG3OKOVHnu6scMj4gMSiYftHvfkr1vNU=;
+	s=k20201202; t=1759426761;
+	bh=Ol9QmzDRQIdGFburmMnhzuufrNXKQBUmjDyAxdEnvGE=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=jB+b+D9epLt9jG2+sspVpP8SXjrbz2w7yrKrbTC9TBb97i/4Bpei4uVukssgrgOXF
-	 fs0+lsg2t+zxfNPegHo/yCAZ7WYBKK3yEM/c/ca5fUgGvA/YytFmTLKvLpev4jL6sx
-	 iXkM0iimoe3pV5dkNqLf07IacIPCsw5duq6aV4bIPTdO0Bl0dbiE4Wt4/fWq8BnTKV
-	 ipqyDFhWSbljIq7YKJVlQPEoJ3hsPKsmrHFbyFI61+Mx2fvMjZ/jOkUGRzI4ZoKMgs
-	 UFAcDCKw8Mwc3dNdcTmH5qduwu4pG3TFTSO91rvdkncMfaHsM7tTtkiqQ4yMpyvy3T
-	 gE8gq9JY/q2VQ==
+	b=MlLUPLBaXClB7qR6Sj6LY83HPaZEv21Ts16hf2vVLGVtCWhMpXE/+pLoUktblVdfH
+	 LCBniRBTdaR2q8q6Qxy4WA5rGmvd73RLTZFr0F7QTccbtjOCcKBysXcvjCRaLtV4FP
+	 byijzk79IBTU3j78OQRGs8OwcV8dDD3BzCAjeY446aAsGOL0RnzZAdZD8Wl41Ty6Gt
+	 bw/PPj8OELOleqPmnBaycSA2v+EL03hbA2k5mqPNAG/pxbOQEY0Yzi0rfg3DV5UplR
+	 UvNzypPcfKOC1X+Z3OPnbiqBn+ZJukXAI3/FjF9Vk2SSWPcAkof+33Bo51jXWu307f
+	 8yXoRqUwN1/Mg==
 From: Mark Brown <broonie@kernel.org>
 To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
  ranjani.sridharan@linux.intel.com, yung-chuan.liao@linux.intel.com, 
  pierre-louis.bossart@linux.dev, stable@vger.kernel.org
-In-Reply-To: <20251002080538.4418-1-peter.ujfalusi@linux.intel.com>
-References: <20251002080538.4418-1-peter.ujfalusi@linux.intel.com>
-Subject: Re: [PATCH 0/3] ASoC: SOF: ipc4/Intel: Fix the host buffer
+In-Reply-To: <20251002125322.15692-1-peter.ujfalusi@linux.intel.com>
+References: <20251002125322.15692-1-peter.ujfalusi@linux.intel.com>
+Subject: Re: [PATCH v2 0/3] ASoC: SOF: ipc4/Intel: Fix the host buffer
  constraint
-Message-Id: <175942675632.119208.2155963068461075221.b4-ty@kernel.org>
-Date: Thu, 02 Oct 2025 18:39:16 +0100
+Message-Id: <175942675900.119208.781210005170787305.b4-ty@kernel.org>
+Date: Thu, 02 Oct 2025 18:39:19 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +62,10 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-56183
 
-On Thu, 02 Oct 2025 11:05:35 +0300, Peter Ujfalusi wrote:
+On Thu, 02 Oct 2025 15:53:19 +0300, Peter Ujfalusi wrote:
+> Changes since v1:
+> - SHAs for Fixes tag corrected (sorry)
+> 
 > The size of the DSP host buffer was incorrectly defined as 2ms while
 > it is 4ms and the ChainDMA PCMs are using 5ms as host facing buffer.
 > 
