@@ -1,435 +1,247 @@
-Return-Path: <stable+bounces-183000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFD9BB2211
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 02:18:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39314BB23DA
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 03:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E69119C201C
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 00:18:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FF7E1892A5D
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 01:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F531C701F;
-	Thu,  2 Oct 2025 00:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEF242A9D;
+	Thu,  2 Oct 2025 01:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RpCV5VSV"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="hBddSyhO";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="KAAOAY6d"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D28156230;
-	Thu,  2 Oct 2025 00:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759364238; cv=none; b=niRCk9kqIgFkVyCydMwkElgmKQMOA2pBrbcgFu5VxmPpEsONgqy72iNaetQ6KdVRUEEZtSwKtxsaW/GUWceqX2JOiYCUvK40+n9hcWYhiqlTQO4RtkxdfavvNFZV1J5Z6n0w2pOkV45oV0U8dsQP7OXZTY9x2zrZMc1gUJk0yIo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759364238; c=relaxed/simple;
-	bh=HUnmaHkJ7AAWM8fs69PhUqq/p2mi72Jzd490l6vpehk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aOj3L/ReYp0h6tkrNQiMSWwNvP70lbXM908f6hE9pv68zxTQD8dyYzhG4PnebfkPGcFPvI0+ERVQ4TEvvAA+lQenkQVf8vILWlavsEkfj3u6OsZsVUuA2iEnDho1QHfY2N296n7oNaKm3zsF3lr6NHJaA+YLJBwEVIYyotNdW1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RpCV5VSV; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759364236; x=1790900236;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=HUnmaHkJ7AAWM8fs69PhUqq/p2mi72Jzd490l6vpehk=;
-  b=RpCV5VSVGnTBmfFFopJyDYHvyyxIYiX/tDIVK1Psc7+6NnEl8pyMdx+t
-   /G/taoXjqq4zQK4wC3AjFEbAm+EGa8l4gWYV7Ot8Q3wPFCHktwLCaTBNt
-   bHUgigFa/GIhf27187wB65+0bmaB1QJy1DkefSPAIcgigs5doR02DY809
-   QKvC40YlhM1mbhepxM6uttHNGZQm6BY4YRQa3ayc3+I4xT+cezNvGOcdx
-   8/o0BGsxS33XfjE9bFIZU8973MDarL05TGM/MoZpvADr5iGXG2dFjSAFJ
-   umexCOfN9OWRQj6//WXtNc3Pl56XKh0LJlH37eMfbBLuOtIDVm81dTrcy
-   A==;
-X-CSE-ConnectionGUID: OGgCxd2VTGKo89ahcKIYaA==
-X-CSE-MsgGUID: 7W/VwMvLTXy9VgoaSUpcCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61561625"
-X-IronPort-AV: E=Sophos;i="6.18,308,1751266800"; 
-   d="scan'208";a="61561625"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 17:17:11 -0700
-X-CSE-ConnectionGUID: BqYl3ZLzS6ebvl709yWA8w==
-X-CSE-MsgGUID: ECS48ejzQymc7afKizwjOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,308,1751266800"; 
-   d="scan'208";a="184105729"
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 17:17:09 -0700
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 01 Oct 2025 17:14:16 -0700
-Subject: [PATCH net 6/8] ixgbevf: fix mailbox API compatibility by
- negotiating supported features
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B055632;
+	Thu,  2 Oct 2025 01:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759367747; cv=fail; b=erauRosntaVyWqCVsIavE+dQovaMyL8sLm8A+zdJNbTEN/a4DVlFCSJT+3fMAP7vt2ZhE8Jx5Vbv3vuoq8p3usMdymkjiZWONAM6Pp1eH6H5F2ECJl7nAPgR2fIR6KQhsIpU2mE2sHHzO0MkTeB9RtMgGkpElN7Dem+a/FbfL+g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759367747; c=relaxed/simple;
+	bh=mKnWmBzMJX2Iq9+DwL/JNaaBROqiIkgDBJaM4uq8tKc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jQoizYF2b8Fej6GmltvTi0p0RW0p/Qakf4PuvKNxAqNEfQzeqIyYtGg/eFJFC2rgzVy5fRN4GKirnVDXSdS6lqPjME1oJVOR6y4wwap+MoGdNgBUwmz+UXnCCq6pTKun8SeFYdctQdTTI5/q6mb7D45yPkDH/pOAPSnJG4wTb4c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=hBddSyhO; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=KAAOAY6d; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591Lg3cW016404;
+	Thu, 2 Oct 2025 01:15:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=wkrTV8MDIYvmnKrgkZ
+	Q0xBaYKJw74WFrfzWQ/F980+s=; b=hBddSyhOxeYvc8OaDqCGVYc+jiZvoWQRpM
+	mjHcCcV5Q4YgfUA4Oyb+t8jFcxrCFGwxEphnaNPsqQfYrFbZawsufB8U1iNswji3
+	019TAvI7p8qHx+m8UB56RXFWercI+p6QTERTzVS7nca9UGcVNhoBBALMeZ4Xk2Zn
+	n+IcvogUXH+5RMCoUoDGF199ZL2mLGnX/gltHs0aHv2KJM+RsHxK7BI5Jfmwncwj
+	PqhbBApZqFRIGhdDOsj/ri35UTz/qs/mrshpc09Zly1mK//T26xr/KlUM3jCf+oE
+	g4+zhH79Ip8pxuUGSjeQ8xp6YLfWZa8pdzykXsZkqYdiNOQ9MYvw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49gm3bjkb3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 02 Oct 2025 01:15:11 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59204RlH000349;
+	Thu, 2 Oct 2025 01:15:10 GMT
+Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013000.outbound.protection.outlook.com [40.93.196.0])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 49e6cgdh8f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 02 Oct 2025 01:15:09 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m/ZmGVvC3g30Nf0o2ruLARes9SEdngxtRqwUZom7kwzi5J98xZktEvXsly0fJuMmYGbaLq3mey5GLuhJrrI+22Z+JWbxih1hW4nJXmkd+MpuT2054LVgySMVDSvvJuslpC91vn4UGwEfk+PUeAG0RGAaqMw7MU/TE1qci3uCsDjky1o6B4rIoa9cVRnz15X2OuDIvWdi6NO2OQv0BnW0vR52CNw+g0wlZUjAsuN/U0NQbGuCM8NNPGjCQA4ObNjdnq5kww89SMwvALPKl8ekCWqQU6oS2wxdRffbSkIZKu3+vB2Be+Q2jm4AN1AC6jYvbK47NL47qpa9RxQKcNC0Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wkrTV8MDIYvmnKrgkZQ0xBaYKJw74WFrfzWQ/F980+s=;
+ b=vW51t0LxR+sgTsZRC5jP+Y1rLB84bJn/XTasm8fYp3d6Qbno23Aw++h9PPSw5oMcvEumAw0+Scg8L+/w7wAi9HwXs+btizXPrkBnt+rWNyaOLeDQ0+HS7ebAjF36fXcY+7iYdHRMxpXGktTJ8ZaKyiGrrIg/OT7R1Axy9kSkrWqS4flYUZ3C1GLsoYGzTkF0woCBl80yt1Mp7mnIX0i7IXhgyIYOeKfQkG2X+c5IQ64S8sAi91yDg9NJBex6HPMvRVPgJHukUSN5kg0d9rzyFiFU1sLkCKV1ttqwAkq0gRA3mv94tusuz/fELYuuXJr4TLHhR6DcP44aWaZwEqSiBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wkrTV8MDIYvmnKrgkZQ0xBaYKJw74WFrfzWQ/F980+s=;
+ b=KAAOAY6d4FeTMeWkg9JEXpJGce/Vbka20FO5vE3OALmSfdqXOpVZSHLlf3NTk98d7p6xZPoo8DiN0d6U8/PWsDHN0uzPevivL09kSnjoAZ7ut4mHM7SaD+L15Ya44Eeu81Xkn5CyelTkeuPnyiwopDeqcN4vEQ01GTUWHupI+Cg=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by CY8PR10MB6612.namprd10.prod.outlook.com (2603:10b6:930:54::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Thu, 2 Oct
+ 2025 01:15:07 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.9160.017; Thu, 2 Oct 2025
+ 01:15:06 +0000
+Date: Thu, 2 Oct 2025 10:14:54 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+        peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+        baohua@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
+        npache@redhat.com, riel@surriel.com, Liam.Howlett@oracle.com,
+        vbabka@suse.cz, jannh@google.com, matthew.brost@intel.com,
+        joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+        gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+        usamaarif642@gmail.com, yuzhao@google.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, ioworker0@gmail.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v5 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
+ remapping zero-filled mTHP subpage to shared zeropage
+Message-ID: <aN3SDmKeVqIXwGfV@hyeyoo>
+References: <20250930081040.80926-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250930081040.80926-1-lance.yang@linux.dev>
+X-ClientProxiedBy: SE2P216CA0193.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2c5::17) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251001-jk-iwl-net-2025-10-01-v1-6-49fa99e86600@intel.com>
-References: <20251001-jk-iwl-net-2025-10-01-v1-0-49fa99e86600@intel.com>
-In-Reply-To: <20251001-jk-iwl-net-2025-10-01-v1-0-49fa99e86600@intel.com>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Emil Tantilov <emil.s.tantilov@intel.com>, 
- Pavan Kumar Linga <pavan.kumar.linga@intel.com>, 
- Alexander Lobakin <aleksander.lobakin@intel.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Sridhar Samudrala <sridhar.samudrala@intel.com>, 
- Phani Burra <phani.r.burra@intel.com>, 
- Piotr Kwapulinski <piotr.kwapulinski@intel.com>, 
- Simon Horman <horms@kernel.org>, Radoslaw Tyl <radoslawx.tyl@intel.com>, 
- Jedrzej Jagielski <jedrzej.jagielski@intel.com>, 
- Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Cc: Anton Nadezhdin <anton.nadezhdin@intel.com>, 
- Konstantin Ilichev <konstantin.ilichev@intel.com>, 
- Milena Olech <milena.olech@intel.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, stable@vger.kernel.org, 
- Rafal Romanowski <rafal.romanowski@intel.com>
-X-Mailer: b4 0.15-dev-cbe0e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12905;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=diYM/DtXrQv8s9hSu/Ie4OjzFJbddmsBNN4+BHu80IE=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoy7R1qmCTcpxfvuERBP/Fewf9GVE70nlmmILj4cKljga
- PpigseMjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACYiJsvIcHz9SeFVaxTkd+y+
- +Vpw3dr9Vf3VtXHyy2zY85V4JTVy0hgZzonuCj18+VHNi+VLbONVOAz7m/bXRzyduY5nz/Ua+8n
- VPAA=
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CY8PR10MB6612:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9a5b411-ebb4-4dfd-e3bb-08de01511f77
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?WvkcDUrgeJ5AvH2gpMbbuGszbEqjofhVGyhmmNIOzaPsfsiinr1B5BXg2pEm?=
+ =?us-ascii?Q?Pp4TsXzkw9RGQbJhrNEpzB3QtrqYGVMNbV3/SSnchxqKcESdDFv0l5jWpWvN?=
+ =?us-ascii?Q?G54AUhGlnJpjh7KhOo8R06Oi241E64rlee5nT3GXZXAL4HFJyDDvzZGWXPCQ?=
+ =?us-ascii?Q?l7ttvLyUEWpSND/jHWlmxb5GIASlPe3Y3xVF3MGJ+qlvCAT4AUVC2d4D/Y+i?=
+ =?us-ascii?Q?nF5vezTFhNaA4fSFBl6rop25MzumUvHyxVvXj7UV42GAhujOmb5G6hK2Ft2Q?=
+ =?us-ascii?Q?OfSjS8nmX5vFZdrm1LE4MvcF5offuxMdxKMdBSOB+97Xb/9y3LeVRvwAPjuJ?=
+ =?us-ascii?Q?Fy+GNXq8RO40U5LAEBXBaGuv50HHJnYXo0BBFv5VZQlT+Zl3wSmO71c8AQ8o?=
+ =?us-ascii?Q?9DIgdiXscfDwhlV8maQ0s0cUy/b8mypmKg6GAj7zOSRKKOGZylMWlZYElDWd?=
+ =?us-ascii?Q?B24cpIAeBiE0QZABisBRX701uWDlRSSOF+jWaEx+nNOUAjgL4k1ckvMjcjt0?=
+ =?us-ascii?Q?1czda5c3HeDm9jtJIimctmUClAOiRFennaXhEgKrjeJ6rbeRHBlxJlPBi+sF?=
+ =?us-ascii?Q?biGloeBsf/sfScdD7KsLJVArX37BsWkCiBWnVj7ZC07NDGLf4fTN85250xE7?=
+ =?us-ascii?Q?BBJvaLhOkIUT5OHUU9z6mzmC1syDyxdWD/8KAAji2m/k4+fxMW1lfqXKnhqt?=
+ =?us-ascii?Q?P65sJL4EsQl1wvnEnYMCK7K/Y2sNBE/c7OJPkiZhRq2ewDfi+WwnWGZ+oBMC?=
+ =?us-ascii?Q?7TZ4dtrLjLXBlH9s91552RcS/JIfDxWxDGKqhbYYiTIaFvioEZf0WDm//uLI?=
+ =?us-ascii?Q?ZqzpmTKAbwMOnj4Llwy+7beAZzruHo9LVR12/qSG/z5NER76PVS/IDkYVZM2?=
+ =?us-ascii?Q?WibnaCJ9Yy9kjqWNeQ8GywbCbR+4LoglFU6CptRHUoWrcyrAVJvNc6BCyY+e?=
+ =?us-ascii?Q?U3tlkuZHw5eWntIIPFjELhbrZlhsi+jChDuDI+Yp8WscfjxM5jVMDpC6oKvj?=
+ =?us-ascii?Q?TCIhcFjzmQscaVg++TAiv76EoUtff54qJMW/GhH7vzjxwfSqRNGqHdeJEP+R?=
+ =?us-ascii?Q?rRxBH1wbOdzdHgxr7r0XpZ+6MWGJHCUHNVTaGlFoT8Na0f4l2qIchx+EhHPy?=
+ =?us-ascii?Q?W8osIx6ScnUf/SXdSxc9pFx+MDafdgpCyKGGaCmzsxFitDh47dCgWtUu7HgR?=
+ =?us-ascii?Q?1tSxr97u2fKwcgsBRuoAk4+vUsZmm9swofJhXn4riN586xyT+wTDe4Lu5DzB?=
+ =?us-ascii?Q?NbL4i+btNO7jBcge4e/1wc/aF+F/+YcpuaiB4fZ15TLSFOJ7JaAmmtDDXAeB?=
+ =?us-ascii?Q?tolAm0Fq9uqPYGx5sNg8jQYZfdhiJkswEURCEjG/FgBGV1MQNugr3Kh8j/Nx?=
+ =?us-ascii?Q?N7GCyf0QthCyUYuihXkYlrhr8OVGKC0UywCglvSiXXFDzXN3qH/F4SYexX+x?=
+ =?us-ascii?Q?GcoYrcf2aqLy/joAQVpqBz/aXzT4+U1a?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/1/c2sgy97Nn7aitIEUj8tSpu/aoFf3j/SUjmEBbk/5Eu9O7hN+HoPL2Q2O2?=
+ =?us-ascii?Q?LnIQ/hrpjLs11JuyNJ3jzyH8wlAFhimXvOA2Sx73OHpE9lDPVsZwFrX9qKY5?=
+ =?us-ascii?Q?eaTmas6KQVkja6UF66Kp3psu/EqStb65JkqY0yr2G2/2+AiCg5X6r9IerzAx?=
+ =?us-ascii?Q?FaGxKgpaNaEXkTnOgzYBw3uIQ6CooGKa50zyTWD/xibQT4We7jvnpe9uLfgm?=
+ =?us-ascii?Q?bS6lSANlsVw7q//W+ne3V55SMPxW1RaTmnB9K/5TC6kPCr/giArx4+3Eatjl?=
+ =?us-ascii?Q?sUPAJe+nahPcmDtvFtZUUsBNTVdIZ6sLq1Cimc+rlivtR0SR24+Ht9ej+t/f?=
+ =?us-ascii?Q?K+LRbPJHQk15wdJs4koNE76MC7ODkbPXSfupP+KshjYpKjhtHo4loJhWGicN?=
+ =?us-ascii?Q?HY2p/WP2ibpPkrZUhe7FZDWkRjOFnzRK8NsVR4AODR+7YNZWIufiwj06hnDy?=
+ =?us-ascii?Q?m3nWjH0+nFJT3cVMb3BJogM6O8lYFxoHnYVdDHmsu5zldsNxx8PH7kNm4Sz/?=
+ =?us-ascii?Q?9ssgT0iaaCDF+1fmaMUBljXv+lEsKNDAWbGntX2Pa+OV2FBCrFfQcFud5bNj?=
+ =?us-ascii?Q?dwwqQQTGNxqjwIJ282hIxN7bT5y5nbAtl7pG/lnfVShIGzPrXGblB8GegqzQ?=
+ =?us-ascii?Q?eUcQ6zr5TxQiFaMy/SHEy3YEmpt5SLIqlpmgOCpy550sSChuAOm8nBhCMWlx?=
+ =?us-ascii?Q?3KABm1ws714l+tqvEmR7oT03F7mJapgAc4B7yXXFsoTC9MG47wMVPPdCTBmZ?=
+ =?us-ascii?Q?cqEgf6rkYlVPF/ix/FF9xZ5wrX+HU/GytaI45fN/PsEvHdYA0WwwyMblezKT?=
+ =?us-ascii?Q?NvkxojMQ12EvRHDAltF7PLu+z3jKotIvU/mqW6PMNGfMLuw7cu7cl3+MiPWx?=
+ =?us-ascii?Q?6OjlgDF+GRXV55LAqn1OS+vmGHxWlgOtXVT78rnPkOtPPLPPTWXqAYx50XTK?=
+ =?us-ascii?Q?SfJOoGX+xRet7s+gFZSKfJuQtPGemxEvESNdH3JLpzwDBEzPm6LFHzfpHzuL?=
+ =?us-ascii?Q?8vn+YB3UIEe0gQ0qzBNc5L/eMqpknvy3+aCuN//no8vzVGdBmBM3/bxdWVd6?=
+ =?us-ascii?Q?AEbENzFsloPOnkkxLd9h2F6URNAaFPmN06oSr843OCY6tnOw3tBHtuEanU9M?=
+ =?us-ascii?Q?8+AnvRPN9lx/0IaT5ebD9oMuN8PDkMJaQjz10wBpf9Rmz8jvUpsyPBVh5nkf?=
+ =?us-ascii?Q?e1QHH+9Pu0GAasoqMAja488URM6vW5UqRFImG68y74BB9o3/cDKyrvm4Dmmq?=
+ =?us-ascii?Q?hFSyYoovI82v1iyy8LRzHpYwnoWYICKOoPtvOhJ7I6k1NHTOmNdHsSHK9gcU?=
+ =?us-ascii?Q?dHTq1mQznqWf5qcCzgEVMkKQ/yjb4TqqO74sjpT9C2vgIXpo6mE5kNXZLvCb?=
+ =?us-ascii?Q?rEqUO0ZVWVcazrbXSHtY/2Rj+zBw+L/gU+qFknnbx7jCM7LwxU4Zz5yngNpv?=
+ =?us-ascii?Q?AgRIpj6hNF4YN61Q3n4t+j+dj0Shzq4ImwdubOKWt9LcmgB+iGGLWyWPKBNK?=
+ =?us-ascii?Q?Z7m97Uadsa+h1jU24ArRJYaC1h6O2ftXpTEV0DoHODnmsrxOayh3u5HPWQIw?=
+ =?us-ascii?Q?lPdgS5wSE8Awu6whCVfz11j5mWLIrVMmAQ1OoE2/?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	BEfT2VwM55XGwYO46Gft8mdhrkb+UWkwA8st5yhMrnDvdM9qzKeuonwwv+aAC/BlE0pYHO5H1hXhPSye4tSssbr0dz1i0ub7cyQSWnwFpnr/xCrAdSkiQWCnjDwp0WPHZUnnTttB66sgPzaYdUainrVv14zM9d2IwVmmRX4KV1WDFvJBCb16zAtU8ftM+XsNkjzlJ9hDjjM/luZHdVCiruLXdUfkiznLz4qzVgX4RCqXZDo9AQn3utGZFLJuingZCooMENpKbgagGN+zBsdfb0v+l0oObqbAqShWc/j4JncGfoTWMoF3IGYNJukJ5AXL5J8SyGrciTjzefCcYtnTEnhlnLJ1IB5xA3xQYdyOybAnhxpcpVRIrLFVjo3IyHrJDuP1cTUjKMWNvq71pD0tps7MRXbIfXRQOZ6ACaBk5W1bd6ZpVqhnTzvjHgvb4lo4QvY5zO/u1KP80tEx14QiXz4pHEJizpx5RHQGYLvInvi2acNs/CKxGJ55Zd8qvEnBXvFVycna3ev/CQaLZXd8xI2Iwt5OMs4ALznfLe0aFtvLKxFzUFk3dcqAB/+9kGIkCw002k9QbGcYioCOf4ggaWEajS06i55X6a9JPDipJz4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9a5b411-ebb4-4dfd-e3bb-08de01511f77
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2025 01:15:06.7867
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NmdLomi7iTt8C/zLw4qIFvXCN///CVt2sT/3X8PA+jmtBFHu0gr/WElcENfwERHXcyDk9WzVNUaSTZ1BuR0IOQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6612
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-01_07,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=754
+ phishscore=0 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2509150000 definitions=main-2510020009
+X-Proofpoint-GUID: -wegKgRID_kNnutkTgAU_qJpPOYbqu0V
+X-Authority-Analysis: v=2.4 cv=GsJPO01C c=1 sm=1 tr=0 ts=68ddd21f b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8
+ a=7CQSdrXTAAAA:8 a=yPCof4ZbAAAA:8 a=bqQlsaOvPmgy4kHRsZoA:9 a=CjuIK1q_8ugA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22 cc=ntf awl=host:12089
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTMwMDE2MiBTYWx0ZWRfX0Sv9uTvFfIrl
+ s0CZyeks1ZfcObgaB6mHZPDAeZ5zJJLufOXqJbAbktgJbaknxh2LkkvnGBIFWrKqxu1noKpxOWa
+ xm267yeDKzZYE0hqCbTlJqdzob4Oc4RvgqX7VD076nKaJMYgVu/iFrycWUMIW6cfc+Sl7N2EOJN
+ t4QgLHybVYWcWyr+5R7hZ/hR6P8529vRO5AjYV14ail7XKgViUKZdRuwL6KCSXeOCX/rrKFGC24
+ 7SYrv1ZUwvqPcIOupRhyflFZ8GLZz5uy7ja0pAOydu0P9eXAVkgZXyCXNqvLoEcro79cQ4jfaBi
+ EKkPXZ5KKGfGuRNw/qm9RoFsF1aytKSuRHvfwyn3PasyOsBZHJITNiEnYkpVFxt0/TayfM4b9vt
+ TmIa5JhLcdN+3YxeXbOPmw4UekRMFKgdaaX2bXWcVy9bhamRz50=
+X-Proofpoint-ORIG-GUID: -wegKgRID_kNnutkTgAU_qJpPOYbqu0V
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+On Tue, Sep 30, 2025 at 04:10:40PM +0800, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
+> 
+> When splitting an mTHP and replacing a zero-filled subpage with the shared
+> zeropage, try_to_map_unused_to_zeropage() currently drops several important
+> PTE bits.
+> 
+> For userspace tools like CRIU, which rely on the soft-dirty mechanism for
+> incremental snapshots, losing the soft-dirty bit means modified pages are
+> missed, leading to inconsistent memory state after restore.
+> 
+> As pointed out by David, the more critical uffd-wp bit is also dropped.
+> This breaks the userfaultfd write-protection mechanism, causing writes
+> to be silently missed by monitoring applications, which can lead to data
+> corruption.
+> 
+> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
+> creating the new zeropage mapping to ensure they are correctly tracked.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Dev Jain <dev.jain@arm.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
 
-There was backward compatibility in the terms of mailbox API. Various
-drivers from various OSes supporting 10G adapters from Intel portfolio
-could easily negotiate mailbox API.
-
-This convention has been broken since introducing API 1.4.
-Commit 0062e7cc955e ("ixgbevf: add VF IPsec offload code") added support
-for IPSec which is specific only for the kernel ixgbe driver. None of the
-rest of the Intel 10G PF/VF drivers supports it. And actually lack of
-support was not included in the IPSec implementation - there were no such
-code paths. No possibility to negotiate support for the feature was
-introduced along with introduction of the feature itself.
-
-Commit 339f28964147 ("ixgbevf: Add support for new mailbox communication
-between PF and VF") increasing API version to 1.5 did the same - it
-introduced code supported specifically by the PF ESX driver. It altered API
-version for the VF driver in the same time not touching the version
-defined for the PF ixgbe driver. It led to additional discrepancies,
-as the code provided within API 1.6 cannot be supported for Linux ixgbe
-driver as it causes crashes.
-
-The issue was noticed some time ago and mitigated by Jake within the commit
-d0725312adf5 ("ixgbevf: stop attempting IPSEC offload on Mailbox API 1.5").
-As a result we have regression for IPsec support and after increasing API
-to version 1.6 ixgbevf driver stopped to support ESX MBX.
-
-To fix this mess add new mailbox op asking PF driver about supported
-features. Basing on a response determine whether to set support for IPSec
-and ESX-specific enhanced mailbox.
-
-New mailbox op, for compatibility purposes, must be added within new API
-revision, as API version of OOT PF & VF drivers is already increased to
-1.6 and doesn't incorporate features negotiate op.
-
-Features negotiation mechanism gives possibility to be extended with new
-features when needed in the future.
-
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Closes: https://lore.kernel.org/intel-wired-lan/20241101-jk-ixgbevf-mailbox-v1-5-fixes-v1-0-f556dc9a66ed@intel.com/
-Fixes: 0062e7cc955e ("ixgbevf: add VF IPsec offload code")
-Fixes: 339f28964147 ("ixgbevf: Add support for new mailbox communication between PF and VF")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
----
- drivers/net/ethernet/intel/ixgbevf/ixgbevf.h      |  7 ++++
- drivers/net/ethernet/intel/ixgbevf/mbx.h          |  4 ++
- drivers/net/ethernet/intel/ixgbevf/vf.h           |  1 +
- drivers/net/ethernet/intel/ixgbevf/ipsec.c        | 10 +++++
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c | 32 +++++++++++++++-
- drivers/net/ethernet/intel/ixgbevf/vf.c           | 45 ++++++++++++++++++++++-
- 6 files changed, 96 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-index 3a379e6a3a2a..039187607e98 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-@@ -363,6 +363,13 @@ struct ixgbevf_adapter {
- 	struct ixgbe_hw hw;
- 	u16 msg_enable;
- 
-+	u32 pf_features;
-+#define IXGBEVF_PF_SUP_IPSEC		BIT(0)
-+#define IXGBEVF_PF_SUP_ESX_MBX		BIT(1)
-+
-+#define IXGBEVF_SUPPORTED_FEATURES	(IXGBEVF_PF_SUP_IPSEC | \
-+					IXGBEVF_PF_SUP_ESX_MBX)
-+
- 	struct ixgbevf_hw_stats stats;
- 
- 	unsigned long state;
-diff --git a/drivers/net/ethernet/intel/ixgbevf/mbx.h b/drivers/net/ethernet/intel/ixgbevf/mbx.h
-index c1494fd1f67b..a8ed23ee66aa 100644
---- a/drivers/net/ethernet/intel/ixgbevf/mbx.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/mbx.h
-@@ -67,6 +67,7 @@ enum ixgbe_pfvf_api_rev {
- 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
- 	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
- 	ixgbe_mbox_api_16,      /* API version 1.6, linux/freebsd VF driver */
-+	ixgbe_mbox_api_17,	/* API version 1.7, linux/freebsd VF driver */
- 	/* This value should always be last */
- 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
- };
-@@ -106,6 +107,9 @@ enum ixgbe_pfvf_api_rev {
- /* mailbox API, version 1.6 VF requests */
- #define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
- 
-+/* mailbox API, version 1.7 VF requests */
-+#define IXGBE_VF_FEATURES_NEGOTIATE	0x12 /* get features supported by PF*/
-+
- /* length of permanent address message returned from PF */
- #define IXGBE_VF_PERMADDR_MSG_LEN	4
- /* word in permanent address message with the current multicast type */
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.h b/drivers/net/ethernet/intel/ixgbevf/vf.h
-index 2d791bc26ae4..4f19b8900c29 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.h
-@@ -26,6 +26,7 @@ struct ixgbe_mac_operations {
- 	s32 (*stop_adapter)(struct ixgbe_hw *);
- 	s32 (*get_bus_info)(struct ixgbe_hw *);
- 	s32 (*negotiate_api_version)(struct ixgbe_hw *hw, int api);
-+	int (*negotiate_features)(struct ixgbe_hw *hw, u32 *pf_features);
- 
- 	/* Link */
- 	s32 (*setup_link)(struct ixgbe_hw *, ixgbe_link_speed, bool, bool);
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ipsec.c b/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-index 65580b9cb06f..fce35924ff8b 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-@@ -273,6 +273,9 @@ static int ixgbevf_ipsec_add_sa(struct net_device *dev,
- 	adapter = netdev_priv(dev);
- 	ipsec = adapter->ipsec;
- 
-+	if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+		return -EOPNOTSUPP;
-+
- 	if (xs->id.proto != IPPROTO_ESP && xs->id.proto != IPPROTO_AH) {
- 		NL_SET_ERR_MSG_MOD(extack, "Unsupported protocol for IPsec offload");
- 		return -EINVAL;
-@@ -405,6 +408,9 @@ static void ixgbevf_ipsec_del_sa(struct net_device *dev,
- 	adapter = netdev_priv(dev);
- 	ipsec = adapter->ipsec;
- 
-+	if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+		return;
-+
- 	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
- 		sa_idx = xs->xso.offload_handle - IXGBE_IPSEC_BASE_RX_INDEX;
- 
-@@ -612,6 +618,10 @@ void ixgbevf_init_ipsec_offload(struct ixgbevf_adapter *adapter)
- 	size_t size;
- 
- 	switch (adapter->hw.api_version) {
-+	case ixgbe_mbox_api_17:
-+		if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+			return;
-+		break;
- 	case ixgbe_mbox_api_14:
- 		break;
- 	default:
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index 574714764791..1ecfbbb95210 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -2271,10 +2271,35 @@ static void ixgbevf_init_last_counter_stats(struct ixgbevf_adapter *adapter)
- 	adapter->stats.base_vfmprc = adapter->stats.last_vfmprc;
- }
- 
-+/**
-+ * ixgbevf_set_features - Set features supported by PF
-+ * @adapter: pointer to the adapter struct
-+ *
-+ * Negotiate with PF supported features and then set pf_features accordingly.
-+ */
-+static void ixgbevf_set_features(struct ixgbevf_adapter *adapter)
-+{
-+	u32 *pf_features = &adapter->pf_features;
-+	struct ixgbe_hw *hw = &adapter->hw;
-+	int err;
-+
-+	err = hw->mac.ops.negotiate_features(hw, pf_features);
-+	if (err && err != -EOPNOTSUPP)
-+		netdev_dbg(adapter->netdev,
-+			   "PF feature negotiation failed.\n");
-+
-+	/* Address also pre API 1.7 cases */
-+	if (hw->api_version == ixgbe_mbox_api_14)
-+		*pf_features |= IXGBEVF_PF_SUP_IPSEC;
-+	else if (hw->api_version == ixgbe_mbox_api_15)
-+		*pf_features |= IXGBEVF_PF_SUP_ESX_MBX;
-+}
-+
- static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
- {
- 	struct ixgbe_hw *hw = &adapter->hw;
- 	static const int api[] = {
-+		ixgbe_mbox_api_17,
- 		ixgbe_mbox_api_16,
- 		ixgbe_mbox_api_15,
- 		ixgbe_mbox_api_14,
-@@ -2295,8 +2320,9 @@ static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
- 		idx++;
- 	}
- 
--	/* Following is not supported by API 1.6, it is specific for 1.5 */
--	if (hw->api_version == ixgbe_mbox_api_15) {
-+	ixgbevf_set_features(adapter);
-+
-+	if (adapter->pf_features & IXGBEVF_PF_SUP_ESX_MBX) {
- 		hw->mbx.ops.init_params(hw);
- 		memcpy(&hw->mbx.ops, &ixgbevf_mbx_ops,
- 		       sizeof(struct ixgbe_mbx_operations));
-@@ -2654,6 +2680,7 @@ static void ixgbevf_set_num_queues(struct ixgbevf_adapter *adapter)
- 		case ixgbe_mbox_api_14:
- 		case ixgbe_mbox_api_15:
- 		case ixgbe_mbox_api_16:
-+		case ixgbe_mbox_api_17:
- 			if (adapter->xdp_prog &&
- 			    hw->mac.max_tx_queues == rss)
- 				rss = rss > 3 ? 2 : 1;
-@@ -4649,6 +4676,7 @@ static int ixgbevf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		netdev->max_mtu = IXGBE_MAX_JUMBO_FRAME_SIZE -
- 				  (ETH_HLEN + ETH_FCS_LEN);
- 		break;
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
-index f05246fb5a74..74d320879513 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -313,6 +313,7 @@ int ixgbevf_get_reta_locked(struct ixgbe_hw *hw, u32 *reta, int num_rx_queues)
- 	 * is not supported for this device type.
- 	 */
- 	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_14:
-@@ -383,6 +384,7 @@ int ixgbevf_get_rss_key_locked(struct ixgbe_hw *hw, u8 *rss_key)
- 	 * or if the operation is not supported for this device type.
- 	 */
- 	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_14:
-@@ -555,6 +557,7 @@ static s32 ixgbevf_update_xcast_mode(struct ixgbe_hw *hw, int xcast_mode)
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -646,6 +649,7 @@ static int ixgbevf_get_pf_link_state(struct ixgbe_hw *hw, ixgbe_link_speed *spee
- 
- 	switch (hw->api_version) {
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -669,6 +673,42 @@ static int ixgbevf_get_pf_link_state(struct ixgbe_hw *hw, ixgbe_link_speed *spee
- 	return err;
- }
- 
-+/**
-+ * ixgbevf_negotiate_features_vf - negotiate supported features with PF driver
-+ * @hw: pointer to the HW structure
-+ * @pf_features: bitmask of features supported by PF
-+ *
-+ * Return: IXGBE_ERR_MBX in the  case of mailbox error,
-+ * -EOPNOTSUPP if the op is not supported or 0 on success.
-+ */
-+static int ixgbevf_negotiate_features_vf(struct ixgbe_hw *hw, u32 *pf_features)
-+{
-+	u32 msgbuf[2] = {};
-+	int err;
-+
-+	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	msgbuf[0] = IXGBE_VF_FEATURES_NEGOTIATE;
-+	msgbuf[1] = IXGBEVF_SUPPORTED_FEATURES;
-+
-+	err = ixgbevf_write_msg_read_ack(hw, msgbuf, msgbuf,
-+					 ARRAY_SIZE(msgbuf));
-+
-+	if (err || (msgbuf[0] & IXGBE_VT_MSGTYPE_FAILURE)) {
-+		err = IXGBE_ERR_MBX;
-+		*pf_features = 0x0;
-+	} else {
-+		*pf_features = msgbuf[1];
-+	}
-+
-+	return err;
-+}
-+
- /**
-  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
-  *  @hw: pointer to the HW structure
-@@ -799,6 +839,7 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
- 				     bool *link_up,
- 				     bool autoneg_wait_to_complete)
- {
-+	struct ixgbevf_adapter *adapter = hw->back;
- 	struct ixgbe_mbx_info *mbx = &hw->mbx;
- 	struct ixgbe_mac_info *mac = &hw->mac;
- 	s32 ret_val = 0;
-@@ -825,7 +866,7 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
- 	 * until we are called again and don't report an error
- 	 */
- 	if (mbx->ops.read(hw, &in_msg, 1)) {
--		if (hw->api_version >= ixgbe_mbox_api_15)
-+		if (adapter->pf_features & IXGBEVF_PF_SUP_ESX_MBX)
- 			mac->get_link_status = false;
- 		goto out;
- 	}
-@@ -1026,6 +1067,7 @@ int ixgbevf_get_queues(struct ixgbe_hw *hw, unsigned int *num_tcs,
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return 0;
-@@ -1080,6 +1122,7 @@ static const struct ixgbe_mac_operations ixgbevf_mac_ops = {
- 	.setup_link		= ixgbevf_setup_mac_link_vf,
- 	.check_link		= ixgbevf_check_mac_link_vf,
- 	.negotiate_api_version	= ixgbevf_negotiate_api_version_vf,
-+	.negotiate_features	= ixgbevf_negotiate_features_vf,
- 	.set_rar		= ixgbevf_set_rar_vf,
- 	.update_mc_addr_list	= ixgbevf_update_mc_addr_list_vf,
- 	.update_xcast_mode	= ixgbevf_update_xcast_mode,
+Looks good to me,
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 
 -- 
-2.51.0.rc1.197.g6d975e95c9d7
-
+Cheers,
+Harry / Hyeonggon
 
