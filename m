@@ -1,59 +1,70 @@
-Return-Path: <stable+bounces-183065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE5FBB42DA
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 16:36:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1632BB434C
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 16:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B876C3271F0
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 14:36:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E54B19E32F1
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 14:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E473312806;
-	Thu,  2 Oct 2025 14:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2812CCDB;
+	Thu,  2 Oct 2025 14:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZxYLLKgp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CyYmN7qG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F3F3126A2;
-	Thu,  2 Oct 2025 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536531EA84;
+	Thu,  2 Oct 2025 14:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759415790; cv=none; b=ATZP7cXj/+LmMYTAXjz1N4wyNv3GywK27RvXwgGo5bialVobbPG3PcvwfkAaLUKrIV03Xg15+WYSOuZu6MXZY+33336N1bo+1bLVGUosZD6uW+J4IT/zHRloT2uYpi8csfIXUTfD5e75BoyxRwsn4xR+o6kkbZ3/J1kxx5RT1dE=
+	t=1759416327; cv=none; b=uMvucDYN95yyXe9a/ti6OzjIH19uV6eotbn2A3e1Ug32aK0fhBl2KInS+gswHsmXrAY6nI34M/2ZDtqdQnfh2WuYq+qyf9ZUun5qzzVa9O8v4yMg4Y4r7VC0kTZKdC4ZwIhi0Lqfzp/i3N3gH2qIFHjI8zMlzV9vLbwzffcunBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759415790; c=relaxed/simple;
-	bh=B3aUqt3yFL4cHWEvV1ArHNkFI5dahy1JTP0dauqet8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KFEdqClkfVn0SO7ip1jA2sIrYcq5XnOxRP+/Pxw7d8aM+6aZ9lrFv5yg+/lLw8lA20PoqjH4okCp6SMoCoZiQSfAhIRRdvsmYZR6E4KuHFgL8jk9w6QX1B4Da2DUZ/yKtj688m7JR3C1aGv0c/JtRyxazzONcv1HVwc9k1WJgIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZxYLLKgp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1FEC4CEF4;
-	Thu,  2 Oct 2025 14:36:29 +0000 (UTC)
+	s=arc-20240116; t=1759416327; c=relaxed/simple;
+	bh=hovg+MzsVFfIJLx6d1wu/V4EcBcDv0vurkK1uFcHofU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p6S+ISUaAl4D9cGSO0ETLZlZ7NglC66SEOJzgb/HaldLq+/1tV6T7byv+UrN3e79ACJSxb7Hw8O7C7q5ADdBKsQ5UT0eX1uof8OzG1s1VB3AM/3Ry0fTaU9UlLsg4GS/a2hBUii3sTete+nQ4dcHZs8j4tqUutQ0ByRL65HhWn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CyYmN7qG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DDDC4CEFB;
+	Thu,  2 Oct 2025 14:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759415790;
-	bh=B3aUqt3yFL4cHWEvV1ArHNkFI5dahy1JTP0dauqet8k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=ZxYLLKgpgek07MIpQs+oWR3QIZ/0+t6zS5HO7VL5SSUaky6Wqsoy6MYs0UJlG0qd/
-	 KfSfck/b9VZhYxoHARfeiJ+XfMQTaYHgb74w/SjBgKEONHvWDJyXoG/HlaU8ztW1HT
-	 OpAeKa+4TFTNbgdoI7bOuqRySqL281bRPtXbJEtTbgFrdsclVZPv2Li0I0xuBdvGiR
-	 uE4AETG1j+75R7mXo0YFDE86MIpMhnAXETIE4NNkBbWPq7rvl0kKT/LCvYq/v7GEb9
-	 7UrFoYgh4imcXqLY94kp07jKJoHvOzRQhqlc9CKvqEDfrRys5UxJtBN0TEppGL8WqJ
-	 GyHfKVXCLxj2A==
-Date: Thu, 2 Oct 2025 09:36:27 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
-	robh@kernel.org, bhelgaas@google.com, cassel@kernel.org,
-	kishon@kernel.org, sergio.paracuellos@gmail.com,
-	18255117159@163.com, jirislaby@kernel.org, m-karicheri2@ti.com,
-	santosh.shilimkar@ti.com, stable@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, srk@ti.com
-Subject: Re: [PATCH 2/2] PCI: keystone: Remove the __init macro for the
- ks_pcie_host_init() callback
-Message-ID: <20251002143627.GA267439@bhelgaas>
+	s=k20201202; t=1759416326;
+	bh=hovg+MzsVFfIJLx6d1wu/V4EcBcDv0vurkK1uFcHofU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CyYmN7qGSN5/kArx1ABt8f54Dhd0h7gkfphpHTn4z25OegPbkGKP2p7D3d43QHWTA
+	 GZ/lzlT/GJmx48qzLLzRxLNc0llBPlDHnSwrtFo+yt1Ajg4kMswpqTaqmKunTzXjPb
+	 QEodCzLXRUpdU4wqTSUZkqOYfjAg+RNlV5rGVXeTu4IPxriV9dw2Kz7fw+yCXWOOE9
+	 cHJPFjA0fSc+3+xomQUidEUQcE+YYDs/vtDF9PoWRhAh3XiwZiiXWEMwz0wEC5Rc8U
+	 gs1Ej1bD9D3d+T74Ltcsc+OBqJNisb3Y1iuQ0JtXUkyZD4VWAUwEwvbqO+ld1mk1TC
+	 I3e2xeW5IYCjg==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1v4KYX-000000001Ut-1qub;
+	Thu, 02 Oct 2025 16:45:17 +0200
+Date: Thu, 2 Oct 2025 16:45:17 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Yong Wu <yong.wu@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Krishna Reddy <vdumpa@nvidia.com>, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Suman Anna <s-anna@ti.com>
+Subject: Re: [PATCH 11/14] iommu/omap: fix device leaks on probe_device()
+Message-ID: <aN6P_Wt2ruMeKF3w@hovoldconsulting.com>
+References: <20250925122756.10910-1-johan@kernel.org>
+ <20250925122756.10910-12-johan@kernel.org>
+ <8e98159d-5c13-453f-8d4b-c7ff80617239@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,80 +73,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250912100802.3136121-3-s-vadapalli@ti.com>
+In-Reply-To: <8e98159d-5c13-453f-8d4b-c7ff80617239@arm.com>
 
-On Fri, Sep 12, 2025 at 03:37:59PM +0530, Siddharth Vadapalli wrote:
-> The ks_pcie_host_init() callback registered by the driver is invoked by
-> dw_pcie_host_init(). Since the driver probe is not guaranteed to finish
-> before the kernel initialization phase, the memory associated with
-> ks_pcie_host_init() may already be freed by free_initmem().
-> 
-> It is observed in practice that the print associated with free_initmem()
-> which is:
-> 	"Freeing unused kernel memory: ..."
-> is displayed before the driver is probed, following which an exception is
-> triggered when ks_pcie_host_init() is invoked which looks like:
-> 
-> 	Unable to handle kernel paging request at virtual address ...
-> 	Mem abort info:
-> 	...
-> 	pc : ks_pcie_host_init+0x0/0x540
-> 	lr : dw_pcie_host_init+0x170/0x498
-> 	...
-> 	ks_pcie_host_init+0x0/0x540 (P)
-> 	ks_pcie_probe+0x728/0x84c
-> 	platform_probe+0x5c/0x98
-> 	really_probe+0xbc/0x29c
-> 	__driver_probe_device+0x78/0x12c
-> 	driver_probe_device+0xd8/0x15c
-> 	...
-> 
-> Fix this by removing the "__init" macro associated with the
-> ks_pcie_host_init() callback and the ks_pcie_init_id() function that it
-> internally invokes.
-> 
-> Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+On Thu, Oct 02, 2025 at 01:05:08PM +0100, Robin Murphy wrote:
+> On 2025-09-25 1:27 pm, Johan Hovold wrote:
 
-I dropped this from pci/controller/keystone because of the resulting
-section mismatch:
-
-  https://lore.kernel.org/r/202510010726.GPljD7FR-lkp@intel.com
-
-ks_pcie_host_init() calls hook_fault_code(), which is __init, so we
-can't make ks_pcie_host_init() non-__init.
-
-Both are bad problems, but there's no point in just swapping one
-problem for a different one.
-
-> ---
->  drivers/pci/controller/dwc/pci-keystone.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> > @@ -1663,22 +1663,22 @@ static struct iommu_device *omap_iommu_probe_device(struct device *dev)
+> >   	for (i = 0, tmp = arch_data; i < num_iommus; i++, tmp++) {
+> >   		np = of_parse_phandle(dev->of_node, "iommus", i);
+> >   		if (!np) {
+> > -			kfree(arch_data);
+> > -			return ERR_PTR(-EINVAL);
+> > +			ret = -EINVAL;
+> > +			goto err_put_iommus;
+> >   		}
+> >   
+> >   		pdev = of_find_device_by_node(np);
+> >   		if (!pdev) {
+> >   			of_node_put(np);
+> > -			kfree(arch_data);
+> > -			return ERR_PTR(-ENODEV);
+> > +			ret = -ENODEV;
+> > +			goto err_put_iommus;
+> >   		}
+> >   
+> >   		oiommu = platform_get_drvdata(pdev);
+> >   		if (!oiommu) {
+> >   			of_node_put(np);
+> > -			kfree(arch_data);
+> > -			return ERR_PTR(-EINVAL);
+> > +			ret = -EINVAL;
+> > +			goto err_put_iommus;
+> >   		}
+> >   
+> >   		tmp->iommu_dev = oiommu;
+> > @@ -1697,17 +1697,28 @@ static struct iommu_device *omap_iommu_probe_device(struct device *dev)
+> >   	oiommu = arch_data->iommu_dev;
+> >   
+> >   	return &oiommu->iommu;
+> > +
+> > +err_put_iommus:
+> > +	for (tmp = arch_data; tmp->dev; tmp++)
+> > +		put_device(tmp->dev);
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-> index 21808a9e5158..c6e082dcb3bc 100644
-> --- a/drivers/pci/controller/dwc/pci-keystone.c
-> +++ b/drivers/pci/controller/dwc/pci-keystone.c
-> @@ -799,7 +799,7 @@ static int ks_pcie_fault(unsigned long addr, unsigned int fsr,
->  }
->  #endif
->  
-> -static int __init ks_pcie_init_id(struct keystone_pcie *ks_pcie)
-> +static int ks_pcie_init_id(struct keystone_pcie *ks_pcie)
->  {
->  	int ret;
->  	unsigned int id;
-> @@ -831,7 +831,7 @@ static int __init ks_pcie_init_id(struct keystone_pcie *ks_pcie)
->  	return 0;
->  }
->  
-> -static int __init ks_pcie_host_init(struct dw_pcie_rp *pp)
-> +static int ks_pcie_host_init(struct dw_pcie_rp *pp)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
->  	struct keystone_pcie *ks_pcie = to_keystone_pcie(pci);
-> -- 
-> 2.43.0
-> 
+> This should just pair with the of_node_put() calls (other than the first 
+> one, of course), i.e. do it in the success path as well and drop the 
+> release_device change below. It doesn't serve any purpose for client 
+> devices to hold additional references on the IOMMU device when those are 
+> strictly within the lifetime of the IOMMU driver being bound to it anyway.
+
+I kept the reference until release() (even if not strictly needed) as I
+mistakenly thought the driver was using the arch data device pointer
+directly.
+
+Turns out that one has never been used so I'll drop it as well as part
+of v2.
+
+Johan
 
