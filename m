@@ -1,109 +1,201 @@
-Return-Path: <stable+bounces-183120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBC5BB4B78
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 19:39:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F37ABB4C4A
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 20:01:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D79519E5944
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 17:39:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43533421A12
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 18:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0743272E72;
-	Thu,  2 Oct 2025 17:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E504123C4E3;
+	Thu,  2 Oct 2025 18:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+PLctcC"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="ifOX4dUt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C38B4501A;
-	Thu,  2 Oct 2025 17:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1731F272E72;
+	Thu,  2 Oct 2025 18:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.28.197.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759426763; cv=none; b=a1GviiVBX95HAF3N2AYB5xO09dJUzuYERHu3061Sv85kB4b7dZf3sgGxCTdIlw3lOAa+YCiEucPtfR2Gv2QCUlwbstwYYa0N5HzgDq5lDUxKgDr0oF7q+eemhOziV2GzRK/sfGKtFGVz2SAgbkefUBiw1z9JznodwQIT88KTW0Q=
+	t=1759428070; cv=none; b=dxrnXGUDktMu4w3HYFRaAJVrD8Ybbl9FdnQEs21PkKWJNqzf8luzFpMI0KvyPTWw9F/JY6tSwL6FIFc4y/8VEglNzJGavMMIyWEWllzPAsd6EvOc2oE8T5SsBF319xjI+BjeRXX3R/Ld0aXhLJ5Xh29MSi3W+Vq1E/MwBicO4HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759426763; c=relaxed/simple;
-	bh=QpmkHyV7gyhmpVXXFzectXRxStvRI6N5IWkvU7snil8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=RI+Aqh01lT4LYXcqBM+RdniApAY3x622XAOLHk5PEjQyjXstCsZfsELE7Dnyoq1i0qiGSIh8Mdm3W7LhvTTnQwrGrU8MRLfwaenV4GXltc/G1xc+dJNqgTq9umt8zNGrppP4vtHEydincrLAsdKSbIyk7lom3qs6C31rAeVmP7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+PLctcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FA1C4CEF5;
-	Thu,  2 Oct 2025 17:39:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759426763;
-	bh=QpmkHyV7gyhmpVXXFzectXRxStvRI6N5IWkvU7snil8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=K+PLctcCHb8nDzUao4wsqnoype8kltwXT/97jQZVY4SkW50R19eplgGvQzFNAlyFh
-	 GnOorLPMog4VdkcNOJ2rmwrft3mBeEKNGHUr5l86jVXg8cxrtlu3+PTmKwbYwJkRJg
-	 21U9witzzoFWBmURLTt3Lh4KV6WodurlrJl/RQbZnmJTX1caeaRvI4PmE2OFFnsiCs
-	 lw95rUC1Jqyy+lJJW/Q6KwsGFQ2JVOyRmdzAubFXGjPYBbNxtWJ/OLB1N9wouAxgu/
-	 AlyttTtl0qp9+cbW/eo5kvBbdIQPd+7qZzl/Kirvo1Cu90tLkz4/ICwxRgT3u0DGen
-	 l9bICtok1S5hA==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
- ranjani.sridharan@linux.intel.com, yung-chuan.liao@linux.intel.com, 
- pierre-louis.bossart@linux.dev, stable@vger.kernel.org
-In-Reply-To: <20251002135752.2430-1-peter.ujfalusi@linux.intel.com>
-References: <20251002135752.2430-1-peter.ujfalusi@linux.intel.com>
-Subject: Re: [PATCH v3 0/3] ASoC: SOF: ipc4/Intel: Fix the host buffer
- constraint
-Message-Id: <175942676123.119208.2828941345407015839.b4-ty@kernel.org>
-Date: Thu, 02 Oct 2025 18:39:21 +0100
+	s=arc-20240116; t=1759428070; c=relaxed/simple;
+	bh=oLmFh7pEq2+c7mvuShVbrMHlXVn53x8NKSecVFXj5vU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f4fIYA83BI2wGrYJ7worLi9WQz3Bhsz4SbxY5D+1s8OQyVOyjN7hj7ASkZkL3EqWvkRpvkFM0wMkd/44MnlbXB5j+LtD9QyZb9ERHjdbrKKQWZ622GxZssym2rXB8//uw7Wq15sUROmLkS/u5ptZZ5LOqjVURAgfkp5h/IQ+Aq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=ifOX4dUt; arc=none smtp.client-ip=52.28.197.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1759428068; x=1790964068;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=epU/uuRCc6FYveB1XcTu+0zfQVVGTvdnWiBQH/N2XKE=;
+  b=ifOX4dUtJIhTrl2yrP126dexft5DtHXGu50OaTxfaRkefWlEU+A68X9n
+   l4XAWHvEe9Gj11NvBwF+o3dI3SHBt8nVmdKlTyRGlDd/K18Ntf42nElCo
+   3D9I98U5Ca2BExji2Ur/mqd0qPU8g7hQknhgylh09Z8gjw8AfKq8Ibo7r
+   atDYBwNQwHGIOczNrOYN1qtF8/+uNdNqeqPCPKiXjyJjaiPQcrlWUoAvA
+   Rbxn0z69mTR0usoZSszfKyjlj+1T4hoAciOqdREYbSAgVVATAk3iuu56h
+   9qAlbljfIFelpIzAR3JMm0Qvkefl0Zhp3JZjAsGOQSkoXaMFOnlwPRioV
+   Q==;
+X-CSE-ConnectionGUID: 4wc7erOoTsG+zcDi3lQiWg==
+X-CSE-MsgGUID: 2gKb5OADRGepv9G3AIxECQ==
+X-IronPort-AV: E=Sophos;i="6.18,310,1751241600"; 
+   d="scan'208";a="2922661"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 18:00:57 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:16626]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.22.27:2525] with esmtp (Farcaster)
+ id 6ebc8389-d59d-4539-8dfb-efa782bd8e1d; Thu, 2 Oct 2025 18:00:57 +0000 (UTC)
+X-Farcaster-Flow-ID: 6ebc8389-d59d-4539-8dfb-efa782bd8e1d
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Thu, 2 Oct 2025 18:00:52 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Thu, 2 Oct 2025
+ 18:00:42 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: <gregkh@linuxfoundation.org>, <kenneth.feng@amd.com>,
+	<alexander.deucher@amd.com>, <christian.koenig@amd.com>, <airlied@gmail.com>,
+	<simona@ffwll.ch>, <linus.walleij@linaro.org>, <dmitry.torokhov@gmail.com>,
+	<tglx@linutronix.de>, <wens@csie.org>, <jernej.skrabec@gmail.com>,
+	<samuel@sholland.org>, <agk@redhat.com>, <snitzer@kernel.org>,
+	<mpatocka@redhat.com>, <clm@fb.com>, <dsterba@suse.com>,
+	<luc.vanoostenryck@gmail.com>, <pmladek@suse.com>, <rostedt@goodmis.org>,
+	<andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>,
+	<senozhatsky@chromium.org>, <akpm@linux-foundation.org>,
+	<lijo.lazar@amd.com>, <asad.kamal@amd.com>, <kevinyang.wang@amd.com>,
+	<David.Laight@ACULAB.COM>, <amd-gfx@lists.freedesktop.org>,
+	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+	<linux-input@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-sunxi@lists.linux.dev>, <dm-devel@lists.linux.dev>,
+	<linux-btrfs@vger.kernel.org>, <linux-sparse@vger.kernel.org>,
+	<stable@vger.kernel.org>, <farbere@amazon.com>
+Subject: [PATCH v3 00/11 6.1.y] Backport minmax.h updates from v6.17-rc7
+Date: Thu, 2 Oct 2025 18:00:18 +0000
+Message-ID: <20251002180036.33738-1-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-56183
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D036UWC003.ant.amazon.com (10.13.139.214) To
+ EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-On Thu, 02 Oct 2025 16:57:49 +0300, Peter Ujfalusi wrote:
-> CHanges since v2:
-> - SHA fix for the last commit, tripple checked them
-> 
-> Changes since v1:
-> - SHAs for Fixes tag corrected (sorry)
-> 
-> The size of the DSP host buffer was incorrectly defined as 2ms while
-> it is 4ms and the ChainDMA PCMs are using 5ms as host facing buffer.
-> 
-> [...]
+This series backports 13 patches to update minmax.h in the 6.1.y branch,
+aligning it with v6.17-rc7.
 
-Applied to
+The ultimate goal is to synchronize all longterm branches so that they
+include the full set of minmax.h changes (6.12.y and 6.6.y were already
+backported by me and are now ligned).
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+The key motivation is to bring in commit d03eba99f5bf ("minmax: allow
+min()/max()/clamp() if the arguments have the same signedness"), which
+is missing in older kernels.
 
-Thanks!
+In mainline, this change enables min()/max()/clamp() to accept mixed
+argument types, provided both have the same signedness. Without it,
+backported patches that use these forms may trigger compiler warnings,
+which escalate to build failures when -Werror is enabled.
 
-[1/3] ASoC: SOF: ipc4-topology: Correct the minimum host DMA buffer size
-      commit: a7fe5ff832d61d9393095bc3dd5f06f4af7da3c1
-[2/3] ASoC: SOF: ipc4-topology: Account for different ChainDMA host buffer size
-      commit: 3dcf683bf1062d69014fe81b90d285c7eb85ca8a
-[3/3] ASoC: SOF: Intel: hda-pcm: Place the constraint on period time instead of buffer time
-      commit: 45ad27d9a6f7c620d8bbc80be3bab1faf37dfa0a
+Changes in v3:
+- v2 included 13 patches:
+  https://lore.kernel.org/stable/20250929183358.18982-1-farbere@amazon.com/
+- First 2 were accepted and are part of 6.1.155.
+- 3rd caused build in drivers/md/ to fail:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+In file included from ./include/linux/container_of.h:5,
+                 from ./include/linux/list.h:5,
+                 from ./include/linux/wait.h:7,
+                 from ./include/linux/mempool.h:8,
+                 from ./include/linux/bio.h:8,
+                 from drivers/md/dm-bio-record.h:10,
+                 from drivers/md/dm-integrity.c:9:
+drivers/md/dm-integrity.c: In function ‘integrity_metadata’:
+drivers/md/dm-integrity.c:131:105: error: ISO C90 forbids variable length array ‘checksums_onstack’ [-Werror=vla]
+  131 | #define MAX_TAG_SIZE                    (JOURNAL_SECTOR_DATA - JOURNAL_MAC_PER_SECTOR - offsetof(struct journal_entry, last_bytes[MAX_SECTORS_PER_BLOCK]))
+      |                                                                                                         ^~~~~~~~~~~~~
+./include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+./include/linux/minmax.h:56:9: note: in expansion of macro ‘static_assert’
+   56 |         static_assert(__types_ok(x, y, ux, uy),         \
+      |         ^~~~~~~~~~~~~
+./include/linux/minmax.h:41:31: note: in expansion of macro ‘__is_noneg_int’
+   41 |          __is_noneg_int(x) || __is_noneg_int(y))
+      |                               ^~~~~~~~~~~~~~
+./include/linux/minmax.h:56:23: note: in expansion of macro ‘__types_ok’
+   56 |         static_assert(__types_ok(x, y, ux, uy),         \
+      |                       ^~~~~~~~~~
+./include/linux/minmax.h:61:9: note: in expansion of macro ‘__careful_cmp_once’
+   61 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+      |         ^~~~~~~~~~~~~~~~~~
+./include/linux/minmax.h:92:25: note: in expansion of macro ‘__careful_cmp’
+   92 | #define max(x, y)       __careful_cmp(max, x, y)
+      |                         ^~~~~~~~~~~~~
+drivers/md/dm-integrity.c:1797:40: note: in expansion of macro ‘max’
+ 1797 |                 char checksums_onstack[max((size_t)HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
+      |                                        ^~~
+drivers/md/dm-integrity.c:131:89: note: in expansion of macro ‘offsetof’
+  131 | #define MAX_TAG_SIZE                    (JOURNAL_SECTOR_DATA - JOURNAL_MAC_PER_SECTOR - offsetof(struct journal_entry, last_bytes[MAX_SECTORS_PER_BLOCK]))
+      |                                                                                         ^~~~~~~~
+drivers/md/dm-integrity.c:1797:73: note: in expansion of macro ‘MAX_TAG_SIZE’
+ 1797 |                 char checksums_onstack[max((size_t)HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
+      |                                                                         ^~~~~~~~~~~~
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+- The build was fixed in the second patch of this series.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Changes in v2:
+- v1 included 19 patches:
+  https://lore.kernel.org/stable/20250924202320.32333-1-farbere@amazon.com/
+- First 6 were pushed to the stable-tree.
+- 7th cauded amd driver's build to fail.
+- This change fixes it.
+- Modified files:
+   drivers/gpu/drm/amd/amdgpu/amdgpu.h
+   drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+   drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+   drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+David Laight (7):
+  minmax.h: add whitespace around operators and after commas
+  minmax.h: update some comments
+  minmax.h: reduce the #define expansion of min(), max() and clamp()
+  minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
+  minmax.h: move all the clamp() definitions after the min/max() ones
+  minmax.h: simplify the variants of clamp()
+  minmax.h: remove some #defines that are only expanded once
 
-Thanks,
-Mark
+Linus Torvalds (4):
+  minmax: simplify min()/max()/clamp() implementation
+  minmax: don't use max() in situations that want a C constant
+    expression
+  minmax: improve macro expansion and type checking
+  minmax: fix up min3() and max3() too
+
+ drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c   |   2 +-
+ drivers/input/touchscreen/cyttsp4_core.c |   2 +-
+ drivers/irqchip/irq-sun6i-r.c            |   2 +-
+ drivers/md/dm-integrity.c                |   2 +-
+ fs/btrfs/tree-checker.c                  |   2 +-
+ include/linux/compiler.h                 |   9 +
+ include/linux/minmax.h                   | 222 +++++++++++++----------
+ lib/vsprintf.c                           |   2 +-
+ 8 files changed, 143 insertions(+), 100 deletions(-)
+
+-- 
+2.47.3
 
 
