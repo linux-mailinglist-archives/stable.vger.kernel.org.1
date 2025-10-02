@@ -1,163 +1,149 @@
-Return-Path: <stable+bounces-183133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46534BB4D86
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 20:10:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD797BB4F25
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 20:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11A607A703B
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 18:09:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CAAD323762
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 18:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7682750F6;
-	Thu,  2 Oct 2025 18:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2649727A904;
+	Thu,  2 Oct 2025 18:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rb2pF6j+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dDV0SCC5"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0057919D092;
-	Thu,  2 Oct 2025 18:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D335F279DA4;
+	Thu,  2 Oct 2025 18:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759428638; cv=none; b=d/ALX/EWjjEvIOTHfXKjkaVX4b/rhZ4ncuFAYjuLJyvsG2A0crc8G4vnCJC0JN3EtCHRS8GognHlmFzQvi29R63Kh0DkX5Kc9z5/9Cl5jwlFD1GukM2N/1ROrGNQ2TrhBVbMh14EwfI9G6f420Gfus7n2orOzLPv4HiBunJ10Is=
+	t=1759431266; cv=none; b=ZYLVUoIgAAeo2eim67JV3LqMIaJFXc2KfuSRXUbu4V39N1xzRDrJ4JIK+bejVjRboNus8Y36brEEWCnzk0JHY/HnLyYvZDg3XNAbTizin/C+swNbQUYxtG47Y6Mp+YYvTgzd9ok81ZHgSlZZC8PrFz5jS4aziYYpmzWU0jnOyGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759428638; c=relaxed/simple;
-	bh=O5wkUwnKgBzNkysEWRRXmGZptZAllZh7UoEkd0clsMk=;
+	s=arc-20240116; t=1759431266; c=relaxed/simple;
+	bh=yug1rTG6Jmv8Tho+QB+2EP7wv3sxXqojKTh72Aa1DYU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NKtPiSgUj8zcQOvExRNQoqU3vSdniIVPni5ZjkRechslremAUClQ+LsPfSjbt5nnCFsYv6VxndP1KjuxptJPN0fKz5l3XK7h1tRR1IzgxuRSSKoUYOF5UtEPaipyOuT9Qx5EfCKUJx2wieIXWH2U6LcmOuMtw6euKRyJ9ktt5iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rb2pF6j+; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759428637; x=1790964637;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=O5wkUwnKgBzNkysEWRRXmGZptZAllZh7UoEkd0clsMk=;
-  b=Rb2pF6j+o3I1wRWbRBubBFinjLabGqjdC1Cfl2jjIdRrwz1tAZQi56o0
-   +t4GZ8y+yT358i4/D/L27tDzQreKGZWNZG57RBgHhMr4TlZXjdqjbG4zk
-   BW6AyDBDeDmdGwTzk6enxtlCjMdv/jAcA83i+kvv9xsgBHetOhs1ZyX8v
-   zygBqRRD2Nz+UFaCSXzqs3DR5GffwQqJYNSmwFQJcDNWVSwdPP6430CrH
-   BmukVjc1qxv0Ueqe4kyXe7YivIyMZoiOnAYm3QyVbEhJBIKivkldZYbgK
-   0tylx/DdYFI8vjLUAHU4Wf811XPJdIWJh12Zti57KtM4YrHDXjj4AMMx4
-   A==;
-X-CSE-ConnectionGUID: fwjC+wUmQ1GFaK7PZWlgSQ==
-X-CSE-MsgGUID: EO0FG/QqRv2vk3smmdJbXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84339496"
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; 
-   d="scan'208";a="84339496"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 11:10:36 -0700
-X-CSE-ConnectionGUID: A7onqpwtRD2arq6ootLb8w==
-X-CSE-MsgGUID: IW16ttgjTUiSWopAP8kd/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; 
-   d="scan'208";a="184394495"
-Received: from skuppusw-desk2.jf.intel.com (HELO [10.165.154.101]) ([10.165.154.101])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 11:10:34 -0700
-Message-ID: <9c4e25e4-c6c7-4c56-ba0a-006b40e64d78@linux.intel.com>
-Date: Thu, 2 Oct 2025 11:10:34 -0700
+	 In-Reply-To:Content-Type; b=Dd6j68akajpVantp1R0191qXqvp1hCA9QWfP2tNkoMQX7Kk/+HPZF1PaaRbiTkMWLHZAcdj5U3l8pKRovvkP/2duoM482vokzi3AInSKaxa0XGZl6MX/ipynMJmQcCBFfZ1ZteYeetF/Wy49RlMC87BXSGk+mlLmEjkeQ1Vj66s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dDV0SCC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEAFC4CEF4;
+	Thu,  2 Oct 2025 18:54:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759431266;
+	bh=yug1rTG6Jmv8Tho+QB+2EP7wv3sxXqojKTh72Aa1DYU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dDV0SCC5fdf9OmipObkpzhLd+Xw/B81qnXZd2qtFB9iQoj6a8cJzYwhyGNuI+bhCm
+	 LIgIlE482M+kk8xBTBQ4aIt0qWQb+pgQaCf2ZNsAY6/YD7XCuRwT5DioF3vA3SQBCc
+	 8Qw/QqdPALnlRBYlL6Z0d+aow+sb/RW5B83seFZb21iYmVonWeh1uZlSGVFFXpdrnU
+	 bQkf8HTNaKt9Vn42ieGX8TTOnpa/FqarRtiil+ZfHW8UepbJqDYLS5q+YP7uynDllg
+	 ElcHmfEC5zE169nf3cmQhSCqLlOWVk3ge99UVgYMyj0tjmRUg4TFgL04j06WityU6P
+	 N3JxeJH2eQfSg==
+Message-ID: <77d23523-be4d-4c5a-aa54-8617e7b5e6e2@kernel.org>
+Date: Thu, 2 Oct 2025 20:54:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] PCI/AER: Check for NULL aer_info before
- ratelimiting in pci_print_aer()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Breno Leitao <leitao@debian.org>, Mahesh J Salgaonkar
- <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Jon Pan-Doh <pandoh@google.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
-References: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
- <7b5c1235-df92-4f18-936c-3d7c0d3a6cb3@linux.intel.com>
- <a63012d4-0c98-4022-8183-5a3488ca66e9@csgroup.eu>
-Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <a63012d4-0c98-4022-8183-5a3488ca66e9@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 6.1.y] selftests: mptcp: connect: fix build regression
+ caused by backport
+Content-Language: en-GB, fr-BE
+To: Kenta Akagi <k@mgml.me>, gregkh@linuxfoundation.org, sashal@kernel.org
+Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>
+References: <20251002141759.76891-1-k@mgml.me>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20251002141759.76891-1-k@mgml.me>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+Hi Kenta,
 
-On 10/2/25 03:06, Christophe Leroy wrote:
->
->
-> Le 29/09/2025 à 17:10, Sathyanarayanan Kuppuswamy a écrit :
->>
->> On 9/29/25 2:15 AM, Breno Leitao wrote:
->>> Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
->>> when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
->>> calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
->>> does not rate limit, given this is fatal.
->>>
->>> This prevents a kernel crash triggered by dereferencing a NULL pointer
->>> in aer_ratelimit(), ensuring safer handling of PCI devices that lack
->>> AER info. This change aligns pci_print_aer() with pci_dev_aer_stats_incr()
->>> which already performs this NULL check.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: a57f2bfb4a5863 ("PCI/AER: Ratelimit correctable and non-fatal error logging")
->>> Signed-off-by: Breno Leitao <leitao@debian.org>
->>> ---
->>> - This problem is still happening in upstream, and unfortunately no action
->>>    was done in the previous discussion.
->>> - Link to previous post:
->>>    https://eur01.safelinks.protection.outlook.com/? url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250804-aer_crash_2-v1-1- fd06562c18a4%40debian.org&data=05%7C02%7Cchristophe.leroy2%40cs- soprasteria.com%7Cfd3d2f1b4e8448a8e67608ddff6a4e70%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638947554250805439%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=6yTN1%2Fq%2Fy0VKX%2BXpE%2BiKxBrn19AkY4IPj01N2ZdxEkg%3D&reserved=0
->>> ---
->>
->> Although we haven't identified the path that triggers this issue, adding this check is harmless.
->
-> Is it really harmless ?
->
-> The purpose of the function is to ratelimit logs. Here by returning 1 when dev->aer_info is NULL it says: don't ratelimit. Isn't it an opened door to Denial of Service by overloading with logs ?
+On 02/10/2025 16:17, Kenta Akagi wrote:
+> Since v6.1.154, mptcp selftests have failed to build with the following
+> errors:
+> 
+> mptcp_connect.c: In function ‘main_loop_s’:
+> mptcp_connect.c:1040:59: error: ‘winfo’ undeclared (first use in this function)
+>  1040 |                 err = copyfd_io(fd, remotesock, 1, true, &winfo);
+>       |                                                           ^~~~~
+> mptcp_connect.c:1040:59: note: each undeclared identifier is reported only once for each function it appears in
+> mptcp_connect.c:1040:23: error: too many arguments to function ‘copyfd_io’; expected 4, have 5
+>  1040 |                 err = copyfd_io(fd, remotesock, 1, true, &winfo);
+>       |                       ^~~~~~~~~                          ~~~~~~
+> mptcp_connect.c:845:12: note: declared here
+>   845 | static int copyfd_io(int infd, int peerfd, int outfd, bool close_peerfd)
+>       |            ^~~~~~~~~
+> 
+> This is caused by commit ff160500c499 ("selftests: mptcp: connect: catch
+> IO errors on listen side"), a backport of upstream 14e22b43df25,
+> which attempts to use the undeclared variable 'winfo' and passes too many
+> arguments to copyfd_io(). Both the winfo variable and the updated
+> copyfd_io() function were introduced in upstream
+> commit ca7ae8916043 ("selftests: mptcp: mptfo Initiator/Listener"),
+> which is not present in v6.1.y.
+> 
+> The goal of the backport is to stop on errors from copyfd_io.
+> Therefore, the backport does not depend on the changes in upstream
+> commit ca7ae8916043 ("selftests: mptcp: mptfo Initiator/Listener").
+> 
+> This commit simply removes ', &winfo' to fix a build failure.
 
-We only skip rate limiting when dev->aer_info is NULL, which happens for
-devices without AER capability. In that case, I think the trade-off is reasonable:
-generating more logs is better than triggering a NULL pointer exception.
+Thank you for this fix for v6.1.y!
 
-Also, this approach is consistent with other functions (for example, the stat
-collection helpers) that already perform similar checks before accessing
-aer_info. So extending the same safeguard here seems acceptable to me.
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
->
-> Christophe
->
->>
->> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->>
->>
->>
->>>   drivers/pci/pcie/aer.c | 3 +++
->>>   1 file changed, 3 insertions(+)
->>>
->>> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
->>> index e286c197d7167..55abc5e17b8b1 100644
->>> --- a/drivers/pci/pcie/aer.c
->>> +++ b/drivers/pci/pcie/aer.c
->>> @@ -786,6 +786,9 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
->>>   static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
->>>   {
->>> +    if (!dev->aer_info)
->>> +        return 1;
->>> +
->>>       switch (severity) {
->>>       case AER_NONFATAL:
->>>           return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
->>>
->>> ---
->>> base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
->>> change-id: 20250801-aer_crash_2-b21cc2ef0d00
->>>
->>> Best regards,
->>> -- 
->>> Breno Leitao <leitao@debian.org>
->>>
->
->
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
 
