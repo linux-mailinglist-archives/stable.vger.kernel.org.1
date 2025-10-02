@@ -1,297 +1,103 @@
-Return-Path: <stable+bounces-183114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A1DBB492E
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 18:43:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13DC8BB49F1
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 19:06:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0605B320A09
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 16:43:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6EC917452D
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 17:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14331265CB2;
-	Thu,  2 Oct 2025 16:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B2B258ED9;
+	Thu,  2 Oct 2025 17:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cmurp+eC"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB8F264F9F
-	for <stable@vger.kernel.org>; Thu,  2 Oct 2025 16:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CABC42A99;
+	Thu,  2 Oct 2025 17:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759423404; cv=none; b=oaL00KUfmMkygw1Jsbl6XOFJKpCvKHEy6EA39l9hI8ZY6+Un4MDnhboGblnpYDA/h25M+iVM8e6MW6O8O9aDL85v+t4bLcG8rs9F+2FG04RGj5kiVDsTCkNjBGfKrVCOZQP3n/tRdnbf3zOksr1G81U+I+4wx+nClMI8l51ZVyI=
+	t=1759424812; cv=none; b=qyczea5zMXRCOjwKtf7+nzlNCOkuxkQ5Rc76tlwpwguZ1w5+awlH8tJUJ9bG+EniD+NnoVSK09VX4KEP/40FeZgrwoVNMX7BRULU3JVvm99/6CyP5QhKAgrphxiUe16iYvOj8kE8LN2ynDRKeil2h1T7q2TjYdjiHMWLplfDwlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759423404; c=relaxed/simple;
-	bh=HYxaEfMtws/N8gZt/uBZJZ+9NzkvYoUL1fvuo/x2hns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TK9lGy4gJmufXKCMHO1PRq4/jL2O4p1Zrz4bOMvim8uVsTUZpHeNNQ8hdMx6S42rMG4yoZP3RJD3QQjGvRy3zNhMOL5ncmapL1HGVaplY7cYX9mLvonTA04jCdJ0kGTTH83dQkXHF6XEtyZZnwJG1bz1TYvE11MI/QRBuq7S1VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6911C1FCD;
-	Thu,  2 Oct 2025 09:43:13 -0700 (PDT)
-Received: from [10.57.3.58] (unknown [10.57.3.58])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 47F683F66E;
-	Thu,  2 Oct 2025 09:43:20 -0700 (PDT)
-Message-ID: <1f47887b-90d5-425c-b80f-9fa8855a6837@arm.com>
-Date: Thu, 2 Oct 2025 17:43:18 +0100
+	s=arc-20240116; t=1759424812; c=relaxed/simple;
+	bh=X/U82S0COSbLUm7gCnAe5j59rq9KR97Yfu7LK1Zj/O8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=hzo7YVmsvfQ0XdkWwIPhHQaVNnsfgyyHKYed239DIoO9y4FJxJXQdNXpkuzxYR+Y1Q1TgdlP7GivhgCPMtxZFGL/a/Wi9Qndud6UOKQ7nxPW/FuNW9D7ScaI9u0JvzVT+lQuDeT4mi6gvzheV0xrw9G5ptzV1+b0jdUezaR+e+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cmurp+eC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C05C4CEF4;
+	Thu,  2 Oct 2025 17:06:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759424810;
+	bh=X/U82S0COSbLUm7gCnAe5j59rq9KR97Yfu7LK1Zj/O8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Cmurp+eCOGzu7Ps7oEVbnOTIO2lU7/4NWrnj8LRBgL4IxISshl9d8jJATN8xSqU/G
+	 /32h0hJunmCxrRcw9hs27Mj90ZPAgZGz2astrBLAJj8V/pA/lVu0P2HAsZMehFj/z5
+	 o0w4XBRYUDeL/AbcP5wQkypry3o0e5g0ml5yu2m+2DJzwaUDrRfnRhAzDIRnf6Uvql
+	 lcNplcfnz9P9vm1N/rHc0RtOFTP6IQeCHNmYeuKS9gN1Bwu0/lCQc37pyIsy/B890D
+	 TNFCdKKfrLPBt1DILJ2W9a2Flyhu3t0856cYwWbdQIv7fDcGEkyyYxttOEmpNtXfnC
+	 LnEWvkJRrz7Og==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
+ ranjani.sridharan@linux.intel.com, yung-chuan.liao@linux.intel.com, 
+ pierre-louis.bossart@linux.dev, stable@vger.kernel.org
+In-Reply-To: <20251002073125.32471-1-peter.ujfalusi@linux.intel.com>
+References: <20251002073125.32471-1-peter.ujfalusi@linux.intel.com>
+Subject: Re: [PATCH] ASoC: SOF: ipc3-topology: Fix multi-core and static
+ pipelines tear down
+Message-Id: <175942480895.110990.5274253507852897704.b4-ty@kernel.org>
+Date: Thu, 02 Oct 2025 18:06:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.17-6.16] arm64: realm: ioremap: Allow mapping
- memory as encrypted
-Content-Language: en-GB
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
- stable@vger.kernel.org
-Cc: Sami Mujawar <sami.mujawar@arm.com>, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Steven Price <steven.price@arm.com>, Gavin Shan <gshan@redhat.com>
-References: <20251002153025.2209281-1-sashal@kernel.org>
- <20251002153025.2209281-8-sashal@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20251002153025.2209281-8-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-56183
 
-Hello !
+On Thu, 02 Oct 2025 10:31:25 +0300, Peter Ujfalusi wrote:
+> In the case of static pipelines, freeing the widgets in the pipelines
+> that were not suspended after freeing the scheduler widgets results in
+> errors because the secondary cores are powered off when the scheduler
+> widgets are freed. Fix this by tearing down the leftover pipelines before
+> powering off the secondary cores.
+> 
+> 
+> [...]
 
-On 02/10/2025 16:29, Sasha Levin wrote:
-> From: Suzuki K Poulose <suzuki.poulose@arm.com>
-> 
-> [ Upstream commit fa84e534c3ec2904d8718a83180294f7b5afecc7 ]
-> 
-> For ioremap(), so far we only checked if it was a device (RIPAS_DEV) to choose
-> an encrypted vs decrypted mapping. However, we may have firmware reserved memory
-> regions exposed to the OS (e.g., EFI Coco Secret Securityfs, ACPI CCEL).
-> We need to make sure that anything that is RIPAS_RAM (i.e., Guest
-> protected memory with RMM guarantees) are also mapped as encrypted.
-> 
-> Rephrasing the above, anything that is not RIPAS_EMPTY is guaranteed to be
-> protected by the RMM. Thus we choose encrypted mapping for anything that is not
-> RIPAS_EMPTY. While at it, rename the helper function
-> 
->    __arm64_is_protected_mmio => arm64_rsi_is_protected
-> 
-> to clearly indicate that this not an arm64 generic helper, but something to do
-> with Realms.
-> 
-> Cc: Sami Mujawar <sami.mujawar@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> Cc: Steven Price <steven.price@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: Steven Price <steven.price@arm.com>
-> Tested-by: Sami Mujawar <sami.mujawar@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> 
-> LLM Generated explanations, may be completely bogus:
+Applied to
 
-Indeed, some are clearly incorrect.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> 
-> Based on my comprehensive analysis of this commit, I can now provide my
-> determination.
-> 
-> ## Analysis Summary
-> 
-> ### Code Change Analysis
-> 
-> The commit makes a **critical logic change** in
-> `arch/arm64/kernel/rsi.c:104`:
-> 
-> **Before**: `if (ripas != RSI_RIPAS_DEV) break;`
-> - Only returns true if **all** regions are RIPAS_DEV (device memory)
-> - Other states (RIPAS_RAM, RIPAS_DESTROYED) cause early exit → mapped as
->    **decrypted**
-> 
-> **After**: `if (ripas == RSI_RIPAS_EMPTY) break;`
-> - Returns true for RIPAS_RAM, RIPAS_DESTROYED, and RIPAS_DEV
-> - Only RIPAS_EMPTY (unprotected/shared) regions are mapped as
->    **decrypted**
-> 
-> ### Problem Being Fixed
-> 
-> The original implementation from commit 371589437616f (Oct 2024) only
-> encrypted RIPAS_DEV regions. However, **firmware-reserved memory
-> regions** use RIPAS_RAM state:
-> 
-> - **EFI Coco Secret Securityfs** areas
-> - **ACPI CCEL** (Confidential Computing Event Log) tables
-> 
-> Without this fix, these RIPAS_RAM regions are incorrectly mapped with
-> `pgprot_decrypted()`, which sets `PROT_NS_SHARED`, making them
+Thanks!
 
-The Realm would have mapped them as decrypted and might have consumed
-untrusted information from (a malicious) hypervisor
+[1/1] ASoC: SOF: ipc3-topology: Fix multi-core and static pipelines tear down
+      commit: 59abe7bc7e7c70e9066b3e46874d1b7e6a13de14
 
-> **accessible to the untrusted hypervisor**.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-No, hypervisor doesn't get access to the protected data.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> 
-> ### Security Impact
-> 
-> This is a **security and data integrity bug**:
-> 1. **Confidential data leakage**: Hypervisor can read protected firmware
->     secrets
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Wrong
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> 2. **Data corruption**: Hypervisor can modify what should be protected
->     memory
-
-Absolutely NO
-
-> 3. **Violation of ARM CCA guarantees**: Breaks confidential computing
->     promises
-
-Not really. The Guest could consume "untrusted" data, thats the only
-violation here.
-
-Suzuki
-
-
-
-
-
-
-> 
-> ### Dependencies
-> 
-> Two related commits were **already backported** (based on "Upstream
-> commit" tags):
-> - `bda90416d53f`: "arm64: Enable EFI secret area Securityfs support"
-> - `09b8e2bf3bf1`: "arm64: acpi: Enable ACPI CCEL support"
-> 
-> Both depend on this fix to function correctly.
-> 
-> ### Risk Assessment
-> 
-> **LOW RISK**:
-> - Isolated to ARM64 Realm subsystem (v6.13+)
-> - Only affects ARM CCA Realm guests
-> - Simple, well-understood logic inversion
-> - Multiple reviewers (Gavin Shan, Steven Price) and testers (Sami
->    Mujawar)
-> - No follow-up fixes or reverts found
-> - Function rename improves code clarity
-> 
-> ### Stable Tree Rules
-> 
-> ✅ Fixes important security/correctness bug
-> ✅ Small and contained (3 files, ~30 lines)
-> ✅ No new features or architectural changes
-> ✅ Minimal regression risk
-> ✅ Well-tested and reviewed
-> 
-> ---
-> 
-> ## **Answer: YES**
-> 
-> **This commit should be backported to stable kernel trees that include
-> ARM64 Realm support (v6.13+).**
-> 
-> **Rationale**: This fixes a security vulnerability where firmware-
-> reserved protected memory (RIPAS_RAM) is incorrectly mapped as decrypted
-> instead of encrypted, violating ARM CCA confidential computing
-> guarantees. The bug allows the untrusted hypervisor to access or corrupt
-> protected firmware data (EFI secrets, ACPI CCEL tables). The fix is
-> small, contained, well-tested, and has minimal regression risk.
-> Additionally, two dependent features (EFI Secret and ACPI CCEL support)
-> were already backported and require this fix to work correctly.
-> 
->   arch/arm64/include/asm/io.h  |  2 +-
->   arch/arm64/include/asm/rsi.h |  2 +-
->   arch/arm64/kernel/rsi.c      | 26 ++++++++++++++++++++++----
->   3 files changed, 24 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
-> index 9b96840fb979b..82276282a3c72 100644
-> --- a/arch/arm64/include/asm/io.h
-> +++ b/arch/arm64/include/asm/io.h
-> @@ -311,7 +311,7 @@ extern bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
->   static inline bool arm64_is_protected_mmio(phys_addr_t phys_addr, size_t size)
->   {
->   	if (unlikely(is_realm_world()))
-> -		return __arm64_is_protected_mmio(phys_addr, size);
-> +		return arm64_rsi_is_protected(phys_addr, size);
->   	return false;
->   }
->   
-> diff --git a/arch/arm64/include/asm/rsi.h b/arch/arm64/include/asm/rsi.h
-> index b42aeac05340e..88b50d660e85a 100644
-> --- a/arch/arm64/include/asm/rsi.h
-> +++ b/arch/arm64/include/asm/rsi.h
-> @@ -16,7 +16,7 @@ DECLARE_STATIC_KEY_FALSE(rsi_present);
->   
->   void __init arm64_rsi_init(void);
->   
-> -bool __arm64_is_protected_mmio(phys_addr_t base, size_t size);
-> +bool arm64_rsi_is_protected(phys_addr_t base, size_t size);
->   
->   static inline bool is_realm_world(void)
->   {
-> diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
-> index ce4778141ec7b..c64a06f58c0bc 100644
-> --- a/arch/arm64/kernel/rsi.c
-> +++ b/arch/arm64/kernel/rsi.c
-> @@ -84,7 +84,25 @@ static void __init arm64_rsi_setup_memory(void)
->   	}
->   }
->   
-> -bool __arm64_is_protected_mmio(phys_addr_t base, size_t size)
-> +/*
-> + * Check if a given PA range is Trusted (e.g., Protected memory, a Trusted Device
-> + * mapping, or an MMIO emulated in the Realm world).
-> + *
-> + * We can rely on the RIPAS value of the region to detect if a given region is
-> + * protected.
-> + *
-> + *  RIPAS_DEV - A trusted device memory or a trusted emulated MMIO (in the Realm
-> + *		world
-> + *  RIPAS_RAM - Memory (RAM), protected by the RMM guarantees. (e.g., Firmware
-> + *		reserved regions for data sharing).
-> + *
-> + *  RIPAS_DESTROYED is a special case of one of the above, where the host did
-> + *  something without our permission and as such we can't do anything about it.
-> + *
-> + * The only case where something is emulated by the untrusted hypervisor or is
-> + * backed by shared memory is indicated by RSI_RIPAS_EMPTY.
-> + */
-> +bool arm64_rsi_is_protected(phys_addr_t base, size_t size)
->   {
->   	enum ripas ripas;
->   	phys_addr_t end, top;
-> @@ -101,18 +119,18 @@ bool __arm64_is_protected_mmio(phys_addr_t base, size_t size)
->   			break;
->   		if (WARN_ON(top <= base))
->   			break;
-> -		if (ripas != RSI_RIPAS_DEV)
-> +		if (ripas == RSI_RIPAS_EMPTY)
->   			break;
->   		base = top;
->   	}
->   
->   	return base >= end;
->   }
-> -EXPORT_SYMBOL(__arm64_is_protected_mmio);
-> +EXPORT_SYMBOL(arm64_rsi_is_protected);
->   
->   static int realm_ioremap_hook(phys_addr_t phys, size_t size, pgprot_t *prot)
->   {
-> -	if (__arm64_is_protected_mmio(phys, size))
-> +	if (arm64_rsi_is_protected(phys, size))
->   		*prot = pgprot_encrypted(*prot);
->   	else
->   		*prot = pgprot_decrypted(*prot);
+Thanks,
+Mark
 
 
