@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-183014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56DCBB2B05
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 09:27:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E029CBB2B08
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 09:27:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EF7E3B954C
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 07:27:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 968F819C1EA8
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 07:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888152C08DC;
-	Thu,  2 Oct 2025 07:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B2F2C11D1;
+	Thu,  2 Oct 2025 07:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IJuo9suh"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="I7m7p2Kd"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0101B2C029B
-	for <stable@vger.kernel.org>; Thu,  2 Oct 2025 07:27:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242BC2C08C5
+	for <stable@vger.kernel.org>; Thu,  2 Oct 2025 07:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759390060; cv=none; b=nnjovFKYsGoCf3YR+2kIZMoN4JZ4AnrahEpWxRca78eqxe/wJLlg0K9y3apxbViwCzOb0qBmwVMY0BYG++8Qn2Q24Rb77PwIxpU3lQk9Wc0umfi0Azm8IQ/RJAikNjboGnB5kDVYvCnF2Di7E8x9p+a7ZMxIw/+Uo+WWLH4qNIA=
+	t=1759390064; cv=none; b=dfCzh/Ibr5cnWQOI2brJrsj+2seq5JrjYsdDZ0MLSqgR4N+dHlj7NuTQnYM/Igz3a7zRocQtbfUdVBYruVrTtwxzce76ojFVv4L5iG85g8ir33EECHvIf7F11zJj0EGhzeI0VsdLsVn35CmjpD4RcWW/muRQfgDsqTQWR9trYtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759390060; c=relaxed/simple;
+	s=arc-20240116; t=1759390064; c=relaxed/simple;
 	bh=E0O3pTQIzDNGpJ6hxldJ9njEUqHefl8QuY2JfvtB1KA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tsIbYD9c9/8NGjDzHp0A/NC8zw2AgKJ31ZRpFKZj0OYaj7XcetPGy2D0uKEXvBySsgYvn2warSMxQMCGADBXl1HQY/AD5VJvACUlq1nEQ6IYHS2VIZiQLKZeVy0gUtFONWRtHkSgnLeFEYHRLXWdSIZ+7lUaGE/CQ5lZ0jN+jcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IJuo9suh; arc=none smtp.client-ip=95.215.58.187
+	 In-Reply-To:Content-Type; b=AFGTYWc0C62CqNGmXZiHLjMEPEhouxxNlZEveX7xG5oWrVURiUdcU8lLZDc/IuFVyz1NtUEqpPzkqP2mZuZR0uYelXsYG6evStS7dFtT0Z7vxAfDdAurCp0YnT7XACmwvKs8VcFKAmYnwy/3qUSjHEmNdpIySLYkEKiEYUhJU/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=I7m7p2Kd; arc=none smtp.client-ip=95.215.58.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Message-ID: <51e0b689-02fa-465c-896b-1178497085c6@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759390055;
+	t=1759390060;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=tf8z5q3IrTjEa1scLQkDrmTv4dYy/I6ofHkuRkCTr8Q=;
-	b=IJuo9suhBO7mPis8m/CD6PeN8fi++MYV7WCQCMrD+3fBnQ2nStg/ZIQ1fcND3dOuHF5LnZ
-	Pc9R2lIccS0rdH4i04CauQvPVxWXPyEgI5aIeZPyDSJJoPCMhgQDA9LcdSgxAO7VvYt9oD
-	yIMmVHgtsWlaUu9WrRdYTbop2IYsCno=
+	b=I7m7p2Kd817cIsaAJb9eSW7jpXSdGDewMdzS5u6oj/QuFuKiQWcxfwN2BkkzJyT/MRT46K
+	3msA7XJ25s+FZvio5MGaMCyIPPWvaPetXpxc62LH+k0mK8gFPwQiF2YIkEPVsD0grdRgCb
+	dDyMSOrJefEuRKSNi09OgUugxGQ6Wqc=
 Date: Thu, 2 Oct 2025 15:27:33 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
