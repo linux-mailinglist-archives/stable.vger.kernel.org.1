@@ -1,130 +1,100 @@
-Return-Path: <stable+bounces-183039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B42BB3EDB
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 14:46:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37FEBB3ECC
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 14:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B8792A5E87
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 12:46:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 819241921E13
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 12:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD66731076A;
-	Thu,  2 Oct 2025 12:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D432E310628;
+	Thu,  2 Oct 2025 12:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UelIIhjc"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCDB285047;
-	Thu,  2 Oct 2025 12:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C2329CE1;
+	Thu,  2 Oct 2025 12:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759409171; cv=none; b=eziqUksS3CfYnLoJShiiyJAJKxxQbZUganMcpVFPV3LlNpcTTSXDp0ypt3l+M3qRyMF6yK1GzVjIBf+Pl6WhM3SIv2OYXpmBOvcGKM1W4yn2e4ea8Pwfl/ePj4KGix0Uut4bLCr9HbtEPvaNCAUvoz2YxLIQNuikpatmSd0mX9g=
+	t=1759409140; cv=none; b=Yex6pKHF4r8Ihh+EPgCboywyXCfArU/Y0/rfVtrPIpJcZY6jSENApGUuEubUWyGIwxQxL44UAUWywFJbZmMBi3rfgu70VRpf3zQhzXk4C524TQQJXzDvnuXIsYppmTwB3kepiAHS7OlJUhGWUZEpX57GoPamY4abso8OAVZ4L84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759409171; c=relaxed/simple;
-	bh=6vCoSI8TiosmG7nf7cJMDZZ4HVDCR/IA5rNM0JedGs0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=iSIqJ8l+zO11tKCSJrE/ehiSmE3pMPZ6fjV0jfW71eOiYT/Vaz/mpR46mqodD4nnJCPTbhzsLHYKLOXUmC1cQ3pLa5vORhd/NO9Fh1E9qVu874rH4OSCIHWQE59G60lGORa7NLJZfbPQXo3XwTpO9X2IaFLk1pp/zFX6mt4khQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowAAXtg_7c95o+hGiCg--.49759S2;
-	Thu, 02 Oct 2025 20:45:57 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: andi.shyti@kernel.org
-Cc: akpm@linux-foundation.org,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	make24@iscas.ac.cn,
-	shyam-sundar.s-k@amd.com,
-	stable@vger.kernel.org,
-	syniurge@gmail.com,
-	wsa@kernel.org
-Subject: Re: [PATCH v2] i2c: fix reference leak in MP2 PCI device
-Date: Thu,  2 Oct 2025 20:45:47 +0800
-Message-Id: <20251002124547.1506-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <7cu6uvwjki72rz6zoshfg3vonawikiasxheotmrsowqoalk2jb@7iu7cenha7p5>
-References: <7cu6uvwjki72rz6zoshfg3vonawikiasxheotmrsowqoalk2jb@7iu7cenha7p5>
-X-CM-TRANSID:zQCowAAXtg_7c95o+hGiCg--.49759S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uryfZryUJryfWry3ZF4DCFg_yoW8Cw17pF
-	Zrta1rArZ8Gr4kXrn8Xw4UZFyfXw40v3yrWrWIyw1Y93Z8ZFWDKry8AFyY9w1Y9rWDAr1I
-	qay7Ja4furyIqa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9G14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6ryUMxAIw28IcxkI7VAKI48JMx
-	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
-	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
-	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v2
-	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
-	W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjNtx3UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1759409140; c=relaxed/simple;
+	bh=ophrfccU9/Pyl70FwqNG7prwo0aWPRlKmQ4E61GSSN8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vi/I3vqKun/l5UCsqDDyHGJjK1L1m8rf0ek0XvLuCKh5EGNsbSbys8ej4uRmFede+v3l+GECk3sOLpoAHRn1fSzqyf9kTb8NOtooAmI9wXPtSagr1Fdl4kLklNPUWbuyhxrEqi+qcjsEsztyZK3c4921S6sps0IhQZXXddVOMa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UelIIhjc; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759409138; x=1790945138;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ophrfccU9/Pyl70FwqNG7prwo0aWPRlKmQ4E61GSSN8=;
+  b=UelIIhjc6HqrwBeeuyXzgMwvMT7FSfos7C69eRCD/dijz6rXfL6Oi1e/
+   uePEMhR1+rW7AHi+u481SQe+w9uPzxTlZjkXoX0Un2Ghf54/vLMb+Kl0/
+   Tmpq0m+9aT7w7any0Die1cx9+0toM5FvcLMOrq0zCcRMBSKQO1Zdqvbbl
+   KDHQGa3tBta1w0XgFu0HkmpMLWfqZlzLNgPNNhgj4RjE12LbU9b3eNOvV
+   8eaDoMcjQSVFigVPMbV/qKOrc9nwtd2Zd5mN0a2BJZQSbd+EQ72HdThKW
+   s3d+sNAdgKFbm2KeIzU0dcIwOpINPqlSgsg/UD195HAhfz7NgbJ0z/wLg
+   Q==;
+X-CSE-ConnectionGUID: cFqbzGFuRP+51bXwY782jQ==
+X-CSE-MsgGUID: WxsjZQDPRtiY6LXLuIFhzg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="73120033"
+X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; 
+   d="scan'208";a="73120033"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 05:45:37 -0700
+X-CSE-ConnectionGUID: +7Pve0nZTNC6dMiSO0z+Wg==
+X-CSE-MsgGUID: bwdjxE9WQ1mn7TKsT5H+9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; 
+   d="scan'208";a="179817123"
+Received: from slindbla-desk.ger.corp.intel.com (HELO [10.245.246.8]) ([10.245.246.8])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 05:45:34 -0700
+Message-ID: <f60fc257-36ed-4bd1-af1a-6fca4a91a532@linux.intel.com>
+Date: Thu, 2 Oct 2025 15:46:30 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] ASoC: SOF: ipc4/Intel: Fix the host buffer constraint
+To: Mark Brown <broonie@kernel.org>
+Cc: lgirdwood@gmail.com, linux-sound@vger.kernel.org,
+ kai.vehmanen@linux.intel.com, ranjani.sridharan@linux.intel.com,
+ yung-chuan.liao@linux.intel.com, pierre-louis.bossart@linux.dev,
+ stable@vger.kernel.org
+References: <20251002080538.4418-1-peter.ujfalusi@linux.intel.com>
+ <88555c06-ccf5-4639-b13f-892149b5faa3@sirena.org.uk>
+Content-Language: en-US
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
+In-Reply-To: <88555c06-ccf5-4639-b13f-892149b5faa3@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2 Oct 2025 at 07:56, Andi Shyti <andi.shyti@kernel.org> wrote:
-> Hi,
-> 
-> > diff --git a/drivers/i2c/busses/i2c-amd-mp2-pci.c b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-> > index ef7370d3dbea..60edbabc2986 100644
-> > --- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
-> > +++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-> > @@ -458,13 +458,16 @@ struct amd_mp2_dev *amd_mp2_find_device(void)
-> >  {
-> >  	struct device *dev;
-> >  	struct pci_dev *pci_dev;
-> > +	struct amd_mp2_dev *mp2_dev;
-> >  
-> >  	dev = driver_find_next_device(&amd_mp2_pci_driver.driver, NULL);
-> >  	if (!dev)
-> >  		return NULL;
-> >  
-> >  	pci_dev = to_pci_dev(dev);
-> > -	return (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
-> > +	mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
-> > +	put_device(dev);
-> > +	return mp2_dev;
-> 
-> the patch is good, but I don't think you need to declare mp2_dev
-> because to_pci_dev(dev) should work even without hodling the
-> reference of dev.
-Thank you for your feedback. The declaration of the temporary variable
-mp2_dev in the patch may be necessary because we need to save the 
-result of pci_get_drvdata(pci_dev) before calling put_device(dev). If 
-we do not do this and instead call put_device(dev) first before 
-returning pci_get_drvdata(pci_dev), it may lead to the deallocation of
-dev, thereby invalidating pci_dev. Accessing its driver data at this 
-point could potentially trigger a use-after-free error. Therefore, the
-temporary variable ensures that the driver data remains safely 
-accessible even after the reference is released. So perhaps we need to
-retain the declaration of this temporary variable?
 
-Best regards,
-Ma Ke
+
+On 02/10/2025 15:25, Mark Brown wrote:
+> On Thu, Oct 02, 2025 at 11:05:35AM +0300, Peter Ujfalusi wrote:
+>> Hi,
+>>
+>> The size of the DSP host buffer was incorrectly defined as 2ms while
+>> it is 4ms and the ChainDMA PCMs are using 5ms as host facing buffer.
 > 
-> I also have to agree with Markus that something like:
-> 
-> struct device *dev __free(put_device) = ...; /* it can also be NULL */
-> 
-> would work nicer.
-> 
-> Thanks,
-> Andi
-> 
-> >  }
-> >  EXPORT_SYMBOL_GPL(amd_mp2_find_device);
-> >  
-> > -- 
-> > 2.17.1
-> > 
+> None of the fixes tags in this series point to commits in my tree.
+
+Hrm, they are upstream, I will check and resend, sorry
+
+-- 
+Péter
 
 
