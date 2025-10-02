@@ -1,149 +1,137 @@
-Return-Path: <stable+bounces-183134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD797BB4F25
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 20:54:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FDE5BB502B
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 21:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CAAD323762
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 18:54:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6034B3C0A6D
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 19:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2649727A904;
-	Thu,  2 Oct 2025 18:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dDV0SCC5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95DA27B325;
+	Thu,  2 Oct 2025 19:31:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from irl.hu (irl.hu [95.85.9.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D335F279DA4;
-	Thu,  2 Oct 2025 18:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EF9A93D;
+	Thu,  2 Oct 2025 19:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759431266; cv=none; b=ZYLVUoIgAAeo2eim67JV3LqMIaJFXc2KfuSRXUbu4V39N1xzRDrJ4JIK+bejVjRboNus8Y36brEEWCnzk0JHY/HnLyYvZDg3XNAbTizin/C+swNbQUYxtG47Y6Mp+YYvTgzd9ok81ZHgSlZZC8PrFz5jS4aziYYpmzWU0jnOyGg=
+	t=1759433481; cv=none; b=WLXU45/z+eNkaXMuo321kffhMkBWvGcSAKyLwxcdk2SCRu4gkrmBX6RewSW887YPJQ21TsDOiddlStnG0k4HX7pxGeHO5DE/TdTU4EkyUQbjmZOCbjkY8x7wR42SlaQtU8gyqhh76Emn6Nt1N3uBTq7WQ2X42/svkVRU+y5X6oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759431266; c=relaxed/simple;
-	bh=yug1rTG6Jmv8Tho+QB+2EP7wv3sxXqojKTh72Aa1DYU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dd6j68akajpVantp1R0191qXqvp1hCA9QWfP2tNkoMQX7Kk/+HPZF1PaaRbiTkMWLHZAcdj5U3l8pKRovvkP/2duoM482vokzi3AInSKaxa0XGZl6MX/ipynMJmQcCBFfZ1ZteYeetF/Wy49RlMC87BXSGk+mlLmEjkeQ1Vj66s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dDV0SCC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEAFC4CEF4;
-	Thu,  2 Oct 2025 18:54:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759431266;
-	bh=yug1rTG6Jmv8Tho+QB+2EP7wv3sxXqojKTh72Aa1DYU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dDV0SCC5fdf9OmipObkpzhLd+Xw/B81qnXZd2qtFB9iQoj6a8cJzYwhyGNuI+bhCm
-	 LIgIlE482M+kk8xBTBQ4aIt0qWQb+pgQaCf2ZNsAY6/YD7XCuRwT5DioF3vA3SQBCc
-	 8Qw/QqdPALnlRBYlL6Z0d+aow+sb/RW5B83seFZb21iYmVonWeh1uZlSGVFFXpdrnU
-	 bQkf8HTNaKt9Vn42ieGX8TTOnpa/FqarRtiil+ZfHW8UepbJqDYLS5q+YP7uynDllg
-	 ElcHmfEC5zE169nf3cmQhSCqLlOWVk3ge99UVgYMyj0tjmRUg4TFgL04j06WityU6P
-	 N3JxeJH2eQfSg==
-Message-ID: <77d23523-be4d-4c5a-aa54-8617e7b5e6e2@kernel.org>
-Date: Thu, 2 Oct 2025 20:54:22 +0200
+	s=arc-20240116; t=1759433481; c=relaxed/simple;
+	bh=uJ6VvsarBYT3wlZHSIo5DU3IhfD35toP8v+Z77bcdyQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uPN5YyhnbSiQxxpprpqzCje86lMdbFtADWTSGtvYyJEP/m8UA6lZLDlgFTZ0UO1SCV1tRObsGJsvawIBK/z08bgRxlv0T/hZar0smVPPQBmdEM2nuIbc5HGz8u5j4yQDIpwDy3I+Hwf7M12JtI8PVZkrLA7cQoNekXeDzfJ3/Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from [10.42.0.76] ([::ffff:94.44.132.12])
+  (AUTH: CRAM-MD5 soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 0000000000088DE7.0000000068DED1D0.002B460A; Thu, 02 Oct 2025 21:26:07 +0200
+Message-ID: <d11c8b06ec79871df74f893da41e81c2f1bcaee2.camel@irl.hu>
+Subject: Re: [PATCH v4] ALSA: hda/tas2781: Fix the order of TAS2781
+ calibrated-data
+From: Gergo Koteles <soyer@irl.hu>
+To: Shenghao Ding <shenghao-ding@ti.com>, tiwai@suse.de
+Cc: broonie@kernel.org, andriy.shevchenko@linux.intel.com,
+  13564923607@139.com, 13916275206@139.com,
+  alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+  baojun.xu@ti.com, Baojun.Xu@fpt.com, stable@vger.kernel.org
+Date: Thu, 02 Oct 2025 21:26:06 +0200
+In-Reply-To: <20250907222728.988-1-shenghao-ding@ti.com>
+References: <20250907222728.988-1-shenghao-ding@ti.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 6.1.y] selftests: mptcp: connect: fix build regression
- caused by backport
-Content-Language: en-GB, fr-BE
-To: Kenta Akagi <k@mgml.me>, gregkh@linuxfoundation.org, sashal@kernel.org
-Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>
-References: <20251002141759.76891-1-k@mgml.me>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20251002141759.76891-1-k@mgml.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Hi Kenta,
+Cc: <stable@vger.kernel.org>
 
-On 02/10/2025 16:17, Kenta Akagi wrote:
-> Since v6.1.154, mptcp selftests have failed to build with the following
-> errors:
-> 
-> mptcp_connect.c: In function ‘main_loop_s’:
-> mptcp_connect.c:1040:59: error: ‘winfo’ undeclared (first use in this function)
->  1040 |                 err = copyfd_io(fd, remotesock, 1, true, &winfo);
->       |                                                           ^~~~~
-> mptcp_connect.c:1040:59: note: each undeclared identifier is reported only once for each function it appears in
-> mptcp_connect.c:1040:23: error: too many arguments to function ‘copyfd_io’; expected 4, have 5
->  1040 |                 err = copyfd_io(fd, remotesock, 1, true, &winfo);
->       |                       ^~~~~~~~~                          ~~~~~~
-> mptcp_connect.c:845:12: note: declared here
->   845 | static int copyfd_io(int infd, int peerfd, int outfd, bool close_peerfd)
->       |            ^~~~~~~~~
-> 
-> This is caused by commit ff160500c499 ("selftests: mptcp: connect: catch
-> IO errors on listen side"), a backport of upstream 14e22b43df25,
-> which attempts to use the undeclared variable 'winfo' and passes too many
-> arguments to copyfd_io(). Both the winfo variable and the updated
-> copyfd_io() function were introduced in upstream
-> commit ca7ae8916043 ("selftests: mptcp: mptfo Initiator/Listener"),
-> which is not present in v6.1.y.
-> 
-> The goal of the backport is to stop on errors from copyfd_io.
-> Therefore, the backport does not depend on the changes in upstream
-> commit ca7ae8916043 ("selftests: mptcp: mptfo Initiator/Listener").
-> 
-> This commit simply removes ', &winfo' to fix a build failure.
-
-Thank you for this fix for v6.1.y!
-
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+On Mon, 2025-09-08 at 06:27 +0800, Shenghao Ding wrote:
+> A bug reported by one of my customers that the order of TAS2781
+> calibrated-data is incorrect, the correct way is to move R0_Low
+> and insert it between R0 and InvR0.
+>=20
+> Fixes: 4fe238513407 ("ALSA: hda/tas2781: Move and unified the calibrated-=
+data getting function for SPI and I2C into the tas2781_hda lib")
+> Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+>=20
+> ---
+> v4:
+>  - Add missing base into cali_cnv().
+> v3:
+>  - Take Tiwai's advice on cali_cnv() to make it more simpler.
+> v2:
+>  - Submit to the sound branch maintained by Tiwai instead of linux-next
+>    branch
+>  - Drop other fix
+> ---
+>  sound/hda/codecs/side-codecs/tas2781_hda.c | 25 +++++++++++++++++-----
+>  1 file changed, 20 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/sound/hda/codecs/side-codecs/tas2781_hda.c b/sound/hda/codec=
+s/side-codecs/tas2781_hda.c
+> index f46d2e06c64f..536940c78f00 100644
+> --- a/sound/hda/codecs/side-codecs/tas2781_hda.c
+> +++ b/sound/hda/codecs/side-codecs/tas2781_hda.c
+> @@ -33,6 +33,23 @@ const efi_guid_t tasdev_fct_efi_guid[] =3D {
+>  };
+>  EXPORT_SYMBOL_NS_GPL(tasdev_fct_efi_guid, "SND_HDA_SCODEC_TAS2781");
+> =20
+> +/*
+> + * The order of calibrated-data writing function is a bit different from=
+ the
+> + * order in UEFI. Here is the conversion to match the order of calibrate=
+d-data
+> + * writing function.
+> + */
+> +static void cali_cnv(unsigned char *data, unsigned int base, int offset)
+> +{
+> +	struct cali_reg reg_data;
+> +
+> +	memcpy(&reg_data, &data[base], sizeof(reg_data));
+> +	/* the data order has to be swapped between r0_low_reg and inv0_reg */
+> +	swap(reg_data.r0_low_reg, reg_data.invr0_reg);
+> +
+> +	cpu_to_be32_array((__force __be32 *)(data + offset + 1),
+> +		(u32 *)&reg_data, TASDEV_CALIB_N);
+> +}
+> +
+>  static void tas2781_apply_calib(struct tasdevice_priv *p)
+>  {
+>  	struct calidata *cali_data =3D &p->cali_data;
+> @@ -103,8 +120,7 @@ static void tas2781_apply_calib(struct tasdevice_priv=
+ *p)
+> =20
+>  				data[l] =3D k;
+>  				oft++;
+> -				for (i =3D 0; i < TASDEV_CALIB_N * 4; i++)
+> -					data[l + i + 1] =3D data[4 * oft + i];
+> +				cali_cnv(data, 4 * oft, l);
+>  				k++;
+>  			}
+>  		}
+> @@ -130,9 +146,8 @@ static void tas2781_apply_calib(struct tasdevice_priv=
+ *p)
+> =20
+>  		for (j =3D p->ndev - 1; j >=3D 0; j--) {
+>  			l =3D j * (cali_data->cali_dat_sz_per_dev + 1);
+> -			for (i =3D TASDEV_CALIB_N * 4; i > 0 ; i--)
+> -				data[l + i] =3D data[p->index * 5 + i];
+> -			data[l+i] =3D j;
+> +			cali_cnv(data, cali_data->cali_dat_sz_per_dev * j, l);
+> +			data[l] =3D j;
+>  		}
+>  	}
+> =20
 
