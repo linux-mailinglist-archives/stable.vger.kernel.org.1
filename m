@@ -1,119 +1,150 @@
-Return-Path: <stable+bounces-183030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A14BB3891
-	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 12:03:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959F5BB39F8
+	for <lists+stable@lfdr.de>; Thu, 02 Oct 2025 12:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62F1A32216A
-	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 10:03:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 852663A337D
+	for <lists+stable@lfdr.de>; Thu,  2 Oct 2025 10:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299F22FE073;
-	Thu,  2 Oct 2025 10:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293313090E1;
+	Thu,  2 Oct 2025 10:20:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622F02F3C10
-	for <stable@vger.kernel.org>; Thu,  2 Oct 2025 10:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64C52EDD52;
+	Thu,  2 Oct 2025 10:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759399377; cv=none; b=YSAijh5lFdIkxRWv5VRcHBMhFUZ0bSqb3qYw9KfzQBDm8NM2tMliVgU4LzLxNYGNoX4dqDiyYUWd/W8KJnGasqMp9e124F5xGYEe4F+sBkgcdVs9O3vWxHeplLrzxnRTAgnNOjeS2MnpjaNFJeDndY/4npNmiXFLQTtokuLb/a4=
+	t=1759400438; cv=none; b=CqBQ8miqsvEhPG+zH0iK6iw9R0KU2IYiYHmH4Dc7T4Zqm3MrviVwK3PtOF95U+q348Vrj5lk9e+BSCa2xwXvHBovpXgLyzG+8bqiYjOuOR7+YDYwiDB2/+5YZiCBslRwRBkOIfcZQR5/tAJA7nae5dzLC8hnyh8BPCXthELKuD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759399377; c=relaxed/simple;
-	bh=oKOvZbmQNCWQ//hSnLqE+hNmE/wFXuNJObFRI25KdQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pVNC/0d2T7dIUS1GMu5W1oofdbX6HFmlfqoXFzb3jSW+dWRcJPizjpMPizd1lrCDwJ5YwHSaFpi87rbBB/ySK4cEV3ZdPZQPjIut0hLYSsl7zKOlxho5ZqfPQePDrJbf98Px7TUOwNpuaZja8cFp00myvmwCeXYlb+RkC0QEnr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b3d80891c6cso320121566b.1
-        for <stable@vger.kernel.org>; Thu, 02 Oct 2025 03:02:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759399374; x=1760004174;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GJ3f0Y8jx/ORdUpe8rUwDsc+LhxkZNLDRVr6mrw2tpc=;
-        b=RimYnpXJ0CSADfosF08I18UaGpD3KljQrXebPFvzHMkA582/C5O1ZTIX0vbb1dxFxA
-         jHTK6CL7hSc25/zifKurqYVKTR5YrwIfgeT/zCO1T5Fy1vhxIYcJyyp2hS7vGiHqtPEP
-         pxuubEXBY0bn2NJz6B2NsTZY/HUROstWbzovAtIwiuhYVtNshMP/H3oKdaTYtzdt+LaM
-         5nV/M7Yu1FSTYcxTQwC5n+zo9iI5RNxuYsEe6yqYMhKbCa7a0JeCaHEelAeJ/QZnzs2b
-         4FLUlzUzyMCRsRVlasA7wbq+McD5bh86/C0d4SI74Tnd31kJG5udSngfARY0TBVBN/yy
-         17NA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlIZ4VFm6XTj5y00MMEqVd+3+24fm+L5/cPxGIS76PtvYxK30f2eU/4q6HsEH9ZaEhFA4OhAw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWo9e3vPBK2FdywB22YAEi3y4F21y1oVMqkOuTim99fXsCD3/0
-	F2XgDYEjc+egbCiJ9ICO+w+Uk+J158gMm/XmzdyowkRdlJ9Lzp0a8CDB
-X-Gm-Gg: ASbGncvyEc+tHP4bRP5joUPEHoIBkNdYHJRoviVjcz0Uqd8/qBbr1AsuvqujPCB2nSg
-	fEQKmezFpa0Kv0Az4aBqJwicTKywArSZaxpDQuoEtGIcPd2ondnk2WsuyYDepEShEr6asFBLdft
-	z55QWrNMladqeoJ/NqJQcl7Epa0B+vsBf4siTE9jykoCKrClpdHK7gNyqdWf59cPE69Qsgb3Z5/
-	1u2byR+PBmclOz63YpBOivqVK0gAvV1LzDEjZ20j4FnK9SAlhJO6r3a4Dv6Nicn9e+5eY4dtx7G
-	8z+Pc6DPdkivXCNtSj9Xl4lnioBvRM6v4g2hN9KAzFdwMu9pVtGvQWRMg/Dqjdeaf3jSsp/pr96
-	8+Cga8685lKU0fLpCC+rxIYlIajj/AKAshDkT
-X-Google-Smtp-Source: AGHT+IECt7u/9qQGkVz0M8l72m7XI4NHOj3MUzKdcpcelojvKIeJ3ZA1Crkq5c7f9e4R+Lj32nMt7Q==
-X-Received: by 2002:a17:907:3c91:b0:b3d:e757:8c3f with SMTP id a640c23a62f3a-b485becf38dmr356982266b.30.1759399373350;
-        Thu, 02 Oct 2025 03:02:53 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:5::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4865a83482sm177255966b.26.2025.10.02.03.02.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 03:02:52 -0700 (PDT)
-Date: Thu, 2 Oct 2025 03:02:50 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Ard Biesheuvel <ardb@kernel.org>, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, Michael van der Westhuizen <rmikey@meta.com>, 
-	Tobias Fleig <tfleig@meta.com>
-Subject: Re: [PATCH] stable: crypto: sha256 - fix crash at kexec
-Message-ID: <vz7xsyrtgg7ss3jlxfykk7frjiwm32nu72pc7pfi244g3ssm77@k7i7t7c3o4lx>
-References: <20251001-stable_crash-v1-1-3071c0bd795e@debian.org>
- <20251001162305.GE1592@sol>
- <jm3bk53sqkqv6eg7rekzhn6bgld5byhkmksdjyxmrkifku2dmc@w7xnklqsrpee>
- <20251001165455.GF1592@sol>
+	s=arc-20240116; t=1759400438; c=relaxed/simple;
+	bh=US6asV8i0eIu1t+KJRb7YRcaFr03ZIyKY5f4wIwvZPA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XVD5eoIlRujTkYyrxfhqKt5tUP4YvazBXS7itauEnl+a80Hiaybggq/EX+8D1m5w7sZUWolWUT+nmtYBpMZEPEtruGC1HR9zyJ5TdMMewikewMtNPaEXNluSZ14+n0FVY+tHEmiN9rCHnO+ujIrMqq3liDqKzVbdaRnj3mq1Svs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4ccnWf6vw3z9sSg;
+	Thu,  2 Oct 2025 12:06:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Mj6qsATOgVWG; Thu,  2 Oct 2025 12:06:38 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4ccnWf5Jssz9sSd;
+	Thu,  2 Oct 2025 12:06:38 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 87D8F8B773;
+	Thu,  2 Oct 2025 12:06:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 0QNfI8vOuITt; Thu,  2 Oct 2025 12:06:38 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0759F8B769;
+	Thu,  2 Oct 2025 12:06:37 +0200 (CEST)
+Message-ID: <a63012d4-0c98-4022-8183-5a3488ca66e9@csgroup.eu>
+Date: Thu, 2 Oct 2025 12:06:37 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001165455.GF1592@sol>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] PCI/AER: Check for NULL aer_info before
+ ratelimiting in pci_print_aer()
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Breno Leitao <leitao@debian.org>, Mahesh J Salgaonkar
+ <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jon Pan-Doh <pandoh@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
+References: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
+ <7b5c1235-df92-4f18-936c-3d7c0d3a6cb3@linux.intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <7b5c1235-df92-4f18-936c-3d7c0d3a6cb3@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello Eric,
 
-On Wed, Oct 01, 2025 at 09:54:55AM -0700, Eric Biggers wrote:
-> On Wed, Oct 01, 2025 at 09:45:07AM -0700, Breno Leitao wrote:
-> > Hello Eric,
-> > 
-> > On Wed, Oct 01, 2025 at 09:23:05AM -0700, Eric Biggers wrote:
-> > 
-> > > This looks fine, but technically 'unsigned int' would be more
-> > > appropriate here, given the context.  If we look at the whole function
-> > > in 6.12, we can see that it took an 'unsigned int' length:
-> > 
-> > Ack. Do you want me to send a v2 with `unsigned int` instead?
-> > 
+
+Le 29/09/2025 à 17:10, Sathyanarayanan Kuppuswamy a écrit :
 > 
-> Sure.  Could you also make it clear which kernel version(s) you are
-> expecting the patch to be applied to?  Is it everything 5.4 through
-> 6.15?  It looks like this bug actually got exposed by f4da7afe07523f
-> ("kexec_file: increase maximum file size to 4G") in 6.0.
+> On 9/29/25 2:15 AM, Breno Leitao wrote:
+>> Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
+>> when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
+>> calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
+>> does not rate limit, given this is fatal.
+>>
+>> This prevents a kernel crash triggered by dereferencing a NULL pointer
+>> in aer_ratelimit(), ensuring safer handling of PCI devices that lack
+>> AER info. This change aligns pci_print_aer() with 
+>> pci_dev_aer_stats_incr()
+>> which already performs this NULL check.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: a57f2bfb4a5863 ("PCI/AER: Ratelimit correctable and non-fatal 
+>> error logging")
+>> Signed-off-by: Breno Leitao <leitao@debian.org>
+>> ---
+>> - This problem is still happening in upstream, and unfortunately no 
+>> action
+>>    was done in the previous discussion.
+>> - Link to previous post:
+>>    https://eur01.safelinks.protection.outlook.com/? 
+>> url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250804-aer_crash_2-v1-1- 
+>> fd06562c18a4%40debian.org&data=05%7C02%7Cchristophe.leroy2%40cs- 
+>> soprasteria.com%7Cfd3d2f1b4e8448a8e67608ddff6a4e70%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638947554250805439%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=6yTN1%2Fq%2Fy0VKX%2BXpE%2BiKxBrn19AkY4IPj01N2ZdxEkg%3D&reserved=0
+>> ---
+> 
+> Although we haven't identified the path that triggers this issue, adding 
+> this check is harmless.
 
-Good point. I've put my wanna-be-hacker hat and try to crash the host
-before commit f4da7afe07523f ("kexec_file: increase maximum file size to
-4G"), but no luck at all.
+Is it really harmless ?
 
-So, I would say we want to limit the backport from v6.0 to 6.16. In
-this case, it seems the easiest thing for stable maintainers is to
-"Fixes: f4da7afe07523f ("kexec_file: increase maximum file size to
-4G")", which will limit the backport into only affected kernels.
+The purpose of the function is to ratelimit logs. Here by returning 1 
+when dev->aer_info is NULL it says: don't ratelimit. Isn't it an opened 
+door to Denial of Service by overloading with logs ?
 
-Let me send a v2 and we can catch-up there.
+Christophe
 
-Thanks for finding f4da7afe07523f!
---breno
+> 
+> Reviewed-by: Kuppuswamy Sathyanarayanan 
+> <sathyanarayanan.kuppuswamy@linux.intel.com>
+> 
+> 
+> 
+>>   drivers/pci/pcie/aer.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+>> index e286c197d7167..55abc5e17b8b1 100644
+>> --- a/drivers/pci/pcie/aer.c
+>> +++ b/drivers/pci/pcie/aer.c
+>> @@ -786,6 +786,9 @@ static void pci_rootport_aer_stats_incr(struct 
+>> pci_dev *pdev,
+>>   static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
+>>   {
+>> +    if (!dev->aer_info)
+>> +        return 1;
+>> +
+>>       switch (severity) {
+>>       case AER_NONFATAL:
+>>           return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
+>>
+>> ---
+>> base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
+>> change-id: 20250801-aer_crash_2-b21cc2ef0d00
+>>
+>> Best regards,
+>> -- 
+>> Breno Leitao <leitao@debian.org>
+>>
+
 
