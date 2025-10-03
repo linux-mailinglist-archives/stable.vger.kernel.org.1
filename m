@@ -1,107 +1,93 @@
-Return-Path: <stable+bounces-183297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F49ABB79DD
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:54:29 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6123BB7A04
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4366848770E
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:54:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 61F94347503
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5531B2D3EE0;
-	Fri,  3 Oct 2025 16:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878A12D3EE0;
+	Fri,  3 Oct 2025 16:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="VrCAewWI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HJbP2dU1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lz6WzSez"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5AC2D595F;
-	Fri,  3 Oct 2025 16:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469A826E706
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 16:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759510450; cv=none; b=qW4Hq4vpiWC3cuaE9o0DIKku8SZX2y2CcvuN2BFyJkFeLemNYK0s9KPxFXFkqvQikjatN7KY2dU7KoqKIfwGosBtDqCiRt5aUXJ3/Ric5aNboBlpp1r2j2EsQiP/9HinScnKXeciLJp4G8HxKsn2QaSDDmHivwT6MBi97jWToL0=
+	t=1759510609; cv=none; b=pqt3nRdRS1TGbkafS76CydHPrtFcojh/lS+MUm/IIqC+6ennCygoUjIQofFlwqDXJU6oDMsywIf96LvYUzYz3dH7yCjwfgNvfsxrIiLtgbqUKmD4BJNi9uRtqePpEcfGmwi8ix79Ir7uvNdbLI0HncXGdkcDxnMuAjU2rSVtVcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759510450; c=relaxed/simple;
-	bh=35W1zDtcABYboWRTHG7RpMOvL/GDkuxlmUL/WfSWIgQ=;
+	s=arc-20240116; t=1759510609; c=relaxed/simple;
+	bh=JV3UpCx5Xkf4WnYDKXQq5+YoXg9RglDY2VFNOWzZ3sE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RSQAkIH3ug2lR5bd0WT44QD/dJWa4+mtMNtHTo6BQz+tOsMKC8ozTeIyaET77qaXoAI+JqLbe9sIvttHItdnH/J4cCZI6WxG5LV1f3tKbh4LikOEGuDRq9edzwrPjNdunAdkZgz8zhijFLNajICpnvwKNnZ/dtxNlExm4CXuAG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=VrCAewWI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HJbP2dU1; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 12A22EC0278;
-	Fri,  3 Oct 2025 12:54:07 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 03 Oct 2025 12:54:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1759510447; x=
-	1759596847; bh=UB3IKnHmzh/QmKgOFKGx8BLdmDHf57NxnecnD+p+sRM=; b=V
-	rCAewWI7sbJvCIV/zpcnz6A0CPYZVWfFX0Dtm6UVGY6RT/28Zy15ntNNBSsAtIPl
-	4AeS0Pk+Ho+rYuDaaB5Hw8Klh46ivi7sHEvbAweBb3JCb/miDh0XneQcuqst6+iP
-	DHK0uh+ii8tWQ/XnmCSykrps7XG21DgZeTLz9ukgJ1iOPBrHGnVuXlbxVeSYLsbZ
-	cL13AnQ6Yg47zxCMlkQh0NMH4W2OUmvwFnwM0klqG7+4HdB4gezArrTeuYAxGz7V
-	ME2GJ/yA/ViRO3iBOMsBiX8P2RbCtCRrrX2Qx4yOchMwc9QS9uxG0tWIxDzVxn0Q
-	O8zpttlCxiJljP2WsmAzQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1759510447; x=1759596847; bh=UB3IKnHmzh/QmKgOFKGx8BLdmDHf57Nxnec
-	nD+p+sRM=; b=HJbP2dU1gXqvJr5xZP81JrdPktlFylwZz2QyJKBRAemfB/Na89d
-	4uMVsS2+JGsNIkxPYS3qPWpObEW7BZQXNk4si7jgrgb9bykcr+01O03QRuqBfSJk
-	CKQ8zCWLG+5Y2L+/ZLXa7Le/UG2trAbGxDTUfJWUGjohNBewZmIkyf2BCHIxtdXh
-	0ANiyZFPCCOwowLLBasMsHF8QE2PFo2kMVAU56I/zlJiufJMFrFy6TFIrjofQ7Ut
-	6RU6mi1hsO08c8503/6rxQumSpu9sifWbOGYmYQkn1ixDCM91gcAXS8PGP13xoNz
-	BqTB4K8OU8Q1vL3G52i84bNpPZ/X7E70A7Q==
-X-ME-Sender: <xms:rv_faFkZNxLNHovlWnH8scAJa2PWTnxJ1De0JAA0q7L9aLqcfUCvYA>
-    <xme:rv_faAtAKu-en65NOEO7BkuNQHdBMf6MQBzHZGG0KjclxEQVQMuT6VcOpAm_QwXFg
-    Zx2rLQp6oXp7ScDUrxq6SM9lzxfjSCyn_CiVZDFn9KYh_0ZTmDuQPY>
-X-ME-Received: <xmr:rv_faI8tg7UcRWHdUwZK2xxEpbyuHG-Aoi_-i5wT2AV8GfwOMyOIoUzLIigZ6g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekleegfecutefuodetggdotefrod
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bpb9+UZoO5/cwBaCIWVcqy5ld66UKzHaf54R19TQsg6jGJCHmm7xgA5b9firLGqxdORGGcQitqMGyR/2+u8PvNoLEHnxzkxuDgp2kTcMV5jd2oCyxuegYYY81CbW0+KOR2UkusIWyfQF1SyHkcdlLyXXdtUb3pBf6sHKXnnxixs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lz6WzSez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70817C4AF09;
+	Fri,  3 Oct 2025 16:56:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759510608;
+	bh=JV3UpCx5Xkf4WnYDKXQq5+YoXg9RglDY2VFNOWzZ3sE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lz6WzSezYl9VgFTmlGlT6FfnRPy713M0YPzIe+tTmXskEm7uJPFzo4hOs8FOjvbxh
+	 Jkl90wEmuvIKE4KXE83lccewNOLqGmTgKC0qEalD9gwH6ebvE0syV+foMVt7jRFzfJ
+	 CZBoIjX/Zb22BzuVWMCypWoSJXn+OK7kqui76ayA5bt2hqBK+ExHhBhwiQGz9PnJLm
+	 cVBx4dNkSGZ3xbRRteZPeVxq7LUjFN8lTwZWHHC3brPUizz+If78pSvYf/dJCwFoXe
+	 FYcO3G6GQS/yDqqAxtElKG6SZS5/dO4455+bh10pakKrwJO6Abbt1czAgdzTTc57Ey
+	 zOwiKSiBmQ77A==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6FB2CF40066;
+	Fri,  3 Oct 2025 12:56:47 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 03 Oct 2025 12:56:47 -0400
+X-ME-Sender: <xms:TwDgaFlxUqzapmQZHn0PHbC8ptyLONHzP77fFPhx3m5xw4_bahlqow>
+    <xme:TwDgaIksgsykPA-UJGwoR42X7ivZT7u1ZC7mJbk0dg9QKLHMLqi9OGgFZrl9s1VQ2
+    WA0S7Vo84qmp_m-Ol3zKDG_W3OxOt25SVx5jTan6sPr8aAqgeL4WL4>
+X-ME-Received: <xmr:TwDgaKMyLseSqZpgPPwZ74nAqOedbBSkXpt_lZlwqN73Qj9tD7G29FwjTMJHTA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekleeggecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeegfeehleevvdetffeluefftdffledvgfetheegieevtefgfefhieej
-    heevkeeigeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
-    vhdrnhgrmhgvpdhnsggprhgtphhtthhopedviedpmhhouggvpehsmhhtphhouhhtpdhrtg
-    hpthhtoheprhihrghnrdhrohgsvghrthhssegrrhhmrdgtohhmpdhrtghpthhtoheprghk
-    phhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvih
-    gusehrvgguhhgrthdrtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghs
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrg
-    gtlhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhrtghpthht
-    oheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsgesghhooh
-    hglhgvrdgtohhmpdhrtghpthhtohepmhhhohgtkhhosehsuhhsvgdrtghomh
-X-ME-Proxy: <xmx:rv_faByXTQ1ZqOnit033VWk75CST6ABfR9loiaIoWbPuFpuXKuy8cA>
-    <xmx:rv_faA9UJCxiG9y9w1PnGVOf5eT3OU6WtAlopeGsVXDnqtRL7jpSag>
-    <xmx:rv_faGKKq0HBVamEfVeUQIwJnZ-ReAXqkZuIfxAYkacd9LeUusHHww>
-    <xmx:rv_faF-zBsHiJgoOLgY1OhO2oG1y8aGMOmT1NLku6yIyYrzyoB4Qsw>
-    <xmx:r__faD9bJJNmCWQHGcetociynY8R-hhTryjqnWWVIeTPovy_N6OmJ88c>
-Feedback-ID: ie3994620:Fastmail
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpefhieekteelledugefhffekfffgjedtveevgffgjeeffeegvdekteetudeggefgkeen
+    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
+    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfedt
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouh
+    hnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhm
+    pdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpd
+    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphht
+    thhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomhdprhgtphhtthhopehvsggrsg
+    hkrgesshhushgvrdgtiidprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehmhhhotg
+    hkohesshhushgvrdgtohhm
+X-ME-Proxy: <xmx:TwDgaP4CAVLa8vmKSGL8lliQN1Pc5vTXs4CmYx14EsepnVmM8SAG0Q>
+    <xmx:TwDgaHslB2UC6UlQCYocZTPwhw9-JVFyVn6xmEBxdSa9JsSQpxeepw>
+    <xmx:TwDgaJOAjuiaDVGUeo8aIL7JTEPFk-giBcQqiFTQpRbmgLT2YC5SCg>
+    <xmx:TwDgaDoAejs1PnA71FQLjfBHG_79VltNAwQhHhXagqXTcfEiRJ4elg>
+    <xmx:TwDgaOHKPLYAKhYXsvdVNvTYraMDsRLij-Ypg_1jBYrAtYnAszsrwD-K>
+Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 3 Oct 2025 12:54:05 -0400 (EDT)
-Date: Fri, 3 Oct 2025 17:54:03 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ 3 Oct 2025 12:56:46 -0400 (EDT)
+Date: Fri, 3 Oct 2025 17:56:44 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Amir Goldstein <amir73il@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1] fsnotify: Pass correct offset to fsnotify_mmap_perm()
-Message-ID: <uqijoyhj6m33aslecgbovhujpjgql2zllw4ahfpm5jfqkcsjut@yemuevv2pjrm>
-References: <20251003155238.2147410-1-ryan.roberts@arm.com>
- <nf7khbu44jzcmyx7wz3ala6ukc2iimf4vej7ffgnezpiosvxal@celav5yumfgw>
- <76cd6212-c85f-4337-99cf-67824c3abee7@arm.com>
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+	Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH] mm/mmap: Fix fsnotify_mmap_perm() call in vm_mmap_pgoff()
+Message-ID: <bqmxwfi4kohx744fa5ggoiovrhiwsoehqn57kptoni64lgflim@ibt5bjvcbhdx>
+References: <20251003155804.1571242-1-kirill@shutemov.name>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -110,40 +96,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <76cd6212-c85f-4337-99cf-67824c3abee7@arm.com>
+In-Reply-To: <20251003155804.1571242-1-kirill@shutemov.name>
 
-On Fri, Oct 03, 2025 at 05:36:23PM +0100, Ryan Roberts wrote:
-> On 03/10/2025 17:00, Kiryl Shutsemau wrote:
-> > On Fri, Oct 03, 2025 at 04:52:36PM +0100, Ryan Roberts wrote:
-> >> fsnotify_mmap_perm() requires a byte offset for the file about to be
-> >> mmap'ed. But it is called from vm_mmap_pgoff(), which has a page offset.
-> >> Previously the conversion was done incorrectly so let's fix it, being
-> >> careful not to overflow on 32-bit platforms.
-> >>
-> >> Discovered during code review.
-> > 
-> > Heh. Just submitted fix for the same issue:
-> > 
-> > https://lore.kernel.org/all/20251003155804.1571242-1-kirill@shutemov.name/T/#u
-> > 
+On Fri, Oct 03, 2025 at 04:58:04PM +0100, Kiryl Shutsemau wrote:
+> From: Kiryl Shutsemau <kas@kernel.org>
 > 
-> Ha... great minds...
+> vm_mmap_pgoff() includes a fsnotify call that allows for pre-content
+> hooks on mmap().
 > 
-> I notice that for your version you're just doing "pgoff << PAGE_SHIFT" without
-> casting pgoff.
+> The fsnotify_mmap_perm() function takes, among other arguments, an
+> offset in the file in the form of loff_t. However, vm_mmap_pgoff() has
+> file offset in the form of pgoff. This offset needs to be converted
+> before being passed to fsnotify_mmap_perm().
 > 
-> I'm not sure if that is safe?
+> The conversion from pgoff to loff_t is incorrect. The pgoff value needs
+> to be shifted left by PAGE_SHIFT to obtain loff_t, not right.
 > 
-> pgoff is unsigned long (so 32 bits on 32 bit systems). loff_t is unsigned long
-> long (so always 64 bits). So is it possible that you shift off the end of 32
-> bits and lose those bits without a cast to loff_t first?
+> This issue was identified through code inspection.
 > 
-> TBH my knowledge of the exact rules is shaky...
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
+> Cc: stable@vger.kernel.org
+> Cc: Josef Bacik <josef@toxicpanda.com>
+> Cc: Amir Goldstein <amir73il@gmail.com>
+> Cc: Jan Kara <jack@suse.cz>
+> ---
+>  mm/util.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/util.c b/mm/util.c
+> index f814e6a59ab1..52a667157264 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -573,7 +573,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+>  
+>  	ret = security_mmap_file(file, prot, flag);
+>  	if (!ret)
+> -		ret = fsnotify_mmap_perm(file, prot, pgoff >> PAGE_SHIFT, len);
+> +		ret = fsnotify_mmap_perm(file, prot, pgoff << PAGE_SHIFT, len);
 
-I think you are right. Missing cast in my patch might be problematic on
-32-bit machines.
+It misses the case to (loff_t) and it broken for 32-bit machines.
 
-Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
+Luckily, Ryan submitted another fix for the same bug at the almost the
+same time. And he was more careful around types:
+
+https://lore.kernel.org/all/20251003155238.2147410-1-ryan.roberts@arm.com
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
