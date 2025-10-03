@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-183245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C002ABB7742
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:06:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 177B8BB775D
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:07:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6B95B346D28
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:06:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 282B819E82EB
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AB3292B4B;
-	Fri,  3 Oct 2025 16:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7123629E0E1;
+	Fri,  3 Oct 2025 16:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkCeHutJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iN6MCgKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E6D79EA;
-	Fri,  3 Oct 2025 16:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A298292B4B;
+	Fri,  3 Oct 2025 16:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759507594; cv=none; b=PZdUBHAok9gpnqL85JHljtMDQckESv49yPvBkxpgrOWDBTHMuFv2fx4i1TH1BBPJDMGy7GAxGLYp/tEDrSWDN4xekkk6Gid3uPrGSiWUyRo5ZesGNpgGm2ZaVE2tL8qVG3G0xo4Qj75gw98K10OkHjZeiuMOBJD3t79yap31Qec=
+	t=1759507614; cv=none; b=NTsRdj0+3jcKrKfxPxMXG86Lj5slPUetuSDX3ycp+p+Q3AO+YHD7aX62AMdvYOqXrLxqGPvr9ncwJ2VgsT8hlb3O8ICW1FHvfTljwQge2qDxN8Pu9kN0UBalEZf0IjH+sO7U1unVk/pe/J8SzFzGBpTMaFJj6bQKsOS0F/dVH6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759507594; c=relaxed/simple;
-	bh=RaPdkCSUQJkOJmZ+eij/mqYaZQgqJyxf68lUFpRPSyE=;
+	s=arc-20240116; t=1759507614; c=relaxed/simple;
+	bh=jKvewCb70Lke/L+XfB+boYOWi1BcLyNSo6IWUbC1bAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYFyShbfOsT3t1paDddTCYjuMKokx2y2z9EQOB5X6yhibBB0hHgLdqaGX7m48jwvB+fm9UV7nbXk/jEHWUS+tzISHXwdrDJBj2+Fsi5DtmlxA2A3IzA4sXBISvFGHTbypz5qEOpYSnMavvt9aNKDCcjirg2au6AWqQrhrxbjvGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkCeHutJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E8EC4CEF5;
-	Fri,  3 Oct 2025 16:06:31 +0000 (UTC)
+	 MIME-Version; b=gBbUpoUIDN/tFmX4V/EJ/wkdAK27tQGsh5ya96k6s/s8PEq349Avst5bL6Veiwt9eLrkpT9bS1zsTn9n/3djiO9Cy4fl57krI2kh0Cv2gULn5ZyRPExC96T7ITkmL3ln7lOxC0A9ygjT3t+mfGp/3F+0MSSpHuXNn70ViTGsvvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iN6MCgKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC5BC4CEF5;
+	Fri,  3 Oct 2025 16:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759507592;
-	bh=RaPdkCSUQJkOJmZ+eij/mqYaZQgqJyxf68lUFpRPSyE=;
+	s=korg; t=1759507614;
+	bh=jKvewCb70Lke/L+XfB+boYOWi1BcLyNSo6IWUbC1bAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkCeHutJHMHH7Le2q+NwcDCPxOMSzgi+FjBn8pC79Rg/GizmBCVN+hjodw/pqE8Kr
-	 h/rIrXaugSQtRKQgWegZoYQJXhwAIuIDO0A3ezbHeYskORqk5MX15d23ozBuqA6D+s
-	 qxFCGXt0VD6t4vxdXyv0qBL8AduswGZHqVmMRMdY=
+	b=iN6MCgKrrAPJTl2DLCv7xlzvvK9xG5B0is4XoZ6jbUmvo1Uv+6MO1H42S6PlnrZMo
+	 xrtUZ9+cK4yy7P4vRVOSELSL1RgPJOfBb47lcPbqXz9IKuZQsKIz4u+NNmwpXDblYU
+	 u/DgU5ZLWvW/Nrw9AuNzAYOoTxicbEE4LufCrcIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Li Nan <linan122@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.17 01/15] blk-mq: fix blk_mq_tags double free while nr_requests grown
-Date: Fri,  3 Oct 2025 18:05:25 +0200
-Message-ID: <20251003160359.899300031@linuxfoundation.org>
+	Christopher Fore <csfore@posteo.net>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.17 02/15] gcc-plugins: Remove TODO_verify_il for GCC >= 16
+Date: Fri,  3 Oct 2025 18:05:26 +0200
+Message-ID: <20251003160359.942543976@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003160359.831046052@linuxfoundation.org>
 References: <20251003160359.831046052@linuxfoundation.org>
@@ -69,48 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Kees Cook <kees@kernel.org>
 
-commit ba28afbd9eff2a6370f23ef4e6a036ab0cfda409 upstream.
+commit a40282dd3c484e6c882e93f4680e0a3ef3814453 upstream.
 
-In the case user trigger tags grow by queue sysfs attribute nr_requests,
-hctx->sched_tags will be freed directly and replaced with a new
-allocated tags, see blk_mq_tag_update_depth().
+GCC now runs TODO_verify_il automatically[1], so it is no longer exposed to
+plugins. Only use the flag on GCC < 16.
 
-The problem is that hctx->sched_tags is from elevator->et->tags, while
-et->tags is still the freed tags, hence later elevator exit will try to
-free the tags again, causing kernel panic.
-
-Fix this problem by replacing et->tags with new allocated tags as well.
-
-Noted there are still some long term problems that will require some
-refactor to be fixed thoroughly[1].
-
-[1] https://lore.kernel.org/all/20250815080216.410665-1-yukuai1@huaweicloud.com/
-Fixes: f5a6604f7a44 ("block: fix lockdep warning caused by lock dependency in elv_iosched_store")
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Li Nan <linan122@huawei.com>
-Link: https://lore.kernel.org/r/20250821060612.1729939-3-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=9739ae9384dd7cd3bb1c7683d6b80b7a9116eaf8 [1]
+Suggested-by: Christopher Fore <csfore@posteo.net>
+Link: https://lore.kernel.org/r/20250920234519.work.915-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq-tag.c |    1 +
- 1 file changed, 1 insertion(+)
+ scripts/gcc-plugins/gcc-common.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/block/blk-mq-tag.c
-+++ b/block/blk-mq-tag.c
-@@ -622,6 +622,7 @@ int blk_mq_tag_update_depth(struct blk_m
- 			return -ENOMEM;
+--- a/scripts/gcc-plugins/gcc-common.h
++++ b/scripts/gcc-plugins/gcc-common.h
+@@ -173,10 +173,17 @@ static inline opt_pass *get_pass_for_id(
+ 	return g->get_passes()->get_pass_for_id(id);
+ }
  
- 		blk_mq_free_map_and_rqs(set, *tagsptr, hctx->queue_num);
-+		hctx->queue->elevator->et->tags[hctx->queue_num] = new;
- 		*tagsptr = new;
- 	} else {
- 		/*
++#if BUILDING_GCC_VERSION < 16000
+ #define TODO_verify_ssa TODO_verify_il
+ #define TODO_verify_flow TODO_verify_il
+ #define TODO_verify_stmts TODO_verify_il
+ #define TODO_verify_rtl_sharing TODO_verify_il
++#else
++#define TODO_verify_ssa 0
++#define TODO_verify_flow 0
++#define TODO_verify_stmts 0
++#define TODO_verify_rtl_sharing 0
++#endif
+ 
+ #define INSN_DELETED_P(insn) (insn)->deleted()
+ 
 
 
 
