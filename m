@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-183268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F921BB7770
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:07:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD37BB7787
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 28A7C346BE2
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:07:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2809486F9D
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2A229E117;
-	Fri,  3 Oct 2025 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8391E29D27F;
+	Fri,  3 Oct 2025 16:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojEMoRkF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9l92i21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5785C29BDB5;
-	Fri,  3 Oct 2025 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E62292B4B;
+	Fri,  3 Oct 2025 16:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759507667; cv=none; b=FjvtZY8fgskropE1w2RvRyYJ1StJfYTKoQLbiNI22M4dx5miYuSTWt8/yZTsRjuFAQ5SDTS7VQ3OW4ictQlZgsca8qm5v+vs3/plWnTuJrVT8FR/3xA4MsdsMyWrVtRR3TvD+0ITi17PejQaWreef5f9MbmhOFV8VXgZ4bi/+T8=
+	t=1759507605; cv=none; b=sC0ZQRzLjogvWFgGSO0eX5J4unsS0tPM2WuKo4HTUA68zoNYwbX461lD+sAVSpYf6EwamtbaVOqAjCzyN2fMw0CBkYQrGSPUeT4sL0TIINcVdiQobP2kkR8pqEiuFUwc83rt+CcgzNntBIafyJ4DhfI5UImkLOdCuxkPvzFIBls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759507667; c=relaxed/simple;
-	bh=HKH7QflExSEnUPWaml+61x1uFfmEwsukei87a+hI68c=;
+	s=arc-20240116; t=1759507605; c=relaxed/simple;
+	bh=krmdEmS7xvf9VIovwgejhhVMB7sgHTPmx/oRbjcXu3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCG4ZZX/IRLcT2+qX2oRt2SX9lKA/3fM+NQng/eLsJjG1B3qo5J1+hv+uOfMxrc32xwaoi6EE2hbnZBj9YN3iqxTCUckFO06kTINoUvT14uUbqndMcknqew9KPC78T9T6nlCTzCKN7nrJACz5KYTNXa1SoGBkjOu/+VI1Tc7xyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojEMoRkF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C56C4CEF5;
-	Fri,  3 Oct 2025 16:07:46 +0000 (UTC)
+	 MIME-Version; b=Er+eob5u+QnzA9s2ovNq41Vcm/US5CMMJPc5gxp/O5d+SHJXUQ/U1Oq2lPiwL6aYfQzZdaRqqsB7aNI6mG3P3xX/SQ/fRtsHxyvm0DFW7BwOTxzzmGmw0MsPsjrAQpS25n4pSQqS4znedDjrFkTPFevebSSa3IBKZcZigU11O28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9l92i21; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BACFC4CEF5;
+	Fri,  3 Oct 2025 16:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759507666;
-	bh=HKH7QflExSEnUPWaml+61x1uFfmEwsukei87a+hI68c=;
+	s=korg; t=1759507604;
+	bh=krmdEmS7xvf9VIovwgejhhVMB7sgHTPmx/oRbjcXu3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojEMoRkFEqhR5m050aPPGfgb+XbjnkG6rxKASy6pMQGFPtvw2cnTWOEOEzp8ZC4fu
-	 az3jPdId932GpQ448xTP6xouMHiy6oUBfZYAsDxG/RTfzY1CpnzjOEyyzgUoU9SV3t
-	 1zK4S2NugZ9ICdQ7xq8eW6ZLeHOeEJ/jf6OfTnTg=
+	b=c9l92i214Gm1c0CcipXX1DMqiTD8sQLQPI1YNb56mFVp/wZ37GEiqCiXEkvd1foPB
+	 ZWlFXqxBzA0nho9yBJrBiexiyw+RZUuAN87yhQUZrOObQmlcGuFXVWY8daeqHM6Dx1
+	 WJNKsn+U/kbigdWl+z8QN/HXNCSiP95OeRGFQ+yY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Haoran <haoranwangsec@gmail.com>,
-	ziiiro <yuanmingbuaa@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.16 03/14] scsi: target: target_core_configfs: Add length check to avoid buffer overflow
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH 6.17 13/15] media: iris: Fix memory leak by freeing untracked persist buffer
 Date: Fri,  3 Oct 2025 18:05:37 +0200
-Message-ID: <20251003160352.812079206@linuxfoundation.org>
+Message-ID: <20251003160400.374921685@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251003160352.713189598@linuxfoundation.org>
-References: <20251003160352.713189598@linuxfoundation.org>
+In-Reply-To: <20251003160359.831046052@linuxfoundation.org>
+References: <20251003160359.831046052@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Haoran <haoranwangsec@gmail.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit 27e06650a5eafe832a90fd2604f0c5e920857fae upstream.
+commit 02a24f13b3a1d9da9f3de56aa5fdb7cc1fe167a2 upstream.
 
-A buffer overflow arises from the usage of snprintf to write into the
-buffer "buf" in target_lu_gp_members_show function located in
-/drivers/target/target_core_configfs.c. This buffer is allocated with
-size LU_GROUP_NAME_BUF (256 bytes).
+One internal buffer which is allocated only once per session was not
+being freed during session close because it was not being tracked as
+part of internal buffer list which resulted in a memory leak.
 
-snprintf(...) formats multiple strings into buf with the HBA name
-(hba->hba_group.cg_item), a slash character, a devicename (dev->
-dev_group.cg_item) and a newline character, the total formatted string
-length may exceed the buffer size of 256 bytes.
+Add the necessary logic to explicitly free the untracked internal buffer
+during session close to ensure all allocated memory is released
+properly.
 
-Since snprintf() returns the total number of bytes that would have been
-written (the length of %s/%sn ), this value may exceed the buffer length
-(256 bytes) passed to memcpy(), this will ultimately cause function
-memcpy reporting a buffer overflow error.
-
-An additional check of the return value of snprintf() can avoid this
-buffer overflow.
-
-Reported-by: Wang Haoran <haoranwangsec@gmail.com>
-Reported-by: ziiiro <yuanmingbuaa@gmail.com>
-Signed-off-by: Wang Haoran <haoranwangsec@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 73702f45db81 ("media: iris: allocate, initialize and queue internal buffers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_configfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_buffer.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -2774,7 +2774,7 @@ static ssize_t target_lu_gp_members_show
- 			config_item_name(&dev->dev_group.cg_item));
- 		cur_len++; /* Extra byte for NULL terminator */
+--- a/drivers/media/platform/qcom/iris/iris_buffer.c
++++ b/drivers/media/platform/qcom/iris/iris_buffer.c
+@@ -413,6 +413,16 @@ static int iris_destroy_internal_buffers
+ 		}
+ 	}
  
--		if ((cur_len + len) > PAGE_SIZE) {
-+		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
- 			pr_warn("Ran out of lu_gp_show_attr"
- 				"_members buffer\n");
- 			break;
++	if (force) {
++		buffers = &inst->buffers[BUF_PERSIST];
++
++		list_for_each_entry_safe(buf, next, &buffers->list, list) {
++			ret = iris_destroy_internal_buffer(inst, buf);
++			if (ret)
++				return ret;
++		}
++	}
++
+ 	return 0;
+ }
+ 
 
 
 
