@@ -1,237 +1,432 @@
-Return-Path: <stable+bounces-183225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0290ABB6FB2
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 15:21:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66847BB7078
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 15:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7DF9A4E9D7F
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 13:21:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BAC189EBF3
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 13:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4AF1DD9D3;
-	Fri,  3 Oct 2025 13:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lU+ono0N"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA8117C21B;
+	Fri,  3 Oct 2025 13:36:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lankhorst.se (lankhorst.se [141.105.120.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99463522F
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 13:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED24B15E8B;
+	Fri,  3 Oct 2025 13:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759497673; cv=none; b=u6Tj4x5QOWW7d6vA1VQuf4undxcO7K79ViY37GneQG7l7xsRyU9PULcH3JhXOFLJwAHZlO9e83efJuGU6ul9X3dNE6Aetf9ZrvXANij3GsvwR9fh1raN1JkwetPLLLa0ocsdCCXJLg7mCy9j5j2i5FGSBSf5BLRDSF8qDgcSMeU=
+	t=1759498596; cv=none; b=ALeCich//6taV3CQPtnecWX7fhZp8W3Pu3N+Bru2jsbASwdZFPLgRPu3Y+AOooJVgd8SofIAnN5D+LVta6cyTctcAPi7R89Y5AVrAp8n87LHlQWgfugoXrrKTLDIteZAqYCcny/8E3RQhF1mX5d+A4tRHHmAklZ8103N0qtpF/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759497673; c=relaxed/simple;
-	bh=+T3UOqQZFvy7eBHlAWJr/3kPNyoFfQ1q2UOiIWHKdwo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WFCPa4Cs8D9MYO+3fSKWeu+euZIT9pDAPCxDHANhmILvwUUi2FfgyV4I9QTWLPbHXx+7Sw7uHJEfVIPgaehnVaRlSiqVJMaZ9oZofltEon1jwD510C7Obc5p1CeOgJBOJ214LLwMERnGAKYMl3KH3ec3Fl3FWC9KRlVSJ5T+0fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lU+ono0N; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-62ec5f750f7so3620318a12.3
-        for <stable@vger.kernel.org>; Fri, 03 Oct 2025 06:21:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759497670; x=1760102470; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x8zhl7eFh/Ccgjvyj875lnW0wZkdwAI8sMWJQNebn0o=;
-        b=lU+ono0NDj2J+OfGgerQ6M9g0JYYdRJhwVDwRuHdr4N50dmZZ4GoLVxf+w6Bnx24Sm
-         uWQUPJe1XEc49Sl2YRkoReP6H5cF3floBG/SJ3B6vvkGeplq/lezu+cj0dGslQSlB/zB
-         tVxEpTebwxwxyO6/2zAtMqycec0BamJ4iKH1onRlYyPCRqGZQIDLEdgjN2uKQPdw+xT6
-         V8/lV5MNgrC+4nM5TbmOk2xSSILLQeMjS0b6Bn3GPn6tSBfHxu4Uw9lFvxUB1NytOPJM
-         wy61ZM3oEEK542HIzqHJiIBEqwsu3UiAM7HeO/Fx+ZGxoc59Gi9t0dnDEFzUJ0gnr7rl
-         lSlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759497670; x=1760102470;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x8zhl7eFh/Ccgjvyj875lnW0wZkdwAI8sMWJQNebn0o=;
-        b=TeMJIq09Fd8fcwKFuhF3mkcPREXfMPik8utl61AQA7DPKFLrug8F2OqK7/+hDQEHhR
-         e+aO+XRNnp1HmdD8TtTxw//y2aNwdCT4BdxMkSj9VPonHbgmTap+YYnWVwSz6e3jE+Iy
-         V+s/andu1HQgEE/1lh2aU6/G193Cv24KJXKbr+bTNgGpW47uJRl10Q/XGbeMIzUCh8gL
-         YJJanOSppv/Afi+AhqA+vYbDCPV6xDuWzNd9xoUg+5vRSFlNZpjNRBU6pOeNz6lGQ/D7
-         7Mkp9qOFSuLbeVihSEHSjJL8vcT+opcRnpXQV6viKlA/xcnhXO/oBmMPGx4TGXcgxe24
-         g17g==
-X-Forwarded-Encrypted: i=1; AJvYcCVmNxhJ6/c1E32s+VQCA7viVFG+DReQyFqmznc2TIAZ/k3JAY352mZZpTgC4RtNVrTv3uaNpgo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywuYxMaU+rTay23OOwZNYeJygcPda2oOP1pR6oYSv3Und9KpDA
-	EWFnt9BPj21F1KqW4/JUjNn5iNR3bMaeo/OWne7Bz/KLf4TjUN7qkw9/B8zX1FZYJf871ZPVG/Q
-	JcDf7gOcSqNdGnFpxCceGaPWTL5ppqDg=
-X-Gm-Gg: ASbGnctH3pOtHf3Npwu/+pAZesQLMpkZDDsuq82jXGEw9W8UJziaFWLGqrFH1ELud52
-	2rl1xSOSiUX+DEK68LJvhADGoAMo19dh4KoI5ld0ySckVlDlIdPDiPzPBEiP3q6y1ffD+Q860jL
-	jsAVeg8n69EnGb02tRzW62YZQelJC7nvDekfosWcBc2FXRKMckzdMwmXsWUEerqBwcfAJcXwhct
-	5DdfDb1Ikyr2sybtQURhpKu2jLzQqEUJZAzWdoUPJyg4rX1P2rdyh+gcIYCCC8kqy/RpXJ3jX43
-	oG+rmT8NPCSyQ6PpnyxorVcQ/j6o+VzQWRxe4cnsKWB/l8uijgcuFkzYXCVnig==
-X-Google-Smtp-Source: AGHT+IEA3negWfetSsQ9J9E7GZNGFXMwJJzB/z247mUrnUgKg78kzOOKAjkgcmEBNB3ECXV1sheBHc3044R6M6RK6bo=
-X-Received: by 2002:a17:907:2d22:b0:b40:e267:93dc with SMTP id
- a640c23a62f3a-b49c2958624mr388499866b.24.1759497669641; Fri, 03 Oct 2025
- 06:21:09 -0700 (PDT)
+	s=arc-20240116; t=1759498596; c=relaxed/simple;
+	bh=DZIayvB4sttGe6Rsea8XfTAkQV2J1p/HCN8C89WFSvA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kfk/xeDxp18Xa+gUfbjEaGWU/wDxOootbOGb4foMayCQ7Iss95Xca+Kk7Cd9tJf9vpn+mUgInXuXYnSvkS84HpnBCJgA6p0rSb1iVSXrE8J5GeCE2YgPquJlSrSSCrNDacAcxXtJWmq8p8E/EnQdovQlfy1Xtz1CNeakVVAc53k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se; spf=pass smtp.mailfrom=lankhorst.se; arc=none smtp.client-ip=141.105.120.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lankhorst.se
+Message-ID: <799a4e7e-076d-4a9d-888d-69f4e2e89520@lankhorst.se>
+Date: Fri, 3 Oct 2025 15:29:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMBK1_QFuLQBp1apHD7=FnJo=RWE532=jMwfo=nkkGFSzJaD-A@mail.gmail.com>
- <2024011723-freeness-caviar-774c@gregkh> <CAMBK1_S2vwv-8PfFQ4rfChPiW7ut5LXgmUZRtyhN=AoG3g5NEg@mail.gmail.com>
- <bf07c1bc-b38e-4672-9bb0-24c16054569a@leemhuis.info>
-In-Reply-To: <bf07c1bc-b38e-4672-9bb0-24c16054569a@leemhuis.info>
-From: Serge SIMON <serge.simon@gmail.com>
-Date: Fri, 3 Oct 2025 15:20:38 +0200
-X-Gm-Features: AS18NWDqPgMDcv-4TQOr74BUnAM5tFfS08euR1LMs-basfmqfZJtbqn0MsFu4Tc
-Message-ID: <CAMBK1_Sw8nVSN3Z7WtHYyJ2xWUNVYNcx26UKFx5hy+xQrO=bHA@mail.gmail.com>
-Subject: Re: S/PDIF not detected anymore / regression on recent kernel 6.7 ?
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: linux-sound@vger.kernel.org, stable@vger.kernel.org, 
-	Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] devcoredump: Fix circular locking dependency with
+ devcd->mutex.
+To: linux-kernel@vger.kernel.org
+Cc: intel-xe@lists.freedesktop.org, Mukesh Ojha <quic_mojha@quicinc.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ stable@vger.kernel.org, Matthew Brost <matthew.brost@intel.com>
+References: <20250723142416.1020423-1-dev@lankhorst.se>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <20250723142416.1020423-1-dev@lankhorst.se>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+Ping?
 
-I still encounter this issue (and every month i test the latest
-kernel, each time with the same results) :
-- i do have an ASUS B560-I WIFI (ITX) motherboard with a S/PDIF output
-- everything was working flawlessly until (and including) kernel
-6.6.10, and that S/PDIF output was perfectly detected (under GNOME
-SHELL, etc.)
-- starting from kernel 6.7.0 (and newest ones, including 6.16.10
-tested today) the S/PDIF output it NOT detected anymore at boot time
-by the kernel (so is not selectable any more under GNOME SHELL or
-COSMIC, etc.)
+Den 2025-07-23 kl. 16:24, skrev Maarten Lankhorst:
+> The original code causes a circular locking dependency found by lockdep.
+> 
+> ======================================================
+> WARNING: possible circular locking dependency detected
+> 6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 Tainted: G S   U
+> ------------------------------------------------------
+> xe_fault_inject/5091 is trying to acquire lock:
+> ffff888156815688 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}, at: __flush_work+0x25d/0x660
+> 
+> but task is already holding lock:
+> 
+> ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
+> which lock already depends on the new lock.
+> the existing dependency chain (in reverse order) is:
+> -> #2 (&devcd->mutex){+.+.}-{3:3}:
+>        mutex_lock_nested+0x4e/0xc0
+>        devcd_data_write+0x27/0x90
+>        sysfs_kf_bin_write+0x80/0xf0
+>        kernfs_fop_write_iter+0x169/0x220
+>        vfs_write+0x293/0x560
+>        ksys_write+0x72/0xf0
+>        __x64_sys_write+0x19/0x30
+>        x64_sys_call+0x2bf/0x2660
+>        do_syscall_64+0x93/0xb60
+>        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> -> #1 (kn->active#236){++++}-{0:0}:
+>        kernfs_drain+0x1e2/0x200
+>        __kernfs_remove+0xae/0x400
+>        kernfs_remove_by_name_ns+0x5d/0xc0
+>        remove_files+0x54/0x70
+>        sysfs_remove_group+0x3d/0xa0
+>        sysfs_remove_groups+0x2e/0x60
+>        device_remove_attrs+0xc7/0x100
+>        device_del+0x15d/0x3b0
+>        devcd_del+0x19/0x30
+>        process_one_work+0x22b/0x6f0
+>        worker_thread+0x1e8/0x3d0
+>        kthread+0x11c/0x250
+>        ret_from_fork+0x26c/0x2e0
+>        ret_from_fork_asm+0x1a/0x30
+> -> #0 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}:
+>        __lock_acquire+0x1661/0x2860
+>        lock_acquire+0xc4/0x2f0
+>        __flush_work+0x27a/0x660
+>        flush_delayed_work+0x5d/0xa0
+>        dev_coredump_put+0x63/0xa0
+>        xe_driver_devcoredump_fini+0x12/0x20 [xe]
+>        devm_action_release+0x12/0x30
+>        release_nodes+0x3a/0x120
+>        devres_release_all+0x8a/0xd0
+>        device_unbind_cleanup+0x12/0x80
+>        device_release_driver_internal+0x23a/0x280
+>        device_driver_detach+0x14/0x20
+>        unbind_store+0xaf/0xc0
+>        drv_attr_store+0x21/0x50
+>        sysfs_kf_write+0x4a/0x80
+>        kernfs_fop_write_iter+0x169/0x220
+>        vfs_write+0x293/0x560
+>        ksys_write+0x72/0xf0
+>        __x64_sys_write+0x19/0x30
+>        x64_sys_call+0x2bf/0x2660
+>        do_syscall_64+0x93/0xb60
+>        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> other info that might help us debug this:
+> Chain exists of: (work_completion)(&(&devcd->del_wk)->work) --> kn->active#236 --> &devcd->mutex
+>  Possible unsafe locking scenario:
+>        CPU0                    CPU1
+>        ----                    ----
+>   lock(&devcd->mutex);
+>                                lock(kn->active#236);
+>                                lock(&devcd->mutex);
+>   lock((work_completion)(&(&devcd->del_wk)->work));
+>  *** DEADLOCK ***
+> 5 locks held by xe_fault_inject/5091:
+>  #0: ffff8881129f9488 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x72/0xf0
+>  #1: ffff88810c755078 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x123/0x220
+>  #2: ffff8881054811a0 (&dev->mutex){....}-{3:3}, at: device_release_driver_internal+0x55/0x280
+>  #3: ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
+>  #4: ffffffff8359e020 (rcu_read_lock){....}-{1:2}, at: __flush_work+0x72/0x660
+> stack backtrace:
+> CPU: 14 UID: 0 PID: 5091 Comm: xe_fault_inject Tainted: G S   U              6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 PREEMPT_{RT,(lazy)}
+> Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
+> Hardware name: Micro-Star International Co., Ltd. MS-7D25/PRO Z690-A DDR4(MS-7D25), BIOS 1.10 12/13/2021
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x91/0xf0
+>  dump_stack+0x10/0x20
+>  print_circular_bug+0x285/0x360
+>  check_noncircular+0x135/0x150
+>  ? register_lock_class+0x48/0x4a0
+>  __lock_acquire+0x1661/0x2860
+>  lock_acquire+0xc4/0x2f0
+>  ? __flush_work+0x25d/0x660
+>  ? mark_held_locks+0x46/0x90
+>  ? __flush_work+0x25d/0x660
+>  __flush_work+0x27a/0x660
+>  ? __flush_work+0x25d/0x660
+>  ? trace_hardirqs_on+0x1e/0xd0
+>  ? __pfx_wq_barrier_func+0x10/0x10
+>  flush_delayed_work+0x5d/0xa0
+>  dev_coredump_put+0x63/0xa0
+>  xe_driver_devcoredump_fini+0x12/0x20 [xe]
+>  devm_action_release+0x12/0x30
+>  release_nodes+0x3a/0x120
+>  devres_release_all+0x8a/0xd0
+>  device_unbind_cleanup+0x12/0x80
+>  device_release_driver_internal+0x23a/0x280
+>  ? bus_find_device+0xa8/0xe0
+>  device_driver_detach+0x14/0x20
+>  unbind_store+0xaf/0xc0
+>  drv_attr_store+0x21/0x50
+>  sysfs_kf_write+0x4a/0x80
+>  kernfs_fop_write_iter+0x169/0x220
+>  vfs_write+0x293/0x560
+>  ksys_write+0x72/0xf0
+>  __x64_sys_write+0x19/0x30
+>  x64_sys_call+0x2bf/0x2660
+>  do_syscall_64+0x93/0xb60
+>  ? __f_unlock_pos+0x15/0x20
+>  ? __x64_sys_getdents64+0x9b/0x130
+>  ? __pfx_filldir64+0x10/0x10
+>  ? do_syscall_64+0x1a2/0xb60
+>  ? clear_bhb_loop+0x30/0x80
+>  ? clear_bhb_loop+0x30/0x80
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> RIP: 0033:0x76e292edd574
+> Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
+> RSP: 002b:00007fffe247a828 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000076e292edd574
+> RDX: 000000000000000c RSI: 00006267f6306063 RDI: 000000000000000b
+> RBP: 000000000000000c R08: 000076e292fc4b20 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000202 R12: 00006267f6306063
+> R13: 000000000000000b R14: 00006267e6859c00 R15: 000076e29322a000
+>  </TASK>
+> xe 0000:03:00.0: [drm] Xe device coredump has been deleted.
+> 
+> Fixes: 01daccf74832 ("devcoredump : Serialize devcd_del work")
+> Cc: Mukesh Ojha <quic_mojha@quicinc.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Johannes Berg <johannes@sipsolutions.net>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: <stable@vger.kernel.org> # v6.1+
+> Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> ---
+>  drivers/base/devcoredump.c | 136 ++++++++++++++++++++++---------------
+>  1 file changed, 83 insertions(+), 53 deletions(-)
+> 
+> diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
+> index 03a39c417dc41..ad4bddde12ccb 100644
+> --- a/drivers/base/devcoredump.c
+> +++ b/drivers/base/devcoredump.c
+> @@ -23,50 +23,46 @@ struct devcd_entry {
+>  	void *data;
+>  	size_t datalen;
+>  	/*
+> -	 * Here, mutex is required to serialize the calls to del_wk work between
+> -	 * user/kernel space which happens when devcd is added with device_add()
+> -	 * and that sends uevent to user space. User space reads the uevents,
+> -	 * and calls to devcd_data_write() which try to modify the work which is
+> -	 * not even initialized/queued from devcoredump.
+> +	 * There are 2 races for which mutex is required.
+>  	 *
+> +	 * The first race is between device creation and userspace writing to
+> +	 * schedule immediately destruction.
+>  	 *
+> +	 * This race is handled by arming the timer before device creation, but
+> +	 * when device creation fails the timer still exists.
+>  	 *
+> -	 *        cpu0(X)                                 cpu1(Y)
+> +	 * To solve this, hold the mutex during device_add(), and set
+> +	 * init_completed on success before releasing the mutex.
+>  	 *
+> -	 *        dev_coredump() uevent sent to user space
+> -	 *        device_add()  ======================> user space process Y reads the
+> -	 *                                              uevents writes to devcd fd
+> -	 *                                              which results into writes to
+> +	 * That way the timer will never fire until device_add() is called,
+> +	 * it will do nothing if init_completed is not set. The timer is also
+> +	 * cancelled in that case.
+>  	 *
+> -	 *                                             devcd_data_write()
+> -	 *                                               mod_delayed_work()
+> -	 *                                                 try_to_grab_pending()
+> -	 *                                                   timer_delete()
+> -	 *                                                     debug_assert_init()
+> -	 *       INIT_DELAYED_WORK()
+> -	 *       schedule_delayed_work()
+> -	 *
+> -	 *
+> -	 * Also, mutex alone would not be enough to avoid scheduling of
+> -	 * del_wk work after it get flush from a call to devcd_free()
+> -	 * mentioned as below.
+> -	 *
+> -	 *	disabled_store()
+> -	 *        devcd_free()
+> -	 *          mutex_lock()             devcd_data_write()
+> -	 *          flush_delayed_work()
+> -	 *          mutex_unlock()
+> -	 *                                   mutex_lock()
+> -	 *                                   mod_delayed_work()
+> -	 *                                   mutex_unlock()
+> -	 * So, delete_work flag is required.
+> +	 * The second race involves multiple parallel invocations of devcd_free(),
+> +	 * add a deleted flag so only 1 can call the destructor.
+>  	 */
+>  	struct mutex mutex;
+> -	bool delete_work;
+> +	bool init_completed, deleted;
+>  	struct module *owner;
+>  	ssize_t (*read)(char *buffer, loff_t offset, size_t count,
+>  			void *data, size_t datalen);
+>  	void (*free)(void *data);
+> +	/*
+> +	 * If nothing interferes and device_add() was returns success,
+> +	 * del_wk will destroy the device after the timer fires.
+> +	 *
+> +	 * Multiple userspace processes can interfere in the working of the timer:
+> +	 * - Writing to the coredump will reschedule the timer to run immediately,
+> +	 *   if still armed.
+> +	 *
+> +	 *   This is handled by using "if (cancel_delayed_work()) {
+> +	 *   schedule_delayed_work() }", to prevent re-arming after having
+> +	 *   been previously fired.
+> +	 * - Writing to /sys/class/devcoredump/disabled will destroy the
+> +	 *   coredump synchronously.
+> +	 *   This is handled by using disable_delayed_work_sync(), and then
+> +	 *   checking if deleted flag is set with &devcd->mutex held.
+> +	 */
+>  	struct delayed_work del_wk;
+>  	struct device *failing_dev;
+>  };
+> @@ -95,14 +91,27 @@ static void devcd_dev_release(struct device *dev)
+>  	kfree(devcd);
+>  }
+>  
+> +static void __devcd_del(struct devcd_entry *devcd)
+> +{
+> +	devcd->deleted = true;
+> +	device_del(&devcd->devcd_dev);
+> +	put_device(&devcd->devcd_dev);
+> +}
+> +
+>  static void devcd_del(struct work_struct *wk)
+>  {
+>  	struct devcd_entry *devcd;
+> +	bool init_completed;
+>  
+>  	devcd = container_of(wk, struct devcd_entry, del_wk.work);
+>  
+> -	device_del(&devcd->devcd_dev);
+> -	put_device(&devcd->devcd_dev);
+> +	/* devcd->mutex serializes against dev_coredumpm_timeout */
+> +	mutex_lock(&devcd->mutex);
+> +	init_completed = devcd->init_completed;
+> +	mutex_unlock(&devcd->mutex);
+> +
+> +	if (init_completed)
+> +		__devcd_del(devcd);
+>  }
+>  
+>  static ssize_t devcd_data_read(struct file *filp, struct kobject *kobj,
+> @@ -122,12 +131,12 @@ static ssize_t devcd_data_write(struct file *filp, struct kobject *kobj,
+>  	struct device *dev = kobj_to_dev(kobj);
+>  	struct devcd_entry *devcd = dev_to_devcd(dev);
+>  
+> -	mutex_lock(&devcd->mutex);
+> -	if (!devcd->delete_work) {
+> -		devcd->delete_work = true;
+> -		mod_delayed_work(system_wq, &devcd->del_wk, 0);
+> -	}
+> -	mutex_unlock(&devcd->mutex);
+> +	/*
+> +	 * Although it's tempting to use mod_delayed work here,
+> +	 * that will cause a reschedule if the timer already fired.
+> +	 */
+> +	if (cancel_delayed_work(&devcd->del_wk))
+> +		schedule_delayed_work(&devcd->del_wk, 0);
+>  
+>  	return count;
+>  }
+> @@ -151,11 +160,21 @@ static int devcd_free(struct device *dev, void *data)
+>  {
+>  	struct devcd_entry *devcd = dev_to_devcd(dev);
+>  
+> +	/*
+> +	 * To prevent a race with devcd_data_write(), disable work and
+> +	 * complete manually instead.
+> +	 *
+> +	 * We cannot rely on the return value of
+> +	 * disable_delayed_work_sync() here, because it might be in the
+> +	 * middle of a cancel_delayed_work + schedule_delayed_work pair.
+> +	 *
+> +	 * devcd->mutex here guards against multiple parallel invocations
+> +	 * of devcd_free().
+> +	 */
+> +	disable_delayed_work_sync(&devcd->del_wk);
+>  	mutex_lock(&devcd->mutex);
+> -	if (!devcd->delete_work)
+> -		devcd->delete_work = true;
+> -
+> -	flush_delayed_work(&devcd->del_wk);
+> +	if (!devcd->deleted)
+> +		__devcd_del(devcd);
+>  	mutex_unlock(&devcd->mutex);
+>  	return 0;
+>  }
+> @@ -179,12 +198,10 @@ static ssize_t disabled_show(const struct class *class, const struct class_attri
+>   *                                                                 put_device() <- last reference
+>   *             error = fn(dev, data)                           devcd_dev_release()
+>   *             devcd_free(dev, data)                           kfree(devcd)
+> - *             mutex_lock(&devcd->mutex);
+>   *
+>   *
+>   * In the above diagram, it looks like disabled_store() would be racing with parallelly
+> - * running devcd_del() and result in memory abort while acquiring devcd->mutex which
+> - * is called after kfree of devcd memory after dropping its last reference with
+> + * running devcd_del() and result in memory abort after dropping its last reference with
+>   * put_device(). However, this will not happens as fn(dev, data) runs
+>   * with its own reference to device via klist_node so it is not its last reference.
+>   * so, above situation would not occur.
+> @@ -374,7 +391,7 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
+>  	devcd->read = read;
+>  	devcd->free = free;
+>  	devcd->failing_dev = get_device(dev);
+> -	devcd->delete_work = false;
+> +	devcd->deleted = false;
+>  
+>  	mutex_init(&devcd->mutex);
+>  	device_initialize(&devcd->devcd_dev);
+> @@ -383,8 +400,14 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
+>  		     atomic_inc_return(&devcd_count));
+>  	devcd->devcd_dev.class = &devcd_class;
+>  
+> -	mutex_lock(&devcd->mutex);
+>  	dev_set_uevent_suppress(&devcd->devcd_dev, true);
+> +
+> +	/* devcd->mutex prevents devcd_del() completing until init finishes */
+> +	mutex_lock(&devcd->mutex);
+> +	devcd->init_completed = false;
+> +	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
+> +	schedule_delayed_work(&devcd->del_wk, timeout);
+> +
+>  	if (device_add(&devcd->devcd_dev))
+>  		goto put_device;
+>  
+> @@ -401,13 +424,20 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
+>  
+>  	dev_set_uevent_suppress(&devcd->devcd_dev, false);
+>  	kobject_uevent(&devcd->devcd_dev.kobj, KOBJ_ADD);
+> -	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
+> -	schedule_delayed_work(&devcd->del_wk, timeout);
+> +
+> +	/*
+> +	 * Safe to run devcd_del() now that we are done with devcd_dev.
+> +	 * Alternatively we could have taken a ref on devcd_dev before
+> +	 * dropping the lock.
+> +	 */
+> +	devcd->init_completed = true;
+>  	mutex_unlock(&devcd->mutex);
+>  	return;
+>   put_device:
+> -	put_device(&devcd->devcd_dev);
+>  	mutex_unlock(&devcd->mutex);
+> +	cancel_delayed_work_sync(&devcd->del_wk);
+> +	put_device(&devcd->devcd_dev);
+> +
+>   put_module:
+>  	module_put(owner);
+>   free:
 
-With old kernel (example :
-https://gist.github.com/SR-G/0e86d917716acff0d31cad0365f0b500#file-gistfile=
-1-txt)
-:
-
-% cat /proc/asound/pcm
-
-00-00: ALC1220 Analog : ALC1220 Analog : playback 1 : capture 1
-00-01: ALC1220 Digital : ALC1220 Digital : playback 1
-00-02: ALC1220 Alt Analog : ALC1220 Alt Analog : capture 1
-01-03: HDMI 0 : HDMI 0 : playback 1
-01-07: HDMI 1 : HDMI 1 : playback 1
-01-08: HDMI 2 : HDMI 2 : playback 1
-01-09: HDMI 3 : HDMI 3 : playback 1
-
-
-With kernels >=3D 6.7.0 (example :
-https://gist.github.com/SR-G/0e86d917716acff0d31cad0365f0b500#file-dmesg-6-=
-12-6-log)
-:
-
-% cat /proc/asound/pcm
-00-03: HDMI 0 : HDMI 0 : playback 1
-00-07: HDMI 1 : HDMI 1 : playback 1
-00-08: HDMI 2 : HDMI 2 : playback 1
-00-09: HDMI 3 : HDMI 3 : playback 1
-
-It seems i'm the only one impacted :(
-
-Who can help me on this topic ?
-
-Thanks in advance and regards.
-
---
-Serge.
-
-
-On Mon, Feb 5, 2024 at 8:35=E2=80=AFAM Linux regression tracking (Thorsten
-Leemhuis) <regressions@leemhuis.info> wrote:
->
-> On 05.02.24 08:09, Serge SIMON wrote:
-> >
-> > Any news on this ?
->
-> Apparently not. I added the sound maintainers just to be sure they are
-> aware of this.
->
-> > Just to say that i tried the 6.7.3 version and i have the exact same
-> > problem as described below
-> > ("linux-headers-6.7.3.arch1-2-x86_64.pkg.tar.zst" for the exact ARCH
-> > package, of course with a system fully up-to-date and rebooted) : no
-> > more S/PDIF device detected after reboot (only the monitors are
-> > detected, but not anymore the S/PDIF output at motherboard level-
-> > which is what i'm using).
-> >
-> > Reverting to 6.6.10 does solve the issue, so per what i'm seeing,
-> > something has definitely been broken between 6.6.10 and 6.7.0 on that
-> > topic.
->
-> Unless the sound maintainers come up with something, we most likely need
-> a bisection from you to resolve this.
->
-> In case you want to perform a bisection, this guide I'm currently
-> working on might help:
->
-> https://www.leemhuis.info/files/misc/How%20to%20bisect%20a%20Linux%20kern=
-el%20regression%20%e2%80%94%20The%20Linux%20Kernel%20documentation.html
->
-> > Is this tracked by a bug somewhere ? Does i have to open one (in
-> > addition to these mails) ?
->
-> No, this thread (for now) is enough.
->
-> Ciao, Thorsten
->
->
-> > On Wed, Jan 17, 2024 at 6:39=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> >>
-> >> On Tue, Jan 16, 2024 at 09:49:59PM +0100, Serge SIMON wrote:
-> >>> Dear Kernel maintainers,
-> >>>
-> >>> I think i'm encountering (for the first time in years !) a regression
-> >>> with the "6.7.arch3-1" kernel (whereas no issues with
-> >>> "6.6.10.arch1-1", on which i reverted).
-> >>>
-> >>> I'm running a (up-to-date, and non-LTS) ARCHLINUX desktop, on a ASUS
-> >>> B560-I motherboard, with 3 monitors (attached to a 4-HDMI outputs
-> >>> card), plus an audio S/PDIF optic output at motherboard level.
-> >>>
-> >>> With the latest kernel, the S/PIDF optic output of the motherboard is
-> >>> NOT detected anymore (and i haven't been able to see / find anything
-> >>> in the logs at quick glance, neither journalctl -xe nor dmesg).
-> >>>
-> >>> Once reverted to 6.6.10, everything is fine again.
-> >>>
-> >>> For example, in a working situation (6.6.10), i have :
-> >>>
-> >>> cat /proc/asound/pcm
-> >>> 00-00: ALC1220 Analog : ALC1220 Analog : playback 1 : capture 1
-> >>> 00-01: ALC1220 Digital : ALC1220 Digital : playback 1
-> >>> 00-02: ALC1220 Alt Analog : ALC1220 Alt Analog : capture 1
-> >>> 01-03: HDMI 0 : HDMI 0 : playback 1
-> >>> 01-07: HDMI 1 : HDMI 1 : playback 1
-> >>> 01-08: HDMI 2 : HDMI 2 : playback 1
-> >>> 01-09: HDMI 3 : HDMI 3 : playback 1
-> >>>
-> >>> Whereas while on the latest 6.7 kernel, i only had the 4 HDMI lines
-> >>> (linked to a NVIDIA T600 card, with 4 HDMI outputs) and not the three
-> >>> first ones (attached to the motherboard).
-> >>>
-> >>> (of course i did several tests with 6.7, reboot, ... without any chan=
-ges)
-> >>>
-> >>> Any idea ?
-> >>
-> >> As this is a sound issue, perhaps send this to the
-> >> linux-sound@vger.kernel.org mailing list (now added).
-> >>
-> >> Any chance you can do a 'git bisect' between 6.6 and 6.7 to track down
-> >> the issue?  Or maybe the sound developers have some things to ask abou=
-t
-> >> as there are loads of debugging knobs in sound...
-> >>
-> >> thanks,
-> >>
-> >> greg k-h
-> >
-> >
->
 
