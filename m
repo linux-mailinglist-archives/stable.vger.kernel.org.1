@@ -1,104 +1,92 @@
-Return-Path: <stable+bounces-183293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB882BB77C0
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F51BB787E
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D78BA1B20C44
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:09:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DBC519C6F7C
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D4014A8B;
-	Fri,  3 Oct 2025 16:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UplVZfCN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9739B28DB56;
+	Fri,  3 Oct 2025 16:25:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4078229BDB5;
-	Fri,  3 Oct 2025 16:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BB110F1;
+	Fri,  3 Oct 2025 16:25:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759507748; cv=none; b=Cl+IvgIedygraHfLg2LcMoDLTpbD17fCzcUMtC1WhGU6fx2IdZkpK918zLsqTWwgmJnM3Te4sVS3r6ifEmCL3nqvecPwrEUO2iB/jO2rEMSvMuNi6oGekS4IX3ByGY21zzdNGZRl0UsbfYKEwcxkqtyu14XDDlPM9pkK+7xunrs=
+	t=1759508715; cv=none; b=dq9t/+NlAI4lh3fBtKrvPM7PCPsZM0s6t52WMh/z3h20HKTjD/PHEmv+klyzAl/Hn7yAqOnB5sCDBiiJCt8aiiPE9tfcSTwelWF/Gh8KtHlu9oVqa/5dy2eLBpMnog0zeCDTNXCbR8MmRJLSV1Dd0pBKmFVb25iqpyy1xIX8pQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759507748; c=relaxed/simple;
-	bh=EgAdY2kiz8z+ol55KksXmbvWn42ZxDF5BJhj7zpkgDU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=moYhwETMGoGI0l+nvLcMcfdtQ0nefTXJ6Xvv9an2XKK0ridX3+2gfaNk4lCq35TTs5OZIFvbnOC9WFOLgYp0pbQ2peB3fJPcXi4SPqxKjJW/FS43hRCXO02P7C+JyLQa6RuJJTEfBxNRgO153KJ/uk3MN7En6yvhY+ANMAJY9gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UplVZfCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6180DC4CEF5;
-	Fri,  3 Oct 2025 16:09:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759507747;
-	bh=EgAdY2kiz8z+ol55KksXmbvWn42ZxDF5BJhj7zpkgDU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UplVZfCN6O01JN+OMOLJBdupDsdIONZEmRwBJ3bFK4EAj8JGmfYdJC8Xdr9wViZzF
-	 h32TqMgRhWbaDdSeNBDRYc5yU3EBwX6m/kIGIJzz5x7ci8ijA94+XB1gtaqZB0dTPX
-	 V4WSyQlc0YI9IggSJhzohr8QRonfCFpJAf+e1M34=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 7/7] ASoC: qcom: audioreach: fix potential null pointer dereference
-Date: Fri,  3 Oct 2025 18:06:15 +0200
-Message-ID: <20251003160331.706703325@linuxfoundation.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251003160331.487313415@linuxfoundation.org>
-References: <20251003160331.487313415@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1759508715; c=relaxed/simple;
+	bh=MSGGQw0EHFBJFHMt+TlybKJnZJ8X0knV03efFYk/kkY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YPn048LVX2gNvHMr9uCe/28fNq+rqBlGrBeWsc7G0qWwC+vDtEsI/DPCNT2ejKc6f2Qio/9R16l6PJiuVPDeWi6cMaPLxEbTyVc2gWCMkSWDYdJgrJo9e2SUTGCboxlV+kLaCJ+R5haQ7uL62Ygj8vJ1OyILfoz/hQQkgNci5sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1A08E1655;
+	Fri,  3 Oct 2025 09:25:04 -0700 (PDT)
+Received: from [10.163.65.114] (unknown [10.163.65.114])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AB1913F5A1;
+	Fri,  3 Oct 2025 09:25:04 -0700 (PDT)
+Message-ID: <39cb4556-f80a-44ba-a8ae-7990544673a8@arm.com>
+Date: Fri, 3 Oct 2025 21:55:00 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mmap: Fix fsnotify_mmap_perm() call in vm_mmap_pgoff()
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, stable@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>, Amir Goldstein <amir73il@gmail.com>,
+ Jan Kara <jack@suse.cz>
+References: <20251003155804.1571242-1-kirill@shutemov.name>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20251003155804.1571242-1-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
 
-------------------
+On 03/10/25 9:28 pm, Kiryl Shutsemau wrote:
+> From: Kiryl Shutsemau <kas@kernel.org>
+>
+> vm_mmap_pgoff() includes a fsnotify call that allows for pre-content
+> hooks on mmap().
+>
+> The fsnotify_mmap_perm() function takes, among other arguments, an
+> offset in the file in the form of loff_t. However, vm_mmap_pgoff() has
+> file offset in the form of pgoff. This offset needs to be converted
+> before being passed to fsnotify_mmap_perm().
+>
+> The conversion from pgoff to loff_t is incorrect. The pgoff value needs
+> to be shifted left by PAGE_SHIFT to obtain loff_t, not right.
+>
+> This issue was identified through code inspection.
+>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
+> Cc: stable@vger.kernel.org
+> Cc: Josef Bacik <josef@toxicpanda.com>
+> Cc: Amir Goldstein <amir73il@gmail.com>
+> Cc: Jan Kara <jack@suse.cz>
+> ---
+>   
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-
-commit 8318e04ab2526b155773313b66a1542476ce1106 upstream.
-
-It is possible that the topology parsing function
-audioreach_widget_load_module_common() could return NULL or an error
-pointer. Add missing NULL check so that we do not dereference it.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Stable@vger.kernel.org
-Fixes: 36ad9bf1d93d ("ASoC: qdsp6: audioreach: add topology support")
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250825101247.152619-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- sound/soc/qcom/qdsp6/topology.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/sound/soc/qcom/qdsp6/topology.c
-+++ b/sound/soc/qcom/qdsp6/topology.c
-@@ -586,8 +586,8 @@ static int audioreach_widget_load_module
- 		return PTR_ERR(cont);
- 
- 	mod = audioreach_parse_common_tokens(apm, cont, &tplg_w->priv, w);
--	if (IS_ERR(mod))
--		return PTR_ERR(mod);
-+	if (IS_ERR_OR_NULL(mod))
-+		return mod ? PTR_ERR(mod) : -ENODEV;
- 
- 	dobj = &w->dobj;
- 	dobj->private = mod;
-
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
 
