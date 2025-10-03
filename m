@@ -1,106 +1,87 @@
-Return-Path: <stable+bounces-183162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F08BB6049
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 08:58:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F49BB6335
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 09:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08EF33C7BB2
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 06:58:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D776619C3745
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 07:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FE021E0AD;
-	Fri,  3 Oct 2025 06:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Jld+0fzl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0F425EF90;
+	Fri,  3 Oct 2025 07:55:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B14207A32;
-	Fri,  3 Oct 2025 06:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2C32475CB
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 07:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759474693; cv=none; b=ru6UMuwASA/ZyI4RjcOhnOGy0KcUh7tvJ7a7Le/jm5nkeM3bSqLeE1FiSyiu7Hp8fRHqU3iCJ5u+2k1PBlOiwVPEtATzbpPwlg8yYtoqVOtJOdE7Gzqv/hi4jbAWvuCxa74gUG0wchrC3JMSi6NEPhGfhF/VBa15bRJU+qm+bzg=
+	t=1759478114; cv=none; b=mGoDGYamb52UE+YkghXPM5+yxg+dDvJ5fkr70nzNmpjlWcE2YLfdn4J37xZ5OE7z9Xl1FlTC+phVygNdwwi5W6JX+ibSTZVtxFrspoW9INdiroGt526Oxweuy19LFSceblHC3OYdfdrbQcAcVLa7xLHTodGPvNcjs6dGpnewZI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759474693; c=relaxed/simple;
-	bh=ygHJ1a2tSCkiw3IPvK5T3GMVSP/bOxGvIO78g0U2oqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JhyiZ6oscbg4y3EKa8dzD/nsQGLk+JxsPste0eclVLOBbbgBWmDfTurzQXSVnXOYvnRWaShbpWrwqgxFVDw1hrqaWImN2s0HmbF8rOhUf7wb6+J3Bb11IoJcuMAowgzIhAfRZJD2/fzZw+beaqeXjRveK7YGgx9LZqfjRVwLHhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Jld+0fzl; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 27C16101D1A39;
-	Fri,  3 Oct 2025 08:58:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1759474689; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=16mRRpkmibLTIgo5zX4xc23aofmm3S9PtXoTu0vtgi8=;
-	b=Jld+0fzlmK3NdbjIRDq8ZCZmJYWBzZUt+HpFdK4zchwzxtV6Mcw240R8h7ZhW8mN0LkJxe
-	9RzHqPewb+e0dAM0tIVsSsEV6xjzqdmFGysBohoIh/V2DuMAqnRIbZmhLh3/ee2xALTC1s
-	l8DSMaCRfzECDH0jGQz5H83You7IZLAsU14XG8SN+NJXXo5bzZF4O8iYeaN1W80tRbv3KR
-	bLvDgWsB3ZzYFHdyB6/Tq9+v/pGsWh22Iwm8eCK2fra+k6ZgwEWgzGMkq0rWO/17pm8uh2
-	Ysv6VZUvLxvDI35Fe2jjvG1S3Os17hH/mXHr7/p5ndVUdK01ZqlFnK4eS99Anw==
-Date: Fri, 3 Oct 2025 08:58:05 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-Subject: Re: [PATCH 5.10 000/122] 5.10.245-rc1 review
-Message-ID: <aN9z/eFB0pYhMPxU@duo.ucw.cz>
-References: <20250930143822.939301999@linuxfoundation.org>
+	s=arc-20240116; t=1759478114; c=relaxed/simple;
+	bh=ZUqhVd7vcsVc1CWlD0NUVC7kP7EMWB7/YDrJRnN/yu4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oWOrgfsZkbXBiRjzTxuH6Jab8TB3/1WlzCOp/IBjCC0XGo8taioD+fwy570Mo36KS0SgJYC+6eyucDPilsSyHckv98VjpycXrOjoUIVbIiBWBbtED12ciO3KQP5K2A5LB5x0tRem1xXWkht+doJXqSG77PhyfpUt7SVxzWBbsGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9CD081655;
+	Fri,  3 Oct 2025 00:54:59 -0700 (PDT)
+Received: from [10.163.66.2] (unknown [10.163.66.2])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 226B33F5A1;
+	Fri,  3 Oct 2025 00:55:01 -0700 (PDT)
+Message-ID: <36c12f7e-b55c-4f8c-998f-ba7a99a050aa@arm.com>
+Date: Fri, 3 Oct 2025 13:24:57 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UFmWpGlbQqNCRvmw"
-Content-Disposition: inline
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
+ do_huge_zero_wp_pmd()
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ wangkefeng.wang@huawei.com
+Cc: linux-mm@kvack.org, stable@vger.kernel.org
+References: <20251002013825.20448-1-richard.weiyang@gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20251002013825.20448-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
---UFmWpGlbQqNCRvmw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 02/10/25 7:08 am, Wei Yang wrote:
+> We add pmd folio into ds_queue on the first page fault in
+> __do_huge_pmd_anonymous_page(), so that we can split it in case of
+> memory pressure. This should be the same for a pmd folio during wp
+> page fault.
+>
+> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
+> to add it to ds_queue, which means system may not reclaim enough memory
+> in case of memory pressure even the pmd folio is under used.
+>
+> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
+> folio installation consistent.
+>
+> Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: <stable@vger.kernel.org>
+>
+> ---
 
-Hi!
+Thanks!
 
-> This is the start of the stable review cycle for the 5.10.245 release.
-> There are 122 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.10.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
---=20
-In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
-Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---UFmWpGlbQqNCRvmw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaN9z/QAKCRAw5/Bqldv6
-8iu9AJ4sUsI001bzGUDTzwZLNN7ZTh72vQCfWWiiOA/gV9vVXYvCfYuoGcMmnBE=
-=zIcY
------END PGP SIGNATURE-----
-
---UFmWpGlbQqNCRvmw--
 
