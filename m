@@ -1,120 +1,155 @@
-Return-Path: <stable+bounces-183264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB32BB7769
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:07:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7979ABB779F
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B991B346D7E
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:07:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71F5B4EDACA
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F5735962;
-	Fri,  3 Oct 2025 16:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B77429E0E5;
+	Fri,  3 Oct 2025 16:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FFEI7wj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXOD/weF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E069829BDB5;
-	Fri,  3 Oct 2025 16:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C7435962;
+	Fri,  3 Oct 2025 16:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759507652; cv=none; b=VZymU//Gge5V2hCf2BNL43koqHu+M4tHH0pylYdGZzWfsv82AVIWuQ3UKHNBKK5JdhRXsx/d0f6xYurf3slsJmwDECDdmRBtAQFmGj8a7YTstOle5FGP/yLDeb+cPVcWFuN+SS6b+jDtHC34fljB/m8IkQBd01puCnsIx4BvQac=
+	t=1759507726; cv=none; b=aWfkorLFwsaGU9itFC4jVZ53qOdkLdbxLMilxDS319NxOnbSAzLnv51+43BX62F0drYGxpMzIZRoYWpDemWHpTC6WrdXerrznlTDmevBIPxulXFsOaXJjx+o0gjwsskWk5mdivrNfxKfXdgE2NY86ZZDFD+dqb/yGKZmMN9Zns8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759507652; c=relaxed/simple;
-	bh=D7oFl6F7tO4a/hoti1V+WR2s0ehZkL83vLuzGJQXAYQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUkKfv6fcE3ADnmRmmwkwbzdazuJU6gWKjt4Xl5Q8VgONX2tkvtGR35GL+ZdXvkAo4or3sC6qEZ3K7O76gN0a8cY7D8XbDkTY5svrn1IM3pGDK9YRLiJBwZXTXhNrKwuKuOHfFkYZrykoR3LCPrdNjYaql7l97flSKojaMCGIKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FFEI7wj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63614C4CEF5;
-	Fri,  3 Oct 2025 16:07:31 +0000 (UTC)
+	s=arc-20240116; t=1759507726; c=relaxed/simple;
+	bh=TcV7MiW8Fesu8TxlwA3xge3zckML+YWn2RsDatupFwU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cge2FBsnRHFxJgqtZwQ5e7jraQFNYdsF0MqBiBaKh5A8EyS01GxOY6BcCOrVHKmEQazo0iMAq98u7Z7YgHFbkYSx809KA6U2h/yBGXzKi08e1n1OhPa7mZpHpUS4uHAh4sY+y37ZGxKcua+HFEuRhK2tJEloXlCps0WK5ZobH4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXOD/weF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156BDC4CEF5;
+	Fri,  3 Oct 2025 16:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759507651;
-	bh=D7oFl6F7tO4a/hoti1V+WR2s0ehZkL83vLuzGJQXAYQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FFEI7wjxEaCCdqA4epN8cFH3tdciS7dhnhgR/yR3Y/LkvrtCDa8ix23noxj6EFXK
-	 ak3t9aV0A/+xfx3sVZRbvbW0tR+ARgx4239GoPsETdT8Qf+PBVm/27vOPww3NqV4ST
-	 eEZ5pvrrVc7OkNMzwgzF+8eUhBexzYx3XnHVRa/s=
+	s=korg; t=1759507725;
+	bh=TcV7MiW8Fesu8TxlwA3xge3zckML+YWn2RsDatupFwU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CXOD/weF98+ogSfcE7tVf7+YiqBWgH0xh5GOAOS+3SmKM4UyzxeQD/ggFKrzDyPIt
+	 H+/pMF5D7TmfTZFJTqVE8iXu0aMBeVj6NFqons/4s4RL2Yap8THd55fT4EU/laS6dq
+	 pChD25RXCdveOAOxrr9Xo1+oflQbneYQnMHB9MMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: [PATCH 6.16 12/14] media: iris: Fix memory leak by freeing untracked persist buffer
-Date: Fri,  3 Oct 2025 18:05:46 +0200
-Message-ID: <20251003160353.060321369@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org
+Subject: [PATCH 6.12 00/10] 6.12.51-rc1 review
+Date: Fri,  3 Oct 2025 18:05:47 +0200
+Message-ID: <20251003160338.463688162@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251003160352.713189598@linuxfoundation.org>
-References: <20251003160352.713189598@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.51-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.12.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.12.51-rc1
+X-KernelTest-Deadline: 2025-10-05T16:03+00:00
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.12.51 release.
+There are 10 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sun, 05 Oct 2025 16:02:25 +0000.
+Anything received after that time might be too late.
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.51-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+and the diffstat can be found below.
 
-commit 02a24f13b3a1d9da9f3de56aa5fdb7cc1fe167a2 upstream.
+thanks,
 
-One internal buffer which is allocated only once per session was not
-being freed during session close because it was not being tracked as
-part of internal buffer list which resulted in a memory leak.
+greg k-h
 
-Add the necessary logic to explicitly free the untracked internal buffer
-during session close to ensure all allocated memory is released
-properly.
+-------------
+Pseudo-Shortlog of commits:
 
-Fixes: 73702f45db81 ("media: iris: allocate, initialize and queue internal buffers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/media/platform/qcom/iris/iris_buffer.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.12.51-rc1
 
---- a/drivers/media/platform/qcom/iris/iris_buffer.c
-+++ b/drivers/media/platform/qcom/iris/iris_buffer.c
-@@ -410,6 +410,16 @@ static int iris_destroy_internal_buffers
- 		}
- 	}
- 
-+	if (force) {
-+		buffers = &inst->buffers[BUF_PERSIST];
-+
-+		list_for_each_entry_safe(buf, next, &buffers->list, list) {
-+			ret = iris_destroy_internal_buffer(inst, buf);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
- 	return 0;
- }
- 
+Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+    ASoC: qcom: audioreach: fix potential null pointer dereference
+
+Matvey Kovalev <matvey.kovalev@ispras.ru>
+    wifi: ath11k: fix NULL dereference in ath11k_qmi_m3_load()
+
+Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+    mm: swap: check for stable address space before operating on the VMA
+
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+    media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID
+
+Larshin Sergey <Sergey.Larshin@kaspersky.com>
+    media: rc: fix races with imon_disconnect()
+
+Duoming Zhou <duoming@zju.edu.cn>
+    media: tuner: xc5000: Fix use-after-free in xc5000_release
+
+Duoming Zhou <duoming@zju.edu.cn>
+    media: b2c2: Fix use-after-free causing by irq_check_work in flexcop_pci_remove
+
+Wang Haoran <haoranwangsec@gmail.com>
+    scsi: target: target_core_configfs: Add length check to avoid buffer overflow
+
+Kees Cook <kees@kernel.org>
+    gcc-plugins: Remove TODO_verify_il for GCC >= 16
+
+Breno Leitao <leitao@debian.org>
+    crypto: sha256 - fix crash at kexec
+
+
+-------------
+
+Diffstat:
+
+ Makefile                              |  4 +-
+ drivers/media/pci/b2c2/flexcop-pci.c  |  2 +-
+ drivers/media/rc/imon.c               | 27 +++++++++----
+ drivers/media/tuners/xc5000.c         |  2 +-
+ drivers/media/usb/uvc/uvc_driver.c    | 73 ++++++++++++++++++++++-------------
+ drivers/media/usb/uvc/uvcvideo.h      |  2 +
+ drivers/net/wireless/ath/ath11k/qmi.c |  2 +-
+ drivers/target/target_core_configfs.c |  2 +-
+ include/crypto/sha256_base.h          |  2 +-
+ mm/swapfile.c                         |  3 ++
+ scripts/gcc-plugins/gcc-common.h      |  7 ++++
+ sound/soc/qcom/qdsp6/topology.c       |  4 +-
+ 12 files changed, 87 insertions(+), 43 deletions(-)
 
 
 
