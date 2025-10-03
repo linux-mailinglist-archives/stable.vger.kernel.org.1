@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-183285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFE1BB77E6
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:11:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20173BB778A
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7686B4850E8
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:08:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A3DC19E4F3E
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241B229D27F;
-	Fri,  3 Oct 2025 16:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B5E29D26D;
+	Fri,  3 Oct 2025 16:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2stGqSW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqTcwQoi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D498826E6FA;
-	Fri,  3 Oct 2025 16:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF6D35962;
+	Fri,  3 Oct 2025 16:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759507722; cv=none; b=GTWDBzAa5Z8BM+QS+OLTuwQoeLc1bfDVW5bK84vkYLzbbx5uQ5pTYnbGmsb0kHnIl43mzaG7RWU4oI3lMhmn3mVAswuHx3FeEKYOFrM2S4EjMrJ6nI1pYcOJuFCN4LPYFUbGriwWoff1ywkCCWsdKY+fUFPwnAlNu6c+u03wOP0=
+	t=1759507697; cv=none; b=asNHNL5E/KpVErkNvfHRVg7cSmtxMdRsptNmrfq/Tm9N8enV6mJNX4kKiEzinrglWoeJJ8vp8pw69g2p0li5Nl8QlpnW4QczcLaEVO+AAS9lxOhGKBckp2IZxUdQhKGCcStSW9RzIZFuWdopYL1NTSCexGSBeM9glB+LSfdodvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759507722; c=relaxed/simple;
-	bh=FD0td7vmOCVqcXAbw50bD7Xt46dTlSQl34tc+hJRDvM=;
+	s=arc-20240116; t=1759507697; c=relaxed/simple;
+	bh=UkLAhO4tHT/8KG+iyMhRMPIPjMrq7C4M9yBXwFGq0uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ix3vj7YFtfrLW3V2koKK2/urjAOjCV0ugdPFKuGa6uTnUdHR4G+w0DElpByztrY4v9PZuGtRHWtlvmE1ytZLSeXOMjplu5R4aWhbrLEd/GHOfhT5MWc9upu8uwrfT2egNQpbUbU4KyB77RvzWBfJlmR15zETFmFMBCMUPD7YxTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2stGqSW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531EBC4CEF5;
-	Fri,  3 Oct 2025 16:08:42 +0000 (UTC)
+	 MIME-Version; b=TDd4lheHSVUpWBNGVNT6UZmwDxhF0wjXVkwLB0V00hwGS+ONpkXvnFIAXEoYPvzaGW455XTlDX1sbQiJTiU3sQa+FekEe8c6Jm7tcp6Td+RqChP8qIF6BhYvS9FmilhTqQRkbRnyoiE8PnLHOT4+i/s3mI8OfhG2uQtWcE+G1zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqTcwQoi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7184C4CEF5;
+	Fri,  3 Oct 2025 16:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759507722;
-	bh=FD0td7vmOCVqcXAbw50bD7Xt46dTlSQl34tc+hJRDvM=;
+	s=korg; t=1759507697;
+	bh=UkLAhO4tHT/8KG+iyMhRMPIPjMrq7C4M9yBXwFGq0uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2stGqSW3aqyle+XG/pSlkikZxO1HVX21HkChydcU/Z5AvwNEXceoqzN8Y64ukpjp
-	 yW5lTthIAskbNyPo0bZMm0MdkMUelpjn8OOAsDwFAuZ5Q1LZkyp3YvTeeeUxhSDzKX
-	 r657R5gBy9mAXSkV7ydix4YCoaxLEgFlG7SemhGU=
+	b=cqTcwQoi8B1S1rV3F4sKDS9AEMRn8lMl8Twboi+bkj3O7pogol+EmWRNXDvIMi5pP
+	 umM11m1laENY24TpwwzI7ExFqoOttU8D67ywm5Znh1OG2tVD6MstiiHYuU+mbMHnYP
+	 XtJUn+J2PJumOTqGeDs7fh0t2gWESllKG9a7b7vM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matvey Kovalev <matvey.kovalev@ispras.ru>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.12 09/10] wifi: ath11k: fix NULL dereference in ath11k_qmi_m3_load()
-Date: Fri,  3 Oct 2025 18:05:56 +0200
-Message-ID: <20251003160338.729520699@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 10/10] ASoC: qcom: audioreach: fix potential null pointer dereference
+Date: Fri,  3 Oct 2025 18:05:57 +0200
+Message-ID: <20251003160338.756682185@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003160338.463688162@linuxfoundation.org>
 References: <20251003160338.463688162@linuxfoundation.org>
@@ -67,41 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matvey Kovalev <matvey.kovalev@ispras.ru>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 3fd2ef2ae2b5c955584a3bee8e83ae7d7a98f782 upstream.
+commit 8318e04ab2526b155773313b66a1542476ce1106 upstream.
 
-If ab->fw.m3_data points to data, then fw pointer remains null.
-Further, if m3_mem is not allocated, then fw is dereferenced to be
-passed to ath11k_err function.
+It is possible that the topology parsing function
+audioreach_widget_load_module_common() could return NULL or an error
+pointer. Add missing NULL check so that we do not dereference it.
 
-Replace fw->size by m3_len.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 7db88b962f06 ("wifi: ath11k: add firmware-2.bin support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matvey Kovalev <matvey.kovalev@ispras.ru>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250917192020.1340-1-matvey.kovalev@ispras.ru
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Stable@vger.kernel.org
+Fixes: 36ad9bf1d93d ("ASoC: qdsp6: audioreach: add topology support")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250825101247.152619-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/qdsp6/topology.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2550,7 +2550,7 @@ static int ath11k_qmi_m3_load(struct ath
- 					   GFP_KERNEL);
- 	if (!m3_mem->vaddr) {
- 		ath11k_err(ab, "failed to allocate memory for M3 with size %zu\n",
--			   fw->size);
-+			   m3_len);
- 		ret = -ENOMEM;
- 		goto out;
- 	}
+--- a/sound/soc/qcom/qdsp6/topology.c
++++ b/sound/soc/qcom/qdsp6/topology.c
+@@ -587,8 +587,8 @@ static int audioreach_widget_load_module
+ 		return PTR_ERR(cont);
+ 
+ 	mod = audioreach_parse_common_tokens(apm, cont, &tplg_w->priv, w);
+-	if (IS_ERR(mod))
+-		return PTR_ERR(mod);
++	if (IS_ERR_OR_NULL(mod))
++		return mod ? PTR_ERR(mod) : -ENODEV;
+ 
+ 	dobj = &w->dobj;
+ 	dobj->private = mod;
 
 
 
