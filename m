@@ -1,432 +1,200 @@
-Return-Path: <stable+bounces-183228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66847BB7078
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 15:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FE4BB705D
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 15:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BAC189EBF3
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 13:37:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5528E188D843
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 13:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA8117C21B;
-	Fri,  3 Oct 2025 13:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7946D1F03D7;
+	Fri,  3 Oct 2025 13:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Ua+yTS4T"
 X-Original-To: stable@vger.kernel.org
-Received: from lankhorst.se (lankhorst.se [141.105.120.124])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED24B15E8B;
-	Fri,  3 Oct 2025 13:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3421EE7DC;
+	Fri,  3 Oct 2025 13:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759498596; cv=none; b=ALeCich//6taV3CQPtnecWX7fhZp8W3Pu3N+Bru2jsbASwdZFPLgRPu3Y+AOooJVgd8SofIAnN5D+LVta6cyTctcAPi7R89Y5AVrAp8n87LHlQWgfugoXrrKTLDIteZAqYCcny/8E3RQhF1mX5d+A4tRHHmAklZ8103N0qtpF/A=
+	t=1759498395; cv=none; b=u5AKfqolZcrbIPceEpWtMG9+ECRPqygF7+UvUfPnFWEZwupMWabEdYLti3Nh6GOKkTBUnRACAHYcJ5Rdm5Amyh7kMF56xVyuBWLsSISYTNyRuiVyhphjFdkTdXE1++6xrzgFR2WXxu9gT7v2HYh6vTAqBYJGXxAlnL0xnmeCXB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759498596; c=relaxed/simple;
-	bh=DZIayvB4sttGe6Rsea8XfTAkQV2J1p/HCN8C89WFSvA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kfk/xeDxp18Xa+gUfbjEaGWU/wDxOootbOGb4foMayCQ7Iss95Xca+Kk7Cd9tJf9vpn+mUgInXuXYnSvkS84HpnBCJgA6p0rSb1iVSXrE8J5GeCE2YgPquJlSrSSCrNDacAcxXtJWmq8p8E/EnQdovQlfy1Xtz1CNeakVVAc53k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se; spf=pass smtp.mailfrom=lankhorst.se; arc=none smtp.client-ip=141.105.120.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lankhorst.se
-Message-ID: <799a4e7e-076d-4a9d-888d-69f4e2e89520@lankhorst.se>
-Date: Fri, 3 Oct 2025 15:29:22 +0200
+	s=arc-20240116; t=1759498395; c=relaxed/simple;
+	bh=Irk3t8nFf/aTjQgzWVzYN3awPzS0XCH6TsYfkakhoLQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OzwhoH0/K8t8yD7mxEgGG0QGqHC8kBgjx5UhZnJ6XeIU8SfmIZYa2nE5luoGhd/mpYEFwAUbxpD+vFrLi/fNh4QmrZxnfr7DflDGFYJx7eRKI51L1G1OyG2KieYBAJZpmqNuq+Ovy/U/Z6YvsJSNhFsMnLBf8r0W01YIYcYLaWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Ua+yTS4T; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id CB8F9C7A;
+	Fri,  3 Oct 2025 15:31:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1759498300;
+	bh=Irk3t8nFf/aTjQgzWVzYN3awPzS0XCH6TsYfkakhoLQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ua+yTS4T0diRNc63DUkdB+LhCgfV2OdWzdxJF0mw/3otgBNiyn7ImWxMVwpEL+0jk
+	 kK/DvPkw27Sb2GR9R9qaDagCbn9ls8b4noWH8JPhjuiZypsf2lwGVTqTkSXt+s8rms
+	 du6BDxr/KKuBQCSVtZ5G8vMpcXhao8Ca2ZU+DcAc=
+Date: Fri, 3 Oct 2025 16:33:04 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Alexey Charkov <alchark@gmail.com>
+Cc: Dragan Simic <dsimic@manjaro.org>,
+	Alexander Shiyan <eagle.alexander923@gmail.com>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>, devicetree@vger.kernel.org,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] arm64: dts: rockchip: Fix broken tsadc pinctrl binding
+ for rk3588
+Message-ID: <20251003133304.GA21023@pendragon.ideasonboard.com>
+References: <20250124052611.3705-1-eagle.alexander923@gmail.com>
+ <CABjd4YwA8P9LVuDviO6xydkHpuuOY7XT0pk1oa+FDqOo=uZN4A@mail.gmail.com>
+ <a76f315f023a3f8f5435e0681119b4eb@manjaro.org>
+ <CABjd4Ywh_AkbXHonx-8vL-hNY5LMLJge5e4oqxvUG+qe6OF-Og@mail.gmail.com>
+ <61b494b209d7360d0f36adbf6d5443a4@manjaro.org>
+ <CABjd4Yx0p0B=e00MjCpDDq8Z=0FtM0s9EN86WdvRimt-_+kh2w@mail.gmail.com>
+ <CABjd4Yy14bpjzvFyc8et-=pmds5uwzfxNqcs7L=+XRXBogZEsQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] devcoredump: Fix circular locking dependency with
- devcd->mutex.
-To: linux-kernel@vger.kernel.org
-Cc: intel-xe@lists.freedesktop.org, Mukesh Ojha <quic_mojha@quicinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Johannes Berg <johannes@sipsolutions.net>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- stable@vger.kernel.org, Matthew Brost <matthew.brost@intel.com>
-References: <20250723142416.1020423-1-dev@lankhorst.se>
-Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <20250723142416.1020423-1-dev@lankhorst.se>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABjd4Yy14bpjzvFyc8et-=pmds5uwzfxNqcs7L=+XRXBogZEsQ@mail.gmail.com>
 
-Ping?
+On Fri, Jan 24, 2025 at 11:44:34PM +0400, Alexey Charkov wrote:
+> On Fri, Jan 24, 2025 at 9:23 PM Alexey Charkov <alchark@gmail.com> wrote:
+> > On Fri, Jan 24, 2025 at 2:37 PM Dragan Simic <dsimic@manjaro.org> wrote:
+> > > On 2025-01-24 11:25, Alexey Charkov wrote:
+> > > > On Fri, Jan 24, 2025 at 2:06 PM Dragan Simic <dsimic@manjaro.org>
+> > > > wrote:
+> > > >> On 2025-01-24 09:33, Alexey Charkov wrote:
+> > > >> > On Fri, Jan 24, 2025 at 9:26 AM Alexander Shiyan
+> > > >> > <eagle.alexander923@gmail.com> wrote:
+> > > >> >>
+> > > >> >> There is no pinctrl "gpio" and "otpout" (probably designed as
+> > > >> >> "output")
+> > > >> >> handling in the tsadc driver.
+> > > >> >> Let's use proper binding "default" and "sleep".
+> > > >> >
+> > > >> > This looks reasonable, however I've tried it on my Radxa Rock 5C and
+> > > >> > the driver still doesn't claim GPIO0 RK_PA1 even with this change. As
+> > > >> > a result, a simulated thermal runaway condition (I've changed the
+> > > >> > tshut temperature to 65000 and tshut mode to 1) doesn't trigger a PMIC
+> > > >> > reset, even though a direct `gpioset 0 1=0` does.
+> > > >> >
+> > > >> > Are any additional changes needed to the driver itself?
+> > > >>
+> > > >> I've been digging through this patch the whole TSADC/OTP thing in the
+> > > >> last couple of hours, and AFAIK some parts of the upstream driver are
+> > > >> still missing, in comparison with the downstream driver.
+> > > >>
+> > > >> I've got some small suggestions for the patch itself, but the issue
+> > > >> you observed is obviously of higher priority, and I've singled it out
+> > > >> as well while digging through the code.
+> > > >>
+> > > >> Could you, please, try the patch below quickly, to see is it going to
+> > > >> fix the issue you observed?  I've got some "IRL stuff" to take care of
+> > > >> today, so I can't test it myself, and it would be great to know is it
+> > > >> the right path to the proper fix.
+> > > >>
+> > > >> diff --git i/drivers/thermal/rockchip_thermal.c
+> > > >> w/drivers/thermal/rockchip_thermal.c
+> > > >> index f551df48eef9..62f0e14a8d98 100644
+> > > >> --- i/drivers/thermal/rockchip_thermal.c
+> > > >> +++ w/drivers/thermal/rockchip_thermal.c
+> > > >> @@ -1568,6 +1568,11 @@ static int rockchip_thermal_probe(struct
+> > > >> platform_device *pdev)
+> > > >>          thermal->chip->initialize(thermal->grf, thermal->regs,
+> > > >>                                    thermal->tshut_polarity);
+> > > >>
+> > > >> +       if (thermal->tshut_mode == TSHUT_MODE_GPIO)
+> > > >> +               pinctrl_select_default_state(dev);
+> > > >> +       else
+> > > >> +               pinctrl_select_sleep_state(dev);
+> > > >
+> > > > I believe no 'else' block is needed here, because if tshut_mode is not
+> > > > TSHUT_MODE_GPIO then the TSADC doesn't use this pin at all, so there's
+> > > > no reason for the driver to mess with its pinctrl state. I'd rather
+> > > > put a mirroring block to put the pin back to its 'sleep' state in the
+> > > > removal function for the TSHUT_MODE_GPIO case.
+> > >
+> > > You're right, but the "else block" is what the downstream driver does,
+> >
+> > Does it though? It only handles the TSHUT_MODE_GPIO case as far as I
+> > can tell (or TSHUT_MODE_OTP in downstream driver lingo) [1]
+> >
+> > [1] https://github.com/radxa/kernel/blob/edb3eeeaa4643ecac6f4185d6d391c574735fca1/drivers/thermal/rockchip_thermal.c#L2564
+> >
+> > > so I think it's better to simply stay on the safe side and follow that
+> > > logic in the upstream driver.  Is it really needed?  Perhaps not, but
+> > > it also shouldn't hurt.
+> > >
+> > > > Will try and revert.
+> > >
+> > > Awesome, thanks!
+> > >
+> > > > P.S. Just looked at the downstream driver, and it actually calls
+> > > > TSHUT_MODE_GPIO TSHUT_MODE_OTP instead, so it seems that "otpout" was
+> > > > not a typo in the first place. So maybe the right approach here is not
+> > > > to change the device tree but rather fix the "gpio" / "otpout" pinctrl
+> > > > state handling in the driver.
+> > >
+> > > Indeed, "otpout" wasn't a typo, and I've already addressed that in my
+> > > comments to Alexander's patch.  Will send that response a bit later.
+> > >
+> > > I think it's actually better to accept the approach in Alexander's
+> > > patch, because the whole thing applies to other Rockchip SoCs as well,
+> > > not just to the RK3588(S).
+> >
+> > Anyway, I've just tried it after including the changes below, and
+> > while /sys/kernel/debug/pinctrl/pinctrl-handles shows the expected
+> > pinctrls under tsadc, the driver still doesn't seem to be triggering a
+> > PMIC reset. Weird. Any thoughts welcome.
+> 
+> I found the culprit. "otpout" (or "default" if we follow Alexander's
+> suggested approach) pinctrl state should refer to the &tsadc_shut_org
+> config instead of &tsadc_shut - then the PMIC reset works.
 
-Den 2025-07-23 kl. 16:24, skrev Maarten Lankhorst:
-> The original code causes a circular locking dependency found by lockdep.
-> 
-> ======================================================
-> WARNING: possible circular locking dependency detected
-> 6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 Tainted: G S   U
-> ------------------------------------------------------
-> xe_fault_inject/5091 is trying to acquire lock:
-> ffff888156815688 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}, at: __flush_work+0x25d/0x660
-> 
-> but task is already holding lock:
-> 
-> ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
-> which lock already depends on the new lock.
-> the existing dependency chain (in reverse order) is:
-> -> #2 (&devcd->mutex){+.+.}-{3:3}:
->        mutex_lock_nested+0x4e/0xc0
->        devcd_data_write+0x27/0x90
->        sysfs_kf_bin_write+0x80/0xf0
->        kernfs_fop_write_iter+0x169/0x220
->        vfs_write+0x293/0x560
->        ksys_write+0x72/0xf0
->        __x64_sys_write+0x19/0x30
->        x64_sys_call+0x2bf/0x2660
->        do_syscall_64+0x93/0xb60
->        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> -> #1 (kn->active#236){++++}-{0:0}:
->        kernfs_drain+0x1e2/0x200
->        __kernfs_remove+0xae/0x400
->        kernfs_remove_by_name_ns+0x5d/0xc0
->        remove_files+0x54/0x70
->        sysfs_remove_group+0x3d/0xa0
->        sysfs_remove_groups+0x2e/0x60
->        device_remove_attrs+0xc7/0x100
->        device_del+0x15d/0x3b0
->        devcd_del+0x19/0x30
->        process_one_work+0x22b/0x6f0
->        worker_thread+0x1e8/0x3d0
->        kthread+0x11c/0x250
->        ret_from_fork+0x26c/0x2e0
->        ret_from_fork_asm+0x1a/0x30
-> -> #0 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}:
->        __lock_acquire+0x1661/0x2860
->        lock_acquire+0xc4/0x2f0
->        __flush_work+0x27a/0x660
->        flush_delayed_work+0x5d/0xa0
->        dev_coredump_put+0x63/0xa0
->        xe_driver_devcoredump_fini+0x12/0x20 [xe]
->        devm_action_release+0x12/0x30
->        release_nodes+0x3a/0x120
->        devres_release_all+0x8a/0xd0
->        device_unbind_cleanup+0x12/0x80
->        device_release_driver_internal+0x23a/0x280
->        device_driver_detach+0x14/0x20
->        unbind_store+0xaf/0xc0
->        drv_attr_store+0x21/0x50
->        sysfs_kf_write+0x4a/0x80
->        kernfs_fop_write_iter+0x169/0x220
->        vfs_write+0x293/0x560
->        ksys_write+0x72/0xf0
->        __x64_sys_write+0x19/0x30
->        x64_sys_call+0x2bf/0x2660
->        do_syscall_64+0x93/0xb60
->        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> other info that might help us debug this:
-> Chain exists of: (work_completion)(&(&devcd->del_wk)->work) --> kn->active#236 --> &devcd->mutex
->  Possible unsafe locking scenario:
->        CPU0                    CPU1
->        ----                    ----
->   lock(&devcd->mutex);
->                                lock(kn->active#236);
->                                lock(&devcd->mutex);
->   lock((work_completion)(&(&devcd->del_wk)->work));
->  *** DEADLOCK ***
-> 5 locks held by xe_fault_inject/5091:
->  #0: ffff8881129f9488 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x72/0xf0
->  #1: ffff88810c755078 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x123/0x220
->  #2: ffff8881054811a0 (&dev->mutex){....}-{3:3}, at: device_release_driver_internal+0x55/0x280
->  #3: ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
->  #4: ffffffff8359e020 (rcu_read_lock){....}-{1:2}, at: __flush_work+0x72/0x660
-> stack backtrace:
-> CPU: 14 UID: 0 PID: 5091 Comm: xe_fault_inject Tainted: G S   U              6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 PREEMPT_{RT,(lazy)}
-> Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
-> Hardware name: Micro-Star International Co., Ltd. MS-7D25/PRO Z690-A DDR4(MS-7D25), BIOS 1.10 12/13/2021
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x91/0xf0
->  dump_stack+0x10/0x20
->  print_circular_bug+0x285/0x360
->  check_noncircular+0x135/0x150
->  ? register_lock_class+0x48/0x4a0
->  __lock_acquire+0x1661/0x2860
->  lock_acquire+0xc4/0x2f0
->  ? __flush_work+0x25d/0x660
->  ? mark_held_locks+0x46/0x90
->  ? __flush_work+0x25d/0x660
->  __flush_work+0x27a/0x660
->  ? __flush_work+0x25d/0x660
->  ? trace_hardirqs_on+0x1e/0xd0
->  ? __pfx_wq_barrier_func+0x10/0x10
->  flush_delayed_work+0x5d/0xa0
->  dev_coredump_put+0x63/0xa0
->  xe_driver_devcoredump_fini+0x12/0x20 [xe]
->  devm_action_release+0x12/0x30
->  release_nodes+0x3a/0x120
->  devres_release_all+0x8a/0xd0
->  device_unbind_cleanup+0x12/0x80
->  device_release_driver_internal+0x23a/0x280
->  ? bus_find_device+0xa8/0xe0
->  device_driver_detach+0x14/0x20
->  unbind_store+0xaf/0xc0
->  drv_attr_store+0x21/0x50
->  sysfs_kf_write+0x4a/0x80
->  kernfs_fop_write_iter+0x169/0x220
->  vfs_write+0x293/0x560
->  ksys_write+0x72/0xf0
->  __x64_sys_write+0x19/0x30
->  x64_sys_call+0x2bf/0x2660
->  do_syscall_64+0x93/0xb60
->  ? __f_unlock_pos+0x15/0x20
->  ? __x64_sys_getdents64+0x9b/0x130
->  ? __pfx_filldir64+0x10/0x10
->  ? do_syscall_64+0x1a2/0xb60
->  ? clear_bhb_loop+0x30/0x80
->  ? clear_bhb_loop+0x30/0x80
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> RIP: 0033:0x76e292edd574
-> Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
-> RSP: 002b:00007fffe247a828 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000076e292edd574
-> RDX: 000000000000000c RSI: 00006267f6306063 RDI: 000000000000000b
-> RBP: 000000000000000c R08: 000076e292fc4b20 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000202 R12: 00006267f6306063
-> R13: 000000000000000b R14: 00006267e6859c00 R15: 000076e29322a000
->  </TASK>
-> xe 0000:03:00.0: [drm] Xe device coredump has been deleted.
-> 
-> Fixes: 01daccf74832 ("devcoredump : Serialize devcd_del work")
-> Cc: Mukesh Ojha <quic_mojha@quicinc.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: <stable@vger.kernel.org> # v6.1+
-> Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> ---
->  drivers/base/devcoredump.c | 136 ++++++++++++++++++++++---------------
->  1 file changed, 83 insertions(+), 53 deletions(-)
-> 
-> diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
-> index 03a39c417dc41..ad4bddde12ccb 100644
-> --- a/drivers/base/devcoredump.c
-> +++ b/drivers/base/devcoredump.c
-> @@ -23,50 +23,46 @@ struct devcd_entry {
->  	void *data;
->  	size_t datalen;
->  	/*
-> -	 * Here, mutex is required to serialize the calls to del_wk work between
-> -	 * user/kernel space which happens when devcd is added with device_add()
-> -	 * and that sends uevent to user space. User space reads the uevents,
-> -	 * and calls to devcd_data_write() which try to modify the work which is
-> -	 * not even initialized/queued from devcoredump.
-> +	 * There are 2 races for which mutex is required.
->  	 *
-> +	 * The first race is between device creation and userspace writing to
-> +	 * schedule immediately destruction.
->  	 *
-> +	 * This race is handled by arming the timer before device creation, but
-> +	 * when device creation fails the timer still exists.
->  	 *
-> -	 *        cpu0(X)                                 cpu1(Y)
-> +	 * To solve this, hold the mutex during device_add(), and set
-> +	 * init_completed on success before releasing the mutex.
->  	 *
-> -	 *        dev_coredump() uevent sent to user space
-> -	 *        device_add()  ======================> user space process Y reads the
-> -	 *                                              uevents writes to devcd fd
-> -	 *                                              which results into writes to
-> +	 * That way the timer will never fire until device_add() is called,
-> +	 * it will do nothing if init_completed is not set. The timer is also
-> +	 * cancelled in that case.
->  	 *
-> -	 *                                             devcd_data_write()
-> -	 *                                               mod_delayed_work()
-> -	 *                                                 try_to_grab_pending()
-> -	 *                                                   timer_delete()
-> -	 *                                                     debug_assert_init()
-> -	 *       INIT_DELAYED_WORK()
-> -	 *       schedule_delayed_work()
-> -	 *
-> -	 *
-> -	 * Also, mutex alone would not be enough to avoid scheduling of
-> -	 * del_wk work after it get flush from a call to devcd_free()
-> -	 * mentioned as below.
-> -	 *
-> -	 *	disabled_store()
-> -	 *        devcd_free()
-> -	 *          mutex_lock()             devcd_data_write()
-> -	 *          flush_delayed_work()
-> -	 *          mutex_unlock()
-> -	 *                                   mutex_lock()
-> -	 *                                   mod_delayed_work()
-> -	 *                                   mutex_unlock()
-> -	 * So, delete_work flag is required.
-> +	 * The second race involves multiple parallel invocations of devcd_free(),
-> +	 * add a deleted flag so only 1 can call the destructor.
->  	 */
->  	struct mutex mutex;
-> -	bool delete_work;
-> +	bool init_completed, deleted;
->  	struct module *owner;
->  	ssize_t (*read)(char *buffer, loff_t offset, size_t count,
->  			void *data, size_t datalen);
->  	void (*free)(void *data);
-> +	/*
-> +	 * If nothing interferes and device_add() was returns success,
-> +	 * del_wk will destroy the device after the timer fires.
-> +	 *
-> +	 * Multiple userspace processes can interfere in the working of the timer:
-> +	 * - Writing to the coredump will reschedule the timer to run immediately,
-> +	 *   if still armed.
-> +	 *
-> +	 *   This is handled by using "if (cancel_delayed_work()) {
-> +	 *   schedule_delayed_work() }", to prevent re-arming after having
-> +	 *   been previously fired.
-> +	 * - Writing to /sys/class/devcoredump/disabled will destroy the
-> +	 *   coredump synchronously.
-> +	 *   This is handled by using disable_delayed_work_sync(), and then
-> +	 *   checking if deleted flag is set with &devcd->mutex held.
-> +	 */
->  	struct delayed_work del_wk;
->  	struct device *failing_dev;
->  };
-> @@ -95,14 +91,27 @@ static void devcd_dev_release(struct device *dev)
->  	kfree(devcd);
->  }
->  
-> +static void __devcd_del(struct devcd_entry *devcd)
-> +{
-> +	devcd->deleted = true;
-> +	device_del(&devcd->devcd_dev);
-> +	put_device(&devcd->devcd_dev);
-> +}
-> +
->  static void devcd_del(struct work_struct *wk)
->  {
->  	struct devcd_entry *devcd;
-> +	bool init_completed;
->  
->  	devcd = container_of(wk, struct devcd_entry, del_wk.work);
->  
-> -	device_del(&devcd->devcd_dev);
-> -	put_device(&devcd->devcd_dev);
-> +	/* devcd->mutex serializes against dev_coredumpm_timeout */
-> +	mutex_lock(&devcd->mutex);
-> +	init_completed = devcd->init_completed;
-> +	mutex_unlock(&devcd->mutex);
-> +
-> +	if (init_completed)
-> +		__devcd_del(devcd);
->  }
->  
->  static ssize_t devcd_data_read(struct file *filp, struct kobject *kobj,
-> @@ -122,12 +131,12 @@ static ssize_t devcd_data_write(struct file *filp, struct kobject *kobj,
->  	struct device *dev = kobj_to_dev(kobj);
->  	struct devcd_entry *devcd = dev_to_devcd(dev);
->  
-> -	mutex_lock(&devcd->mutex);
-> -	if (!devcd->delete_work) {
-> -		devcd->delete_work = true;
-> -		mod_delayed_work(system_wq, &devcd->del_wk, 0);
-> -	}
-> -	mutex_unlock(&devcd->mutex);
-> +	/*
-> +	 * Although it's tempting to use mod_delayed work here,
-> +	 * that will cause a reschedule if the timer already fired.
-> +	 */
-> +	if (cancel_delayed_work(&devcd->del_wk))
-> +		schedule_delayed_work(&devcd->del_wk, 0);
->  
->  	return count;
->  }
-> @@ -151,11 +160,21 @@ static int devcd_free(struct device *dev, void *data)
->  {
->  	struct devcd_entry *devcd = dev_to_devcd(dev);
->  
-> +	/*
-> +	 * To prevent a race with devcd_data_write(), disable work and
-> +	 * complete manually instead.
-> +	 *
-> +	 * We cannot rely on the return value of
-> +	 * disable_delayed_work_sync() here, because it might be in the
-> +	 * middle of a cancel_delayed_work + schedule_delayed_work pair.
-> +	 *
-> +	 * devcd->mutex here guards against multiple parallel invocations
-> +	 * of devcd_free().
-> +	 */
-> +	disable_delayed_work_sync(&devcd->del_wk);
->  	mutex_lock(&devcd->mutex);
-> -	if (!devcd->delete_work)
-> -		devcd->delete_work = true;
-> -
-> -	flush_delayed_work(&devcd->del_wk);
-> +	if (!devcd->deleted)
-> +		__devcd_del(devcd);
->  	mutex_unlock(&devcd->mutex);
->  	return 0;
->  }
-> @@ -179,12 +198,10 @@ static ssize_t disabled_show(const struct class *class, const struct class_attri
->   *                                                                 put_device() <- last reference
->   *             error = fn(dev, data)                           devcd_dev_release()
->   *             devcd_free(dev, data)                           kfree(devcd)
-> - *             mutex_lock(&devcd->mutex);
->   *
->   *
->   * In the above diagram, it looks like disabled_store() would be racing with parallelly
-> - * running devcd_del() and result in memory abort while acquiring devcd->mutex which
-> - * is called after kfree of devcd memory after dropping its last reference with
-> + * running devcd_del() and result in memory abort after dropping its last reference with
->   * put_device(). However, this will not happens as fn(dev, data) runs
->   * with its own reference to device via klist_node so it is not its last reference.
->   * so, above situation would not occur.
-> @@ -374,7 +391,7 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
->  	devcd->read = read;
->  	devcd->free = free;
->  	devcd->failing_dev = get_device(dev);
-> -	devcd->delete_work = false;
-> +	devcd->deleted = false;
->  
->  	mutex_init(&devcd->mutex);
->  	device_initialize(&devcd->devcd_dev);
-> @@ -383,8 +400,14 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
->  		     atomic_inc_return(&devcd_count));
->  	devcd->devcd_dev.class = &devcd_class;
->  
-> -	mutex_lock(&devcd->mutex);
->  	dev_set_uevent_suppress(&devcd->devcd_dev, true);
-> +
-> +	/* devcd->mutex prevents devcd_del() completing until init finishes */
-> +	mutex_lock(&devcd->mutex);
-> +	devcd->init_completed = false;
-> +	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
-> +	schedule_delayed_work(&devcd->del_wk, timeout);
-> +
->  	if (device_add(&devcd->devcd_dev))
->  		goto put_device;
->  
-> @@ -401,13 +424,20 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
->  
->  	dev_set_uevent_suppress(&devcd->devcd_dev, false);
->  	kobject_uevent(&devcd->devcd_dev.kobj, KOBJ_ADD);
-> -	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
-> -	schedule_delayed_work(&devcd->del_wk, timeout);
-> +
-> +	/*
-> +	 * Safe to run devcd_del() now that we are done with devcd_dev.
-> +	 * Alternatively we could have taken a ref on devcd_dev before
-> +	 * dropping the lock.
-> +	 */
-> +	devcd->init_completed = true;
->  	mutex_unlock(&devcd->mutex);
->  	return;
->   put_device:
-> -	put_device(&devcd->devcd_dev);
->  	mutex_unlock(&devcd->mutex);
-> +	cancel_delayed_work_sync(&devcd->del_wk);
-> +	put_device(&devcd->devcd_dev);
-> +
->   put_module:
->  	module_put(owner);
->   free:
+I've recently brought up an RK3588S-based Orange Pi CM5 Base board, made
+of a compute module (CM5, see [1]) and a carrier board (Base, see [2]).
+The carrier board has a reset button which pulls the PMIC_RESET_L signal
+of the CM5 to GND (see page 3 of the schematics in [3]).
 
+With &tsadc_shut_org the reset button has absolutely no effect. With
+&tsadc_shut it resets the board as expected.
+
+Unfortunately the schematics of the CM5 is not available so it's not
+immediately clear what the reset button is connected exactly. The same
+manufacturer sells another board based on the same SoC, the Orange Pi 5B
+([4]) whose full schematics is available ([5]). The board also has a
+reset button pulling a PMIC_RESET_L signal to GND. The signal is pulled
+up to VCC_1V8_S3 and connected to
+
+- RESETB on the PMIC
+- NPOR on the RK3588S
+- TSADC_SHUT (GPIO0_A1) on the RK3588S
+
+[1] http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-CM5.html
+[2] http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-CM5-Board.html
+[3] https://drive.google.com/file/d/1t4WmXGWed8NnS0m2PWE7p5YLiR1dbnvP/view
+[4] http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-5B.html
+[5] https://drive.google.com/file/d/19iPdpAXhA1vFkVOgG5Sz7L6cV8BB6004/view
+
+-- 
+Regards,
+
+Laurent Pinchart
 
