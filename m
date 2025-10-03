@@ -1,393 +1,202 @@
-Return-Path: <stable+bounces-183238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E63BB74F6
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 17:20:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8413BB752B
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 17:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 31D014E753F
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 15:20:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB1A142674F
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 15:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2925F284B42;
-	Fri,  3 Oct 2025 15:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7F828031D;
+	Fri,  3 Oct 2025 15:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qpnGLnZz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OaC8rsrj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2DF1EB195
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 15:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1E31AF0C8
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 15:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759504810; cv=none; b=YuMT+YJJeemDPKcGbzdC1ScjphY1i9oUcAGYOABjbiIHMus34P+X5oKWKSn3MvqXQVmUs9LJSVQW5uE2VvtNpZW3BBfzwNenFttDfwMcGr3EEor7YnNHq3oibYPkGFXzxjF/2JodxxYcoo1f6tD4DObV/ylFq0ZS/3AkIIPcLAY=
+	t=1759505428; cv=none; b=oSsHfRpX3xeJ6KnHmBZ6I4CJ5TYoB5Ai7tWsY57Yk1P2k+3BOOywjK+JN1Cwwajt64ukTUtsdbQcm+1DlNwLeNwAxSiuNob3i6c2Fg33oS2PO1olSuML5Imcy6bUIhbRu+t8Xg/TH4pyU6j6U2JKN1xlbIgMTPfvYZYceeSKDzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759504810; c=relaxed/simple;
-	bh=NiRFQNjGEoli2qE8aUchCbHI3GqMP8N8Z6EtQk4lsmg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYs+WcFf1xpB0Cj7AsuvJKfel3aAZBr97pjjrFS4AjoaSY3OYsMXdRxF1CASfkyUsGnR2NYw/WNsDX7FtViQu9i6f0/esGEXTM3NtXyVhA9pc6/UL2R6W7vyOrQXqvd3G7thg1Hwx3IxZDo3oXnj4zRxfvXM/hzZZeUkvMhXVB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qpnGLnZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4552C4CEF7;
-	Fri,  3 Oct 2025 15:20:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759504809;
-	bh=NiRFQNjGEoli2qE8aUchCbHI3GqMP8N8Z6EtQk4lsmg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpnGLnZzyhMLzakajjdJ+DNEHbPdG83yFuL1nUgDstuQocdsGqQ3FncA7Ne8YZbCP
-	 MiPk7ybPUircNvadscI86PEJ2+muz1rWPjH+tewsyKwRl8qdiVtkwV21UJXSD0ppVO
-	 YDMrNMqhVAdgwonbg8MaFjM9laZeoVXQviBDP7ht5M0FDFotBho+Fd5T6aaCF+XU+e
-	 gl111phJJ+scPo4Vdlg5p4xzxAM9xhqY6Q4F3wZ17VdEAWKoHSR/pnHROCuAePqOC7
-	 rLLqj7LV7lK+o+xFApBy9TXl+TeSIvyT6SjDEwHHqGcKw4W35yXBn3g+N89I3vqTsl
-	 88JcEO99TD7dQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 2/2] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
-Date: Fri,  3 Oct 2025 11:20:05 -0400
-Message-ID: <20251003152005.3176758-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251003152005.3176758-1-sashal@kernel.org>
-References: <2025100340-dwelling-engross-0738@gregkh>
- <20251003152005.3176758-1-sashal@kernel.org>
+	s=arc-20240116; t=1759505428; c=relaxed/simple;
+	bh=6Gj5Pburfupv4j5dEK3lJoGa65Xi7aVs2ZdYFTTXo8o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JRf8tuD5P7eOvliEAZslCeRrPDuJFWaN3fCvpPhFxrr8T6Zne0hcZMP353Yi6+BZNA6dewRw56lONBOO/cXX7sYSqJj9UJsky4E22HUT3iQFzrwU7SOAzqG1R+ILDHtjH7I+NzkeFGvgh+YHzOEVivdUQESQMoZt4YJ7OHUQfz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OaC8rsrj; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45b4d89217aso14995465e9.2
+        for <stable@vger.kernel.org>; Fri, 03 Oct 2025 08:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759505425; x=1760110225; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1ThghlDWAjurOxYC98aHbkMmCDK/KWDP3RpbWxUD1rs=;
+        b=OaC8rsrjnm6kGW8e0axxiHyfZYMD/1DQxZpGh2+fYDRI7UkFgchryg8sOGmCCK0x+J
+         AF9YlsGCr/47bMmaHceMzoUBYsdvDCvfoTlBbeQZPT1WdBjlMzo13rohfOKJKV7H1V8V
+         8Gv6W2654Z9knz7Sn98eSJXwMtEfkstSn9/6z68Nf1LuH/ur8lFoTF4W3g9GkUy+GYv1
+         QuOZtTwheB9aycBKOoBskSB00SGsXxDRDFqib1ivv23DShiQDPtBmXQ4SVQuFBEnf+go
+         RQNA5CY1KoyqmlPl3Ib6SkeVADmcAbSm8RA4chW5a5ulrCCQz0EYGOhtUbsZEqI+k8n7
+         SeWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759505425; x=1760110225;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1ThghlDWAjurOxYC98aHbkMmCDK/KWDP3RpbWxUD1rs=;
+        b=ci7CMx8MCwYyHPiK5F8oPld9utq3sJr7BVI174gFNH8k9tUV6o7KXku7DFA3iXTUul
+         2HjUbHFEaSaVlxmFQjZ36VM2UyrOKlP+3FotTzjRXCL/QYkhZVD39QADE6vsktmfrW9g
+         aotR2pqMYv19oCwQ856hlC/Kzosyt34AibpS+Vxd+XSKEmZPMXKNK+liw6Py2/C4TN9w
+         A0OQJ51Kd7tWY40TSA5+tJOD3cEQz5S4iNt0bjPJcEdfbrHhiLKwUCQDK/GCpVn42Rtl
+         mv30mFKAHiFQGteMFwRcfUy1ZUJI12wCd+jU6qMVIakIwFrnLS3thfz7yfz9B1jAeHJJ
+         dVsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVj2QPpK/hDFPxU+BDjsVoIcf+lpOniU3D8yyKc/p9BWhMuTkRZQMlV4DL/V+eUpEmziST6Ns=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJreFV8gQZ5ce7xwlfvmCIZKVMyxGdZ6sKbRVbQ2oW/KFN2h+z
+	4ekwbNWycw23RATVQAWxHlUgoMpLppa9EXmUk7jJyyQ+js/euF64TRJQ
+X-Gm-Gg: ASbGncsWUpfmln4jQs4xYv+TBevCE509fZabV9c9rNXoUffA3py+oIqM3wTjUrx0n2h
+	HS3Np9SxUDvLSzxDz2xKrkA0fxHsEQxCvwImnY0xK09tqBQtLSSKH+KEnBEOSVWmo95cDCpvMHt
+	0Fznm9y1VQa+tqYpv7GBgIsJTMMdyYIEXIazJeKjXvz+iqQM4D03Thg6LF6mzM4ykDIECjSpY5M
+	p/myAOU+RlsTkkHgpxhwEquhv5mFGgIyfWsns3el5KYc5wcX0OYAG32c8uPxN4wmlW4zVOlq3ct
+	7l4aCeZ7dOYwdfuJ4AXrP86WMVThjPd7KHZQzi+15uYh71hzqKmglB5LRx2JXVyQN26eZvRHmcr
+	f24Xxsyu4DFHRgHI61GPRQmyKyEiABjTIjg88vQZ2CF9diBmzyVRxf8yH8tXO4YvcUM0PmdvlDn
+	P7PsmPRWaCqFzXh8SnBL4+5bNgp6MQNka5HQUyVZoImg==
+X-Google-Smtp-Source: AGHT+IEREfLt3SJY1BFKHzWytZfJ9g4dT9ZMKAjBYAjJwr5+hXtXNDgkIQf10sLtLNpFjlYZ9kvUEA==
+X-Received: by 2002:a05:600c:a319:b0:46e:74cc:42b8 with SMTP id 5b1f17b1804b1-46e74cc4609mr13969235e9.17.1759505424738;
+        Fri, 03 Oct 2025 08:30:24 -0700 (PDT)
+Received: from ?IPV6:2a02:6b6f:e750:1b00:1cfc:9209:4810:3ae5? ([2a02:6b6f:e750:1b00:1cfc:9209:4810:3ae5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f4abcsm8332891f8f.53.2025.10.03.08.30.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Oct 2025 08:30:23 -0700 (PDT)
+Message-ID: <29ac3e02-fb60-47ed-9834-033604744624@gmail.com>
+Date: Fri, 3 Oct 2025 16:30:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
+ do_huge_zero_wp_pmd()
+Content-Language: en-GB
+To: Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>
+Cc: Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, wangkefeng.wang@huawei.com, stable@vger.kernel.org,
+ ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com,
+ baohua@kernel.org, akpm@linux-foundation.org, david@redhat.com
+References: <20251002013825.20448-1-richard.weiyang@gmail.com>
+ <d8467e83-aa89-4f98-b035-210c966ef263@linux.dev>
+ <1286D3DE-8F53-4B64-840F-A598B130DF13@nvidia.com>
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <1286D3DE-8F53-4B64-840F-A598B130DF13@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 3e31a6bc07312b448fad3b45de578471f86f0e77 ]
 
-There is a bug observed when rtw89_core_tx_kick_off_and_wait() tries to
-access already freed skb_data:
+On 03/10/2025 15:08, Zi Yan wrote:
+> On 3 Oct 2025, at 9:49, Lance Yang wrote:
+> 
+>> Hey Wei,
+>>
+>> On 2025/10/2 09:38, Wei Yang wrote:
+>>> We add pmd folio into ds_queue on the first page fault in
+>>> __do_huge_pmd_anonymous_page(), so that we can split it in case of
+>>> memory pressure. This should be the same for a pmd folio during wp
+>>> page fault.
+>>>
+>>> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
+>>> to add it to ds_queue, which means system may not reclaim enough memory
+>>
+>> IIRC, it was commit dafff3f4c850 ("mm: split underused THPs") that
+>> started unconditionally adding all new anon THPs to _deferred_list :)
+>>
+>>> in case of memory pressure even the pmd folio is under used.
+>>>
+>>> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
+>>> folio installation consistent.
+>>>
+>>> Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
+>>
+>> Shouldn't this rather be the following?
+>>
+>> Fixes: dafff3f4c850 ("mm: split underused THPs")
+> 
+> Yes, I agree. In this case, this patch looks more like an optimization
+> for split underused THPs.
+> 
+> One observation on this change is that right after zero pmd wp, the
+> deferred split queue could be scanned, the newly added pmd folio will
+> split since it is all zero except one subpage. This means we probably
+> should allocate a base folio for zero pmd wp and map the rest to zero
+> page at the beginning if split underused THP is enabled to avoid
+> this long trip. The downside is that user app cannot get a pmd folio
+> if it is intended to write data into the entire folio.
+> 
+> Usama might be able to give some insight here.
+> 
 
- BUG: KFENCE: use-after-free write in rtw89_core_tx_kick_off_and_wait drivers/net/wireless/realtek/rtw89/core.c:1110
+Thanks for CCing me Zi!
 
- CPU: 6 UID: 0 PID: 41377 Comm: kworker/u64:24 Not tainted  6.17.0-rc1+ #1 PREEMPT(lazy)
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-20250523-14.fc42 05/23/2025
- Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+hmm I think the downside of not having PMD folio probably outweights the cost of splitting
+a zer-filled page?
+ofcourse I dont have any numbers to back that up, but that would be my initial guess.
 
- Use-after-free write at 0x0000000020309d9d (in kfence-#251):
- rtw89_core_tx_kick_off_and_wait drivers/net/wireless/realtek/rtw89/core.c:1110
- rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
- rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
- rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
- rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.h:141
- rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
- rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
- rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
- process_one_work kernel/workqueue.c:3241
- worker_thread kernel/workqueue.c:3400
- kthread kernel/kthread.c:463
- ret_from_fork arch/x86/kernel/process.c:154
- ret_from_fork_asm arch/x86/entry/entry_64.S:258
+Also:
 
- kfence-#251: 0x0000000056e2393d-0x000000009943cb62, size=232, cache=skbuff_head_cache
+Acked-by: Usama Arif <usamaarif642@gmail.com>
 
- allocated by task 41377 on cpu 6 at 77869.159548s (0.009551s ago):
- __alloc_skb net/core/skbuff.c:659
- __netdev_alloc_skb net/core/skbuff.c:734
- ieee80211_nullfunc_get net/mac80211/tx.c:5844
- rtw89_core_send_nullfunc drivers/net/wireless/realtek/rtw89/core.c:3431
- rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
- rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
- rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
- rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.c:3194
- rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
- rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
- rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
- process_one_work kernel/workqueue.c:3241
- worker_thread kernel/workqueue.c:3400
- kthread kernel/kthread.c:463
- ret_from_fork arch/x86/kernel/process.c:154
- ret_from_fork_asm arch/x86/entry/entry_64.S:258
 
- freed by task 1045 on cpu 9 at 77869.168393s (0.001557s ago):
- ieee80211_tx_status_skb net/mac80211/status.c:1117
- rtw89_pci_release_txwd_skb drivers/net/wireless/realtek/rtw89/pci.c:564
- rtw89_pci_release_tx_skbs.isra.0 drivers/net/wireless/realtek/rtw89/pci.c:651
- rtw89_pci_release_tx drivers/net/wireless/realtek/rtw89/pci.c:676
- rtw89_pci_napi_poll drivers/net/wireless/realtek/rtw89/pci.c:4238
- __napi_poll net/core/dev.c:7495
- net_rx_action net/core/dev.c:7557 net/core/dev.c:7684
- handle_softirqs kernel/softirq.c:580
- do_softirq.part.0 kernel/softirq.c:480
- __local_bh_enable_ip kernel/softirq.c:407
- rtw89_pci_interrupt_threadfn drivers/net/wireless/realtek/rtw89/pci.c:927
- irq_thread_fn kernel/irq/manage.c:1133
- irq_thread kernel/irq/manage.c:1257
- kthread kernel/kthread.c:463
- ret_from_fork arch/x86/kernel/process.c:154
- ret_from_fork_asm arch/x86/entry/entry_64.S:258
-
-It is a consequence of a race between the waiting and the signaling side
-of the completion:
-
-            Waiting thread                            Completing thread
-
-rtw89_core_tx_kick_off_and_wait()
-  rcu_assign_pointer(skb_data->wait, wait)
-  /* start waiting */
-  wait_for_completion_timeout()
-                                                rtw89_pci_tx_status()
-                                                  rtw89_core_tx_wait_complete()
-                                                    rcu_read_lock()
-                                                    /* signals completion and
-                                                     * proceeds further
-                                                     */
-                                                    complete(&wait->completion)
-                                                    rcu_read_unlock()
-                                                  ...
-                                                  /* frees skb_data */
-                                                  ieee80211_tx_status_ni()
-  /* returns (exit status doesn't matter) */
-  wait_for_completion_timeout()
-  ...
-  /* accesses the already freed skb_data */
-  rcu_assign_pointer(skb_data->wait, NULL)
-
-The completing side might proceed and free the underlying skb even before
-the waiting side is fully awoken and run to execution.  Actually the race
-happens regardless of wait_for_completion_timeout() exit status, e.g.
-the waiting side may hit a timeout and the concurrent completing side is
-still able to free the skb.
-
-Skbs which are sent by rtw89_core_tx_kick_off_and_wait() are owned by the
-driver.  They don't come from core ieee80211 stack so no need to pass them
-to ieee80211_tx_status_ni() on completing side.
-
-Introduce a work function which will act as a garbage collector for
-rtw89_tx_wait_info objects and the associated skbs.  Thus no potentially
-heavy locks are required on the completing side.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of TX skbs")
-Cc: stable@vger.kernel.org
-Suggested-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250919210852.823912-2-pchelkin@ispras.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/realtek/rtw89/core.c | 30 +++++++++++++++----
- drivers/net/wireless/realtek/rtw89/core.h | 35 +++++++++++++++++++++--
- drivers/net/wireless/realtek/rtw89/pci.c  |  3 +-
- drivers/net/wireless/realtek/rtw89/ser.c  |  2 ++
- 4 files changed, 61 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 0e4d5679e426c..b506afaaa3ec9 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1050,6 +1050,14 @@ rtw89_core_tx_update_desc_info(struct rtw89_dev *rtwdev,
- 	}
- }
- 
-+static void rtw89_tx_wait_work(struct wiphy *wiphy, struct wiphy_work *work)
-+{
-+	struct rtw89_dev *rtwdev = container_of(work, struct rtw89_dev,
-+						tx_wait_work.work);
-+
-+	rtw89_tx_wait_list_clear(rtwdev);
-+}
-+
- void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel)
- {
- 	u8 ch_dma;
-@@ -1067,6 +1075,8 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *sk
- 	unsigned long time_left;
- 	int ret = 0;
- 
-+	lockdep_assert_wiphy(rtwdev->hw->wiphy);
-+
- 	wait = kzalloc(sizeof(*wait), GFP_KERNEL);
- 	if (!wait) {
- 		rtw89_core_tx_kick_off(rtwdev, qsel);
-@@ -1074,18 +1084,23 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *sk
- 	}
- 
- 	init_completion(&wait->completion);
-+	wait->skb = skb;
- 	rcu_assign_pointer(skb_data->wait, wait);
- 
- 	rtw89_core_tx_kick_off(rtwdev, qsel);
- 	time_left = wait_for_completion_timeout(&wait->completion,
- 						msecs_to_jiffies(timeout));
--	if (time_left == 0)
--		ret = -ETIMEDOUT;
--	else if (!wait->tx_done)
--		ret = -EAGAIN;
- 
--	rcu_assign_pointer(skb_data->wait, NULL);
--	kfree_rcu(wait, rcu_head);
-+	if (time_left == 0) {
-+		ret = -ETIMEDOUT;
-+		list_add_tail(&wait->list, &rtwdev->tx_waits);
-+		wiphy_delayed_work_queue(rtwdev->hw->wiphy, &rtwdev->tx_wait_work,
-+					 RTW89_TX_WAIT_WORK_TIMEOUT);
-+	} else {
-+		if (!wait->tx_done)
-+			ret = -EAGAIN;
-+		rtw89_tx_wait_release(wait);
-+	}
- 
- 	return ret;
- }
-@@ -4810,6 +4825,7 @@ void rtw89_core_stop(struct rtw89_dev *rtwdev)
- 	wiphy_work_cancel(wiphy, &btc->dhcp_notify_work);
- 	wiphy_work_cancel(wiphy, &btc->icmp_notify_work);
- 	cancel_delayed_work_sync(&rtwdev->txq_reinvoke_work);
-+	wiphy_delayed_work_cancel(wiphy, &rtwdev->tx_wait_work);
- 	wiphy_delayed_work_cancel(wiphy, &rtwdev->track_work);
- 	wiphy_delayed_work_cancel(wiphy, &rtwdev->chanctx_work);
- 	wiphy_delayed_work_cancel(wiphy, &rtwdev->coex_act1_work);
-@@ -5034,6 +5050,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
- 		INIT_LIST_HEAD(&rtwdev->scan_info.pkt_list[band]);
- 	}
- 	INIT_LIST_HEAD(&rtwdev->scan_info.chan_list);
-+	INIT_LIST_HEAD(&rtwdev->tx_waits);
- 	INIT_WORK(&rtwdev->ba_work, rtw89_core_ba_work);
- 	INIT_WORK(&rtwdev->txq_work, rtw89_core_txq_work);
- 	INIT_DELAYED_WORK(&rtwdev->txq_reinvoke_work, rtw89_core_txq_reinvoke_work);
-@@ -5044,6 +5061,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
- 	wiphy_delayed_work_init(&rtwdev->coex_rfk_chk_work, rtw89_coex_rfk_chk_work);
- 	wiphy_delayed_work_init(&rtwdev->cfo_track_work, rtw89_phy_cfo_track_work);
- 	wiphy_delayed_work_init(&rtwdev->mcc_prepare_done_work, rtw89_mcc_prepare_done_work);
-+	wiphy_delayed_work_init(&rtwdev->tx_wait_work, rtw89_tx_wait_work);
- 	INIT_DELAYED_WORK(&rtwdev->forbid_ba_work, rtw89_forbid_ba_work);
- 	wiphy_delayed_work_init(&rtwdev->antdiv_work, rtw89_phy_antdiv_work);
- 	rtwdev->txq_wq = alloc_workqueue("rtw89_tx_wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index f505fe6da4a24..e2e90eab15ce0 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3429,9 +3429,12 @@ struct rtw89_phy_rate_pattern {
- 	bool enable;
- };
- 
-+#define RTW89_TX_WAIT_WORK_TIMEOUT msecs_to_jiffies(500)
- struct rtw89_tx_wait_info {
- 	struct rcu_head rcu_head;
-+	struct list_head list;
- 	struct completion completion;
-+	struct sk_buff *skb;
- 	bool tx_done;
- };
- 
-@@ -5802,6 +5805,9 @@ struct rtw89_dev {
- 	/* used to protect rpwm */
- 	spinlock_t rpwm_lock;
- 
-+	struct list_head tx_waits;
-+	struct wiphy_delayed_work tx_wait_work;
-+
- 	struct rtw89_cam_info cam_info;
- 
- 	struct sk_buff_head c2h_queue;
-@@ -6056,6 +6062,26 @@ rtw89_assoc_link_rcu_dereference(struct rtw89_dev *rtwdev, u8 macid)
- 	list_first_entry_or_null(&p->dlink_pool, typeof(*p->links_inst), dlink_schd); \
- })
- 
-+static inline void rtw89_tx_wait_release(struct rtw89_tx_wait_info *wait)
-+{
-+	dev_kfree_skb_any(wait->skb);
-+	kfree_rcu(wait, rcu_head);
-+}
-+
-+static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_tx_wait_info *wait, *tmp;
-+
-+	lockdep_assert_wiphy(rtwdev->hw->wiphy);
-+
-+	list_for_each_entry_safe(wait, tmp, &rtwdev->tx_waits, list) {
-+		if (!completion_done(&wait->completion))
-+			continue;
-+		list_del(&wait->list);
-+		rtw89_tx_wait_release(wait);
-+	}
-+}
-+
- static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
- 				     struct rtw89_core_tx_request *tx_req)
- {
-@@ -6065,6 +6091,7 @@ static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
- static inline void rtw89_hci_reset(struct rtw89_dev *rtwdev)
- {
- 	rtwdev->hci.ops->reset(rtwdev);
-+	rtw89_tx_wait_list_clear(rtwdev);
- }
- 
- static inline int rtw89_hci_start(struct rtw89_dev *rtwdev)
-@@ -7122,11 +7149,12 @@ static inline struct sk_buff *rtw89_alloc_skb_for_rx(struct rtw89_dev *rtwdev,
- 	return dev_alloc_skb(length);
- }
- 
--static inline void rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
-+static inline bool rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
- 					       struct rtw89_tx_skb_data *skb_data,
- 					       bool tx_done)
- {
- 	struct rtw89_tx_wait_info *wait;
-+	bool ret = false;
- 
- 	rcu_read_lock();
- 
-@@ -7134,11 +7162,14 @@ static inline void rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
- 	if (!wait)
- 		goto out;
- 
-+	ret = true;
- 	wait->tx_done = tx_done;
--	complete(&wait->completion);
-+	/* Don't access skb anymore after completion */
-+	complete_all(&wait->completion);
- 
- out:
- 	rcu_read_unlock();
-+	return ret;
- }
- 
- static inline bool rtw89_is_mlo_1_1(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 064f6a9401073..8eeb1a4498cd8 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -464,7 +464,8 @@ static void rtw89_pci_tx_status(struct rtw89_dev *rtwdev,
- 	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
- 	struct ieee80211_tx_info *info;
- 
--	rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status == RTW89_TX_DONE);
-+	if (rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status == RTW89_TX_DONE))
-+		return;
- 
- 	info = IEEE80211_SKB_CB(skb);
- 	ieee80211_tx_info_clear_status(info);
-diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
-index 811c914814411..869ab22a79681 100644
---- a/drivers/net/wireless/realtek/rtw89/ser.c
-+++ b/drivers/net/wireless/realtek/rtw89/ser.c
-@@ -501,7 +501,9 @@ static void ser_reset_trx_st_hdl(struct rtw89_ser *ser, u8 evt)
- 		}
- 
- 		drv_stop_rx(ser);
-+		wiphy_lock(wiphy);
- 		drv_trx_reset(ser);
-+		wiphy_unlock(wiphy);
- 
- 		/* wait m3 */
- 		hal_send_m2_event(ser);
--- 
-2.51.0
+> 
+>>
+>> Thanks,
+>> Lance
+>>
+>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>> Cc: David Hildenbrand <david@redhat.com>
+>>> Cc: Lance Yang <lance.yang@linux.dev>
+>>> Cc: Dev Jain <dev.jain@arm.com>
+>>> Cc: <stable@vger.kernel.org>
+>>>
+>>> ---
+>>> v2:
+>>>    * add fix, cc stable and put description about the flow of current
+>>>      code
+>>>    * move deferred_split_folio() into map_anon_folio_pmd()
+>>> ---
+>>>   mm/huge_memory.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 1b81680b4225..f13de93637bf 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -1232,6 +1232,7 @@ static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
+>>>   	count_vm_event(THP_FAULT_ALLOC);
+>>>   	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
+>>>   	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
+>>> +	deferred_split_folio(folio, false);
+>>>   }
+>>>    static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+>>> @@ -1272,7 +1273,6 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+>>>   		pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, pgtable);
+>>>   		map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
+>>>   		mm_inc_nr_ptes(vma->vm_mm);
+>>> -		deferred_split_folio(folio, false);
+>>>   		spin_unlock(vmf->ptl);
+>>>   	}
+>>>
+> 
+> 
+> Best Regards,
+> Yan, Zi
 
 
