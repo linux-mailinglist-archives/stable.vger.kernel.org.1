@@ -1,119 +1,208 @@
-Return-Path: <stable+bounces-183314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8663BB7E73
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 20:43:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A877CBB7E94
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 20:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E24A4E685B
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 18:43:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 632E53A9334
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 18:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9466E2DC761;
-	Fri,  3 Oct 2025 18:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6259E231858;
+	Fri,  3 Oct 2025 18:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="doE2HMi0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RaV9x5bW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51282146D45;
-	Fri,  3 Oct 2025 18:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD971804A
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 18:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759517005; cv=none; b=LLxnBQupZlWomXn6AehV30BjaNlZ+OEOFY9RM2d3Q2i8ErXhhPZe3ieI6d23EVyOcEe70JiwJoqMrrNIp8uNDWU6zpVos/PgNuNW1ov+CU4xgQdfm+EXXxsrGDGJNZLwiXbIcZX6aijSHfurW/WwB3zjw6VpDKUR+S3t2XJfVyQ=
+	t=1759517249; cv=none; b=HNZk+ByBrKc7Xr842p5mCHsDyDZzx1flQp74vhRAv8SfTmRgsCfwv1luKkMhVUAt3qi7juWEBsgQVaV+JZDtQMSqxNE7zmuoqbAGqPxMZes74yC6Iq2dLelXMeoolrZp67XpksD+QJPPr8zOX7CmiL8ODz3HKpgTFY/jTT1Y3f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759517005; c=relaxed/simple;
-	bh=Qz+UBaRtpZxocqoXLqAhwwxs/LwCEkK7O5cjtMKYXPA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=frVaYtkZxCIl5y9QJ+0NssAR9QtWaqTBeV4/KV3yFePAi4UY4m+lPgMXLC87BXxLKQYJlKyshuFnud8SqI/ZssixhnFgqBhS07wCB2+cVf2tqQKzCuiGDOvQ7MN8RRNSH3ddygdRTPR1QNhK0/wh5uxjkz2rxVeU/WQl9ecBEPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=doE2HMi0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB34C4CEF5;
-	Fri,  3 Oct 2025 18:43:23 +0000 (UTC)
+	s=arc-20240116; t=1759517249; c=relaxed/simple;
+	bh=Q68B11dRFJ+o5KJkYjtDwa38IfZWdMci16u/D10ms+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fNT2QrmIOMJ25Ao7LXcb7q4dLFc0W8PfjcuzgaFZYlPPPEUkc3jeAbsCrbXbQnbL9+dqvXUcfWj1I1qbyea9Ki9lDZb2D6E84SuGr8cum+E8NClvCFdwYsXO9Dr+c06/aRtAzS6iVXuQ4CxNXtTXZq0P6ZI1u3K6Zc4VvjHHIG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RaV9x5bW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8A7C4CEF5;
+	Fri,  3 Oct 2025 18:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759517004;
-	bh=Qz+UBaRtpZxocqoXLqAhwwxs/LwCEkK7O5cjtMKYXPA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=doE2HMi0Mlo2gaWrBBUUGTtcKzOxx+WmlFif1p4vvY9+VGdglc4raeDQ/IDsRMFUP
-	 ZX/zqeDGhl80c74pSShqVLG4TLZEneG4j81cgh0obiuYwqfKeIsm0Hh/INJBmLidrU
-	 E1fb2whzWsYotfw1/8SkUxN5MYJkJjuK9pReymQ6u1MqJ3Dr4oBHsgJwqZ7zkyrt6U
-	 Pq+0XtUeGvKZLqlC54iz+bvRBj/cG/y+agUrFhJN1dJUme9atyCZTZrEsK47IHbBbM
-	 ff1Y6CSEjIiA1D33A1HJW2uFTVkK969K1Ke9G8Zg1FiLHzeoy1WQEicsPUxQOYYRM4
-	 +yCJWdyxNQ7PQ==
-Date: Fri, 3 Oct 2025 19:43:19 +0100
-From: Will Deacon <will@kernel.org>
+	s=k20201202; t=1759517248;
+	bh=Q68B11dRFJ+o5KJkYjtDwa38IfZWdMci16u/D10ms+8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RaV9x5bWG7g8YN53TftqP2fMWLzu5TL5DiC+4ij8zLvHInEehVTaeDkk/SXd8Ea+n
+	 1tE8FqNXtEJ++zcOMqTSSzsFyUCijDkyywLo6tRtd4gU040/vmpPUFOBaOQ04P9pxS
+	 2hwFZZT2/7VBEEdrgcenzeh/D0Q1lRapMBzAtwdoGB5qJGEyfH4VeIKI+LTKWeBocZ
+	 OTdSelm5WflZWDqtQY2SxVW1wvWHDKrQtWksCOwvjhqCWUhtq+zY8O1tCRGBBQSLHr
+	 ieUY+a0vog6enE4l43HcjiG0W9sDt/WfICOmyycsc4TTSW26wxALPHqQXsoKvPPqJS
+	 VMiQ++eUc+hZQ==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>, Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Kenneth Van Alstyne <kvanals@kvanals.org>,
-	gregkh@linuxfoundation.org
-Subject: Re: [STABLE 5.15.y] [PATCH] KVM: arm64: Fix softirq masking in
- FPSIMD register saving sequence
-Message-ID: <aOAZR0-4ZCq78DZ8@willie-the-truck>
-References: <20251003183917.4209-1-will@kernel.org>
+Cc: Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] media: i2c: tc358743: Fix use-after-free bugs caused by orphan timer in probe
+Date: Fri,  3 Oct 2025 14:47:26 -0400
+Message-ID: <20251003184726.3288621-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025100330-bootie-slurp-7058@gregkh>
+References: <2025100330-bootie-slurp-7058@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251003183917.4209-1-will@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 03, 2025 at 07:39:17PM +0100, Will Deacon wrote:
-> Stable commit 23249dade24e ("KVM: arm64: Fix kernel BUG() due to bad
-> backport of FPSIMD/SVE/SME fix") fixed a kernel BUG() caused by a bad
-> backport of upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally
-> save+flush host FPSIMD/SVE/SME state") by ensuring that softirqs are
-> disabled/enabled across the fpsimd register save operation.
-> 
-> Unfortunately, although this fixes the original issue, it can now lead
-> to deadlock when re-enabling softirqs causes pending softirqs to be
-> handled with locks already held:
-> 
->  | BUG: spinlock recursion on CPU#7, CPU 3/KVM/57616
->  |  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU 3/KVM/57616, .owner_cpu: 7
->  | CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O       6.1.152 #1
->  | Hardware name: SoftIron SoftIron Platform Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
->  | Call trace:
->  |  dump_backtrace+0xe4/0x110
->  |  show_stack+0x20/0x30
->  |  dump_stack_lvl+0x6c/0x88
->  |  dump_stack+0x18/0x34
->  |  spin_dump+0x98/0xac
->  |  do_raw_spin_lock+0x70/0x128
->  |  _raw_spin_lock+0x18/0x28
->  |  raw_spin_rq_lock_nested+0x18/0x28
->  |  update_blocked_averages+0x70/0x550
->  |  run_rebalance_domains+0x50/0x70
->  |  handle_softirqs+0x198/0x328
->  |  __do_softirq+0x1c/0x28
->  |  ____do_softirq+0x18/0x28
->  |  call_on_irq_stack+0x30/0x48
->  |  do_softirq_own_stack+0x24/0x30
->  |  do_softirq+0x74/0x90
->  |  __local_bh_enable_ip+0x64/0x80
->  |  fpsimd_save_and_flush_cpu_state+0x5c/0x68
->  |  kvm_arch_vcpu_put_fp+0x4c/0x88
->  |  kvm_arch_vcpu_put+0x28/0x88
->  |  kvm_sched_out+0x38/0x58
->  |  __schedule+0x55c/0x6c8
->  |  schedule+0x60/0xa8
-> 
-> Take a tiny step towards the upstream fix in 9b19700e623f ("arm64:
-> fpsimd: Drop unneeded 'busy' flag") by additionally disabling hardirqs
-> while saving the fpsimd registers.
-> 
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Lee Jones <lee@kernel.org>
-> Cc: Sasha Levin <sashal@kernel.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-Sorry, Greg, I lost a stray '>' here ^^^  and so you didn't end up on CC
-for this one.
+[ Upstream commit 79d10f4f21a92e459b2276a77be62c59c1502c9d ]
 
-Will
+The state->timer is a cyclic timer that schedules work_i2c_poll and
+delayed_work_enable_hotplug, while rearming itself. Using timer_delete()
+fails to guarantee the timer isn't still running when destroyed, similarly
+cancel_delayed_work() cannot ensure delayed_work_enable_hotplug has
+terminated if already executing. During probe failure after timer
+initialization, these may continue running as orphans and reference the
+already-freed tc358743_state object through tc358743_irq_poll_timer.
+
+The following is the trace captured by KASAN.
+
+BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+Write of size 8 at addr ffff88800ded83c8 by task swapper/1/0
+...
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_report+0xcf/0x610
+ ? __pfx_sched_balance_find_src_group+0x10/0x10
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ kasan_report+0xb8/0xf0
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ __run_timer_base.part.0+0x7d7/0x8c0
+ ? rcu_sched_clock_irq+0xb06/0x27d0
+ ? __pfx___run_timer_base.part.0+0x10/0x10
+ ? try_to_wake_up+0xb15/0x1960
+ ? tmigr_update_events+0x280/0x740
+ ? _raw_spin_lock_irq+0x80/0xe0
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ tmigr_handle_remote_up+0x603/0x7e0
+ ? __pfx_tmigr_handle_remote_up+0x10/0x10
+ ? sched_balance_trigger+0x98/0x9f0
+ ? sched_tick+0x221/0x5a0
+ ? _raw_spin_lock_irq+0x80/0xe0
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ ? tick_nohz_handler+0x339/0x440
+ ? __pfx_tmigr_handle_remote_up+0x10/0x10
+ __walk_groups.isra.0+0x42/0x150
+ tmigr_handle_remote+0x1f4/0x2e0
+ ? __pfx_tmigr_handle_remote+0x10/0x10
+ ? ktime_get+0x60/0x140
+ ? lapic_next_event+0x11/0x20
+ ? clockevents_program_event+0x1d4/0x2a0
+ ? hrtimer_interrupt+0x322/0x780
+ handle_softirqs+0x16a/0x550
+ irq_exit_rcu+0xaf/0xe0
+ sysvec_apic_timer_interrupt+0x70/0x80
+ </IRQ>
+...
+
+Allocated by task 141:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x7f/0x90
+ __kmalloc_node_track_caller_noprof+0x198/0x430
+ devm_kmalloc+0x7b/0x1e0
+ tc358743_probe+0xb7/0x610  i2c_device_probe+0x51d/0x880
+ really_probe+0x1ca/0x5c0
+ __driver_probe_device+0x248/0x310
+ driver_probe_device+0x44/0x120
+ __device_attach_driver+0x174/0x220
+ bus_for_each_drv+0x100/0x190
+ __device_attach+0x206/0x370
+ bus_probe_device+0x123/0x170
+ device_add+0xd25/0x1470
+ i2c_new_client_device+0x7a0/0xcd0
+ do_one_initcall+0x89/0x300
+ do_init_module+0x29d/0x7f0
+ load_module+0x4f48/0x69e0
+ init_module_from_file+0xe4/0x150
+ idempotent_init_module+0x320/0x670
+ __x64_sys_finit_module+0xbd/0x120
+ do_syscall_64+0xac/0x280
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 141:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3a/0x60
+ __kasan_slab_free+0x3f/0x50
+ kfree+0x137/0x370
+ release_nodes+0xa4/0x100
+ devres_release_group+0x1b2/0x380
+ i2c_device_probe+0x694/0x880
+ really_probe+0x1ca/0x5c0
+ __driver_probe_device+0x248/0x310
+ driver_probe_device+0x44/0x120
+ __device_attach_driver+0x174/0x220
+ bus_for_each_drv+0x100/0x190
+ __device_attach+0x206/0x370
+ bus_probe_device+0x123/0x170
+ device_add+0xd25/0x1470
+ i2c_new_client_device+0x7a0/0xcd0
+ do_one_initcall+0x89/0x300
+ do_init_module+0x29d/0x7f0
+ load_module+0x4f48/0x69e0
+ init_module_from_file+0xe4/0x150
+ idempotent_init_module+0x320/0x670
+ __x64_sys_finit_module+0xbd/0x120
+ do_syscall_64+0xac/0x280
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+
+Replace timer_delete() with timer_delete_sync() and cancel_delayed_work()
+with cancel_delayed_work_sync() to ensure proper termination of timer and
+work items before resource cleanup.
+
+This bug was initially identified through static analysis. For reproduction
+and testing, I created a functional emulation of the tc358743 device via a
+kernel module and introduced faults through the debugfs interface.
+
+Fixes: 869f38ae07f7 ("media: i2c: tc358743: Fix crash in the probe error path when using polling")
+Fixes: d32d98642de6 ("[media] Driver for Toshiba TC358743 HDMI to CSI-2 bridge")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ replaced del_timer() instead of timer_delete() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/media/i2c/tc358743.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index d13e8f19278f2..d7d93ba390b25 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -2180,10 +2180,10 @@ static int tc358743_probe(struct i2c_client *client)
+ err_work_queues:
+ 	cec_unregister_adapter(state->cec_adap);
+ 	if (!state->i2c_client->irq) {
+-		del_timer(&state->timer);
++		timer_delete_sync(&state->timer);
+ 		flush_work(&state->work_i2c_poll);
+ 	}
+-	cancel_delayed_work(&state->delayed_work_enable_hotplug);
++	cancel_delayed_work_sync(&state->delayed_work_enable_hotplug);
+ 	mutex_destroy(&state->confctl_mutex);
+ err_hdl:
+ 	media_entity_cleanup(&sd->entity);
+-- 
+2.51.0
+
 
