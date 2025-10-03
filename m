@@ -1,99 +1,168 @@
-Return-Path: <stable+bounces-183167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12009BB6427
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 10:45:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CDFBB65CC
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 11:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 027414E120C
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 08:45:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA1343BDB65
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 09:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B2527703C;
-	Fri,  3 Oct 2025 08:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20524258EE1;
+	Fri,  3 Oct 2025 09:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="nHfOpo/E"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6528F2741B6
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 08:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347B81EB5D6
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 09:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759481115; cv=none; b=ZeIfFOmd+UDrsfIS7yvaKZqbSBN/atk885HD17h+quSz829/8B8FT5Ekz7jjkY7LNN/dlgnma5Yj8+W+56zv5Pw//8+iQH07eSEl6emG+PdmZrCysLd/YR1fbg7oC3JNhP/NHUNjNwne+mH8lagS75dfggBrkABPwflZTc7FR6E=
+	t=1759483633; cv=none; b=DbLQIvZC68YdUM94kctJ1B3y3y54Y9buTlKQWSGrWHvK31CEIC0EGN/bzwacgTjfg//pxBNQstLTTCQxjVOT1ilKVUxkwdAPzpFtZNYZcRVKeq1kmZPy7CcSwUw3Y2g/b20tVRQ1M+H85+4Fi0iFrIiheYn59uPDh1gFxN7cVaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759481115; c=relaxed/simple;
-	bh=YB1ghMEOeQ5JFYWeY2ps8djFxf5/HuRtlXBeq/CH+jo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OPQKTkuaPieXBsNII+8iPJtK5ISPKv5CGyCdYD2J5qemNHSQSP9GzVMAn+3w3s4sJHhy3qSv00Rd442obqFIiryP8tiGeFIGo1+qm2MKcTVuoQeAjS29HQVk/syGRylQ+IsIP2gLfzQiTg9ZIeNdm4JmQ7+YjheDNEx7xjB6Ka4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-637ef0137f7so2430989a12.1
-        for <stable@vger.kernel.org>; Fri, 03 Oct 2025 01:45:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759481110; x=1760085910;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lNchDiEzIDmBEztmo8oZmioyYgfq18ckj4ZJE8yTj5I=;
-        b=B8CIuCGiOynHy4tGpJ/axtlCAi82YCZLyQmJYsR5gD0N+ZpYOgSqIvYgDkIlpKnTBY
-         wGb5inR7PN/CSiOskexmxvDAx7JNhZ3fM/LePM/0UymmngFwWimGi4XnO3nCMowONCnr
-         LkG2KBlEcaJrTL+BJTPBgfbRQ4Mm2KWlX9gpIvCREv4b44smxtgCWVXDFiDLZJ7WRyAT
-         RAfo67mA/SIjc4qQxcd2e0tY+TrsmHDOJ1fBp/kLQmxxa8enqDgXpcCznYfos9pUF+/L
-         OmOIDRB5r7GEdEn89HbJAWEgajNmJVl2u42WgfelbR8alQgaA5pGr+LovfpJflLdIh+E
-         41vw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1Ube3Cs07C4RCitk38AIkS3MgSxRbFepAOZLTE/4Wx4867itqiNaSdXOvgbo7+lXoMU8FPo0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCoYOjqMN4AMxTQifdFKLXSFErfLnX+z6Dl5d7quU0I1eBthAM
-	nieWJ0hGBhO2S0P6W7h6gFIg2qYZyUvXrP8STXm94oPAwNG67DAt416o
-X-Gm-Gg: ASbGncvk3X8xkj96kk9pArso76+znKwsyokV4bxdnO0Z6BBwf1UF91NUPDgCK64FhGn
-	8JMv+NazF85S2lHajSP+PFnu55TtjCevivc6j00czUVHL0wEebtY7VSAHag3XViZsCvSp2KiAMt
-	WjS4bRgdec6gDROMb5cfNK0dcmo+KyzbP+eD4O8jmvkSMoECK0v2sfqjO4L41UT2YgeX2EpwoPq
-	0uvGdypiMIiH0CuHqd8By/mndbk6mNNV82jqpoxBT8cd+80g9PZQQFRa5n4cNrQ4qIXJys46AZP
-	k9dIPVHSYejmeFHdshFUlaLC40cHqfiML6AXuVEP/U0Qap1n0SgHlKs7N3pBCJ9oD2Zk7VNRkkD
-	GfUsbXYM0b0hAsqQrKReCe8zq17BRIn2Ol+5WCQ==
-X-Google-Smtp-Source: AGHT+IGjw0zmq2CU/sdA/VkxJILpqI/TtLALso31v4P2kiwd0BksUPICZg/6K3fI5iB1htfz3dZPgQ==
-X-Received: by 2002:a05:6402:5347:10b0:634:5297:e3b3 with SMTP id 4fb4d7f45d1cf-63939c509b6mr1714584a12.38.1759481110436;
-        Fri, 03 Oct 2025 01:45:10 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:74::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6378811f14bsm3554826a12.45.2025.10.03.01.45.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Oct 2025 01:45:09 -0700 (PDT)
-Date: Fri, 3 Oct 2025 01:45:06 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Simon Horman <horms@kernel.org>, david decotigny <decot@googlers.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, calvin@wbinvd.org, 
-	kernel-team@meta.com, jv@jvosburgh.net, stable@vger.kernel.org
-Subject: Re: [PATCH net v6 0/4] net: netpoll: fix memory leak and add
- comprehensive selftests
-Message-ID: <s4lrro6msmvu3xtxbrwk3njvmh4vrtk6tmpis4c5q5cbmojuuc@pig4xhrvhoxq>
-References: <20251002-netconsole_torture-v6-0-543bf52f6b46@debian.org>
+	s=arc-20240116; t=1759483633; c=relaxed/simple;
+	bh=FduCMGB8ugAL+afmkEoxLRdDMDJ7SAHjAAtwCadxfBw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aLILyZvCSRceRNb/wnz6MQ3xShjLpo3K6dfeqcbvcR/v3l5CLFLNZlUVhFEFE16XdxO7eYm/V/VxOQs65A4bVOXy6WVYjcRi05evDk/W2NFTHeR5kpis9w8XKOb33gERM2way6fYBhV5MOF6nb/vV5sFx8tZhPzsubZfZ4HguvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=nHfOpo/E; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=lIIBhuv8Qcx4BkAVq3ng5V3qtF2O1wVYDC1zh7zMIFY=; b=nHfOpo/E2WquEzhkLBB8splHBr
+	NypXqxAhqFVBv7XHPXVKe+kKbfa/eS6sxlO6yulw3Lwg6UZQ/GVCDgNzCf3d48JW0fK46Rdso2+jl
+	BYl3VSkXcpntQjqoOjPVmrFcFmF6PmOrQAssDSTW4p7JnwuvraI+sMRZo1M8ksgfZ7dzj8L1aIPrm
+	oL8FC0JilkTbsF+MYUAp5EQGQ8C1rx/QT7vZni+2nuq/T3K41/mohClDiP6AwlpQrY+51MXLVkU4A
+	zryzkKxatEg2RQ9Zcqjy9Lmvx9EuQcAn7wGoNOZB0jtGrbbscoLM5aTZE4zY6tWQiBkqtQy9YVoky
+	pa3r6oMw==;
+Received: from [84.66.36.92] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1v4c3s-003ngf-Ky; Fri, 03 Oct 2025 11:26:48 +0200
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+To: dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Philipp Stanner <phasta@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/sched: Fix potential double free in drm_sched_job_add_resv_dependencies
+Date: Fri,  3 Oct 2025 10:26:41 +0100
+Message-ID: <20251003092642.37065-1-tvrtko.ursulin@igalia.com>
+X-Mailer: git-send-email 2.48.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251002-netconsole_torture-v6-0-543bf52f6b46@debian.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 02, 2025 at 08:26:24AM -0700, Breno Leitao wrote:
-> Fix a memory leak in netpoll and introduce netconsole selftests that
-> expose the issue when running with kmemleak detection enabled.
-> 
-> This patchset includes a selftest for netpoll with multiple concurrent
-> users (netconsole + bonding), which simulates the scenario from test[1]
-> that originally demonstrated the issue allegedly fixed by commit
-> efa95b01da18 ("netpoll: fix use after free") - a commit that is now
-> being reverted.
-> 
-> Sending this to "net" branch because this is a fix, and the selftest
-> might help with the backports validation.
+Drm_sched_job_add_dependency() consumes the fence reference both on
+success and failure, so in the latter case the dma_fence_put() on the
+error path (xarray failed to expand) is a double free.
 
-This is conflicting with `net` tree. Rebasing and resending.
+Interestingly this bug appears to have been present ever since
+ebd5f74255b9 ("drm/sched: Add dependency tracking"), since the code back
+then looked like this:
+
+drm_sched_job_add_implicit_dependencies():
+...
+       for (i = 0; i < fence_count; i++) {
+               ret = drm_sched_job_add_dependency(job, fences[i]);
+               if (ret)
+                       break;
+       }
+
+       for (; i < fence_count; i++)
+               dma_fence_put(fences[i]);
+
+Which means for the failing 'i' the dma_fence_put was already a double
+free. Possibly there were no users at that time, or the test cases were
+insufficient to hit it.
+
+The bug was then only noticed and fixed after
+9c2ba265352a ("drm/scheduler: use new iterator in drm_sched_job_add_implicit_dependencies v2")
+landed, with its fixup of
+4eaf02d6076c ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies").
+
+At that point it was a slightly different flavour of a double free, which
+963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
+noticed and attempted to fix.
+
+But it only moved the double free from happening inside the
+drm_sched_job_add_dependency(), when releasing the reference not yet
+obtained, to the caller, when releasing the reference already released by
+the former in the failure case.
+
+As such it is not easy to identify the right target for the fixes tag so
+lets keep it simple and just continue the chain.
+
+We also drop the misleading comment about additional reference, since it
+is not additional but the only one from the point of view of dependency
+tracking.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Rob Clark <robdclark@chromium.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Philipp Stanner <phasta@kernel.org>
+Cc: "Christian König" <ckoenig.leichtzumerken@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.16+
+---
+ drivers/gpu/drm/scheduler/sched_main.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
+index 46119aacb809..aff34240f230 100644
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -960,20 +960,16 @@ int drm_sched_job_add_resv_dependencies(struct drm_sched_job *job,
+ {
+ 	struct dma_resv_iter cursor;
+ 	struct dma_fence *fence;
+-	int ret;
++	int ret = 0;
+ 
+ 	dma_resv_assert_held(resv);
+ 
+ 	dma_resv_for_each_fence(&cursor, resv, usage, fence) {
+-		/* Make sure to grab an additional ref on the added fence */
+-		dma_fence_get(fence);
+-		ret = drm_sched_job_add_dependency(job, fence);
+-		if (ret) {
+-			dma_fence_put(fence);
+-			return ret;
+-		}
++		ret = drm_sched_job_add_dependency(job, dma_fence_get(fence));
++		if (ret)
++			break;
+ 	}
+-	return 0;
++	return ret;
+ }
+ EXPORT_SYMBOL(drm_sched_job_add_resv_dependencies);
+ 
+-- 
+2.48.0
+
 
