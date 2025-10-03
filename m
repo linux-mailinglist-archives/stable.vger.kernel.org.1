@@ -1,147 +1,247 @@
-Return-Path: <stable+bounces-183298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6123BB7A04
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:56:55 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7556DBB7A2B
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 61F94347503
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:56:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 61CE94EC5FA
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878A12D3EE0;
-	Fri,  3 Oct 2025 16:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C912C21D4;
+	Fri,  3 Oct 2025 16:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lz6WzSez"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="0tOTuiPE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469A826E706
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 16:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A711B26E706
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 16:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759510609; cv=none; b=pqt3nRdRS1TGbkafS76CydHPrtFcojh/lS+MUm/IIqC+6ennCygoUjIQofFlwqDXJU6oDMsywIf96LvYUzYz3dH7yCjwfgNvfsxrIiLtgbqUKmD4BJNi9uRtqePpEcfGmwi8ix79Ir7uvNdbLI0HncXGdkcDxnMuAjU2rSVtVcM=
+	t=1759510748; cv=none; b=q3+S1TdKipupipvkfPDXEYIRBV9Q4sjaErCDwQIDEdPW1vOn7xI8eQUPAxKVuwHhhN91J58/mNhQS0uLXt6Q4hS6W0+1m+m3aL8zlewM/7qOnaQ146SmD156vYKXuWj4gVpQtnNEaP0UJyVGNMUarxPitbmUmIq9D0fGyQaCn2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759510609; c=relaxed/simple;
-	bh=JV3UpCx5Xkf4WnYDKXQq5+YoXg9RglDY2VFNOWzZ3sE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bpb9+UZoO5/cwBaCIWVcqy5ld66UKzHaf54R19TQsg6jGJCHmm7xgA5b9firLGqxdORGGcQitqMGyR/2+u8PvNoLEHnxzkxuDgp2kTcMV5jd2oCyxuegYYY81CbW0+KOR2UkusIWyfQF1SyHkcdlLyXXdtUb3pBf6sHKXnnxixs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lz6WzSez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70817C4AF09;
-	Fri,  3 Oct 2025 16:56:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759510608;
-	bh=JV3UpCx5Xkf4WnYDKXQq5+YoXg9RglDY2VFNOWzZ3sE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lz6WzSezYl9VgFTmlGlT6FfnRPy713M0YPzIe+tTmXskEm7uJPFzo4hOs8FOjvbxh
-	 Jkl90wEmuvIKE4KXE83lccewNOLqGmTgKC0qEalD9gwH6ebvE0syV+foMVt7jRFzfJ
-	 CZBoIjX/Zb22BzuVWMCypWoSJXn+OK7kqui76ayA5bt2hqBK+ExHhBhwiQGz9PnJLm
-	 cVBx4dNkSGZ3xbRRteZPeVxq7LUjFN8lTwZWHHC3brPUizz+If78pSvYf/dJCwFoXe
-	 FYcO3G6GQS/yDqqAxtElKG6SZS5/dO4455+bh10pakKrwJO6Abbt1czAgdzTTc57Ey
-	 zOwiKSiBmQ77A==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6FB2CF40066;
-	Fri,  3 Oct 2025 12:56:47 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 03 Oct 2025 12:56:47 -0400
-X-ME-Sender: <xms:TwDgaFlxUqzapmQZHn0PHbC8ptyLONHzP77fFPhx3m5xw4_bahlqow>
-    <xme:TwDgaIksgsykPA-UJGwoR42X7ivZT7u1ZC7mJbk0dg9QKLHMLqi9OGgFZrl9s1VQ2
-    WA0S7Vo84qmp_m-Ol3zKDG_W3OxOt25SVx5jTan6sPr8aAqgeL4WL4>
-X-ME-Received: <xmr:TwDgaKMyLseSqZpgPPwZ74nAqOedbBSkXpt_lZlwqN73Qj9tD7G29FwjTMJHTA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekleeggecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpefhieekteelledugefhffekfffgjedtveevgffgjeeffeegvdekteetudeggefgkeen
-    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
-    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfedt
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouh
-    hnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhm
-    pdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpd
-    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphht
-    thhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomhdprhgtphhtthhopehvsggrsg
-    hkrgesshhushgvrdgtiidprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehmhhhotg
-    hkohesshhushgvrdgtohhm
-X-ME-Proxy: <xmx:TwDgaP4CAVLa8vmKSGL8lliQN1Pc5vTXs4CmYx14EsepnVmM8SAG0Q>
-    <xmx:TwDgaHslB2UC6UlQCYocZTPwhw9-JVFyVn6xmEBxdSa9JsSQpxeepw>
-    <xmx:TwDgaJOAjuiaDVGUeo8aIL7JTEPFk-giBcQqiFTQpRbmgLT2YC5SCg>
-    <xmx:TwDgaDoAejs1PnA71FQLjfBHG_79VltNAwQhHhXagqXTcfEiRJ4elg>
-    <xmx:TwDgaOHKPLYAKhYXsvdVNvTYraMDsRLij-Ypg_1jBYrAtYnAszsrwD-K>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 3 Oct 2025 12:56:46 -0400 (EDT)
-Date: Fri, 3 Oct 2025 17:56:44 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
-	Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH] mm/mmap: Fix fsnotify_mmap_perm() call in vm_mmap_pgoff()
-Message-ID: <bqmxwfi4kohx744fa5ggoiovrhiwsoehqn57kptoni64lgflim@ibt5bjvcbhdx>
-References: <20251003155804.1571242-1-kirill@shutemov.name>
+	s=arc-20240116; t=1759510748; c=relaxed/simple;
+	bh=qN88UNW+Zvp7fI0g+q45ph+xQERUi8+EWblZrRIyMZQ=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=d/mSoiKjDqRQfYBsfBHiHijh0lVfDTQ105OEDMoxoJOfb1ks/WCHhmqoOK1udwDFq3p1K4epVFZOA/8wticPQ2y757HaB/G8ePX18YlnGheKHT92UaCoGORAAovFEVnz/znWxEX5j/4DbSUACKbmPxUukMvdqAO6iLE6cZOJFuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=0tOTuiPE; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2680cf68265so18354515ad.2
+        for <stable@vger.kernel.org>; Fri, 03 Oct 2025 09:59:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1759510745; x=1760115545; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AWa56QJ63YV8qd/PV5qaFs9n0mrt68Fr5yauXNrBRm4=;
+        b=0tOTuiPEgsVM0xrubm0qW9kSzSUoEPawviyFWwNgzrfhV3XA/0gdWmYWoeHhLgjCH6
+         OhUo6nrpWX2DjqwwUROuBXVEhcKYR+P0yVldKCPw7T0UfL2XGM3Om6yTL+CMkxhwbMxp
+         bAJPR2and+ydFsEYNOhhvhysfu68JPFePyEFITwKCJDvALnDyq1H46/m4jeL7AJgvFvL
+         G0fFQac6dykztZEVMHTqJwhEXDNifw+r0ffYWcMltL8V3bfAzhFqentRoyHUNzJ087C4
+         MmTrGJwb6IHGM0xVmmEndnsWLf8TI9T7uFM8MXLUA7x6fsIU6haczwKrTnPAOxe/UKAl
+         TIzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759510745; x=1760115545;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AWa56QJ63YV8qd/PV5qaFs9n0mrt68Fr5yauXNrBRm4=;
+        b=HRYMBvBMx0atXRjMr4ucjRFR1uz1kO+ujFDaQi52wL6yPpE6/GFzHTUegtB/R7lonz
+         IZSMSjEZ511WQ/Nse6gMd6vzeviz438/rWnaCBqZOAqS3DJqYwVJ3KCfs4NTCKpoZYzc
+         O64JLltpZ6lnUflEcXEU5nST0Lq7haGAOgpCQYpayi9dyMv+/yOa4Obvgy4PLfdYJ1ax
+         rWF0Yp9ThTzvR4aan9kkvL9ojIBx81+k5MmRvKty+5Tgt5DRCoMrdA9MyX0xw7f0IJZd
+         oiFuLNtHAQf/5BAKa9T70Xg6TYneWjdpOzKh0G97Ze2lCzhFbncMMdkED1X8aJ9D675x
+         xpcg==
+X-Forwarded-Encrypted: i=1; AJvYcCXjdHgiya/q1DruMza1m/fNhhKAFGhETFgNW5vwzZR7evUsaqy2Z4FQhVkQfV2XqDx/opxaH0Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI66K22kkesFdT5drybb1BV9w9va66UqzMFRcMt9jN2UVzMCBc
+	4w9ENNh5wTk3bc7aCrJZxSVoI4Ty8dI0ZhWuuoKBbXSosSZaMh+32aKqjNlEpYHCprE5d3FyV2W
+	NQgSvDBQ=
+X-Gm-Gg: ASbGncvES5QsFUM+lL9JD/r7Enw3C5sTRn/apt9CGxeUxFs45CJeaVmCZ+qvCmdNMZM
+	KcHEGDlG7Iwo4u7SzBczkM0FfqBJfowSI+bdEa5ASgGv++Hrmom2hKYWAEInPzo1yQ9Fgygwki4
+	5spjpYQDRx2cEQ7EyJ/SLC9/CM5nj8UicFr4CM6AXqmQd4A9BOjCgEy9sNOpX4yEjT8pRBmDpid
+	0OmSvwSuOL3uWNMHsKJQtWzm7bjBFzXFIS8xd3qv2xcVrxx8SHhmFIqlXpbCUwWWXuR5aTs1D+7
+	Q5FjogGJSmzXDsL8Y+rpLFUnBV/pniZyU+zGBivI68V/9x5ZBMQk6jNxjusjgSYUbByEbJCu3Dl
+	abRFIjvEz5r4Aj++xzI4YZF0aarvjE6FAMA8AwAPn
+X-Google-Smtp-Source: AGHT+IFxvqULGwLzaC1vY6Bri+0Rl0k3g2SicfytaznK8ltRfpLFIfDAdUe2GWqvENp/NR4setuAhg==
+X-Received: by 2002:a17:902:e5d0:b0:282:2c52:5094 with SMTP id d9443c01a7336-28e9a61abb2mr41359015ad.37.1759510744668;
+        Fri, 03 Oct 2025 09:59:04 -0700 (PDT)
+Received: from c325b7c58cb6 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339a6e9d00csm8706133a91.6.2025.10.03.09.59.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Oct 2025 09:59:03 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251003155804.1571242-1-kirill@shutemov.name>
+Content-Transfer-Encoding: 8bit
+Subject: 
+ =?utf-8?b?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC01LjQueTogKGJ1aWxkKSAuL2Fy?=
+ =?utf-8?b?Y2gvYXJtNjQvaW5jbHVkZS9hc20vbWVtb3J5Lmg6ODU6NTA6IGVycm9yOiDigJhL?=
+ =?utf-8?b?QVNBTl9TSEFET1dfU0NBTC4uLg==?=
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Fri, 03 Oct 2025 16:59:03 -0000
+Message-ID: <175951074325.374.10838912080762882041@c325b7c58cb6>
 
-On Fri, Oct 03, 2025 at 04:58:04PM +0100, Kiryl Shutsemau wrote:
-> From: Kiryl Shutsemau <kas@kernel.org>
-> 
-> vm_mmap_pgoff() includes a fsnotify call that allows for pre-content
-> hooks on mmap().
-> 
-> The fsnotify_mmap_perm() function takes, among other arguments, an
-> offset in the file in the form of loff_t. However, vm_mmap_pgoff() has
-> file offset in the form of pgoff. This offset needs to be converted
-> before being passed to fsnotify_mmap_perm().
-> 
-> The conversion from pgoff to loff_t is incorrect. The pgoff value needs
-> to be shifted left by PAGE_SHIFT to obtain loff_t, not right.
-> 
-> This issue was identified through code inspection.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
-> Cc: stable@vger.kernel.org
-> Cc: Josef Bacik <josef@toxicpanda.com>
-> Cc: Amir Goldstein <amir73il@gmail.com>
-> Cc: Jan Kara <jack@suse.cz>
-> ---
->  mm/util.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/util.c b/mm/util.c
-> index f814e6a59ab1..52a667157264 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -573,7 +573,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
->  
->  	ret = security_mmap_file(file, prot, flag);
->  	if (!ret)
-> -		ret = fsnotify_mmap_perm(file, prot, pgoff >> PAGE_SHIFT, len);
-> +		ret = fsnotify_mmap_perm(file, prot, pgoff << PAGE_SHIFT, len);
 
-It misses the case to (loff_t) and it broken for 32-bit machines.
 
-Luckily, Ryan submitted another fix for the same bug at the almost the
-same time. And he was more careful around types:
 
-https://lore.kernel.org/all/20251003155238.2147410-1-ryan.roberts@arm.com
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Hello,
+
+New build issue found on stable-rc/linux-5.4.y:
+
+---
+ ./arch/arm64/include/asm/memory.h:85:50: error: ‘KASAN_SHADOW_SCALE_SHIFT’ undeclared (first use in this function) in arch/arm64/kernel/vdso32/vgettimeofday.o (arch/arm64/kernel/vdso32/Makefile:166) [logspec:kbuild,kbuild.compiler.error]
+---
+
+- dashboard: https://d.kernelci.org/i/maestro:35fc997ccf1864d670c66eb7815463e470fe1fa9
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  2c0548712531f8b879edccf67949a8e5abe4e5e4
+
+
+
+Log excerpt:
+=====================================================
+  CC32    arch/arm64/kernel/vdso32/vgettimeofday.o
+  AS32    arch/arm64/kernel/vdso32/sigreturn.o
+  HOSTCC  arch/arm64/kernel/vdso32/../../../arm/vdso/vdsomunge
+In file included from ./arch/arm64/include/asm/thread_info.h:17,
+                 from ./include/linux/thread_info.h:39,
+                 from ./arch/arm64/include/asm/preempt.h:5,
+                 from ./include/linux/preempt.h:78,
+                 from ./include/linux/spinlock.h:51,
+                 from ./include/linux/seqlock.h:36,
+                 from ./include/linux/time.h:6,
+                 from /tmp/kci/linux/lib/vdso/gettimeofday.c:7,
+                 from <command-line>:
+./arch/arm64/include/asm/memory.h: In function ‘kaslr_offset’:
+./arch/arm64/include/asm/memory.h:85:50: error: ‘KASAN_SHADOW_SCALE_SHIFT’ undeclared (first use in this function)
+   85 | #define KASAN_SHADOW_END        ((UL(1) << (64 - KASAN_SHADOW_SCALE_SHIFT)) \
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:50:34: note: in expansion of macro ‘KASAN_SHADOW_END’
+   50 | #define BPF_JIT_REGION_START    (KASAN_SHADOW_END)
+      |                                  ^~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:52:34: note: in expansion of macro ‘BPF_JIT_REGION_START’
+   52 | #define BPF_JIT_REGION_END      (BPF_JIT_REGION_START + BPF_JIT_REGION_SIZE)
+      |                                  ^~~~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:54:34: note: in expansion of macro ‘BPF_JIT_REGION_END’
+   54 | #define MODULES_VADDR           (BPF_JIT_REGION_END)
+      |                                  ^~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:53:34: note: in expansion of macro ‘MODULES_VADDR’
+   53 | #define MODULES_END             (MODULES_VADDR + MODULES_VSIZE)
+      |                                  ^~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:49:34: note: in expansion of macro ‘MODULES_END’
+   49 | #define KIMAGE_VADDR            (MODULES_END)
+      |                                  ^~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:193:31: note: in expansion of macro ‘KIMAGE_VADDR’
+  193 |         return kimage_vaddr - KIMAGE_VADDR;
+      |                               ^~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:85:50: note: each undeclared identifier is reported only once for each function it appears in
+   85 | #define KASAN_SHADOW_END        ((UL(1) << (64 - KASAN_SHADOW_SCALE_SHIFT)) \
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:50:34: note: in expansion of macro ‘KASAN_SHADOW_END’
+   50 | #define BPF_JIT_REGION_START    (KASAN_SHADOW_END)
+      |                                  ^~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:52:34: note: in expansion of macro ‘BPF_JIT_REGION_START’
+   52 | #define BPF_JIT_REGION_END      (BPF_JIT_REGION_START + BPF_JIT_REGION_SIZE)
+      |                                  ^~~~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:54:34: note: in expansion of macro ‘BPF_JIT_REGION_END’
+   54 | #define MODULES_VADDR           (BPF_JIT_REGION_END)
+      |                                  ^~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:53:34: note: in expansion of macro ‘MODULES_VADDR’
+   53 | #define MODULES_END             (MODULES_VADDR + MODULES_VSIZE)
+      |                                  ^~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:49:34: note: in expansion of macro ‘MODULES_END’
+   49 | #define KIMAGE_VADDR            (MODULES_END)
+      |                                  ^~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:193:31: note: in expansion of macro ‘KIMAGE_VADDR’
+  193 |         return kimage_vaddr - KIMAGE_VADDR;
+      |                               ^~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h: In function ‘__tag_set’:
+./arch/arm64/include/asm/memory.h:238:22: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  238 |         u64 __addr = (u64)addr & ~__tag_shifted(0xff);
+      |                      ^
+In file included from ./arch/arm64/include/asm/pgtable-hwdef.h:8,
+                 from ./arch/arm64/include/asm/processor.h:34,
+                 from ./arch/arm64/include/asm/elf.h:118,
+                 from ./include/linux/elf.h:5,
+                 from ./include/linux/elfnote.h:62,
+                 from arch/arm64/kernel/vdso32/note.c:11:
+./arch/arm64/include/asm/memory.h: In function ‘kaslr_offset’:
+./arch/arm64/include/asm/memory.h:85:50: error: ‘KASAN_SHADOW_SCALE_SHIFT’ undeclared (first use in this function)
+   85 | #define KASAN_SHADOW_END        ((UL(1) << (64 - KASAN_SHADOW_SCALE_SHIFT)) \
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:50:34: note: in expansion of macro ‘KASAN_SHADOW_END’
+   50 | #define BPF_JIT_REGION_START    (KASAN_SHADOW_END)
+      |                                  ^~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:52:34: note: in expansion of macro ‘BPF_JIT_REGION_START’
+   52 | #define BPF_JIT_REGION_END      (BPF_JIT_REGION_START + BPF_JIT_REGION_SIZE)
+      |                                  ^~~~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:54:34: note: in expansion of macro ‘BPF_JIT_REGION_END’
+   54 | #define MODULES_VADDR           (BPF_JIT_REGION_END)
+      |                                  ^~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:53:34: note: in expansion of macro ‘MODULES_VADDR’
+   53 | #define MODULES_END             (MODULES_VADDR + MODULES_VSIZE)
+      |                                  ^~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:49:34: note: in expansion of macro ‘MODULES_END’
+   49 | #define KIMAGE_VADDR            (MODULES_END)
+      |                                  ^~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:193:31: note: in expansion of macro ‘KIMAGE_VADDR’
+  193 |         return kimage_vaddr - KIMAGE_VADDR;
+      |                               ^~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:85:50: note: each undeclared identifier is reported only once for each function it appears in
+   85 | #define KASAN_SHADOW_END        ((UL(1) << (64 - KASAN_SHADOW_SCALE_SHIFT)) \
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:50:34: note: in expansion of macro ‘KASAN_SHADOW_END’
+   50 | #define BPF_JIT_REGION_START    (KASAN_SHADOW_END)
+      |                                  ^~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:52:34: note: in expansion of macro ‘BPF_JIT_REGION_START’
+   52 | #define BPF_JIT_REGION_END      (BPF_JIT_REGION_START + BPF_JIT_REGION_SIZE)
+      |                                  ^~~~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:54:34: note: in expansion of macro ‘BPF_JIT_REGION_END’
+   54 | #define MODULES_VADDR           (BPF_JIT_REGION_END)
+      |                                  ^~~~~~~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:53:34: note: in expansion of macro ‘MODULES_VADDR’
+   53 | #define MODULES_END             (MODULES_VADDR + MODULES_VSIZE)
+      |                                  ^~~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:49:34: note: in expansion of macro ‘MODULES_END’
+   49 | #define KIMAGE_VADDR            (MODULES_END)
+      |                                  ^~~~~~~~~~~
+./arch/arm64/include/asm/memory.h:193:31: note: in expansion of macro ‘KIMAGE_VADDR’
+  193 |         return kimage_vaddr - KIMAGE_VADDR;
+      |                               ^~~~~~~~~~~~
+./arch/arm64/include/asm/memory.h: In function ‘__tag_set’:
+./arch/arm64/include/asm/memory.h:238:22: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  238 |         u64 __addr = (u64)addr & ~__tag_shifted(0xff);
+      |                      ^
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+arm64-chromebook+kcidebug+lab-setup on (arm64):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:68dffa7e841b167e8d3e0d0c
+
+
+#kernelci issue maestro:35fc997ccf1864d670c66eb7815463e470fe1fa9
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
