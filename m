@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-183276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA58DBB77DB
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:11:05 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E54BB7793
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2412F3C1265
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:08:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 48C594EDCA8
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFC22BE632;
-	Fri,  3 Oct 2025 16:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A97B29E0E5;
+	Fri,  3 Oct 2025 16:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btq8XavA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUvwAsNm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD13335962;
-	Fri,  3 Oct 2025 16:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FD035962;
+	Fri,  3 Oct 2025 16:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759507693; cv=none; b=AJ0cgYjfYHXB8OdlyHfA9Bi1B1Sbjt890OF8yLiyi7TvW73UHQoPeX4KJbgO+nEBgy6xjQZuHKi0iOzVE+G5G+4uvH1fxlX67IkT0DXAAVWQUOv2ogGy18y/uOiIYr0d06gA735KjD9My7E1b2OVhav9CAgxw7FiW74HmCxV/fM=
+	t=1759507701; cv=none; b=XD3x/8ptjG3dpGMvE0SW4ELvBgNmxmb8/NByg6blUtx6iCX4VobEsntmGBLYCCGu7MMjOal8Yf+8b3HyuM9wkuUkDYEBsaWSDky5o3janybeVXHkmRdH4iDOD005dyVXgrLExO1bGjdLimWA+CvpHA/69haJ6PI0tzN5pSTgInM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759507693; c=relaxed/simple;
-	bh=ZUUiLPJ3c+xgSXUwgj/CK9MveF4AoPt+UXCHtU4niHk=;
+	s=arc-20240116; t=1759507701; c=relaxed/simple;
+	bh=oa1/KGFHapj1AKgPynRJqGsoFaFnKf/24G/DohVYbVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNLC7tcPktAdf97+cvU9T7GlnuQedb6jWxHEn6gj83Cxy24ryNsDz6aL2pAiAWDPUE12yaNhAtjfFUwKIFa8KSv5ws+2aMhTqqjKWh2WFqINzcWsazRUs9jA5SnSSBwCurGKdAqrdvQdBzrP+xF5qTrufyVa+0O68PA0Uwh9d2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btq8XavA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3883AC4CEFB;
-	Fri,  3 Oct 2025 16:08:12 +0000 (UTC)
+	 MIME-Version; b=jKxaW+x7zdugPxwwwENRjXHVpCyVmPspdkX9C3ogo7xH9Q9HLBIwk6ZPyqdC8vvbrNdUJlW8AersHPxYvexqoChrng+DBaplPw3pGb2q0J0B0ZrhfGvxgYxz/luEOp/Wr34tH9TqEC5uNZmjntkNcJQmbutmGfksNYcyz/LPn10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUvwAsNm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7F1C4CEF5;
+	Fri,  3 Oct 2025 16:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759507693;
-	bh=ZUUiLPJ3c+xgSXUwgj/CK9MveF4AoPt+UXCHtU4niHk=;
+	s=korg; t=1759507700;
+	bh=oa1/KGFHapj1AKgPynRJqGsoFaFnKf/24G/DohVYbVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=btq8XavA24HyS6bgezOTIREzrsoOYvq62pq3SnRjruHm6OWZPGYmld+vvvxnoTS3G
-	 uQRptEVtFdpovJDv6gItPhBTm4/Q6A4z9bOSLQ9qLy5R0ZPNK4E3Ft8WPAD7OKYDi0
-	 AGdh0cedFR5aD569LR/wMxowy6VXxh63qxAsgBig=
+	b=RUvwAsNm5QBPwOAv5r6m8XsioXj0BqKA14S1JK723EgV5LxpCEmSSbPROy1iXAvTr
+	 tKEXm9+ZqNGMnsPpysPtytjGBy4VSkT5oKDYQnUNJ4KPIOm/gdbfPP4D3koL943nbe
+	 DRjrXRJsPUYEI4zRTgiLaHsbmN3WEFKvYMradBZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Tobias Fleig <tfleig@meta.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.12 01/10] crypto: sha256 - fix crash at kexec
-Date: Fri,  3 Oct 2025 18:05:48 +0200
-Message-ID: <20251003160338.506948730@linuxfoundation.org>
+	Christopher Fore <csfore@posteo.net>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.12 02/10] gcc-plugins: Remove TODO_verify_il for GCC >= 16
+Date: Fri,  3 Oct 2025 18:05:49 +0200
+Message-ID: <20251003160338.533978422@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003160338.463688162@linuxfoundation.org>
 References: <20251003160338.463688162@linuxfoundation.org>
@@ -67,63 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Kees Cook <kees@kernel.org>
 
-Loading a large (~2.1G) files with kexec crashes the host with when
-running:
+commit a40282dd3c484e6c882e93f4680e0a3ef3814453 upstream.
 
-  # kexec --load kernel --initrd initrd_with_2G_or_more
+GCC now runs TODO_verify_il automatically[1], so it is no longer exposed to
+plugins. Only use the flag on GCC < 16.
 
-  UBSAN: signed-integer-overflow in ./include/crypto/sha256_base.h:64:19
-  34152083 * 64 cannot be represented in type 'int'
-  ...
-  BUG: unable to handle page fault for address: ff9fffff83b624c0
-  sha256_update (lib/crypto/sha256.c:137)
-  crypto_sha256_update (crypto/sha256_generic.c:40)
-  kexec_calculate_store_digests (kernel/kexec_file.c:769)
-  __se_sys_kexec_file_load (kernel/kexec_file.c:397 kernel/kexec_file.c:332)
-  ...
-
-(Line numbers based on commit da274362a7bd9 ("Linux 6.12.49")
-
-This started happening after commit f4da7afe07523f
-("kexec_file: increase maximum file size to 4G") that landed in v6.0,
-which increased the file size for kexec.
-
-This is not happening upstream (v6.16+), given that `block` type was
-upgraded from "int" to "size_t" in commit 74a43a2cf5e8 ("crypto:
-lib/sha256 - Move partial block handling out")
-
-Upgrade the block type similar to the commit above, avoiding hitting the
-overflow.
-
-This patch is only suitable for the stable tree, and before 6.16, which
-got commit 74a43a2cf5e8 ("crypto: lib/sha256 - Move partial block
-handling out"). This is not required before f4da7afe07523f ("kexec_file:
-increase maximum file size to 4G"). In other words, this fix is required
-between versions v6.0 and v6.16.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Fixes: f4da7afe07523f ("kexec_file: increase maximum file size to 4G") # Before v6.16
-Reported-by: Michael van der Westhuizen <rmikey@meta.com>
-Reported-by: Tobias Fleig <tfleig@meta.com>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=9739ae9384dd7cd3bb1c7683d6b80b7a9116eaf8 [1]
+Suggested-by: Christopher Fore <csfore@posteo.net>
+Link: https://lore.kernel.org/r/20250920234519.work.915-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/crypto/sha256_base.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/gcc-plugins/gcc-common.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/include/crypto/sha256_base.h
-+++ b/include/crypto/sha256_base.h
-@@ -44,7 +44,7 @@ static inline int lib_sha256_base_do_upd
- 	sctx->count += len;
+--- a/scripts/gcc-plugins/gcc-common.h
++++ b/scripts/gcc-plugins/gcc-common.h
+@@ -191,10 +191,17 @@ inline bool is_a_helper<const gassign *>
+ }
+ #endif
  
- 	if (unlikely((partial + len) >= SHA256_BLOCK_SIZE)) {
--		int blocks;
-+		unsigned int blocks;
++#if BUILDING_GCC_VERSION < 16000
+ #define TODO_verify_ssa TODO_verify_il
+ #define TODO_verify_flow TODO_verify_il
+ #define TODO_verify_stmts TODO_verify_il
+ #define TODO_verify_rtl_sharing TODO_verify_il
++#else
++#define TODO_verify_ssa 0
++#define TODO_verify_flow 0
++#define TODO_verify_stmts 0
++#define TODO_verify_rtl_sharing 0
++#endif
  
- 		if (partial) {
- 			int p = SHA256_BLOCK_SIZE - partial;
+ #define INSN_DELETED_P(insn) (insn)->deleted()
+ 
 
 
 
