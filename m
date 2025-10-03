@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-183248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B62BB7747
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:06:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D83BB77C9
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 18:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3C4AB346D74
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:06:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791353B41A7
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 16:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DFD29E117;
-	Fri,  3 Oct 2025 16:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4772C29E0E1;
+	Fri,  3 Oct 2025 16:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdPBOJ2g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2y0I7u3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB6B29E0E1;
-	Fri,  3 Oct 2025 16:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AE429BDB5;
+	Fri,  3 Oct 2025 16:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759507602; cv=none; b=MHAAG1Yc9Nm4BMxd4QsQiGIDJeBlikmHL9Yj7FApT0n4qh1QrIJggnm5Xn2PRpgW8nufB5/+EJD6fKX3ufYT5w46M6LH/xVickXT10n4GFCOXw5HeFEeicddCHm5bzrYgPp3zDBtoEx9E4nGetD/k4KycfqLCqsDPO1cDw3FlAk=
+	t=1759507664; cv=none; b=kgxIJEHnX1KbqTYu2iGJEaW083CJbSovELtQC6+enYi0eWnAQy+rei1swlPM2xm0KfO4VUoww+7ZKS+A6TEcbCGh3Ic+B3cEVJmqAeHYgj48OJTerq+Wm3mteGjJKexthE9qBKS3wKvHfcDepnd59AKUVcolzeJFdnbxxy7f9i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759507602; c=relaxed/simple;
-	bh=pBbUHsnhIYTRbKwRpZiKVGT7/aQCl7yW7sojJmEfG8M=;
+	s=arc-20240116; t=1759507664; c=relaxed/simple;
+	bh=wLbfskF9ilofgWRa85Vq/NfnP8zYoBMT2HhU6yIf10Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZDJBkOLz8MN7WAyHOOU9u6GcI3vV6jC98jnNWyOg05DSlPVEpwkuWPiHip5aIYIvGw052X+RPJj3tv3zcB6KGNEfCq2kfzRKUOA9AinVzyVH0U5GaA3Oc1/sWjS1pnaC4Ka/8cFEFQb8l5Rd5L0BWa2Cvb2dfIlv05q7V60bP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdPBOJ2g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FD1C4CEF5;
-	Fri,  3 Oct 2025 16:06:41 +0000 (UTC)
+	 MIME-Version; b=DCEQew11Krfe4khhPVo9hpX4s6HPV/4/sQiCGb0DCHa03lh3mJwKYbys9+BVQNP1Y5MkUA7b4fofXaQq5XOQOaYzIH/E3kFaFdxazy3IdIc0Jt8F8Ma8SNHFUQ2Odwy7FYaxIK1OSsXW+g/E/yNoWHLYoZpXCeE36uxdWFD/7Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2y0I7u3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707D6C4CEF5;
+	Fri,  3 Oct 2025 16:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759507601;
-	bh=pBbUHsnhIYTRbKwRpZiKVGT7/aQCl7yW7sojJmEfG8M=;
+	s=korg; t=1759507663;
+	bh=wLbfskF9ilofgWRa85Vq/NfnP8zYoBMT2HhU6yIf10Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IdPBOJ2gX1CBFuLZTI1BHQwpKKCypHoOlZtqZluKgQJz1frMBNJKliN4JtJVNMKIq
-	 eJleY48EiKCI9jol6bRcjp1Un7obn1WvPkt2I8zmW42qIzvFKjMhQPqqCHanrTWoXN
-	 4doZ6wUIIZgCQbnb7CkCGQhFSG6fQCVsKHbnRNOQ=
+	b=L2y0I7u3+ZwkvN1tNX1TIOPAOMy2q82kMOM2hDEcfJNgGzQ63SNE8CwiZJzIijwnN
+	 UOlGzEwIcljvQ9v2/R2O7b84rESKEbIY13dJK3hBevsyRp8tyqjIUETqEnXGpY9oOe
+	 0SOiSk01YAhlQiYoNvnlr3eB4PM1b65J4WeCMyp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matvey Kovalev <matvey.kovalev@ispras.ru>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.17 12/15] wifi: ath11k: fix NULL dereference in ath11k_qmi_m3_load()
+	Christopher Fore <csfore@posteo.net>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.16 02/14] gcc-plugins: Remove TODO_verify_il for GCC >= 16
 Date: Fri,  3 Oct 2025 18:05:36 +0200
-Message-ID: <20251003160400.347316135@linuxfoundation.org>
+Message-ID: <20251003160352.783394369@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251003160359.831046052@linuxfoundation.org>
-References: <20251003160359.831046052@linuxfoundation.org>
+In-Reply-To: <20251003160352.713189598@linuxfoundation.org>
+References: <20251003160352.713189598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matvey Kovalev <matvey.kovalev@ispras.ru>
+From: Kees Cook <kees@kernel.org>
 
-commit 3fd2ef2ae2b5c955584a3bee8e83ae7d7a98f782 upstream.
+commit a40282dd3c484e6c882e93f4680e0a3ef3814453 upstream.
 
-If ab->fw.m3_data points to data, then fw pointer remains null.
-Further, if m3_mem is not allocated, then fw is dereferenced to be
-passed to ath11k_err function.
+GCC now runs TODO_verify_il automatically[1], so it is no longer exposed to
+plugins. Only use the flag on GCC < 16.
 
-Replace fw->size by m3_len.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 7db88b962f06 ("wifi: ath11k: add firmware-2.bin support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matvey Kovalev <matvey.kovalev@ispras.ru>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250917192020.1340-1-matvey.kovalev@ispras.ru
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=9739ae9384dd7cd3bb1c7683d6b80b7a9116eaf8 [1]
+Suggested-by: Christopher Fore <csfore@posteo.net>
+Link: https://lore.kernel.org/r/20250920234519.work.915-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/gcc-plugins/gcc-common.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2557,7 +2557,7 @@ static int ath11k_qmi_m3_load(struct ath
- 					   GFP_KERNEL);
- 	if (!m3_mem->vaddr) {
- 		ath11k_err(ab, "failed to allocate memory for M3 with size %zu\n",
--			   fw->size);
-+			   m3_len);
- 		ret = -ENOMEM;
- 		goto out;
- 	}
+--- a/scripts/gcc-plugins/gcc-common.h
++++ b/scripts/gcc-plugins/gcc-common.h
+@@ -173,10 +173,17 @@ static inline opt_pass *get_pass_for_id(
+ 	return g->get_passes()->get_pass_for_id(id);
+ }
+ 
++#if BUILDING_GCC_VERSION < 16000
+ #define TODO_verify_ssa TODO_verify_il
+ #define TODO_verify_flow TODO_verify_il
+ #define TODO_verify_stmts TODO_verify_il
+ #define TODO_verify_rtl_sharing TODO_verify_il
++#else
++#define TODO_verify_ssa 0
++#define TODO_verify_flow 0
++#define TODO_verify_stmts 0
++#define TODO_verify_rtl_sharing 0
++#endif
+ 
+ #define INSN_DELETED_P(insn) (insn)->deleted()
+ 
 
 
 
