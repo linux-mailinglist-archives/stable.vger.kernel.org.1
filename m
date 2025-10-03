@@ -1,119 +1,126 @@
-Return-Path: <stable+bounces-183328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2903BB8208
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 22:43:34 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE38BB825C
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 22:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D6DF19E3695
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 20:43:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1EADB4EEDDF
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 20:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB80F246BA7;
-	Fri,  3 Oct 2025 20:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBE7253B73;
+	Fri,  3 Oct 2025 20:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mPvdNFaI"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="k2M/ReJg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBAF2459C6
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 20:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54412561AE
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 20:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759524210; cv=none; b=Sd7fyZhAdDa19Med1SuK0N9atd0sIn7g3+/M7pu0WrYs7VPLPUFweLPTmuZQL5jAf2lIxwYE4A8YlzrF+2T1Ci1fZlOBBnA1ivw4aBrRqe0oK+RpXcV4b9fjdndo8M6RcBv4J6KJAt+StBohwdTYigHcUTscidih2Yft0PrErBY=
+	t=1759524690; cv=none; b=Rg4uOXfTE76xFBwOvElb5wbuk19HewHAAR+j5nOq3sqjsBOOpC6esUPc9T9ptonvgweLUb4yJiPH+9Hw+Qc7AMgu4FHFuXwDfzacGY3HXmVLE/wLkwVUKZtpcWhZx6kSeXrs2ZcxEvG/GRLyBLcjlIkB/SCYnZH9PHSV811epVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759524210; c=relaxed/simple;
-	bh=hF51D3+mOVx4or+38FUJ8pzrNs5XeCs3vLi1r7zW64w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCsgRl6SyHmL9ukKx0abEqL9ThxTO+jI6MOIJOXE8LBnrbwmMa7jJGQ2XIn4YACmAyb2TIegDORo/J3u39rmb9gNcPo0r5zN0H831YIyzHKykM/iJcbxXDlOIwUrS1V+VD/RAHidFEJ8vosIWz6S0poBaWgFMSvlth54nqH079Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mPvdNFaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0996FC4CEFA;
-	Fri,  3 Oct 2025 20:43:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759524210;
-	bh=hF51D3+mOVx4or+38FUJ8pzrNs5XeCs3vLi1r7zW64w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPvdNFaIMZNBnkEmQb+VY7GvKYik6C9m8zBGq8Ff59gmK46D1U2uP0KvS7r72JuXq
-	 rHcp5WxcDg/4EDHvOYlD99XUccbmet9GL5YaSDQuhuazwpI2Hiov1rz+KQ+KCiq16w
-	 cbEISkK9U7Ju9BeLD0Nce4IcAO0SOquygBR2E/yUnYXUjfKBGID7bklyi8Fw9xVoQt
-	 DyyiZLV89tp9kj8idFSa46XrXwjyhXV7lK7+epDuxxGpnHoiKNAAjeLJLr+/kEoexT
-	 J1Iu8krOqDS9Uy/tuXc6V0lu1EPQ+j+W77Hn1UU3e9BQfqBZR/YX41AXlx+Sa8laBa
-	 cVgus4RDmdOLg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] media: tuner: xc5000: Fix use-after-free in xc5000_release
-Date: Fri,  3 Oct 2025 16:43:26 -0400
-Message-ID: <20251003204327.3377848-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251003204327.3377848-1-sashal@kernel.org>
-References: <2025100339-scarring-buffoon-fbc5@gregkh>
- <20251003204327.3377848-1-sashal@kernel.org>
+	s=arc-20240116; t=1759524690; c=relaxed/simple;
+	bh=bGf/fVMq7D81Q5YNB5Z+ahF/or+jbs9kwSx5EKrooY4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aFBKVUHXvl6qq28xaCGRpgYIoePJ6Xf/KUf/Yl5i2h4jwYt+FwNmGQL1B498B/kVFWa8ARLiLs9OAX9Yhvb/EEaFrPj44dMoQ2rq8LlKiRp8UIitY36TIH/+hJ/8KhlFAHyQfFuuZWGAUEqbEBVtDRAhHfcW+xggUhQCFmGtS8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=k2M/ReJg; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4e2d2d764a3so21352601cf.1
+        for <stable@vger.kernel.org>; Fri, 03 Oct 2025 13:51:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ciq.com; s=s1; t=1759524687; x=1760129487; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7Z9OJHsg9AnDgBWFYYVznso9JgY1ikRBT350Nr1kqdA=;
+        b=k2M/ReJgV/PIPf4/m4x1RqbifFPwBk5bqmg8At//lqk6DpVBhDAm6KT4/g2mVY1DEA
+         2X0Ac4C23kFdj2Mos7g7JXG9+pZHCBLeYaaw+h/iGbMT+0fHaviuoapGj038Ccl8Zat2
+         eRzWm1Q3dwSHgL0go0/W5FG09tfDkyG4uULYxOF+puBvARO9pvQTt32yEAMg92oXnql9
+         IUErb7yQeBzFm6BnuB6SeVU4K3fiM+g50n9rCflqYg7cQhXK70ta5OxRHeXHv+rAb6Ox
+         b/dlWauTsRnEdQV09tGwWa6Q1NspN4PMi0eCIyQakckYXOZZcoK8vtk84LT9Yh9l2Cm2
+         tFPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759524687; x=1760129487;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7Z9OJHsg9AnDgBWFYYVznso9JgY1ikRBT350Nr1kqdA=;
+        b=coC6bPKcAMAi9p49WU9Hz7ys+PwI0EKFiiNTt3OblhFHb1xKycSwXPgEpjCSgb3hKc
+         Xf1noKGScn2CZPldlSXvSYTLzswM1xFgQT7E05T3KlqAUcg1t631BvjKwwak50kmvOZv
+         98TZeRP0chK0Z7chKjRH8D2kCJ2xXg+0+oEv1ejH0jZ00UQ8HjiX8hDAktMuIxvqHkEP
+         ClaRqxayhDvwzmFRCq+6hyzMvQgRzyVC3ZGFOMNZs5YQhNx2zfKep4gZjDH8nJCq9cO9
+         sJPJu5OWtrTT/iMi7UoT1sL1k8ou1uonMEr97+jPzyQDWaFftavhIJaJiSik2iRKwdrm
+         K9zg==
+X-Gm-Message-State: AOJu0YwnLBMFNIqxMWi0WDyRI9f5z67THU6O1VYpVRHuQKs6SfUw2S06
+	l4HGcLnksQxEY97yRH2Ap+jYSp8A+zrIRQ4V8+L18SCMT5F5cWv2tIo+5/kBHykvjFifx0V4ZMX
+	Ja9uvdjsloCQYiTPK5js5+N8VDGV6p0cU8grWfXdQsw==
+X-Gm-Gg: ASbGncvExbknkpigWyLUAosIQ/7WtgsGcL0I4tN0RALT3vL0a5aNfrAI5EFfvdCHouE
+	EXDtkY10bu1FrGFP1L9elHEM5HHnrJ+gMhuBIAGYZLDDxv3rnGFCU/Xgn9YtVR5xeJbfi0kb0t3
+	oMfi2/0vnfClsdtD7juAA347jvElEdj8g5qjYbckCI7QfwGtOa03UdOEbxEuBSFZrwCLBtrvPy0
+	2p3jEXhoIgzDfsZIvCbIvEhMcnKl4A0lUUKrlBVXG4=
+X-Google-Smtp-Source: AGHT+IGOFuK5QKXUa0EoyQNwTfrrar3OCp+dKAGP3fEaEJ9VnSeYg1Yk+ezWQ9N6bxp2R87Mtx6d9Bh25m/9JjggpuQ=
+X-Received: by 2002:a05:622a:303:b0:4b7:9add:76cd with SMTP id
+ d75a77b69052e-4e576ae6ba4mr64596521cf.42.1759524687516; Fri, 03 Oct 2025
+ 13:51:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251003160338.463688162@linuxfoundation.org>
+In-Reply-To: <20251003160338.463688162@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Fri, 3 Oct 2025 16:51:16 -0400
+X-Gm-Features: AS18NWCwKeFKfMLlMvvr2cSuujlh1BUpd9drr1fldSku7mQZdxTUWOKjj9ta5Is
+Message-ID: <CAOBMUvjBZLErkgx=VK06QHFBJZ3rLiJ+NdXitrT7PUnd452Jmg@mail.gmail.com>
+Subject: Re: [PATCH 6.12 00/10] 6.12.51-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+On Fri, Oct 3, 2025 at 12:08=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.51 release.
+> There are 10 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 05 Oct 2025 16:02:25 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.51-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-[ Upstream commit 40b7a19f321e65789612ebaca966472055dab48c ]
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
 
-The original code uses cancel_delayed_work() in xc5000_release(), which
-does not guarantee that the delayed work item timer_sleep has fully
-completed if it was already running. This leads to use-after-free scenarios
-where xc5000_release() may free the xc5000_priv while timer_sleep is still
-active and attempts to dereference the xc5000_priv.
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
-A typical race condition is illustrated below:
-
-CPU 0 (release thread)                 | CPU 1 (delayed work callback)
-xc5000_release()                       | xc5000_do_timer_sleep()
-  cancel_delayed_work()                |
-  hybrid_tuner_release_state(priv)     |
-    kfree(priv)                        |
-                                       |   priv = container_of() // UAF
-
-Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
-that the timer_sleep is properly canceled before the xc5000_priv memory
-is deallocated.
-
-A deadlock concern was considered: xc5000_release() is called in a process
-context and is not holding any locks that the timer_sleep work item might
-also need. Therefore, the use of the _sync() variant is safe here.
-
-This bug was initially identified through static analysis.
-
-Fixes: f7a27ff1fb77 ("[media] xc5000: delay tuner sleep to 5 seconds")
-Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[hverkuil: fix typo in Subject: tunner -> tuner]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/media/tuners/xc5000.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
-index 30aa4ee958bde..ec9a3cd4784e1 100644
---- a/drivers/media/tuners/xc5000.c
-+++ b/drivers/media/tuners/xc5000.c
-@@ -1304,7 +1304,7 @@ static void xc5000_release(struct dvb_frontend *fe)
- 	mutex_lock(&xc5000_list_mutex);
- 
- 	if (priv) {
--		cancel_delayed_work(&priv->timer_sleep);
-+		cancel_delayed_work_sync(&priv->timer_sleep);
- 		hybrid_tuner_release_state(priv);
- 	}
- 
--- 
-2.51.0
-
+Thanks,
+Brett
 
