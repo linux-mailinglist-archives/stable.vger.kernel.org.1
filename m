@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-183214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB63BB6F31
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 15:16:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174E0BB6F34
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 15:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A17104ED18B
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 13:15:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 53DCD4EC1DD
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 13:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F0D2EFDB4;
-	Fri,  3 Oct 2025 13:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A21D2F25EC;
+	Fri,  3 Oct 2025 13:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdUeaM9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+tGh2I6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966382F2D
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 13:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC61B2F25E4
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 13:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759497167; cv=none; b=kJqXhuOgd4dkPTS4m8itQQLGypve3JeQrFVqSblstdd7DGDJg1ivLWtty4sfMnS1yKoLK1nYS2u+4T/WlavKg7oN/v/hbYJiVoK/t+nqppLqoVS2Na2DBaQHj3z681iTd9Ng/c4YbiCAxXOLFidL3kCohwbPmUrgq6p3t/6UogQ=
+	t=1759497174; cv=none; b=a+vsGZdgvXvuidx8zyIM9RIlq+t553u5q5uvSFWQBUiX6RVefisR3WsxiSjZpNM8PEamTJ/CRpqojmC2BwLRVUgtM80vGmT4BP+dkr2mKkrJHKStJbjitHs+htzqG5s4akUZxk9h3Qhni/c+DVt6BkL+YJA4R+RpyzJ/B84SMQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759497167; c=relaxed/simple;
-	bh=QrZLlMBIb7L+S4YR9nB2yff6JcFXt7OJqVsN56TiuuU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=B/KI2k5afDMpGLyLmPiz7AjlWhImd5lY0bWhFhiLd3ZMU1BRASjHP2vXfb4TrmIbuqAYuEEPgq9vPvYANGcRgMX0SB9qEclVQ7AOQiKrq5Fc26WlUoDmV3BrM9gYhbcbWsdsDUNFr1b1XuoNuc3UcFIp5ZYxGPx29fqrc3PXJpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdUeaM9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9CAC4CEF5;
-	Fri,  3 Oct 2025 13:12:46 +0000 (UTC)
+	s=arc-20240116; t=1759497174; c=relaxed/simple;
+	bh=RmfnfVp14Rfdt85nxH0jLi3aMfWii+B0AI32Y6tJtSc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i+h/C+t64wAts+ksRdgLVz5f/pWr/bom7jivJOBxbR1qIPWzyqn2Vcgkxs7yD3a3xZBYDgMNZTQAN++UfV8FXZwYhTQBozAS99PyvF4PdusfnglqoOVRx53b6QxTN4E3TILINRlHH7kM6nBV4M6VqHCRwKoEsDw8ArjZoO1hbZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+tGh2I6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1756BC4CEF5;
+	Fri,  3 Oct 2025 13:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759497167;
-	bh=QrZLlMBIb7L+S4YR9nB2yff6JcFXt7OJqVsN56TiuuU=;
+	s=korg; t=1759497174;
+	bh=RmfnfVp14Rfdt85nxH0jLi3aMfWii+B0AI32Y6tJtSc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZdUeaM9Xypq9nDJTzzOdTAp7+ybDXNROnvRZF9Up7a/d79jGPmURWfUEHq6XVnGHg
-	 r0hgIZRHkaZzXsdnpN8ZdMA6xoSsMeHjTdsmf+IsL/QzvPGi7C29koZw+AcQwXL5+s
-	 zZt8yGCoNhYrFttfPU+C5krTWJfz5Vm8cpxsOCR4=
-Subject: FAILED: patch "[PATCH] media: i2c: tc358743: Fix use-after-free bugs caused by" failed to apply to 5.4-stable tree
+	b=f+tGh2I6ZyRWlbIxGdPX/URYSKh89RFpEaL2yUIfNt5jameVkRNRihQBsfIMUTZ9m
+	 s/Lw9bAoP5QTp6bhoVkboQjXHgY9Obj2oxQzstLwIoZKpFF/dtsScvSaBuE2KklJzk
+	 lWOKy/gUd4SPCMHHwpVqpalX7fEBX9zJnK3Dtodg=
+Subject: FAILED: patch "[PATCH] media: tuner: xc5000: Fix use-after-free in xc5000_release
+[hverkuil: fix typo in tunner -> tuner]" failed to apply to 6.6-stable tree
 To: duoming@zju.edu.cn,hverkuil+cisco@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 03 Oct 2025 15:12:33 +0200
-Message-ID: <2025100333-silica-pebble-c8d6@gregkh>
+Date: Fri, 03 Oct 2025 15:12:39 +0200
+Message-ID: <2025100338-ambulance-swaddling-4b2b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +54,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 79d10f4f21a92e459b2276a77be62c59c1502c9d
+git cherry-pick -x 40b7a19f321e65789612ebaca966472055dab48c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025100333-silica-pebble-c8d6@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025100338-ambulance-swaddling-4b2b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,144 +78,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 79d10f4f21a92e459b2276a77be62c59c1502c9d Mon Sep 17 00:00:00 2001
+From 40b7a19f321e65789612ebaca966472055dab48c Mon Sep 17 00:00:00 2001
 From: Duoming Zhou <duoming@zju.edu.cn>
-Date: Wed, 17 Sep 2025 17:57:42 +0800
-Subject: [PATCH] media: i2c: tc358743: Fix use-after-free bugs caused by
- orphan timer in probe
+Date: Wed, 17 Sep 2025 17:56:08 +0800
+Subject: [PATCH] media: tuner: xc5000: Fix use-after-free in xc5000_release
 
-The state->timer is a cyclic timer that schedules work_i2c_poll and
-delayed_work_enable_hotplug, while rearming itself. Using timer_delete()
-fails to guarantee the timer isn't still running when destroyed, similarly
-cancel_delayed_work() cannot ensure delayed_work_enable_hotplug has
-terminated if already executing. During probe failure after timer
-initialization, these may continue running as orphans and reference the
-already-freed tc358743_state object through tc358743_irq_poll_timer.
+The original code uses cancel_delayed_work() in xc5000_release(), which
+does not guarantee that the delayed work item timer_sleep has fully
+completed if it was already running. This leads to use-after-free scenarios
+where xc5000_release() may free the xc5000_priv while timer_sleep is still
+active and attempts to dereference the xc5000_priv.
 
-The following is the trace captured by KASAN.
+A typical race condition is illustrated below:
 
-BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
-Write of size 8 at addr ffff88800ded83c8 by task swapper/1/0
-...
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_report+0xcf/0x610
- ? __pfx_sched_balance_find_src_group+0x10/0x10
- ? __run_timer_base.part.0+0x7d7/0x8c0
- kasan_report+0xb8/0xf0
- ? __run_timer_base.part.0+0x7d7/0x8c0
- __run_timer_base.part.0+0x7d7/0x8c0
- ? rcu_sched_clock_irq+0xb06/0x27d0
- ? __pfx___run_timer_base.part.0+0x10/0x10
- ? try_to_wake_up+0xb15/0x1960
- ? tmigr_update_events+0x280/0x740
- ? _raw_spin_lock_irq+0x80/0xe0
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- tmigr_handle_remote_up+0x603/0x7e0
- ? __pfx_tmigr_handle_remote_up+0x10/0x10
- ? sched_balance_trigger+0x98/0x9f0
- ? sched_tick+0x221/0x5a0
- ? _raw_spin_lock_irq+0x80/0xe0
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- ? tick_nohz_handler+0x339/0x440
- ? __pfx_tmigr_handle_remote_up+0x10/0x10
- __walk_groups.isra.0+0x42/0x150
- tmigr_handle_remote+0x1f4/0x2e0
- ? __pfx_tmigr_handle_remote+0x10/0x10
- ? ktime_get+0x60/0x140
- ? lapic_next_event+0x11/0x20
- ? clockevents_program_event+0x1d4/0x2a0
- ? hrtimer_interrupt+0x322/0x780
- handle_softirqs+0x16a/0x550
- irq_exit_rcu+0xaf/0xe0
- sysvec_apic_timer_interrupt+0x70/0x80
- </IRQ>
-...
+CPU 0 (release thread)                 | CPU 1 (delayed work callback)
+xc5000_release()                       | xc5000_do_timer_sleep()
+  cancel_delayed_work()                |
+  hybrid_tuner_release_state(priv)     |
+    kfree(priv)                        |
+                                       |   priv = container_of() // UAF
 
-Allocated by task 141:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x7f/0x90
- __kmalloc_node_track_caller_noprof+0x198/0x430
- devm_kmalloc+0x7b/0x1e0
- tc358743_probe+0xb7/0x610  i2c_device_probe+0x51d/0x880
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __device_attach_driver+0x174/0x220
- bus_for_each_drv+0x100/0x190
- __device_attach+0x206/0x370
- bus_probe_device+0x123/0x170
- device_add+0xd25/0x1470
- i2c_new_client_device+0x7a0/0xcd0
- do_one_initcall+0x89/0x300
- do_init_module+0x29d/0x7f0
- load_module+0x4f48/0x69e0
- init_module_from_file+0xe4/0x150
- idempotent_init_module+0x320/0x670
- __x64_sys_finit_module+0xbd/0x120
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the timer_sleep is properly canceled before the xc5000_priv memory
+is deallocated.
 
-Freed by task 141:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3a/0x60
- __kasan_slab_free+0x3f/0x50
- kfree+0x137/0x370
- release_nodes+0xa4/0x100
- devres_release_group+0x1b2/0x380
- i2c_device_probe+0x694/0x880
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __device_attach_driver+0x174/0x220
- bus_for_each_drv+0x100/0x190
- __device_attach+0x206/0x370
- bus_probe_device+0x123/0x170
- device_add+0xd25/0x1470
- i2c_new_client_device+0x7a0/0xcd0
- do_one_initcall+0x89/0x300
- do_init_module+0x29d/0x7f0
- load_module+0x4f48/0x69e0
- init_module_from_file+0xe4/0x150
- idempotent_init_module+0x320/0x670
- __x64_sys_finit_module+0xbd/0x120
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
+A deadlock concern was considered: xc5000_release() is called in a process
+context and is not holding any locks that the timer_sleep work item might
+also need. Therefore, the use of the _sync() variant is safe here.
 
-Replace timer_delete() with timer_delete_sync() and cancel_delayed_work()
-with cancel_delayed_work_sync() to ensure proper termination of timer and
-work items before resource cleanup.
+This bug was initially identified through static analysis.
 
-This bug was initially identified through static analysis. For reproduction
-and testing, I created a functional emulation of the tc358743 device via a
-kernel module and introduced faults through the debugfs interface.
-
-Fixes: 869f38ae07f7 ("media: i2c: tc358743: Fix crash in the probe error path when using polling")
-Fixes: d32d98642de6 ("[media] Driver for Toshiba TC358743 HDMI to CSI-2 bridge")
+Fixes: f7a27ff1fb77 ("[media] xc5000: delay tuner sleep to 5 seconds")
 Cc: stable@vger.kernel.org
 Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[hverkuil: fix typo in Subject: tunner -> tuner]
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index aa02a5a6ae3e..a0ca19359c43 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -2326,10 +2326,10 @@ static int tc358743_probe(struct i2c_client *client)
- err_work_queues:
- 	cec_unregister_adapter(state->cec_adap);
- 	if (!state->i2c_client->irq) {
--		timer_delete(&state->timer);
-+		timer_delete_sync(&state->timer);
- 		flush_work(&state->work_i2c_poll);
+diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
+index bf4ff461e082..a28481edd22e 100644
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -1304,7 +1304,7 @@ static void xc5000_release(struct dvb_frontend *fe)
+ 	mutex_lock(&xc5000_list_mutex);
+ 
+ 	if (priv) {
+-		cancel_delayed_work(&priv->timer_sleep);
++		cancel_delayed_work_sync(&priv->timer_sleep);
+ 		hybrid_tuner_release_state(priv);
  	}
--	cancel_delayed_work(&state->delayed_work_enable_hotplug);
-+	cancel_delayed_work_sync(&state->delayed_work_enable_hotplug);
- 	mutex_destroy(&state->confctl_mutex);
- err_hdl:
- 	media_entity_cleanup(&sd->entity);
+ 
 
 
