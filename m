@@ -1,126 +1,172 @@
-Return-Path: <stable+bounces-183329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE38BB825C
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 22:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA02BB8262
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 22:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1EADB4EEDDF
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 20:51:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 75E174ED44F
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 20:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBE7253B73;
-	Fri,  3 Oct 2025 20:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FD82571B0;
+	Fri,  3 Oct 2025 20:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="k2M/ReJg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="denXtdYY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54412561AE
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 20:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55ACF253B73
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 20:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759524690; cv=none; b=Rg4uOXfTE76xFBwOvElb5wbuk19HewHAAR+j5nOq3sqjsBOOpC6esUPc9T9ptonvgweLUb4yJiPH+9Hw+Qc7AMgu4FHFuXwDfzacGY3HXmVLE/wLkwVUKZtpcWhZx6kSeXrs2ZcxEvG/GRLyBLcjlIkB/SCYnZH9PHSV811epVw=
+	t=1759524891; cv=none; b=sXkZr745QRilea2RF8cQFTpB1W7Z4fhD9J4laYRCw52grhM31yYKPNKvdbmJalAlkKPp7I9hWjoFiwvvyzb0qu8xL+VdfpNAGxm2M7pJR1+cCq3PB4oDzoiaQ2rNwAMa/YeCKhW+syXvsR0QXpLJDI52UIN2Y5tae6GGoNkPtrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759524690; c=relaxed/simple;
-	bh=bGf/fVMq7D81Q5YNB5Z+ahF/or+jbs9kwSx5EKrooY4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aFBKVUHXvl6qq28xaCGRpgYIoePJ6Xf/KUf/Yl5i2h4jwYt+FwNmGQL1B498B/kVFWa8ARLiLs9OAX9Yhvb/EEaFrPj44dMoQ2rq8LlKiRp8UIitY36TIH/+hJ/8KhlFAHyQfFuuZWGAUEqbEBVtDRAhHfcW+xggUhQCFmGtS8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=k2M/ReJg; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4e2d2d764a3so21352601cf.1
-        for <stable@vger.kernel.org>; Fri, 03 Oct 2025 13:51:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1759524687; x=1760129487; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7Z9OJHsg9AnDgBWFYYVznso9JgY1ikRBT350Nr1kqdA=;
-        b=k2M/ReJgV/PIPf4/m4x1RqbifFPwBk5bqmg8At//lqk6DpVBhDAm6KT4/g2mVY1DEA
-         2X0Ac4C23kFdj2Mos7g7JXG9+pZHCBLeYaaw+h/iGbMT+0fHaviuoapGj038Ccl8Zat2
-         eRzWm1Q3dwSHgL0go0/W5FG09tfDkyG4uULYxOF+puBvARO9pvQTt32yEAMg92oXnql9
-         IUErb7yQeBzFm6BnuB6SeVU4K3fiM+g50n9rCflqYg7cQhXK70ta5OxRHeXHv+rAb6Ox
-         b/dlWauTsRnEdQV09tGwWa6Q1NspN4PMi0eCIyQakckYXOZZcoK8vtk84LT9Yh9l2Cm2
-         tFPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759524687; x=1760129487;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7Z9OJHsg9AnDgBWFYYVznso9JgY1ikRBT350Nr1kqdA=;
-        b=coC6bPKcAMAi9p49WU9Hz7ys+PwI0EKFiiNTt3OblhFHb1xKycSwXPgEpjCSgb3hKc
-         Xf1noKGScn2CZPldlSXvSYTLzswM1xFgQT7E05T3KlqAUcg1t631BvjKwwak50kmvOZv
-         98TZeRP0chK0Z7chKjRH8D2kCJ2xXg+0+oEv1ejH0jZ00UQ8HjiX8hDAktMuIxvqHkEP
-         ClaRqxayhDvwzmFRCq+6hyzMvQgRzyVC3ZGFOMNZs5YQhNx2zfKep4gZjDH8nJCq9cO9
-         sJPJu5OWtrTT/iMi7UoT1sL1k8ou1uonMEr97+jPzyQDWaFftavhIJaJiSik2iRKwdrm
-         K9zg==
-X-Gm-Message-State: AOJu0YwnLBMFNIqxMWi0WDyRI9f5z67THU6O1VYpVRHuQKs6SfUw2S06
-	l4HGcLnksQxEY97yRH2Ap+jYSp8A+zrIRQ4V8+L18SCMT5F5cWv2tIo+5/kBHykvjFifx0V4ZMX
-	Ja9uvdjsloCQYiTPK5js5+N8VDGV6p0cU8grWfXdQsw==
-X-Gm-Gg: ASbGncvExbknkpigWyLUAosIQ/7WtgsGcL0I4tN0RALT3vL0a5aNfrAI5EFfvdCHouE
-	EXDtkY10bu1FrGFP1L9elHEM5HHnrJ+gMhuBIAGYZLDDxv3rnGFCU/Xgn9YtVR5xeJbfi0kb0t3
-	oMfi2/0vnfClsdtD7juAA347jvElEdj8g5qjYbckCI7QfwGtOa03UdOEbxEuBSFZrwCLBtrvPy0
-	2p3jEXhoIgzDfsZIvCbIvEhMcnKl4A0lUUKrlBVXG4=
-X-Google-Smtp-Source: AGHT+IGOFuK5QKXUa0EoyQNwTfrrar3OCp+dKAGP3fEaEJ9VnSeYg1Yk+ezWQ9N6bxp2R87Mtx6d9Bh25m/9JjggpuQ=
-X-Received: by 2002:a05:622a:303:b0:4b7:9add:76cd with SMTP id
- d75a77b69052e-4e576ae6ba4mr64596521cf.42.1759524687516; Fri, 03 Oct 2025
- 13:51:27 -0700 (PDT)
+	s=arc-20240116; t=1759524891; c=relaxed/simple;
+	bh=AUBIFMN0oL9q60EaetitQwhQca5lqAfJFQq3y+UmHXU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aNaRNjqSAA0DH4Qsivim4FN/S6troTYYqxrREMUXfH+VU93z+m+YBqs86mrVuyTNveJFyV8mCJxItElpMlRS52ftqDWYY4eNT2CsqrthPuRzMmUILbamoCxWZ7kOV8NQDtIkfDpOHWD/3wWzcZ8vJ+ild4hD386gsJyGWbty0NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=denXtdYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29EFEC4CEFA;
+	Fri,  3 Oct 2025 20:54:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759524890;
+	bh=AUBIFMN0oL9q60EaetitQwhQca5lqAfJFQq3y+UmHXU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=denXtdYYzKjvpZ0Oxtw9rIze4NGSxbRwoCVd7OWKUjGY9zwgrEJoz5gyrQ0135ITx
+	 ViR+S1B+PmFy2DBDfsPb2f+564gBZH/CbV2BF2HJgKk7Y5XqTmrjNekMki85hzDuin
+	 Er57pJJkzaAalz8EbVo3zY/P+rjOO7DajvuutDWcjcG+hQPlltJAxYC38kes1J8XU2
+	 m+zHcuC2dLLWsWVV90G2BItZjG1dDH0QCyQr4IcMf8XJC0R5d2srb+oGHF2TlfA5+A
+	 myVSMtvCAKbm/zOu/QUs86f6uyb2H87VhRARSi7cNIBGElwWhWaeI0UM5KYu8URsFR
+	 UdZXyqFwIXNSg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Ricardo Ribalda <ribalda@chromium.org>,
+	Shuah Khan <shuah.kh@samsung.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/2] media: tunner: xc5000: Refactor firmware load
+Date: Fri,  3 Oct 2025 16:54:46 -0400
+Message-ID: <20251003205447.3385896-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025100340-pleat-amusable-e5dc@gregkh>
+References: <2025100340-pleat-amusable-e5dc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251003160338.463688162@linuxfoundation.org>
-In-Reply-To: <20251003160338.463688162@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Fri, 3 Oct 2025 16:51:16 -0400
-X-Gm-Features: AS18NWCwKeFKfMLlMvvr2cSuujlh1BUpd9drr1fldSku7mQZdxTUWOKjj9ta5Is
-Message-ID: <CAOBMUvjBZLErkgx=VK06QHFBJZ3rLiJ+NdXitrT7PUnd452Jmg@mail.gmail.com>
-Subject: Re: [PATCH 6.12 00/10] 6.12.51-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 3, 2025 at 12:08=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.51 release.
-> There are 10 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 05 Oct 2025 16:02:25 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.51-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
-Intel Core i7-12600H
+[ Upstream commit 8e1f5da59dd4a1966f859639860b803a7e8b8bfb ]
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
+Make sure the firmware is released when we leave
+xc_load_fw_and_init_tuner()
 
-Thanks,
-Brett
+This change makes smatch happy:
+drivers/media/tuners/xc5000.c:1213 xc_load_fw_and_init_tuner() warn: 'fw' from request_firmware() not released on lines: 1213.
+
+Cc: Shuah Khan <shuah.kh@samsung.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 40b7a19f321e ("media: tuner: xc5000: Fix use-after-free in xc5000_release")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/media/tuners/xc5000.c | 39 +++++++++++++++--------------------
+ 1 file changed, 17 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
+index 2182e5b7b6064..30aa4ee958bde 100644
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -58,7 +58,7 @@ struct xc5000_priv {
+ 	struct dvb_frontend *fe;
+ 	struct delayed_work timer_sleep;
+ 
+-	const struct firmware   *firmware;
++	bool inited;
+ };
+ 
+ /* Misc Defines */
+@@ -1110,23 +1110,19 @@ static int xc_load_fw_and_init_tuner(struct dvb_frontend *fe, int force)
+ 	if (!force && xc5000_is_firmware_loaded(fe) == 0)
+ 		return 0;
+ 
+-	if (!priv->firmware) {
+-		ret = request_firmware(&fw, desired_fw->name,
+-					priv->i2c_props.adap->dev.parent);
+-		if (ret) {
+-			pr_err("xc5000: Upload failed. rc %d\n", ret);
+-			return ret;
+-		}
+-		dprintk(1, "firmware read %zu bytes.\n", fw->size);
++	ret = request_firmware(&fw, desired_fw->name,
++			       priv->i2c_props.adap->dev.parent);
++	if (ret) {
++		pr_err("xc5000: Upload failed. rc %d\n", ret);
++		return ret;
++	}
++	dprintk(1, "firmware read %zu bytes.\n", fw->size);
+ 
+-		if (fw->size != desired_fw->size) {
+-			pr_err("xc5000: Firmware file with incorrect size\n");
+-			release_firmware(fw);
+-			return -EINVAL;
+-		}
+-		priv->firmware = fw;
+-	} else
+-		fw = priv->firmware;
++	if (fw->size != desired_fw->size) {
++		pr_err("xc5000: Firmware file with incorrect size\n");
++		release_firmware(fw);
++		return -EINVAL;
++	}
+ 
+ 	/* Try up to 5 times to load firmware */
+ 	for (i = 0; i < 5; i++) {
+@@ -1204,6 +1200,7 @@ static int xc_load_fw_and_init_tuner(struct dvb_frontend *fe, int force)
+ 	}
+ 
+ err:
++	release_firmware(fw);
+ 	if (!ret)
+ 		printk(KERN_INFO "xc5000: Firmware %s loaded and running.\n",
+ 		       desired_fw->name);
+@@ -1274,7 +1271,7 @@ static int xc5000_resume(struct dvb_frontend *fe)
+ 
+ 	/* suspended before firmware is loaded.
+ 	   Avoid firmware load in resume path. */
+-	if (!priv->firmware)
++	if (!priv->inited)
+ 		return 0;
+ 
+ 	return xc5000_set_params(fe);
+@@ -1293,6 +1290,8 @@ static int xc5000_init(struct dvb_frontend *fe)
+ 	if (debug)
+ 		xc_debug_dump(priv);
+ 
++	priv->inited = true;
++
+ 	return 0;
+ }
+ 
+@@ -1306,10 +1305,6 @@ static void xc5000_release(struct dvb_frontend *fe)
+ 
+ 	if (priv) {
+ 		cancel_delayed_work(&priv->timer_sleep);
+-		if (priv->firmware) {
+-			release_firmware(priv->firmware);
+-			priv->firmware = NULL;
+-		}
+ 		hybrid_tuner_release_state(priv);
+ 	}
+ 
+-- 
+2.51.0
+
 
