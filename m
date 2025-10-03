@@ -1,159 +1,208 @@
-Return-Path: <stable+bounces-183308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7C6BB7D86
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 20:07:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6894CBB7E31
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 20:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703313A9134
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 18:05:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 03E7A4E489B
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 18:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6E72DC33B;
-	Fri,  3 Oct 2025 18:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D2E2D46A1;
+	Fri,  3 Oct 2025 18:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="lBiNobmV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4JfwJCB"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9034A2DBF75;
-	Fri,  3 Oct 2025 18:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFBB79EA
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 18:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759514733; cv=none; b=X9+62EIodw8l99oJBvjx8u+QhF+6eVj2qIpHDzOqWyqlcOqNvyJnRZ0LzQ8ytlZ0NouhTc1/TLCUrKhqmGgRZ5/97tnB9rFlQNS4LA9YWDOd8kM6BUbXOgdY3m6n/AEZSkyQCNJKDbcvsOeaqdXzZQaaXJqT2YNWlR3Thc1TIB8=
+	t=1759516184; cv=none; b=IZWofOVzF3JVAmVAOv0FLzDMZJLICy9abBYS02yk2/80Pbo7iJMrBy2WVqHg6aYiWvuVs6L7gAJQRh2O0lAQEAEqePqZlMOFXBMRsZUvdjZDIafYbx0/8wzkaGJsmxgObFh39yn9WyJbV3jHll1hcY85tvH5yiC8X5nTMDNbn20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759514733; c=relaxed/simple;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KfT6DGDbY/7X+Gq1lqyJSG7sqgJ90XG0BAm2kHd/Yk+ywjrdntqt19xIhPRYBzpNkElN54mK6vzwcBObGsBVQ8/RTLowvlJNfskIrgdghL/gtHKApnXGjPGzGD3qR5Dz34d7jGfbofxZf1NhQUZYj5xdXOACNTwsTyjE3hZDx3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=lBiNobmV; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1759514720; x=1760119520; i=rwarsow@gmx.de;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=lBiNobmVh+u9scIHOx0N6Z/30Sj9XRr45ZeE+cNTSq+0flzcx1B6x9R1O2aXSh94
-	 GyfkqD4MFA3ELIAAQCMKKnj6P5ESmsyNt99He4HlG/jzIPCDskJFfzWUC1pTct31v
-	 6dhpEGE2ybjbiswmPt9VMtXydUs18yAXzVsQyESMpn6k8S3aVNj59l5+y5ve/Ys1N
-	 0xHs6PDl3c7N7XaDLG1WCc/oM/OVUjGoM0TaY1qstGHVf7O/+DKx44Fa8OaRfSErU
-	 sFsvug59kZPNBbM1RwkQamNRluIUgquUdCDtSrfaz8SSHaqJsvV6dtXaFdKr/mYDO
-	 OUPO4gAyahl7B8VAPw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.34.54]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MaJ81-1ukD812S4T-00Ly3x; Fri, 03
- Oct 2025 20:05:20 +0200
-Message-ID: <db988e53-cf5f-4529-8a0a-71779daa6e6e@gmx.de>
-Date: Fri, 3 Oct 2025 20:05:18 +0200
+	s=arc-20240116; t=1759516184; c=relaxed/simple;
+	bh=Rr5LuRakQbtIoNBKzXkBtjmY8uuLlAXWdupA1qhuZCY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QuiKxrwTxfkgeMxBRJz6X8t2d0uD1JEKbRdb6RDcjytDtVdqtD21zQd7JlW+A4TGWY2N3ohlC4MYXPHjm0iQrtqPtmbX93AtZNWbL1inHUY4TPG+/l5nx2LxvvY1JNs8/EOJT1d/Nhh1e0A7H0DfgH26mkr3jVJUvq/BaxCYaJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4JfwJCB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9811C4CEF5;
+	Fri,  3 Oct 2025 18:29:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759516184;
+	bh=Rr5LuRakQbtIoNBKzXkBtjmY8uuLlAXWdupA1qhuZCY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=K4JfwJCBD5E0palwPYCKiVLt+A6qbI59+MnHlKqNNA3yYymLX43vlufKdDxV2yQ91
+	 feQ4/2cEzF7x/ZOqwlAtNh55iFf65626qyMndlz+JHGu9/kdl3V1tT5F44PfwUeZ5D
+	 De0EwcUbpjUjOJFl+a4W3qfiFXyM/Fd1OVSDK2yCGE5AZc3xA0qDdRah7ggQmkuJTf
+	 CdCyYOFMeWMH2iewG0O/1TO+KBgh1fgP1ANKR+FQ3jrnLv4gl3SMJOuriXrJXWAYN/
+	 09k/idHfD7JONJ3NZr7G7JxVVY8wsZ1tdVxXdLb//Vaj9SCtQSXwgdu3ThLWM71uxP
+	 zILQfb1Kp06IQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] media: i2c: tc358743: Fix use-after-free bugs caused by orphan timer in probe
+Date: Fri,  3 Oct 2025 14:29:42 -0400
+Message-ID: <20251003182942.3278149-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025100329-icy-unbroken-b3bb@gregkh>
+References: <2025100329-icy-unbroken-b3bb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.17 00/15] 6.17.1-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20251003160359.831046052@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20251003160359.831046052@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:ZhcklcU7Se7NHy9syxLC9Fmjk3ll9tXKkSBxQ3srrgyvmShyEb1
- WGM8vQloJgFpzsuUwNt9Q6QtiNcP5rBWyrCwVEDqE3txe4ce/ZA1Y5zbPEW90uUxED4w+e/
- 5FgW0gkai+ah9sWFrzY5cgesgb2mwmBNFZEqHtM2mI4bqnHagBb8LVOHhkgGnLhgsT/akRB
- qtHTvPoPByv6GJciIFrSg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:kP1kPEMh/BY=;nL+KQF78n95VV+fAbFa75tKduop
- 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
+Content-Transfer-Encoding: 8bit
 
-Hi
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+[ Upstream commit 79d10f4f21a92e459b2276a77be62c59c1502c9d ]
 
-Thanks
+The state->timer is a cyclic timer that schedules work_i2c_poll and
+delayed_work_enable_hotplug, while rearming itself. Using timer_delete()
+fails to guarantee the timer isn't still running when destroyed, similarly
+cancel_delayed_work() cannot ensure delayed_work_enable_hotplug has
+terminated if already executing. During probe failure after timer
+initialization, these may continue running as orphans and reference the
+already-freed tc358743_state object through tc358743_irq_poll_timer.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+The following is the trace captured by KASAN.
+
+BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+Write of size 8 at addr ffff88800ded83c8 by task swapper/1/0
+...
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_report+0xcf/0x610
+ ? __pfx_sched_balance_find_src_group+0x10/0x10
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ kasan_report+0xb8/0xf0
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ __run_timer_base.part.0+0x7d7/0x8c0
+ ? rcu_sched_clock_irq+0xb06/0x27d0
+ ? __pfx___run_timer_base.part.0+0x10/0x10
+ ? try_to_wake_up+0xb15/0x1960
+ ? tmigr_update_events+0x280/0x740
+ ? _raw_spin_lock_irq+0x80/0xe0
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ tmigr_handle_remote_up+0x603/0x7e0
+ ? __pfx_tmigr_handle_remote_up+0x10/0x10
+ ? sched_balance_trigger+0x98/0x9f0
+ ? sched_tick+0x221/0x5a0
+ ? _raw_spin_lock_irq+0x80/0xe0
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ ? tick_nohz_handler+0x339/0x440
+ ? __pfx_tmigr_handle_remote_up+0x10/0x10
+ __walk_groups.isra.0+0x42/0x150
+ tmigr_handle_remote+0x1f4/0x2e0
+ ? __pfx_tmigr_handle_remote+0x10/0x10
+ ? ktime_get+0x60/0x140
+ ? lapic_next_event+0x11/0x20
+ ? clockevents_program_event+0x1d4/0x2a0
+ ? hrtimer_interrupt+0x322/0x780
+ handle_softirqs+0x16a/0x550
+ irq_exit_rcu+0xaf/0xe0
+ sysvec_apic_timer_interrupt+0x70/0x80
+ </IRQ>
+...
+
+Allocated by task 141:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x7f/0x90
+ __kmalloc_node_track_caller_noprof+0x198/0x430
+ devm_kmalloc+0x7b/0x1e0
+ tc358743_probe+0xb7/0x610  i2c_device_probe+0x51d/0x880
+ really_probe+0x1ca/0x5c0
+ __driver_probe_device+0x248/0x310
+ driver_probe_device+0x44/0x120
+ __device_attach_driver+0x174/0x220
+ bus_for_each_drv+0x100/0x190
+ __device_attach+0x206/0x370
+ bus_probe_device+0x123/0x170
+ device_add+0xd25/0x1470
+ i2c_new_client_device+0x7a0/0xcd0
+ do_one_initcall+0x89/0x300
+ do_init_module+0x29d/0x7f0
+ load_module+0x4f48/0x69e0
+ init_module_from_file+0xe4/0x150
+ idempotent_init_module+0x320/0x670
+ __x64_sys_finit_module+0xbd/0x120
+ do_syscall_64+0xac/0x280
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 141:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3a/0x60
+ __kasan_slab_free+0x3f/0x50
+ kfree+0x137/0x370
+ release_nodes+0xa4/0x100
+ devres_release_group+0x1b2/0x380
+ i2c_device_probe+0x694/0x880
+ really_probe+0x1ca/0x5c0
+ __driver_probe_device+0x248/0x310
+ driver_probe_device+0x44/0x120
+ __device_attach_driver+0x174/0x220
+ bus_for_each_drv+0x100/0x190
+ __device_attach+0x206/0x370
+ bus_probe_device+0x123/0x170
+ device_add+0xd25/0x1470
+ i2c_new_client_device+0x7a0/0xcd0
+ do_one_initcall+0x89/0x300
+ do_init_module+0x29d/0x7f0
+ load_module+0x4f48/0x69e0
+ init_module_from_file+0xe4/0x150
+ idempotent_init_module+0x320/0x670
+ __x64_sys_finit_module+0xbd/0x120
+ do_syscall_64+0xac/0x280
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+
+Replace timer_delete() with timer_delete_sync() and cancel_delayed_work()
+with cancel_delayed_work_sync() to ensure proper termination of timer and
+work items before resource cleanup.
+
+This bug was initially identified through static analysis. For reproduction
+and testing, I created a functional emulation of the tc358743 device via a
+kernel module and introduced faults through the debugfs interface.
+
+Fixes: 869f38ae07f7 ("media: i2c: tc358743: Fix crash in the probe error path when using polling")
+Fixes: d32d98642de6 ("[media] Driver for Toshiba TC358743 HDMI to CSI-2 bridge")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ replaced del_timer() instead of timer_delete() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/media/i2c/tc358743.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 8a1a33862ba71..4b6ad85cf261d 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -2180,10 +2180,10 @@ static int tc358743_probe(struct i2c_client *client)
+ err_work_queues:
+ 	cec_unregister_adapter(state->cec_adap);
+ 	if (!state->i2c_client->irq) {
+-		del_timer(&state->timer);
++		timer_delete_sync(&state->timer);
+ 		flush_work(&state->work_i2c_poll);
+ 	}
+-	cancel_delayed_work(&state->delayed_work_enable_hotplug);
++	cancel_delayed_work_sync(&state->delayed_work_enable_hotplug);
+ 	mutex_destroy(&state->confctl_mutex);
+ err_hdl:
+ 	media_entity_cleanup(&sd->entity);
+-- 
+2.51.0
 
 
