@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-183237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44073BB74F5
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E63BB74F6
 	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 17:20:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DCE614E9C5C
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 15:20:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 31D014E753F
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 15:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FF62848BB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2925F284B42;
 	Fri,  3 Oct 2025 15:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QUNBv/uq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qpnGLnZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB355284670
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 15:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2DF1EB195
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 15:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759504810; cv=none; b=dCKD5ZhJCo4pxEG0ZnSDxeSWVQCwrJE7TRyVY0jfUgPOtQEv4elQ6NG7VcdlpZcSVEfdS8r7NgN5C9r29+sKGwzqThgNA9joXXWs0RjlgXEFY0skbxek554oNI/FnFshQZz7JPcuoIZDcVsU1zfp31JnohbSwovLu3T+YeIe9Is=
+	t=1759504810; cv=none; b=YuMT+YJJeemDPKcGbzdC1ScjphY1i9oUcAGYOABjbiIHMus34P+X5oKWKSn3MvqXQVmUs9LJSVQW5uE2VvtNpZW3BBfzwNenFttDfwMcGr3EEor7YnNHq3oibYPkGFXzxjF/2JodxxYcoo1f6tD4DObV/ylFq0ZS/3AkIIPcLAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759504810; c=relaxed/simple;
-	bh=IpAFTubAVXYPQLJ+5YyMrifJUtVWBC4sXuvqGgFQJn0=;
+	bh=NiRFQNjGEoli2qE8aUchCbHI3GqMP8N8Z6EtQk4lsmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MlLOfMRZvGxLSZeGQFGIKxVlGYyKgc0RtedxBe55cRdM5woF/e+bAmFvGP1yMO5QnQhEQSzVSHoAVzv2z23pybtLfjQ3LwPmJbrJNDwyu+eZ4pmdqhNNwjdhxdIaGiUui0I2dAbUMXuJZ2/zuqZC3TN9U2jIVRG5BVu1WrOaw50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QUNBv/uq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9415C4CEF5;
-	Fri,  3 Oct 2025 15:20:07 +0000 (UTC)
+	 MIME-Version; b=SYs+WcFf1xpB0Cj7AsuvJKfel3aAZBr97pjjrFS4AjoaSY3OYsMXdRxF1CASfkyUsGnR2NYw/WNsDX7FtViQu9i6f0/esGEXTM3NtXyVhA9pc6/UL2R6W7vyOrQXqvd3G7thg1Hwx3IxZDo3oXnj4zRxfvXM/hzZZeUkvMhXVB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qpnGLnZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4552C4CEF7;
+	Fri,  3 Oct 2025 15:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759504808;
-	bh=IpAFTubAVXYPQLJ+5YyMrifJUtVWBC4sXuvqGgFQJn0=;
+	s=k20201202; t=1759504809;
+	bh=NiRFQNjGEoli2qE8aUchCbHI3GqMP8N8Z6EtQk4lsmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUNBv/uqGV2z9q5mTZq+ly7a7UU7zl7J4lXSlaK61Bk3Xgi2UVFKeZSK1mkbYLXBv
-	 D0N/XCDn0EP7djVlmENm3+lH9iUQCstlRaoBCXawWsE/vP1aehbBqWQF03h38sHR5L
-	 Uph4rs0HpOUCIQKA7XUD3AMpxbGveRdrNtGHSrC6/21g7+FG4+9IuvQC0NLEzm1lQt
-	 f8TOqrBLgVx1BDJ1t3rWp2HLmU0pIQbBQnZD4sjcaioFTVzPsLXNhUO7jmRCaYV8ui
-	 WlJho269UtxrDiBrNb2LR4R5g4es2vbOwQ81FN2HHKynn8Z/5BG8WgIVmLdXDao0FU
-	 KOaQynR3xEszA==
+	b=qpnGLnZzyhMLzakajjdJ+DNEHbPdG83yFuL1nUgDstuQocdsGqQ3FncA7Ne8YZbCP
+	 MiPk7ybPUircNvadscI86PEJ2+muz1rWPjH+tewsyKwRl8qdiVtkwV21UJXSD0ppVO
+	 YDMrNMqhVAdgwonbg8MaFjM9laZeoVXQviBDP7ht5M0FDFotBho+Fd5T6aaCF+XU+e
+	 gl111phJJ+scPo4Vdlg5p4xzxAM9xhqY6Q4F3wZ17VdEAWKoHSR/pnHROCuAePqOC7
+	 rLLqj7LV7lK+o+xFApBy9TXl+TeSIvyT6SjDEwHHqGcKw4W35yXBn3g+N89I3vqTsl
+	 88JcEO99TD7dQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Chih-Kang Chang <gary.chang@realtek.com>,
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 1/2] wifi: rtw89: mcc: stop TX during MCC prepare
-Date: Fri,  3 Oct 2025 11:20:04 -0400
-Message-ID: <20251003152005.3176758-1-sashal@kernel.org>
+Subject: [PATCH 6.16.y 2/2] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
+Date: Fri,  3 Oct 2025 11:20:05 -0400
+Message-ID: <20251003152005.3176758-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025100340-dwelling-engross-0738@gregkh>
+In-Reply-To: <20251003152005.3176758-1-sashal@kernel.org>
 References: <2025100340-dwelling-engross-0738@gregkh>
+ <20251003152005.3176758-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,146 +62,331 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 182c7ff8b87e4edbb2227ede39ae0952da7a0f4a ]
+[ Upstream commit 3e31a6bc07312b448fad3b45de578471f86f0e77 ]
 
-Stop TX during the MCC configuration period to prevent packet leakage.
-The stop time is defined as 'start_tsf - tsf', which means the duration
-from when MCC configuration begins until MCC starts.
+There is a bug observed when rtw89_core_tx_kick_off_and_wait() tries to
+access already freed skb_data:
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+ BUG: KFENCE: use-after-free write in rtw89_core_tx_kick_off_and_wait drivers/net/wireless/realtek/rtw89/core.c:1110
+
+ CPU: 6 UID: 0 PID: 41377 Comm: kworker/u64:24 Not tainted  6.17.0-rc1+ #1 PREEMPT(lazy)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-20250523-14.fc42 05/23/2025
+ Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+
+ Use-after-free write at 0x0000000020309d9d (in kfence-#251):
+ rtw89_core_tx_kick_off_and_wait drivers/net/wireless/realtek/rtw89/core.c:1110
+ rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
+ rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
+ rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
+ rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.h:141
+ rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
+ rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
+ rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
+ process_one_work kernel/workqueue.c:3241
+ worker_thread kernel/workqueue.c:3400
+ kthread kernel/kthread.c:463
+ ret_from_fork arch/x86/kernel/process.c:154
+ ret_from_fork_asm arch/x86/entry/entry_64.S:258
+
+ kfence-#251: 0x0000000056e2393d-0x000000009943cb62, size=232, cache=skbuff_head_cache
+
+ allocated by task 41377 on cpu 6 at 77869.159548s (0.009551s ago):
+ __alloc_skb net/core/skbuff.c:659
+ __netdev_alloc_skb net/core/skbuff.c:734
+ ieee80211_nullfunc_get net/mac80211/tx.c:5844
+ rtw89_core_send_nullfunc drivers/net/wireless/realtek/rtw89/core.c:3431
+ rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
+ rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
+ rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
+ rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.c:3194
+ rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
+ rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
+ rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
+ process_one_work kernel/workqueue.c:3241
+ worker_thread kernel/workqueue.c:3400
+ kthread kernel/kthread.c:463
+ ret_from_fork arch/x86/kernel/process.c:154
+ ret_from_fork_asm arch/x86/entry/entry_64.S:258
+
+ freed by task 1045 on cpu 9 at 77869.168393s (0.001557s ago):
+ ieee80211_tx_status_skb net/mac80211/status.c:1117
+ rtw89_pci_release_txwd_skb drivers/net/wireless/realtek/rtw89/pci.c:564
+ rtw89_pci_release_tx_skbs.isra.0 drivers/net/wireless/realtek/rtw89/pci.c:651
+ rtw89_pci_release_tx drivers/net/wireless/realtek/rtw89/pci.c:676
+ rtw89_pci_napi_poll drivers/net/wireless/realtek/rtw89/pci.c:4238
+ __napi_poll net/core/dev.c:7495
+ net_rx_action net/core/dev.c:7557 net/core/dev.c:7684
+ handle_softirqs kernel/softirq.c:580
+ do_softirq.part.0 kernel/softirq.c:480
+ __local_bh_enable_ip kernel/softirq.c:407
+ rtw89_pci_interrupt_threadfn drivers/net/wireless/realtek/rtw89/pci.c:927
+ irq_thread_fn kernel/irq/manage.c:1133
+ irq_thread kernel/irq/manage.c:1257
+ kthread kernel/kthread.c:463
+ ret_from_fork arch/x86/kernel/process.c:154
+ ret_from_fork_asm arch/x86/entry/entry_64.S:258
+
+It is a consequence of a race between the waiting and the signaling side
+of the completion:
+
+            Waiting thread                            Completing thread
+
+rtw89_core_tx_kick_off_and_wait()
+  rcu_assign_pointer(skb_data->wait, wait)
+  /* start waiting */
+  wait_for_completion_timeout()
+                                                rtw89_pci_tx_status()
+                                                  rtw89_core_tx_wait_complete()
+                                                    rcu_read_lock()
+                                                    /* signals completion and
+                                                     * proceeds further
+                                                     */
+                                                    complete(&wait->completion)
+                                                    rcu_read_unlock()
+                                                  ...
+                                                  /* frees skb_data */
+                                                  ieee80211_tx_status_ni()
+  /* returns (exit status doesn't matter) */
+  wait_for_completion_timeout()
+  ...
+  /* accesses the already freed skb_data */
+  rcu_assign_pointer(skb_data->wait, NULL)
+
+The completing side might proceed and free the underlying skb even before
+the waiting side is fully awoken and run to execution.  Actually the race
+happens regardless of wait_for_completion_timeout() exit status, e.g.
+the waiting side may hit a timeout and the concurrent completing side is
+still able to free the skb.
+
+Skbs which are sent by rtw89_core_tx_kick_off_and_wait() are owned by the
+driver.  They don't come from core ieee80211 stack so no need to pass them
+to ieee80211_tx_status_ni() on completing side.
+
+Introduce a work function which will act as a garbage collector for
+rtw89_tx_wait_info objects and the associated skbs.  Thus no potentially
+heavy locks are required on the completing side.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of TX skbs")
+Cc: stable@vger.kernel.org
+Suggested-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250610130034.14692-6-pkshih@realtek.com
-Stable-dep-of: 3e31a6bc0731 ("wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()")
+Link: https://patch.msgid.link/20250919210852.823912-2-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/chan.c | 35 +++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/chan.h |  2 ++
- drivers/net/wireless/realtek/rtw89/core.c |  2 ++
- drivers/net/wireless/realtek/rtw89/core.h |  2 ++
- 4 files changed, 41 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.c | 30 +++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/core.h | 35 +++++++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/pci.c  |  3 +-
+ drivers/net/wireless/realtek/rtw89/ser.c  |  2 ++
+ 4 files changed, 61 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index b18019b53181c..17daf93fec0a4 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.c
-+++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -1595,6 +1595,35 @@ static bool rtw89_mcc_duration_decision_on_bt(struct rtw89_dev *rtwdev)
- 	return false;
- }
- 
-+void rtw89_mcc_prepare_done_work(struct wiphy *wiphy, struct wiphy_work *work)
-+{
-+	struct rtw89_dev *rtwdev = container_of(work, struct rtw89_dev,
-+						mcc_prepare_done_work.work);
-+
-+	lockdep_assert_wiphy(wiphy);
-+
-+	ieee80211_wake_queues(rtwdev->hw);
-+}
-+
-+static void rtw89_mcc_prepare(struct rtw89_dev *rtwdev, bool start)
-+{
-+	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
-+	struct rtw89_mcc_config *config = &mcc->config;
-+
-+	if (start) {
-+		ieee80211_stop_queues(rtwdev->hw);
-+
-+		wiphy_delayed_work_queue(rtwdev->hw->wiphy,
-+					 &rtwdev->mcc_prepare_done_work,
-+					 usecs_to_jiffies(config->prepare_delay));
-+	} else {
-+		wiphy_delayed_work_queue(rtwdev->hw->wiphy,
-+					 &rtwdev->mcc_prepare_done_work, 0);
-+		wiphy_delayed_work_flush(rtwdev->hw->wiphy,
-+					 &rtwdev->mcc_prepare_done_work);
-+	}
-+}
-+
- static int rtw89_mcc_fill_start_tsf(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
-@@ -1630,6 +1659,8 @@ static int rtw89_mcc_fill_start_tsf(struct rtw89_dev *rtwdev)
- 
- 	config->start_tsf = start_tsf;
- 	config->start_tsf_in_aux_domain = tsf_aux + start_tsf - tsf;
-+	config->prepare_delay = start_tsf - tsf;
-+
- 	return 0;
- }
- 
-@@ -2219,6 +2250,8 @@ static int rtw89_mcc_start(struct rtw89_dev *rtwdev)
- 	rtw89_chanctx_notify(rtwdev, RTW89_CHANCTX_STATE_MCC_START);
- 
- 	rtw89_mcc_start_beacon_noa(rtwdev);
-+
-+	rtw89_mcc_prepare(rtwdev, true);
- 	return 0;
- }
- 
-@@ -2307,6 +2340,8 @@ static void rtw89_mcc_stop(struct rtw89_dev *rtwdev,
- 	rtw89_chanctx_notify(rtwdev, RTW89_CHANCTX_STATE_MCC_STOP);
- 
- 	rtw89_mcc_stop_beacon_noa(rtwdev);
-+
-+	rtw89_mcc_prepare(rtwdev, false);
- }
- 
- static int rtw89_mcc_update(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.h b/drivers/net/wireless/realtek/rtw89/chan.h
-index 2a25563593af9..be998fdd8724b 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.h
-+++ b/drivers/net/wireless/realtek/rtw89/chan.h
-@@ -129,6 +129,8 @@ const struct rtw89_chan *__rtw89_mgnt_chan_get(struct rtw89_dev *rtwdev,
- #define rtw89_mgnt_chan_get(rtwdev, link_index) \
- 	__rtw89_mgnt_chan_get(rtwdev, __func__, link_index)
- 
-+void rtw89_mcc_prepare_done_work(struct wiphy *wiphy, struct wiphy_work *work);
-+
- int rtw89_chanctx_ops_add(struct rtw89_dev *rtwdev,
- 			  struct ieee80211_chanctx_conf *ctx);
- void rtw89_chanctx_ops_remove(struct rtw89_dev *rtwdev,
 diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 894ab7ab94ccb..0e4d5679e426c 100644
+index 0e4d5679e426c..b506afaaa3ec9 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.c
 +++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -4816,6 +4816,7 @@ void rtw89_core_stop(struct rtw89_dev *rtwdev)
- 	wiphy_delayed_work_cancel(wiphy, &rtwdev->coex_bt_devinfo_work);
- 	wiphy_delayed_work_cancel(wiphy, &rtwdev->coex_rfk_chk_work);
- 	wiphy_delayed_work_cancel(wiphy, &rtwdev->cfo_track_work);
-+	wiphy_delayed_work_cancel(wiphy, &rtwdev->mcc_prepare_done_work);
- 	cancel_delayed_work_sync(&rtwdev->forbid_ba_work);
- 	wiphy_delayed_work_cancel(wiphy, &rtwdev->antdiv_work);
+@@ -1050,6 +1050,14 @@ rtw89_core_tx_update_desc_info(struct rtw89_dev *rtwdev,
+ 	}
+ }
  
-@@ -5042,6 +5043,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
- 	wiphy_delayed_work_init(&rtwdev->coex_bt_devinfo_work, rtw89_coex_bt_devinfo_work);
++static void rtw89_tx_wait_work(struct wiphy *wiphy, struct wiphy_work *work)
++{
++	struct rtw89_dev *rtwdev = container_of(work, struct rtw89_dev,
++						tx_wait_work.work);
++
++	rtw89_tx_wait_list_clear(rtwdev);
++}
++
+ void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel)
+ {
+ 	u8 ch_dma;
+@@ -1067,6 +1075,8 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *sk
+ 	unsigned long time_left;
+ 	int ret = 0;
+ 
++	lockdep_assert_wiphy(rtwdev->hw->wiphy);
++
+ 	wait = kzalloc(sizeof(*wait), GFP_KERNEL);
+ 	if (!wait) {
+ 		rtw89_core_tx_kick_off(rtwdev, qsel);
+@@ -1074,18 +1084,23 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *sk
+ 	}
+ 
+ 	init_completion(&wait->completion);
++	wait->skb = skb;
+ 	rcu_assign_pointer(skb_data->wait, wait);
+ 
+ 	rtw89_core_tx_kick_off(rtwdev, qsel);
+ 	time_left = wait_for_completion_timeout(&wait->completion,
+ 						msecs_to_jiffies(timeout));
+-	if (time_left == 0)
+-		ret = -ETIMEDOUT;
+-	else if (!wait->tx_done)
+-		ret = -EAGAIN;
+ 
+-	rcu_assign_pointer(skb_data->wait, NULL);
+-	kfree_rcu(wait, rcu_head);
++	if (time_left == 0) {
++		ret = -ETIMEDOUT;
++		list_add_tail(&wait->list, &rtwdev->tx_waits);
++		wiphy_delayed_work_queue(rtwdev->hw->wiphy, &rtwdev->tx_wait_work,
++					 RTW89_TX_WAIT_WORK_TIMEOUT);
++	} else {
++		if (!wait->tx_done)
++			ret = -EAGAIN;
++		rtw89_tx_wait_release(wait);
++	}
+ 
+ 	return ret;
+ }
+@@ -4810,6 +4825,7 @@ void rtw89_core_stop(struct rtw89_dev *rtwdev)
+ 	wiphy_work_cancel(wiphy, &btc->dhcp_notify_work);
+ 	wiphy_work_cancel(wiphy, &btc->icmp_notify_work);
+ 	cancel_delayed_work_sync(&rtwdev->txq_reinvoke_work);
++	wiphy_delayed_work_cancel(wiphy, &rtwdev->tx_wait_work);
+ 	wiphy_delayed_work_cancel(wiphy, &rtwdev->track_work);
+ 	wiphy_delayed_work_cancel(wiphy, &rtwdev->chanctx_work);
+ 	wiphy_delayed_work_cancel(wiphy, &rtwdev->coex_act1_work);
+@@ -5034,6 +5050,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+ 		INIT_LIST_HEAD(&rtwdev->scan_info.pkt_list[band]);
+ 	}
+ 	INIT_LIST_HEAD(&rtwdev->scan_info.chan_list);
++	INIT_LIST_HEAD(&rtwdev->tx_waits);
+ 	INIT_WORK(&rtwdev->ba_work, rtw89_core_ba_work);
+ 	INIT_WORK(&rtwdev->txq_work, rtw89_core_txq_work);
+ 	INIT_DELAYED_WORK(&rtwdev->txq_reinvoke_work, rtw89_core_txq_reinvoke_work);
+@@ -5044,6 +5061,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
  	wiphy_delayed_work_init(&rtwdev->coex_rfk_chk_work, rtw89_coex_rfk_chk_work);
  	wiphy_delayed_work_init(&rtwdev->cfo_track_work, rtw89_phy_cfo_track_work);
-+	wiphy_delayed_work_init(&rtwdev->mcc_prepare_done_work, rtw89_mcc_prepare_done_work);
+ 	wiphy_delayed_work_init(&rtwdev->mcc_prepare_done_work, rtw89_mcc_prepare_done_work);
++	wiphy_delayed_work_init(&rtwdev->tx_wait_work, rtw89_tx_wait_work);
  	INIT_DELAYED_WORK(&rtwdev->forbid_ba_work, rtw89_forbid_ba_work);
  	wiphy_delayed_work_init(&rtwdev->antdiv_work, rtw89_phy_antdiv_work);
  	rtwdev->txq_wq = alloc_workqueue("rtw89_tx_wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 1c8f3b9b7c4c6..f505fe6da4a24 100644
+index f505fe6da4a24..e2e90eab15ce0 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5728,6 +5728,7 @@ struct rtw89_mcc_config {
- 	struct rtw89_mcc_sync sync;
- 	u64 start_tsf;
- 	u64 start_tsf_in_aux_domain;
-+	u64 prepare_delay;
- 	u16 mcc_interval; /* TU */
- 	u16 beacon_offset; /* TU */
+@@ -3429,9 +3429,12 @@ struct rtw89_phy_rate_pattern {
+ 	bool enable;
  };
-@@ -5858,6 +5859,7 @@ struct rtw89_dev {
- 	struct wiphy_delayed_work coex_bt_devinfo_work;
- 	struct wiphy_delayed_work coex_rfk_chk_work;
- 	struct wiphy_delayed_work cfo_track_work;
-+	struct wiphy_delayed_work mcc_prepare_done_work;
- 	struct delayed_work forbid_ba_work;
- 	struct wiphy_delayed_work antdiv_work;
- 	struct rtw89_ppdu_sts_info ppdu_sts;
+ 
++#define RTW89_TX_WAIT_WORK_TIMEOUT msecs_to_jiffies(500)
+ struct rtw89_tx_wait_info {
+ 	struct rcu_head rcu_head;
++	struct list_head list;
+ 	struct completion completion;
++	struct sk_buff *skb;
+ 	bool tx_done;
+ };
+ 
+@@ -5802,6 +5805,9 @@ struct rtw89_dev {
+ 	/* used to protect rpwm */
+ 	spinlock_t rpwm_lock;
+ 
++	struct list_head tx_waits;
++	struct wiphy_delayed_work tx_wait_work;
++
+ 	struct rtw89_cam_info cam_info;
+ 
+ 	struct sk_buff_head c2h_queue;
+@@ -6056,6 +6062,26 @@ rtw89_assoc_link_rcu_dereference(struct rtw89_dev *rtwdev, u8 macid)
+ 	list_first_entry_or_null(&p->dlink_pool, typeof(*p->links_inst), dlink_schd); \
+ })
+ 
++static inline void rtw89_tx_wait_release(struct rtw89_tx_wait_info *wait)
++{
++	dev_kfree_skb_any(wait->skb);
++	kfree_rcu(wait, rcu_head);
++}
++
++static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_tx_wait_info *wait, *tmp;
++
++	lockdep_assert_wiphy(rtwdev->hw->wiphy);
++
++	list_for_each_entry_safe(wait, tmp, &rtwdev->tx_waits, list) {
++		if (!completion_done(&wait->completion))
++			continue;
++		list_del(&wait->list);
++		rtw89_tx_wait_release(wait);
++	}
++}
++
+ static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
+ 				     struct rtw89_core_tx_request *tx_req)
+ {
+@@ -6065,6 +6091,7 @@ static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
+ static inline void rtw89_hci_reset(struct rtw89_dev *rtwdev)
+ {
+ 	rtwdev->hci.ops->reset(rtwdev);
++	rtw89_tx_wait_list_clear(rtwdev);
+ }
+ 
+ static inline int rtw89_hci_start(struct rtw89_dev *rtwdev)
+@@ -7122,11 +7149,12 @@ static inline struct sk_buff *rtw89_alloc_skb_for_rx(struct rtw89_dev *rtwdev,
+ 	return dev_alloc_skb(length);
+ }
+ 
+-static inline void rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
++static inline bool rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
+ 					       struct rtw89_tx_skb_data *skb_data,
+ 					       bool tx_done)
+ {
+ 	struct rtw89_tx_wait_info *wait;
++	bool ret = false;
+ 
+ 	rcu_read_lock();
+ 
+@@ -7134,11 +7162,14 @@ static inline void rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
+ 	if (!wait)
+ 		goto out;
+ 
++	ret = true;
+ 	wait->tx_done = tx_done;
+-	complete(&wait->completion);
++	/* Don't access skb anymore after completion */
++	complete_all(&wait->completion);
+ 
+ out:
+ 	rcu_read_unlock();
++	return ret;
+ }
+ 
+ static inline bool rtw89_is_mlo_1_1(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 064f6a9401073..8eeb1a4498cd8 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -464,7 +464,8 @@ static void rtw89_pci_tx_status(struct rtw89_dev *rtwdev,
+ 	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
+ 	struct ieee80211_tx_info *info;
+ 
+-	rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status == RTW89_TX_DONE);
++	if (rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status == RTW89_TX_DONE))
++		return;
+ 
+ 	info = IEEE80211_SKB_CB(skb);
+ 	ieee80211_tx_info_clear_status(info);
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 811c914814411..869ab22a79681 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -501,7 +501,9 @@ static void ser_reset_trx_st_hdl(struct rtw89_ser *ser, u8 evt)
+ 		}
+ 
+ 		drv_stop_rx(ser);
++		wiphy_lock(wiphy);
+ 		drv_trx_reset(ser);
++		wiphy_unlock(wiphy);
+ 
+ 		/* wait m3 */
+ 		hal_send_m2_event(ser);
 -- 
 2.51.0
 
