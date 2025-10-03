@@ -1,208 +1,131 @@
-Return-Path: <stable+bounces-183321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62034BB7FC1
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 21:32:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0297ABB805B
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 22:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C46AF3478E7
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 19:32:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5E513C85DE
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 20:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B683D21B195;
-	Fri,  3 Oct 2025 19:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDB91F3FE2;
+	Fri,  3 Oct 2025 20:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rfrWgC5p"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="D9k694jR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7699178F26
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 19:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE617A2E1;
+	Fri,  3 Oct 2025 20:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759519961; cv=none; b=rbAZ1WcLt8JwEVPl3DMeuzJ1XqXE2TOS0Wq/crFqegeWDuUVAdVDUK8c9TVH2DBV4zwooJaOybyrsIjY6KWjsKpYTwUxgHxqMhoDSrxHQ1lbmVd/ywQHMB5F7YOJWjnfJBkIUYS3fjwVitrpNofgB92gaCTiBH7yBsa3ejeC60Q=
+	t=1759521866; cv=none; b=e+0qHuD5qmmCHH1xDMPcnXSDCgrlq4A0INW8HFgBpjeChJYzE0fC0xvRmAZm0V9lVFqJaWsESOGrnRBRqF2Gpzi87R1kQVIGTHN0Up7uMI2WK75ubkKAW5ts1nXhB29Kez8EVnmCKUpxIZo1guvMUZ2d8oLUlyooKGdxSL07mp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759519961; c=relaxed/simple;
-	bh=r3CIzdgQ0XmO+Nml7t74zgP3uPdYpL3CuGrmu8S8LiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AW72GmtPPsIfhKoiSEx9qx3V3QSN3HBOj48DgIKfr1l7WCDfUu6R2BSi9hd+cuAn2RqOCmoeOzYx1YTReHXLDuQ5nyugsSelTo8QQejsBn/EC7jxOT0/3Zjauo474UFCGVatZosoipqKMK+an2IyMQKZEyTG+q4rH7xDCbgVfEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rfrWgC5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0FDC4CEF5;
-	Fri,  3 Oct 2025 19:32:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759519961;
-	bh=r3CIzdgQ0XmO+Nml7t74zgP3uPdYpL3CuGrmu8S8LiA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rfrWgC5pHJTY0BxBdiRHnsZdiXKVeWRbpw7U3rkXzE8mza2hfKMpxcXEWnMApmCwE
-	 hX0MiZkyo76+1aqGpMM0dhcy/XZrXZpX1+7ShZMg5KL48uTTtbe5sfgr95V7xu/OOk
-	 mCSZwq0V7hH9xDqhPJNI5Kx9w5jAiFL5hEKPyVzRztkXtrYM4++haGuT4w41ixDTnI
-	 +1OTFwokAVtaHzu8yBgz/fdtbS2xjB1kT8tm+K4127MKcPrAh14Ip0ub6CrlmTIrY0
-	 l9uIW/z95GdxAlYUF5jMPoV29AlmxybBMm6Ww0jFnHyQVy1NWwe1j7FoORd2Ktr1Uw
-	 WmbNhdI+3PV8g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] media: i2c: tc358743: Fix use-after-free bugs caused by orphan timer in probe
-Date: Fri,  3 Oct 2025 15:32:38 -0400
-Message-ID: <20251003193238.3340101-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025100332-oblivion-shun-2bd3@gregkh>
-References: <2025100332-oblivion-shun-2bd3@gregkh>
+	s=arc-20240116; t=1759521866; c=relaxed/simple;
+	bh=u1QnQx13LE9hjNdiPOQyvWmgHXi8c3nrDp92oymNCQ0=;
+	h=Date:To:From:Subject:Message-Id; b=uHyO8+I9EDmeiqDeT0KbysNI6mkwOUUTfZu7VmulQ3qyQuynRSfCExMOx5wjGgYnjQXdUGPg4vYuDPCTgT2pCrzssdVFuvhGTR/CbVKJ7fb8YlsK4YDmpRtpJ6XonDVzQQSZvCzZa7hOdnXQNHSqyT3HHmfEtehRo66hMCi+/4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=D9k694jR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15BB0C4CEF5;
+	Fri,  3 Oct 2025 20:04:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1759521866;
+	bh=u1QnQx13LE9hjNdiPOQyvWmgHXi8c3nrDp92oymNCQ0=;
+	h=Date:To:From:Subject:From;
+	b=D9k694jRMkn9A/5EaRNVGvqqp5aL06IJARqeqfI53DUOQFWGlWWMRoE7sc5KflvY/
+	 K566eWahxxjRvnmlwHL4hEPQSofV1lR+v3U/vn/5H6GBWgwJ3w08q4fQiFOlGBXYuQ
+	 cEHTHa6fae6jYBvRJxnlbYkOlDELU7q+i1PupNCA=
+Date: Fri, 03 Oct 2025 13:04:25 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kas@kernel.org,david@redhat.com,amir73il@gmail.com,ryan.roberts@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fsnotify-pass-correct-offset-to-fsnotify_mmap_perm.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251003200426.15BB0C4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 79d10f4f21a92e459b2276a77be62c59c1502c9d ]
+The patch titled
+     Subject: fsnotify: pass correct offset to fsnotify_mmap_perm()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fsnotify-pass-correct-offset-to-fsnotify_mmap_perm.patch
 
-The state->timer is a cyclic timer that schedules work_i2c_poll and
-delayed_work_enable_hotplug, while rearming itself. Using timer_delete()
-fails to guarantee the timer isn't still running when destroyed, similarly
-cancel_delayed_work() cannot ensure delayed_work_enable_hotplug has
-terminated if already executing. During probe failure after timer
-initialization, these may continue running as orphans and reference the
-already-freed tc358743_state object through tc358743_irq_poll_timer.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fsnotify-pass-correct-offset-to-fsnotify_mmap_perm.patch
 
-The following is the trace captured by KASAN.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
-Write of size 8 at addr ffff88800ded83c8 by task swapper/1/0
-...
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_report+0xcf/0x610
- ? __pfx_sched_balance_find_src_group+0x10/0x10
- ? __run_timer_base.part.0+0x7d7/0x8c0
- kasan_report+0xb8/0xf0
- ? __run_timer_base.part.0+0x7d7/0x8c0
- __run_timer_base.part.0+0x7d7/0x8c0
- ? rcu_sched_clock_irq+0xb06/0x27d0
- ? __pfx___run_timer_base.part.0+0x10/0x10
- ? try_to_wake_up+0xb15/0x1960
- ? tmigr_update_events+0x280/0x740
- ? _raw_spin_lock_irq+0x80/0xe0
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- tmigr_handle_remote_up+0x603/0x7e0
- ? __pfx_tmigr_handle_remote_up+0x10/0x10
- ? sched_balance_trigger+0x98/0x9f0
- ? sched_tick+0x221/0x5a0
- ? _raw_spin_lock_irq+0x80/0xe0
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- ? tick_nohz_handler+0x339/0x440
- ? __pfx_tmigr_handle_remote_up+0x10/0x10
- __walk_groups.isra.0+0x42/0x150
- tmigr_handle_remote+0x1f4/0x2e0
- ? __pfx_tmigr_handle_remote+0x10/0x10
- ? ktime_get+0x60/0x140
- ? lapic_next_event+0x11/0x20
- ? clockevents_program_event+0x1d4/0x2a0
- ? hrtimer_interrupt+0x322/0x780
- handle_softirqs+0x16a/0x550
- irq_exit_rcu+0xaf/0xe0
- sysvec_apic_timer_interrupt+0x70/0x80
- </IRQ>
-...
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Allocated by task 141:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x7f/0x90
- __kmalloc_node_track_caller_noprof+0x198/0x430
- devm_kmalloc+0x7b/0x1e0
- tc358743_probe+0xb7/0x610  i2c_device_probe+0x51d/0x880
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __device_attach_driver+0x174/0x220
- bus_for_each_drv+0x100/0x190
- __device_attach+0x206/0x370
- bus_probe_device+0x123/0x170
- device_add+0xd25/0x1470
- i2c_new_client_device+0x7a0/0xcd0
- do_one_initcall+0x89/0x300
- do_init_module+0x29d/0x7f0
- load_module+0x4f48/0x69e0
- init_module_from_file+0xe4/0x150
- idempotent_init_module+0x320/0x670
- __x64_sys_finit_module+0xbd/0x120
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Freed by task 141:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3a/0x60
- __kasan_slab_free+0x3f/0x50
- kfree+0x137/0x370
- release_nodes+0xa4/0x100
- devres_release_group+0x1b2/0x380
- i2c_device_probe+0x694/0x880
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __device_attach_driver+0x174/0x220
- bus_for_each_drv+0x100/0x190
- __device_attach+0x206/0x370
- bus_probe_device+0x123/0x170
- device_add+0xd25/0x1470
- i2c_new_client_device+0x7a0/0xcd0
- do_one_initcall+0x89/0x300
- do_init_module+0x29d/0x7f0
- load_module+0x4f48/0x69e0
- init_module_from_file+0xe4/0x150
- idempotent_init_module+0x320/0x670
- __x64_sys_finit_module+0xbd/0x120
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Replace timer_delete() with timer_delete_sync() and cancel_delayed_work()
-with cancel_delayed_work_sync() to ensure proper termination of timer and
-work items before resource cleanup.
+------------------------------------------------------
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: fsnotify: pass correct offset to fsnotify_mmap_perm()
+Date: Fri, 3 Oct 2025 16:52:36 +0100
 
-This bug was initially identified through static analysis. For reproduction
-and testing, I created a functional emulation of the tc358743 device via a
-kernel module and introduced faults through the debugfs interface.
+fsnotify_mmap_perm() requires a byte offset for the file about to be
+mmap'ed.  But it is called from vm_mmap_pgoff(), which has a page offset. 
+Previously the conversion was done incorrectly so let's fix it, being
+careful not to overflow on 32-bit platforms.
 
-Fixes: 869f38ae07f7 ("media: i2c: tc358743: Fix crash in the probe error path when using polling")
-Fixes: d32d98642de6 ("[media] Driver for Toshiba TC358743 HDMI to CSI-2 bridge")
-Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ replaced del_timer() instead of timer_delete() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Discovered during code review.
+
+Link: https://lkml.kernel.org/r/20251003155238.2147410-1-ryan.roberts@arm.com
+Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/media/i2c/tc358743.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index 9cc52beb3b5e1..ac0d3076d1124 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -2201,10 +2201,10 @@ static int tc358743_probe(struct i2c_client *client)
- err_work_queues:
- 	cec_unregister_adapter(state->cec_adap);
- 	if (!state->i2c_client->irq) {
--		del_timer(&state->timer);
-+		timer_delete_sync(&state->timer);
- 		flush_work(&state->work_i2c_poll);
- 	}
--	cancel_delayed_work(&state->delayed_work_enable_hotplug);
-+	cancel_delayed_work_sync(&state->delayed_work_enable_hotplug);
- 	mutex_destroy(&state->confctl_mutex);
- err_hdl:
- 	media_entity_cleanup(&sd->entity);
--- 
-2.51.0
+ mm/util.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/mm/util.c~fsnotify-pass-correct-offset-to-fsnotify_mmap_perm
++++ a/mm/util.c
+@@ -566,6 +566,7 @@ unsigned long vm_mmap_pgoff(struct file
+ 	unsigned long len, unsigned long prot,
+ 	unsigned long flag, unsigned long pgoff)
+ {
++	loff_t off = (loff_t)pgoff << PAGE_SHIFT;
+ 	unsigned long ret;
+ 	struct mm_struct *mm = current->mm;
+ 	unsigned long populate;
+@@ -573,7 +574,7 @@ unsigned long vm_mmap_pgoff(struct file
+ 
+ 	ret = security_mmap_file(file, prot, flag);
+ 	if (!ret)
+-		ret = fsnotify_mmap_perm(file, prot, pgoff >> PAGE_SHIFT, len);
++		ret = fsnotify_mmap_perm(file, prot, off, len);
+ 	if (!ret) {
+ 		if (mmap_write_lock_killable(mm))
+ 			return -EINTR;
+_
+
+Patches currently in -mm which might be from ryan.roberts@arm.com are
+
+fsnotify-pass-correct-offset-to-fsnotify_mmap_perm.patch
 
 
