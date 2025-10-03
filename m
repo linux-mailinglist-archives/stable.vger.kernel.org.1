@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-183221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635E7BB6F6E
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 15:17:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54908BB6FF7
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 15:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67B561AE1CC9
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 13:16:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC704A029B
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 13:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E212EB872;
-	Fri,  3 Oct 2025 13:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDBD35942;
+	Fri,  3 Oct 2025 13:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZufqWMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlch1Wvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE3B1B0439
-	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 13:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1FB2F2D
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 13:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759497243; cv=none; b=qEWdAv2Ooz33qhOibhaWFmabZaUo6x1eIm3/Afrjvp1NkQmNpcbexhvhY8ksx1uE+9n+jivh0Uf6QyC9KTwXvLCZP1UmanBNmkSonQgS2g4QIwlhYFfmYXl/23NKnVfOek7vB5ZzUMBdgQI+2oYorVpfoMqW2CNwMxzbnY/9uEA=
+	t=1759497390; cv=none; b=aR4iAxUch4xU2DKwC40+cdWpcYjyDFSG1FLGlgUUcuYwX2gXvwP6Cxu1F2BXs1apEbNZypOo6YSol7NwMMM0ByLeghZIhv0+yQOxM3kLfGAZf1SJxZoSyHpq4kjGyBcssF3+GvIF9NMMtE/Ys0hng3Z/p17Ix+uJR4o0hG9+qdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759497243; c=relaxed/simple;
-	bh=sEbDdwymTlImeHESCPxGeOLu96D9Ucu2xyTELibhHMI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=r21azmBs/iAxvLrWnOAkTUzn3smPYJUqEnAy8UnqUTFcrFfzo+TQKExiCcwqFYEU00hgeeYLHc7GRE+AiI92k8htgaT99vsDbnzG5U110ct2ZhF3lzCM0zQthMN0bots0s2IJBih0u424TSGO8yghcTdGuiaURuHsFJagCQGAgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZufqWMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E82C4CEF5;
-	Fri,  3 Oct 2025 13:14:01 +0000 (UTC)
+	s=arc-20240116; t=1759497390; c=relaxed/simple;
+	bh=VPepe3Uoo43vniIGn0JG7H2HAPfck/0QAbhUl+JGBlU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=doKjXhW1XN3CgYH/zQ9kd+ag5EyQrzkE2quSvrV4+hTe2GdKiAbeDZMe+oD8wVRL0BT2pUICC8rRHtxzub7XP0OD3ao71B/nlcwHNedeWKAR4xFzygsxVNOhVwrjhf8UbKBQkDoD5EvlsBQQyTGJDMqlTvamFctnkUe3HkJ7wR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlch1Wvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10EAC4CEF5;
+	Fri,  3 Oct 2025 13:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759497242;
-	bh=sEbDdwymTlImeHESCPxGeOLu96D9Ucu2xyTELibhHMI=;
+	s=korg; t=1759497390;
+	bh=VPepe3Uoo43vniIGn0JG7H2HAPfck/0QAbhUl+JGBlU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cZufqWMMaM3D9ojCaykYxo28amLqCBIZ3E7jZ1aMjGFuTFLo5W2qI5TtwhoQbMH7b
-	 ZYTV2zA/CugDqycDtB+M9Wt7bSfuoEthWiUdKwHOVF0EATELVPHa1jgyDZnuO46qEW
-	 yOqou+GR2zdVk5H/4dkRMDt75zwkaGh+ELyR9YpM=
-Subject: FAILED: patch "[PATCH] media: uvcvideo: Mark invalid entities with id" failed to apply to 5.10-stable tree
-To: cascardo@igalia.com,hansg@kernel.org,hverkuil+cisco@kernel.org,laurent.pinchart@ideasonboard.com,ribalda@chromium.org,yjjuny.lee@samsung.com
+	b=zlch1Wvh6sD4VVWf6sax6+yrgkEAvOkl1GU/I2jfWHAzr6oOi96qul7L6sRHHRqxi
+	 dWkNSDXoNzB/yXD78Q3izQTQI5lTojMY9cVtH2n4uQxE1cqOLA3JeKU0ZoBcu/ic8W
+	 EaDStDWePvWRQi4S9SCkDLIsjCiOwRl7pDT8hnso=
+Subject: FAILED: patch "[PATCH] drm/xe/vm: Clear the scratch_pt pointer on error" failed to apply to 6.17-stable tree
+To: thomas.hellstrom@linux.intel.com,brian.welty@intel.com,lucas.demarchi@intel.com,matthew.brost@intel.com,rodrigo.vivi@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 03 Oct 2025 15:13:59 +0200
-Message-ID: <2025100359-vagrancy-fragment-e446@gregkh>
+Date: Fri, 03 Oct 2025 15:16:27 +0200
+Message-ID: <2025100327-judgingly-revenue-6ef4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0e2ee70291e64a30fe36960c85294726d34a103e
+git cherry-pick -x 358ee50ab565f3c8ea32480e9d03127a81ba32f8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025100359-vagrancy-fragment-e446@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025100327-judgingly-revenue-6ef4@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,310 +77,44 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0e2ee70291e64a30fe36960c85294726d34a103e Mon Sep 17 00:00:00 2001
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Date: Wed, 20 Aug 2025 16:08:16 +0000
-Subject: [PATCH] media: uvcvideo: Mark invalid entities with id
- UVC_INVALID_ENTITY_ID
+From 358ee50ab565f3c8ea32480e9d03127a81ba32f8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Date: Thu, 21 Aug 2025 16:30:45 +0200
+Subject: [PATCH] drm/xe/vm: Clear the scratch_pt pointer on error
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Per UVC 1.1+ specification 3.7.2, units and terminals must have a non-zero
-unique ID.
+Avoid triggering a dereference of an error pointer on cleanup in
+xe_vm_free_scratch() by clearing any scratch_pt error pointer.
 
-```
-Each Unit and Terminal within the video function is assigned a unique
-identification number, the Unit ID (UID) or Terminal ID (TID), contained in
-the bUnitID or bTerminalID field of the descriptor. The value 0x00 is
-reserved for undefined ID,
-```
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 06951c2ee72d ("drm/xe: Use NULL PTEs as scratch PTEs")
+Cc: Brian Welty <brian.welty@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250821143045.106005-4-thomas.hellstrom@linux.intel.com
 
-If we add a new entity with id 0 or a duplicated ID, it will be marked
-as UVC_INVALID_ENTITY_ID.
-
-In a previous attempt commit 3dd075fe8ebb ("media: uvcvideo: Require
-entities to have a non-zero unique ID"), we ignored all the invalid units,
-this broke a lot of non-compatible cameras. Hopefully we are more lucky
-this time.
-
-This also prevents some syzkaller reproducers from triggering warnings due
-to a chain of entities referring to themselves. In one particular case, an
-Output Unit is connected to an Input Unit, both with the same ID of 1. But
-when looking up for the source ID of the Output Unit, that same entity is
-found instead of the input entity, which leads to such warnings.
-
-In another case, a backward chain was considered finished as the source ID
-was 0. Later on, that entity was found, but its pads were not valid.
-
-Here is a sample stack trace for one of those cases.
-
-[   20.650953] usb 1-1: new high-speed USB device number 2 using dummy_hcd
-[   20.830206] usb 1-1: Using ep0 maxpacket: 8
-[   20.833501] usb 1-1: config 0 descriptor??
-[   21.038518] usb 1-1: string descriptor 0 read error: -71
-[   21.038893] usb 1-1: Found UVC 0.00 device <unnamed> (2833:0201)
-[   21.039299] uvcvideo 1-1:0.0: Entity type for entity Output 1 was not initialized!
-[   21.041583] uvcvideo 1-1:0.0: Entity type for entity Input 1 was not initialized!
-[   21.042218] ------------[ cut here ]------------
-[   21.042536] WARNING: CPU: 0 PID: 9 at drivers/media/mc/mc-entity.c:1147 media_create_pad_link+0x2c4/0x2e0
-[   21.043195] Modules linked in:
-[   21.043535] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.11.0-rc7-00030-g3480e43aeccf #444
-[   21.044101] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-[   21.044639] Workqueue: usb_hub_wq hub_event
-[   21.045100] RIP: 0010:media_create_pad_link+0x2c4/0x2e0
-[   21.045508] Code: fe e8 20 01 00 00 b8 f4 ff ff ff 48 83 c4 30 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 0f 0b eb e9 0f 0b eb 0a 0f 0b eb 06 <0f> 0b eb 02 0f 0b b8 ea ff ff ff eb d4 66 2e 0f 1f 84 00 00 00 00
-[   21.046801] RSP: 0018:ffffc9000004b318 EFLAGS: 00010246
-[   21.047227] RAX: ffff888004e5d458 RBX: 0000000000000000 RCX: ffffffff818fccf1
-[   21.047719] RDX: 000000000000007b RSI: 0000000000000000 RDI: ffff888004313290
-[   21.048241] RBP: ffff888004313290 R08: 0001ffffffffffff R09: 0000000000000000
-[   21.048701] R10: 0000000000000013 R11: 0001888004313290 R12: 0000000000000003
-[   21.049138] R13: ffff888004313080 R14: ffff888004313080 R15: 0000000000000000
-[   21.049648] FS:  0000000000000000(0000) GS:ffff88803ec00000(0000) knlGS:0000000000000000
-[   21.050271] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   21.050688] CR2: 0000592cc27635b0 CR3: 000000000431c000 CR4: 0000000000750ef0
-[   21.051136] PKRU: 55555554
-[   21.051331] Call Trace:
-[   21.051480]  <TASK>
-[   21.051611]  ? __warn+0xc4/0x210
-[   21.051861]  ? media_create_pad_link+0x2c4/0x2e0
-[   21.052252]  ? report_bug+0x11b/0x1a0
-[   21.052540]  ? trace_hardirqs_on+0x31/0x40
-[   21.052901]  ? handle_bug+0x3d/0x70
-[   21.053197]  ? exc_invalid_op+0x1a/0x50
-[   21.053511]  ? asm_exc_invalid_op+0x1a/0x20
-[   21.053924]  ? media_create_pad_link+0x91/0x2e0
-[   21.054364]  ? media_create_pad_link+0x2c4/0x2e0
-[   21.054834]  ? media_create_pad_link+0x91/0x2e0
-[   21.055131]  ? _raw_spin_unlock+0x1e/0x40
-[   21.055441]  ? __v4l2_device_register_subdev+0x202/0x210
-[   21.055837]  uvc_mc_register_entities+0x358/0x400
-[   21.056144]  uvc_register_chains+0x1fd/0x290
-[   21.056413]  uvc_probe+0x380e/0x3dc0
-[   21.056676]  ? __lock_acquire+0x5aa/0x26e0
-[   21.056946]  ? find_held_lock+0x33/0xa0
-[   21.057196]  ? kernfs_activate+0x70/0x80
-[   21.057533]  ? usb_match_dynamic_id+0x1b/0x70
-[   21.057811]  ? find_held_lock+0x33/0xa0
-[   21.058047]  ? usb_match_dynamic_id+0x55/0x70
-[   21.058330]  ? lock_release+0x124/0x260
-[   21.058657]  ? usb_match_one_id_intf+0xa2/0x100
-[   21.058997]  usb_probe_interface+0x1ba/0x330
-[   21.059399]  really_probe+0x1ba/0x4c0
-[   21.059662]  __driver_probe_device+0xb2/0x180
-[   21.059944]  driver_probe_device+0x5a/0x100
-[   21.060170]  __device_attach_driver+0xe9/0x160
-[   21.060427]  ? __pfx___device_attach_driver+0x10/0x10
-[   21.060872]  bus_for_each_drv+0xa9/0x100
-[   21.061312]  __device_attach+0xed/0x190
-[   21.061812]  device_initial_probe+0xe/0x20
-[   21.062229]  bus_probe_device+0x4d/0xd0
-[   21.062590]  device_add+0x308/0x590
-[   21.062912]  usb_set_configuration+0x7b6/0xaf0
-[   21.063403]  usb_generic_driver_probe+0x36/0x80
-[   21.063714]  usb_probe_device+0x7b/0x130
-[   21.063936]  really_probe+0x1ba/0x4c0
-[   21.064111]  __driver_probe_device+0xb2/0x180
-[   21.064577]  driver_probe_device+0x5a/0x100
-[   21.065019]  __device_attach_driver+0xe9/0x160
-[   21.065403]  ? __pfx___device_attach_driver+0x10/0x10
-[   21.065820]  bus_for_each_drv+0xa9/0x100
-[   21.066094]  __device_attach+0xed/0x190
-[   21.066535]  device_initial_probe+0xe/0x20
-[   21.066992]  bus_probe_device+0x4d/0xd0
-[   21.067250]  device_add+0x308/0x590
-[   21.067501]  usb_new_device+0x347/0x610
-[   21.067817]  hub_event+0x156b/0x1e30
-[   21.068060]  ? process_scheduled_works+0x48b/0xaf0
-[   21.068337]  process_scheduled_works+0x5a3/0xaf0
-[   21.068668]  worker_thread+0x3cf/0x560
-[   21.068932]  ? kthread+0x109/0x1b0
-[   21.069133]  kthread+0x197/0x1b0
-[   21.069343]  ? __pfx_worker_thread+0x10/0x10
-[   21.069598]  ? __pfx_kthread+0x10/0x10
-[   21.069908]  ret_from_fork+0x32/0x40
-[   21.070169]  ? __pfx_kthread+0x10/0x10
-[   21.070424]  ret_from_fork_asm+0x1a/0x30
-[   21.070737]  </TASK>
-
-Reported-by: syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0584f746fde3d52b4675
-Reported-by: syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=dd320d114deb3f5bb79b
-Reported-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Fixes: a3fbc2e6bb05 ("media: mc-entity.c: use WARN_ON, validate link pads")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Co-developed-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 10df845fb17e..fa61f1d0ea2c 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -137,6 +137,9 @@ struct uvc_entity *uvc_entity_by_id(struct uvc_device *dev, int id)
- {
- 	struct uvc_entity *entity;
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index c86337e08a55..d3f6dc6b1779 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1635,8 +1635,12 @@ static int xe_vm_create_scratch(struct xe_device *xe, struct xe_tile *tile,
  
-+	if (id == UVC_INVALID_ENTITY_ID)
-+		return NULL;
+ 	for (i = MAX_HUGEPTE_LEVEL; i < vm->pt_root[id]->level; i++) {
+ 		vm->scratch_pt[id][i] = xe_pt_create(vm, tile, i);
+-		if (IS_ERR(vm->scratch_pt[id][i]))
+-			return PTR_ERR(vm->scratch_pt[id][i]);
++		if (IS_ERR(vm->scratch_pt[id][i])) {
++			int err = PTR_ERR(vm->scratch_pt[id][i]);
 +
- 	list_for_each_entry(entity, &dev->entities, list) {
- 		if (entity->id == id)
- 			return entity;
-@@ -791,14 +794,27 @@ static const u8 uvc_media_transport_input_guid[16] =
- 	UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
- static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
++			vm->scratch_pt[id][i] = NULL;
++			return err;
++		}
  
--static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
--		unsigned int num_pads, unsigned int extra_size)
-+static struct uvc_entity *uvc_alloc_new_entity(struct uvc_device *dev, u16 type,
-+					       u16 id, unsigned int num_pads,
-+					       unsigned int extra_size)
- {
- 	struct uvc_entity *entity;
- 	unsigned int num_inputs;
- 	unsigned int size;
- 	unsigned int i;
- 
-+	/* Per UVC 1.1+ spec 3.7.2, the ID should be non-zero. */
-+	if (id == 0) {
-+		dev_err(&dev->intf->dev, "Found Unit with invalid ID 0\n");
-+		id = UVC_INVALID_ENTITY_ID;
-+	}
-+
-+	/* Per UVC 1.1+ spec 3.7.2, the ID is unique. */
-+	if (uvc_entity_by_id(dev, id)) {
-+		dev_err(&dev->intf->dev, "Found multiple Units with ID %u\n", id);
-+		id = UVC_INVALID_ENTITY_ID;
-+	}
-+
- 	extra_size = roundup(extra_size, sizeof(*entity->pads));
- 	if (num_pads)
- 		num_inputs = type & UVC_TERM_OUTPUT ? num_pads : num_pads - 1;
-@@ -808,7 +824,7 @@ static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
- 	     + num_inputs;
- 	entity = kzalloc(size, GFP_KERNEL);
- 	if (entity == NULL)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	entity->id = id;
- 	entity->type = type;
-@@ -920,10 +936,10 @@ static int uvc_parse_vendor_control(struct uvc_device *dev,
- 			break;
- 		}
- 
--		unit = uvc_alloc_entity(UVC_VC_EXTENSION_UNIT, buffer[3],
--					p + 1, 2*n);
--		if (unit == NULL)
--			return -ENOMEM;
-+		unit = uvc_alloc_new_entity(dev, UVC_VC_EXTENSION_UNIT,
-+					    buffer[3], p + 1, 2 * n);
-+		if (IS_ERR(unit))
-+			return PTR_ERR(unit);
- 
- 		memcpy(unit->guid, &buffer[4], 16);
- 		unit->extension.bNumControls = buffer[20];
-@@ -1032,10 +1048,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
- 			return -EINVAL;
- 		}
- 
--		term = uvc_alloc_entity(type | UVC_TERM_INPUT, buffer[3],
--					1, n + p);
--		if (term == NULL)
--			return -ENOMEM;
-+		term = uvc_alloc_new_entity(dev, type | UVC_TERM_INPUT,
-+					    buffer[3], 1, n + p);
-+		if (IS_ERR(term))
-+			return PTR_ERR(term);
- 
- 		if (UVC_ENTITY_TYPE(term) == UVC_ITT_CAMERA) {
- 			term->camera.bControlSize = n;
-@@ -1091,10 +1107,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
- 			return 0;
- 		}
- 
--		term = uvc_alloc_entity(type | UVC_TERM_OUTPUT, buffer[3],
--					1, 0);
--		if (term == NULL)
--			return -ENOMEM;
-+		term = uvc_alloc_new_entity(dev, type | UVC_TERM_OUTPUT,
-+					    buffer[3], 1, 0);
-+		if (IS_ERR(term))
-+			return PTR_ERR(term);
- 
- 		memcpy(term->baSourceID, &buffer[7], 1);
- 
-@@ -1113,9 +1129,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
- 			return -EINVAL;
- 		}
- 
--		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, 0);
--		if (unit == NULL)
--			return -ENOMEM;
-+		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
-+					    p + 1, 0);
-+		if (IS_ERR(unit))
-+			return PTR_ERR(unit);
- 
- 		memcpy(unit->baSourceID, &buffer[5], p);
- 
-@@ -1135,9 +1152,9 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
- 			return -EINVAL;
- 		}
- 
--		unit = uvc_alloc_entity(buffer[2], buffer[3], 2, n);
--		if (unit == NULL)
--			return -ENOMEM;
-+		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3], 2, n);
-+		if (IS_ERR(unit))
-+			return PTR_ERR(unit);
- 
- 		memcpy(unit->baSourceID, &buffer[4], 1);
- 		unit->processing.wMaxMultiplier =
-@@ -1164,9 +1181,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
- 			return -EINVAL;
- 		}
- 
--		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, n);
--		if (unit == NULL)
--			return -ENOMEM;
-+		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
-+					    p + 1, n);
-+		if (IS_ERR(unit))
-+			return PTR_ERR(unit);
- 
- 		memcpy(unit->guid, &buffer[4], 16);
- 		unit->extension.bNumControls = buffer[20];
-@@ -1311,9 +1329,10 @@ static int uvc_gpio_parse(struct uvc_device *dev)
- 		return dev_err_probe(&dev->intf->dev, irq,
- 				     "No IRQ for privacy GPIO\n");
- 
--	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
--	if (!unit)
--		return -ENOMEM;
-+	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
-+				    UVC_EXT_GPIO_UNIT_ID, 0, 1);
-+	if (IS_ERR(unit))
-+		return PTR_ERR(unit);
- 
- 	unit->gpio.gpio_privacy = gpio_privacy;
- 	unit->gpio.irq = irq;
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 8a9a3e5ae3c0..24292efbe47d 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -41,6 +41,8 @@
- #define UVC_EXT_GPIO_UNIT		0x7ffe
- #define UVC_EXT_GPIO_UNIT_ID		0x100
- 
-+#define UVC_INVALID_ENTITY_ID          0xffff
-+
- /* ------------------------------------------------------------------------
-  * Driver specific constants.
-  */
+ 		xe_pt_populate_empty(tile, vm, vm->scratch_pt[id][i]);
+ 	}
 
 
