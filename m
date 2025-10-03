@@ -1,117 +1,206 @@
-Return-Path: <stable+bounces-183236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9339BB748E
-	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 17:06:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44073BB74F5
+	for <lists+stable@lfdr.de>; Fri, 03 Oct 2025 17:20:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61E4189AE9B
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 15:06:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DCE614E9C5C
+	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 15:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110641F1302;
-	Fri,  3 Oct 2025 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FF62848BB;
+	Fri,  3 Oct 2025 15:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=tsoy.me header.i=@tsoy.me header.b="BHSFxpYR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QUNBv/uq"
 X-Original-To: stable@vger.kernel.org
-Received: from puleglot.ru (puleglot.ru [195.201.32.202])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB7542A80;
-	Fri,  3 Oct 2025 15:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.201.32.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB355284670
+	for <stable@vger.kernel.org>; Fri,  3 Oct 2025 15:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759503964; cv=none; b=pI99U/70bddG57Lv3ICQ7oK4PrRgBigHj+gZHhNk/rYA/RqhppC/nBfv8AIdiIX8LudwKdeqQArBKfURUJ/lgptzNvayK0XqCuS6kGTXUfOz6Ibq5OOy8VptywHm+UGK16UetsHkB2W5VBEawuBepigBQixj0ru0CeaoU+/7VBc=
+	t=1759504810; cv=none; b=dCKD5ZhJCo4pxEG0ZnSDxeSWVQCwrJE7TRyVY0jfUgPOtQEv4elQ6NG7VcdlpZcSVEfdS8r7NgN5C9r29+sKGwzqThgNA9joXXWs0RjlgXEFY0skbxek554oNI/FnFshQZz7JPcuoIZDcVsU1zfp31JnohbSwovLu3T+YeIe9Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759503964; c=relaxed/simple;
-	bh=cn0SYSGCQ2+nQxPGi29l1O7Jzqnaq/TOCJCC5GcD0DI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pvdncEcOzIfnSKL82Jh35HovEI6I5ua9u4w1n6tNhvmIYWsYButiY/WV8a6o/fwxZb3XvYkLpx1EVykFzT94IuMK+XpUeWKZbw5BzBHX/l9s3n2RvKfn77eEW2IBOcuil0XVslIMMpcLf47wPNC74/WynzkBkmK0edQH6+Le624=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tsoy.me; spf=pass smtp.mailfrom=puleglot.ru; dkim=pass (1024-bit key) header.d=tsoy.me header.i=@tsoy.me header.b=BHSFxpYR; arc=none smtp.client-ip=195.201.32.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tsoy.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puleglot.ru
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tsoy.me;
-	s=mymail; h=Sender:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
-	:List-Post:List-Owner:List-Archive;
-	bh=cn0SYSGCQ2+nQxPGi29l1O7Jzqnaq/TOCJCC5GcD0DI=; b=BHSFxpYRrZaskkN+ZrVjDyRAe9
-	rIn3FLDwiZsq9xLJEWGL295e3sd9rQNXlf6SeZk4lqMXV97IbuwWfcKKBLHwyaR6/io3duR9LClEv
-	yblSLfuRS7aqF4UbDIaAtms+PWuhaSVn1zoV7sMrLElmN7t3xtlVyFY4WmwmmbBDN2oU=;
-Received: from [62.217.191.191] (helo=[192.168.1.230])
-	by puleglot.ru with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <puleglot@puleglot.ru>)
-	id 1v4hDW-00000002sKk-2srK;
-	Fri, 03 Oct 2025 17:57:06 +0300
-Message-ID: <265839123283304ede6b391bd92340adf77ad0f4.camel@tsoy.me>
-Subject: Re: S/PDIF not detected anymore / regression on recent kernel 6.7 ?
-From: Alexander Tsoy <alexander@tsoy.me>
-To: Serge SIMON <serge.simon@gmail.com>, Linux regressions mailing list
-	 <regressions@lists.linux.dev>
-Cc: linux-sound@vger.kernel.org, stable@vger.kernel.org, Takashi Iwai
-	 <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>
-Date: Fri, 03 Oct 2025 17:57:05 +0300
-In-Reply-To: <CAMBK1_Sw8nVSN3Z7WtHYyJ2xWUNVYNcx26UKFx5hy+xQrO=bHA@mail.gmail.com>
-References: 
-	<CAMBK1_QFuLQBp1apHD7=FnJo=RWE532=jMwfo=nkkGFSzJaD-A@mail.gmail.com>
-	 <2024011723-freeness-caviar-774c@gregkh>
-	 <CAMBK1_S2vwv-8PfFQ4rfChPiW7ut5LXgmUZRtyhN=AoG3g5NEg@mail.gmail.com>
-	 <bf07c1bc-b38e-4672-9bb0-24c16054569a@leemhuis.info>
-	 <CAMBK1_Sw8nVSN3Z7WtHYyJ2xWUNVYNcx26UKFx5hy+xQrO=bHA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	s=arc-20240116; t=1759504810; c=relaxed/simple;
+	bh=IpAFTubAVXYPQLJ+5YyMrifJUtVWBC4sXuvqGgFQJn0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MlLOfMRZvGxLSZeGQFGIKxVlGYyKgc0RtedxBe55cRdM5woF/e+bAmFvGP1yMO5QnQhEQSzVSHoAVzv2z23pybtLfjQ3LwPmJbrJNDwyu+eZ4pmdqhNNwjdhxdIaGiUui0I2dAbUMXuJZ2/zuqZC3TN9U2jIVRG5BVu1WrOaw50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QUNBv/uq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9415C4CEF5;
+	Fri,  3 Oct 2025 15:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759504808;
+	bh=IpAFTubAVXYPQLJ+5YyMrifJUtVWBC4sXuvqGgFQJn0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QUNBv/uqGV2z9q5mTZq+ly7a7UU7zl7J4lXSlaK61Bk3Xgi2UVFKeZSK1mkbYLXBv
+	 D0N/XCDn0EP7djVlmENm3+lH9iUQCstlRaoBCXawWsE/vP1aehbBqWQF03h38sHR5L
+	 Uph4rs0HpOUCIQKA7XUD3AMpxbGveRdrNtGHSrC6/21g7+FG4+9IuvQC0NLEzm1lQt
+	 f8TOqrBLgVx1BDJ1t3rWp2HLmU0pIQbBQnZD4sjcaioFTVzPsLXNhUO7jmRCaYV8ui
+	 WlJho269UtxrDiBrNb2LR4R5g4es2vbOwQ81FN2HHKynn8Z/5BG8WgIVmLdXDao0FU
+	 KOaQynR3xEszA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16.y 1/2] wifi: rtw89: mcc: stop TX during MCC prepare
+Date: Fri,  3 Oct 2025 11:20:04 -0400
+Message-ID: <20251003152005.3176758-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025100340-dwelling-engross-0738@gregkh>
+References: <2025100340-dwelling-engross-0738@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Sender: puleglot@puleglot.ru
+Content-Transfer-Encoding: 8bit
 
-=D0=92 =D0=9F=D1=82, 03/10/2025 =D0=B2 15:20 +0200, Serge SIMON =D0=BF=D0=
-=B8=D1=88=D0=B5=D1=82:
-> Hello,
->=20
-> I still encounter this issue (and every month i test the latest
-> kernel, each time with the same results) :
-> - i do have an ASUS B560-I WIFI (ITX) motherboard with a S/PDIF
-> output
-> - everything was working flawlessly until (and including) kernel
-> 6.6.10, and that S/PDIF output was perfectly detected (under GNOME
-> SHELL, etc.)
-> - starting from kernel 6.7.0 (and newest ones, including 6.16.10
-> tested today) the S/PDIF output it NOT detected anymore at boot time
-> by the kernel (so is not selectable any more under GNOME SHELL or
-> COSMIC, etc.)
->=20
-> With old kernel (example :
-> https://gist.github.com/SR-G/0e86d917716acff0d31cad0365f0b500#file-gistfi=
-le1-txt
-> )
-> :
->=20
-> % cat /proc/asound/pcm
->=20
-> 00-00: ALC1220 Analog : ALC1220 Analog : playback 1 : capture 1
-> 00-01: ALC1220 Digital : ALC1220 Digital : playback 1
-> 00-02: ALC1220 Alt Analog : ALC1220 Alt Analog : capture 1
-> 01-03: HDMI 0 : HDMI 0 : playback 1
-> 01-07: HDMI 1 : HDMI 1 : playback 1
-> 01-08: HDMI 2 : HDMI 2 : playback 1
-> 01-09: HDMI 3 : HDMI 3 : playback 1
->=20
->=20
-> With kernels >=3D 6.7.0 (example :
-> https://gist.github.com/SR-G/0e86d917716acff0d31cad0365f0b500#file-dmesg-=
-6-12-6-log
-> )
-> :
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-Did you disable intel iGPU somehow? Try to add snd_hda_core.gpu_bind=3D0
-to the kernel cmdline.
->=20
+[ Upstream commit 182c7ff8b87e4edbb2227ede39ae0952da7a0f4a ]
+
+Stop TX during the MCC configuration period to prevent packet leakage.
+The stop time is defined as 'start_tsf - tsf', which means the duration
+from when MCC configuration begins until MCC starts.
+
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250610130034.14692-6-pkshih@realtek.com
+Stable-dep-of: 3e31a6bc0731 ("wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/realtek/rtw89/chan.c | 35 +++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/chan.h |  2 ++
+ drivers/net/wireless/realtek/rtw89/core.c |  2 ++
+ drivers/net/wireless/realtek/rtw89/core.h |  2 ++
+ 4 files changed, 41 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index b18019b53181c..17daf93fec0a4 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -1595,6 +1595,35 @@ static bool rtw89_mcc_duration_decision_on_bt(struct rtw89_dev *rtwdev)
+ 	return false;
+ }
+ 
++void rtw89_mcc_prepare_done_work(struct wiphy *wiphy, struct wiphy_work *work)
++{
++	struct rtw89_dev *rtwdev = container_of(work, struct rtw89_dev,
++						mcc_prepare_done_work.work);
++
++	lockdep_assert_wiphy(wiphy);
++
++	ieee80211_wake_queues(rtwdev->hw);
++}
++
++static void rtw89_mcc_prepare(struct rtw89_dev *rtwdev, bool start)
++{
++	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
++	struct rtw89_mcc_config *config = &mcc->config;
++
++	if (start) {
++		ieee80211_stop_queues(rtwdev->hw);
++
++		wiphy_delayed_work_queue(rtwdev->hw->wiphy,
++					 &rtwdev->mcc_prepare_done_work,
++					 usecs_to_jiffies(config->prepare_delay));
++	} else {
++		wiphy_delayed_work_queue(rtwdev->hw->wiphy,
++					 &rtwdev->mcc_prepare_done_work, 0);
++		wiphy_delayed_work_flush(rtwdev->hw->wiphy,
++					 &rtwdev->mcc_prepare_done_work);
++	}
++}
++
+ static int rtw89_mcc_fill_start_tsf(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
+@@ -1630,6 +1659,8 @@ static int rtw89_mcc_fill_start_tsf(struct rtw89_dev *rtwdev)
+ 
+ 	config->start_tsf = start_tsf;
+ 	config->start_tsf_in_aux_domain = tsf_aux + start_tsf - tsf;
++	config->prepare_delay = start_tsf - tsf;
++
+ 	return 0;
+ }
+ 
+@@ -2219,6 +2250,8 @@ static int rtw89_mcc_start(struct rtw89_dev *rtwdev)
+ 	rtw89_chanctx_notify(rtwdev, RTW89_CHANCTX_STATE_MCC_START);
+ 
+ 	rtw89_mcc_start_beacon_noa(rtwdev);
++
++	rtw89_mcc_prepare(rtwdev, true);
+ 	return 0;
+ }
+ 
+@@ -2307,6 +2340,8 @@ static void rtw89_mcc_stop(struct rtw89_dev *rtwdev,
+ 	rtw89_chanctx_notify(rtwdev, RTW89_CHANCTX_STATE_MCC_STOP);
+ 
+ 	rtw89_mcc_stop_beacon_noa(rtwdev);
++
++	rtw89_mcc_prepare(rtwdev, false);
+ }
+ 
+ static int rtw89_mcc_update(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.h b/drivers/net/wireless/realtek/rtw89/chan.h
+index 2a25563593af9..be998fdd8724b 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.h
++++ b/drivers/net/wireless/realtek/rtw89/chan.h
+@@ -129,6 +129,8 @@ const struct rtw89_chan *__rtw89_mgnt_chan_get(struct rtw89_dev *rtwdev,
+ #define rtw89_mgnt_chan_get(rtwdev, link_index) \
+ 	__rtw89_mgnt_chan_get(rtwdev, __func__, link_index)
+ 
++void rtw89_mcc_prepare_done_work(struct wiphy *wiphy, struct wiphy_work *work);
++
+ int rtw89_chanctx_ops_add(struct rtw89_dev *rtwdev,
+ 			  struct ieee80211_chanctx_conf *ctx);
+ void rtw89_chanctx_ops_remove(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 894ab7ab94ccb..0e4d5679e426c 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -4816,6 +4816,7 @@ void rtw89_core_stop(struct rtw89_dev *rtwdev)
+ 	wiphy_delayed_work_cancel(wiphy, &rtwdev->coex_bt_devinfo_work);
+ 	wiphy_delayed_work_cancel(wiphy, &rtwdev->coex_rfk_chk_work);
+ 	wiphy_delayed_work_cancel(wiphy, &rtwdev->cfo_track_work);
++	wiphy_delayed_work_cancel(wiphy, &rtwdev->mcc_prepare_done_work);
+ 	cancel_delayed_work_sync(&rtwdev->forbid_ba_work);
+ 	wiphy_delayed_work_cancel(wiphy, &rtwdev->antdiv_work);
+ 
+@@ -5042,6 +5043,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+ 	wiphy_delayed_work_init(&rtwdev->coex_bt_devinfo_work, rtw89_coex_bt_devinfo_work);
+ 	wiphy_delayed_work_init(&rtwdev->coex_rfk_chk_work, rtw89_coex_rfk_chk_work);
+ 	wiphy_delayed_work_init(&rtwdev->cfo_track_work, rtw89_phy_cfo_track_work);
++	wiphy_delayed_work_init(&rtwdev->mcc_prepare_done_work, rtw89_mcc_prepare_done_work);
+ 	INIT_DELAYED_WORK(&rtwdev->forbid_ba_work, rtw89_forbid_ba_work);
+ 	wiphy_delayed_work_init(&rtwdev->antdiv_work, rtw89_phy_antdiv_work);
+ 	rtwdev->txq_wq = alloc_workqueue("rtw89_tx_wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 1c8f3b9b7c4c6..f505fe6da4a24 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -5728,6 +5728,7 @@ struct rtw89_mcc_config {
+ 	struct rtw89_mcc_sync sync;
+ 	u64 start_tsf;
+ 	u64 start_tsf_in_aux_domain;
++	u64 prepare_delay;
+ 	u16 mcc_interval; /* TU */
+ 	u16 beacon_offset; /* TU */
+ };
+@@ -5858,6 +5859,7 @@ struct rtw89_dev {
+ 	struct wiphy_delayed_work coex_bt_devinfo_work;
+ 	struct wiphy_delayed_work coex_rfk_chk_work;
+ 	struct wiphy_delayed_work cfo_track_work;
++	struct wiphy_delayed_work mcc_prepare_done_work;
+ 	struct delayed_work forbid_ba_work;
+ 	struct wiphy_delayed_work antdiv_work;
+ 	struct rtw89_ppdu_sts_info ppdu_sts;
+-- 
+2.51.0
+
 
