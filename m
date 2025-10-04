@@ -1,132 +1,74 @@
-Return-Path: <stable+bounces-183379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17420BB9091
-	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 19:35:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAABDBB9117
+	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 20:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C53643A8969
-	for <lists+stable@lfdr.de>; Sat,  4 Oct 2025 17:35:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A424188968E
+	for <lists+stable@lfdr.de>; Sat,  4 Oct 2025 18:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A926285054;
-	Sat,  4 Oct 2025 17:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F282737FB;
+	Sat,  4 Oct 2025 18:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCjJKPd2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYhnvgaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B71450FE;
-	Sat,  4 Oct 2025 17:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066E91E51EF
+	for <stable@vger.kernel.org>; Sat,  4 Oct 2025 18:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759599299; cv=none; b=gdwODxE8t9ZXVic7YayrAflk1sT31OQqYjWnhl1PjJP2Flrs3MYOALMxyKbAmnr1/32nhmwkLdTEbfJztoYrw3pxmWzqeGe43xv/zcAsXzj7/0cG90nkrVkcaHVZIzfMT/FOTYJkW569MGNOrY3i6nVcPMWwJ27eNmgiFzmCP4o=
+	t=1759603289; cv=none; b=aoExqwkOg2xMhnwupiUW3sMvYaVSEmTQrHv9BS1KhsVO9g1Mar7DXUJK4W8JUnTPdfnxyO3/+kyt2hAY/81ol261f4NurhVtZfUtf//od1VdL2mMgFgz7+f4xNoE5n72/UFf4xM9sVkNMNvE+/nHS2Vpqaw+roCaX6n3Bm+D5dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759599299; c=relaxed/simple;
-	bh=QrmbzFWdXVjrkXP1XKgkDdSN8NwVcE41VeySN7cDksE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T5O68sdoNZFgyP1dr00YTfDjhlbM45aFf4DQj3Ej/TYhbBigP9fl6OS5N288nfmm3A4BlDIu70GxAAbajibnVvq8nmxUraIIB8RPOMR9aRF6077lpzZXayMoWApyIYjlrlLXBWHWA/aeJK98sYnLt6N6AvM8xcrE+vuWAHqBvmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCjJKPd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02629C4CEF1;
-	Sat,  4 Oct 2025 17:34:47 +0000 (UTC)
+	s=arc-20240116; t=1759603289; c=relaxed/simple;
+	bh=tfnjCEx0sQ+E+0kwMooucESZIA3uU0vY4ALV2gkqkrs=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=lK0axwpmetrl1Aq5qZQJijEGsGv8Mdw53Tq1W/RxFAdymO8H9I46HlsurTVERb02UZLFOnxLf7UidVjRu6reyVdPnJTH3A7B8DWdgwEK5g7zv6jJ6PlI6nQgmRsnLpmL8UZQhoHICWsF7oEr4GbVi01BGENd9ssdCbxCo2xpe20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYhnvgaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FACEC4CEF1
+	for <stable@vger.kernel.org>; Sat,  4 Oct 2025 18:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759599298;
-	bh=QrmbzFWdXVjrkXP1XKgkDdSN8NwVcE41VeySN7cDksE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eCjJKPd2kPpbJvaqPjAXAInrSnxBDV5nb0AMICsS9hQMMliN3fJvCdbrmwXy3fIUV
-	 ohrVoxpkW+be4EVH/w9nbxZM7Ak/E6/EDK9Lp0NCknVpI1GCETARXpO07wmg2ZpD/+
-	 DByXFfpXXyYeZlQkVVLtzRVnyK8TVARObjp8O7/bLifZSMLL3hFAVhw59jraHJGJSU
-	 jJr5Bwc/tv5Yfh1bMT1CVVujvmV4wENVMTyccM7ocR9rWZd+tiM8xB2zSxYZLMMv7w
-	 gkh7Ny1wYGPxEy8eZ5XMWwF7ZVqYYm7f++8qAjKK70TwSHcLWR4seTowQlJ4Il6NDN
-	 EngbGLHwMM0Sg==
-Date: Sat, 4 Oct 2025 23:04:35 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, 
-	manivannan.sadhasivam@oss.qualcomm.com, Bjorn Helgaas <bhelgaas@google.com>, 
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Joerg Roedel <jroedel@suse.de>, iommu@lists.linux.dev, Anders Roxell <anders.roxell@linaro.org>, 
-	Naresh Kamboju <naresh.kamboju@linaro.org>, Pavankumar Kondeti <quic_pkondeti@quicinc.com>, 
-	Xingang Wang <wangxingang5@huawei.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] iommu/of: Call pci_request_acs() before enumerating
- the Root Port device
-Message-ID: <5f4uclyawwh57u5pdwlk5q36keeg3oyhk5hw42xgnryz6xs7ph@rrkulj4ex2xb>
-References: <20250924185750.GA2128243@bhelgaas>
- <b8a871d8-d84b-4c86-8f63-f4e1b2a5fccf@arm.com>
+	s=k20201202; t=1759603288;
+	bh=tfnjCEx0sQ+E+0kwMooucESZIA3uU0vY4ALV2gkqkrs=;
+	h=Date:To:From:Subject:From;
+	b=FYhnvgaSPcgoFUX3uifoIwuYMtUQNCUGrja55ScjIdGtE14kEi12PV119iZxZejHl
+	 UcmG3qOmoGEGhgz8quw8mRMe+oBY0diobdJqKrmdwvlfzpRHfJZOrY+u+BqA30+qtF
+	 2Vr4grCj6YtC89f7bLJBtvxAvFfVRqfoskhmNvtzAuddmKVQVmmOUGSY/Cq0RN1Kc1
+	 PRc5Z/JE5QIl+RJFzwu1rcdyOUG1O9nvYCYIEmHvJKc/5r3LNgNa1e/RX2hBCDlJ6w
+	 dB4ACeU5rtPzYWQ0gXVZwC21MmFj+yycAjKDXHI0AXi85wh0TGOQTMUuLBoUl571+Q
+	 W80ToBU3DJI5g==
+Message-ID: <3c147f99-0911-420b-812b-a41a26b4a723@kernel.org>
+Date: Sat, 4 Oct 2025 13:41:29 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b8a871d8-d84b-4c86-8f63-f4e1b2a5fccf@arm.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable@vger.kernel.org
+From: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Subject: LR compute WA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 24, 2025 at 08:49:26PM +0100, Robin Murphy wrote:
+Hi,
 
-[...]
+We have some reports of long compute jobs on APUs hanging the system. 
+This has been root caused and a workaround has been introduced in the 
+mainline kernel.  I didn't CC stable on the original W/A because I 
+wanted to make sure we've had enough time to test it didn't have 
+unintended side effects.
 
-> > I don't doubt that the current code doesn't detect presence or use of
-> > IOMMU until later.  But that feels like an implementation defect
-> > because logically the IOMMU is upstream of any PCI device that uses
-> > it, so architecturally I would expect it to be *possible* to detect it
-> > before PCI enumeration.
-> > 
-> > More to the point, it's not at all obvious how to infer that
-> > 'iommu-map' in the devicetree means the IOMMU will be used.
-> 
-> Indeed, I would say the way to go down that route would be to echo what we
-> do for "iommus", and defer probing the entire host controller driver until
-> the targets of an "iommu-map" are either present or assumed to never be
-> appearing. (And of course an ACPI equivalent for that would be tricky...)
-> 
+I feel comfortable with the testing at this point and I think it's worth 
+bringing back to any stable kernels it will apply to 6.12.y and newer. 
+The commit is:
 
-Maybe we should just call pci_enable_acs() only when the iommu is detected for
-the device? But ofc, this is not possible for non-OF platforms as they tend to
-call pci_request_acs() pretty early.
+1fb710793ce2619223adffaf981b1ff13cd48f17
 
-> However, even that isn't necessarily the full solution, as just as it's not
-> really appropriate for PCI to force ACS without knowing whether an IOMMU is
-> actually present to make it meaningful, it's also not strictly appropriate
-> for an IOMMU driver to request ACS globally without knowing that it actually
-> serves any relevant PCIe devices. Even in the ideal scenario, I think the
-> point of actually knowing is still a bit too late for the current API
-> design:
-> 
->   pci_device_add
->     pci_init_capabilities
->       pci_acs_init
->         pci_enable_acs
->     device_add
->       iommu_bus_notifier
->         iommu_probe_device
->           //logically, request ACS for dev here
-> 
-> (at the moment, iommu_probe_device() will actually end up calling into the
-> same of_iommu_configure()->pci_request_acs() path, but the plan is still to
-> eventually shorten and streamline that.)
-> 
-
-What is worrying me is that of_iommu_configure() is called for each PCI device,
-as opposed to just one time on other platforms. But I think that's a good thing
-to have as the IOMMU driver can have a per-device ACS policy, instead of a
-global one.
-
-> I guess we might want to separate the actual ACS enablement from the basic
-> capability init, or at least perhaps just call pci_enable_acs() again after
-> the IOMMU notifier may have changed the policy?
-> 
-
-Is this applicable to other platforms as well? Not just OF?
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Thanks,
 
