@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-183342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80E6BB8722
-	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 02:22:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A4CBB8725
+	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 02:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8223D4C0E61
-	for <lists+stable@lfdr.de>; Sat,  4 Oct 2025 00:22:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C809B19E31DA
+	for <lists+stable@lfdr.de>; Sat,  4 Oct 2025 00:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A87E611E;
-	Sat,  4 Oct 2025 00:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE7F7483;
+	Sat,  4 Oct 2025 00:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VpLUXoPW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJhIfeGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA83234BA3C
-	for <stable@vger.kernel.org>; Sat,  4 Oct 2025 00:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFA734BA3C
+	for <stable@vger.kernel.org>; Sat,  4 Oct 2025 00:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759537321; cv=none; b=kP4sEuem/Qg+nX9aOMCRnujX/pgqB/E83uewpe6vDMpio7Zi+YJz/exXQLMcSmCHP/XAuoZjnNv2uOh/1N0xePSqGUFgj+ipKsVgMJ3Umq8AbbatyXElmurFilRyUDoXc6SE4bqPjMaVyFBEyIpqujmy9MtEoMTZc9QBHV0LDUQ=
+	t=1759537321; cv=none; b=jx6uQg7zb16r7mIrp8fOhhcBVRGADGTQuinuzKoMDoNnS8m+AcJAqnBVWsHftIRSE+CpFgkCwD/O9IDTthl7iZVF8MBLhH2wKUX+1xyqjASfQBperNbXZ2wVD48xXAkNS7AbW+fzna4fRavEy77zn9BmjW5N8AMXucrF9FyNQ40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759537321; c=relaxed/simple;
-	bh=AUBIFMN0oL9q60EaetitQwhQca5lqAfJFQq3y+UmHXU=;
+	bh=hF51D3+mOVx4or+38FUJ8pzrNs5XeCs3vLi1r7zW64w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVr10kNKIqEvKplQ60J5Gv/kIGdt69mFzhGNvkIY+AoF5lPv1FOG6rpYjOPy9pTTNv2iB8sbUbPI8tXjwbWu+UzSFvypAHR2BLVUu5Kusci+onvEfvDIhR8u1ar9DObORXypPFuY47rrnbeagX/zmK3/iqhh+BiW3rdjK9DCGTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VpLUXoPW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CABC4CEF5;
-	Sat,  4 Oct 2025 00:21:59 +0000 (UTC)
+	 MIME-Version; b=buEAOgliTus8YFtSFE/JZVywPY6Hz3Pugw7QsTpE9vGVlto8zFsvWbWM40cgV980a7C3TKQPDj21W9qeEJlg9PuXB6O7h3YwM8J2SExryH/23emlknnUNvj57Hnc1LykUVjNA0R0dqVcx0ZCLtJYwuf6KYdSlPMGB6r0zAneQEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJhIfeGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4956C4CEFB;
+	Sat,  4 Oct 2025 00:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759537320;
-	bh=AUBIFMN0oL9q60EaetitQwhQca5lqAfJFQq3y+UmHXU=;
+	s=k20201202; t=1759537321;
+	bh=hF51D3+mOVx4or+38FUJ8pzrNs5XeCs3vLi1r7zW64w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpLUXoPWy6Pa8pnnR/AZePBoLVnKBK84S6sB9WMTWQ+IRF6WgqLTXALHb/7n4DXav
-	 BDKwefssJ126LarEyaESkCJWEu2fqg/aoAW/5BhtUWmzOZhoedORZJevT6MuRyp5/0
-	 IwSOWCfh50p7UVUA/SqAm3o40O+5NB7cUX01tPEIDrfrnqOO+47KI4JVLD6N0+WYoG
-	 6Jz9zFyk7gtrvZGGgiyYu81mVUywspMnSt7TgO85n8nJ+xt42sDo7hQ9QJua47szC8
-	 SXcYllfGWJaqijGQUI3LsG8scd1tSBSh5ZJaMYxUA9n6os7xzJ7R3X6muhPEb4DBoM
-	 p1sB4wXNICI6Q==
+	b=gJhIfeGc9HC6NjI0ZOBifTvaJd9GkbvJ31+X198bW+rlL8u+4SPg+qXYTx0x7epaK
+	 5PD2Dge+C+XUjdeyJkTC0YrlzbdB4VMaXrrlV1a2GfkjOf0cu/fJqyIiGzrTaGbsUV
+	 qOGEkUHEWImtBaWm+jxzpBinkA6SeW8OiyhPAyzU4n4aqvVEA+NCytnf+T3wf8WvWq
+	 vpfNLmiiCd1+AQ5z56diKP2qY3IP8+MdnpM4RKnVDSu3I/VNaRz7LkD5DIsZrZeqvq
+	 u0V0em/s2VMbI5yvPaLYO9paiJ1rPKAYcVzh5Q309kbd3hKnBv0Iuyhlp1mCISfIzQ
+	 D9dnpfA/SpkHw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Shuah Khan <shuah.kh@samsung.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+Cc: Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 1/2] media: tunner: xc5000: Refactor firmware load
-Date: Fri,  3 Oct 2025 20:21:56 -0400
-Message-ID: <20251004002158.4023173-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 2/2] media: tuner: xc5000: Fix use-after-free in xc5000_release
+Date: Fri,  3 Oct 2025 20:21:57 -0400
+Message-ID: <20251004002158.4023173-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025100341-cobbler-alabaster-748a@gregkh>
+In-Reply-To: <20251004002158.4023173-1-sashal@kernel.org>
 References: <2025100341-cobbler-alabaster-748a@gregkh>
+ <20251004002158.4023173-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,108 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 8e1f5da59dd4a1966f859639860b803a7e8b8bfb ]
+[ Upstream commit 40b7a19f321e65789612ebaca966472055dab48c ]
 
-Make sure the firmware is released when we leave
-xc_load_fw_and_init_tuner()
+The original code uses cancel_delayed_work() in xc5000_release(), which
+does not guarantee that the delayed work item timer_sleep has fully
+completed if it was already running. This leads to use-after-free scenarios
+where xc5000_release() may free the xc5000_priv while timer_sleep is still
+active and attempts to dereference the xc5000_priv.
 
-This change makes smatch happy:
-drivers/media/tuners/xc5000.c:1213 xc_load_fw_and_init_tuner() warn: 'fw' from request_firmware() not released on lines: 1213.
+A typical race condition is illustrated below:
 
-Cc: Shuah Khan <shuah.kh@samsung.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: 40b7a19f321e ("media: tuner: xc5000: Fix use-after-free in xc5000_release")
+CPU 0 (release thread)                 | CPU 1 (delayed work callback)
+xc5000_release()                       | xc5000_do_timer_sleep()
+  cancel_delayed_work()                |
+  hybrid_tuner_release_state(priv)     |
+    kfree(priv)                        |
+                                       |   priv = container_of() // UAF
+
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the timer_sleep is properly canceled before the xc5000_priv memory
+is deallocated.
+
+A deadlock concern was considered: xc5000_release() is called in a process
+context and is not holding any locks that the timer_sleep work item might
+also need. Therefore, the use of the _sync() variant is safe here.
+
+This bug was initially identified through static analysis.
+
+Fixes: f7a27ff1fb77 ("[media] xc5000: delay tuner sleep to 5 seconds")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[hverkuil: fix typo in Subject: tunner -> tuner]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/tuners/xc5000.c | 39 +++++++++++++++--------------------
- 1 file changed, 17 insertions(+), 22 deletions(-)
+ drivers/media/tuners/xc5000.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
-index 2182e5b7b6064..30aa4ee958bde 100644
+index 30aa4ee958bde..ec9a3cd4784e1 100644
 --- a/drivers/media/tuners/xc5000.c
 +++ b/drivers/media/tuners/xc5000.c
-@@ -58,7 +58,7 @@ struct xc5000_priv {
- 	struct dvb_frontend *fe;
- 	struct delayed_work timer_sleep;
- 
--	const struct firmware   *firmware;
-+	bool inited;
- };
- 
- /* Misc Defines */
-@@ -1110,23 +1110,19 @@ static int xc_load_fw_and_init_tuner(struct dvb_frontend *fe, int force)
- 	if (!force && xc5000_is_firmware_loaded(fe) == 0)
- 		return 0;
- 
--	if (!priv->firmware) {
--		ret = request_firmware(&fw, desired_fw->name,
--					priv->i2c_props.adap->dev.parent);
--		if (ret) {
--			pr_err("xc5000: Upload failed. rc %d\n", ret);
--			return ret;
--		}
--		dprintk(1, "firmware read %zu bytes.\n", fw->size);
-+	ret = request_firmware(&fw, desired_fw->name,
-+			       priv->i2c_props.adap->dev.parent);
-+	if (ret) {
-+		pr_err("xc5000: Upload failed. rc %d\n", ret);
-+		return ret;
-+	}
-+	dprintk(1, "firmware read %zu bytes.\n", fw->size);
- 
--		if (fw->size != desired_fw->size) {
--			pr_err("xc5000: Firmware file with incorrect size\n");
--			release_firmware(fw);
--			return -EINVAL;
--		}
--		priv->firmware = fw;
--	} else
--		fw = priv->firmware;
-+	if (fw->size != desired_fw->size) {
-+		pr_err("xc5000: Firmware file with incorrect size\n");
-+		release_firmware(fw);
-+		return -EINVAL;
-+	}
- 
- 	/* Try up to 5 times to load firmware */
- 	for (i = 0; i < 5; i++) {
-@@ -1204,6 +1200,7 @@ static int xc_load_fw_and_init_tuner(struct dvb_frontend *fe, int force)
- 	}
- 
- err:
-+	release_firmware(fw);
- 	if (!ret)
- 		printk(KERN_INFO "xc5000: Firmware %s loaded and running.\n",
- 		       desired_fw->name);
-@@ -1274,7 +1271,7 @@ static int xc5000_resume(struct dvb_frontend *fe)
- 
- 	/* suspended before firmware is loaded.
- 	   Avoid firmware load in resume path. */
--	if (!priv->firmware)
-+	if (!priv->inited)
- 		return 0;
- 
- 	return xc5000_set_params(fe);
-@@ -1293,6 +1290,8 @@ static int xc5000_init(struct dvb_frontend *fe)
- 	if (debug)
- 		xc_debug_dump(priv);
- 
-+	priv->inited = true;
-+
- 	return 0;
- }
- 
-@@ -1306,10 +1305,6 @@ static void xc5000_release(struct dvb_frontend *fe)
+@@ -1304,7 +1304,7 @@ static void xc5000_release(struct dvb_frontend *fe)
+ 	mutex_lock(&xc5000_list_mutex);
  
  	if (priv) {
- 		cancel_delayed_work(&priv->timer_sleep);
--		if (priv->firmware) {
--			release_firmware(priv->firmware);
--			priv->firmware = NULL;
--		}
+-		cancel_delayed_work(&priv->timer_sleep);
++		cancel_delayed_work_sync(&priv->timer_sleep);
  		hybrid_tuner_release_state(priv);
  	}
  
