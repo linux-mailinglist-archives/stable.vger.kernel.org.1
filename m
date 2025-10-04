@@ -1,124 +1,132 @@
-Return-Path: <stable+bounces-183378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3B6BB9069
-	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 18:58:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17420BB9091
+	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 19:35:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AD760346ADA
-	for <lists+stable@lfdr.de>; Sat,  4 Oct 2025 16:58:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C53643A8969
+	for <lists+stable@lfdr.de>; Sat,  4 Oct 2025 17:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D3B27AC28;
-	Sat,  4 Oct 2025 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A926285054;
+	Sat,  4 Oct 2025 17:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0zZL383"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCjJKPd2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72998280A5B
-	for <stable@vger.kernel.org>; Sat,  4 Oct 2025 16:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B71450FE;
+	Sat,  4 Oct 2025 17:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759597114; cv=none; b=sHyiEptG7LzdeVuNKIOb467tGKRH39e0xcbW1/xW++4aPacuJFwuRzHHQxZTj3ps0sUgaw41VN2SbUH2cE0NGryRLvewDw0QtjHfPJyYP25D3EIN3m2v4tInqs1vD/NVAzr1J+h9nGFfeqpYwuaHbMs0NPnVotlrgkC4XqnNhP8=
+	t=1759599299; cv=none; b=gdwODxE8t9ZXVic7YayrAflk1sT31OQqYjWnhl1PjJP2Flrs3MYOALMxyKbAmnr1/32nhmwkLdTEbfJztoYrw3pxmWzqeGe43xv/zcAsXzj7/0cG90nkrVkcaHVZIzfMT/FOTYJkW569MGNOrY3i6nVcPMWwJ27eNmgiFzmCP4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759597114; c=relaxed/simple;
-	bh=K9vC458WseZ+t5Qy5yDU9N4O2xS+IAk6v0rfKcmkCkU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JoTkdpAvRa0g56XvNoVSWW6ka6Jl7geRjMIlDB/ZMap6PBxkFVLws7hsssIWiNOGr/ELgFV39TCTDEP0m9AquEH3+M4npmXgRRCZPouK6pYyR7Huq/q7ei5XRcfI7c2sJFOEnzoesqQQlndqTZoXSBRZYRaiO2hU36G5oixPHCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0zZL383; arc=none smtp.client-ip=209.85.166.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-4248746aabfso13407265ab.2
-        for <stable@vger.kernel.org>; Sat, 04 Oct 2025 09:58:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1759597111; x=1760201911; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YKCXGIJ/5BK0XkF8KRZhRh28Rfy6IWFA9g8zjTx/OE8=;
-        b=A0zZL383y+HkitdZnP3b+bXSrq/QPBkAm53YTqd44BHkPLA7KXCxqF5tLwskOd3fqG
-         MJyR2aOVONSZOpX17j+rBxmF4MuRO4Bdnsb2UrJwyv8nZa4VZRvdLYI0SlX4ooTtW0ch
-         QJFx/JDu2X73CtMAYhdQofEBo9ZyOaLya5KG4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759597111; x=1760201911;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YKCXGIJ/5BK0XkF8KRZhRh28Rfy6IWFA9g8zjTx/OE8=;
-        b=iqG78XH8PLec96CjarWW9aRwalmpAK9+wcihgMqhZM/gAUXnKGvz/aSB6MuGiljNGg
-         1J7KeFIIShr/jMAEgsIQYbpOpXhCXNBq0PnG7F5ZMhol65f4HDVzQHyqVXWoCTThp+rK
-         E8u9V2lHMFm5SYrSWUf3fajgq5t+mmiW68EM2yJs77KPoIg7PRaE2o4fj4WwFJ7SQPNe
-         HVb6yxr4PF8m+2lRFliz6cpPmRxZJT1Rhi0KaWrFI9yi8tE+btMWXxVq3iLoF0vjmpJN
-         XbJGgTxTpY8eWz88yB+04DuQtTMUHzuOrnhtX2tmb7eldlbQ8ikQZh9XhXIdKbGTvFXA
-         5LMw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+ETu5O7BSLaf8e34m4MADHEdCYBhKRO0COOEjIwsspJEWbq4b8S6fj72ZeytoFL1CuCDp5JM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCKRSBmZn3pXsvDBVEL5D3EJH8BQ+mh7PAfZ9SaYqEO+IaHUG7
-	ThKHIwBoLdkmX+u8lktA5ONV7TUHhCKwYF1Tna/R19tfVwqSWA2rNmkdFPHW7iD1l/8=
-X-Gm-Gg: ASbGncsgnJ9oQRECmMIMPOLl0ldihoRs+dQzSqCjDpXjzQFgU/WLcqLdKy9/TzXLspZ
-	X1EqxABYbvTErehKWAAk1YfVP52wdOZ9r4U/8Z5tUZjuGLcSsy18b9hkGgEd9XcUmcNc1fQHjIA
-	uEV5ofWP9KzJqNwpwlSFHbrxwN0g/HtAEFeswqNjAo2h49GJeigX128Ky2inI6WbbnBeXC0l4mv
-	cPepUKGAJEQar9KkzoAKnMTvVUBnMeygZ+K8ghwYCyi5MTFCLLOzw+PPZSTaEG9jUPQLOUiO5WS
-	vwsfeuEfXcjyKNs9XGKTDZNYqUtf+iiqTNKw8irEL69W2azfma1iw7jf359E/CPbtskg3clbWyX
-	KlLWUeDe2iNKOU9gPXZeJIq7QSPVoat5U9XYHW9DZKVv0C+fHYkXLaKglgKHdhpkZlopTRg==
-X-Google-Smtp-Source: AGHT+IGBk0KCUm6TNrRRCC/kGTGBW3hhMrS42dCtvvENIAVPXJcG7xcFtOUNCLRzrIFUnqtmgp2/IQ==
-X-Received: by 2002:a05:6e02:16c9:b0:424:b860:7d84 with SMTP id e9e14a558f8ab-42e7adaa636mr84992425ab.27.1759597111493;
-        Sat, 04 Oct 2025 09:58:31 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-42d8b1f37edsm34479515ab.5.2025.10.04.09.58.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 04 Oct 2025 09:58:31 -0700 (PDT)
-Message-ID: <df2f8664-cb83-41b3-9094-ab2cd17fe531@linuxfoundation.org>
-Date: Sat, 4 Oct 2025 10:58:29 -0600
+	s=arc-20240116; t=1759599299; c=relaxed/simple;
+	bh=QrmbzFWdXVjrkXP1XKgkDdSN8NwVcE41VeySN7cDksE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T5O68sdoNZFgyP1dr00YTfDjhlbM45aFf4DQj3Ej/TYhbBigP9fl6OS5N288nfmm3A4BlDIu70GxAAbajibnVvq8nmxUraIIB8RPOMR9aRF6077lpzZXayMoWApyIYjlrlLXBWHWA/aeJK98sYnLt6N6AvM8xcrE+vuWAHqBvmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCjJKPd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02629C4CEF1;
+	Sat,  4 Oct 2025 17:34:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759599298;
+	bh=QrmbzFWdXVjrkXP1XKgkDdSN8NwVcE41VeySN7cDksE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eCjJKPd2kPpbJvaqPjAXAInrSnxBDV5nb0AMICsS9hQMMliN3fJvCdbrmwXy3fIUV
+	 ohrVoxpkW+be4EVH/w9nbxZM7Ak/E6/EDK9Lp0NCknVpI1GCETARXpO07wmg2ZpD/+
+	 DByXFfpXXyYeZlQkVVLtzRVnyK8TVARObjp8O7/bLifZSMLL3hFAVhw59jraHJGJSU
+	 jJr5Bwc/tv5Yfh1bMT1CVVujvmV4wENVMTyccM7ocR9rWZd+tiM8xB2zSxYZLMMv7w
+	 gkh7Ny1wYGPxEy8eZ5XMWwF7ZVqYYm7f++8qAjKK70TwSHcLWR4seTowQlJ4Il6NDN
+	 EngbGLHwMM0Sg==
+Date: Sat, 4 Oct 2025 23:04:35 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, 
+	manivannan.sadhasivam@oss.qualcomm.com, Bjorn Helgaas <bhelgaas@google.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Joerg Roedel <jroedel@suse.de>, iommu@lists.linux.dev, Anders Roxell <anders.roxell@linaro.org>, 
+	Naresh Kamboju <naresh.kamboju@linaro.org>, Pavankumar Kondeti <quic_pkondeti@quicinc.com>, 
+	Xingang Wang <wangxingang5@huawei.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] iommu/of: Call pci_request_acs() before enumerating
+ the Root Port device
+Message-ID: <5f4uclyawwh57u5pdwlk5q36keeg3oyhk5hw42xgnryz6xs7ph@rrkulj4ex2xb>
+References: <20250924185750.GA2128243@bhelgaas>
+ <b8a871d8-d84b-4c86-8f63-f4e1b2a5fccf@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 0/7] 6.6.110-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20251003160331.487313415@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20251003160331.487313415@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b8a871d8-d84b-4c86-8f63-f4e1b2a5fccf@arm.com>
 
-On 10/3/25 10:06, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.110 release.
-> There are 7 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Sep 24, 2025 at 08:49:26PM +0100, Robin Murphy wrote:
+
+[...]
+
+> > I don't doubt that the current code doesn't detect presence or use of
+> > IOMMU until later.  But that feels like an implementation defect
+> > because logically the IOMMU is upstream of any PCI device that uses
+> > it, so architecturally I would expect it to be *possible* to detect it
+> > before PCI enumeration.
+> > 
+> > More to the point, it's not at all obvious how to infer that
+> > 'iommu-map' in the devicetree means the IOMMU will be used.
 > 
-> Responses should be made by Sun, 05 Oct 2025 16:02:25 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.110-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Indeed, I would say the way to go down that route would be to echo what we
+> do for "iommus", and defer probing the entire host controller driver until
+> the targets of an "iommu-map" are either present or assumed to never be
+> appearing. (And of course an ACPI equivalent for that would be tricky...)
 > 
 
-Compiled and booted on my test system. No dmesg regressions.
+Maybe we should just call pci_enable_acs() only when the iommu is detected for
+the device? But ofc, this is not possible for non-OF platforms as they tend to
+call pci_request_acs() pretty early.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+> However, even that isn't necessarily the full solution, as just as it's not
+> really appropriate for PCI to force ACS without knowing whether an IOMMU is
+> actually present to make it meaningful, it's also not strictly appropriate
+> for an IOMMU driver to request ACS globally without knowing that it actually
+> serves any relevant PCIe devices. Even in the ideal scenario, I think the
+> point of actually knowing is still a bit too late for the current API
+> design:
+> 
+>   pci_device_add
+>     pci_init_capabilities
+>       pci_acs_init
+>         pci_enable_acs
+>     device_add
+>       iommu_bus_notifier
+>         iommu_probe_device
+>           //logically, request ACS for dev here
+> 
+> (at the moment, iommu_probe_device() will actually end up calling into the
+> same of_iommu_configure()->pci_request_acs() path, but the plan is still to
+> eventually shorten and streamline that.)
+> 
 
-thanks,
--- Shuah
+What is worrying me is that of_iommu_configure() is called for each PCI device,
+as opposed to just one time on other platforms. But I think that's a good thing
+to have as the IOMMU driver can have a per-device ACS policy, instead of a
+global one.
+
+> I guess we might want to separate the actual ACS enablement from the basic
+> capability init, or at least perhaps just call pci_enable_acs() again after
+> the IOMMU notifier may have changed the policy?
+> 
+
+Is this applicable to other platforms as well? Not just OF?
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
