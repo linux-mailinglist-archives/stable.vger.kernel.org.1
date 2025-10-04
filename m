@@ -1,202 +1,172 @@
-Return-Path: <stable+bounces-183341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0174CBB86FA
-	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 01:52:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80E6BB8722
+	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 02:22:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBE91B20F98
-	for <lists+stable@lfdr.de>; Fri,  3 Oct 2025 23:53:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8223D4C0E61
+	for <lists+stable@lfdr.de>; Sat,  4 Oct 2025 00:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D462798FA;
-	Fri,  3 Oct 2025 23:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A87E611E;
+	Sat,  4 Oct 2025 00:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="UV+d3WKy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VpLUXoPW"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CDD24679F;
-	Fri,  3 Oct 2025 23:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA83234BA3C
+	for <stable@vger.kernel.org>; Sat,  4 Oct 2025 00:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759535560; cv=none; b=ool8n89LLetuQJtDiC74ZmUpp62EcuPFmQGLaeWd8i7uX/+T3PFYFeqkubc3NE7Fu2/sasqnEGcic3GIZfWPNDYXd+6P6r4kKaf8bVwNGpGeOKKBIG4BvmRAo8zQrk6+5thYCTa3CvycMX+z4MPb7qEMjhfwRn7OPDrhycRw7OY=
+	t=1759537321; cv=none; b=kP4sEuem/Qg+nX9aOMCRnujX/pgqB/E83uewpe6vDMpio7Zi+YJz/exXQLMcSmCHP/XAuoZjnNv2uOh/1N0xePSqGUFgj+ipKsVgMJ3Umq8AbbatyXElmurFilRyUDoXc6SE4bqPjMaVyFBEyIpqujmy9MtEoMTZc9QBHV0LDUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759535560; c=relaxed/simple;
-	bh=bgbeQkYqa1A2Y3gpDzbMy9FRoP1Nbs7BaWl5sEjJKKM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XjMy8i8FX3AGXNssx6nOAG4OEvLzK0oT3g20PgbGsu/3WR2kpbufK3E2u2OcvCfmkf9SW7jGzUjH7SSv3sikNZvYSWm51UgGYea+cmh04vV5XUdvxYa7w+q2E/iPoNpS3Ghej/Wy4nJWXzMrttyVScGhmeSshtiUjpgIISqyviw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=UV+d3WKy; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id B41371340;
-	Sat,  4 Oct 2025 01:51:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1759535465;
-	bh=bgbeQkYqa1A2Y3gpDzbMy9FRoP1Nbs7BaWl5sEjJKKM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UV+d3WKy7zPh0026oTMivv9SmFnqH8QBxKHMiBRLoktA855IEEoyfVH5DUrIBwQG5
-	 /xyeEuU58IE4NnOf95DpLw8AiQkJ6QN7jjVp6J1cybnDVBHhwe0dcdXVI/sz8goi3I
-	 YvFc/W2Emwa5wRbNljuwPeXQBbhA8AzM2Ka9Mx68=
-Date: Sat, 4 Oct 2025 02:52:30 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Alexey Charkov <alchark@gmail.com>
-Cc: Dragan Simic <dsimic@manjaro.org>,
-	Alexander Shiyan <eagle.alexander923@gmail.com>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, devicetree@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] arm64: dts: rockchip: Fix broken tsadc pinctrl binding
- for rk3588
-Message-ID: <20251003235230.GD1492@pendragon.ideasonboard.com>
-References: <20250124052611.3705-1-eagle.alexander923@gmail.com>
- <CABjd4YwA8P9LVuDviO6xydkHpuuOY7XT0pk1oa+FDqOo=uZN4A@mail.gmail.com>
- <a76f315f023a3f8f5435e0681119b4eb@manjaro.org>
- <CABjd4Ywh_AkbXHonx-8vL-hNY5LMLJge5e4oqxvUG+qe6OF-Og@mail.gmail.com>
- <61b494b209d7360d0f36adbf6d5443a4@manjaro.org>
- <CABjd4Yx0p0B=e00MjCpDDq8Z=0FtM0s9EN86WdvRimt-_+kh2w@mail.gmail.com>
- <CABjd4Yy14bpjzvFyc8et-=pmds5uwzfxNqcs7L=+XRXBogZEsQ@mail.gmail.com>
- <20251003133304.GA21023@pendragon.ideasonboard.com>
- <CABjd4YxbyUWghd1ya8UayFkAE-VWQSd5-J2QD0sV7WmS8AXkCg@mail.gmail.com>
+	s=arc-20240116; t=1759537321; c=relaxed/simple;
+	bh=AUBIFMN0oL9q60EaetitQwhQca5lqAfJFQq3y+UmHXU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XVr10kNKIqEvKplQ60J5Gv/kIGdt69mFzhGNvkIY+AoF5lPv1FOG6rpYjOPy9pTTNv2iB8sbUbPI8tXjwbWu+UzSFvypAHR2BLVUu5Kusci+onvEfvDIhR8u1ar9DObORXypPFuY47rrnbeagX/zmK3/iqhh+BiW3rdjK9DCGTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VpLUXoPW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CABC4CEF5;
+	Sat,  4 Oct 2025 00:21:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759537320;
+	bh=AUBIFMN0oL9q60EaetitQwhQca5lqAfJFQq3y+UmHXU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VpLUXoPWy6Pa8pnnR/AZePBoLVnKBK84S6sB9WMTWQ+IRF6WgqLTXALHb/7n4DXav
+	 BDKwefssJ126LarEyaESkCJWEu2fqg/aoAW/5BhtUWmzOZhoedORZJevT6MuRyp5/0
+	 IwSOWCfh50p7UVUA/SqAm3o40O+5NB7cUX01tPEIDrfrnqOO+47KI4JVLD6N0+WYoG
+	 6Jz9zFyk7gtrvZGGgiyYu81mVUywspMnSt7TgO85n8nJ+xt42sDo7hQ9QJua47szC8
+	 SXcYllfGWJaqijGQUI3LsG8scd1tSBSh5ZJaMYxUA9n6os7xzJ7R3X6muhPEb4DBoM
+	 p1sB4wXNICI6Q==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Ricardo Ribalda <ribalda@chromium.org>,
+	Shuah Khan <shuah.kh@samsung.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] media: tunner: xc5000: Refactor firmware load
+Date: Fri,  3 Oct 2025 20:21:56 -0400
+Message-ID: <20251004002158.4023173-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025100341-cobbler-alabaster-748a@gregkh>
+References: <2025100341-cobbler-alabaster-748a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABjd4YxbyUWghd1ya8UayFkAE-VWQSd5-J2QD0sV7WmS8AXkCg@mail.gmail.com>
 
-On Fri, Oct 03, 2025 at 06:13:39PM +0400, Alexey Charkov wrote:
-> On Fri, Oct 3, 2025 at 5:33 PM Laurent Pinchart wrote:
-> > On Fri, Jan 24, 2025 at 11:44:34PM +0400, Alexey Charkov wrote:
-> > > On Fri, Jan 24, 2025 at 9:23 PM Alexey Charkov <alchark@gmail.com> wrote:
-> > > > On Fri, Jan 24, 2025 at 2:37 PM Dragan Simic <dsimic@manjaro.org> wrote:
-> > > > > On 2025-01-24 11:25, Alexey Charkov wrote:
-> > > > > > On Fri, Jan 24, 2025 at 2:06 PM Dragan Simic <dsimic@manjaro.org>
-> > > > > > wrote:
-> > > > > >> On 2025-01-24 09:33, Alexey Charkov wrote:
-> > > > > >> > On Fri, Jan 24, 2025 at 9:26 AM Alexander Shiyan
-> > > > > >> > <eagle.alexander923@gmail.com> wrote:
-> > > > > >> >>
-> > > > > >> >> There is no pinctrl "gpio" and "otpout" (probably designed as
-> > > > > >> >> "output")
-> > > > > >> >> handling in the tsadc driver.
-> > > > > >> >> Let's use proper binding "default" and "sleep".
-> > > > > >> >
-> > > > > >> > This looks reasonable, however I've tried it on my Radxa Rock 5C and
-> > > > > >> > the driver still doesn't claim GPIO0 RK_PA1 even with this change. As
-> > > > > >> > a result, a simulated thermal runaway condition (I've changed the
-> > > > > >> > tshut temperature to 65000 and tshut mode to 1) doesn't trigger a PMIC
-> > > > > >> > reset, even though a direct `gpioset 0 1=0` does.
-> > > > > >> >
-> > > > > >> > Are any additional changes needed to the driver itself?
-> > > > > >>
-> > > > > >> I've been digging through this patch the whole TSADC/OTP thing in the
-> > > > > >> last couple of hours, and AFAIK some parts of the upstream driver are
-> > > > > >> still missing, in comparison with the downstream driver.
-> > > > > >>
-> > > > > >> I've got some small suggestions for the patch itself, but the issue
-> > > > > >> you observed is obviously of higher priority, and I've singled it out
-> > > > > >> as well while digging through the code.
-> > > > > >>
-> > > > > >> Could you, please, try the patch below quickly, to see is it going to
-> > > > > >> fix the issue you observed?  I've got some "IRL stuff" to take care of
-> > > > > >> today, so I can't test it myself, and it would be great to know is it
-> > > > > >> the right path to the proper fix.
-> > > > > >>
-> > > > > >> diff --git i/drivers/thermal/rockchip_thermal.c
-> > > > > >> w/drivers/thermal/rockchip_thermal.c
-> > > > > >> index f551df48eef9..62f0e14a8d98 100644
-> > > > > >> --- i/drivers/thermal/rockchip_thermal.c
-> > > > > >> +++ w/drivers/thermal/rockchip_thermal.c
-> > > > > >> @@ -1568,6 +1568,11 @@ static int rockchip_thermal_probe(struct
-> > > > > >> platform_device *pdev)
-> > > > > >>          thermal->chip->initialize(thermal->grf, thermal->regs,
-> > > > > >>                                    thermal->tshut_polarity);
-> > > > > >>
-> > > > > >> +       if (thermal->tshut_mode == TSHUT_MODE_GPIO)
-> > > > > >> +               pinctrl_select_default_state(dev);
-> > > > > >> +       else
-> > > > > >> +               pinctrl_select_sleep_state(dev);
-> > > > > >
-> > > > > > I believe no 'else' block is needed here, because if tshut_mode is not
-> > > > > > TSHUT_MODE_GPIO then the TSADC doesn't use this pin at all, so there's
-> > > > > > no reason for the driver to mess with its pinctrl state. I'd rather
-> > > > > > put a mirroring block to put the pin back to its 'sleep' state in the
-> > > > > > removal function for the TSHUT_MODE_GPIO case.
-> > > > >
-> > > > > You're right, but the "else block" is what the downstream driver does,
-> > > >
-> > > > Does it though? It only handles the TSHUT_MODE_GPIO case as far as I
-> > > > can tell (or TSHUT_MODE_OTP in downstream driver lingo) [1]
-> > > >
-> > > > [1] https://github.com/radxa/kernel/blob/edb3eeeaa4643ecac6f4185d6d391c574735fca1/drivers/thermal/rockchip_thermal.c#L2564
-> > > >
-> > > > > so I think it's better to simply stay on the safe side and follow that
-> > > > > logic in the upstream driver.  Is it really needed?  Perhaps not, but
-> > > > > it also shouldn't hurt.
-> > > > >
-> > > > > > Will try and revert.
-> > > > >
-> > > > > Awesome, thanks!
-> > > > >
-> > > > > > P.S. Just looked at the downstream driver, and it actually calls
-> > > > > > TSHUT_MODE_GPIO TSHUT_MODE_OTP instead, so it seems that "otpout" was
-> > > > > > not a typo in the first place. So maybe the right approach here is not
-> > > > > > to change the device tree but rather fix the "gpio" / "otpout" pinctrl
-> > > > > > state handling in the driver.
-> > > > >
-> > > > > Indeed, "otpout" wasn't a typo, and I've already addressed that in my
-> > > > > comments to Alexander's patch.  Will send that response a bit later.
-> > > > >
-> > > > > I think it's actually better to accept the approach in Alexander's
-> > > > > patch, because the whole thing applies to other Rockchip SoCs as well,
-> > > > > not just to the RK3588(S).
-> > > >
-> > > > Anyway, I've just tried it after including the changes below, and
-> > > > while /sys/kernel/debug/pinctrl/pinctrl-handles shows the expected
-> > > > pinctrls under tsadc, the driver still doesn't seem to be triggering a
-> > > > PMIC reset. Weird. Any thoughts welcome.
-> > >
-> > > I found the culprit. "otpout" (or "default" if we follow Alexander's
-> > > suggested approach) pinctrl state should refer to the &tsadc_shut_org
-> > > config instead of &tsadc_shut - then the PMIC reset works.
-> >
-> > I've recently brought up an RK3588S-based Orange Pi CM5 Base board, made
-> > of a compute module (CM5, see [1]) and a carrier board (Base, see [2]).
-> > The carrier board has a reset button which pulls the PMIC_RESET_L signal
-> > of the CM5 to GND (see page 3 of the schematics in [3]).
-> >
-> > With &tsadc_shut_org the reset button has absolutely no effect. With
-> > &tsadc_shut it resets the board as expected.
-> 
-> Interesting. The TSADC shouldn't affect the physical button operation
-> at all, if it's really wired to the PMIC as the signal name implies.
-> There isn't even any default pull value associated with the TSHUT pin
-> config.
-> 
-> What if you switch the GPIO0_A1 pin to GPIO output mode with no pull?
-> Does the button work then? Does the board reset if you toggle the GPIO
-> value with `gpioset`?
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-The button works when GPIO0_A1 is configured as a GPIO input. It doesn't
-work anymore when the GPIO is set to 1, and setting the GPIO to 0 resets
-the board. This confirms your hypothesis that the reset button
-functionality conflicts with TSADC_SHUT being configured as a push-pull
-output.
+[ Upstream commit 8e1f5da59dd4a1966f859639860b803a7e8b8bfb ]
 
+Make sure the firmware is released when we leave
+xc_load_fw_and_init_tuner()
+
+This change makes smatch happy:
+drivers/media/tuners/xc5000.c:1213 xc_load_fw_and_init_tuner() warn: 'fw' from request_firmware() not released on lines: 1213.
+
+Cc: Shuah Khan <shuah.kh@samsung.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 40b7a19f321e ("media: tuner: xc5000: Fix use-after-free in xc5000_release")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/media/tuners/xc5000.c | 39 +++++++++++++++--------------------
+ 1 file changed, 17 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
+index 2182e5b7b6064..30aa4ee958bde 100644
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -58,7 +58,7 @@ struct xc5000_priv {
+ 	struct dvb_frontend *fe;
+ 	struct delayed_work timer_sleep;
+ 
+-	const struct firmware   *firmware;
++	bool inited;
+ };
+ 
+ /* Misc Defines */
+@@ -1110,23 +1110,19 @@ static int xc_load_fw_and_init_tuner(struct dvb_frontend *fe, int force)
+ 	if (!force && xc5000_is_firmware_loaded(fe) == 0)
+ 		return 0;
+ 
+-	if (!priv->firmware) {
+-		ret = request_firmware(&fw, desired_fw->name,
+-					priv->i2c_props.adap->dev.parent);
+-		if (ret) {
+-			pr_err("xc5000: Upload failed. rc %d\n", ret);
+-			return ret;
+-		}
+-		dprintk(1, "firmware read %zu bytes.\n", fw->size);
++	ret = request_firmware(&fw, desired_fw->name,
++			       priv->i2c_props.adap->dev.parent);
++	if (ret) {
++		pr_err("xc5000: Upload failed. rc %d\n", ret);
++		return ret;
++	}
++	dprintk(1, "firmware read %zu bytes.\n", fw->size);
+ 
+-		if (fw->size != desired_fw->size) {
+-			pr_err("xc5000: Firmware file with incorrect size\n");
+-			release_firmware(fw);
+-			return -EINVAL;
+-		}
+-		priv->firmware = fw;
+-	} else
+-		fw = priv->firmware;
++	if (fw->size != desired_fw->size) {
++		pr_err("xc5000: Firmware file with incorrect size\n");
++		release_firmware(fw);
++		return -EINVAL;
++	}
+ 
+ 	/* Try up to 5 times to load firmware */
+ 	for (i = 0; i < 5; i++) {
+@@ -1204,6 +1200,7 @@ static int xc_load_fw_and_init_tuner(struct dvb_frontend *fe, int force)
+ 	}
+ 
+ err:
++	release_firmware(fw);
+ 	if (!ret)
+ 		printk(KERN_INFO "xc5000: Firmware %s loaded and running.\n",
+ 		       desired_fw->name);
+@@ -1274,7 +1271,7 @@ static int xc5000_resume(struct dvb_frontend *fe)
+ 
+ 	/* suspended before firmware is loaded.
+ 	   Avoid firmware load in resume path. */
+-	if (!priv->firmware)
++	if (!priv->inited)
+ 		return 0;
+ 
+ 	return xc5000_set_params(fe);
+@@ -1293,6 +1290,8 @@ static int xc5000_init(struct dvb_frontend *fe)
+ 	if (debug)
+ 		xc_debug_dump(priv);
+ 
++	priv->inited = true;
++
+ 	return 0;
+ }
+ 
+@@ -1306,10 +1305,6 @@ static void xc5000_release(struct dvb_frontend *fe)
+ 
+ 	if (priv) {
+ 		cancel_delayed_work(&priv->timer_sleep);
+-		if (priv->firmware) {
+-			release_firmware(priv->firmware);
+-			priv->firmware = NULL;
+-		}
+ 		hybrid_tuner_release_state(priv);
+ 	}
+ 
 -- 
-Regards,
+2.51.0
 
-Laurent Pinchart
 
