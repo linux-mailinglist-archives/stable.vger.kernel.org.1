@@ -1,119 +1,124 @@
-Return-Path: <stable+bounces-183376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3737FBB905D
-	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 18:56:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67C6BB9063
+	for <lists+stable@lfdr.de>; Sat, 04 Oct 2025 18:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04DF9189AE33
-	for <lists+stable@lfdr.de>; Sat,  4 Oct 2025 16:57:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 953B24E4E95
+	for <lists+stable@lfdr.de>; Sat,  4 Oct 2025 16:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1BA281371;
-	Sat,  4 Oct 2025 16:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA9281371;
+	Sat,  4 Oct 2025 16:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXDHV94w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXU9/8IJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822A123183F;
-	Sat,  4 Oct 2025 16:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B562927FB05
+	for <stable@vger.kernel.org>; Sat,  4 Oct 2025 16:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759596992; cv=none; b=kj1nrTMujxXs6Rzq79zeQTxGqfqdG4joBzk9vPibVslTLp7gc2BjJJBQ45Stl7Lt2p0jMKP8yoytowBBkjBddMEIbGenpzuKkNeFCSETc15H1Sk2UP7Rh5HVs2R1LN89wIRLcAWGidplTyMlS1NivhqxbJNERadwoFufrJeGBFA=
+	t=1759597032; cv=none; b=CASez4UcUtBpmqEYpPF7EBOvzImBf203XzW+UP49HBcmP3Ap8WPkvwjcQaUUMpLqxd0dRhn6T0NGXaAHSVZaNLWfiaN4FzPnfwMDyi2zw8AeA4JUyL9EISr09SvEZALPLHQ1GDj+mOTX2/HqqqTUkTDN4XqMdS5xJz33UOyhtgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759596992; c=relaxed/simple;
-	bh=GbSS2s6Tqj5av7SjOR8btii8CxGfihWeGED030TOZPo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qDG+7ZAoyYtBJ603+CCtden60Ou6ywsMfBkYMGhW7qnxhk30ct9m+FZ8mpqQstHr94MZ29VK4T0xX9UDKSEVK14fUTKxEXxm/a3pKSNAXTOTVbh0cuohMqWdcb+4On5v/VSaWrDh6wj8/TM/x1o2rBbYnOvo9mA+TeW6hQsURQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXDHV94w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E561C4CEF1;
-	Sat,  4 Oct 2025 16:56:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759596992;
-	bh=GbSS2s6Tqj5av7SjOR8btii8CxGfihWeGED030TOZPo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WXDHV94wJQliGkoUtEzGfwy23uaflGx2iPTuCo317pN41QuZ0nrgwvFgZ9Xbl/jzb
-	 BTlr8E2XBPit3Ic5rHDZXOs+YV2FIsG7Bhg2Op8lYbtCIVQSVw/rTJq3X9JbjUic/4
-	 Tw8ZNadti46rbO/rdrr30lmf/poX5WQY7xSghT4pN0i/Y9FpZQaR8Lvj76A0cHG5df
-	 /MCcTKQ2hHicmUufhxRbPMmQFFeNSSodwUMMiSYBxct3qUzSWKPjNpysZ1Tg1feQyF
-	 6IXjgqYNj/OXx6Ev3O8VxEmU5vSWxO5NbAodV6HXF/p2HJW9xoKII4Q4dCWvJS68U1
-	 kW4XTNskf2LJA==
-Date: Sat, 4 Oct 2025 17:56:23 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Phani Burra <phani.r.burra@intel.com>,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Radoslaw Tyl <radoslawx.tyl@intel.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Anton Nadezhdin <anton.nadezhdin@intel.com>,
-	Konstantin Ilichev <konstantin.ilichev@intel.com>,
-	Milena Olech <milena.olech@intel.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Andrzej Wilczynski <andrzejx.wilczynski@intel.com>,
-	stable@vger.kernel.org,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Koichiro Den <den@valinux.co.jp>, Rinitha S <sx.rinitha@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: Re: [PATCH net v2 0/6] Intel Wired LAN Driver Updates 2025-10-01
- (idpf, ixgbe, ixgbevf)
-Message-ID: <20251004165623.GN3060232@horms.kernel.org>
-References: <20251003-jk-iwl-net-2025-10-01-v2-0-e59b4141c1b5@intel.com>
+	s=arc-20240116; t=1759597032; c=relaxed/simple;
+	bh=+UohY9HqNpMBf+gQ74FwUWrvvqUMkiginVNAaAKBJFA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qDPAvVUkqyktIFe5/Bqzpq4b8FjNvmZnYJvyLxuJjPz8lBNW6KnXV4Qm9nzQHdL0rtN0yPVWIWu6VZiaPyP370xSPBM64lzIdRkmJB6YeA/rgnFHVzH8P/wPoBAP4GP8IFLiPJVoMoQq0HzJ9Os7cgKG++UyzhXJ7LZx/InwcqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXU9/8IJ; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-8ca2e53c37bso309893239f.3
+        for <stable@vger.kernel.org>; Sat, 04 Oct 2025 09:57:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1759597030; x=1760201830; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a1mMWuCz0t3r8/HFzzxA4DdadxyuLy3zuMlmevG8qBs=;
+        b=OXU9/8IJYBw7XEtLbQTYR8QZ2eJXHvlUVlvK0JMjtArDfls214+PCp+AwK49zqXdO/
+         cYxpPF/MuLYUCEeSz8KSowW3ay8+ho0W3s9zp3SdB5DGsXgU1CQWSRSJg0nyIlHFEaIU
+         hlU8kUNO8FDF1OUTfrFxOwacdS19LCwaeE12s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759597030; x=1760201830;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a1mMWuCz0t3r8/HFzzxA4DdadxyuLy3zuMlmevG8qBs=;
+        b=jbVPAzXba+h0NqJ3OGqBjn/Wv+B0s1uFcfcpEGDROzRyJ+l1raboJXPNzxxLeUeqKY
+         gvn6m/+IedCTyqlsB1EIqsRJiNQvR6HvoZaxkQ9Ojk/6Wu0l+d2pBBnqWDxoby9aF3JP
+         avRh2Je+hcO4GGYAYK3JBZQaUk5cr2Wnfa2YK3Q1h61SWL22epuY/jcz9SXfe+yUQgSR
+         nilZunRSmIKiNfjWJQX2RUB0bKf3BIjSf+qCNXVGRDf5cSvYz9Y71G9NNgl2ROCq71RQ
+         RvE2vuQGWdw+/lCJACpcuW0+QXiAUHKYdwJCrnSVxSsdsEEyxbj7dp/0rP4WBDer5BVc
+         /1PA==
+X-Forwarded-Encrypted: i=1; AJvYcCWY/7PUTECdVFKsWCbz4cEd4kuB6IAZ3cGysV9FcD22aBo1T624HNSGTzP78tvn9/8gsuBxUsc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCxsfhFxbKA/fYq7kjCPiY+vZt57oxpW45Y8I5c5ABZXr63x6P
+	XsmuJiJgrEPpLTaWngv+uQQr8SIpgzVCnS9poLwV/ZRap6XujKFjmjih9LN7XyaIxkY=
+X-Gm-Gg: ASbGncugS5gc6Dggbm3s4Xkm9tJrm9L1o0r6jJmCM36VKZoegNFrhyKl4vuWqzXIMbt
+	te+XBuaMyf/ygHpf7ZOMl9X6dun++cGPpsRvUBk0HD7iT2nqhuk1N7WDx2Gqu/48cRX0KA7iWhL
+	QTz3uLaMzc7E1pxeCiSjS4cbVEGsI2S04TemyGxh3pqGtuV3O96zfXwbuRsHxvgpnNtA89Kq1Cj
+	K2MA7CyP7S2/NiIuOFhunvWRl4bmzGY3FHgVzG0D/Gg+KbBG6K2gnpHhwcsTKEaiCggVnLJoDp5
+	mUatoeLiB46yRqzr1f1DHpZmihHx7n8/MnQm5VhX3fATTOd7FwaB7GaPqMAFkEZO0GZ5zV25QPd
+	tIF9YzDkT5TD0J36kOwJQIB32w2J3s2eBZ+eOAahetWsBYbkawiIfANc8LoE=
+X-Google-Smtp-Source: AGHT+IHef8taA+Z8P8AtiePPCV7SM1tDyeVyNmWwQlrFm7/YcjguSwVAX+OofP7dxS87Htom2Ta7NA==
+X-Received: by 2002:a05:6602:6215:b0:887:26b5:a581 with SMTP id ca18e2360f4ac-93b96a5d491mr841505339f.12.1759597029719;
+        Sat, 04 Oct 2025 09:57:09 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-57b5ea7f82asm2964305173.33.2025.10.04.09.57.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 04 Oct 2025 09:57:09 -0700 (PDT)
+Message-ID: <052bd9ce-fb5a-49e7-a670-a75613ad0488@linuxfoundation.org>
+Date: Sat, 4 Oct 2025 10:57:08 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251003-jk-iwl-net-2025-10-01-v2-0-e59b4141c1b5@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 00/10] 6.12.51-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
+References: <20251003160338.463688162@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20251003160338.463688162@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 03, 2025 at 06:09:43PM -0700, Jacob Keller wrote:
-> For idpf:
-> Milena fixes a memory leak in the idpf reset logic when the driver resets
-> with an outstanding Tx timestamp.
+On 10/3/25 10:05, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.51 release.
+> There are 10 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> For ixgbe and ixgbevf:
-> Jedrzej fixes an issue with reporting link speed on E610 VFs.
+> Responses should be made by Sun, 05 Oct 2025 16:02:25 +0000.
+> Anything received after that time might be too late.
 > 
-> Jedrzej also fixes the VF mailbox API incompatibilities caused by the
-> confusion with API v1.4, v1.5, and v1.6. The v1.4 API introduced IPSEC
-> offload, but this was only supported on Linux hosts. The v1.5 API
-> introduced a new mailbox API which is necessary to resolve issues on ESX
-> hosts. The v1.6 API introduced a new link management API for E610. Jedrzej
-> introduces a new v1.7 API with a feature negotiation which enables properly
-> checking if features such as IPSEC or the ESX mailbox APIs are supported.
-> This resolves issues with compatibility on different hosts, and aligns the
-> API across hosts instead of having Linux require custom mailbox API
-> versions for IPSEC offload.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.51-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
 > 
-> Koichiro fixes a KASAN use-after-free bug in ixgbe_remove().
+> thanks,
 > 
-> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-> ---
-> Changes in v2:
-> - Drop Emil's idpf_vport_open race fix for now.
-> - Add my signature.
-> - Link to v1: https://lore.kernel.org/r/20251001-jk-iwl-net-2025-10-01-v1-0-49fa99e86600@intel.com
+> greg k-h
+> 
 
-Hi Jake,
+Compiled and booted on my test system. No dmesg regressions.
 
-Maybe I'm missing something simple here.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-But this series doesn't seem to apply to net due to the presence of
-commit 7a5a03869801 ("idpf: add HW timestamping statistics")
+thanks,
+-- Shuah
 
