@@ -1,138 +1,130 @@
-Return-Path: <stable+bounces-183394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB066BB9855
-	for <lists+stable@lfdr.de>; Sun, 05 Oct 2025 16:37:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC11BB98A9
+	for <lists+stable@lfdr.de>; Sun, 05 Oct 2025 16:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 677FA3469A6
-	for <lists+stable@lfdr.de>; Sun,  5 Oct 2025 14:37:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1D5D3B537E
+	for <lists+stable@lfdr.de>; Sun,  5 Oct 2025 14:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0418C28B3E7;
-	Sun,  5 Oct 2025 14:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E637258EEF;
+	Sun,  5 Oct 2025 14:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="XPJbynRL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bM39Lkrn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41358273809
-	for <stable@vger.kernel.org>; Sun,  5 Oct 2025 14:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA93289E16
+	for <stable@vger.kernel.org>; Sun,  5 Oct 2025 14:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759675049; cv=none; b=XbZkUkAhfTxFAAaigTfbCy0gpOD5UUkws2dkZaQ5xlDfK9i+wxCulAGpCZcqGCbna4GePE24pQ4w6OMi0mjgNRAm3kUrGgPh2eT7AugRrNDayTuAYu+2MpjrO5NbENYtF46yiA6DP1Xoj6QGsnaCLyTLRAMc8ofWz7/iy0pCjyE=
+	t=1759676208; cv=none; b=Tlx48itleoh+/6V640T1AZelNgtItcZ2ynjiz7izUhx6EFFcg7k6LCc0xOt3znJTADzhjudB8SIrQD6FvIpSdz0gQtFH3Ru7j9CdADdjl30myFsXscmoHG7nKoC242DYNhfRxFdNifB9smH8CXWye+anGGl0CU3JTJQXmsdngX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759675049; c=relaxed/simple;
-	bh=68Hs1m2KCNgUTWFrubMbAjOMlruERL80FpRXR3jtVUY=;
+	s=arc-20240116; t=1759676208; c=relaxed/simple;
+	bh=Yj4tiE4dTWU4yfDRcYohrrunQ86WlGRjquzJPgYlLoo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H9+CRXbPjtfbhumwYmoW0jt8RVBN+o08B8rffqLDCsOtKNBjHMRx1/mcFiRvg0MTKvV1SAf4cTk7Cxw3XOx8bCLPXqhoxqZPvsMZCSSMi0mP3puH33Lq6LcuNndrXNdo19R889eHAIYXxh8zohnjAOMcW5wz0kdFAcVzb7Or8ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=XPJbynRL; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b62fcddfa21so319322a12.1
-        for <stable@vger.kernel.org>; Sun, 05 Oct 2025 07:37:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1759675047; x=1760279847; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nqeLcDuce/fJEO6dWcvk7aWGQEF9pvPJT1tdDWjmEQM=;
-        b=XPJbynRLo2d4Z3Qyidy8Ih+M/8YJ5cj5EaMTXzDtNfHfFyRBlgU8zcFFQeegcMoQQz
-         dVI3WsHNo8sJIphjVniH6/inQVTGA7T+OVU3m77d2TB7wrvDuPS63GrBFG6FsoSjOabT
-         tc5gvNenzTAAqY2pq9o8ufVw1dMCL/wUt3OIS7vny1XO/AJzSJjqcfytiOUcZgLQxnGL
-         frdpTH8dj+hJBNp0twFV20a/ENqyFgGIPP8RJ9h75SMGmRMLeAPYZdsEfBlt4konE8V2
-         nf5I3QqJdmw9u2y4eKGYxw6r0N5xh7w9T7jP5VrmfpJCn1/9TDVyaakDiC6xubAATkGa
-         oKeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759675047; x=1760279847;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nqeLcDuce/fJEO6dWcvk7aWGQEF9pvPJT1tdDWjmEQM=;
-        b=iER8O3PPScuNOmmAGSQePhOLELnfT8l0dbTcTU/suEpRakNrCnEP0q18d5heLA0xC7
-         PG/CSwhR5b5mxfZwfCP68vJ5aVqY/f56rPOsjfCU7wCyUIX5gLi6qhisIRxNiugDab//
-         +SoOU9IzIhUmCKnPuS03QfTCzFaRx6J8PazpNDee0zxhVBT//1PzqqiHCgKxKsJija8Q
-         btRG1ZPGG49ys+S/RhCj9UHvE8EOjD1Hr5zzPMI/vTT18r6WwrjaZiyUnJrzWnqubt8O
-         o/8ehz3Ezz/vCsJuCbZmcJmQSBUw8CV2C8b5mOJVdSMcgrG1C+27xGDs+XExWbcM4U8N
-         N3MQ==
-X-Gm-Message-State: AOJu0Yx5mcPPMOAYtx4p6zNVWRxqWWRx/VxAy5l96imS5b50VyvMM/6h
-	g3bgYvowbWDZd4gszwn8tf/I42R7j1sPGfcae6fa8+5WZte1y6m4KyZW3bLTygwJU6/xVI9DpQA
-	5qEhVw483aVSNKC6X9+RL3JavN60OvbH2nwiFlXZeiQ==
-X-Gm-Gg: ASbGncsWIK/TFm9TwmTfcrejFjo1AYr+2Td10bYm+y1dCzo5gAUP3DxM3RiqqoeC6AA
-	uq1zvfmuJ+7i0HS+uGOPYqWr53K8fTUFK6WYLwcdkowv0NXCxwTmVBCxw/9neR0KFsfJBEGaVMj
-	FM+8kQL0k8SnsenQNUDvm1xoC54VdiK4UlXD/iJ/VC6uJt7bff9yiBVUNr+m3b0Rgs4CfDCCx1Y
-	XsmLQwF/ef+qgIx81ujPo0Yn1UQ5TI4lB9sd/W2xw==
-X-Google-Smtp-Source: AGHT+IF2SH2TFu3dkLS6uR8T8yDPp0+s2BJIdcXwXmq/VC0MdS0nzpDNEz9+ew3L3311RjuGHEf4dr7QtIGIj6GFOYw=
-X-Received: by 2002:a17:903:3504:b0:24a:fab6:d15a with SMTP id
- d9443c01a7336-28e9a5665f8mr106992295ad.20.1759675047357; Sun, 05 Oct 2025
- 07:37:27 -0700 (PDT)
+	 To:Cc:Content-Type; b=qRD/iOzGskEOxy0vZL8HT6syHVnzsZZpje18HoqdO3krYAG6E9X7QboLYGywULg5PDAk2u5SH4vKBC4tzyWwnnd+mnzWvV/M+adDBteHWtxIQcM7PYQR/hwukEkdO0jKzTkwPO5TQVPkiLItXbsWXfIsJyLYqLbsIQX8o0ybjWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bM39Lkrn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDB1C4CEF4
+	for <stable@vger.kernel.org>; Sun,  5 Oct 2025 14:56:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759676208;
+	bh=Yj4tiE4dTWU4yfDRcYohrrunQ86WlGRjquzJPgYlLoo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bM39LkrnNqlprILFdRvaDox5bzxzS2ZLyd4b/WpKjBb7l/K7x+qXirkK+cOJTdNTC
+	 3fe+/9CUlhP5Wm73T82uUg5mR0NIGY62ZMS34qPzzXrS1TyFEv4HcORRU4CtVpfRlv
+	 E6NqAAjYn1TgPm2f8AKt4WMYL1cpimRHR0gr54ht/BGx0acP0ERt6WgTWITF5Gi3pg
+	 SrPnRk8n/TeffzlvYlutXyG5lbRdoZ3dNoB0ot+X4617yvliFCApWnsa615NShxZmH
+	 oaQQsVtG3wEId6xmZUXKoYyXKOYpR1PGF7959cR9nIXmU4FjBy/WMbrPncy2YYIkZs
+	 EUX238+/UCznw==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-36a6a39752bso41708031fa.0
+        for <stable@vger.kernel.org>; Sun, 05 Oct 2025 07:56:48 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yx5rJWSXDYo7vHJhBVVA2aJDLsdiSlAWZIK7o4Y/7GuL7oKk7Ur
+	4+ceUtBKpWyO0CV3VL1v8XjIfJIqOX+St/IkQ+F/yWLjQNnG8DJsRXlORZn8C/c4cqR+Zzlk9wj
+	fWl/EvJdnUxs21z1K48Z3i7u0ldeSS2E=
+X-Google-Smtp-Source: AGHT+IHTBpde/4YqplVs3DvfJcUY45IE5HyynZLYjJZCEhLnl34hecKm47NpIOXlv+NwHQkGQNpDfmKYcWNAPQWIcTw=
+X-Received: by 2002:a2e:bd13:0:b0:372:a12c:45a5 with SMTP id
+ 38308e7fff4ca-374c3841062mr34212861fa.33.1759676206685; Sun, 05 Oct 2025
+ 07:56:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251003160359.831046052@linuxfoundation.org>
-In-Reply-To: <20251003160359.831046052@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Sun, 5 Oct 2025 23:37:11 +0900
-X-Gm-Features: AS18NWBfJZ5Th1MJIXFkn-PdqzYH5JpHlnaEZ3ST9sWDu2YJAX0wQLCac07MmBY
-Message-ID: <CAKL4bV6Gw4KL0=bnh3hWk1bwQ2txSAViM=k+BKZa=FT4opoXGw@mail.gmail.com>
-Subject: Re: [PATCH 6.17 00/15] 6.17.1-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org
+References: <20251003183917.4209-1-will@kernel.org> <aOAZR0-4ZCq78DZ8@willie-the-truck>
+In-Reply-To: <aOAZR0-4ZCq78DZ8@willie-the-truck>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sun, 5 Oct 2025 16:56:35 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE0v7mtDbOLMmXkmSJVQFcjTPvib1D+MnHSHCfximyixA@mail.gmail.com>
+X-Gm-Features: AS18NWCWnxptvHIz8dittp-mT7s9UTTlScpg8LcZAgmaKGO2Z1S4zTcYNuKocPU
+Message-ID: <CAMj1kXE0v7mtDbOLMmXkmSJVQFcjTPvib1D+MnHSHCfximyixA@mail.gmail.com>
+Subject: Re: [STABLE 5.15.y] [PATCH] KVM: arm64: Fix softirq masking in FPSIMD
+ register saving sequence
+To: Will Deacon <will@kernel.org>
+Cc: stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>, 
+	Kenneth Van Alstyne <kvanals@kvanals.org>, gregkh@linuxfoundation.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Greg
-
-On Sat, Oct 4, 2025 at 1:07=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Fri, 3 Oct 2025 at 20:43, Will Deacon <will@kernel.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.17.1 release.
-> There are 15 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On Fri, Oct 03, 2025 at 07:39:17PM +0100, Will Deacon wrote:
+> > Stable commit 23249dade24e ("KVM: arm64: Fix kernel BUG() due to bad
+> > backport of FPSIMD/SVE/SME fix") fixed a kernel BUG() caused by a bad
+> > backport of upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally
+> > save+flush host FPSIMD/SVE/SME state") by ensuring that softirqs are
+> > disabled/enabled across the fpsimd register save operation.
+> >
+> > Unfortunately, although this fixes the original issue, it can now lead
+> > to deadlock when re-enabling softirqs causes pending softirqs to be
+> > handled with locks already held:
+> >
+> >  | BUG: spinlock recursion on CPU#7, CPU 3/KVM/57616
+> >  |  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU 3/KVM/57616, .owner_cpu: 7
+> >  | CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O       6.1.152 #1
+> >  | Hardware name: SoftIron SoftIron Platform Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
+> >  | Call trace:
+> >  |  dump_backtrace+0xe4/0x110
+> >  |  show_stack+0x20/0x30
+> >  |  dump_stack_lvl+0x6c/0x88
+> >  |  dump_stack+0x18/0x34
+> >  |  spin_dump+0x98/0xac
+> >  |  do_raw_spin_lock+0x70/0x128
+> >  |  _raw_spin_lock+0x18/0x28
+> >  |  raw_spin_rq_lock_nested+0x18/0x28
+> >  |  update_blocked_averages+0x70/0x550
+> >  |  run_rebalance_domains+0x50/0x70
+> >  |  handle_softirqs+0x198/0x328
+> >  |  __do_softirq+0x1c/0x28
+> >  |  ____do_softirq+0x18/0x28
+> >  |  call_on_irq_stack+0x30/0x48
+> >  |  do_softirq_own_stack+0x24/0x30
+> >  |  do_softirq+0x74/0x90
+> >  |  __local_bh_enable_ip+0x64/0x80
+> >  |  fpsimd_save_and_flush_cpu_state+0x5c/0x68
+> >  |  kvm_arch_vcpu_put_fp+0x4c/0x88
+> >  |  kvm_arch_vcpu_put+0x28/0x88
+> >  |  kvm_sched_out+0x38/0x58
+> >  |  __schedule+0x55c/0x6c8
+> >  |  schedule+0x60/0xa8
+> >
+> > Take a tiny step towards the upstream fix in 9b19700e623f ("arm64:
+> > fpsimd: Drop unneeded 'busy' flag") by additionally disabling hardirqs
+> > while saving the fpsimd registers.
+> >
+> > Cc: Ard Biesheuvel <ardb@kernel.org>
+> > Cc: Lee Jones <lee@kernel.org>
+> > Cc: Sasha Levin <sashal@kernel.org>
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org
 >
-> Responses should be made by Sun, 05 Oct 2025 16:02:25 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.17.1-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> Sorry, Greg, I lost a stray '>' here ^^^  and so you didn't end up on CC
+> for this one.
 >
 
-6.17.1-rc1 tested.
-
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-[    0.000000] Linux version 6.17.1-rc1rv-ge7da5b86b53d
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20250813, GNU ld (GNU
-Binutils) 2.45.0) #1 SMP PREEMPT_DYNAMIC Sun Oct  5 22:53:48 JST 2025
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
