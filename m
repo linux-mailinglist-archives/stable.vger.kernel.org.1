@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-183396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C0DBB98AC
-	for <lists+stable@lfdr.de>; Sun, 05 Oct 2025 16:57:05 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EA6BB98AF
+	for <lists+stable@lfdr.de>; Sun, 05 Oct 2025 16:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4254C3454DB
-	for <lists+stable@lfdr.de>; Sun,  5 Oct 2025 14:57:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 20105345356
+	for <lists+stable@lfdr.de>; Sun,  5 Oct 2025 14:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A3B28AAE0;
-	Sun,  5 Oct 2025 14:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D1828A705;
+	Sun,  5 Oct 2025 14:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h/gVkemH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hIHuPo7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DDC258EEF
-	for <stable@vger.kernel.org>; Sun,  5 Oct 2025 14:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E9A258EEF
+	for <stable@vger.kernel.org>; Sun,  5 Oct 2025 14:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759676220; cv=none; b=KjZ9WXiQqq3dc8Zwh1QNZmciUTb/hmKWLvsfirz3ZLa5hRlyvjepsXwqHMvoB+sB2iV3alOGkevPeprnqcweqbdx+SGtTJw3AjfbEF1a384q8E9Fr5KFazg/l5j2EGwmG2IYNW8Wsd1BO0M5pQ3JlBcp4blpSPsUkyJdTyaf4QE=
+	t=1759676231; cv=none; b=Zr/Kc5YbjFV6+XbLoes6n8XND6VgLyKWIY1+jBPJgLDCTguh0cOTPOsvLz8neqO0qj3elAvzd/BmqjfGksCtRP+4YfgiTk9iR9qQh9VJN2eQ2zb3+xYURw9QGCHGSpzLX2aC5a8jzkQ45ECd0fqz4ZZOMN0AL4RDd2TkptTHhL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759676220; c=relaxed/simple;
-	bh=Y+L7oxTglEs6TaCqZRGlKflLvr+9eNVWa1dQwDozuzA=;
+	s=arc-20240116; t=1759676231; c=relaxed/simple;
+	bh=OfxBuX2NG6qRYHgT4owtNmha9ytoyldyaEdP+EyW59o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b7y1V17pQmk4LEOSQM0T4OETZ+tozqLZ/etXZszR4dQqbmoN33LEpUBKMAP0Vol/DzCKtDKkrYLPfxNWUu8QABO3y1/mHUio4Fh9e08bHG698+OhrKxIvpF6fXguWEvuzrqO9USFNO2wNcb5kR2ekSKo4QUTU6hPTV3M5TUaE5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h/gVkemH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE1AC4CEF4
-	for <stable@vger.kernel.org>; Sun,  5 Oct 2025 14:57:00 +0000 (UTC)
+	 To:Cc:Content-Type; b=iA+FK4zGzn9sSY8/wJNhnQVJy1EXMsd76MfJnrpEdBdpBrt5Eq6USsXA5j1IcXLqt2pDDdmD2BsuUkTAAlmPlG+KNY7rd+022QaEhNKP/oVoCsB78Ph6GLMpfFpM1783sIFI7+TtOpvqY5x4rgWgleYWGUprDDxauONo28PZAk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hIHuPo7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6BCC113D0
+	for <stable@vger.kernel.org>; Sun,  5 Oct 2025 14:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759676220;
-	bh=Y+L7oxTglEs6TaCqZRGlKflLvr+9eNVWa1dQwDozuzA=;
+	s=k20201202; t=1759676231;
+	bh=OfxBuX2NG6qRYHgT4owtNmha9ytoyldyaEdP+EyW59o=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=h/gVkemHyk7NBmLosH9fbxJZ7kpNS6zu0xluG4bFqvLGYOGUZDp6b8uTHIegJJFR1
-	 e1V5c2Jode7NctLrza9M3X0VUiIcJSVrxiadM7eAbXtF/1peBo+2F5iz/m2u79Aay5
-	 RQ/d6zAAJBKImTcpGCVc/KAT0ucR63DQh9aWlVqUkXVVN7Y+maoYXuI99qHtv7o/KW
-	 QBB+gp+zOfrZJQPH/3aWxjtNcHTAX3ecR2nybTTsw8Pfmz+fD86YwL99u0wy6G7T2J
-	 Y2duyHIJwnwdg37eqvy9J1z1XtRCOuVvNmJ6nxOTYMbYTtsMVW/ge7zM7ipeE16HEK
-	 A+78z8xQfxCHA==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-363cb0cd8a1so49197331fa.2
-        for <stable@vger.kernel.org>; Sun, 05 Oct 2025 07:56:59 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yzf7hIlX1sTZEmdZrLThRbzOmGt4CeMtkExAeS91bjdF92ToFUM
-	GecjacqzTr4UWQ6RJZT/7hPKgx/mgGEAoWtfkZmGPxbLe40v9CzSb1/96i7a4y/Q4+7U6reVYcQ
-	dLqOtq+/sN8KEXK7Rpug4H8voqsedZJg=
-X-Google-Smtp-Source: AGHT+IH7twvgnWuXM008bvuQkIdqZ77ZYuE4LRpBwjrRe3xkGR35VYjfgbhseLv8khD47pSwTdtdIDoHVJz+SLkG1xQ=
-X-Received: by 2002:a05:651c:2112:b0:352:b6c0:d33e with SMTP id
- 38308e7fff4ca-374c36fe0aemr30436501fa.11.1759676218449; Sun, 05 Oct 2025
- 07:56:58 -0700 (PDT)
+	b=hIHuPo7nD/q6+vT/w6NqUCxbffUHAqbz+zHUQOObboqixR5e07MZnIo2dnIeK7lrR
+	 REGdcmTP4HqQrYRyXZ1doZjbTkaKHNFdIESi6j/tK82CYv/7+n3T4vX+3PTrNHUMrj
+	 ZfGpSSEcyDOnvKw6ULvk6GhulAvUCZfxueiw6x93KqSXKKb6U9Hc/UD5axNH1FXGYB
+	 Z5Bs24H9PYv66JynSqQ/W22oPytOMqLk1usm97IlBtpYtg4WwGH0MvVKlkqH7ALAuT
+	 AciCHqcq5xwjfRRoodYba8iVgblVx0DK7nJtFC4Eck60xAy1bIQLeK7iUcUEgc+HX6
+	 AKJcyCr0Qww9A==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-373a5376d0bso40402051fa.0
+        for <stable@vger.kernel.org>; Sun, 05 Oct 2025 07:57:11 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwcEnlEVkjJ2sXbLMxHZH1P6utBndvO71rr7QLIZuB/9Z+7ltoY
+	zz7Tebw41CKmSn5Ek7E0XNKjdsZcr/OSBSGNDBPc+nVtKyEXkGmBAjMV2OG+8zLk8MkCv3YQKze
+	QBsQcI6l8tOEhft59h75hcTGWGsU42wk=
+X-Google-Smtp-Source: AGHT+IFdUUomsft5E8FUnkormYOwKRzYQeKZmO/G18QMqhFbnT5zgoA+GQiOMmDzGpZq09lHMaM7alUM8i7Yu8aR1j4=
+X-Received: by 2002:a05:651c:12c1:b0:36a:878b:6e34 with SMTP id
+ 38308e7fff4ca-374c3434da7mr21926661fa.0.1759676229581; Sun, 05 Oct 2025
+ 07:57:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251003184054.4286-1-will@kernel.org>
-In-Reply-To: <20251003184054.4286-1-will@kernel.org>
+References: <20251003184018.4264-1-will@kernel.org>
+In-Reply-To: <20251003184018.4264-1-will@kernel.org>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 5 Oct 2025 16:56:47 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFmXZCPiB+oMsOjoqhwi4hBykamerki5dMOZMy2uouUMw@mail.gmail.com>
-X-Gm-Features: AS18NWDdh4ZAp5XFFokXYmAoqAnRwM3Raujv5rpRowuKAB4ovo24Z1H_fbAUyiE
-Message-ID: <CAMj1kXFmXZCPiB+oMsOjoqhwi4hBykamerki5dMOZMy2uouUMw@mail.gmail.com>
-Subject: Re: [STABLE 6.6.y] [PATCH] KVM: arm64: Fix softirq masking in FPSIMD
+Date: Sun, 5 Oct 2025 16:56:58 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEo-4Rw=Nttbfnf2Bjv7zSomw1FAnNwbCe97i5UmQ7EVA@mail.gmail.com>
+X-Gm-Features: AS18NWAWBJWNYFeWaecMOW4SEUuN_L3lqjI9wswzCjVaIi0JK_wVGUBis0E81yk
+Message-ID: <CAMj1kXEo-4Rw=Nttbfnf2Bjv7zSomw1FAnNwbCe97i5UmQ7EVA@mail.gmail.com>
+Subject: Re: [STABLE 6.1.y] [PATCH] KVM: arm64: Fix softirq masking in FPSIMD
  register saving sequence
 To: Will Deacon <will@kernel.org>
 Cc: stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
@@ -71,9 +71,9 @@ Cc: stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kenneth Van Alstyne <kvanals@kvanals.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 3 Oct 2025 at 20:41, Will Deacon <will@kernel.org> wrote:
+On Fri, 3 Oct 2025 at 20:40, Will Deacon <will@kernel.org> wrote:
 >
-> Stable commit 28b82be094e2 ("KVM: arm64: Fix kernel BUG() due to bad
+> Stable commit 8f4dc4e54eed ("KVM: arm64: Fix kernel BUG() due to bad
 > backport of FPSIMD/SVE/SME fix") fixed a kernel BUG() caused by a bad
 > backport of upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally
 > save+flush host FPSIMD/SVE/SME state") by ensuring that softirqs are
@@ -120,8 +120,8 @@ On Fri, 3 Oct 2025 at 20:41, Will Deacon <will@kernel.org> wrote:
 > Cc: Lee Jones <lee@kernel.org>
 > Cc: Sasha Levin <sashal@kernel.org>
 > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: <stable@vger.kernel.org> # 6.6.y
-> Fixes: 28b82be094e2 ("KVM: arm64: Fix kernel BUG() due to bad backport of FPSIMD/SVE/SME fix")
+> Cc: <stable@vger.kernel.org> # 6.1.y
+> Fixes: 8f4dc4e54eed ("KVM: arm64: Fix kernel BUG() due to bad backport of FPSIMD/SVE/SME fix")
 > Reported-by: Kenneth Van Alstyne <kvanals@kvanals.org>
 > Link: https://lore.kernel.org/r/010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com
 > Signed-off-by: Will Deacon <will@kernel.org>
