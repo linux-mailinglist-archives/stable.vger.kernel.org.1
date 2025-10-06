@@ -1,74 +1,61 @@
-Return-Path: <stable+bounces-183438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6305FBBE5A4
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 16:31:18 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A563EBBE628
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 16:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07A243BFC3C
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 14:31:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 25781348CCC
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 14:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58ABE199385;
-	Mon,  6 Oct 2025 14:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0FC2D6626;
+	Mon,  6 Oct 2025 14:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RCRaY8Qx"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="q2ldwKH4";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="IacS/6YH"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730411DFFC
-	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 14:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25CE1C7005;
+	Mon,  6 Oct 2025 14:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759761075; cv=none; b=bLcTzsY5NYiCUFzYaXCaXWVGBLEZD40wSl4ub0tx3VbZK1XbaBdAf6Nl9DvgXpAysgIxFByHCgWvKVBnzLDIq6/ZgkdGWZFIGB2F0DmdPLb3U+hsmJCndRI56+z7xs08ad72w4CHXEKb8fx2tJr+uNuYgNJ28PXc0+z0O49VwZ0=
+	t=1759761953; cv=none; b=NO98GrtXjkPlD22QECbUN5gw5xH3KzDxZF+WqCyPBma+agCj78e3gdKyPWBJBr/3/ovUHL+2OYIGqBG3dW/rgrt9GB1v9hOjXx891CHkxlbfLhpEIvNFrC9KY+0VNtHupgN71g2wTfdJWR3Aymhwet4WefpthiWEXCxcOqQ1daM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759761075; c=relaxed/simple;
-	bh=xXvB05+JXWunM/ZZ7+8SH3cVZRqU/GJnOV4tEaSXfi0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dx3HDkmFIklaXMuhmNX4BEm3NmfcM5krHnSDNEjN2TRkKmTbxbhph5cBmohJ8TBXWxlB/kLu06hW+eTd0q6SMXVBCCxmBaCyU78icrgZGJse8RXayHtBsIQQJnrOEE+EuDJ8ZIrCI/oaRvlQK9ETd0VSPdvpqxjMTBaLO9tOaT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RCRaY8Qx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759761071;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WG6rfa392OPZRww4x0r3OSF9GJZW1H33YuysnWkj2NU=;
-	b=RCRaY8QxW23wpHTlOjnM3JSXfBk0WfyFUV3bxDQmA+ze6A3FB281a0Mxbx6oG6Dbl6aEoG
-	3St/Ppog6B9FSqa5m5lJpDWc7Gg2Wy0HldQsP4OUQi7Bq164DBqEhyZ+q6MNQxwdLjZxc0
-	/PDtDjhXhCHPEXXEv3TbvV29sRrKfjg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-75-0KhC7PTiM0mByPq9ZE3GDQ-1; Mon,
- 06 Oct 2025 10:31:10 -0400
-X-MC-Unique: 0KhC7PTiM0mByPq9ZE3GDQ-1
-X-Mimecast-MFC-AGG-ID: 0KhC7PTiM0mByPq9ZE3GDQ_1759761068
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1903A195608F;
-	Mon,  6 Oct 2025 14:31:08 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.32.125])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5D9B81955F19;
-	Mon,  6 Oct 2025 14:31:04 +0000 (UTC)
-From: Tomas Glozar <tglozar@redhat.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Costa Shulyupin <costa.shul@redhat.com>,
-	Crystal Wood <crwood@redhat.com>,
-	Wander Lairson Costa <wander@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+	s=arc-20240116; t=1759761953; c=relaxed/simple;
+	bh=f2lVa86/wPKb30SHUxj2idQocPvFNcnOkh58cZ4fb+0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lkuMtrEPZbwQihViw/xW5tpAIHaHBBocPE2OWxT+O3+Yr6WEW5YmZ62SVHgbaMzNkDDOJQPpdq3RLuiLJOG76/US85gC5CH3+8ZluDRuCKoUy+3WHcyutBpFJIFNn5+ofQMe+Gh3d9grxUGcTzWvdTtudBhyeXN6nD024XluQWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=q2ldwKH4; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=IacS/6YH; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Date:Subject:To:From; t=1759761455; bh=hT8aWyIDgjsEqbFovnN215l
+	unAK8tXcDqNu8S0mbHIk=; b=q2ldwKH4+hjp03qV0nrXpPeSeG0O+ZVqdjqGnNN/WJCPUoTXIK
+	AMCBfbklZQnYOpnUmlI+fWNlofqW3q3XlEJwNlSwtKrs5ZMpp3UviPVCH/tkecE9Sea0LeA7OF0
+	BqoKPZSLRglUnFRS+rLAt2A2cJ3PEgetlF41zpIJJpC2MhPBLcw3NJKJwO5rWxlH2/hmLLKrRbU
+	04ziV64hZuHKlBGWk5pT1aNiggV2yVVQoylVwB4sNe7GKW/YIr0Nbx+F6VqiRlTaPQZTQpb9rAY
+	IDP/ELG+EO/TcIeIUfiw5H8ex+pRYhzO9ldEB/gAZs/IBe/Vj9i9Trkuhc0P7k07EjQ==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Date:Subject:To:From; t=1759761455; bh=hT8aWyIDgjsEqbFovnN215l
+	unAK8tXcDqNu8S0mbHIk=; b=IacS/6YHNGEDLiMIOi3bysrK9L7quIybRkuHaOZWNJhsHoJCWn
+	7mZXe7pjFjDr2CNdpmyVC31w3irAGvzf9PDg==;
+From: Victor Paul <vipoll@mainlining.org>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Daniel Martin <dmanlfc@gmail.com>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Victor Paul <vipoll@mainlining.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] rtla/timerlat_bpf: Stop tracing on user latency
-Date: Mon,  6 Oct 2025 16:31:00 +0200
-Message-ID: <20251006143100.137255-1-tglozar@redhat.com>
+Subject: [PATCH] PCI: probe: fix typo: CONFIG_PCI_PWRCTRL -> CONFIG_PCI_PWRCTL
+Date: Mon,  6 Oct 2025 18:37:14 +0400
+Message-ID: <20251006143714.18868-1-vipoll@mainlining.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,39 +63,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-rtla-timerlat allows a *thread* latency threshold to be set via the
--T/--thread option. However, the timerlat tracer calls this *total*
-latency (stop_tracing_total_us), and stops tracing also when the
-return-to-user latency is over the threshold.
+The commit
+	8c493cc91f3a ("PCI/pwrctrl: Create pwrctrl devices only when CONFIG_PCI_PWRCTRL is enabled")
+introduced a typo, it uses CONFIG_PCI_PWRCTRL while the correct symbol
+is CONFIG_PCI_PWRCTL. As reported by Daniel Martin, it causes device
+initialization failures on some arm boards.
+I encountered it on sm8250-xiaomi-pipa after rebasing from v6.15.8
+to v6.15.11, with the following error:
+[    6.035321] pcieport 0000:00:00.0: Failed to create device link (0x180) with supplier qca6390-pmu for /soc@0/pcie@1c00000/pcie@0/wifi@0
 
-Change the behavior of the timerlat BPF program to reflect what the
-timerlat tracer is doing, to avoid discrepancy between stopping
-collecting data in the BPF program and stopping tracing in the timerlat
-tracer.
+Fix the typo to use the correct CONFIG_PCI_PWRCTL symbol.
 
+Fixes: 8c493cc91f3a ("PCI/pwrctrl: Create pwrctrl devices only when CONFIG_PCI_PWRCTRL is enabled")
 Cc: stable@vger.kernel.org
-Fixes: e34293ddcebd ("rtla/timerlat: Add BPF skeleton to collect samples")
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Reported-by: Daniel Martin <dmanlfc@gmail.com>
+Closes: https://lore.kernel.org/linux-pci/2025081053-expectant-observant-6268@gregkh/
+Signed-off-by: Victor Paul <vipoll@mainlining.org>
 ---
- tools/tracing/rtla/src/timerlat.bpf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/probe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/tracing/rtla/src/timerlat.bpf.c b/tools/tracing/rtla/src/timerlat.bpf.c
-index 084cd10c21fc..e2265b5d6491 100644
---- a/tools/tracing/rtla/src/timerlat.bpf.c
-+++ b/tools/tracing/rtla/src/timerlat.bpf.c
-@@ -148,6 +148,9 @@ int handle_timerlat_sample(struct trace_event_raw_timerlat_sample *tp_args)
- 	} else {
- 		update_main_hist(&hist_user, bucket);
- 		update_summary(&summary_user, latency, bucket);
-+
-+		if (thread_threshold != 0 && latency_us >= thread_threshold)
-+			set_stop_tracing();
- 	}
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 19010c382864..7e97e33b3fb5 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2508,7 +2508,7 @@ bool pci_bus_read_dev_vendor_id(struct pci_bus *bus, int devfn, u32 *l,
+ }
+ EXPORT_SYMBOL(pci_bus_read_dev_vendor_id);
  
- 	return 0;
+-#if IS_ENABLED(CONFIG_PCI_PWRCTRL)
++#if IS_ENABLED(CONFIG_PCI_PWRCTL)
+ static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, int devfn)
+ {
+ 	struct pci_host_bridge *host = pci_find_host_bridge(bus);
 -- 
 2.51.0
 
