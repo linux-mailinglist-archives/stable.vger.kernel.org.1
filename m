@@ -1,97 +1,103 @@
-Return-Path: <stable+bounces-183488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29DB1BBF1A5
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 21:33:43 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74670BBF1D5
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 21:41:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 45AED4E4884
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 19:33:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EE75234B547
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 19:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBE21DE2D7;
-	Mon,  6 Oct 2025 19:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88B12550D5;
+	Mon,  6 Oct 2025 19:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2T1oOda"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EBbMtXrc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F4478F43;
-	Mon,  6 Oct 2025 19:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990F93595C;
+	Mon,  6 Oct 2025 19:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759779215; cv=none; b=rYIzduZ47rxWlp8QWR5i260MmFmJm1r1gLXI2lBNTCxAJd6sxlyTOCHj3RFJJalD3MV3AePKnYXoIgNLhZLKG3xDhZzbrM3FlGHxldh7P9SKAS9qzlSs6yMRTL26IIitzeCixwtQuIh64AdNB+lYjfVh6YFOREbYnTQOm5ZsBVE=
+	t=1759779691; cv=none; b=jzQgkriNUWaAQmDr2HK+dqZWe3RZN93P/I6seJ+a10X7sV1jBcew2aYwAKZDECgRN7XLwh8x/PDu/HIiCJpARVUeScLeApGeHEhxrZ4MXty11YZD1312kHovLsn6E1WG5af0DGMuGEfjO0fmUL18jVaJD/d1cbAPC7Fd3pM3jow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759779215; c=relaxed/simple;
-	bh=8cCOiOCy0xsEJL2nKdqfeYkc4B6AdYbPHDiHhRIGpj4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=M/Kax9YQUtvZbplH9496fKJvKBqFYHUyw0PqhzgejNbTI21TRXju8ekK1/uWCJpnHdRR2ipAetH8uL2NyrTUvpI2Eb2MdJAZBr3IQdGA9fFKd0ZhTwiS5N0joSq22vvfYEoqLN5jMK1o6VHNYUQa+sGMLYcATSi6gTOJlGK16tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2T1oOda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068EFC4CEF5;
-	Mon,  6 Oct 2025 19:33:34 +0000 (UTC)
+	s=arc-20240116; t=1759779691; c=relaxed/simple;
+	bh=jxP0zMtLefG3gelLpEwi/Nfyuz8ryR09EqQ3t1WBA+w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rYhBYZKUjnT5WiZwNf22UZhIeAcQn/lrTGdXafANgbaSlGuLeibxPy7NQzuhQbYtxT4F8DtHzRVla6CQhUdTfbYLaNaP8MAqvlmJxyt8En1rYovijUChFbYXavlci9IlMoVNIIrSU4mIydyXAOrpiAgplmlGubA5RZ4mNPkTJSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EBbMtXrc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9C2C4CEF5;
+	Mon,  6 Oct 2025 19:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759779215;
-	bh=8cCOiOCy0xsEJL2nKdqfeYkc4B6AdYbPHDiHhRIGpj4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=e2T1oOdaGpUvqnuT8g8UoNM7nklUUIReD8DRtOulZXhe8Hq1YPVXIC42jahFXWVfh
-	 blZ7UJXRMvWXG9cqkFj0p1nm+mPSvcJ4ejGQ5ZMDdPdOk6XhZczoQ1X/SsDZXLaA/L
-	 2pW5T/H6nCgqDyWN6hO2T7rWoQOavd14N7PeSWTCIc+CmkMvvC7aMoseD71TgU2+Se
-	 ETA4yKGpPKYRB0tr4SmDRhftP72tB+E+HHM8uLBjSIrfJYdarGSnSttMrxzCsQk0ak
-	 VnCQ6Em76/aRwPq2QYm3zGZWstPdWM2PQB5A7iBFN79FeBEpB2DJU/0NscgH34NhwW
-	 H65ewjZkj4O7Q==
-Date: Mon, 6 Oct 2025 14:33:33 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] PCI/PM: Avoid redundant delays on D3hot->D3cold
-Message-ID: <20251006193333.GA537409@bhelgaas>
+	s=k20201202; t=1759779691;
+	bh=jxP0zMtLefG3gelLpEwi/Nfyuz8ryR09EqQ3t1WBA+w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EBbMtXrcRPtkn+cXtsxzXPsiAnxRORCr2LiSol6hGiagi4OlD2EnkiyranHO9bSpv
+	 AZEv624lzFrw28XtMPu3gUaR+UIuuPiuYqudLRmE+tKPI2Nk7z1wZ/Nfo6nY4ADXH/
+	 INFg9ih6Jfs0dPPt2n7NFude6dR1lhYnG7KoURLi/8Gp/NNMy6A4jizA6tYOIa0moG
+	 /gnKML89dXOJZ1FLEhorRVVxlx1kUgH5jlFjMPrEOY9YM3m3fLZPfPZnEDsBlU6nVa
+	 QeFks1SeRxZ9uN1ajzMQmMCnV3iyFv/vCAVXivzsZZ+UBpjQdAFJ7YydsVMCCr+edn
+	 4Wh2yLZ4DPzwQ==
+Message-ID: <a6709051-bd95-4f7f-8a85-d4d670f7a316@kernel.org>
+Date: Mon, 6 Oct 2025 13:41:30 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aOQLRhot8-MtXeE3@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scsi: fix shift out-of-bounds in sg_build_indirect The
+ num variable is set to 0. The variable num gets its value from
+ scatter_elem_sz. However the minimum value of scatter_elem_sz is PAGE_SHIFT.
+ So setting num to PAGE_SIZE when num < PAGE_SIZE.
+To: Kshitij Paranjape <kshitijvparanjape@gmail.com>,
+ "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: Doug Gilbert <dgilbert@interlog.com>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org,
+ syzbot+270f1c719ee7baab9941@syzkaller.appspotmail.com
+References: <20251006174658.217497-1-kshitijvparanjape@gmail.com>
+Content-Language: en-US
+From: Khalid Aziz <khalid@kernel.org>
+In-Reply-To: <20251006174658.217497-1-kshitijvparanjape@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 06, 2025 at 11:32:38AM -0700, Brian Norris wrote:
-> On Mon, Oct 06, 2025 at 03:52:22PM +0200, Mika Westerberg wrote:
-> > On Fri, Oct 03, 2025 at 03:40:09PM -0700, Brian Norris wrote:
-> > > From: Brian Norris <briannorris@google.com>
-> > > 
-> > > When transitioning to D3cold, __pci_set_power_state() will first
-> > > transition a device to D3hot. If the device was already in D3hot, this
-> > > will add excess work:
-> > > (a) read/modify/write PMCSR; and
-> > > (b) excess delay (pci_dev_d3_sleep()).
-> > 
-> > How come the device is already in D3hot when __pci_set_power_state() is
-> > called? IIRC PCI core will transition the device to low power state so that
-> > it passes there the deepest possible state, and at that point the device is
-> > still in D0. Then __pci_set_power_state() puts it into D3hot and then turns
-> > if the power resource -> D3cold.
-> > 
-> > What I'm missing here?
+On 10/6/25 11:46 AM, Kshitij Paranjape wrote:
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+270f1c719ee7baab9941@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=270f1c719ee7baab9941
+> Signed-off-by: Kshitij Paranjape <kshitijvparanjape@gmail.com>
+> ---
+>   drivers/scsi/sg.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> Some PCI drivers call pci_set_power_state(..., PCI_D3hot) on their own
-> when preparing for runtime or system suspend, so by the time they hit
-> pci_finish_runtime_suspend(), they're in D3hot. Then, pci_target_state()
-> may still pick a lower state (D3cold).
+> diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+> index effb7e768165..9ae41bb256d7 100644
+> --- a/drivers/scsi/sg.c
+> +++ b/drivers/scsi/sg.c
+> @@ -1888,6 +1888,7 @@ sg_build_indirect(Sg_scatter_hold * schp, Sg_fd * sfp, int buff_size)
+>   		if (num < PAGE_SIZE) {
+>   			scatter_elem_sz = PAGE_SIZE;
+>   			scatter_elem_sz_prev = PAGE_SIZE;
+> +			num = scatter_elem_sz;
+>   		} else
+>   			scatter_elem_sz_prev = num;
+>   	}
 
-We might need this change, but maybe this is also an opportunity to
-remove some of those pci_set_power_state(..., PCI_D3hot) calls from
-drivers.
+Have you seen any issues caused by not setting num to PAGE_SIZE when num 
+< PAGE_SIZE?
 
-I didn't look into any of them in detail, but I would jump at any
-chance to remove PCI details from driver suspend paths.  There are
-only ~20 calls from suspend functions, ~25 from shutdown, and a few
-from poweroff.  The fact that there are so few makes me think they
-might be leftovers that could be more fully converted to generic PM.
+ From what I can see, num is used to calculate the page order for 
+allocation which will be 0 whether num=PAGE_SIZE or < PAGE_SIZE. After 
+that num gets assigned a new value any way before its next use.
+
+--
+Khalid
 
