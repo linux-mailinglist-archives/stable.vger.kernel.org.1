@@ -1,57 +1,74 @@
-Return-Path: <stable+bounces-183437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F091EBBE509
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 16:20:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6305FBBE5A4
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 16:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B887F4EC8BA
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 14:20:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07A243BFC3C
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 14:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395552D47F4;
-	Mon,  6 Oct 2025 14:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58ABE199385;
+	Mon,  6 Oct 2025 14:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="K0U5KjLr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RCRaY8Qx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30723283FE5;
-	Mon,  6 Oct 2025 14:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730411DFFC
+	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 14:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759760444; cv=none; b=ZPoAUr3oXltYr/cNElEX/pd4qJl8zVBJGrlXzrUDFmbvE//c6+OhwTCBtD9bl4TiAvJ04qSjHJM7cAfqlmQxiCdcRkvdl2B5yfEnBJKf5U40NmvN3aDohLyZ+H90VH4DRMMAxy3otr0vzjNAQ+78Y1D73N4QpakzZhfHZvWB34Q=
+	t=1759761075; cv=none; b=bLcTzsY5NYiCUFzYaXCaXWVGBLEZD40wSl4ub0tx3VbZK1XbaBdAf6Nl9DvgXpAysgIxFByHCgWvKVBnzLDIq6/ZgkdGWZFIGB2F0DmdPLb3U+hsmJCndRI56+z7xs08ad72w4CHXEKb8fx2tJr+uNuYgNJ28PXc0+z0O49VwZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759760444; c=relaxed/simple;
-	bh=QIMmn3T1KZwC2RE6BCze3N2hdjHyG2Jh9yg8h/UTYNY=;
-	h=From:To:Cc:Date:Message-Id:MIME-Version:Subject; b=RPtL8K4HYYt+S6E8dkJY4zTZpraGqP2EF1uSQ17no7Ht/6z7E0W0yFpk9JXhFTE+P1KynhCuq+LuxjA0LtFtKEuZOUpDdJ9DGqOkOrs6hXOWGv9MTW4HhNtQ0q/FKZhtKP2JEs700C/SrOZN+Mq5i7jjRioOhaQ24ecU74tyx7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=K0U5KjLr; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
-	:From:subject:date:message-id:reply-to;
-	bh=TnVJr+G/negDbYh0moPGGK3iRnZJniEtGgGzi4aX6LM=; b=K0U5KjLrODA2ObH+Tcb0KQI4oV
-	azRNBcN10YUqpgP3lfhloObhkjWNiYX0rPJJLR43/foAoQha7OjWtflX3Ia5uy3yZaLtnEsfCmMdu
-	+T051hypB4Et+RYwmxOs7yRkLKsE43nLF0HVMoWIrnGWSSo6W6Qf48cyjWXUW2+IYCoM=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:42564 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1v5m4n-0007jX-Uq; Mon, 06 Oct 2025 10:20:35 -0400
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Florian Vallee <fvallee@eukrea.fr>
-Cc: hugo@hugovil.com,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Date: Mon,  6 Oct 2025 10:20:02 -0400
-Message-Id: <20251006142002.177475-1-hugo@hugovil.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1759761075; c=relaxed/simple;
+	bh=xXvB05+JXWunM/ZZ7+8SH3cVZRqU/GJnOV4tEaSXfi0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dx3HDkmFIklaXMuhmNX4BEm3NmfcM5krHnSDNEjN2TRkKmTbxbhph5cBmohJ8TBXWxlB/kLu06hW+eTd0q6SMXVBCCxmBaCyU78icrgZGJse8RXayHtBsIQQJnrOEE+EuDJ8ZIrCI/oaRvlQK9ETd0VSPdvpqxjMTBaLO9tOaT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RCRaY8Qx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759761071;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WG6rfa392OPZRww4x0r3OSF9GJZW1H33YuysnWkj2NU=;
+	b=RCRaY8QxW23wpHTlOjnM3JSXfBk0WfyFUV3bxDQmA+ze6A3FB281a0Mxbx6oG6Dbl6aEoG
+	3St/Ppog6B9FSqa5m5lJpDWc7Gg2Wy0HldQsP4OUQi7Bq164DBqEhyZ+q6MNQxwdLjZxc0
+	/PDtDjhXhCHPEXXEv3TbvV29sRrKfjg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-75-0KhC7PTiM0mByPq9ZE3GDQ-1; Mon,
+ 06 Oct 2025 10:31:10 -0400
+X-MC-Unique: 0KhC7PTiM0mByPq9ZE3GDQ-1
+X-Mimecast-MFC-AGG-ID: 0KhC7PTiM0mByPq9ZE3GDQ_1759761068
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1903A195608F;
+	Mon,  6 Oct 2025 14:31:08 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.32.125])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5D9B81955F19;
+	Mon,  6 Oct 2025 14:31:04 +0000 (UTC)
+From: Tomas Glozar <tglozar@redhat.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>,
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Costa Shulyupin <costa.shul@redhat.com>,
+	Crystal Wood <crwood@redhat.com>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] rtla/timerlat_bpf: Stop tracing on user latency
+Date: Mon,  6 Oct 2025 16:31:00 +0200
+Message-ID: <20251006143100.137255-1-tglozar@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,57 +76,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-Subject: [PATCH] serial: sc16is7xx: remove useless enable of enhanced features
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+rtla-timerlat allows a *thread* latency threshold to be set via the
+-T/--thread option. However, the timerlat tracer calls this *total*
+latency (stop_tracing_total_us), and stops tracing also when the
+return-to-user latency is over the threshold.
 
-Commit 43c51bb573aa ("sc16is7xx: make sure device is in suspend once
-probed") permanently enabled access to the enhanced features in
-sc16is7xx_probe(), and it is never disabled after that.
+Change the behavior of the timerlat BPF program to reflect what the
+timerlat tracer is doing, to avoid discrepancy between stopping
+collecting data in the BPF program and stopping tracing in the timerlat
+tracer.
 
-Therefore, remove re-enable of enhanced features in
-sc16is7xx_set_baud(). This eliminates a potential useless read + write
-cycle each time the baud rate is reconfigured.
-
-Fixes: 43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Fixes: e34293ddcebd ("rtla/timerlat: Add BPF skeleton to collect samples")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
 ---
-This patch was originally part of this series:
-https://lore.kernel.org/linux-serial/20251002145738.3250272-1-hugo@hugovil.com/raw
-and it is now separate as suggested by Greg to facilitate stable backporting.
----
- drivers/tty/serial/sc16is7xx.c | 7 -------
- 1 file changed, 7 deletions(-)
+ tools/tracing/rtla/src/timerlat.bpf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 1a2c4c14f6aac..c7435595dce13 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -588,13 +588,6 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 		div /= prescaler;
+diff --git a/tools/tracing/rtla/src/timerlat.bpf.c b/tools/tracing/rtla/src/timerlat.bpf.c
+index 084cd10c21fc..e2265b5d6491 100644
+--- a/tools/tracing/rtla/src/timerlat.bpf.c
++++ b/tools/tracing/rtla/src/timerlat.bpf.c
+@@ -148,6 +148,9 @@ int handle_timerlat_sample(struct trace_event_raw_timerlat_sample *tp_args)
+ 	} else {
+ 		update_main_hist(&hist_user, bucket);
+ 		update_summary(&summary_user, latency, bucket);
++
++		if (thread_threshold != 0 && latency_us >= thread_threshold)
++			set_stop_tracing();
  	}
  
--	/* Enable enhanced features */
--	sc16is7xx_efr_lock(port);
--	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
--			      SC16IS7XX_EFR_ENABLE_BIT,
--			      SC16IS7XX_EFR_ENABLE_BIT);
--	sc16is7xx_efr_unlock(port);
--
- 	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
-
-base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
+ 	return 0;
 -- 
-2.39.5
+2.51.0
 
 
