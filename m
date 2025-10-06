@@ -1,113 +1,141 @@
-Return-Path: <stable+bounces-183450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E42BBE9BB
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 18:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8D9BBE9E0
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 18:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49DC8189A3B5
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 16:15:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5B6B189A561
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 16:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D176B2D97AB;
-	Mon,  6 Oct 2025 16:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55F91E51F6;
+	Mon,  6 Oct 2025 16:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpUOsYsw"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ua2rC38d"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8557D2D73A7;
-	Mon,  6 Oct 2025 16:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483161E1DF2
+	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 16:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759767289; cv=none; b=QpKIzk+Y0nTKtI9IruXjk2N1wj0FSnHNItNSHisSj/Y+Um165mKNKbnQYk7kmD+pXBnly5gw5yDyCq8JPeFA9ecr3ueFvbFVLXwe8Ejcruw5XhPvPrygEwcI15VHPiUb/AH3rAiurjpcOcKSx3UYEqcfF20+EoYaJqYLp8Mq04U=
+	t=1759767542; cv=none; b=kPwexTSfY7HDb89+JCuvqVYcofyiUzc3W0v1gsj1055E5TT4t/NvEJff52p/tCCkPDE4+KumsGIpwHe4DqZ+AFUZL29++/E2gsJBzb5upUBCsarES8V+IoUaQ7oE3E5GJIXMPBPHIxvperL8gfkr1IGK0k2n4EDFWpMgIGFi+x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759767289; c=relaxed/simple;
-	bh=94oJ9caDdvG59xpvIjfSBv9UCE7Qfj6W+KBmHijwk+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ZhXV4kNMIIUD+yp0CAxYE/R/dVAGG5ltxitQAA7ryyngDUuubFsDtahkb17pxd8pU4pkuMYaHTwz0uy9kwZCyBmtfPRsAE5t/dysEMeQH7L/E+ORsNUE9y8ptOqk87bSpN9YTyVcW/jsMGdw+aJr9nXUEnLEqpKhXKj74kaFHXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpUOsYsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0025C4CEF5;
-	Mon,  6 Oct 2025 16:14:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759767289;
-	bh=94oJ9caDdvG59xpvIjfSBv9UCE7Qfj6W+KBmHijwk+w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=MpUOsYswLerIqfAAY58/P2aoL+Ggn3eBaT/bQoiNgTM22caB9MDJiAxYOtiUyNBKZ
-	 MJzwdjVNVThhasekah8wteKl7FnB2pwYWUUuoWxALK2hfe0bK9Xs3uCgwI93egSMcF
-	 G/3YCozmcjdk0b/lGOah6j7i9HqhYMX/Qzk20yT78CrGnMqQiaC15fILOxlUWVMhFX
-	 jMS3X21BqO8s3VN2JkP8YCqpdpK6Mm2bUNLgZkkZfcGZHEIE24qgVN1E3jCh115qcz
-	 GwZOOn/0LMmHhdUV1d9uUUPix5NFanpfiAnyg6Uom0grsLcXLiWD4MLzk0+sM3RFoW
-	 bZ+dA+XB6VppQ==
-Date: Mon, 6 Oct 2025 11:14:47 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Victor Paul <vipoll@mainlining.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Daniel Martin <dmanlfc@gmail.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: probe: fix typo: CONFIG_PCI_PWRCTRL ->
- CONFIG_PCI_PWRCTL
-Message-ID: <20251006161447.GA521686@bhelgaas>
+	s=arc-20240116; t=1759767542; c=relaxed/simple;
+	bh=Q6EvSHfkO4e/9YwivHi3csU4VMPQMQ8A5SfcPJE6jwg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pwnh7oP0jome4zPvo8Q5VrPRvPPkdqJO5HrTBRbs4MVAXhbFvx2qXEiI4zTTwGjFDX9g1ojZgehmERAIOdVCaHVvH9v1kGu98/rDgTUiyze3WuaRHK+LfhgTQMYWPGwn94Slv8fgkMnuoToGqultV44vqOHD71Pv/FJ8mrll+mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ua2rC38d; arc=none smtp.client-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-64e3e259f93so2496049eaf.3
+        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 09:19:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1759767539; x=1760372339; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vhZR1oqC5kvhnlZSDqYbJoK0fSBTzQfqw1bJiCNbME8=;
+        b=ua2rC38dpGLUY9/t/s/ojZk/HTks1yn89dcbPA9a42xXCHASxBBPCd33iW0xt5fz4W
+         HDSbT0Jm6LYmlRxqSa//GDCV+73jjztuy1Xfvww9s2rpARun7fpRs0mdKr4ILVF2glbs
+         rmRuzzuJ4RkYdtK5mj5SgMbp2BaylBgN3ZMYhPPMel1mY9LsuZazu6mqDgWwB7HQQ1uq
+         phcAK0z7ueI0Drb8jZB+M++o9KkxaoHYZRT3S6RT8YnJr7ZxRNeWI62mBzTrA14UhI1N
+         wAGqOH2gKE7y9uiwRdmZvYvwYyCTkAT3psGxI7W3oAZb8ATAnygMxXiBqIUP0vrGCMc2
+         hDQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759767539; x=1760372339;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vhZR1oqC5kvhnlZSDqYbJoK0fSBTzQfqw1bJiCNbME8=;
+        b=f7Po1bF6Yfusv8tlOYcssrx+nOU4X5aDa9/uWealeS3WH+se0gP2Rnf07RsZnfhubM
+         6VHWKE941+MFUOe6N3e+dyRiJF17P6rnoNyD9Tl87CQQE7LqyBraEfoYfY5rDcfB92D6
+         OUO93qhkeszVjaZg3bqNCiMhSZie1JnWvrhiFK1LoWNxh+h8w6HSwBjRhjjuzrjvCoJk
+         6JeqN4H8Zf9+EvE926uo44W9cQIwoFiYm0C0YG+utKuGhM1gIM+rb8bEGbBiJCC5qear
+         y5O6GZh1qIjGw2qGAHzuKzfJVwa2oml3/PE7vB3hysWyXIs7U04pDPL54gYMI2gvY64Z
+         bkrg==
+X-Forwarded-Encrypted: i=1; AJvYcCVbLsm4x/rpAsDypV93RnrN9T0EzrSxsRe/L7wZJGX19qr1ZEaD5Iqebcet3n6AgrTY4cNA1qo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhFe0RwkdZkL2COHOUyf5eiDRPaRWKEtocVLfFEWmYvDiDTNQJ
+	oIPVgQ3NW30iLyzoVTop7FZOnS4S8nNzag00JeqFi8j8EhECJDa8Q0nrvmMQWXpGObI=
+X-Gm-Gg: ASbGnct7sGB5jR73eOnVsAyrnJhhAfwNFvzMyBqVh9h9SHVPWSRClw1XkwqCWiu0qKo
+	+0iGjkSmCoZmnLF+MQUO7Xl9tNybnCVgv1v8dhTeLFDHVXSd0q7HcjYQA8WfmWeAvD6tNFUjarX
+	kHTDwVLEywxyxGMEwTfAoeodwKnmL76s8fkQOmoovXi0wu5x0ds2TfsFJ6W2wimI+sp4Ng2sdLg
+	duFpxKKeYNevoDHEcqzsdm4eZ7gbvprbvxCY2spvxkBuJsrZ4aCbHjG7uwfG5upiVy1i2S9ugZX
+	HhkCllvFcdJ49BVRYazB6htesHZajjKtPyfYUK+8kjv+zjJCzVEtavohWKV8+YD8WhEIjLqr6Ba
+	uzCBQ4fN7e5gcu35pAKAqCmi9hgPzhITOW5Ym2InPzhvvp1wdIk3XnY4ucPtIiWx6lZhchvL6WW
+	WsZHwWfVZAGiHdgO8/+Xu+OWs=
+X-Google-Smtp-Source: AGHT+IFUfHmjx5ckM1OlqXY6Ld+RV1yTaLt0MDlsh6omBMgy6OcZDc1gI3MR0SM9LREgCHsUySFRVA==
+X-Received: by 2002:a05:6870:264:b0:30b:8821:aba4 with SMTP id 586e51a60fabf-3b0fd798233mr6748754fac.20.1759767539344;
+        Mon, 06 Oct 2025 09:18:59 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:a1fd:4fbd:e7a6:9246? ([2600:8803:e7e4:1d00:a1fd:4fbd:e7a6:9246])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ab794bd04esm4196944fac.10.2025.10.06.09.18.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Oct 2025 09:18:58 -0700 (PDT)
+Message-ID: <7eeb3072-b54e-46c7-9fb2-c4d2422188d8@baylibre.com>
+Date: Mon, 6 Oct 2025 11:18:58 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251006143714.18868-1-vipoll@mainlining.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] iio: buffer: Fix DMABUF mapping in some systems
+To: nuno.sa@analog.com, linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ stable@vger.kernel.org
+References: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 06, 2025 at 06:37:14PM +0400, Victor Paul wrote:
-> The commit
-> 	8c493cc91f3a ("PCI/pwrctrl: Create pwrctrl devices only when CONFIG_PCI_PWRCTRL is enabled")
-> introduced a typo, it uses CONFIG_PCI_PWRCTRL while the correct symbol
-> is CONFIG_PCI_PWRCTL. As reported by Daniel Martin, it causes device
-> initialization failures on some arm boards.
-> I encountered it on sm8250-xiaomi-pipa after rebasing from v6.15.8
-> to v6.15.11, with the following error:
-> [    6.035321] pcieport 0000:00:00.0: Failed to create device link (0x180) with supplier qca6390-pmu for /soc@0/pcie@1c00000/pcie@0/wifi@0
+On 10/6/25 11:06 AM, Nuno Sá via B4 Relay wrote:
+> This series fixes an issue with DMABUF support in the IIO subsystem where
+> the wrong DMA device could be used for buffer mapping operations. This
+> becomes critical on systems like Xilinx/AMD ZynqMP Ultrascale where memory
+> can be mapped above the 32-bit address range.
 > 
-> Fix the typo to use the correct CONFIG_PCI_PWRCTL symbol.
+> Problem:
+> --------
+> The current IIO DMABUF implementation assumes it can use the parent device
+> of the IIO device for DMA operations. However, this device may not have
+> the appropriate DMA mask configuration for accessing high memory addresses.
+> On systems where memory is mapped above 32-bits, this leads to the use of
+> bounce buffers through swiotlb, significantly impacting performance.
 > 
-> Fixes: 8c493cc91f3a ("PCI/pwrctrl: Create pwrctrl devices only when CONFIG_PCI_PWRCTRL is enabled")
-> Cc: stable@vger.kernel.org
-> Reported-by: Daniel Martin <dmanlfc@gmail.com>
-> Closes: https://lore.kernel.org/linux-pci/2025081053-expectant-observant-6268@gregkh/
-> Signed-off-by: Victor Paul <vipoll@mainlining.org>
-
-Might this be a stale .config file?
-
-I think 13bbf6a5f065 ("PCI/pwrctrl: Rename pwrctrl Kconfig symbols and
-slot module") should have resolved this. 
-
-In the current upstream tree (fd94619c4336 ("Merge tag 'zonefs-6.18-rc1'
-of git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/zonefs"),
-git grep "\<CONFIG_PCI_PWRCTL\>" finds nothing at all.
-
+> Solution:
+> ---------
+> This series introduces a new .get_dma_dev() callback in the buffer access
+> functions that allows buffer implementations to specify the correct DMA
+> device that should be used for DMABUF operations. The DMA buffer
+> infrastructure implements this callback to return the device that actually
+> owns the DMA channel, ensuring proper memory mapping without bounce buffers.
+> 
+> Changes:
+> --------
+> 1. Add .get_dma_dev() callback to iio_buffer_access_funcs and update core
+>    DMABUF code to use it when available
+> 2. Implement the callback in the DMA buffer infrastructure
+> 3. Wire up the callback in the dmaengine buffer implementation
+> 
+> This ensures that DMABUF operations use the device with the correct DMA
+> configuration, eliminating unnecessary bounce buffer usage and improving
+> performance on high-memory systems.
+> 
+> (AI generated cover. I would not be this formal but I guess is not
+> that bad :))
+> 
 > ---
->  drivers/pci/probe.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 19010c382864..7e97e33b3fb5 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -2508,7 +2508,7 @@ bool pci_bus_read_dev_vendor_id(struct pci_bus *bus, int devfn, u32 *l,
->  }
->  EXPORT_SYMBOL(pci_bus_read_dev_vendor_id);
->  
-> -#if IS_ENABLED(CONFIG_PCI_PWRCTRL)
-> +#if IS_ENABLED(CONFIG_PCI_PWRCTL)
->  static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, int devfn)
->  {
->  	struct pci_host_bridge *host = pci_find_host_bridge(bus);
-> -- 
-> 2.51.0
-> 
+> Changes in v2:
+> - Dropped Fixes tags on the first two patches and Cc stable them instead
+>   (as prerequisites for the third patch). 
+> - Link to v1: https://lore.kernel.org/r/20251002-fix-iio-dmabuf-get-dma-device-v1-0-c1c9945029d0@analog.com
+
+Did you not care for my other suggestions in v1?
+
 
