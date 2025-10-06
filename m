@@ -1,129 +1,113 @@
-Return-Path: <stable+bounces-183449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08970BBE952
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 18:06:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E42BBE9BB
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 18:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B48F63B4ED1
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 16:06:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49DC8189A3B5
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 16:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C7C2D97A0;
-	Mon,  6 Oct 2025 16:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D176B2D97AB;
+	Mon,  6 Oct 2025 16:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+TBm0NM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpUOsYsw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE1F27F754;
-	Mon,  6 Oct 2025 16:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8557D2D73A7;
+	Mon,  6 Oct 2025 16:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759766764; cv=none; b=WfZniam4+FSFchDYaVk0chfE0Tml4regBUFuU/rN3t5UwqvmgQ6y7BxySPPdufkix+GHNVljdlrteJ4az7fNRlGnvGro4OoPvukyIzSzVbJdttRCrcavtbpN6z1z5rX0hL+Up3r3V4qf1DG40mhvKb6gBga0bktdpy7Uc11n9yc=
+	t=1759767289; cv=none; b=QpKIzk+Y0nTKtI9IruXjk2N1wj0FSnHNItNSHisSj/Y+Um165mKNKbnQYk7kmD+pXBnly5gw5yDyCq8JPeFA9ecr3ueFvbFVLXwe8Ejcruw5XhPvPrygEwcI15VHPiUb/AH3rAiurjpcOcKSx3UYEqcfF20+EoYaJqYLp8Mq04U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759766764; c=relaxed/simple;
-	bh=BaFLta81w+NLxTP9O9t2OJTctrOyaPOQ8rq/bkeohmM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CxY/C8gH3DDYshXpSJR1lCim9JY1DLQc0UzsDeerwx5TvFYVOtlTtFOcsqdMUlc+RgMxyJW3OGZEgT8FRnAJTaX3OTg+29IkHTIci2f/3kOUGsB5aE5XLtfUjlWexUOyDS/DBxGtWmLYJMGWZjY1IvXLy6H8llMzUcGXpfmeOgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+TBm0NM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C99C7C113D0;
-	Mon,  6 Oct 2025 16:06:03 +0000 (UTC)
+	s=arc-20240116; t=1759767289; c=relaxed/simple;
+	bh=94oJ9caDdvG59xpvIjfSBv9UCE7Qfj6W+KBmHijwk+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ZhXV4kNMIIUD+yp0CAxYE/R/dVAGG5ltxitQAA7ryyngDUuubFsDtahkb17pxd8pU4pkuMYaHTwz0uy9kwZCyBmtfPRsAE5t/dysEMeQH7L/E+ORsNUE9y8ptOqk87bSpN9YTyVcW/jsMGdw+aJr9nXUEnLEqpKhXKj74kaFHXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpUOsYsw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0025C4CEF5;
+	Mon,  6 Oct 2025 16:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759766763;
-	bh=BaFLta81w+NLxTP9O9t2OJTctrOyaPOQ8rq/bkeohmM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=D+TBm0NMpTA4ENmCpELSV2glC7uwTNEhjCXASGj0WlQnAAqTivXiMfqJ2Qt+ykw+X
-	 B3vmVWqSCHEmzcZ6MvuKhRO1a2qqBpKuuA2uhQps5ke2F0aYH6dw4+EegQu7FVkxcP
-	 FJR0SHws2KGyM80Mil2P1Pl1tFMvGt/ea4BwOLWyStnxZmr8+gFtXFPkaJZakiDdT/
-	 4DIJPqYYLCmPniFdHs5j4fdgzSGVVxPPd2GafyE3zR4QrPbrt8Oqsya8Wf3cIp9HwG
-	 qZjixn7vwFQ0iuT+PRFQo8I04b08CVppMwdcn0hsOMZU5t1dLuI0RQKU0fHs9Y6nIc
-	 hSvew3G1OrYnQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C25E9CCA476;
-	Mon,  6 Oct 2025 16:06:03 +0000 (UTC)
-From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Mon, 06 Oct 2025 17:06:33 +0100
-Subject: [PATCH v2 2/3] iio: buffer-dma: support getting the DMA channel
+	s=k20201202; t=1759767289;
+	bh=94oJ9caDdvG59xpvIjfSBv9UCE7Qfj6W+KBmHijwk+w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=MpUOsYswLerIqfAAY58/P2aoL+Ggn3eBaT/bQoiNgTM22caB9MDJiAxYOtiUyNBKZ
+	 MJzwdjVNVThhasekah8wteKl7FnB2pwYWUUuoWxALK2hfe0bK9Xs3uCgwI93egSMcF
+	 G/3YCozmcjdk0b/lGOah6j7i9HqhYMX/Qzk20yT78CrGnMqQiaC15fILOxlUWVMhFX
+	 jMS3X21BqO8s3VN2JkP8YCqpdpK6Mm2bUNLgZkkZfcGZHEIE24qgVN1E3jCh115qcz
+	 GwZOOn/0LMmHhdUV1d9uUUPix5NFanpfiAnyg6Uom0grsLcXLiWD4MLzk0+sM3RFoW
+	 bZ+dA+XB6VppQ==
+Date: Mon, 6 Oct 2025 11:14:47 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Victor Paul <vipoll@mainlining.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Daniel Martin <dmanlfc@gmail.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] PCI: probe: fix typo: CONFIG_PCI_PWRCTRL ->
+ CONFIG_PCI_PWRCTL
+Message-ID: <20251006161447.GA521686@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251006-fix-iio-dmabuf-get-dma-device-v2-2-d960bc9084da@analog.com>
-References: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
-In-Reply-To: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
-To: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1759766793; l=2059;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=GrS7qJFdtb/72HMZOouMQanpI/Z9hVW7H2co7YCJG34=;
- b=Ppedd/xGWnhefbXfUWpH3W3UcSEi2/B4vjHzk2SdCsnqqIjKNGiJWcisVwSxC2UoofQV6W7Jg
- CNM8gtZnJTMBqJUmISGZZtmso1JxOjyMLKyNxRQF6lAMIFRafzFRgcd
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251006143714.18868-1-vipoll@mainlining.org>
 
-From: Nuno Sá <nuno.sa@analog.com>
+On Mon, Oct 06, 2025 at 06:37:14PM +0400, Victor Paul wrote:
+> The commit
+> 	8c493cc91f3a ("PCI/pwrctrl: Create pwrctrl devices only when CONFIG_PCI_PWRCTRL is enabled")
+> introduced a typo, it uses CONFIG_PCI_PWRCTRL while the correct symbol
+> is CONFIG_PCI_PWRCTL. As reported by Daniel Martin, it causes device
+> initialization failures on some arm boards.
+> I encountered it on sm8250-xiaomi-pipa after rebasing from v6.15.8
+> to v6.15.11, with the following error:
+> [    6.035321] pcieport 0000:00:00.0: Failed to create device link (0x180) with supplier qca6390-pmu for /soc@0/pcie@1c00000/pcie@0/wifi@0
+> 
+> Fix the typo to use the correct CONFIG_PCI_PWRCTL symbol.
+> 
+> Fixes: 8c493cc91f3a ("PCI/pwrctrl: Create pwrctrl devices only when CONFIG_PCI_PWRCTRL is enabled")
+> Cc: stable@vger.kernel.org
+> Reported-by: Daniel Martin <dmanlfc@gmail.com>
+> Closes: https://lore.kernel.org/linux-pci/2025081053-expectant-observant-6268@gregkh/
+> Signed-off-by: Victor Paul <vipoll@mainlining.org>
 
-Implement the .get_dma_dev() callback for DMA buffers by returning the
-device that owns the DMA channel. This allows the core DMABUF
-infrastructure to properly map DMA buffers using the correct device,
-avoiding the need for bounce buffers on systems where memory is mapped
-above the 32-bit range.
+Might this be a stale .config file?
 
-The function returns the DMA queue's device, which is the actual device
-responsible for DMA operations in buffer-dma implementations.
+I think 13bbf6a5f065 ("PCI/pwrctrl: Rename pwrctrl Kconfig symbols and
+slot module") should have resolved this. 
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/iio/buffer/industrialio-buffer-dma.c | 6 ++++++
- include/linux/iio/buffer-dma.h               | 1 +
- 2 files changed, 7 insertions(+)
+In the current upstream tree (fd94619c4336 ("Merge tag 'zonefs-6.18-rc1'
+of git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/zonefs"),
+git grep "\<CONFIG_PCI_PWRCTL\>" finds nothing at all.
 
-diff --git a/drivers/iio/buffer/industrialio-buffer-dma.c b/drivers/iio/buffer/industrialio-buffer-dma.c
-index ee294a775e8aa050aca85e422de4c267adee1a33..7a7a9d37339bc1c2ffec58687a42dde16b1412bb 100644
---- a/drivers/iio/buffer/industrialio-buffer-dma.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dma.c
-@@ -786,6 +786,12 @@ int iio_dma_buffer_enqueue_dmabuf(struct iio_buffer *buffer,
- }
- EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_enqueue_dmabuf, "IIO_DMA_BUFFER");
- 
-+struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer)
-+{
-+	return iio_buffer_to_queue(buffer)->dev;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_get_dma_dev, "IIO_DMA_BUFFER");
-+
- void iio_dma_buffer_lock_queue(struct iio_buffer *buffer)
- {
- 	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
-diff --git a/include/linux/iio/buffer-dma.h b/include/linux/iio/buffer-dma.h
-index 5eb66a3990021afb1821297e540656a65916daa7..4f33e6a39797d3ecfddc69c11d6d3985b9212920 100644
---- a/include/linux/iio/buffer-dma.h
-+++ b/include/linux/iio/buffer-dma.h
-@@ -174,5 +174,6 @@ int iio_dma_buffer_enqueue_dmabuf(struct iio_buffer *buffer,
- 				  size_t size, bool cyclic);
- void iio_dma_buffer_lock_queue(struct iio_buffer *buffer);
- void iio_dma_buffer_unlock_queue(struct iio_buffer *buffer);
-+struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer);
- 
- #endif
-
--- 
-2.51.0
-
-
+> ---
+>  drivers/pci/probe.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 19010c382864..7e97e33b3fb5 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -2508,7 +2508,7 @@ bool pci_bus_read_dev_vendor_id(struct pci_bus *bus, int devfn, u32 *l,
+>  }
+>  EXPORT_SYMBOL(pci_bus_read_dev_vendor_id);
+>  
+> -#if IS_ENABLED(CONFIG_PCI_PWRCTRL)
+> +#if IS_ENABLED(CONFIG_PCI_PWRCTL)
+>  static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, int devfn)
+>  {
+>  	struct pci_host_bridge *host = pci_find_host_bridge(bus);
+> -- 
+> 2.51.0
+> 
 
