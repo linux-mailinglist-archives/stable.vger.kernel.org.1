@@ -1,55 +1,50 @@
-Return-Path: <stable+bounces-183422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5AFBBD8EE
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 12:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09185BBD994
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 12:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6DCA14EA700
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 10:00:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 234C44EC3E6
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 10:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956D62192F2;
-	Mon,  6 Oct 2025 10:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB62E22F383;
+	Mon,  6 Oct 2025 10:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcK951BV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6mPGJEU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD621EB195;
-	Mon,  6 Oct 2025 10:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0B722DF95
+	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 10:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759744809; cv=none; b=HunZ2AAFwvamaM4LdEZ8KOsLZWXefQutF6HuISon5BDKKvl3qFhAcqV+eZ31YNHNsR0xgdhFM1nJxFPtJZxkRovtuJu5puUu+dTgdXsfM4lA6LR/Lf2zALHE4FSHkRpm1O7bgHqMtQVGbgJkwJkA1ywG9lyNp6pyMDUhomQ0ed8=
+	t=1759745051; cv=none; b=rcb6bOg8t3zrzxbKpuNR9d5CgvdsOSgtZ5C78oCYBH4/7kawoV7SUjeSiIHq7r5shCL+lQAvHpdmNZA5aoR39BvQI7n1t9CmlRK6uunimaZBHdJsvrXWfFhZPb7V7Mq7z/3iccTKcL+H+yYIO8Roo8MJKijVgDcHRXb+je0Vxvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759744809; c=relaxed/simple;
-	bh=HmCN+7Mqf/MRdFKZQf5GfilkUM5v3O6PnYlANxH+lYk=;
+	s=arc-20240116; t=1759745051; c=relaxed/simple;
+	bh=ZodNcP9XZMFAlZIEv94Epv7oy+W/iw/ONeixjaqxH8Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YgUkIOVLTq5FZWWt26PHYRAvlFco8b5GIA/eNoPv6jXB7Jd3ilw7biSG8YN5uDiawl1GNyiXTKN6bK6RNptgkRDRSH/LLt7a86L8ZxsXOMhRm7G168oiDnQtbo2OJxYMWQH9h9A+IH3wQ/nApZaOsgxUVx8OCvkalBBKyhUo0sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcK951BV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399D7C4CEF7;
-	Mon,  6 Oct 2025 10:00:04 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ErcBVBBN3JBdYbX9+IIdFBcmSzoJApkoyaD7ywvzalj1AWO0kBECDmXO4/Le6EmLPvElXUBm/8O8CWnT3OeQC8gEFXPorqNmVJigCm7fQB+sweksChSvIte9S2UdffRtGrh2J10xY34X+O8BacqjURr4yUlYfrVuUlis7Y00CzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6mPGJEU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB003C4CEF5;
+	Mon,  6 Oct 2025 10:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759744804;
-	bh=HmCN+7Mqf/MRdFKZQf5GfilkUM5v3O6PnYlANxH+lYk=;
+	s=korg; t=1759745051;
+	bh=ZodNcP9XZMFAlZIEv94Epv7oy+W/iw/ONeixjaqxH8Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GcK951BVY6eNOsq8UkKBT79D/4LwVGMYN73Kh7H+2tp0kYNTImy/2HGvuo7iNrBNW
-	 CcLxxOFnGZzkJ/VJxgc1j3YyHhYSNA8MW12qHBkRD73/FXSBMaDudUAlAseSbVChCc
-	 /uXyC9ofKpzwzwAScFaRTD7qXRah83XPIq5TREdE=
-Date: Mon, 6 Oct 2025 12:00:02 +0200
+	b=B6mPGJEUEc2nKdkbmFd+kDIXBm4pRkZP4JNzy5jkYsuGEfu06y9xvsXXKIPs2DNAq
+	 Br/MUk3d6ODWv27Lu9jZ/oLCtUUSJt14nAL1p8rxBfzmOGlVDp31gY9QU9fx5TuSDM
+	 mK+9i3aCV2d+33YujaPVSpitWHAkgmaTD5AuUj4E=
+Date: Mon, 6 Oct 2025 12:04:08 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Will Deacon <will@kernel.org>
-Cc: stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
-	Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>,
-	Kenneth Van Alstyne <kvanals@kvanals.org>
-Subject: Re: [STABLE 5.15.y] [PATCH] KVM: arm64: Fix softirq masking in
- FPSIMD register saving sequence
-Message-ID: <2025100641-guileless-retainer-c885@gregkh>
-References: <20251003183917.4209-1-will@kernel.org>
- <aOAZR0-4ZCq78DZ8@willie-the-truck>
+To: Gergo Koteles <soyer@irl.hu>
+Cc: stable@vger.kernel.org
+Subject: Re: 71d2893a235bf3b95baccead27b3d47f2f2cdc4c
+Message-ID: <2025100600-repose-extended-6758@gregkh>
+References: <c3e98ccee91993c1d0c3df4556ac172ae04234aa.camel@irl.hu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,64 +53,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aOAZR0-4ZCq78DZ8@willie-the-truck>
+In-Reply-To: <c3e98ccee91993c1d0c3df4556ac172ae04234aa.camel@irl.hu>
 
-On Fri, Oct 03, 2025 at 07:43:19PM +0100, Will Deacon wrote:
-> On Fri, Oct 03, 2025 at 07:39:17PM +0100, Will Deacon wrote:
-> > Stable commit 23249dade24e ("KVM: arm64: Fix kernel BUG() due to bad
-> > backport of FPSIMD/SVE/SME fix") fixed a kernel BUG() caused by a bad
-> > backport of upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally
-> > save+flush host FPSIMD/SVE/SME state") by ensuring that softirqs are
-> > disabled/enabled across the fpsimd register save operation.
-> > 
-> > Unfortunately, although this fixes the original issue, it can now lead
-> > to deadlock when re-enabling softirqs causes pending softirqs to be
-> > handled with locks already held:
-> > 
-> >  | BUG: spinlock recursion on CPU#7, CPU 3/KVM/57616
-> >  |  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU 3/KVM/57616, .owner_cpu: 7
-> >  | CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O       6.1.152 #1
-> >  | Hardware name: SoftIron SoftIron Platform Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
-> >  | Call trace:
-> >  |  dump_backtrace+0xe4/0x110
-> >  |  show_stack+0x20/0x30
-> >  |  dump_stack_lvl+0x6c/0x88
-> >  |  dump_stack+0x18/0x34
-> >  |  spin_dump+0x98/0xac
-> >  |  do_raw_spin_lock+0x70/0x128
-> >  |  _raw_spin_lock+0x18/0x28
-> >  |  raw_spin_rq_lock_nested+0x18/0x28
-> >  |  update_blocked_averages+0x70/0x550
-> >  |  run_rebalance_domains+0x50/0x70
-> >  |  handle_softirqs+0x198/0x328
-> >  |  __do_softirq+0x1c/0x28
-> >  |  ____do_softirq+0x18/0x28
-> >  |  call_on_irq_stack+0x30/0x48
-> >  |  do_softirq_own_stack+0x24/0x30
-> >  |  do_softirq+0x74/0x90
-> >  |  __local_bh_enable_ip+0x64/0x80
-> >  |  fpsimd_save_and_flush_cpu_state+0x5c/0x68
-> >  |  kvm_arch_vcpu_put_fp+0x4c/0x88
-> >  |  kvm_arch_vcpu_put+0x28/0x88
-> >  |  kvm_sched_out+0x38/0x58
-> >  |  __schedule+0x55c/0x6c8
-> >  |  schedule+0x60/0xa8
-> > 
-> > Take a tiny step towards the upstream fix in 9b19700e623f ("arm64:
-> > fpsimd: Drop unneeded 'busy' flag") by additionally disabling hardirqs
-> > while saving the fpsimd registers.
-> > 
-> > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > Cc: Lee Jones <lee@kernel.org>
-> > Cc: Sasha Levin <sashal@kernel.org>
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org
+On Sat, Oct 04, 2025 at 10:47:47PM +0200, Gergo Koteles wrote:
+> Hey Greg,
 > 
-> Sorry, Greg, I lost a stray '>' here ^^^  and so you didn't end up on CC
-> for this one.
+> I think this commit should be applied to v6.16 stable, because without
+> it some speakers may be damaged.
 
-No worries, I see the stuff going to stable@vger.kernel.org as well :)
-
-Now all queued up, thanks for these.
+Now queued up, thanks.
 
 greg k-h
 
