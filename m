@@ -1,217 +1,118 @@
-Return-Path: <stable+bounces-183493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B346BBF360
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 22:35:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549CFBBF9DB
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 23:55:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37AA4189C050
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 20:35:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456B3189AC7B
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 21:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F412DECBA;
-	Mon,  6 Oct 2025 20:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7CE21C9FD;
+	Mon,  6 Oct 2025 21:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JLcuykQW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HxcTn8rh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8AE2DE714
-	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 20:35:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D93184524;
+	Mon,  6 Oct 2025 21:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759782911; cv=none; b=M0nqoFq2QGiBcvE+q6XEXDKAyd1VaYiLiWz40vN0TUnA905T1XNb0bidk8TdcN3NRum8e9xqnluHWuU2nH1rueE0aTk9YbL3/u3vJTtJ9yXFOnL40qk46kG3Y7EsAteCrTgFXcNG2TdB8dO1g8s1G73KfUiSeWsfyVBYl9HBlds=
+	t=1759787710; cv=none; b=KjRPvpTB5uOsMn5EF5X9QRG0tiFdkQ+i5dqVynpaRCNlMlbv9DXxFYY8R/mKS66IDObYceXNXvDC/aWmkwmOly+idcM9O92y7D//AzmVXR+mVRGwx9DhfdnT/ypfiTrXdt5obx6vlpNIxAPEifPtMsfoqEy1U3+jeVaaA1vyIi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759782911; c=relaxed/simple;
-	bh=wRqM1wL0rtVZzWbUB1vZjAZ//+DX1ksR98VvmNXh1Ag=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XRXQpzGAMSgimUeQY9QBX0tcN5k9tBXtK7cCbu2xsq3WLj7oZAspR7B58I737TVOvwB39D7d8ljQRErmw5iynSnVrOdTSq2mYBC2P3KvbeZCaj1rDUqhXww06hcA0ytVqdhd0qjIO/jBuHsJMfsU9uEDnmAIjianELYiS5gXUsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JLcuykQW; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-46e326e4e99so33435715e9.1
-        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 13:35:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759782907; x=1760387707; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w8A8mrbjHOp4I+EQv9aLZuINyxZFXeZgTqLUL4/gbts=;
-        b=JLcuykQWTX1qhWoGcyL4rEQ654Dn8fEafHNnYaDb6dJmDejlYhMexc8dmKE0V+67KA
-         VXeK/+jdcGamwSsNrowIARdasb/A3kfrVP+mYMrjG2fMDyohKFx1OR/CBHF/NQieDvTm
-         nYhYkQLV5FmuVpoGFvxSlH9sEY7KtEtF6AA69dHyfafQLyW7FbgGfvjK7QzAsZKhJRxF
-         6b1Bh3dSp4xPjBWSZAhhNHoWPX4ZTv1vyvmhV1EfLHKX0+BMy3LeCJPJ/qPM7TxeZzUu
-         gAvPPXnbv8/OFMtna0TOzl2h/DsQ3zNdQkpQ+LVjhXyApki4ODJMjXgeiBA/a3ojS0nY
-         rm8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759782907; x=1760387707;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w8A8mrbjHOp4I+EQv9aLZuINyxZFXeZgTqLUL4/gbts=;
-        b=EeQFJEGZJLNTe2nPEh5an8OZkHITVBLsSGnOezeU2WjHOy1kbNTMa3XU/SblDcVXKc
-         7jryKl+lGeNqNj2VlEWpIri8B679cHBat5K/nwCoyvxMaBb5i1kAkq9dB6aW1H0Ikbww
-         FUkLLAGsgKA40WaxLM+sKjm6HaFoCpyYM5Awoa92SieCjNpsvAIdwytaGiBxDuQungud
-         qRtJ4Xay3jEN2YiPUL9Vj8vF18nT2DPuRo+i2sVzbXVtkRGsAqs51Mrs/5un7P5HXQEc
-         d/ooebdGKByBjwD0inmQkJYMbIYPwnFtoBFGg+xRj+mnVnvskp7+77mMcFb3kcQcb4bD
-         a2lg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCmkKB9yMG7NOoyU4338vOeYGrVQcEaAIziZMM1gKUFtFDnA48ZkKVhBoy3NopWKxsBMsi4os=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqoLWvs8xgBRGdjSVIdXsneqhuDQnBLU95a6kHvZL5I1IHwVLM
-	8QUA2sQwbWV9DE0LxFJ39T8Um1LCqpr7qPO3Md5PWIt07DvHHhX4FiG+
-X-Gm-Gg: ASbGncvbLmydtuzUBrWxUl9Y4c0RN7DknCgHzLjhZOHepJy/9ftFYDcp+6vHsj2bvk1
-	HnEqrQUP+cBYrWN1NOusJ7MZ+QQ98Yc8EHszTaRZBctu4JpAdbLJwRVXwkS9W+bi1eOoNIs7yE9
-	6Mo8xtuCUVGzW+v8PEOwV3HXd91fqViLs7C94i8AwCgnTW/oilJqPM6mDMz4mntVNsgbjcsaE5e
-	t2CdP0MMTguV1ceTmOP9XpQo31r8tMDguLVz27CWkewKimTN2FSprqx3MAv9uWcjhmhWJMe8bnz
-	SHBtVliu+eVBYC6URjl8YR4hbD5zCseSrcTQU1/8rAjO3lgDwYHIgVqzu7DspN7UwnOc5tvMsWu
-	8AdRR07nEObUhMDsHbVgsnD2wCUnHA7dVX/AZMGKpwnHsw9Olzc3h3WiwxFl4k21Jn1CVE6+g2X
-	31Q9oW0gJs1uXh
-X-Google-Smtp-Source: AGHT+IEnzSpQE+ROtayFnE2b4dPjTQF2CaZO9TdUfVNFcX6ejR4aNYCswD7XdVH/ajIMwYylIXY+YQ==
-X-Received: by 2002:a05:600c:2287:b0:45d:d86b:b386 with SMTP id 5b1f17b1804b1-46fa29f13dfmr4596085e9.14.1759782906754;
-        Mon, 06 Oct 2025 13:35:06 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e723591fcsm172334545e9.10.2025.10.06.13.35.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 13:35:06 -0700 (PDT)
-Date: Mon, 6 Oct 2025 21:35:03 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Eliav Farber <farbere@amazon.com>, dave.hansen@linux.intel.com,
- peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- x86@kernel.org, hpa@zytor.com, james.morse@arm.com, rric@kernel.org,
- daniel@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, sean@poorly.run, jdelvare@suse.com,
- linux@roeck-us.net, linus.walleij@linaro.org, dmitry.torokhov@gmail.com,
- maz@kernel.org, wens@csie.org, jernej.skrabec@gmail.com, agk@redhat.com,
- snitzer@redhat.com, dm-devel@redhat.com, davem@davemloft.net,
- kuba@kernel.org, mcoquelin.stm32@gmail.com,
- krzysztof.kozlowski@canonical.com, malattia@linux.it, hdegoede@redhat.com,
- mgross@linux.intel.com, jejb@linux.ibm.com, martin.petersen@oracle.com,
- sakari.ailus@linux.intel.com, clm@fb.com, josef@toxicpanda.com,
- dsterba@suse.com, jack@suse.com, tytso@mit.edu, adilger.kernel@dilger.ca,
- dushistov@mail.ru, luc.vanoostenryck@gmail.com, rostedt@goodmis.org,
- pmladek@suse.com, senozhatsky@chromium.org,
- andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
- minchan@kernel.org, ngupta@vflare.org, akpm@linux-foundation.org,
- yoshfuji@linux-ipv6.org, dsahern@kernel.org, pablo@netfilter.org,
- kadlec@netfilter.org, fw@strlen.de, jmaloy@redhat.com,
- ying.xue@windriver.com, shuah@kernel.org, willy@infradead.org,
- sashal@kernel.org, quic_akhilpo@quicinc.com, ruanjinjie@huawei.com,
- David.Laight@aculab.com, herve.codina@bootlin.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-um@lists.infradead.org, linux-edac@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
- linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-mm@kvack.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, tipc-discussion@lists.sourceforge.net,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>
-Subject: Re: [PATCH v2 07/19 5.15.y] minmax: simplify and clarify
- min_t()/max_t() implementation
-Message-ID: <20251006213242.3462e746@pumpkin>
-In-Reply-To: <2025100648-capable-register-101b@gregkh>
-References: <20251003130006.41681-1-farbere@amazon.com>
-	<20251003130006.41681-8-farbere@amazon.com>
-	<2025100648-capable-register-101b@gregkh>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1759787710; c=relaxed/simple;
+	bh=QOuCeBcgcbWQto9WnsHySOKZ81rbgK/I39KFx6jJPbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WBQriMSCBsBMffjF44o4A6ox0yC6xlT4GaXWnvNOft0OyWVHJAXepc9iBHuIrZsz17vXZet/csVQ9j5gPYPgTD56iStkiVIz8YJH19NhE9HDKgJPHfFLVxt98m90QoMB7SG2wPU68a0+EyAtWqKU2LSj51zH+624vVq57EIe3Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HxcTn8rh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2063C4CEF5;
+	Mon,  6 Oct 2025 21:55:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759787710;
+	bh=QOuCeBcgcbWQto9WnsHySOKZ81rbgK/I39KFx6jJPbw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HxcTn8rh2qtGoaJOOZNdQsG6QOQSuXkjo9ioB23X2j876uD5kx+XCssfZNvJDHdSj
+	 5Tb5LbzdYi3AKBXVuMAlbhzBe9bvJLgUEZImnWQGc0byYLUeLZRKw64qNit4AyUJxl
+	 4EmXamrJ0J7h0oV5jBeCGRI90XTCR1KkoV0+tcolM7Zgoep7gcISp4iBDLHzVi6ddz
+	 sZbZc+Lpe4V4zDMGLLOWaYO56mTkOQz5gREjezMUTZWmPaSrJkO4o2K+VQbwgM9zSm
+	 T7bPxWXmiPIu3yhaRGzsvqXXWs2NLC/+wTXugzEAjzS3AgIsDI+PCEpOPRAEFfh8xy
+	 RcIGXtWWzi7VQ==
+Date: Mon, 6 Oct 2025 14:55:05 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	"Borislav Petkov (AMD)" <bp@alien8.de>, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.17-5.4] x86/build: Remove cc-option from stack
+ alignment flags
+Message-ID: <20251006215505.GB3234160@ax162>
+References: <20251006181835.1919496-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251006181835.1919496-1-sashal@kernel.org>
 
-On Mon, 6 Oct 2025 12:47:45 +0200
-Greg KH <gregkh@linuxfoundation.org> wrote:
+On Mon, Oct 06, 2025 at 02:17:33PM -0400, Sasha Levin wrote:
+> From: Nathan Chancellor <nathan@kernel.org>
+> 
+> [ Upstream commit d87208128a3330c0eab18301ab39bdb419647730 ]
+> 
+> '-mpreferred-stack-boundary' (the GCC option) and '-mstack-alignment'
+> (the clang option) have been supported in their respective compilers for
+> some time, so it is unnecessary to check for support for them via
+> cc-option. '-mpreferred-stack-boundary=3' had a restriction on
+> '-mno-sse' until GCC 7.1 but that is irrelevant for most of the kernel,
+> which includes '-mno-sse'.
+> 
+> Move to simple Kconfig checks to avoid querying the compiler for the
+> flags that it supports.
+> 
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Link: https://lore.kernel.org/20250814-x86-min-ver-cleanups-v1-2-ff7f19457523@kernel.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+...
+> ## Backport Status: NO
+...
+> **Dependency Analysis:**
+> - Requires minimum GCC 8.1 for x86 (introduced in v6.15 via commit
+>   a3e8fe814ad1)
+> - Requires minimum Clang 15.0.0 for x86 (commit 7861640aac52b)
+> - Both requirements are satisfied in 6.17 stable tree (verified via
+>   scripts/min-tool-version.sh)
+> - GCC 7.1+ supports `-mpreferred-stack-boundary=3` with `-msse` (per GCC
+>   commit 34fac449e121)
+...
+> ### Conclusion
+> 
+> While this commit is technically safe and provides a marginal build-time
+> performance improvement by eliminating unnecessary runtime compiler
+> checks, **it does not meet the fundamental requirement for stable kernel
+> backporting**: it does not fix a bug that affects users.
+> 
+> The commit is purely a cleanup that removes obsolete code after compiler
+> minimum version requirements were raised. Such cleanups belong in
+> mainline development, not stable trees, which should focus exclusively
+> on fixing bugs that impact users.
+> 
+> The fact that it was auto-selected by AUTOSEL does not override the
+> documented stable kernel rules. This commit should be **rejected** from
+> stable backporting or **reverted** if already applied.
 
-(I've had to trim the 'To' list to send this...)
+Based on all of this, I would agree that it is not really suitable for
+backporting (at least not beyond 6.15, whereas the subject says back to
+5.4), so why was this still sent for review?
 
-> On Fri, Oct 03, 2025 at 12:59:54PM +0000, Eliav Farber wrote:
-> > From: Linus Torvalds <torvalds@linux-foundation.org>
-> >=20
-> > [ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
-> >=20
-> > This simplifies the min_t() and max_t() macros by no longer making them
-> > work in the context of a C constant expression.
-> >=20
-> > That means that you can no longer use them for static initializers or
-> > for array sizes in type definitions, but there were only a couple of
-> > such uses, and all of them were converted (famous last words) to use
-> > MIN_T/MAX_T instead.
-> >=20
-> > Cc: David Laight <David.Laight@aculab.com>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> > Signed-off-by: Eliav Farber <farbere@amazon.com> =20
->=20
-> Eliav, your testing infrastructure needs some work, this patch breaks
-> the build on this kernel tree:
->=20
-> In file included from ./include/linux/kernel.h:16,
->                  from ./include/linux/list.h:9,
->                  from ./include/linux/wait.h:7,
->                  from ./include/linux/wait_bit.h:8,
->                  from ./include/linux/fs.h:6,
->                  from fs/erofs/internal.h:10,
->                  from fs/erofs/zdata.h:9,
->                  from fs/erofs/zdata.c:6:
-> fs/erofs/zdata.c: In function =E2=80=98z_erofs_decompress_pcluster=E2=80=
-=99:
-> fs/erofs/zdata.h:185:61: error: ISO C90 forbids variable length array =E2=
-=80=98pages_onstack=E2=80=99 [-Werror=3Dvla]
->   185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page =
-*), 96U)
->       |                                                             ^~~~
-
-That constant seems to get (renamed and) changed to 32 in a later patch.
-I'm not sure of the rational for the min() at all.
-I think THREAD_SIZE is the size of the kernel stack? Or at least related to=
- it.
-The default seems to be 8k on x86-64 and 4k or 8k on i386.
-So it is pretty much always going to be 96.
-
-Linus added MIN() that can be used for array sizes.
-But I'd guess this could just be changed to 32 - need to ask the erofs guys.
-
-	David
-
-
-> ./include/linux/minmax.h:49:23: note: in definition of macro =E2=80=98__c=
-mp_once_unique=E2=80=99
->    49 |         ({ type ux =3D (x); type uy =3D (y); __cmp(op, ux, uy); })
->       |                       ^
-> ./include/linux/minmax.h:164:27: note: in expansion of macro =E2=80=98__c=
-mp_once=E2=80=99
->   164 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
->       |                           ^~~~~~~~~~
-> fs/erofs/zdata.h:185:9: note: in expansion of macro =E2=80=98min_t=E2=80=
-=99
->   185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page =
-*), 96U)
->       |         ^~~~~
-> fs/erofs/zdata.c:847:36: note: in expansion of macro =E2=80=98Z_EROFS_VMA=
-P_ONSTACK_PAGES=E2=80=99
->   847 |         struct page *pages_onstack[Z_EROFS_VMAP_ONSTACK_PAGES];
->       |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
->=20
->=20
-> I'll drop this whole series, please do a bit more testing before sending
-> out a new version.
->=20
-> thanks,
->=20
-> greg k-h
->=20
-
+Cheers,
+Nathan
 
