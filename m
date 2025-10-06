@@ -1,160 +1,121 @@
-Return-Path: <stable+bounces-183431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5EFBBE244
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 15:06:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C69BBE3B9
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 15:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55E943A5CDC
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 13:06:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9722D1898440
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 13:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985D529993A;
-	Mon,  6 Oct 2025 13:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F4E2D3A60;
+	Mon,  6 Oct 2025 13:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="pqLYTWRT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O7HV3MDd"
 X-Original-To: stable@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF661F4CB3;
-	Mon,  6 Oct 2025 13:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A55D27F19F;
+	Mon,  6 Oct 2025 13:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759755997; cv=none; b=K1RznooMk1Mh83IgGdUmfFMEIlKEVmrQ9SJb81nCmGTggZBRrLHil/UoqmIoy3d72fGYCtU1/7Ru9PfJGwdAhFHkX0IEpLsh4TaUbgU597gymmUCfvNvNz2Q0RO44IGy0HliWqYP3nWipE5EQXVssVpqv0UBdrfs/gcxCfz/CUM=
+	t=1759758748; cv=none; b=jT/JAL3NKaZUxz9gAF+4FZ5MSvH/mLwcohhVib3wq9kDNq+ZnOhnYKgMdvAILzF9Z798Hxf1fEhDaPamRWxMQqg62E/xqIF/vf9feEUgh+cvBlQyqe/AiMNrLG9ZqxlHFVV6yl0I38QmcSVJtoCnG3vJk3fC3sH8RNqp3PwailA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759755997; c=relaxed/simple;
-	bh=Se2h8mHA0GPBvqWfAGxuAl8vyGkUvNM8hK49ch6pvyA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IeXjO7n8DCGOHF3GQu5TGNOEPDZAMlL1GMtqhD3oZnms5AJuuFpEoVi5MQN4jFSvEMe5Wwk75uMtGxP0VbdecJPHuOxXRkbXayH4dGCeSkU0RpkS/9B7DlShSX1RtyPgFMSr/TYCSlqZONZGYydX3o6kb3cXrQg3YP2CIf7H3CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=pqLYTWRT; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=Content-Transfer-Encoding:MIME-Version:Message-ID:
-	Date:Subject:Cc:To:From:From:Reply-To:Subject:Date:Message-ID:To:Cc:
-	MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=KwqAABJ6dqZZWn3QO15od/yjIGBnSfZpjDbm7FXan64=; t=1759755994; x=1760360794; 
-	b=pqLYTWRTGLjrbiVvTIPl+hBYcVNJdM5YCTIrpXqjHx6VnbmKoNQaZ/eeoVDX6vfgpMBvVhIL69F
-	eduK8Z01lSMufiuxwefe2bXaYVeopMwDELvhKqYneXqtO1+Wm5dG6aJXr+3308xzYpPL2Jo/ITddH
-	1H+aNIfyxYvrcz1Ibm/QBYdv4fG5L7Pvzh4uZXoV49MTzjqfld63pX/yy9iIr1IQtR1MjvGiGPvKH
-	vBQm73g9+7ySdBFk0fitTkdazWjK0VHL368u2Y5Gfpbo6lzkBFfjwxDpLOxQe5lHCVsYHPOX5s61T
-	YhCCbYNHL+yZXVaeaMW9mWjU280wQmFB0wRg==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1v5kv6-000000005sN-2Mjt; Mon, 06 Oct 2025 15:06:28 +0200
-Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=z6.fritz.box)
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1v5kv6-000000035Xg-1GZK; Mon, 06 Oct 2025 15:06:28 +0200
-Received: from glaubitz by z6.fritz.box with local (Exim 4.98.2)
-	(envelope-from <glaubitz@physik.fu-berlin.de>)
-	id 1v5kv5-000000000pp-3t0P;
-	Mon, 06 Oct 2025 15:06:27 +0200
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Jens Axboe <axboe@kernel.dk>,
-	Young Xiao <YangX92@hotmail.com>,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Andreas Larsson <andreas@gaisler.com>,
-	Anthony Yznaga <anthony.yznaga@oracle.com>,
-	Sam James <sam@gentoo.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-	sparclinux@vger.kernel.org,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] Revert "sunvdc: Do not spin in an infinite loop when vio_ldc_send() returns EAGAIN"
-Date: Mon,  6 Oct 2025 15:05:42 +0200
-Message-ID: <20251006130542.3174-2-glaubitz@physik.fu-berlin.de>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1759758748; c=relaxed/simple;
+	bh=4IBVQkaNlJQeL/7kwoMR2W+EtGDZZF8s1gjkN1ztlQo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b/Heai8rPr7ruPDgle3pUDovyb74IWkhYS46sm5QeoeV1eOxaFnIg8znFM+eAontou8KKPyf7NsKhFBoGO1TzvP2mYnKOQYYxi+TBp1EDo5zX5RLcUw7jK/DVW9K1lNVWx98QD1k60n9ENSGHBQnl/uM9gtWVRb9nKuq9b6ETeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O7HV3MDd; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759758747; x=1791294747;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4IBVQkaNlJQeL/7kwoMR2W+EtGDZZF8s1gjkN1ztlQo=;
+  b=O7HV3MDdjI5Q4po7Fp2ev7UX64pZ3O4fLw2xtKlTqDno1vVHKbvy0zoe
+   NPgPp3HeeostlKvo4HmAzeDH1M5A2MFGddBmKocZumjvQ9cbFe7PH7ITV
+   t2rP9e92HGJJDaW93UVGySUQHm3TmK0xwvEO5bQdpnkZ6w7NffRF9ozJG
+   kHRep43j/ddkgJ7VCjNEIcQGzL4l/EaP+uOQGDLgecD1wJNSUvbJ6RsWD
+   0ZeXYvl8NeMDyeuDxr5NiGBokSxt5+KQFO4DEFj2hZEUcIhE1bjIlYLIB
+   kPxwqmQclI4HDVb6Kbjr1oPOoiXXQAZiE93fr5nj8JtmqQQu7O8Fh+u/A
+   w==;
+X-CSE-ConnectionGUID: 9hEX/jZ6R1K/ym3tK9wOLw==
+X-CSE-MsgGUID: 88uAAA+PRL6QxpMzJ0L8wg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11574"; a="64549511"
+X-IronPort-AV: E=Sophos;i="6.18,319,1751266800"; 
+   d="scan'208";a="64549511"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2025 06:52:26 -0700
+X-CSE-ConnectionGUID: Nr5aZJQfTgitbiz4KLiTlg==
+X-CSE-MsgGUID: FNCCBtwYRXKwAfPz0lGLSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,319,1751266800"; 
+   d="scan'208";a="179160338"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa010.jf.intel.com with ESMTP; 06 Oct 2025 06:52:24 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 9F51295; Mon, 06 Oct 2025 15:52:22 +0200 (CEST)
+Date: Mon, 6 Oct 2025 15:52:22 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Brian Norris <briannorris@chromium.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	Brian Norris <briannorris@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] PCI/PM: Avoid redundant delays on D3hot->D3cold
+Message-ID: <20251006135222.GD2912318@black.igk.intel.com>
+References: <20251003154008.1.I7a21c240b30062c66471329567a96dceb6274358@changeid>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251003154008.1.I7a21c240b30062c66471329567a96dceb6274358@changeid>
 
-In a11f6ca9aef9 ("sunvdc: Do not spin in an infinite loop when vio_ldc_send()
-returns EAGAIN"), a maximum retry count was added to __vdc_tx_trigger().
+Hi,
 
-After this change, several users reported disk I/O errors when running Linux
-inside a logical domain on Solaris 11.4:
+On Fri, Oct 03, 2025 at 03:40:09PM -0700, Brian Norris wrote:
+> From: Brian Norris <briannorris@google.com>
+> 
+> When transitioning to D3cold, __pci_set_power_state() will first
+> transition a device to D3hot. If the device was already in D3hot, this
+> will add excess work:
+> (a) read/modify/write PMCSR; and
+> (b) excess delay (pci_dev_d3_sleep()).
 
-[19095.192532] sunvdc: vdc_tx_trigger() failure, err=-11
-[19095.192605] I/O error, dev vdiskc, sector 368208928 op 0x1:(WRITE) flags 0x1000 phys_seg 2 prio class 2
-[19095.205681] XFS (vdiskc1): metadata I/O error in "xfs_buf_ioend+0x28c/0x600 [xfs]" at daddr 0x15f26420 len 32 error 5
-[19432.043471] sunvdc: vdc_tx_trigger() failure, err=-11
-[19432.043529] I/O error, dev vdiskc, sector 3732568 op 0x1:(WRITE) flags 0x1000 phys_seg 1 prio class 2
-[19432.058821] sunvdc: vdc_tx_trigger() failure, err=-11
-[19432.058843] I/O error, dev vdiskc, sector 3736256 op 0x1:(WRITE) flags 0x1000 phys_seg 4 prio class 2
-[19432.074109] sunvdc: vdc_tx_trigger() failure, err=-11
-[19432.074128] I/O error, dev vdiskc, sector 3736512 op 0x1:(WRITE) flags 0x1000 phys_seg 4 prio class 2
-[19432.089425] sunvdc: vdc_tx_trigger() failure, err=-11
-[19432.089443] I/O error, dev vdiskc, sector 3737024 op 0x1:(WRITE) flags 0x1000 phys_seg 1 prio class 2
-[19432.100964] XFS (vdiskc1): metadata I/O error in "xfs_buf_ioend+0x28c/0x600 [xfs]" at daddr 0x38ec58 len 8 error 5
+How come the device is already in D3hot when __pci_set_power_state() is
+called? IIRC PCI core will transition the device to low power state so that
+it passes there the deepest possible state, and at that point the device is
+still in D0. Then __pci_set_power_state() puts it into D3hot and then turns
+if the power resource -> D3cold.
 
-Since this change seems to have only been justified by reading the code which
-becomes evident by the reference to adddc32d6fde ("sunvnet: Do not spin in an
-infinite loop when vio_ldc_send() returns EAGAIN") in the commit message, it
-can be safely assumed that the change was neither properly tested nor motivated
-by any actual bug reports.
+What I'm missing here?
 
-Thus, let's revert this change to address the disk I/O errors above.
+> For (b), we already performed the necessary delay on the previous D3hot
+> entry; this was extra noticeable when evaluating runtime PM transition
+> latency.
+> 
+> Check whether we're already in the target state before continuing.
+> 
+> Note that __pci_set_power_state() already does this same check for other
+> state transitions, but D3cold is special because __pci_set_power_state()
+> converts it to D3hot for the purposes of PMCSR.
+> 
+> This seems to be an oversight in commit 0aacdc957401 ("PCI/PM: Clean up
+> pci_set_low_power_state()").
+> 
+> Fixes: 0aacdc957401 ("PCI/PM: Clean up pci_set_low_power_state()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Brian Norris <briannorris@google.com>
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
 
-Cc: stable@vger.kernel.org
-Fixes: a11f6ca9aef9 ("sunvdc: Do not spin in an infinite loop when vio_ldc_send() returns EAGAIN")
-
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
----
-Changes since v1:
-- Rephrase commit message
-Changes since v2:
-- Add missing CC and Fixes tags
----
- drivers/block/sunvdc.c | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/drivers/block/sunvdc.c b/drivers/block/sunvdc.c
-index 282f81616a78..f56023c2b033 100644
---- a/drivers/block/sunvdc.c
-+++ b/drivers/block/sunvdc.c
-@@ -45,8 +45,6 @@ MODULE_VERSION(DRV_MODULE_VERSION);
- #define WAITING_FOR_GEN_CMD	0x04
- #define WAITING_FOR_ANY		-1
- 
--#define	VDC_MAX_RETRIES	10
--
- static struct workqueue_struct *sunvdc_wq;
- 
- struct vdc_req_entry {
-@@ -437,7 +435,6 @@ static int __vdc_tx_trigger(struct vdc_port *port)
- 		.end_idx		= dr->prod,
- 	};
- 	int err, delay;
--	int retries = 0;
- 
- 	hdr.seq = dr->snd_nxt;
- 	delay = 1;
-@@ -450,8 +447,6 @@ static int __vdc_tx_trigger(struct vdc_port *port)
- 		udelay(delay);
- 		if ((delay <<= 1) > 128)
- 			delay = 128;
--		if (retries++ > VDC_MAX_RETRIES)
--			break;
- 	} while (err == -EAGAIN);
- 
- 	if (err == -ENOTCONN)
--- 
-2.47.3
-
+BTW, I think only one SoB from you is enough ;-)
 
