@@ -1,441 +1,149 @@
-Return-Path: <stable+bounces-183407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE55BBD699
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 11:11:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA892BBD6B2
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 11:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 045FB3B4B04
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 09:11:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B37ED4E1DAD
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 09:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF906264F9C;
-	Mon,  6 Oct 2025 09:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2128265CA4;
+	Mon,  6 Oct 2025 09:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BNxivvhF"
 X-Original-To: stable@vger.kernel.org
-Received: from lankhorst.se (lankhorst.se [141.105.120.124])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E829C219E8D;
-	Mon,  6 Oct 2025 09:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0B23FC7;
+	Mon,  6 Oct 2025 09:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759741876; cv=none; b=dK8nBhEpmdidhR9P8akSdXrCYXC5Kvx8CmnghLJFpx+nxlCSXTZL+5MhFzqT8KCZU6vdnlYs3aS+VE7eU+q1WSg26HmPPJPr4bfQoc/Yal9KpnszUIrjeESP2HLCpx1rBSQWv3ZveMWA495ht/+0mXh70YvczRwTCskDH6u61tM=
+	t=1759742322; cv=none; b=WzT1F5umM3LczbGeey8qGyExTEFp9QpMXw3xFSxpN3UGpPg6NlSPqPmwZRngDgpO68pAYwcBl2DKT1MJt5/wIf4xopEiNil1ujiPzDAndDPD1Og1VgBIdHTg09c4iT30jEkcPN+EEcU+JdqkMWz018B9A5A+IN8CH91pXZVN/wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759741876; c=relaxed/simple;
-	bh=dWqGdfM9BsNk2Qs9aElhZtirK72+i12wnE3VDj9+fbg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oxmJu8kQafGtDeueTOrumglqhyAdjz9E8m/se1j//tf0FeojxGpBjIOe4jCpCIu9An8/naTZ4WscczfWpMdTrW5kiR6y9BhGthpwF/mvSSeKeD30byvv4vm09n2YEFsBZZi1ccrxirF1YX8IkMSA+dQ0Qi7Dj69DxzsuL/+3cBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se; spf=pass smtp.mailfrom=lankhorst.se; arc=none smtp.client-ip=141.105.120.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lankhorst.se
-Message-ID: <977e15c2-ad91-45c4-be99-0390ae7f8315@lankhorst.se>
-Date: Mon, 6 Oct 2025 11:11:01 +0200
+	s=arc-20240116; t=1759742322; c=relaxed/simple;
+	bh=jXeM/u0/nnZafGW4O+70km7d+QdoV5xSOImlb1WmmiA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eITaTQsAJZhRzECqEWO9ik/oFgSg26LZlkzZyVxeJSJupXO/HJ6alT4P2QuSb3CMeXU/tALRkCWrp2GCnfzEhyViu+D4PB2Z+2pWrov/QENiw++E06Sz3rpcIg9cyklYetnLmrMQAa0QQYqAZOWi3J256KnjCkOZlIIscmGVESM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BNxivvhF; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5961V50c012073;
+	Mon, 6 Oct 2025 09:18:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=UIcBLPogFPr84n3P+mfbWNgH/jB3ny8AyGp
+	DWMJ9E4g=; b=BNxivvhFHx+0NIHFIZNkjzuRIJb3BIfhn0AJ6Qd//9a4EMfSt5i
+	6x2VngAM2FixRugqtmvkTqPfSz+MwwE54na1g6dzI2EHNfGsP+91VOTiOK8QOn8I
+	uc76cnETnL1qRp0zO7aym2aLaoBh8dpNfBltV7XGKZIA3GkoxyQm42cFOvW8NIxl
+	98zu6cj3FaUi18ARUEguvzV0pk5+AJ+wF1d71U99s37JQexr8dPD2v5RxWHNue3K
+	s/PobUQ5HKih5ng2w8rRvsgfpFlYUJW8yOE54SJGvMJWR3MCKpxtyfbUSCa3wgBO
+	02VZ48/Q7wKqRWKZFgsWsReweWWyaRzvnPw==
+Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49jrxn3p16-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Oct 2025 09:18:28 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 5969INFc028688;
+	Mon, 6 Oct 2025 09:18:23 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 49jvnm1h0x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Oct 2025 09:18:23 +0000
+Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5969IN4m028681;
+	Mon, 6 Oct 2025 09:18:23 GMT
+Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-bvisredd-hyd.qualcomm.com [10.147.240.98])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 5969INLn028679
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Oct 2025 09:18:23 +0000
+Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 4559132)
+	id 2808C570; Mon,  6 Oct 2025 14:48:22 +0530 (+0530)
+From: Vishnu Reddy <quic_bvisredd@quicinc.com>
+To: vikash.garodia@oss.qualcomm.com, dikshita.agarwal@oss.qualcomm.com,
+        abhinav.kumar@linux.dev, bod@kernel.org, mchehab@kernel.org,
+        hverkuil@kernel.org, stefan.schmidt@linaro.org
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Vishnu Reddy <quic_bvisredd@quicinc.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] media: iris: Fix ffmpeg corrupted frame error
+Date: Mon,  6 Oct 2025 14:48:19 +0530
+Message-Id: <20251006091819.2725617-1-quic_bvisredd@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] devcoredump: Fix circular locking dependency with
- devcd->mutex.
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: linux-kernel@vger.kernel.org, intel-xe@lists.freedesktop.org,
- Mukesh Ojha <quic_mojha@quicinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Johannes Berg <johannes@sipsolutions.net>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- stable@vger.kernel.org, Matthew Brost <matthew.brost@intel.com>
-References: <20250723142416.1020423-1-dev@lankhorst.se>
- <20251003180052.wpx4d5mqs6tmmber@hu-mojha-hyd.qualcomm.com>
-Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <20251003180052.wpx4d5mqs6tmmber@hu-mojha-hyd.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAwMSBTYWx0ZWRfX6ZvXHcGvdiKS
+ 8Htf+ElNLrR5niwhBWl/JPydGYnk7QZV8z2qPqqUAgz84WyJja0pLHzgIOB74FxJxiCE/5fpdie
+ 7Y1VlMNVXg9L3wigegMJzEBLbfTdI4LZ2KJI1OWOtNyZMuX4pvldVciOntIhw3HNZeOBsnLsPmE
+ dP6sRAUC32cDH2BbNeUeEkhLZv1KyBrvXEywvOSeN85m4f09hsqtP1HbRZqTHJ2YlPDuGFE9Ngl
+ Exue3GG0HzRjCvcdxY515926pTpCqH80nw96lBQKaS/7+M8RrE5OpYtRDR4gr8gdCgOGkPr8rq4
+ pQuFgyxUkGokk+9en1azeP+eeU9qQSvhGFO6FLq0RY4wzB5zPFSYj7Hrk32XUOzD33uyxtgZZ+h
+ 2Ue9g4ebjZWwpDFdVWtLBUih8zZn8A==
+X-Proofpoint-GUID: lKA8AbMXEIRdwqMl9WmwXxbLHs3Ru3qB
+X-Proofpoint-ORIG-GUID: lKA8AbMXEIRdwqMl9WmwXxbLHs3Ru3qB
+X-Authority-Analysis: v=2.4 cv=EqnfbCcA c=1 sm=1 tr=0 ts=68e38965 cx=c_pps
+ a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=pO0-sYB_UKqAWa9ZsqIA:9
+ a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-06_03,2025-10-02_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0 malwarescore=0
+ adultscore=0 suspectscore=0 bulkscore=0 impostorscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040001
 
-Hey,
+When the ffmpeg decoder is running, the driver receives the
+V4L2_BUF_FLAG_KEYFRAME flag in the input buffer. The driver then forwards
+this flag information to the firmware. The firmware, in turn, copies the
+input buffer flags directly into the output buffer flags. Upon receiving
+the output buffer from the firmware, the driver observes that the buffer
+contains the HFI_BUFFERFLAG_DATACORRUPT flag. The root cause is that both
+V4L2_BUF_FLAG_KEYFRAME and HFI_BUFFERFLAG_DATACORRUPT are the same value.
+As a result, the driver incorrectly interprets the output frame as
+corrupted, even though the frame is actually valid. This misinterpretation
+causes the driver to report an error and skip good frames, leading to
+missing frames in the final video output and triggering ffmpeg's "corrupt
+decoded frame" error.
 
-Den 2025-10-03 kl. 20:00, skrev Mukesh Ojha:
-> On Wed, Jul 23, 2025 at 04:24:16PM +0200, Maarten Lankhorst wrote:
->> The original code causes a circular locking dependency found by lockdep.
->>
->> ======================================================
->> WARNING: possible circular locking dependency detected
->> 6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 Tainted: G S   U
->> ------------------------------------------------------
->> xe_fault_inject/5091 is trying to acquire lock:
->> ffff888156815688 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}, at: __flush_work+0x25d/0x660
->>
->> but task is already holding lock:
->>
->> ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
->> which lock already depends on the new lock.
->> the existing dependency chain (in reverse order) is:
->> -> #2 (&devcd->mutex){+.+.}-{3:3}:
->>        mutex_lock_nested+0x4e/0xc0
->>        devcd_data_write+0x27/0x90
->>        sysfs_kf_bin_write+0x80/0xf0
->>        kernfs_fop_write_iter+0x169/0x220
->>        vfs_write+0x293/0x560
->>        ksys_write+0x72/0xf0
->>        __x64_sys_write+0x19/0x30
->>        x64_sys_call+0x2bf/0x2660
->>        do_syscall_64+0x93/0xb60
->>        entry_SYSCALL_64_after_hwframe+0x76/0x7e
->> -> #1 (kn->active#236){++++}-{0:0}:
->>        kernfs_drain+0x1e2/0x200
->>        __kernfs_remove+0xae/0x400
->>        kernfs_remove_by_name_ns+0x5d/0xc0
->>        remove_files+0x54/0x70
->>        sysfs_remove_group+0x3d/0xa0
->>        sysfs_remove_groups+0x2e/0x60
->>        device_remove_attrs+0xc7/0x100
->>        device_del+0x15d/0x3b0
->>        devcd_del+0x19/0x30
->>        process_one_work+0x22b/0x6f0
->>        worker_thread+0x1e8/0x3d0
->>        kthread+0x11c/0x250
->>        ret_from_fork+0x26c/0x2e0
->>        ret_from_fork_asm+0x1a/0x30
->> -> #0 ((work_completion)(&(&devcd->del_wk)->work)){+.+.}-{0:0}:
->>        __lock_acquire+0x1661/0x2860
->>        lock_acquire+0xc4/0x2f0
->>        __flush_work+0x27a/0x660
->>        flush_delayed_work+0x5d/0xa0
->>        dev_coredump_put+0x63/0xa0
->>        xe_driver_devcoredump_fini+0x12/0x20 [xe]
->>        devm_action_release+0x12/0x30
->>        release_nodes+0x3a/0x120
->>        devres_release_all+0x8a/0xd0
->>        device_unbind_cleanup+0x12/0x80
->>        device_release_driver_internal+0x23a/0x280
->>        device_driver_detach+0x14/0x20
->>        unbind_store+0xaf/0xc0
->>        drv_attr_store+0x21/0x50
->>        sysfs_kf_write+0x4a/0x80
->>        kernfs_fop_write_iter+0x169/0x220
->>        vfs_write+0x293/0x560
->>        ksys_write+0x72/0xf0
->>        __x64_sys_write+0x19/0x30
->>        x64_sys_call+0x2bf/0x2660
->>        do_syscall_64+0x93/0xb60
->>        entry_SYSCALL_64_after_hwframe+0x76/0x7e
->> other info that might help us debug this:
->> Chain exists of: (work_completion)(&(&devcd->del_wk)->work) --> kn->active#236 --> &devcd->mutex
->>  Possible unsafe locking scenario:
->>        CPU0                    CPU1
->>        ----                    ----
->>   lock(&devcd->mutex);
->>                                lock(kn->active#236);
->>                                lock(&devcd->mutex);
->>   lock((work_completion)(&(&devcd->del_wk)->work));
->>  *** DEADLOCK ***
->> 5 locks held by xe_fault_inject/5091:
->>  #0: ffff8881129f9488 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x72/0xf0
->>  #1: ffff88810c755078 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x123/0x220
->>  #2: ffff8881054811a0 (&dev->mutex){....}-{3:3}, at: device_release_driver_internal+0x55/0x280
->>  #3: ffff888156815620 (&devcd->mutex){+.+.}-{3:3}, at: dev_coredump_put+0x3f/0xa0
->>  #4: ffffffff8359e020 (rcu_read_lock){....}-{1:2}, at: __flush_work+0x72/0x660
->> stack backtrace:
->> CPU: 14 UID: 0 PID: 5091 Comm: xe_fault_inject Tainted: G S   U              6.16.0-rc6-lgci-xe-xe-pw-151626v3+ #1 PREEMPT_{RT,(lazy)}
->> Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
->> Hardware name: Micro-Star International Co., Ltd. MS-7D25/PRO Z690-A DDR4(MS-7D25), BIOS 1.10 12/13/2021
->> Call Trace:
->>  <TASK>
->>  dump_stack_lvl+0x91/0xf0
->>  dump_stack+0x10/0x20
->>  print_circular_bug+0x285/0x360
->>  check_noncircular+0x135/0x150
->>  ? register_lock_class+0x48/0x4a0
->>  __lock_acquire+0x1661/0x2860
->>  lock_acquire+0xc4/0x2f0
->>  ? __flush_work+0x25d/0x660
->>  ? mark_held_locks+0x46/0x90
->>  ? __flush_work+0x25d/0x660
->>  __flush_work+0x27a/0x660
->>  ? __flush_work+0x25d/0x660
->>  ? trace_hardirqs_on+0x1e/0xd0
->>  ? __pfx_wq_barrier_func+0x10/0x10
->>  flush_delayed_work+0x5d/0xa0
->>  dev_coredump_put+0x63/0xa0
->>  xe_driver_devcoredump_fini+0x12/0x20 [xe]
->>  devm_action_release+0x12/0x30
->>  release_nodes+0x3a/0x120
->>  devres_release_all+0x8a/0xd0
->>  device_unbind_cleanup+0x12/0x80
->>  device_release_driver_internal+0x23a/0x280
->>  ? bus_find_device+0xa8/0xe0
->>  device_driver_detach+0x14/0x20
->>  unbind_store+0xaf/0xc0
->>  drv_attr_store+0x21/0x50
->>  sysfs_kf_write+0x4a/0x80
->>  kernfs_fop_write_iter+0x169/0x220
->>  vfs_write+0x293/0x560
->>  ksys_write+0x72/0xf0
->>  __x64_sys_write+0x19/0x30
->>  x64_sys_call+0x2bf/0x2660
->>  do_syscall_64+0x93/0xb60
->>  ? __f_unlock_pos+0x15/0x20
->>  ? __x64_sys_getdents64+0x9b/0x130
->>  ? __pfx_filldir64+0x10/0x10
->>  ? do_syscall_64+0x1a2/0xb60
->>  ? clear_bhb_loop+0x30/0x80
->>  ? clear_bhb_loop+0x30/0x80
->>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
->> RIP: 0033:0x76e292edd574
->> Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
->> RSP: 002b:00007fffe247a828 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
->> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000076e292edd574
->> RDX: 000000000000000c RSI: 00006267f6306063 RDI: 000000000000000b
->> RBP: 000000000000000c R08: 000076e292fc4b20 R09: 0000000000000000
->> R10: 0000000000000000 R11: 0000000000000202 R12: 00006267f6306063
->> R13: 000000000000000b R14: 00006267e6859c00 R15: 000076e29322a000
->>  </TASK>
->> xe 0000:03:00.0: [drm] Xe device coredump has been deleted.
->>
->> Fixes: 01daccf74832 ("devcoredump : Serialize devcd_del work")
->> Cc: Mukesh Ojha <quic_mojha@quicinc.com>
->> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Cc: Johannes Berg <johannes@sipsolutions.net>
->> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
->> Cc: Danilo Krummrich <dakr@kernel.org>
->> Cc: linux-kernel@vger.kernel.org
->> Cc: <stable@vger.kernel.org> # v6.1+
->> Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
->> Cc: Matthew Brost <matthew.brost@intel.com>
-> 
-> Looks to be genuine issue.,
-> 
->> ---
->>  drivers/base/devcoredump.c | 136 ++++++++++++++++++++++---------------
->>  1 file changed, 83 insertions(+), 53 deletions(-)
->>
->> diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
->> index 03a39c417dc41..ad4bddde12ccb 100644
->> --- a/drivers/base/devcoredump.c
->> +++ b/drivers/base/devcoredump.c
->> @@ -23,50 +23,46 @@ struct devcd_entry {
->>  	void *data;
->>  	size_t datalen;
->>  	/*
->> -	 * Here, mutex is required to serialize the calls to del_wk work between
->> -	 * user/kernel space which happens when devcd is added with device_add()
->> -	 * and that sends uevent to user space. User space reads the uevents,
->> -	 * and calls to devcd_data_write() which try to modify the work which is
->> -	 * not even initialized/queued from devcoredump.
->> +	 * There are 2 races for which mutex is required.
->>  	 *
->> +	 * The first race is between device creation and userspace writing to
->> +	 * schedule immediately destruction.
->>  	 *
->> +	 * This race is handled by arming the timer before device creation, but
->> +	 * when device creation fails the timer still exists.
->>  	 *
->> -	 *        cpu0(X)                                 cpu1(Y)
->> +	 * To solve this, hold the mutex during device_add(), and set
->> +	 * init_completed on success before releasing the mutex.
->>  	 *
->> -	 *        dev_coredump() uevent sent to user space
->> -	 *        device_add()  ======================> user space process Y reads the
->> -	 *                                              uevents writes to devcd fd
->> -	 *                                              which results into writes to
->> +	 * That way the timer will never fire until device_add() is called,
->> +	 * it will do nothing if init_completed is not set. The timer is also
->> +	 * cancelled in that case.
->>  	 *
->> -	 *                                             devcd_data_write()
->> -	 *                                               mod_delayed_work()
->> -	 *                                                 try_to_grab_pending()
->> -	 *                                                   timer_delete()
->> -	 *                                                     debug_assert_init()
->> -	 *       INIT_DELAYED_WORK()
->> -	 *       schedule_delayed_work()
->> -	 *
->> -	 *
->> -	 * Also, mutex alone would not be enough to avoid scheduling of
->> -	 * del_wk work after it get flush from a call to devcd_free()
->> -	 * mentioned as below.
->> -	 *
->> -	 *	disabled_store()
->> -	 *        devcd_free()
->> -	 *          mutex_lock()             devcd_data_write()
->> -	 *          flush_delayed_work()
->> -	 *          mutex_unlock()
->> -	 *                                   mutex_lock()
->> -	 *                                   mod_delayed_work()
->> -	 *                                   mutex_unlock()
->> -	 * So, delete_work flag is required.
->> +	 * The second race involves multiple parallel invocations of devcd_free(),
->> +	 * add a deleted flag so only 1 can call the destructor.
->>  	 */
->>  	struct mutex mutex;
->> -	bool delete_work;
->> +	bool init_completed, deleted;
->>  	struct module *owner;
->>  	ssize_t (*read)(char *buffer, loff_t offset, size_t count,
->>  			void *data, size_t datalen);
->>  	void (*free)(void *data);
->> +	/*
->> +	 * If nothing interferes and device_add() was returns success,
->> +	 * del_wk will destroy the device after the timer fires.
->> +	 *
->> +	 * Multiple userspace processes can interfere in the working of the timer:
->> +	 * - Writing to the coredump will reschedule the timer to run immediately,
->> +	 *   if still armed.
->> +	 *
->> +	 *   This is handled by using "if (cancel_delayed_work()) {
->> +	 *   schedule_delayed_work() }", to prevent re-arming after having
->> +	 *   been previously fired.
->> +	 * - Writing to /sys/class/devcoredump/disabled will destroy the
->> +	 *   coredump synchronously.
->> +	 *   This is handled by using disable_delayed_work_sync(), and then
->> +	 *   checking if deleted flag is set with &devcd->mutex held.
->> +	 */
->>  	struct delayed_work del_wk;
->>  	struct device *failing_dev;
->>  };
->> @@ -95,14 +91,27 @@ static void devcd_dev_release(struct device *dev)
->>  	kfree(devcd);
->>  }
->>  
->> +static void __devcd_del(struct devcd_entry *devcd)
->> +{
->> +	devcd->deleted = true;
->> +	device_del(&devcd->devcd_dev);
->> +	put_device(&devcd->devcd_dev);
->> +}
->> +
->>  static void devcd_del(struct work_struct *wk)
->>  {
->>  	struct devcd_entry *devcd;
->> +	bool init_completed;
->>  
->>  	devcd = container_of(wk, struct devcd_entry, del_wk.work);
->>  
->> -	device_del(&devcd->devcd_dev);
->> -	put_device(&devcd->devcd_dev);
->> +	/* devcd->mutex serializes against dev_coredumpm_timeout */
->> +	mutex_lock(&devcd->mutex);
->> +	init_completed = devcd->init_completed;
->> +	mutex_unlock(&devcd->mutex);
->> +
->> +	if (init_completed)
->> +		__devcd_del(devcd);
->>  }
->>  
->>  static ssize_t devcd_data_read(struct file *filp, struct kobject *kobj,
->> @@ -122,12 +131,12 @@ static ssize_t devcd_data_write(struct file *filp, struct kobject *kobj,
->>  	struct device *dev = kobj_to_dev(kobj);
->>  	struct devcd_entry *devcd = dev_to_devcd(dev);
->>  
->> -	mutex_lock(&devcd->mutex);
->> -	if (!devcd->delete_work) {
->> -		devcd->delete_work = true;
->> -		mod_delayed_work(system_wq, &devcd->del_wk, 0);
->> -	}
->> -	mutex_unlock(&devcd->mutex);
->> +	/*
->> +	 * Although it's tempting to use mod_delayed work here,
->> +	 * that will cause a reschedule if the timer already fired.
->> +	 */
->> +	if (cancel_delayed_work(&devcd->del_wk))
->> +		schedule_delayed_work(&devcd->del_wk, 0);
->>  
->>  	return count;
->>  }
->> @@ -151,11 +160,21 @@ static int devcd_free(struct device *dev, void *data)
->>  {
->>  	struct devcd_entry *devcd = dev_to_devcd(dev);
->>  
->> +	/*
->> +	 * To prevent a race with devcd_data_write(), disable work and
->> +	 * complete manually instead.
->> +	 *
->> +	 * We cannot rely on the return value of
->> +	 * disable_delayed_work_sync() here, because it might be in the
->> +	 * middle of a cancel_delayed_work + schedule_delayed_work pair.
->> +	 *
->> +	 * devcd->mutex here guards against multiple parallel invocations
->> +	 * of devcd_free().
->> +	 */
->> +	disable_delayed_work_sync(&devcd->del_wk);
->>  	mutex_lock(&devcd->mutex);
->> -	if (!devcd->delete_work)
->> -		devcd->delete_work = true;
->> -
->> -	flush_delayed_work(&devcd->del_wk);
->> +	if (!devcd->deleted)
->> +		__devcd_del(devcd);
->>  	mutex_unlock(&devcd->mutex);
->>  	return 0;
->>  }
->> @@ -179,12 +198,10 @@ static ssize_t disabled_show(const struct class *class, const struct class_attri
->>   *                                                                 put_device() <- last reference
->>   *             error = fn(dev, data)                           devcd_dev_release()
->>   *             devcd_free(dev, data)                           kfree(devcd)
->> - *             mutex_lock(&devcd->mutex);
->>   *
->>   *
->>   * In the above diagram, it looks like disabled_store() would be racing with parallelly
->> - * running devcd_del() and result in memory abort while acquiring devcd->mutex which
->> - * is called after kfree of devcd memory after dropping its last reference with
->> + * running devcd_del() and result in memory abort after dropping its last reference with
->>   * put_device(). However, this will not happens as fn(dev, data) runs
->>   * with its own reference to device via klist_node so it is not its last reference.
->>   * so, above situation would not occur.
->> @@ -374,7 +391,7 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
->>  	devcd->read = read;
->>  	devcd->free = free;
->>  	devcd->failing_dev = get_device(dev);
->> -	devcd->delete_work = false;
->> +	devcd->deleted = false;
->>  
->>  	mutex_init(&devcd->mutex);
->>  	device_initialize(&devcd->devcd_dev);
->> @@ -383,8 +400,14 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
->>  		     atomic_inc_return(&devcd_count));
->>  	devcd->devcd_dev.class = &devcd_class;
->>  
->> -	mutex_lock(&devcd->mutex);
->>  	dev_set_uevent_suppress(&devcd->devcd_dev, true);
->> +
->> +	/* devcd->mutex prevents devcd_del() completing until init finishes */
->> +	mutex_lock(&devcd->mutex);
->> +	devcd->init_completed = false;
->> +	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
->> +	schedule_delayed_work(&devcd->del_wk, timeout);
->> +
->>  	if (device_add(&devcd->devcd_dev))
->>  		goto put_device;
->>  
->> @@ -401,13 +424,20 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
->>  
->>  	dev_set_uevent_suppress(&devcd->devcd_dev, false);
->>  	kobject_uevent(&devcd->devcd_dev.kobj, KOBJ_ADD);
->> -	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
->> -	schedule_delayed_work(&devcd->del_wk, timeout);
->> +
->> +	/*
->> +	 * Safe to run devcd_del() now that we are done with devcd_dev.
->> +	 * Alternatively we could have taken a ref on devcd_dev before
->> +	 * dropping the lock.
->> +	 */
->> +	devcd->init_completed = true;
->>  	mutex_unlock(&devcd->mutex);
->>  	return;
->>   put_device:
->> -	put_device(&devcd->devcd_dev);
->>  	mutex_unlock(&devcd->mutex);
->> +	cancel_delayed_work_sync(&devcd->del_wk);
->> +	put_device(&devcd->devcd_dev);
->> +
-> 
-> Acked-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+To resolve this issue, the input buffer flags should not be sent to the
+firmware during decoding, since the firmware does not require this
+information.
 
-Thanks, through what tree can this be merged?
+Fixes: 17f2a485ca67 ("media: iris: implement vb2 ops for buf_queue and firmware response")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vishnu Reddy <quic_bvisredd@quicinc.com>
+---
+ drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Kind regards,
-~Maarten Lankhorst
+diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+index e1788c266bb1..4de03f31eaf3 100644
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+@@ -282,7 +282,7 @@ static int iris_hfi_gen1_queue_input_buffer(struct iris_inst *inst, struct iris_
+ 		com_ip_pkt.shdr.session_id = inst->session_id;
+ 		com_ip_pkt.time_stamp_hi = upper_32_bits(buf->timestamp);
+ 		com_ip_pkt.time_stamp_lo = lower_32_bits(buf->timestamp);
+-		com_ip_pkt.flags = buf->flags;
++		com_ip_pkt.flags = 0;
+ 		com_ip_pkt.mark_target = 0;
+ 		com_ip_pkt.mark_data = 0;
+ 		com_ip_pkt.offset = buf->data_offset;
+-- 
+2.34.1
+
 
