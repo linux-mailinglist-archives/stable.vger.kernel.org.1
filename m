@@ -1,186 +1,121 @@
-Return-Path: <stable+bounces-183485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24405BBEF3D
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 20:28:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9888BBEFA4
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 20:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27F054F1DAD
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 18:27:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82D984F1960
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 18:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AC02D9EC5;
-	Mon,  6 Oct 2025 18:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862E42D7DC1;
+	Mon,  6 Oct 2025 18:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHQ5YbiX"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PujDmGmS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC542D77FA;
-	Mon,  6 Oct 2025 18:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC25246BC5
+	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 18:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759774780; cv=none; b=S8Qv1f1LQzGXOzV78wZsKwDNzL/yogzID2NNx58ko5KL+niUXNSjJIjm3WHlqUHoezpFkUXqNAA+kcFIXU82rsCln+zky6GpYNcdPweB4c/zBEviMj0xyIrXwVN7hjjsqYLvZzC8b3cFBpiN5upGicJnX8Q1uGTMfGI/ck4AtYE=
+	t=1759775563; cv=none; b=JdO+1d+BVM9ucs3/kiNBS8JoOwDWW0kgzuulgkFlALnXMLJOc4EDLeBJNr+p92tPLq6JpPD1rP5Kshts4Ehwr0QYGvW4r6Fk7E+Gu4ZpW7NeU7Vr/3f5xHSYHR0wYURsTHPShXFYxoiC8g25xnYXeneYYw5WIYjtlbtW54blvZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759774780; c=relaxed/simple;
-	bh=9d1aYZa7ivc1Xsk6b+2+eA945TgzEDmM2AXkU1jkut4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUqrTmOEWYzALfh2zbJ7UH+Wqs/HWJerl/kVodJolE0Aa2QwDXE81oKGZygGgTl/54LpgOaoIgCXBibyaBoPF4NQik0APpoy/fmZLEYTtX1DAe0ZmNRSJDQ69VEK7o+zn4K3wHGs8PrrNYVRMuMzj8cU2KM8Oh7LsHgkKD6GceE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHQ5YbiX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A703FC4AF09;
-	Mon,  6 Oct 2025 18:19:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759774780;
-	bh=9d1aYZa7ivc1Xsk6b+2+eA945TgzEDmM2AXkU1jkut4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHQ5YbiX4Mn4k1MajxG8qK8SsZf9bCyYPEE0LCUzac3CPX0wc0syClc1fjPNNlCQh
-	 DXRvUBHPdy1YC3BD09cekFStIJl8ULN0gRubnpLh2EkH1dznbphnW6KDg0pUWkZ1oB
-	 2MGxGCwKsV9UJEanelRtf13ZAHxitto6MoVp2o+jCwuBZhnb56WVQcQupk6xEtK74a
-	 JmYyBOMOdfbchFhqhbL2FMlUQpNqfSxJVPJR/qJBRd+/jevF3DZGN0YC43+nJMP0JB
-	 MLjmiit8YQpb/q78nblVKZu/WQ8BSU1RLmOPgQEh03bcVay83Uy6wd5PWOHJ8YSzwC
-	 /2y2Cj+iArK7g==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
+	s=arc-20240116; t=1759775563; c=relaxed/simple;
+	bh=Dj6m4vh4I+aSGB7esG1Hx/YYkGrqbAo4J1raPd5acaM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AAAkv58KzcmNP19spfaB2Mqc0z0D3oYktRRtjj2WcfrfhQ3/Ujm56Kb4++Jko4G6/FkvpZjxpqcpJRX5Gd4hphscNMn6bwELRTkglOnZYfhJ8oEp0YGGs9HaGRowRp9Id5VXeZxpu9lC0oYzkRYUP3FLo0TJ83GLY5/vb9A6Rj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PujDmGmS; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2698384978dso37952755ad.0
+        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 11:32:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1759775561; x=1760380361; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uwSuYHyPWLnd4B0J2NLg4Ynddq4RJZuyBAc+JpL56Y0=;
+        b=PujDmGmSuclp/MSAl7Ki7Ge2233hL8EypmdA+14CW5MM6nNOSsqeebkCSafiFVoVVr
+         ANxVwvxEH/JfPgFzT4W8KOUCtVzVQlIDpM7LdWCSJO1Bk3gFsThmrIy4jHrhQe4HpFzZ
+         95gfPN844C3T4D2sbVqAsh6DRbIHZXw7pgYng=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759775561; x=1760380361;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uwSuYHyPWLnd4B0J2NLg4Ynddq4RJZuyBAc+JpL56Y0=;
+        b=kdif55tpr7cVdfAE5BieOdEUPC4vL49ptFi9UVQmqLE5wo/qIYPQHhxUnfr4I4LNcD
+         Yyf+u5dAtwkId4UMgFLIm+iMADKR6cvZYrHol/D17g1RII23Gw/l38Rlc0nRJmqfKvNC
+         mZWVlOIE0y/Qws+SdDWQ+KbSU1BJDY0ndHjDGTDb5l9EpetMWV5Nv4uMhiSxy8JBEYDo
+         AUrQWaE+AUGINkTev+DuN2VgQ5cM3E0ESCqTBASHqv5MnY1rnt3puRsSc0x/0xDQZVrw
+         al7BHBBWwSepUbGIgCNIJKLlEXvXrFvWVOjuwnwRw5C9L8N3AQdP4y0F2YFjUxvM6+lA
+         CsQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+qZgGC1vXDWQPgnXuOJ/bEc1bl9A7knpD4ROv6wB6kLf/QP5CwVzTk+Lb6EdFDUe7Kx9BrsY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeymgbhGYWt7+haKxBwrdUR+Huw8dodlGMlZJbu1qxxGZm9TZU
+	l/h/slmZ8CuJ3MQj8o2TJe5rxSUlNUIQGgiAGcoWXrU6KC+FPKgxQp0s2KlidzzTAQ==
+X-Gm-Gg: ASbGncu6xIidd+OZyE1QfCrtDUdVtV8Ag5IPHzh+GwBrjWJ4+SeXTa+GTToFTcqbo2E
+	F/gaBOwPtJVXDVozYTwEKTfZUgc0z9Qn6lLVd97ZyswxW92Pu2+haZilNVWhVPenGphznyxQ1eY
+	pFQDNiEcw2Vo46Yji77X6cJKeHRE2X45roeipFTA+S2XTkRnRZqjOBWm6cacuDUctuxLmkcsiAm
+	BlYFN2c10Qjqe8asEG+SpNNY5C6gSzexxgF3F/m+1kRsLCVf5OG7hIMkP8U8tTUHhy8RKLEGotk
+	OM0TgYxofbwqrSC1O1dvC+5gpfYKHw9KWvn9EKPjeuS3rAIpirkpDfKOvD3tywp2WkWnWkGmVfc
+	3DafWVyJctjyZyFaVJSdVeLr51Q1c3Jy4ZzTFtuV3tt18XXbxqDCFQ6CVeSXWXWJiTlZ/wN07Tw
+	Myz9yxiYGc3ZuQ/Vh0mwk=
+X-Google-Smtp-Source: AGHT+IHyUh9+Wdk2VWGp0HemaJgNqqUfeJ8XAjYRPDqgSqGja/q3alk2W+weivII4Y0JLs+WqyHOXQ==
+X-Received: by 2002:a17:903:3c65:b0:269:8072:5be7 with SMTP id d9443c01a7336-28e9a6654c0mr169220315ad.56.1759775560991;
+        Mon, 06 Oct 2025 11:32:40 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e7c:8:299e:f3e3:eadb:de86])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-28e8d1108c5sm140090835ad.16.2025.10.06.11.32.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Oct 2025 11:32:40 -0700 (PDT)
+Date: Mon, 6 Oct 2025 11:32:38 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Kaplan <david.kaplan@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	peterz@infradead.org,
-	jpoimboe@kernel.org
-Subject: [PATCH AUTOSEL 6.17-6.6] x86/bugs: Report correct retbleed mitigation status
-Date: Mon,  6 Oct 2025 14:18:00 -0400
-Message-ID: <20251006181835.1919496-28-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251006181835.1919496-1-sashal@kernel.org>
-References: <20251006181835.1919496-1-sashal@kernel.org>
+Subject: Re: [PATCH] PCI/PM: Avoid redundant delays on D3hot->D3cold
+Message-ID: <aOQLRhot8-MtXeE3@google.com>
+References: <20251003154008.1.I7a21c240b30062c66471329567a96dceb6274358@changeid>
+ <20251006135222.GD2912318@black.igk.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.17.1
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251006135222.GD2912318@black.igk.intel.com>
 
-From: David Kaplan <david.kaplan@amd.com>
+Hi Mika,
 
-[ Upstream commit 930f2361fe542a00de9ce6070b1b6edb976f1165 ]
+On Mon, Oct 06, 2025 at 03:52:22PM +0200, Mika Westerberg wrote:
+> On Fri, Oct 03, 2025 at 03:40:09PM -0700, Brian Norris wrote:
+> > From: Brian Norris <briannorris@google.com>
+> > 
+> > When transitioning to D3cold, __pci_set_power_state() will first
+> > transition a device to D3hot. If the device was already in D3hot, this
+> > will add excess work:
+> > (a) read/modify/write PMCSR; and
+> > (b) excess delay (pci_dev_d3_sleep()).
+> 
+> How come the device is already in D3hot when __pci_set_power_state() is
+> called? IIRC PCI core will transition the device to low power state so that
+> it passes there the deepest possible state, and at that point the device is
+> still in D0. Then __pci_set_power_state() puts it into D3hot and then turns
+> if the power resource -> D3cold.
+> 
+> What I'm missing here?
 
-On Intel CPUs, the default retbleed mitigation is IBRS/eIBRS but this
-requires that a similar spectre_v2 mitigation is applied.  If the user
-selects a different spectre_v2 mitigation (like spectre_v2=retpoline) a
-warning is printed but sysfs will still report 'Mitigation: IBRS' or
-'Mitigation: Enhanced IBRS'.  This is incorrect because retbleed is not
-mitigated, and IBRS is not actually set.
+Some PCI drivers call pci_set_power_state(..., PCI_D3hot) on their own
+when preparing for runtime or system suspend, so by the time they hit
+pci_finish_runtime_suspend(), they're in D3hot. Then, pci_target_state()
+may still pick a lower state (D3cold).
 
-Fix this by choosing RETBLEED_MITIGATION_NONE in this scenario so the
-kernel correctly reports the system as vulnerable to retbleed.
-
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250915134706.3201818-1-david.kaplan@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Based on my comprehensive analysis of this commit, here is my
-assessment:
-
-## **Backport Status: YES**
-
-### Analysis
-
-**The Bug:**
-On Intel CPUs, when a user selects `spectre_v2=retpoline` (or another
-non-IBRS/eIBRS mitigation), the kernel correctly prints a warning
-message:
-```
-"WARNING: Spectre v2 mitigation leaves CPU vulnerable to RETBleed
-attacks, data leaks possible!\n"
-```
-
-However, it does NOT update the `retbleed_mitigation` variable to
-`RETBLEED_MITIGATION_NONE`. This causes sysfs to incorrectly report
-"Mitigation: IBRS" or "Mitigation: Enhanced IBRS" when the system is
-actually vulnerable to retbleed attacks.
-
-**The Fix:**
-The fix is minimal and surgical - adding just one line at
-arch/x86/kernel/cpu/bugs.c:1465:
-```c
-retbleed_mitigation = RETBLEED_MITIGATION_NONE;
-```
-
-This ensures that when the warning is printed, the mitigation status is
-correctly set to NONE, causing sysfs to report "Vulnerable" instead of
-falsely claiming mitigation.
-
-**Why This Should Be Backported:**
-
-1. **Important Security Information Bug**: Users rely on sysfs security
-   reporting to understand their system's vulnerability status.
-   Incorrect reporting can lead to false sense of security.
-
-2. **Affects Real Users**: Anyone running Intel systems with custom
-   `spectre_v2=retpoline` configuration is affected by this
-   misreporting.
-
-3. **Minimal Risk**: The change is a single line setting a variable to
-   NONE. It only affects the reporting path in the default case, making
-   regression risk extremely low.
-
-4. **No Architectural Changes**: This is purely a status reporting fix
-   with no changes to actual mitigation mechanisms.
-
-5. **Small and Contained**: The change is confined to one function
-   (`retbleed_update_mitigation()`) in one file.
-
-6. **Already Being Backported**: Evidence shows this commit has already
-   been backported to at least one stable tree (commit 8429c98317d24 is
-   a backport with "Upstream commit 930f2361fe542").
-
-7. **Applicable to 6.17**: The buggy code exists in linux-autosel-6.17
-   (introduced in commit e3b78a7ad5ea7), so this fix is directly
-   applicable.
-
-**Code Change Verification:**
-The diff shows the fix correctly:
-- Adds braces around the if block
-- Adds `retbleed_mitigation = RETBLEED_MITIGATION_NONE;` to ensure
-  correct reporting
-- This aligns with the existing pattern at lines 1444-1445 where
-  RETBLEED_MITIGATION_NONE is set when retbleed=stuff fails
-
-This commit meets all stable kernel backport criteria: it fixes an
-important bug, has minimal risk, introduces no new features, and is
-confined to a single subsystem.
-
- arch/x86/kernel/cpu/bugs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index e817bbae01591..b633b026c117d 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1463,8 +1463,10 @@ static void __init retbleed_update_mitigation(void)
- 			retbleed_mitigation = RETBLEED_MITIGATION_EIBRS;
- 			break;
- 		default:
--			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF)
-+			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF) {
- 				pr_err(RETBLEED_INTEL_MSG);
-+				retbleed_mitigation = RETBLEED_MITIGATION_NONE;
-+			}
- 		}
- 	}
- 
--- 
-2.51.0
-
+HTH,
+Brian
 
