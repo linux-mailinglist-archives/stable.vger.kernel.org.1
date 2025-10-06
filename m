@@ -1,158 +1,119 @@
-Return-Path: <stable+bounces-183442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC74BBE6A0
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 16:57:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74ACEBBE6DC
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 17:04:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 48EFF4EEE31
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 14:57:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 614561889246
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 15:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6835F2D641F;
-	Mon,  6 Oct 2025 14:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DMz6WpbJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898BE27F754;
+	Mon,  6 Oct 2025 15:04:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE5B2874FC
-	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 14:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9645819F115;
+	Mon,  6 Oct 2025 15:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759762638; cv=none; b=Og4RIthcvjGvN0HEj01DQaIC9v1L8C5qHeT1XexxZfWq3I5efFTC3pPfOTqU8wIm6jSUc9+bi1e4bQmVVbbt1RD/qp8sqkExIjTLou01TJGmlhRyY/f34GZlmDtm2BiTh5wRGDOxDXBMSIHnWXV+kESSLSOQDdMh7G26nFw2gtc=
+	t=1759763069; cv=none; b=reRI2zs4S4gF3TmLZf4PmtSbJcigKjrknpbyRdFb2kfSD2F8MKVduNROZ87PccfpOY6PpLiy86a5wLL1E5VddUi3gHTU5oJQfce7dren/kpduv+NU1HBZEjOwj9fJRql9ciUjud9xrI+oxTDxMhC2sm68LUpxSzJKX3NPnnnFE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759762638; c=relaxed/simple;
-	bh=jhanX6T0C/CgFwpJufY1Z11zs77Vwb4iEfdm4wPkXWY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f60VZXZBkswMDd1fc2yOutH0usjY9xK9j3ZNNsVtVOwZD1d1SXhXnnPRWBidNX7HAAUa0IM6JJq5AIfi39vnSoLna+tpj3/vVPna1i1nfutsYRqDD2GHP5yFo7h5C9z34Z3xPJ+fyw9KE9nIy8R4fMbueKpV0jC67xde0p3pB0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DMz6WpbJ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759762635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Sp5ApOjH4RCi6YxBNf6Q9TZoHxlt3LqlFYkBMPytEDg=;
-	b=DMz6WpbJf4MNkqU4FJ1POT8iYq8mDjNxH/ZRaJC+gmCxsAWXd6KstxJVtVk/REiceSp1Jf
-	pCbgfesgtgJcusksk/8vmKSsoGpp7ldFmeAcK5/P2irBMyzJ51lzzxUar+iQ9weYnpgv28
-	up3rjQ56fLb+OD0L85cL/jWD1SVBmdA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-ZpMYa0W0NmOtD8dGB5bTqQ-1; Mon, 06 Oct 2025 10:57:14 -0400
-X-MC-Unique: ZpMYa0W0NmOtD8dGB5bTqQ-1
-X-Mimecast-MFC-AGG-ID: ZpMYa0W0NmOtD8dGB5bTqQ_1759762633
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4256fae4b46so1375897f8f.0
-        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 07:57:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759762633; x=1760367433;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sp5ApOjH4RCi6YxBNf6Q9TZoHxlt3LqlFYkBMPytEDg=;
-        b=WyF0AxAy8PyiMAcXp51aSQkVp3RNyZ4Lx53SIbv2ErgNgWA0OLNg6w7qt8IWC+DGbB
-         o/xpDuvb2Kwr2g5je1Ioq5fAd4J1pqH1qYKNy9z0pKObZg0RSPPjbsGYiTZZvcaQrcui
-         9ZASWfG9Foa0faes4lNIDHR0QZ9YT+qXgDyx5l8AmhqTLko0ObNiV3N3Z+KGEgxwxUOF
-         FnJQBlMn/vqAolNJ7MxTFJvEMQanlHvWny8laFHSUguyPQ6UyIB/X6TvLH7RtiuJhgvR
-         fe0g9wsPvi6ugseb4WNOChlYlQShJpJtnmJNasFu40bh/rSwUU9EB2KJ+UWK6sY1Cpe9
-         us5w==
-X-Gm-Message-State: AOJu0YxDARmuhHrvGFZ/WIHZkMU9YQTSmJxS86m5f8RkNnFA7h3HcRS9
-	YM5DUsoHqYpD4i1sIkW7sxkO9q7jB342cod/7g9S+gtuUY3FcNIJc6gQxveS4dCvzsoHQxO+1ip
-	KlyPvDjkuS9b5OEVl81jOOXmm+iGRFG2PQhf2V38YVyOCNZW8ETL0aryRUg==
-X-Gm-Gg: ASbGncuYbGw/9TIIr+rZWusvLe/vxrmIlp7Sbl7TLbvMLUSzejAyovpLuc2VAMS+TLw
-	6KpTasT+1RycP1O6n9by0JSR2/bljnjdMmGSws3PyjnfQ6R/7SpYoiOO3/UhJgbsMCFjP9zsW8x
-	PK+Q1ClLMMy89ly3fvuaWGyW1n5sPdKI9VfRP8xxA7mSYTXftHoKu5nnGCC4pFiaBV5KBavlA5D
-	1t+1z8z2MucwhntRQ0rK2r9GHIt2vB9J43glf4SWHno13NFByEL5XG0QEQ02mOBuCmwgqssbC+j
-	Xa9sRjUeUfKwRj4rcDyG2oZMzTdEgWk+aqCZxk0=
-X-Received: by 2002:a05:6000:2c0b:b0:3ea:c893:95c6 with SMTP id ffacd0b85a97d-4256714d54cmr7467169f8f.18.1759762632887;
-        Mon, 06 Oct 2025 07:57:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhCh+WQlE03GS/5i0teFXU29iwxX265IzFV+HGIBnzz3VE2lFdRIe6xVdZDphPiu/L9OdYuA==
-X-Received: by 2002:a05:6000:2c0b:b0:3ea:c893:95c6 with SMTP id ffacd0b85a97d-4256714d54cmr7467149f8f.18.1759762632376;
-        Mon, 06 Oct 2025 07:57:12 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f02a8sm21594716f8f.39.2025.10.06.07.57.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 07:57:11 -0700 (PDT)
-Date: Mon, 6 Oct 2025 10:57:09 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Filip Hejsek <filip.hejsek@gmail.com>
-Cc: stable@vger.kernel.org,
-	Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>,
-	Daniel Verkamp <dverkamp@chromium.org>, Amit Shah <amit@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	virtualization@lists.linux.dev
-Subject: Re: Backport request for commit 5326ab737a47 ("virtio_console: fix
- order of fields cols and rows")
-Message-ID: <20251006105608-mutt-send-email-mst@kernel.org>
-References: <f839e710b4ede119aa9ad1f2a8e8bcc7fcc00233.camel@gmail.com>
- <20251006062851-mutt-send-email-mst@kernel.org>
- <a4e912547211eed865bdf769647936c1e3034e4e.camel@gmail.com>
+	s=arc-20240116; t=1759763069; c=relaxed/simple;
+	bh=0B0iR2A3/3ULUTFpkpZyX/WPowk5NM3sAUJwWo0eieE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UtJYdaU1diEDg9O8WD3tuSV+XTS3jLAT3+rabzpV32+ibI/c5dLe+YC8i7X9lDh6u6cGeQC6r0KO2qmOADVKrVAf7qDYBH/9rK9pfIwQnc9/1hblTeMuz8aUUcBOL5h7hT4rZn10kGj+UoFLgwCU2QBtcR8NQPJamtZc0xHJEzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D19BB1515;
+	Mon,  6 Oct 2025 08:04:18 -0700 (PDT)
+Received: from [10.57.81.160] (unknown [10.57.81.160])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F30893F66E;
+	Mon,  6 Oct 2025 08:04:24 -0700 (PDT)
+Message-ID: <ae61f721-3d07-4908-ad31-9c25e8b8119e@arm.com>
+Date: Mon, 6 Oct 2025 16:04:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a4e912547211eed865bdf769647936c1e3034e4e.camel@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] fsnotify: Pass correct offset to fsnotify_mmap_perm()
+Content-Language: en-GB
+To: Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Amir Goldstein <amir73il@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251003155238.2147410-1-ryan.roberts@arm.com>
+ <uyh6y4qjuj6vcpsdnexwl2xqf2jnp6ejj7esr3g3hix66ml2zi@pqsbsjtt6apl>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <uyh6y4qjuj6vcpsdnexwl2xqf2jnp6ejj7esr3g3hix66ml2zi@pqsbsjtt6apl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 06, 2025 at 04:15:10PM +0200, Filip Hejsek wrote:
-> On Mon, 2025-10-06 at 06:29 -0400, Michael S. Tsirkin wrote:
-> > On Thu, Sep 18, 2025 at 01:13:24AM +0200, Filip Hejsek wrote:
-> > > Hi,
-> > > 
-> > > I would like to request backporting 5326ab737a47 ("virtio_console: fix
-> > > order of fields cols and rows") to all LTS kernels.
-> > > 
-> > > I'm working on QEMU patches that add virtio console size support.
-> > > Without the fix, rows and columns will be swapped.
-> > > 
-> > > As far as I know, there are no device implementations that use the
-> > > wrong order and would by broken by the fix.
-> > > 
-> > > Note: A previous version [1] of the patch contained "Cc: stable" and
-> > > "Fixes:" tags, but they seem to have been accidentally left out from
-> > > the final version.
-> > > 
-> > > [1]: https://lore.kernel.org/all/20250320172654.624657-1-maxbr@linux.ibm.com/
-> > > 
-> > > Thanks,
-> > > Filip Hejsek
-> > 
-> > But I thought we are reverting it?
+On 06/10/2025 15:55, Jan Kara wrote:
+> On Fri 03-10-25 16:52:36, Ryan Roberts wrote:
+>> fsnotify_mmap_perm() requires a byte offset for the file about to be
+>> mmap'ed. But it is called from vm_mmap_pgoff(), which has a page offset.
+>> Previously the conversion was done incorrectly so let's fix it, being
+>> careful not to overflow on 32-bit platforms.
+>>
+>> Discovered during code review.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> ---
+>> Applies against today's mm-unstable (aa05a436eca8).
 > 
-> I'm kinda confused by this question, because I thought you already
-> understood the situation.
+> Thanks Ryan! I've added the patch to my tree. As a side note, I know the
+> callsite is in mm/ but since this is clearly impacting fsnotify, it would
+> be good to add to CC relevant people (I'm not following linux-mm nor
+> linux-kernel) and discovered this only because of Kiryl's link...
 
-Yes - I just noticed this backport request stood unanswered and
-I thought it's a good idea to make stable maintainers know it's
-not yet the time to do the backport.
+Ahh good point... Sorry I was sleepwalking through the process on Friday
+afternoon and blindly sent it to the maintainers and reviewers that
+get_maintainer.pl spat out. It didn't even occur to me that this wasn't an mm
+thing. :-|
 
-Sorry if I did it in a confusing way.
-
-
-> I sent this backport request after a discussion with Max in the revert
-> thread, from which I got the impression that the virtio spec
-> maintainers were unwilling to change the spec to match the Linux
-> implementation. That impression might have been wrong though.
 > 
-> When you sent Linus a pull request containing the revert, I realized
-> that there was no consensus about which side should be fixed (spec or
-> Linux) and told you that I think it should be reverted only if the spec
-> is also changed. You then sent a spec change patch [1] to the virtio
-> mailing list.
+> 								Honza
 > 
-> I'm not familiar with how decisions about the virtio spec are made, so
-> I don't know if that change is going to be accepted or not.
-> 
-> [1]: https://lore.kernel.org/virtio-comment/7b939d85ec0b532bae4c16bb927edddcf663bb48.1758212319.git.mst@redhat.com/t/
-> 
-> Best regards,
-> Filip Hejsek
+>>  mm/util.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/util.c b/mm/util.c
+>> index 6c1d64ed0221..8989d5767528 100644
+>> --- a/mm/util.c
+>> +++ b/mm/util.c
+>> @@ -566,6 +566,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+>>  	unsigned long len, unsigned long prot,
+>>  	unsigned long flag, unsigned long pgoff)
+>>  {
+>> +	loff_t off = (loff_t)pgoff << PAGE_SHIFT;
+>>  	unsigned long ret;
+>>  	struct mm_struct *mm = current->mm;
+>>  	unsigned long populate;
+>> @@ -573,7 +574,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+>>
+>>  	ret = security_mmap_file(file, prot, flag);
+>>  	if (!ret)
+>> -		ret = fsnotify_mmap_perm(file, prot, pgoff >> PAGE_SHIFT, len);
+>> +		ret = fsnotify_mmap_perm(file, prot, off, len);
+>>  	if (!ret) {
+>>  		if (mmap_write_lock_killable(mm))
+>>  			return -EINTR;
+>> --
+>> 2.43.0
+>>
 
 
