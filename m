@@ -1,103 +1,146 @@
-Return-Path: <stable+bounces-183440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A563EBBE628
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 16:46:08 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A4CBBE5F8
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 16:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 25781348CCC
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 14:46:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CC2294ECECA
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 14:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0FC2D6626;
-	Mon,  6 Oct 2025 14:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6212D541B;
+	Mon,  6 Oct 2025 14:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="q2ldwKH4";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="IacS/6YH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="im4Ifywn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25CE1C7005;
-	Mon,  6 Oct 2025 14:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD040283FD4
+	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 14:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759761953; cv=none; b=NO98GrtXjkPlD22QECbUN5gw5xH3KzDxZF+WqCyPBma+agCj78e3gdKyPWBJBr/3/ovUHL+2OYIGqBG3dW/rgrt9GB1v9hOjXx891CHkxlbfLhpEIvNFrC9KY+0VNtHupgN71g2wTfdJWR3Aymhwet4WefpthiWEXCxcOqQ1daM=
+	t=1759761616; cv=none; b=Csovosbfk42CYrAMOBOJq01Zj062Ew2AP5CMe/T/52Pgzkjo7W3jvnn6CK5lSSztA/oHFZRNRYi5DPA9Zdn4EuS9cKqhHD+bC1OkM6kZQr9zZmbKvVXEivoazZ44cKMO3f50vcx0OGAqdQrGLzLM7iQBbrvyJPM45doRg42Mtdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759761953; c=relaxed/simple;
-	bh=f2lVa86/wPKb30SHUxj2idQocPvFNcnOkh58cZ4fb+0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lkuMtrEPZbwQihViw/xW5tpAIHaHBBocPE2OWxT+O3+Yr6WEW5YmZ62SVHgbaMzNkDDOJQPpdq3RLuiLJOG76/US85gC5CH3+8ZluDRuCKoUy+3WHcyutBpFJIFNn5+ofQMe+Gh3d9grxUGcTzWvdTtudBhyeXN6nD024XluQWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=q2ldwKH4; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=IacS/6YH; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1759761455; bh=hT8aWyIDgjsEqbFovnN215l
-	unAK8tXcDqNu8S0mbHIk=; b=q2ldwKH4+hjp03qV0nrXpPeSeG0O+ZVqdjqGnNN/WJCPUoTXIK
-	AMCBfbklZQnYOpnUmlI+fWNlofqW3q3XlEJwNlSwtKrs5ZMpp3UviPVCH/tkecE9Sea0LeA7OF0
-	BqoKPZSLRglUnFRS+rLAt2A2cJ3PEgetlF41zpIJJpC2MhPBLcw3NJKJwO5rWxlH2/hmLLKrRbU
-	04ziV64hZuHKlBGWk5pT1aNiggV2yVVQoylVwB4sNe7GKW/YIr0Nbx+F6VqiRlTaPQZTQpb9rAY
-	IDP/ELG+EO/TcIeIUfiw5H8ex+pRYhzO9ldEB/gAZs/IBe/Vj9i9Trkuhc0P7k07EjQ==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1759761455; bh=hT8aWyIDgjsEqbFovnN215l
-	unAK8tXcDqNu8S0mbHIk=; b=IacS/6YHNGEDLiMIOi3bysrK9L7quIybRkuHaOZWNJhsHoJCWn
-	7mZXe7pjFjDr2CNdpmyVC31w3irAGvzf9PDg==;
-From: Victor Paul <vipoll@mainlining.org>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Daniel Martin <dmanlfc@gmail.com>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Victor Paul <vipoll@mainlining.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] PCI: probe: fix typo: CONFIG_PCI_PWRCTRL -> CONFIG_PCI_PWRCTL
-Date: Mon,  6 Oct 2025 18:37:14 +0400
-Message-ID: <20251006143714.18868-1-vipoll@mainlining.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1759761616; c=relaxed/simple;
+	bh=EkR1H7X+TDjtCRI9KWYEwXGW5NBq3MyXaQ39Dh/nn3M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bzzDfUPhqtLUzimOz30NGVrkEGN6C1qOqJq1VuGWAfQ+ZV6oPqGtruGzGn/qfxy7dDtuyyQ4jXkexBPTFueWXANtUsJn2VZzJxuEyNG2/VbltPfMRKjuf1y4GGNzlceCRyuUtjX1eaemgTPieNWHmidYeLv5FFdSdUQD5lDF94E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=im4Ifywn; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-63163a6556bso11141097a12.1
+        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 07:40:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759761613; x=1760366413; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EkR1H7X+TDjtCRI9KWYEwXGW5NBq3MyXaQ39Dh/nn3M=;
+        b=im4IfywnSfxkP83dl8psGq2Rk2Z21zYb4jvP9nKF9vr9f3Nn2L6JqohFlgdCpyT4ui
+         SNFRCjB8yvFMI7CGKmJrS/VXB1bWBqMIfcJZvFZa4qnDartVwNwBa4dvznfG7eOUJ1HF
+         G2e2ITptWjR30EYsV02Yg1H2TFrHGR8XbQi4bC9NxRJveiRU75yQl8kSw1uObnrbT0gL
+         l3FSe1dS2uheXAxUp25AiVvk5wG/pXZVqk6Rk14JRX9GSF9Uy4mN4pSI+oWS04AF5HJ4
+         orYYatd8sXLkae2RL6M3y4FiUyhBU8oM39Kgc71VZqj5Hxpph6tb0+CvSu/njymjp636
+         yNTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759761613; x=1760366413;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EkR1H7X+TDjtCRI9KWYEwXGW5NBq3MyXaQ39Dh/nn3M=;
+        b=umrlu2m5JsKRHR5nGFqAQkutfgGoRQG4NxrqOiUzMka7H0nFc3UOQW2xn2DanHbkH2
+         ubOsuGVrQIZr9DVgT2zXIoPYPblA9xkHyo29oC2y2jp+39cHW8xduQXC5geskeaExSzw
+         3yONGjRPv2Ut6M8MDSUxQosPfQyx2eWtEcxLtH2rNXhJBH+hbwkpjB8XBZG8eCKkBmhm
+         atKqwMZqLM7t1Oed9GdSts71XDlKtAP+DJj5hs7tPZHaN0OZf9IppPNT6l2o3MQ9bS7v
+         uN7TCdQGFvk56jkb0KqJ56bfYUWeRJUp59KXd0ZYYruWPlPJ35x5+cIPzJL0E6yYixmS
+         SkNA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTyDJzAhVycScvzr9RUKbRe9d3lG3Yz5NL/v0lYP51fealSNQmHdbIHHcITryvObywRJhxwJE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylyZOjOSJXxVoEVAGS2JJBB2iuyv/+5pYv0IVKXw/mJefxh7jg
+	QYK8D4kynfpI0vR2T0qKeq2je2Fx7WUrlLS7USrD/ssCmv7dKZY0OkAaUA9WZz99W8iEHNWCBg5
+	qAYd9b88jFf6zWYtCWB+su3AhMPFqF9w=
+X-Gm-Gg: ASbGnctHNss3v2LuE7NdKkSHQ6Q4Gu4/xIX+gaPGa0ZAG3WMCCyQ79pBwL23Fk2bvK7
+	7kINBj2tkZWi8jPSxuJa9s9QcbZeHPiRl+c4yWXMS1g4vIF1TlL0A0oBwN3CS6IF7kCIZKkcKCU
+	5G9TTiPMAsN4+TXA2jF1nctfrQEDlUnwaYzr+CFKIdF+oLpW0e62esrOTV/+RfsP20Uz6+/WJCO
+	PHQ2Jic/MxpM+x67FkTsUmsnahf944qd8ZVAWBiE3OxtfLirmsHIfUYWN8kKik41PnrcVY1tclF
+X-Google-Smtp-Source: AGHT+IG7l9FcW7nFH5wcnGqf94SKHFIJbD02eMTFgXIso7ems2/RZwPOGR76iL5Jz5L+CD+kbTGEfLyCiPawWH7oe0s=
+X-Received: by 2002:a05:6402:520e:b0:634:8c41:c299 with SMTP id
+ 4fb4d7f45d1cf-6393491e788mr15011143a12.19.1759761612739; Mon, 06 Oct 2025
+ 07:40:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251003155238.2147410-1-ryan.roberts@arm.com>
+ <edc832b4-5f4c-4f26-a306-954d65ec2e85@redhat.com> <66251c3e-4970-4cac-a1fc-46749d2a727a@arm.com>
+ <989c49fc-1f6f-4674-96e7-9f987ec490db@redhat.com>
+In-Reply-To: <989c49fc-1f6f-4674-96e7-9f987ec490db@redhat.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Mon, 6 Oct 2025 16:40:00 +0200
+X-Gm-Features: AS18NWBuQFyxsQau3P8JL_AyINiEL_Ybt3_UNKcM6OGOrGzarzlxxcIDC21sR04
+Message-ID: <CAOQ4uxh+Mho71c93FNqcw=crw2H3yEs-uecWf4b6JMKYDTBCWQ@mail.gmail.com>
+Subject: Re: [PATCH v1] fsnotify: Pass correct offset to fsnotify_mmap_perm()
+To: David Hildenbrand <david@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Jan Kara <jack@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The commit
-	8c493cc91f3a ("PCI/pwrctrl: Create pwrctrl devices only when CONFIG_PCI_PWRCTRL is enabled")
-introduced a typo, it uses CONFIG_PCI_PWRCTRL while the correct symbol
-is CONFIG_PCI_PWRCTL. As reported by Daniel Martin, it causes device
-initialization failures on some arm boards.
-I encountered it on sm8250-xiaomi-pipa after rebasing from v6.15.8
-to v6.15.11, with the following error:
-[    6.035321] pcieport 0000:00:00.0: Failed to create device link (0x180) with supplier qca6390-pmu for /soc@0/pcie@1c00000/pcie@0/wifi@0
+On Mon, Oct 6, 2025 at 3:53=E2=80=AFPM David Hildenbrand <david@redhat.com>=
+ wrote:
+>
+> On 06.10.25 14:14, Ryan Roberts wrote:
+> > On 06/10/2025 12:36, David Hildenbrand wrote:
+> >> On 03.10.25 17:52, Ryan Roberts wrote:
+> >>> fsnotify_mmap_perm() requires a byte offset for the file about to be
+> >>> mmap'ed. But it is called from vm_mmap_pgoff(), which has a page offs=
+et.
+> >>> Previously the conversion was done incorrectly so let's fix it, being
+> >>> careful not to overflow on 32-bit platforms.
+> >>>
+> >>> Discovered during code review.
+> >>>
+> >>> Cc: <stable@vger.kernel.org>
+> >>> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
+> >>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> >>> ---
+> >>> Applies against today's mm-unstable (aa05a436eca8).
+> >>>
+> >>
+> >> Curious: is there some easy way to write a reproducer? Did you look in=
+to that?
+> >
+> > I didn't; this was just a drive-by discovery.
+> >
+> > It looks like there are some fanotify tests in the filesystems selftest=
+s; I
+> > guess they could be extended to add a regression test?
+> >
+> > But FWIW, I think the kernel is just passing the ofset/length info off =
+to user
+> > space and isn't acting on it itself. So there is no kernel vulnerabilit=
+y here.
+>
+> Right, I'm rather wondering if this could have been caught earlier and
+> how we could have caught it earlier :)
 
-Fix the typo to use the correct CONFIG_PCI_PWRCTL symbol.
+Ha! you would have thought we either have no test for it or we test
+only mmap with offset 0.
 
-Fixes: 8c493cc91f3a ("PCI/pwrctrl: Create pwrctrl devices only when CONFIG_PCI_PWRCTRL is enabled")
-Cc: stable@vger.kernel.org
-Reported-by: Daniel Martin <dmanlfc@gmail.com>
-Closes: https://lore.kernel.org/linux-pci/2025081053-expectant-observant-6268@gregkh/
-Signed-off-by: Victor Paul <vipoll@mainlining.org>
----
- drivers/pci/probe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+But we have LTP test fanotify24 which does mmap with offset page_sz*100
+and indeed it prints the info and info says offset 0, only we do not verify=
+ the
+offset info in this test...
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 19010c382864..7e97e33b3fb5 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2508,7 +2508,7 @@ bool pci_bus_read_dev_vendor_id(struct pci_bus *bus, int devfn, u32 *l,
- }
- EXPORT_SYMBOL(pci_bus_read_dev_vendor_id);
- 
--#if IS_ENABLED(CONFIG_PCI_PWRCTRL)
-+#if IS_ENABLED(CONFIG_PCI_PWRCTL)
- static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, int devfn)
- {
- 	struct pci_host_bridge *host = pci_find_host_bridge(bus);
--- 
-2.51.0
+Will be fixed.
 
+Thanks Ryan for being alert!
+Amir.
 
