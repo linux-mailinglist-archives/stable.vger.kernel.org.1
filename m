@@ -1,128 +1,155 @@
-Return-Path: <stable+bounces-183426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A9EBBDB0A
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 12:29:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35B3BBDC7A
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 12:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 388374E8D89
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 10:29:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62A7D3BC7C5
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 10:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6978E231858;
-	Mon,  6 Oct 2025 10:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F8E26E6F4;
+	Mon,  6 Oct 2025 10:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gL1Aj7VL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E597mMN/"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B333D18C02E
-	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 10:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8D4259C83;
+	Mon,  6 Oct 2025 10:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759746564; cv=none; b=VPU/kPmscVnlnkdDBa8r96Uyp6niQnKsUP9kxWr8My2ND2XQzh1nH+aTj3YRraNVlroU/ASp2YMKkxgblv02S5+/0KnK7jdsshOzxKLwuZ+tLUKs182sCXCjTQ4Xm+vHKT9/Vr69O5AdJPcH/Ax7eh5Bs2Dca0HiZbPrhYK6bws=
+	t=1759747669; cv=none; b=tml4xtVwYWs7mwKu465pxaD9M1wNYmsIhsvhYxtQe8J4IYyauWoIwFyBOajIomUKRi+FbYs4heASeBAJovYd3/4qXOaToPNs2uKLWlmDGAxuudifybv/pb6Jz16G0BR61jbzOUzpKpUlXQcLdtryVBvskiTo1m9DbqRTPnXAq0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759746564; c=relaxed/simple;
-	bh=X/er2LoDkvUlCWyDSAEiyjLpPRF0VnQhqBtnxbeNMI0=;
+	s=arc-20240116; t=1759747669; c=relaxed/simple;
+	bh=FX1Lzu7+bvM9e8qmukvbO1hpPMzmlxgfp1qFo7AK/EQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ltf+GSBjiKOWPUv4YYczrBTdohcIcbECDMzUuxq0XY/oeVW30tbyB+hTYef6oQL0C0VbHDMhd4+hpV6VzWISBoWUEOLXzivCenhdvO03gorn0ku0zAXG0O5feZk+5u5PA+db1fDnzA0ltewNPKD/cLqL7yuK5t/1Ufek4TUcBJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gL1Aj7VL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759746561;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4x4Ic6friOxCIiqjgkFZ1nAitS5y19AHJ4CH0PQv8Vk=;
-	b=gL1Aj7VLbvaIJxVoEIvzzMvXo2hJVFoLBrs0iomJliWAhENc9wR50kA2E5B6MSyTgMTGu6
-	GKGRNJB8fgeWacc7CxCSFGTxQSv4JE/SqsLJJvbduCFAtscXfI3Nispez3xp+dgi8LFbWS
-	sk0LGviqF+RHkuRb8mm6c1jgujWYuAY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-619-71wynDNkNtOUZ1VoAz-i-A-1; Mon, 06 Oct 2025 06:29:20 -0400
-X-MC-Unique: 71wynDNkNtOUZ1VoAz-i-A-1
-X-Mimecast-MFC-AGG-ID: 71wynDNkNtOUZ1VoAz-i-A_1759746559
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4255d025f41so2851797f8f.1
-        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 03:29:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759746559; x=1760351359;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4x4Ic6friOxCIiqjgkFZ1nAitS5y19AHJ4CH0PQv8Vk=;
-        b=IYFswM7mJJAQA87LiPId8h2qkfQlk+YXln9m+vBbm5GiAbo56TNbvAm8zGFrc34IPz
-         UsPnY09aFW3IfrF5TdyL6ihktKWpilusASuJ28Fm+ZRUv9vwrWqtAopDOP2F9h3pQQ9Z
-         LS8hfo4qHOqLkyVk5NtZ1/+dpcBaTfi0vBCekYcmErOkDk5Wo1S+IPMQG5vopi3pBOyd
-         nzueR2ZPCLQF/Pn3mFi5gkF8I7wPDeI94qWNoU+ZNSxlMhsJMDr96WrNujdCZTD4nqNW
-         LUNehhLShbSPxTxBdPLk5g+yXFSmdiwUL/Ip1+FfjA5DvdQEUG/7jsaOMMcMcwhvgBJa
-         JijA==
-X-Gm-Message-State: AOJu0Yz/26PqO/J/XCYiO23ZQpBV3wRrfsWfuUNJB0jV2ehlMTrXZVk6
-	0cfNR1IjvnRAUr9yq8vF3H9b6nK0k8ZtXoAyGrWZIW/phiSFjb697PWqNvaNrgiPC4dLmnR9oQk
-	24UnmnFHwX0MXnQorN4e9X3vF/jAs3ikkPMAXi//JZuu48kTMRswabzAFGA==
-X-Gm-Gg: ASbGncsNhOGOZp79t+RUfBhCUyovvwAkN2D3sqM/qm8jlFF6LNpsNOVMBR/GSS/9SSZ
-	Dw8e0lQUzDTW7gBboFw7BG7xVvRlMi7tDh01Zku+ERJp/6PfBoAjoVd06Itjtod4zuyMpmZIziM
-	4nuTO83leFNvho5uzIGYq6Ev8sNx5mxkfyHuj9nrf5QynJAa3RQvDSvHbnFxGcRl4E+Vcr52ejK
-	yNj90yYbSbqAUwrUEhAUbsBvPjzoxHD4bRmNKmPWY6/NPoDCxQUXgtJZ0m4I7ijtZU3kRRfooqV
-	KRGk5dZLU39isPvAx9DbuQYUrBZ87h/USGdlTkk=
-X-Received: by 2002:a05:6000:310c:b0:425:7f10:e79b with SMTP id ffacd0b85a97d-4257f10eaa1mr1066569f8f.44.1759746559163;
-        Mon, 06 Oct 2025 03:29:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG4tbvKRnrBj8QVt2nG5Eh7SlaXI+5atXG7MzqxwfWdVdeV+C+QICcLFfV8wDO9Tk24H1QpXg==
-X-Received: by 2002:a05:6000:310c:b0:425:7f10:e79b with SMTP id ffacd0b85a97d-4257f10eaa1mr1066538f8f.44.1759746558652;
-        Mon, 06 Oct 2025 03:29:18 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1518:6900:b69a:73e1:9698:9cd3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6b5csm20308787f8f.5.2025.10.06.03.29.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 03:29:18 -0700 (PDT)
-Date: Mon, 6 Oct 2025 06:29:15 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Filip Hejsek <filip.hejsek@gmail.com>
-Cc: stable@vger.kernel.org,
-	Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>,
-	Daniel Verkamp <dverkamp@chromium.org>, Amit Shah <amit@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	virtualization@lists.linux.dev
-Subject: Re: Backport request for commit 5326ab737a47 ("virtio_console: fix
- order of fields cols and rows")
-Message-ID: <20251006062851-mutt-send-email-mst@kernel.org>
-References: <f839e710b4ede119aa9ad1f2a8e8bcc7fcc00233.camel@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=miDG5M6zH2nR+N4KhMGspZyicQXFTmDEh9ybswXjTlXN3HR+mLrxpPwebHxHysiiOqDHjMS/H8EKFHhQdNj4df9F7p4DBzVyfAygw1GCUL1GC9xovSEVk5dzcfGjbrAE8tYY2km5ucrFKZ8EY44tph7O1wcpbAS0IbE7mE7jP10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E597mMN/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDD7C4CEF5;
+	Mon,  6 Oct 2025 10:47:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1759747669;
+	bh=FX1Lzu7+bvM9e8qmukvbO1hpPMzmlxgfp1qFo7AK/EQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E597mMN/x7YVkjNX1Bc0G8W7GHt89kk8u2seksXgi5q2H3Gw9DqBry/MoIgd7Hl/f
+	 QcuYuZ/DwxfZxXg04LwRoNwgtiAl8T7SsOstK7UXK8SyqkUmffohAckrwzORjzcTe+
+	 /i/1SV3Pn0pttPu3dXePy8Hlmyjuwx9fL801o6Qw=
+Date: Mon, 6 Oct 2025 12:47:45 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Eliav Farber <farbere@amazon.com>
+Cc: jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com,
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, tony.luck@intel.com, qiuxu.zhuo@intel.com,
+	james.morse@arm.com, rric@kernel.org, airlied@linux.ie,
+	daniel@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, robdclark@gmail.com,
+	sean@poorly.run, jdelvare@suse.com, linux@roeck-us.net,
+	linus.walleij@linaro.org, dmitry.torokhov@gmail.com, maz@kernel.org,
+	wens@csie.org, jernej.skrabec@gmail.com, agk@redhat.com,
+	snitzer@redhat.com, dm-devel@redhat.com, davem@davemloft.net,
+	kuba@kernel.org, mcoquelin.stm32@gmail.com,
+	krzysztof.kozlowski@canonical.com, malattia@linux.it,
+	hdegoede@redhat.com, mgross@linux.intel.com, jejb@linux.ibm.com,
+	martin.petersen@oracle.com, sakari.ailus@linux.intel.com,
+	clm@fb.com, josef@toxicpanda.com, dsterba@suse.com, jack@suse.com,
+	tytso@mit.edu, adilger.kernel@dilger.ca, dushistov@mail.ru,
+	luc.vanoostenryck@gmail.com, rostedt@goodmis.org, pmladek@suse.com,
+	senozhatsky@chromium.org, andriy.shevchenko@linux.intel.com,
+	linux@rasmusvillemoes.dk, minchan@kernel.org, ngupta@vflare.org,
+	akpm@linux-foundation.org, yoshfuji@linux-ipv6.org,
+	dsahern@kernel.org, pablo@netfilter.org, kadlec@netfilter.org,
+	fw@strlen.de, jmaloy@redhat.com, ying.xue@windriver.com,
+	shuah@kernel.org, willy@infradead.org, sashal@kernel.org,
+	quic_akhilpo@quicinc.com, ruanjinjie@huawei.com,
+	David.Laight@aculab.com, herve.codina@bootlin.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-um@lists.infradead.org, linux-edac@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+	linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-sparse@vger.kernel.org,
+	linux-mm@kvack.org, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, tipc-discussion@lists.sourceforge.net,
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH v2 07/19 5.15.y] minmax: simplify and clarify
+ min_t()/max_t() implementation
+Message-ID: <2025100648-capable-register-101b@gregkh>
+References: <20251003130006.41681-1-farbere@amazon.com>
+ <20251003130006.41681-8-farbere@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f839e710b4ede119aa9ad1f2a8e8bcc7fcc00233.camel@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251003130006.41681-8-farbere@amazon.com>
 
-On Thu, Sep 18, 2025 at 01:13:24AM +0200, Filip Hejsek wrote:
-> Hi,
+On Fri, Oct 03, 2025 at 12:59:54PM +0000, Eliav Farber wrote:
+> From: Linus Torvalds <torvalds@linux-foundation.org>
 > 
-> I would like to request backporting 5326ab737a47 ("virtio_console: fix
-> order of fields cols and rows") to all LTS kernels.
+> [ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
 > 
-> I'm working on QEMU patches that add virtio console size support.
-> Without the fix, rows and columns will be swapped.
+> This simplifies the min_t() and max_t() macros by no longer making them
+> work in the context of a C constant expression.
 > 
-> As far as I know, there are no device implementations that use the
-> wrong order and would by broken by the fix.
+> That means that you can no longer use them for static initializers or
+> for array sizes in type definitions, but there were only a couple of
+> such uses, and all of them were converted (famous last words) to use
+> MIN_T/MAX_T instead.
 > 
-> Note: A previous version [1] of the patch contained "Cc: stable" and
-> "Fixes:" tags, but they seem to have been accidentally left out from
-> the final version.
-> 
-> [1]: https://lore.kernel.org/all/20250320172654.624657-1-maxbr@linux.ibm.com/
-> 
-> Thanks,
-> Filip Hejsek
+> Cc: David Laight <David.Laight@aculab.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Eliav Farber <farbere@amazon.com>
 
-But I thought we are reverting it?
+Eliav, your testing infrastructure needs some work, this patch breaks
+the build on this kernel tree:
 
--- 
-MST
+In file included from ./include/linux/kernel.h:16,
+                 from ./include/linux/list.h:9,
+                 from ./include/linux/wait.h:7,
+                 from ./include/linux/wait_bit.h:8,
+                 from ./include/linux/fs.h:6,
+                 from fs/erofs/internal.h:10,
+                 from fs/erofs/zdata.h:9,
+                 from fs/erofs/zdata.c:6:
+fs/erofs/zdata.c: In function ‘z_erofs_decompress_pcluster’:
+fs/erofs/zdata.h:185:61: error: ISO C90 forbids variable length array ‘pages_onstack’ [-Werror=vla]
+  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
+      |                                                             ^~~~
+./include/linux/minmax.h:49:23: note: in definition of macro ‘__cmp_once_unique’
+   49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
+      |                       ^
+./include/linux/minmax.h:164:27: note: in expansion of macro ‘__cmp_once’
+  164 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+      |                           ^~~~~~~~~~
+fs/erofs/zdata.h:185:9: note: in expansion of macro ‘min_t’
+  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
+      |         ^~~~~
+fs/erofs/zdata.c:847:36: note: in expansion of macro ‘Z_EROFS_VMAP_ONSTACK_PAGES’
+  847 |         struct page *pages_onstack[Z_EROFS_VMAP_ONSTACK_PAGES];
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
+
+I'll drop this whole series, please do a bit more testing before sending
+out a new version.
+
+thanks,
+
+greg k-h
 
