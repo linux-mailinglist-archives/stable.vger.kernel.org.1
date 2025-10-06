@@ -1,94 +1,160 @@
-Return-Path: <stable+bounces-183430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB408BBDFD7
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 14:14:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5EFBBE244
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 15:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4D8D3A7BDC
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 12:14:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55E943A5CDC
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 13:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0122B262FC0;
-	Mon,  6 Oct 2025 12:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985D529993A;
+	Mon,  6 Oct 2025 13:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="pqLYTWRT"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9149269CF1;
-	Mon,  6 Oct 2025 12:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF661F4CB3;
+	Mon,  6 Oct 2025 13:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759752850; cv=none; b=KG2zJOP2u+92hB5mQ4YaOcgVOSdnjjMag2qG49uanMOkS4QjRcaF5zT4phqt0Jq6nmpK4AgaIYhTOtUWBBsdvZRIoYx5ESLpGMXAvY76ITSs0MY4Eu+ekHVyDd8atPcF3W64UotXeC6U2UvkBekwKc4dntU7r3KOPbqkWIUuOYU=
+	t=1759755997; cv=none; b=K1RznooMk1Mh83IgGdUmfFMEIlKEVmrQ9SJb81nCmGTggZBRrLHil/UoqmIoy3d72fGYCtU1/7Ru9PfJGwdAhFHkX0IEpLsh4TaUbgU597gymmUCfvNvNz2Q0RO44IGy0HliWqYP3nWipE5EQXVssVpqv0UBdrfs/gcxCfz/CUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759752850; c=relaxed/simple;
-	bh=YK4niNdQaM3H/jhjLOvTw+T2AmFLkKWKRBPumt1Nd1Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fQPl/1DrHW6MGmXNOssJqrjd4b/Wwy/CCzopoikqxBdpJXrbTVvXtIo1phZWgmbEU6kOZqHKCHM4ZsRwBzlDuSsnR6HqZsqJ9dI5vgDCk6aul8E/ioLUuR9epfeti8GNVLDJbMaP8jWRx722VNgs5TpONC1alYM5Bdw98F4iBA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A7B9A1515;
-	Mon,  6 Oct 2025 05:13:57 -0700 (PDT)
-Received: from [10.57.81.160] (unknown [10.57.81.160])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0AAD73F738;
-	Mon,  6 Oct 2025 05:14:03 -0700 (PDT)
-Message-ID: <66251c3e-4970-4cac-a1fc-46749d2a727a@arm.com>
-Date: Mon, 6 Oct 2025 13:14:02 +0100
+	s=arc-20240116; t=1759755997; c=relaxed/simple;
+	bh=Se2h8mHA0GPBvqWfAGxuAl8vyGkUvNM8hK49ch6pvyA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IeXjO7n8DCGOHF3GQu5TGNOEPDZAMlL1GMtqhD3oZnms5AJuuFpEoVi5MQN4jFSvEMe5Wwk75uMtGxP0VbdecJPHuOxXRkbXayH4dGCeSkU0RpkS/9B7DlShSX1RtyPgFMSr/TYCSlqZONZGYydX3o6kb3cXrQg3YP2CIf7H3CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=pqLYTWRT; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=Content-Transfer-Encoding:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:From:Reply-To:Subject:Date:Message-ID:To:Cc:
+	MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=KwqAABJ6dqZZWn3QO15od/yjIGBnSfZpjDbm7FXan64=; t=1759755994; x=1760360794; 
+	b=pqLYTWRTGLjrbiVvTIPl+hBYcVNJdM5YCTIrpXqjHx6VnbmKoNQaZ/eeoVDX6vfgpMBvVhIL69F
+	eduK8Z01lSMufiuxwefe2bXaYVeopMwDELvhKqYneXqtO1+Wm5dG6aJXr+3308xzYpPL2Jo/ITddH
+	1H+aNIfyxYvrcz1Ibm/QBYdv4fG5L7Pvzh4uZXoV49MTzjqfld63pX/yy9iIr1IQtR1MjvGiGPvKH
+	vBQm73g9+7ySdBFk0fitTkdazWjK0VHL368u2Y5Gfpbo6lzkBFfjwxDpLOxQe5lHCVsYHPOX5s61T
+	YhCCbYNHL+yZXVaeaMW9mWjU280wQmFB0wRg==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1v5kv6-000000005sN-2Mjt; Mon, 06 Oct 2025 15:06:28 +0200
+Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=z6.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1v5kv6-000000035Xg-1GZK; Mon, 06 Oct 2025 15:06:28 +0200
+Received: from glaubitz by z6.fritz.box with local (Exim 4.98.2)
+	(envelope-from <glaubitz@physik.fu-berlin.de>)
+	id 1v5kv5-000000000pp-3t0P;
+	Mon, 06 Oct 2025 15:06:27 +0200
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Jens Axboe <axboe@kernel.dk>,
+	Young Xiao <YangX92@hotmail.com>,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Andreas Larsson <andreas@gaisler.com>,
+	Anthony Yznaga <anthony.yznaga@oracle.com>,
+	Sam James <sam@gentoo.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+	sparclinux@vger.kernel.org,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] Revert "sunvdc: Do not spin in an infinite loop when vio_ldc_send() returns EAGAIN"
+Date: Mon,  6 Oct 2025 15:05:42 +0200
+Message-ID: <20251006130542.3174-2-glaubitz@physik.fu-berlin.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] fsnotify: Pass correct offset to fsnotify_mmap_perm()
-Content-Language: en-GB
-To: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Amir Goldstein <amir73il@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251003155238.2147410-1-ryan.roberts@arm.com>
- <edc832b4-5f4c-4f26-a306-954d65ec2e85@redhat.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <edc832b4-5f4c-4f26-a306-954d65ec2e85@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 
-On 06/10/2025 12:36, David Hildenbrand wrote:
-> On 03.10.25 17:52, Ryan Roberts wrote:
->> fsnotify_mmap_perm() requires a byte offset for the file about to be
->> mmap'ed. But it is called from vm_mmap_pgoff(), which has a page offset.
->> Previously the conversion was done incorrectly so let's fix it, being
->> careful not to overflow on 32-bit platforms.
->>
->> Discovered during code review.
->>
->> Cc: <stable@vger.kernel.org>
->> Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->> ---
->> Applies against today's mm-unstable (aa05a436eca8).
->>
-> 
-> Curious: is there some easy way to write a reproducer? Did you look into that?
+In a11f6ca9aef9 ("sunvdc: Do not spin in an infinite loop when vio_ldc_send()
+returns EAGAIN"), a maximum retry count was added to __vdc_tx_trigger().
 
-I didn't; this was just a drive-by discovery.
+After this change, several users reported disk I/O errors when running Linux
+inside a logical domain on Solaris 11.4:
 
-It looks like there are some fanotify tests in the filesystems selftests; I
-guess they could be extended to add a regression test?
+[19095.192532] sunvdc: vdc_tx_trigger() failure, err=-11
+[19095.192605] I/O error, dev vdiskc, sector 368208928 op 0x1:(WRITE) flags 0x1000 phys_seg 2 prio class 2
+[19095.205681] XFS (vdiskc1): metadata I/O error in "xfs_buf_ioend+0x28c/0x600 [xfs]" at daddr 0x15f26420 len 32 error 5
+[19432.043471] sunvdc: vdc_tx_trigger() failure, err=-11
+[19432.043529] I/O error, dev vdiskc, sector 3732568 op 0x1:(WRITE) flags 0x1000 phys_seg 1 prio class 2
+[19432.058821] sunvdc: vdc_tx_trigger() failure, err=-11
+[19432.058843] I/O error, dev vdiskc, sector 3736256 op 0x1:(WRITE) flags 0x1000 phys_seg 4 prio class 2
+[19432.074109] sunvdc: vdc_tx_trigger() failure, err=-11
+[19432.074128] I/O error, dev vdiskc, sector 3736512 op 0x1:(WRITE) flags 0x1000 phys_seg 4 prio class 2
+[19432.089425] sunvdc: vdc_tx_trigger() failure, err=-11
+[19432.089443] I/O error, dev vdiskc, sector 3737024 op 0x1:(WRITE) flags 0x1000 phys_seg 1 prio class 2
+[19432.100964] XFS (vdiskc1): metadata I/O error in "xfs_buf_ioend+0x28c/0x600 [xfs]" at daddr 0x38ec58 len 8 error 5
 
-But FWIW, I think the kernel is just passing the ofset/length info off to user
-space and isn't acting on it itself. So there is no kernel vulnerability here.
+Since this change seems to have only been justified by reading the code which
+becomes evident by the reference to adddc32d6fde ("sunvnet: Do not spin in an
+infinite loop when vio_ldc_send() returns EAGAIN") in the commit message, it
+can be safely assumed that the change was neither properly tested nor motivated
+by any actual bug reports.
 
-> 
-> LGTM, thanks
-> 
-> Acked-by: David Hildenbrand <david@redhat.com>
-> 
+Thus, let's revert this change to address the disk I/O errors above.
+
+Cc: stable@vger.kernel.org
+Fixes: a11f6ca9aef9 ("sunvdc: Do not spin in an infinite loop when vio_ldc_send() returns EAGAIN")
+
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+---
+Changes since v1:
+- Rephrase commit message
+Changes since v2:
+- Add missing CC and Fixes tags
+---
+ drivers/block/sunvdc.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/drivers/block/sunvdc.c b/drivers/block/sunvdc.c
+index 282f81616a78..f56023c2b033 100644
+--- a/drivers/block/sunvdc.c
++++ b/drivers/block/sunvdc.c
+@@ -45,8 +45,6 @@ MODULE_VERSION(DRV_MODULE_VERSION);
+ #define WAITING_FOR_GEN_CMD	0x04
+ #define WAITING_FOR_ANY		-1
+ 
+-#define	VDC_MAX_RETRIES	10
+-
+ static struct workqueue_struct *sunvdc_wq;
+ 
+ struct vdc_req_entry {
+@@ -437,7 +435,6 @@ static int __vdc_tx_trigger(struct vdc_port *port)
+ 		.end_idx		= dr->prod,
+ 	};
+ 	int err, delay;
+-	int retries = 0;
+ 
+ 	hdr.seq = dr->snd_nxt;
+ 	delay = 1;
+@@ -450,8 +447,6 @@ static int __vdc_tx_trigger(struct vdc_port *port)
+ 		udelay(delay);
+ 		if ((delay <<= 1) > 128)
+ 			delay = 128;
+-		if (retries++ > VDC_MAX_RETRIES)
+-			break;
+ 	} while (err == -EAGAIN);
+ 
+ 	if (err == -ENOTCONN)
+-- 
+2.47.3
 
 
