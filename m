@@ -1,141 +1,166 @@
-Return-Path: <stable+bounces-183451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8D9BBE9E0
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 18:19:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8005BBBEA40
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 18:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5B6B189A561
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 16:19:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4909E3A1322
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 16:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55F91E51F6;
-	Mon,  6 Oct 2025 16:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3482DC780;
+	Mon,  6 Oct 2025 16:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ua2rC38d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LK4m8H8d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483161E1DF2
-	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 16:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52ED72DC77A
+	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 16:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759767542; cv=none; b=kPwexTSfY7HDb89+JCuvqVYcofyiUzc3W0v1gsj1055E5TT4t/NvEJff52p/tCCkPDE4+KumsGIpwHe4DqZ+AFUZL29++/E2gsJBzb5upUBCsarES8V+IoUaQ7oE3E5GJIXMPBPHIxvperL8gfkr1IGK0k2n4EDFWpMgIGFi+x4=
+	t=1759767919; cv=none; b=UC4tkHuRkFLLNPLuNR/l+gGd1jcLkcAew2yUtYy/BjSPg8T0rkzneOKZ1ESsN15SWq0cDuQeKOW8XA0wzK3Q3FmAp4hWLWidoZ/rbdFg7vuAraQwjDwTmzr6SWsm9zfIUWFMRdXbQo7pzhFlq0Emj3GC1qL7ZWCvOmOqUcM62Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759767542; c=relaxed/simple;
-	bh=Q6EvSHfkO4e/9YwivHi3csU4VMPQMQ8A5SfcPJE6jwg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pwnh7oP0jome4zPvo8Q5VrPRvPPkdqJO5HrTBRbs4MVAXhbFvx2qXEiI4zTTwGjFDX9g1ojZgehmERAIOdVCaHVvH9v1kGu98/rDgTUiyze3WuaRHK+LfhgTQMYWPGwn94Slv8fgkMnuoToGqultV44vqOHD71Pv/FJ8mrll+mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ua2rC38d; arc=none smtp.client-ip=209.85.161.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-64e3e259f93so2496049eaf.3
-        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 09:19:00 -0700 (PDT)
+	s=arc-20240116; t=1759767919; c=relaxed/simple;
+	bh=jBYax2wAYW+F+axem1AqE4EDxeEWy61Irb34BoS1Eyo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CJR8gTfN3PSo+TLfxMn/rPBKYigk1rO3VS/aluadmDEWSH27GZRj3S5+/ig1uQhOnFnTd3xeYPHlhe4qNnKu9NVJ3ag+FpF2WcbZ8dNEyPFdImJ035r6KsJ/pXRabsRMtpvONlHi5zM+nxendUA7CKyZstAoLbE8R9Qxh8s/M5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LK4m8H8d; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3ee64bc6b90so3054616f8f.0
+        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 09:25:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1759767539; x=1760372339; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vhZR1oqC5kvhnlZSDqYbJoK0fSBTzQfqw1bJiCNbME8=;
-        b=ua2rC38dpGLUY9/t/s/ojZk/HTks1yn89dcbPA9a42xXCHASxBBPCd33iW0xt5fz4W
-         HDSbT0Jm6LYmlRxqSa//GDCV+73jjztuy1Xfvww9s2rpARun7fpRs0mdKr4ILVF2glbs
-         rmRuzzuJ4RkYdtK5mj5SgMbp2BaylBgN3ZMYhPPMel1mY9LsuZazu6mqDgWwB7HQQ1uq
-         phcAK0z7ueI0Drb8jZB+M++o9KkxaoHYZRT3S6RT8YnJr7ZxRNeWI62mBzTrA14UhI1N
-         wAGqOH2gKE7y9uiwRdmZvYvwYyCTkAT3psGxI7W3oAZb8ATAnygMxXiBqIUP0vrGCMc2
-         hDQA==
+        d=gmail.com; s=20230601; t=1759767915; x=1760372715; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jBYax2wAYW+F+axem1AqE4EDxeEWy61Irb34BoS1Eyo=;
+        b=LK4m8H8dwbfiPLbMBKsVX8DTeVbSejqkkJFic6IvuyPAL6ApivDZFBANcGCUg8SYIt
+         3+VCnKUBnWjKICnwIt01QHxLLr4eJ3Puv9okmbOLWzItN4uebONoZ1R3HuV21tdSQ/6+
+         10i5km1QOOY9RZ1owCARag78FfCtOERhTf8j0M6psSCFsuyhaDQbedMFLZ+GxsS7lcId
+         5GeZhYRDEz2sIcRJc+Xo0yVx2qmwWbePWWjFQashAlEVAgjou28HYP/4doxUddSvpEaZ
+         egA62hIIMdxLpfvGQJ49uO2VXWkY49o7z4+iBUIbFKs0wGoBhFWv9qWgtioih0AsyNjt
+         pcFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759767539; x=1760372339;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vhZR1oqC5kvhnlZSDqYbJoK0fSBTzQfqw1bJiCNbME8=;
-        b=f7Po1bF6Yfusv8tlOYcssrx+nOU4X5aDa9/uWealeS3WH+se0gP2Rnf07RsZnfhubM
-         6VHWKE941+MFUOe6N3e+dyRiJF17P6rnoNyD9Tl87CQQE7LqyBraEfoYfY5rDcfB92D6
-         OUO93qhkeszVjaZg3bqNCiMhSZie1JnWvrhiFK1LoWNxh+h8w6HSwBjRhjjuzrjvCoJk
-         6JeqN4H8Zf9+EvE926uo44W9cQIwoFiYm0C0YG+utKuGhM1gIM+rb8bEGbBiJCC5qear
-         y5O6GZh1qIjGw2qGAHzuKzfJVwa2oml3/PE7vB3hysWyXIs7U04pDPL54gYMI2gvY64Z
-         bkrg==
-X-Forwarded-Encrypted: i=1; AJvYcCVbLsm4x/rpAsDypV93RnrN9T0EzrSxsRe/L7wZJGX19qr1ZEaD5Iqebcet3n6AgrTY4cNA1qo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhFe0RwkdZkL2COHOUyf5eiDRPaRWKEtocVLfFEWmYvDiDTNQJ
-	oIPVgQ3NW30iLyzoVTop7FZOnS4S8nNzag00JeqFi8j8EhECJDa8Q0nrvmMQWXpGObI=
-X-Gm-Gg: ASbGnct7sGB5jR73eOnVsAyrnJhhAfwNFvzMyBqVh9h9SHVPWSRClw1XkwqCWiu0qKo
-	+0iGjkSmCoZmnLF+MQUO7Xl9tNybnCVgv1v8dhTeLFDHVXSd0q7HcjYQA8WfmWeAvD6tNFUjarX
-	kHTDwVLEywxyxGMEwTfAoeodwKnmL76s8fkQOmoovXi0wu5x0ds2TfsFJ6W2wimI+sp4Ng2sdLg
-	duFpxKKeYNevoDHEcqzsdm4eZ7gbvprbvxCY2spvxkBuJsrZ4aCbHjG7uwfG5upiVy1i2S9ugZX
-	HhkCllvFcdJ49BVRYazB6htesHZajjKtPyfYUK+8kjv+zjJCzVEtavohWKV8+YD8WhEIjLqr6Ba
-	uzCBQ4fN7e5gcu35pAKAqCmi9hgPzhITOW5Ym2InPzhvvp1wdIk3XnY4ucPtIiWx6lZhchvL6WW
-	WsZHwWfVZAGiHdgO8/+Xu+OWs=
-X-Google-Smtp-Source: AGHT+IFUfHmjx5ckM1OlqXY6Ld+RV1yTaLt0MDlsh6omBMgy6OcZDc1gI3MR0SM9LREgCHsUySFRVA==
-X-Received: by 2002:a05:6870:264:b0:30b:8821:aba4 with SMTP id 586e51a60fabf-3b0fd798233mr6748754fac.20.1759767539344;
-        Mon, 06 Oct 2025 09:18:59 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:a1fd:4fbd:e7a6:9246? ([2600:8803:e7e4:1d00:a1fd:4fbd:e7a6:9246])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ab794bd04esm4196944fac.10.2025.10.06.09.18.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Oct 2025 09:18:58 -0700 (PDT)
-Message-ID: <7eeb3072-b54e-46c7-9fb2-c4d2422188d8@baylibre.com>
-Date: Mon, 6 Oct 2025 11:18:58 -0500
+        d=1e100.net; s=20230601; t=1759767915; x=1760372715;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jBYax2wAYW+F+axem1AqE4EDxeEWy61Irb34BoS1Eyo=;
+        b=c6lVJ2LLtpM/1633UynXGAW0Q7YGunNbie+kXnjM/tcMrS1n1jOkQ8rSm5ukUlb6Z4
+         9fSlimVwLnUCgqdsbH9ogQOJxVdTvG/0v0IqwJPmxnXLQWoHTuF0Qut76hI3Imv6GNxe
+         xW4O++h8ob0um/EJ+rsv7rw5YsRN4B0ygSKg4YlwNl7iGCXEeBa9tj6wW+OrsWgwzNVr
+         bkfe44aAMMGag9tgOZGnGnl/SkFgNOItIw03JuQ8Azpl2xVxTggcowXsuViYf8hL5BGK
+         BLc5Lv4r+y/ChqO+BxpqgztMsOe48ZhGy0Y9C9kYdWQe1k2mBp4GvKIaur+ZOpuYFX6K
+         LosQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTrLnem5mn9ozpZ8JLbXORp02lVflMOSduMjYqunNUgFR0yG7XGEbMV4U4zlMa97AUpIDCF3Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc5Xxp0ittxZcUyBxt1zWZzPeJdfHA/1nW5CzyWjJfZlic6VbF
+	PwtmKSE71UZI38m2VviAwAypWSwq3O3EJn1bL53EQrj1KibSpG1tJK23
+X-Gm-Gg: ASbGncuSc/QFOhVwqYMAjgE9Opj8mSWkAUCOCpwC/VRt/vA16auQKHuDYo/b/LM9sfg
+	P7gd7HwOFORaPZo2JSxt3fLxgEA25rLcbt2DyIQQs1TVqZ2FPgbgxYOLwwxbIEfI4dZ+RnmPvUS
+	Y6R3v+m3AClgYPV+sGygdAIffCaAxCDuRLGjm9B/3O4Q92VTqxFwSkbCVKewxoQUiVZZpT/8PtZ
+	eWIE+G9o0Xqi8CCJQwDkILypIqLDAppekr/czU4S9op/6+tAbHW1UM3okQm7MTeF++/GLnNE2tw
+	eUzzohxX33ZBnm2D8xr2uE4ZjYUCtrBXUUoTti4Lkw7B22vzqNBXLb4+PtsgArkO5WZ8oKW5yvJ
+	IlJM7rIX+h8kjf7A+G9wdfOqyNfzi0lalCQlMF3kpiu5AEpUY/WHT5Pk=
+X-Google-Smtp-Source: AGHT+IG2xrQKr0WMPxw//a+T9W1FJSFFpq+oFwpBvL4mODap+XSIH58WzexWACPYCKiXtle2wPVJUw==
+X-Received: by 2002:a05:6000:2386:b0:3ee:1357:e191 with SMTP id ffacd0b85a97d-425671a92f2mr7017976f8f.30.1759767915344;
+        Mon, 06 Oct 2025 09:25:15 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f0853sm21919779f8f.50.2025.10.06.09.25.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Oct 2025 09:25:15 -0700 (PDT)
+Message-ID: <2fe00df37ad75591e437813f1c618c3decbdf2cb.camel@gmail.com>
+Subject: Re: [PATCH v2 0/3] iio: buffer: Fix DMABUF mapping in some systems
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, 
+	linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+	stable@vger.kernel.org
+Date: Mon, 06 Oct 2025 17:25:45 +0100
+In-Reply-To: <7eeb3072-b54e-46c7-9fb2-c4d2422188d8@baylibre.com>
+References: 
+	<20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
+	 <7eeb3072-b54e-46c7-9fb2-c4d2422188d8@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] iio: buffer: Fix DMABUF mapping in some systems
-To: nuno.sa@analog.com, linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- stable@vger.kernel.org
-References: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 10/6/25 11:06 AM, Nuno Sá via B4 Relay wrote:
-> This series fixes an issue with DMABUF support in the IIO subsystem where
-> the wrong DMA device could be used for buffer mapping operations. This
-> becomes critical on systems like Xilinx/AMD ZynqMP Ultrascale where memory
-> can be mapped above the 32-bit address range.
-> 
-> Problem:
-> --------
-> The current IIO DMABUF implementation assumes it can use the parent device
-> of the IIO device for DMA operations. However, this device may not have
-> the appropriate DMA mask configuration for accessing high memory addresses.
-> On systems where memory is mapped above 32-bits, this leads to the use of
-> bounce buffers through swiotlb, significantly impacting performance.
-> 
-> Solution:
-> ---------
-> This series introduces a new .get_dma_dev() callback in the buffer access
-> functions that allows buffer implementations to specify the correct DMA
-> device that should be used for DMABUF operations. The DMA buffer
-> infrastructure implements this callback to return the device that actually
-> owns the DMA channel, ensuring proper memory mapping without bounce buffers.
-> 
-> Changes:
-> --------
-> 1. Add .get_dma_dev() callback to iio_buffer_access_funcs and update core
->    DMABUF code to use it when available
-> 2. Implement the callback in the DMA buffer infrastructure
-> 3. Wire up the callback in the dmaengine buffer implementation
-> 
-> This ensures that DMABUF operations use the device with the correct DMA
-> configuration, eliminating unnecessary bounce buffer usage and improving
-> performance on high-memory systems.
-> 
-> (AI generated cover. I would not be this formal but I guess is not
-> that bad :))
-> 
-> ---
-> Changes in v2:
-> - Dropped Fixes tags on the first two patches and Cc stable them instead
->   (as prerequisites for the third patch). 
-> - Link to v1: https://lore.kernel.org/r/20251002-fix-iio-dmabuf-get-dma-device-v1-0-c1c9945029d0@analog.com
+On Mon, 2025-10-06 at 11:18 -0500, David Lechner wrote:
+> On 10/6/25 11:06 AM, Nuno S=C3=A1 via B4 Relay wrote:
+> > This series fixes an issue with DMABUF support in the IIO subsystem whe=
+re
+> > the wrong DMA device could be used for buffer mapping operations. This
+> > becomes critical on systems like Xilinx/AMD ZynqMP Ultrascale where mem=
+ory
+> > can be mapped above the 32-bit address range.
+> >=20
+> > Problem:
+> > --------
+> > The current IIO DMABUF implementation assumes it can use the parent dev=
+ice
+> > of the IIO device for DMA operations. However, this device may not have
+> > the appropriate DMA mask configuration for accessing high memory addres=
+ses.
+> > On systems where memory is mapped above 32-bits, this leads to the use =
+of
+> > bounce buffers through swiotlb, significantly impacting performance.
+> >=20
+> > Solution:
+> > ---------
+> > This series introduces a new .get_dma_dev() callback in the buffer acce=
+ss
+> > functions that allows buffer implementations to specify the correct DMA
+> > device that should be used for DMABUF operations. The DMA buffer
+> > infrastructure implements this callback to return the device that actua=
+lly
+> > owns the DMA channel, ensuring proper memory mapping without bounce buf=
+fers.
+> >=20
+> > Changes:
+> > --------
+> > 1. Add .get_dma_dev() callback to iio_buffer_access_funcs and update co=
+re
+> > =C2=A0=C2=A0 DMABUF code to use it when available
+> > 2. Implement the callback in the DMA buffer infrastructure
+> > 3. Wire up the callback in the dmaengine buffer implementation
+> >=20
+> > This ensures that DMABUF operations use the device with the correct DMA
+> > configuration, eliminating unnecessary bounce buffer usage and improvin=
+g
+> > performance on high-memory systems.
+> >=20
+> > (AI generated cover. I would not be this formal but I guess is not
+> > that bad :))
+> >=20
+> > ---
+> > Changes in v2:
+> > - Dropped Fixes tags on the first two patches and Cc stable them instea=
+d
+> > =C2=A0 (as prerequisites for the third patch).=20
+> > - Link to v1:
+> > https://lore.kernel.org/r/20251002-fix-iio-dmabuf-get-dma-device-v1-0-c=
+1c9945029d0@analog.com
+>=20
+> Did you not care for my other suggestions in v1?
 
-Did you not care for my other suggestions in v1?
+Completely missed them, sorry! I kind of stop reading in the stable stuff. =
+I'm
+ok with the helper function. For the clarification I feel it's redundant. T=
+he
+field is called .get_dma_dev() and the description "called to get the DMA
+channel associated with this buffer" already implies is for DMA buffer. Sam=
+e as
+ops like .enqueue_dmabuf().
 
+- Nuno S=C3=A1
 
