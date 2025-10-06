@@ -1,172 +1,146 @@
-Return-Path: <stable+bounces-183435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A118BBE480
-	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 16:09:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F2ABBE4CE
+	for <lists+stable@lfdr.de>; Mon, 06 Oct 2025 16:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C5D43B67D9
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 14:09:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB8F64ED1F0
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 14:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436B62D47F5;
-	Mon,  6 Oct 2025 14:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD37C2D47F5;
+	Mon,  6 Oct 2025 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HqPRy82Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nEg8PCHB"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7656D2D3228
-	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 14:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA92C27CB02
+	for <stable@vger.kernel.org>; Mon,  6 Oct 2025 14:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759759780; cv=none; b=VWU7G0Xvjk/aAuXFQelDf+uVtKoHjUhfAQ+a245cWZYGqwTKgLkpVF2co5kdZsRRYYq4deeIbcgKiMX8IEjDp5aL1+TDN5Hs4lWvBZ4c6ANCRc2rSxS4F4aCPD5wcOc7ziou1VHiDEsBHlYSwUR+fIXMAZBKO231uytmsUoa2TM=
+	t=1759760115; cv=none; b=KOjgdXXOoRANoDv3bT5hgWKMqz/truIGldAXb5qJ+Fz7Ezt2M62UdHbOSupdvsQf9EAV6e2N15k7jgfdZRLcI7HGMMya2JuP5qdBxvmno9Wjm4TI7fJIZ1oMQkPZUd2dtoysOK5GLUfecuazo/2DTW4NFaCjb3sqs2FK5pXoIIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759759780; c=relaxed/simple;
-	bh=+Ac5cJDdDTJOQVETiuUSs4LHivS3FpAmbvBAbBep0jU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sX1o0ThSyrnHnYH1fSOFFmcmiX8kNkybeggkP6M7TXIGRKeGoPvFQWWuH0h6u4x0wjROWf57PBac6NXoVDEVsg/Xp+CuW1iEta5oJ7e98Xz4Ys2Zd35TgfsDKISc9toHWkDo9aHD5kJXx4QBuUuqT/DIZh9w7FJlT3jCIYJgKcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HqPRy82Q; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 595LNT8w022342
-	for <stable@vger.kernel.org>; Mon, 6 Oct 2025 14:09:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	GB29UCMLBPXo5eLdPjvIY/VLAFer3OBUfViSSQUTz/4=; b=HqPRy82QW9dvo6V9
-	ZeLHR1a+pjiex41d81XSc+lXdIouV9OoeMLKggKrxaxBJsYRhMVD4EhnyluvKqa1
-	e1mWUjSS2ixA7Al4vx5kR5g4UHaftia6Fqrrxcwx5EE/WwIe4Q/xtWQfJyoXyndl
-	rpXhpa51BoKonI/WtZR8D39pVuFBU7QbGm0JJ7YnswydRT5vmi7PqMP45wc7SdHH
-	tjyEWVcL60jVbqhe4mwkuiSPjSw6ppPrwhA/eglD5bk/EVAxQ9tqW6D52/SlC4B8
-	PRtqHL4hJbuQnUXgYVuGsUgeZcQjywlM8TO4h652Zo7QBfEDtmxQ+qyeGksA6qut
-	FOTPaw==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49jthpv5x1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 06 Oct 2025 14:09:37 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2697410e7f9so100909485ad.2
-        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 07:09:37 -0700 (PDT)
+	s=arc-20240116; t=1759760115; c=relaxed/simple;
+	bh=dpC1E3ty+TFIwvkaEmernFgK/zs4Oj/TxnNsvw9c65s=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Mg3MA6u+I3XHsodG3ltbtBhjMOwfImMiwHplVHImL2W1n1Wrtwp4o+lsWx2f9aASAS/QLhb4sMSnVRESTM30Euy6PYmTuDn6asd6mywL+W/WUGqjhb1PPW1mdlvSwexG+tUaZhhA4pfIPBBbrozvuq6wInPlqzQSw/ToGpKbn8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nEg8PCHB; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-46e326e4e99so31225335e9.1
+        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 07:15:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759760112; x=1760364912; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dpC1E3ty+TFIwvkaEmernFgK/zs4Oj/TxnNsvw9c65s=;
+        b=nEg8PCHBODwG66V2/NNuOnludfp1ZI9z8yOO7jDQ/5Y/bGs1N592mzlR4tiw7Yd7Sw
+         rPJMHVMcplSmPtg59XVVVwGMTYm2t1QXsvCBVFON+bCeFfZwig+nANAG+2j/OBu2De2k
+         +gFzTpQtg2ed6W612rxNxlq0SJTt+lLzWJEiuAzYRDwCz9bscGTwpXOdJUNdzxDT78Uf
+         Bs2VqXKPbaId+VvgR2wnRkqvznMqaM2InfWFOCRxQNnSV7CRPu527ivZdFSxHDDcJaY1
+         XNd/52MNEaw+v8rEM+5uOlJWxoVNL9vkpMsd8+3rWAM19QLQWg3tm/WPt9Oz7dhXeuCG
+         CFwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759759777; x=1760364577;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GB29UCMLBPXo5eLdPjvIY/VLAFer3OBUfViSSQUTz/4=;
-        b=UZTkuvPVamIzOrIEGAqSr2QJQnZ2QqfhBopu7i+XXavGJUgbt1qHPUX2GpQwJe3cBE
-         HXPDwVeDsghz5fG/jUpJL/IKh7XpjbwW5D7xNWO9k9qUoTmBIjgdkTWbCvLMZ26h0F+u
-         ImoMrjlxZc1vL6B7IFFntSJMKZ1aF0LvuGEua2PuYCL6YNSg2HXOlQDLQjL/S5BoIYQJ
-         g/mMpo6isQPD5XuLipL9e6xLNcHeWzJQ+U7B8MVroMT4ixYJfd3E9EW4AYcIDTx8+PEY
-         EAK+8H8q10xF48cTNbtY33ny7hSbk0ubfyMOuqif/47L0kD2vGX5/we4fuCRcuG8xqYE
-         KcKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXYU7nJlXS7MlBkNhZQjMsoO0gr1TGrc/mhv9pyGdv1K/TEt7cXfcGS7gibFo4AsUcTdGNSfQM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWEgYpb5lkuKzFb8twzWrL7Al+Di8iWLBE6RdvGmM42Zhwh2Ko
-	J9m2d/xot6/A6VC9806bYv5jS6qm7YZ1bITKo+4z1TzB2GtK1fFIL+Me9tzZypn86SMQk0JAiL2
-	gzmmKFLrVsWji+btMKJuhe5KO2GV8OEDr2inAmoQjBRbigZW+QyOfMVyB21k=
-X-Gm-Gg: ASbGnctojzBm/TaFQgGg4eUrXgEdkeVy9c95LOezYGhIRtm8ELU2kdp4aTgZOcQDQQ3
-	Y7Pdnz3VidQEzftq1vGS/YVyO8NjRTHwS6TqbYWBMu21YZ5114loau6JMOyVzeTQZUI5ZsG8b+U
-	NPyGEbAEUROYBqLzhREjVRL7JShkCTJdVGy3aRYqkwGi+vSSGdMV7H9PeImDQo9VR8V1wJDr9H9
-	l2BxGsdAHF2RSVE3mK2UkCAm1CKTVuZ7/2Ptm7oxn1jd9oZ+nkhmLoquQDj9CnxdECRhUBeYEq3
-	406m4Mg34BFrcs1lXbqu8iRUymGR7W1qixgaM5PEO1WlIfwhjqoBFdpGrg7YFFqOYU4caXJC4dz
-	TYGY=
-X-Received: by 2002:a17:902:ef09:b0:278:9051:8e9c with SMTP id d9443c01a7336-28e9a65bbe4mr151249445ad.42.1759759776703;
-        Mon, 06 Oct 2025 07:09:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxq1GEAbYHAQEO8/Ijrp/7z7LdukF6tnpYf0+ClvsrQbBiRXSi+LJNN1E6SVrt66M4621L7w==
-X-Received: by 2002:a17:902:ef09:b0:278:9051:8e9c with SMTP id d9443c01a7336-28e9a65bbe4mr151249005ad.42.1759759776277;
-        Mon, 06 Oct 2025 07:09:36 -0700 (PDT)
-Received: from [192.168.0.166] ([49.205.253.54])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d1b8796sm134519245ad.77.2025.10.06.07.09.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Oct 2025 07:09:35 -0700 (PDT)
-Message-ID: <fd9860aa-23c9-b223-2139-a2da93191410@oss.qualcomm.com>
-Date: Mon, 6 Oct 2025 19:39:28 +0530
+        d=1e100.net; s=20230601; t=1759760112; x=1760364912;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dpC1E3ty+TFIwvkaEmernFgK/zs4Oj/TxnNsvw9c65s=;
+        b=Q06WcMhjJZLdFD1lDfjmLfS3iv/MWQRmU6Xrnq3kY9AI7A568kMSNgXOycsztlJ/yl
+         H+YlgmWyvgzbgw2IJnOyH2n0L7tcSy7TwLiwXUdzRorbDuUtREoXqjVGEM8AK5Shnwso
+         ACiSLfzSmYKm06ZED6DagHIxm+xBUB0CvxGc7fiVL0hAwJKAfS2KVoQi/a8JADdPYInx
+         pN8FaFFJxLV6FkWOjKQiCHom0BBGYR/eiX6rNHf/5aLhOucqv24w/sDNWd2at1/ywdUN
+         4Q7+/UPynv2cztM/mWtXyDe1hdjJBVUX5JDKj2KsFyTZbUmOHJn2nzPrGZjorcmHcSji
+         Mo6A==
+X-Gm-Message-State: AOJu0YwniFwH73lVR2z4i0kg0PLYUHasqP8ZfpbLx5QJ2Lh79Gfkgh/N
+	sMcJjkBBgNwkO8BhVlVy7ANY2ZxMhyBxrpdbyjfmXWQEpSoZSRFU/UVd
+X-Gm-Gg: ASbGncudq7y3BXCyAZ8d+MbBhTxllIQYeAbgefnyL1qCJMoWqE6sSoc/higHeUGvtDo
+	MfA50AHsNXTA+L9Lf0iUMNIvuWOfyTxmgfsg+AKHpnX7vTAIzJqOPFewYZqJDyEiWjLs0sIgwXe
+	XawI+ex4oFGX85adIPFmtlNclBhyOLmggENPUNmedU8z9BpK7OlHvX53ZwrMrdBCiIYnxX87ECv
+	BePbiKbbgOH2ASXab/lSiAKVS8dPagV4A/vk1wSluqSePvIngxqBIpzDoywrIN1bkC4NHgdSOY1
+	avjltJJYk7HR/s4MPDF5aJXXKy/axcKDbLeXuEmzx6MR2AVqbKR7qykun32Bode5e5j/b2C37mb
+	JhAS++MBNPSFrmlERNzlHxGAQCPGJ79CXUVNTFz0W481KGlBj7pQsBUAlH4WfzfF5WkQIXMreeP
+	Lu50SGEA==
+X-Google-Smtp-Source: AGHT+IFvFV4OWJrtZLVyN6HOHxV1pZ8u+HpcMb9x2itMg3VtsVtai86lf60GZYy3ywG2hvyKpuqDFw==
+X-Received: by 2002:a05:600c:530e:b0:45f:29eb:2148 with SMTP id 5b1f17b1804b1-46e70c5ca50mr85971895e9.7.1759760111974;
+        Mon, 06 Oct 2025 07:15:11 -0700 (PDT)
+Received: from [10.33.80.40] (mem-185.47.220.165.jmnet.cz. [185.47.220.165])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e72359e2bsm161672755e9.13.2025.10.06.07.15.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Oct 2025 07:15:11 -0700 (PDT)
+Message-ID: <a4e912547211eed865bdf769647936c1e3034e4e.camel@gmail.com>
+Subject: Re: Backport request for commit 5326ab737a47 ("virtio_console: fix
+ order of fields cols and rows")
+From: Filip Hejsek <filip.hejsek@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: stable@vger.kernel.org, Maximilian Immanuel Brandtner
+ <maxbr@linux.ibm.com>,  Daniel Verkamp <dverkamp@chromium.org>, Amit Shah
+ <amit@kernel.org>, Greg Kroah-Hartman	 <gregkh@linuxfoundation.org>,
+ virtualization@lists.linux.dev
+Date: Mon, 06 Oct 2025 16:15:10 +0200
+In-Reply-To: <20251006062851-mutt-send-email-mst@kernel.org>
+References: <f839e710b4ede119aa9ad1f2a8e8bcc7fcc00233.camel@gmail.com>
+	 <20251006062851-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] media: iris: Fix ffmpeg corrupted frame error
-Content-Language: en-US
-To: Vishnu Reddy <quic_bvisredd@quicinc.com>,
-        dikshita.agarwal@oss.qualcomm.com, abhinav.kumar@linux.dev,
-        bod@kernel.org, mchehab@kernel.org, hverkuil@kernel.org,
-        stefan.schmidt@linaro.org
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251006091819.2725617-1-quic_bvisredd@quicinc.com>
-From: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-In-Reply-To: <20251006091819.2725617-1-quic_bvisredd@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: CljnCZtfdREUrl10Lfetx2x6DRyK4uX0
-X-Authority-Analysis: v=2.4 cv=N5gk1m9B c=1 sm=1 tr=0 ts=68e3cda1 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=kO0dpjAoeuYzon0q5oXcQQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=EUspDBNiAAAA:8 a=kcjkJnMakA67_LZCmskA:9 a=QEXdDO2ut3YA:10
- a=324X-CrmTo6CU4MGRt3R:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAxNiBTYWx0ZWRfX5IrTSGojB9vy
- IKKx4z15irEABjB2KbK2BMV2F8BdQiUzDjxjke8TH9vsRFdQN4qRu0NaOvI5L7ZoaXCPd18lEWX
- HzN+h+qQLOT+MgshHBWL7ykJNFh8sZ4gPlhficFZiHvcXMtI02rJxrWgCg8OupT7McjHjLTlEpK
- CQKmbTjeCUd9fxATUzYMxBG3k53EIZqu0r4NupbSnOit8C40JZZ7tOcQAOEP7l3NJXNK0j6IL06
- GmG9tGfXfzBZDbpXg9HjnWYCOKGqv5LvQ9PL4jOczsetKZ+kjKV97pw6Ik/ldWHnYwa322ftkvU
- fWF0OrsEroKJtH0CPoR0/FdBY8CkEm8eX9gR47x+AO6mYeVWrdDR8gEecnJ0SRLtCRzv/glyWmK
- DBQiov1557gDORIpTM/mP/AlCsAMyQ==
-X-Proofpoint-ORIG-GUID: CljnCZtfdREUrl10Lfetx2x6DRyK4uX0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-06_04,2025-10-02_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0 clxscore=1011 suspectscore=0 adultscore=0
- impostorscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
- definitions=main-2510040016
 
+On Mon, 2025-10-06 at 06:29 -0400, Michael S. Tsirkin wrote:
+> On Thu, Sep 18, 2025 at 01:13:24AM +0200, Filip Hejsek wrote:
+> > Hi,
+> >=20
+> > I would like to request backporting 5326ab737a47 ("virtio_console: fix
+> > order of fields cols and rows") to all LTS kernels.
+> >=20
+> > I'm working on QEMU patches that add virtio console size support.
+> > Without the fix, rows and columns will be swapped.
+> >=20
+> > As far as I know, there are no device implementations that use the
+> > wrong order and would by broken by the fix.
+> >=20
+> > Note: A previous version [1] of the patch contained "Cc: stable" and
+> > "Fixes:" tags, but they seem to have been accidentally left out from
+> > the final version.
+> >=20
+> > [1]: https://lore.kernel.org/all/20250320172654.624657-1-maxbr@linux.ib=
+m.com/
+> >=20
+> > Thanks,
+> > Filip Hejsek
+>=20
+> But I thought we are reverting it?
 
-On 10/6/2025 2:48 PM, Vishnu Reddy wrote:
-> When the ffmpeg decoder is running, the driver receives the
-> V4L2_BUF_FLAG_KEYFRAME flag in the input buffer. The driver then forwards
-> this flag information to the firmware. The firmware, in turn, copies the
-> input buffer flags directly into the output buffer flags. Upon receiving
-> the output buffer from the firmware, the driver observes that the buffer
-> contains the HFI_BUFFERFLAG_DATACORRUPT flag. The root cause is that both
-> V4L2_BUF_FLAG_KEYFRAME and HFI_BUFFERFLAG_DATACORRUPT are the same value.
-> As a result, the driver incorrectly interprets the output frame as
-> corrupted, even though the frame is actually valid. This misinterpretation
-> causes the driver to report an error and skip good frames, leading to
-> missing frames in the final video output and triggering ffmpeg's "corrupt
-> decoded frame" error.
-> 
-> To resolve this issue, the input buffer flags should not be sent to the
-> firmware during decoding, since the firmware does not require this
-> information.
-> 
-> Fixes: 17f2a485ca67 ("media: iris: implement vb2 ops for buf_queue and firmware response")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vishnu Reddy <quic_bvisredd@quicinc.com>
-> ---
->  drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-> index e1788c266bb1..4de03f31eaf3 100644
-> --- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-> +++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-> @@ -282,7 +282,7 @@ static int iris_hfi_gen1_queue_input_buffer(struct iris_inst *inst, struct iris_
->  		com_ip_pkt.shdr.session_id = inst->session_id;
->  		com_ip_pkt.time_stamp_hi = upper_32_bits(buf->timestamp);
->  		com_ip_pkt.time_stamp_lo = lower_32_bits(buf->timestamp);
-> -		com_ip_pkt.flags = buf->flags;
-> +		com_ip_pkt.flags = 0;
->  		com_ip_pkt.mark_target = 0;
->  		com_ip_pkt.mark_data = 0;
->  		com_ip_pkt.offset = buf->data_offset;
+I'm kinda confused by this question, because I thought you already
+understood the situation.
 
-Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+I sent this backport request after a discussion with Max in the revert
+thread, from which I got the impression that the virtio spec
+maintainers were unwilling to change the spec to match the Linux
+implementation. That impression might have been wrong though.
+
+When you sent Linus a pull request containing the revert, I realized
+that there was no consensus about which side should be fixed (spec or
+Linux) and told you that I think it should be reverted only if the spec
+is also changed. You then sent a spec change patch [1] to the virtio
+mailing list.
+
+I'm not familiar with how decisions about the virtio spec are made, so
+I don't know if that change is going to be accepted or not.
+
+[1]: https://lore.kernel.org/virtio-comment/7b939d85ec0b532bae4c16bb927eddd=
+cf663bb48.1758212319.git.mst@redhat.com/t/
+
+Best regards,
+Filip Hejsek
 
