@@ -1,104 +1,123 @@
-Return-Path: <stable+bounces-183497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593EFBBFC10
-	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 01:13:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C5FBBFC16
+	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 01:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A852034BD05
-	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 23:13:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CF68189942E
+	for <lists+stable@lfdr.de>; Mon,  6 Oct 2025 23:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089E81E51EC;
-	Mon,  6 Oct 2025 23:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4256C1FDA82;
+	Mon,  6 Oct 2025 23:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onCPadsc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANrGMgQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9AB15667D;
-	Mon,  6 Oct 2025 23:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FB615667D;
+	Mon,  6 Oct 2025 23:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759792408; cv=none; b=WOCd3MMyCKBlKpV2ykNYbEJWRp4egSdsMU6CLOjZQT9eoKWdBChnY8Frw1q9oOW42fZudVBPowuWhVXNOmsyCVpXyDrnPLssMBlH/DdfG4OEOZh7k0jp+QnO095Rgh+zX+OXv2Kf1C5D1hqd1BfEw8ciphFd+evKv5uVNnisIzc=
+	t=1759792424; cv=none; b=gpazi+8AyE4ZchmZyz2N9TsloKwQ/XCeUjoagNiVLw59Dt0YIjvrJpoKsbpXmbAGb87bnWiXY4eRkXFUDYvAq6kTEfTDBP4rGrx2Ag5F2UHVQvMbXQiVRlnengBjolUOdTpGqX1PfLYaLO82GWFKYD+06Oj8elYUmfNm65yN/ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759792408; c=relaxed/simple;
-	bh=bLiJ06jMARRE5CuLlJkwHNZ7cvjQTnOD4kHGO/M63F4=;
+	s=arc-20240116; t=1759792424; c=relaxed/simple;
+	bh=tLxUDT8VxXFPFnuT+CrckMnld9Zv9Ckx1PPsCInUXNw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ud67I+A2s88HWLexp+XwoIRIVqyDeBtdKilzAP2J17Ea2RylN3A+E/6duU20qQRO6Ypb6EzOzWhWW991ZLSkbnT+FQcg7i2fQWJNDws+VVSwhbXpoJEZM1Pj2v4LN7xtJhudkDZedRHYHh5AW5xjoJSnHr5FzYyjXaDnLU1R05g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onCPadsc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8D9C4CEF5;
-	Mon,  6 Oct 2025 23:13:27 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=a8c7aeP92caA+1FKc0SjjcgNQAhBXYGL4rn8MqHkEsYCG09jCp+H2VC85QDt2nftwo4EzRMB0gdahZna0jKQx1vP1cC2G9V3zsXH9CDI3CZgas3KJ4iVSDEgnRr1qBYTegEwTAHd6q7k095e4W0LLLyviTImW1w8/UIYWAKNXTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANrGMgQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4797AC4CEF5;
+	Mon,  6 Oct 2025 23:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759792408;
-	bh=bLiJ06jMARRE5CuLlJkwHNZ7cvjQTnOD4kHGO/M63F4=;
+	s=k20201202; t=1759792423;
+	bh=tLxUDT8VxXFPFnuT+CrckMnld9Zv9Ckx1PPsCInUXNw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=onCPadscgHwmiNX6VAuSG58AVoDmwbuGqHAzguiMVkr1EbFUjVjW0Hr6GvQQOJqen
-	 2jqe3qeYfhuoq3abM9AdkKe5OU8kzk8016AXv4IOocS4lfhqJJly/pvGgq/vyaRJEB
-	 LfTUF6PaohM37Ex0Q2/dquHQEsGVTEEEAreWt8GX56w7dS8RVVbmPuDeLCFzWPas+Y
-	 RyNz2LzTCG2vDE43oHrgoNGsAWXPLrdiSl05tPOAe+KgtyFM+KZ39QucKZJGzUJoWe
-	 3v+0kiiQkB6v8l7jhTl6W1vEDH/rPgpjboFae1arODiem8LSgrKi77JzP7mKHQPDyS
-	 NKLCnaZNFZLbg==
-Date: Mon, 6 Oct 2025 16:13:26 -0700
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Brian Norris <briannorris@chromium.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] PCI/PM: Avoid redundant delays on D3hot->D3cold
-Message-ID: <v7ynntv43urqjfdfzzbai2btsohaxpprni2pix2wnjfoazlfcl@xdbhvnpmoebt>
-References: <aOQLRhot8-MtXeE3@google.com>
- <20251006193333.GA537409@bhelgaas>
+	b=ANrGMgQUebt+vnoKrOkHX9a8pceog9ly8XuX9PtfTyjMk0YSnKnlde22xzVYIp6/v
+	 JB5y2YpQdveQSUOEb/nwuwXXKXw3DywiOGVLW9oTv3RfR/nRYbuFW1gDrzdrs+PxTD
+	 sXb0qwOD5YjT90IFApp0q8tjbnWQrtixEAlrHj8o62CdF7M7V6MIryU/QHSAE4R+WE
+	 TXQJWyhRQPOe3SHCabis8w5W7Mk3y3iFm5xDjh7O6zqp9VAlbFr1BS8cqAixQk+wjO
+	 Dz2CKHfy8gAC8+RJxz+NxSqlwu2Hr97AxJ+NBPaR8wHHyn1djSVdA42XTP8LqCMoW2
+	 ahr2/YVOldHNw==
+Date: Mon, 6 Oct 2025 19:13:39 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	"Borislav Petkov (AMD)" <bp@alien8.de>, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.17-5.4] x86/build: Remove cc-option from stack
+ alignment flags
+Message-ID: <aORNI3nnm5PRvNuT@laps>
+References: <20251006181835.1919496-1-sashal@kernel.org>
+ <20251006215505.GB3234160@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251006193333.GA537409@bhelgaas>
+In-Reply-To: <20251006215505.GB3234160@ax162>
 
-On Mon, Oct 06, 2025 at 02:33:33PM -0500, Bjorn Helgaas wrote:
-> On Mon, Oct 06, 2025 at 11:32:38AM -0700, Brian Norris wrote:
-> > On Mon, Oct 06, 2025 at 03:52:22PM +0200, Mika Westerberg wrote:
-> > > On Fri, Oct 03, 2025 at 03:40:09PM -0700, Brian Norris wrote:
-> > > > From: Brian Norris <briannorris@google.com>
-> > > > 
-> > > > When transitioning to D3cold, __pci_set_power_state() will first
-> > > > transition a device to D3hot. If the device was already in D3hot, this
-> > > > will add excess work:
-> > > > (a) read/modify/write PMCSR; and
-> > > > (b) excess delay (pci_dev_d3_sleep()).
-> > > 
-> > > How come the device is already in D3hot when __pci_set_power_state() is
-> > > called? IIRC PCI core will transition the device to low power state so that
-> > > it passes there the deepest possible state, and at that point the device is
-> > > still in D0. Then __pci_set_power_state() puts it into D3hot and then turns
-> > > if the power resource -> D3cold.
-> > > 
-> > > What I'm missing here?
-> > 
-> > Some PCI drivers call pci_set_power_state(..., PCI_D3hot) on their own
-> > when preparing for runtime or system suspend, so by the time they hit
-> > pci_finish_runtime_suspend(), they're in D3hot. Then, pci_target_state()
-> > may still pick a lower state (D3cold).
-> 
-> We might need this change, but maybe this is also an opportunity to
-> remove some of those pci_set_power_state(..., PCI_D3hot) calls from
-> drivers.
-> 
+On Mon, Oct 06, 2025 at 02:55:05PM -0700, Nathan Chancellor wrote:
+>On Mon, Oct 06, 2025 at 02:17:33PM -0400, Sasha Levin wrote:
+>> From: Nathan Chancellor <nathan@kernel.org>
+>>
+>> [ Upstream commit d87208128a3330c0eab18301ab39bdb419647730 ]
+>>
+>> '-mpreferred-stack-boundary' (the GCC option) and '-mstack-alignment'
+>> (the clang option) have been supported in their respective compilers for
+>> some time, so it is unnecessary to check for support for them via
+>> cc-option. '-mpreferred-stack-boundary=3' had a restriction on
+>> '-mno-sse' until GCC 7.1 but that is irrelevant for most of the kernel,
+>> which includes '-mno-sse'.
+>>
+>> Move to simple Kconfig checks to avoid querying the compiler for the
+>> flags that it supports.
+>>
+>> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+>> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+>> Link: https://lore.kernel.org/20250814-x86-min-ver-cleanups-v1-2-ff7f19457523@kernel.org
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>...
+>> ## Backport Status: NO
+>...
+>> **Dependency Analysis:**
+>> - Requires minimum GCC 8.1 for x86 (introduced in v6.15 via commit
+>>   a3e8fe814ad1)
+>> - Requires minimum Clang 15.0.0 for x86 (commit 7861640aac52b)
+>> - Both requirements are satisfied in 6.17 stable tree (verified via
+>>   scripts/min-tool-version.sh)
+>> - GCC 7.1+ supports `-mpreferred-stack-boundary=3` with `-msse` (per GCC
+>>   commit 34fac449e121)
+>...
+>> ### Conclusion
+>>
+>> While this commit is technically safe and provides a marginal build-time
+>> performance improvement by eliminating unnecessary runtime compiler
+>> checks, **it does not meet the fundamental requirement for stable kernel
+>> backporting**: it does not fix a bug that affects users.
+>>
+>> The commit is purely a cleanup that removes obsolete code after compiler
+>> minimum version requirements were raised. Such cleanups belong in
+>> mainline development, not stable trees, which should focus exclusively
+>> on fixing bugs that impact users.
+>>
+>> The fact that it was auto-selected by AUTOSEL does not override the
+>> documented stable kernel rules. This commit should be **rejected** from
+>> stable backporting or **reverted** if already applied.
+>
+>Based on all of this, I would agree that it is not really suitable for
+>backporting (at least not beyond 6.15, whereas the subject says back to
+>5.4), so why was this still sent for review?
 
-Agree. The PCI client drivers should have no business in opting for D3Hot in the
-suspend path. It should be the other way around, they should opt-out if they
-want by calling pci_save_state(), but that is also subject to discussion.
-
-- Mani
+Sorry for the noise, I thought I dropped this one :(
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Thanks,
+Sasha
 
