@@ -1,132 +1,227 @@
-Return-Path: <stable+bounces-183565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47232BC2CBB
-	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 23:52:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA5FBC2CD3
+	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 23:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C96C63C1A28
-	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 21:52:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17F2D19A19CC
+	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 21:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268AC248898;
-	Tue,  7 Oct 2025 21:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E612494D8;
+	Tue,  7 Oct 2025 21:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k7M0g4DI"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0z9xIjsg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4D5246783
-	for <stable@vger.kernel.org>; Tue,  7 Oct 2025 21:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA871246BB7;
+	Tue,  7 Oct 2025 21:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759873918; cv=none; b=ReAX9g0rDtM4HPc0rSuRV30MuLLGiZfl2brcofHWMfStWiVhaSezHldip3CMptvO4JM8dbN+zaKenUiy1zyjnjMv70FFqT7JDUm7csfIkRD+XPnecsyu2VQTYDF0KooofwaVUxpfyOZFYdXtRsWw1TCk28rjT+8RItjdMZvvVyA=
+	t=1759874005; cv=none; b=m5m6BAGHclOqfxj0ET7KPJh7ZIggmjKhB6uiREY+XAH/EVtlz+9+E68eK1IlwnNX9RzZW+NfkSEQtFeIVq9aCvKM5pQyv1nyAe5mQFXXP0uBqORAV0AD3YMKh20P1vB/mCyXBzQTh7rLyD8EjlYqyiwmTn1n7MgUdSyguYHo8qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759873918; c=relaxed/simple;
-	bh=QDGRau9hUTIw0LmGZxQbGkUnm+lvJ+Sc5cUwuswn8gw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N60xyAsBEWbtR/Zls/IgMe756g+/esiXOTUDb5A68Ij6LUil4OlzTZb06BQV0VJPC82o2ZVuNpGyEbEVElQEZo8BHw14W8V2qYQxvOIBBxGmDgfBUHNluBuIIGg6tkxKER9lEsPplXSSokmltoepXDQB0W7Lj573e9LKRoALXuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k7M0g4DI; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-87808473c3bso873840985a.1
-        for <stable@vger.kernel.org>; Tue, 07 Oct 2025 14:51:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759873916; x=1760478716; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zspedv/g7MbmKhSduq0BNA8/CtYiYE9VtM2LqWSPvok=;
-        b=k7M0g4DIQmPLKKBSH2K+BRrIRpBxar64hq/OqbP+UATzE/JJfPvQS4t1Ze2Hah7poU
-         0cH4ptnxaLZj++AWaZI/V/K0zFZbcR9Ft/afHqqi6lOOuScrevHhwOu4go9DhgiaNkbK
-         vvVGQ1PZBBqR1HQIFzIDqKRZ5V4KYjZHQgy1oFd/YIwcWH0P2tBOCs2cWf7h1MAB1O6Q
-         b7LOPbf87PkTxujCPEb/iu4caC/aHieOGlOlFplYETEtzSFZNzxMW9Zh+RiClbrUCUDu
-         wVPbGgbhCXtA+FAtRg2Oab7o82VyizOw+tjNur1+6MX+oAhSHGwWQCSqiCgbTlr4aY0r
-         ATQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759873916; x=1760478716;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zspedv/g7MbmKhSduq0BNA8/CtYiYE9VtM2LqWSPvok=;
-        b=adIWLT0kSgzN66/R2wmF6tzUQCW6rggo9SNdSD/qIFoOFovoZjvwhN4fqVop75zMff
-         SQnCO2k3fwZsL3baK63zwRPs0R6jksywNVqb7U1C84KRLCs5AEXFW9WjZPk8K5ocZdKy
-         yFC/HcvzLzMu24QLhcpsRamTC4VeYIHoG9LWnDPxgZU+BJprGjwmhdhRwTz70Ql+rQCl
-         DGERAGE+Co5P9MWPAHb52ysFj/UVSZEsdDYRfa0Iy5nTt7Q8Mxsut2Etk++KC9a6x1ed
-         F0is7KbTL2bPL/yBAAu3uFk3e0QnpBlZkQN5O8WbpJIevkTGEJ4DORGs/ffdveqcUKgA
-         4roQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUn5ktVqZ5VYFAlRAqEkjO7pv5QwuO2hdEBbA4blBHtm8XXhacWsdEWLEFtZ0sUQ7GNEzhKwNk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0UeHM7Jwr81tjXIFjdVKaPCdO1QVIC1DP+etY3W34l3Nmx1g6
-	68FyyE/hN+dIti13+ZT/Ry17U1HWFYnZ3xk0gl3ahV4SQGQRRvaX6nDo
-X-Gm-Gg: ASbGncuPcmnj2ZQS0JcQJtDAzs8vCchy4OpOSOEujd4WEO3sbrYloH2bzD9SzwiVY78
-	flS1vce8PhMFiNS7nN7Ras/48nWRXneHHpLTR5sgu64qCDZCDJENh4ivD15UgUP1bk5jOBdKWUP
-	Ae9QLlPmqtJfh+SsMy94PaYRx79B/XtMSGt4IV1LvufVS9BV0KKr+b1DorWVpuBiteWj6UkEQkM
-	yHa90OkB27U/bTeKaDOdGdpqv1AZ/C8u3VpYakPmEoc03ea77QIIBYzVvGD7Vw6mhZiRDP71b8J
-	OFoxOfeacMkYf0OtJ4XSbLMvUfhZ4GPWm3L8bt/bHMxDWy5Y1aR54PKrHB8hNV75ODSm8q2dbkA
-	zWmRXy0nJxNaz0bdvzJ+lD5YpQ9vut6/RIXU4tv34uEul1ib/gJJwzTfIytLrGI79c09PkPCoHP
-	Riqo0/2BKN9mUpYc0OBrQwDGc+jK1FApc=
-X-Google-Smtp-Source: AGHT+IGOq5pYG58K8mMoqQOeJGCTbi6ZyRgh8XgbbYFkzRFf5ylz+GiLTUem9QZ+rZgBYEWJ1sLt5w==
-X-Received: by 2002:a05:620a:4807:b0:84a:568:b7d3 with SMTP id af79cd13be357-883546e1a86mr163438385a.74.1759873916127;
-        Tue, 07 Oct 2025 14:51:56 -0700 (PDT)
-Received: from mango-teamkim.. ([129.170.197.108])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-87771129fdasm1618199585a.6.2025.10.07.14.51.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Oct 2025 14:51:54 -0700 (PDT)
-From: pip-izony <eeodqql09@gmail.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Seungjin Bae <eeodqql09@gmail.com>,
-	Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] Input: pegasus-notetaker - fix out-of-bounds access vulnerability in pegasus_parse_packet() function of the pegasus driver
-Date: Tue,  7 Oct 2025 17:41:32 -0400
-Message-ID: <20251007214131.3737115-2-eeodqql09@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1759874005; c=relaxed/simple;
+	bh=okTtg+KeoWVUc3MEEXJT9sF3H7Hq+pWjuiMXXLui/R0=;
+	h=Date:To:From:Subject:Message-Id; b=oV6L2Wcm5Igswig6Bg2FR9GYjoBM4vvmp+TR4QhOTm0mVK3OCn+EAUu/2IIGP2mRrmneP8qgsZupt00Dj+So/aiYo7ozyBuWOsOuSikqM5EIDBzwxjNswsjr+nl0ZpuzfNs6wh8TzsReAyYp1Lp9fViAmeFtY1eqltJQkmNNOdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0z9xIjsg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E38C4CEF1;
+	Tue,  7 Oct 2025 21:53:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1759874004;
+	bh=okTtg+KeoWVUc3MEEXJT9sF3H7Hq+pWjuiMXXLui/R0=;
+	h=Date:To:From:Subject:From;
+	b=0z9xIjsgZK4bp1VBYdijeOD7CeI2GIBcGGt0hdeWIvLzfvNhWWyQQuY6SlIVDJ9i3
+	 3yHQgyOCj2JEbUhUIK+nn8h5qEfvVkdTj5/KFbaiwxJ4AF7kIeJkHt6W0WDWPHiHWV
+	 kSDmqPst8mWsKAh/omdbSjOTl4/cFlG2l9mWd2OY=
+Date: Tue, 07 Oct 2025 14:53:23 -0700
+To: mm-commits@vger.kernel.org,yang.yang29@zte.com.cn,wang.yaxin@zte.com.cn,tujinjiang@huawei.com,stable@vger.kernel.org,shr@devkernel.io,david@redhat.com,xu.xin16@zte.com.cn,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-ksm-fix-exec-fork-inheritance-support-for-prctl.patch added to mm-new branch
+Message-Id: <20251007215324.73E38C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Seungjin Bae <eeodqql09@gmail.com>
 
-In the pegasus_notetaker driver, the pegasus_probe() function allocates
-the URB transfer buffer using the wMaxPacketSize value from
-the endpoint descriptor. An attacker can use a malicious USB descriptor
-to force the allocation of a very small buffer.
+The patch titled
+     Subject: mm/ksm: fix exec/fork inheritance support for prctl
+has been added to the -mm mm-new branch.  Its filename is
+     mm-ksm-fix-exec-fork-inheritance-support-for-prctl.patch
 
-Subsequently, if the device sends an interrupt packet with a specific
-pattern (e.g., where the first byte is 0x80 or 0x42),
-the pegasus_parse_packet() function parses the packet without checking
-the allocated buffer size. This leads to an out-of-bounds memory access,
-which could result in a system panic.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-ksm-fix-exec-fork-inheritance-support-for-prctl.patch
 
-Fixes: 948bf18 ("Input: remove third argument of usb_maxpacket()")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: xu xin <xu.xin16@zte.com.cn>
+Subject: mm/ksm: fix exec/fork inheritance support for prctl
+Date: Tue, 7 Oct 2025 18:28:21 +0800 (CST)
+
+Patch series "ksm: fix exec/fork inheritance", v2.
+
+This series fixes exec/fork inheritance.  See the detailed description of
+the issue below.
+
+
+This patch (of 2):
+
+Background
+==========
+
+commit d7597f59d1d33 ("mm: add new api to enable ksm per process")
+introduced MMF_VM_MERGE_ANY for mm->flags, and allowed user to set it by
+prctl() so that the process's VMAs are forcibly scanned by ksmd. 
+
+Subsequently, the 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
+supported inheriting the MMF_VM_MERGE_ANY flag when a task calls execve().
+
+Finally, commit 3a9e567ca45fb ("mm/ksm: fix ksm exec support for prctl")
+fixed the issue that ksmd doesn't scan the mm_struct with MMF_VM_MERGE_ANY
+by adding the mm_slot to ksm_mm_head in __bprm_mm_init().
+
+Problem
+=======
+
+In some extreme scenarios, however, this inheritance of MMF_VM_MERGE_ANY
+during exec/fork can fail.  For example, when the scanning frequency of
+ksmd is tuned extremely high, a process carrying MMF_VM_MERGE_ANY may
+still fail to pass it to the newly exec'd process.  This happens because
+ksm_execve() is executed too early in the do_execve flow (prematurely
+adding the new mm_struct to the ksm_mm_slot list).
+
+As a result, before do_execve completes, ksmd may have already performed a
+scan and found that this new mm_struct has no VM_MERGEABLE VMAs, thus
+clearing its MMF_VM_MERGE_ANY flag.  Consequently, when the new program
+executes, the flag MMF_VM_MERGE_ANY inheritance missed.
+
+Root reason
+===========
+
+commit d7597f59d1d33 ("mm: add new api to enable ksm per process") clear
+the flag MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs.
+
+Solution
+========
+
+Firstly, Don't clear MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE
+VMAs, because perhaps their mm_struct has just been added to ksm_mm_slot
+list, and its process has not yet officially started running or has not
+yet performed mmap/brk to allocate anonymous VMAS.
+
+Secondly, recheck MMF_VM_MERGEABLE again if a process takes
+MMF_VM_MERGE_ANY, and create a mm_slot and join it into ksm_scan_list
+again.
+
+Link: https://lkml.kernel.org/r/20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn
+Link: https://lkml.kernel.org/r/20251007182821572h_SoFqYZXEP1mvWI4n9VL@zte.com.cn
+Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
+Fixes: d7597f59d1d3 ("mm: add new api to enable ksm per process")
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Cc: Stefan Roesch <shr@devkernel.io>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
+Cc: Yang Yang <yang.yang29@zte.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/input/tablet/pegasus_notetaker.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/input/tablet/pegasus_notetaker.c b/drivers/input/tablet/pegasus_notetaker.c
-index 8d6b71d59793..6c4199712a4e 100644
---- a/drivers/input/tablet/pegasus_notetaker.c
-+++ b/drivers/input/tablet/pegasus_notetaker.c
-@@ -311,6 +311,11 @@ static int pegasus_probe(struct usb_interface *intf,
- 	}
+ include/linux/ksm.h |    4 ++--
+ mm/ksm.c            |   20 +++++++++++++++++---
+ 2 files changed, 19 insertions(+), 5 deletions(-)
+
+--- a/include/linux/ksm.h~mm-ksm-fix-exec-fork-inheritance-support-for-prctl
++++ a/include/linux/ksm.h
+@@ -17,7 +17,7 @@
+ #ifdef CONFIG_KSM
+ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+ 		unsigned long end, int advice, vm_flags_t *vm_flags);
+-vm_flags_t ksm_vma_flags(const struct mm_struct *mm, const struct file *file,
++vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+ 			 vm_flags_t vm_flags);
+ int ksm_enable_merge_any(struct mm_struct *mm);
+ int ksm_disable_merge_any(struct mm_struct *mm);
+@@ -103,7 +103,7 @@ bool ksm_process_mergeable(struct mm_str
  
- 	pegasus->data_len = usb_maxpacket(dev, pipe);
-+    if (pegasus->data_len < 5) {
-+		dev_err(&intf->dev, "Invalid number of wMaxPacketSize\n");
-+		error = -EINVAL;
-+		goto err_free_mem;
+ #else  /* !CONFIG_KSM */
+ 
+-static inline vm_flags_t ksm_vma_flags(const struct mm_struct *mm,
++static inline vm_flags_t ksm_vma_flags(struct mm_struct *mm,
+ 		const struct file *file, vm_flags_t vm_flags)
+ {
+ 	return vm_flags;
+--- a/mm/ksm.c~mm-ksm-fix-exec-fork-inheritance-support-for-prctl
++++ a/mm/ksm.c
+@@ -2617,8 +2617,14 @@ no_vmas:
+ 		spin_unlock(&ksm_mmlist_lock);
+ 
+ 		mm_slot_free(mm_slot_cache, mm_slot);
++		/*
++		 * Only clear MMF_VM_MERGEABLE. We must not clear
++		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
++		 * perhaps their mm_struct has just been added to ksm_mm_slot
++		 * list, and its process has not yet officially started running
++		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
++		 */
+ 		mm_flags_clear(MMF_VM_MERGEABLE, mm);
+-		mm_flags_clear(MMF_VM_MERGE_ANY, mm);
+ 		mmap_read_unlock(mm);
+ 		mmdrop(mm);
+ 	} else {
+@@ -2736,12 +2742,20 @@ static int __ksm_del_vma(struct vm_area_
+  *
+  * Returns: @vm_flags possibly updated to mark mergeable.
+  */
+-vm_flags_t ksm_vma_flags(const struct mm_struct *mm, const struct file *file,
++vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+ 			 vm_flags_t vm_flags)
+ {
+ 	if (mm_flags_test(MMF_VM_MERGE_ANY, mm) &&
+-	    __ksm_should_add_vma(file, vm_flags))
++	    __ksm_should_add_vma(file, vm_flags)) {
+ 		vm_flags |= VM_MERGEABLE;
++		/*
++		 * Generally, the flags here always include MMF_VM_MERGEABLE.
++		 * However, in rare cases, this flag may be cleared by ksmd who
++		 * scans a cycle without finding any mergeable vma.
++		 */
++		if (unlikely(!mm_flags_test(MMF_VM_MERGEABLE, mm)))
++			__ksm_enter(mm);
 +	}
  
- 	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
- 					   &pegasus->data_dma);
--- 
-2.43.0
+ 	return vm_flags;
+ }
+_
+
+Patches currently in -mm which might be from xu.xin16@zte.com.cn are
+
+mm-ksm-fix-exec-fork-inheritance-support-for-prctl.patch
+selftests-update-ksm-inheritation-tests-for-prctl-fork-exec.patch
 
 
