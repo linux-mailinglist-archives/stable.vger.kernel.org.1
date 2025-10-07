@@ -1,130 +1,108 @@
-Return-Path: <stable+bounces-183512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93221BC0D50
-	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 11:15:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66AB5BC0E31
+	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 11:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E23BD4F1E0E
-	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 09:14:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94B013AB30E
+	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 09:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBA42D73A1;
-	Tue,  7 Oct 2025 09:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D292D7DF7;
+	Tue,  7 Oct 2025 09:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGjXa6OS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJcDcXAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68522D47E9;
-	Tue,  7 Oct 2025 09:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CF22D3EDF;
+	Tue,  7 Oct 2025 09:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759828491; cv=none; b=q4HdKTb6y6p1ecle+paT8iWsea7/rf8IgyvZiESzp8LKjHapok1hCqIsFVGZ/1q2Kj9/MGXDRTqBPs/bG/Iopymij9gF4vzfFgfeMwXbFcHII5C4tj1CCrjbmjtlveFis3g2JsMZKhMcyd2W9LoXfte8MMb6zIbWtd+2vbK/sCA=
+	t=1759830295; cv=none; b=F1vKN/yd1/0XUKJDTQks+TuwV3LSAzAtA/YYTtGK6Gyme74qo69iKEPxoIF2OmwY0TaN2aF036Sx/ORIl1J2DScDV/9DCXHSwCIwLp+B9E1KGh8UPdNf9VPQQII0vIB4RA45mlyKnjpoEfrTo5J1rrDB6fFQTjjpPcO5FJDm4y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759828491; c=relaxed/simple;
-	bh=ic5garmDtwPbiYjiCLxAOQWxTze/dBe+/CXDyiu4RvQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d7vmq/9zDthdZ44iI9GUg4b00XkVtTlv3T2aja6r7urR17tR1PFH7RBQ6bPTxZYxC5TBJAs5vdEjjAjDh+fkpCE/aeckDEZ/pA71GLfcte+lojqAQeoVERQagcRBa8Y+9GyoIdifaH6H/hRZF+WcTJC+FREBTFiZqaUKnSLDdu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGjXa6OS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7BA65C4CEF7;
-	Tue,  7 Oct 2025 09:14:51 +0000 (UTC)
+	s=arc-20240116; t=1759830295; c=relaxed/simple;
+	bh=24lxMVd6ezJDeP+VC+ACkuc82KgwoZ9Q4vT6cNRNrWI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RoLc6nJ6OnzEwDN0n0sG6jZ7ppwlXG7W+AuHP00rH5p4hednSVCVjGDF1XD2GJIbzrupxTRSsDOkp5dYTpgWqrnXG/rYO/RkNYZv4rdbu6FQiwLYrDmbyCpL0bfErs0Zrn34f9qB3zKds9nnP2WKwAchkc3o+vqUHx/pyVCCQqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJcDcXAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA006C4CEF9;
+	Tue,  7 Oct 2025 09:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759828491;
-	bh=ic5garmDtwPbiYjiCLxAOQWxTze/dBe+/CXDyiu4RvQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=GGjXa6OSl17w+QUX0AkW6K5TZqNcL9gBhj5Nu2/v6C591UEMiSB9IVQx4hBHhVT/j
-	 fosnMHSjsO9tn6UKvMHFyDR6c4YCnvadyKQDuEr9rjjprhfLFeMBI7IDa1+Cau9Iw2
-	 zqLVzn0ei/lVc6exhrQu3JqjPGqIsCXQx7wxOHojTQZLsYSR/0uCMlFAknr1nMQ0d+
-	 Rzz7lwWvItfQORr619Ce2hv+5G4JBW7S6eHd5rlzN5Aeu4TI2W/PLY8YLXbfAoRKl4
-	 z+qj5X6IY0LiBGoIGikc2XFOd56Oh79XqHtUjpx7LUYhrTE82kyZXH7y1G2uR6DKyh
-	 vQtHfEWCFqozQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BBA7CCD185;
-	Tue,  7 Oct 2025 09:14:51 +0000 (UTC)
-From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Tue, 07 Oct 2025 10:15:22 +0100
-Subject: [PATCH v3 2/3] iio: buffer-dma: support getting the DMA channel
+	s=k20201202; t=1759830294;
+	bh=24lxMVd6ezJDeP+VC+ACkuc82KgwoZ9Q4vT6cNRNrWI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LJcDcXAKWu2jTe3Xb44iXIun7VW4wdME/I1WEC5X07Seq4WeR2ABkUmD4SqduLyF8
+	 0wXOpmuMSbGK/MG5r0GCh+7bAJ8o+2wCw6dJYI1ySe5MARM7a8O/gdl+VDKbwqkPYH
+	 ILyOBOQOwDIVGyxLzXuCIiAB+pyZGVspU1lYPCKDG2mK11LoKaL4GSklpnURSjnYxq
+	 XkY58/YJw/2vMG3BjfNeFgqT5xmrVZm2nbTh//IXmTgBLJrVv+2vXO+JmUol5k2jWg
+	 HeMkmk1E3fh2rH8dQnWSyLYQ7w7A05btNgpxAXntt58SLZC0/QJmGSQn+o5i6BW8iL
+	 kxGPQY4syfhcw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1v64FY-0000000035Z-3O0C;
+	Tue, 07 Oct 2025 11:44:52 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Yong Wu <yong.wu@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Krishna Reddy <vdumpa@nvidia.com>,
+	iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 01/14] iommu/apple-dart: fix device leak on of_xlate()
+Date: Tue,  7 Oct 2025 11:43:14 +0200
+Message-ID: <20251007094327.11734-2-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20251007094327.11734-1-johan@kernel.org>
+References: <20251007094327.11734-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251007-fix-iio-dmabuf-get-dma-device-v3-2-0c73e2c0653b@analog.com>
-References: <20251007-fix-iio-dmabuf-get-dma-device-v3-0-0c73e2c0653b@analog.com>
-In-Reply-To: <20251007-fix-iio-dmabuf-get-dma-device-v3-0-0c73e2c0653b@analog.com>
-To: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1759828521; l=2111;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=UeNxzat1eGNvUr3sMj3PKl6QY4MQ66nZwzV2A6/tUFQ=;
- b=dQoXcvR61sYTLqbDWDPZoeygYWDSj1moSPYvlHuQybbcJXsobNP5uh7FvkVAnwEoAA+Z2nqoC
- 5KtHHpTMkCVAvEtNJdsunsKMtRi4u8dezPeDThc/pTPb53s6jj4NXiw
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
 
-From: Nuno Sá <nuno.sa@analog.com>
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-Implement the .get_dma_dev() callback for DMA buffers by returning the
-device that owns the DMA channel. This allows the core DMABUF
-infrastructure to properly map DMA buffers using the correct device,
-avoiding the need for bounce buffers on systems where memory is mapped
-above the 32-bit range.
-
-The function returns the DMA queue's device, which is the actual device
-responsible for DMA operations in buffer-dma implementations.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Fixes: 46d1fb072e76 ("iommu/dart: Add DART iommu driver")
+Cc: stable@vger.kernel.org	# 5.15
+Cc: Sven Peter <sven@kernel.org>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/iio/buffer/industrialio-buffer-dma.c | 6 ++++++
- include/linux/iio/buffer-dma.h               | 1 +
- 2 files changed, 7 insertions(+)
+ drivers/iommu/apple-dart.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/buffer/industrialio-buffer-dma.c b/drivers/iio/buffer/industrialio-buffer-dma.c
-index ee294a775e8aa050aca85e422de4c267adee1a33..7a7a9d37339bc1c2ffec58687a42dde16b1412bb 100644
---- a/drivers/iio/buffer/industrialio-buffer-dma.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dma.c
-@@ -786,6 +786,12 @@ int iio_dma_buffer_enqueue_dmabuf(struct iio_buffer *buffer,
- }
- EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_enqueue_dmabuf, "IIO_DMA_BUFFER");
+diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
+index 190f28d76615..1aa7c10262a8 100644
+--- a/drivers/iommu/apple-dart.c
++++ b/drivers/iommu/apple-dart.c
+@@ -790,6 +790,8 @@ static int apple_dart_of_xlate(struct device *dev,
+ 	struct apple_dart *cfg_dart;
+ 	int i, sid;
  
-+struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer)
-+{
-+	return iio_buffer_to_queue(buffer)->dev;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_get_dma_dev, "IIO_DMA_BUFFER");
++	put_device(&iommu_pdev->dev);
 +
- void iio_dma_buffer_lock_queue(struct iio_buffer *buffer)
- {
- 	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
-diff --git a/include/linux/iio/buffer-dma.h b/include/linux/iio/buffer-dma.h
-index 5eb66a3990021afb1821297e540656a65916daa7..4f33e6a39797d3ecfddc69c11d6d3985b9212920 100644
---- a/include/linux/iio/buffer-dma.h
-+++ b/include/linux/iio/buffer-dma.h
-@@ -174,5 +174,6 @@ int iio_dma_buffer_enqueue_dmabuf(struct iio_buffer *buffer,
- 				  size_t size, bool cyclic);
- void iio_dma_buffer_lock_queue(struct iio_buffer *buffer);
- void iio_dma_buffer_unlock_queue(struct iio_buffer *buffer);
-+struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer);
- 
- #endif
-
+ 	if (args->args_count != 1)
+ 		return -EINVAL;
+ 	sid = args->args[0];
 -- 
-2.51.0
-
+2.49.1
 
 
