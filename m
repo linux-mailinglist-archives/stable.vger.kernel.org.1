@@ -1,160 +1,194 @@
-Return-Path: <stable+bounces-183557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0241CBC2B5B
-	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 22:56:08 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EB2BC2B76
+	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 23:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A5E1887537
-	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 20:56:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 41E4A4E46C9
+	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 21:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F9B23D290;
-	Tue,  7 Oct 2025 20:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC1E202F7B;
+	Tue,  7 Oct 2025 21:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vpy3OQSP"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oRmbOB5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DA628399;
-	Tue,  7 Oct 2025 20:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA64170A11;
+	Tue,  7 Oct 2025 21:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759870562; cv=none; b=gQHlEarW7cLlMd9MVTCtBsqHDrZogHEyI2fNWefk448oQGEjbaItBUJHGphzazhXRWq1cOgVYGQUb4Wtst7C3rl2oIIFwBSAU63B/pdg2Km4dz+A+kFqSpoYW3kTLD4zW93vaH5PsCrG+jv0fsj4LEU6y5OrIRZpIGOskRTe/hM=
+	t=1759870895; cv=none; b=IReAYsS2CREhU3nRzcHt7+wW+KPrIIFt6K1YeVhFV5r3qwoP2j8jTgy1j3R69jezSXk1yxnQh+S6AOxUINoJmQ9h8FUPRdI9t/+VOM1Mmxg/MXLTWAlR25KzjbXHzpv4QqGFXHARleyrgfuCaM8RXV+zyS7YgAzlTqljNHNfn9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759870562; c=relaxed/simple;
-	bh=Gg93q9CWxU5Fuu6tdVUBKMJqQ0HTtVaIEb6Cg6dpU9s=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=SHYR2zpc5/YZmPcYKg4xq0+U7UzslH9tD3IqY6KH6Js0DA2Ykjs+aqu/8mhjBj5p9jmMITvktoRPWitK06PhwkIzRkkbKhsIbzpMXUu5xM45njEuzqfGQHsBT5e1L/gMOvrnGP3ABhG3t7ayZyHxUPWW6nitwbzoJwnCq34uWLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vpy3OQSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24D4C4CEF1;
-	Tue,  7 Oct 2025 20:56:00 +0000 (UTC)
+	s=arc-20240116; t=1759870895; c=relaxed/simple;
+	bh=qlbm7w8e8Bw8y/TCGZNILZKJ9d2mCSxLI3Q95yl5z2Y=;
+	h=Date:To:From:Subject:Message-Id; b=gEKa0RM7jcDEyPFtcGF44y9xR0sQ+SMHoiK/rS8bWznO3GbIlX4myr6BeLQi+3hS25du1yUHHeGLOelY6yRNgaNKqBZl2+YBbrIXMH/wfwIjIRmepo/kawtuBj0NqLoTvnBT/Uvz6vDpBd5A/5rKeRkbdExplzCZArxkq1IBkV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oRmbOB5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5C6C4CEF1;
+	Tue,  7 Oct 2025 21:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1759870561;
-	bh=Gg93q9CWxU5Fuu6tdVUBKMJqQ0HTtVaIEb6Cg6dpU9s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vpy3OQSPxKsYHofaY5nTubfqbeqCcI02CR2QjQABytRZminMP/SlUK8Lg0Yy5Rk1t
-	 nMiGpw5x0NaHJU4Go+SY3vkeu+6DN8Cn0B4yKwuZUBgyXWkb3Iqa0a++tobdurFO0E
-	 JVfOHj0NBLGpUSlj+d3VbUWwq2a0dxVBkpi7QCiU=
-Date: Tue, 7 Oct 2025 13:56:00 -0700
+	s=korg; t=1759870895;
+	bh=qlbm7w8e8Bw8y/TCGZNILZKJ9d2mCSxLI3Q95yl5z2Y=;
+	h=Date:To:From:Subject:From;
+	b=oRmbOB5hX8V1957UVuDTqRXnxzVeq2MGKUUyVW/qKg9/zXJ1g1AtQqNV9TmrlwVDP
+	 UeI+n+6UEG9ruemhVkPGUbZJLvXVyzO5pqthNeJFVNnp61QyI5M2uhVm6btKf8/HT4
+	 IxQhfbiScpLABJsrWWtREXNIlxQjaskQF1PC7Lsk=
+Date: Tue, 07 Oct 2025 14:01:34 -0700
+To: mm-commits@vger.kernel.org,yepeilin@google.com,tj@kernel.org,stable@vger.kernel.org,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@suse.com,memxor@gmail.com,hannes@cmpxchg.org,ast@kernel.org,shakeel.butt@linux.dev,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Finn Thain
- <fthain@linux-m68k.org>, Lance Yang <lance.yang@linux.dev>,
- amaindex@outlook.com, anna.schumaker@oracle.com, boqun.feng@gmail.com,
- ioworker0@gmail.com, joel.granados@kernel.org, jstultz@google.com,
- leonylgao@tencent.com, linux-kernel@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, longman@redhat.com, mhiramat@kernel.org,
- mingo@redhat.com, mingzhe.yang@ly.com, oak@helsinkinet.fi,
- peterz@infradead.org, rostedt@goodmis.org, senozhatsky@chromium.org,
- tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
- pointers
-Message-Id: <20251007135600.6fc4a031c60b1384dffaead1@linux-foundation.org>
-In-Reply-To: <inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp>
-References: <20250909145243.17119-1-lance.yang@linux.dev>
-	<yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
-	<99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
-	<CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
-	<inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: [merged mm-hotfixes-stable] memcg-skip-cgroup_file_notify-if-spinning-is-not-allowed.patch removed from -mm tree
+Message-Id: <20251007210135.0B5C6C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
 
-Getting back to the $Subject at hand, are people OK with proceeding
-with Lance's original fix?
+The quilt patch titled
+     Subject: memcg: skip cgroup_file_notify if spinning is not allowed
+has been removed from the -mm tree.  Its filename was
+     memcg-skip-cgroup_file_notify-if-spinning-is-not-allowed.patch
 
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-From: Lance Yang <lance.yang@linux.dev>
-Subject: hung_task: fix warnings caused by unaligned lock pointers
-Date: Tue, 9 Sep 2025 22:52:43 +0800
+------------------------------------------------------
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Subject: memcg: skip cgroup_file_notify if spinning is not allowed
+Date: Mon, 22 Sep 2025 15:02:03 -0700
 
-From: Lance Yang <lance.yang@linux.dev>
+Generally memcg charging is allowed from all the contexts including NMI
+where even spinning on spinlock can cause locking issues.  However one
+call chain was missed during the addition of memcg charging from any
+context support.  That is try_charge_memcg() -> memcg_memory_event() ->
+cgroup_file_notify().
 
-The blocker tracking mechanism assumes that lock pointers are at least
-4-byte aligned to use their lower bits for type encoding.
+The possible function call tree under cgroup_file_notify() can acquire
+many different spin locks in spinning mode.  Some of them are
+cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock.  So, let's
+just skip cgroup_file_notify() from memcg charging if the context does not
+allow spinning.
 
-However, as reported by Eero Tamminen, some architectures like m68k
-only guarantee 2-byte alignment of 32-bit values. This breaks the
-assumption and causes two related WARN_ON_ONCE checks to trigger.
+Alternative approach was also explored where instead of skipping
+cgroup_file_notify(), we defer the memcg event processing to irq_work [1].
+However it adds complexity and it was decided to keep things simple until
+we need more memcg events with !allow_spinning requirement.
 
-To fix this, the runtime checks are adjusted to silently ignore any lock
-that is not 4-byte aligned, effectively disabling the feature in such
-cases and avoiding the related warnings.
-
-Thanks to Geert Uytterhoeven for bisecting!
-
-Link: https://lkml.kernel.org/r/20250909145243.17119-1-lance.yang@linux.dev
-Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Reported-by: Eero Tamminen <oak@helsinkinet.fi>
-Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Mingzhe Yang <mingzhe.yang@ly.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Tomasz Figa <tfiga@chromium.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yongliang Gao <leonylgao@tencent.com>
+Link: https://lore.kernel.org/all/5qi2llyzf7gklncflo6gxoozljbm4h3tpnuv4u4ej4ztysvi6f@x44v7nz2wdzd/ [1]
+Link: https://lkml.kernel.org/r/20250922220203.261714-1-shakeel.butt@linux.dev
+Fixes: 3ac4638a734a ("memcg: make memcg_rstat_updated nmi safe")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Closes: https://lore.kernel.org/all/20250905061919.439648-1-yepeilin@google.com/
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peilin Ye <yepeilin@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Tejun Heo <tj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/hung_task.h |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/linux/memcontrol.h |   26 +++++++++++++++++++-------
+ mm/memcontrol.c            |    7 ++++---
+ 2 files changed, 23 insertions(+), 10 deletions(-)
 
---- a/include/linux/hung_task.h~hung_task-fix-warnings-caused-by-unaligned-lock-pointers
-+++ a/include/linux/hung_task.h
-@@ -20,6 +20,10 @@
-  * always zero. So we can use these bits to encode the specific blocking
-  * type.
-  *
-+ * Note that on architectures where this is not guaranteed, or for any
-+ * unaligned lock, this tracking mechanism is silently skipped for that
-+ * lock.
-+ *
-  * Type encoding:
-  * 00 - Blocked on mutex			(BLOCKER_TYPE_MUTEX)
-  * 01 - Blocked on semaphore			(BLOCKER_TYPE_SEM)
-@@ -45,7 +49,7 @@ static inline void hung_task_set_blocker
- 	 * If the lock pointer matches the BLOCKER_TYPE_MASK, return
- 	 * without writing anything.
- 	 */
--	if (WARN_ON_ONCE(lock_ptr & BLOCKER_TYPE_MASK))
-+	if (lock_ptr & BLOCKER_TYPE_MASK)
- 		return;
- 
- 	WRITE_ONCE(current->blocker, lock_ptr | type);
-@@ -53,8 +57,6 @@ static inline void hung_task_set_blocker
- 
- static inline void hung_task_clear_blocker(void)
- {
--	WARN_ON_ONCE(!READ_ONCE(current->blocker));
--
- 	WRITE_ONCE(current->blocker, 0UL);
+--- a/include/linux/memcontrol.h~memcg-skip-cgroup_file_notify-if-spinning-is-not-allowed
++++ a/include/linux/memcontrol.h
+@@ -1001,22 +1001,28 @@ static inline void count_memcg_event_mm(
+ 	count_memcg_events_mm(mm, idx, 1);
  }
  
+-static inline void memcg_memory_event(struct mem_cgroup *memcg,
+-				      enum memcg_memory_event event)
++static inline void __memcg_memory_event(struct mem_cgroup *memcg,
++					enum memcg_memory_event event,
++					bool allow_spinning)
+ {
+ 	bool swap_event = event == MEMCG_SWAP_HIGH || event == MEMCG_SWAP_MAX ||
+ 			  event == MEMCG_SWAP_FAIL;
+ 
++	/* For now only MEMCG_MAX can happen with !allow_spinning context. */
++	VM_WARN_ON_ONCE(!allow_spinning && event != MEMCG_MAX);
++
+ 	atomic_long_inc(&memcg->memory_events_local[event]);
+-	if (!swap_event)
++	if (!swap_event && allow_spinning)
+ 		cgroup_file_notify(&memcg->events_local_file);
+ 
+ 	do {
+ 		atomic_long_inc(&memcg->memory_events[event]);
+-		if (swap_event)
+-			cgroup_file_notify(&memcg->swap_events_file);
+-		else
+-			cgroup_file_notify(&memcg->events_file);
++		if (allow_spinning) {
++			if (swap_event)
++				cgroup_file_notify(&memcg->swap_events_file);
++			else
++				cgroup_file_notify(&memcg->events_file);
++		}
+ 
+ 		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+ 			break;
+@@ -1026,6 +1032,12 @@ static inline void memcg_memory_event(st
+ 		 !mem_cgroup_is_root(memcg));
+ }
+ 
++static inline void memcg_memory_event(struct mem_cgroup *memcg,
++				      enum memcg_memory_event event)
++{
++	__memcg_memory_event(memcg, event, true);
++}
++
+ static inline void memcg_memory_event_mm(struct mm_struct *mm,
+ 					 enum memcg_memory_event event)
+ {
+--- a/mm/memcontrol.c~memcg-skip-cgroup_file_notify-if-spinning-is-not-allowed
++++ a/mm/memcontrol.c
+@@ -2307,12 +2307,13 @@ static int try_charge_memcg(struct mem_c
+ 	bool drained = false;
+ 	bool raised_max_event = false;
+ 	unsigned long pflags;
++	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+ 
+ retry:
+ 	if (consume_stock(memcg, nr_pages))
+ 		return 0;
+ 
+-	if (!gfpflags_allow_spinning(gfp_mask))
++	if (!allow_spinning)
+ 		/* Avoid the refill and flush of the older stock */
+ 		batch = nr_pages;
+ 
+@@ -2348,7 +2349,7 @@ retry:
+ 	if (!gfpflags_allow_blocking(gfp_mask))
+ 		goto nomem;
+ 
+-	memcg_memory_event(mem_over_limit, MEMCG_MAX);
++	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+ 	raised_max_event = true;
+ 
+ 	psi_memstall_enter(&pflags);
+@@ -2415,7 +2416,7 @@ force:
+ 	 * a MEMCG_MAX event.
+ 	 */
+ 	if (!raised_max_event)
+-		memcg_memory_event(mem_over_limit, MEMCG_MAX);
++		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+ 
+ 	/*
+ 	 * The allocation either can't fail or will lead to more memory
 _
+
+Patches currently in -mm which might be from shakeel.butt@linux.dev are
+
 
 
