@@ -1,78 +1,95 @@
-Return-Path: <stable+bounces-183501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6B0BC007B
-	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 04:30:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A50A2BC0087
+	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 04:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3C3F189A446
-	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 02:30:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B0DC24EC184
+	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 02:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D6A16E863;
-	Tue,  7 Oct 2025 02:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840801F4C89;
+	Tue,  7 Oct 2025 02:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="xKJHbkZy"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Bcd63eLL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324FA1B4247
-	for <stable@vger.kernel.org>; Tue,  7 Oct 2025 02:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A846714A4F0
+	for <stable@vger.kernel.org>; Tue,  7 Oct 2025 02:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759804220; cv=none; b=Nk2IWIuZhF+cGEgTIqAMp4vy8YsHZrIY0AZNMQN2JuCnfUNb6eFMy3Sez7aJhraKqeXQ9VJOPZpwPaE7rrxy2R/mDdm2JeM7c97c16XhUI5U4w+YNu2GYsyTWkWFDQzX2+YwjinLKfRUeHJXa/YNy6z3Ru5E3OaMFXZNOt4WSNA=
+	t=1759804431; cv=none; b=clYZ+YOIlqyAHiaRLfoZM6iUUhd38a7tQMMeinp+B20gnspU9jKZ0gtHPI45UK4M1Kd6qT/NTeiyCj7t54r/xf0QYqQ/zxVuXSpUVqzxFUs4gxhzNC0IO+qDnNGn8SBOh5mD8Dkc6reXJZxY3MsJZRERxM6ciSegkrWbfisMuus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759804220; c=relaxed/simple;
-	bh=uJlf4OaNoxaJnhUpN1cv8CptXSZVlmbMKWjHhh7KbgA=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=uAZ9a/histtOY2Ftr9tfGV36oFtncWwXDGJb010Rn/Uy9oBrClwlIzT0TZl1ZvVEOIvBF27HqHCsZd/m6x3aik2tC+hFd0IwH/QnEHnGHPY1GqLQOCpD0N6gmaOZLHPVWFXkqKyjp9Fgbx484BRqvbb5BIpstHKiXQ+bfKs7P3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=xKJHbkZy; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-78a9793aa09so6680187b3a.0
-        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 19:30:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1759804218; x=1760409018; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sxwrlAFbGl/q8Y5TVQ9cfyG3etW3pffyQuTrGZcrQ+8=;
-        b=xKJHbkZyr5XEceY+fHzzac2djRLBq249h0iHMLbfWBD0eMpwq40yU8xdrX8HP8P0Vu
-         dBgnx7n93n5HTOLXTZISVKzsX2ydNCHx6ebKfOgvgreKSNU7m5K2gjq1pG2LMtpKwm3y
-         +9LiV7kj7W6UbPrlhUlTFpzDM8RvL9Dc8CXSd24KRvCT2RIPcOmM/GhhO3zTkf/P7R8b
-         +ZyKgxeon7Hc3+b20y0/cN0ohU5Fz/JTTnojDg+iCv8YbZZWpyzP43ugFJlByXH2HnuG
-         ifMtrT8wWWOKr16PocOmgt07mFsWVLYYrofKVrUCC3Tf5XYjCl+yPrYVxYuDdPI1R5V7
-         9mBw==
+	s=arc-20240116; t=1759804431; c=relaxed/simple;
+	bh=Dlcnn7y3HlTxqYtAbXosZmFmnaZZi+s6TuVywlg5AaA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LQbisYtNLTSHg5WHJfBvRP8N3D6A0rLyJm5ChEZwrxneA5YqV3sEZgvnsjFmme90+fkWnhh3/ATVGIm24zjQ8CMGx+Io1DnUmxBkE6zwZ2g0BeGSpjRSHk5OuZQkkxAfEZRsPL7wxVY/SJMwW9e4qBnzCBfS5Mob7wbW2244xyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Bcd63eLL; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 596Et6SX003197
+	for <stable@vger.kernel.org>; Tue, 7 Oct 2025 02:33:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=7XSY4z7nlmBoPCLNtNQ+8rowUkAIu3i0gAH
+	G6gd+0F4=; b=Bcd63eLLddyDJ6CXgrewHmny6+WzK8fp1RTQ/Aeio+5ycL19ssl
+	GQEwaFgE9GXFYQfpfkd4E7a1N9+ncetEynzvVfMM2Y1rS+nrIqKvycmsnfdWqAsv
+	wosf7clUQAVKyjUgHHkPQ0e4AGU//v6AfBr90z5m3DC5tVt31nh38WFHEsiF1owB
+	+nzcykzvi148ojVoJLYJASL+HkT/z0oopKMvf+fyFteuSSXfRSmJZZ8khrRVMqBL
+	tzGx3BAzTvQ5H1mu1CaqrTBLEjyH/ItrEybhNkeJRHp6rq38+pqNmy/ARBbZWSNm
+	mkpJd886vbRDEcVHf5PdEAp0oocBXneNiww==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49jtk6wu08-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 07 Oct 2025 02:33:48 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-277f0ea6ee6so72368325ad.0
+        for <stable@vger.kernel.org>; Mon, 06 Oct 2025 19:33:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759804218; x=1760409018;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sxwrlAFbGl/q8Y5TVQ9cfyG3etW3pffyQuTrGZcrQ+8=;
-        b=FaGaEhubEEXBwV+KXBYgLJni5kcOKhDSUG/S/3f6S6b1nxpgJQRvpgSrm8MPVLCbUa
-         E5NbQy/J45d5uVV2jjgfCRY5JDIuqvF3jTQ5szlIx80ZmSF+AAMGt0NEWDQTbNO8FEdY
-         zmg9c5rfv+pbZFiK3SBLQvZfxW2xSFHaKJsisxTo/eAVMFyhbupE+P+E5ctImev+rz49
-         S9NH1P5nYUam7kJ2Ewoe9iLG2eV7XhoqQlwHrYH8n7JYoQ18aeEeSwrNp3eHG5Psy0qe
-         u2Ebk/vMaGwTYVKNjtffzO6Z9gvCsDoQDiZkuS9+rSkWXDwInW9vOTzsaCQ1yfibpUuV
-         gWcg==
-X-Gm-Message-State: AOJu0YyiIMVZ23l/HHnqsTsV9lnlNR5LNABcjmQRrDTZUqbbvwvf9mjx
-	ZoJd8osLhZAf61Vo0hKqKk+++bShj01mVtEWyNJ3j4FqJOVAPXAX8j0nWtFuTnIB0xsJFtdb+AS
-	y0YJi
-X-Gm-Gg: ASbGncsQ5L3GMkuWXWb+bEUvQvB8MLgmbhP9Unn7Opb4LVD/jmsjfbqYP3TgoWRIfGw
-	e/4CcGcopHpFeoroWsDd35mza12THY9cCrNt6guOZmg3ol673LaYq/xj5OtzpAmqzsAFXGUh5lY
-	lVnhxO/khkopWoyDldVgtDK3P5vPy5lEYpLrpN2zTN5yeV6K6UfOQd1S8ozIiHRUPN/3MKXmkED
-	B9oTCuPWd8eSRTV3zoh/rVywUP1dz90TpV43n12DT3xS81x8Jtb3CY2a3o9oDpw5nrh6Jb0juEo
-	d/Koxb3F9xL8sXvUwklzU/CX9rXFDyLva9uw/3bORmZV/88AERiyBxX8W16GOJ9YHuOaHMBUqZd
-	ZUS//WXz7IFcJK5Q5goDtX3apBCmB3M6W/HA19KAY
-X-Google-Smtp-Source: AGHT+IF31tX8YQRCLyfb1d/uy7CPMLdI7bc1a3sQdIpFtRpsU5uO6Z7O58jUG7G5tnGyhmsMjsWhaQ==
-X-Received: by 2002:a17:90b:3a88:b0:335:2a21:69db with SMTP id 98e67ed59e1d1-339c273dabfmr21366838a91.10.1759804218387;
-        Mon, 06 Oct 2025 19:30:18 -0700 (PDT)
-Received: from d76c3c94e839 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339c4a31975sm12593979a91.13.2025.10.06.19.30.17
+        d=1e100.net; s=20230601; t=1759804427; x=1760409227;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7XSY4z7nlmBoPCLNtNQ+8rowUkAIu3i0gAHG6gd+0F4=;
+        b=okv824MpGtoXjmWyR7ZxHlA3drRlzp3F5HcTYp2dSqwJ8oFIAZtJOA0BLvbyQUdhBP
+         e49zVl9Juwh93zaHj88+rI9rNPDV/SJHuJUoaezRtH91xtZhej+tJHmArrymrPBH5DHH
+         wunkyK4dsWjV+CjAS7rZu8O1mMO4nAiU04RJe9uEVTFH7+oMA/4wm2v+GWHZhhAIyDtI
+         /fzznYsw4NCmvUQ8DiyY0KSJruSU50gtLMfSfma1Hq4tt8tuhOQZDDCMuMaKvGQAM2RQ
+         HpJdaqYhr3v4HYS9Q4o8YoYDXcBu5a61bBZ+S65dzdNoueNXrEfZFjEg6vDf83S2nNW5
+         8Kcw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlZw+Zx6lwQmHKbocifuUOMmNkd2NT1Yr7QUJ7NQcnd5we3x+kk1+FBO7st+0xjRngYOjsomc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaT1oH4V6xhBw0iOxx9+OUJHsb4cuxcHrDfv1EuFe3O25tD4fE
+	PqX76jyIDLN3PC2xceJWCcyKybPK6IEFWnx6QvrFiBGhGxHpu9InyCtQ12vj3lRqOOfxq5no0WZ
+	N66xDhr+ZYd5U79c1zKoTE0lIjKC07cG7rUEgSJYGDLGal1wAtcB3G+JpheM=
+X-Gm-Gg: ASbGncttdfkPfEogDnPImhRcp5BEKPZkJLkJ6TlWeMReKGqO8QlK95EmQ1yx0sAoV6c
+	o07S3cT45ggwIHiWxZuyEiuaWGxHbJKMoqEUODXoSGMhuwA1dS4J+2nAb/WJdojwXyrf1ainEJQ
+	JDmZiRvhISNYJ+0bt/4BcavOKoN6iLT4VHl76s/1Sti+FJXp3GpmzXJsCqFY6XPF11fyDYt9JX3
+	JjIbQipI3HQzrs3HKAbdPhoZFoqqwLlciG0/L/SB86ikWNeIYYlpKWvTyCgPilaPCgdvPiKlP9A
+	SwO4+QgiJ6YuyridCaSU0lJzu09xLzXPWNWF2pFrywkZABlCoKFZQGYzgZ0AkLO/zBLzbFisOkU
+	db2oYiA==
+X-Received: by 2002:a17:903:3504:b0:24a:fab6:d15a with SMTP id d9443c01a7336-28e9a5665f8mr169858245ad.20.1759804426895;
+        Mon, 06 Oct 2025 19:33:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiig/p1KQze92yCEITwhtnQai6O3T2aDxdUHjAMcQsNgWMdH7TrKomEar5i3ANE9//H9BSuw==
+X-Received: by 2002:a17:903:3504:b0:24a:fab6:d15a with SMTP id d9443c01a7336-28e9a5665f8mr169857945ad.20.1759804426362;
+        Mon, 06 Oct 2025 19:33:46 -0700 (PDT)
+Received: from hu-mohs-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d1ba25asm147726755ad.87.2025.10.06.19.33.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 19:30:17 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 06 Oct 2025 19:33:46 -0700 (PDT)
+From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Srinivas Kandagatla <srini@kernel.org>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@oss.qualcomm.com, prasad.kumpatla@oss.qualcomm.com,
+        ajay.nandam@oss.qualcomm.com, stable@vger.kernel.org
+Subject: [PATCH v1] ASoC: soc-pcm: Fix mute and unmute control for non-dynamic DAI links
+Date: Tue,  7 Oct 2025 08:03:25 +0530
+Message-Id: <20251007023325.853640-1-mohammad.rafi.shaik@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,66 +97,65 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [STATUS] stable/linux-6.12.y -
- a9152eb181adaac576e8ac1ab79989881e0f301b
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAxNyBTYWx0ZWRfXybhyElyx3fLJ
+ Uz+MxfyFh7ezhUAZGr0+0mTF566IxAQkk/YLD/vbmBcgxtgU6AFB9l/0IDm4R0jrUrweOYVHEyr
+ o/UNgcaPSb58iP5bUD4oBmL9Z7FsAbOBxRbQzpibDjDvK9KAWkGr5xcjWjxoFIC4qzfVPjNmd6/
+ +BI99U1JFz8WXxkTfFMdF90RbxBCskDTEp6KLMpIPGdXEBkHtNoyrgs0VRUenzHgi0NT+/4LDDS
+ hfGQSPu2gWBX33Y9ct22rBESvUNJdqty70TwPfElGC3IimhqKDNoNXFhun/34cMQdyahtGaubWr
+ WYk5HWRcdQCi/wc3RiZrHP7FE0/hWbT1Ee2co/6HtsKsXI4hEiKq4GaGSqaHq6kp/dJmOGeh+KM
+ dGkj/TuJr5mhn3CtDrphJhmt8Amj1g==
+X-Authority-Analysis: v=2.4 cv=do3Wylg4 c=1 sm=1 tr=0 ts=68e47c0c cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=3uxOjINHiGvl1vUfC3YA:9
+ a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: 1Y9oSFpsXoXpm4OfUb8D9ZD-K_UTLkqd
+X-Proofpoint-ORIG-GUID: 1Y9oSFpsXoXpm4OfUb8D9ZD-K_UTLkqd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-06_07,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015
+ malwarescore=0 spamscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040017
+
+In setups where the same codec DAI is reused across multiple DAI
+links, mute controls via `snd_soc_dai_digital_mute()` is skipped for
+non-dynamic links. The trigger operations are not invoked when
+`dai_link->dynamic == 0`, and mute controls is currently conditioned
+only on `snd_soc_dai_mute_is_ctrled_at_trigger()`. This patch ensures
+that mute and unmute is applied explicitly for non-dynamic links.
+
+Fixes: f0220575e65a ("ASoC: soc-dai: add flag to mute and unmute stream during trigger")
 Cc: stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Tue, 07 Oct 2025 02:30:17 -0000
-Message-ID: <175980421727.60.18054395891363421649@d76c3c94e839>
+Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+---
+ sound/soc/soc-pcm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 2c21fd528afd..4ed829b49bc2 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -949,7 +949,7 @@ static int __soc_pcm_prepare(struct snd_soc_pcm_runtime *rtd,
+ 			SND_SOC_DAPM_STREAM_START);
+ 
+ 	for_each_rtd_dais(rtd, i, dai) {
+-		if (!snd_soc_dai_mute_is_ctrled_at_trigger(dai))
++		if (!snd_soc_dai_mute_is_ctrled_at_trigger(dai) || !rtd->dai_link->dynamic)
+ 			snd_soc_dai_digital_mute(dai, 0, substream->stream);
+ 	}
+ 
+@@ -1007,7 +1007,7 @@ static int soc_pcm_hw_clean(struct snd_soc_pcm_runtime *rtd,
+ 			soc_pcm_set_dai_params(dai, NULL);
+ 
+ 		if (snd_soc_dai_stream_active(dai, substream->stream) == 1) {
+-			if (!snd_soc_dai_mute_is_ctrled_at_trigger(dai))
++			if (!snd_soc_dai_mute_is_ctrled_at_trigger(dai) || !rtd->dai_link->dynamic)
+ 				snd_soc_dai_digital_mute(dai, 1, substream->stream);
+ 		}
+ 	}
+-- 
+2.34.1
 
-
-
-
-Hello,
-
-Status summary for stable/linux-6.12.y
-
-Dashboard:
-https://d.kernelci.org/c/stable/linux-6.12.y/a9152eb181adaac576e8ac1ab79989881e0f301b/
-
-giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-branch: linux-6.12.y
-commit hash: a9152eb181adaac576e8ac1ab79989881e0f301b
-origin: maestro
-test start time: 2025-10-06 09:30:07.031000+00:00
-
-Builds:	   44 ✅    1 ❌    0 ⚠️
-Boots: 	  172 ✅    4 ❌    5 ⚠️
-Tests: 	10782 ✅  945 ❌ 2510 ⚠️
-
-### POSSIBLE REGRESSIONS
-    
-Hardware: imx6q-udoo
-  > Config: multi_v7_defconfig
-    - Architecture/compiler: arm/gcc-12
-      - kselftest.dt
-      last run: https://d.kernelci.org/test/maestro:68e399ac9512ca5274538de3
-      history:  > ✅  > ❌  
-            
-
-
-### FIXED REGRESSIONS
-
-  No fixed regressions observed.
-
-
-### UNSTABLE TESTS
-
-  No unstable tests observed.
-
-
-
-This branch has 1 pre-existing build issues. See details in the dashboard.
-
-Sent every day if there were changes in the past 24 hours.
-Legend: ✅ PASS   ❌ FAIL  ⚠️ INCONCLUSIVE
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
