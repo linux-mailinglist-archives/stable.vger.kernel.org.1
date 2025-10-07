@@ -1,147 +1,144 @@
-Return-Path: <stable+bounces-183533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 055CEBC12DF
-	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 13:21:04 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2676CBC1387
+	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 13:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4400719A0B91
-	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 11:21:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9BCAA34E65A
+	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 11:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE852DAFBB;
-	Tue,  7 Oct 2025 11:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5562D94A0;
+	Tue,  7 Oct 2025 11:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="UHZ07eBF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Pt1FOcF3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A469B2D979B;
-	Tue,  7 Oct 2025 11:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9C4215043
+	for <stable@vger.kernel.org>; Tue,  7 Oct 2025 11:32:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759835972; cv=none; b=qurhNayQFSABBU9OiXFjHrgERN4pMB7NecqGmkEsH5LgcczSx6cBtDWjfmCrVeq9dyJQKTLysQvXjpMR42lfSzVnjMfsfg5l/VuZ2eIimfIfDaxIb+DqmQ0PXronjYg8/WP59xpYPb9lw0Ye9c0VgT8xjnlksVn7UCZTa+AO8ho=
+	t=1759836746; cv=none; b=NT32yFK0SU0Oi1vezSQYgtoGWxdmHyFi9qWlBp97ezETJlfH237Q7yFKlbm0kOc1Daz1/gCRq0fQLnL2892+/EVxWTJE/qIJWQrmN0d0598IqK/TyI+sjQMy7E+zZvZC1IJcR/Soq9NJ/MyNvkMr9ElWawsXgMdCL8q8fCenzVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759835972; c=relaxed/simple;
-	bh=i2/mIJZywNFRDzg/L8D1NE6gFQ2BKhRmpA3TA90foLk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=FLItfWJosY9sovURGOEPl1oawCm+XqFgEKGFataawqakZbPc0n3f0GhH3HExeL6rs9KtnsrdYVgRhdr50R8sqCtpeaUYtBy6SqTs94N/uOWnJ8kt7maHMNI07SezygyHAfZhM4xGoBhu+7isSQGOiEbuLw2njEMgoAhpureTOUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=UHZ07eBF; arc=none smtp.client-ip=91.244.183.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
-Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id 441871050FB6;
-	Tue,  7 Oct 2025 14:19:20 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 441871050FB6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1759835960; bh=i2/mIJZywNFRDzg/L8D1NE6gFQ2BKhRmpA3TA90foLk=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=UHZ07eBFT7U1enM5SLzkO5DhLNgV6zxrFfnOKr/xMNAoDTUQKL1G+6ElA6WjV0x8m
-	 vE9/PMe2a4ByPgyN+C2o4lMYukaOSFXWA4IIckRt7JVrhAGh2csDhemEBn0WnirKhW
-	 AaeaH47bllfR6RI/GrX4Dgmp74u3H5iPfyuU0Akc=
-Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
-	by mx0.infotecs-nt (Postfix) with ESMTP id 3F00931118DB;
-	Tue,  7 Oct 2025 14:19:20 +0300 (MSK)
-From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-CC: Song Yoong Siang <yoong.siang.song@intel.com>, Maciej Fijalkowski
-	<maciej.fijalkowski@intel.com>, Jesper Dangaard Brouer <hawk@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, John Fastabend <john.fastabend@gmail.com>, "Alexei
- Starovoitov" <ast@kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Eric Dumazet <edumazet@google.com>,
-	"Stanislav Fomichev" <sdf@fomichev.me>, Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, "bpf@vger.kernel.org"
-	<bpf@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>, "David S. Miller"
-	<davem@davemloft.net>, Magnus Karlsson <magnus.karlsson@intel.com>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-Subject: Re: [lvc-project] [PATCH net] xsk: Fix overflow in descriptor
- validation@@
-Thread-Topic: [lvc-project] [PATCH net] xsk: Fix overflow in descriptor
- validation@@
-Thread-Index: AQHcN3w5Ve3VV/I+jk+9of8ehLdFkg==
-Date: Tue, 7 Oct 2025 11:19:19 +0000
-Message-ID: <06da20bf-79f6-4ad7-92cc-75f19685b530@infotecs.ru>
-References: <20251006085316.470279-1-Ilia.Gavrilov@infotecs.ru>
- <c5a1c806-2c4c-47c5-b83a-cb83f93369b4@intel.com>
-In-Reply-To: <c5a1c806-2c4c-47c5-b83a-cb83f93369b4@intel.com>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <56B79B3E998EB0499C802CA4B2F65111@infotecs.ru>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1759836746; c=relaxed/simple;
+	bh=A4j+7JTxsbiZRzdRZU7yWqXtGFdx3Ok4jN8NDV+qcoE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j11BgoxnDukoMhX4NYpDVHNZseGBuTydl8d8Zbl9isJecSt/PcgyJ4N87yP2Voo7O4A3jszn0yed4wFuPyXoOG5M25bxyGrxmXQEwEMtKNR2/x6YMb6kmC4SQufoZRKn31YNS5/uBjjLmyy1kHeAoUA1BXDnhF2ZWuRSpSlBUZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Pt1FOcF3; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so9032229a12.1
+        for <stable@vger.kernel.org>; Tue, 07 Oct 2025 04:32:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1759836743; x=1760441543; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZC6d70RCI062m/NmlsWdu8eeof6vN1BlqZdvcy2VsBI=;
+        b=Pt1FOcF3RTBT5yloMcq2p9lwgpCN1IgOzyOmI1JflZvqpN80MCkjKkD3lTi9INjkpK
+         0PRNpeU2G4v3oyi2EeyDt47h2rf02Lc86qf4wpOl3Kqr3b7gH25d1Z1S1GCQ6+2Aee5H
+         PFmIDTVILWL757DkV0L66wgBlQQVHb4UyeKDZcJKCysc7NaOVJ5s8bgRAeLNhN+ocvX4
+         lK4JzeuOE7pqyoqFyP2XeSXmho8L3h19tiankhIHpRqRzzLgIXNiyaoX7gORPuITKIow
+         MnXBE7GnzIw5TzpJIomffd/yHLq19B4tp/vX6NGwe0ROZQ+N2fP3Gk1bAD96vz8Jw8/a
+         B6Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759836743; x=1760441543;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZC6d70RCI062m/NmlsWdu8eeof6vN1BlqZdvcy2VsBI=;
+        b=KFyl8pAmvnatOMOOvWWSjI79Pzodx9bVF1YUVCFB8mSIEQFwHQ/bxfALkTRmCSUwaX
+         7g09kMaVnmFKudfg2hzmGGpaZiPnIq9KtVvj//La+ZSZw0vgnuX1gzL/1lh9+L3C+ixP
+         Nv6gfKOLgGU4fCWuKRy2+P2rB7hf0c+bC56OEWYCFnCGWel0rCnrMBi2eBf/gDOYbkfO
+         bDC0iUB+UBqwRUb5vQ6r2/+veJOCnFpn1ZoWynZKVj9q3bUB7dhts/YNROpsTmVif2cd
+         qTbGq+k03In7e3VSEjK+HJpLEaXO2G0wj6qI9XKbB69g9y1fGUR4PUdYYHj0ucllHgri
+         e5eg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJw/za7a9yXqpTbzj9Q23ploODfAuYQZ80cWkbDCV7yiTTzaa/JZcCaCrYt1sWYBk2FB9tb3s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwONyH7z1wO9dxg2rDHPWOWWa+c3SgJvpQXMwLwSwDdM82AN8z7
+	pf/i/YYSbaLoLgP9viWXPXh9tspsvUYaTHij71na7alzpexFZ48I9Jymb/vTlrG20RE=
+X-Gm-Gg: ASbGnct/56IGYA7x1FRtys7IbM/tXBDr5ZvcZEtBjiXGj+oep1LjngsAJT/OEEmFqsU
+	629ur7ST1J25YUK6cRWE/W0fRVW1ZhaZRnkhaT1U8YwrKr9T40a//7QOXLyTHiPwXdmJXnHL7y9
+	XedGaErqoL7tlJL9N9G7rQqPXtfttmZRmtzDfjMLDMOlZknwry2sscWo32tTlFulx4NN+ZVMi8N
+	cusjiARwpCesF/9KHfnHftwUWyl6jHXZbQZqHUycH7qOr6D4TqwG4OC8icYWPt985vcLFNTYZpi
+	bstLK9ohIrYeZAvUhyxwIZgBDgc1xHKj/VjakywAdSgjI4B/0df3maM+Z6vxWBDIORHxejgz89r
+	A5MHBM4JkKeYETezwhIdDoraUt+tJSRwPrMlF+bQIJrcXdAKetXouJvEPXmsMRCMwEaevU02mEa
+	bAuN+iYS/wmnXXXaJa
+X-Google-Smtp-Source: AGHT+IFjZJgPkdCZvczYKSg21gtQzjZuEg71RmQ8o+OjBKMXLb1coIMLo0/KuBwAPewegCHdx5P6fQ==
+X-Received: by 2002:a17:907:268b:b0:b40:6e13:1a7f with SMTP id a640c23a62f3a-b49c2a5788dmr2192509666b.27.1759836743118;
+        Tue, 07 Oct 2025 04:32:23 -0700 (PDT)
+Received: from [192.168.0.19] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63788111f1fsm12371986a12.36.2025.10.07.04.32.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Oct 2025 04:32:22 -0700 (PDT)
+Message-ID: <3a07850b-90bb-4035-91ce-9f361c635df5@linaro.org>
+Date: Tue, 7 Oct 2025 12:32:21 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KLMS-Rule-ID: 5
-X-KLMS-Message-Action: clean
-X-KLMS-AntiSpam-Status: not scanned, disabled by settings
-X-KLMS-AntiSpam-Interceptor-Info: not scanned
-X-KLMS-AntiPhishing: Clean, bases: 2025/10/07 08:54:00
-X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/10/07 08:21:00 #27888622
-X-KLMS-AntiVirus-Status: Clean, skipped
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: iris: Fix ffmpeg corrupted frame error
+To: Vishnu Reddy <quic_bvisredd@quicinc.com>,
+ vikash.garodia@oss.qualcomm.com, dikshita.agarwal@oss.qualcomm.com,
+ abhinav.kumar@linux.dev, mchehab@kernel.org, hverkuil@kernel.org,
+ stefan.schmidt@linaro.org
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <9UYDQ7nzBQ9Uqb5q4mG8WWKGLEZNPSvgV1vw6mmYS0wY2VKS5F11n8IaesvJsKYBvndy99tKFqGoak5MzQVZIA==@protonmail.internalid>
+ <20251006091819.2725617-1-quic_bvisredd@quicinc.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251006091819.2725617-1-quic_bvisredd@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-T24gMTAvNi8yNSAxODoxOSwgQWxleGFuZGVyIExvYmFraW4gd3JvdGU6DQo+IEZyb206IElsaWEg
-R2F2cmlsb3YgPElsaWEuR2F2cmlsb3ZAaW5mb3RlY3MucnU+DQo+IERhdGU6IE1vbiwgNiBPY3Qg
-MjAyNSAwODo1MzoxNyArMDAwMA0KPiANCj4+IFRoZSBkZXNjLT5sZW4gdmFsdWUgY2FuIGJlIHNl
-dCB1cCB0byBVMzJfTUFYLiBJZiB1bWVtIHR4X21ldGFkYXRhX2xlbg0KPiANCj4gSW4gdGhlb3J5
-LiBOZXZlciBpbiBwcmFjdGljZS4NCj4gDQoNCkhpIEFsZXhhbmRlciwNClRoYW5rIHlvdSBmb3Ig
-dGhlIHJldmlldy4NCg0KSXQgc2VlbXMgdG8gbWUgdGhhdCB0aGlzIHByb2JsZW0gc2hvdWxkIGJl
-IGNvbnNpZGVyZWQgbm90IGZyb20gdGhlIHBvaW50IG9mIHZpZXcgb2YgcHJhY3RpY2FsIHVzZSwg
-DQpidXQgZnJvbSB0aGUgcG9pbnQgb2YgdmlldyBvZiBzZWN1cml0eS4gQW4gYXR0YWNrZXIgY2Fu
-IHNldCBhbnkgbGVuZ3RoIG9mIHRoZSBwYWNrZXQgaW4gdGhlIGRlc2NyaXB0b3IgDQpmcm9tIHRo
-ZSB1c2VyIHNwYWNlIGFuZCBkZXNjcmlwdG9yIHZhbGlkYXRpb24gd2lsbCBwYXNzLg0KDQoNCj4+
-IG9wdGlvbiBpcyBhbHNvIHNldCwgdGhlbiB0aGUgdmFsdWUgb2YgdGhlIGV4cHJlc3Npb24NCj4+
-ICdkZXNjLT5sZW4gKyBwb29sLT50eF9tZXRhZGF0YV9sZW4nIGNhbiBvdmVyZmxvdyBhbmQgdmFs
-aWRhdGlvbg0KPj4gb2YgdGhlIGluY29ycmVjdCBkZXNjcmlwdG9yIHdpbGwgYmUgc3VjY2Vzc2Z1
-bGx5IHBhc3NlZC4NCj4+IFRoaXMgY2FuIGxlYWQgdG8gYSBzdWJzZXF1ZW50IGNoYWluIG9mIGFy
-aXRobWV0aWMgb3ZlcmZsb3dzDQo+PiBpbiB0aGUgeHNrX2J1aWxkX3NrYigpIGZ1bmN0aW9uIGFu
-ZCBpbmNvcnJlY3Qgc2tfYnVmZiBhbGxvY2F0aW9uLg0KPj4NCj4+IEZvdW5kIGJ5IEluZm9UZUNT
-IG9uIGJlaGFsZiBvZiBMaW51eCBWZXJpZmljYXRpb24gQ2VudGVyDQo+PiAobGludXh0ZXN0aW5n
-Lm9yZykgd2l0aCBTVkFDRS4NCj4gDQo+IEkgdGhpbmsgdGhlIGdlbmVyYWwgcnVsZSBmb3Igc2Vu
-ZGluZyBmaXhlcyBpcyB0aGF0IGEgZml4IG11c3QgZml4IGEgcmVhbA0KPiBidWcgd2hpY2ggY2Fu
-IGJlIHJlcHJvZHVjZWQgaW4gcmVhbCBsaWZlIHNjZW5hcmlvcy4NCg0KSSBhZ3JlZSB3aXRoIHRo
-YXQsIHNvIEkgbWFrZSBhIHRlc3QgcHJvZ3JhbSAoUG9DKS4gU29tZXRoaW5nIGxpa2UgdGhhdDoN
-Cg0KCXN0cnVjdCB4ZHBfdW1lbV9yZWcgdW1lbV9yZWc7DQoJdW1lbV9yZWcuYWRkciA9IChfX3U2
-NCkodm9pZCAqKXVtZW07DQoJLi4uDQoJdW1lbV9yZWcuY2h1bmtfc2l6ZSA9IDQwOTY7DQoJdW1l
-bV9yZWcudHhfbWV0YWRhdGFfbGVuID0gMTY7DQoJdW1lbV9yZWcuZmxhZ3MgPSBYRFBfVU1FTV9U
-WF9NRVRBREFUQV9MRU47DQoJc2V0c29ja29wdChzZmQsIFNPTF9YRFAsIFhEUF9VTUVNX1JFRywg
-JnVtZW1fcmVnLCBzaXplb2YodW1lbV9yZWcpKTsNCgkuLi4NCgkNCgl4c2tfcmluZ19wcm9kX19y
-ZXNlcnZlKHRxLCBiYXRjaF9zaXplLCAmaWR4KTsNCg0KCWZvciAoaSA9IDA7IGkgPCBucl9wYWNr
-ZXRzOyArK2kpIHsNCgkJc3RydWN0IHhkcF9kZXNjICp0eF9kZXNjID0geHNrX3JpbmdfcHJvZF9f
-dHhfZGVzYyh0cSwgaWR4ICsgaSk7DQoJCXR4X2Rlc2MtPmFkZHIgPSBwYWNrZXRzW2ldLmFkZHI7
-DQoJCXR4X2Rlc2MtPmFkZHIgKz0gdW1lbS0+dHhfbWV0YWRhdGFfbGVuOw0KCQl0eF9kZXNjLT5v
-cHRpb25zID0gWERQX1RYX01FVEFEQVRBOw0KCQl0eF9kZXNjLT5sZW4gPSBVSU5UMzJfTUFYOw0K
-CX0NCg0KCXhza19yaW5nX3Byb2RfX3N1Ym1pdCh0cSwgbnJfcGFja2V0cyk7DQoJLi4uDQoJc2Vu
-ZHRvKHNmZCwgTlVMTCwgMCwgTVNHX0RPTlRXQUlULCBOVUxMLCAwKTsNCg0KU2luY2UgdGhlIGNo
-ZWNrIG9mIGFuIGludmFsaWQgZGVzY3JpcHRvciBoYXMgcGFzc2VkLCBrZXJuZWwgdHJ5IHRvIGFs
-bG9jYXRlDQphIHNrYiB3aXRoIHNpemUgb2YgJ2hyICsgbGVuICsgdHInIGluIHRoZSBzb2NrX2Fs
-bG9jX3NlbmRfcHNrYigpIGZ1bmN0aW9uDQphbmQgdGhpcyBpcyB3aGVyZSB0aGUgbmV4dCBvdmVy
-ZmxvdyBvY2N1cnMuDQpza2IgYWxsb2NhdGVzIHdpdGggYSBzaXplIG9mIDYzLiBOZXh0IHRoZSBz
-a2JfcHV0KCkgaXMgY2FsbGVkLCB3aGljaCBhZGRzIFUzMl9NQVggdG8gc2tiLT50YWlsIGFuZCBz
-a2ItPmVuZC4NCk5leHQgdGhlIHNrYl9zdG9yZV9iaXRzKCkgdHJpZXMgdG8gY29weSAtMSBieXRl
-cywgYnV0IGZhaWxzLg0KDQogX194c2tfZ2VuZXJpY194bWl0DQoJeHNrX2J1aWxkX3NrYg0KCQls
-ZW4gPSBkZXNjLT5sZW47IC8vIGZyb20gZGVzY3JpcHRvcg0KCQlzb2NrX2FsbG9jX3NlbmRfc2ti
-KC4uLiwgaHIgKyBsZW4gKyB0ciwgLi4uKSAvLyB0aGUgbmV4dCBvdmVyZmxvdw0KCQkJc29ja19h
-bGxvY19zZW5kX3Bza2INCgkJCQlhbGxvY19za2Jfd2l0aF9mcmFncw0KCQlza2JfcHV0KHNrYiwg
-bGVuKSAgLy8gbGVuIGNhc3RzIHRvIGludA0KCQlza2Jfc3RvcmVfYml0cyhza2IsIDAsIGJ1ZmZl
-ciwgbGVuKQ0KDQo+IFN0YXRpYyBBbmFseXNpcyBUb29scyBoYXZlIG5vIGlkZWEgdGhhdCBub2Jv
-ZHkgc2VuZHMgNCBHYiBzaXplZCBuZXR3b3JrDQo+IHBhY2tldHMuDQo+IA0KDQpUaGF0J3Mgcmln
-aHQuIFN0YXRpYyBhbmFseXplciBpcyBvbmx5IGEgdG9vbCwgYnV0IGluIHRoaXMgY2FzZSwgdGhl
-IG92ZXJmbG93DQpoaWdobGlnaHRlZCBieSB0aGUgc3RhdGljIGFuYWx5emVyIGNhbiBiZSB1c2Vk
-IGZvciBtYWxpY2lvdXMgcHVycG9zZXMuDQogDQoNCj4+DQo+PiBGaXhlczogMzQxYWM5ODBlYWI5
-ICgieHNrOiBTdXBwb3J0IHR4X21ldGFkYXRhX2xlbiIpDQo+PiBDYzogc3RhYmxlQHZnZXIua2Vy
-bmVsLm9yZw0KPj4gU2lnbmVkLW9mZi1ieTogSWxpYSBHYXZyaWxvdiA8SWxpYS5HYXZyaWxvdkBp
-bmZvdGVjcy5ydT4NCj4+IC0tLQ0KPj4gIG5ldC94ZHAveHNrX3F1ZXVlLmggfCA0ICsrLS0NCj4+
-ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiBUaGFu
-a3MsDQo+IE9sZWsNCg0KVGhhbmtzLCANCklsaWENCg0K
+On 06/10/2025 10:18, Vishnu Reddy wrote:
+> When the ffmpeg decoder is running, the driver receives the
+> V4L2_BUF_FLAG_KEYFRAME flag in the input buffer. The driver then forwards
+> this flag information to the firmware. The firmware, in turn, copies the
+> input buffer flags directly into the output buffer flags. Upon receiving
+> the output buffer from the firmware, the driver observes that the buffer
+> contains the HFI_BUFFERFLAG_DATACORRUPT flag. The root cause is that both
+> V4L2_BUF_FLAG_KEYFRAME and HFI_BUFFERFLAG_DATACORRUPT are the same value.
+> As a result, the driver incorrectly interprets the output frame as
+> corrupted, even though the frame is actually valid. This misinterpretation
+> causes the driver to report an error and skip good frames, leading to
+> missing frames in the final video output and triggering ffmpeg's "corrupt
+> decoded frame" error.
+> 
+> To resolve this issue, the input buffer flags should not be sent to the
+> firmware during decoding, since the firmware does not require this
+> information.
+> 
+> Fixes: 17f2a485ca67 ("media: iris: implement vb2 ops for buf_queue and firmware response")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vishnu Reddy <quic_bvisredd@quicinc.com>
+> ---
+>   drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+> index e1788c266bb1..4de03f31eaf3 100644
+> --- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+> +++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+> @@ -282,7 +282,7 @@ static int iris_hfi_gen1_queue_input_buffer(struct iris_inst *inst, struct iris_
+>   		com_ip_pkt.shdr.session_id = inst->session_id;
+>   		com_ip_pkt.time_stamp_hi = upper_32_bits(buf->timestamp);
+>   		com_ip_pkt.time_stamp_lo = lower_32_bits(buf->timestamp);
+> -		com_ip_pkt.flags = buf->flags;
+> +		com_ip_pkt.flags = 0;
+>   		com_ip_pkt.mark_target = 0;
+>   		com_ip_pkt.mark_data = 0;
+>   		com_ip_pkt.offset = buf->data_offset;
+> --
+> 2.34.1
+> 
+
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
