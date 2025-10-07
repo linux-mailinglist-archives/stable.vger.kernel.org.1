@@ -1,146 +1,145 @@
-Return-Path: <stable+bounces-183553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E2CBC2421
-	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 19:32:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092C1BC27D2
+	for <lists+stable@lfdr.de>; Tue, 07 Oct 2025 21:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DDFD188CC97
-	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 17:33:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A65563A53BD
+	for <lists+stable@lfdr.de>; Tue,  7 Oct 2025 19:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE6C2E889C;
-	Tue,  7 Oct 2025 17:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F4022D4F9;
+	Tue,  7 Oct 2025 19:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvfxaTtv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OuYFB5zv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7251FDE19
-	for <stable@vger.kernel.org>; Tue,  7 Oct 2025 17:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133A620E31C
+	for <stable@vger.kernel.org>; Tue,  7 Oct 2025 19:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759858364; cv=none; b=uWPQNAG+9Dt5IiHc9BTYigM76PKaIWlUxHiG2AiiePP8lh3lPp0A5fc/5f7msMSecTzuNA9GdWW9ECSeVp8fEmbbnxUW9LOKuUwLA/B9XxkyrV+iD+uf4kRdihQkXhKMZ8OniWDCXvrCgCSg8mNes5QTsZ/QrqZ62otbtQjqiGs=
+	t=1759864819; cv=none; b=SuA+ZTIlBJEQ9zperdwtYL7o6PQSztTNx+PVHUvi8kK8HndiY5w+B1jhdJEeZl9WHn5gX8SZ+3F+fpbRw74hxt3PYPXGBkxVRQDil1uITCJhn66mVAjAcKgIihXShheHSRBvMnzkar9bp1zEob+vJdLvPbJGA6j172zzcleLpek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759858364; c=relaxed/simple;
-	bh=E+aX5TOHEp/d3HJVpZn2bgZqwYp9dTDEPZHCmNXbvCw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HZ4V4+wkXq4DfdL5wzOdZxu1qoCqGQQ0ur5h6+U6BXjnuiPcHVS7x9L6JhpDKYo/I/KrVJqHgm29mf/ZEo6bkBpwqQHHj8XJypqwc/7LiGOGsNpT0tlfjUgQEQ4HxEhrNqc30k7uxIHn5SAfrYQcSuc13Dc+GZOFUW3MvtwOj9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvfxaTtv; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-77f1f29a551so8332865b3a.3
-        for <stable@vger.kernel.org>; Tue, 07 Oct 2025 10:32:43 -0700 (PDT)
+	s=arc-20240116; t=1759864819; c=relaxed/simple;
+	bh=EiImG7GpvLr04lXxcmldheIyewvjHETXWh8n7xAqUho=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BlqN4WyzaIiN52c2AOhrcwPmlL8BahVRvROZRs54nGvNE+omGucXBPNOcVJ10d+gfzq9WG3uNMPdHXzFu1RhldvzQacRc899b6vEM21SgrnNGXbs7Uy7IbQDtV9xvRv9KMdK3kam82ixFphZZwlzyUuuM16n7GCjgD7yM1+hJEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OuYFB5zv; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-73f20120601so80216867b3.2
+        for <stable@vger.kernel.org>; Tue, 07 Oct 2025 12:20:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759858362; x=1760463162; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=X8ZpYVM0V4I1RihtN3wza324vQ8Dd1czFpMPPhquAHA=;
-        b=DvfxaTtv5unexpVlCHVdzbCGmcG9xoMWHRo1rC8VIsLC/7wyGXhHX0fdiTkEGq2UlR
-         SMRHWVOHgeSFQXHDGrrVTA+ybKpkT4sIIssaCjnESDyxcuCmh4kcwVAVB7zpYtc2eloE
-         OBv+cvEd2pjeoN0+o53Xx3tSx5eGQUtwXuI/5enGaqZd0PiTXcKtW8s3Jha7dLo/uzu4
-         oqEaeMOzuatWyxkW1Jd4r7lHbtNT168rnMCdaUZ8ge1bHyABGjpGSdpvunZyfvAPvS1r
-         SqqQYtD2mwsK2RGa/6hy8ci+AZVzcjfmIRVSPwmlqwCOaMFiami6GCBDGajry84AK72R
-         Tywg==
+        d=linaro.org; s=google; t=1759864817; x=1760469617; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fyvVzqRAZ+jJPuuow0tWhdGCSI6e0A8fiu8e4y33sz4=;
+        b=OuYFB5zvbyOqeF9sc6vVd6/KWcmPH+yeGN9vbYOb3bh4vyJwc31wYX1Dkxd1Jb/Td8
+         evmdoI6tXcWqHPzZhz6ye/H2exkmk3dv867W0kdqifxa7ZkAbN9DU7OVhDBkVQFhVbu3
+         BNEQOGMpBj68fhyofiN2m3HIiq7+tMT1MjZwD8YIrw6+RVWej8BNSl4V6RwESGmYKhBq
+         BlnG0C8dtzZccNXVEM9g06lCZm5XvguDn53Cn4qw9NBW/FhnDyfbCgT/cpqJRCczkX4i
+         HrRtt07YpRNnW0fwfbjg7cnGAbqVSQgfGY9QoEZx9w2LmnQGCgIRiZgbHRvFlSI6PLX5
+         GXFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759858362; x=1760463162;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X8ZpYVM0V4I1RihtN3wza324vQ8Dd1czFpMPPhquAHA=;
-        b=DxzFNqlDV4tVCQeBubVShMrLxFvk89gLCuc0lC0M2ShIMRn8/vzjfrnj1SCc+9OXpD
-         luZPsJHoh9W70rQtkRm5xrXYsoIb63eEI2K/lFMXcsFAieg3i2WN/aNs8aF+eOEMdYoi
-         cQm6J34z9OOyWJaOAZGN3tWTMjRO6iZJBg486AXTtmvC0SEU8bysql7o0x7UzxzicudH
-         qY6mRf2z7VMbKCEvjU1LzAyQQJPdcFS/5YXPNQ4/9/86FTXTPwVapvIL4L8IgtR86LS1
-         k2SxqfqLBh6OB3+cZcohpzGfTzQs7brqsnir+hQ23dULc42BAFR1r3pK8vrMiTroNPX2
-         u/PA==
-X-Gm-Message-State: AOJu0YxbSf0QphAS7VFfNx+/JdUnk2heLXBzUnTi/J2wKB4/HlHRhNhO
-	ZpLHrMXjrZerIENkZe3rOoKNjAXrwDGCzJZ0PLqREEKYWmZnlwpD5Ve0yEHcxbX+Mf0=
-X-Gm-Gg: ASbGncsaq9Plvh0Vt+B2hStUABEhNmSUMq/rmyqjyAdEzNfBtNQXBN4lDLbMhIX2mbt
-	8Zp88/x7WzBUaPJgIeBtIfr4Wod2mOdVADmsahVd1mPQxoMjyUrZbuvEXLjiKASbq/2mhPpFWPH
-	uzVSa7so+6kQ4OdaIj36OyxzJUpmjFBowLRqkOo0ARj9Mw+sZ3eUD57/ce+lOsmeKnR1Jvm16l4
-	Lj2IaykXaDuAnDNbDbrb5zSGu9Z36ed6mNRp7EgCTHtnJXMg7U3F+HoOhHC06Hzow4hwXW6/Xtu
-	ZlZ/G3iJWeJs4bg0yUEuUE48USe3xBrz1tCaiPo7DeADttPPRrt9aM+S9VJZa9ytbsyBNhmDJHx
-	ygCymKhHGOtvkF1p/ao5MUcOoqT8aObUVXTZS0Ob8tfoowuZcKpfozLQjaP+t6mgP+LY8oJAsJQ
-	==
-X-Google-Smtp-Source: AGHT+IExWMmFTXnDVcbabTZSsSq9hWpU8JqdDhoWXYn31Lw8poGbxgJvYey6hOLOtatkbJuCV9+qNw==
-X-Received: by 2002:a05:6a00:23c1:b0:77c:6621:6168 with SMTP id d2e1a72fcca58-79387e05457mr328770b3a.30.1759858362279;
-        Tue, 07 Oct 2025 10:32:42 -0700 (PDT)
-Received: from name2965-Precision-7820-Tower.. ([121.185.186.233])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78b01fb288asm16271240b3a.30.2025.10.07.10.32.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Oct 2025 10:32:42 -0700 (PDT)
-From: Jeongjun Park <aha310510@gmail.com>
-To: stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
-	syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com,
-	Clemens Ladisch <clemens@ladisch.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.12.y 6.6.y 6.1.y 5.15.y 5.10.y 5.4.y] ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
-Date: Wed,  8 Oct 2025 02:31:34 +0900
-Message-Id: <20251007173134.440372-1-aha310510@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1759864817; x=1760469617;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fyvVzqRAZ+jJPuuow0tWhdGCSI6e0A8fiu8e4y33sz4=;
+        b=Z9DR5KqQV9ddsDI1qczpinwWU8zqapCYOvF6Ir2dgQ9kkfcqL/KNSgXmQRcPSS74gZ
+         FnL7IxVZFYYiNJZFYN37FvoyGoasX4n4XCLSFRnSDkctXyUmqy7jXaWcahp1DtTn5wQw
+         jq2lDIM1MinxXybVyZMA+vqea7iKgStvKE+p9mZPAllYXrC/S0dZ5CfvrBjhkr59TP/0
+         f/6CiTg6DCjxOJtYVJS6vJBxLp2m4TQJz5kOYcQp3/JHn2brTm690Z1qnVWJbBeuFTgL
+         ksIzk9+C9nWnbMqlgsQCEOcnrVBKsFSPybJ7iYQzIJV0z3arQlZIyLFqCYWDBFx1WOI0
+         qbwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUH1hE6noQ5Jb6Oj9nXX6UjDMmTNfCYEKrvi94KKeQAF2eIlhUQngHCdhsMHAX3YXqLxMCn7uc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7oijv7uqIjOHznGSKNDpOQgzPZDotF8fiv3TK25g4KDQJHRHv
+	MX6JjOQdbn51bgEBLQcHbDjbKXuhOFAd37iz/gknBtl2ZPGLt4fzTFQjHvQioKTrpYj9q+OsKIi
+	TRdX04yxaUC+fSEmNjBlAOV/SGTIdB1tLyq3CBb0jdQ==
+X-Gm-Gg: ASbGnctdKepH9ECOn+emn3jjqtr07r4V/mYrdRx83fFqofjCjnEn6oDGmnE84+2ifN6
+	7NKbewiyyx1vYVHmjM8oVXIkFzT6qckXCYqEqFQyi/VPiTrQX1QK2BksdkdGWQc45WlDtFk06X4
+	4aBtPe8ZnZ6VdjcYDbMJYWw4wNeHfE8oXF42yClHtzXPeWSZFw5fJ9v0kjAySDXyGicHI6fn4pO
+	XXJgwi6Jxmpq9iDc6DGtiSQUFNcBw3MbnDmwEHOpdPn
+X-Google-Smtp-Source: AGHT+IEcS4H3ART7XbkyRLcIVlRN9ttSIKXOMErrDhYI7itdbz36cK6980ngyigAxI0SbIW7DumJI/JYvN83SQijQyM=
+X-Received: by 2002:a05:690e:c8:b0:622:7517:af78 with SMTP id
+ 956f58d0204a3-63ccb85338fmr715381d50.13.1759864815549; Tue, 07 Oct 2025
+ 12:20:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251006-gs101-usb-phy-clk-imbalance-v1-1-205b206126cf@linaro.org>
+In-Reply-To: <20251006-gs101-usb-phy-clk-imbalance-v1-1-205b206126cf@linaro.org>
+From: Sam Protsenko <semen.protsenko@linaro.org>
+Date: Tue, 7 Oct 2025 14:20:03 -0500
+X-Gm-Features: AS18NWCtEcLGJeO6dNMCbDSRSbiDXW6f_hsYoSbqLJrQg-Tj2Vl72UtnnpoTtMI
+Message-ID: <CAPLW+4mT+BcK+sLTenaNP7T3iFF1yXj4kziSYiJx2gOYV2NSWg@mail.gmail.com>
+Subject: Re: [PATCH] phy: exynos5-usbdrd: fix clock prepare imbalance
+To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Peter Griffin <peter.griffin@linaro.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, 
+	Will McVicker <willmcvicker@google.com>, kernel-team@android.com, 
+	linux-phy@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jeongjun Park <aha310510@gmail.com>
+On Mon, Oct 6, 2025 at 3:07=E2=80=AFAM Andr=C3=A9 Draszik <andre.draszik@li=
+naro.org> wrote:
+>
+> Commit f4fb9c4d7f94 ("phy: exynos5-usbdrd: allow DWC3 runtime suspend
+> with UDC bound (E850+)") incorrectly added clk_bulk_disable() as the
+> inverse of clk_bulk_prepare_enable() while it should have of course
+> used clk_bulk_disable_unprepare(). This means incorrect reference
+> counts to the CMU driver remain.
+>
+> Update the code accordingly.
+>
+> Fixes: f4fb9c4d7f94 ("phy: exynos5-usbdrd: allow DWC3 runtime suspend wit=
+h UDC bound (E850+)")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
+> ---
 
-[ Upstream commit 9f2c0ac1423d5f267e7f1d1940780fc764b0fee3 ]
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
 
-The previous commit 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at
-removal") patched a UAF issue caused by the error timer.
-
-However, because the error timer kill added in this patch occurs after the
-endpoint delete, a race condition to UAF still occurs, albeit rarely.
-
-Additionally, since kill-cleanup for urb is also missing, freed memory can
-be accessed in interrupt context related to urb, which can cause UAF.
-
-Therefore, to prevent this, error timer and urb must be killed before
-freeing the heap memory.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f02665daa2abeef4a947
-Fixes: 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at removal")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
----
- sound/usb/midi.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/sound/usb/midi.c b/sound/usb/midi.c
-index c3de2b137435..461e183680da 100644
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -1522,15 +1522,14 @@ static void snd_usbmidi_free(struct snd_usb_midi *umidi)
- {
- 	int i;
- 
-+	if (!umidi->disconnected)
-+		snd_usbmidi_disconnect(&umidi->list);
-+
- 	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
- 		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
--		if (ep->out)
--			snd_usbmidi_out_endpoint_delete(ep->out);
--		if (ep->in)
--			snd_usbmidi_in_endpoint_delete(ep->in);
-+		kfree(ep->out);
- 	}
- 	mutex_destroy(&umidi->mutex);
--	timer_shutdown_sync(&umidi->error_timer);
- 	kfree(umidi);
- }
- 
---
+>  drivers/phy/samsung/phy-exynos5-usbdrd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/phy/samsung/phy-exynos5-usbdrd.c b/drivers/phy/samsu=
+ng/phy-exynos5-usbdrd.c
+> index a88ba95bdc8f539dd8d908960ee2079905688622..1c8bf80119f11e2cd2f07c829=
+986908c150688ac 100644
+> --- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
+> +++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+> @@ -1823,7 +1823,7 @@ static int exynos5_usbdrd_orien_sw_set(struct typec=
+_switch_dev *sw,
+>                 phy_drd->orientation =3D orientation;
+>         }
+>
+> -       clk_bulk_disable(phy_drd->drv_data->n_clks, phy_drd->clks);
+> +       clk_bulk_disable_unprepare(phy_drd->drv_data->n_clks, phy_drd->cl=
+ks);
+>
+>         return 0;
+>  }
+>
+> ---
+> base-commit: 3b9b1f8df454caa453c7fb07689064edb2eda90a
+> change-id: 20251006-gs101-usb-phy-clk-imbalance-62eb4e761d55
+>
+> Best regards,
+> --
+> Andr=C3=A9 Draszik <andre.draszik@linaro.org>
+>
+>
 
