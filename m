@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-183580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BC9BC35B8
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 06:58:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35020BC35D0
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 06:59:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C9631886A55
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 04:58:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AFBF3C0571
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 04:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239162BFC60;
-	Wed,  8 Oct 2025 04:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685AB2C0262;
+	Wed,  8 Oct 2025 04:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14fxT6kY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1OV30nO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA68A2BF01D;
-	Wed,  8 Oct 2025 04:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC662BFC60;
+	Wed,  8 Oct 2025 04:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759899505; cv=none; b=ruLWXRvUEIepHhMmqe0a+5oXwwcU2DRv4GlWINiVAXvtUCAm63nfY9wD+pUQz30Ym1bDz0MI1CmNSnCKgZNevMz57ypi48HB68h4T8yPC6wxNhYvTZpL+qJnwQyrmec+k+lICXijOwuWuYGc5HIGAFvTvG31sgpkfXj3uZYifZM=
+	t=1759899538; cv=none; b=uq0MeIJbKM3PGsjFId8alprcr6M/0mQsGEtLgunyE5HzxWF5WIbMDTCcSVfReMOvyr295E04htNOiP52QksQAZwRBcTN3SlyjwV3SnYsi6S0QgVBD5mSWgqiKh9ecASHn/9ofYLPxgLP8OPNskFSDzVtIyzGWeQ8EDPMTR4nyS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759899505; c=relaxed/simple;
-	bh=Gc5kuSx8Wv53/KioYtvOBgndz3B4AbmBS/aGNh0PRqY=;
+	s=arc-20240116; t=1759899538; c=relaxed/simple;
+	bh=SCtk0BHUhjXkwi+qKXVHVoFCybYdmqTnWVjrx2Cxk+Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kJpKwrfN40qxQ2B6UjxyISjqIZKU84bP2tX86ngLBaQeWZGHnafgOPBtJNCAYhbG9fmlciewYqxEPR7ak6H7pa6Xc5WqYML3CvbPK34y2paFJjQ3vGjIBOB69Nvs5pdVmU3Eb6J9JzPRMvO2mhQLbzNWsMm/thMoY8eljxpn/Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14fxT6kY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D750BC4CEF4;
-	Wed,  8 Oct 2025 04:58:24 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=LbTjZ3CPtDq3W3EDt358tgkGid6MxHX1Se0LcC11VDWX72Edn6jPpTq2adOue6JagjUFO8eoMTZ7ppUEC96+pzsPZVI6y2vkPfc+U4dN92h+IkvJbwQuq9pCMmHJQEVf4z8mYH5jgkMHpRrLhB7KrxYory3CxOcLjRGD92UBc1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1OV30nO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F181C4CEF4;
+	Wed,  8 Oct 2025 04:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759899505;
-	bh=Gc5kuSx8Wv53/KioYtvOBgndz3B4AbmBS/aGNh0PRqY=;
+	s=korg; t=1759899537;
+	bh=SCtk0BHUhjXkwi+qKXVHVoFCybYdmqTnWVjrx2Cxk+Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=14fxT6kYuAAcHKtb95yS3SxdvBzJB5HFzQGhRw1hSPKsAJq/S4xd5sFT/1JdBe3/D
-	 93FtypPpm7ZfMJ9PfE2p/oKzByXBYxRGRi9T/uuqzFBeiyQt7Ct+HntVPStrjrL9Bs
-	 0FL/gjGRdOp3mp7dqGUUhpQji1p6mugu0qTgMEOY=
-Date: Wed, 8 Oct 2025 06:58:22 +0200
+	b=I1OV30nOAhB4FVOLuSRPRCODwta8Io3y6O/pcq812uSR/LnuiElG1g7vvzblNN4ni
+	 fKFsDGQRcbPeaTPLxc9ymtocQn5zlXYUJxM2qK35Uok/M8UzCPceKB1i9metIPLWd5
+	 KGAmqu1Pm+ES/Wfizk4nQLir5wcGzjobBb55Xkr0=
+Date: Wed, 8 Oct 2025 06:58:54 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: pip-izony <eeodqql09@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>,
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] Bluetooth: bfusb: Fix buffer over-read in rx processing
- loop
-Message-ID: <2025100813-thicken-snowfall-0d4d@gregkh>
-References: <20251007232941.3742133-2-eeodqql09@gmail.com>
+Subject: Re: [PATCH] Input: pegasus-notetaker - fix out-of-bounds access
+ vulnerability in pegasus_parse_packet() function of the pegasus driver
+Message-ID: <2025100848-busload-baggage-77f7@gregkh>
+References: <20251007214131.3737115-2-eeodqql09@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,44 +57,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251007232941.3742133-2-eeodqql09@gmail.com>
+In-Reply-To: <20251007214131.3737115-2-eeodqql09@gmail.com>
 
-On Tue, Oct 07, 2025 at 07:29:42PM -0400, pip-izony wrote:
+On Tue, Oct 07, 2025 at 05:41:32PM -0400, pip-izony wrote:
 > From: Seungjin Bae <eeodqql09@gmail.com>
 > 
-> The bfusb_rx_complete() function parses incoming URB data in while loop.
-> The logic does not sufficiently validate the remaining buffer size(count)
-> accross loop iterations, which can lead to a buffer over-read.
+> In the pegasus_notetaker driver, the pegasus_probe() function allocates
+> the URB transfer buffer using the wMaxPacketSize value from
+> the endpoint descriptor. An attacker can use a malicious USB descriptor
+> to force the allocation of a very small buffer.
 > 
-> For example, with 4-bytes remaining buffer, if the first iteration takes
-> the `hdr & 0x4000` branch, 2-bytes are consumed. On the next iteration,
-> only 2-bytes remain, but the else branch is trying to access the third
-> byte(buf[2]). This causes an out-of-bounds read and a potential kernel panic.
+> Subsequently, if the device sends an interrupt packet with a specific
+> pattern (e.g., where the first byte is 0x80 or 0x42),
+> the pegasus_parse_packet() function parses the packet without checking
+> the allocated buffer size. This leads to an out-of-bounds memory access,
+> which could result in a system panic.
 > 
-> This patch fixes the vulnerability by adding checks to ensure enough
-> data remains in the buffer before it is accessed.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Fixes: 948bf18 ("Input: remove third argument of usb_maxpacket()")
 > Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
 > ---
->  drivers/bluetooth/bfusb.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  drivers/input/tablet/pegasus_notetaker.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/drivers/bluetooth/bfusb.c b/drivers/bluetooth/bfusb.c
-> index 8df310983bf6..f17eae6dbd7d 100644
-> --- a/drivers/bluetooth/bfusb.c
-> +++ b/drivers/bluetooth/bfusb.c
-> @@ -360,6 +360,10 @@ static void bfusb_rx_complete(struct urb *urb)
->  			count -= 2;
->  			buf   += 2;
->  		} else {
-> +            if (count < 3) {
-> +                bf_dev_err(data->hdev, "block header is too short");
-> +                break;
-> +            }
->  			len = (buf[2] == 0) ? 256 : buf[2];
->  			count -= 3;
->  			buf   += 3;
+> diff --git a/drivers/input/tablet/pegasus_notetaker.c b/drivers/input/tablet/pegasus_notetaker.c
+> index 8d6b71d59793..6c4199712a4e 100644
+> --- a/drivers/input/tablet/pegasus_notetaker.c
+> +++ b/drivers/input/tablet/pegasus_notetaker.c
+> @@ -311,6 +311,11 @@ static int pegasus_probe(struct usb_interface *intf,
+>  	}
+>  
+>  	pegasus->data_len = usb_maxpacket(dev, pipe);
+> +    if (pegasus->data_len < 5) {
+> +		dev_err(&intf->dev, "Invalid number of wMaxPacketSize\n");
+> +		error = -EINVAL;
+> +		goto err_free_mem;
+> +	}
+>  
+>  	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
+>  					   &pegasus->data_dma);
 > -- 
 > 2.43.0
 > 
