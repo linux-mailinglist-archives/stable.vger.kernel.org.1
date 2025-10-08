@@ -1,170 +1,266 @@
-Return-Path: <stable+bounces-183637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8937BC662B
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 20:58:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3A6BC69D4
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 22:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 54C86346665
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 18:58:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 080E64E1435
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 20:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51242C11E1;
-	Wed,  8 Oct 2025 18:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81DF261586;
+	Wed,  8 Oct 2025 20:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BrbTHxU5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNpYkMKZ"
 X-Original-To: stable@vger.kernel.org
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011003.outbound.protection.outlook.com [52.101.52.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55872C0F89
-	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 18:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759949901; cv=fail; b=ZZBbOCiOZzPThhLjDLEJC/5uiYo3feQWOTvnONP5FwbCUG2MjB6kE6XVd2kFv8pxA7LxY1g7EOs3+k3mrw6iKgnqYa3CVCgey3BTVwLQc5HNpFmYl0AKzh8HdPQypaJ+gPPjWRRP58/KvpYgkyZfDxtv1LIliNo46kI1IPuhL1Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759949901; c=relaxed/simple;
-	bh=gNQp+dOMLQ27XasYjO5CWj7LYPsMCeNA0Ix2Bn0OKbc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z0xAQQi4p2vwfAqNkkfy2DIPSXc74b+LfRX6BSyS82jFRda+GEdt0tH/7Bt1HO7RYveyvKnVfgPffFeT63cbfReN3FpIWeCwp1/3YF/zA+0SWtXvHCQf/jGGq4NhL9f+H4+ILivJJ61dHBYDknsIpxR5gUApfypy+uUij/SwjLs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BrbTHxU5; arc=fail smtp.client-ip=52.101.52.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RKqOTcnNeCg3Fp8s8QHMyDuVom089IF0DO5gdk2pbwKxSg6GPGf/AFFZzvpdLXua9+HB91k7PALK3yuSPBpHMha5LoAhHLnsAXCnfBJmSiSv3p/PCs2XUyQIVWfNZU6uurp7a37kD19m/fgJQsixpiel709naqvmuPejrZcVJxESZANCBq3uAV1fX3bUumtnI/sNKjvmo85WnzK9A7AqG+L+Qb/qXzqP46dOAy6zAty3Ib5/hyLnqc175NuuFlhoeYx5JNNAMPLy7rb3lQXLQ2cpt44Cs89Tm3ddKoxCePoFkfmsakOFsn/YPbxb6mHIrAb5pjpIIkG9juohtrixLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UN4tE7W4JdH6Biw3013A5vjuel8CFBhIRJwqp/KYicU=;
- b=b9rtByuwLASJwHga8FK9Dup/+Btu7Nsh0Iy5+8tgcHyuv8C6SNwcaTgR7h51zlgGrpqZcH0XaKWSmiEMMiYEhYghYsEyXGKB2RtvhsiDPoZi41LjxC4NdaUsBFKUupi1prFC1hRmueDdrF+ji0dJCGf/9hux+ATwRrvYz2fqaCSA1wGL4II+fmBokB8B/c3YS7WM6cxQysPrCfT6HdFdZAop9BVps1bYzB6Cwus49h2cBNcYYcq7baJkVkaK3CmRqLdYr/Ejt1MqO0iDhYuf6+V0zqR8QgGkIFLllk0KIZvDwQleZODkWxZ5pNLT8l/kWT9x8cYiD86/5XlfusYmdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UN4tE7W4JdH6Biw3013A5vjuel8CFBhIRJwqp/KYicU=;
- b=BrbTHxU5t6BulxR0v6CpP5VQOnBeos/k4HlmU8moFW1Czk99JxxQzi+InK8Vozc6dKjGrqOF/UszCWPtbd7Z3FUHdelNyy1CqdZ/fxDUh5v2uJOZkxWLK65kWOQg1VwiBf+jZyY53iqRhflsyX1PutVQI4MO3R7h7HCE7PCTl0OoIX3VFOcLs7YV7f1h5+iIJ8TTsgG2PBwqFsSbUjHC0jORiq0nOdoGSjtQ1I8R/lJPgPu3oMyIFT27GnVkG7fpafzXQKk5KInvxcjde1sW7buRRIQ9xdPDq0CLf5hA+4paRa+3QmOV3BZMZFnjK3fT+FWA+rxdb8Jjkk/BDYPMgQ==
-Received: from DM6PR02CA0122.namprd02.prod.outlook.com (2603:10b6:5:1b4::24)
- by CH3PR12MB7594.namprd12.prod.outlook.com (2603:10b6:610:140::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Wed, 8 Oct
- 2025 18:58:15 +0000
-Received: from DS2PEPF0000343C.namprd02.prod.outlook.com
- (2603:10b6:5:1b4:cafe::e5) by DM6PR02CA0122.outlook.office365.com
- (2603:10b6:5:1b4::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9182.20 via Frontend Transport; Wed,
- 8 Oct 2025 18:58:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DS2PEPF0000343C.mail.protection.outlook.com (10.167.18.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9203.9 via Frontend Transport; Wed, 8 Oct 2025 18:58:15 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 8 Oct
- 2025 11:58:00 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 8 Oct
- 2025 11:58:00 -0700
-Received: from Asurada-Nvidia (10.127.8.9) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Wed, 8 Oct 2025 11:57:59 -0700
-Date: Wed, 8 Oct 2025 11:57:57 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: <iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
-	<kevin.tian@intel.com>, Robin Murphy <robin.murphy@arm.com>, Will Deacon
-	<will@kernel.org>, Alex Williamson <alex.williamson@redhat.com>, Joao Martins
-	<joao.m.martins@oracle.com>, <patches@lists.linux.dev>,
-	<stable@vger.kernel.org>,
-	<syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com>, Yishai Hadas
-	<yishaih@nvidia.com>
-Subject: Re: [PATCH rc] iommufd: Don't overflow during division for dirty
- tracking
-Message-ID: <aOa0NWKpNMDSECz7@Asurada-Nvidia>
-References: <0-v1-663679b57226+172-iommufd_dirty_div0_jgg@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675412AF1B
+	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 20:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759956860; cv=none; b=sKEprX93IrnAANuvxfI5b/4pDO6v2WsbOb94hvwCYhGqvBrhkeRIhqV/Ihwpicyp0eipy+jkd9rUyyb7DkKHxfZJZC1LPmLLFY7Ic/bbaipIDK5FaAdO17DXn7UhyW2ERVL5ms9lEIEp9gv1OfkY9b8LeQguPXuB046LT+cTW1I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759956860; c=relaxed/simple;
+	bh=agL9NQjRm83/yHaWQQb9LP2YNW141HDrTz3t3n7+nWc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=codbqsfH8V8Ri+jkn2r2fdjR/azgCJIKHPvhTCHg9XiQI/VMPtQTNWpBL5OoCZdzI//C4Em/rWf/l7lPF+CDL8vpDzEY0aSp4rki5DLOjArErOU2RPukFOUoDoNPh5E2tI6TehQCnnPR569OceCsbZ5tLAk9RwjQtOOJsaLIW3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNpYkMKZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1B1C116B1
+	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 20:54:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759956860;
+	bh=agL9NQjRm83/yHaWQQb9LP2YNW141HDrTz3t3n7+nWc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aNpYkMKZfCFMWJKhtFzH9ssZDk+h5QDwRDs6/raKHPcAjEdn5aAlINFU1ys/sGiE3
+	 v0oOf3aZOVksaFkJyHY1P2B56MsfVxccy5i25BCfvczrn7YXWpCJKvQesr35u69+Sk
+	 mbh7+wFiNRR6n4lZ3TETnyHaLccM8C43xfjOz5Datmuaqwvqh7kn+7j4OXcnYvoM5j
+	 R+noBr0BQQK+dHuhCP6V0ldfVYyUkS5pXM5nJ4RxksOe0hbz8Uwc0hU1DwAwQbntoT
+	 2sbikPEgHZCvPhlZK8ArXxkuNFD6+WFWLMn753uGqV1mLzXcMsmIENMnJ4uCDPnoiN
+	 ppLiDdXRuMtew==
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6354af028c6so359973d50.3
+        for <stable@vger.kernel.org>; Wed, 08 Oct 2025 13:54:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWyhdsX7/vHluXuRyTTvHw0STtVo656DalG//PrkmBdsspQ+Pgrxc3HM5j9JTZOUtM6u8TdgOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzz1o+qiCwZfNMJ/GwvqWllkwh9ymurveUUzU+1CmbOcrlomRsm
+	OswPhznmYPth3gkJaa6OVQiI4SmlHSzKYpPMXduQftBClJovjlAuR6P+HGnflBG7kv5c4MSL3rJ
+	lyThz6q8zHOf7KPUj31EJeWgmRDMlpVFrx64EjS52uw==
+X-Google-Smtp-Source: AGHT+IGXcPsre3jPnzCXfW/NrHxTfes0Zrdq4yHGtjhgwz7kNPMXwSCxT4ITZ6YQG7WRPEjbYGDlrMXAh/E7qHIvmVo=
+X-Received: by 2002:a05:690e:2486:b0:628:2e16:6566 with SMTP id
+ 956f58d0204a3-63ccb6763d1mr4749241d50.0.1759956859230; Wed, 08 Oct 2025
+ 13:54:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <0-v1-663679b57226+172-iommufd_dirty_div0_jgg@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF0000343C:EE_|CH3PR12MB7594:EE_
-X-MS-Office365-Filtering-Correlation-Id: dfde37c2-4704-4574-cbb9-08de069ca336
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|36860700013|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QbLZtNT1bFoKXZuWIAAC8U0BFaUsH1ZOnB6i0iIKjlGAdVrVAPxVxE7IWBlW?=
- =?us-ascii?Q?cD2KTASPfkQjeN9dPOLTPiq8IdynMqKIvgltqt/4dfc6Cuub244yGBUiCVUD?=
- =?us-ascii?Q?ZXoVz1O4qlasHHOMZXPa//8XBXp7QCraK6wVbs+/e57DvdmGZM1MIJ1SIfc5?=
- =?us-ascii?Q?nl9Xxj+pVjk8j2yvv/bwksSBRhEHv2U/IX/9QXdOY/EbCG/IUjC7WzgOCQPV?=
- =?us-ascii?Q?DgdclmVgmd9W8Vk5nFBWO2PKEOO3I0LmQvnPjgkpbuMkjLPz3Z/QTnOWA98f?=
- =?us-ascii?Q?HniJVHaPF1ESVYfcddtu8kuCoSlAH4UJSX2AQeatC/Cma9lT3qr9zqQUzTzp?=
- =?us-ascii?Q?rBN2XVPmSrYfUSoxppiRW5l/2izcgKbx6lA+wf2ho6yFEDH+6Z0/CW+m8c4y?=
- =?us-ascii?Q?58g1Jt6ZegXKWy1Kp5rCa0sd6q1/CaizjOC+ip3eJjiOm69UT2TC1amfVi48?=
- =?us-ascii?Q?Vo3GX32bDsdErTN1gtdU1stsOFlqqlrqCOiSK3pDtWZtjr1xe3wQy2/qAV/4?=
- =?us-ascii?Q?mwSomd6IrJuslTjHTNhJhuHFXV1yt57ImKqfXOLM4VRKc46bNl2nvawAnM6+?=
- =?us-ascii?Q?qGFM35ivwv6Ga644I+DEU3e4V2i8cBw5/0FPc4r6sqaLUvh0jBbRim9+6TOx?=
- =?us-ascii?Q?PMszkZBFyUMuVE/bbnyMwBWlxdhlszlCyQHVxN82tZoEhSSFD6gRV3LKWqID?=
- =?us-ascii?Q?VYbc+vHsoanGvk79nSy1lATRUqZEv9Z/ExGcXFNSBT0a0Q4hoX0fTcli1SGb?=
- =?us-ascii?Q?Gu8U8/YDxpSmy2SudGY7monv12CrRiuVkdpMMe08kqTjVXkTBqaKzGieOS9Q?=
- =?us-ascii?Q?a1oMr6aunEUuTHwngP+zo8NeN46eodaofWlVBvAA9P7fOCiytNrbTKxGAUd6?=
- =?us-ascii?Q?GzxmoeOIz+TnlMuhIt6zboFPFtRdJ6F6AzkwWzvul30I6VubBtnddSYtm9UU?=
- =?us-ascii?Q?bnbmaUdXy7gpI7gPfm+aLVDLwmR9zSD8a+LMudRajvE8dXBCg+B/XXt21qLb?=
- =?us-ascii?Q?VIi+RvdyVTpM8xrQlJb+78Or5od8gfLxs2re5d/sjquykP0uNPlQ7f2b99Dt?=
- =?us-ascii?Q?jTsqCtwTlb+0fqjzeghlp1OOCcGvm/1FuhIbkh9nICct61GHj9ookDafXSaa?=
- =?us-ascii?Q?5OfFruI127zP0rZtmpjjxo8Kkrp/JdvB/ld4nfmLwJKRFVqduH6F0Ewv6kcJ?=
- =?us-ascii?Q?3PAITAdJ3SjVlvGm+xP/a5Quxm9U9M1GL/9Cmux86Cf0BHSIsbuKK+lewOQd?=
- =?us-ascii?Q?iTEJ30DFwgi/1txNXx0WU7+G1j77QT5BoO+fqOt59ZpW5E6Y/uW1xcq3jtC8?=
- =?us-ascii?Q?S2eNtsC8JoUA3D2zJohKDO6adPVKZdDsWwYOgOAyBosNVhlNM1uJp8OxYEcf?=
- =?us-ascii?Q?ot+P/NXiFQlYarNHz99TzbpNlLvoxd6gEyzKAgDpCyWYnqVoax8z3X1RZha3?=
- =?us-ascii?Q?KqyX4upo31asqcDmSUYAU92iI7HPK5gAhegfRyvHi6Bs7z+i2tTWColBrIDG?=
- =?us-ascii?Q?4Je6QHJv6KFuQh8B7wuSwP10roeBm95GwAZFodq+L/mopIc2qXa8nr/C2lnn?=
- =?us-ascii?Q?lYmF5nBdaXx2ZDPMAig=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(36860700013)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2025 18:58:15.4476
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dfde37c2-4704-4574-cbb9-08de069ca336
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF0000343C.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7594
+References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
+ <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
+In-Reply-To: <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 8 Oct 2025 13:54:06 -0700
+X-Gmail-Original-Message-ID: <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
+X-Gm-Features: AS18NWDV4-kH86tXLtXJeQUM8aNsKlZYE7T0tTk3LlA5GEJjYTJActBrpZqaAP8
+Message-ID: <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 08, 2025 at 03:17:18PM -0300, Jason Gunthorpe wrote:
-> If pgshift is 63 then BITS_PER_TYPE(*bitmap->bitmap) * pgsize will overflow
-> to 0 and this triggers divide by 0.
-> 
-> In this case the index should just be 0, so reorganize things to divide
-> by shift and avoid hitting any overflows.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 58ccf0190d19 ("vfio: Add an IOVA bitmap support")
-> Reported-by: syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=093a8a8b859472e6c257
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Hi Kairui,
 
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+First of all, your title is a bit misleading:
+"do not perform synchronous discard during allocation"
+
+You still do the synchronous discard, just limited to order 0 failing.
+
+Also your commit did not describe the behavior change of this patch.
+The behavior change is that, it now prefers to allocate from the
+fragment list before waiting for the discard. Which I feel is not
+justified.
+
+After reading your patch, I feel that you still do the synchronous
+discard, just now you do it with less lock held.
+I suggest you just fix the lock held issue without changing the
+discard ordering behavior.
+
+On Mon, Oct 6, 2025 at 1:03=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
+:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Since commit 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation
+> fast path"), swap allocation is protected by a local lock, which means
+> we can't do any sleeping calls during allocation.
+>
+> However, the discard routine is not taken well care of. When the swap
+> allocator failed to find any usable cluster, it would look at the
+> pending discard cluster and try to issue some blocking discards. It may
+> not necessarily sleep, but the cond_resched at the bio layer indicates
+> this is wrong when combined with a local lock. And the bio GFP flag used
+> for discard bio is also wrong (not atomic).
+
+If lock is the issue, let's fix the lock issue.
+
+> It's arguable whether this synchronous discard is helpful at all. In
+> most cases, the async discard is good enough. And the swap allocator is
+> doing very differently at organizing the clusters since the recent
+> change, so it is very rare to see discard clusters piling up.
+
+Very rare does not mean this never happens. If you have a cluster on
+the discarding queue, I think it is better to wait for the discard to
+complete before using the fragmented list, to reduce the
+fragmentation. So it seems the real issue is holding a lock while
+doing the block discard?
+
+> So far, no issues have been observed or reported with typical SSD setups
+> under months of high pressure. This issue was found during my code
+> review. But by hacking the kernel a bit: adding a mdelay(100) in the
+> async discard path, this issue will be observable with WARNING triggered
+> by the wrong GFP and cond_resched in the bio layer.
+
+I think that makes an assumption on how slow the SSD discard is. Some
+SSD can be really slow. We want our kernel to work for those slow
+discard SSD cases as well.
+
+> So let's fix this issue in a safe way: remove the synchronous discard in
+> the swap allocation path. And when order 0 is failing with all cluster
+> list drained on all swap devices, try to do a discard following the swap
+
+I don't feel that changing the discard behavior is justified here, the
+real fix is discarding with less lock held. Am I missing something?
+If I understand correctly, we should be able to keep the current
+discard ordering behavior, discard before the fragment list. But with
+less lock held as your current patch does.
+
+I suggest the allocation here detects there is a discard pending and
+running out of free blocks. Return there and indicate the need to
+discard. The caller performs the discard without holding the lock,
+similar to what you do with the order =3D=3D 0 case.
+
+> device priority list. If any discards released some cluster, try the
+> allocation again. This way, we can still avoid OOM due to swap failure
+> if the hardware is very slow and memory pressure is extremely high.
+>
+> Cc: <stable@vger.kernel.org>
+> Fixes: 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation fast pa=
+th")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/swapfile.c | 40 +++++++++++++++++++++++++++++++++-------
+>  1 file changed, 33 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index cb2392ed8e0e..0d1924f6f495 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swap_entry(stru=
+ct swap_info_struct *si, int o
+>                         goto done;
+>         }
+>
+> -       /*
+> -        * We don't have free cluster but have some clusters in discardin=
+g,
+> -        * do discard now and reclaim them.
+> -        */
+> -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_scheduled_discard(s=
+i))
+> -               goto new_cluster;
+
+Assume you follow my suggestion.
+Change this to some function to detect if there is a pending discard
+on this device. Return to the caller indicating that you need a
+discard for this device that has a pending discard.
+Add an output argument to indicate the discard device "discard" if needed.
+
+> -
+>         if (order)
+>                 goto done;
+>
+> @@ -1394,6 +1387,33 @@ static bool swap_alloc_slow(swp_entry_t *entry,
+>         return false;
+>  }
+>
+> +/*
+> + * Discard pending clusters in a synchronized way when under high pressu=
+re.
+> + * Return: true if any cluster is discarded.
+> + */
+> +static bool swap_sync_discard(void)
+> +{
+
+This function discards all swap devices. I am wondering if we should
+just discard the current working device instead.
+Another device supposedly discarded is already on going with the work
+queue. We don't have to wait for that.
+
+To unblock the current swap allocation.  We only need to wait for the
+discard on the current swap device to indicate it needs to wait for
+discard. Assume you take my above suggestion.
+
+> +       bool ret =3D false;
+> +       int nid =3D numa_node_id();
+> +       struct swap_info_struct *si, *next;
+> +
+> +       spin_lock(&swap_avail_lock);
+> +       plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail=
+_lists[nid]) {
+> +               spin_unlock(&swap_avail_lock);
+> +               if (get_swap_device_info(si)) {
+> +                       if (si->flags & SWP_PAGE_DISCARD)
+> +                               ret =3D swap_do_scheduled_discard(si);
+> +                       put_swap_device(si);
+> +               }
+> +               if (ret)
+> +                       break;
+> +               spin_lock(&swap_avail_lock);
+> +       }
+> +       spin_unlock(&swap_avail_lock);
+> +
+> +       return ret;
+> +}
+> +
+>  /**
+>   * folio_alloc_swap - allocate swap space for a folio
+>   * @folio: folio we want to move to swap
+> @@ -1432,11 +1452,17 @@ int folio_alloc_swap(struct folio *folio, gfp_t g=
+fp)
+>                 }
+>         }
+>
+> +again:
+>         local_lock(&percpu_swap_cluster.lock);
+>         if (!swap_alloc_fast(&entry, order))
+>                 swap_alloc_slow(&entry, order);
+
+Here we can have a "discard" output function argument to indicate
+which swap device needs to be discarded.
+
+>         local_unlock(&percpu_swap_cluster.lock);
+>
+> +       if (unlikely(!order && !entry.val)) {
+
+If you take the above suggestion, here will be just check if the
+"discard" device is not NULL, perform discard on that device and done.
+
+> +               if (swap_sync_discard())
+> +                       goto again;
+> +       }
+> +
+>         /* Need to call this even if allocation failed, for MEMCG_SWAP_FA=
+IL. */
+>         if (mem_cgroup_try_charge_swap(folio, entry))
+>                 goto out_free;
+
+Chris
 
