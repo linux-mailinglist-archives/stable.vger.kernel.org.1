@@ -1,40 +1,41 @@
-Return-Path: <stable+bounces-183590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5FDBC3B95
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 09:51:28 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B415CBC3B8C
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 09:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D62B73B8431
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 07:51:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B4A8A4E15D3
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 07:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EA5BA4A;
-	Wed,  8 Oct 2025 07:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0465C2F0C73;
+	Wed,  8 Oct 2025 07:50:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2A61F12E9;
-	Wed,  8 Oct 2025 07:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546AE1E5B7B;
+	Wed,  8 Oct 2025 07:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759909860; cv=none; b=LpDTVgI4LkmCKMs21N25pCIdgOTRoq5MnlyHqQVbb2TS7n0bxZs2F4H46D0dSwk4LLRpGCrbHYDnIvBChUrIJoAZKfCuSjtyQ0H2Sq8DXzITUV0AfUHHRUojFYRd+7i8wb5iQyZLddbzqG1qhxh+RnJBrLtEC6ExhtlHLeK1LXA=
+	t=1759909858; cv=none; b=EPsrQwCg3qB3SJp6U7ZlvEJBsLFz+ako84hfRbWYMzu5ASQyiTd0aKtDGEE02tnJdF3CLDy6eqvIerxMcHXTwSgLJofoCYHe5hCmjNCvXISFFnb6dIZ0721PCuoPKF36T+aHMMn5O4+3hx5oOo3JvhbWXP3P/mh/BiS6Xjm4J+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759909860; c=relaxed/simple;
-	bh=jcE1zGotb3oaZ4oCLRDR6NYwb4QZFGglLycnEneFsh0=;
+	s=arc-20240116; t=1759909858; c=relaxed/simple;
+	bh=px9Lr1+HC+LthT8zAWS5s3VKv1z0Z0pYU6ur6uCZNCI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b5qb9XvQ1Yt5pPoNlpAHi2n0TkFp4xuhYeyrK+zQsFKaTCsL9r0rFyHeCODKtkgq7y4tfd92XjAt5kkcXlIEV/GDOOm6bPiNsPqFUFX8/rzqhkbQfL+gfC5WdPeyJdD/DkUp/DT0D1vxC7odiStX0NeDj1hGcyxPt34NisTPAPM=
+	 In-Reply-To:To:Cc; b=HmhWEfg0kxVIiZg9pgvZ52dXC7kXA1DysyHf/OVpAMAfuNG+CVQNvP+Ga53UfjDBEeBkyvwgsJ8K3Q2IJhcBKcABeldSZA9ejP6/i2ODnY9HBUBfsO0fz4WWhXZKgFLyfB3KTxlC1Jxpd6e8TutqdjZZCWJenAnG09HifAp9GXY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from [127.0.0.2] (unknown [114.241.81.247])
-	by APP-01 (Coremail) with SMTP id qwCowAA3kaPLF+ZoUI4EDQ--.32936S3;
-	Wed, 08 Oct 2025 15:50:35 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowAA3kaPLF+ZoUI4EDQ--.32936S4;
+	Wed, 08 Oct 2025 15:50:36 +0800 (CST)
 From: Vivian Wang <wangruikang@iscas.ac.cn>
-Date: Wed, 08 Oct 2025 15:50:16 +0800
-Subject: [PATCH 6.6.y 1/2] riscv: mm: Use hint address in mmap if available
+Date: Wed, 08 Oct 2025 15:50:17 +0800
+Subject: [PATCH 6.6.y 2/2] riscv: mm: Do not restrict mmap address based on
+ hint
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -43,7 +44,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251008-riscv-mmap-addr-space-6-6-v1-1-9f47574a520f@iscas.ac.cn>
+Message-Id: <20251008-riscv-mmap-addr-space-6-6-v1-2-9f47574a520f@iscas.ac.cn>
 References: <20251008-riscv-mmap-addr-space-6-6-v1-0-9f47574a520f@iscas.ac.cn>
 In-Reply-To: <20251008-riscv-mmap-addr-space-6-6-v1-0-9f47574a520f@iscas.ac.cn>
 To: stable@vger.kernel.org, Paul Walmsley <pjw@kernel.org>, 
@@ -56,113 +57,84 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Vivian Wang <wangruikang@iscas.ac.cn>, Yao Zi <ziyao@disroot.org>, 
  Palmer Dabbelt <palmer@rivosinc.com>
 X-Mailer: b4 0.14.2
-X-CM-TRANSID:qwCowAA3kaPLF+ZoUI4EDQ--.32936S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxur43Cr4fKFW7tw4DuFykKrg_yoW5tF1fpa
-	sIka93urn7t3W7Kry7Jr1UKF17Gan5KFy2qFW0grWvkFs8uasxWr1vk3W5GFy0vFW09a18
-	Z3Wayws5u3W5Z3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
-	x26xkF7I0E14v26r4j6ryUM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l84
-	ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_Cr1U
-	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
-	v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
-	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
-	IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
-	6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-	CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
-	0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
-	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2
-	KfnxnUUI43ZEXa7VUjrHUDUUUUU==
+X-CM-TRANSID:qwCowAA3kaPLF+ZoUI4EDQ--.32936S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr1DWF1furyUZr4kZFyDAwb_yoW8uFykpF
+	Zakanakr1vkry7trZrAr47uF18tan8KFy2grW0grnYkr1YvFW7Xr4Ik3WkZF1UZFW09a1F
+	vF1fCasYva4UJwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUm214x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
+	8EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4U
+	JwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
+	IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
+	M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
+	kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
+	bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
+	AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI
+	42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMI
+	IF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVF
+	xhVjvjDU0xZFpf9x0JUQXo7UUUUU=
 X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
 From: Charlie Jenkins <charlie@rivosinc.com>
 
-[ Upstream commit b5b4287accd702f562a49a60b10dbfaf7d40270f ]
+[ Upstream commit 2116988d5372aec51f8c4fb85bf8e305ecda47a0 ]
 
-On riscv it is guaranteed that the address returned by mmap is less than
-the hint address. Allow mmap to return an address all the way up to
-addr, if provided, rather than just up to the lower address space.
-
-This provides a performance benefit as well, allowing mmap to exit after
-checking that the address is in range rather than searching for a valid
-address.
-
-It is possible to provide an address that uses at most the same number
-of bits, however it is significantly more computationally expensive to
-provide that number rather than setting the max to be the hint address.
-There is the instruction clz/clzw in Zbb that returns the highest set bit
-which could be used to performantly implement this, but it would still
-be slower than the current implementation. At worst case, half of the
-address would not be able to be allocated when a hint address is
-provided.
+The hint address should not forcefully restrict the addresses returned
+by mmap as this causes mmap to report ENOMEM when there is memory still
+available.
 
 Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20240130-use_mmap_hint_address-v3-1-8a655cfa8bcb@rivosinc.com
+Fixes: b5b4287accd7 ("riscv: mm: Use hint address in mmap if available")
+Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
+Closes: https://lore.kernel.org/linux-kernel/ZbxTNjQPFKBatMq+@ghost/T/#mccb1890466bf5a488c9ce7441e57e42271895765
+Link: https://lore.kernel.org/r/20240826-riscv_mmap-v1-3-cd8962afe47f@rivosinc.com
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-[ Adjust TASK_SIZE64 -> TASK_SIZE in moved lines ]
+[ Adjust removed lines ]
 Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 Tested-by: Han Gao <rabenda.cn@gmail.com>
 ---
- arch/riscv/include/asm/processor.h | 27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ arch/riscv/include/asm/processor.h | 22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
 diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
-index 4f6af8c6cfa060380594c6d0e727af6b02d08d70..938aef30dfb42ee477b7c59b5d2afc3871d8004d 100644
+index 938aef30dfb42ee477b7c59b5d2afc3871d8004d..4747277983ad1a2a9666c03a4e69758f56d22dbc 100644
 --- a/arch/riscv/include/asm/processor.h
 +++ b/arch/riscv/include/asm/processor.h
-@@ -13,22 +13,16 @@
+@@ -15,30 +15,12 @@
  
- #include <asm/ptrace.h>
- 
--#ifdef CONFIG_64BIT
--#define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
--#define STACK_TOP_MAX		TASK_SIZE
--
  #define arch_get_mmap_end(addr, len, flags)			\
  ({								\
- 	unsigned long mmap_end;					\
- 	typeof(addr) _addr = (addr);				\
--	if ((_addr) == 0 || (IS_ENABLED(CONFIG_COMPAT) && is_compat_task())) \
-+	if ((_addr) == 0 ||					\
-+	    (IS_ENABLED(CONFIG_COMPAT) && is_compat_task()) ||	\
-+	    ((_addr + len) > BIT(VA_BITS - 1)))			\
- 		mmap_end = STACK_TOP_MAX;			\
--	else if ((_addr) >= VA_USER_SV57)			\
+-	unsigned long mmap_end;					\
+-	typeof(addr) _addr = (addr);				\
+-	if ((_addr) == 0 ||					\
+-	    (IS_ENABLED(CONFIG_COMPAT) && is_compat_task()) ||	\
+-	    ((_addr + len) > BIT(VA_BITS - 1)))			\
 -		mmap_end = STACK_TOP_MAX;			\
--	else if ((((_addr) >= VA_USER_SV48)) && (VA_BITS >= VA_BITS_SV48)) \
--		mmap_end = VA_USER_SV48;			\
- 	else							\
--		mmap_end = VA_USER_SV39;			\
-+		mmap_end = (_addr + len);			\
- 	mmap_end;						\
+-	else							\
+-		mmap_end = (_addr + len);			\
+-	mmap_end;						\
++	STACK_TOP_MAX;						\
  })
  
-@@ -38,17 +32,18 @@
- 	typeof(addr) _addr = (addr);				\
- 	typeof(base) _base = (base);				\
- 	unsigned long rnd_gap = DEFAULT_MAP_WINDOW - (_base);	\
--	if ((_addr) == 0 || (IS_ENABLED(CONFIG_COMPAT) && is_compat_task())) \
-+	if ((_addr) == 0 ||					\
-+	    (IS_ENABLED(CONFIG_COMPAT) && is_compat_task()) ||	\
-+	    ((_addr + len) > BIT(VA_BITS - 1)))			\
- 		mmap_base = (_base);				\
--	else if (((_addr) >= VA_USER_SV57) && (VA_BITS >= VA_BITS_SV57)) \
--		mmap_base = VA_USER_SV57 - rnd_gap;		\
--	else if ((((_addr) >= VA_USER_SV48)) && (VA_BITS >= VA_BITS_SV48)) \
--		mmap_base = VA_USER_SV48 - rnd_gap;		\
- 	else							\
--		mmap_base = VA_USER_SV39 - rnd_gap;		\
-+		mmap_base = (_addr + len) - rnd_gap;		\
- 	mmap_base;						\
+ #define arch_get_mmap_base(addr, base)				\
+ ({								\
+-	unsigned long mmap_base;				\
+-	typeof(addr) _addr = (addr);				\
+-	typeof(base) _base = (base);				\
+-	unsigned long rnd_gap = DEFAULT_MAP_WINDOW - (_base);	\
+-	if ((_addr) == 0 ||					\
+-	    (IS_ENABLED(CONFIG_COMPAT) && is_compat_task()) ||	\
+-	    ((_addr + len) > BIT(VA_BITS - 1)))			\
+-		mmap_base = (_base);				\
+-	else							\
+-		mmap_base = (_addr + len) - rnd_gap;		\
+-	mmap_base;						\
++	base;							\
  })
  
-+#ifdef CONFIG_64BIT
-+#define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
-+#define STACK_TOP_MAX		TASK_SIZE
- #else
- #define DEFAULT_MAP_WINDOW	TASK_SIZE
- #define STACK_TOP_MAX		TASK_SIZE
+ #ifdef CONFIG_64BIT
 
 -- 
 2.50.1
