@@ -1,125 +1,117 @@
-Return-Path: <stable+bounces-183578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B16BC340C
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 05:52:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F25BC3565
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 06:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D9C9C4E925E
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 03:52:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DBEC64E94F2
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 04:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FC22BDC2A;
-	Wed,  8 Oct 2025 03:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06D828A1D5;
+	Wed,  8 Oct 2025 04:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="TnaffeSL"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8DB23F422;
-	Wed,  8 Oct 2025 03:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D8334BA3C
+	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 04:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759895529; cv=none; b=QXXOCiqR1EhuPnJvpXv7dXDFUXO9jCnj8NnWtbwcdJGf9SvWitOiTZ92JgqOO74zunVbAZzIGqY2Uw/UlX5GWsPnpx0BQkMpjhliumg6m+L70RBLynhdm2GfrJ6l5DCwJjTIfhjunxFdc4FhMTnOWKNucxA5wl/7yillK1MaRLA=
+	t=1759898740; cv=none; b=PzeC9QD+SnLY7r63B9pdYiNWTXsYFQYK5vivwG3PBolDKpCaWrWUV6uJmM2kIpyz2v3Xh022qA+hhKFic/HcF9Si1S9uUom56BAXNK3GknMN/CneyI3Kl3uMYRZbUAkbEzjJfiNwTgkeaf5ExzBD5UQ/u7gzv3wbf9L6qHYciVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759895529; c=relaxed/simple;
-	bh=vMnZxNvw3AeVnX0HFoTG1czseYUxgJCDXkCU9NJB/LE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yhhe62b80KDEDVD2XFlf6MTJL2QwXkTgKUcl78UmJZLF6FfaN2ZE+ShrUVsMbEPukTMRliYl7qdGkqXw/VobTUBLTNPkGwjQ09cQ4wYrNarfpo3YAZ+tTcP2OyvNTYTEMDpoZd6H+/7GbHo5knhlEK0dMfBBCQbCiB8ZZx0HTpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.5] (ip5f5af0e2.dynamic.kabel-deutschland.de [95.90.240.226])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 5A2DD60288273;
-	Wed, 08 Oct 2025 05:51:54 +0200 (CEST)
-Message-ID: <77bde79f-2080-4e40-a013-52b480c0928c@molgen.mpg.de>
-Date: Wed, 8 Oct 2025 05:51:52 +0200
+	s=arc-20240116; t=1759898740; c=relaxed/simple;
+	bh=wE/kdATIEfdP1bT5DFvn1f+TOEuk6V4ywi7jxxibmN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=hnCJgTQzxPqesgqyAN1TSWLO47s8ShWiT9WD6jRMc67IAN+BCx/AIovhzrfjx+N3IKBgi8oN/yd2WIK4w+abyU/x58rQG3mvk7thM0wpGqBxuehSnwltOpvjXkJycZhb3vTdNyg5C1rDcYOtP4Z4y0L0grlpeI1MyiEAtqpPsTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=TnaffeSL; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-78115430134so4313531b3a.1
+        for <stable@vger.kernel.org>; Tue, 07 Oct 2025 21:45:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1759898738; x=1760503538; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5kr1L00wvOVr25j3yOIqLleOM/mW0MLWBZeaiqgZ8Wk=;
+        b=TnaffeSL0lm+9MMBv4ErPvZ8StuIMT0Kbv/+8PCrPX64MBPjAOJntXUkKQg86sBT2F
+         q3GAfUxTqQGpxR0Ii1CZtUAKqEdAnqC5ebIxUZDPouq9rEQQOdpmUPogXU7qLET+bsYP
+         J/a4wYfIh7zY15imAJN8V0FLvsV6b72G1odjY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759898738; x=1760503538;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5kr1L00wvOVr25j3yOIqLleOM/mW0MLWBZeaiqgZ8Wk=;
+        b=p4KhmWQKqWmTf/+v2oDclr84AlgyspFMlsloEzavcK3H/aerUdwI5tj9zTX4lmZSt4
+         fmiILVIs+zS+OEFm0QzpwdjDrTvx15eX9GnE9LuZCg7281yKUxs/OBf3Q0z6H7Ktsley
+         g94bqACZ46Gpya0sAcKzrw05jsxQXXthD7rL0O1D6KcgsT64rZHKrlNiQeEkpdX43om3
+         UtqhN3FI8GAiTmibojmyVlvVVwae/qP9bZhVozfECJ44L4eeU20Kq6JxAurXGdZWhrdL
+         DLqu4/Xy4mAmiwo9Be70AcXLxqbyW4lHT5Hs3kg7VypCQiB8gTYQcqhZv/PhgzmRGAYF
+         UqtA==
+X-Forwarded-Encrypted: i=1; AJvYcCWj4xHTb0HV4ysn6nqBL2q4+o2J/ExOWqeAbMjFSqC/hjVvOw+vtqWGICD5Y9rn+PlpItpPrWY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOgHRUEN/IoyFvdbrO53SJcyiIRnhxsfDy51zMNtwyzq0Dy7tQ
+	1r59F0zPvDXV5ulrSgj2E3gXsYwaAOKF8IVQ1psH79no6hF5zHH+7QFlxe9NtRCYVw==
+X-Gm-Gg: ASbGncv0c0cJh+LQI+aN2W/UBAz47rfo0oMmiEF6QrJdITInP4iTWiF0uRAlF7UUhBM
+	3R44bKx+VmAmimtn4QVxMEvV+fLz9vj3f5T0Y4A6c8fAyfitT2tHhMUNfod2kuUjZL2DhAihzWd
+	U6/0sI5sgvVU4/O6jQqgwbcMkJ6/7QVTrOVN73NLz5mc8U/s/pDkQzYKOYga6Z414bcSnJtWO9S
+	e2R4BsIOoAZlkl1EKPfvy3qBwWltG9iYJ/Ktg71Pgc2ZofuulB1uOes+SFJFvl9YIltrVyvauWH
+	g3KFBMXnVjnoDZTHBQYrUN0wRmi/a8S/9fbTtA3FU4HpADZKTszwxn12jLBd/dpJS3ptx4/onJF
+	39N6rTnDfEIXvx4mWRuL3EPx+tAT0KHnEebWPETPpGwti7vuiiQ==
+X-Google-Smtp-Source: AGHT+IFLUr0j2WR9Nd0qMRsWsIHFOH6znggjE7lmgxCqD3Uq946in/DRyGXhdUAnZKPPI7qOtPJMtQ==
+X-Received: by 2002:a05:6a00:2388:b0:772:3aa4:226e with SMTP id d2e1a72fcca58-79387242fa9mr2116159b3a.19.1759898738380;
+        Tue, 07 Oct 2025 21:45:38 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:465a:c20b:6935:23d8])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78b02053b77sm17347590b3a.43.2025.10.07.21.45.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Oct 2025 21:45:37 -0700 (PDT)
+Date: Wed, 8 Oct 2025 13:45:32 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Mark Brown <broonie@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Tomasz Figa <tfiga@chromium.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: kvm: arm64: stable commit "Fix kernel BUG() due to bad backport of
+ FPSIMD/SVE/SME fix" deadlocks host kernel
+Message-ID: <hjc7jwarhmwrvcswa7nax26vgvs2wl7256pf3ba3onoaj26s5x@qubtqvi3vy6u>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Bluetooth: bfusb: Fix buffer over-read in rx
- processing loop
-To: Seungjin Bae <eeodqql09@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>,
- Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, linux-kernel@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, stable@vger.kernel.org
-References: <20251007232941.3742133-2-eeodqql09@gmail.com>
- <20251008015640.3745834-2-eeodqql09@gmail.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20251008015640.3745834-2-eeodqql09@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Dear Seungjin,
+Commits 8f4dc4e54eed4 (6.1.y) and 23249dade24e6 (5.15.y) (maybe other
+stable kernels as well) deadlock the host kernel (presumably a
+recursive spinlock):
 
+ queued_spin_lock_slowpath+0x274/0x358
+ raw_spin_rq_lock_nested+0x2c/0x48
+ _raw_spin_rq_lock_irqsave+0x30/0x4c
+ run_rebalance_domains+0x808/0x2e18
+ __do_softirq+0x104/0x550
+ irq_exit+0x88/0xe0
+ handle_domain_irq+0x7c/0xb0
+ gic_handle_irq+0x1cc/0x420
+ call_on_irq_stack+0x20/0x48
+ do_interrupt_handler+0x3c/0x50
+ el1_interrupt+0x30/0x58
+ el1h_64_irq_handler+0x18/0x24
+ el1h_64_irq+0x7c/0x80
+ kvm_arch_vcpu_ioctl_run+0x24c/0x49c
+ kvm_vcpu_ioctl+0xc4/0x614
 
-Thank you for the patch.
+We found out a similar report at [1], but it doesn't seem like a formal
+patch was ever posted.  Will, can you please send a formal patch so that
+stable kernels can run VMs again?
 
-Am 08.10.25 um 03:56 schrieb pip-izony:
-> From: Seungjin Bae <eeodqql09@gmail.com>
-> 
-> The bfusb_rx_complete() function parses incoming URB data in while loop.
-
-… in *a* while loop.
-
-> The logic does not sufficiently validate the remaining buffer size(count)
-> accross loop iterations, which can lead to a buffer over-read.
-
-across
-
-> For example, with 4-bytes remaining buffer, if the first iteration takes
-> the `hdr & 0x4000` branch, 2-bytes are consumed. On the next iteration,
-> only 2-bytes remain, but the else branch is trying to access the third
-> byte(buf[2]). This causes an out-of-bounds read and a potential kernel panic.
-
-Please re-flow for 75 characters per line.
-
-> This patch fixes the vulnerability by adding checks to ensure enough
-> data remains in the buffer before it is accessed.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-> ---
->   v1 -> v2: Fixing the error function name
->   
->   drivers/bluetooth/bfusb.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/bluetooth/bfusb.c b/drivers/bluetooth/bfusb.c
-> index 8df310983bf6..45f4ec5b6860 100644
-> --- a/drivers/bluetooth/bfusb.c
-> +++ b/drivers/bluetooth/bfusb.c
-> @@ -360,6 +360,10 @@ static void bfusb_rx_complete(struct urb *urb)
->   			count -= 2;
->   			buf   += 2;
->   		} else {
-> +            if (count < 3) {
-> +                bt_dev_err(data->hdev, "block header is too short");
-
-Please print count and 3.
-
-> +                break;
-> +            }
-
-Please use tabs for alignment. `scripts/checkpatch.pl` should have 
-warned about this.
-
->   			len = (buf[2] == 0) ? 256 : buf[2];
->   			count -= 3;
->   			buf   += 3;
-
-
-Kind regards,
-
-Paul
+[1] https://lists.linaro.org/archives/list/linux-stable-mirror@lists.linaro.org/thread/3FQHC4GVN57SM2CNST3EMVEBUXMSFOGR/#AQB4LMHLGTUO73GVCVV5QLCEJT3MRTN4
 
