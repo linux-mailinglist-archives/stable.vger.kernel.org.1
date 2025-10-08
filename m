@@ -1,164 +1,211 @@
-Return-Path: <stable+bounces-183633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8CABC5FF5
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 18:19:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853BEBC61A2
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 18:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D3C8420F8D
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 16:12:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B4FA188C604
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 16:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C551228D83E;
-	Wed,  8 Oct 2025 16:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6072F361A;
+	Wed,  8 Oct 2025 16:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tyCG0l6t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j+sEn+dh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D35429D27E;
-	Wed,  8 Oct 2025 16:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F070C2ECE8A;
+	Wed,  8 Oct 2025 16:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759939959; cv=none; b=XISO4mjukDLNGwuaWr0+RTqAGccikBUBdbcHgYW2Kf++JjrZEf8aqxPFM9wZ/wE3ZpR9xiDIMaK4xwysRTzDvboQ39+2Pw5TqamjGPY2Ojo+oEqmfY3LR4Bpl1fz7yucwsI7+CBOpxOq+9Th2eQvmE7zTXGcoTyOyXG4A7XFAAo=
+	t=1759942672; cv=none; b=UuMnCxreCsgGjocqLKP/4g/dXwElzIVZA1s2gIY85ChCwVYB+UwIlMZZp5ciFel//fneaCMIgr48FCyv1NBShMpB9sBTytGNi2jDMQXldBvOEZBl3nHeAf0KlWZnpxThDibY6sLNjfdv1MBk3/SuU7wrghJn9I56rqnRwoe5OP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759939959; c=relaxed/simple;
-	bh=GSLhHE+jLJmDn587I8Vc9P6oopRm4TApxDA0Te8Um7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L/d+hDg6JZf3l2m3ieUC5Gv2o/SPWtizMszCz8RiqXOwxykM+wUiibhmU6dUPGBnyDZFbAde9syPfjRPxWh5kEifg0t8FmeFi0EpWkM5oMjiC6SZVNABxmRk7fAMvrjRSaV7Tzl+5ZS1d4P77vu/+5+y935TgD34xzStpMAwSLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tyCG0l6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D7BC4CEE7;
-	Wed,  8 Oct 2025 16:12:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759939959;
-	bh=GSLhHE+jLJmDn587I8Vc9P6oopRm4TApxDA0Te8Um7M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tyCG0l6tNTE0LM6z0M0layIp6vBh4VNNHNBa/SGRxsVOOEdRJIIBdOwqyrhZRkeCv
-	 sgrsrVK+1KX3X+aV0Bnym6cxMRswiYTzx9pWlr6oDe7+sNGwRizQ/9LjgecMeXqf7i
-	 qg0DuGX2IDkkxULzyYm37hP/NH7N53pmYqKHAK5Nm1uWTs/WPNZCja8Yc8FwTFu4Se
-	 g96mH9yMeC392Ws6EhaNdVAStiU4kUy4J4F1XCJzjE4y7eVZaRM/BYAKNBwaPG7wgx
-	 GBhOnjn1wT37A9td91fmo/Adge0RrAItJia1WFQeNBSplHxO0OnV/6sS4lQnouSemM
-	 40MjkyZEU4UDw==
-Message-ID: <317f4edc-0592-492f-8c3d-f0cdb0d013cd@kernel.org>
-Date: Wed, 8 Oct 2025 17:12:37 +0100
+	s=arc-20240116; t=1759942672; c=relaxed/simple;
+	bh=Eq/1r+VZp2Evz/CTTMUVwGClrUgMN6C7oaQOpB9fUXg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bqGv9veypl/NZXr4t1SCX640uXHgPFmdNk8F/tBzoVDEoKF6WcEviiiGzuXgi5fbVuky7FMlUnB1N6LjAliai6GHii9FVLJfgJGCN5NKBlLS8YvRYV7/C3deYZbGIDI6Iy1fpsyT0BIKamyLsPZIZV7BbNx0U3DZtoIPUZcT6Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j+sEn+dh; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759942670; x=1791478670;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Eq/1r+VZp2Evz/CTTMUVwGClrUgMN6C7oaQOpB9fUXg=;
+  b=j+sEn+dhI43ifrjcmSo6DCMXjbSzRwq9gPMElX+ogPPPC/y8YZdI+xt4
+   mmDUL4X4wMlaqNLr/jKaARR3izr/Q8W4z175DWuKoiD6IM87meUeKrJSU
+   EdCgC89qZ5sxZVRuF929pBV9AJ8LNzZ47oIYpOPFIQm3zBzCj9xwI27M/
+   Naxkyx+6/Ln5U9dCy9mUxVR9TmngkueS4EX4AT/dlZasuyAzUbmFyfHyv
+   qJNVUo5eECAci75vXyzTreS3uQBda+mMrVFNEAEWf5CzU7wXPiF0iMVaT
+   v/bSapTsfB5Nf69vMCYGMJ8g4T3capBSOcgbPAiL7aL+7Z2Cu6H5X806g
+   w==;
+X-CSE-ConnectionGUID: Y/aM1mXCQUWeKB/A/ckrHA==
+X-CSE-MsgGUID: d2B82jBjRMCjX46+/zZ0cw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="73487536"
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; 
+   d="scan'208";a="73487536"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 09:57:49 -0700
+X-CSE-ConnectionGUID: wXKPDV8WQKuQWySFSquJpg==
+X-CSE-MsgGUID: oTtQcRjZRaeEq3izNJbQpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; 
+   d="scan'208";a="181255763"
+Received: from newjersey.igk.intel.com ([10.102.20.203])
+  by fmviesa010.fm.intel.com with ESMTP; 08 Oct 2025 09:57:45 -0700
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+To: Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	nxne.cnse.osdt.itp.upstreaming@intel.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH bpf] xsk: harden userspace-supplied &xdp_desc validation
+Date: Wed,  8 Oct 2025 18:56:59 +0200
+Message-ID: <20251008165659.4141318-1-aleksander.lobakin@intel.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ASoC: soc-pcm: Fix mute and unmute control for
- non-dynamic DAI links
-To: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
- Srinivas Kandagatla <srini@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel@oss.qualcomm.com, prasad.kumpatla@oss.qualcomm.com,
- ajay.nandam@oss.qualcomm.com, stable@vger.kernel.org
-References: <20251007023325.853640-1-mohammad.rafi.shaik@oss.qualcomm.com>
- <d9971ca4-1911-4204-b175-1ceeaae7c238@kernel.org>
- <b257d715-cc12-46cc-ba31-7f7fc257f763@oss.qualcomm.com>
-Content-Language: en-US
-From: Srinivas Kandagatla <srini@kernel.org>
-In-Reply-To: <b257d715-cc12-46cc-ba31-7f7fc257f763@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+Turned out certain clearly invalid values passed in &xdp_desc from
+userspace can pass xp_{,un}aligned_validate_desc() and then lead
+to UBs or just invalid frames to be queued for xmit.
 
+desc->len close to ``U32_MAX`` with a non-zero pool->tx_metadata_len
+can cause positive integer overflow and wraparound, the same way low
+enough desc->addr with a non-zero pool->tx_metadata_len can cause
+negative integer overflow. Both scenarios can then pass the
+validation successfully.
+This doesn't happen with valid XSk applications, but can be used
+to perform attacks.
 
-On 10/8/25 5:08 PM, Mohammad Rafi Shaik wrote:
-> 
-> 
-> On 10/8/2025 7:16 PM, Srinivas Kandagatla wrote:
->>
->>
->> On 10/7/25 3:33 AM, Mohammad Rafi Shaik wrote:
->>> In setups where the same codec DAI is reused across multiple DAI
->>> links, mute controls via `snd_soc_dai_digital_mute()` is skipped for
->>
->> Please explain the problem.
->>
-> In Qualcomm audioreach setup, if platform dai not specified in DT, then
-> cpu dai using as platform and initialize as static dai-link and created
-> pcm device and link-dynamic == false by default.
-> 
-> In existing setup if dynamic==false, it's skipping trigger snd-ops and
-> the codec is always on mute state.
-> 
->>> non-dynamic links. The trigger operations are not invoked when
->>> `dai_link->dynamic == 0`, and mute controls is currently conditioned
->>
->> I dont think any of the Qualcomm upstream platforms use this flag.
->>
-> 
-> Yes, we are using dynamic flag and it's set to true in Qualcomm platforms.
-> 
-> Please check: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/
-> sound.git/tree/sound/soc/qcom/qdsp6/topology.c#n1093
-> 
->>> only on `snd_soc_dai_mute_is_ctrled_at_trigger()`. This patch ensures
->>> that mute and unmute is applied explicitly for non-dynamic links.
->> How is this resolving the issue, mute on these codecs happens at trigger
->> level instead of prepare.
->>
-> yes agree, but if link->dynamic==false the trigger ops not getting
-> called, which leading to codec always on mute state.
+Always promote desc->len to ``u64`` first to exclude positive
+overflows of it. Use explicit check_{add,sub}_overflow() when
+validating desc->addr (which is ``u64`` already).
 
-This is because you are using something very different solution to what
-ASoC kernel provides.
+bloat-o-meter reports a little growth of the code size:
 
-I dont think this is a problem with as long as you use kernel ABI..
+add/remove: 0/0 grow/shrink: 2/1 up/down: 60/-16 (44)
+Function                                     old     new   delta
+xskq_cons_peek_desc                          299     330     +31
+xsk_tx_peek_release_desc_batch               973    1002     +29
+xsk_generic_xmit                            3148    3132     -16
 
-This patch looks totally a hack from something that does not belong to
-kernel, so is  NAK  from my side on this.
+but hopefully this doesn't hurt the performance much.
 
---srini
+Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
+Cc: stable@vger.kernel.org # 6.8+
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+---
+ net/xdp/xsk_queue.h | 45 +++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 10 deletions(-)
 
-
-> 
-> Thanks & Regards,
-> Rafi.
-> 
->> --srini
->>>
->>> Fixes: f0220575e65a ("ASoC: soc-dai: add flag to mute and unmute
->>> stream during trigger")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Mohammad Rafi Shaik
->>> <mohammad.rafi.shaik@oss.qualcomm.com>
->>> ---
->>>   sound/soc/soc-pcm.c | 4 ++--
->>>   1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
->>> index 2c21fd528afd..4ed829b49bc2 100644
->>> --- a/sound/soc/soc-pcm.c
->>> +++ b/sound/soc/soc-pcm.c
->>> @@ -949,7 +949,7 @@ static int __soc_pcm_prepare(struct
->>> snd_soc_pcm_runtime *rtd,
->>>               SND_SOC_DAPM_STREAM_START);
->>>         for_each_rtd_dais(rtd, i, dai) {
->>> -        if (!snd_soc_dai_mute_is_ctrled_at_trigger(dai))
->>> +        if (!snd_soc_dai_mute_is_ctrled_at_trigger(dai) || !rtd-
->>> >dai_link->dynamic)
->>>               snd_soc_dai_digital_mute(dai, 0, substream->stream);
->>>       }
->>>   @@ -1007,7 +1007,7 @@ static int soc_pcm_hw_clean(struct
->>> snd_soc_pcm_runtime *rtd,
->>>               soc_pcm_set_dai_params(dai, NULL);
->>>             if (snd_soc_dai_stream_active(dai, substream->stream) ==
->>> 1) {
->>> -            if (!snd_soc_dai_mute_is_ctrled_at_trigger(dai))
->>> +            if (!snd_soc_dai_mute_is_ctrled_at_trigger(dai) || !rtd-
->>> >dai_link->dynamic)
->>>                   snd_soc_dai_digital_mute(dai, 1, substream->stream);
->>>           }
->>>       }
->>
-> 
+diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
+index f16f390370dc..1eb8d9f8b104 100644
+--- a/net/xdp/xsk_queue.h
++++ b/net/xdp/xsk_queue.h
+@@ -143,14 +143,24 @@ static inline bool xp_unused_options_set(u32 options)
+ static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
+ 					    struct xdp_desc *desc)
+ {
+-	u64 addr = desc->addr - pool->tx_metadata_len;
+-	u64 len = desc->len + pool->tx_metadata_len;
+-	u64 offset = addr & (pool->chunk_size - 1);
++	u64 len = desc->len;
++	u64 addr, offset;
+ 
+-	if (!desc->len)
++	if (!len)
+ 		return false;
+ 
+-	if (offset + len > pool->chunk_size)
++	/* Can overflow if desc->addr < pool->tx_metadata_len */
++	if (check_sub_overflow(desc->addr, pool->tx_metadata_len, &addr))
++		return false;
++
++	offset = addr & (pool->chunk_size - 1);
++
++	/*
++	 * Can't overflow: @offset is guaranteed to be < ``U32_MAX``
++	 * (pool->chunk_size is ``u32``), @len is guaranteed
++	 * to be <= ``U32_MAX``.
++	 */
++	if (offset + len + pool->tx_metadata_len > pool->chunk_size)
+ 		return false;
+ 
+ 	if (addr >= pool->addrs_cnt)
+@@ -158,27 +168,42 @@ static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
+ 
+ 	if (xp_unused_options_set(desc->options))
+ 		return false;
++
+ 	return true;
+ }
+ 
+ static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *pool,
+ 					      struct xdp_desc *desc)
+ {
+-	u64 addr = xp_unaligned_add_offset_to_addr(desc->addr) - pool->tx_metadata_len;
+-	u64 len = desc->len + pool->tx_metadata_len;
++	u64 len = desc->len;
++	u64 addr, end;
+ 
+-	if (!desc->len)
++	if (!len)
+ 		return false;
+ 
++	/* Can't overflow: @len is guaranteed to be <= ``U32_MAX`` */
++	len += pool->tx_metadata_len;
+ 	if (len > pool->chunk_size)
+ 		return false;
+ 
+-	if (addr >= pool->addrs_cnt || addr + len > pool->addrs_cnt ||
+-	    xp_desc_crosses_non_contig_pg(pool, addr, len))
++	/* Can overflow if desc->addr is close to 0 */
++	if (check_sub_overflow(xp_unaligned_add_offset_to_addr(desc->addr),
++			       pool->tx_metadata_len, &addr))
++		return false;
++
++	if (addr >= pool->addrs_cnt)
++		return false;
++
++	/* Can overflow if pool->addrs_cnt is high enough */
++	if (check_add_overflow(addr, len, &end) || end > pool->addrs_cnt)
++		return false;
++
++	if (xp_desc_crosses_non_contig_pg(pool, addr, len))
+ 		return false;
+ 
+ 	if (xp_unused_options_set(desc->options))
+ 		return false;
++
+ 	return true;
+ }
+ 
+-- 
+2.51.0
 
 
