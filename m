@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-183581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35020BC35D0
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 06:59:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442E4BC3667
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 07:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AFBF3C0571
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 04:59:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C40D33C7DD5
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 05:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685AB2C0262;
-	Wed,  8 Oct 2025 04:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3022EA491;
+	Wed,  8 Oct 2025 05:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1OV30nO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTHiFudH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC662BFC60;
-	Wed,  8 Oct 2025 04:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B929314A09C;
+	Wed,  8 Oct 2025 05:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759899538; cv=none; b=uq0MeIJbKM3PGsjFId8alprcr6M/0mQsGEtLgunyE5HzxWF5WIbMDTCcSVfReMOvyr295E04htNOiP52QksQAZwRBcTN3SlyjwV3SnYsi6S0QgVBD5mSWgqiKh9ecASHn/9ofYLPxgLP8OPNskFSDzVtIyzGWeQ8EDPMTR4nyS4=
+	t=1759902847; cv=none; b=uHshFhesxpL3nxg+EmWZb6pFhQgFV0VR53SfGt8YdTeND/MMIv1TYQK2X1M0kzD7MnlZLmLQKr6CiWhCd3vRxKK6309rQh+uS7/C6yIykeF14/hqzBAfJi7QDH6jtKWY1Xh37HhbwCeVT2a9Xg4AX8ZLvALkU0cxk5q4qnEv+Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759899538; c=relaxed/simple;
-	bh=SCtk0BHUhjXkwi+qKXVHVoFCybYdmqTnWVjrx2Cxk+Y=;
+	s=arc-20240116; t=1759902847; c=relaxed/simple;
+	bh=ik0Hlz3eWe16I+0HWwL85cFBzx9FNEbvtzDp8YkHiQE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LbTjZ3CPtDq3W3EDt358tgkGid6MxHX1Se0LcC11VDWX72Edn6jPpTq2adOue6JagjUFO8eoMTZ7ppUEC96+pzsPZVI6y2vkPfc+U4dN92h+IkvJbwQuq9pCMmHJQEVf4z8mYH5jgkMHpRrLhB7KrxYory3CxOcLjRGD92UBc1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1OV30nO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F181C4CEF4;
-	Wed,  8 Oct 2025 04:58:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=GKDWGdbduIp70QcHQSeu5aC583NOKqGNHADrgwnOu4gVC2w/qom8s92HQ3n8MRgE24TOAhBwjnxORKqT4MJaH4kJE4JDhLsn6SyULEld9jkHgM34YjPBbFPup6V8HqBC14Bd0WdHRk6/a0nk4UMUuRcisSUU97qGYXzjOGpgNJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTHiFudH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C2BC4CEFF;
+	Wed,  8 Oct 2025 05:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759899537;
-	bh=SCtk0BHUhjXkwi+qKXVHVoFCybYdmqTnWVjrx2Cxk+Y=;
+	s=korg; t=1759902845;
+	bh=ik0Hlz3eWe16I+0HWwL85cFBzx9FNEbvtzDp8YkHiQE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I1OV30nOAhB4FVOLuSRPRCODwta8Io3y6O/pcq812uSR/LnuiElG1g7vvzblNN4ni
-	 fKFsDGQRcbPeaTPLxc9ymtocQn5zlXYUJxM2qK35Uok/M8UzCPceKB1i9metIPLWd5
-	 KGAmqu1Pm+ES/Wfizk4nQLir5wcGzjobBb55Xkr0=
-Date: Wed, 8 Oct 2025 06:58:54 +0200
+	b=JTHiFudHBYHLJqpVkXrX6V4PYKb7Vi9sNmzx6NwnD2hdCKeUIE8gO6XK3/8UswvbH
+	 Lhl1q5RXERF1LD/+akpnVtCiGBBSNf9Hp0XL8kJrQIfAUYNtFiIte2XKm23UU+uolC
+	 OV4Qwjh2hUHJaAHEilOMS8XC1HRpAomYn5rXhtEQ=
+Date: Wed, 8 Oct 2025 07:54:02 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: pip-izony <eeodqql09@gmail.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] Input: pegasus-notetaker - fix out-of-bounds access
- vulnerability in pegasus_parse_packet() function of the pegasus driver
-Message-ID: <2025100848-busload-baggage-77f7@gregkh>
-References: <20251007214131.3737115-2-eeodqql09@gmail.com>
+To: Jeongjun Park <aha310510@gmail.com>
+Cc: stable@vger.kernel.org, Takashi Iwai <tiwai@suse.de>,
+	syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.12.y 6.6.y 6.1.y 5.15.y 5.10.y 5.4.y] ALSA: usb-audio:
+ Kill timer properly at removal
+Message-ID: <2025100824-frolic-spout-d400@gregkh>
+References: <20251007155808.438441-1-aha310510@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,55 +58,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251007214131.3737115-2-eeodqql09@gmail.com>
+In-Reply-To: <20251007155808.438441-1-aha310510@gmail.com>
 
-On Tue, Oct 07, 2025 at 05:41:32PM -0400, pip-izony wrote:
-> From: Seungjin Bae <eeodqql09@gmail.com>
+On Wed, Oct 08, 2025 at 12:58:08AM +0900, Jeongjun Park wrote:
+> From: Takashi Iwai <tiwai@suse.de>
 > 
-> In the pegasus_notetaker driver, the pegasus_probe() function allocates
-> the URB transfer buffer using the wMaxPacketSize value from
-> the endpoint descriptor. An attacker can use a malicious USB descriptor
-> to force the allocation of a very small buffer.
+> [ Upstream commit 0718a78f6a9f04b88d0dc9616cc216b31c5f3cf1 ]
 > 
-> Subsequently, if the device sends an interrupt packet with a specific
-> pattern (e.g., where the first byte is 0x80 or 0x42),
-> the pegasus_parse_packet() function parses the packet without checking
-> the allocated buffer size. This leads to an out-of-bounds memory access,
-> which could result in a system panic.
+> The USB-audio MIDI code initializes the timer, but in a rare case, the
+> driver might be freed without the disconnect call.  This leaves the
+> timer in an active state while the assigned object is released via
+> snd_usbmidi_free(), which ends up with a kernel warning when the debug
+> configuration is enabled, as spotted by fuzzer.
 > 
-> Fixes: 948bf18 ("Input: remove third argument of usb_maxpacket()")
-> Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+> For avoiding the problem, put timer_shutdown_sync() at
+> snd_usbmidi_free(), so that the timer can be killed properly.
+> While we're at it, replace the existing timer_delete_sync() at the
+> disconnect callback with timer_shutdown_sync(), too.
+> 
+> Reported-by: syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/681c70d7.050a0220.a19a9.00c6.GAE@google.com
+> Cc: <stable@vger.kernel.org>
+> Link: https://patch.msgid.link/20250519212031.14436-1-tiwai@suse.de
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> [ del_timer vs timer_delete differences ]
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 > ---
->  drivers/input/tablet/pegasus_notetaker.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>  sound/usb/midi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/input/tablet/pegasus_notetaker.c b/drivers/input/tablet/pegasus_notetaker.c
-> index 8d6b71d59793..6c4199712a4e 100644
-> --- a/drivers/input/tablet/pegasus_notetaker.c
-> +++ b/drivers/input/tablet/pegasus_notetaker.c
-> @@ -311,6 +311,11 @@ static int pegasus_probe(struct usb_interface *intf,
+> diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+> index a792ada18863..c3de2b137435 100644
+> --- a/sound/usb/midi.c
+> +++ b/sound/usb/midi.c
+> @@ -1530,6 +1530,7 @@ static void snd_usbmidi_free(struct snd_usb_midi *umidi)
+>  			snd_usbmidi_in_endpoint_delete(ep->in);
 >  	}
->  
->  	pegasus->data_len = usb_maxpacket(dev, pipe);
-> +    if (pegasus->data_len < 5) {
-> +		dev_err(&intf->dev, "Invalid number of wMaxPacketSize\n");
-> +		error = -EINVAL;
-> +		goto err_free_mem;
-> +	}
->  
->  	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
->  					   &pegasus->data_dma);
-> -- 
-> 2.43.0
-> 
-> 
+>  	mutex_destroy(&umidi->mutex);
+> +	timer_shutdown_sync(&umidi->error_timer);
 
-<formletter>
+This function is not in older kernel versions, you did not test this
+build :(
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+I've applied this to 6.6.y and newer, but for 6.1.y and older, please
+use the proper function.
 
-</formletter>
+thanks,
+
+greg k-h
 
