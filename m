@@ -1,139 +1,108 @@
-Return-Path: <stable+bounces-183574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D887BC323B
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 03:58:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B24BC32E2
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 05:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A6F24E5425
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 01:57:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06CE61898F94
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 03:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADBC29AB02;
-	Wed,  8 Oct 2025 01:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6298D221DB1;
+	Wed,  8 Oct 2025 03:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D/c90Ws1"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="T/3jXx84"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6910B29A307
-	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 01:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B166621423C
+	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 03:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759888669; cv=none; b=bsbZ0wJyR1J2hijSkKvfc11uXLOr4XLndDlPWqW1Oikh5/NnuxAdinuV937BxUsxl4wTacBoDTlCuGvo1cvEQIQQRibey86TPjtyUeWCLLDXgHrH8DE1UkwRAGe57AfUwqr+fiIRNIvaF7kozEJUPyKh5E5IdC78TamZDhQqcg0=
+	t=1759892616; cv=none; b=lNiWV+OJ+yVnxSRNbc2JKboQlatxaEeoyN6HnYUhGdGNMuWhFSrjzQjz34hSZmtay5ZPkiybM1JL5+Qam0qbdGTzDkXPnId3PIJtYwh9ZPs3gMKswdo8PkqV6W7pWGvGheev8eLlE9274cibVu7uFPnLpeCo12KEhcmXo0yMkwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759888669; c=relaxed/simple;
-	bh=nYWUxbqqzq5QQ6EmGRf9P1x3GCe3p++g87Rn6siR5m8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSDJscd2gJfJt1P66liyuU57PEndddFuCcKjKLBPF6pK2zliMnc/PireeJ0WJE2eTtgKSPyyYJBJlt9dawL9r0sz+nrSqPc4e9EoOdUgz+IBDF2AI36DMUFIeJzO2nLTemsHIBrvpoSL56T14rFifZDDgavMxSa53M8rY/EwQRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D/c90Ws1; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-879b99b7ca8so61958706d6.0
-        for <stable@vger.kernel.org>; Tue, 07 Oct 2025 18:57:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759888665; x=1760493465; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FTB+YSGmu0bpbLnHjtaDTbYodJCzl2qjGAMNG+RlZjI=;
-        b=D/c90Ws1G+GGV44Yzj+RjcvoAc1Zet0BgdzuPGpPaYujFKJst/3ugUE2hhE8Uz8gah
-         EbbmQxbZWV0tw/Ry02bUL6v3IHx2pvHW/SlOar74hTdTKPSX4UbVlVms1tShnV0GSuhs
-         x547f41Rq60OKnZz4wRJaqoxAEg8lOhg1x4rexoG+jApGLWKRfcL8ks49+GlNp3Yk/MD
-         7NpkIIkrd3bM3bZczqtHXSbP8hAjzEqZGSoYosC47ssBZZNN9H2wYti5eBf654L4Xg4l
-         h1DS39BZZQu3ORlBuQQZiFXYMz3OYXOsaI4Q7ltPMz7iiGakOc5pPsTuVRJvv8zPFLnc
-         jVkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759888665; x=1760493465;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FTB+YSGmu0bpbLnHjtaDTbYodJCzl2qjGAMNG+RlZjI=;
-        b=WvoSHazGbSITkpOQ5FTXURxJZbsKNlHv+L5ZE+dQaH8be09FiBpIlx/Md69a9Zbd48
-         BUqtY6KyaRA/Lnig32lNiPjGI1c2bKOBH4dKXbn8HXWIW3bpkvYaX9aHgSrKXEC4gCcI
-         QKyPcZ0Luk42zzNpkYPQ3MB5ctlnZlDX1k9D9g4Ua3cs5fjfM/Vqeex5WnPM9YGaBX8L
-         KtWVjdPZnnV+seldRd8nUo1jkvnt2OffV/gk1cUgE+2cv7Nokq7K2lH/S9yZsC+zy6AC
-         YmDVoVW4DJ0xADqTKUS3UQnGCbr5Pn7h2n2mkPg1pGGsls6ZawPzbn6+57s5JFEzrOPd
-         y98Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX9+arIfWhy+44P2QeAgHhjyoTOt8ocVO7AikK6XO2ZUc+roXcjNb43a89+OQ4RtExEzTBEMm4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywt4PSZoAewsQykTf5Nus0ye0Tj+j3hw3ZA360ryJMU+JO02I/V
-	tzmgrn9kag4gyUNoI+vwf7UqJTmn4QWsZMWCGxjN56gW3rG+pDOgwSrM
-X-Gm-Gg: ASbGnctORN5z/BazB64l/dlQ+AfrMDckiUVfF0xZpZwLc3WdahU5wF/j/nLNr9W7Fy2
-	E/zPUEY0F4JPi/bly47TnEBRWB6HadjMh+wt8+bHq0Ii5H3VRKM1ptqLPi7LO8SUiIF5T4Rrk2S
-	yaRVVxHQ4wc6BD68HJ+vjx3cRnzZ7kQptyOxGPBZsLdRmwHZwffck9szyMWOKh/r38FoKKRiMsI
-	PdKj0ycg7ymxWpeVbrolcJOw6WmgO0khV3zKgGdjWE9eGzQci0RJHvKWOFwMVqG6xNnQwoxcFGa
-	R7aXLjd/ecRCwF7wqPbZJO4efqrx3QSJoeOO/wT41XAnNkbmK5oumYHNMX10akE280oSLb7cv5s
-	rQi0P/dVVr49v9PXPwoXtoD0nSU1WGNjEEFEOuHy7vO79vy8qbg5WWTygtpOnzDUukAcgcAZeCU
-	0mscw4ksKN8MUqQFBUup1KEtOCk5umHCbga7y63IUhtQ==
-X-Google-Smtp-Source: AGHT+IGoHjbRgqWNn7pWfYsSMs1tXQxTjaq25oW+rI7yvaco4w9zmjYdtsj6ViMdN47X51D41+1jkQ==
-X-Received: by 2002:ad4:5aa4:0:b0:809:19ab:599f with SMTP id 6a1803df08f44-87b2106da26mr22488656d6.27.1759888665253;
-        Tue, 07 Oct 2025 18:57:45 -0700 (PDT)
-Received: from mango-teamkim.. ([129.170.197.108])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878bae60146sm154303896d6.11.2025.10.07.18.57.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Oct 2025 18:57:44 -0700 (PDT)
-From: pip-izony <eeodqql09@gmail.com>
-To: Marcel Holtmann <marcel@holtmann.org>
-Cc: Seungjin Bae <eeodqql09@gmail.com>,
-	Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] Bluetooth: bfusb: Fix buffer over-read in rx processing loop
-Date: Tue,  7 Oct 2025 21:56:41 -0400
-Message-ID: <20251008015640.3745834-2-eeodqql09@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251007232941.3742133-2-eeodqql09@gmail.com>
-References: <20251007232941.3742133-2-eeodqql09@gmail.com>
+	s=arc-20240116; t=1759892616; c=relaxed/simple;
+	bh=5yStW0L1wEARM1VcACJHqDCy7X/TSWEwGB67a2Fqnmg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hf2xwSdrPiGz1jiKnIM8rdi6+JCiuMFz3xfJERQCzznQCIzhqbIhnUb0+vbIbsXbYrjm3x/r71Uzu3pXdHg+e2tUHF2mo570luvGHyFmx1P1o7a0rzHG27lIfzxkhHRW1IxzNe6GWxdYSfZnyhzrTlKe2hQbNlhiga+kjY+6MbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=T/3jXx84; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <56784853-b653-4587-b850-b03359306366@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759892608;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vSRrtrvWgwS90ySr5nF6OQKQum7o9S6zWNvqm6k9XvM=;
+	b=T/3jXx84Rfw++V6z2MKJJv5c/rPYfsL5Ui23RZkEQx9CDR0WnlRFujpQtx7DTK8morvqzQ
+	fGf+hxuXI0wGprlzykRqYh0W/J+sSVWQbdk1l39Qun/FBJqNpmP2TIBlXlxC4mcFM9II/u
+	MInrvhq4Nld0p1caXSOIDmVSFa3ddig=
+Date: Wed, 8 Oct 2025 11:03:18 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
+ pointers
+Content-Language: en-US
+To: Finn Thain <fthain@linux-m68k.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Eero Tamminen <oak@helsinkinet.fi>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, amaindex@outlook.com,
+ anna.schumaker@oracle.com, boqun.feng@gmail.com, ioworker0@gmail.com,
+ joel.granados@kernel.org, jstultz@google.com, leonylgao@tencent.com,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ longman@redhat.com, mhiramat@kernel.org, mingo@redhat.com,
+ mingzhe.yang@ly.com, peterz@infradead.org, rostedt@goodmis.org,
+ senozhatsky@chromium.org, tfiga@chromium.org, will@kernel.org,
+ stable@vger.kernel.org
+References: <20250909145243.17119-1-lance.yang@linux.dev>
+ <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
+ <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
+ <CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
+ <inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp>
+ <20251007135600.6fc4a031c60b1384dffaead1@linux-foundation.org>
+ <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Seungjin Bae <eeodqql09@gmail.com>
 
-The bfusb_rx_complete() function parses incoming URB data in while loop.
-The logic does not sufficiently validate the remaining buffer size(count)
-accross loop iterations, which can lead to a buffer over-read.
 
-For example, with 4-bytes remaining buffer, if the first iteration takes
-the `hdr & 0x4000` branch, 2-bytes are consumed. On the next iteration,
-only 2-bytes remain, but the else branch is trying to access the third
-byte(buf[2]). This causes an out-of-bounds read and a potential kernel panic.
+On 2025/10/8 08:40, Finn Thain wrote:
+> 
+> On Tue, 7 Oct 2025, Andrew Morton wrote:
+> 
+>>
+>> Getting back to the $Subject at hand, are people OK with proceeding
+>> with Lance's original fix?
+>>
+> 
+> Lance's patch is probably more appropriate for -stable than the patch I
+> proposed -- assuming a fix is needed for -stable.
 
-This patch fixes the vulnerability by adding checks to ensure enough
-data remains in the buffer before it is accessed.
+Thanks!
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
----
- v1 -> v2: Fixing the error function name
- 
- drivers/bluetooth/bfusb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Apart from that, I believe this fix is still needed for the hung task
+detector itself, to prevent unnecessary warnings in a few unexpected
+cases.
 
-diff --git a/drivers/bluetooth/bfusb.c b/drivers/bluetooth/bfusb.c
-index 8df310983bf6..45f4ec5b6860 100644
---- a/drivers/bluetooth/bfusb.c
-+++ b/drivers/bluetooth/bfusb.c
-@@ -360,6 +360,10 @@ static void bfusb_rx_complete(struct urb *urb)
- 			count -= 2;
- 			buf   += 2;
- 		} else {
-+            if (count < 3) {
-+                bt_dev_err(data->hdev, "block header is too short");
-+                break;
-+            }
- 			len = (buf[2] == 0) ? 256 : buf[2];
- 			count -= 3;
- 			buf   += 3;
--- 
-2.43.0
+> 
+> Besides those two alternatives, there is also a workaround:
+> $ ./scripts/config -d DETECT_HUNG_TASK_BLOCKER
+> which may be acceptable to the interested parties (i.e. m68k users).
+> 
+> I don't have a preference. I'll leave it up to the bug reporters (Eero and
+> Geert).
 
 
