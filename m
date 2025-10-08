@@ -1,96 +1,117 @@
-Return-Path: <stable+bounces-183601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15DDBC4F9B
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 14:50:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33A5BC51F6
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 15:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C56754F1A89
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 12:50:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 844DF3A17E7
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 13:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC83256C9F;
-	Wed,  8 Oct 2025 12:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DA82571A0;
+	Wed,  8 Oct 2025 13:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b="iNPCV9BB"
+	dkim=pass (2048-bit key) header.d=helsinkinet.fi header.i=@helsinkinet.fi header.b="BQqPu1u4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hostpark.net (mail.hostpark.net [212.243.197.30])
+Received: from smtp.dnamail.fi (sender001.dnamail.fi [83.102.40.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC4A20C023;
-	Wed,  8 Oct 2025 12:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.243.197.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE88241691;
+	Wed,  8 Oct 2025 13:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.102.40.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759927846; cv=none; b=kE9dZ0tnh9vlPfmCFh2+LUgiChfoHKRbigbo7D6fdWl8yq5tjZlucikcpCTPgMMHPvHauamloYdQC5u/4lQhB/VwPGmzhxR9T11tnlxdN7kZ6MXGM/kMPdZQBPZvc0e/P7lDqHwZpicbqozzxR6k0I7pxHOvCXqh4j18Jr1ybk0=
+	t=1759928770; cv=none; b=krIuUmXs2pgu4/e8eDSPMW9biqKUYYSDulLuR6MyWH//Y8L31CY/HbgE38iL89ld3lTSO1vaXJCxB+VtSJh4JOatVDyhCJWRIDZt3MJgItR/KoQRhxFHXJc51k+v8iMPH88n82FmiNs+7uOd8ofm9b3FXwhkAD7y/+mzoHVgBe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759927846; c=relaxed/simple;
-	bh=kgrznO8irHWuXkIwiNhZgAYFnig2K7K5z4CJbGR5Cf8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XymuF225To5pWA43WaAlYcbBycWW5roVLYfpPHg0D/Ah8ex7wqqAO049XS1Uno+2C9bfwtueoaYgvrfeJnnmB4rl3+oaCCSrOuplKAmSLEYjxmUBiYltxiijSSogrHXwxY70I1ReUzFfWtb+ZXoMSqiTi43wSeH1WCAT/MlJLHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li; spf=pass smtp.mailfrom=klarinett.li; dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b=iNPCV9BB; arc=none smtp.client-ip=212.243.197.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=klarinett.li
+	s=arc-20240116; t=1759928770; c=relaxed/simple;
+	bh=bDBSmVBWpfbY7PAaZEpHubLf7uYeTwh3B4k6cq15LUU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TssGNtr5mp7C+kuE25O5wRlE4TOkNzl0WNbU8eme8hljHoOIES13F+is29m7vH5OPD/eUXhc0d5j3cnOBUlmhYvIV7+Bkpp9a/4fJwJlvXVXkGTFaR1E+1CiPVdUTcGo6PBx0CQfsZHY/QS8Bd1X7eA9BbMqFbWXYHTqlVhCxXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=helsinkinet.fi; spf=pass smtp.mailfrom=helsinkinet.fi; dkim=pass (2048-bit key) header.d=helsinkinet.fi header.i=@helsinkinet.fi header.b=BQqPu1u4; arc=none smtp.client-ip=83.102.40.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=helsinkinet.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=helsinkinet.fi
 Received: from localhost (localhost [127.0.0.1])
-	by mail.hostpark.net (Postfix) with ESMTP id 68630166D2;
-	Wed, 08 Oct 2025 14:50:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=klarinett.li; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from; s=sel2011a; t=1759927842; bh=kg
-	rznO8irHWuXkIwiNhZgAYFnig2K7K5z4CJbGR5Cf8=; b=iNPCV9BBirjmJMzP4K
-	SBhbwkOMbASoVOQG0Y9cSCCm0fJoFpvvtyDJLh+vANjxbN5XJI+jbrkODjYJ6qP+
-	svMbfYBeIvak3oiZg8vVjtjekRnQCtX2gpOMF6MWt9E7KsGT6Hf5R77ecljSGsXo
-	kdvQIR1VAFOn3JVYjX9y7YHYE=
-X-Virus-Scanned: by Hostpark/NetZone Mailprotection at hostpark.net
-Received: from mail.hostpark.net ([127.0.0.1])
- by localhost (mail1.hostpark.net [127.0.0.1]) (amavis, port 10224) with ESMTP
- id qtfzY1Bylb67; Wed,  8 Oct 2025 14:50:42 +0200 (CEST)
-Received: from customer (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	by smtp.dnamail.fi (Postfix) with ESMTP id 387E22113E0A;
+	Wed,  8 Oct 2025 15:56:24 +0300 (EEST)
+X-Virus-Scanned: X-Virus-Scanned: amavis at smtp.dnamail.fi
+Received: from smtp.dnamail.fi ([83.102.40.178])
+ by localhost (dmail-psmtp01.s.dnaip.fi [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id GDv7ZgzeFdQs; Wed,  8 Oct 2025 15:56:23 +0300 (EEST)
+Received: from [192.168.101.100] (87-92-77-37.bb.dnainternet.fi [87.92.77.37])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.hostpark.net (Postfix) with ESMTPSA id E084D1614C;
-	Wed, 08 Oct 2025 14:50:40 +0200 (CEST)
-From: Christian Hitz <christian@klarinett.li>
-To: Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>
-Cc: Christian Hitz <christian.hitz@bbv.ch>,
-	stable@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] leds: leds-lp50xx: LP5009 supports 3 modules for a total of 9 LEDs
-Date: Wed,  8 Oct 2025 14:50:30 +0200
-Message-ID: <20251008125031.1174886-1-christian@klarinett.li>
-X-Mailer: git-send-email 2.51.0
+	(Authenticated sender: oak@dnamail.internal)
+	by smtp.dnamail.fi (Postfix) with ESMTPSA id C32C62113FD1;
+	Wed,  8 Oct 2025 15:56:20 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp.dnamail.fi C32C62113FD1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=helsinkinet.fi;
+	s=2025-03; t=1759928183;
+	bh=OCj4WpQavSfPv91/WhnHhKdc5F/dvQGVXuCoN9OhquQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BQqPu1u4Gnwm7jNBwS6NTOLQjgETu9AVmi5nHDxfI0dT/1ZRe83rb2GFU2WAUcnK3
+	 oFcqed3tvdPWTDbLxqzwbcdTuCHH4jU2Zp7gzB2NiWOPnynpnWbJpUsNLsX38Fycbl
+	 OVoyJzG8lSDG6gocx12s+WcWk1QNRdMAj7ozKhWDWNj8qZB9C+Qza7V6v5VcWZQf7A
+	 /C91tytd4rio59SwMzMZzIs1RxWfUYdLd7dcrSwb4wWu27SSfy8qju6UFs278V6hfS
+	 Eo3Z3W+QirXeKTxcciVE7dDfaS0eh3h/0DAq5zzMXrQd5/8lg6QsU21X3nPovzJwUY
+	 8HYJOl/PfdZTg==
+Message-ID: <8864b0ad-d9c7-4de3-b7e7-95512778822d@helsinkinet.fi>
+Date: Wed, 8 Oct 2025 15:56:20 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
+ pointers
+To: Finn Thain <fthain@linux-m68k.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,
+ Lance Yang <lance.yang@linux.dev>, amaindex@outlook.com,
+ anna.schumaker@oracle.com, boqun.feng@gmail.com, ioworker0@gmail.com,
+ joel.granados@kernel.org, jstultz@google.com, leonylgao@tencent.com,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ longman@redhat.com, mhiramat@kernel.org, mingo@redhat.com,
+ mingzhe.yang@ly.com, peterz@infradead.org, rostedt@goodmis.org,
+ senozhatsky@chromium.org, tfiga@chromium.org, will@kernel.org,
+ stable@vger.kernel.org
+References: <20250909145243.17119-1-lance.yang@linux.dev>
+ <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
+ <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
+ <CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
+ <inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp>
+ <20251007135600.6fc4a031c60b1384dffaead1@linux-foundation.org>
+ <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org>
+Content-Language: en-US
+From: Eero Tamminen <oak@helsinkinet.fi>
+In-Reply-To: <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Christian Hitz <christian.hitz@bbv.ch>
+Hi,
 
-Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
-Cc: stable@vger.kernel.org
----
- drivers/leds/leds-lp50xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 10/8/25 03:40, Finn Thain wrote:
+> On Tue, 7 Oct 2025, Andrew Morton wrote:
+>> Getting back to the $Subject at hand, are people OK with proceeding
+>> with Lance's original fix?
+> 
+> Lance's patch is probably more appropriate for -stable than the patch I
+> proposed -- assuming a fix is needed for -stable.
+> 
+> Besides those two alternatives, there is also a workaround:
+> $ ./scripts/config -d DETECT_HUNG_TASK_BLOCKER
+> which may be acceptable to the interested parties (i.e. m68k users).
+> 
+> I don't have a preference. I'll leave it up to the bug reporters (Eero and
+> Geert).
 
-diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
-index 94f8ef6b482c..05229e2f2e7e 100644
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -54,7 +54,7 @@
- /* There are 3 LED outputs per bank */
- #define LP50XX_LEDS_PER_MODULE	3
- 
--#define LP5009_MAX_LED_MODULES	2
-+#define LP5009_MAX_LED_MODULES	3
- #define LP5012_MAX_LED_MODULES	4
- #define LP5018_MAX_LED_MODULES	6
- #define LP5024_MAX_LED_MODULES	8
--- 
-2.51.0
+It's good for me.
+
+
+	- Eero
 
 
