@@ -1,102 +1,149 @@
-Return-Path: <stable+bounces-183592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D825BC3E67
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 10:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79253BC3F1F
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 10:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A1C019E2D8E
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 08:46:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D2D719E33EF
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 08:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C502F2602;
-	Wed,  8 Oct 2025 08:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5F82F49FC;
+	Wed,  8 Oct 2025 08:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/SRhARr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X7m4j1ko"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3665212568;
-	Wed,  8 Oct 2025 08:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4903B2F361E
+	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 08:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759913150; cv=none; b=kN0O+b5kL44TBCBtzSe5BsThGN5dD4Sn0rgjSllh+nMFUHL4ccL484kyBgjarUF8D7oYV6swooK4UyO0XJv/9dN8SIbRHbCaYTJf0i7Hd+Obv7iXVw+mljIwKvaezfDcj3VJ53iyVLL44mzEpAf2bFhKFfZHTtpIW7OhJU07Pdg=
+	t=1759913580; cv=none; b=cPk8N2UXVpAv1HNPW+xP1LOTSmBZCjVdbIU4+n9oHo6zolMWrpuYIrym0kOp0SHEURPAjbxghUvKuTP+1wmjnogLBCIZaCzbMcZIkyX/mBUAYlKH0K13HJiFJGNSaLAJ6bHFuY2CKFqfgOTgiengW0Yc6n6D3HE3HTfJmoqJclE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759913150; c=relaxed/simple;
-	bh=/tT7K/+4Yic47D9gSJOVksDXGGdOZm6NjABI8bxhXZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nVc6BI2v7coyQLSruEHlpIs2sYanE3fB7DMfaPu2tHtkn1Ff/FQwTcdFcVP2zeum+/p2QAkXtCeX4FQaTZRFa9fYlfUjpXlEv9+OCQpC6kzb6oVLG4yZ3TQo4tUdv5oX2g/7SKYHlib+/lcxujwY2eaf8+n5fezlg1QFccqbnYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/SRhARr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69559C4CEF4;
-	Wed,  8 Oct 2025 08:45:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759913150;
-	bh=/tT7K/+4Yic47D9gSJOVksDXGGdOZm6NjABI8bxhXZA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n/SRhARr89olGEmHCXk6SVGPbo61lltxmCojxUI1OPSr9+MCr1mMhFzhmwaraWyHr
-	 6GNgMhv8EAEO7fVc080LNIr3L7IPATMwRF8/iinwYoicHfXfeCL4AlAy0NOPKFrB6+
-	 KhvYUeLJiIc+h93A3EW9EBof+BV7l0BfOGMZz9ojqHV6CGZjCjI18dltE/6LECdBRf
-	 2jsxHNqTjIwGIygKNp+KP2aHY1T8a5pnS+BgGO4dz009tW16nAHe0m3tfb//2JqHLI
-	 pwoj6BcTANg2SxqrW7yu3TdbD2yuDkl8xbd+KkFlJm9Zlul3yoqZoAMf3m8mF74vx2
-	 UZWMgB/zFyAfQ==
-Date: Wed, 8 Oct 2025 09:45:45 +0100
-From: Will Deacon <will@kernel.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Tomasz Figa <tfiga@chromium.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: kvm: arm64: stable commit "Fix kernel BUG() due to bad backport
- of FPSIMD/SVE/SME fix" deadlocks host kernel
-Message-ID: <aOYkuatjNVyiQzU1@willie-the-truck>
-References: <hjc7jwarhmwrvcswa7nax26vgvs2wl7256pf3ba3onoaj26s5x@qubtqvi3vy6u>
+	s=arc-20240116; t=1759913580; c=relaxed/simple;
+	bh=AYlPlEYnalDPu3mU+G9COpLgD9gYXaXXBqfIzZI0NhM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SjUBWidnpHZ3oZYHpyzHidIspfH/F7sLHLZTteAEg0xEYT/JP58Q5k+wCHxqHb4sRnaCEuvMynVWd64MQm67aOR7NuvCoeoj/hkTG0sQhV3VMy93NQtkT5n/F+BKdzfw3gX9t+b4SlTnEGac+oVbhN5T31fyOU6IsllJ64d1ddY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X7m4j1ko; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-271d1305ad7so113095205ad.2
+        for <stable@vger.kernel.org>; Wed, 08 Oct 2025 01:52:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759913578; x=1760518378; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/JRe+Ysw3ed28Q5I6fD0FZJYvYHKIT6y/Zbw+MVV2NU=;
+        b=X7m4j1ko+GpgLoWu+E+qXVENFgOVjCRRloSPKiko6o29gjI+idBHM/4+NvTbmMKc4S
+         wrFJXQH9CUiYZvRRlTyolb+oCtzCgDKGB7S+9C9WLiAbT7D7eaebtGfECTSV1MPosw/x
+         2eMtxarrphPZdU7R3Dc8+laGMb1KIcYliI6dprrV3QeP6GBrCSieQPFgBL0oqTGwI/ub
+         7FciQBAG9qJf8ldOY8p4XfO+AvwUmE5IF39m+qW+D8/xnES9N6x5udqZu//0b/iF1p9k
+         8ryrlxJ0kRVxGRokOTkH+zjIO8cedVeApFs6zGM4eGB3Pwjj6tWILyMMEbR3DKCNd9mD
+         ZT3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759913578; x=1760518378;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/JRe+Ysw3ed28Q5I6fD0FZJYvYHKIT6y/Zbw+MVV2NU=;
+        b=oUBOUSpqvskLrlJEC0YECulrCsewVVsggDxbyqB2RMqoS4rchD37BG9OWY2S7bDGJp
+         E7c7iqZOYVnmOwlDlJLoCNSO2hctS93U2r1CX7lBkFY1aXotmF/Nlcb/Ljd994RAt6NG
+         Ey8uJXIU5aRYL3z0JBGNutbggPO4lZyBxe+przhqKhyArpIFDMF17UsHEut08WUu+ckf
+         YhDXVdBUs0pgEdU13LNB1iSvY9l0Scb0JRYBP2sBBR59etdY3KXQjmWfZlUhh9ryB/zh
+         j/kUCHWJEeH/irF88lo+zQbbKDn69s1/v4lQX36owlG79K8+hX/aZJfvPp5CbJhv6kja
+         Lu8A==
+X-Forwarded-Encrypted: i=1; AJvYcCXqifq8gyMedUrIgJr87+WVIruamU+kUn6v4NH/NOutvUHOxMQCDAunsBOT6U3IHN1Ym2U6IIg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4OFHS+kCRPqsBhiWF/4b/RCgicpJ7Lh0Tbodj8GhzmD9/ozJV
+	H/R3x5LwCIYOI1OGAjHaPK69o7E2sy6sSntAJAgGR3OTp8/+G+rYlCQokG1IOmcNUDllvbZVQA5
+	iMiVefO7SwIbTMCCXGHcFA3tUPtwRa7k=
+X-Gm-Gg: ASbGncuoP2zms82PJ/rdurc89sBu7jpb7Wd1TcOcQEs1pz9S5I43wepm7uDEy1JYYJE
+	s56QwsfXLfO/7JDnp62WQgh3KnqhETuo9V7oMZ9Z2QZETstUm+/v3GDBYyBOKFZ2PzlJyqxO6eq
+	LZOREGPSOF69NvKGNzmdlR8S4WNH/F0N/tToZ4uKv7mRux2XWTb/rK57ieys0qqewC3qPxKVn1u
+	eEQTq6i3BKsRxdqCRhhelWtXv32E9ePFmaEEEbZis9O
+X-Google-Smtp-Source: AGHT+IFKCMDzVKeMBL64zSYDRpRFM0H2rB7wq31qh9YFT8+du8n/p0Y5R8iH/2zbH4uxiGTK7bY6Wyb/b/TqjnRgSmI=
+X-Received: by 2002:a17:902:f607:b0:25c:7434:1c03 with SMTP id
+ d9443c01a7336-290273568e4mr34433325ad.10.1759913578515; Wed, 08 Oct 2025
+ 01:52:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <hjc7jwarhmwrvcswa7nax26vgvs2wl7256pf3ba3onoaj26s5x@qubtqvi3vy6u>
+References: <20251006114507.371788-1-aha310510@gmail.com> <CAKYAXd8pyEBm6cOBLQ_yKaoeb2QDkofprMK1Hq1c_r_pumRnxQ@mail.gmail.com>
+In-Reply-To: <CAKYAXd8pyEBm6cOBLQ_yKaoeb2QDkofprMK1Hq1c_r_pumRnxQ@mail.gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Wed, 8 Oct 2025 17:52:47 +0900
+X-Gm-Features: AS18NWC61Zud4JgwiWJjoS2O6q9aZLnXpBR98-miFbKRgAfyGTqcKi4hwMhR8L4
+Message-ID: <CAO9qdTHx-EYBeo1mfgVzcwQT5M6iwtVsBZTjAEVQugcfTsVtjA@mail.gmail.com>
+Subject: Re: [PATCH] exfat: fix out-of-bounds in exfat_nls_to_ucs2()
+To: Namjae Jeon <linkinjeon@kernel.org>
+Cc: sj1557.seo@samsung.com, yuezhang.mo@sony.com, viro@zeniv.linux.org.uk, 
+	pali@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 08, 2025 at 01:45:32PM +0900, Sergey Senozhatsky wrote:
-> Commits 8f4dc4e54eed4 (6.1.y) and 23249dade24e6 (5.15.y) (maybe other
-> stable kernels as well) deadlock the host kernel (presumably a
-> recursive spinlock):
-> 
->  queued_spin_lock_slowpath+0x274/0x358
->  raw_spin_rq_lock_nested+0x2c/0x48
->  _raw_spin_rq_lock_irqsave+0x30/0x4c
->  run_rebalance_domains+0x808/0x2e18
->  __do_softirq+0x104/0x550
->  irq_exit+0x88/0xe0
->  handle_domain_irq+0x7c/0xb0
->  gic_handle_irq+0x1cc/0x420
->  call_on_irq_stack+0x20/0x48
->  do_interrupt_handler+0x3c/0x50
->  el1_interrupt+0x30/0x58
->  el1h_64_irq_handler+0x18/0x24
->  el1h_64_irq+0x7c/0x80
->  kvm_arch_vcpu_ioctl_run+0x24c/0x49c
->  kvm_vcpu_ioctl+0xc4/0x614
-> 
-> We found out a similar report at [1], but it doesn't seem like a formal
-> patch was ever posted.  Will, can you please send a formal patch so that
-> stable kernels can run VMs again?
+Hi Namjae,
 
-Yup, already queued up for stable:
+Namjae Jeon <linkinjeon@kernel.org> wrote:
+>
+> On Mon, Oct 6, 2025 at 8:45=E2=80=AFPM Jeongjun Park <aha310510@gmail.com=
+> wrote:
+> >
+> Hi Jeongjun,
+> > After the loop that converts characters to ucs2 ends, the variable i
+> > may be greater than or equal to len. However, when checking whether the
+> > last byte of p_cstring is NULL, the variable i is used as is, resulting
+> > in an out-of-bounds read if i >=3D len.
+> >
+> > Therefore, to prevent this, we need to modify the function to check
+> > whether i is less than len, and if i is greater than or equal to len,
+> > to check p_cstring[len - 1] byte.
+> I think we need to pass FSLABEL_MAX - 1 to exfat_nls_to_utf16, not FSLABE=
+L_MAX.
+> Can you check it and update the patch?
 
-https://lore.kernel.org/r/20251003183917.4209-1-will@kernel.org
-https://lore.kernel.org/r/20251003184018.4264-1-will@kernel.org
-https://lore.kernel.org/r/20251003184054.4286-1-will@kernel.org
+If the only reason to change len to FSLABEL_MAX - 1 is to prevent
+out-of-bounds, this isn't a very appropriate solution.
 
-Sorry for the breakage.
+Because the return value of exfat_convert_char_to_ucs2() can be greater
+than 1, even if len is set to FSLABEL_MAX - 1, i may still be FSLABEL_MAX
+when the loop ends. Therefore, checking the last byte of p_cstring with
+the min() function is essential to ensure out-of-bounds prevention.
 
-Will
+> Thanks.
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Reported-by: syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=3D98cc76a76de46b3714d4
+> > Fixes: 370e812b3ec1 ("exfat: add nls operations")
+> > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> > ---
+> >  fs/exfat/nls.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
+> > index 8243d94ceaf4..a52f3494eb20 100644
+> > --- a/fs/exfat/nls.c
+> > +++ b/fs/exfat/nls.c
+> > @@ -616,7 +616,7 @@ static int exfat_nls_to_ucs2(struct super_block *sb=
+,
+> >                 unilen++;
+> >         }
+> >
+> > -       if (p_cstring[i] !=3D '\0')
+> > +       if (p_cstring[min(i, len - 1)] !=3D '\0')
+> >                 lossy |=3D NLS_NAME_OVERLEN;
+> >
+> >         *uniname =3D '\0';
+> > --
+
+Regards,
+Jeongjun Park
 
