@@ -1,147 +1,102 @@
-Return-Path: <stable+bounces-183591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F49BC3D0C
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 10:23:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D825BC3E67
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 10:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68AE1403088
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 08:23:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A1C019E2D8E
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 08:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB20E2EC0AC;
-	Wed,  8 Oct 2025 08:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C502F2602;
+	Wed,  8 Oct 2025 08:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="JmWlZSDt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/SRhARr"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1461913D521
-	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 08:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3665212568;
+	Wed,  8 Oct 2025 08:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759911828; cv=none; b=UFSoDQMkyIw5F/nMz3LpQwTrZlRR2UyGAAFGhtIoEDb0+Y8DCEV3z/8a+QoOQKeqZhyoAyYxRne2bVHrAVv5cOJ2xDdaHC15ZPhOpKamxAmn+ekCBQJA8EgU77JLidEDQLLPBOBTgn0IPuztRse6GNbp/8MT5cl8kHo5v+Lmums=
+	t=1759913150; cv=none; b=kN0O+b5kL44TBCBtzSe5BsThGN5dD4Sn0rgjSllh+nMFUHL4ccL484kyBgjarUF8D7oYV6swooK4UyO0XJv/9dN8SIbRHbCaYTJf0i7Hd+Obv7iXVw+mljIwKvaezfDcj3VJ53iyVLL44mzEpAf2bFhKFfZHTtpIW7OhJU07Pdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759911828; c=relaxed/simple;
-	bh=+dxyJRGiUUIK22wq5cd29dbMXuEsFp2Z9BhfqxkRbqA=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:References:
-	 In-Reply-To:Content-Type; b=E3xIPFGiLjtUf+J2+op4pJD4o5QDGx2B+HWCe0Ibn1IERRD2Sr003UEjYnlsNNbqWeyUGRAFKhMl1gl5D6EauO7AXh+LbaYwZGmm+Hq+2CBSfTH6aMG5Wup5jzObRH9qBXTj/F0BnI2LvHmxWoBCSvFlMpx18Y3x63NamxL4j6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=JmWlZSDt; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1759911827; x=1791447827;
-  h=message-id:date:mime-version:from:to:subject:references:
-   in-reply-to:content-transfer-encoding;
-  bh=+dxyJRGiUUIK22wq5cd29dbMXuEsFp2Z9BhfqxkRbqA=;
-  b=JmWlZSDtaBTRP6x4c1efXf/7GLF2iTLiT/9p1IdeHPNV0CNGZqbkEIfU
-   HVeg8ZurHMQG9+SGkKXTHbFsVB7lb8vWWNOI6lJ37e+LdAXDSpoTY9rCo
-   MhBU152bHDzP9vNX+0kECasZ26aSfjkVTLPzXAO7QYwnfNYXrvvxNxmev
-   NZzAq3+qtPFmVJrtOHQLD4zwA6RN8E1hn5ILvoYuLSf6s3oFk1QmeKNKg
-   rP/Y+gFDMPJ2oxDqnak2lB5zmpCdNITZvtaGVVEWdQ1y0zMmxLeOQoIbX
-   Lh4bYiJTHAFpccu0SMr8XxngD1m8U+dsAjN2WK+H23NYzFTrWk+E9pQkk
-   Q==;
-X-CSE-ConnectionGUID: m7/J0LYfR1umnxvlY8MedQ==
-X-CSE-MsgGUID: sZa0B6soQHmd6f74Ski5Fw==
-X-IronPort-AV: E=Sophos;i="6.18,323,1751266800"; 
-   d="scan'208";a="47980652"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Oct 2025 01:23:46 -0700
-Received: from chn-vm-ex2.mchp-main.com (10.10.87.31) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 8 Oct 2025 01:23:20 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1748.10; Wed, 8 Oct 2025 01:23:20 -0700
-Received: from [10.159.245.206] (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Wed, 8 Oct 2025 01:23:18 -0700
-Message-ID: <6f27f897-8d09-4e8b-9265-79bf7df2b15e@microchip.com>
-Date: Wed, 8 Oct 2025 10:22:46 +0200
+	s=arc-20240116; t=1759913150; c=relaxed/simple;
+	bh=/tT7K/+4Yic47D9gSJOVksDXGGdOZm6NjABI8bxhXZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nVc6BI2v7coyQLSruEHlpIs2sYanE3fB7DMfaPu2tHtkn1Ff/FQwTcdFcVP2zeum+/p2QAkXtCeX4FQaTZRFa9fYlfUjpXlEv9+OCQpC6kzb6oVLG4yZ3TQo4tUdv5oX2g/7SKYHlib+/lcxujwY2eaf8+n5fezlg1QFccqbnYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/SRhARr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69559C4CEF4;
+	Wed,  8 Oct 2025 08:45:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759913150;
+	bh=/tT7K/+4Yic47D9gSJOVksDXGGdOZm6NjABI8bxhXZA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n/SRhARr89olGEmHCXk6SVGPbo61lltxmCojxUI1OPSr9+MCr1mMhFzhmwaraWyHr
+	 6GNgMhv8EAEO7fVc080LNIr3L7IPATMwRF8/iinwYoicHfXfeCL4AlAy0NOPKFrB6+
+	 KhvYUeLJiIc+h93A3EW9EBof+BV7l0BfOGMZz9ojqHV6CGZjCjI18dltE/6LECdBRf
+	 2jsxHNqTjIwGIygKNp+KP2aHY1T8a5pnS+BgGO4dz009tW16nAHe0m3tfb//2JqHLI
+	 pwoj6BcTANg2SxqrW7yu3TdbD2yuDkl8xbd+KkFlJm9Zlul3yoqZoAMf3m8mF74vx2
+	 UZWMgB/zFyAfQ==
+Date: Wed, 8 Oct 2025 09:45:45 +0100
+From: Will Deacon <will@kernel.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Tomasz Figa <tfiga@chromium.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: kvm: arm64: stable commit "Fix kernel BUG() due to bad backport
+ of FPSIMD/SVE/SME fix" deadlocks host kernel
+Message-ID: <aOYkuatjNVyiQzU1@willie-the-truck>
+References: <hjc7jwarhmwrvcswa7nax26vgvs2wl7256pf3ba3onoaj26s5x@qubtqvi3vy6u>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: <romain.sioen@microchip.com>
-To: "Lecomte, Arnaud" <contact@arnaud-lcm.com>, Greg KH
-	<gregkh@linuxfoundation.org>, Romain Sioen - M70749
-	<Romain.Sioen@microchip.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "jikos@kernel.org" <jikos@kernel.org>,
-	"syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com"
-	<syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com>
-Subject: Re: [PATCH 1/1] hid: fix I2C read buffer overflow in raw_event() for
- mcp2221
-References: <20251007130811.1001125-1-romain.sioen@microchip.com>
- <20251007130811.1001125-2-romain.sioen@microchip.com>
- <2025100751-ambiance-resubmit-c65e@gregkh>
- <3a44a61b-bd60-4dec-a5e6-8ad064203f2b@arnaud-lcm.com>
- <2025100716-rockfish-panda-9c4b@gregkh>
- <1eea8c34-8c96-4e0b-a255-8679f6d4ae00@arnaud-lcm.com>
-In-Reply-To: <1eea8c34-8c96-4e0b-a255-8679f6d4ae00@arnaud-lcm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <hjc7jwarhmwrvcswa7nax26vgvs2wl7256pf3ba3onoaj26s5x@qubtqvi3vy6u>
 
-Hi all,
-
-On 10/8/25 8:50 AM, "Lecomte, Arnaud" <contact@arnaud-lcm.com> wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know 
-> the content is safe
+On Wed, Oct 08, 2025 at 01:45:32PM +0900, Sergey Senozhatsky wrote:
+> Commits 8f4dc4e54eed4 (6.1.y) and 23249dade24e6 (5.15.y) (maybe other
+> stable kernels as well) deadlock the host kernel (presumably a
+> recursive spinlock):
 > 
-> On 07/10/2025 17:26, Greg KH wrote:
-> > On Tue, Oct 07, 2025 at 05:23:17PM +0200, Lecomte, Arnaud wrote:
-> >> On 07/10/2025 15:16, Greg KH wrote:
-> >>> On Tue, Oct 07, 2025 at 03:08:11PM +0200, Romain Sioen wrote:
-> >>>> From: Arnaud Lecomte <contact@arnaud-lcm.com>
-> >>>>
-> >>>> [ Upstream commit b56cc41a3ae7323aa3c6165f93c32e020538b6d2 ]
-> >>>>
-> >>>> As reported by syzbot, mcp2221_raw_event lacked
-> >>>> validation of incoming I2C read data sizes, risking buffer
-> >>>> overflows in mcp->rxbuf during multi-part transfers.
-> >>>> As highlighted in the DS20005565B spec, p44, we have:
-> >>>> "The number of read-back data bytes to follow in this packet:
-> >>>> from 0 to a maximum of 60 bytes of read-back bytes."
-> >>>> This patch enforces we don't exceed this limit.
-> >>>>
-> >>>> Reported-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
-> >>>> Closes: https://syzkaller.appspot.com/bug?extid=52c1a7d3e5b361ccd346
-> >>>> Tested-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
-> >>>> Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-> >>>> Link: https://patch.msgid.link/20250726220931.7126-1- 
-> >>>> contact@arnaud-lcm.com
-> >>>> Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-> >>>> [romain.sioen@microchip.com: backport to stable, up to 6.12. Add 
-> >>>> "Fixes" tag]
-> >>> I don't see a fixes tag :(
-> >> Hey, I am the author of the patch. I can find the fixes tag if this 
-> >> looks
-> >> good to you.
-> > There's no need for a fixes tag, just let us know where you want this
-> > backported to.
-> The ones, you already did the back-port to, seems good enough for me,
-> Thanks Greg :)
-> > thanks,
-> >
-> > greg k-h
-> Arnaud
+>  queued_spin_lock_slowpath+0x274/0x358
+>  raw_spin_rq_lock_nested+0x2c/0x48
+>  _raw_spin_rq_lock_irqsave+0x30/0x4c
+>  run_rebalance_domains+0x808/0x2e18
+>  __do_softirq+0x104/0x550
+>  irq_exit+0x88/0xe0
+>  handle_domain_irq+0x7c/0xb0
+>  gic_handle_irq+0x1cc/0x420
+>  call_on_irq_stack+0x20/0x48
+>  do_interrupt_handler+0x3c/0x50
+>  el1_interrupt+0x30/0x58
+>  el1h_64_irq_handler+0x18/0x24
+>  el1h_64_irq+0x7c/0x80
+>  kvm_arch_vcpu_ioctl_run+0x24c/0x49c
+>  kvm_vcpu_ioctl+0xc4/0x614
 > 
+> We found out a similar report at [1], but it doesn't seem like a formal
+> patch was ever posted.  Will, can you please send a formal patch so that
+> stable kernels can run VMs again?
 
-Sorry for the confusion, I didn't put a tag indeed. I just wanted to backport this
-patch to previous LTS versions 5.10, 5.15, 6.1, 6.6 and 6.12 as we need it to solve 
-a bug. I tested it in all these stable versions and can confirm that it compiles correctly.
-This is in the continuity of a backport request I made 1 month ago which has been accepted
-and merged.
+Yup, already queued up for stable:
 
-Thank you for your help,
+https://lore.kernel.org/r/20251003183917.4209-1-will@kernel.org
+https://lore.kernel.org/r/20251003184018.4264-1-will@kernel.org
+https://lore.kernel.org/r/20251003184054.4286-1-will@kernel.org
 
-Romain
+Sorry for the breakage.
+
+Will
 
