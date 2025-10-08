@@ -1,55 +1,101 @@
-Return-Path: <stable+bounces-183582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442E4BC3667
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 07:54:13 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1937BBC3725
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 08:15:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C40D33C7DD5
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 05:54:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9CA54351325
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 06:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3022EA491;
-	Wed,  8 Oct 2025 05:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DA22E11AB;
+	Wed,  8 Oct 2025 06:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTHiFudH"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="H4pIYGV1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B929314A09C;
-	Wed,  8 Oct 2025 05:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AF71EA7CF;
+	Wed,  8 Oct 2025 06:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759902847; cv=none; b=uHshFhesxpL3nxg+EmWZb6pFhQgFV0VR53SfGt8YdTeND/MMIv1TYQK2X1M0kzD7MnlZLmLQKr6CiWhCd3vRxKK6309rQh+uS7/C6yIykeF14/hqzBAfJi7QDH6jtKWY1Xh37HhbwCeVT2a9Xg4AX8ZLvALkU0cxk5q4qnEv+Vs=
+	t=1759904109; cv=none; b=ffQtRW6XGFpWNSy7E+nd3wU3fvaGkpt7B/eeuO8HY8pv2BFrFFFWO+U2GoTNOo4Kognw7fetYG3mw9dJeMqYqjIlqFIb4uU5m758YxEi3MCPazG3ELtbAMacUTL5AVDBInm2pAsfk5cIUwvtbK3yCfF2mt/pi4U7HTIW9lIFXOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759902847; c=relaxed/simple;
-	bh=ik0Hlz3eWe16I+0HWwL85cFBzx9FNEbvtzDp8YkHiQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GKDWGdbduIp70QcHQSeu5aC583NOKqGNHADrgwnOu4gVC2w/qom8s92HQ3n8MRgE24TOAhBwjnxORKqT4MJaH4kJE4JDhLsn6SyULEld9jkHgM34YjPBbFPup6V8HqBC14Bd0WdHRk6/a0nk4UMUuRcisSUU97qGYXzjOGpgNJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTHiFudH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C2BC4CEFF;
-	Wed,  8 Oct 2025 05:54:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759902845;
-	bh=ik0Hlz3eWe16I+0HWwL85cFBzx9FNEbvtzDp8YkHiQE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JTHiFudHBYHLJqpVkXrX6V4PYKb7Vi9sNmzx6NwnD2hdCKeUIE8gO6XK3/8UswvbH
-	 Lhl1q5RXERF1LD/+akpnVtCiGBBSNf9Hp0XL8kJrQIfAUYNtFiIte2XKm23UU+uolC
-	 OV4Qwjh2hUHJaAHEilOMS8XC1HRpAomYn5rXhtEQ=
-Date: Wed, 8 Oct 2025 07:54:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: stable@vger.kernel.org, Takashi Iwai <tiwai@suse.de>,
-	syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com,
-	Clemens Ladisch <clemens@ladisch.de>,
-	Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.12.y 6.6.y 6.1.y 5.15.y 5.10.y 5.4.y] ALSA: usb-audio:
- Kill timer properly at removal
-Message-ID: <2025100824-frolic-spout-d400@gregkh>
-References: <20251007155808.438441-1-aha310510@gmail.com>
+	s=arc-20240116; t=1759904109; c=relaxed/simple;
+	bh=/ysWvONG/rRVXYMAmJinyLug2h51k7AZJtFHEIsBFSs=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=SNDVBu9qyDdxBfUxXlau5OKbFqO81Iz8rxI/8Pk0Ij8ESTbN4Nlmd1AGRGUGGwyQppZAHFw92zFj60/sr5pf3eehTCxJcv9jm6A1W/ZPkU9RQi6khbnYJydwx3W+gkEoKV9xOUnENH34UlOS+hqGAIRAcPk+G/cFXRWAFG6oNgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=H4pIYGV1; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfout.stl.internal (Postfix) with ESMTP id D0D641D000F6;
+	Wed,  8 Oct 2025 02:15:05 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Wed, 08 Oct 2025 02:15:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1759904105; x=1759990505; bh=OR22NrgfEglb+PpHIQeRBTrbvW1PJ4Cuam0
+	YJIEfV0I=; b=H4pIYGV1EQNs1jQJwTh4cFbdIOIqDSRbUJOrNMgSNleCr1uaDbz
+	83gtppMOOi95c+qeZe0RZ6vT582FQQ61PIefr9Q4yZJ310MpqhxVG7cj2kaK7tH4
+	R6Qtmse+wvoJQAPKfkJ9OxTnb8KM0V04PyvutoH0qntdFmDnVWd7neyq5+6jqhD+
+	X2UTfd1xSNAAczuhzRZIxIhZ/JTdWQ/iKVgmrMDrjKm4O7fPXgNdTgezoH6zR7yA
+	RiB+X5Ep/bT+FXlCqIvQb94rYcoGzq+kMkVr573/rrsyWX3YSyFjo/X8r6jLI1ZJ
+	qkTnRMoUf9OodVOhWmo9IS3w0f05X0II3dQ==
+X-ME-Sender: <xms:ZwHmaNI3P6wZKZ5XO7ttzt61tyxCx8Bx_CNiJVfGMKAb6DxNBsDI_Q>
+    <xme:ZwHmaKfJ8VDqB04FBE21xAuXhTQMhnrAO0UagQJw9ZEow9A3k0WtjFPbv083SVBMy
+    xJctAfMKO9TLLuVMOooppePT3bL5m2ahbddAFSjLHUMS_F6Q8o0CA>
+X-ME-Received: <xmr:ZwHmaIItPTjqlOlS8uTwwV3QhM0Ud-0jiIvtel90eiw981OOu0gJ2HBYf3ZSoWkj_XJMV_cCIfL-X4N1kS-pOSyuZHkfsguImyc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddutddvheehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
+    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
+    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
+    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopedvgedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhgrnhgtvgdrhigrnhhgsehlihhnuhigrd
+    guvghvpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
+    ghdprhgtphhtthhopehgvggvrhhtsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtth
+    hopehorghksehhvghlshhinhhkihhnvghtrdhfihdprhgtphhtthhopehkvghnthdrohhv
+    vghrshhtrhgvvghtsehlihhnuhigrdguvghvpdhrtghpthhtoheprghmrghinhguvgigse
+    houhhtlhhoohhkrdgtohhmpdhrtghpthhtoheprghnnhgrrdhstghhuhhmrghkvghrseho
+    rhgrtghlvgdrtghomhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtg
+    homhdprhgtphhtthhopehiohifohhrkhgvrhdtsehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:ZwHmaEBshOGlofW4dgdH5pof2eeL8jG8Uku8px4j0R_klQ9lsJySTA>
+    <xmx:ZwHmaBiof7ulRVDPwVSy9Bpjh9MPMSbYOSsyMXNNNAHM7E4HjLu2Jg>
+    <xmx:ZwHmaON0SBtdBi7Q3fvlg8CEdc4pqpySVuxNjfHvktaxb05saU-6WQ>
+    <xmx:ZwHmaIbIalGzzuNpmRJXqOfdvkK4sOffNS7H0h-RNQIHyNP-_xL39w>
+    <xmx:aQHmaJbYvfqHNm6XqREz3Fom4EgOagPCSmFgJ5--AAVtb_uujybWKyuf>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 8 Oct 2025 02:15:01 -0400 (EDT)
+Date: Wed, 8 Oct 2025 17:14:51 +1100 (AEDT)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Lance Yang <lance.yang@linux.dev>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Geert Uytterhoeven <geert@linux-m68k.org>, 
+    Eero Tamminen <oak@helsinkinet.fi>, 
+    Kent Overstreet <kent.overstreet@linux.dev>, amaindex@outlook.com, 
+    anna.schumaker@oracle.com, boqun.feng@gmail.com, ioworker0@gmail.com, 
+    joel.granados@kernel.org, jstultz@google.com, leonylgao@tencent.com, 
+    linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+    longman@redhat.com, mhiramat@kernel.org, mingo@redhat.com, 
+    mingzhe.yang@ly.com, peterz@infradead.org, rostedt@goodmis.org, 
+    senozhatsky@chromium.org, tfiga@chromium.org, will@kernel.org, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
+ pointers
+In-Reply-To: <56784853-b653-4587-b850-b03359306366@linux.dev>
+Message-ID: <693a62e0-a2b5-113b-d5d9-ffb7f2521d6c@linux-m68k.org>
+References: <20250909145243.17119-1-lance.yang@linux.dev> <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov> <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org> <CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
+ <inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp> <20251007135600.6fc4a031c60b1384dffaead1@linux-foundation.org> <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org> <56784853-b653-4587-b850-b03359306366@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,53 +103,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251007155808.438441-1-aha310510@gmail.com>
 
-On Wed, Oct 08, 2025 at 12:58:08AM +0900, Jeongjun Park wrote:
-> From: Takashi Iwai <tiwai@suse.de>
-> 
-> [ Upstream commit 0718a78f6a9f04b88d0dc9616cc216b31c5f3cf1 ]
-> 
-> The USB-audio MIDI code initializes the timer, but in a rare case, the
-> driver might be freed without the disconnect call.  This leaves the
-> timer in an active state while the assigned object is released via
-> snd_usbmidi_free(), which ends up with a kernel warning when the debug
-> configuration is enabled, as spotted by fuzzer.
-> 
-> For avoiding the problem, put timer_shutdown_sync() at
-> snd_usbmidi_free(), so that the timer can be killed properly.
-> While we're at it, replace the existing timer_delete_sync() at the
-> disconnect callback with timer_shutdown_sync(), too.
-> 
-> Reported-by: syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/681c70d7.050a0220.a19a9.00c6.GAE@google.com
-> Cc: <stable@vger.kernel.org>
-> Link: https://patch.msgid.link/20250519212031.14436-1-tiwai@suse.de
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> [ del_timer vs timer_delete differences ]
-> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> ---
->  sound/usb/midi.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/sound/usb/midi.c b/sound/usb/midi.c
-> index a792ada18863..c3de2b137435 100644
-> --- a/sound/usb/midi.c
-> +++ b/sound/usb/midi.c
-> @@ -1530,6 +1530,7 @@ static void snd_usbmidi_free(struct snd_usb_midi *umidi)
->  			snd_usbmidi_in_endpoint_delete(ep->in);
->  	}
->  	mutex_destroy(&umidi->mutex);
-> +	timer_shutdown_sync(&umidi->error_timer);
 
-This function is not in older kernel versions, you did not test this
-build :(
+On Wed, 8 Oct 2025, Lance Yang wrote:
 
-I've applied this to 6.6.y and newer, but for 6.1.y and older, please
-use the proper function.
+> On 2025/10/8 08:40, Finn Thain wrote:
+> > 
+> > On Tue, 7 Oct 2025, Andrew Morton wrote:
+> > 
+> >> Getting back to the $Subject at hand, are people OK with proceeding
+> >> with Lance's original fix?
+> >>
+> > 
+> > Lance's patch is probably more appropriate for -stable than the patch I
+> > proposed -- assuming a fix is needed for -stable.
+> 
+> Thanks!
+> 
+> Apart from that, I believe this fix is still needed for the hung task 
+> detector itself, to prevent unnecessary warnings in a few unexpected 
+> cases.
+> 
 
-thanks,
+Can you be more specific about those cases? A fix for a theoretical bug 
+doesn't qualify for -stable branches. But if it's a fix for a real bug, I 
+have misunderstood Andrew's question...
 
-greg k-h
+> > 
+> > Besides those two alternatives, there is also a workaround:
+> > $ ./scripts/config -d DETECT_HUNG_TASK_BLOCKER
+> > which may be acceptable to the interested parties (i.e. m68k users).
+> > 
+> > I don't have a preference. I'll leave it up to the bug reporters (Eero 
+> > and Geert).
+> 
 
