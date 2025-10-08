@@ -1,155 +1,103 @@
-Return-Path: <stable+bounces-183587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D149BC38E1
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 09:23:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC39BC3B89
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 09:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CE5719E2DB8
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 07:24:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DA14188142C
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 07:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E1A2BEC5F;
-	Wed,  8 Oct 2025 07:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Dee5XhHN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9C02F0699;
+	Wed,  8 Oct 2025 07:50:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BBD2F1FE9
-	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 07:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54649BA4A;
+	Wed,  8 Oct 2025 07:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759908212; cv=none; b=IUGuwBd99v1C2Rb1hGAcBtEF2e6J1ifUl/AZkz3UQ/hDiQkOiERke2suG3D8ZgzV1gJVoC+MygjeEJi9Jbpkx1s9L1QqqlEJ69t0zPrkRwq2Ev6bZaHKE3Vvttn84du4v33mY/BLG1bJniS1InkY3ORhwgppUCiSAUxey2//3G8=
+	t=1759909858; cv=none; b=lRQrPWZ5EQ1xMYCVYK0pA4jIbvb/vqsi84GWLQTXWI1WJ96kr73ATV3qw6xtGzgohLteI2i1o/P4dUK+XJSiptDyfIffcYifl4qhyMZVfubRv6tmBjA/srkHG4PRah8ZCksclW5ckgttud9CWOCv+5n7QUlXnFtl8mFw6EfcJwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759908212; c=relaxed/simple;
-	bh=1hrKhcewNAog3goQOz9EqxB44PnuDQDFLGTcN9t+kO0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=o5PtDSaCFQUh+L8yY3GMBvtErDHnBd0UWrMRzwDAUU1vhZFXAHCNfadnGN2opDk+WN4INA5N5wOhZY9dtSYOMWBNWGLFzWB7Bb7MJeLLz71n7jSdFjqlP0ZFzulYEB0K4HGecO5guuEOrw5FddBHYStazxEi18BYYQ4GmzMtaTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Dee5XhHN; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <2bd2c4a8-456e-426a-aece-6d21afe80643@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759908198;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7UAlSyFCkIOPcSkRc3Lm4Oe7r2DyLQZxHY7cDP0CdBc=;
-	b=Dee5XhHNRi8+jbIjAMSc7VYUoyLS2n5Fa3t+P3S6Vurg1mz0XZURAABYGb6QUH0OX0ytvu
-	R9y2tkbCktxKpZpBFiECWBrpk4I7X8VNSzHe/hxCfx0XrX6P2hPDZZYu2kYvI9tBLyf5ET
-	wji78FEvG+Ukr16/gbwgg6gm6U821MI=
-Date: Wed, 8 Oct 2025 15:23:05 +0800
+	s=arc-20240116; t=1759909858; c=relaxed/simple;
+	bh=UCqejvx3Wzj5uQO0KGNts4+sn5ztUu1ECviBWuIVAuE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bsOh8NojXPnU5T7ZxOJP8qRzDfgX3zPo9fQfLbAkBn0pRfFwiMFIO1mh9Qwxha/I18sSB2P/xyXNqiztB6OBrVrWZV2JSIkqtp3eboqcUG3LMKsq3mhBd9P0vH2GC/zZkeFPxRMFw5Asmqw5gD2idTRkCRqLYyvw/qwE7UQN1Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [127.0.0.2] (unknown [114.241.81.247])
+	by APP-01 (Coremail) with SMTP id qwCowAA3kaPLF+ZoUI4EDQ--.32936S2;
+	Wed, 08 Oct 2025 15:50:35 +0800 (CST)
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+Subject: [PATCH 6.6.y 0/2] riscv: mm: Backport of mmap hint address fixes
+Date: Wed, 08 Oct 2025 15:50:15 +0800
+Message-Id: <20251008-riscv-mmap-addr-space-6-6-v1-0-9f47574a520f@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
- pointers
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Eero Tamminen
- <oak@helsinkinet.fi>, Kent Overstreet <kent.overstreet@linux.dev>,
- amaindex@outlook.com, anna.schumaker@oracle.com, boqun.feng@gmail.com,
- ioworker0@gmail.com, joel.granados@kernel.org, jstultz@google.com,
- leonylgao@tencent.com, linux-kernel@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, longman@redhat.com, mhiramat@kernel.org,
- mingo@redhat.com, mingzhe.yang@ly.com, peterz@infradead.org,
- rostedt@goodmis.org, senozhatsky@chromium.org, tfiga@chromium.org,
- will@kernel.org, stable@vger.kernel.org
-References: <20250909145243.17119-1-lance.yang@linux.dev>
- <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
- <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
- <CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
- <inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp>
- <20251007135600.6fc4a031c60b1384dffaead1@linux-foundation.org>
- <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org>
- <56784853-b653-4587-b850-b03359306366@linux.dev>
- <693a62e0-a2b5-113b-d5d9-ffb7f2521d6c@linux-m68k.org>
- <23b67f9d-20ff-4302-810c-bf2d77c52c63@linux.dev>
-In-Reply-To: <23b67f9d-20ff-4302-810c-bf2d77c52c63@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-B4-Tracking: v=1; b=H4sIALcX5mgC/x2MQQqEMAxFryJZG7FCK3oVcVHbzEwWaklAFPHuh
+ uHBh7f47wYlYVIYqxuEDlbeNxNXV5B+cfsScjaHru18O7gehTUduK6xYMxZUEtMhMFwnvq8hMX
+ bgP2L0IfPf3uC0ITmgvl5XkLmNYVyAAAA
+X-Change-ID: 20250917-riscv-mmap-addr-space-6-6-15e7db6b5db6
+To: stable@vger.kernel.org, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Paul Walmsley <paul.walmsley@sifive.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Guo Ren <guoren@kernel.org>, Charlie Jenkins <charlie@rivosinc.com>, 
+ Yangyu Chen <cyy@cyyself.name>, Han Gao <rabenda.cn@gmail.com>, 
+ Icenowy Zheng <uwu@icenowy.me>, Inochi Amaoto <inochiama@gmail.com>, 
+ Vivian Wang <wangruikang@iscas.ac.cn>, Yao Zi <ziyao@disroot.org>, 
+ Palmer Dabbelt <palmer@rivosinc.com>
+X-Mailer: b4 0.14.2
+X-CM-TRANSID:qwCowAA3kaPLF+ZoUI4EDQ--.32936S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xr17Kw45Cr43Jw4xCr4Durg_yoWfGwb_ZF
+	WUtas5Xw1UJF4DWFWDK3WrWr4vk3sYvryrAr1kJ39xGr1akr4DCw42grW8XasFvan5KrZr
+	JrWxA34IyFy7tjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUba8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
+	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+	x4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
+	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
+	sGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
+Backport of the two riscv mmap patches from master. In effect, these two
+patches removes arch_get_mmap_{base,end} for riscv.
 
+Guo Ren: Please take a look. Patch 1 has a slightly non-trivial conflict
+with your commit 97b7ac69be2e ("riscv: mm: Fixup compat
+arch_get_mmap_end"), which changed STACK_TOP_MAX from TASK_SIZE_64 to
+TASK_SIZE when CONFIG_64BIT=y. This shouldn't be a problem, but, well,
+just to be safe.
 
-On 2025/10/8 15:09, Lance Yang wrote:
-> 
-> 
-> On 2025/10/8 14:14, Finn Thain wrote:
->>
->> On Wed, 8 Oct 2025, Lance Yang wrote:
->>
->>> On 2025/10/8 08:40, Finn Thain wrote:
->>>>
->>>> On Tue, 7 Oct 2025, Andrew Morton wrote:
->>>>
->>>>> Getting back to the $Subject at hand, are people OK with proceeding
->>>>> with Lance's original fix?
->>>>>
->>>>
->>>> Lance's patch is probably more appropriate for -stable than the patch I
->>>> proposed -- assuming a fix is needed for -stable.
->>>
->>> Thanks!
->>>
->>> Apart from that, I believe this fix is still needed for the hung task
->>> detector itself, to prevent unnecessary warnings in a few unexpected
->>> cases.
->>>
->>
->> Can you be more specific about those cases? A fix for a theoretical bug
->> doesn't qualify for -stable branches. But if it's a fix for a real bug, I
->> have misunderstood Andrew's question...
-> 
-> I believe it is a real bug, as it was reported by Eero and Geert[1].
-> 
-> The blocker tracking mechanism in -stable assumes that lock pointers
-> are at least 4-byte aligned. As I mentioned previously[2], this
-> assumption fails for packed structs on architectures that don't trap
-> on unaligned access.
-> 
-> Of course, we could always improve the mechanism to not make
-> assumptions. But for -stable, this fix completely resolves the issue
-> by ignoring any unaligned pointer, whatever the cause (e.g., packed
-> structs, non-native alignment, etc.).
-> 
-> So we can all sleep well at night again :)
-> 
-> [1] https://lore.kernel.org/lkml/ 
-> CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com/
-> [2] https://lore.kernel.org/lkml/cfb62b9d-9cbd-47dd- 
-> a894-3357027e2a50@linux.dev/
+---
+Charlie Jenkins (2):
+      riscv: mm: Use hint address in mmap if available
+      riscv: mm: Do not restrict mmap address based on hint
 
-Forgot to add:
+ arch/riscv/include/asm/processor.h | 33 +++++----------------------------
+ 1 file changed, 5 insertions(+), 28 deletions(-)
+---
+base-commit: 60a9e718726fa7019ae00916e4b1c52498da5b60
+change-id: 20250917-riscv-mmap-addr-space-6-6-15e7db6b5db6
 
-In other words, we are not just fixing the bug reported by Eero
-and Geert, but correcting the blocker tracking mechanism's flawed
-assumption for -stable ;)
-
-If you feel this doesn't qualify as a fix, I can change the Fixes:
-tag to point to the original commit that introduced this flawed
-mechanism instead.
-
-> 
->>
->>>>
->>>> Besides those two alternatives, there is also a workaround:
->>>> $ ./scripts/config -d DETECT_HUNG_TASK_BLOCKER
->>>> which may be acceptable to the interested parties (i.e. m68k users).
->>>>
->>>> I don't have a preference. I'll leave it up to the bug reporters (Eero
->>>> and Geert).
->>>
-> 
+Best regards,
+-- 
+Vivian "dramforever" Wang
 
 
