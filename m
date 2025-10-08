@@ -1,108 +1,113 @@
-Return-Path: <stable+bounces-183575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B24BC32E2
-	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 05:03:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB5BBC335B
+	for <lists+stable@lfdr.de>; Wed, 08 Oct 2025 05:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06CE61898F94
-	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 03:04:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB6534E65F7
+	for <lists+stable@lfdr.de>; Wed,  8 Oct 2025 03:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6298D221DB1;
-	Wed,  8 Oct 2025 03:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDF929E0E9;
+	Wed,  8 Oct 2025 03:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="T/3jXx84"
+	dkim=pass (1024-bit key) header.d=cse.ust.hk header.i=@cse.ust.hk header.b="O1mWmbhe"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from cse.ust.hk (cssvr7.cse.ust.hk [143.89.41.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B166621423C
-	for <stable@vger.kernel.org>; Wed,  8 Oct 2025 03:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759892616; cv=none; b=lNiWV+OJ+yVnxSRNbc2JKboQlatxaEeoyN6HnYUhGdGNMuWhFSrjzQjz34hSZmtay5ZPkiybM1JL5+Qam0qbdGTzDkXPnId3PIJtYwh9ZPs3gMKswdo8PkqV6W7pWGvGheev8eLlE9274cibVu7uFPnLpeCo12KEhcmXo0yMkwI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759892616; c=relaxed/simple;
-	bh=5yStW0L1wEARM1VcACJHqDCy7X/TSWEwGB67a2Fqnmg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hf2xwSdrPiGz1jiKnIM8rdi6+JCiuMFz3xfJERQCzznQCIzhqbIhnUb0+vbIbsXbYrjm3x/r71Uzu3pXdHg+e2tUHF2mo570luvGHyFmx1P1o7a0rzHG27lIfzxkhHRW1IxzNe6GWxdYSfZnyhzrTlKe2hQbNlhiga+kjY+6MbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=T/3jXx84; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <56784853-b653-4587-b850-b03359306366@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759892608;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vSRrtrvWgwS90ySr5nF6OQKQum7o9S6zWNvqm6k9XvM=;
-	b=T/3jXx84Rfw++V6z2MKJJv5c/rPYfsL5Ui23RZkEQx9CDR0WnlRFujpQtx7DTK8morvqzQ
-	fGf+hxuXI0wGprlzykRqYh0W/J+sSVWQbdk1l39Qun/FBJqNpmP2TIBlXlxC4mcFM9II/u
-	MInrvhq4Nld0p1caXSOIDmVSFa3ddig=
-Date: Wed, 8 Oct 2025 11:03:18 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AF1209F5A;
+	Wed,  8 Oct 2025 03:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=143.89.41.157
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759893641; cv=pass; b=LOpzF08Igi5tCChyTkBLZR0BMO4uK/q9wRLVMMxt/OOgKufBiwR71rotj6+TjDs12f0avQ4/MJIAfn1AOZX6/syC+BR+vsw36Z12m2xx1AxEgBsVoLFoBWmpDuqet39cHFPtfR7ZMFXWJxx0sdmq4c+YLEzEsUU0PbQGhkEZJCg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759893641; c=relaxed/simple;
+	bh=7d2Q9ZTuBEetu77KNDrONqWiHf5pg8/Rj+okFCgdYRU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=urcCKPmeg2A+mjil12S/icMgv8+NsXYK+GLNEdkpfmmKxqTnZIIClniU5S0naTvq8zsg4pCFaaIRgqS8mOYWO0y3ilyQoqKarOeBg1ZnCcKhsBgFa4Dlq+8+pHxwFmq7NWaVjTh8X+/p4gvqqgLuDcJGEE1ZATqEZmd65vVh3+A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.ust.hk; spf=pass smtp.mailfrom=cse.ust.hk; dkim=pass (1024-bit key) header.d=cse.ust.hk header.i=@cse.ust.hk header.b=O1mWmbhe; arc=pass smtp.client-ip=143.89.41.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.ust.hk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.ust.hk
+Received: from osx.local (ecs-119-8-240-33.compute.hwclouds-dns.com [119.8.240.33])
+	(authenticated bits=0)
+	by cse.ust.hk (8.18.1/8.12.5) with ESMTPSA id 5983K89V1969764
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 8 Oct 2025 11:20:14 +0800
+ARC-Seal: i=1; a=rsa-sha256; d=cse.ust.hk; s=arccse; t=1759893615; cv=none;
+	b=rcPP8yLtXjCv4k/DLipdIwhSVZ5CwYt/xRFq7i0sc44nIC1QHO6MKK6f4NMvuQ8kYDya1k01xg07pUe2fM3cXzrsuq+OJWSQdo8LQCS9USU+itC8yK2FujLsLpkMTCmEiHkvUa3UPZ9mfTNiDN7YE8cQdqJhQjQDQJ2rOQyn4Rw=
+ARC-Message-Signature: i=1; a=rsa-sha256; d=cse.ust.hk; s=arccse;
+	t=1759893615; c=relaxed/relaxed;
+	bh=WuLSA2EjkrLhSQFnaBGCNZGIYOqkvds6auE54bA3lWQ=;
+	h=DKIM-Signature:Date:From:To:Subject:Message-ID:MIME-Version; b=cSCrFM+NEka5AqGCOg0vIypTESoI7v1+4r5/Iw+kIN7yny9+mcqkVFeAOpPi2vuB63bMjH9YfY+PwtIsi39lRszyy0eNcDlHUkBd47H0omi5RdOmJpJ6rmwT0PsW6f3y3S2JAcL3PwByrbKkfCTykeSXiS35+nefRX9kbPdq0w0=
+ARC-Authentication-Results: i=1; cse.ust.hk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cse.ust.hk;
+	s=cseusthk; t=1759893615;
+	bh=WuLSA2EjkrLhSQFnaBGCNZGIYOqkvds6auE54bA3lWQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O1mWmbhe3wxDfirmk6JKjwo4Qc+QANnMrDAiMaxMv6vbHp21QI7HEUmaDtREupztT
+	 ITsS1D23MTLgcXf6uISKfRLSIZ43UdPgZs0z8dh//rgVL68sU0qEaYGtX3KX+x5a4p
+	 SIjm8/XVkjp/qyzWU2cfbTulg9rsFvv7Ircqe+jo=
+Date: Wed, 8 Oct 2025 11:20:03 +0800
+From: Shuhao Fu <sfual@cse.ust.hk>
+To: Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] drm/nouveau: Fix refcount leak in nouveau_connector_detect
+Message-ID: <aOXYV5pgilTvqMxR@osx.local>
+References: <aOPy5aCiRTqb9kjR@homelab>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
- pointers
-Content-Language: en-US
-To: Finn Thain <fthain@linux-m68k.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Eero Tamminen <oak@helsinkinet.fi>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, amaindex@outlook.com,
- anna.schumaker@oracle.com, boqun.feng@gmail.com, ioworker0@gmail.com,
- joel.granados@kernel.org, jstultz@google.com, leonylgao@tencent.com,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- longman@redhat.com, mhiramat@kernel.org, mingo@redhat.com,
- mingzhe.yang@ly.com, peterz@infradead.org, rostedt@goodmis.org,
- senozhatsky@chromium.org, tfiga@chromium.org, will@kernel.org,
- stable@vger.kernel.org
-References: <20250909145243.17119-1-lance.yang@linux.dev>
- <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
- <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
- <CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
- <inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp>
- <20251007135600.6fc4a031c60b1384dffaead1@linux-foundation.org>
- <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aOPy5aCiRTqb9kjR@homelab>
+X-Env-From: sfual
 
+A possible inconsistent refcount update has been identified in function
+`nouveau_connector_detect`, which may cause a resource leak.
 
+After calling `pm_runtime_get_*(dev->dev)`, the usage counter of `dev->dev`
+gets increased. In case function `nvif_outp_edid_get` returns negative,
+function `nouveau_connector_detect` returns without decreasing the usage
+counter of `dev->dev`, causing a refcount inconsistency.
 
-On 2025/10/8 08:40, Finn Thain wrote:
-> 
-> On Tue, 7 Oct 2025, Andrew Morton wrote:
-> 
->>
->> Getting back to the $Subject at hand, are people OK with proceeding
->> with Lance's original fix?
->>
-> 
-> Lance's patch is probably more appropriate for -stable than the patch I
-> proposed -- assuming a fix is needed for -stable.
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/450
+Fixes: 0cd7e0718139 ("drm/nouveau/disp: add output method to fetch edid")
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Cc: stable@vger.kernel.org
 
-Thanks!
+Change in v3:
+- Cc stable
+Change in v2:
+- Add "Fixes" and "Cc" tags
+---
+ drivers/gpu/drm/nouveau/nouveau_connector.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Apart from that, I believe this fix is still needed for the hung task
-detector itself, to prevent unnecessary warnings in a few unexpected
-cases.
+diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
+index 63621b151..45caccade 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -600,8 +600,10 @@ nouveau_connector_detect(struct drm_connector *connector, bool force)
+                                new_edid = drm_get_edid(connector, nv_encoder->i2c);
+                } else {
+                        ret = nvif_outp_edid_get(&nv_encoder->outp, (u8 **)&new_edid);
+-                       if (ret < 0)
+-                               return connector_status_disconnected;
++                       if (ret < 0) {
++                               conn_status = connector_status_disconnected;
++                               goto out;
++                       }
+                }
 
-> 
-> Besides those two alternatives, there is also a workaround:
-> $ ./scripts/config -d DETECT_HUNG_TASK_BLOCKER
-> which may be acceptable to the interested parties (i.e. m68k users).
-> 
-> I don't have a preference. I'll leave it up to the bug reporters (Eero and
-> Geert).
+                nouveau_connector_set_edid(nv_connector, new_edid);
+--
+2.39.5
 
 
