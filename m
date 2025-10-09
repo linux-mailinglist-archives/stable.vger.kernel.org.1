@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-183788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D351BC9FEA
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5CDBC9FF0
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7AE84355714
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:07:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BF7A03404C4
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AF52F3C09;
-	Thu,  9 Oct 2025 16:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD932F3C16;
+	Thu,  9 Oct 2025 16:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cCFAq3nX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qzvkb0cb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE66E2F3C08;
-	Thu,  9 Oct 2025 16:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171762FB99B;
+	Thu,  9 Oct 2025 16:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760025602; cv=none; b=kstXCsMfVLTT2m7cgkYl+UpDUjp4BQwXgQszkGOTZ/u+DPX60FSszKZ5VKkulsbvKN6B8d91CqygUeBiVvqEEHAiYaWbYEmpEl/WteeaoV5sJ6lManVRD1rBbwdnmit6mFRFY+u6ZVKEVN0OWfFzWvMSbrnJBbG+4NOu2F9XERc=
+	t=1760025604; cv=none; b=QqmXdgPOFqXYNKoyI2I8yA27iC4SGBCB5yKTDXEXdPPhXrnzeKcEGp2245pRv8vH2PlSMBPDc+mUw+fH8AXU4Fda3QIKO8p7d4KU3Ov0qz//r9CTq8IKq1tDkzjdi4o4YL6yVHNiJtHBuSnV6g2ofQ5RgGEdIuZyawOuT8dHl98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760025602; c=relaxed/simple;
-	bh=F1FqzWXtuPtaRyeU2V6dAFIZKGQOW+Hcqx9BB7Zc0sY=;
+	s=arc-20240116; t=1760025604; c=relaxed/simple;
+	bh=iGPfhXstUEtIPxlrGq/8WGl8mFp+xaycxoQGPc3q3CQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CvJC0fB+cqIS5cw22NuXW3+eTD6mZldt8jtuNLRJ4siC1ads8sAoD5GBSI+I8OoCFDdtYfRiSo60piKWZPPGkEWwR5T16TX9qkwIiniIzYzpBFCIRKxFJlJwiKTUHQiCCVXuz36o6Xw5N31MW+3Dno17bLiyjQ9Mwbx0jO8cz9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cCFAq3nX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4520DC4CEFE;
-	Thu,  9 Oct 2025 16:00:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c82CcgO6E+TjW5lCJD1RUKDn1cSa+hsH+W4xRNjcTlTjzgaSmF/l070Mhp1ZH4moJKROGnzumrQbV+PuUD+f0JVICvGU+/t0L1ys8yddFRjZfNvMnab+SFyXJsy96GTTtIQIjNyUbnksVfHqQe1nZ0h93Vba0oa0wtNUtNrpm40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qzvkb0cb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2122FC4CEE7;
+	Thu,  9 Oct 2025 16:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760025602;
-	bh=F1FqzWXtuPtaRyeU2V6dAFIZKGQOW+Hcqx9BB7Zc0sY=;
+	s=k20201202; t=1760025604;
+	bh=iGPfhXstUEtIPxlrGq/8WGl8mFp+xaycxoQGPc3q3CQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCFAq3nX4HfpIwfR9bjnkCRThrt8pYALPlzrJPtbt+uIVr+OkcGxS0Los4Tv6Ld3B
-	 GpfNBVBVNM0N0j6+tqETTemwg25JuSwQmAB9odN52E4qEtodCuS4hwutzJaU+h01vZ
-	 od54biIaiv8wXZRcCv+HFUXwZ1JWYe2hBfaM3nI1txtzHI0R3NTi5rfsrq4xLm7lHZ
-	 umOsAHY9ZImhJx11e3tTyZ97YRFYljrMQjgyhjiY/ChnQUYM5quNZDi7ewc/M87qMa
-	 cX5RW7QelqNTXwDH0yzPCD+br+Y4aWjGWCKJEufB7YEQMGOK0+0H+k+5oht65Ug36W
-	 hYrk4Dww1SNug==
+	b=qzvkb0cbZJ5m5WmeCn5YlzRxuDz4NAE81VPSKugzHBth1kBeqlIOtqf8gMSP8DnBA
+	 Cerd1AvEbNbPEIRk8bE6ewFBUCy48vf00u9BAFPg1VopfMAxvPqF7aac0rB0TymuUY
+	 jV5P6rbmsj/gOwA3GYZAneywRpereu+p+c3QncFE5lUKyl2/wkTposum09fEQZxMqO
+	 MEZTCZHnnj5p60Rebw/9Io4SrImXUixh24N5fh/qZ9bXgA3ueobefjUY5wHQwLh1/T
+	 BVcQ1xe+6GU7RcJieIQBdZ2w1qir/iQXMibvgIpani5H/7M83qsYdh4AHUlOMuaubY
+	 N6ZLALdknmU3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Icenowy Zheng <uwu@icenowy.me>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+Cc: Gabor Juhos <j4g8y7@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	fustini@kernel.org,
-	guoren@kernel.org,
-	wefu@redhat.com,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.17] pmdomain: thead: create auxiliary device for rebooting
-Date: Thu,  9 Oct 2025 11:55:35 -0400
-Message-ID: <20251009155752.773732-69-sashal@kernel.org>
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17-6.16] spi: spi-qpic-snand: handle 'use_ecc' parameter of qcom_spi_config_cw_read()
+Date: Thu,  9 Oct 2025 11:55:36 -0400
+Message-ID: <20251009155752.773732-70-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009155752.773732-1-sashal@kernel.org>
 References: <20251009155752.773732-1-sashal@kernel.org>
@@ -69,107 +67,126 @@ X-stable-base: Linux 6.17.1
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 64581f41f4c4aa1845edeee6bb0c8f2a7103d9aa ]
+[ Upstream commit 9c45f95222beecd6a284fd1284d54dd7a772cf59 ]
 
-The reboot / power off operations require communication with the AON
-firmware too.
+During raw read, neither the status of the ECC correction nor the erased
+state of the codeword gets checked by the qcom_spi_read_cw_raw() function,
+so in case of raw access reading the corresponding registers via DMA is
+superfluous.
 
-As the driver is already present, create an auxiliary device with name
-"reboot" to match that driver, and pass the AON channel by using
-platform_data.
+Extend the qcom_spi_config_cw_read() function to evaluate the existing
+(but actually unused) 'use_ecc' parameter, and configure reading only
+the flash status register when ECC is not used.
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+With the change, the code gets in line with the corresponding part of
+the config_nand_cw_read() function in the qcom_nandc driver.
+
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250808-qpic-snand-handle-use_ecc-v1-1-67289fbb5e2f@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-YES
+Based on my comprehensive analysis of this commit, here is my
+assessment:
 
-- User-visible bugfix: Without this, TH1520 systems cannot register
-  platform reboot/poweroff handlers via the AON firmware, so
-  reboot/poweroff won’t work even though the AON protocol and the reboot
-  driver exist. This commit wires them up by instantiating the auxiliary
-  device that the reboot driver matches on.
-- Small and contained: Adds a tiny helper and one call in the TH1520 PM
-  domain driver; no architectural changes.
-- Specific code changes
-  - Adds `th1520_pd_reboot_init()` which creates an auxiliary device
-    named `reboot` and passes the AON channel through `platform_data` so
-    the reboot driver can use it: drivers/pmdomain/thead/th1520-pm-
-    domains.c:176
-    - `adev = devm_auxiliary_device_create(dev, "reboot", aon_chan);`
-  - Hooks it into probe after setting up PM domains and the optional GPU
-    pwrseq: drivers/pmdomain/thead/th1520-pm-domains.c:250
-    - `ret = th1520_pd_reboot_init(dev, aon_chan);`
-  - Error path is correctly routed back to the provider cleanup.
-- Correct driver pairing: The created device name matches the existing
-  driver’s ID table
-  - Reboot driver expects `th1520_pm_domains.reboot` and consumes
-    `adev->dev.platform_data` as the `th1520_aon_chan` to issue AON RPCs
-    for poweroff/restart: drivers/power/reset/th1520-aon-reboot.c:51 and
-    drivers/power/reset/th1520-aon-reboot.c:82
-- Risk and scope:
-  - TH1520-specific; no impact on other platforms.
-  - Only instantiates an auxiliary device; safe if the reboot driver
-    isn’t present.
-  - No ABI/uAPI changes.
-- Important follow-up fix to include: The original change used
-  `PTR_ERR_OR_ZERO(adev)` with `devm_auxiliary_device_create()`, which
-  returns NULL on failure (not an error pointer). That was fixed by
-  “pmdomain: thead: Fix error pointer vs NULL bug in
-  th1520_pd_reboot_init()” (bbc3110823eca), which changes the return to
-  `-ENODEV` on NULL and returns 0 otherwise:
-  drivers/pmdomain/thead/th1520-pm-domains.c:181. For stable
-  backporting, include this fix alongside the main commit to avoid
-  silently succeeding when the aux device creation fails.
-- Stable policy fit:
-  - Fixes a real functionality gap (reboot/poweroff) for TH1520 users.
-  - Minimal code, clear intent, and contained to the TH1520 PM domain
-    driver.
-  - No feature creep or architectural refactoring.
+## Backport Recommendation: **YES**
 
-Recommendation: Backport this commit together with the follow-up fix
-bbc3110823eca to ensure correct error handling.
+### Analysis Summary:
 
- drivers/pmdomain/thead/th1520-pm-domains.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+**Context & History:**
+This commit fixes a code correctness issue in the spi-qpic-snand driver
+(added in v6.17, Feb 2025). The `qcom_spi_config_cw_read()` function had
+a `use_ecc` parameter since the driver's inception, but it was
+completely ignored - the function always read both ECC-related registers
+regardless of whether ECC was being used.
 
-diff --git a/drivers/pmdomain/thead/th1520-pm-domains.c b/drivers/pmdomain/thead/th1520-pm-domains.c
-index 9040b698e7f7f..5213994101a59 100644
---- a/drivers/pmdomain/thead/th1520-pm-domains.c
-+++ b/drivers/pmdomain/thead/th1520-pm-domains.c
-@@ -173,6 +173,16 @@ static int th1520_pd_pwrseq_gpu_init(struct device *dev)
- 					adev);
+**Technical Details:**
+The change modifies lines 491-500 in `drivers/spi/spi-qpic-snand.c`:
+
+**Before:** Always reads 3 registers via DMA:
+- `NAND_FLASH_STATUS` + `NAND_BUFFER_STATUS` (2 registers)
+- `NAND_ERASED_CW_DETECT_STATUS` (1 register)
+
+**After:** Conditionally reads based on `use_ecc`:
+- When `use_ecc=true`: Reads all 3 registers (normal ECC-enabled reads)
+- When `use_ecc=false`: Reads only `NAND_FLASH_STATUS` (raw reads)
+
+**Why This Matters:**
+1. **Code Correctness:** During raw reads (`use_ecc=false`), the
+   `qcom_spi_check_raw_flash_errors()` function (line 557-571) only
+   checks the flash status register, never the ECC registers. Reading
+   those ECC registers via DMA is "superfluous" as the commit message
+   states.
+
+2. **Established Pattern:** This aligns with the qcom_nandc driver's
+   `config_nand_cw_read()` function, which has had this exact same
+   conditional logic since 2018 (commit 5bc36b2bf6e2c8). That commit's
+   message explained: "For raw reads, there won't be any ECC failure but
+   the operational failures are possible, so schedule the
+   NAND_FLASH_STATUS read."
+
+3. **Already Backported:** The commit shows `[ Upstream commit
+   9c45f95222bee ]` and `Signed-off-by: Sasha Levin
+   <sashal@kernel.org>`, indicating it was already selected by AUTOSEL.
+
+**Backport Justification:**
+
+✅ **Pros:**
+- Small, contained change (11 lines, 1 file)
+- Fixes code correctness (parameter was being ignored)
+- Removes unnecessary DMA operations (optimization)
+- Aligns with well-established pattern from related driver
+- Very low regression risk
+- Already reviewed and approved by Konrad Dybcio and Mark Brown
+- No follow-up fixes or reverts since Aug 8, 2025
+
+❌ **Cons:**
+- No explicit `Fixes:` tag
+- No `Cc: stable@vger.kernel.org` tag
+- Not fixing a critical user-visible bug
+- More optimization/cleanup than bug fix
+- Limited impact (Qualcomm-specific hardware only)
+
+**Conclusion:**
+While this doesn't fix a critical bug, it fixes a code correctness issue
+where a function parameter was being completely ignored. The unnecessary
+DMA operations during raw reads waste resources and could potentially
+cause subtle timing or performance issues. The change is safe, well-
+reviewed, and follows the established pattern from the mature qcom_nandc
+driver. The fact that AUTOSEL has already selected it confirms its
+suitability for stable backporting.
+
+ drivers/spi/spi-qpic-snand.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
+index 780abb967822a..5a247eebde4d9 100644
+--- a/drivers/spi/spi-qpic-snand.c
++++ b/drivers/spi/spi-qpic-snand.c
+@@ -494,9 +494,14 @@ qcom_spi_config_cw_read(struct qcom_nand_controller *snandc, bool use_ecc, int c
+ 	qcom_write_reg_dma(snandc, &snandc->regs->cmd, NAND_FLASH_CMD, 1, NAND_BAM_NEXT_SGL);
+ 	qcom_write_reg_dma(snandc, &snandc->regs->exec, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
+ 
+-	qcom_read_reg_dma(snandc, NAND_FLASH_STATUS, 2, 0);
+-	qcom_read_reg_dma(snandc, NAND_ERASED_CW_DETECT_STATUS, 1,
+-			  NAND_BAM_NEXT_SGL);
++	if (use_ecc) {
++		qcom_read_reg_dma(snandc, NAND_FLASH_STATUS, 2, 0);
++		qcom_read_reg_dma(snandc, NAND_ERASED_CW_DETECT_STATUS, 1,
++				  NAND_BAM_NEXT_SGL);
++	} else {
++		qcom_read_reg_dma(snandc, NAND_FLASH_STATUS, 1,
++				  NAND_BAM_NEXT_SGL);
++	}
  }
  
-+static int th1520_pd_reboot_init(struct device *dev,
-+				 struct th1520_aon_chan *aon_chan)
-+{
-+	struct auxiliary_device *adev;
-+
-+	adev = devm_auxiliary_device_create(dev, "reboot", aon_chan);
-+
-+	return PTR_ERR_OR_ZERO(adev);
-+}
-+
- static int th1520_pd_probe(struct platform_device *pdev)
- {
- 	struct generic_pm_domain **domains;
-@@ -235,6 +245,10 @@ static int th1520_pd_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_clean_provider;
- 
-+	ret = th1520_pd_reboot_init(dev, aon_chan);
-+	if (ret)
-+		goto err_clean_provider;
-+
- 	return 0;
- 
- err_clean_provider:
+ static int qcom_spi_block_erase(struct qcom_nand_controller *snandc)
 -- 
 2.51.0
 
