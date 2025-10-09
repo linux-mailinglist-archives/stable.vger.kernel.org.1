@@ -1,147 +1,152 @@
-Return-Path: <stable+bounces-183842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6148BCA309
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:30:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65065BCA345
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 79CED4FCDDB
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:28:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DFE319E51E1
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41215223DC0;
-	Thu,  9 Oct 2025 16:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPUGXPax"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6546A223DC0;
+	Thu,  9 Oct 2025 16:38:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1F1205E25;
-	Thu,  9 Oct 2025 16:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EED21578F
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 16:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760027317; cv=none; b=anyo8Ub1qaGcXQX23fDWYVN3Hpa6YcLIYSUlfyFLnFvif85Ybc0FVGJ3IynxAL6DfO11cfnr6vRutpayFdsiGA5L8t5hVRDy33n2LaURVJqTXS8nLdUUcWJy1yNQJXXk4nIR3ZeBA7tRZOkNrzqmyZL55UONqt/elFZu6JIVtU8=
+	t=1760027890; cv=none; b=iUGBwdq/kYJeXJZ6MkIiqSyHXTuqNfHuNqAAXEfnpxmJ618JG+fQ0UO+0M39uElfxaPIBNWVpeki/5aFwDBDTSp35ny/meNskEm3d1jfdvrd4aCNIE28MWJ5t5mTnHusjg7rZbghBZj5bISDk1eNvlIfk/bJ9jtn4Jpgj7T8cSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760027317; c=relaxed/simple;
-	bh=2wArb6McKN8XDi7aNFLZi+tNZ6xI/BBBQekeTD7ykeI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RkT2EiweW1yDqPqDRuLiCPfKftI8MDYIYarz9MvRej4dqrLzIRf4VzcbP2h3tl1KzsQlQDrMYMY/PTSGW/jCEdk4BV9/6NNR/GBG5sOz/IE+3uQs8ByIwNpAlPWep1xwYLBY8YfzLK9SZCSdQaG+2F1UYTPK8gLsY8VpJVyaXaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPUGXPax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1479BC4CEE7;
-	Thu,  9 Oct 2025 16:28:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760027316;
-	bh=2wArb6McKN8XDi7aNFLZi+tNZ6xI/BBBQekeTD7ykeI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LPUGXPax0HqpgV/RqSODMWwUBKp8JeXUVKMeqW3DaYCo3X6O/7K0oe5igbMZeNAuQ
-	 9DOQ6JV9t4c1ESegbQp2A9t5UABdzoCuHTH4A9UXmRVoWY8tJBkmHNJ+rZgkXMxs0O
-	 h2rP6yYfrsz6cq/D2iJDZSXcOMdslwjWdslCdjN7hEF4YlZhtjWaLeC3cxGWJzmBPn
-	 C3CqXBOd9s95UylE92RPRNjo6OkZmFz7bcpItGI8lG3Zvj7B+pkDFWBvTDCubw4ERc
-	 +AC8Z93KRy9IKg0Zaecfs/sf3AVXYvfwWv9PucFN+jAkTydo9c0kI9fx9ueP3KuEuk
-	 IGgSCwgQbwAjQ==
-Received: by pali.im (Postfix)
-	id B7AA556D; Thu,  9 Oct 2025 18:28:31 +0200 (CEST)
-Date: Thu, 9 Oct 2025 18:28:31 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com,
-	viro@zeniv.linux.org.uk, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
-Subject: Re: [PATCH] exfat: fix out-of-bounds in exfat_nls_to_ucs2()
-Message-ID: <20251009162831.ullg2fxcpkhcsnkh@pali>
-References: <20251006114507.371788-1-aha310510@gmail.com>
- <20251008173935.4skifawm57zqpsai@pali>
- <CAO9qdTFk94yDCMAuTkx5yW9VXYExWuhgpi0X15C5F7e5DQgibA@mail.gmail.com>
+	s=arc-20240116; t=1760027890; c=relaxed/simple;
+	bh=Z6CkqxnnUfmkgbMvPoujJuaf91jki7GVcRE735THLT4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AZrtSC/AmDEd/JxY3W1NWyxCjUWP6O5YC7QRM9m9RoIiaJv6a1LN9V4TZVXdL/Kx/UrRnSc/9NAZ4fzpgFPp9fNw2uIXVtgMlEk2vykQCnHqkN5R/Bx/cvZ6y4aSpFAtFkNk/oUTWAqt5UXuY9CeE7IBxcP2JqCH2XQXh08zRu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 531701762;
+	Thu,  9 Oct 2025 09:37:57 -0700 (PDT)
+Received: from donnerap.manchester.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2BE7B3F66E;
+	Thu,  9 Oct 2025 09:38:04 -0700 (PDT)
+Date: Thu, 9 Oct 2025 17:38:01 +0100
+From: Andre Przywara <andre.przywara@arm.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org, Chen-Yu Tsai
+ <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ samuel@sholland.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.17-6.12] soc: sunxi: sram: add entry for a523
+Message-ID: <20251009173801.13c133a4@donnerap.manchester.arm.com>
+In-Reply-To: <20251009155752.773732-11-sashal@kernel.org>
+References: <20251009155752.773732-1-sashal@kernel.org>
+	<20251009155752.773732-11-sashal@kernel.org>
+Organization: ARM
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAO9qdTFk94yDCMAuTkx5yW9VXYExWuhgpi0X15C5F7e5DQgibA@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thursday 09 October 2025 18:05:26 Jeongjun Park wrote:
-> Hi Pali
-> 
-> Pali Rohár <pali@kernel.org> wrote:
-> >
-> > Hello!
-> >
-> > On Monday 06 October 2025 20:45:07 Jeongjun Park wrote:
-> > > After the loop that converts characters to ucs2 ends, the variable i
-> > > may be greater than or equal to len.
-> >
-> > It is really possible to have "i" greater than len? Because I do not see
-> > from the code how such thing could happen.
-> >
-> > I see only a case when i is equal to len (which is also overflow).
-> >
-> > My understanding:
-> > while-loop condition ensures that i cannot be greater than len and i is
-> > increased by exfat_convert_char_to_ucs2() function which has upper bound
-> > of "len-i". So value of i can be increased maximally by (len-i) which
-> > could lead to maximal value of i to be just "len".
-> >
-> > > However, when checking whether the
-> > > last byte of p_cstring is NULL, the variable i is used as is, resulting
-> > > in an out-of-bounds read if i >= len.
-> > >
-> > > Therefore, to prevent this, we need to modify the function to check
-> > > whether i is less than len, and if i is greater than or equal to len,
-> > > to check p_cstring[len - 1] byte.
-> > >
-> > > Cc: <stable@vger.kernel.org>
-> > > Reported-by: syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
-> > > Closes: https://syzkaller.appspot.com/bug?extid=98cc76a76de46b3714d4
-> > > Fixes: 370e812b3ec1 ("exfat: add nls operations")
-> > > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> > > ---
-> > >  fs/exfat/nls.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
-> > > index 8243d94ceaf4..a52f3494eb20 100644
-> > > --- a/fs/exfat/nls.c
-> > > +++ b/fs/exfat/nls.c
-> > > @@ -616,7 +616,7 @@ static int exfat_nls_to_ucs2(struct super_block *sb,
-> > >               unilen++;
-> > >       }
-> > >
-> > > -     if (p_cstring[i] != '\0')
-> > > +     if (p_cstring[min(i, len - 1)] != '\0')
-> >
-> > What about "if (i < len)" condition instead?
-> >
-> > The p_cstring is the nul term string and my understanding is that the
-> > "p_cstring[i] != '\0'" is checking that i is at position of strlen()+1.
-> > So should not be "if (i < len)" the same check without need to
-> > dereference the p_cstring?
-> >
-> 
-> Thank you for the detailed explanation! I misunderstood.
-> 
-> In summary, since the variable i can never be greater than len, we don't
-> need to consider this case. Therefore, if i is less than len, we can
-> determine that an nls loss has occurred.
-> 
-> I think that under normal nls conditions, i should be equal to len
-> immediately after the while loop terminates, so changing the condition
-> here to "if (i != len)" would be a better way to make this clear.
-> 
-> This way, we can check for an nls loss without dereferencing p_cstring,
-> and we can clearly indicate that i should be equal to len when the while
-> loop terminates. What do you think?
-> 
-> Regards,
-> Jeongjun Park
+On Thu,  9 Oct 2025 11:54:37 -0400
+Sasha Levin <sashal@kernel.org> wrote:
 
-Hello, yes, this is how I understood what is the code doing and how to
-simple fix this reported problem.
+Hi,
+
+> From: Chen-Yu Tsai <wens@csie.org>
+>=20
+> [ Upstream commit 30849ab484f7397c9902082c7567ca4cd4eb03d3 ]
+>=20
+> The A523 has two Ethernet controllers. So in the system controller
+> address space, there are two registers for Ethernet clock delays,
+> one for each controller.
+>=20
+> Add a new entry for the A523 system controller that allows access to
+> the second register.
+>=20
+> Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+> Link: https://patch.msgid.link/20250908181059.1785605-4-wens@kernel.org
+> Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>=20
+> LLM Generated explanations, may be completely bogus:
+>=20
+> YES =E2=80=93 this should go to stable; without it the second GMAC on A523
+> cannot program its clock-delay register.
+
+It's pointless, any kernel before v6.15 will not boot on any A523 device,
+so support for any kind of A523 MAC is irrelevant.
+For newer kernels, this would be tied to the GMAC1 enablement, which is
+also a new feature, so not a candidate for stable.
+
+Cheers,
+Andre
+
+> - The A523 DT already instantiates the system-control syscon with an
+>   A523-specific compatible and wires GMAC0 (with GMAC1 expected next) to
+>   that syscon (`arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi:423` and
+>   `arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi:543`). Because the
+>   current driver falls back to the A64 variant,
+>   `sunxi_sram_regmap_accessible_reg()` only exposes a single EMAC clock
+>   register (`drivers/soc/sunxi/sunxi_sram.c:325`), so any attempt to use
+>   the second EMAC clock register at 0x34 is blocked, which makes the
+>   second Ethernet controller unusable on this SoC.
+> - The patch adds a dedicated A523 variant with `.num_emac_clocks =3D 2`
+>   and wires it into the OF match table
+>   (`drivers/soc/sunxi/sunxi_sram.c:313` and
+>   `drivers/soc/sunxi/sunxi_sram.c:438` after the change). This is the
+>   minimal change required to expose the second register; no other SoCs
+>   are affected and no behaviour changes for existing users.
+> - Risk is very low: the change only enlarges the allowed register window
+>   for the A523 system controller and mirrors the existing H616 handling.
+>   Without it, backporting forthcoming GMAC1 enablement (or any
+>   downstream board DT that already uses it) will continue to fail, so
+>   carrying this fix in stable keeps A523 Ethernet support from
+>   regressing.
+>=20
+> Next step if you pick it up: merge alongside the GMAC1 enablement so the
+> second port works end-to-end.
+>=20
+>  drivers/soc/sunxi/sunxi_sram.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/drivers/soc/sunxi/sunxi_sram.c b/drivers/soc/sunxi/sunxi_sra=
+m.c
+> index 2781a091a6a64..16144a0a0d371 100644
+> --- a/drivers/soc/sunxi/sunxi_sram.c
+> +++ b/drivers/soc/sunxi/sunxi_sram.c
+> @@ -310,6 +310,10 @@ static const struct sunxi_sramc_variant sun50i_h616_=
+sramc_variant =3D {
+>  	.has_ths_offset =3D true,
+>  };
+> =20
+> +static const struct sunxi_sramc_variant sun55i_a523_sramc_variant =3D {
+> +	.num_emac_clocks =3D 2,
+> +};
+> +
+>  #define SUNXI_SRAM_THS_OFFSET_REG	0x0
+>  #define SUNXI_SRAM_EMAC_CLOCK_REG	0x30
+>  #define SUNXI_SYS_LDO_CTRL_REG		0x150
+> @@ -430,6 +434,10 @@ static const struct of_device_id sunxi_sram_dt_match=
+[] =3D {
+>  		.compatible =3D "allwinner,sun50i-h616-system-control",
+>  		.data =3D &sun50i_h616_sramc_variant,
+>  	},
+> +	{
+> +		.compatible =3D "allwinner,sun55i-a523-system-control",
+> +		.data =3D &sun55i_a523_sramc_variant,
+> +	},
+>  	{ },
+>  };
+>  MODULE_DEVICE_TABLE(of, sunxi_sram_dt_match);
+
 
