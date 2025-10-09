@@ -1,99 +1,81 @@
-Return-Path: <stable+bounces-183696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1DC2BC90A5
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 14:34:30 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98EB5BC909F
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 14:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD1D53BFF6F
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 12:32:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 70A804F9A95
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 12:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8E023E334;
-	Thu,  9 Oct 2025 12:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4265523E334;
+	Thu,  9 Oct 2025 12:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X8wZ04/M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Adxxw5cS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EA319E967
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 12:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0639523A;
+	Thu,  9 Oct 2025 12:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760013166; cv=none; b=KoGvO4zWmQa1CTzsllQmp/M1SSauApLnYQ8P1yYCGbxNH+zCA/LOkopLOBMP+pjgiSx6LsVxqV1JrMmO2XOsepSJzNY2RPs33351wu1JzWk+mUCnB4gs86TTCh7Dn7ixmgbRCI39uqpg23g2ZYuoU8G0Qxwf/Bh/CMaazH76XTg=
+	t=1760013160; cv=none; b=nsCAx62ZSPCvpsQA+2c71gtNu95RRA44l/SZWhJYJD9n6hdbWLKXAbWZb/u63Ah8KEHSdMyzAScAQ8QZq41ItgX5Ax8hRJA+fLrman1MxMitQ8vJjCKYwSmNbfjUG6jlN6Py7JfVFay9M2k0cYC01DM+hz5rMZqZBi1ngg2K2bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760013166; c=relaxed/simple;
-	bh=668Z3MlV85j12M7E4iYG5aHUTUwErdII4XWxAOFpOZ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=J5WnxdijbmiKBXh3KGYStb+tWvEeeXuSij+aWAj386/WcArt5PT1WqBPF8WCwtSPfG/+6JT3+X5YaTZrKJAUA7txQYFPwv5xA+3VxAUkOhWgD4Q5Q2NTCjRRa4xPruKIU2hVjIdost7ZpW7ll2kHEfR7WuqrWRmNRlhLw0ynsNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X8wZ04/M; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760013165; x=1791549165;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=668Z3MlV85j12M7E4iYG5aHUTUwErdII4XWxAOFpOZ8=;
-  b=X8wZ04/MgOmk7o95nrG1NkYNC0HKFi1tZ0UXvZCWYqvUjI9iKKwGvrJy
-   ayIjmm1ypHipjgksN4IwKQAKlQlPqzCmPMzY85OcK5EluPuxoGhXbgdAu
-   zHXQJmY9pl8iftHIRVumoRgKClUQM8wFeowRpO6DJICgRPEEN0/IyeR1h
-   d2i2yULMu7FVBKRD+4i2qni6Qh47e4S3kG7MtR7et0Dz8hrbYY84xI9jc
-   cBtTOzxFW1Wy4wUdfzGfviGYQ/xf97KmzD2pgqOwjaYRTw/qkU1i+wvDd
-   HTkDd1hECvsj54ulPhBuW97PagUK+oeAKnMmil2t07UwSQjtHm0D2bAIu
-   g==;
-X-CSE-ConnectionGUID: 5pHTE+TgQkigDptcXAwLiw==
-X-CSE-MsgGUID: RoNW8k+lSHugB2VNC9O2Mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66047883"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="66047883"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 05:32:28 -0700
-X-CSE-ConnectionGUID: r1Q4jEQ5TWycCWDyvKMAag==
-X-CSE-MsgGUID: Fkst9ZhtTjSj8ln3k5ji6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,216,1754982000"; 
-   d="scan'208";a="180278769"
-Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 09 Oct 2025 05:32:27 -0700
-Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v6pom-0000hD-2z;
-	Thu, 09 Oct 2025 12:32:24 +0000
-Date: Thu, 9 Oct 2025 20:31:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/6] drm/panic: Fix overlap between qr code and logo
-Message-ID: <aOerOTyCvH_S8kc-@a686f2e3b087>
+	s=arc-20240116; t=1760013160; c=relaxed/simple;
+	bh=kOQ62hzNRfxXQio1GfpBiqLQK3jn8IRfmjGxk4hY4VU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=OCUPJn9vzAiQHzogiSvTpD5Vt1AJbYWFuWSWF9XeyMTKH910Rq6UUX8S5E2uAocP+JxQhzT1N2VHi449w3Mu4uIBs59DLEk4KTX2j4RcfqlQSwh8A7P2O2VISYzcuD/g76y36sNZsPfUBS1dU0iiU0Kc2JbDdE+4eMt5dg0IOMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Adxxw5cS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90D3C4CEE7;
+	Thu,  9 Oct 2025 12:32:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760013159;
+	bh=kOQ62hzNRfxXQio1GfpBiqLQK3jn8IRfmjGxk4hY4VU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Adxxw5cSBif8CKRrf2tDtkWHUksHyiNwPs25vLmsA2O67zdSIaPgbIjPRROzhwlXB
+	 HudRfOjim/m4gPdZ3dEfaAaG7knDiyExo7u4L4FgwjP7cAbfjpim2Mq8KeHU4iWS2X
+	 EDRMNBcJvCwoP6eCJ9LEGdXLnKp4NjDZS7OX0s2TemOBOB0FlpQ+Z2a5RxZQ7qbr83
+	 tYWz+gsmJLncRLlk5e6SvCL0QnAZEZg/iPyUktIH6SLc2Devy3g1lte5yKGQ4sWU6t
+	 +XVJkkOZSB6wad9wyPExg2mVET3HN7LOH1SYVdQG6lAlBa1ZT6e87PERTGIEStOROG
+	 qkjR2fzRJ0XBQ==
+From: Lee Jones <lee@kernel.org>
+To: Lee Jones <lee@kernel.org>, Johan Hovold <johan@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20250925150219.24361-1-johan@kernel.org>
+References: <20250925150219.24361-1-johan@kernel.org>
+Subject: Re: (subset) [PATCH] mfd: altera-sysmgr: fix device leak on sysmgr
+ regmap lookup
+Message-Id: <176001315848.2814183.5153117784242287470.b4-ty@kernel.org>
+Date: Thu, 09 Oct 2025 13:32:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251009122955.562888-3-jfalempe@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-b87af
 
-Hi,
+On Thu, 25 Sep 2025 17:02:19 +0200, Johan Hovold wrote:
+> Make sure to drop the reference taken to the sysmgr platform device when
+> retrieving its driver data.
+> 
+> Note that holding a reference to a device does not prevent its driver
+> data from going away.
+> 
+> 
+> [...]
 
-Thanks for your patch.
+Applied, thanks!
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+[1/1] mfd: altera-sysmgr: fix device leak on sysmgr regmap lookup
+      commit: e6ce75fac4a299805939e33f9f104829ba9ffdcc
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 2/6] drm/panic: Fix overlap between qr code and logo
-Link: https://lore.kernel.org/stable/20251009122955.562888-3-jfalempe%40redhat.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+--
+Lee Jones [李琼斯]
 
 
