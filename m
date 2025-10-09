@@ -1,76 +1,98 @@
-Return-Path: <stable+bounces-183646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE95BC72C5
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 04:06:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E311BC7308
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 04:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6D4F3E5EC3
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 02:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C68119E2C5F
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 02:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA761D9A54;
-	Thu,  9 Oct 2025 02:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352B48615A;
+	Thu,  9 Oct 2025 02:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="DWGngXQf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xt3Iaty+"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4281C1F02;
-	Thu,  9 Oct 2025 02:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EDD4C81
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 02:18:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759975337; cv=none; b=c9w9n+jFslzEPmt64KtyhfLtXRz/DdDhdQClmwIT6s2ywQ4swo/hGbtbmL8Y1GdjU3ebsUeypJ8LjKg6Kjkhvvtw8w4M1YkJo9tzzD2EkHy1ewu9QmS7tSr8pUx5HYW6T0Shr8C+hYBgBBNICOtDkk0SR2C6dhmQUnUyueTnbLU=
+	t=1759976283; cv=none; b=k5L6grfUCirqPi7IB/hGqJouhgcUZtXkbIWetUMRSWk56x2KOwhW5+oZBNREwaGC3jIb5M2mBO7Di5nuLl2JuPVrELTX+/i4o/OM5sDv6ZlyogcSzvy3q0YThE1dVAduPt+Z0tsdn+185W2PmKgtTZpMPEkDtE69dihvaFdU6ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759975337; c=relaxed/simple;
-	bh=AXBJLQjmVKX4CqJCA5PpFecbwyCPvLASHLapqhwJkaM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m2yvMo/z73dm58djxWMz2RhUQyReUqWoopwWRpa7tlFnfPHg26m6Wex1nw/xqqhaXKs/0zJDUyaCZaq94BL7j0NZTfobgLLTdcq++/fOjwJoDaS/21XbpIAEhyJ+GKJlKkd25Qfcz61o5nW9m1CYDyaBKCMAu5iL5t3QkkxGkF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=DWGngXQf; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: f6396deaa4b311f0b33aeb1e7f16c2b6-20251009
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=aZIE8iEoWepIU4IvbJ7gGd9jnoBAtSM2nxsZWSBh934=;
-	b=DWGngXQfD5chsjPJIdgLykAiwas4ZVDDZOIwMTIDcADe2vWAMrwgLNX79azOylUzi89XOD3d1j/IP5rhFLmRcGTFPz5BMEOM9+8tGIZJwS5zj7kg07Kj2bJqXwNQn2ApkIrlUHag/OvmHISFBlSJ+MneBV5hr7aeMf6oVFt8UWw=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:8d919feb-cf50-4614-9c8f-5fcdd3366f0f,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:a9d874c,CLOUDID:e83c3202-eaf8-4c8c-94de-0bc39887e077,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,
-	OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f6396deaa4b311f0b33aeb1e7f16c2b6-20251009
-Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 549237259; Thu, 09 Oct 2025 10:02:08 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS14N2.mediatek.inc (172.21.101.76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Thu, 9 Oct 2025 10:01:59 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1748.10 via Frontend Transport; Thu, 9 Oct 2025 10:01:59 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Leon Yen <leon.yen@mediatek.com>,
-	<stable@vger.kernel.org>, Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921: fix a potential clc buffer length underflow
-Date: Thu, 9 Oct 2025 10:01:58 +0800
-Message-ID: <20251009020158.1923429-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1759976283; c=relaxed/simple;
+	bh=UPpanAGwa+ZBbXwSP7/T+zKiHQf8/QkRlgpF98tPimE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jSXz7E+R1FTfv6UqtTNyBIy5Ic0xCuHh3HjRX6hdjUPPrWlzqq58q2Td0n1VbCzJCdkmfbFQYsdSCO3DDDrebL2vq0gKuUSFXQ32qtStlL4S0UmX71adzDFui5VqKCG5+qlhtjVI9xDu1OHCJNPIS3KxZ70yZ4oQL7Rf+vVuG5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xt3Iaty+; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4256866958bso262925f8f.1
+        for <stable@vger.kernel.org>; Wed, 08 Oct 2025 19:18:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759976280; x=1760581080; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZMwXLPH27WuiEOjKg3ccYDptKtMt8Wlr4nTnNsdwDvo=;
+        b=Xt3Iaty+qg50iyEURpxQNUtJE2jdftMplckT92f/N8mV0G0Fh/GJk7rzsKcLoT1+yJ
+         4FgEraiMHq8cBxbhL6xLZAwN+qv1bjTGkJ0cO1RT6tOK0ktxktB0L5pNKeosjf4aya4M
+         BPhEpUTQyIJgrwyAD2Bo1nSIiE+YSmqHPbzNZ8TskYEAalc4JONdrZDfINUugQzi0eXk
+         o0aA5jeCchlqHcmIGtml/dvL8fMquQOmiTbFCh4CqXS/rHvdFP2ijj7pDHjCNZIDLAIu
+         2KiTfkXW0rsWBBIxeLhYGr38HXJjauktcNhXKFbnAcHw3dth1G3UkrqHngYELzsvkV5h
+         73hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759976280; x=1760581080;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZMwXLPH27WuiEOjKg3ccYDptKtMt8Wlr4nTnNsdwDvo=;
+        b=EqdjgTgoIwxKlxhtMhD9Li2D+14WK2aSz+knUZDET+LjcnXvlRSJyVNwAhqCxreOvK
+         d8eHtYIbYV+joi+MXt3UZ+7/aqOMNxu7hBqLAsVCjuZ/kUJfU9DUFh+z3Z/qM8pM0uSq
+         za+bw+pBWUz5c4SzpfGoR12T3oKYrMLaX2nHe9CuALLwmnixA6frXtWpJ3C4s8nDf+VJ
+         7I7fTCv8/JGzRYDXYu+OnGlE84E1Ta9L59W7CZpRuuFDYc0VF7E33DXtHXKbzUjM6El6
+         Q9GZkWJuOEJIPjcGa7FtV0LsbH41NRBXKiBssHjmCv7HmceVw2S61QbEtHd1Sqkoi2pR
+         lsEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWPouDLtZhP6gBB22M5w/mQPrJ03B/XuqXUzWsHN5F7AHxJXv271883pV7fWft1jkLF+I4AuzA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4c2GWYA4BJFkJnk3o/XvUhzDHM1IdWIjJKzFSS8VGhQiS7rTO
+	PktDHzosOKQuSGR4fYnBwgmVxroSwTcJgD3CfbztEvEZbZBFvKb1wNAN
+X-Gm-Gg: ASbGnctc/DxqWFXzq+FChFJB0K22Wj5/8w/nCbm6vjpknRw0w66r6hjocPmCpdB5jBU
+	0HdxwITiez/KpXEQx0+a3MsnEuLgHikyRFS7eObJFm1j6JebkDjdDFzekpn52vpooAjfg3S3sTT
+	zlIjZ+XFSu0YoTGH4NKcnzi3jLa0n+sJwqKVeDVicS/sK1yG5a9xIqurxeznTu/WHoxajcHaIbd
+	WyEtU0sWqylg0ZW6C5I9BaP8MNYFGLkIKug9+xYC69XZRhfpRC8sdx+uHCAbvX2gUJxPnbQYkdX
+	nAdqwSLDxdLWvsXnzJ7q6DvgppCgYuDHxGyXTisBy7TJU0TjYltX94tPo2Eb963I9ncCR6/ezGN
+	GOcZ7pmTDOfwuWoCrfcBFb8WXPAof+yc2Mt1Ed4g8JEQ/qnVDTD+ERlsz1mzdVWw=
+X-Google-Smtp-Source: AGHT+IGkF8cnCg0NUgJr87v3b6RBEHWZZ8L7rvOevRDn7+hjom4Wb24Qm/GEl5r+wlLmW+LXsMv0Yw==
+X-Received: by 2002:a05:6000:4025:b0:403:8cc:db66 with SMTP id ffacd0b85a97d-4266e7df9c6mr3333203f8f.32.1759976279696;
+        Wed, 08 Oct 2025 19:17:59 -0700 (PDT)
+Received: from ekhafagy-ROG-Strix.. ([41.37.1.171])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9d7f91esm60094215e9.20.2025.10.08.19.17.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Oct 2025 19:17:59 -0700 (PDT)
+From: Eslam Khafagy <eslam.medhat1993@gmail.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	airlied@linux.ie,
+	daniel@ffwll.ch,
+	mario.kleiner.de@gmail.com,
+	hersenxs.wu@amd.com,
+	Igor.A.Artemiev@mcst.ru,
+	nikola.cornij@amd.com,
+	srinivasan.shanmugam@amd.com,
+	roman.li@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	eslam.medhat1993@gmail.com
+Subject: [PATCH 5.10.y 0/2] drm/amd/display: Fix potential null dereference
+Date: Thu,  9 Oct 2025 05:17:10 +0300
+Message-ID: <cover.1759974167.git.eslam.medhat1993@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,41 +100,21 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
 
-From: Leon Yen <leon.yen@mediatek.com>
+This series backports commit [52f1783ff414 ("drm/amd/display: Fix potential null dereference")]
+to stable branch 5.10.y. However to apply this i had to backport commit
+[3beac533b8da ("drm/amd/display: Remove redundant safeguards for dmub-srv destroy()")] first.
 
-The buf_len is used to limit the iterations for retrieving the country
-power setting and may underflow under certain conditions due to changes
-in the power table in CLC.
+Igor Artemiev (1):
+  drm/amd/display: Fix potential null dereference
 
-This underflow leads to an almost infinite loop or an invalid power
-setting resulting in driver initialization failure.
+Roman Li (1):
+  drm/amd/display: Remove redundant safeguards for dmub-srv destroy()
 
-Cc: stable@vger.kernel.org
-Fixes: fa6ad88e023d ("wifi: mt76: mt7921: fix country count limitation for CLC")
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 86bd33b916a9..80ccd56409b3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1353,6 +1353,9 @@ int __mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
- 		u16 len = le16_to_cpu(rule->len);
- 		u16 offset = len + sizeof(*rule);
- 
-+		if (buf_len < offset)
-+			break;
-+
- 		pos += offset;
- 		buf_len -= offset;
- 		if (rule->alpha2[0] != alpha2[0] ||
--- 
-2.34.1
+--
+2.43.0
 
 
