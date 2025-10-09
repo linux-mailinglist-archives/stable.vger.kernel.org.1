@@ -1,171 +1,174 @@
-Return-Path: <stable+bounces-183644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02605BC718F
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 03:20:00 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C5BBC72AD
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 04:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 908494E8E51
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 01:19:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5775234BE34
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 02:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D3C2A1CA;
-	Thu,  9 Oct 2025 01:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B671C3F0C;
+	Thu,  9 Oct 2025 02:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=geoffthorpe.net header.i=@geoffthorpe.net header.b="gJDv7dzM"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ibQ2QABF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C858234BA2C
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 01:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19231B4F1F
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 02:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759972796; cv=none; b=jht7Epc//wUMCDDpKaHWuzCsWZSG4l2Z6q9QqV/46dhnSlpxMc5UBsY65X5JzzgYD1JDoj2naTtpA8SFI1zalmBfY/3/IuD0QigfMOPnuLZU+W0/DviNLKnyPMcxe+/UucyPwHDMreHLqosk3+P4pneY9SjruTcapP5/NGzx5GM=
+	t=1759975335; cv=none; b=Vc4t4tewMJeK3tzeV+pzh7coUplS0m5Kea7EIj4Oc/vLTSmfnizosBUDmg1RxkS819cyuE1nOhu2q58TsSKnxNQ2/h4NZkHaLUaazrnimo5tCxfiQGofYSIkHa/e5nPU3yZ1zhaNcQurlTHJdQCSv9ieqB9sr632BQSxu+c5NeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759972796; c=relaxed/simple;
-	bh=ZxWdDT2cizErFSu2EavwIia11MxZf2+fzj9yc9DzoGE=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=iAz11T+dOW1o7U/+nVj7+mZ56qyFzUm6dBwLLJFMc3gcQzL8NvukQsGuZGSkviAmgW8tQZHyBH4eVKBeKpLeuUbT1Lon4NY8YOTuiB18qiDY756BWmxWjmcOLjCdGEeLOUu/BCN7zopGXnpexeWXsvc85yHZg0z3D8oM5DphMdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=geoffthorpe.net; spf=pass smtp.mailfrom=qclibre.com; dkim=pass (1024-bit key) header.d=geoffthorpe.net header.i=@geoffthorpe.net header.b=gJDv7dzM; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=geoffthorpe.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qclibre.com
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-7970e8d1cfeso6194386d6.1
-        for <stable@vger.kernel.org>; Wed, 08 Oct 2025 18:19:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=geoffthorpe.net; s=myprefix; t=1759972793; x=1760577593; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=acR+s3oVDWyAwHDskgAsxeBcl+TGvm3f4GFFmuSPOck=;
-        b=gJDv7dzMZLx+gEk3k7C6My8fzQJDOyjqwdZLA/4Q7CJb0JRZ/Px4hOZZ4UybzTqNWQ
-         4pjgb7WIl1L49QlHQBkZFPHeS1b65M34B7cBGnix0gFdLCJ9tkTgGXHjiuc6teV0cItS
-         i4aGy0H565CIlqOKHP/V+nNtNwnQOHNzjw8fY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759972793; x=1760577593;
-        h=content-transfer-encoding:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=acR+s3oVDWyAwHDskgAsxeBcl+TGvm3f4GFFmuSPOck=;
-        b=F/tdgQwv+CshK9xtS4OOu+Fsj4618dPyf8z4KzyC9+SE1nvh0DW9SP6peR8l1aFKFg
-         1V8VC1uY/R3MWGbdtdv1q5b1eIKh91UrQ7vHC5CY7M/QVK9otWTBEusD/TWoGOtLc7XH
-         kPDMeo1UajUEGwO2VgG0UMMvk9r53K1xRhC/PkfJ+0UvkjEwPqHNiR8s/F6cZYjYSh6V
-         ikTmHR9KYdYMhq45LBZVH6n8X89GkLI7bkEfVRiMW7X/E/2WCd27mFmflptmWiqJ88c1
-         j3Tpf8beO234knVTfJJwxZeEqIGzdCrp5hu2g46YPJI9d1skl8v3N6cLuDg0ntxd6Nrv
-         P4ug==
-X-Gm-Message-State: AOJu0YwlpHvrU++9K/rje5xdOQD3Grj73JEfZPrTGShanW9HwItP98EB
-	RagJtAi5IoceUIjVGHljw+0MMq6FOd6W23BfC1u7rZEQEVVJKhl21fe2JFnSiZ6pqsGh+zoaP0d
-	Yt7cOsEwO2g==
-X-Gm-Gg: ASbGncuYHtfBJ8rWQym1kmc9IPDdXCj7ehUdXdaC99HLIrE1o+VN4sxYUd5t37sQ7QX
-	U3T1e3YytTVrv7sj2WmnwQBF1VCpuDkAbeQWXd6UciD0IGgpvqROIQ1zbsNOUFejhsYM/+ibwIb
-	72aO+XyY8QRbbQzTQKVdv9oxHG49F2FO/ARAyvqwfTT9g3mlKlhd6luQUpOIY/nCd+3/Ud9lVc5
-	Xj2NpCesby1c/SjPOcPJvjSaJYlEfK6THDLApATHMF/qWYxLBtoA8aL/GiqQGs7PV1Z4b0DnF8+
-	DNG5D88a1bVw6AcGgvqIAdnYtswEGXey4Ioci6eNSI4IkJbfxndERU1+GcPnAGxrOcMm1X9b338
-	i1mSp/iYAjlndu0FblX4ADy9hxPJ8GO3PbdCpQd0gHmlheDYYqR8cD0j2pfwVEAjjj0Z+nCKlKK
-	OabeBR2D8keJKE7Q==
-X-Google-Smtp-Source: AGHT+IHAxpEM7+GoT5/HGr1UNF25QOlBKyFcd4LEScvHTr+MLbISRd2I+c6acOdxday8/kU61JUo1Q==
-X-Received: by 2002:a05:6214:c65:b0:79a:6359:14c6 with SMTP id 6a1803df08f44-87b2efc2dc6mr70392156d6.40.1759972793560;
-        Wed, 08 Oct 2025 18:19:53 -0700 (PDT)
-Received: from [10.0.0.3] (modemcable155.19-201-24.mc.videotron.ca. [24.201.19.155])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878be61fb91sm170468636d6.60.2025.10.08.18.19.53
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 18:19:53 -0700 (PDT)
-Message-ID: <643333a0-f434-42fb-82ac-d25a0b56f3b7@geoffthorpe.net>
-Date: Wed, 8 Oct 2025 21:19:52 -0400
+	s=arc-20240116; t=1759975335; c=relaxed/simple;
+	bh=FGWwqKnQ6kJ8i65qahfQZ38o0N58kC2zqWCBjd710Ao=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qy69INubNKnh6paqUCt6Mglpn1A/5cq10Dvn5OtFZnH5MOG3LebRTea0HwkH6Y72aNRv8NW+h5yN3eNVvKj249igs5PFQb5SSNblNmaKJC+LNcSbp1oZjgYZMiiZdLU3BySKUmUcjPZPzorjCnlPE4pnIwow190iDx5IF8bVJ6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ibQ2QABF; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <3e0b7551-698f-4ef6-919b-ff4cbe3aa11c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759975319;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZhDQlPsddEKheWIQpFcriCM6m7o0PSu3nTL17MTHX4o=;
+	b=ibQ2QABFSTUpvgdiYujW8QvoiiTr1qEW3Tdy3UeDf8h5TEfQnjsr5maVJuqWlDZTTUlXD5
+	yI3rzmoIa5SFI48PvMG3ZLD3PcxHf2ijRHO6zBJyHIVZ1/i0ruLKCavWH9QgnbffM0axmv
+	synA/a4qrBBCMmUDmk+vT/aydAh+VYU=
+Date: Thu, 9 Oct 2025 10:01:18 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Geoffrey Thorpe <geoff@geoffthorpe.net>
-Subject: regression in hostfs (ARCH=um)
-To: stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
+ pointers
 Content-Language: en-US
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Eero Tamminen <oak@helsinkinet.fi>,
+ Kent Overstreet <kent.overstreet@linux.dev>, amaindex@outlook.com,
+ anna.schumaker@oracle.com, boqun.feng@gmail.com, ioworker0@gmail.com,
+ joel.granados@kernel.org, jstultz@google.com, leonylgao@tencent.com,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ longman@redhat.com, mhiramat@kernel.org, mingo@redhat.com,
+ mingzhe.yang@ly.com, peterz@infradead.org, rostedt@goodmis.org,
+ Finn Thain <fthain@linux-m68k.org>, senozhatsky@chromium.org,
+ tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
+References: <20250909145243.17119-1-lance.yang@linux.dev>
+ <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
+ <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
+ <CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
+ <inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp>
+ <20251007135600.6fc4a031c60b1384dffaead1@linux-foundation.org>
+ <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org>
+ <56784853-b653-4587-b850-b03359306366@linux.dev>
+ <693a62e0-a2b5-113b-d5d9-ffb7f2521d6c@linux-m68k.org>
+ <23b67f9d-20ff-4302-810c-bf2d77c52c63@linux.dev>
+ <2bd2c4a8-456e-426a-aece-6d21afe80643@linux.dev>
+ <ba00388c-1d5b-4d95-054d-a6f09af41e7b@linux-m68k.org>
+ <3fa8182f-0195-43ee-b163-f908a9e2cba3@linux.dev>
+ <ad7cb710-0d5a-93b1-fa4d-efb236760495@linux-m68k.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <ad7cb710-0d5a-93b1-fa4d-efb236760495@linux-m68k.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Any trivial usage of hostfs seems to be broken since commit cd140ce9 
-("hostfs: convert hostfs to use the new mount API") - that's what it 
-bisected down to.
+@Andrew, what's your call on this?
 
-Steps to reproduce;
+I think we fundamentally disagree on whether this fix for known
+false-positive warnings is needed for -stable.
 
-The following assumes that the ARCH=um kernel has already been compiled 
-(and the 'vmlinux' executable is in the local directory, as is the case 
-when building from the top directory of a source tree). I built mine 
-from a fresh clone using 'defconfig'. The uml_run.sh script creates a 
-bootable root FS image (from debian, via docker) and then boots it with 
-a hostfs mount to demonstrate the regression. This should be observable 
-with any other bootable image though, simply pass "hostfs=<hostpath>" to 
-the ./vmlinux kernel and then try to mount it from within the booted VM 
-("mount -t hostfs none <guestpath>").
+Rather than continuing this thread, let's just ask the maintainer.
 
-The following 3 text files are used, and as they're small enough for 
-copy-n-paste I figured (hoped) it was best to inline them rather than 
-post attachments.
+Thanks,
+Lance
 
-uml_run.sh:
-#!/bin/bash
-set -ex
-cat Dockerfile | docker build -t foobar:foobar -
-docker export -o foobar.tar \
-     `docker run -d foobar:foobar /bin/true`
-dd if=/dev/zero of=rootfs.img \
-     bs=$(expr 2048 \* 1024 \* 1024 / 512) count=512
-mkfs.ext4 rootfs.img
-sudo ./uml_root.sh
-cp rootfs.img temp.img
-dd if=/dev/zero of=swapfile bs=1M count=1024
-chmod 600 swapfile
-mkswap swapfile
-./vmlinux mem=4G ubd0=temp.img rw ubd1=swapfile \
-     hostfs=$(pwd)
-
-uml_root.sh:
-#!/bin/bash
-set -ex
-losetup -D
-LOOPDEVICE=$(losetup -f)
-losetup ${LOOPDEVICE} rootfs.img
-mkdir -p tmpmnt
-mount -t auto ${LOOPDEVICE} tmpmnt/
-(cd tmpmnt && tar xf ../foobar.tar)
-umount tmpmnt
-losetup -D
-
-Dockerfile:
-FROM debian:trixie
-RUN echo 'debconf debconf/frontend select Noninteractive' | \
-     debconf-set-selections
-RUN apt-get update
-RUN apt-get install -y apt-utils
-RUN apt-get -y full-upgrade
-RUN echo "US/Eastern" > /etc/timezone
-RUN chmod 644 /etc/timezone
-RUN cd /etc && rm -f localtime && \
-     ln -s /usr/share/zoneinfo/US/Eastern localtime
-RUN apt-get install -y systemd-sysv kmod
-RUN echo "root:root" | chpasswd
-RUN echo "/dev/ubdb swap swap defaults 0 0" >> /etc/fstab
-RUN mkdir /hosthack
-RUN echo "none /hosthack hostfs defaults 0 0" >> /etc/fstab
-RUN systemctl set-default multi-user.target
-
-Execute ./uml_run.sh to build the rootfs image and boot the VM. This 
-requires a system with docker, and will also require a sudo password 
-when creating the rootfs. The boot output indicates whether the hostfs 
-mount succeeds or not - the boot should degrade to emergency mode if the 
-mount fails, otherwise a login prompt indicates success. (Login is 
-root:root, e.g. if you prefer to go in and shutdown the VM gracefully.)
-
-Please let me know if I can/should provide anything else.
-
-Cheers,
-Geoff
-
-
+On 2025/10/9 05:55, Finn Thain wrote:
+> 
+> On Wed, 8 Oct 2025, Lance Yang wrote:
+> 
+>> On 2025/10/8 18:12, Finn Thain wrote:
+>>>
+>>> On Wed, 8 Oct 2025, Lance Yang wrote:
+>>>
+>>>>
+>>>> In other words, we are not just fixing the bug reported by Eero and
+>>>> Geert, but correcting the blocker tracking mechanism's flawed
+>>>> assumption for -stable ;)
+>>>>
+>>>> If you feel this doesn't qualify as a fix, I can change the Fixes:
+>>>> tag to point to the original commit that introduced this flawed
+>>>> mechanism instead.
+>>>>
+>>>
+>>> That's really a question for the bug reporters. I don't personally
+>>> have a problem with CONFIG_DETECT_HUNG_TASK_BLOCKER so I can't say
+>>> whether the fix meets the requirements set in
+>>> Documentation/process/stable-kernel-rules.rst. And I still don't know
+>>
+>> I'm a bit confused, as I recall you previously stating that "It's wrong
+>> and should be fixed"[1].
+>>
+> 
+> You took that quote out of context. Please go and read it again.
+> 
+>> To clarify, is your current position that it should be fixed in general,
+>> but the fix should not be backported to -stable?
+>>
+> 
+> To clarify, what do you mean by "it"? Is it the commentary discussed in
+> [1]? The misalignment of atomics? The misalignment of locks? The alignment
+> assumptions in your code? The WARN reported by Eero and Geert?
+> 
+>> If so, then I have nothing further to add to this thread and am happy to
+>> let the maintainer @Andrew decide.
+>>
+>>> what's meant by "unnecessary warnings in a few unexpected cases".
+>>
+>> The blocker tracking mechanism will trigger a warning when it encounters
+>> any unaligned lock pointer (e.g., from a packed struct). I don't think
+>> that is the expected behavior.
+> 
+> Sure, no-one was expecting false positives.
+> 
+> I think you are conflating "misaligned" with "not 4-byte aligned". Your
+> algorithm does not strictly require natural alignment, it requires 4-byte
+> alignment of locks.
+> 
+> Regarding your concern about packed structs, please re-read this message:
+> https://lore.kernel.org/all/CAMuHMdV-AtPm-W-QUC1HixJ8Koy_HdESwCCOhRs3Q26=wjWwog@mail.gmail.com/
+> 
+> AFAIK the problem with your code is nothing more than the usual difficulty
+> encountered when porting between architectures that have different
+> alignment rules for scalar variables.
+> 
+> Therefore, my question about the theoretical nature of the problem comes
+> down to this.
+> 
+> Is the m68k architecture the only one producing actual false positives?
+> 
+> Do you know of actual instances of locks in packed structs?
+> 
+>> Instead, it should simply skip any unaligned pointer it cannot handle.
+>> For the stable kernels, at least, this is the correct behavior.
+>>
+> 
+> Why? Are users of the stable branch actually affected?
+> 
+>> [1]
+>> https://lore.kernel.org/lkml/6ec95c3f-365b-e352-301b-94ab3d8af73c@linux-m68k.org/
+>>
+>>
 
 
