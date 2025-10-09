@@ -1,109 +1,154 @@
-Return-Path: <stable+bounces-183682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE81EBC895D
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 12:51:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0C5BC8C56
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 13:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E39DF1889087
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 10:51:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E34223B959C
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 11:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C9A2DCF7C;
-	Thu,  9 Oct 2025 10:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA872DFA3A;
+	Thu,  9 Oct 2025 11:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="gYVeLXP7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4FcU3jW"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB8313E41A;
-	Thu,  9 Oct 2025 10:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055FC2DCC04
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 11:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760007064; cv=none; b=ZGvPCifcWkYjqtw70dpG/kBm7t3gl2AQHtxJ/Kh32KLJmJ78Q15pQWv2psvPlPNMPofjCiqSM3H3BVEvifC/fMIJWVwV0p7oDAl6BU/VqUf/pcOn3loeASnd10ylSo3RYNl0+pDwXggwxl+FZfeJxUQrcsEFSkB64mniTTqW4J8=
+	t=1760009037; cv=none; b=rdD27NeW+1/GLwvNHkKLEmb+kCEMg65NBjEpixEaKiAbbUl/BlX7aFB/8oa0lrkIeCXk8hZnux/fYY7WgKfpS3NWAFDOD3Q6cgEHNX3h0lEV51K/9TPvZeqU/jrovNc9ZCaT+nqVRY64id69zSGRS1gDaXcw5ldgpVgTIWewlu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760007064; c=relaxed/simple;
-	bh=dES5xU44DVZYAsDNXMMecotfKT0H5p3bn+Jl+pDUyZY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NXgPoJPLMCvjM+tygfy7PP22VBNDwx+wSDjMSY2rHad046TDWqgM8LRA8KNHg5aeBHfOsRLv2slLJypc+A2b19YWpGx1+sXd6YTuc07J5r376S5THcXoMIx+f1Fs9ln744lkJNlJCgoEkMxexNxniiNhfIoT8jpO7Tt51UO7hPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=gYVeLXP7; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1760007050;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vsiZ5gBlQopTSGe0JyyYKO7fN0J0UxYzPlRuHKTUIfs=;
-	b=gYVeLXP7MhHyuFhiol5SOAGMkE8kuMSQIR/1n2agnPeCPMbU3TXcNHP6crx3iYP++QlxIL
-	bucnV9YV72jArNUKA4W0Npfs6D2xwuD8XJN/hPlvX3HwQCQ9zsPZS6zgB+u4UO8ffXGVhr
-	kJo2+appnpfoVBhBDjAm5e7Sh68QZd8=
-To: David Rhodes <david.rhodes@cirrus.com>
-Cc: Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] ALSA: hda: Fix missing pointer check in hda_component_manager_init function
-Date: Thu,  9 Oct 2025 13:50:47 +0300
-Message-ID: <20251009105050.20806-1-arefev@swemel.ru>
+	s=arc-20240116; t=1760009037; c=relaxed/simple;
+	bh=M8nKHUSLyfmF/jDqaCh29GHjGeEn2rLwihqAqoSAQ1U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=elE3+sOAgSvSKUORj5KvdcRT6pFOBHwZvAzzMC0wMtTZQArFL1G+mHkxfyvi220OOXfw9PqoK3ltFTw5HU5tzxm7Qjm1XS2CSWcNMrwX9mZsgj1C7JoRJ2jTt//REsJMH/uT+P7tfVvJe7+79Uw56l77miJebGqJ+ndyph90oic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4FcU3jW; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3322e6360bbso823686a91.0
+        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 04:23:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760009034; x=1760613834; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kliHzWy45qfkN0IzOPN+PcDRadWv7e7Kck/MfP/2C44=;
+        b=W4FcU3jWi9hIPMO7TKrTCUPJTEcQWtrhQpJIpnCxru7nx5N5zEtCvZbPMbITqSUp/9
+         RP4lz9yiwTXTefqmNh2Cxp3uQsjadOC3i65gcm1Q2z0wr2g1DVhPEjYdW69RGqjeE0fP
+         mSnge8Q9HfW5bWH29YLP21am7ylFlvXbsYnjPavjCvL6/U2wVVk+Zw8zMW0C5D5ww5GN
+         fNzyQkgBQhDKNOeKpn/sLK7c2vh1yL5TttBHQ4/ZlEUT8767MbJA4frUxnKDn/0u+6Jp
+         TgtgeEyyVxIkbo73BWa6fo+Y1OhCp36lhfwQFtlUgqiu/njcsw7PxCum9eL0rj+3Hl9U
+         T4Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760009034; x=1760613834;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kliHzWy45qfkN0IzOPN+PcDRadWv7e7Kck/MfP/2C44=;
+        b=DzIXl1rQy+ROXZdJZIVNP2y6xnJ3OwhDGHTicLrUhhIOTmP496b1NYZS3NFqfb3X+O
+         QIA9LOsoAs4pbRKQee+pKbQraQJ+vk4rL25ajCmKzAVwKYWyUMft8RUax2SK+c4ziPXf
+         lkZLyqRjOijIbEqfor7PLk30/izx9lMU0szUYcZCuVfO9VuS8pSd9X3byMWqGC2pXsti
+         d4VBUC8cd9Snsg+/LDfR1v0anmud5oqKO1v/bfrKvfKFrKu53X53cJKvugwJ2Lg3lnfi
+         Qpryvoz/WPjgNINbfWlprDvddwyCAPYerkgtYAK8ZpLUoZy/4WAvRUm5tkD+OE9QJlGi
+         nV0w==
+X-Gm-Message-State: AOJu0YxwgMQUYP/KNz8LtCj38RNgEYalfUlSD2nmCyq6iw1WT+SOrj+u
+	pBfQpqXyOguzOqJmmGnlkPH31kMtGb90SKqTvBTob5dgnA/T2/B5gdM0W0byt0sSKiC2SGzEDy6
+	LX63wzzwPMBmQ/g35Fv7u9KQCMkDN6+4=
+X-Gm-Gg: ASbGncsqKyeuKNHnVi5hOnZYrVUY7bijd0iEWAFxekE5/LERPTVfqF667GwXTEP+Etz
+	DrNecKAlmxfyYdF/R7GTF7UzXDUEHVKqgvdoQlCxG9aZ74tk0AhzqFO8UrOmS2Bb2aIxEow+a+T
+	Q2vpsEWAEQkUIHGO+oWhw1toWfZty8TWuJufsLVORxxJ9w4PYl4btLWbsk6vi03ZIzaxtKxf4c/
+	FUBcPBJlgLwbFQK64RZ8O/q42lCo0Om0g==
+X-Google-Smtp-Source: AGHT+IE+oExOF2jNddJCJDxFn2LMWZIP7mnrCCfmT9mXjdVFldXv6CzpC9tsZJGeyRewgDpRTI6zkh6MEHvslRRbXv0=
+X-Received: by 2002:a17:90b:48:b0:32e:5d87:8abc with SMTP id
+ 98e67ed59e1d1-33b51399953mr8978140a91.36.1760009034367; Thu, 09 Oct 2025
+ 04:23:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251007155808.438441-1-aha310510@gmail.com> <2025100824-frolic-spout-d400@gregkh>
+In-Reply-To: <2025100824-frolic-spout-d400@gregkh>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Thu, 9 Oct 2025 20:23:42 +0900
+X-Gm-Features: AS18NWDC7BJjcFMFyKRFdwMNKT5poJ9maKr6eXsqA75V1U9kn8oIuPnGoXIKjFI
+Message-ID: <CAO9qdTEo46hCZ0UXKjjBQ4W2sLT2+5zw9DugQF98sqpHLyNzPg@mail.gmail.com>
+Subject: Re: [PATCH 6.12.y 6.6.y 6.1.y 5.15.y 5.10.y 5.4.y] ALSA: usb-audio:
+ Kill timer properly at removal
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Takashi Iwai <tiwai@suse.de>, 
+	syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com, 
+	Clemens Ladisch <clemens@ladisch.de>, Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org, 
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The __component_match_add function may assign the 'matchptr' pointer
-the value ERR_PTR(-ENOMEM), which will subsequently be dereferenced.
+Hi Greg,
 
-The call stack leading to the error looks like this:
+Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Wed, Oct 08, 2025 at 12:58:08AM +0900, Jeongjun Park wrote:
+> > From: Takashi Iwai <tiwai@suse.de>
+> >
+> > [ Upstream commit 0718a78f6a9f04b88d0dc9616cc216b31c5f3cf1 ]
+> >
+> > The USB-audio MIDI code initializes the timer, but in a rare case, the
+> > driver might be freed without the disconnect call.  This leaves the
+> > timer in an active state while the assigned object is released via
+> > snd_usbmidi_free(), which ends up with a kernel warning when the debug
+> > configuration is enabled, as spotted by fuzzer.
+> >
+> > For avoiding the problem, put timer_shutdown_sync() at
+> > snd_usbmidi_free(), so that the timer can be killed properly.
+> > While we're at it, replace the existing timer_delete_sync() at the
+> > disconnect callback with timer_shutdown_sync(), too.
+> >
+> > Reported-by: syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/681c70d7.050a0220.a19a9.00c6.GAE@google.com
+> > Cc: <stable@vger.kernel.org>
+> > Link: https://patch.msgid.link/20250519212031.14436-1-tiwai@suse.de
+> > Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> > [ del_timer vs timer_delete differences ]
+> > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> > ---
+> >  sound/usb/midi.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+> > index a792ada18863..c3de2b137435 100644
+> > --- a/sound/usb/midi.c
+> > +++ b/sound/usb/midi.c
+> > @@ -1530,6 +1530,7 @@ static void snd_usbmidi_free(struct snd_usb_midi *umidi)
+> >                       snd_usbmidi_in_endpoint_delete(ep->in);
+> >       }
+> >       mutex_destroy(&umidi->mutex);
+> > +     timer_shutdown_sync(&umidi->error_timer);
+>
+> This function is not in older kernel versions, you did not test this
+> build :(
+>
+> I've applied this to 6.6.y and newer, but for 6.1.y and older, please
+> use the proper function.
 
-hda_component_manager_init
-|-> component_match_add
-    |-> component_match_add_release
-        |-> __component_match_add ( ... ,**matchptr, ... )
-            |-> *matchptr = ERR_PTR(-ENOMEM);       // assign
-|-> component_master_add_with_match( ...  match)
-    |-> component_match_realloc(match, match->num); // dereference
+Sorry, I didn't realize that the timer_shutdown_sync() implementation
+commit wasn't backported to versions prior to 6.2.
 
-Add IS_ERR() check to prevent the crash.
+But why wasn't this feature backported to previous versions? I understand
+that most drivers write separate patches for pre-6.2 versions that don't
+implement timer_shutdown_sync() to address this type of bug.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Is there some other, unavoidable reason I'm unaware of?
 
-Fixes: ae7abe36e352 ("ALSA: hda/realtek: Add CS35L41 support for Thinkpad laptops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
----
-V1 -> V2:
-Changed tag Fixes
-Add print to log an error it as Stefan Binding <sbinding@opensource.cirrus.com> suggested
+>
+> thanks,
+>
+> greg k-h
 
- sound/hda/codecs/side-codecs/hda_component.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/sound/hda/codecs/side-codecs/hda_component.c b/sound/hda/codecs/side-codecs/hda_component.c
-index bcf47a301697..603a9b8ca481 100644
---- a/sound/hda/codecs/side-codecs/hda_component.c
-+++ b/sound/hda/codecs/side-codecs/hda_component.c
-@@ -174,6 +174,10 @@ int hda_component_manager_init(struct hda_codec *cdc,
- 		sm->match_str = match_str;
- 		sm->index = i;
- 		component_match_add(dev, &match, hda_comp_match_dev_name, sm);
-+		if (IS_ERR(match)) {
-+			codec_err(cdc, "Fail to add component %ld\n", PTR_ERR(match));
-+			return PTR_ERR(match);
-+		}
- 	}
- 
- 	ret = component_master_add_with_match(dev, ops, match);
--- 
-2.43.0
-
+Regards,
+Jeongjun Park
 
