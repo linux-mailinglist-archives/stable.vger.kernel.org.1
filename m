@@ -1,171 +1,99 @@
-Return-Path: <stable+bounces-183693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAC8BC9066
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 14:31:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DC2BC90A5
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 14:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C585188B5FE
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 12:31:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD1D53BFF6F
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 12:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6252E2DD0;
-	Thu,  9 Oct 2025 12:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8E023E334;
+	Thu,  9 Oct 2025 12:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ee2oM8RM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X8wZ04/M"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8B72E1F06
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 12:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EA319E967
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 12:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760013043; cv=none; b=KbxmVWEzSBszDA+8nZNFM1YjE9ET8Z009RSKh7FkfmlEXWDysob/VFtkzoi/QQkhZvlB3Ts0n5j7FJ5qmDbrvC8BzisI5Il/g82pMOmnSVlQTcPBJ+sNdEj6zORdBwYOOMZq3qvPSowzjO/Nr0lb+XbcgLLfoB7E31O9HQhBB3A=
+	t=1760013166; cv=none; b=KoGvO4zWmQa1CTzsllQmp/M1SSauApLnYQ8P1yYCGbxNH+zCA/LOkopLOBMP+pjgiSx6LsVxqV1JrMmO2XOsepSJzNY2RPs33351wu1JzWk+mUCnB4gs86TTCh7Dn7ixmgbRCI39uqpg23g2ZYuoU8G0Qxwf/Bh/CMaazH76XTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760013043; c=relaxed/simple;
-	bh=t9ylgHY+PljaKu8kJBcIBeNSsNWev04iThKtIuBpAP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDbrDD42wul0cIp8IrCCQuTpAR9P08R03AjPolvN9Q0taEu6gCPsX9Qy695ZItzhp8KkbD3GMXOKhjZTQ/z2X5uGBTQjktjl8Nl+nPP2XmjyaM4T0o/EsusRU0CtAHd9rjWqWDDIOMg/ndBEgBMC59VUdkFbwFttMHTFOZU4ywU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ee2oM8RM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760013041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hyzFZxJbO2L5avzgNukRA/OHc7c+vIBxWzW6CopjW/U=;
-	b=Ee2oM8RMxllvs/YkserRvdFNMURkdfAgiAsLkghH/+1pQIcPDgBO+n/BVdV4cuomYP9zDu
-	c4CkcPbMl1Sz9NzZub7t4WcJuz2IiJFEM9ho96evS78qqyrs+2t13DahQb0nWGQvbBj5dl
-	M9eoUFsz1hZa4Hu8F2t0SBJT+hPsraM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-Ys3Hi_-hOVit_MVKA0Ie8g-1; Thu,
- 09 Oct 2025 08:30:39 -0400
-X-MC-Unique: Ys3Hi_-hOVit_MVKA0Ie8g-1
-X-Mimecast-MFC-AGG-ID: Ys3Hi_-hOVit_MVKA0Ie8g_1760013038
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 027001800587;
-	Thu,  9 Oct 2025 12:30:38 +0000 (UTC)
-Received: from hydra.redhat.com (unknown [10.45.225.212])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A9328180035E;
-	Thu,  9 Oct 2025 12:30:34 +0000 (UTC)
-From: Jocelyn Falempe <jfalempe@redhat.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6/6] drm/panic: Fix 24bit pixel crossing page boundaries
-Date: Thu,  9 Oct 2025 14:24:53 +0200
-Message-ID: <20251009122955.562888-7-jfalempe@redhat.com>
-In-Reply-To: <20251009122955.562888-1-jfalempe@redhat.com>
-References: <20251009122955.562888-1-jfalempe@redhat.com>
+	s=arc-20240116; t=1760013166; c=relaxed/simple;
+	bh=668Z3MlV85j12M7E4iYG5aHUTUwErdII4XWxAOFpOZ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=J5WnxdijbmiKBXh3KGYStb+tWvEeeXuSij+aWAj386/WcArt5PT1WqBPF8WCwtSPfG/+6JT3+X5YaTZrKJAUA7txQYFPwv5xA+3VxAUkOhWgD4Q5Q2NTCjRRa4xPruKIU2hVjIdost7ZpW7ll2kHEfR7WuqrWRmNRlhLw0ynsNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X8wZ04/M; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760013165; x=1791549165;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=668Z3MlV85j12M7E4iYG5aHUTUwErdII4XWxAOFpOZ8=;
+  b=X8wZ04/MgOmk7o95nrG1NkYNC0HKFi1tZ0UXvZCWYqvUjI9iKKwGvrJy
+   ayIjmm1ypHipjgksN4IwKQAKlQlPqzCmPMzY85OcK5EluPuxoGhXbgdAu
+   zHXQJmY9pl8iftHIRVumoRgKClUQM8wFeowRpO6DJICgRPEEN0/IyeR1h
+   d2i2yULMu7FVBKRD+4i2qni6Qh47e4S3kG7MtR7et0Dz8hrbYY84xI9jc
+   cBtTOzxFW1Wy4wUdfzGfviGYQ/xf97KmzD2pgqOwjaYRTw/qkU1i+wvDd
+   HTkDd1hECvsj54ulPhBuW97PagUK+oeAKnMmil2t07UwSQjtHm0D2bAIu
+   g==;
+X-CSE-ConnectionGUID: 5pHTE+TgQkigDptcXAwLiw==
+X-CSE-MsgGUID: RoNW8k+lSHugB2VNC9O2Mw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66047883"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="66047883"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 05:32:28 -0700
+X-CSE-ConnectionGUID: r1Q4jEQ5TWycCWDyvKMAag==
+X-CSE-MsgGUID: Fkst9ZhtTjSj8ln3k5ji6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,216,1754982000"; 
+   d="scan'208";a="180278769"
+Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 09 Oct 2025 05:32:27 -0700
+Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v6pom-0000hD-2z;
+	Thu, 09 Oct 2025 12:32:24 +0000
+Date: Thu, 9 Oct 2025 20:31:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/6] drm/panic: Fix overlap between qr code and logo
+Message-ID: <aOerOTyCvH_S8kc-@a686f2e3b087>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251009122955.562888-3-jfalempe@redhat.com>
 
-When using page list framebuffer, and using RGB888 format, some
-pixels can cross the page boundaries, and this case was not handled,
-leading to writing 1 or 2 bytes on the next virtual address.
+Hi,
 
-Add a check and a specific function to handle this case.
+Thanks for your patch.
 
-Fixes: c9ff2808790f0 ("drm/panic: Add support to scanout buffer as array of pages")
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
----
- drivers/gpu/drm/drm_panic.c | 46 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index bc5158683b2b..d4b6ea42db0f 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -174,6 +174,33 @@ static void drm_panic_write_pixel24(void *vaddr, unsigned int offset, u32 color)
- 	*p = color & 0xff;
- }
- 
-+/*
-+ * Special case if the pixel crosses page boundaries
-+ */
-+static void drm_panic_write_pixel24_xpage(void *vaddr, struct page *next_page,
-+					  unsigned int offset, u32 color)
-+{
-+	u8 *vaddr2;
-+	u8 *p = vaddr + offset;
-+
-+	vaddr2 = kmap_local_page_try_from_panic(next_page);
-+
-+	*p++ = color & 0xff;
-+	color >>= 8;
-+
-+	if (offset == PAGE_SIZE - 1)
-+		p = vaddr2;
-+
-+	*p++ = color & 0xff;
-+	color >>= 8;
-+
-+	if (offset == PAGE_SIZE - 2)
-+		p = vaddr2;
-+
-+	*p = color & 0xff;
-+	kunmap_local(vaddr2);
-+}
-+
- static void drm_panic_write_pixel32(void *vaddr, unsigned int offset, u32 color)
- {
- 	u32 *p = vaddr + offset;
-@@ -231,7 +258,14 @@ static void drm_panic_blit_page(struct page **pages, unsigned int dpitch,
- 					page = new_page;
- 					vaddr = kmap_local_page_try_from_panic(pages[page]);
- 				}
--				if (vaddr)
-+				if (!vaddr)
-+					continue;
-+
-+				// Special case for 24bit, as a pixel might cross page boundaries
-+				if (cpp == 3 && offset + 3 > PAGE_SIZE)
-+					drm_panic_write_pixel24_xpage(vaddr, pages[page + 1],
-+								      offset, fg32);
-+				else
- 					drm_panic_write_pixel(vaddr, offset, fg32, cpp);
- 			}
- 		}
-@@ -321,7 +355,15 @@ static void drm_panic_fill_page(struct page **pages, unsigned int dpitch,
- 				page = new_page;
- 				vaddr = kmap_local_page_try_from_panic(pages[page]);
- 			}
--			drm_panic_write_pixel(vaddr, offset, color, cpp);
-+			if (!vaddr)
-+				continue;
-+
-+			// Special case for 24bit, as a pixel might cross page boundaries
-+			if (cpp == 3 && offset + 3 > PAGE_SIZE)
-+				drm_panic_write_pixel24_xpage(vaddr, pages[page + 1],
-+							      offset, color);
-+			else
-+				drm_panic_write_pixel(vaddr, offset, color, cpp);
- 		}
- 	}
- 	if (vaddr)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 2/6] drm/panic: Fix overlap between qr code and logo
+Link: https://lore.kernel.org/stable/20251009122955.562888-3-jfalempe%40redhat.com
+
 -- 
-2.51.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
