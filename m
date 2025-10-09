@@ -1,136 +1,106 @@
-Return-Path: <stable+bounces-183704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39467BC96B8
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 16:05:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F81BC97CD
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 16:23:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CCF63351242
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 14:05:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21DD7420CE1
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 14:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7038378F59;
-	Thu,  9 Oct 2025 14:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BE02EA48E;
+	Thu,  9 Oct 2025 14:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=geoffthorpe.net header.i=@geoffthorpe.net header.b="SUdeUn+I"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ad+sySV3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C571E47A3
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 14:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598672EA474;
+	Thu,  9 Oct 2025 14:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760018697; cv=none; b=PnIKRJ/CdeKfOWqFTRDODiIMzBa+eP0JpInL6MdoN0eU9NWu5XEdjTc6vLxh/p/p1trlF89Ynhm7q12z2uwZ/Euadlajhi5rzzdlN2RQQ5qiJpfGsqkJ/OSKQqItx2Sf+gILzF7vkwhQ1iDXxl+e/1M2w0WGWBl+CqqUQ9vmqGU=
+	t=1760019819; cv=none; b=opaWMqZwFOTiotGIdobjis3mV/JEu5Yh5+U9QcD/2R5bBQCnwGMnpj/ZNYzA7XYwMtoM7YxB1mft1VFkHZN0teyvC837WkH7TEml3tFX/7HezHkvxADTeJNRE++1O1Ea+01xxS3AgQq/W+OvTIxNDj0eX2IiywTP5a8uS36m1JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760018697; c=relaxed/simple;
-	bh=HFz+DzsAHHYBSi6GUFx67A7OgctCJkmIJ99bn/U5o6Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iAJfK2kdhkE7yojleLHK22c1vKHosAH+Khoisy/mvZ6Xhq9wRS3nVB0DFCVoaiSfI95ofY2RYYJroqdd3HA6QLjThNs/7UxZXeHtikbtpfyQDQr2NV4EPwMDoUo7saRmmG8SexCydvUZyg5pUYCiLNcvJ4vjL1OqCDG9uVNzWiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=geoffthorpe.net; spf=pass smtp.mailfrom=qclibre.com; dkim=pass (1024-bit key) header.d=geoffthorpe.net header.i=@geoffthorpe.net header.b=SUdeUn+I; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=geoffthorpe.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qclibre.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71d71bcac45so10816557b3.0
-        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 07:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=geoffthorpe.net; s=myprefix; t=1760018694; x=1760623494; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RdqKy9G6bRtRu/wXq/+0Le+P5mZ0KkhEVzNICvjTdJs=;
-        b=SUdeUn+IQi0fAW6YJQxyN+6j7VYVrXng244qtszknaYPUex26olKckKHLqgCl+PcIi
-         Tk9uFJ0d6Ie+a4x2yLjV5pr3+CVHkduxnqCDfZebcVrXckBq+qgsqZzgR6fCJEPubatc
-         DHufWIRfxWX44Azx9HTNPb+9OlUgE8xXcsM+A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760018694; x=1760623494;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RdqKy9G6bRtRu/wXq/+0Le+P5mZ0KkhEVzNICvjTdJs=;
-        b=ec+k822zFB4O1xDFM1UPy2a1d2Om9S4a1tS8fiMOP2ANRgvfCmdjKDOanRmehkteNh
-         FXHgdA/XcR78wj7abHvqV2sW0zb+B6yZPzjSQtnWtYg5i7s5oyzq+jIVJmAUje+Z/FNU
-         M7/twOoy+BZNKD/PQ52PO39xVLjnRr2WBrdYMYDwp/NxJ1/klA4fYkX7qydPj3CoF3G7
-         Btq7ZtZYa/wWZxdwq5bJlzDb0auf6bKEaac3oqu8/cfVucOVTpwF6RRzASS01vKcj5SX
-         71feWBM/m6USu+JTrnvmQLkQf4MR2poHKIhZ2iWTFZjIzoQjKr5wgfIdX5hkQe9dlPZS
-         napg==
-X-Forwarded-Encrypted: i=1; AJvYcCV6N1863LY6bPddd6txcHvqcxN74EVkVjO1iEuKqVm5iRN30P5FiZ1hwD8YWdii656DH/c+8rk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwloGkEJyZBhtBbcWJMlfk2rF25lC8gSKxbqZFHKzW29ArDhXbF
-	eMN67jYG+gF5FMRt02OP90GWiNeXIceBj8qme5kHdb/+ePzLei5IKwiIhZJF1I0PI2M=
-X-Gm-Gg: ASbGncu8E3s/6gzoljCltDZzDtp9YKa8l+/UDMPz7wWyb5j6U7B/onjxd9bXe6gk05A
-	da6qxzIJhO/lZ3VvwXkhjuAN1PiP2WbicG7sxLfNDzhcpn/4OOO6n34zgntvhYlPBd65GinhDfk
-	kzXNopZnlhqn9j4PIBqgvn7Rx48TuybM0OkoVnmQ0lWx2iTWayRxA8QtHEYgKw3ZXhNxVD3ODkK
-	IOOB8nfXYaDA546Dyx/uskWa8HJoQM4iYG/ZqQ/iPs8hmpXe2ceA90oGVUvLLtQqDfYQnlKN7WT
-	GPBrA9uoZtPlEQgl/4orpO59H/vEfFsJKrlF1hhaAtsQ6sNbT5pl8jk/mAlItUNEsCHeNeL3lgG
-	i5eY0CJPdZM/Npcw+W9ZkYhsDQvtDOcvB9WNXq40KzO8DdkjylT0RF9oRRXQD8UTEXZSqswcPgF
-	i3w27NVgYDiUHnmA==
-X-Google-Smtp-Source: AGHT+IEy3Zpk1t7I8Y9go0VYl6eLttKJfqUkxmv9wH5m56XMkNIzUJ4aTQJcvW0kxxWmFap74ApUMg==
-X-Received: by 2002:a05:690c:46c5:b0:772:2b5e:1f10 with SMTP id 00721157ae682-780e13f4996mr97210717b3.1.1760018694426;
-        Thu, 09 Oct 2025 07:04:54 -0700 (PDT)
-Received: from [10.0.0.3] (modemcable155.19-201-24.mc.videotron.ca. [24.201.19.155])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8849f2e1db1sm200301485a.4.2025.10.09.07.04.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 07:04:53 -0700 (PDT)
-Message-ID: <028786fa-8964-4dd1-8721-62a5b757237c@geoffthorpe.net>
-Date: Thu, 9 Oct 2025 10:04:52 -0400
+	s=arc-20240116; t=1760019819; c=relaxed/simple;
+	bh=tKsf4rNNLhAUy8cx/s+Zj+MAaKVikS0yGc2U8lMqRPo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g6BjFKnFe0q3bSRUcoktDNCdOiF4VEE7t4pR/8GoaTY8PKpMtgXXM1tmUqm6U+1ZSBt4iHsHBkfPuL6JSJFk0pENyGQJ7poki1A2t69PaIltf1eQacjGtM1nsK6wdybbBCpZF0PmDqYhT9wTcfT00w1aU1C9lfOHnoY865e+rVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ad+sySV3; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A8AAA101DB814;
+	Thu,  9 Oct 2025 16:23:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1760019813; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=0A5K/PIrYFfczp2p7aBd8MOP+eifTgY270bvBsYk9ws=;
+	b=ad+sySV3WNJRwtSW7u2Zn0uLB+SSMg4Zh+KL6VJ8fPKYLhm0CABTN3K/dOTG4k+ZHrB4F7
+	ZBJYeoZRyh1LBFnneelIJHWrbpsP/p8jdgoavwEn4ux1OTx8CLsrCgSTQgiNH8mf8C8cGH
+	Tz3tACg8aSPInLyXJD8GI24dPLdsVtTksQ4/MFhZS9f7AapfVASxVJXJJrPcYYmD3p/FFU
+	htoV/P1+/uJleBe8Ue88S+c8NicjxUT6luGlugkX/Rg933olcImIRi1b+8LiaPddYSHW/U
+	vl0nS3L/Nfw14Ptt9CqyDFdj2mZtFwUmRAr++F3+m7Em5agceOu6jqcjrPCBPw==
+Date: Thu, 9 Oct 2025 16:23:28 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+Subject: Re: [PATCH 6.12 00/10] 6.12.51-rc1 review
+Message-ID: <aOfFYDUuTPkgEqQp@duo.ucw.cz>
+References: <20251003160338.463688162@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: regression in hostfs (ARCH=um)
-To: Hongbo Li <lihongbo22@huawei.com>, stable@vger.kernel.org
-Cc: Christian Brauner <brauner@kernel.org>, regressions@lists.linux.dev
-References: <CAH2n15x389Uv_PuQ8Crm7gg4VC0UZ3kJg+eEfHMy8A6rzUtUAA@mail.gmail.com>
- <75a53a17-b5fe-441e-8953-8c1d5e7ca47a@huawei.com>
-Content-Language: en-US
-From: Geoffrey Thorpe <geoff@geoffthorpe.net>
-In-Reply-To: <75a53a17-b5fe-441e-8953-8c1d5e7ca47a@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 2025-10-08 22:42, Hongbo Li wrote:
->
-> Hi Geoffrey,
->
-> On 2025/10/9 7:22, Geoffrey Thorpe wrote:
->> Any trivial usage of hostfs seems to be broken since commit cd140ce9 
->> ("hostfs: convert hostfs to use the new mount API") - I bisected it 
->> down to this commit to make sure.
->>
->
-> Sorry to trouble you, can you provide your information about mount 
-> version and kernel version (use mount -v and uname -ar) ?
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="8dWd9aYyb2y9MZlB"
+Content-Disposition: inline
+In-Reply-To: <20251003160338.463688162@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
-root@localhost:~# mount --version
-mount from util-linux 2.41 (libmount 2.41.0: selinux, smack, btrfs, 
-verity, namespaces, idmapping, fd-based-mount, statmount, statx, assert, 
-debug)
+--8dWd9aYyb2y9MZlB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-As for the kernel version, I have been bisecting different kernel 
-versions to find the culprit commit. The problem occurs with the commit 
-id I mentioned (cd140ce9: "hostfs: convert hostfs to use the new mount 
-API"). This appears to be between v6.10 and v6.11. The most recent 
-kernel releases all seem to exhibit the problem. My own code has been 
-using kernel v6.6 up till now and that works fine.
+Hi!
 
-By the way, did you try using the steps to reproduce? No pressure to do 
-so, I am just curious if the instructions I provided work OK for other 
-people (or whether I missed something essential). If you do follow those 
-steps, you should be able to see success if you use v6.6 or older, and 
-you should see failure with anything newer.
+> This is the start of the stable review cycle for the 6.12.51 release.
+> There are 10 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-(Side note: when bisecting, I noticed that a number of commits had to be 
-skipped because they seg-faulted during early boot. Fortunately, that 
-didn't prevent me from finding the culprit. I mention this just in case 
-you stumble across a commit that seg-faults too - it appears that's 
-unrelated to the current regression.)
+CIP testing did not find any problems here:
 
-Regards,
-Geoff
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.12.y
 
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
+Best regards,
+                                                                Pavel
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--8dWd9aYyb2y9MZlB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaOfFYAAKCRAw5/Bqldv6
+8pCxAJ42fMNsmC9JjCmiJtNjG84lVoY2sgCgnH0MwALItQyJ3oYlt+cMtue1vjw=
+=hvkj
+-----END PGP SIGNATURE-----
+
+--8dWd9aYyb2y9MZlB--
 
