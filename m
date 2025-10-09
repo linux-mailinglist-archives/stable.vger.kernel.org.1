@@ -1,214 +1,162 @@
-Return-Path: <stable+bounces-183686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C3FBC8E01
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 13:43:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC471BC8FD0
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 14:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D1A63352630
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 11:43:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB4C24F1489
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 12:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D432E092B;
-	Thu,  9 Oct 2025 11:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9782DCC04;
+	Thu,  9 Oct 2025 12:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AbZ19RRZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KdqOzkuK";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TKWwB8UU";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="uLhpTnJ8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rTolYT8P"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BD92DFA3A
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 11:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7312D879B
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 12:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760010217; cv=none; b=LBpg3iA7LrV7f1bbmAbOtilku+5dRift53eZif1UgFyfZ1/B56lfj9SRMcbatkM23Umr4wNZ0Pu+LVmnfW3Cohdu8A2AdkHR4kujgoVNmSM3FVF3XutPUnx8GRQRErf/gYuY5OIP0BvsGQZtzGzGAehqjMFkxpd6TSO0NLxQOO4=
+	t=1760012568; cv=none; b=G+EqHgFBi71ehnFlMggXQjd5pbWjF+PUqsd4twmS4RtVBrBpbKjtrF8mca1WAvSW8hkMsR9zzM5GBiIg0g61MM+dSnh2EWC54ccIeJ/+ZniDZ2g3MLnf2HK4hfrjvXGRxhcfXINTgPW9l0WZk9jfVkBronSuHO6Zwp5Qy/KRxuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760010217; c=relaxed/simple;
-	bh=tmj+vqID2stoZTnrovV4ZydTngVL9314LGt/KjTL3+Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s1OZetzHItswU7cOINDsoYNQpwVpT5DZhxBs2dXSWF6xxbAdCW0/te6ew2GmH5Lv2B/to38cmWb0lQLcK83my//pQsXnQNBolCpaa0ratLb3B+A/Pa0uEDQOdQDMc572NhhyHUQMDHvfdA75ql21N0IbS9S/62gxsLp2+Ld7Ki0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AbZ19RRZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KdqOzkuK; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TKWwB8UU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=uLhpTnJ8; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E10A31F78B;
-	Thu,  9 Oct 2025 11:43:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760010212; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M+fSniwpzHs25VKtHpH5PnHd4TBNPg09lmllWBQnnco=;
-	b=AbZ19RRZ1Gab04QEHkQPCyOtss3ILjUzWwC/lvzQIk/SFAtOBFIwLADl8BURL0TcEsc6AY
-	hsmvgJyzoMzgHgjHDY7F/+D1oaWWrVoYmJv8qpjLBQTabd1+yBl4uXnkwbSQ++AZHaLsj2
-	Jl6/ew7yAhr7J27AhoB/SDGv/NEYMOY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760010212;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M+fSniwpzHs25VKtHpH5PnHd4TBNPg09lmllWBQnnco=;
-	b=KdqOzkuKiBzOlokeBmqCshd1Bk4JID/z6u6ObLZYXv/4N5bHGqQq3ULNrKSnay7nhSbEwG
-	zeN6flV8ea8/FuCg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TKWwB8UU;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=uLhpTnJ8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760010211; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M+fSniwpzHs25VKtHpH5PnHd4TBNPg09lmllWBQnnco=;
-	b=TKWwB8UUrfInlb7JV6Ue7b6Qa+HmUsNABoZi5KlPU1oWYbba1wOr8D0apRcsmYmFgI4Q1j
-	TfBiSIE6W6XyzyQFcVaEEBiEPPOMpBnLXOGhQ2mhRSQ7RqPDArHU6TaRHOMyM3GEW3Caqg
-	9T0yI0sCG7Ad+Rbmp4Ff29QEdna2SiE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760010211;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M+fSniwpzHs25VKtHpH5PnHd4TBNPg09lmllWBQnnco=;
-	b=uLhpTnJ8cNQbj9gep1wfo+f/Uz4hDyqiBjnfAiIXfmGJxtIx0ZPoFxvEhSEKRaQDI33S9n
-	Wd+uNOQVrQxDfQDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A46C613A61;
-	Thu,  9 Oct 2025 11:43:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vlyuJuOf52h8VwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 09 Oct 2025 11:43:31 +0000
-Message-ID: <a4e604bf-eeb9-46ce-bc89-5a7b39acecbc@suse.de>
-Date: Thu, 9 Oct 2025 13:43:31 +0200
+	s=arc-20240116; t=1760012568; c=relaxed/simple;
+	bh=WED1CaVoy7jTVdlX/Aw/IQWqtv/1nGQg+rNRCl+wjRg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I/S2kPCSKdlG/5rMDV21vxEnJudvTNpsfz7Tm33yvLW6SvrAq5n6mLdDIijWrjo5w4LuKv7TQNhQCyt1Qq1N5+csr6ujYHMO3kzRMFYerAPFo2WIeZHNCrhXmVIsY5emobNtSntcxYbGC5C6S+zLbRCVp5sE3D2z+4aSGtrpKlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rTolYT8P; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760012563;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+LD5r01PNN7zm04H6bSvacVHamUM/2IZoCmv2ssIeCg=;
+	b=rTolYT8PhikH16sOIRDoUQet6iGvoyf7ONa/qlIsqyhBepgupyHs0OdGPTCEDLAqueqrJz
+	6+3xmVrUMMBHkVB7ZIHngJD7EoM4lGdiF3zRhX0S6KDP/7l/Cv6v4Pt+r8fqkvIrDOoPft
+	iWj+O/j9E1UXsQuYv7v6OYDkc2qBs2k=
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
+To: harry.wentland@amd.com,
+	christian.koenig@amd.com,
+	sunpeng.li@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	alexander.deucher@amd.com
+Cc: linux-kernel@vger.kernel.org,
+	mario.limonciello@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	regressions@lists.linux.dev,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] Revert "drm/amd/display: Only restore backlight after amdgpu_dm_init or dm_resume"
+Date: Thu,  9 Oct 2025 14:19:00 +0200
+Message-ID: <20251009121900.12777-1-matthew.schwartz@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbdev: Fix logic error in "offb" name match
-To: Finn Thain <fthain@linux-m68k.org>, Simona Vetter <simona@ffwll.ch>,
- Helge Deller <deller@gmx.de>, Javier Martinez Canillas <javierm@redhat.com>
-Cc: stable@vger.kernel.org, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <f91c6079ef9764c7e23abd80ceab39a35f39417f.1759964186.git.fthain@linux-m68k.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <f91c6079ef9764c7e23abd80ceab39a35f39417f.1759964186.git.fthain@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[linux-m68k.org,ffwll.ch,gmx.de,redhat.com];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim,suse.de:email,linux-m68k.org:email];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: E10A31F78B
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
+This fix regressed the original issue that commit d83c747a1225
+("drm/amd/display: Fix brightness level not retained over reboot") solved,
+so revert it until a different approach to solve the regression that
+it caused with AMD_PRIVATE_COLOR is found.
 
+Fixes: a490c8d77d50 ("drm/amd/display: Only restore backlight after amdgpu_dm_init or dm_resume")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4620
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+---
+v1 -> v2:
+- Fix missing stable tag
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 ++++--------
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |  7 -------
+ 2 files changed, 4 insertions(+), 15 deletions(-)
 
-Am 09.10.25 um 00:56 schrieb Finn Thain:
-> A regression was reported to me recently whereby /dev/fb0 had disappeared
-> from a PowerBook G3 Series "Wallstreet". The problem shows up when the
-> "video=ofonly" parameter is passed to the kernel, which is what the
-> bootloader does when "no video driver" is selected. The cause of the
-> problem is the "offb" string comparison, which got mangled when it got
-> refactored. Fix it.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 93604a5ade3a ("fbdev: Handle video= parameter in video/cmdline.c")
-> Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-> ---
->   drivers/video/fbdev/core/fb_cmdline.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/video/fbdev/core/fb_cmdline.c b/drivers/video/fbdev/core/fb_cmdline.c
-> index 4d1634c492ec..594b60424d1c 100644
-> --- a/drivers/video/fbdev/core/fb_cmdline.c
-> +++ b/drivers/video/fbdev/core/fb_cmdline.c
-> @@ -40,7 +40,7 @@ int fb_get_options(const char *name, char **option)
->   	bool enabled;
->   
->   	if (name)
-> -		is_of = strncmp(name, "offb", 4);
-> +		is_of = !strncmp(name, "offb", 4);
->   
->   	enabled = __video_get_options(name, &options, is_of);
->   
-
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 8e1622bf7a42..21281e684b84 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2081,8 +2081,6 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
+ 
+ 	dc_hardware_init(adev->dm.dc);
+ 
+-	adev->dm.restore_backlight = true;
+-
+ 	adev->dm.hpd_rx_offload_wq = hpd_rx_irq_create_workqueue(adev);
+ 	if (!adev->dm.hpd_rx_offload_wq) {
+ 		drm_err(adev_to_drm(adev), "failed to create hpd rx offload workqueue.\n");
+@@ -3438,7 +3436,6 @@ static int dm_resume(struct amdgpu_ip_block *ip_block)
+ 		dc_set_power_state(dm->dc, DC_ACPI_CM_POWER_STATE_D0);
+ 
+ 		dc_resume(dm->dc);
+-		adev->dm.restore_backlight = true;
+ 
+ 		amdgpu_dm_irq_resume_early(adev);
+ 
+@@ -9965,6 +9962,7 @@ static void amdgpu_dm_commit_streams(struct drm_atomic_state *state,
+ 	bool mode_set_reset_required = false;
+ 	u32 i;
+ 	struct dc_commit_streams_params params = {dc_state->streams, dc_state->stream_count};
++	bool set_backlight_level = false;
+ 
+ 	/* Disable writeback */
+ 	for_each_old_connector_in_state(state, connector, old_con_state, i) {
+@@ -10084,6 +10082,7 @@ static void amdgpu_dm_commit_streams(struct drm_atomic_state *state,
+ 			acrtc->hw_mode = new_crtc_state->mode;
+ 			crtc->hwmode = new_crtc_state->mode;
+ 			mode_set_reset_required = true;
++			set_backlight_level = true;
+ 		} else if (modereset_required(new_crtc_state)) {
+ 			drm_dbg_atomic(dev,
+ 				       "Atomic commit: RESET. crtc id %d:[%p]\n",
+@@ -10140,16 +10139,13 @@ static void amdgpu_dm_commit_streams(struct drm_atomic_state *state,
+ 	 * to fix a flicker issue.
+ 	 * It will cause the dm->actual_brightness is not the current panel brightness
+ 	 * level. (the dm->brightness is the correct panel level)
+-	 * So we set the backlight level with dm->brightness value after initial
+-	 * set mode. Use restore_backlight flag to avoid setting backlight level
+-	 * for every subsequent mode set.
++	 * So we set the backlight level with dm->brightness value after set mode
+ 	 */
+-	if (dm->restore_backlight) {
++	if (set_backlight_level) {
+ 		for (i = 0; i < dm->num_of_edps; i++) {
+ 			if (dm->backlight_dev[i])
+ 				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
+ 		}
+-		dm->restore_backlight = false;
+ 	}
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index 009f206226f0..db75e991ac7b 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -630,13 +630,6 @@ struct amdgpu_display_manager {
+ 	 */
+ 	u32 actual_brightness[AMDGPU_DM_MAX_NUM_EDP];
+ 
+-	/**
+-	 * @restore_backlight:
+-	 *
+-	 * Flag to indicate whether to restore backlight after modeset.
+-	 */
+-	bool restore_backlight;
+-
+ 	/**
+ 	 * @aux_hpd_discon_quirk:
+ 	 *
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+2.51.0
 
 
