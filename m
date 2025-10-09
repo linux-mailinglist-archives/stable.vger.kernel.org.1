@@ -1,320 +1,130 @@
-Return-Path: <stable+bounces-183662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91160BC78C4
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 08:25:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C41BC7A7D
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 09:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C7973A4BA2
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 06:25:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D883319E6568
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 07:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43432290D81;
-	Thu,  9 Oct 2025 06:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="B09IWro2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A172D0C78;
+	Thu,  9 Oct 2025 07:18:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f98.google.com (mail-ua1-f98.google.com [209.85.222.98])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B4320E030
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 06:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAF724E01D
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 07:18:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759991115; cv=none; b=FJBPrq85XmPDMGUmPZC/O3F8qtgW9w9x0RVD4CuaMcib4ZweivY71eyj35xI1dhFd1z6e/SINLm95q5jrai8VgnANDwJgMHPJBqb1YDxfZSBYCp69GIrNl2I47FtdObg5nYzD88GRvlyMaFJ7S1MTwdMQvfm33aQuRuKmzgynkM=
+	t=1759994282; cv=none; b=rOpACRC4QuHDg6iUnW/jFas4H6N2zHUSr871vW3Zg/i2UxVccXIwF+Bdnf050d37ETD3gk9rcXwIMCVQp/I2MK13QK9s8WtGH/+GvJ3o6+mibDmqZj7yZ74/c7aR2hgYYHZLnm+HPOBRzJqbZQXQ/NEqApOMIuVIwlgDh7DKOdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759991115; c=relaxed/simple;
-	bh=+J+9CQSJvXmIuePph7LZKBSTQUJaQDgSX95H7QjCjvA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fDPQY8+JROGyQw2iptVkXx3KO5y4ZylJ6TPhzJ3dupFu4xwd/+qAxdyp4QaBxzuIKVLvfv18qtk2PREThufD16++cxTWowmoVzRyUQiYfr9ApRrsEOko6cTlPHunDS0qRq+jrRvrz6JR3EvEQs3a0VmV1nx9wUTcyu+i+rFG0Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=B09IWro2; arc=none smtp.client-ip=209.85.222.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ua1-f98.google.com with SMTP id a1e0cc1a2514c-89018ea5625so188731241.0
-        for <stable@vger.kernel.org>; Wed, 08 Oct 2025 23:25:12 -0700 (PDT)
+	s=arc-20240116; t=1759994282; c=relaxed/simple;
+	bh=vHsLC2ZZf3R3Cazh2jOIeRCeKj5FEq8IfCJ5bB8jxzg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dTO1OLCdkM7xWiJ9Req1KIaZ4KHqS5oAs6nDQE3Qvr/1oGe3CoaX1KmVoogXi9WOzgqrJNMCINKxtZx40XQa8SwB0ohvMvHXdr2rKaWhCQJtAF/K6GZorOFrfjk4lUB/5fgAEUMVd5KO0BISDhm22MkyAk8rR2zcEzDLm0nAxls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-7ea50f94045so16208786d6.1
+        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 00:18:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759991111; x=1760595911;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bS+vJs2offx96KKff6hwDdiXDpHtb7AICfG+1qxivmI=;
-        b=nAMPc/2U6/SjhQueud1Fqz2PzyABbhWkjMZDjOq3hM4zPQbe6ejSgs38AwaaJOXVaF
-         0w8KrAxtQZZ9GCmX2pmxDhKrHFcFazGKiuBmL6TV2Zfw5efI8knK667/C4kGZkpI0eFn
-         adn+Yb7oMr/owDxHH0/4bbwl0KxawbrFyYFugmqrZFtBsrZPqKMGSKDSn3N9cdFWhfHp
-         sovb6hBC7y1Eq2pPWhhwHoG3wlvJg0uOWQBFvVw3oij0P2UJLJSkM0z/hkwoBzgA514/
-         XBKAvPh4nTLjofmu5Uu35C2G7Y3a7xzbGODpleToNH0YVCW5/bH99Pw810G2hisY6zqY
-         FW5g==
-X-Gm-Message-State: AOJu0YwfE3mkjPRyoV3g/Qqp4M5BpVCMMiNZIsyKCVifBuem5/dgPA4S
-	1c8JuucWso4O2+kWVvI0h9ioRSc+faDuKMSNKtpRA3p+vzcVGVT6+/XEperWS6Ih3/VrS/8IYvI
-	3Qzbs65HERFpB2pXQVZAnWNI6hj0IFbepXFtv/yRHqisobODaEkhcqS1Qy1hSm+MhPMWavCxOE0
-	G+ZQ0iPqeGOjlAxANXK0uGShSXSODwxeTUxHpo2aK5lhlSQpkW6xZpD29f/cQZyYQ3KKm480w9C
-	Sp0bxp2iTudao74fA==
-X-Gm-Gg: ASbGncsiBPe+3SmfbTRpKK5tV6Pr7TlT9kX0Ed9tYnPVV7QEnQ3CdaDNmpTjrUi3MZ1
-	DhYDrtgMqbAixBpmJOzTQjhx136Q+e9Pgu7MQIS3gbIqnqhNKo7u5UW1N9yQ6tq0QlR3cLzRFmT
-	morRzif7ONxKH97RHbtBXTOxPG4lOP7oUJ2aj7FUeNdGNT6xTQ5QZrFSLsMqVbX8YQW3Je7DdIf
-	VJ0PWRv/Bohlf3/d4dvCS4glcvEZwOfxPXi0dow4R8Dh34GGfxmmTbtFvisoHISmON3dKor2n/G
-	C2szBG0APqEMm9WpkN7vlGr5ACorYWuR12vt4HqR151dP7zSyxkpXREzdepMssKSOXgmIZvrAls
-	yBd1ty7C85zVk6j4QwfT3RF+wFM8vT63helA5SyICNOByptI7Wl+cZubHEC8wLO62J88KNa5xth
-	OLgyGBqWM4
-X-Google-Smtp-Source: AGHT+IG+zb4yEnbpUikVehiR1iekN4QcK8yAueGOI0GI7HcB0zJlUmZg9THoYFfEuZsCPffLwcfXkGEeFeJC
-X-Received: by 2002:a05:6102:1626:b0:4e9:b0ec:9682 with SMTP id ada2fe7eead31-5d5e237b988mr2268550137.24.1759991111634;
-        Wed, 08 Oct 2025 23:25:11 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-19.dlp.protect.broadcom.com. [144.49.247.19])
-        by smtp-relay.gmail.com with ESMTPS id 71dfb90a1353d-5523d06a33fsm2124815e0c.8.2025.10.08.23.25.11
+        d=1e100.net; s=20230601; t=1759994280; x=1760599080;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sLfLe9mIdxe47Pj3LvR4pabCTnZl5QqVr+O+If4CSm8=;
+        b=ZkXy2aVjWyTjpTlurpbpzlLv8x1i6PxlfN9Ox+vdnkwCDkn9ii4jW9GrSWFMtM/Fd1
+         qKt8XHY+3fH+mIaPl4HWgqsMBXdI8qV6/Et2hoxRoSISqNO87X/Wp1rL76+PTViUpUwb
+         SUqB1LihdhiSt3GQnEkw+9inUtPZiOrwpDByoxYHfPzISaMy/bVAZDcgNpl7tBI3B7ZU
+         m6yl1/09JcR/J9tNC3NcE72oeiy/JRNwaRxQB9+oEGnP0RX9L7d2kMbvaAI2Dam7RfrJ
+         jbKkJH8EJ/zF89NJHyFDaVaQ8Oqr5/O2UNVXocM0qDLy6+qYqlOjLDtqgUeqMBYXUIFN
+         9pcA==
+X-Forwarded-Encrypted: i=1; AJvYcCVIJaAyyvp2kCXU3CwqVgYYAc1EWu9DAF6Xz+Vo3+dIOdT/2rIoOp5QFeuJG+Y6ETrAhYDObN4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx02cg2rdLt0RVJQapOj7/Xp1F3yC4G+wRksUEXlP/y1mqaghet
+	Bp8jhHQj0SKDW4G3OT8zEP4L97MqVn78WdhahwJUDbbTtAfjlhje2g9Ts8ULIr49
+X-Gm-Gg: ASbGncszvzHg5L5uVh/XWlSfHhpE3kynczHGCz1JGutjqxPk7L/mGZUR9SP43VKXj+8
+	cxqiStGz1kMeaPAFlK9UoxnFe1Sto9d2OcQFEO+6vPx4j2g+58zS3lQb7Tq1mmBZ5Vsf1TEaZYA
+	sidl+Uj65utCGJUlbEUlRRNCqPg+EbauXUX7xX/8s1fBiP5j/eddDLA+aNVyjnsEQaWaf0DDhvf
+	fAaY0WNZGXcKap4UnMZdK1SxtnCiOADqBdEXP1MuLJ6QZBPBdnzpsL5Q7dBwi6EH36sO8tVkRw8
+	kTVItJYPx6IVdzstjsvpp2xVqS9lLt0zwLAnT4ZW0DIl7v1/zb5RQDqvgNcTXTuYW/3hXKQsVn0
+	GEuIPNRNfnZqXvHCNNWSYAOszQLMbelVttzizItu/B8krskuwMepHaCpaMUfhOTTftQSHfajKRy
+	9ruC+nwOftybEemrg8PJ8mWjM=
+X-Google-Smtp-Source: AGHT+IEUSP1ncou/c8h+j+X1Lb8tMsf8prnbgrD3RYJ0pVXYEbKjH2dVcuLXjmPpf0CfVX/O7U5iTQ==
+X-Received: by 2002:ad4:4ea5:0:b0:813:b162:e3e6 with SMTP id 6a1803df08f44-87b3a7a22aemr100328896d6.11.1759994279833;
+        Thu, 09 Oct 2025 00:17:59 -0700 (PDT)
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com. [209.85.222.171])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878be61fc21sm176775626d6.63.2025.10.09.00.17.59
         for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 08 Oct 2025 23:25:11 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-86df46fa013so249871885a.2
-        for <stable@vger.kernel.org>; Wed, 08 Oct 2025 23:25:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1759991110; x=1760595910; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bS+vJs2offx96KKff6hwDdiXDpHtb7AICfG+1qxivmI=;
-        b=B09IWro2M/rBm7Kwi5qYHfrmWk+uPl145ZU15FFVpV5lZorusB8IZ3i56ogn/o70Z7
-         vMU7bP+fK5cZzWNkSk89OrnVIdXHioA5S6wHIFwTDQR11/OCPxXR6htXoQDZcFHm+qeG
-         WVS/K+lyvI2RHdIA109z4saWl2YezCf8mTFlM=
-X-Received: by 2002:a05:620a:4016:b0:862:75e0:76e8 with SMTP id af79cd13be357-883535590bdmr909461785a.42.1759991110426;
-        Wed, 08 Oct 2025 23:25:10 -0700 (PDT)
-X-Received: by 2002:a05:620a:4016:b0:862:75e0:76e8 with SMTP id af79cd13be357-883535590bdmr909458885a.42.1759991109866;
-        Wed, 08 Oct 2025 23:25:09 -0700 (PDT)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-884a274d0fcsm136973085a.55.2025.10.08.23.25.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Oct 2025 23:25:08 -0700 (PDT)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	tapas.kundu@broadcom.com,
-	sfrench@samba.org,
-	pc@manguebit.org,
-	ronniesahlberg@gmail.com,
-	sprasad@microsoft.com,
-	tom@talpey.com,
-	bharathsm@microsoft.com,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Paul Aurich <paul@darkrain42.org>,
-	Steve French <stfrench@microsoft.com>,
-	Cliff Liu <donghua.liu@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v6.1] smb: prevent use-after-free due to open_cached_dir error paths
-Date: Wed,  8 Oct 2025 23:08:46 -0700
-Message-Id: <20251009060846.351250-1-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Oct 2025 00:17:59 -0700 (PDT)
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8572d7b2457so83736085a.1
+        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 00:17:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWoPFIEeIE0eqiXIxq9oClZnS4BNh+3YJ+gCSYCAkNFDZqg+F/ObiyLKOzeunreSypGQWcmyb4=@vger.kernel.org
+X-Received: by 2002:a05:6122:a0e:b0:552:361e:25fd with SMTP id
+ 71dfb90a1353d-554b9193d05mr2881875e0c.2.1759993878614; Thu, 09 Oct 2025
+ 00:11:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+References: <20250909145243.17119-1-lance.yang@linux.dev> <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
+ <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org> <CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
+ <inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp>
+ <20251007135600.6fc4a031c60b1384dffaead1@linux-foundation.org>
+ <b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org> <56784853-b653-4587-b850-b03359306366@linux.dev>
+ <693a62e0-a2b5-113b-d5d9-ffb7f2521d6c@linux-m68k.org> <23b67f9d-20ff-4302-810c-bf2d77c52c63@linux.dev>
+ <2bd2c4a8-456e-426a-aece-6d21afe80643@linux.dev> <ba00388c-1d5b-4d95-054d-a6f09af41e7b@linux-m68k.org>
+ <3fa8182f-0195-43ee-b163-f908a9e2cba3@linux.dev> <ad7cb710-0d5a-93b1-fa4d-efb236760495@linux-m68k.org>
+ <3e0b7551-698f-4ef6-919b-ff4cbe3aa11c@linux.dev> <20251008210453.71ba81a635fc99ce9262be7e@linux-foundation.org>
+In-Reply-To: <20251008210453.71ba81a635fc99ce9262be7e@linux-foundation.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 9 Oct 2025 09:11:06 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV5o0mA50yeEfG9cH-YUZspEd-OVSDJP-q+H+bxbqm-KQ@mail.gmail.com>
+X-Gm-Features: AS18NWCQgTe_ntCJBOH_V5jiAjzJoJEeK5wkQ-O8aRmmail08XldJV7y3wHkl-Q
+Message-ID: <CAMuHMdV5o0mA50yeEfG9cH-YUZspEd-OVSDJP-q+H+bxbqm-KQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock pointers
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lance Yang <lance.yang@linux.dev>, Eero Tamminen <oak@helsinkinet.fi>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, amaindex@outlook.com, anna.schumaker@oracle.com, 
+	boqun.feng@gmail.com, ioworker0@gmail.com, joel.granados@kernel.org, 
+	jstultz@google.com, leonylgao@tencent.com, linux-kernel@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, longman@redhat.com, mhiramat@kernel.org, 
+	mingo@redhat.com, mingzhe.yang@ly.com, peterz@infradead.org, 
+	rostedt@goodmis.org, Finn Thain <fthain@linux-m68k.org>, senozhatsky@chromium.org, 
+	tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Paul Aurich <paul@darkrain42.org>
+Hi Andrew,
 
-commit a9685b409a03b73d2980bbfa53eb47555802d0a9 upstream.
+On Thu, 9 Oct 2025 at 06:04, Andrew Morton <akpm@linux-foundation.org> wrote:
+> On Thu, 9 Oct 2025 10:01:18 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+> > I think we fundamentally disagree on whether this fix for known
+> > false-positive warnings is needed for -stable.
+>
+> Having the kernel send scary warnings to our users is really bad
+> behavior.  And if we don't fix it, people will keep reporting it.
 
-If open_cached_dir() encounters an error parsing the lease from the
-server, the error handling may race with receiving a lease break,
-resulting in open_cached_dir() freeing the cfid while the queued work is
-pending.
+As the issue is present in v6.16 and v6.17, I think that warrants -stable.
 
-Update open_cached_dir() to drop refs rather than directly freeing the
-cfid.
+> And removing a WARN_ON is a perfectly good way of fixing it.  The
+> kernel has 19,000 WARNs, probably seven of which are useful :(
 
-Have cached_dir_lease_break(), cfids_laundromat_worker(), and
-invalidate_all_cached_dirs() clear has_lease immediately while still
-holding cfids->cfid_list_lock, and then use this to also simplify the
-reference counting in cfids_laundromat_worker() and
-invalidate_all_cached_dirs().
+Right. And there is panic_on_warn...
 
-Fixes this KASAN splat (which manually injects an error and lease break
-in open_cached_dir()):
+Gr{oetje,eeting}s,
 
-==================================================================
-BUG: KASAN: slab-use-after-free in smb2_cached_lease_break+0x27/0xb0
-Read of size 8 at addr ffff88811cc24c10 by task kworker/3:1/65
+                        Geert
 
-CPU: 3 UID: 0 PID: 65 Comm: kworker/3:1 Not tainted 6.12.0-rc6-g255cf264e6e5-dirty #87
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-Workqueue: cifsiod smb2_cached_lease_break
-Call Trace:
- <TASK>
- dump_stack_lvl+0x77/0xb0
- print_report+0xce/0x660
- kasan_report+0xd3/0x110
- smb2_cached_lease_break+0x27/0xb0
- process_one_work+0x50a/0xc50
- worker_thread+0x2ba/0x530
- kthread+0x17c/0x1c0
- ret_from_fork+0x34/0x60
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Allocated by task 2464:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0xaa/0xb0
- open_cached_dir+0xa7d/0x1fb0
- smb2_query_path_info+0x43c/0x6e0
- cifs_get_fattr+0x346/0xf10
- cifs_get_inode_info+0x157/0x210
- cifs_revalidate_dentry_attr+0x2d1/0x460
- cifs_getattr+0x173/0x470
- vfs_statx_path+0x10f/0x160
- vfs_statx+0xe9/0x150
- vfs_fstatat+0x5e/0xc0
- __do_sys_newfstatat+0x91/0xf0
- do_syscall_64+0x95/0x1a0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Freed by task 2464:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x60
- __kasan_slab_free+0x51/0x70
- kfree+0x174/0x520
- open_cached_dir+0x97f/0x1fb0
- smb2_query_path_info+0x43c/0x6e0
- cifs_get_fattr+0x346/0xf10
- cifs_get_inode_info+0x157/0x210
- cifs_revalidate_dentry_attr+0x2d1/0x460
- cifs_getattr+0x173/0x470
- vfs_statx_path+0x10f/0x160
- vfs_statx+0xe9/0x150
- vfs_fstatat+0x5e/0xc0
- __do_sys_newfstatat+0x91/0xf0
- do_syscall_64+0x95/0x1a0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Last potentially related work creation:
- kasan_save_stack+0x33/0x60
- __kasan_record_aux_stack+0xad/0xc0
- insert_work+0x32/0x100
- __queue_work+0x5c9/0x870
- queue_work_on+0x82/0x90
- open_cached_dir+0x1369/0x1fb0
- smb2_query_path_info+0x43c/0x6e0
- cifs_get_fattr+0x346/0xf10
- cifs_get_inode_info+0x157/0x210
- cifs_revalidate_dentry_attr+0x2d1/0x460
- cifs_getattr+0x173/0x470
- vfs_statx_path+0x10f/0x160
- vfs_statx+0xe9/0x150
- vfs_fstatat+0x5e/0xc0
- __do_sys_newfstatat+0x91/0xf0
- do_syscall_64+0x95/0x1a0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The buggy address belongs to the object at ffff88811cc24c00
- which belongs to the cache kmalloc-1k of size 1024
-The buggy address is located 16 bytes inside of
- freed 1024-byte region [ffff88811cc24c00, ffff88811cc25000)
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Aurich <paul@darkrain42.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Do not apply the change for cfids_laundromat_worker() since there is no
-  this function and related feature on 6.1.y. Update open_cached_dir()
-  according to method of upstream patch. ]
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
-[Shivani: Modified to apply on 6.1.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
----
- fs/smb/client/cached_dir.c | 39 ++++++++++++++++----------------------
- 1 file changed, 16 insertions(+), 23 deletions(-)
-
-diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
-index 3d028b6a2..23a57a0c8 100644
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -320,17 +320,13 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
- 		/*
- 		 * We are guaranteed to have two references at this point.
- 		 * One for the caller and one for a potential lease.
--		 * Release the Lease-ref so that the directory will be closed
--		 * when the caller closes the cached handle.
-+		 * Release one here, and the second below.
- 		 */
- 		kref_put(&cfid->refcount, smb2_close_cached_fid);
- 	}
- 	if (rc) {
--		if (cfid->is_open)
--			SMB2_close(0, cfid->tcon, cfid->fid.persistent_fid,
--				   cfid->fid.volatile_fid);
--		free_cached_dir(cfid);
--		cfid = NULL;
-+		cfid->has_lease = false;
-+		kref_put(&cfid->refcount, smb2_close_cached_fid);
- 	}
- 
- 	if (rc == 0) {
-@@ -462,25 +458,24 @@ void invalidate_all_cached_dirs(struct cifs_tcon *tcon)
- 		cfids->num_entries--;
- 		cfid->is_open = false;
- 		cfid->on_list = false;
--		/* To prevent race with smb2_cached_lease_break() */
--		kref_get(&cfid->refcount);
-+		if (cfid->has_lease) {
-+			/*
-+			 * The lease was never cancelled from the server,
-+			 * so steal that reference.
-+			 */
-+			cfid->has_lease = false;
-+		} else
-+			kref_get(&cfid->refcount);
- 	}
- 	spin_unlock(&cfids->cfid_list_lock);
- 
- 	list_for_each_entry_safe(cfid, q, &entry, entry) {
- 		list_del(&cfid->entry);
- 		cancel_work_sync(&cfid->lease_break);
--		if (cfid->has_lease) {
--			/*
--			 * We lease was never cancelled from the server so we
--			 * need to drop the reference.
--			 */
--			spin_lock(&cfids->cfid_list_lock);
--			cfid->has_lease = false;
--			spin_unlock(&cfids->cfid_list_lock);
--			kref_put(&cfid->refcount, smb2_close_cached_fid);
--		}
--		/* Drop the extra reference opened above*/
-+		/*
-+		 * Drop the ref-count from above, either the lease-ref (if there
-+		 * was one) or the extra one acquired.
-+		 */
- 		kref_put(&cfid->refcount, smb2_close_cached_fid);
- 	}
- }
-@@ -491,9 +486,6 @@ smb2_cached_lease_break(struct work_struct *work)
- 	struct cached_fid *cfid = container_of(work,
- 				struct cached_fid, lease_break);
- 
--	spin_lock(&cfid->cfids->cfid_list_lock);
--	cfid->has_lease = false;
--	spin_unlock(&cfid->cfids->cfid_list_lock);
- 	kref_put(&cfid->refcount, smb2_close_cached_fid);
- }
- 
-@@ -511,6 +503,7 @@ int cached_dir_lease_break(struct cifs_tcon *tcon, __u8 lease_key[16])
- 		    !memcmp(lease_key,
- 			    cfid->fid.lease_key,
- 			    SMB2_LEASE_KEY_SIZE)) {
-+			cfid->has_lease = false;
- 			cfid->time = 0;
- 			/*
- 			 * We found a lease remove it from the list
--- 
-2.40.4
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
