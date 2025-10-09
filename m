@@ -1,100 +1,104 @@
-Return-Path: <stable+bounces-183680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46C7BC8849
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 12:36:08 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC607BC8945
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 12:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 753F01882901
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 10:36:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 79A1E35104B
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 10:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B8E2C11E2;
-	Thu,  9 Oct 2025 10:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96ABD2DA762;
+	Thu,  9 Oct 2025 10:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JzDXOicz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xa40BtJX"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9DB2C11DB
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 10:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E7013E41A;
+	Thu,  9 Oct 2025 10:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760006163; cv=none; b=Y91csOXLoJhEK6ITsYHNpYHjyohn4RThbJsCZ7b1Xlc8jnIZcUxocrQvVefk+zj14JAghcp2L9tu1GZrg2pN/ith1BLHJHkHDmXEPUEE7/qdQflaH9vPjFLr1RYsIisrOhmvJo12uP5OlZ+frqg09U9ywL1h+NN/lTxrPc/gXRk=
+	t=1760006949; cv=none; b=mlRMk3tggWz0O7gTCtWcy8n5p5l0mF7iwTxUL+ycApQqfFoiKmK/tiyOekRjvTdpHiTfmOujxqLObf37/oWyD4veGGkXyPV6k/RIVEKm5rg44GCm3etXSIdX7JC/OQA1a/NSGMq0PuM0uG0aMSWvj2o7jbogDanGJfiV/GEP8wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760006163; c=relaxed/simple;
-	bh=3jSlWK4l+M4ijsYlN+DTcRjodb6H0pjkmFnOs4WGzlM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=UOAJB5MZAwMlNdj9391QnPtaDJfBSdB+W2gAShz+/PejcDzy793H/uAuueNrjy+676jDeFIJ/gC1bLblXwSYaT8YzjdN2dt88+vLKqKwcoKIltUAV+jP7Kda4QP/V5IhdlJX+rjtq8qLaxdUg8A7le5C/FnVGH/PSVGrTbjA08E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JzDXOicz; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760006161; x=1791542161;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=3jSlWK4l+M4ijsYlN+DTcRjodb6H0pjkmFnOs4WGzlM=;
-  b=JzDXOiczKHBypBq8XnuL/4uXZPmwIDRvD782vYA052UKVMPP6qJJlYdk
-   uLQyNEONxYcTReEzuNIA4Ti+OLlyvCBMelgw9ZrTWa1zRUo9PCb/5iGm/
-   sHisouZLdBFS2i0AVEoEHjg6K1Q+7g2NEmJGwY6C9fHAC+H9MQ0ug5IPK
-   4uR1qFHBBlhRb/2Apew0t4knF0WUu0qAYvpsFcDSSlH4ZJUth+Sb8yzo/
-   L1lumPZAqPy8c034Jfg7s8MkFVvBGrU4A3BHnaUL02y2D2lkxwRBaIIQ9
-   xQ5ISfkEcjbwRadK435Yu4W7nTsarEsTw/pPD0FueCpqEaHgZ3eTEcRNv
-   g==;
-X-CSE-ConnectionGUID: r+46C8SUSHS7DYbhBsrw4A==
-X-CSE-MsgGUID: qf+Ov2nOQXar1YEuBh+RKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="65860565"
-X-IronPort-AV: E=Sophos;i="6.19,216,1754982000"; 
-   d="scan'208";a="65860565"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 03:36:01 -0700
-X-CSE-ConnectionGUID: vM0QTB1DRGWfIwP6Ko5+gw==
-X-CSE-MsgGUID: SvSpeLNjTQOFDb3n6BUydw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,216,1754982000"; 
-   d="scan'208";a="180500272"
-Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 09 Oct 2025 03:35:59 -0700
-Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v6o04-0000Vz-1n;
-	Thu, 09 Oct 2025 10:35:56 +0000
-Date: Thu, 9 Oct 2025 18:35:16 +0800
-From: kernel test robot <lkp@intel.com>
+	s=arc-20240116; t=1760006949; c=relaxed/simple;
+	bh=vP9HeJi0bXQzo1u6hZI+xUyxJCXb3b/WOUuQAuCYXJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OyVixjAaC6p9gpOL6JJq0EJTzGmuGjC681PiQGyiDu2kTO0Jkyg5mEmkSDuQXGa2Ebe6gZiKgeFKgWBVBuUWTG/QkkeoXA3zzAj4nnxWYvGRFH5VtrCbxOIRGZvxohlJIWDE584WSAdEqtNOr2+3+dmPr7KbJ7R03g1a0WMYa50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xa40BtJX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF069C4CEF9;
+	Thu,  9 Oct 2025 10:49:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760006949;
+	bh=vP9HeJi0bXQzo1u6hZI+xUyxJCXb3b/WOUuQAuCYXJ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xa40BtJX2scHkLcabOL172JePmIvhkplIlCHTz1JQ38ZcNWYbwve8S0k7bW0B60qr
+	 O2WnT59zxUQ3A52kHPS0T0PzR2COJ0u9/tyJj8G1DOdPS2u4RQLsLMPH4dy8sk85eI
+	 OQ/sWTdc1DBsKErwxWVa4MBGRfVIy4Qh0NXY97H0=
+Date: Thu, 9 Oct 2025 12:49:06 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
 To: Matthew Schwartz <matthew.schwartz@linux.dev>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Cc: harry.wentland@amd.com, Christian.Koenig@amd.com, sunpeng.li@amd.com,
+	airlied@gmail.com, simona@ffwll.ch, Alexander.Deucher@amd.com,
+	linux-kernel@vger.kernel.org, mario.limonciello@amd.com,
+	amd-gfx@lists.freedesktop.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev
 Subject: Re: [PATCH] Revert "drm/amd/display: Only restore backlight after
  amdgpu_dm_init or dm_resume"
-Message-ID: <aOeP5MXpJ2IPTlGg@d0417ff97f04>
+Message-ID: <2025100959-denture-freebie-76b4@gregkh>
+References: <2025100931-retorted-mystified-bd52@gregkh>
+ <F64C306E-67BC-4ADC-AF8F-1DACAF695D9D@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251009092301.13212-1-matthew.schwartz@linux.dev>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <F64C306E-67BC-4ADC-AF8F-1DACAF695D9D@linux.dev>
 
-Hi,
+On Thu, Oct 09, 2025 at 12:00:29PM +0200, Matthew Schwartz wrote:
+> 
+> > 
+> > On Oct 9, 2025, at 11:51 AM, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > 
+> > ﻿On Thu, Oct 09, 2025 at 11:23:01AM +0200, Matthew Schwartz wrote:
+> >> This fix regressed the original issue that commit d83c747a1225
+> >> ("drm/amd/display: Fix brightness level not retained over reboot") solved,
+> >> so revert it until a different approach to solve the regression that
+> >> it caused with AMD_PRIVATE_COLOR is found.
+> >> 
+> >> Fixes: a490c8d77d50 ("drm/amd/display: Only restore backlight after amdgpu_dm_init or dm_resume")
+> >> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4620
+> >> Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+> >> ---
+> >> drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 ++++--------
+> >> drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |  7 -------
+> >> 2 files changed, 4 insertions(+), 15 deletions(-)
+> > 
+> > <formletter>
+> > 
+> > This is not the correct way to submit patches for inclusion in the
+> > stable kernel tree.  Please read:
+> >    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > for how to do this properly.
+> 
+> Apologies, I was a bit confused by:
+> 
+> If a regression made it into a proper mainline release during the past twelve months, ensure to tag the fix with “Cc: stable@vger.kernel.org”
+> 
+> in the regressions page, but I see now the way I did it via email cc was incorrect.
+> 
+> Should I resend with that fixed?
 
-Thanks for your patch.
+Please do.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+thanks!
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] Revert "drm/amd/display: Only restore backlight after amdgpu_dm_init or dm_resume"
-Link: https://lore.kernel.org/stable/20251009092301.13212-1-matthew.schwartz%40linux.dev
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+greg k-h
 
