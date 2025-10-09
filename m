@@ -1,80 +1,39 @@
-Return-Path: <stable+bounces-183660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2EFBC7735
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 07:41:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5AFBC7792
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 07:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7AB5D35130C
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 05:41:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 499A53E66E6
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 05:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B35261B92;
-	Thu,  9 Oct 2025 05:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MlPROR1Q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EB425CC5E;
+	Thu,  9 Oct 2025 05:57:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3382609E3
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 05:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61831DF75D;
+	Thu,  9 Oct 2025 05:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759988476; cv=none; b=h56z6R48meWfEWUBb0YOPqwn3FrY4yhHBI9rMr1tbP3jiHYpzj7Qwu1M/ZGSWVYH+nz/kVXACgLqBTcR61g0yINk/wRvtcrk8RuUUBaJESHYq61bwlibrx4B+h9ZJw38qHGHpRzo9Usj3ZwKe7Ej6+Tj/aLHFqjyzcW7SfnErPA=
+	t=1759989457; cv=none; b=jEcDX0kpmNI/y3EIb9LXyREt95X6y2N9wUkbhr/lx0gun3p+HmUSBn/zZXzCCEamSy8uFFhyrtipYjrGXAckWjefPCBR7d6Xv/kU+aSLu6eOiEoR0l6egwKswGqTVPH3ThHQm4blFXMlxgMhH2pa948P7XaV7N7A3hsEFpxV6fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759988476; c=relaxed/simple;
-	bh=U7g6KkV2IFnVrQikZSPZ1dcFlLVplBkp4l5QFbLACbQ=;
+	s=arc-20240116; t=1759989457; c=relaxed/simple;
+	bh=pZQaNYzeBHaJH4Vz/t2FVsiKHeWBwnG/yHlpr0D1EB0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K/ST42A7juC8HYg74gksKj0ZcaKOouRofGNM2HZmWNEuHe5Oct7jf5v94tPY5IgyyI/UP4UUG5SUmZ81onwUNEmx55ph6wPIIe5MQXwuaPwZ0aVJGXdIQoFF0yKxfCvKCsuldRSEKFj3vxO4qeYPT6qbOBFRQwBLkhRpSvcNzKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MlPROR1Q; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-781206cce18so648397b3a.0
-        for <stable@vger.kernel.org>; Wed, 08 Oct 2025 22:41:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759988474; x=1760593274; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2KNKsCp2Ww11qIKHJ00jyA6DJfSKlBk9NjUhCjdbmcc=;
-        b=MlPROR1QdnJHwGy1Pxg4JeitOCx4xPZ2WhXHglt5lweA0bH0o/v4/1caXnWkLlawc4
-         CTxMj/Bmp0FaQdZhkbY4lQCAhtLI/tKE8sZVGwhs62ltgn0tZcTKl3mrOMx9lFDcZzfT
-         NE1ROT2vqqH3Atw8RabGiN/fM+v5nVkGKoRywHpwSGGjNgE+5riBjgoEtCoL7HE1k6lq
-         OZDc4F1GK8QWJKa9uPH2vjDkhKP5DN3L7G1ajvBNqnN2BIFDHlEzhPEBBsHw9QSRnGk6
-         pEC1tZZUK5iMIce0X/W1iY9zNdvfs97QceSw+cFwKV3nAZcDJoN/wBwFI0ZgbdnuJgKn
-         nQ0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759988474; x=1760593274;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2KNKsCp2Ww11qIKHJ00jyA6DJfSKlBk9NjUhCjdbmcc=;
-        b=EjOAH6dKIUuwP0X/QvdGf1XCAGSzCWSB88Y/i2dqVssxjSU0Ra58FM2OBkZ2jdjsYL
-         PjozlHgHTYZmnrfVXsVDoLekkNS6FmZmicudx2hUif4Fk20yECiV0xvki+oJiigoHglp
-         3Xotbp1z2h2t3vZmupk6MCjobjuW/Yiuub9ufPsx9susuYX+RpslXQzh8P7WC4hhKn2+
-         6+GKMRSsAbOMdmE49IjGIwKpYFBlGN5vpDDTg3LbM1SQukxfFvaBw1y7MdCW+4J/C0fB
-         U7dQ70RGyNmVU4VqSvJxttO6W26T0865nvU/zGnSfDNo4/AcY/UAluThACZQkS5EqBeK
-         OD9A==
-X-Forwarded-Encrypted: i=1; AJvYcCWsMJudAHJi2x3B4VzL1TxQXrWW++DGCwTkV11H0JtQQb+dr3Wz0HTgeKMtjsHbjhv4k1puicY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXJpiafnZqhTq2JXr24O6nwXEt+3oKQ61DToFRS42g/pB4h3gp
-	eeitBAdPFVbVkkKCKbgL7/zINJTOKX83py6qAkQ/Jx3J7+MWX8GuEspo
-X-Gm-Gg: ASbGncuBKjFs5JaaMxLP0nr5JYUSCJpgqb7tnB+beF9FMdub2zZFrJjgH+EmqoXRUJQ
-	6wDKFm5WqH7S7rgg/WtDSHsPkb+1qIjexte6je9/4ragD0SYaaglKIDD6dM9mfNApcp3ReqzVrK
-	rHOCCLjl8Y1IU6lyD/Ku9/XgFLfbmOE/0bkosvj/b2xZ+Fp07vzQE0A3nddJ1Kya9NT1I9AcmAz
-	l7zF2pGNEFkIog4vqIYQfN2NTEYBjXveB1n/01IwZJ9QDCzt1awY5xeL6bR8k3ZUo5QQqeuQf2f
-	HkNHoNpPZnnPhs7GLOfolwHUX8IYx7khrMOJGyk3V0v7fer9oqtIPG+mm1Ztjwpqn0ZCLZ30SgS
-	KM7YJuxiQcqHAa3Zggtz4rBmWGci30GaeH2FGKyu5z+nqOjqhtk8f/MAKt6z2nk2kPxI=
-X-Google-Smtp-Source: AGHT+IE9oykuetNbvR+7em1eWM6yMVpGn5cles1cEeIi0mcRnMwvIGU8Ccu1Dh5yRdwJE+IrZiL2mg==
-X-Received: by 2002:a05:6300:7110:b0:32d:b924:f90e with SMTP id adf61e73a8af0-32db9251bfdmr3011937637.29.1759988474177;
-        Wed, 08 Oct 2025 22:41:14 -0700 (PDT)
-Received: from [10.0.2.15] ([14.98.178.155])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6099f3b041sm19842042a12.24.2025.10.08.22.41.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 22:41:13 -0700 (PDT)
-Message-ID: <b183a040-3d1c-47aa-a41a-9865ba70b94d@gmail.com>
-Date: Thu, 9 Oct 2025 11:11:08 +0530
+	 In-Reply-To:Content-Type; b=QOevdCLNT/lVJcXKzyYA56X0jdPmlO/U25BcOsu9pjsZkpEYs92orkeiz9Jb5eXJLDREOEdpmHXZzWHxXuwPeD3gK255rIpCoXeswzTTI5Ec5I6donykoPInsLRVlHFHfS68H1vAs8dCNp3qE+/kOfHvRnod7uuEyGaIvALTVYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [192.168.0.108] (unknown [114.241.81.247])
+	by APP-03 (Coremail) with SMTP id rQCowACn73kTTedoBU42DQ--.27093S2;
+	Thu, 09 Oct 2025 13:50:11 +0800 (CST)
+Message-ID: <87d603ce-578d-46a7-87b1-54befccc6fad@iscas.ac.cn>
+Date: Thu, 9 Oct 2025 13:50:11 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,87 +41,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: usb: lan78xx: Fix lost EEPROM write timeout
- error(-ETIMEDOUT) in lan78xx_write_raw_eeprom
-To: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
- Rengarajan Sundararajan <Rengarajan.S@microchip.com>,
- UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, khalid@kernel.org,
- linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org,
- david.hunter.linux@gmail.com, stable@vger.kernel.org
-References: <20251009053009.5427-1-bhanuseshukumar@gmail.com>
+Subject: Re: [PATCH 6.6.y 0/2] riscv: mm: Backport of mmap hint address fixes
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Inochi Amaoto <inochiama@gmail.com>,
+ Han Gao <rabenda.cn@gmail.com>, Charlie Jenkins <charlie@rivosinc.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Meng Zhuo <mengzhuo@iscas.ac.cn>, Yangyu Chen <cyy@cyyself.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmer@rivosinc.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Guo Ren <guoren@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org,
+ Yao Zi <ziyao@disroot.org>
+References: <20251008-riscv-mmap-addr-space-6-6-v1-0-9f47574a520f@iscas.ac.cn>
+ <2025100812-raven-goes-4fd8@gregkh>
+ <187fe5a3-99b9-49b6-be49-3d4f6f1fb16b@iscas.ac.cn>
+ <2025100920-riverbank-congress-c7ee@gregkh>
 Content-Language: en-US
-From: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
-In-Reply-To: <20251009053009.5427-1-bhanuseshukumar@gmail.com>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <2025100920-riverbank-congress-c7ee@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:rQCowACn73kTTedoBU42DQ--.27093S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ar4kXw45GFW8tF1fCF1kAFb_yoW8CFy7pF
+	W2qr1jyw42yryIyw1q9rsYgFZ5Ww4ktay5JFZ5CFWvvrn8Zr92grn2gFWq9Fyjvr1kW34Y
+	qay5WryrZaykZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+	8E87Iv6xkF7I0E14v26F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
+	MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+	67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+	UI43ZEXa7IU56yI5UUUUU==
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-On 09/10/25 11:00, Bhanu Seshu Kumar Valluri wrote:
-> The function lan78xx_write_raw_eeprom failed to properly propagate EEPROM
-> write timeout errors (-ETIMEDOUT). In the timeout  fallthrough path, it first
-> attempted to restore the pin configuration for LED outputs and then
-> returned only the status of that restore operation, discarding the
-> original timeout error saved in ret.
-> 
-> As a result, callers could mistakenly treat EEPROM write operation as
-> successful even though the EEPROM write had actually timed out with no
-> or partial data write.
-> 
-> To fix this, handle errors in restoring the LED pin configuration separately.
-> If the restore succeeds, return any prior EEPROM write timeout error saved
-> in ret to the caller.
-> 
-> Suggested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Fixes: 8b1b2ca83b20 ("net: usb: lan78xx: Improve error handling in EEPROM and OTP operations")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
-> ---
->  Note:
->  The patch is compiled and tested using EVB-LAN7800LC.
->  The patch was suggested by Oleksij Rempel while reviewing a fix to a bug
->  found by syzbot earlier.
->  The review mail chain where this fix was suggested is given below.
->  https://lore.kernel.org/all/aNzojoXK-m1Tn6Lc@pengutronix.de/
-> 
->  ChangeLog:
->  v1->v2:
->   Added cc:stable tag as asked during v1 review.
->   V1 Link : https://lore.kernel.org/all/20251004040722.82882-1-bhanuseshukumar@gmail.com/
-> 
->  drivers/net/usb/lan78xx.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-> index d75502ebbc0d..5ccbe6ae2ebe 100644
-> --- a/drivers/net/usb/lan78xx.c
-> +++ b/drivers/net/usb/lan78xx.c
-> @@ -1174,10 +1174,13 @@ static int lan78xx_write_raw_eeprom(struct lan78xx_net *dev, u32 offset,
->  	}
->  
->  write_raw_eeprom_done:
-> -	if (dev->chipid == ID_REV_CHIP_ID_7800_)
-> -		return lan78xx_write_reg(dev, HW_CFG, saved);
-> -
-> -	return 0;
-> +	if (dev->chipid == ID_REV_CHIP_ID_7800_) {
-> +		int rc = lan78xx_write_reg(dev, HW_CFG, saved);
-> +		/* If USB fails, there is nothing to do */
-> +		if (rc < 0)
-> +			return rc;
-> +	}
-> +	return ret;
->  }
->  
->  static int lan78xx_read_raw_otp(struct lan78xx_net *dev, u32 offset,
 
-Hi,
+On 10/9/25 13:00, Greg KH wrote:
+> On Thu, Oct 09, 2025 at 12:19:46PM +0800, Vivian Wang wrote:
+>> [...]
+> Ok, that makes a bit more sense, but again, why is this just showing up
+> now?  What changed to cause this to be noticed at and needed to be fixed
+> at this moment in time and not before?
 
-The subject prefix must be [PATCH v2] instead. I overlooked it. Should I resend it?
+As of why this came quite late in the lifetime of the 6.6.y branch, I
+believe it's a combination of two factors.
 
-Regards,
-Bhanu Seshu Kumar Valluri
+Firstly, actual Sv48-capable RISC-V hardware came fairly late. Milk-V
+Megrez (with Eswin EIC7700X), on which the Go TSAN thing ran, was
+shipped only early this year. The DC ROMA II laptop (EIC7702X) and
+Framework mainboard with the same SoC has not even shipped yet, or maybe
+only shipped to developers - I'm not so certain. Most other RISC-V
+machines only have Sv39.
+
+Secondly, there is interest among some Chinese software vendors to ship
+Linux distros based on a 6.6.y LTS kernel. The "RISC-V Common Kernel"
+(RVCK) project [1], with support from openEuler and various HW vendors,
+maintains backports on top of a 6.6.y kernel. "RockOS" [2] is a distro
+maintained by PLCT Lab, ISCAS, for EIC770{0,2}X-based boards, and it has
+a 6.6.y kernel branch. Both have cherry-picked the mmap patches for now.
+
+We operate with the understanding that the official stable kernel will
+not be accepting new major features and drivers, but fixes do belong in
+stable, and at least from the perspective of PLCT Lab we generally try
+to send patches instead of hoarding them. Hence, the earlier backport
+request and this backport series.
+
+I hope this explanation is acceptable.
+
+Thanks,
+Vivian "dramforever" Wang
+
+PS: This 6.6 kernel thing isn't just a RISC-V thing, by the way. KylinOS
+V11 has shipped in August with a 6.6 kernel. Deepin and UOS will be
+shipping with 6.6, with UOS "25" shipping maybe late this year or early
+2026.
+
+[1]: https://github.com/RVCK-Project/rvck
+[2]: https://docs.rockos.dev/
+
 
