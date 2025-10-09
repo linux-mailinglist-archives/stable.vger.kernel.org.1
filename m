@@ -1,153 +1,147 @@
-Return-Path: <stable+bounces-183841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40896BCA249
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6148BCA309
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 080CA4FE27D
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:15:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 79CED4FCDDB
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968EF231A21;
-	Thu,  9 Oct 2025 16:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41215223DC0;
+	Thu,  9 Oct 2025 16:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hv+H5D2O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPUGXPax"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DDE230BEC
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 16:08:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1F1205E25;
+	Thu,  9 Oct 2025 16:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760026092; cv=none; b=jXfdfDojjShLCp+SsBJLnFu4CH3DC/vC/YFPuy4l+Oc32YfDDwQEnNb48AC/fOG6GhWqNfVgfk11Fa4b73Bx0Qj4g8cq8yUSPTlEFhjnwvguwokWbcSAnfwKEmTzijOxC5u/s/rAUy+++MwGKB19fgfdqViOTCJpBQVeS3D68X0=
+	t=1760027317; cv=none; b=anyo8Ub1qaGcXQX23fDWYVN3Hpa6YcLIYSUlfyFLnFvif85Ybc0FVGJ3IynxAL6DfO11cfnr6vRutpayFdsiGA5L8t5hVRDy33n2LaURVJqTXS8nLdUUcWJy1yNQJXXk4nIR3ZeBA7tRZOkNrzqmyZL55UONqt/elFZu6JIVtU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760026092; c=relaxed/simple;
-	bh=wnjQVG+egmK2IXhzGH82IGBpeDw+1s4hu8UVsW7/sgo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a0VjW6qPUABbcj2syFGV3Fd+gBQNGkSte6pKPcqP5d1YnvqiCRTl+vV2KBzSfNME4F1nolToRQEyOmwkXdbwFY33MXvpvzBPcvdMG//QWf1V1tpKtYOtCKWdeXYRMRsE58eiICGXQBCUNj5zLOcL/C61yKknTnFX+dwMOi1y8wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hv+H5D2O; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 599EX79M005222
-	for <stable@vger.kernel.org>; Thu, 9 Oct 2025 16:08:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	jJ9LcKuZ6RaI0QjDWk+WPpGF97bOBxFsnMcVmm6o4g0=; b=hv+H5D2OfGlqf+y9
-	/PSpdxaTYKMxoVN4k62FgqHz1rxKKD8aXMnTm/nVgPli+9kzdF44iNUMObioxUbj
-	81cbqg9t+GtCxT/kARnXsIFKqQwGytBQHCZfqy0otpD5b+uoUX+uPbywnlDzmk5G
-	vw0FOBA6ArmpQ0crQLT9aZnnNypjRA/Wd35s4/CnTjlHoRLMHRlhx3JcTikYmg6y
-	DP6wonghk3cJ1loKcHTIWJDFYNHFakUtzQVKr1PTDn2rtQVXGxA3y3mbULJZP+xd
-	X+aqo9oerBPPRCgRTORlwaNY9JKoOU0hexPP7SCdAOETGhicUqnfkvO8wPNkdDyS
-	jNCbvw==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49nv4u3htb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 09 Oct 2025 16:08:08 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4d8c35f814eso3797141cf.0
-        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 09:08:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760026088; x=1760630888;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jJ9LcKuZ6RaI0QjDWk+WPpGF97bOBxFsnMcVmm6o4g0=;
-        b=TqpbVqoDdtScJ2hLSeyKzMfMLFRgLeUdobuaWJdHnYCgwUZ7L+AxXUNYL6qZhLkFw1
-         vpFDYSpGmmspln+QUSPU4LsB4GWTVyQKfTDXwO2MBWrHtJovafZvLnMRLdrLFy7UPIeN
-         3zr82BJbmDJMFksB5PXYg3iSZ9P/jzWAUKiEW6bccJktpDo+/bYpDyTfgB/rEHJsPoIL
-         sAs9DxbbPhOpOSXCmo7JnU8aPuya2EbXmCzFuDk4V12xGg84Ig8oLdIhMl0ySCgp6ssv
-         cLifOiTNabgUNSnLmRuA0sj8ih4gHVS698kXx9/hqDsszgPHugMLnfoYCB7otg/B2sfH
-         2psw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDmEhc1xn2AJJ+MV361u+H+otv7lfPlC2bB0oFlPNpE+/95uJC/5xR1HHpCdsv8jZED9ch3bE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeYetJkMPD+U0Jc9+MdYMxkJqWioF7PIyG8L4dBqbAF+8WkyB7
-	FF3fVd4HRQnVk/iONG4yEi+LlI8erdMqxB5csdcAAftB4J2ioDg4yYQqZJM0fpiBTchgB40Ij5+
-	X7bs/4ybi3uPmCP3q4mgADqlFX0YNCDi7E8ROLSMW6hV52oKKZnCSD5P2PK0=
-X-Gm-Gg: ASbGnctLEum1+Z9tQaxv7/YXk4nE3D7btapYPXSPsUiXbXbihfaFUfuvtNThqcCCLMO
-	IWp4kQz7KIRJzCPEpjDmdIHq6PFKPFP5EXFwltkJrjifvmqyOGQj0Rdi9oRPiM5yS6lXLrLEtel
-	JnBT9Ij1dkBgHKOhPawogfxTVjjmkpetHEOy0OA+aWuC6V9sR6eJfqTn+Yb0PkDZunttNGtzxNu
-	g++OXsXOCTdvjPcY4UNPZXfpmtX2H7judqzpZZg7MGjjzR4h+D926U8dB6fOco6+vvwseraoccC
-	UZC3KdZ4ZmNwx5Ub68Sp+08J44opZBG9LXch8lRxmZeWB+/cYjD1cde2yiA+F0uMggpmktN0gCO
-	9DOf0t8vMHWGcJekOxzsjuTM2bdA=
-X-Received: by 2002:ac8:58d2:0:b0:4ab:6e68:1186 with SMTP id d75a77b69052e-4e6eacd4f8cmr74888221cf.2.1760026087655;
-        Thu, 09 Oct 2025 09:08:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH2+Z2nuPl0CiMPeaV1ZrBJxe7W45K0/bsiPvQVl/aLb1IdSFCEiGmt6XM4B2I/2P+tfM8wiQ==
-X-Received: by 2002:ac8:58d2:0:b0:4ab:6e68:1186 with SMTP id d75a77b69052e-4e6eacd4f8cmr74887731cf.2.1760026087092;
-        Thu, 09 Oct 2025 09:08:07 -0700 (PDT)
-Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63a52b71503sm86363a12.27.2025.10.09.09.08.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 09:08:06 -0700 (PDT)
-Message-ID: <1cd57f5c-d829-4dbd-aac9-b07d0e155e4e@oss.qualcomm.com>
-Date: Thu, 9 Oct 2025 18:08:03 +0200
+	s=arc-20240116; t=1760027317; c=relaxed/simple;
+	bh=2wArb6McKN8XDi7aNFLZi+tNZ6xI/BBBQekeTD7ykeI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RkT2EiweW1yDqPqDRuLiCPfKftI8MDYIYarz9MvRej4dqrLzIRf4VzcbP2h3tl1KzsQlQDrMYMY/PTSGW/jCEdk4BV9/6NNR/GBG5sOz/IE+3uQs8ByIwNpAlPWep1xwYLBY8YfzLK9SZCSdQaG+2F1UYTPK8gLsY8VpJVyaXaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPUGXPax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1479BC4CEE7;
+	Thu,  9 Oct 2025 16:28:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760027316;
+	bh=2wArb6McKN8XDi7aNFLZi+tNZ6xI/BBBQekeTD7ykeI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LPUGXPax0HqpgV/RqSODMWwUBKp8JeXUVKMeqW3DaYCo3X6O/7K0oe5igbMZeNAuQ
+	 9DOQ6JV9t4c1ESegbQp2A9t5UABdzoCuHTH4A9UXmRVoWY8tJBkmHNJ+rZgkXMxs0O
+	 h2rP6yYfrsz6cq/D2iJDZSXcOMdslwjWdslCdjN7hEF4YlZhtjWaLeC3cxGWJzmBPn
+	 C3CqXBOd9s95UylE92RPRNjo6OkZmFz7bcpItGI8lG3Zvj7B+pkDFWBvTDCubw4ERc
+	 +AC8Z93KRy9IKg0Zaecfs/sf3AVXYvfwWv9PucFN+jAkTydo9c0kI9fx9ueP3KuEuk
+	 IGgSCwgQbwAjQ==
+Received: by pali.im (Postfix)
+	id B7AA556D; Thu,  9 Oct 2025 18:28:31 +0200 (CEST)
+Date: Thu, 9 Oct 2025 18:28:31 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Jeongjun Park <aha310510@gmail.com>
+Cc: linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com,
+	viro@zeniv.linux.org.uk, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
+Subject: Re: [PATCH] exfat: fix out-of-bounds in exfat_nls_to_ucs2()
+Message-ID: <20251009162831.ullg2fxcpkhcsnkh@pali>
+References: <20251006114507.371788-1-aha310510@gmail.com>
+ <20251008173935.4skifawm57zqpsai@pali>
+ <CAO9qdTFk94yDCMAuTkx5yW9VXYExWuhgpi0X15C5F7e5DQgibA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.17-5.4] pinctrl: qcom: make the pinmuxing strict
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
-        stable@vger.kernel.org
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>, andersson@kernel.org,
-        linux-arm-msm@vger.kernel.org
-References: <20251009155752.773732-1-sashal@kernel.org>
- <20251009155752.773732-60-sashal@kernel.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251009155752.773732-60-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=Vrcuwu2n c=1 sm=1 tr=0 ts=68e7dde8 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8
- a=VwQbUJbxAAAA:8 a=FGwjZpymIQ_i5ujK4VkA:9 a=QEXdDO2ut3YA:10
- a=dawVfQjAaf238kedN5IG:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: 0Ph8HtqZ-1sUXNF_FDh-neN3OrormkhI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX1YwMF9anxJxo
- 7JvLttrrAAuLs7uO6iRI+baHyYq+R+qZrrfDjOYrRBq0Vk34vAPu0cugUbi8Dp5+z3Gwlpf0q5R
- FzzUMghyQWgN5MV9MAofIn8/Fz9yPFcuZw9B8zFIO3sSAIEzDzSv0LjLdBnep12RTUq3gMRd/Vt
- EgnQJX3qmJolfp36JWE0kid32CHrpeSV1RuOLcBnTrVX7SkZswedBBnNBOG5Vb3PlAPaYmoq4Qg
- qJ4rDpKn+mNFqffMI8PyigYfRSsOSBgeShSNRFNHIk/S7RcDXZRizzQjHOAzp4R1My5NXYgO5Y6
- D0z+IHlrbVMyVO2x+DLxLZ1P7NNfXisRa4i9KL7/fr6SoeArB0NyI7mkUgfbPVgBRYKHPTP9gxt
- ohDvGcOp9U2NKwXoPu2RWI5q3VyNCw==
-X-Proofpoint-ORIG-GUID: 0Ph8HtqZ-1sUXNF_FDh-neN3OrormkhI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-09_05,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 impostorscore=0 clxscore=1031 adultscore=0
- bulkscore=0 spamscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510080121
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO9qdTFk94yDCMAuTkx5yW9VXYExWuhgpi0X15C5F7e5DQgibA@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 
-On 10/9/25 5:55 PM, Sasha Levin wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Thursday 09 October 2025 18:05:26 Jeongjun Park wrote:
+> Hi Pali
 > 
-> [ Upstream commit cc85cb96e2e4489826e372cde645b7823c435de0 ]
+> Pali Rohár <pali@kernel.org> wrote:
+> >
+> > Hello!
+> >
+> > On Monday 06 October 2025 20:45:07 Jeongjun Park wrote:
+> > > After the loop that converts characters to ucs2 ends, the variable i
+> > > may be greater than or equal to len.
+> >
+> > It is really possible to have "i" greater than len? Because I do not see
+> > from the code how such thing could happen.
+> >
+> > I see only a case when i is equal to len (which is also overflow).
+> >
+> > My understanding:
+> > while-loop condition ensures that i cannot be greater than len and i is
+> > increased by exfat_convert_char_to_ucs2() function which has upper bound
+> > of "len-i". So value of i can be increased maximally by (len-i) which
+> > could lead to maximal value of i to be just "len".
+> >
+> > > However, when checking whether the
+> > > last byte of p_cstring is NULL, the variable i is used as is, resulting
+> > > in an out-of-bounds read if i >= len.
+> > >
+> > > Therefore, to prevent this, we need to modify the function to check
+> > > whether i is less than len, and if i is greater than or equal to len,
+> > > to check p_cstring[len - 1] byte.
+> > >
+> > > Cc: <stable@vger.kernel.org>
+> > > Reported-by: syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
+> > > Closes: https://syzkaller.appspot.com/bug?extid=98cc76a76de46b3714d4
+> > > Fixes: 370e812b3ec1 ("exfat: add nls operations")
+> > > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> > > ---
+> > >  fs/exfat/nls.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
+> > > index 8243d94ceaf4..a52f3494eb20 100644
+> > > --- a/fs/exfat/nls.c
+> > > +++ b/fs/exfat/nls.c
+> > > @@ -616,7 +616,7 @@ static int exfat_nls_to_ucs2(struct super_block *sb,
+> > >               unilen++;
+> > >       }
+> > >
+> > > -     if (p_cstring[i] != '\0')
+> > > +     if (p_cstring[min(i, len - 1)] != '\0')
+> >
+> > What about "if (i < len)" condition instead?
+> >
+> > The p_cstring is the nul term string and my understanding is that the
+> > "p_cstring[i] != '\0'" is checking that i is at position of strlen()+1.
+> > So should not be "if (i < len)" the same check without need to
+> > dereference the p_cstring?
+> >
 > 
-> The strict flag in struct pinmux_ops disallows the usage of the same pin
-> as a GPIO and for another function. Without it, a rouge user-space
-> process with enough privileges (or even a buggy driver) can request a
-> used pin as GPIO and drive it, potentially confusing devices or even
-> crashing the system. Set it globally for all pinctrl-msm users.
+> Thank you for the detailed explanation! I misunderstood.
 > 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
+> In summary, since the variable i can never be greater than len, we don't
+> need to consider this case. Therefore, if i is less than len, we can
+> determine that an nls loss has occurred.
+> 
+> I think that under normal nls conditions, i should be equal to len
+> immediately after the while loop terminates, so changing the condition
+> here to "if (i != len)" would be a better way to make this clear.
+> 
+> This way, we can check for an nls loss without dereferencing p_cstring,
+> and we can clearly indicate that i should be equal to len when the while
+> loop terminates. What do you think?
+> 
+> Regards,
+> Jeongjun Park
 
-I didn't receive more related patches, but this had quite some
-dependencies (in pinctrl core and individual per-SoC drivers), which I'm
-not sure are worth all digging up and resolving conflicts
-
-Konrad
+Hello, yes, this is how I understood what is the code doing and how to
+simple fix this reported problem.
 
