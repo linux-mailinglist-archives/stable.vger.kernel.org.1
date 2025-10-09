@@ -1,180 +1,140 @@
-Return-Path: <stable+bounces-183654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326B5BC7586
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 06:05:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB712BC758F
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 06:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DAA6234AF60
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 04:05:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 164C23E10E7
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 04:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91735221FB6;
-	Thu,  9 Oct 2025 04:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0886B242D7D;
+	Thu,  9 Oct 2025 04:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nIUztAZJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JP2SWXsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400F716DEB1;
-	Thu,  9 Oct 2025 04:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9143154BE2;
+	Thu,  9 Oct 2025 04:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759982695; cv=none; b=IXfYhgfxTvxkDk7OvfldplWoXhEnQ14RpnncMXvfScWat7zTgy17KLCMjq6JjB4EZTHVTkNlngB39Gz9ArxdI8KkBxZAL0Sm2Siwq6lhxZ26m7VMaXjn7mlNtrKOk+xihn9gYCrlvdYi+q9xHy01SF6wz3NZOlXfQohqPuGnkuk=
+	t=1759982995; cv=none; b=sOwEpp1NkKp4uxr06hbpUz9u3FFCRzabarbACrAIDSrAplAjIeoomFdD5ouqTp3+3uWhqdvqIcdc6XhGh+fCe3nx6BLHO/1kuWBLEeRs19zzwGkDSDUfL8jVeroDodDgrkyUJ5XRD1XusC0tdiFWwQr7BZlX3jY3UaAWcKOyUNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759982695; c=relaxed/simple;
-	bh=DCmW1Fy9ep6190H7tU2v5kS2XIm6raDoEW/DHR1Vjjg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=KdE1WJBk36n/yT4PvjBh5dESXRzhg/mUxf0BMtahDSBJrVVAYyXXtHuJhULdseufK3BgIj/6L7hxsHMi9SKvyvnDEGIbtQwyoOuK+NiZSAv3y4WG3btaT+PCa6f+M4xUk1cNcSuvbmB4Vz3SVtS42yiaRo6yk4epKrMt3psuJts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nIUztAZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35D1C4CEE7;
-	Thu,  9 Oct 2025 04:04:53 +0000 (UTC)
+	s=arc-20240116; t=1759982995; c=relaxed/simple;
+	bh=76GtxTQ9g8hb2HTgrV261GUqJcKp2bKqR5EmQDQA3fw=;
+	h=Date:To:From:Subject:Message-Id; b=u/D5MHkQJP73924C/PJSYjIr09s0nOYLVH/JwNgdY6uunmAr3Tk/U3wGvF2puLU0wR3rUqV1BCjY4RMPUrv9z4uRcX6w0cGcKCqPca+gWFMpAewX+ukjnQw4Ds4RcMRBRYPL7Oq5hRS1IJJ9B6BU8RqCumvZZIUpj22JMRSursQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JP2SWXsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66108C4CEE7;
+	Thu,  9 Oct 2025 04:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1759982694;
-	bh=DCmW1Fy9ep6190H7tU2v5kS2XIm6raDoEW/DHR1Vjjg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nIUztAZJruIzIDci75GQZX+SEixhge4TpK1eNqOb/hlvMQJFOaZTX2zEx1gcgBklJ
-	 oEzDbhGwzqUsxOaZE6o64JYS4LapPFhGlquXTm5JJNaZB3G3vqHEBvJGh9agHawsud
-	 f46csRYJjvknKBzXG25HGsS1kJoMjo7iE+A8M1l0=
-Date: Wed, 8 Oct 2025 21:04:53 -0700
+	s=korg; t=1759982995;
+	bh=76GtxTQ9g8hb2HTgrV261GUqJcKp2bKqR5EmQDQA3fw=;
+	h=Date:To:From:Subject:From;
+	b=JP2SWXsP56WqouBVdjSGEXCsCRVrxc5cpqZF4Mos7Ttt1Y/9BtpkZ9tq19fGAzNBt
+	 0BsudSkDZFdbxq5KCQ5v9dci2gv4n1CRlvdCtCpxetzo02pmhSm/1HuMhEZ6Sq87Ue
+	 aUCYcuD5f7mZcb3L69sDAEfuR3csr2hQZrFxiblc=
+Date: Wed, 08 Oct 2025 21:09:54 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,usamaarif642@gmail.com,stable@vger.kernel.org,lance.yang@linux.dev,dev.jain@arm.com,david@redhat.com,richard.weiyang@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Eero Tamminen
- <oak@helsinkinet.fi>, Kent Overstreet <kent.overstreet@linux.dev>,
- amaindex@outlook.com, anna.schumaker@oracle.com, boqun.feng@gmail.com,
- ioworker0@gmail.com, joel.granados@kernel.org, jstultz@google.com,
- leonylgao@tencent.com, linux-kernel@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, longman@redhat.com, mhiramat@kernel.org,
- mingo@redhat.com, mingzhe.yang@ly.com, peterz@infradead.org,
- rostedt@goodmis.org, Finn Thain <fthain@linux-m68k.org>,
- senozhatsky@chromium.org, tfiga@chromium.org, will@kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
- pointers
-Message-Id: <20251008210453.71ba81a635fc99ce9262be7e@linux-foundation.org>
-In-Reply-To: <3e0b7551-698f-4ef6-919b-ff4cbe3aa11c@linux.dev>
-References: <20250909145243.17119-1-lance.yang@linux.dev>
-	<yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
-	<99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
-	<CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
-	<inscijwnnydibdwwrkggvgxjtimajr5haixff77dbd7cxvvwc7@2t7l7oegsxcp>
-	<20251007135600.6fc4a031c60b1384dffaead1@linux-foundation.org>
-	<b43ce4a0-c2b5-53f2-e374-ea195227182d@linux-m68k.org>
-	<56784853-b653-4587-b850-b03359306366@linux.dev>
-	<693a62e0-a2b5-113b-d5d9-ffb7f2521d6c@linux-m68k.org>
-	<23b67f9d-20ff-4302-810c-bf2d77c52c63@linux.dev>
-	<2bd2c4a8-456e-426a-aece-6d21afe80643@linux.dev>
-	<ba00388c-1d5b-4d95-054d-a6f09af41e7b@linux-m68k.org>
-	<3fa8182f-0195-43ee-b163-f908a9e2cba3@linux.dev>
-	<ad7cb710-0d5a-93b1-fa4d-efb236760495@linux-m68k.org>
-	<3e0b7551-698f-4ef6-919b-ff4cbe3aa11c@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: + mm-huge_memory-add-pmd-folio-to-ds_queue-in-do_huge_zero_wp_pmd.patch added to mm-new branch
+Message-Id: <20251009040955.66108C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-
-On Thu, 9 Oct 2025 10:01:18 +0800 Lance Yang <lance.yang@linux.dev> wrote:
-
-> I think we fundamentally disagree on whether this fix for known
-> false-positive warnings is needed for -stable.
-
-Having the kernel send scary warnings to our users is really bad
-behavior.  And if we don't fix it, people will keep reporting it.
-
-And removing a WARN_ON is a perfectly good way of fixing it.  The
-kernel has 19,000 WARNs, probably seven of which are useful :(
 
 
+The patch titled
+     Subject: mm/huge_memory: add pmd folio to ds_queue in do_huge_zero_wp_pmd()
+has been added to the -mm mm-new branch.  Its filename is
+     mm-huge_memory-add-pmd-folio-to-ds_queue-in-do_huge_zero_wp_pmd.patch
 
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-add-pmd-folio-to-ds_queue-in-do_huge_zero_wp_pmd.patch
 
-From: Lance Yang <lance.yang@linux.dev>
-Subject: hung_task: fix warnings caused by unaligned lock pointers
-Date: Tue, 9 Sep 2025 22:52:43 +0800
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-From: Lance Yang <lance.yang@linux.dev>
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
 
-The blocker tracking mechanism assumes that lock pointers are at least
-4-byte aligned to use their lower bits for type encoding.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-However, as reported by Eero Tamminen, some architectures like m68k
-only guarantee 2-byte alignment of 32-bit values. This breaks the
-assumption and causes two related WARN_ON_ONCE checks to trigger.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-To fix this, the runtime checks are adjusted to silently ignore any lock
-that is not 4-byte aligned, effectively disabling the feature in such
-cases and avoiding the related warnings.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Thanks to Geert Uytterhoeven for bisecting!
+------------------------------------------------------
+From: Wei Yang <richard.weiyang@gmail.com>
+Subject: mm/huge_memory: add pmd folio to ds_queue in do_huge_zero_wp_pmd()
+Date: Wed, 8 Oct 2025 09:54:52 +0000
 
-Link: https://lkml.kernel.org/r/20250909145243.17119-1-lance.yang@linux.dev
-Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Reported-by: Eero Tamminen <oak@helsinkinet.fi>
-Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Mingzhe Yang <mingzhe.yang@ly.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Tomasz Figa <tfiga@chromium.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yongliang Gao <leonylgao@tencent.com>
+We add pmd folio into ds_queue on the first page fault in
+__do_huge_pmd_anonymous_page(), so that we can split it in case of memory
+pressure.  This should be the same for a pmd folio during wp page fault.
+
+Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss to
+add it to ds_queue, which means system may not reclaim enough memory in
+case of memory pressure even the pmd folio is under used.
+
+Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
+folio installation consistent.
+
+Link: https://lkml.kernel.org/r/20251008095453.18772-2-richard.weiyang@gmail.com
+Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Acked-by: Usama Arif <usamaarif642@gmail.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/hung_task.h |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ mm/huge_memory.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/hung_task.h~hung_task-fix-warnings-caused-by-unaligned-lock-pointers
-+++ a/include/linux/hung_task.h
-@@ -20,6 +20,10 @@
-  * always zero. So we can use these bits to encode the specific blocking
-  * type.
-  *
-+ * Note that on architectures where this is not guaranteed, or for any
-+ * unaligned lock, this tracking mechanism is silently skipped for that
-+ * lock.
-+ *
-  * Type encoding:
-  * 00 - Blocked on mutex			(BLOCKER_TYPE_MUTEX)
-  * 01 - Blocked on semaphore			(BLOCKER_TYPE_SEM)
-@@ -45,7 +49,7 @@ static inline void hung_task_set_blocker
- 	 * If the lock pointer matches the BLOCKER_TYPE_MASK, return
- 	 * without writing anything.
- 	 */
--	if (WARN_ON_ONCE(lock_ptr & BLOCKER_TYPE_MASK))
-+	if (lock_ptr & BLOCKER_TYPE_MASK)
- 		return;
- 
- 	WRITE_ONCE(current->blocker, lock_ptr | type);
-@@ -53,8 +57,6 @@ static inline void hung_task_set_blocker
- 
- static inline void hung_task_clear_blocker(void)
- {
--	WARN_ON_ONCE(!READ_ONCE(current->blocker));
--
- 	WRITE_ONCE(current->blocker, 0UL);
+--- a/mm/huge_memory.c~mm-huge_memory-add-pmd-folio-to-ds_queue-in-do_huge_zero_wp_pmd
++++ a/mm/huge_memory.c
+@@ -1317,6 +1317,7 @@ static void map_anon_folio_pmd(struct fo
+ 	count_vm_event(THP_FAULT_ALLOC);
+ 	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
+ 	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
++	deferred_split_folio(folio, false);
  }
  
+ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+@@ -1357,7 +1358,6 @@ static vm_fault_t __do_huge_pmd_anonymou
+ 		pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, pgtable);
+ 		map_anon_folio_pmd(folio, vmf->pmd, vma, haddr);
+ 		mm_inc_nr_ptes(vma->vm_mm);
+-		deferred_split_folio(folio, false);
+ 		spin_unlock(vmf->ptl);
+ 	}
+ 
 _
+
+Patches currently in -mm which might be from richard.weiyang@gmail.com are
+
+mm-compaction-check-the-range-to-pageblock_pfn_to_page-is-within-the-zone-first.patch
+mm-compaction-fix-the-range-to-pageblock_pfn_to_page.patch
+mm-huge_memory-add-pmd-folio-to-ds_queue-in-do_huge_zero_wp_pmd.patch
+mm-khugepaged-unify-pmd-folio-installation-with-map_anon_folio_pmd.patch
 
 
