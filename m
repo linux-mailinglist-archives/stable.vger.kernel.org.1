@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-183737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47887BC9EE6
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:04:46 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF9ABC9EEC
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C0E43BEF86
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:04:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7E5D5354486
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA70E2EDD52;
-	Thu,  9 Oct 2025 15:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D8B2EF64F;
+	Thu,  9 Oct 2025 15:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRdyzqP2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ab1us6xF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E62C2ED858;
-	Thu,  9 Oct 2025 15:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F20D2EE608;
+	Thu,  9 Oct 2025 15:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760025497; cv=none; b=Et+o4VXiLmAsI/0tRg6CMgX9CSfMMTpcYJs9NO4+ndib3TbZerJEwd8n4hufp94hVLHoIzkrYFztld4QwnoV7vXeZrxekompWsbQtOAA1lbVO0ERoP1Cx1K5Wx1E4NngPI9NM+1z9UU1XW5Yp/QwV97S8UglUBbcFW3A0v6j4OQ=
+	t=1760025501; cv=none; b=pEQCkqrItBD2TWUgGRidWK3N+Ez5wwzoxGSJYiPeiexEfuoXOpssir9kkiX49gAkhPrrlbB8kUcnoy9xtIQKnotudDhlOc7bQAogVbufMVL/RFknnUd8Rgf20g4irLY4KkAbMkt8fioeE653Cf9e2iBpm3Nkq8GIKI571HBr6fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760025497; c=relaxed/simple;
-	bh=Imkb1krffdVd9dUc09lqWgoj2DlYbxNjjKJINgipLvg=;
+	s=arc-20240116; t=1760025501; c=relaxed/simple;
+	bh=l4o1Wo9ZAq+anKdCih6uevSIcfQ3LbIUix80h9iXPsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G2otF5HREUM2S9JpNH9mahP6drepM+UeHiUB2JJGEPQ55qxZPzoOx81py7aJ4twM6wMMIWa4slzSNMPkYl299jDD/OOP+Ghs18mYAvOk2bLRkjyPuRzUic2QZdphH+suzlozBG7wFsbECDujrOCWMEy/7ja7UsADt6dkUO66nqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRdyzqP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92594C4CEF7;
-	Thu,  9 Oct 2025 15:58:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=thS491PjrqFr4S3PC7hQNaHgJUw3fniM+cfn5yTMDT+YAz74RVrSWflb6/rPSbgBb3DqjD06xCdLWeLaHlt4CMjhw0jMiETpaL5niQkWUPMWp5KQKzjKAI4OMtb6MDwIKHVze9SSnbk8wvsnsj2ANFbAJrtNt5fjBPBzxsE9AGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ab1us6xF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AA0C4CEE7;
+	Thu,  9 Oct 2025 15:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760025497;
-	bh=Imkb1krffdVd9dUc09lqWgoj2DlYbxNjjKJINgipLvg=;
+	s=k20201202; t=1760025501;
+	bh=l4o1Wo9ZAq+anKdCih6uevSIcfQ3LbIUix80h9iXPsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRdyzqP2AVdoeZlxsAclgqFZOB4VtkHSnzycFOaiS/xMJCeOHs8TgMRfjByDr5x2w
-	 /2guxGe80fb8+Ix3Tme7z8b1ocKI8hqoTGjRpCxSj6+KcqHdkMaQ81ypWfs0ObH/2P
-	 Qlarzxe2BLmT20UbPo2BTOEPY4vXZ3UddDKpQ/2d7bcwfdt4YfLr4EbGDDYFO0WcmK
-	 n1S7esDEDL9XsS9aDze5oeZhC8FwUKqX4hQFaDVh6w9hsYBva/DGc8NlfPvC4S1XiZ
-	 NHPkELdT18iOhyAKzPhH93Ddyp6WsvSfry9cQ0yNRekXdbYCjCGd5OQ1a4HrvOg7F0
-	 eSVW7C7m/HRwQ==
+	b=Ab1us6xFsCtrFmkZq9JLXyoPYULO3E4fyhTiZu4M8aysafy0fgWriCheSCH4+Chqf
+	 h7/ultQrwPoax4G5eexn+2DriDLMYy84cgAQmPPxslBeTcDnCZ7SWlq4ss0Z4U1c27
+	 3Kit+WrNteoo6nRr+Zy1FT85vXzK3aSpCU55CexlcKb3B/sxFtlVju5spRRLfgMpjL
+	 XYwaTv+RUX3FaZ19LlIbe11vljGWdtzJWH8kqF1WVEUVVBjJoN3zgkmYFR5isbeSVG
+	 XQOqaMQmJ4V/L1oNud7Rq/UfS/Y/2c5LmaVmEOpgbEX9fCHv0FLc6yryZL3ZCKdnr3
+	 +kcMWyfwf/9uQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	daniel.lezcano@linaro.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17-5.10] cpuidle: Fail cpuidle device registration if there is one already
-Date: Thu,  9 Oct 2025 11:54:43 -0400
-Message-ID: <20251009155752.773732-17-sashal@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.17-5.4] arc: Fix __fls() const-foldability via __builtin_clzl()
+Date: Thu,  9 Oct 2025 11:54:46 -0400
+Message-ID: <20251009155752.773732-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009155752.773732-1-sashal@kernel.org>
 References: <20251009155752.773732-1-sashal@kernel.org>
@@ -67,122 +67,176 @@ X-stable-base: Linux 6.17.1
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 7b1b7961170e4fcad488755e5ffaaaf9bd527e8f ]
+[ Upstream commit a3fecb9160482367365cc384c59dd220b162b066 ]
 
-Refuse to register a cpuidle device if the given CPU has a cpuidle
-device already and print a message regarding it.
+While tracking down a problem where constant expressions used by
+BUILD_BUG_ON() suddenly stopped working[1], we found that an added static
+initializer was convincing the compiler that it couldn't track the state
+of the prior statically initialized value. Tracing this down found that
+ffs() was used in the initializer macro, but since it wasn't marked with
+__attribute__const__, the compiler had to assume the function might
+change variable states as a side-effect (which is not true for ffs(),
+which provides deterministic math results).
 
-Without this, an attempt to register a new cpuidle device without
-unregistering the existing one leads to the removal of the existing
-cpuidle device without removing its sysfs interface.
+For arc architecture with CONFIG_ISA_ARCV2=y, the __fls() function
+uses __builtin_arc_fls() which lacks GCC's const attribute, preventing
+compile-time constant folding, and KUnit testing of ffs/fls fails on
+arc[3]. A patch[2] to GCC to solve this has been sent.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Add a fix for this by handling compile-time constants with the standard
+__builtin_clzl() builtin (which has const attribute) while preserving
+the optimized arc-specific builtin for runtime cases. This has the added
+benefit of skipping runtime calculation of compile-time constant values.
+Even with the GCC bug fixed (which is about "attribute const") this is a
+good change to avoid needless runtime costs, and should be done
+regardless of the state of GCC's bug.
+
+Build tested ARCH=arc allyesconfig with GCC arc-linux 15.2.0.
+
+Link: https://github.com/KSPP/linux/issues/364 [1]
+Link: https://gcc.gnu.org/pipermail/gcc-patches/2025-August/693273.html
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202508031025.doWxtzzc-lkp@intel.com/ [3]
+Signed-off-by: Kees Cook <kees@kernel.org>
+Acked-by: Vineet Gupta <vgupta@kernel.org>
+Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-YES
+Based on my comprehensive analysis of this commit, here is my
+assessment:
 
-Explanation
+## **Answer: YES**
 
-- What it fixes
-  - The patch adds an explicit per-CPU guard in the core registration
-    path to prevent registering a second cpuidle device for a CPU that
-    already has one. Specifically, it introduces an early check in
-    __cpuidle_register_device:
-    - drivers/cpuidle/cpuidle.c:641
-      - if (per_cpu(cpuidle_devices, cpu)) { pr_info(...); return
-        -EEXIST; }
-  - Before this, the code unconditionally replaced the per-CPU pointer
-    with the new device:
-    - drivers/cpuidle/cpuidle.c:657
-      - per_cpu(cpuidle_devices, cpu) = dev;
-  - This “silent replacement” makes the prior device unreachable to the
-    core (and duplicates entries on cpuidle_detected_devices), while its
-    sysfs state remains present and bound to the old device object. The
-    sysfs layer allocates a kobject that keeps a backpointer to the
-    cpuidle_device:
-    - drivers/cpuidle/sysfs.c:697 (cpuidle_add_sysfs) sets kdev->dev =
-      dev and publishes it
-    - drivers/cpuidle/sysfs.c:740 (cpuidle_remove_sysfs) tears it down
-      for the same dev
-  - If a new device is registered without first unregistering the old
-    one, the old sysfs instance is never removed, leaving stale sysfs
-    entries referencing the old cpuidle_device. That is at best user-
-    visible breakage (stale sysfs) and at worst a lifetime hazard if
-    that device is later freed by its owner.
+This commit should be backported to stable kernel trees.
 
-- Why the change is correct and minimal-risk
-  - The new guard is small, contained, and runs under the existing
-    cpuidle_lock (as required by the function’s contract), so it’s race-
-    safe with the unregister path.
-    - The function comment already requires the lock;
-      cpuidle_register_device holds it before calling
-      __cpuidle_register_device (drivers/cpuidle/cpuidle.c:680).
-  - It complements the existing check that only prevents double-
-    registering the same struct (dev->registered):
-    - drivers/cpuidle/cpuidle.c:682
-    - That check does not cover the case of a different struct
-      cpuidle_device for the same CPU. The new per-CPU check closes that
-      gap.
-  - The behavior change is limited to returning -EEXIST instead of
-    proceeding to corrupt state. Callers already treat non-zero returns
-    as failure and back out cleanly (see drivers like ACPI, intel_idle,
-    etc., which unregister the driver or bail on error).
-  - No architectural changes, no new features, no ABI changes. The only
-    user-visible change is a pr_info() when misuse occurs.
+### **Extensive Analysis:**
 
-- Stable backport considerations
-  - It fixes a real bug with observable user impact (stale sysfs
-    interface) and potential lifetime issues.
-  - The fix is tiny (7 insertions and one trivial local-variable use)
-    and self-contained to drivers/cpuidle/cpuidle.c: no dependencies on
-    new APIs, no cross-subsystem changes.
-  - It aligns with stable rules: important bugfix, minimal risk,
-    confined to the cpuidle core.
-  - It leverages existing per-CPU tracking (include/linux/cpuidle.h:116)
-    and existing unregister semantics that clear the pointer and
-    dev->registered, so it should apply cleanly across maintained stable
-    branches.
+#### **Code Changes Analysis (arch/arc/include/asm/bitops.h:134-138)**
 
-Conclusion: This is a clear, contained bug fix that prevents a subtle
-but serious state/lifetime problem in cpuidle registration. It is well-
-suited for stable backport.
+The change adds just 2 lines to the `__fls()` function:
 
- drivers/cpuidle/cpuidle.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+```c
+static inline __attribute__ ((const)) unsigned long __fls(unsigned long
+x)
+{
++       if (__builtin_constant_p(x))
++               return x ? BITS_PER_LONG - 1 - __builtin_clzl(x) : 0;
+        /* FLS insn has exactly same semantics as the API */
+        return  __builtin_arc_fls(x);
+}
+```
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 0835da449db8b..56132e843c991 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -635,8 +635,14 @@ static void __cpuidle_device_init(struct cpuidle_device *dev)
- static int __cpuidle_register_device(struct cpuidle_device *dev)
+**Mathematical Correctness:** The formula `BITS_PER_LONG - 1 -
+__builtin_clzl(x)` is mathematically equivalent to `__fls(x)`:
+- `__builtin_clzl(x)` counts leading zeros
+- For a value with the MSB at position N, there are `BITS_PER_LONG - 1 -
+  N` leading zeros
+- Therefore, `BITS_PER_LONG - 1 - clz(x)` gives the position of the MSB
+  (which is what `__fls()` returns)
+- The zero-check `x ? ... : 0` handles the edge case correctly
+
+#### **Bug Fix Characteristics:**
+
+1. **Fixes Real User-Visible Issues:**
+   - BUILD_BUG_ON() failures when ffs/fls is used in static initializers
+     (reported via KSPP issue #364)
+   - KUnit test failures on ARC architecture (kernel test robot report
+     lore.kernel.org/oe-kbuild-all/202508031025.doWxtzzc-lkp@intel.com/)
+   - Part of a kernel-wide effort to fix const-foldability across all
+     architectures (evidenced by commit 95719dfa32370 "KUnit: ffs:
+     Validate all the __attribute_const__ annotations")
+
+2. **Risk Assessment - MINIMAL:**
+   - **Scope:** Only affects ARC architecture with CONFIG_ISA_ARCV2=y
+   - **Size:** 2-line addition
+   - **Runtime behavior:** Completely preserved - the runtime path using
+     `__builtin_arc_fls()` is unchanged
+   - **Compile-time optimization:** Only adds a new code path for
+     compile-time constants, which cannot introduce runtime regressions
+   - **Pattern precedent:** Uses `__builtin_constant_p()` which is
+     already extensively used in kernel bitops (see
+     include/linux/bitops.h:42-47)
+
+3. **Part of Systematic Fix Series:**
+   - Multiple similar commits for other architectures (x86:
+     fca08b748d177, powerpc: 69057d3db759c, s390: b77fee88bfdfc, etc.)
+   - All adding `__attribute_const__` to ffs()-family implementations
+   - Demonstrates this is a recognized kernel-wide issue being
+     systematically addressed
+
+#### **Stable Tree Backport Criteria Evaluation:**
+
+**✅ Fixes important bugs:** Yes - breaks BUILD_BUG_ON() and KUnit tests
+**✅ Small and contained:** Yes - 2 lines, one function, one architecture
+**✅ No harmful side effects:** Correct - only adds optimization,
+preserves runtime behavior
+**✅ No architectural changes:** Correct - just adds compile-time
+constant handling
+**✅ Minimal regression risk:** Yes - compile-time optimization cannot
+break runtime code
+**✅ Maintainer approval:** Acked-by: Vineet Gupta <vgupta@kernel.org>
+(ARC maintainer)
+**✅ Addresses test failures:** Fixes kernel test robot reported failures
+
+**⚠️ Missing Cc: stable tag:** The commit lacks explicit stable tagging,
+but this appears to be an oversight given:
+- It fixes actual test failures
+- It's part of a systematic bugfix series
+- Similar fixes are being applied across all architectures
+- The commit message states "Even with the GCC bug fixed... this is a
+  good change to avoid needless runtime costs, and should be done
+  regardless"
+
+#### **Dependencies:**
+
+No dependencies identified. The change:
+- Uses standard kernel macros (BITS_PER_LONG, __builtin_constant_p,
+  __builtin_clzl)
+- Doesn't require the KUnit test commit to be present (works standalone)
+- Doesn't depend on GCC version changes
+
+#### **Impact Assessment:**
+
+**ARC users:** Fixes build breakage when BUILD_BUG_ON is used with
+ffs/fls in static initializers
+**Other architectures:** Zero impact (change is ARC-specific)
+**Performance:** Slight improvement - compile-time constants avoid
+runtime calculation
+**Testing:** Fixes KUnit test failures, improving test coverage on ARC
+
+### **Conclusion:**
+
+This is a **low-risk, high-value bugfix** that addresses real test
+failures and build issues on ARC architecture. The mathematical
+correctness is sound, the implementation follows established kernel
+patterns, and it has maintainer approval. Despite lacking an explicit
+Cc: stable tag, this commit meets all the criteria for stable tree
+backporting and should be included to fix the BUILD_BUG_ON() failures
+and KUnit test issues on ARC systems.
+
+**Backport Status: YES**
+
+ arch/arc/include/asm/bitops.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arc/include/asm/bitops.h b/arch/arc/include/asm/bitops.h
+index 5340c28713927..df894235fdbc6 100644
+--- a/arch/arc/include/asm/bitops.h
++++ b/arch/arc/include/asm/bitops.h
+@@ -133,6 +133,8 @@ static inline __attribute__ ((const)) int fls(unsigned int x)
+  */
+ static inline __attribute__ ((const)) unsigned long __fls(unsigned long x)
  {
- 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
-+	unsigned int cpu = dev->cpu;
- 	int i, ret;
- 
-+	if (per_cpu(cpuidle_devices, cpu)) {
-+		pr_info("CPU%d: cpuidle device already registered\n", cpu);
-+		return -EEXIST;
-+	}
-+
- 	if (!try_module_get(drv->owner))
- 		return -EINVAL;
- 
-@@ -648,7 +654,7 @@ static int __cpuidle_register_device(struct cpuidle_device *dev)
- 			dev->states_usage[i].disable |= CPUIDLE_STATE_DISABLED_BY_USER;
- 	}
- 
--	per_cpu(cpuidle_devices, dev->cpu) = dev;
-+	per_cpu(cpuidle_devices, cpu) = dev;
- 	list_add(&dev->device_list, &cpuidle_detected_devices);
- 
- 	ret = cpuidle_coupled_register_device(dev);
++	if (__builtin_constant_p(x))
++		return x ? BITS_PER_LONG - 1 - __builtin_clzl(x) : 0;
+ 	/* FLS insn has exactly same semantics as the API */
+ 	return	__builtin_arc_fls(x);
+ }
 -- 
 2.51.0
 
