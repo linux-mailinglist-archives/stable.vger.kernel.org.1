@@ -1,217 +1,176 @@
-Return-Path: <stable+bounces-183665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516E5BC7BD6
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 09:40:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F61FBC7D2F
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 09:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05CA53A68CF
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 07:40:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 575091892552
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 07:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECD3265CA8;
-	Thu,  9 Oct 2025 07:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23632D0639;
+	Thu,  9 Oct 2025 07:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Lei51xPd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nWguEwY+"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAE41DED52
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 07:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE362BE648
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 07:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759995645; cv=none; b=iu2M8ELFtHLHA549jH/f+D0wUGpd6sSMYz349ozvdB4eLCeRoURQgtRkCt0Xmac+klXKsy41t3OSF+9gTz9hNhb4gYAAUh8a9h8CwlmbVhcbG5n88AuDvILO7/lqMHCMSQaZWbQxVM5d3cMS75Cf65K8ONN7G+Lk9wgsnINvZOE=
+	t=1759996586; cv=none; b=DChkryETgVGteg54m/pQ9ktRCpKnyer9J6JA3wFzYQzQZZLnZYIrGd6TNWYcrfGDhqEiHbDUbVk5ROl64acoY1mmMhF3DqiqC6QQm9l1ngSokVvkRalXuBVveyaQvGujjtBOvzzBMwl/wVT/KSBNaEiB9lA4TxJudVLxWgZO0xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759995645; c=relaxed/simple;
-	bh=FbRvNRG53mvcxQHobPkffQk9qMLOOwloJQhAz6nxH2o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tsN7+FUu5q60zPN9MXnRLcirw3wyMO1GNM9ddk0BBEQda9YH8ziDzL44SJQNNjWl+mT0++iCb+e4iPCKzDb5ws4GqeujptOl7R++dSKrTbFiFTlLediabPxHr/N2Z/wpvGrhnIPzJU9mkxnuVWDg5vCJzG7pjxny0HNBWyruDrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Lei51xPd; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759995642;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4T6bYmZE+LO9vR1ksJGNOmn5mFmrEK+ilv0kzm2Rmso=;
-	b=Lei51xPdfCntzMWMwlvgntAuCqogywAvtSnH3ILB2rhIo+o/RV4rlS+4TYyHeNwT+g4g7g
-	JjA4iYcLGbM7PIE6jZJKEtSVXwRJdPsmtWqrbwOazpnggEvAtKOtrLmxczkJaj9m7AN39x
-	EcWHPkoF5kgQjj2FGVg/1rrA8krRpK4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-533-aWvo8u45PE6c6fjKrjhG3A-1; Thu, 09 Oct 2025 03:40:41 -0400
-X-MC-Unique: aWvo8u45PE6c6fjKrjhG3A-1
-X-Mimecast-MFC-AGG-ID: aWvo8u45PE6c6fjKrjhG3A_1759995640
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ecdc9dbc5fso383144f8f.1
-        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 00:40:40 -0700 (PDT)
+	s=arc-20240116; t=1759996586; c=relaxed/simple;
+	bh=rhd2Vz+1e/iOi2LHto5xUh03sKP51Qg56huR5FisGJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r+S+pjWkrYmgqeGVmmmW8pzJteKYCRW8v9Tk5t2+RE5FddHP7942bNEofTqpLuk90dgVTKLhlYEv0YRibs3O7yd1BfEc+hcbHIg22KFNsAA6gVdTn35uTlJbpaUuM3hk/xizYRV7OCzdL9HfPAUjSA/YpYFpn1K4dWJ8ja2YbOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nWguEwY+; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3ecdf2b1751so498539f8f.0
+        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 00:56:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759996583; x=1760601383; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=T0a1fYc0MJ9EuqumxNBgOSane0jVrbsSTPrQvSq4lE4=;
+        b=nWguEwY+dp1rfzkVgoYo68UeyX8pTm+R7OayCMfo31qBdEZGuUxtM8OGSS3KZ2Udsb
+         D7YyPyFoSey16FgsYH1rY1cI6z0zAzekveMn8h6P+2SlIPdMRmiwvWplDlEWNpMn4duv
+         fkmCz/ABT2OI8vmgoMtv5T7p8ut+IDwGOyT5d9tR3KXCV/79wx9CTMRAueOKnukASYQI
+         0xoo5ohwvBXfBNUZ3JW5ANhILVvYd2YHu3kJrNJ9sNrPSroPdQJX9OGy1F5K1G6muNlF
+         kio502NkjsbTAsvrdg5wUqr+RNW4jwmM1uODNJ6m/OH6XyIa0zzIWta0wuxvsa+8a1uP
+         +JAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759995640; x=1760600440;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4T6bYmZE+LO9vR1ksJGNOmn5mFmrEK+ilv0kzm2Rmso=;
-        b=bEVfDmBwX1A53AKUZCucQUH9n3rPuINBBCVapCaPrIQa67dx1f9MkZBCfP12Y+Cvuy
-         9ZzcWWi1VkFjRbG55NQab7FKv3kOXWHIW3+cE7HSQSdzJFF4v2Tp0vBGZZT8/Xh3nbV0
-         7cZbG9h/45lWsn5ENAR7mYzsx/i4F4YPgOIPJL+f4ItpCWqrUg851yKUK8j4gNVFggae
-         uliqaJYyNWBhWH89e7Yg458X/eEkTO5NpUkwsuKMgraGfRqe5KsV1wMsacfUjL+PFh8o
-         o/4USvQQdyPuBOHVMOypngZ8Tm/SawlV74J+GsBtnQEE7/7yP55yD1v5sDNJawVbY+tC
-         JwkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXfzDqkLd8wvZZZ0FLfwPWrYjkuiJT5fOZXORlD+r6oGXTkjJyxAfEnvLG7HjCiqAEVRSb4HCk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyo9l/38GKJk/ylKQ1kaZ4nGAgULnS96r64x7GPw03yrTlYNwcH
-	ja6dvugHFxTChAAJwO/t93gr9quyH/VaNSBfn1y83OBLDPnXaJn2tRl8dSUhRxPWBsBk/FuC4M5
-	kwAtp0e+E/+kFSH5Aj6Wwv5U2moGiAVAe6FvKMv+nd52Ok+QShPGyat+jDQ==
-X-Gm-Gg: ASbGncuYvsd75HZaKrP3jLaSTYqfnMZpOYItLRPar6L21n5cqHQHwIKQIoMmeKu8Dzn
-	i00Sl3RrikkA/GnVs6VeDx0k/OZn+YxKy89rzOBB2nzQm0oN2Dp8ml038NmyH5Ub8eI/G1mt6R0
-	YoBx/Wk4abTS4I7Jg00Og6BvZ/0qrOhju5GmwHBlv4ixTc57FuZqTZafHoDqWh/EyeKb33t1hDX
-	R9ySmPDsgpDclhBjxM5xWUzpRdSJECiLK0yzillOxvRT5hNwv38AEoNCZZcmQNWtMGgXV5nKsJd
-	RxPTDwD1fcjgibpzmMZbkTM4EFNyO8vdT9Y76iNToU8K9IhXpG1rWYf87t9OvV2pvqi+xXtCQx0
-	wS51DUXPj
-X-Received: by 2002:a05:6000:607:b0:425:72a0:a981 with SMTP id ffacd0b85a97d-42666abb02bmr3831518f8f.2.1759995639884;
-        Thu, 09 Oct 2025 00:40:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWMrszMDlMbAC3kv3AzOArS5/qJRRP5l/pf0umDvfvnlRGQEsSMcDv4DZOlUxZZACt2Yd3Vg==
-X-Received: by 2002:a05:6000:607:b0:425:72a0:a981 with SMTP id ffacd0b85a97d-42666abb02bmr3831503f8f.2.1759995639459;
-        Thu, 09 Oct 2025 00:40:39 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8e96e0sm33332407f8f.33.2025.10.09.00.40.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 00:40:38 -0700 (PDT)
-Message-ID: <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
-Date: Thu, 9 Oct 2025 09:40:34 +0200
+        d=1e100.net; s=20230601; t=1759996583; x=1760601383;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T0a1fYc0MJ9EuqumxNBgOSane0jVrbsSTPrQvSq4lE4=;
+        b=M7UAGP57u+qI8mq4uFW7oAQ+Sswta9xOCXgHZ2SlL26FUqxmwVe/T9h5S/HNPn8h0P
+         u064Phmohd+fpNeFDOr+wTCyFJdmpmBMmxmq8/jppXCNpLD73Gro7KfFScwZAx153A+L
+         NQSJ2eFds410QhE5o6TF0Rxr3E/tC/Q51Zg6lM6xBmzQ0fsdDtAHWnm9sfCviTnzfFa0
+         SAjILkqQRPM+4Vh/mju+tFQ+ZIsRfZy41urhp4j+jg5xzktf6aPb0oFk6nCBpLGU4kDQ
+         cOCbw5nJA4xLBfdOQ5baVviH4M5/Uh3h7VsVcPPhfni9N2bSMkrWZLQtj1xGE/beWgri
+         f5gw==
+X-Forwarded-Encrypted: i=1; AJvYcCUNjzs040wIfkRs46kMvzuesqX/N6SEGmZuij1cHy6fj/kTLdCi9T37bwFSlrYDKY1FbyUTXpk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzQef/kOPhAiNt2zVRn8SCREqkDS6vbIpQbtz8GNXBBdkI+1T8
+	QCokOY7S5b6AI3Yl1FQO15QF1LKszPoxT59iJ5BqBQr2wm7OzRWppjsOPqTY6Q==
+X-Gm-Gg: ASbGnctu5basisZw/afV55gCnMb+DA+5Jv9WF2LQQ/rcwnYGdaXemp6clUeDY01pETG
+	0SeL0zQxcdvAx8FlV+GJvS2eMa+XAd8IWiCQJFJxTj3QE7U3xdPyB0xV5GULhrlv2MixMb22MX5
+	JHjan7NuWxf99tjpsIPHxbNVrRiAl6qPr1qXe5Iidh9wBvmkd9dtcKs/gnekH4SjMjjthqzDQWP
+	RVClO1T7bQLe8x+9z6G4weTNnBJsyGE8lC0CfGZ5TfA/kzeaSotu3Dt8XpAZkbWFfWAvpluOHh0
+	6SHPhrWIrKTg4X6h1ZGVxk67ABc1RiVbrjCzNWZ2W9UYmhdqrfFgsTu8Fnw3/ZjcZLC1dwZq/0M
+	m6r2GW7eqhyKo9BNeiEp0LaUnrazTXmX1xjkHknyHmzXv2Py6iDC2L+wP0D6WeulEATc4iRT26U
+	6YQuhCUj8w2trqhQDMelxNGl5xeAWzajXQ5W3D0ohnHcZv
+X-Google-Smtp-Source: AGHT+IHdPDeElx1hyAYh5U0ai1YogNJIHEcNDQIevaS+npNxA1G4K3X5r3iKDWJLm2QYPiZpKcmqQA==
+X-Received: by 2002:a05:6000:2301:b0:425:72cd:8364 with SMTP id ffacd0b85a97d-4266e8e1afamr4240788f8f.53.1759996582753;
+        Thu, 09 Oct 2025 00:56:22 -0700 (PDT)
+Received: from orome (p200300e41f28f500f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:f500:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6bbesm33269369f8f.12.2025.10.09.00.56.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Oct 2025 00:56:20 -0700 (PDT)
+Date: Thu, 9 Oct 2025 09:56:18 +0200
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Yong Wu <yong.wu@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Chen-Yu Tsai <wens@csie.org>, Krishna Reddy <vdumpa@nvidia.com>, 
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Thierry Reding <treding@nvidia.com>, Miaoqian Lin <linmq006@gmail.com>
+Subject: Re: [PATCH v2 14/14] iommu/tegra: fix device leak on probe_device()
+Message-ID: <rp2yiradenf3twznebagx7tgsruwh66exiikal37c4fwo75t4t@4breto65stqt>
+References: <20251007094327.11734-1-johan@kernel.org>
+ <20251007094327.11734-15-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
- huge_pmd_unshare() vs GUP-fast race
-To: Jann Horn <jannh@google.com>, "Uschakow, Stanislav" <suschako@amazon.de>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "trix@redhat.com" <trix@redhat.com>,
- "ndesaulniers@google.com" <ndesaulniers@google.com>,
- "nathan@kernel.org" <nathan@kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "muchun.song@linux.dev" <muchun.song@linux.dev>,
- "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "liam.howlett@oracle.com" <liam.howlett@oracle.com>,
- "osalvador@suse.de" <osalvador@suse.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de>
- <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 01.09.25 12:58, Jann Horn wrote:
-> Hi!
-> 
-> On Fri, Aug 29, 2025 at 4:30 PM Uschakow, Stanislav <suschako@amazon.de> wrote:
->> We have observed a huge latency increase using `fork()` after ingesting the CVE-2025-38085 fix which leads to the commit `1013af4f585f: mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race`. On large machines with 1.5TB of memory with 196 cores, we identified mmapping of 1.2TB of shared memory and forking itself dozens or hundreds of times we see a increase of execution times of a factor of 4. The reproducer is at the end of the email.
-> 
-> Yeah, every 1G virtual address range you unshare on unmap will do an
-> extra synchronous IPI broadcast to all CPU cores, so it's not very
-> surprising that doing this would be a bit slow on a machine with 196
-> cores.
-> 
->> My observation/assumption is:
->>
->> each child touches 100 random pages and despawns
->> on each despawn `huge_pmd_unshare()` is called
->> each call to `huge_pmd_unshare()` syncrhonizes all threads using `tlb_remove_table_sync_one()` leading to the regression
-> 
-> Yeah, makes sense that that'd be slow.
-> 
-> There are probably several ways this could be optimized - like maybe
-> changing tlb_remove_table_sync_one() to rely on the MM's cpumask
-> (though that would require thinking about whether this interacts with
-> remote MM access somehow), or batching the refcount drops for hugetlb
-> shared page tables through something like struct mmu_gather, or doing
-> something special for the unmap path, or changing the semantics of
-> hugetlb page tables such that they can never turn into normal page
-> tables again. However, I'm not planning to work on optimizing this.
-
-I'm currently looking at the fix and what sticks out is "Fix it with an 
-explicit broadcast IPI through tlb_remove_table_sync_one()".
-
-(I don't understand how the page table can be used for "normal, 
-non-hugetlb". I could only see how it is used for the remaining user for 
-hugetlb stuff, but that's different question)
-
-How does the fix work when an architecture does not issue IPIs for TLB 
-shootdown? To handle gup-fast on these architectures, we use RCU.
-
-So I'm wondering whether we use RCU somehow.
-
-But note that in gup_fast_pte_range(), we are validating whether the PMD 
-changed:
-
-if (unlikely(pmd_val(pmd) != pmd_val(*pmdp)) ||
-     unlikely(pte_val(pte) != pte_val(ptep_get(ptep)))) {
-	gup_put_folio(folio, 1, flags);
-	goto pte_unmap;
-}
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wgvpzj7uzsv4xh6z"
+Content-Disposition: inline
+In-Reply-To: <20251007094327.11734-15-johan@kernel.org>
 
 
-So in case the page table got reused in the meantime, we should just 
-back off and be fine, right?
+--wgvpzj7uzsv4xh6z
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 14/14] iommu/tegra: fix device leak on probe_device()
+MIME-Version: 1.0
 
--- 
-Cheers
+On Tue, Oct 07, 2025 at 11:43:27AM +0200, Johan Hovold wrote:
+> Make sure to drop the reference taken to the iommu platform device when
+> looking up its driver data during probe_device().
+>=20
+> Note that commit 9826e393e4a8 ("iommu/tegra-smmu: Fix missing
+> put_device() call in tegra_smmu_find") fixed the leak in an error path,
+> but the reference is still leaking on success.
+>=20
+> Fixes: 891846516317 ("memory: Add NVIDIA Tegra memory controller support")
+> Cc: stable@vger.kernel.org	# 3.19: 9826e393e4a8
+> Cc: Thierry Reding <treding@nvidia.com>
+> Cc: Miaoqian Lin <linmq006@gmail.com>
+> Acked-by: Robin Murphy <robin.murphy@arm.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+>  drivers/iommu/tegra-smmu.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iommu/tegra-smmu.c b/drivers/iommu/tegra-smmu.c
+> index 36cdd5fbab07..f6f26a072820 100644
+> --- a/drivers/iommu/tegra-smmu.c
+> +++ b/drivers/iommu/tegra-smmu.c
+> @@ -830,10 +830,9 @@ static struct tegra_smmu *tegra_smmu_find(struct dev=
+ice_node *np)
+>  		return NULL;
+> =20
+>  	mc =3D platform_get_drvdata(pdev);
+> -	if (!mc) {
+> -		put_device(&pdev->dev);
+> +	put_device(&pdev->dev);
+> +	if (!mc)
+>  		return NULL;
+> -	}
+> =20
+>  	return mc->smmu;
 
-David / dhildenb
+pdev->dev is what's backing mc, so if we use put_device() here, then the
+MC could go away at any time, right?
 
+So the goal here was to make sure that the MC stays around during the
+entire lifetime of the IOMMU attachment. We don't currently release that
+reference, ever, so there is a leak, but wouldn't it be more appropriate
+to release it in a .release_device implementation?
+
+Thierry
+
+--wgvpzj7uzsv4xh6z
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmjnaqIACgkQ3SOs138+
+s6GKbhAAsfz1wZw0MTC9RsEY4Yd9FfbGZFwUqkdbKTFeuIj2pdIDddlr1W27EUR4
+k8LSmG+B/zzQVAB+e6/9evMs0tBh7sAJqdN+4KS9Xu9oCSz0NZT/DVYKPEhAH44D
+/LkM2+RGcyVcF/2ebov9rCMzHJpcNbgjU6gg9NfQlCrl7diKXSUGhTcSL/Emycmg
+3FuBz6DDHAD0J1slkQ7Tfy+jUKm4Z8Ewh4NBTF0Cv8k+S6WdTq8TOlVhedYyOhii
+YGJeu84qQoOfIf3wFIWqIswb0NmzL/uN/kMw4eLy3FaJ+H9LjYVrfHkDO5lNfW/N
+wwj7QOHLllKcSavr7TPGLglzrRBj2l0ApXL+8Xe1zLvhTx7VX4ksEAVzkJY4mHmu
+5M2JLtgntGiyAY8Korl+NY0K3G42D48qa4fWIewpTEjbT5IQB3C0GQsDMaz0uaZT
+xQK1Ik2W4zP6w/de2FlZj7YF2D/8tAuS7Af8uEZXMny3addBpoICCgraDg4aU1XV
+Nqx/TP3mFHu4V/J6twarFQM7zTeKiKdUyp0yJ428Jed/yGVREBjAqS8Vvml/Zmpn
+e7LFJGHYCLUVymAE1z61G3HPSt1w1IAnRaHrSrq/IbanY3Jhfeu95Az/fpYcW2hU
+FOjysPFAigkUvlqz6M954uRgLGHixqtm3vI/VA+LtKqjR1PJo3w=
+=VlYs
+-----END PGP SIGNATURE-----
+
+--wgvpzj7uzsv4xh6z--
 
