@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-183787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D349ABCA0B6
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:13:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D905BCA0E9
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 18:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0771188AEF8
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:07:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CBD665402ED
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 16:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EAC2FB965;
-	Thu,  9 Oct 2025 16:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A462FB997;
+	Thu,  9 Oct 2025 16:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZAC3Dh7s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwiNNFDf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25152F3C08;
-	Thu,  9 Oct 2025 15:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448AD2F3C13;
+	Thu,  9 Oct 2025 16:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760025599; cv=none; b=u9nqsiS7j9OK8eakElSzwg436w8Neq6Fuc1dSsxF7gUe0kfN/aqtnDkNhTyE83/wt4qT38ZpdQyAwznRu8Cu+hBOs9jnQAcWU88kpPKfk+uRtbBis2SO8iAwBkCveKTnqeEJU1cvq/eTkKDiQEvzcCKXP5TtempXvT1eDZ8V864=
+	t=1760025603; cv=none; b=U6FyoRarh/fWburJ9krS9onh6KpoE1Ooh+2u41zbcnvv5nLjYJtFbQvDDKh6iOLyhlaHClgwZ3YqAxon3IuejfxjN+2IGl/tkaUQUKk4UAMDhGieao1py/v8pK0vAdC8USUpiqz1XFhQt605lkOgM8i7JfskJS6iqhYrmpmHMO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760025599; c=relaxed/simple;
-	bh=lPM1YBZADVg/ysU1qDCn+/3SC2trH32e6mG4B0qcwek=;
+	s=arc-20240116; t=1760025603; c=relaxed/simple;
+	bh=Uw2zzNDBC9Vexn3nS2g+O2Ta5jH8YxIB7tM2uwsQn/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nXmKLAMd3Y7Tr9IonrH1ETZPFoNcfhrhVDJx8k38UWxoV07zOFOqHO1QWxWYVYYK3JXV66p3A4FiGHfe8edH5n1q2U5zpAD6mb1VQAqghD1g2i3FWhO9pOBcuwUVuHd0N+Q2M9/Kmq7YgxRhK0Adi1eVLhW/jFOy7xumWJjrs98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZAC3Dh7s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC92C4CEE7;
-	Thu,  9 Oct 2025 15:59:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iLW4mRgZ1Qf2H7HUnfvIUaCBJgykuMVrp3veRCBPn3mkl66k0BWdZoQBw3p8T5TukT/Lk2L3wYp4Ew7RCEb0jA1pOrYRR16GsFxMNj84Cg2SsFMJ13DVw7TeuXIOLo7nz9ncIqjuUerG3991VZ7Th5AvGGF9ODT1EMcIQSOkrXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwiNNFDf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2020DC4CEF8;
+	Thu,  9 Oct 2025 16:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760025599;
-	bh=lPM1YBZADVg/ysU1qDCn+/3SC2trH32e6mG4B0qcwek=;
+	s=k20201202; t=1760025600;
+	bh=Uw2zzNDBC9Vexn3nS2g+O2Ta5jH8YxIB7tM2uwsQn/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAC3Dh7sC0VP/9d3zwdTicszclt22rVYUX4yfG5sRxGZCu54cbRCBp0z2LwuTD10g
-	 e95waYOZf7rxZnXOWoD5YPNBv/PnsNJXfAQJE1UJIA5j75YwdLCUJSFRE+pZn7hVUA
-	 S1tmYhsMTIAnF5f1sRXOl036B/u4fLSEbpo9G71wPVB6gAxKqZC+i7qDkPHAeeMr4p
-	 ZKIVM1gQy+sYfmnXzDtK5AKJr9GSt/sPj5N5gZiKOW18HusZZdQMkFHR6TR1qxQZtC
-	 aiP7J4uYQSEHeR9DGQamoltTNzD1O2CWFnZsruNJyL+mGdKA45TU0GMq6bC+L2LviP
-	 qMXJImG51Bw1Q==
+	b=YwiNNFDfIUtPxSPPXuP9uh1YnYL+5JeacnN1rC64P1JF6/8MGRkhdQxlVaDTmz+Gh
+	 vqsdB+NiptPDXY2M7zMXuWNWxRKCvc+QZVkgPieZyhd0O1JsE6oltyLGxPppaZ0nTF
+	 ASrgDE43trDOgQcfQAEAiHgqzmvr6VLMqaW5vCIcyxSzuUTjGCriGsd/Avc5toha/D
+	 +ZzUL9vBfOxwoY2L/HibXlrIM7ZdZUhPe8jqha1vQzTl427rL7DlraCJgoXsu6Oe9j
+	 ZQaLDzxjjZHUJTtgRPxxorG5BKczveyMFAaTPG/3WISIthcNhbWncdR1vgkPXOvBCq
+	 /t/HWJs82MrlA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.17-5.4] tools/cpupower: Fix incorrect size in cpuidle_state_disable()
-Date: Thu,  9 Oct 2025 11:55:33 -0400
-Message-ID: <20251009155752.773732-67-sashal@kernel.org>
+Cc: Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17-6.16] io_uring/rsrc: respect submitter_task in io_register_clone_buffers()
+Date: Thu,  9 Oct 2025 11:55:34 -0400
+Message-ID: <20251009155752.773732-68-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009155752.773732-1-sashal@kernel.org>
 References: <20251009155752.773732-1-sashal@kernel.org>
@@ -65,144 +66,95 @@ X-stable-base: Linux 6.17.1
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit 23199d2aa6dcaf6dd2da772f93d2c94317d71459 ]
+[ Upstream commit 2f076a453f75de691a081c89bce31b530153d53b ]
 
-Fix incorrect size parameter passed to cpuidle_state_write_file() in
-cpuidle_state_disable().
+io_ring_ctx's enabled with IORING_SETUP_SINGLE_ISSUER are only allowed
+a single task submitting to the ctx. Although the documentation only
+mentions this restriction applying to io_uring_enter() syscalls,
+commit d7cce96c449e ("io_uring: limit registration w/ SINGLE_ISSUER")
+extends it to io_uring_register(). Ensuring only one task interacts
+with the io_ring_ctx will be important to allow this task to avoid
+taking the uring_lock.
+There is, however, one gap in these checks: io_register_clone_buffers()
+may take the uring_lock on a second (source) io_ring_ctx, but
+__io_uring_register() only checks the current thread against the
+*destination* io_ring_ctx's submitter_task. Fail the
+IORING_REGISTER_CLONE_BUFFERS with -EEXIST if the source io_ring_ctx has
+a registered submitter_task other than the current task.
 
-The function was incorrectly using sizeof(disable) which returns the
-size of the unsigned int variable (4 bytes) instead of the actual
-length of the string stored in the 'value' buffer.
-
-Since 'value' is populated with snprintf() to contain the string
-representation of the disable value, we should use the length
-returned by snprintf() to get the correct string length for
-writing to the sysfs file.
-
-This ensures the correct number of bytes is written to the cpuidle
-state disable file in sysfs.
-
-Link: https://lore.kernel.org/r/20250917050820.1785377-1-kaushlendra.kumar@intel.com
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
 YES
+**Why Backport**
+- `io_uring/register.c:646` already enforces
+  `IORING_SETUP_SINGLE_ISSUER` by rejecting registrations issued by any
+  task other than `ctx->submitter_task`, but
+  `io_register_clone_buffers()` still grabs `src_ctx->uring_lock`
+  without checking `src_ctx->submitter_task` (see current flow in
+  `io_uring/rsrc.c:1296-1305`). This lets a non-owner thread interact
+  with the source ring, breaking the SINGLE_ISSUER contract introduced
+  by d7cce96c449e.
+- The patch plugs that only gap by validating `src_ctx->submitter_task
+  == current` immediately after `lock_two_rings(ctx, src_ctx)` in
+  `io_uring/rsrc.c`, and returning `-EEXIST` when another task tries to
+  clone buffers. That keeps all rings with SINGLE_ISSUER consistent with
+  the locking and lockdep assumptions documented in
+  `io_uring/io_uring.h:136-144`.
 
-- What it fixes
-  - The patch corrects the length passed to the sysfs write helper from
-    a fixed, incorrect size to the actual string length:
-    - Before: `cpuidle_state_disable()` used `sizeof(disable)` (always
-      4) when writing the textual value to sysfs, causing 4 bytes to be
-      written regardless of the actual string length.
-      - See old call site changed in
-        `tools/power/cpupower/lib/cpuidle.c:247` (post‑patch numbering):
-        `value, sizeof(disable)` → `value, len`
-    - After: It computes `len = snprintf(value, SYSFS_PATH_MAX, "%u",
-      disable);` and passes that `len` to the writer, ensuring only the
-      intended number of bytes is written:
-      - New local `int len;` added at
-        `tools/power/cpupower/lib/cpuidle.c:236`.
-      - `len = snprintf(...)` at
-        `tools/power/cpupower/lib/cpuidle.c:245`.
-      - Correct write length used at
-        `tools/power/cpupower/lib/cpuidle.c:247-248`.
+**Impact Without Fix**
+- A second task can still take `src_ctx->uring_lock` through cloning,
+  undermining the guarantee that only the designated submitter ever
+  touches that ring. Upcoming optimizations that skip `uring_lock` for
+  the submitter rely on this guarantee; leaving the hole risks future
+  functional regressions or lockdep splats once those changes land.
+- Even today, the gap lets another thread stall a SINGLE_ISSUER ring by
+  holding its lock via `IORING_REGISTER_CLONE_BUFFERS`, which
+  contradicts users’ expectations after enabling SINGLE_ISSUER.
 
-- Why it matters
-  - The writer `cpuidle_state_write_file()` is a thin wrapper around
-    `write(2)` that takes a `len` and writes it verbatim to the sysfs
-    attribute `disable`:
-    - See `tools/power/cpupower/lib/cpuidle.c:85-111`.
-  - The backing kernel sysfs store for `stateX/disable` parses a
-    NUL/newline-terminated string using `kstrtouint()` (see
-    `drivers/cpuidle/sysfs.c:281-306`). While the kernfs write path
-    guarantees NUL termination for the internal buffer, passing a length
-    larger than the actual string (e.g., 4 for “0”) causes extra bytes
-    beyond the first NUL to be sent. This is conceptually incorrect and
-    can lead to surprising behavior (e.g., stray bytes copied into the
-    sysfs buffer), even if parsing usually succeeds due to the early
-    NUL.
-  - In practice, cpupower only writes “0” or “1”, so `sizeof(unsigned
-    int)` = 4 led to writing “1\0??” instead of just “1”. That typically
-    works today because:
-    - Kernfs appends a NUL at position `count` and `kstrtouint()` stops
-      at the first NUL, so the extra bytes after the embedded NUL are
-      ignored in most cases.
-    - However, this is still a correctness bug and fragile across
-      attribute implementations and future changes.
+**Risk & Scope**
+- Change is tiny and self-contained (one extra guard plus an early exit)
+  with no data structure churn or ABI impact. Rings that are not flagged
+  SINGLE_ISSUER have `submitter_task == NULL`, so behaviour is
+  unchanged; legitimate same-thread clones still succeed.
 
-- Scope and risk
-  - Scope is minimal and fully contained to the cpupower userspace
-    library:
-    - Only `tools/power/cpupower/lib/cpuidle.c` is changed.
-    - No ABI changes; only a local variable and corrected length usage.
-  - No architectural changes; no kernel/runtime impact beyond how many
-    bytes userspace writes.
-  - Regression risk is negligible:
-    - Success semantics in `cpuidle_state_disable()` remain the same
-      (returns 0 if any positive byte count is written; see
-      `tools/power/cpupower/lib/cpuidle.c:247-251`).
-    - Downstream callers (cpupower `cpuidle-set`, Python bindings, and
-      `rtla`) do not depend on writing exactly 4 bytes and will continue
-      to work; see callers such as `tools/power/cpupower/utils/cpuidle-
-      set.c:117,130` and `tools/tracing/rtla/src/utils.c:596,661`.
+**Backport Notes**
+- Needs to go only into trees that already contain the clone-buffer
+  support (`7cc2a6eadcd7` / `636119af94f2f`) and the SINGLE_ISSUER
+  registration gating (`d7cce96c449e`). No further prerequisites
+  identified.
 
-- Affected history
-  - The incorrect `sizeof(disable)` usage dates back to the introduction
-    of the cpuidle library to cpupower in 2016 (commit `ac5a181d065d7`),
-    so all stable series carrying cpupower’s cpuidle library are
-    affected.
-  - The fix is already in mainline as `23199d2aa6dca` (“tools/cpupower:
-    Fix incorrect size in cpuidle_state_disable()”), authored
-    2025-09-17.
+ io_uring/rsrc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-- Stable backport criteria
-  - Important bugfix: Yes — corrects wrong write length to sysfs,
-    eliminating stray bytes and making behavior robust and explicit.
-  - Small and contained: Yes — one function, a few lines in a single
-    file.
-  - No new features or architectural changes: Correct.
-  - Minimal regression risk: Correct.
-  - Critical subsystem: It’s in `tools/` (userspace cpupower), which
-    stable regularly backports fixes for.
-
-Given the above, this is a low-risk correctness fix confined to
-cpupower, addressing a long-standing bug. It should be backported to
-stable trees.
-
- tools/power/cpupower/lib/cpuidle.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/tools/power/cpupower/lib/cpuidle.c b/tools/power/cpupower/lib/cpuidle.c
-index 0ecac009273ce..f2c1139adf716 100644
---- a/tools/power/cpupower/lib/cpuidle.c
-+++ b/tools/power/cpupower/lib/cpuidle.c
-@@ -233,6 +233,7 @@ int cpuidle_state_disable(unsigned int cpu,
- {
- 	char value[SYSFS_PATH_MAX];
- 	int bytes_written;
-+	int len;
+diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
+index f75f5e43fa4aa..e1e5f0fb0f56d 100644
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -1299,10 +1299,17 @@ int io_register_clone_buffers(struct io_ring_ctx *ctx, void __user *arg)
+ 	if (src_ctx != ctx) {
+ 		mutex_unlock(&ctx->uring_lock);
+ 		lock_two_rings(ctx, src_ctx);
++
++		if (src_ctx->submitter_task &&
++		    src_ctx->submitter_task != current) {
++			ret = -EEXIST;
++			goto out;
++		}
+ 	}
  
- 	if (cpuidle_state_count(cpu) <= idlestate)
- 		return -1;
-@@ -241,10 +242,10 @@ int cpuidle_state_disable(unsigned int cpu,
- 				 idlestate_value_files[IDLESTATE_DISABLE]))
- 		return -2;
+ 	ret = io_clone_buffers(ctx, src_ctx, &buf);
  
--	snprintf(value, SYSFS_PATH_MAX, "%u", disable);
-+	len = snprintf(value, SYSFS_PATH_MAX, "%u", disable);
++out:
+ 	if (src_ctx != ctx)
+ 		mutex_unlock(&src_ctx->uring_lock);
  
- 	bytes_written = cpuidle_state_write_file(cpu, idlestate, "disable",
--						   value, sizeof(disable));
-+						   value, len);
- 	if (bytes_written)
- 		return 0;
- 	return -3;
 -- 
 2.51.0
 
