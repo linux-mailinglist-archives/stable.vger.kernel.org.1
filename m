@@ -1,126 +1,111 @@
-Return-Path: <stable+bounces-183671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A105BC80B5
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 10:28:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F342BC80D9
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 10:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5CF188AE8A
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 08:28:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F03D3AEA99
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 08:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACB62C026B;
-	Thu,  9 Oct 2025 08:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672972848BB;
+	Thu,  9 Oct 2025 08:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DdA+a5pI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UtVUjQvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1014E253356;
-	Thu,  9 Oct 2025 08:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173434A01;
+	Thu,  9 Oct 2025 08:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759998478; cv=none; b=iGUZOj4zv1llAD0xbKX58Jm6U5eSiyArfn4o19wsJeaTH95FmYX0vwvKlFaXzY3DccJlUMThceOAXztKot6IcpfLBHbytqiG8WWgDV8phDIEhhOMiwnyuq+WYhgv0uZsLDMi4Tc5BQamoppTKRDU495s99vhnOZ3J2/ebWcnAgM=
+	t=1759998744; cv=none; b=COEuRLrKEcCrvIZHbSeSifF0uvk4fsqXYdyUBvfeWLgGdnCiA45nHpxgPDjxB6r3vIk5H/bl7KXIdxzFJ941cWyfdTgge1/fc57KfwkhJSJTjfvnOPlTBC4Xy3339+0n3DGbcxEesZo5HNM/oUwX3s3X17CQvQUnw1bym5fJFss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759998478; c=relaxed/simple;
-	bh=rZSSjMlfyp1/DY/FUZFefqXE1tJXo2iaAfShYMGP5t8=;
+	s=arc-20240116; t=1759998744; c=relaxed/simple;
+	bh=CpT047vseBAHkLMTuVR4Y4+NLn53QOvWFMPmqJrJSW8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JrJeTmpHyeqJDfAzXGP53NtETLsncx27008gnGP2FCbPy+U2mfqC1NfM0+wjrPqMCEAjMLyuW/rQqaF55jrdGuS+gvDVSN6kQuEsW/gqLhP1pBBa/buQIvE4n8f4qryhTFENodI9gSZoYX7JJF0Pyn4ASAel+SzTVPnFCipx9tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DdA+a5pI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6564FC4CEE7;
-	Thu,  9 Oct 2025 08:27:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cr8Ook4kqOX/eanrExThZwEk1KFK6ICYJOGKcruf73SZYXXvjzwVw/Vwcf/4kW6ZKCIKcbxldxKg5TIa1FJc2x4sPjfiScUpLGMcwJqhiXJbZj+gVza6BL/af4hgAAZSi+aEXXZfRE8s4ivN491tHlPWpY+W0SQVk6Mn0LyOS2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UtVUjQvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACB3C4CEF7;
+	Thu,  9 Oct 2025 08:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759998477;
-	bh=rZSSjMlfyp1/DY/FUZFefqXE1tJXo2iaAfShYMGP5t8=;
+	s=k20201202; t=1759998743;
+	bh=CpT047vseBAHkLMTuVR4Y4+NLn53QOvWFMPmqJrJSW8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DdA+a5pIqIR7UM7ITP9VqMbrQ/uGA1V12t1LNQDOuPyrLQEoJKE5WKh2NSlGCFcFH
-	 uGV+H0pwp2yawTthgjn/F2Z0S6P2suSREhU47mceABhSQ+lsz4NACjbsay/R1WY6xl
-	 63eVDxL1HjTFsgs/K4KbrMpb8/bYp4irws9z33gqhrlUwxHverez29c2Tz9ErOzkD4
-	 lI3+p6SBzsx9lFVrFr5mtC7WR+54NC05PADE4DaHpGWvtVsMpKmDKEi7ct0qWmaPC0
-	 Ke7yKxdzEgNBLhs2Eb1NQka8ViQMV9K4MiwFR6XhqnCVW6ZTKG2vr0HUAKxlQ2nSl/
-	 qu7Zcvd+NNQBA==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1v6m0B-000000001lE-3wvQ;
-	Thu, 09 Oct 2025 10:27:55 +0200
-Date: Thu, 9 Oct 2025 10:27:55 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, Sven Peter <sven@kernel.org>,
-	Janne Grunau <j@jannau.net>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Yong Wu <yong.wu@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wens@csie.org>, Krishna Reddy <vdumpa@nvidia.com>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Thierry Reding <treding@nvidia.com>,
-	Miaoqian Lin <linmq006@gmail.com>
-Subject: Re: [PATCH v2 14/14] iommu/tegra: fix device leak on probe_device()
-Message-ID: <aOdyC1toHHIeE4i5@hovoldconsulting.com>
-References: <20251007094327.11734-1-johan@kernel.org>
- <20251007094327.11734-15-johan@kernel.org>
- <rp2yiradenf3twznebagx7tgsruwh66exiikal37c4fwo75t4t@4breto65stqt>
+	b=UtVUjQvJ8VwBB4YjHG2j2Vhn4SwfSST9s7jMtACswUNDy6+QNYppj3Lk26sueiMmn
+	 1bzAQRWADFCEGtf4V8IvoiT8Ly6xSXkAj7lc00CM9/cfO1b+7B9qpq4Ep3caaD/E4q
+	 bX8uUItpgOE2Q0t5JqFugou4hlv1jR3WMWWzaE4o9rIXGMtWA3/0yTacq6YzL7NED6
+	 mKpCI3/qsqHi3s/9KgSrj7LX8O1FQdz6Q4yBX5Kz/rbsF4VlLLnO5Hps3ATvzcx19a
+	 HB108zq+cnuCTPRyT+ndX/+C0S4alfSSmCVSorC4t56hOnxxzW7vw2jJi6gaup9zAE
+	 ArPus5VBXh2yw==
+Date: Thu, 9 Oct 2025 09:32:17 +0100
+From: Simon Horman <horms@kernel.org>
+To: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	Rengarajan Sundararajan <Rengarajan.S@microchip.com>,
+	UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>, netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	khalid@kernel.org, linux-kernel-mentees@lists.linuxfoundation.org,
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: usb: lan78xx: Fix lost EEPROM write timeout
+ error(-ETIMEDOUT) in lan78xx_write_raw_eeprom
+Message-ID: <20251009083217.GT3060232@horms.kernel.org>
+References: <20251009053009.5427-1-bhanuseshukumar@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KFWfMBBEp9y0HjZa"
-Content-Disposition: inline
-In-Reply-To: <rp2yiradenf3twznebagx7tgsruwh66exiikal37c4fwo75t4t@4breto65stqt>
-
-
---KFWfMBBEp9y0HjZa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20251009053009.5427-1-bhanuseshukumar@gmail.com>
 
-On Thu, Oct 09, 2025 at 09:56:18AM +0200, Thierry Reding wrote:
-> On Tue, Oct 07, 2025 at 11:43:27AM +0200, Johan Hovold wrote:
+On Thu, Oct 09, 2025 at 11:00:09AM +0530, Bhanu Seshu Kumar Valluri wrote:
+> The function lan78xx_write_raw_eeprom failed to properly propagate EEPROM
+> write timeout errors (-ETIMEDOUT). In the timeout  fallthrough path, it first
+> attempted to restore the pin configuration for LED outputs and then
+> returned only the status of that restore operation, discarding the
+> original timeout error saved in ret.
+> 
+> As a result, callers could mistakenly treat EEPROM write operation as
+> successful even though the EEPROM write had actually timed out with no
+> or partial data write.
+> 
+> To fix this, handle errors in restoring the LED pin configuration separately.
+> If the restore succeeds, return any prior EEPROM write timeout error saved
+> in ret to the caller.
+> 
+> Suggested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Fixes: 8b1b2ca83b20 ("net: usb: lan78xx: Improve error handling in EEPROM and OTP operations")
+> cc: stable@vger.kernel.org
+> Signed-off-by: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+> ---
+>  Note:
+>  The patch is compiled and tested using EVB-LAN7800LC.
+>  The patch was suggested by Oleksij Rempel while reviewing a fix to a bug
+>  found by syzbot earlier.
+>  The review mail chain where this fix was suggested is given below.
+>  https://lore.kernel.org/all/aNzojoXK-m1Tn6Lc@pengutronix.de/
+> 
+>  ChangeLog:
+>  v1->v2:
+>   Added cc:stable tag as asked during v1 review.
+>   V1 Link : https://lore.kernel.org/all/20251004040722.82882-1-bhanuseshukumar@gmail.com/
 
-> > @@ -830,10 +830,9 @@ static struct tegra_smmu *tegra_smmu_find(struct d=
-evice_node *np)
-> >  		return NULL;
-> > =20
-> >  	mc =3D platform_get_drvdata(pdev);
-> > -	if (!mc) {
-> > -		put_device(&pdev->dev);
-> > +	put_device(&pdev->dev);
-> > +	if (!mc)
-> >  		return NULL;
-> > -	}
-> > =20
-> >  	return mc->smmu;
->=20
-> pdev->dev is what's backing mc, so if we use put_device() here, then the
-> MC could go away at any time, right?
+Thanks,
 
-Holding a reference to a device does not prevent its driver data from
-going away so there is no point in keeping the reference.
+This patch seems consistent with the discussion at the link under Note.
+I believe it addresses the review of v1.
+And that the Fixes tag corresponds to the commit that introduced this problem.
 
-But from what I can tell, you don't need to worry about that anyway
-since it's the memory controller driver that registers the iommu (and
-the driver can't be unbound).
-
-Johan
-
---KFWfMBBEp9y0HjZa
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCaOdyBwAKCRALxc3C7H1l
-CEs2AP0RtypMzHwKSdgb+1LkzszK9dEi+yrUUVVJnU4HXJHGcQD/W3QAlXRFlmAR
-1c8Lq3vdjCx4jKS7G127MmgisGSECgw=
-=inx4
------END PGP SIGNATURE-----
-
---KFWfMBBEp9y0HjZa--
+Reviewed-by: Simon Horman <horms@kernel.org>
 
