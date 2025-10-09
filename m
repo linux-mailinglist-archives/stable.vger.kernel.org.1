@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-183648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9E0BC730B
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 04:18:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD877BC730E
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 04:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70CDE3A29FB
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 02:18:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF44C19E3C63
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 02:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A6B13957E;
-	Thu,  9 Oct 2025 02:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51826195B1A;
+	Thu,  9 Oct 2025 02:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fn9uRrKC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HHX5RDfi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E922A182D0
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 02:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318E2182D0
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 02:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759976299; cv=none; b=dylN+proRDFJ1G+Hpv+9W88MMlKt6+MWq0QEuV7OzMinzskgoqXbaYro+d1owycIxpma/+C3pyqbGqxqJdOISvVAahICWACXjoEai8AjqNx11m+ghdow9uz3OTIbst+tWJ3t+j4LEvQ4/y+8EiP02OGFosV59JW8yXuzy8a5Mjs=
+	t=1759976303; cv=none; b=hgD2yA0aI3xb09v5wNKVq41GAyWeop3Hnnp/yCt7uhUxTeFlqLerN3fAp894EMoDq+NB4Sn80IOaccu2r02sGQ9S9Qwp8Vqhcmy7noyuec4rTnL9QBMn96ISMD2n4x8LeYuhXDnfd6NFVXvLevAjZ8YTBlR1yn1JHhTHAm28S7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759976299; c=relaxed/simple;
-	bh=yoPP0zAn7en2oS/pwpGca6/EWuK42KOvhHg7GivmrWY=;
+	s=arc-20240116; t=1759976303; c=relaxed/simple;
+	bh=fwl4SXcRQ0Iebk1UH3j//gtZfAQmuRT1usIr3DpjXlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1EcjMFIltZSEY/9lEacaVkJWZCNwzXRxnDUwikvFo4eE6VXUj4dyzEyisjl8tErTCEl7mUpjn7q8BgYr83IoGrefsoWd0WHl9Mg1wmXgwGml+PTF7Ddya9dJrF6NSUvwoYdrXftkoPDXLEpCkrlPwECr27wofWTiO4qdN3G4n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fn9uRrKC; arc=none smtp.client-ip=209.85.221.42
+	 MIME-Version; b=fgJHyRikOgX4nxOp5bPMGq3AoAzFEFXVrxBaC3AySANNyWWBEtNE79XB/YiLGbGeZp5yhS/VIZq/RGhvLkaEnZX7nU2QlFxjmtgR8t0IIebR1tXyaDImVn0EicF5ef4+fUGLi3Amo89yzuk9QJ7R+dYpHDyOkVnCZa/HDcqAJm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HHX5RDfi; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3fa528f127fso377012f8f.1
-        for <stable@vger.kernel.org>; Wed, 08 Oct 2025 19:18:17 -0700 (PDT)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3ee15b5435bso282175f8f.0
+        for <stable@vger.kernel.org>; Wed, 08 Oct 2025 19:18:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759976296; x=1760581096; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1759976299; x=1760581099; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JJfaOf0LMlbdtGGDx/Ijf4csp3yPAQB4jZH4m4DLONE=;
-        b=Fn9uRrKC9l5gb8iJqXTrBE0Z7JD8cvFf2UMCFH84f5Lg5RD5Ez3LIbikNkYlosid6K
-         h4CM5DLr3une2sLGbjyefnu7PyplYDoTewXvoQmJzhvXCa3kAXP/MfznypnRU+OcJ6Ga
-         LvWGj8GdXboJPXnSs7DE3SJqRxoft4NKPNHviglRkYOA13EjSRBL47eQCkBI9GhrHfGn
-         8kjsOphvBW4Nl4bwIvGJ9ckKB/W8ITBMLPckbzq1hzpd3JFBOwDS1PWavqkpMMKbWrMp
-         OwA7V5gQIcL05YMe8eQUU+QaeZ6SdoIGAeet3Xc26VS9rdxX5GKvhHF0EVbAmrwUU69z
-         N7GA==
+        bh=gqgyYd4Mgcg6Fw8yS9ue0bFgfT1RMe7FZ2RNvXUjHH8=;
+        b=HHX5RDfiaou7FtOWwfJHjtbykJli/Vm9ZXFikzY1Y9iBY1WQlfUcurB10pNxUmB7IP
+         O25CDK4DDSTL6P9AG6ZvCIHYrifWj+Gcx3PZ972gW+xzXptDJDB14hGI8CNFhukrdB/j
+         8BVSAkgxlvlYwruW1J4v+JBaKE/7I+e4SeazHz7B1iKs0VLoMiNnGQReDFr4NoIYh7GY
+         IRh3jmF/QK8Z5T+HnV/aGHd4kAHu4US1DGqITluWolSYOLKA5G/1Ix7VZtGbAB4JyWrb
+         Ysqr5akTRIRe0BwdRIwsStuiT49aGsDV3H0QctF+z3aVAl8URn2k68s1HJeJL2CwmVO1
+         hGoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759976296; x=1760581096;
+        d=1e100.net; s=20230601; t=1759976299; x=1760581099;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JJfaOf0LMlbdtGGDx/Ijf4csp3yPAQB4jZH4m4DLONE=;
-        b=ZYsbTdM8u+FXevf9h12yU0qhdpNV2u6hGlT8/FtvO/cDQMxEAZQnKfh8fvRMkQ3xpV
-         EvHkjYTiDqXez6m9ksTsDVNrQNXd1oUYb+uMXmUM7tnpRJZqKJ6Yx7AEtyy18u1gpD/W
-         k53KB7NA5DNJa31Z0rpWretl79O+Y0xOWgF4ru/VSpdXjjMqtBSwGSrqFtcCwVeSPm0j
-         fYLWQmdipyUe7cqBNFTBDmMTCBpe45JEKEEfz6Ib4AvBC/T4tUpvgHNzoweQQ6ixKMVy
-         cjNK+4y5C8fpzeuIzCDl1EenQhvM4zoy5jnP6tsFAm6RCx/fk/JHVxo1tlqIgbwQLbYM
-         oBqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXvJhYM/2t9+PBSDGZ+JW7MyZxF8PqRpMPn8hkMVvwzwdI97wY9kF1iSaJtR18o8ZZjry9aXUQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzubwL5c7uEmTPlLkf9Un2xbtLPqn3nkeEZoK8y4MRbMvtkIHr6
-	Ns/D0MeMHodECbnZ7DB8YodO7efzWiRTiUqipobkylaM7BNNSuJIhBAC
-X-Gm-Gg: ASbGnctB/o2ba2geCj76oIHPrx6ZH0FzDwaBujFo8TYkL+k+GFzKKGROiHEb6o4THLe
-	Ppqo2eV+Y5dWG+YutAxLTGYe4zMyzvw7UQ667NzioQ96D4953kdik3YM4yplIkLLKWts3cDj5u4
-	aPC79EkgyLUCqosN9JvbH61EVx3F/RnSBiZPqq+EpRRYZHwhZYV99Y7iO04q/GZp4QHAznWP2RO
-	U2DI0Z8Q28WBMk0p6dkz0Qvy8cmIgdMJ6+HVAbWSQZ3XmdX0hEWj2yxCNUx2G8DlcvwAYkdEg/Z
-	ZHyKRQI9pUuEkESD/fDeIMTwiLInicxbHr2rrnOjv2zii8vhXJNaRd+IpUdi0WgsSTUWEUs/rlk
-	3t2mBYM05cqADBMJpzXHZnCJqIkKfbaYFKEjnPstql7Fuf79fhCGDb3IJjxhtp9Q=
-X-Google-Smtp-Source: AGHT+IFDWwCsyIH3udntapEMeZKsjzc8YDWsB8IzrNKOcKADqGXbJI8EsYvL5lJPVkIkMFPSMByYZw==
-X-Received: by 2002:a5d:5d13:0:b0:3e9:4ae9:9f1 with SMTP id ffacd0b85a97d-42582a058bfmr6587708f8f.31.1759976296131;
-        Wed, 08 Oct 2025 19:18:16 -0700 (PDT)
+        bh=gqgyYd4Mgcg6Fw8yS9ue0bFgfT1RMe7FZ2RNvXUjHH8=;
+        b=Wv8NGWJgak78h/LWhdhI7wEZmQHy/VRsAxTOqiCFimJg6vMZUtCIGWl+3P+aPlZGWo
+         OA+QPuiB56WW5jf3fEdZ07b0gVim+M50iLY/oo7Fx97o8ze/K7h9MRP7HeHOzxpfov8d
+         zuIbLvdFU3WSTBWLWrKKJuJswH6UlKSo3En9QQOG9XA3vZdRNuq332QT+KKhXo65ON5i
+         /VLPGKWiq2USR2GisULkDjm0PsvwyTZIT/JukxB0TJYIn76nptY/Ufh5anPRFgMRyviW
+         Wz+bDgZGt25SlX+SPcy99eJtXGl+bEpo0G7llbGL3TWWZAH7a0YX/e1obh78XqsHKdT8
+         b/fg==
+X-Forwarded-Encrypted: i=1; AJvYcCUeEY7H6JH9Qjj3SNcMhgTBeSMIFqPkYqSXpLYZPAqAck8NdmjP1m4ts8JluAuQc2nCM/0+Czc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYT52ppXEgVJmg9HqMj4sOOCkEfcvMwA8o0QOJT7ore1CeUMD2
+	0HwiYYBBcBXt54BwIC4cPY9w+SjWjPkeog6pqeno7j8tCh9VO72e01xd
+X-Gm-Gg: ASbGncsiIyDTwXcNH4kRQUsWNhbwstS14FmLSKC6tjGHFz/hysMZht/dwDGU9eGSXGU
+	jm1MdGNTVHtQVa5+0j/m7IXi6z1amSmIR1jmhCYCz6o0QfCrD0VhaMkF5z2ekYxyUBqahpj5wOo
+	p4XDYGV4rLWPYtQ7hEfhNuBOZd+vzlQ0rljzWpBxmfPvkpmL8lJ0RWVp+f1O+qAueXHA3srXPK+
+	fBbzk5mFxz/vWKNecXu2DMR3Wb11S79iXNl5SmSrn6alLubKqB/rkZ3hwpPpLykQVeNRU3YeJ4B
+	LOTEJSLnPnk6XhU7E1pRVOrhLNOiR45INZW7/RC492ja2xcOymKDmM6OrBxISGOCWK7ltQ/H264
+	L5QehQ5QEpj9rYEi3rHneyypFQNqNKh9UJEm8mOO72oZbmAHATHdMmHuN+KBdAog=
+X-Google-Smtp-Source: AGHT+IEm5kdnFG09dYVzwvY+GYBWGh2ZZck+203z4lbF02DASvHUzeCJVzSdR5m2k47thehYE31uPA==
+X-Received: by 2002:a05:6000:26cc:b0:3dc:1a8c:e878 with SMTP id ffacd0b85a97d-42667177b8emr2951904f8f.18.1759976299330;
+        Wed, 08 Oct 2025 19:18:19 -0700 (PDT)
 Received: from ekhafagy-ROG-Strix.. ([41.37.1.171])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9d7f91esm60094215e9.20.2025.10.08.19.18.14
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9d7f91esm60094215e9.20.2025.10.08.19.18.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Oct 2025 19:18:15 -0700 (PDT)
+        Wed, 08 Oct 2025 19:18:18 -0700 (PDT)
 From: Eslam Khafagy <eslam.medhat1993@gmail.com>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org,
@@ -91,13 +91,10 @@ Cc: harry.wentland@amd.com,
 	roman.li@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	eslam.medhat1993@gmail.com,
-	Lang Yu <Lang.Yu@amd.com>,
-	Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
-	Qingqing Zhuo <qingqing.zhuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 5.10.y 1/2] drm/amd/display: Remove redundant safeguards for dmub-srv destroy()
-Date: Thu,  9 Oct 2025 05:17:11 +0300
-Message-ID: <40a1a37aab140b0b0f444f8435b17dee5eae31f2.1759974167.git.eslam.medhat1993@gmail.com>
+	Hamza Mahfooz <hamza.mahfooz@amd.com>
+Subject: [PATCH 5.10.y 2/2] drm/amd/display: Fix potential null dereference
+Date: Thu,  9 Oct 2025 05:17:12 +0300
+Message-ID: <1c15fc3dd25c509faa95cf8805a64c30b62529b2.1759974167.git.eslam.medhat1993@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1759974167.git.eslam.medhat1993@gmail.com>
 References: <cover.1759974167.git.eslam.medhat1993@gmail.com>
@@ -109,42 +106,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Roman Li <roman.li@amd.com>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-[ Upstream commit 3beac533b8daa18358dabbe5059c417d192b2a93 ]
+[ Upstream commit 52f1783ff4146344342422c1cd94fcb4ce39b6fe ]
 
-[Why]
-dc_dmub_srv_destroy() has internal null-check and null assignment.
-No need to duplicate them externally.
+The adev->dm.dc pointer can be NULL and dereferenced in amdgpu_dm_fini()
+without checking.
 
-[How]
-Remove redundant safeguards.
+Add a NULL pointer check before calling dc_dmub_srv_destroy().
 
-Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9a71c7d31734 ("drm/amd/display: Register DMUB service with DC")
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Eslam Khafagy <eslam.medhat1993@gmail.com>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 45420968e5f1..b698d652d41f 100644
+index b698d652d41f..0aa681939b7e 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1141,10 +1141,8 @@ static void amdgpu_dm_fini(struct amdgpu_device *adev)
- 	if (adev->dm.dc)
+@@ -1142,7 +1142,8 @@ static void amdgpu_dm_fini(struct amdgpu_device *adev)
  		dc_deinit_callbacks(adev->dm.dc);
  #endif
--	if (adev->dm.dc->ctx->dmub_srv) {
--		dc_dmub_srv_destroy(&adev->dm.dc->ctx->dmub_srv);
--		adev->dm.dc->ctx->dmub_srv = NULL;
--	}
-+
-+	dc_dmub_srv_destroy(&adev->dm.dc->ctx->dmub_srv);
+ 
+-	dc_dmub_srv_destroy(&adev->dm.dc->ctx->dmub_srv);
++	if (adev->dm.dc)
++		dc_dmub_srv_destroy(&adev->dm.dc->ctx->dmub_srv);
  
  	if (adev->dm.dmub_bo)
  		amdgpu_bo_free_kernel(&adev->dm.dmub_bo,
