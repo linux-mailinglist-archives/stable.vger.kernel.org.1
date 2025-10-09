@@ -1,125 +1,167 @@
-Return-Path: <stable+bounces-183685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F143BC8D5E
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 13:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC41EBC86EC
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 12:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E4B63E7BE2
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 11:35:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA5C13BB9C1
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 10:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C191F3FE2;
-	Thu,  9 Oct 2025 11:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88AD2D73B6;
+	Thu,  9 Oct 2025 10:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.toshiba header.i=nobuhiro.iwamatsu.x90@mail.toshiba header.b="Oya/88nz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B8HpBE00"
 X-Original-To: stable@vger.kernel.org
-Received: from mo-csw-fb.securemx.jp (mo-csw-fb1122.securemx.jp [210.130.202.130])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28062A1CA
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 11:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.130.202.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBAB25EF81
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 10:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760009703; cv=none; b=E2RbjhXmagdn2pSWFV/ZRde0u9BP56XyROjx/SMMEQ8TjEVcIhb9Wnm0JPHCtWunrq614X7H0Tq1Tep0wiUriAlb6GbqNMmA4d8WxZK4Sp1Mn/Wox7eZthV+1IXkkvXDbJZCtvjROK+yFKEo02A3wiYJEYdWW7HdiZ4JEgeG/aA=
+	t=1760004964; cv=none; b=fSXOW36OPM7ZwFtJAgQvR6CRQHSpSQEOWxRxLbyxuDgu18SSy+l346C9qEg/UvDCdn3kKw0gJnfyhDt4ombB65Awmf1z4Ahr4kDIpNm4Wx74ZzS30TD19wg3xggGtlM1ITTvu6y06nzu+mmH9YNgXoeT9l5UXmtx1qib7CbpAAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760009703; c=relaxed/simple;
-	bh=XIZONmzgg9hE/QMIfFBqq5Qc+pn+2ZDaiYR/r+q2zWo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=nghZza9aMxO1BIr+A8UTLo3lgmO+A4+nr1VTUPlTAJimfMatR72w/tYgUpsCuFEgifn3oe+of1KQD9u/Vw65RFCiDz8pDthAFJoty9FBSD/yoyWGFbxWX9bIzuE/xFLTYxxa1ukay77glBT7PEW+9ndY+PZT0OnK3UKcGILnE8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.toshiba; spf=pass smtp.mailfrom=mail.toshiba; dkim=pass (2048-bit key) header.d=mail.toshiba header.i=nobuhiro.iwamatsu.x90@mail.toshiba header.b=Oya/88nz; arc=none smtp.client-ip=210.130.202.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.toshiba
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.toshiba
-Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1122) id 5998FYLL3355056; Thu, 9 Oct 2025 17:15:42 +0900
-DKIM-Signature: v=1;a=rsa-sha256;c=relaxed/simple;d=mail.toshiba;h=From:To:Cc:
-	Subject:Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	i=nobuhiro.iwamatsu.x90@mail.toshiba;s=key1.smx;t=1759997709;x=1761207309;bh=
-	XIZONmzgg9hE/QMIfFBqq5Qc+pn+2ZDaiYR/r+q2zWo=;b=Oya/88nzhqKxBF9L832o65N4B2TWFV
-	yXkRchea6Qge8JTMCSTlDFUOO2j2WUJp8+y2qneM18tKtjXVOX5McsikcFYNwRPDuCRjJp7p8ANmb
-	Oa6MDrGF0eOPDG3gQGMzhJr+JnHQtuoKtwhVpSNx3SH/J3H1QVaaq4svsJy0L72MP9RRgI0t5e3SN
-	B7iCoN8MVH711MzW7QsJzMUWMIouiU13Rb0bRQhZQHMyq7b9smjCWDYRAqAzDT/xzxxgG4yTqjlw6
-	CwT3aaeE9xbt08iPvaoJY3iMEr8/N4w+dhdHx6h0TjdP8L8XHs2KOO6DFwybe3RTGD+3HexUC6R1b
-	z4jA==;
-Received: by mo-csw.securemx.jp (mx-mo-csw1121) id 5998F8Ul2414734; Thu, 9 Oct 2025 17:15:08 +0900
-X-Iguazu-Qid: 2rWhqFKk7rwnP0jIro
-X-Iguazu-QSIG: v=2; s=0; t=1759997708; q=2rWhqFKk7rwnP0jIro; m=oSCVMdv+VMTtV+oQLnzu4yznINdTyh6QafBpwwjtUDo=
-Received: from imx2-a.toshiba.co.jp (imx2-a.toshiba.co.jp [106.186.93.35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	 id 4cj2jm1XT3z4vym; Thu,  9 Oct 2025 17:15:08 +0900 (JST)
-From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>
-Subject: [PATCH for 5.15] platform/x86: int3472: Check for adev == NULL
-Date: Thu,  9 Oct 2025 17:15:04 +0900
-X-TSB-HOP2: ON
-Message-Id: <1759997704-14581-1-git-send-email-nobuhiro.iwamatsu.x90@mail.toshiba>
-X-Mailer: git-send-email 2.7.4
+	s=arc-20240116; t=1760004964; c=relaxed/simple;
+	bh=9qRHHYEqmADy2Hg7PePBEBsrGtyY7ax7aZmn7NMwQzY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PK7W92UIM2OXEkmNSQ1ILnbugI5liQprX8XDfUD8E+oqqPo1D1Yk45qB1XPBrE8tBSuwcdMVggFqW8hG3kQiJiUOLFoZQMXvId4d9eGxUZnMV3FuGoiGvyKoJZ9KDlusI45WERpse615/8Vde80CcwgDBulITZNF749KHV9G43I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B8HpBE00; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3fa528f127fso616702f8f.1
+        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 03:16:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760004961; x=1760609761; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OM8w5j3cNslas5sLb0Tl+m0IuMNBdYJF77WJyrPk0Zo=;
+        b=B8HpBE005iYFBGqBQo4ECpHydKfdlV0+oCOmRFs8rGYYi4/UtePoLbU7AWSrNB9lgS
+         CNcgEy4IKRjWmXggTLB6pD89KpiurR2k91KCBmJO+Akg0R+YjD1NSlz1yNFaI20knGgC
+         tGT31dP357e2O38SOSET51Y95PkDk2fSFhPv9pGjtNE9a0RwejZaRcrdULUsfjzcICIg
+         bIVvq2dOHe27BoJtmZKxvEU0nbDkpjs70XA6RE662tA6ct1s7N5bJgZjBKCsHg9nMrn/
+         SEeBpH1BUlxctEJygkyztFWXSqZ5D+FW65atQxUpFm4EhCT/EgRuPU7f4/HyxDJJLgsb
+         70yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760004961; x=1760609761;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OM8w5j3cNslas5sLb0Tl+m0IuMNBdYJF77WJyrPk0Zo=;
+        b=xGIfDR+dZNuQamRDlmufYvcohArJQMWm7LA5WbbpxTVNjc++SC8pZVaCuevfORV0v1
+         x/SOmnF9gp0CjhV/vmuEUhboTTA3OxnyvsweiTfPuyiqO6xUTsdeqvlmhkzUxQA8th9S
+         j01xv04mfMucGfu5TSkx3XPnC1o6zUnZj2VsGqhfNzKtpsKeRIW5lDM6BGkNnPajj32+
+         Tq817+lMH2hnQ74r3yJH0cuyzvoLW87CmNm6Xy0xA2Ti60IsGGF6qLv2VGlpGdCPcETz
+         3L01VZhLdG5YM/pB9KeKl2x2yiAC+RLKC9z8k4stfmo1OFBPiM3uv650ETlVTogXDPLv
+         INxw==
+X-Forwarded-Encrypted: i=1; AJvYcCWceY6jrrEIFUBowJk3lgY3kINrv3ndIeQrSBHhYmTuhmi5/f0Sx8odajC6M3Bc71KNrGELLRw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVewr9qvxoIGipco1ySvg6F+91k3IYuOuxE/u3V8QDHK//eTO5
+	9eVUIUHuuqjfk8sxSozZOzUMpfWNRiINx8hCMpL3WLv4Iz5Hx7miLemm
+X-Gm-Gg: ASbGncvks4DhlE3/Srm4csw4Vfy42ohWRnbthIJSCrvG+9hZZ/qWSfP43S4rE6bv579
+	AM2SHtwkQBjQUqY+quueoT50ydZiPw+kJSuMQJ7hEwpIBxLZdKjPAgZympuhUxTtr+56asLGp1L
+	gbZxJl38RdRy69IMYEBBQRAOCpfA2+te+XOempODsolUh5vngW81cVI9EJWScnNxfv0u3WS5ojY
+	yq2Vh97dQquong469SUurZLMhrJIRpVSx067Gu4IFq2EQDG/3X7UunULrcQZNLQ/vL+N+yqbL0e
+	ueFooWSQHCtzfqbKPimsiLh71HzW8fm7VEW0Gs2KpVUvsPCKUdAsbjgsqbyUNYDshmOZMWKDuM+
+	8zq2Ziv90R8N1Hf/AeE9LmM0CAQPV606GDaMgq/pxNlct7PryWMyJOC2KHhGCs1CdY2tekyykrH
+	GnZ6Ef0hMiymb3Rva4/SjTuDQbjcA7bCz85C06+e5dobSm
+X-Google-Smtp-Source: AGHT+IFlFWC9kU+Mnozr0FajDi8lLvELWyKIXfkOw61WlClbcF8AFrsB7MLFt16hX93JOqSFya6Ipw==
+X-Received: by 2002:a05:6000:4283:b0:3ee:1368:a921 with SMTP id ffacd0b85a97d-4266e7cfb85mr5665226f8f.28.1760004961089;
+        Thu, 09 Oct 2025 03:16:01 -0700 (PDT)
+Received: from orome (p200300e41f28f500f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:f500:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6bb2sm33100275f8f.10.2025.10.09.03.15.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Oct 2025 03:15:59 -0700 (PDT)
+Date: Thu, 9 Oct 2025 12:15:57 +0200
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Yong Wu <yong.wu@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Chen-Yu Tsai <wens@csie.org>, Krishna Reddy <vdumpa@nvidia.com>, 
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Thierry Reding <treding@nvidia.com>, Miaoqian Lin <linmq006@gmail.com>
+Subject: Re: [PATCH v2 14/14] iommu/tegra: fix device leak on probe_device()
+Message-ID: <4uszly3pf2iddttdwbrfnt5pypzsyj4loz4i3a6ecnekkiedgr@r2bbpn6ymtax>
+References: <20251007094327.11734-1-johan@kernel.org>
+ <20251007094327.11734-15-johan@kernel.org>
+ <rp2yiradenf3twznebagx7tgsruwh66exiikal37c4fwo75t4t@4breto65stqt>
+ <aOdyC1toHHIeE4i5@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-From: Hans de Goede <hdegoede@redhat.com>
-
-commit cd2fd6eab480dfc247b737cf7a3d6b009c4d0f1c upstream.
-
-Not all devices have an ACPI companion fwnode, so adev might be NULL. This
-can e.g. (theoretically) happen when a user manually binds one of
-the int3472 drivers to another i2c/platform device through sysfs.
-
-Add a check for adev not being set and return -ENODEV in that case to
-avoid a possible NULL pointer deref in skl_int3472_get_acpi_buffer().
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241209220522.25288-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-[iwamatsu: adjusted context]
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro.iwamatsu.x90@mail.toshiba>
----
- drivers/platform/x86/intel/int3472/discrete.c | 3 +++
- drivers/platform/x86/intel/int3472/tps68470.c | 3 +++
- 2 files changed, 6 insertions(+)
-
-diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
-index 401fa8f223d622..31494f4247864e 100644
---- a/drivers/platform/x86/intel/int3472/discrete.c
-+++ b/drivers/platform/x86/intel/int3472/discrete.c
-@@ -345,6 +345,9 @@ static int skl_int3472_discrete_probe(struct platform_device *pdev)
- 	struct int3472_cldb cldb;
- 	int ret;
- 
-+	if (!adev)
-+		return -ENODEV;
-+
- 	ret = skl_int3472_fill_cldb(adev, &cldb);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't fill CLDB structure\n");
-diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
-index fd3bef449137cf..b3faae7b23736a 100644
---- a/drivers/platform/x86/intel/int3472/tps68470.c
-+++ b/drivers/platform/x86/intel/int3472/tps68470.c
-@@ -102,6 +102,9 @@ static int skl_int3472_tps68470_probe(struct i2c_client *client)
- 	int device_type;
- 	int ret;
- 
-+	if (!adev)
-+		return -ENODEV;
-+
- 	regmap = devm_regmap_init_i2c(client, &tps68470_regmap_config);
- 	if (IS_ERR(regmap)) {
- 		dev_err(&client->dev, "Failed to create regmap: %ld\n", PTR_ERR(regmap));
--- 
-2.51.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="c3sygtlebt6s3awu"
+Content-Disposition: inline
+In-Reply-To: <aOdyC1toHHIeE4i5@hovoldconsulting.com>
 
 
+--c3sygtlebt6s3awu
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 14/14] iommu/tegra: fix device leak on probe_device()
+MIME-Version: 1.0
+
+On Thu, Oct 09, 2025 at 10:27:55AM +0200, Johan Hovold wrote:
+> On Thu, Oct 09, 2025 at 09:56:18AM +0200, Thierry Reding wrote:
+> > On Tue, Oct 07, 2025 at 11:43:27AM +0200, Johan Hovold wrote:
+>=20
+> > > @@ -830,10 +830,9 @@ static struct tegra_smmu *tegra_smmu_find(struct=
+ device_node *np)
+> > >  		return NULL;
+> > > =20
+> > >  	mc =3D platform_get_drvdata(pdev);
+> > > -	if (!mc) {
+> > > -		put_device(&pdev->dev);
+> > > +	put_device(&pdev->dev);
+> > > +	if (!mc)
+> > >  		return NULL;
+> > > -	}
+> > > =20
+> > >  	return mc->smmu;
+> >=20
+> > pdev->dev is what's backing mc, so if we use put_device() here, then the
+> > MC could go away at any time, right?
+>=20
+> Holding a reference to a device does not prevent its driver data from
+> going away so there is no point in keeping the reference.
+>=20
+> But from what I can tell, you don't need to worry about that anyway
+> since it's the memory controller driver that registers the iommu (and
+> the driver can't be unbound).
+
+That's true. It'd be nice to at least conceptually do the right thing
+here, but not sure it's worth it. As you said, driver data going away
+would need special handling and it's not even clear what that would
+mean in terms of the clients...
+
+Acked-by: Thierry Reding <treding@nvidia.com>
+
+--c3sygtlebt6s3awu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmjni1kACgkQ3SOs138+
+s6Hxrg//eMtMJXdv/o41OWNrAKnyhekEvAPwh5MW/YZi09gOgbHUcjPGo7vThuPz
+JSWzANjX6kXaUPvM0lVPbg19I+qQGCldNOP33d3RjMKpeRbWtoFOCsVj0ejUx/eq
+Y06TzaFYDlNmR8aF+QqlBltg6fj+CNUbxYqndjyft88d+84QvhxXeI+ZsGcB/Fbi
+FazMs3Qcqe4U1+ZPpRz08hrH4fTL2I77X3zZKiAqb1FFSewEtIeC6wlohOTgCELe
+mgS9n7eW8PatznfexWMAsf14LLegxFs/KstlJGu6Oe+9oXOzKMcn165y8GGGy6wc
+h4TsdPMnbkEzRwxqjkQ0ONFOZ35ozFKfa8LuKbhEf7oGbqZEKRN2ZapqcCfGHckh
+ssUgFXmQ2dA4DCysprjvQ9EV9gLdyzMy0/Q57Ogwo1zrJz+fmke6HTPPY+fWoiLP
+QWx6TWuG7ZQhh4lb+uo1ZQAnMGNttLTvLygk5jvaHEIPW8xM88jnDwVn7Bpf8qdV
+9TrKejE1xVgQsbuPQZUOERdGX677mNudKdm+t9+JTD+VtPBNfBLUN/R4f2dOi/3L
+xNNyM54fXljVBx49pvIAw2xbsP/tjPLUfFOOtGoU9tdhxbjMHWMYe5LdktpyeoCv
+QFWHWcgx+C+w4y4YzM6f+zI7TJ6ZB4eLXR5rAtt+J4FjdB5vMt0=
+=XUBA
+-----END PGP SIGNATURE-----
+
+--c3sygtlebt6s3awu--
 
