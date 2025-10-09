@@ -1,167 +1,158 @@
-Return-Path: <stable+bounces-183675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AFDBC82B6
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 11:06:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F4BBC8498
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 11:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1567B348025
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 09:06:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB3E43E30B6
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 09:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8C92D63E2;
-	Thu,  9 Oct 2025 09:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D2727B327;
+	Thu,  9 Oct 2025 09:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L2RB7pUD"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QZY/vbHr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077672D5944
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 09:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9C7241CB7
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 09:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760000740; cv=none; b=rrjw2q12IlJq3ShlX2J/gUuBTwybY4JwevuIQj5OOhEj67dd9uU+Xbt2oef13CMB0vqAjv8Kp/XKB3fVrF8P05w44Hj1LpwDmit16garK1lfGl2gL7SoKr49ezOW0DRl0LdEkuwkkYRjEevBOKkZZKBGMlZZ13f86nPm/299E9k=
+	t=1760001824; cv=none; b=FtKgEt7gjGCOg1NIa+O5BJ5+HlYIAxPf4ChwwFjcQa7HdggZwABBOaFUf+q5MQ1rzBr3QHMB1gjtI0no8Ai9Q8lMEiyRadIPYt6RIHTveOUcrkAAba9n20BhlKlIRzHZ/ThB0utoLuDirl8dQAMv1QQY5y+NxPlH+9PdZfNvvjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760000740; c=relaxed/simple;
-	bh=VEKWxVUe/tnNvlLhoBnBBDaH0OhNaEJWHRAMuAoTH98=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NUzbGuTIDKLAEdwzy8eLKmWiV53w0/vxd9E0jsFQZHrxG4b5RqpKPFC1vrbz6g4KqOLhLEjbSbBbn0fA7YAJNg0C33puC8QCWxfSl1XuZs6E/Z2weafcSzEVhiXl4aDH0JQ4h34QK/Z+V+4ETYUDvA4gxoB1+Yg0ZLvS4O79GD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L2RB7pUD; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-33b5a3e8ae2so440433a91.1
-        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 02:05:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760000737; x=1760605537; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I1TU7MfYzP9/dysH1d26eBKhbqRPLF+RftNgfSNIzQw=;
-        b=L2RB7pUDn8k6GgbryTExOKml2C/KIRl2yJ1UGHoFawVLTI8BNT/x+EsSRQi3+s5JgN
-         rDq2RYBwwtrWegNxjSiPdGxD5E84pJRlYQhXHjkP6ptHQECEuHNr/dwzAnSaYkfEMxr4
-         iDYEhePxOjUA2C5B94Jg21Vos0/r6qphnl8t49MDM6XVF3a1Z27tG9+9UQ0pY2lFg4Fn
-         L6EM/5Nr+WZN2cxogeJRICRI/y3v0QB1CpBJkheVbNiWv455Tz9MZQorADIkHqgStwuS
-         0BZhV0k4KH7xoDxdUiSRIWY5FEMlqRPRvwSCDCx5DtSA5AheReiiw9UjrTMj3pidYwBN
-         BOnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760000737; x=1760605537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I1TU7MfYzP9/dysH1d26eBKhbqRPLF+RftNgfSNIzQw=;
-        b=KeeySDcH6jJ3BgO4tNNZFvCHLP5YOk7KDD32+7APQecLjH+CK1+reSbqkDY5Iy80R7
-         u8Zbt0Ni1cpUfGIwe4/e8/dmZAcg8DkOw6WJyZ2n4mrOKP70n/aUO5BMn5SzhaHY9bKZ
-         LJYQcfCQDwwfzEUetwx9AjgOnyPWEUVCZzltiUEyOCeylMoirgB8HmAy9+cPJ1yuhAuk
-         6Yyid9NBKcV668zQxqf5NbAkxwqvHNhov9dc9GPJNzNEf8JiBeBidbSiGU2T8hd7fzT+
-         tN/FQtv6lgI71SgoD2PaoszbW95GF26Osc8JOyCkEkDmquKhUJ4JiFV6ePNE0AnaNeUR
-         8TSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFy9mg4PpfDuIwwlmIHo/66oiiBT6G4ZFJ2zgEASV1nYnQgzhEKDAZcRvvuDpQZjzMGQ57IsM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtaPPVH3GLqtsFgM+3hAYyXYd0pfZId1EusVjuZ2F7VwPJjzLS
-	NQrnurDY3maSjDkGzpMoJZcSgeB2UjmLO/Ook5fxJXUOE9LM1+UXj3uQkzZcHPh7KyMpCCxFLx9
-	sfgdRNxhgRFkb8C8zkCoKe9tyJtzIqqc=
-X-Gm-Gg: ASbGnctbvbon/wTg/v2IapiwOoa4GDU/i8oD9qTroFznSP+GNSgDw7FwtX30tQJwQQi
-	/Ut4nDS5bmGtbBD1JlirvjWBICi516Bwyx+FCVNyiH4i8aB2ee2ZlJsJIQNQ9e8/34HRR9E0tX8
-	slfN2O3oKfBi37f9Lnh1UwmZkUPGsAwITWCGbB8y7sNcsa5BwZ4RtYY2ualP2d/EqmMOymrux8Q
-	XE7ODFyaBt9nveqA0OZr3UFJczyEsGlnyi2AAjlQ+4l
-X-Google-Smtp-Source: AGHT+IH2GX8bEk4r+hR0p6Q8BVGAccvpb8Z43LxRJ+PRTrW6XFN+OBi7YUZTF1aXK8kHV5VFN+DBONnEIiVmO5qoAbs=
-X-Received: by 2002:a17:90b:3c09:b0:31f:ecf:36f with SMTP id
- 98e67ed59e1d1-339eda48b06mr15014058a91.1.1760000737140; Thu, 09 Oct 2025
- 02:05:37 -0700 (PDT)
+	s=arc-20240116; t=1760001824; c=relaxed/simple;
+	bh=Fcp0jPHuTaTEqj1AeQwmDUWdnPD+3eJn9JS0FEQIwCI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eKY3WWYEL1b/qHoVNZmSRQcz8JeXjDFk5Oi2FbM2IQJ9nOjtqPYRBYU7149f48Qmw0t9iJoAZ0GyQV/vlvmdJxzsh0RjLbGiOda4MFs7GoIoPH4TUxr32JtLslYSVfvJx8cAr0qySLsHq7kYKOosoti5IsHoBRWbH0IZ6JUh360=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QZY/vbHr; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760001818;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4+ivuVc0pjauohQnwAnQmgWCo18q7rQO//Il1Z5pDkI=;
+	b=QZY/vbHrRB/rCyBfesv9Z2RDIxgEjgiKiecm/PF/eZ0F33H1eP6amKz82mDHDXU4/9P4ga
+	vkSqMr8hps/8zuw3sbm342wB2l6WpbcRz/o1xhTNfuxMqj6s22Fa4Kl4f6VbiQKH1DVA1X
+	o3MPT8V0d3yCRnPrg0nTnGzDHq3De60=
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
+To: harry.wentland@amd.com,
+	christian.koenig@amd.com,
+	sunpeng.li@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	alexander.deucher@amd.com
+Cc: linux-kernel@vger.kernel.org,
+	mario.limonciello@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	regressions@lists.linux.dev,
+	Matthew Schwartz <matthew.schwartz@linux.dev>
+Subject: [PATCH] Revert "drm/amd/display: Only restore backlight after amdgpu_dm_init or dm_resume"
+Date: Thu,  9 Oct 2025 11:23:01 +0200
+Message-ID: <20251009092301.13212-1-matthew.schwartz@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251006114507.371788-1-aha310510@gmail.com> <20251008173935.4skifawm57zqpsai@pali>
-In-Reply-To: <20251008173935.4skifawm57zqpsai@pali>
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Thu, 9 Oct 2025 18:05:26 +0900
-X-Gm-Features: AS18NWCMN2fHRdD8EN6xDD1OrTWxPjBo90ZkWO_xScRehILrRLDTEGSKJK0VrA4
-Message-ID: <CAO9qdTFk94yDCMAuTkx5yW9VXYExWuhgpi0X15C5F7e5DQgibA@mail.gmail.com>
-Subject: Re: [PATCH] exfat: fix out-of-bounds in exfat_nls_to_ucs2()
-To: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
-Cc: linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com, 
-	viro@zeniv.linux.org.uk, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Pali
+This fix regressed the original issue that commit d83c747a1225
+("drm/amd/display: Fix brightness level not retained over reboot") solved,
+so revert it until a different approach to solve the regression that
+it caused with AMD_PRIVATE_COLOR is found.
 
-Pali Roh=C3=A1r <pali@kernel.org> wrote:
->
-> Hello!
->
-> On Monday 06 October 2025 20:45:07 Jeongjun Park wrote:
-> > After the loop that converts characters to ucs2 ends, the variable i
-> > may be greater than or equal to len.
->
-> It is really possible to have "i" greater than len? Because I do not see
-> from the code how such thing could happen.
->
-> I see only a case when i is equal to len (which is also overflow).
->
-> My understanding:
-> while-loop condition ensures that i cannot be greater than len and i is
-> increased by exfat_convert_char_to_ucs2() function which has upper bound
-> of "len-i". So value of i can be increased maximally by (len-i) which
-> could lead to maximal value of i to be just "len".
->
-> > However, when checking whether the
-> > last byte of p_cstring is NULL, the variable i is used as is, resulting
-> > in an out-of-bounds read if i >=3D len.
-> >
-> > Therefore, to prevent this, we need to modify the function to check
-> > whether i is less than len, and if i is greater than or equal to len,
-> > to check p_cstring[len - 1] byte.
-> >
-> > Cc: <stable@vger.kernel.org>
-> > Reported-by: syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=3D98cc76a76de46b3714d4
-> > Fixes: 370e812b3ec1 ("exfat: add nls operations")
-> > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> > ---
-> >  fs/exfat/nls.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
-> > index 8243d94ceaf4..a52f3494eb20 100644
-> > --- a/fs/exfat/nls.c
-> > +++ b/fs/exfat/nls.c
-> > @@ -616,7 +616,7 @@ static int exfat_nls_to_ucs2(struct super_block *sb=
-,
-> >               unilen++;
-> >       }
-> >
-> > -     if (p_cstring[i] !=3D '\0')
-> > +     if (p_cstring[min(i, len - 1)] !=3D '\0')
->
-> What about "if (i < len)" condition instead?
->
-> The p_cstring is the nul term string and my understanding is that the
-> "p_cstring[i] !=3D '\0'" is checking that i is at position of strlen()+1.
-> So should not be "if (i < len)" the same check without need to
-> dereference the p_cstring?
->
+Fixes: a490c8d77d50 ("drm/amd/display: Only restore backlight after amdgpu_dm_init or dm_resume")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4620
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 ++++--------
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |  7 -------
+ 2 files changed, 4 insertions(+), 15 deletions(-)
 
-Thank you for the detailed explanation! I misunderstood.
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 8e1622bf7a42..21281e684b84 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2081,8 +2081,6 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
+ 
+ 	dc_hardware_init(adev->dm.dc);
+ 
+-	adev->dm.restore_backlight = true;
+-
+ 	adev->dm.hpd_rx_offload_wq = hpd_rx_irq_create_workqueue(adev);
+ 	if (!adev->dm.hpd_rx_offload_wq) {
+ 		drm_err(adev_to_drm(adev), "failed to create hpd rx offload workqueue.\n");
+@@ -3438,7 +3436,6 @@ static int dm_resume(struct amdgpu_ip_block *ip_block)
+ 		dc_set_power_state(dm->dc, DC_ACPI_CM_POWER_STATE_D0);
+ 
+ 		dc_resume(dm->dc);
+-		adev->dm.restore_backlight = true;
+ 
+ 		amdgpu_dm_irq_resume_early(adev);
+ 
+@@ -9965,6 +9962,7 @@ static void amdgpu_dm_commit_streams(struct drm_atomic_state *state,
+ 	bool mode_set_reset_required = false;
+ 	u32 i;
+ 	struct dc_commit_streams_params params = {dc_state->streams, dc_state->stream_count};
++	bool set_backlight_level = false;
+ 
+ 	/* Disable writeback */
+ 	for_each_old_connector_in_state(state, connector, old_con_state, i) {
+@@ -10084,6 +10082,7 @@ static void amdgpu_dm_commit_streams(struct drm_atomic_state *state,
+ 			acrtc->hw_mode = new_crtc_state->mode;
+ 			crtc->hwmode = new_crtc_state->mode;
+ 			mode_set_reset_required = true;
++			set_backlight_level = true;
+ 		} else if (modereset_required(new_crtc_state)) {
+ 			drm_dbg_atomic(dev,
+ 				       "Atomic commit: RESET. crtc id %d:[%p]\n",
+@@ -10140,16 +10139,13 @@ static void amdgpu_dm_commit_streams(struct drm_atomic_state *state,
+ 	 * to fix a flicker issue.
+ 	 * It will cause the dm->actual_brightness is not the current panel brightness
+ 	 * level. (the dm->brightness is the correct panel level)
+-	 * So we set the backlight level with dm->brightness value after initial
+-	 * set mode. Use restore_backlight flag to avoid setting backlight level
+-	 * for every subsequent mode set.
++	 * So we set the backlight level with dm->brightness value after set mode
+ 	 */
+-	if (dm->restore_backlight) {
++	if (set_backlight_level) {
+ 		for (i = 0; i < dm->num_of_edps; i++) {
+ 			if (dm->backlight_dev[i])
+ 				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
+ 		}
+-		dm->restore_backlight = false;
+ 	}
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index 009f206226f0..db75e991ac7b 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -630,13 +630,6 @@ struct amdgpu_display_manager {
+ 	 */
+ 	u32 actual_brightness[AMDGPU_DM_MAX_NUM_EDP];
+ 
+-	/**
+-	 * @restore_backlight:
+-	 *
+-	 * Flag to indicate whether to restore backlight after modeset.
+-	 */
+-	bool restore_backlight;
+-
+ 	/**
+ 	 * @aux_hpd_discon_quirk:
+ 	 *
+-- 
+2.51.0
 
-In summary, since the variable i can never be greater than len, we don't
-need to consider this case. Therefore, if i is less than len, we can
-determine that an nls loss has occurred.
-
-I think that under normal nls conditions, i should be equal to len
-immediately after the while loop terminates, so changing the condition
-here to "if (i !=3D len)" would be a better way to make this clear.
-
-This way, we can check for an nls loss without dereferencing p_cstring,
-and we can clearly indicate that i should be equal to len when the while
-loop terminates. What do you think?
-
-Regards,
-Jeongjun Park
 
