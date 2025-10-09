@@ -1,238 +1,136 @@
-Return-Path: <stable+bounces-183703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20297BC9694
-	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 16:03:09 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39467BC96B8
+	for <lists+stable@lfdr.de>; Thu, 09 Oct 2025 16:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 157F7189C73D
-	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 14:03:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CCF63351242
+	for <lists+stable@lfdr.de>; Thu,  9 Oct 2025 14:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220352EA154;
-	Thu,  9 Oct 2025 14:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7038378F59;
+	Thu,  9 Oct 2025 14:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hx1cpHeP"
+	dkim=pass (1024-bit key) header.d=geoffthorpe.net header.i=@geoffthorpe.net header.b="SUdeUn+I"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381132E9759
-	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 14:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C571E47A3
+	for <stable@vger.kernel.org>; Thu,  9 Oct 2025 14:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760018582; cv=none; b=oPybQ+IpcchJCIHXRS2/FwphhkDPxjqmHbUr6CIOapT87EwVWd6/wef0MS/tUHoeKxrnGnXBYvwKvKjZ0YL3LM/Go2huOEHdbpYDkfnXs5XE0i34c8TpJHe7x3WwHqEa2se7OEtsrpha4+q8zngVgn+EjwLCmN6FrguFqrYZkv0=
+	t=1760018697; cv=none; b=PnIKRJ/CdeKfOWqFTRDODiIMzBa+eP0JpInL6MdoN0eU9NWu5XEdjTc6vLxh/p/p1trlF89Ynhm7q12z2uwZ/Euadlajhi5rzzdlN2RQQ5qiJpfGsqkJ/OSKQqItx2Sf+gILzF7vkwhQ1iDXxl+e/1M2w0WGWBl+CqqUQ9vmqGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760018582; c=relaxed/simple;
-	bh=sY/gtgf7NBozOjwc2EeRJ+KgsNPbK5kep4ypL81cuJQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U3KGY0DAwLeX/ArKmTubaKRKBuLSCUokkpeYrxn/fALKTgKCjHKKWQf4yZLJc5ijnvtdUyyy8H6fzFYINtqTtdSzFa4BusLjIUgTAh/jTf9tTyimipEKngKfzzkkZYmQinkCRIuL0clms2+asg2t2sN3yJxz80kYAgvPi865EoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hx1cpHeP; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-930cfdfabb3so92563539f.1
-        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 07:03:00 -0700 (PDT)
+	s=arc-20240116; t=1760018697; c=relaxed/simple;
+	bh=HFz+DzsAHHYBSi6GUFx67A7OgctCJkmIJ99bn/U5o6Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iAJfK2kdhkE7yojleLHK22c1vKHosAH+Khoisy/mvZ6Xhq9wRS3nVB0DFCVoaiSfI95ofY2RYYJroqdd3HA6QLjThNs/7UxZXeHtikbtpfyQDQr2NV4EPwMDoUo7saRmmG8SexCydvUZyg5pUYCiLNcvJ4vjL1OqCDG9uVNzWiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=geoffthorpe.net; spf=pass smtp.mailfrom=qclibre.com; dkim=pass (1024-bit key) header.d=geoffthorpe.net header.i=@geoffthorpe.net header.b=SUdeUn+I; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=geoffthorpe.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qclibre.com
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71d71bcac45so10816557b3.0
+        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 07:04:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760018580; x=1760623380; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lfk2bfyqFX2yPC1pilpdm6kUPU4T4/Dvd4LObp2un+E=;
-        b=hx1cpHeP97IWTfCT66W1ey8BmgdueE/D7jc6vp7ykfiYizvyc/GsfcLOSLM6TXLhgj
-         iWW0DwTWqTMlJQbjl0jgrp7SDTEQGQDXDURN1N6/+i/cZ5sXdwvJJkXzGVXOcfaOI2D7
-         36u8V4bRl1U6piKJ9JqjusCQcJlCOk32W3ITClBZCzYmr1q+2ZscngIlBzpnnLao2Qxr
-         vPwpCbLtuvfHpmE4G8DJOCiWi0vsOCKe8awit8HDZj9PoQVtjeB4SGuW7WoVVN8nJpl8
-         XRJQoC/m7LDM1puM9HBFRMuSMcRaRftNpF60Pmdoui9AVYvyztxWlOEBXpT6MTImiZmc
-         y8OQ==
+        d=geoffthorpe.net; s=myprefix; t=1760018694; x=1760623494; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RdqKy9G6bRtRu/wXq/+0Le+P5mZ0KkhEVzNICvjTdJs=;
+        b=SUdeUn+IQi0fAW6YJQxyN+6j7VYVrXng244qtszknaYPUex26olKckKHLqgCl+PcIi
+         Tk9uFJ0d6Ie+a4x2yLjV5pr3+CVHkduxnqCDfZebcVrXckBq+qgsqZzgR6fCJEPubatc
+         DHufWIRfxWX44Azx9HTNPb+9OlUgE8xXcsM+A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760018580; x=1760623380;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lfk2bfyqFX2yPC1pilpdm6kUPU4T4/Dvd4LObp2un+E=;
-        b=lqVTP0+3ddhohLIcsMNULrm4YwJR2nMa9BXHgG0ruU+afsSlsaziufcBHralJNaE9d
-         gaW6QEJ8bwiJZL1sFN858dQvSx6fmTBwylTLYloq+XBq5I4lrP4hFp7zuyVUhtBfHGKM
-         ru1RBBQP9v0Bp+Q+lCTkEN7FZpl/KfSu433s3ww/PkbO7lSWbW3OMb2nQbj3p/wv2JhV
-         VxOIYqj/v4Y712pCBrLwmgxaTrTg9fVtmR4qkRBwMoAnBw6AQEa997rpqR6mvCjo2bGQ
-         FTK+xZHRXKXjuvxd+ocib5oKObFDU1YVuqa2oKcTaLVQaj0CMtzFiSRR7IxktRTQw7wp
-         GeBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrX4JyBwZCQYHbljNZ0kHPwp/KMm7Fx3aVQQ6f097VYOTkbxSw/Cn8pAHZP36URsr7i57jc9w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcCDBxCy07lt51uMSkr21UGlI/4pxDMHo3Zc6Ou4XuGPyYwB9T
-	NYXWJHGZ8nh8aHXEGkEvAkomLsW5juPCl7wgPC4TFOhYhqU1A6Fga9ssb8SlQa4xp27CMX28Efu
-	7MpCQrRbEeTtbNCn2/f3y3laMFKpiPl8=
-X-Gm-Gg: ASbGncthX09bOVi/0LPPUswrjCjBR8tvZzQfqs7tDZKiqmA6Nx0utlAvTQTuysRscZL
-	+VWcFstXrqVdzWX2yekvmKHFhvEzWtVsr5ohI1Bu4gDdnSy9H+iSXR6X5VdnahPpuwKWJgsB5lh
-	gjROZDcGpXTLjFNDDVEVmnOkzUHbk45/776BJfFB9VwhPMmsPpW1uWCn9xBQHdhoYtTrhp+DOH1
-	FLLsS3a4KJaaWWENATDjXADDRDehhI=
-X-Google-Smtp-Source: AGHT+IGFUh+yxdaAwOY01QTdDPRzmkqga8JwC7gVQ8hdE1VZLzwP/yHjfQX0w+P+lGz62g/ohriduN1YX1Cx7jhB7TA=
-X-Received: by 2002:a05:6e02:4405:20b0:42f:9888:48f1 with SMTP id
- e9e14a558f8ab-42f98884980mr2655225ab.1.1760018579842; Thu, 09 Oct 2025
- 07:02:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760018694; x=1760623494;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RdqKy9G6bRtRu/wXq/+0Le+P5mZ0KkhEVzNICvjTdJs=;
+        b=ec+k822zFB4O1xDFM1UPy2a1d2Om9S4a1tS8fiMOP2ANRgvfCmdjKDOanRmehkteNh
+         FXHgdA/XcR78wj7abHvqV2sW0zb+B6yZPzjSQtnWtYg5i7s5oyzq+jIVJmAUje+Z/FNU
+         M7/twOoy+BZNKD/PQ52PO39xVLjnRr2WBrdYMYDwp/NxJ1/klA4fYkX7qydPj3CoF3G7
+         Btq7ZtZYa/wWZxdwq5bJlzDb0auf6bKEaac3oqu8/cfVucOVTpwF6RRzASS01vKcj5SX
+         71feWBM/m6USu+JTrnvmQLkQf4MR2poHKIhZ2iWTFZjIzoQjKr5wgfIdX5hkQe9dlPZS
+         napg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6N1863LY6bPddd6txcHvqcxN74EVkVjO1iEuKqVm5iRN30P5FiZ1hwD8YWdii656DH/c+8rk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwloGkEJyZBhtBbcWJMlfk2rF25lC8gSKxbqZFHKzW29ArDhXbF
+	eMN67jYG+gF5FMRt02OP90GWiNeXIceBj8qme5kHdb/+ePzLei5IKwiIhZJF1I0PI2M=
+X-Gm-Gg: ASbGncu8E3s/6gzoljCltDZzDtp9YKa8l+/UDMPz7wWyb5j6U7B/onjxd9bXe6gk05A
+	da6qxzIJhO/lZ3VvwXkhjuAN1PiP2WbicG7sxLfNDzhcpn/4OOO6n34zgntvhYlPBd65GinhDfk
+	kzXNopZnlhqn9j4PIBqgvn7Rx48TuybM0OkoVnmQ0lWx2iTWayRxA8QtHEYgKw3ZXhNxVD3ODkK
+	IOOB8nfXYaDA546Dyx/uskWa8HJoQM4iYG/ZqQ/iPs8hmpXe2ceA90oGVUvLLtQqDfYQnlKN7WT
+	GPBrA9uoZtPlEQgl/4orpO59H/vEfFsJKrlF1hhaAtsQ6sNbT5pl8jk/mAlItUNEsCHeNeL3lgG
+	i5eY0CJPdZM/Npcw+W9ZkYhsDQvtDOcvB9WNXq40KzO8DdkjylT0RF9oRRXQD8UTEXZSqswcPgF
+	i3w27NVgYDiUHnmA==
+X-Google-Smtp-Source: AGHT+IEy3Zpk1t7I8Y9go0VYl6eLttKJfqUkxmv9wH5m56XMkNIzUJ4aTQJcvW0kxxWmFap74ApUMg==
+X-Received: by 2002:a05:690c:46c5:b0:772:2b5e:1f10 with SMTP id 00721157ae682-780e13f4996mr97210717b3.1.1760018694426;
+        Thu, 09 Oct 2025 07:04:54 -0700 (PDT)
+Received: from [10.0.0.3] (modemcable155.19-201-24.mc.videotron.ca. [24.201.19.155])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8849f2e1db1sm200301485a.4.2025.10.09.07.04.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Oct 2025 07:04:53 -0700 (PDT)
+Message-ID: <028786fa-8964-4dd1-8721-62a5b757237c@geoffthorpe.net>
+Date: Thu, 9 Oct 2025 10:04:52 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251008165659.4141318-1-aleksander.lobakin@intel.com>
-In-Reply-To: <20251008165659.4141318-1-aleksander.lobakin@intel.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 9 Oct 2025 22:02:23 +0800
-X-Gm-Features: AS18NWAnZSobSr21rzMet2NXYBsUZ-tOijH1hdSEoiMgzrgWiOgQX5AxwPD-zdc
-Message-ID: <CAL+tcoAWf4sNkQzCBTE8S7VgH12NPyqwiYDiig+jv0KGYAhFTA@mail.gmail.com>
-Subject: Re: [PATCH bpf] xsk: harden userspace-supplied &xdp_desc validation
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kees Cook <kees@kernel.org>, nxne.cnse.osdt.itp.upstreaming@intel.com, 
-	bpf@vger.kernel.org, netdev@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: regression in hostfs (ARCH=um)
+To: Hongbo Li <lihongbo22@huawei.com>, stable@vger.kernel.org
+Cc: Christian Brauner <brauner@kernel.org>, regressions@lists.linux.dev
+References: <CAH2n15x389Uv_PuQ8Crm7gg4VC0UZ3kJg+eEfHMy8A6rzUtUAA@mail.gmail.com>
+ <75a53a17-b5fe-441e-8953-8c1d5e7ca47a@huawei.com>
+Content-Language: en-US
+From: Geoffrey Thorpe <geoff@geoffthorpe.net>
+In-Reply-To: <75a53a17-b5fe-441e-8953-8c1d5e7ca47a@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 9, 2025 at 12:59=E2=80=AFAM Alexander Lobakin
-<aleksander.lobakin@intel.com> wrote:
+On 2025-10-08 22:42, Hongbo Li wrote:
 >
-> Turned out certain clearly invalid values passed in &xdp_desc from
-> userspace can pass xp_{,un}aligned_validate_desc() and then lead
-> to UBs or just invalid frames to be queued for xmit.
+> Hi Geoffrey,
 >
-> desc->len close to ``U32_MAX`` with a non-zero pool->tx_metadata_len
-> can cause positive integer overflow and wraparound, the same way low
-> enough desc->addr with a non-zero pool->tx_metadata_len can cause
-> negative integer overflow. Both scenarios can then pass the
-> validation successfully.
-> This doesn't happen with valid XSk applications, but can be used
-> to perform attacks.
+> On 2025/10/9 7:22, Geoffrey Thorpe wrote:
+>> Any trivial usage of hostfs seems to be broken since commit cd140ce9 
+>> ("hostfs: convert hostfs to use the new mount API") - I bisected it 
+>> down to this commit to make sure.
+>>
 >
-> Always promote desc->len to ``u64`` first to exclude positive
-> overflows of it. Use explicit check_{add,sub}_overflow() when
-> validating desc->addr (which is ``u64`` already).
->
-> bloat-o-meter reports a little growth of the code size:
->
-> add/remove: 0/0 grow/shrink: 2/1 up/down: 60/-16 (44)
-> Function                                     old     new   delta
-> xskq_cons_peek_desc                          299     330     +31
-> xsk_tx_peek_release_desc_batch               973    1002     +29
-> xsk_generic_xmit                            3148    3132     -16
->
-> but hopefully this doesn't hurt the performance much.
+> Sorry to trouble you, can you provide your information about mount 
+> version and kernel version (use mount -v and uname -ar) ?
 
-I don't see an evident point that might affect the performance. Since
-you said that, I tested by running './xdpsock -i eth1 -t -S -s 64' and
-didn't spot any degradation.
 
->
-> Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
-> Cc: stable@vger.kernel.org # 6.8+
-> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+root@localhost:~# mount --version
+mount from util-linux 2.41 (libmount 2.41.0: selinux, smack, btrfs, 
+verity, namespaces, idmapping, fd-based-mount, statmount, statx, assert, 
+debug)
 
-Thanks for the fix!
+As for the kernel version, I have been bisecting different kernel 
+versions to find the culprit commit. The problem occurs with the commit 
+id I mentioned (cd140ce9: "hostfs: convert hostfs to use the new mount 
+API"). This appears to be between v6.10 and v6.11. The most recent 
+kernel releases all seem to exhibit the problem. My own code has been 
+using kernel v6.6 up till now and that works fine.
 
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+By the way, did you try using the steps to reproduce? No pressure to do 
+so, I am just curious if the instructions I provided work OK for other 
+people (or whether I missed something essential). If you do follow those 
+steps, you should be able to see success if you use v6.6 or older, and 
+you should see failure with anything newer.
 
-> ---
->  net/xdp/xsk_queue.h | 45 +++++++++++++++++++++++++++++++++++----------
->  1 file changed, 35 insertions(+), 10 deletions(-)
->
-> diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
-> index f16f390370dc..1eb8d9f8b104 100644
-> --- a/net/xdp/xsk_queue.h
-> +++ b/net/xdp/xsk_queue.h
-> @@ -143,14 +143,24 @@ static inline bool xp_unused_options_set(u32 option=
-s)
->  static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
->                                             struct xdp_desc *desc)
->  {
-> -       u64 addr =3D desc->addr - pool->tx_metadata_len;
-> -       u64 len =3D desc->len + pool->tx_metadata_len;
-> -       u64 offset =3D addr & (pool->chunk_size - 1);
-> +       u64 len =3D desc->len;
-> +       u64 addr, offset;
->
-> -       if (!desc->len)
-> +       if (!len)
->                 return false;
->
-> -       if (offset + len > pool->chunk_size)
-> +       /* Can overflow if desc->addr < pool->tx_metadata_len */
-> +       if (check_sub_overflow(desc->addr, pool->tx_metadata_len, &addr))
-> +               return false;
-> +
-> +       offset =3D addr & (pool->chunk_size - 1);
-> +
-> +       /*
-> +        * Can't overflow: @offset is guaranteed to be < ``U32_MAX``
-> +        * (pool->chunk_size is ``u32``), @len is guaranteed
-> +        * to be <=3D ``U32_MAX``.
-> +        */
-> +       if (offset + len + pool->tx_metadata_len > pool->chunk_size)
->                 return false;
->
->         if (addr >=3D pool->addrs_cnt)
-> @@ -158,27 +168,42 @@ static inline bool xp_aligned_validate_desc(struct =
-xsk_buff_pool *pool,
->
->         if (xp_unused_options_set(desc->options))
->                 return false;
-> +
+(Side note: when bisecting, I noticed that a number of commits had to be 
+skipped because they seg-faulted during early boot. Fortunately, that 
+didn't prevent me from finding the culprit. I mention this just in case 
+you stumble across a commit that seg-faults too - it appears that's 
+unrelated to the current regression.)
 
-nit?
+Regards,
+Geoff
 
->         return true;
->  }
->
->  static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *pool=
-,
->                                               struct xdp_desc *desc)
->  {
-> -       u64 addr =3D xp_unaligned_add_offset_to_addr(desc->addr) - pool->=
-tx_metadata_len;
-> -       u64 len =3D desc->len + pool->tx_metadata_len;
-> +       u64 len =3D desc->len;
-> +       u64 addr, end;
->
-> -       if (!desc->len)
-> +       if (!len)
->                 return false;
->
-> +       /* Can't overflow: @len is guaranteed to be <=3D ``U32_MAX`` */
-> +       len +=3D pool->tx_metadata_len;
->         if (len > pool->chunk_size)
->                 return false;
->
-> -       if (addr >=3D pool->addrs_cnt || addr + len > pool->addrs_cnt ||
-> -           xp_desc_crosses_non_contig_pg(pool, addr, len))
-> +       /* Can overflow if desc->addr is close to 0 */
-> +       if (check_sub_overflow(xp_unaligned_add_offset_to_addr(desc->addr=
-),
-> +                              pool->tx_metadata_len, &addr))
-> +               return false;
-> +
-> +       if (addr >=3D pool->addrs_cnt)
-> +               return false;
-> +
-> +       /* Can overflow if pool->addrs_cnt is high enough */
-> +       if (check_add_overflow(addr, len, &end) || end > pool->addrs_cnt)
-> +               return false;
-> +
-> +       if (xp_desc_crosses_non_contig_pg(pool, addr, len))
->                 return false;
->
->         if (xp_unused_options_set(desc->options))
->                 return false;
-> +
->         return true;
->  }
->
-> --
-> 2.51.0
->
->
+
 
