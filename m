@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-183892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2ABCBCD272
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:34 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8E6BCD278
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BEB81A66E46
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:20:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E6F944FE0D2
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829BC2F9982;
-	Fri, 10 Oct 2025 13:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E712F5A3E;
+	Fri, 10 Oct 2025 13:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKTKlL8h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAPAGSEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4A528A1CC;
-	Fri, 10 Oct 2025 13:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FC42F5A31;
+	Fri, 10 Oct 2025 13:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102282; cv=none; b=do7+s7msWD3zS8N30pUPBiHpwpyx5C2E5gpPiVQz+RVi9m0PGVwkPj943z3RC3ff80jCbWXiboKX2ACCDD/ioaMwa96ybR+4l6kgBgBtPTi7Dn6K7YbaX9gAFtfojcnY6kWxCeEIMYXtFwU+zn8WHNu6ibs3ftvrQLCOp6YdP+0=
+	t=1760102350; cv=none; b=QN4aw1V8hN9elLOhu0wJJYWJGAbQ+mUK4OoKtr05ULgNNypG+Qz361T8Z4b0H5zPkgy5n/s7eQPDfw7vA+Mmy6T6TB3OSPXIF/QD68L1aC9WSp6GxElseJOPWV8oVql2lTbx5B2Fk0sdeQOfQqubKs/thXe4K/yrtgxL6Ha6vaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102282; c=relaxed/simple;
-	bh=O6NK/5Es7WUJQ229HvLeMJeaIVIiOmm54n/8Ww5Mx1s=;
+	s=arc-20240116; t=1760102350; c=relaxed/simple;
+	bh=H5VrpytArjlzzIF1zPfM3pxEBgvnpcQ81f6tN6vyqOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUUGZwkkn60cfhkhpds1w0uMI9/sPtA89eA9Gw2aIrkdrLWCGDq7UCLGqQJx5naKUvysZAvRS1tA7JdDUZPmZsLE/msG+2In9E5h42bOB0G5uw2ZK07wc/9/Za8Sa7cHd+ohelWwVfGkolB2wkoeJj6gHKdbepsfPPJ7F81zdGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKTKlL8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FF9C4CEF1;
-	Fri, 10 Oct 2025 13:18:01 +0000 (UTC)
+	 MIME-Version; b=qSyH8JNBNealsN+MCtLrs9FHnTVOxOt96zY/Zc+fnWqbCG/oxam17NVWlSnv2Fnr8WfROhoTPsAaunwqeWyMNSIMYbH/oD62QTRANEmWueVkCi+zw1wIomeWAd3MT6uUMVG+XD+BzhXdawmYuoOOgsF/d1BgFMVlk8bXUMs7D2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAPAGSEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EADEC4CEF1;
+	Fri, 10 Oct 2025 13:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102282;
-	bh=O6NK/5Es7WUJQ229HvLeMJeaIVIiOmm54n/8Ww5Mx1s=;
+	s=korg; t=1760102350;
+	bh=H5VrpytArjlzzIF1zPfM3pxEBgvnpcQ81f6tN6vyqOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKTKlL8h6AKMX1LG8ZXYWO1wheppyVGilcu23/Lu4dpI8aV3HReDi20y6PojIwxwo
-	 i9bNK+NpZ0VDrQ3OlDjutzxctfdrR5BZklcA/x8I+eL6OwAWo4nGEIpTVE23sc7qmj
-	 33pt40A3RKaUNZgv8lox7tVwu2s7lYIJC+MHlj0o=
+	b=eAPAGSEMbVgdA2yItxjFL3jxaLyA03xDP444uuoXoUufZYS6sF2tMd74lisTZ1NsD
+	 R3VQZCKeVqWuJXjhWD4X2l6zfsurEiU6kVNRYhAnQ1Ey0+dB3FvjmR2FfQyn9b0Nsc
+	 ntCodSUhThSWfN3sTOFeECxmK1q2oBeci4T/Zyr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	stable <stable@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.17 18/26] driver core: faux: Set power.no_pm for faux devices
+	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 25/41] can: hi311x: fix null pointer dereference when resuming from sleep before interface was enabled
 Date: Fri, 10 Oct 2025 15:16:13 +0200
-Message-ID: <20251010131331.871707399@linuxfoundation.org>
+Message-ID: <20251010131334.329701003@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Chen Yufeng <chenyufeng@iie.ac.cn>
 
-commit 1ad926459970444af1140f9b393f416536e1a828 upstream.
+[ Upstream commit 6b696808472197b77b888f50bc789a3bae077743 ]
 
-Since faux devices are not supposed to be involved in any kind of
-power management, set the no_pm flag for all of them.
+This issue is similar to the vulnerability in the `mcp251x` driver,
+which was fixed in commit 03c427147b2d ("can: mcp251x: fix resume from
+sleep before interface was brought up").
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/6206518.lOV4Wx5bFT@rafael.j.wysocki
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the `hi311x` driver, when the device resumes from sleep, the driver
+schedules `priv->restart_work`. However, if the network interface was
+not previously enabled, the `priv->wq` (workqueue) is not allocated and
+initialized, leading to a null pointer dereference.
+
+To fix this, we move the allocation and initialization of the workqueue
+from the `hi3110_open` function to the `hi3110_can_probe` function.
+This ensures that the workqueue is properly initialized before it is
+used during device resume. And added logic to destroy the workqueue
+in the error handling paths of `hi3110_can_probe` and in the
+`hi3110_can_remove` function to prevent resource leaks.
+
+Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
+Link: https://patch.msgid.link/20250911150820.250-1-chenyufeng@iie.ac.cn
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/faux.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/spi/hi311x.c | 33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
---- a/drivers/base/faux.c
-+++ b/drivers/base/faux.c
-@@ -155,6 +155,7 @@ struct faux_device *faux_device_create_w
- 		dev->parent = &faux_bus_root;
- 	dev->bus = &faux_bus_type;
- 	dev_set_name(dev, "%s", name);
-+	device_set_pm_not_required(dev);
+diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
+index 6441ff3b41987..963ea8510dd9b 100644
+--- a/drivers/net/can/spi/hi311x.c
++++ b/drivers/net/can/spi/hi311x.c
+@@ -545,8 +545,6 @@ static int hi3110_stop(struct net_device *net)
  
- 	ret = device_add(dev);
- 	if (ret) {
+ 	priv->force_quit = 1;
+ 	free_irq(spi->irq, priv);
+-	destroy_workqueue(priv->wq);
+-	priv->wq = NULL;
+ 
+ 	mutex_lock(&priv->hi3110_lock);
+ 
+@@ -770,34 +768,23 @@ static int hi3110_open(struct net_device *net)
+ 		goto out_close;
+ 	}
+ 
+-	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
+-				   0);
+-	if (!priv->wq) {
+-		ret = -ENOMEM;
+-		goto out_free_irq;
+-	}
+-	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
+-	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
+-
+ 	ret = hi3110_hw_reset(spi);
+ 	if (ret)
+-		goto out_free_wq;
++		goto out_free_irq;
+ 
+ 	ret = hi3110_setup(net);
+ 	if (ret)
+-		goto out_free_wq;
++		goto out_free_irq;
+ 
+ 	ret = hi3110_set_normal_mode(spi);
+ 	if (ret)
+-		goto out_free_wq;
++		goto out_free_irq;
+ 
+ 	netif_wake_queue(net);
+ 	mutex_unlock(&priv->hi3110_lock);
+ 
+ 	return 0;
+ 
+- out_free_wq:
+-	destroy_workqueue(priv->wq);
+  out_free_irq:
+ 	free_irq(spi->irq, priv);
+ 	hi3110_hw_sleep(spi);
+@@ -909,6 +896,15 @@ static int hi3110_can_probe(struct spi_device *spi)
+ 	if (ret)
+ 		goto out_clk;
+ 
++	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
++				   0);
++	if (!priv->wq) {
++		ret = -ENOMEM;
++		goto out_clk;
++	}
++	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
++	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
++
+ 	priv->spi = spi;
+ 	mutex_init(&priv->hi3110_lock);
+ 
+@@ -944,6 +940,8 @@ static int hi3110_can_probe(struct spi_device *spi)
+ 	return 0;
+ 
+  error_probe:
++	destroy_workqueue(priv->wq);
++	priv->wq = NULL;
+ 	hi3110_power_enable(priv->power, 0);
+ 
+  out_clk:
+@@ -964,6 +962,9 @@ static void hi3110_can_remove(struct spi_device *spi)
+ 
+ 	hi3110_power_enable(priv->power, 0);
+ 
++	destroy_workqueue(priv->wq);
++	priv->wq = NULL;
++
+ 	clk_disable_unprepare(priv->clk);
+ 
+ 	free_candev(net);
+-- 
+2.51.0
+
 
 
 
