@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-183893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1CBBCD28D
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A38BCD2BA
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 444711A67722
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1562427766
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7302F99B5;
-	Fri, 10 Oct 2025 13:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA752F5A37;
+	Fri, 10 Oct 2025 13:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziASLCV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQxQnO+Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2852F8BFA;
-	Fri, 10 Oct 2025 13:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A34C2F5482;
+	Fri, 10 Oct 2025 13:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102285; cv=none; b=H0dZ/OluLVoNCW/4XrO93U/RxArlxC0ebKkXLA3MdEe5emo7vkYMjETS38Pub5k9SNZamA2TxspqDQbgwE5GSY0NaIGcmrJBWbeunX4INLFyYz1lv0R9jdoObKt/YPAB+wDejapqCOEXytdb8Gez5D5sujapsVojz7l8ZYNAJ9I=
+	t=1760102353; cv=none; b=L5XNft3oYC59qjb/U6iQh15lqqJbVw4fXjCNOGY3NknW3zSlipfbmanxQhUYS9EiOYJWq0+1cfK0r8Ub1TSZv+wXcI5dKhLvcDUGJseoOH6wWRRIain0GargenrAP8djwOkS2QVyrVhmfPgtioGAxZf6SeI4RjcGUYtRz0N+kgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102285; c=relaxed/simple;
-	bh=ztRPJo/WTAPb+6zLcob4w7qV8sg+daiygRlFEIL6iLE=;
+	s=arc-20240116; t=1760102353; c=relaxed/simple;
+	bh=nyGGYOHrZJGUtDhhjuvpX8nHl7P+UyzPC1mfWxnp8zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEGpQUbt2hCf5MWTcElS3Lj9dDoAM6lZGCkmXi+HePhcyActevS+Ef8zPuek9ghZaIRFnxjI+ldOWUGBwq3j7Q79qFxZ2cD5DGVIVLOChwZ8xzdVVq+U/kK6iVNQmTp3UZbfG0I84g0U9fVfevI2odqdgTMUY86UUdj3eFNpNZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziASLCV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E07C4CEF1;
-	Fri, 10 Oct 2025 13:18:04 +0000 (UTC)
+	 MIME-Version; b=Y8CZJpnUS9T77GlBLQa6JYzqdEf2fmc8HgcJ20t6RfCHNJaHWcN1zTlvueQUuhGnwG6IagwMo3u1Dme/5cT30qQxXLQWlSNyVCrZidIspqu0wN8bsBB0yPFwIkl/FFR4ysLJffmYTpTiYaN6wzsZ5P8MIs6rYkxbtSSVZAKozJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQxQnO+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3A2C4CEF1;
+	Fri, 10 Oct 2025 13:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102284;
-	bh=ztRPJo/WTAPb+6zLcob4w7qV8sg+daiygRlFEIL6iLE=;
+	s=korg; t=1760102353;
+	bh=nyGGYOHrZJGUtDhhjuvpX8nHl7P+UyzPC1mfWxnp8zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziASLCV2dzYj1Br5wxlDZY4t4/fXcDMjmbegTeyq48XE4s4+XeASZIpkB05vkKqu+
-	 wUCk9MybsDxUGygYg9+XIvOt13QP/y78skihQO7lwoSS3v49gVU0FQHAp+hrDc0/5R
-	 vCLT7pmAF0SWZNV+W0iY+GP5vZrTDN4+eimh5TLo=
+	b=LQxQnO+Zpr5EXo6kfLgjOIdmineO9i6yLaEf7dbKW+DITh/xMTWWJqiar0cltMIAl
+	 wO/9r516gGgR2uxKorkJup+3nnkJLNwE3+8dBwNlUkzPiWhycvJb0R2S+yByahqI5f
+	 a5dspMDR9jTWr91XkqpATDp5xyCAsyWvYX2+at/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	stable <stable@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.17 19/26] driver core/PM: Set power.no_callbacks along with power.no_pm
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Tranh Ha <tranh.ha.xb@renesas.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 26/41] can: rcar_canfd: Fix controller mode setting
 Date: Fri, 10 Oct 2025 15:16:14 +0200
-Message-ID: <20251010131331.906612184@linuxfoundation.org>
+Message-ID: <20251010131334.365158106@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Duy Nguyen <duy.nguyen.rh@renesas.com>
 
-commit c2ce2453413d429e302659abc5ace634e873f6f5 upstream.
+[ Upstream commit 5cff263606a10102a0ea19ff579eaa18fd5577ad ]
 
-Devices with power.no_pm set are not expected to need any power
-management at all, so modify device_set_pm_not_required() to set
-power.no_callbacks for them too in case runtime PM will be enabled
-for any of them (which in principle may be done for convenience if
-such a device participates in a dependency chain).
+Driver configures register to choose controller mode before
+setting all channels to reset mode leading to failure.
+The patch corrects operation of mode setting.
 
-Since device_set_pm_not_required() must be called before device_add()
-or it would not have any effect, it can update power.no_callbacks
-without locking, unlike pm_runtime_no_callbacks() that can be called
-after registering the target device.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/1950054.tdWV9SEqCh@rafael.j.wysocki
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Signed-off-by: Tranh Ha <tranh.ha.xb@renesas.com>
+Link: https://patch.msgid.link/TYWPR01MB87434739F83E27EDCD23DF44B416A@TYWPR01MB8743.jpnprd01.prod.outlook.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/device.h |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/can/rcar/rcar_canfd.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -851,6 +851,9 @@ static inline bool device_pm_not_require
- static inline void device_set_pm_not_required(struct device *dev)
- {
- 	dev->power.no_pm = true;
-+#ifdef CONFIG_PM
-+	dev->power.no_callbacks = true;
-+#endif
+diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
+index 7f10213738e5c..e2ae8d6a9de64 100644
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -870,9 +870,6 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
+ 	/* Reset Global error flags */
+ 	rcar_canfd_write(gpriv->base, RCANFD_GERFL, 0x0);
+ 
+-	/* Set the controller into appropriate mode */
+-	rcar_canfd_set_mode(gpriv);
+-
+ 	/* Transition all Channels to reset mode */
+ 	for_each_set_bit(ch, &gpriv->channels_mask, gpriv->info->max_channels) {
+ 		rcar_canfd_clear_bit(gpriv->base,
+@@ -892,6 +889,10 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
+ 			return err;
+ 		}
+ 	}
++
++	/* Set the controller into appropriate mode */
++	rcar_canfd_set_mode(gpriv);
++
+ 	return 0;
  }
  
- static inline void dev_pm_syscore_device(struct device *dev, bool val)
+-- 
+2.51.0
+
 
 
 
