@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-183881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BEA6BCD160
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32492BCD24B
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C68763B9E38
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 156D14FDCA9
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391622882AC;
-	Fri, 10 Oct 2025 13:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBF52F49EC;
+	Fri, 10 Oct 2025 13:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSXEn8c2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij2sPNa8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E241F63FF;
-	Fri, 10 Oct 2025 13:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E422F49E4;
+	Fri, 10 Oct 2025 13:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102250; cv=none; b=ni61+bkAm08iwt14ccZzvQh+tzdiBRztv/VsLxiSm8zY78gnQ5RKeZVZxMKSd+SaUP2qjYfSQ/v3aRI8o8JFi3BNkMkd033mbf7XT+TXLuk3PtST/MerneiOk+3bqIJqkld77jEr5gAb2vo/SfaiHpOf0B/c98bd0S1W1XZOEyc=
+	t=1760102313; cv=none; b=RDcWUVaLpVPQwD1LpV6oAEx+t8iCXxDa6K306Qx+4nW2bh1D3mjqImlEU+Vf556A9AJLb67WpY4yVF+ezrx3DyloWAHzvsPdS6pCOHodg5diqsyCA39yaFfMlkyenRM6pxMTPO0Uvf3XR+PtEmGH4xlgAu1Yp8nQanLAlGn2mxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102250; c=relaxed/simple;
-	bh=C+rb5qiheNGvA2YoHs3Z/BtYZyscTFp8pJe1U08A6R4=;
+	s=arc-20240116; t=1760102313; c=relaxed/simple;
+	bh=pIMKGxwc6v6q2eScJ/eNV3tHvtKjyRLzW8Bh8C6ue7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2v1szf0BVJUmBGjcB7s7mgFVihhVA9sG9fdA5/ebpBhkjAeUDQl8Myn4TQ74ACjMet9/iR/7JU/Im+qQ0cIJ5Io7FE5L+7+fSGj1DKjS84NAKFZS9jrA62O/7LX2i7Wrm2jb2c4UunogS6m7IGRn/5MFDbFU75++c+Ow8mDux8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSXEn8c2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BACDC4CEF1;
-	Fri, 10 Oct 2025 13:17:29 +0000 (UTC)
+	 MIME-Version; b=bgOKsOpYtHpckzL/mKWl2Bt1VmakTGrv5uyCSPAdSsRlXWdIBmUeqjyhKUV5CkB1QCoXsBy0rJrkHg6IEvvNwOFKHFvuXiuU7iApyrMgzViqpoDlSv8OPp6eU/fPcfn4xCqp8oUtBDIm0XDi1MVFAVr6oZtLhWAneuVgymNCdL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij2sPNa8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EE3C4CEF1;
+	Fri, 10 Oct 2025 13:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102249;
-	bh=C+rb5qiheNGvA2YoHs3Z/BtYZyscTFp8pJe1U08A6R4=;
+	s=korg; t=1760102313;
+	bh=pIMKGxwc6v6q2eScJ/eNV3tHvtKjyRLzW8Bh8C6ue7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSXEn8c2T4Spt01CUhGHjUx2S7lxMGN0YPq3GSV/pb0usPIF/txl8r47OtRqror2o
-	 2XXvpmiE0AibrNg+TdU3nd655JEYSZkM0x8ZRwdt8mMM9mB5ObQTaWajT4JZGbXTTm
-	 NtOmPKcqGbc88oiufiT3KGk/BypF0f3JEH2sbMyU=
+	b=Ij2sPNa8z7VO9E23qqY6Dvb0tZJzz+Hdye2zFepkoHurMDTIYgd/FNh65wMKu5WzS
+	 k3QH4BO2ToMCzLeMvpjXVZggsURoZUfUN1TcNxy3UOak/esiJZHHVvqPKz79xw19+E
+	 tecMQPZAmcYTWyGSsrPDS1Zc7mMyFmbFuYQdSzS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.17 06/26] rust: drm: fix `srctree/` links
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 13/41] ASoC: rt712: avoid skipping the blind write
 Date: Fri, 10 Oct 2025 15:16:01 +0200
-Message-ID: <20251010131331.440271350@linuxfoundation.org>
+Message-ID: <20251010131333.904940414@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Shuming Fan <shumingf@realtek.com>
 
-commit c2783c7cfefd55b1a5be781679cbee5191c0fd87 upstream.
+[ Upstream commit f54d87dad7619c8026e95b848d6ef677b9f2b55f ]
 
-These `srctree/` links pointed inside `linux/`, but they are directly
-under `drm/`.
+Some devices might not use the DMIC function of the RT712VB.
+Therefore, this patch avoids skipping the blind write with RT712VB.
 
-Thus fix them.
-
-This cleans a future warning that will check our `srctree/` links.
-
-Cc: stable@vger.kernel.org
-Fixes: a98a73be9ee9 ("rust: drm: file: Add File abstraction")
-Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
-Fixes: 07c9016085f9 ("rust: drm: add driver abstractions")
-Fixes: 1e4b8896c0f3 ("rust: drm: add device abstraction")
-Fixes: 9a69570682b1 ("rust: drm: ioctl: Add DRM ioctl abstraction")
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20250901085757.1287945-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/drm/device.rs  |    2 +-
- rust/kernel/drm/driver.rs  |    2 +-
- rust/kernel/drm/file.rs    |    2 +-
- rust/kernel/drm/gem/mod.rs |    2 +-
- rust/kernel/drm/ioctl.rs   |    2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ sound/soc/codecs/rt712-sdca.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -2,7 +2,7 @@
+diff --git a/sound/soc/codecs/rt712-sdca.c b/sound/soc/codecs/rt712-sdca.c
+index 570c2af1245d6..0c57aee766b5c 100644
+--- a/sound/soc/codecs/rt712-sdca.c
++++ b/sound/soc/codecs/rt712-sdca.c
+@@ -1891,11 +1891,9 @@ int rt712_sdca_io_init(struct device *dev, struct sdw_slave *slave)
  
- //! DRM device.
- //!
--//! C header: [`include/linux/drm/drm_device.h`](srctree/include/linux/drm/drm_device.h)
-+//! C header: [`include/drm/drm_device.h`](srctree/include/drm/drm_device.h)
+ 		rt712_sdca_va_io_init(rt712);
+ 	} else {
+-		if (!rt712->dmic_function_found) {
+-			dev_err(&slave->dev, "%s RT712 VB detected but no SMART_MIC function exposed in ACPI\n",
++		if (!rt712->dmic_function_found)
++			dev_warn(&slave->dev, "%s RT712 VB detected but no SMART_MIC function exposed in ACPI\n",
+ 				__func__);
+-			goto suspend;
+-		}
  
- use crate::{
-     alloc::allocator::Kmalloc,
---- a/rust/kernel/drm/driver.rs
-+++ b/rust/kernel/drm/driver.rs
-@@ -2,7 +2,7 @@
- 
- //! DRM driver core.
- //!
--//! C header: [`include/linux/drm/drm_drv.h`](srctree/include/linux/drm/drm_drv.h)
-+//! C header: [`include/drm/drm_drv.h`](srctree/include/drm/drm_drv.h)
- 
- use crate::{
-     bindings, device, devres, drm,
---- a/rust/kernel/drm/file.rs
-+++ b/rust/kernel/drm/file.rs
-@@ -2,7 +2,7 @@
- 
- //! DRM File objects.
- //!
--//! C header: [`include/linux/drm/drm_file.h`](srctree/include/linux/drm/drm_file.h)
-+//! C header: [`include/drm/drm_file.h`](srctree/include/drm/drm_file.h)
- 
- use crate::{bindings, drm, error::Result, prelude::*, types::Opaque};
- use core::marker::PhantomData;
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -2,7 +2,7 @@
- 
- //! DRM GEM API
- //!
--//! C header: [`include/linux/drm/drm_gem.h`](srctree/include/linux/drm/drm_gem.h)
-+//! C header: [`include/drm/drm_gem.h`](srctree/include/drm/drm_gem.h)
- 
- use crate::{
-     alloc::flags::*,
---- a/rust/kernel/drm/ioctl.rs
-+++ b/rust/kernel/drm/ioctl.rs
-@@ -2,7 +2,7 @@
- 
- //! DRM IOCTL definitions.
- //!
--//! C header: [`include/linux/drm/drm_ioctl.h`](srctree/include/linux/drm/drm_ioctl.h)
-+//! C header: [`include/drm/drm_ioctl.h`](srctree/include/drm/drm_ioctl.h)
- 
- use crate::ioctl;
- 
+ 		/* multilanes and DMIC are supported by rt712vb */
+ 		prop->lane_control_support = true;
+-- 
+2.51.0
+
 
 
 
