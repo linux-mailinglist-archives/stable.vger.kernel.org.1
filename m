@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-183999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E616BBCD3E6
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:25:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E924BCD35C
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF59F427553
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC04C1897975
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC4521579F;
-	Fri, 10 Oct 2025 13:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2CF2F60BC;
+	Fri, 10 Oct 2025 13:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyzxP91b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLHSu075"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDA52F28E0;
-	Fri, 10 Oct 2025 13:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279161C84DE;
+	Fri, 10 Oct 2025 13:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102588; cv=none; b=p9YO3P/BMYwR/IHhBrQCjWJDndVG6JiAmEKs3E0rAFK32OiumyeIt1JKZ+zJJi5Yj4Z/y+a6z6ANa8pFu40CRONjrxawskHXWrCXFBZnpjmuB42brb/nXpJbWxp0Bk7E1N7ZH4TC/tcMELKaOOyxyr2l8itiSYf8PF/lkdvJOS8=
+	t=1760102388; cv=none; b=stXTjFETyWnKXzjQun+9Q/2gvys7irbXW9VBgl1h0sU1kMENJHGRkv0r2rghHYTbfJ/Y20f7lblpR6mu/sFHwjp4Muo8b/r4ijzMJiuWnjgni68FtR0K1I3XY/RQ43jAZ2m5ILZUPnRjVrUutAWyxvwVh5sMPBHG72BRop+VV7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102588; c=relaxed/simple;
-	bh=7cWxGMtnlxFB3yZsUk2uCAEzX6xtVZx2xE102xs+qJ8=;
+	s=arc-20240116; t=1760102388; c=relaxed/simple;
+	bh=HRQkSH5MnpoAIgohecakrJbxjm9S/MkKYd830QZdQck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aX84oFE6JYy5c9446vYsJ2mIZpfTRJxCSBc3yNIKX1T9f7fHSrpvCAR46T0IMz/06/4aGbYdJd4SmfNYbuBk+9a1pXBxMsnIRkhgSpjGlh625Eh303yM7XHi5oAu/PBQxxJN4ASd5llrGHbEiGJo2pRXjbI/IVTBZ0rkrJah3B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyzxP91b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623E1C4CEF1;
-	Fri, 10 Oct 2025 13:23:07 +0000 (UTC)
+	 MIME-Version; b=EE7WBeh+DNdfd8gsGJ9TQS6SLkiEeGuSktXO5/QLXsnZ9Fb1I78pqtEbnLaZd2RQ5n6K0VZO8g9ihhFD3nMWNn97DDQjwoUgew6N0mVicr1l1EH2/EBZZMbuRhR4RBnIDq5jGW2CJds4VyDXtFYY3xvLsFEsxMUV63Z8f6IQX3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLHSu075; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DB2C4CEF1;
+	Fri, 10 Oct 2025 13:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102587;
-	bh=7cWxGMtnlxFB3yZsUk2uCAEzX6xtVZx2xE102xs+qJ8=;
+	s=korg; t=1760102388;
+	bh=HRQkSH5MnpoAIgohecakrJbxjm9S/MkKYd830QZdQck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OyzxP91bgKUrGSg4ZKar/C3H281oav/trlyMjnE3vY71KjlwkB8dbH3x6rUM0TCCc
-	 ZGUDxFMj1pQc9kvzoUatGP+Ew0BNiGiC62AIl07ibGG7fY+69C7N04ZI0xa6erbxi4
-	 idD3ZxQnAEyjlPCMov2ue4LXO0VOvAXe+hiEuhjU=
+	b=JLHSu075YX6MB0hsdbsQPR288OHG/A+alF7YfwQKKmRbFRFhhVZQKLxym0gFQcIYc
+	 GKpi2I0mlIOFuCXFSNAATpZ9tmG3Nin1iNIxdk7bek6rFvgumIg4FG/9k72F3PLRD/
+	 Vys8gCuNihAIQbnglTuhHNZVnZuINKPdA5fD7N7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	April Grimoire <aprilgrimoire@proton.me>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 09/28] platform/x86/amd/pmc: Add MECHREVO Yilong15Pro to spurious_8042 list
+	Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>,
+	Dominique Martinet <asmadeus@codewreck.org>
+Subject: [PATCH 6.16 39/41] net/9p: fix double req put in p9_fd_cancelled
 Date: Fri, 10 Oct 2025 15:16:27 +0200
-Message-ID: <20251010131330.702651341@linuxfoundation.org>
+Message-ID: <20251010131334.821973381@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +59,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: aprilgrimoire <aprilgrimoire@proton.me>
+From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
 
-[ Upstream commit 8822e8be86d40410ddd2ac8ff44f3050c9ecf9c6 ]
+commit 674b56aa57f9379854cb6798c3bbcef7e7b51ab7 upstream.
 
-The firmware of Mechrevo Yilong15Pro emits a spurious keyboard interrupt on
-events including closing the lid. When a user closes the lid on an already
-suspended system this causes the system to wake up.
-Add Mechrevo Yilong15Pro Series (GM5HG7A) to the list of quirk
-spurious_8042 to work around this issue.
+Syzkaller reports a KASAN issue as below:
 
-Link: https://lore.kernel.org/linux-pm/6ww4uu6Gl4F5n6VY5dl1ufASfKzs4DhMxAN8BuqUpCoqU3PQukVSVSBCl_lKIzkQ-S8kt1acPd58eyolhkWN32lMLFj4ViI0Tdu2jwhnYZ8=@proton.me/
-Signed-off-by: April Grimoire <aprilgrimoire@proton.me>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/IvSc_IN5Pa0wRXElTk_fEl-cTpMZxg6TCQk_7aRUkTd9vJUp_ZeC0NdXZ0z6Tn7B-XiqqqQvCH65lq6FqhuECBMEYWcHQmWm1Jo7Br8kpeg=@proton.me
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+general protection fault, probably for non-canonical address 0xfbd59c0000000021: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: maybe wild-memory-access in range [0xdead000000000108-0xdead00000000010f]
+CPU: 0 PID: 5083 Comm: syz-executor.2 Not tainted 6.1.134-syzkaller-00037-g855bd1d7d838 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:__list_del include/linux/list.h:114 [inline]
+RIP: 0010:__list_del_entry include/linux/list.h:137 [inline]
+RIP: 0010:list_del include/linux/list.h:148 [inline]
+RIP: 0010:p9_fd_cancelled+0xe9/0x200 net/9p/trans_fd.c:734
+
+Call Trace:
+ <TASK>
+ p9_client_flush+0x351/0x440 net/9p/client.c:614
+ p9_client_rpc+0xb6b/0xc70 net/9p/client.c:734
+ p9_client_version net/9p/client.c:920 [inline]
+ p9_client_create+0xb51/0x1240 net/9p/client.c:1027
+ v9fs_session_init+0x1f0/0x18f0 fs/9p/v9fs.c:408
+ v9fs_mount+0xba/0xcb0 fs/9p/vfs_super.c:126
+ legacy_get_tree+0x108/0x220 fs/fs_context.c:632
+ vfs_get_tree+0x8e/0x300 fs/super.c:1573
+ do_new_mount fs/namespace.c:3056 [inline]
+ path_mount+0x6a6/0x1e90 fs/namespace.c:3386
+ do_mount fs/namespace.c:3399 [inline]
+ __do_sys_mount fs/namespace.c:3607 [inline]
+ __se_sys_mount fs/namespace.c:3584 [inline]
+ __x64_sys_mount+0x283/0x300 fs/namespace.c:3584
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+This happens because of a race condition between:
+
+- The 9p client sending an invalid flush request and later cleaning it up;
+- The 9p client in p9_read_work() canceled all pending requests.
+
+      Thread 1                              Thread 2
+    ...
+    p9_client_create()
+    ...
+    p9_fd_create()
+    ...
+    p9_conn_create()
+    ...
+    // start Thread 2
+    INIT_WORK(&m->rq, p9_read_work);
+                                        p9_read_work()
+    ...
+    p9_client_rpc()
+    ...
+                                        ...
+                                        p9_conn_cancel()
+                                        ...
+                                        spin_lock(&m->req_lock);
+    ...
+    p9_fd_cancelled()
+    ...
+                                        ...
+                                        spin_unlock(&m->req_lock);
+                                        // status rewrite
+                                        p9_client_cb(m->client, req, REQ_STATUS_ERROR)
+                                        // first remove
+                                        list_del(&req->req_list);
+                                        ...
+
+    spin_lock(&m->req_lock)
+    ...
+    // second remove
+    list_del(&req->req_list);
+    spin_unlock(&m->req_lock)
+  ...
+
+Commit 74d6a5d56629 ("9p/trans_fd: Fix concurrency del of req_list in
+p9_fd_cancelled/p9_read_work") fixes a concurrency issue in the 9p filesystem
+client where the req_list could be deleted simultaneously by both
+p9_read_work and p9_fd_cancelled functions, but for the case where req->status
+equals REQ_STATUS_RCVD.
+
+Update the check for req->status in p9_fd_cancelled to skip processing not
+just received requests, but anything that is not SENT, as whatever
+changed the state from SENT also removed the request from its list.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: afd8d6541155 ("9P: Add cancelled() to the transport functions.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+Message-ID: <20250715154815.3501030-1-Sergey.Nalivayko@kaspersky.com>
+[updated the check from status == RECV || status == ERROR to status != SENT]
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/9p/trans_fd.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 6f5437d210a61..b872baf35808f 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -233,6 +233,14 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE14-GX4HRXL"),
- 		}
- 	},
-+	{
-+		.ident = "MECHREVO Yilong15Pro Series GM5HG7A",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "MECHREVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Yilong15Pro Series GM5HG7A"),
-+		}
-+	},
- 	/* https://bugzilla.kernel.org/show_bug.cgi?id=220116 */
- 	{
- 		.ident = "PCSpecialist Lafite Pro V 14M",
--- 
-2.51.0
-
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -726,10 +726,10 @@ static int p9_fd_cancelled(struct p9_cli
+ 	p9_debug(P9_DEBUG_TRANS, "client %p req %p\n", client, req);
+ 
+ 	spin_lock(&m->req_lock);
+-	/* Ignore cancelled request if message has been received
+-	 * before lock.
+-	 */
+-	if (req->status == REQ_STATUS_RCVD) {
++	/* Ignore cancelled request if status changed since the request was
++	 * processed in p9_client_flush()
++	*/
++	if (req->status != REQ_STATUS_SENT) {
+ 		spin_unlock(&m->req_lock);
+ 		return 0;
+ 	}
 
 
 
