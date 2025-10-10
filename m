@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-183902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C0DBCD2AE
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F9BBCD15D
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E46A1A6842A
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808DE1A66DCA
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD602F3C3A;
-	Fri, 10 Oct 2025 13:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E4B26A1AB;
+	Fri, 10 Oct 2025 13:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6ri0BmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6Bg39bt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA042F3C32;
-	Fri, 10 Oct 2025 13:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35061F63FF;
+	Fri, 10 Oct 2025 13:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102310; cv=none; b=Q4wlFlBi+bokV/wRKQI4uTqqSm5VebT0OWhOrV0lRRT1qvIfaX8bnQ2ZAuViorUR8obrCS5P34ji0TMYPwQEzuqqUNygRE5w61rXbrrst4L/XyZvQvAajVeHA2L8SChTHv07XOXxcgcWlNSvgJyTB/l3zQ4V2RyHukpeVrQ0LFo=
+	t=1760102247; cv=none; b=uuNuToZnQ1XqlD4PcwdgvaMkmRLtpRg5zJT6KY6LR/wycXqd3J6c4G7LuRhG1qs9fZjUIRpL/H8FP6hfRyAaiCDYRXtDks9TyEBhRZPw0ZUqc1ONkSM/JewLDpRCTXDt7BNbIcHJDLTSr3M1E2pNus/foKDZzi+H0zj8bZ7e0EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102310; c=relaxed/simple;
-	bh=FdWvGbHhgV/CaeijXHtWTr0KCztKl8ebl9gFPeYm02Y=;
+	s=arc-20240116; t=1760102247; c=relaxed/simple;
+	bh=I27ZozqIEns2GV7voCE5dyHncevcR1SUTDQqFT3NSYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PN8Ph96vWwfTOFpP1SsPBYNF2uvyLFv1s7MthNaSYOqpBvpMcSDI+gSBuQEjDTOSrKFnOddb7s6y1dGPfKqDRqAs5kqgKjiP6iZ9XQSq2oWHzwg/c7/IXGxra+oLv01nmj1xftInVRlQqbGlcMPYSQmqc9RRaXtgYKLbAFZqBvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6ri0BmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEA7C4CEF1;
-	Fri, 10 Oct 2025 13:18:30 +0000 (UTC)
+	 MIME-Version; b=SsZThzqUlGhYYxwGWQaNjrphNq47oBzg8C6RdHwoj4pOrJm3aF2TCPB23q7IT1tgo2mC4rkeVZhdZUHqKD5aVfMABmDfQgOZvBriOMAiDBTKVvVn3RtEwVExygw5+an/cRyWvxn9cUP6SdRJnx2owRAmYQ+L+rMLaPMNY5x9lqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6Bg39bt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFA0C4CEF1;
+	Fri, 10 Oct 2025 13:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102310;
-	bh=FdWvGbHhgV/CaeijXHtWTr0KCztKl8ebl9gFPeYm02Y=;
+	s=korg; t=1760102246;
+	bh=I27ZozqIEns2GV7voCE5dyHncevcR1SUTDQqFT3NSYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6ri0BmW8mONvgKRJy9n2A6l/b5XIphhI58p9gVGaUbgJqM8LXTTXE6WJ/W90LMtP
-	 gteCws25Fud5jAznZm9a6hyr5K7hy2ZxTn+nmDPcsp6GkndbLuMyvIg47xVr/KqLdG
-	 WYUEtRH/jIRoOzmg390DgYOHwWSW4s2JXCmJrOjM=
+	b=c6Bg39btTSkCvXKxp+nOqPEnRueyAoHfjcFxlky1iBOALrHvbi4O+KDGxrwF+ng13
+	 0Le61Ba9tCrDZTAOPEfSpjbYsnHXmJLrMe0mbJEer7B3GuBs7l7j2SAzAx3vWfui0B
+	 V9IrqbOrIg7IBgqwFikjw3nbWQIaRGw0yFsPyuJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Mika Westerberg <westeri@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 12/41] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-05
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.17 05/26] wifi: rtl8xxxu: Dont claim USB ID 07b8:8188
 Date: Fri, 10 Oct 2025 15:16:00 +0200
-Message-ID: <20251010131333.868542755@linuxfoundation.org>
+Message-ID: <20251010131331.405443685@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 3712ce9fa501617cdc4466d30ae3894d50887743 ]
+commit ec0b44736b1d22b763ee94f1aee856f9e793f3fe upstream.
 
-Same issue as G1619-04 in commit 805c74eac8cb ("gpiolib: acpi: Ignore
-touchpad wakeup on GPD G1619-04"), Strix Point lineup uses 05.
+This ID appears to be RTL8188SU, not RTL8188CU. This is the wrong driver
+for RTL8188SU. The r8712u driver from staging used to handle this ID.
 
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Reviewed-by: Mika Westerberg <westeri@kernel.org>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://lore.kernel.org/linux-wireless/ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de/
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/f147b2ab-4505-435a-aa32-62964e4f1f1e@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-acpi-quirks.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/realtek/rtl8xxxu/core.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
-index bfb04e67c4bc8..7b95d1b033614 100644
---- a/drivers/gpio/gpiolib-acpi-quirks.c
-+++ b/drivers/gpio/gpiolib-acpi-quirks.c
-@@ -317,6 +317,18 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_wake = "PNP0C50:00@8",
- 		},
- 	},
-+	{
-+		/*
-+		 * Same as G1619-04. New model.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-05"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "PNP0C50:00@8",
-+		},
-+	},
- 	{
- 		/*
- 		 * Spurious wakeups from GPIO 11
--- 
-2.51.0
-
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -8172,8 +8172,6 @@ static const struct usb_device_id dev_ta
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+-{USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8188, 0xff, 0xff, 0xff),
+-	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8189, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9041, 0xff, 0xff, 0xff),
 
 
 
