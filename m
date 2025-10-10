@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-183933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C92BCD371
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:17 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC06DBCD32D
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40E3F189ACD8
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5B6F54FE7E8
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9A92F7457;
-	Fri, 10 Oct 2025 13:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09E62F39C5;
+	Fri, 10 Oct 2025 13:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lv76BrM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AL75mPdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878ED21579F;
-	Fri, 10 Oct 2025 13:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D46D1F63FF;
+	Fri, 10 Oct 2025 13:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102399; cv=none; b=FGRaxKAdtiZkn3zBhZBo3WzFJ/6+EB8Sx8d9Vq+DSBDIwIPoB9gApYCqiIeEtVauJEIIG3GilJZASb/88Yba3NlF25pXMYQjKH2QtJ6jym1Jx9rf+Vispr9yxZE5iCmwiXW5xO1tlYpMY9SLJlPZDV6eVxbMYr0mkrnbcSCueeM=
+	t=1760102556; cv=none; b=UK57M6DmhKqlPtwTnGf46kqJvVWBQJvE9Y31bO+I8CbWsSMl56hWyBXDEllyTqIh5ox05/r3J9d1i6CyowXisjzdUql3oA5rev2ICpCGm2AjRLK8WOboZKD7uUQYXVYH6RK5WleUtbZt/RPbbWaZNHDJgSPdbYdpsZeT+ZVPjgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102399; c=relaxed/simple;
-	bh=8DN4GnWnUtScIbHgYVm8Nj6oHr8YVpMNDHhsNp980X4=;
+	s=arc-20240116; t=1760102556; c=relaxed/simple;
+	bh=DnkisLsKtJTOWXA+FpAsYI7VlDEa9mi6CmMxNIpkU/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kk301ubj0oPYFxGEnLiUP4AJN5Bpc8fgPydAHLGachmu2kltbH0GmvMzqE+xe4m/h/7rbEhPVQuGLbr6/xdldtXEuRy+X6twfU3KP1nJ/GUCq2jspaWxmzEsrCWPz4TKNhcdeJAgqotADxoXU1iPNYaNaNpEhu2Viv0dQC7h9II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lv76BrM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4BDC4CEF1;
-	Fri, 10 Oct 2025 13:19:58 +0000 (UTC)
+	 MIME-Version; b=sKgOqseNSLqDxcf71qdiAMXUqiOEKMV3yoLa50vfjZOOKXblq6QbPXweaTE2t5IV8IhjubPjR4qckFclqvJLwE4p3dHFZTuK3I3K1vE7wip6R6ba1uBdnimX1VANfYBryKIYiy2TAUFWvDOBhi7eB086flaM3LykT9zm2Uwipug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AL75mPdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA65C4CEF1;
+	Fri, 10 Oct 2025 13:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102399;
-	bh=8DN4GnWnUtScIbHgYVm8Nj6oHr8YVpMNDHhsNp980X4=;
+	s=korg; t=1760102556;
+	bh=DnkisLsKtJTOWXA+FpAsYI7VlDEa9mi6CmMxNIpkU/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lv76BrM5gxAx4GfPXYsDzo3wYQ2oagsQSsYa6+omemK2EWwHxjG0bJ6XfIplR9oiX
-	 KQxhOPt1BzBAIwj/9abX6Rog5M0cXe9reWRC364g2USWbOs7lw+jnXfCYSsL14zM8U
-	 cu9P7gTw33SzYrGU5ujPJKqMChrVLgS2i0W0UIOg=
+	b=AL75mPdXd+VvoKv7xT5hEH5kLmn8/Ja6iKkY0wihTaQ11G22IVrO8FmqLZfEVZLxb
+	 j35qgKICo/8TFUblau7Ynk7EpagAKDAdnfUY8xbHLanQZxfXiaLnGRCXM4xwPvQrWN
+	 tYLz2b8OEzAJhL2gWpF2fjq+y1OnLLot3O33BTvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Tiffany Yang <ynaffit@google.com>
-Subject: [PATCH 6.16 31/41] binder: fix double-free in dbitmap
-Date: Fri, 10 Oct 2025 15:16:19 +0200
-Message-ID: <20251010131334.542085401@linuxfoundation.org>
+	Shuah Khan <shuah.kh@samsung.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 02/28] media: tunner: xc5000: Refactor firmware load
+Date: Fri, 10 Oct 2025 15:16:20 +0200
+Message-ID: <20251010131330.449695295@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
+References: <20251010131330.355311487@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 3ebcd3460cad351f198c39c6edb4af519a0ed934 upstream.
+[ Upstream commit 8e1f5da59dd4a1966f859639860b803a7e8b8bfb ]
 
-A process might fail to allocate a new bitmap when trying to expand its
-proc->dmap. In that case, dbitmap_grow() fails and frees the old bitmap
-via dbitmap_free(). However, the driver calls dbitmap_free() again when
-the same process terminates, leading to a double-free error:
+Make sure the firmware is released when we leave
+xc_load_fw_and_init_tuner()
 
-  ==================================================================
-  BUG: KASAN: double-free in binder_proc_dec_tmpref+0x2e0/0x55c
-  Free of addr ffff00000b7c1420 by task kworker/9:1/209
+This change makes smatch happy:
+drivers/media/tuners/xc5000.c:1213 xc_load_fw_and_init_tuner() warn: 'fw' from request_firmware() not released on lines: 1213.
 
-  CPU: 9 UID: 0 PID: 209 Comm: kworker/9:1 Not tainted 6.17.0-rc6-dirty #5 PREEMPT
-  Hardware name: linux,dummy-virt (DT)
-  Workqueue: events binder_deferred_func
-  Call trace:
-   kfree+0x164/0x31c
-   binder_proc_dec_tmpref+0x2e0/0x55c
-   binder_deferred_func+0xc24/0x1120
-   process_one_work+0x520/0xba4
-  [...]
-
-  Allocated by task 448:
-   __kmalloc_noprof+0x178/0x3c0
-   bitmap_zalloc+0x24/0x30
-   binder_open+0x14c/0xc10
-  [...]
-
-  Freed by task 449:
-   kfree+0x184/0x31c
-   binder_inc_ref_for_node+0xb44/0xe44
-   binder_transaction+0x29b4/0x7fbc
-   binder_thread_write+0x1708/0x442c
-   binder_ioctl+0x1b50/0x2900
-  [...]
-  ==================================================================
-
-Fix this issue by marking proc->map NULL in dbitmap_free().
-
-Cc: stable@vger.kernel.org
-Fixes: 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Tiffany Yang <ynaffit@google.com>
-Link: https://lore.kernel.org/r/20250915221248.3470154-1-cmllamas@google.com
+Cc: Shuah Khan <shuah.kh@samsung.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 40b7a19f321e ("media: tuner: xc5000: Fix use-after-free in xc5000_release")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/dbitmap.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/tuners/xc5000.c |   41 ++++++++++++++++++-----------------------
+ 1 file changed, 18 insertions(+), 23 deletions(-)
 
---- a/drivers/android/dbitmap.h
-+++ b/drivers/android/dbitmap.h
-@@ -37,6 +37,7 @@ static inline void dbitmap_free(struct d
- {
- 	dmap->nbits = 0;
- 	kfree(dmap->map);
-+	dmap->map = NULL;
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -58,7 +58,7 @@ struct xc5000_priv {
+ 	struct dvb_frontend *fe;
+ 	struct delayed_work timer_sleep;
+ 
+-	const struct firmware   *firmware;
++	bool inited;
+ };
+ 
+ /* Misc Defines */
+@@ -1110,23 +1110,19 @@ static int xc_load_fw_and_init_tuner(str
+ 	if (!force && xc5000_is_firmware_loaded(fe) == 0)
+ 		return 0;
+ 
+-	if (!priv->firmware) {
+-		ret = request_firmware(&fw, desired_fw->name,
+-					priv->i2c_props.adap->dev.parent);
+-		if (ret) {
+-			pr_err("xc5000: Upload failed. rc %d\n", ret);
+-			return ret;
+-		}
+-		dprintk(1, "firmware read %zu bytes.\n", fw->size);
+-
+-		if (fw->size != desired_fw->size) {
+-			pr_err("xc5000: Firmware file with incorrect size\n");
+-			release_firmware(fw);
+-			return -EINVAL;
+-		}
+-		priv->firmware = fw;
+-	} else
+-		fw = priv->firmware;
++	ret = request_firmware(&fw, desired_fw->name,
++			       priv->i2c_props.adap->dev.parent);
++	if (ret) {
++		pr_err("xc5000: Upload failed. rc %d\n", ret);
++		return ret;
++	}
++	dprintk(1, "firmware read %zu bytes.\n", fw->size);
++
++	if (fw->size != desired_fw->size) {
++		pr_err("xc5000: Firmware file with incorrect size\n");
++		release_firmware(fw);
++		return -EINVAL;
++	}
+ 
+ 	/* Try up to 5 times to load firmware */
+ 	for (i = 0; i < 5; i++) {
+@@ -1204,6 +1200,7 @@ static int xc_load_fw_and_init_tuner(str
+ 	}
+ 
+ err:
++	release_firmware(fw);
+ 	if (!ret)
+ 		printk(KERN_INFO "xc5000: Firmware %s loaded and running.\n",
+ 		       desired_fw->name);
+@@ -1274,7 +1271,7 @@ static int xc5000_resume(struct dvb_fron
+ 
+ 	/* suspended before firmware is loaded.
+ 	   Avoid firmware load in resume path. */
+-	if (!priv->firmware)
++	if (!priv->inited)
+ 		return 0;
+ 
+ 	return xc5000_set_params(fe);
+@@ -1293,6 +1290,8 @@ static int xc5000_init(struct dvb_fronte
+ 	if (debug)
+ 		xc_debug_dump(priv);
+ 
++	priv->inited = true;
++
+ 	return 0;
  }
  
- /* Returns the nbits that a dbitmap can shrink to, 0 if not possible. */
+@@ -1306,10 +1305,6 @@ static void xc5000_release(struct dvb_fr
+ 
+ 	if (priv) {
+ 		cancel_delayed_work(&priv->timer_sleep);
+-		if (priv->firmware) {
+-			release_firmware(priv->firmware);
+-			priv->firmware = NULL;
+-		}
+ 		hybrid_tuner_release_state(priv);
+ 	}
+ 
 
 
 
