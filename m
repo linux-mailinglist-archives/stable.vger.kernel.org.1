@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-183924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6D6BCD31A
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD330BCD13C
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8266188DDAE
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 925363B3452
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDD22F60D5;
-	Fri, 10 Oct 2025 13:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA01826A1AB;
+	Fri, 10 Oct 2025 13:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRdpz24w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbETi5mo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1492F60D8;
-	Fri, 10 Oct 2025 13:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0131F63FF;
+	Fri, 10 Oct 2025 13:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102374; cv=none; b=uietKzitLGeXJGAdh6tTcjyRf5jAuQhKJZlQ8cZrpajnC2e21/iCMogiCCDL/vMjNsdL6cgu2hsj5eYvpN2jodgnsKgn/ZEo/wM4jERoNOOaWjAKtSTfKQvCrExxvWIhcXKl0tJJnpowIzlmKwix8e9hPgHaf2tHtP2OplPBhIU=
+	t=1760102224; cv=none; b=e8PJiMIGmM0B+vFpQ9LuoTx2QUPo22E/Jhz1i0xZvxYvqbEIXLF7JoCAclvsE2v3Su2A2WPqiJEEfqd3ok60vQPbDWMDgSkkMOkNME94X948GdUfHbutUBcg8Tz4/AjV1gBWbyUd2HHGR0r3OxGJ+2FkkDTRSo14zJUAe9O1unI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102374; c=relaxed/simple;
-	bh=wVBobpJxKdmIxzp/cH2sj0QeUZfyX7viAbwCPzVaZBM=;
+	s=arc-20240116; t=1760102224; c=relaxed/simple;
+	bh=r7aHSMpuokHWSlHEIBag636kYuzUotCP5eavH7Hooe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjlywQ33tJI2Jm3pw2oIedAZ8eVGDQwQdx1J2O7Ykvqk1GeFVPZNwJHRLFgHWhTHbb17ggpXQDFx1f2hhD//JXyPSlM9ULFvSIRxq3jyl9p4hrXduV+VGBbCR9vVbQaAktzFNp8xfnJXtYnpTNiwpa0lrWtC4mt1YXwW2pVCEn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRdpz24w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B75C4CEF9;
-	Fri, 10 Oct 2025 13:19:33 +0000 (UTC)
+	 MIME-Version; b=cEuoFbxbxr/+dsMAQWeMGN1OZ1Vrzh4QydHyu9Nz7OaB9DrOysBo62deOphYNYP2yg0CniZK2B7JMhe8bZEOBwgGcGH03NpRKmOqj0qT+t/G8q9kDum6sj7HGpVBmAV5nCNwf/GvlC+UgmJ4LNwwNl/CcPuC0Tovk1X8HqeS5hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbETi5mo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82900C4CEF1;
+	Fri, 10 Oct 2025 13:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102373;
-	bh=wVBobpJxKdmIxzp/cH2sj0QeUZfyX7viAbwCPzVaZBM=;
+	s=korg; t=1760102223;
+	bh=r7aHSMpuokHWSlHEIBag636kYuzUotCP5eavH7Hooe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sRdpz24wOhUNcUgzW7AAmLSctfFpeAM4afV8yS+wWGwT3DgCUXsHC34bqabv9Ogyv
-	 B0OdnLoxqgyhTrQbcGjK/i4veBP003xnyfw80eQUgw0GHXSNZA1Fn2PnYQXE2X9zE+
-	 4VTceqrbV1eMhTyIv54/JOVSSQ0Lro18Ks3ghMoI=
+	b=CbETi5mom4670hOQpfyCNg/mEb9dEOwG9Z4QK1hG96Q5GnttXJzYb83Rx+GcblDJ3
+	 lt+fjohOLsVcjnlLSHnc66PQSzf6VA+VkyR1Z2RKMkyTdiqt2f6iV4LpExNsXjZatF
+	 K2Hpp8S/blk4rqDgaCzvRZHBssPdjS7eLfs+xjnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.16 08/41] wifi: rtl8xxxu: Dont claim USB ID 07b8:8188
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.17 01/26] drm/amdgpu: Enable MES lr_compute_wa by default
 Date: Fri, 10 Oct 2025 15:15:56 +0200
-Message-ID: <20251010131333.726674052@linuxfoundation.org>
+Message-ID: <20251010131331.262014427@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ec0b44736b1d22b763ee94f1aee856f9e793f3fe upstream.
+commit 1fb710793ce2619223adffaf981b1ff13cd48f17 upstream.
 
-This ID appears to be RTL8188SU, not RTL8188CU. This is the wrong driver
-for RTL8188SU. The r8712u driver from staging used to handle this ID.
+The MES set resources packet has an optional bit 'lr_compute_wa'
+which can be used for preventing MES hangs on long compute jobs.
 
-Closes: https://lore.kernel.org/linux-wireless/ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de/
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/f147b2ab-4505-435a-aa32-62964e4f1f1e@gmail.com
+Set this bit by default.
+
+Co-developed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/core.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mes_v11_0.c        |    6 ++++++
+ drivers/gpu/drm/amd/amdgpu/mes_v12_0.c        |    5 +++++
+ drivers/gpu/drm/amd/include/mes_v11_api_def.h |    3 ++-
+ drivers/gpu/drm/amd/include/mes_v12_api_def.h |    3 ++-
+ 4 files changed, 15 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -8170,8 +8170,6 @@ static const struct usb_device_id dev_ta
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
--{USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8188, 0xff, 0xff, 0xff),
--	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8189, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9041, 0xff, 0xff, 0xff),
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -711,6 +711,12 @@ static int mes_v11_0_set_hw_resources(st
+ 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
+ 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
+ 	mes_set_hw_res_pkt.oversubscription_timer = 50;
++	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x7f)
++		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
++	else
++		dev_info_once(mes->adev->dev,
++			      "MES FW version must be >= 0x7f to enable LR compute workaround.\n");
++
+ 	if (amdgpu_mes_log_enable) {
+ 		mes_set_hw_res_pkt.enable_mes_event_int_logging = 1;
+ 		mes_set_hw_res_pkt.event_intr_history_gpu_mc_ptr =
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+@@ -738,6 +738,11 @@ static int mes_v12_0_set_hw_resources(st
+ 	mes_set_hw_res_pkt.use_different_vmid_compute = 1;
+ 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
+ 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
++	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x82)
++		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
++	else
++		dev_info_once(adev->dev,
++			      "MES FW version must be >= 0x82 to enable LR compute workaround.\n");
+ 
+ 	/*
+ 	 * Keep oversubscribe timer for sdma . When we have unmapped doorbell
+--- a/drivers/gpu/drm/amd/include/mes_v11_api_def.h
++++ b/drivers/gpu/drm/amd/include/mes_v11_api_def.h
+@@ -238,7 +238,8 @@ union MESAPI_SET_HW_RESOURCES {
+ 				uint32_t enable_mes_sch_stb_log : 1;
+ 				uint32_t limit_single_process : 1;
+ 				uint32_t is_strix_tmz_wa_enabled  :1;
+-				uint32_t reserved : 13;
++				uint32_t enable_lr_compute_wa : 1;
++				uint32_t reserved : 12;
+ 			};
+ 			uint32_t	uint32_t_all;
+ 		};
+--- a/drivers/gpu/drm/amd/include/mes_v12_api_def.h
++++ b/drivers/gpu/drm/amd/include/mes_v12_api_def.h
+@@ -286,7 +286,8 @@ union MESAPI_SET_HW_RESOURCES {
+ 				uint32_t limit_single_process : 1;
+ 				uint32_t unmapped_doorbell_handling: 2;
+ 				uint32_t enable_mes_fence_int: 1;
+-				uint32_t reserved : 10;
++				uint32_t enable_lr_compute_wa : 1;
++				uint32_t reserved : 9;
+ 			};
+ 			uint32_t uint32_all;
+ 		};
 
 
 
