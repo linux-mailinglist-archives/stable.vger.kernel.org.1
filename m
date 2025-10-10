@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-183994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2924BBCD362
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D64FBCD2F0
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 381344FE5A7
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39C9B400621
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0022F3C1F;
-	Fri, 10 Oct 2025 13:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D752F3638;
+	Fri, 10 Oct 2025 13:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8QzEqwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoJcpGwt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6462F3C0C;
-	Fri, 10 Oct 2025 13:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502792882AC;
+	Fri, 10 Oct 2025 13:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102573; cv=none; b=L2FNVzS7T+QIwU6tX6/WkGOmp5Mc5VfbF47wHIkANx0atvn1OazS7mRdjtqf5m1AtZyKf3Hiunhu/uDGqxNaaMPnIUFFGe+Nn3OQXrlKEREgialQHFe5DgHPNzd0QJKKDNlTS6B+wXvYrfct0XGuRUUwkwzcFy/HVD+pW1XDh8A=
+	t=1760102408; cv=none; b=SKgNkxseGp3gsSlaWvLMUApGqsOY5TdpWcJnJMoJRWSP6k0TgNoYdpRgKENs/UeRM/7IsY2oWw8DZ0Dlmqsc8BInaG0CSrw2vii6Uo5FIVDPVi+3IXyaUaKwsI7pj+cI+AnobWwHGp0fS/P/iYFVW//EIzTKHkVBrLVE/KMYxrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102573; c=relaxed/simple;
-	bh=Bcf0fPc5v3aU/qw+d08Zce95md3oFkROUxsGYYHGNRY=;
+	s=arc-20240116; t=1760102408; c=relaxed/simple;
+	bh=PchFbDQoc3hCJ0pZPxizFFaXPR3V5uGUdEYl5zP2Kmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLzdzjjka4xbGpXRtAzzncxz6GFed/gNl8/dW6w7K9ro/9uMvYWSDu9xE1OpZkBDIUo3T9iGu8/mmtK5oJUoAi3ViVJPV/vwrSNGZq64SZCswiRXoTLooUnbItHvWDSHYZzoT/nPbTaWFQJFgTmyM/37rASRdYH9EdbJ+h8NENI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8QzEqwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1149AC4CEF1;
-	Fri, 10 Oct 2025 13:22:52 +0000 (UTC)
+	 MIME-Version; b=PcD8cCZHBoBt6Wugf34DUF07rphRtAZYgoJ/JXbC96KrrH8FJOREJqt8YF+AdgVwV9j7XhtMC0AGxD4L3d+iP3n+ljZaCPuTv9jcOAwIqhUiqpMrtf4WSgZ/ng2qh5Su9vAnnkl1h8rD1qzIWqsNCN5fd6hvMtyGsRAEZW/4w7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoJcpGwt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78F7C4CEF1;
+	Fri, 10 Oct 2025 13:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102573;
-	bh=Bcf0fPc5v3aU/qw+d08Zce95md3oFkROUxsGYYHGNRY=;
+	s=korg; t=1760102408;
+	bh=PchFbDQoc3hCJ0pZPxizFFaXPR3V5uGUdEYl5zP2Kmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8QzEqwWKdiw5ewSjSB5VtLj3BGO4UTqLNbkrtr+htGHF0zUtGzipGPT1yJBF//X3
-	 MlFLyJ7xps/L+Bfi3UmDsAyzWASUYUz+MP4oeRYzVv5QPk47LZE8shOa3j4wwrxOKQ
-	 wZVDkoddFVDQxcvaFF6RLWul75RgOkbZ5Xjiwde0=
+	b=qoJcpGwtmYWRF2UCi9ZDfIpxidcIzDiLMGrL11HWLxZp/ruZAJi/t9boh/iGzuV2E
+	 Ah8bZptG/XeyNHiWin6FHE3KW+3sa0jRs/qj5IqppHI4EHg3q34QejZRE3Wylo4P77
+	 q2mKHFfq3K7VDLbqjPYMJO6DP7CsYBk/K4E4pchE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 04/28] media: i2c: tc358743: Fix use-after-free bugs caused by orphan timer in probe
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 6.16 34/41] staging: axis-fifo: fix TX handling on copy_from_user() failure
 Date: Fri, 10 Oct 2025 15:16:22 +0200
-Message-ID: <20251010131330.522743323@linuxfoundation.org>
+Message-ID: <20251010131334.646410349@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 79d10f4f21a92e459b2276a77be62c59c1502c9d ]
+commit 6d07bee10e4bdd043ec7152cbbb9deb27033c9e2 upstream.
 
-The state->timer is a cyclic timer that schedules work_i2c_poll and
-delayed_work_enable_hotplug, while rearming itself. Using timer_delete()
-fails to guarantee the timer isn't still running when destroyed, similarly
-cancel_delayed_work() cannot ensure delayed_work_enable_hotplug has
-terminated if already executing. During probe failure after timer
-initialization, these may continue running as orphans and reference the
-already-freed tc358743_state object through tc358743_irq_poll_timer.
+If copy_from_user() fails, write() currently returns -EFAULT, but any
+partially written data leaves the TX FIFO in an inconsistent state.
+Subsequent write() calls then fail with "transmit length mismatch"
+errors.
 
-The following is the trace captured by KASAN.
+Once partial data is written to the hardware FIFO, it cannot be removed
+without a TX reset. Commit c6e8d85fafa7 ("staging: axis-fifo: Remove
+hardware resets for user errors") removed a full FIFO reset for this case,
+which fixed a potential RX data loss, but introduced this TX issue.
 
-BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
-Write of size 8 at addr ffff88800ded83c8 by task swapper/1/0
-...
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_report+0xcf/0x610
- ? __pfx_sched_balance_find_src_group+0x10/0x10
- ? __run_timer_base.part.0+0x7d7/0x8c0
- kasan_report+0xb8/0xf0
- ? __run_timer_base.part.0+0x7d7/0x8c0
- __run_timer_base.part.0+0x7d7/0x8c0
- ? rcu_sched_clock_irq+0xb06/0x27d0
- ? __pfx___run_timer_base.part.0+0x10/0x10
- ? try_to_wake_up+0xb15/0x1960
- ? tmigr_update_events+0x280/0x740
- ? _raw_spin_lock_irq+0x80/0xe0
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- tmigr_handle_remote_up+0x603/0x7e0
- ? __pfx_tmigr_handle_remote_up+0x10/0x10
- ? sched_balance_trigger+0x98/0x9f0
- ? sched_tick+0x221/0x5a0
- ? _raw_spin_lock_irq+0x80/0xe0
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- ? tick_nohz_handler+0x339/0x440
- ? __pfx_tmigr_handle_remote_up+0x10/0x10
- __walk_groups.isra.0+0x42/0x150
- tmigr_handle_remote+0x1f4/0x2e0
- ? __pfx_tmigr_handle_remote+0x10/0x10
- ? ktime_get+0x60/0x140
- ? lapic_next_event+0x11/0x20
- ? clockevents_program_event+0x1d4/0x2a0
- ? hrtimer_interrupt+0x322/0x780
- handle_softirqs+0x16a/0x550
- irq_exit_rcu+0xaf/0xe0
- sysvec_apic_timer_interrupt+0x70/0x80
- </IRQ>
-...
+Fix this by introducing a bounce buffer: copy the full packet from
+userspace first, and write to the hardware FIFO only if the copy
+was successful.
 
-Allocated by task 141:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x7f/0x90
- __kmalloc_node_track_caller_noprof+0x198/0x430
- devm_kmalloc+0x7b/0x1e0
- tc358743_probe+0xb7/0x610  i2c_device_probe+0x51d/0x880
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __device_attach_driver+0x174/0x220
- bus_for_each_drv+0x100/0x190
- __device_attach+0x206/0x370
- bus_probe_device+0x123/0x170
- device_add+0xd25/0x1470
- i2c_new_client_device+0x7a0/0xcd0
- do_one_initcall+0x89/0x300
- do_init_module+0x29d/0x7f0
- load_module+0x4f48/0x69e0
- init_module_from_file+0xe4/0x150
- idempotent_init_module+0x320/0x670
- __x64_sys_finit_module+0xbd/0x120
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 141:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3a/0x60
- __kasan_slab_free+0x3f/0x50
- kfree+0x137/0x370
- release_nodes+0xa4/0x100
- devres_release_group+0x1b2/0x380
- i2c_device_probe+0x694/0x880
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __device_attach_driver+0x174/0x220
- bus_for_each_drv+0x100/0x190
- __device_attach+0x206/0x370
- bus_probe_device+0x123/0x170
- device_add+0xd25/0x1470
- i2c_new_client_device+0x7a0/0xcd0
- do_one_initcall+0x89/0x300
- do_init_module+0x29d/0x7f0
- load_module+0x4f48/0x69e0
- init_module_from_file+0xe4/0x150
- idempotent_init_module+0x320/0x670
- __x64_sys_finit_module+0xbd/0x120
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
-
-Replace timer_delete() with timer_delete_sync() and cancel_delayed_work()
-with cancel_delayed_work_sync() to ensure proper termination of timer and
-work items before resource cleanup.
-
-This bug was initially identified through static analysis. For reproduction
-and testing, I created a functional emulation of the tc358743 device via a
-kernel module and introduced faults through the debugfs interface.
-
-Fixes: 869f38ae07f7 ("media: i2c: tc358743: Fix crash in the probe error path when using polling")
-Fixes: d32d98642de6 ("[media] Driver for Toshiba TC358743 HDMI to CSI-2 bridge")
+Fixes: c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for user errors")
 Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ replaced del_timer() instead of timer_delete() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250912101322.1282507-1-ovidiu.panait.oss@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/tc358743.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/axis-fifo/axis-fifo.c |   36 +++++++++-------------------------
+ 1 file changed, 10 insertions(+), 26 deletions(-)
 
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -2180,10 +2180,10 @@ static int tc358743_probe(struct i2c_cli
- err_work_queues:
- 	cec_unregister_adapter(state->cec_adap);
- 	if (!state->i2c_client->irq) {
--		del_timer(&state->timer);
-+		timer_delete_sync(&state->timer);
- 		flush_work(&state->work_i2c_poll);
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -42,7 +42,6 @@
+ #define DRIVER_NAME "axis_fifo"
+ 
+ #define READ_BUF_SIZE 128U /* read buffer length in words */
+-#define WRITE_BUF_SIZE 128U /* write buffer length in words */
+ 
+ /* ----------------------------
+  *     IP register offsets
+@@ -466,11 +465,8 @@ static ssize_t axis_fifo_write(struct fi
+ {
+ 	struct axis_fifo *fifo = (struct axis_fifo *)f->private_data;
+ 	unsigned int words_to_write;
+-	unsigned int copied;
+-	unsigned int copy;
+-	unsigned int i;
++	u32 *txbuf;
+ 	int ret;
+-	u32 tmp_buf[WRITE_BUF_SIZE];
+ 
+ 	if (len % sizeof(u32)) {
+ 		dev_err(fifo->dt_device,
+@@ -535,32 +531,20 @@ static ssize_t axis_fifo_write(struct fi
+ 		}
  	}
--	cancel_delayed_work(&state->delayed_work_enable_hotplug);
-+	cancel_delayed_work_sync(&state->delayed_work_enable_hotplug);
- 	mutex_destroy(&state->confctl_mutex);
- err_hdl:
- 	media_entity_cleanup(&sd->entity);
+ 
+-	/* write data from an intermediate buffer into the fifo IP, refilling
+-	 * the buffer with userspace data as needed
+-	 */
+-	copied = 0;
+-	while (words_to_write > 0) {
+-		copy = min(words_to_write, WRITE_BUF_SIZE);
+-
+-		if (copy_from_user(tmp_buf, buf + copied * sizeof(u32),
+-				   copy * sizeof(u32))) {
+-			ret = -EFAULT;
+-			goto end_unlock;
+-		}
+-
+-		for (i = 0; i < copy; i++)
+-			iowrite32(tmp_buf[i], fifo->base_addr +
+-				  XLLF_TDFD_OFFSET);
+-
+-		copied += copy;
+-		words_to_write -= copy;
++	txbuf = vmemdup_user(buf, len);
++	if (IS_ERR(txbuf)) {
++		ret = PTR_ERR(txbuf);
++		goto end_unlock;
+ 	}
+ 
+-	ret = copied * sizeof(u32);
++	for (int i = 0; i < words_to_write; ++i)
++		iowrite32(txbuf[i], fifo->base_addr + XLLF_TDFD_OFFSET);
+ 
+ 	/* write packet size to fifo */
+-	iowrite32(ret, fifo->base_addr + XLLF_TLR_OFFSET);
++	iowrite32(len, fifo->base_addr + XLLF_TLR_OFFSET);
+ 
++	ret = len;
++	kvfree(txbuf);
+ end_unlock:
+ 	mutex_unlock(&fifo->write_lock);
+ 
 
 
 
