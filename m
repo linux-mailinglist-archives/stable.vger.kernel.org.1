@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-183956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB95BCD2DB
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89508BCD25D
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 541FA4FE401
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 372904FDB82
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2052F3C2B;
-	Fri, 10 Oct 2025 13:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216B42F5461;
+	Fri, 10 Oct 2025 13:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRnqVU5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8CDHy+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4FB285CB6;
-	Fri, 10 Oct 2025 13:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24532F3605;
+	Fri, 10 Oct 2025 13:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102465; cv=none; b=dJvkHFR9Azenr9z5SkT7E7Xx9B+N+As4q2hm3H7zyAOaTgY0K0i77O87zsSNRbC9nlJ3DGYJooZvibFQPdjLB7B4A5VEIFlS1oPnuQrm0miE0910nE4lKO/52bh338fG/SBCDv5wWxHmxvuCsUscJH+Fj3HTELebj8kUjslIsRk=
+	t=1760102330; cv=none; b=o4ar4Ouq2QNFMw8hU2VNzvsq9fno7OuG05lFwG0fRVVFYwgPHg4iIrVhfnV4KTE+rX/asZLdmDUFGvZb6Gyb9a46zSSL39/c2kkLKPydVFK/DQs5PvYkpdqpp9s72PHuxH8Dg4rpO3emKNrL1jRjV1ZS9ffahqoZnueLbwiTaSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102465; c=relaxed/simple;
-	bh=VKadKl1gcy9GbvCbfjMzO6+LNRkl78qWdC1oCQvo6RE=;
+	s=arc-20240116; t=1760102330; c=relaxed/simple;
+	bh=5hCpYKng3divR1V4azgqk6TIDa83yoRj5sjv7o5j7Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uo5kKU0/2mV3b9GL/+yt66w+QgisDa26G4Tu4+6sL/aurt6iTearUFVN+FkzBdH18L23IeeiEXwrtBRQNfPAeMTa3joHn5wCuTPGLB/lkF8B48sh4UqXRyYmZ/AzdHjWTBwhPZyx23Y8SXSOe49ObrAF9hA0KrirYFoJwBp6r/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRnqVU5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451DFC4CEF1;
-	Fri, 10 Oct 2025 13:21:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j7ocG/wn0RwLFA/Ldr83Cf2MvcvfKX8xBo+EdHShGY3220LY2Kw+7ndl/nzJ1//IEevysaDfqL9qdiEi77wXHIXp5anPW4m3sIKDW2YFvN7TX1HNrWYEp7QHaAYne4xBqYCg1i4nq3JRjV1ybUuTNbLmDCfzPNKPCBqclSgG6cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8CDHy+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06345C4AF0D;
+	Fri, 10 Oct 2025 13:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102464;
-	bh=VKadKl1gcy9GbvCbfjMzO6+LNRkl78qWdC1oCQvo6RE=;
+	s=korg; t=1760102330;
+	bh=5hCpYKng3divR1V4azgqk6TIDa83yoRj5sjv7o5j7Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kRnqVU5qUSJ3YyAg4HQYieVud/tdLLnFAQY3D7/Krp5zbMBY5C3Fphr5arDgZkLEh
-	 zrLOSjXR2BwhCNHmHnRCLTDvnan/6ME+mjkByfAMrOSXS6vZfRfJ+j62sMSB48kXVH
-	 p6COoG0YE33U2hAHWPg24xMMrIQ/fpuefPNtspko=
+	b=d8CDHy+WqZL1oMeo0yVl6wp/ATLxIvytGacn0Z3ARLQez5tDDnCISGC0Wsj5RznGR
+	 jndfWDlUP/egS6ziK2Wo46VgRbytSNO0VOJ8EfCWRJ21e72xFbPQilPlKPmvny9Syu
+	 xz8kBHjnKPYrmp8Nde5HUFVSrzj0HxRMU7F9tcVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.12 05/35] wifi: rtlwifi: rtl8192cu: Dont claim USB ID 07b8:8188
+	Wasee Alam <wasee.alam@amd.com>,
+	Mario Sopena-Novales <mario.novales@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 19/41] drm/amdgpu/gfx11: Add Cleaner Shader Support for GFX11.0.1/11.0.4 GPUs
 Date: Fri, 10 Oct 2025 15:16:07 +0200
-Message-ID: <20251010131331.988064741@linuxfoundation.org>
+Message-ID: <20251010131334.117737752@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +63,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit e798f2ac6040f46a04795d7de977341fa9aeabae upstream.
+[ Upstream commit c1b6b8c7706354b73196649c46b5e6d4d61c2f5c ]
 
-This ID appears to be RTL8188SU, not RTL8188CU. This is the wrong driver
-for RTL8188SU. The r8712u driver from staging used to handle this ID.
+Enable the cleaner shader for additional GFX11.0.1/11.0.4 series GPUs to
+ensure data isolation among GPU tasks. The cleaner shader is tasked with
+clearing the Local Data Store (LDS), Vector General Purpose Registers
+(VGPRs), and Scalar General Purpose Registers (SGPRs), which helps avoid
+data leakage and guarantees the accuracy of computational results.
 
-Closes: https://lore.kernel.org/linux-wireless/ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de/
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/2e5e2348-bdb3-44b2-92b2-0231dbf464b0@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This update extends cleaner shader support to GFX11.0.1/11.0.4 GPUs,
+previously available for GFX11.0.3. It enhances security by clearing GPU
+memory between processes and maintains a consistent GPU state across KGD
+and KFD workloads.
+
+Cc: Wasee Alam <wasee.alam@amd.com>
+Cc: Mario Sopena-Novales <mario.novales@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0a71ceb27f88a944c2de2808b67b2f46ac75076b)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-@@ -291,7 +291,6 @@ static const struct usb_device_id rtl819
- 	{RTL_USB_DEVICE(0x050d, 0x1102, rtl92cu_hal_cfg)}, /*Belkin - Edimax*/
- 	{RTL_USB_DEVICE(0x050d, 0x11f2, rtl92cu_hal_cfg)}, /*Belkin - ISY*/
- 	{RTL_USB_DEVICE(0x06f8, 0xe033, rtl92cu_hal_cfg)}, /*Hercules - Edimax*/
--	{RTL_USB_DEVICE(0x07b8, 0x8188, rtl92cu_hal_cfg)}, /*Abocom - Abocom*/
- 	{RTL_USB_DEVICE(0x07b8, 0x8189, rtl92cu_hal_cfg)}, /*Funai - Abocom*/
- 	{RTL_USB_DEVICE(0x0846, 0x9041, rtl92cu_hal_cfg)}, /*NetGear WNA1000M*/
- 	{RTL_USB_DEVICE(0x0846, 0x9043, rtl92cu_hal_cfg)}, /*NG WNA1000Mv2*/
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 96566870f079b..199bd9340b3bf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -1654,6 +1654,21 @@ static int gfx_v11_0_sw_init(struct amdgpu_ip_block *ip_block)
+ 			}
+ 		}
+ 		break;
++	case IP_VERSION(11, 0, 1):
++	case IP_VERSION(11, 0, 4):
++		adev->gfx.cleaner_shader_ptr = gfx_11_0_3_cleaner_shader_hex;
++		adev->gfx.cleaner_shader_size = sizeof(gfx_11_0_3_cleaner_shader_hex);
++		if (adev->gfx.pfp_fw_version >= 102 &&
++		    adev->gfx.mec_fw_version >= 66 &&
++		    adev->mes.fw_version[0] >= 128) {
++			adev->gfx.enable_cleaner_shader = true;
++			r = amdgpu_gfx_cleaner_shader_sw_init(adev, adev->gfx.cleaner_shader_size);
++			if (r) {
++				adev->gfx.enable_cleaner_shader = false;
++				dev_err(adev->dev, "Failed to initialize cleaner shader\n");
++			}
++		}
++		break;
+ 	case IP_VERSION(11, 5, 0):
+ 	case IP_VERSION(11, 5, 1):
+ 		adev->gfx.cleaner_shader_ptr = gfx_11_0_3_cleaner_shader_hex;
+-- 
+2.51.0
+
 
 
 
