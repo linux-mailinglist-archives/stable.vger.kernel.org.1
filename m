@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-183939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37180BCD380
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75CB9BCD386
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BDDC189EF31
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5B103A5F74
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204942F7442;
-	Fri, 10 Oct 2025 13:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F82D2F5472;
+	Fri, 10 Oct 2025 13:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ycd1Mv7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQ5oYQW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D178E2EF664;
-	Fri, 10 Oct 2025 13:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06B52EF664;
+	Fri, 10 Oct 2025 13:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102416; cv=none; b=jTtcT/lqg1rHgpXAZooOD1zJuW947l0C0+aUUTTeKJH2hvSKJzErDSZufezP+oP06SO/6g0UP/945K6DyvhftlZVZ92KUUd9TfSwfUdYYXpNbJSApZAmk+RiDOes41grR3k0LRYPMpkM/h5NRpoa7K3+3eXNuU4IcPnHmedyico=
+	t=1760102499; cv=none; b=OViAvlWirwVPsv96oaivcdgc93fGChhslbFgQpighZOsi/ISUwxIc0hXl9nmdBD7ZY94wHECtcOiDHb16fKVSafwGwREJfXT5uGfVJewyi2HwIKOIkT5IB338HZLATMMFLaohULh/9IF9W2HRrk24yUBpakBwNMSBDz6mc5Ux/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102416; c=relaxed/simple;
-	bh=4mSDTwAB2J/wIykZ0mUaOXG6Pjakmgw70q4adPCMbUg=;
+	s=arc-20240116; t=1760102499; c=relaxed/simple;
+	bh=5XghcfwOY//jaN63uCUdQehLNrKg2GPKdGq/D+SbXUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WECVtT2sRQ2thJbMoBWg8vt3eXAd9Zz/JMZLnLJKFsUx2f8GrVQLQG26jZXEjUzgpTjW95nEdyly3BWQK/VirGpcU9K/pgsjGucCwK4r6FV7va8jL1dD2NtgSBC7lfut4moBV2dvuc0huYQTyqsbJ9nkozvVnMi4jjp3UW2gJXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ycd1Mv7o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9E1C4CEF1;
-	Fri, 10 Oct 2025 13:20:16 +0000 (UTC)
+	 MIME-Version; b=GWvCG0WBb1VIjG8kJ0mUqagS6YFXDhTx3qKZODHlAAq1NJe53O50PJn+xmDO9P3GEtQYqUPaGeMyrIx+/Mf8GyDaEzD8yfQj4hyADlPCrukqRS7dSReu33VJJRhmSgUGp5D8m3kbialH8g5bwgGyKIESMhINtnDouARJwtpcwkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQ5oYQW4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC95C4CEF1;
+	Fri, 10 Oct 2025 13:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102416;
-	bh=4mSDTwAB2J/wIykZ0mUaOXG6Pjakmgw70q4adPCMbUg=;
+	s=korg; t=1760102498;
+	bh=5XghcfwOY//jaN63uCUdQehLNrKg2GPKdGq/D+SbXUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ycd1Mv7o3T2Z4HnyxSZOoD8e/plFvVvO4nOlpI2JSjk4S4Y0tJFvV9WGnFW8rKNXO
-	 QC98OTHpznDR349rIoAIljPzhDGFjpbHv1gh76h7IvF1RaqkAgAtTvLSHbf8cq1Ota
-	 duDOMw3kFrVEaOBRLg/gNz3efIu1RlnPXvwNfEUY=
+	b=KQ5oYQW4ptLOhre5w+cU+zHkb3vd1aP2Oo0GxnKAlOu0eCUfpjD7M0lvI3o2oMzWC
+	 tTP7RDx8nHaOZXZSQofr4uVO+g12NCNY3FtMgFsO8YuJ4NGnxbUXat5m53N6X9VWYQ
+	 wc/OrGJMKksVTNLy/WYarpfVWtTwdqn5km6IdO94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	stable <stable@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.16 37/41] driver core/PM: Set power.no_callbacks along with power.no_pm
+	syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.12 23/35] ALSA: usb-audio: Kill timer properly at removal
 Date: Fri, 10 Oct 2025 15:16:25 +0200
-Message-ID: <20251010131334.750995295@linuxfoundation.org>
+Message-ID: <20251010131332.630355663@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit c2ce2453413d429e302659abc5ace634e873f6f5 upstream.
+commit 0718a78f6a9f04b88d0dc9616cc216b31c5f3cf1 upstream.
 
-Devices with power.no_pm set are not expected to need any power
-management at all, so modify device_set_pm_not_required() to set
-power.no_callbacks for them too in case runtime PM will be enabled
-for any of them (which in principle may be done for convenience if
-such a device participates in a dependency chain).
+The USB-audio MIDI code initializes the timer, but in a rare case, the
+driver might be freed without the disconnect call.  This leaves the
+timer in an active state while the assigned object is released via
+snd_usbmidi_free(), which ends up with a kernel warning when the debug
+configuration is enabled, as spotted by fuzzer.
 
-Since device_set_pm_not_required() must be called before device_add()
-or it would not have any effect, it can update power.no_callbacks
-without locking, unlike pm_runtime_no_callbacks() that can be called
-after registering the target device.
+For avoiding the problem, put timer_shutdown_sync() at
+snd_usbmidi_free(), so that the timer can be killed properly.
+While we're at it, replace the existing timer_delete_sync() at the
+disconnect callback with timer_shutdown_sync(), too.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/1950054.tdWV9SEqCh@rafael.j.wysocki
+Reported-by: syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/681c70d7.050a0220.a19a9.00c6.GAE@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250519212031.14436-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ del_timer vs timer_delete differences ]
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/device.h |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/usb/midi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -851,6 +851,9 @@ static inline bool device_pm_not_require
- static inline void device_set_pm_not_required(struct device *dev)
- {
- 	dev->power.no_pm = true;
-+#ifdef CONFIG_PM
-+	dev->power.no_callbacks = true;
-+#endif
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1530,6 +1530,7 @@ static void snd_usbmidi_free(struct snd_
+ 			snd_usbmidi_in_endpoint_delete(ep->in);
+ 	}
+ 	mutex_destroy(&umidi->mutex);
++	timer_shutdown_sync(&umidi->error_timer);
+ 	kfree(umidi);
  }
  
- static inline void dev_pm_syscore_device(struct device *dev, bool val)
+@@ -1553,7 +1554,7 @@ void snd_usbmidi_disconnect(struct list_
+ 	spin_unlock_irq(&umidi->disc_lock);
+ 	up_write(&umidi->disc_rwsem);
+ 
+-	del_timer_sync(&umidi->error_timer);
++	timer_shutdown_sync(&umidi->error_timer);
+ 
+ 	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
+ 		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
 
 
 
