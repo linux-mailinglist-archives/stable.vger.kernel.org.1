@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-183970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46530BCD2FF
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E616BBCD3E6
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A7AE54FE556
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF59F427553
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DA72F5322;
-	Fri, 10 Oct 2025 13:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC4521579F;
+	Fri, 10 Oct 2025 13:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uN+CB1Iw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyzxP91b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95122F0C63;
-	Fri, 10 Oct 2025 13:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDA52F28E0;
+	Fri, 10 Oct 2025 13:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102504; cv=none; b=e5sUH8cbw+Yw6L0DbatqZWI/aRHMibKlPdXJ4UoZLajKXahpiqcKTLdYT31biGBEjvgoCEtxWK7MVQ5a0zDCpmXR1g/4khzG4bX5/0VcOZMP9ml/nnj3TUbvIxoEDCjKbBXSnhaPRz38H9lx0sMfYNjyKUX6lMaltvAaUdi/mx4=
+	t=1760102588; cv=none; b=p9YO3P/BMYwR/IHhBrQCjWJDndVG6JiAmEKs3E0rAFK32OiumyeIt1JKZ+zJJi5Yj4Z/y+a6z6ANa8pFu40CRONjrxawskHXWrCXFBZnpjmuB42brb/nXpJbWxp0Bk7E1N7ZH4TC/tcMELKaOOyxyr2l8itiSYf8PF/lkdvJOS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102504; c=relaxed/simple;
-	bh=ePnu6SdZbeIDFlOUfTPOZR1BzDnyuWBZWTNIBH1ejeg=;
+	s=arc-20240116; t=1760102588; c=relaxed/simple;
+	bh=7cWxGMtnlxFB3yZsUk2uCAEzX6xtVZx2xE102xs+qJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oM++otvreJwzslVeDQPWm9Wiz3V8e4hdDpa0wLHxKT9tkKSiJXebCZCiCfzjmQzntGbajPUwa37oohZuRXX/0TbWbsQYTtuQza3SWnspOhxFjinXGOIHA3ROwAkuqOViA7hbXLEpgpcI6kUjNPgh0mVpACnsk9VyfZI76eS+9SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uN+CB1Iw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60180C4CEF1;
-	Fri, 10 Oct 2025 13:21:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aX84oFE6JYy5c9446vYsJ2mIZpfTRJxCSBc3yNIKX1T9f7fHSrpvCAR46T0IMz/06/4aGbYdJd4SmfNYbuBk+9a1pXBxMsnIRkhgSpjGlh625Eh303yM7XHi5oAu/PBQxxJN4ASd5llrGHbEiGJo2pRXjbI/IVTBZ0rkrJah3B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyzxP91b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623E1C4CEF1;
+	Fri, 10 Oct 2025 13:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102504;
-	bh=ePnu6SdZbeIDFlOUfTPOZR1BzDnyuWBZWTNIBH1ejeg=;
+	s=korg; t=1760102587;
+	bh=7cWxGMtnlxFB3yZsUk2uCAEzX6xtVZx2xE102xs+qJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uN+CB1Iwg7s6xUW3H60WdMtmizlX9xY8rkN6SpRybQP6kqz9GGJhCszQVW7ERwiFh
-	 ACjVH8/w01ojl9l9FuWgrnPNKJ6Vc/j9JfRsHYqAS6OvYOPJvp0VXhEz0N3DaxtzRq
-	 SJca8I3cfP+v73QQeC2DvYK27WdNCKhOIh/waI2s=
+	b=OyzxP91bgKUrGSg4ZKar/C3H281oav/trlyMjnE3vY71KjlwkB8dbH3x6rUM0TCCc
+	 ZGUDxFMj1pQc9kvzoUatGP+Ew0BNiGiC62AIl07ibGG7fY+69C7N04ZI0xa6erbxi4
+	 idD3ZxQnAEyjlPCMov2ue4LXO0VOvAXe+hiEuhjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Romain Sioen <romain.sioen@microchip.com>
-Subject: [PATCH 6.12 25/35] hid: fix I2C read buffer overflow in raw_event() for mcp2221
+	April Grimoire <aprilgrimoire@proton.me>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 09/28] platform/x86/amd/pmc: Add MECHREVO Yilong15Pro to spurious_8042 list
 Date: Fri, 10 Oct 2025 15:16:27 +0200
-Message-ID: <20251010131332.701110291@linuxfoundation.org>
+Message-ID: <20251010131330.702651341@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
+References: <20251010131330.355311487@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: aprilgrimoire <aprilgrimoire@proton.me>
 
-commit b56cc41a3ae7323aa3c6165f93c32e020538b6d2 upstream.
+[ Upstream commit 8822e8be86d40410ddd2ac8ff44f3050c9ecf9c6 ]
 
-As reported by syzbot, mcp2221_raw_event lacked
-validation of incoming I2C read data sizes, risking buffer
-overflows in mcp->rxbuf during multi-part transfers.
-As highlighted in the DS20005565B spec, p44, we have:
-"The number of read-back data bytes to follow in this packet:
-from 0 to a maximum of 60 bytes of read-back bytes."
-This patch enforces we don't exceed this limit.
+The firmware of Mechrevo Yilong15Pro emits a spurious keyboard interrupt on
+events including closing the lid. When a user closes the lid on an already
+suspended system this causes the system to wake up.
+Add Mechrevo Yilong15Pro Series (GM5HG7A) to the list of quirk
+spurious_8042 to work around this issue.
 
-Reported-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=52c1a7d3e5b361ccd346
-Tested-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Link: https://patch.msgid.link/20250726220931.7126-1-contact@arnaud-lcm.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-pm/6ww4uu6Gl4F5n6VY5dl1ufASfKzs4DhMxAN8BuqUpCoqU3PQukVSVSBCl_lKIzkQ-S8kt1acPd58eyolhkWN32lMLFj4ViI0Tdu2jwhnYZ8=@proton.me/
+Signed-off-by: April Grimoire <aprilgrimoire@proton.me>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/IvSc_IN5Pa0wRXElTk_fEl-cTpMZxg6TCQk_7aRUkTd9vJUp_ZeC0NdXZ0z6Tn7B-XiqqqQvCH65lq6FqhuECBMEYWcHQmWm1Jo7Br8kpeg=@proton.me
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-mcp2221.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -814,6 +814,10 @@ static int mcp2221_raw_event(struct hid_
- 			}
- 			if (data[2] == MCP2221_I2C_READ_COMPL ||
- 			    data[2] == MCP2221_I2C_READ_PARTIAL) {
-+				if (!mcp->rxbuf || mcp->rxbuf_idx < 0 || data[3] > 60) {
-+					mcp->status = -EINVAL;
-+					break;
-+				}
- 				buf = mcp->rxbuf;
- 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
- 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 6f5437d210a61..b872baf35808f 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -233,6 +233,14 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE14-GX4HRXL"),
+ 		}
+ 	},
++	{
++		.ident = "MECHREVO Yilong15Pro Series GM5HG7A",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MECHREVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Yilong15Pro Series GM5HG7A"),
++		}
++	},
+ 	/* https://bugzilla.kernel.org/show_bug.cgi?id=220116 */
+ 	{
+ 		.ident = "PCSpecialist Lafite Pro V 14M",
+-- 
+2.51.0
+
 
 
 
