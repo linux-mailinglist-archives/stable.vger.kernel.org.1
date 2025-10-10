@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-183977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AF9BCD3AA
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7D7BCD3A5
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95CBA540A71
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 532DA19E4C98
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656B318872A;
-	Fri, 10 Oct 2025 13:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0AB2F39C5;
+	Fri, 10 Oct 2025 13:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWdAfv0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pND8nTXd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F971C84DE;
-	Fri, 10 Oct 2025 13:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475A621579F;
+	Fri, 10 Oct 2025 13:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102526; cv=none; b=qV9ksOwcVpfPQTefcpfluuyqfrTwWDWbmfEZBtjItR6NLQ7jBxe4gr7xoc6KieFnQwmz7mjg4jaWObFULyGAsOGuLuEVFCQwiXWLXTf/r5Kd/UMb1+/Sl2JR67L6NgCVbEZI1qTuhM3u7lk2VtU+iPfaylcYqKp2rCjHM18Wc/4=
+	t=1760102445; cv=none; b=UDheOTcvdQ8vX2uRbCtUq+EpbPU1nNmBAwIaQXZkGlzoL0XJlNYV3djKQKrnUF4C2rcNv4yoPnOkTYlEuc071xQ9k4nwdpb0CCcYbE+SLS7T8vLizJg1PcBvrLzukiqKKoiJOvxdgafpQXaKA5W8WZdedhHpTT9ApO6L7ih6qCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102526; c=relaxed/simple;
-	bh=OhiPMaYrbUgAslF5D/ST/pz6K+RfEK/HXW9YwUAJtYk=;
+	s=arc-20240116; t=1760102445; c=relaxed/simple;
+	bh=FZQlJ/2bL0YOM8kKk6HNAVYbZ1/XcNhZ33DoyDlPvRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKa7WjTpZ6lRhSa2gxHBkApRFaSdZyAA2EWjjS7ocOogKA0xUz6pLxjho+euuD0Bww/440orohPBsDukCboTYouZaLQHat85qlaxZGRfs1UwJ/X5hv2N6vTEMAtjR/ErUqZh8Ng/nvwsLDNbejK+LNKqWWtiqgymNZZYWjRnEKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWdAfv0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA41C4CEF1;
-	Fri, 10 Oct 2025 13:22:04 +0000 (UTC)
+	 MIME-Version; b=e362XNhyePGLS5HxxTGLdSk3ycZHBxzpAeq0vXSi2lwmcnxuigXNqY7sDQLknZsmvSL74NB48Rs1eCOk4pg3LxCQJgbnihkLJ49QXD3EbT0y/VoYnPS5DhhRgM1KrnpdEh9tR/OTv8YOANuXiaI24W0RZ1UVUj562oEUXOFHh78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pND8nTXd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6873C4CEF1;
+	Fri, 10 Oct 2025 13:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102524;
-	bh=OhiPMaYrbUgAslF5D/ST/pz6K+RfEK/HXW9YwUAJtYk=;
+	s=korg; t=1760102445;
+	bh=FZQlJ/2bL0YOM8kKk6HNAVYbZ1/XcNhZ33DoyDlPvRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWdAfv0cb1JPmC5CncHr8J343iBiFA54+M+qCB1HvJaCxbWdYLjO3LL/vrYSJElEy
-	 CRF32Gu1Z4UL0bkwHrCdP8N/BtxGCKkPuPaxTFSHsGb6uI2iRVPBnV+W0K3YTzVyIL
-	 iRuskpSwLo8j4QpjALAhi2oQjmhoZTNeDLFGv3EY=
+	b=pND8nTXdtjiYZksjXhSUACEiuVizMXn/bLNTgSz+LM9AQ/gNnv8vX1wjushx3BmU1
+	 4Q3Pmp3W9gS4INsSAGzVfXDBFVN8+7KzVi7ib274Cndu6Iz8il4oiHT4KI8VueV/7o
+	 2FTGPFGAaVx5wxOqDWJy46gQThFZdhJ18dGfNsKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Kenneth Van Alstyne <kvanals@kvanals.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 01/28] KVM: arm64: Fix softirq masking in FPSIMD register saving sequence
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Tranh Ha <tranh.ha.xb@renesas.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 17/35] can: rcar_canfd: Fix controller mode setting
 Date: Fri, 10 Oct 2025 15:16:19 +0200
-Message-ID: <20251010131330.412107519@linuxfoundation.org>
+Message-ID: <20251010131332.416692187@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Duy Nguyen <duy.nguyen.rh@renesas.com>
 
-Stable commit 28b82be094e2 ("KVM: arm64: Fix kernel BUG() due to bad
-backport of FPSIMD/SVE/SME fix") fixed a kernel BUG() caused by a bad
-backport of upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally
-save+flush host FPSIMD/SVE/SME state") by ensuring that softirqs are
-disabled/enabled across the fpsimd register save operation.
+[ Upstream commit 5cff263606a10102a0ea19ff579eaa18fd5577ad ]
 
-Unfortunately, although this fixes the original issue, it can now lead
-to deadlock when re-enabling softirqs causes pending softirqs to be
-handled with locks already held:
+Driver configures register to choose controller mode before
+setting all channels to reset mode leading to failure.
+The patch corrects operation of mode setting.
 
- | BUG: spinlock recursion on CPU#7, CPU 3/KVM/57616
- |  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU 3/KVM/57616, .owner_cpu: 7
- | CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O       6.1.152 #1
- | Hardware name: SoftIron SoftIron Platform Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
- | Call trace:
- |  dump_backtrace+0xe4/0x110
- |  show_stack+0x20/0x30
- |  dump_stack_lvl+0x6c/0x88
- |  dump_stack+0x18/0x34
- |  spin_dump+0x98/0xac
- |  do_raw_spin_lock+0x70/0x128
- |  _raw_spin_lock+0x18/0x28
- |  raw_spin_rq_lock_nested+0x18/0x28
- |  update_blocked_averages+0x70/0x550
- |  run_rebalance_domains+0x50/0x70
- |  handle_softirqs+0x198/0x328
- |  __do_softirq+0x1c/0x28
- |  ____do_softirq+0x18/0x28
- |  call_on_irq_stack+0x30/0x48
- |  do_softirq_own_stack+0x24/0x30
- |  do_softirq+0x74/0x90
- |  __local_bh_enable_ip+0x64/0x80
- |  fpsimd_save_and_flush_cpu_state+0x5c/0x68
- |  kvm_arch_vcpu_put_fp+0x4c/0x88
- |  kvm_arch_vcpu_put+0x28/0x88
- |  kvm_sched_out+0x38/0x58
- |  __schedule+0x55c/0x6c8
- |  schedule+0x60/0xa8
-
-Take a tiny step towards the upstream fix in 9b19700e623f ("arm64:
-fpsimd: Drop unneeded 'busy' flag") by additionally disabling hardirqs
-while saving the fpsimd registers.
-
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org> # 6.6.y
-Fixes: 28b82be094e2 ("KVM: arm64: Fix kernel BUG() due to bad backport of FPSIMD/SVE/SME fix")
-Reported-by: Kenneth Van Alstyne <kvanals@kvanals.org>
-Link: https://lore.kernel.org/r/010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Signed-off-by: Tranh Ha <tranh.ha.xb@renesas.com>
+Link: https://patch.msgid.link/TYWPR01MB87434739F83E27EDCD23DF44B416A@TYWPR01MB8743.jpnprd01.prod.outlook.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/fpsimd.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/can/rcar/rcar_canfd.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index d0d836448a76..83827384982e 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1873,13 +1873,17 @@ static void fpsimd_flush_cpu_state(void)
-  */
- void fpsimd_save_and_flush_cpu_state(void)
- {
-+	unsigned long flags;
+diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
+index aa3df0d05b853..24dd15c917228 100644
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -732,9 +732,6 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
+ 	/* Reset Global error flags */
+ 	rcar_canfd_write(gpriv->base, RCANFD_GERFL, 0x0);
+ 
+-	/* Set the controller into appropriate mode */
+-	rcar_canfd_set_mode(gpriv);
+-
+ 	/* Transition all Channels to reset mode */
+ 	for_each_set_bit(ch, &gpriv->channels_mask, gpriv->info->max_channels) {
+ 		rcar_canfd_clear_bit(gpriv->base,
+@@ -754,6 +751,10 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
+ 			return err;
+ 		}
+ 	}
 +
- 	if (!system_supports_fpsimd())
- 		return;
- 	WARN_ON(preemptible());
--	get_cpu_fpsimd_context();
-+	local_irq_save(flags);
-+	__get_cpu_fpsimd_context();
- 	fpsimd_save();
- 	fpsimd_flush_cpu_state();
--	put_cpu_fpsimd_context();
-+	__put_cpu_fpsimd_context();
-+	local_irq_restore(flags);
++	/* Set the controller into appropriate mode */
++	rcar_canfd_set_mode(gpriv);
++
+ 	return 0;
  }
  
- #ifdef CONFIG_KERNEL_MODE_NEON
 -- 
-2.51.0.618.g983fd99d29-goog
+2.51.0
 
 
 
