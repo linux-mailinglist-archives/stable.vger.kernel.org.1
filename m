@@ -1,59 +1,96 @@
-Return-Path: <stable+bounces-183860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA16BCC030
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 10:00:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 164D5BCC137
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 10:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF56D1A6461B
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 08:01:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 902273ACC24
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 08:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC3D2750E1;
-	Fri, 10 Oct 2025 08:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3ED2765EA;
+	Fri, 10 Oct 2025 08:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CBsueoYO"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wR+6BkHk";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8JWRKwNE";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wTsn/O0v";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="W1WJpnCL"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1EB272810;
-	Fri, 10 Oct 2025 08:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADFB277032
+	for <stable@vger.kernel.org>; Fri, 10 Oct 2025 08:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760083242; cv=none; b=tZnHv0w5ghPwTEfIxiXbj+xiyDn+DvcDOFNdfnVWUy5Xc8W501nJs4P8W2bMj/vniLM+WJkDPezohf1Fk4GCf+1GLuEmTro2rdomCmn4tmjVnKEPQ9/0x13K8Q0lGwZ1nJMwQr2MX4L195ehQ3H1Z+3W28WKLt1qfhUNc9fm+FE=
+	t=1760083543; cv=none; b=AdT6JpR9VKd4YCMyKEESyjIBxfgqQ3XffX+KVwlaxZE0K1/YbzP0HiQOUSTZoKHh9fG9JdWp6CjMpneVmR/dvVy+xO1pmkZ79YT/nTttMLEi3Ye3ub5t8jwXkYjQLUOn77ii5zfEkDu1doAAZLbuSPsn4awoprfgvc7GGhVrSOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760083242; c=relaxed/simple;
-	bh=7VSc4VZGRf4kATJd9RpFMALSCnx/oi6QGglUySBWA3Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GRbLv/AwsE0OnbelL2sVHWk/Bup54nCzsFvZuh9PqQgNpS5DlnncJimQPtKoaDIR0HpAX1RpQDIZVEyMU2rbyXtC4M/lY8HyZM1+w6VXOh7HmrHEeRf8oaZQt3NnLaYRYcHkxUOJaEadZ3oTQxIsn/h13anD88bUlbInt/nK3TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CBsueoYO; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ri
-	4q9fhZbJ9iRglDYBjtEDYzk9imyFA9mfEoZbEnZks=; b=CBsueoYOusTSV9Z6gD
-	KUzdGe+lvatYdGArYQoUAOSMpTLvcIKtfTV/EHD+nKoXsm71P337FVUqey0dSLMM
-	7MJ8znVx+zQuIqP1TSMGvRQjZlekImhBjKdXkt8X/TZeDJpH8phHAExBOA5MbpmT
-	q+zxEtPGvjpTGsUiGYhHoIiS0=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wBH2wn3vOhoULLLDA--.5915S2;
-	Fri, 10 Oct 2025 15:59:52 +0800 (CST)
-From: yicongsrfy@163.com
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	oneukum@suse.com
-Cc: horms@kernel.org,
-	kuba@kernel.org,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	yicong@kylinos.cn,
+	s=arc-20240116; t=1760083543; c=relaxed/simple;
+	bh=DDidXe6PP74jgsUEBtDPB7Ij2eV2mv9DSbsVpnJBhDM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VKeUJA7mCtWpzo5ZOEbXa7JM8vsmsdYwc57AFs0IdPJJGDILg6jF6fB6TozaSt6OBI8Ebf7VvVyLwyPfwWQiVaZWyg/QRx1joKEj0j1wz+aM7SNkUbYXrTz/mPTanp5MOiVaMn99W6aBoWNlwGiC5jdLts9bBqk5aoKRhukaVSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wR+6BkHk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8JWRKwNE; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wTsn/O0v; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=W1WJpnCL; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C456322256;
+	Fri, 10 Oct 2025 08:05:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760083527; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=IS1STlROBFliAHGj9qR2lNNKpklIWgOwVN9GrvrG0QY=;
+	b=wR+6BkHkl9X3fFW3x0I8lJ3gzvztYlQJTp2bI1rk/9PvwgBGBaLu0ymSyAMtmQW06ybjoH
+	0iXorxF1309eDVfs0aiZSvzSQniuBA170WJtL43KsKj+GYKwAFo76jnTd1Ij+Gsqs60roR
+	rS9RCVl1oq6Uy5QhxNCgjZ7eTCi8HMQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760083527;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=IS1STlROBFliAHGj9qR2lNNKpklIWgOwVN9GrvrG0QY=;
+	b=8JWRKwNE3wYStH7yh4SqRVy2MKnAHsmf2px2asLkqXmr7vX00lbWX0bJ2pQ2DXAv7VkQ6V
+	Nfe1EfKD5NTUWwAQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760083522; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=IS1STlROBFliAHGj9qR2lNNKpklIWgOwVN9GrvrG0QY=;
+	b=wTsn/O0vDBU+tEclaSspIcFtCfpOEGoIwR8uz2uo+3VwBxWLPdwy7emxllsBwTnSrBxCgG
+	oKTSoc0rYmqTeQn/gukx4nWrFVVDQW/FSvQ5VN/bsawlhyqncSPhb6cx2y5yI46ErTTKll
+	OHZ/YAXiK5CxHns1Sek4QsDK9Zb3Jjc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760083522;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=IS1STlROBFliAHGj9qR2lNNKpklIWgOwVN9GrvrG0QY=;
+	b=W1WJpnCLPlEJyb5iYGdx1GD5EstMp2YkQqz708WhX1r8A8iAXJqrrnG6AwI6R6Et1f86x3
+	RrDbeYfC87aiQhDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8A2A71375D;
+	Fri, 10 Oct 2025 08:05:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id N2pHIEK+6GjHIAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 10 Oct 2025 08:05:22 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: jfalempe@redhat.com,
+	airlied@redhat.com,
+	dianders@chromium.org,
+	nbowler@draconx.ca
+Cc: dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	stable@vger.kernel.org
-Subject: [PATCH net v2] r8152: add error handling in rtl8152_driver_init
-Date: Fri, 10 Oct 2025 15:59:49 +0800
-Message-Id: <20251010075949.337132-1-yicongsrfy@163.com>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH] drm/ast: Blank with VGACR17 sync enable, always clear VGACRB6 sync off
+Date: Fri, 10 Oct 2025 10:02:17 +0200
+Message-ID: <20251010080233.21771-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,50 +98,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBH2wn3vOhoULLLDA--.5915S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKFWrGFWfur1UXr1fJw43Wrg_yoWkZrcEkr
-	yIga47Xr1DuFW5KF15WrWavrySkan0vFs3Zr4xt3sIgwnrXrn5Gr1UZr9xXw4UWrWfZFnx
-	Ca1UGFyxCr129jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU82iiDUUUUU==
-X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/1tbiLBPi22jouzAv0AAAsy
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	SEM_URIBL_UNKNOWN_FAIL(0.00)[lists.freedesktop.org:query timed out];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[draconx.ca:query timed out,lists.freedesktop.org:query timed out];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email]
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
 
-From: Yi Cong <yicong@kylinos.cn>
+Blank the display by disabling sync pulses with VGACR17<7>. Unblank
+by reenabling them. This VGA setting should be supported by all Aspeed
+hardware.
 
-rtl8152_driver_init missing error handling.
-If cannot register rtl8152_driver, rtl8152_cfgselector_driver
-should be deregistered.
+Ast currently blanks via sync-off bits in VGACRB6. Not all BMCs handle
+VGACRB6 correctly. After disabling sync during a reboot, some BMCs do
+not reenable it after the soft reset. The display output remains dark.
+When the display is off during boot, some BMCs set the sync-off bits in
+VGACRB6, so the display remains dark. Observed with Blackbird AST2500
+BMC. Clearing the sync-off bits unconditionally fixes these issues.
 
-Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yi Cong <yicong@kylinos.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Also do not modify VGASR1's SD bit for blanking, as it only disables GPU
+access to video memory.
 
-v2: replacing return 0 with return ret and adding Cc stable
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: ce3d99c83495 ("drm: Call drm_atomic_helper_shutdown() at shutdown time for misc drivers")
+Tested-by: Nick Bowler <nbowler@draconx.ca>
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Closes: https://lore.kernel.org/dri-devel/wpwd7rit6t4mnu6kdqbtsnk5bhftgslio6e2jgkz6kgw6cuvvr@xbfswsczfqsi/
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.7+
 ---
- drivers/net/usb/r8152.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/ast/ast_mode.c | 18 ++++++++++--------
+ drivers/gpu/drm/ast/ast_reg.h  |  1 +
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 44cba7acfe7d..8a0c824e9eb4 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -10122,7 +10122,14 @@ static int __init rtl8152_driver_init(void)
- 	ret = usb_register_device_driver(&rtl8152_cfgselector_driver, THIS_MODULE);
- 	if (ret)
- 		return ret;
--	return usb_register(&rtl8152_driver);
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index 6b9d510c509d..fe8089266db5 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -836,22 +836,24 @@ ast_crtc_helper_atomic_flush(struct drm_crtc *crtc,
+ static void ast_crtc_helper_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_state *state)
+ {
+ 	struct ast_device *ast = to_ast_device(crtc->dev);
++	u8 vgacr17 = 0x00;
++	u8 vgacrb6 = 0x00;
+ 
+-	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, 0x00);
+-	ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, 0x00);
++	vgacr17 |= AST_IO_VGACR17_SYNC_ENABLE;
++	vgacrb6 &= ~(AST_IO_VGACRB6_VSYNC_OFF | AST_IO_VGACRB6_HSYNC_OFF);
 +
-+	ret = usb_register(&rtl8152_driver);
-+	if (ret) {
-+		usb_deregister_device_driver(&rtl8152_cfgselector_driver);
-+		return ret;
-+	}
-+
-+	return ret;
++	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
++	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
  }
  
- static void __exit rtl8152_driver_exit(void)
+ static void ast_crtc_helper_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_state *state)
+ {
+ 	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(state, crtc);
+ 	struct ast_device *ast = to_ast_device(crtc->dev);
+-	u8 vgacrb6;
++	u8 vgacr17 = 0xff;
+ 
+-	ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, AST_IO_VGASR1_SD);
+-
+-	vgacrb6 = AST_IO_VGACRB6_VSYNC_OFF |
+-		  AST_IO_VGACRB6_HSYNC_OFF;
+-	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
++	vgacr17 &= ~AST_IO_VGACR17_SYNC_ENABLE;
++	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
+ 
+ 	/*
+ 	 * HW cursors require the underlying primary plane and CRTC to
+diff --git a/drivers/gpu/drm/ast/ast_reg.h b/drivers/gpu/drm/ast/ast_reg.h
+index e15adaf3a80e..30578e3b07e4 100644
+--- a/drivers/gpu/drm/ast/ast_reg.h
++++ b/drivers/gpu/drm/ast/ast_reg.h
+@@ -29,6 +29,7 @@
+ #define AST_IO_VGAGRI			(0x4E)
+ 
+ #define AST_IO_VGACRI			(0x54)
++#define AST_IO_VGACR17_SYNC_ENABLE	BIT(7) /* called "Hardware reset" in docs */
+ #define AST_IO_VGACR80_PASSWORD		(0xa8)
+ #define AST_IO_VGACR99_VGAMEM_RSRV_MASK	GENMASK(1, 0)
+ #define AST_IO_VGACRA1_VGAIO_DISABLED	BIT(1)
 -- 
-2.25.1
+2.51.0
 
 
