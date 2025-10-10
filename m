@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-183944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85516BCD396
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C27F1BCD308
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2C9619E1697
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 483E2188A3AF
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362B92F747C;
-	Fri, 10 Oct 2025 13:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751452F60B6;
+	Fri, 10 Oct 2025 13:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UK4JkGoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vvb+7nSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E822A21579F;
-	Fri, 10 Oct 2025 13:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305662F532C;
+	Fri, 10 Oct 2025 13:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102431; cv=none; b=ui+wFfj/JUyw7zgFyQVyoTbnPa4qk48wHC5OWe83UH8boOLHdN8vBzMylxFZL6BBDI0jzCyYreMLoLRfRcZZLxl84cczE71dK5I7GrdrSPJKGjBH4tCPaiUNljfDvrJZMt/7/+WhuHPmVip6psLxcTOFDYhex6kDvmi0wBqQI8g=
+	t=1760102356; cv=none; b=fbErqX6NCT68XfPC6SnRXoPzFWmQi8cCnA0MDO9dSAh8IJyZIPOeUBODvd8xTYxVfkezgF1Rivfi7GN/Fk4XUlhOlGJj5itr4/SwT2G4xVQ+nmPIUoTf9OKIEwitx5NyyrltNorzSvMp9zIaNzc+bUfjFlm1obONQTLy7LjFxgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102431; c=relaxed/simple;
-	bh=4L8qjw/4jslETTYyb78sq94BeD6cD5GClrNgaqM272I=;
+	s=arc-20240116; t=1760102356; c=relaxed/simple;
+	bh=fq/567LqvUeahVCNl3/yt9Jp98AvqXHacB8dghC5n1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RiLei/J0OHSzv+O899T6NzDFA5gLz2jHdOjlEmzByH4mNathfqM5S9DQzngmYeeXIOHoeoTCNvjFg9rBtHZiqXCOgZ9d7sFWl+5pTWlxmZJ/e5e4Fu8e4azZv76hypdsqQ4y7FpXXUW7VJQJyS220gtYjzjrciAS30YSqptvmEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UK4JkGoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D812C4CEF1;
-	Fri, 10 Oct 2025 13:20:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q0Uq8aJJX44BLXTm5sS8Pip4dKTUQl9CFFf4xuCUom+tdhEscJ+grWjoQZNYj1eHO0YNWW/59ZUH5mHYrzThiCDvIfdfOL43MfB8xOlBEa8Z3QxgwPajnq/earSz+jS7Jw9oKDyhf+jYHwlNrMdn3OKbqDomA1sTLBNPYeTscKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vvb+7nSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD629C4CEF1;
+	Fri, 10 Oct 2025 13:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102430;
-	bh=4L8qjw/4jslETTYyb78sq94BeD6cD5GClrNgaqM272I=;
+	s=korg; t=1760102356;
+	bh=fq/567LqvUeahVCNl3/yt9Jp98AvqXHacB8dghC5n1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UK4JkGoe7Z5g4RLtPNdtUDFT52/DdVW1jQtpHP7AlEckyVhZ55p347Z0AezmrD1nV
-	 IPDKV3cI6wnEjPfkCarZgUpYXKBJ3KHbhbFwIdZdUX8ub0ZgnodOHecGccpz3+Fwsn
-	 1NiE03RxTHJEbCMnPkv3F0sEtiHfsFATPAiekc2M=
+	b=Vvb+7nSrGlwK191Sse1PdXyGsI6GXsqSavIbhVqHpQMoLJDLOEd/E2Rb0VpvXfQQV
+	 DzhDfScuUuh6F6yapnmh6HMjVeX9M11dJCeqb4iOXpwyG4DJxKb+ZzXXsrwJ/pAK/v
+	 r+54ACmLR7DmQsjOpKI/2AThrzPRTfrmunFavuzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 12/35] platform/x86/amd/pmf: Support new ACPI ID AMDI0108
-Date: Fri, 10 Oct 2025 15:16:14 +0200
-Message-ID: <20251010131332.235936334@linuxfoundation.org>
+Subject: [PATCH 6.16 27/41] platform/x86/amd/pmc: Add Stellaris Slim Gen6 AMD to spurious 8042 quirks list
+Date: Fri, 10 Oct 2025 15:16:15 +0200
+Message-ID: <20251010131334.402356012@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +64,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-[ Upstream commit 1b09d08866277677d11726116f5e786d5ba00173 ]
+[ Upstream commit 12a3dd4d2cd9232d4e4df3b9a5b3d745db559941 ]
 
-Include the ACPI ID AMDI0108, which is used on upcoming AMD platforms, in
-the PMF driver's list of supported devices.
+Prevents instant wakeup ~1s after suspend
 
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250915090546.2759130-1-Shyam-sundar.S-k@amd.com
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20250916164700.32896-1-wse@tuxedocomputers.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index 719caa2a00f05..8a1e2268d301a 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -406,6 +406,7 @@ static const struct acpi_device_id amd_pmf_acpi_ids[] = {
- 	{"AMDI0103", 0},
- 	{"AMDI0105", 0},
- 	{"AMDI0107", 0},
-+	{"AMDI0108", 0},
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, amd_pmf_acpi_ids);
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 4d0a38e06f083..d63aaad7ef599 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -256,6 +256,13 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Lafite Pro V 14M"),
+ 		}
+ 	},
++	{
++		.ident = "TUXEDO Stellaris Slim 15 AMD Gen6",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
++		}
++	},
+ 	{
+ 		.ident = "TUXEDO InfinityBook Pro 14/15 AMD Gen10",
+ 		.driver_data = &quirk_spurious_8042,
 -- 
 2.51.0
 
