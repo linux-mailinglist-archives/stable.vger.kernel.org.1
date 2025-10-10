@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-183879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696CABCD157
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78976BCD2A9
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 61B7C4FD178
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13D571A67452
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD28285CB6;
-	Fri, 10 Oct 2025 13:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D74C2F3C2D;
+	Fri, 10 Oct 2025 13:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2JmiQth"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLY72Yjm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C401F63FF;
-	Fri, 10 Oct 2025 13:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE012F3C32;
+	Fri, 10 Oct 2025 13:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102244; cv=none; b=gOQo5M74l/3gZeF+B1jR6DPAA2OEfUqRAIQUuEoqdjfTUD/M12qRbECWxwxSoQkEATEoffBazBpu9vyk29JILjDg2K/XOGkJ1fBYFvhGnwNGlxL6i4t3TtICfWPIMcuXaxAOc+edABjdv5pCIbsgzyW7lF1uTdyq5KQH+c/bdOA=
+	t=1760102308; cv=none; b=VzkJCZZWdysI6SOXj4RsQhOoVZtwNQ7xTH/6wBii+iowloum60ogRcZvrt5PE0LLmI7WDv1GzLCQU6+3kTCo2E3NUwEc7aDCHmz+6Ps0/fSO6eeeQINWHCq1A5Pc8Jnlv7Br1WbmCbdjBFVFeCC3DjY4lnC6hSounUXviHkcqRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102244; c=relaxed/simple;
-	bh=4JVdz5GmVEFn3nzg/cJJC9DUvYP/SPewI+mUm6ytvpk=;
+	s=arc-20240116; t=1760102308; c=relaxed/simple;
+	bh=WnimUu7lnCJB/a0i3CdgTCbSJbC2nStmiVvXxXGnYFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uz/XNMdUCA29VzUXWq+Tz7UUgN36G09A5X6JgmeZKUo8XEwcMby+xWHnbgQ/uB2KDFOs0G3rgxVASqsR8HCfG3EtZBvpFpMSdRFmi5eqcKyeOr7ion8qWLU4oZQiVUur67bryZBnA5Yjq/Y0J3FfCTe3bts+Cu3IagbYmZBCW9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2JmiQth; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3051C4CEF1;
-	Fri, 10 Oct 2025 13:17:23 +0000 (UTC)
+	 MIME-Version; b=BDmF6jb4pCH5cTjIfLexNDa4AOxHPwBSwFne9pp1jse6UrNv4TUdHdd1RtGX8pOl1tnlsMJvwk6M52T3SLHDaO6qrhqY41gi4Pzj38j7fsUscvnUb4sHubHGJ/in85mU4YyR9nsng8VFKGubMvH98pVERAxVs07OagVSEuJijv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLY72Yjm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1C1C4CEF1;
+	Fri, 10 Oct 2025 13:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102244;
-	bh=4JVdz5GmVEFn3nzg/cJJC9DUvYP/SPewI+mUm6ytvpk=;
+	s=korg; t=1760102307;
+	bh=WnimUu7lnCJB/a0i3CdgTCbSJbC2nStmiVvXxXGnYFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2JmiQthgKsdKs/qbvXGsZYG8mBJ45rrj2o9c8XYKN0KEdOexDMMfkJwVXOTElToG
-	 OHHeiNa7ro6r3fcw3ryqeo8tcaI+ZFlUObA0gNNyOv3mCtLlLmIPeJu9Zsev7z7Arp
-	 ciD0wdNguOrDYgDMyIyU3ssMOxY4WgDNy3+Ps4Cg=
+	b=aLY72YjmG0XieJO5VHHvR5LoSR/6wb9sP3WDIx9xrFbY/z2k49aGclBbXSXDyokiu
+	 64A90cSPOxpSz4coKAPMKxgWam5rS/izovaWFdGH6Uw/ZgRhKVM8YOhEAbt6k5zTZS
+	 xcUWEBZ5dhbNetoxyFpdrb2v+hfD/SqgUTIOAp+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.17 04/26] wifi: rtlwifi: rtl8192cu: Dont claim USB ID 07b8:8188
+	stable@kernel.org,
+	Rahul Rameshbabu <sergeantsagara@protonmail.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.16 11/41] rust: pci: fix incorrect platform reference in PCI driver probe doc comment
 Date: Fri, 10 Oct 2025 15:15:59 +0200
-Message-ID: <20251010131331.369720372@linuxfoundation.org>
+Message-ID: <20251010131333.832567923@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
 
-commit e798f2ac6040f46a04795d7de977341fa9aeabae upstream.
+commit 855318e7c0c4a3e3014c0469dd5bc93a1c0df30c upstream.
 
-This ID appears to be RTL8188SU, not RTL8188CU. This is the wrong driver
-for RTL8188SU. The r8712u driver from staging used to handle this ID.
+Substitute 'platform' with 'pci'.
 
-Closes: https://lore.kernel.org/linux-wireless/ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de/
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/2e5e2348-bdb3-44b2-92b2-0231dbf464b0@gmail.com
+Fixes: 1bd8b6b2c5d3 ("rust: pci: add basic PCI device / driver abstractions")
+Cc: stable@kernel.org
+Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c |    1 -
- 1 file changed, 1 deletion(-)
+ rust/kernel/pci.rs |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-@@ -291,7 +291,6 @@ static const struct usb_device_id rtl819
- 	{RTL_USB_DEVICE(0x050d, 0x1102, rtl92cu_hal_cfg)}, /*Belkin - Edimax*/
- 	{RTL_USB_DEVICE(0x050d, 0x11f2, rtl92cu_hal_cfg)}, /*Belkin - ISY*/
- 	{RTL_USB_DEVICE(0x06f8, 0xe033, rtl92cu_hal_cfg)}, /*Hercules - Edimax*/
--	{RTL_USB_DEVICE(0x07b8, 0x8188, rtl92cu_hal_cfg)}, /*Abocom - Abocom*/
- 	{RTL_USB_DEVICE(0x07b8, 0x8189, rtl92cu_hal_cfg)}, /*Funai - Abocom*/
- 	{RTL_USB_DEVICE(0x0846, 0x9041, rtl92cu_hal_cfg)}, /*NetGear WNA1000M*/
- 	{RTL_USB_DEVICE(0x0846, 0x9043, rtl92cu_hal_cfg)}, /*NG WNA1000Mv2*/
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -238,8 +238,8 @@ pub trait Driver: Send {
+ 
+     /// PCI driver probe.
+     ///
+-    /// Called when a new platform device is added or discovered.
+-    /// Implementers should attempt to initialize the device here.
++    /// Called when a new pci device is added or discovered. Implementers should
++    /// attempt to initialize the device here.
+     fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> Result<Pin<KBox<Self>>>;
+ }
+ 
 
 
 
