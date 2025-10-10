@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-183872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD330BCD13C
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4113BCD14E
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 925363B3452
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7DFF1A66BF4
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA01826A1AB;
-	Fri, 10 Oct 2025 13:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BB528314A;
+	Fri, 10 Oct 2025 13:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbETi5mo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/SOFm/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0131F63FF;
-	Fri, 10 Oct 2025 13:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D861A1F63FF;
+	Fri, 10 Oct 2025 13:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102224; cv=none; b=e8PJiMIGmM0B+vFpQ9LuoTx2QUPo22E/Jhz1i0xZvxYvqbEIXLF7JoCAclvsE2v3Su2A2WPqiJEEfqd3ok60vQPbDWMDgSkkMOkNME94X948GdUfHbutUBcg8Tz4/AjV1gBWbyUd2HHGR0r3OxGJ+2FkkDTRSo14zJUAe9O1unI=
+	t=1760102238; cv=none; b=XGz7u6eUifeA2qiCZIwMIh91SQwtJoH/Cn64ktXxVo3X6D4vc67Dnk3ige1yuVyR7wFIvHhP/NHTshECAnvZSxIakhgEZma7oH3AUop2M4h501vc0vrg92cSxqWCLqar7QKkUFVn0RgurmhGV8Omoi6ZUB5YP1m95kyAHaioQPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102224; c=relaxed/simple;
-	bh=r7aHSMpuokHWSlHEIBag636kYuzUotCP5eavH7Hooe4=;
+	s=arc-20240116; t=1760102238; c=relaxed/simple;
+	bh=C/yMcT057ktXOvYMCfjlkiWml9Rzt5pbBFh10lwm59A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEuoFbxbxr/+dsMAQWeMGN1OZ1Vrzh4QydHyu9Nz7OaB9DrOysBo62deOphYNYP2yg0CniZK2B7JMhe8bZEOBwgGcGH03NpRKmOqj0qT+t/G8q9kDum6sj7HGpVBmAV5nCNwf/GvlC+UgmJ4LNwwNl/CcPuC0Tovk1X8HqeS5hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbETi5mo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82900C4CEF1;
-	Fri, 10 Oct 2025 13:17:03 +0000 (UTC)
+	 MIME-Version; b=qVu3JWOJrd+CgSk+eDdNeGQIe4hxSQ076YyDoOiT+Iv+mzdHD9yTb4Yn83kkcnnWdv3/9/zOuGODh9diTeAboMMccGfQOAoQVqs1ZAzewhAixrnDRaVDPHJk1FOS1g/ch/BCxX5983n8D+6ZJtIdihtVrML0513i7/sj0tsD6bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/SOFm/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B325C4CEF1;
+	Fri, 10 Oct 2025 13:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102223;
-	bh=r7aHSMpuokHWSlHEIBag636kYuzUotCP5eavH7Hooe4=;
+	s=korg; t=1760102238;
+	bh=C/yMcT057ktXOvYMCfjlkiWml9Rzt5pbBFh10lwm59A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CbETi5mom4670hOQpfyCNg/mEb9dEOwG9Z4QK1hG96Q5GnttXJzYb83Rx+GcblDJ3
-	 lt+fjohOLsVcjnlLSHnc66PQSzf6VA+VkyR1Z2RKMkyTdiqt2f6iV4LpExNsXjZatF
-	 K2Hpp8S/blk4rqDgaCzvRZHBssPdjS7eLfs+xjnQ=
+	b=E/SOFm/b76a8BQVfKbyrsMrgAsQ7sNeF13Tpc1heBF3P3mKnRTvyvYcuW+OQA/Qhq
+	 iCqBY3uTiruB00WhO0dUafYr+J/xMipStu29g9bh4G2UhRXYrAqyymO539R/U/oJkY
+	 Am1ynzDf44h27CsIR2f56bi8io0WTvhBj6/e2OD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.17 01/26] drm/amdgpu: Enable MES lr_compute_wa by default
-Date: Fri, 10 Oct 2025 15:15:56 +0200
-Message-ID: <20251010131331.262014427@linuxfoundation.org>
+	Xiaowei Li <xiaowei.li@simcom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.17 02/26] USB: serial: option: add SIMCom 8230C compositions
+Date: Fri, 10 Oct 2025 15:15:57 +0200
+Message-ID: <20251010131331.296903953@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
 References: <20251010131331.204964167@linuxfoundation.org>
@@ -66,81 +65,119 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Xiaowei Li <xiaowei.li@simcom.com>
 
-commit 1fb710793ce2619223adffaf981b1ff13cd48f17 upstream.
+commit 0e0ba0ecec3d6e819e0c2348331ff99afe2eb5d5 upstream.
 
-The MES set resources packet has an optional bit 'lr_compute_wa'
-which can be used for preventing MES hangs on long compute jobs.
+Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
 
-Set this bit by default.
+USB Device Listings:
 
-Co-developed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet (QMI mode) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#= 10 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=9071 Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x9078: tty (DM) + tty (NMEA) + tty (AT) + ECM + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  9 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=9078 Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 4 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x907b: RNDIS + tty (DM) + tty (NMEA) + tty (AT) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=907b Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=ef(misc ) Sub=04 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Xiaowei Li <xiaowei.li@simcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c        |    6 ++++++
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c        |    5 +++++
- drivers/gpu/drm/amd/include/mes_v11_api_def.h |    3 ++-
- drivers/gpu/drm/amd/include/mes_v12_api_def.h |    3 ++-
- 4 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -711,6 +711,12 @@ static int mes_v11_0_set_hw_resources(st
- 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
- 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
- 	mes_set_hw_res_pkt.oversubscription_timer = 50;
-+	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x7f)
-+		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
-+	else
-+		dev_info_once(mes->adev->dev,
-+			      "MES FW version must be >= 0x7f to enable LR compute workaround.\n");
-+
- 	if (amdgpu_mes_log_enable) {
- 		mes_set_hw_res_pkt.enable_mes_event_int_logging = 1;
- 		mes_set_hw_res_pkt.event_intr_history_gpu_mc_ptr =
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -738,6 +738,11 @@ static int mes_v12_0_set_hw_resources(st
- 	mes_set_hw_res_pkt.use_different_vmid_compute = 1;
- 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
- 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
-+	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x82)
-+		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
-+	else
-+		dev_info_once(adev->dev,
-+			      "MES FW version must be >= 0x82 to enable LR compute workaround.\n");
- 
- 	/*
- 	 * Keep oversubscribe timer for sdma . When we have unmapped doorbell
---- a/drivers/gpu/drm/amd/include/mes_v11_api_def.h
-+++ b/drivers/gpu/drm/amd/include/mes_v11_api_def.h
-@@ -238,7 +238,8 @@ union MESAPI_SET_HW_RESOURCES {
- 				uint32_t enable_mes_sch_stb_log : 1;
- 				uint32_t limit_single_process : 1;
- 				uint32_t is_strix_tmz_wa_enabled  :1;
--				uint32_t reserved : 13;
-+				uint32_t enable_lr_compute_wa : 1;
-+				uint32_t reserved : 12;
- 			};
- 			uint32_t	uint32_t_all;
- 		};
---- a/drivers/gpu/drm/amd/include/mes_v12_api_def.h
-+++ b/drivers/gpu/drm/amd/include/mes_v12_api_def.h
-@@ -286,7 +286,8 @@ union MESAPI_SET_HW_RESOURCES {
- 				uint32_t limit_single_process : 1;
- 				uint32_t unmapped_doorbell_handling: 2;
- 				uint32_t enable_mes_fence_int: 1;
--				uint32_t reserved : 10;
-+				uint32_t enable_lr_compute_wa : 1;
-+				uint32_t reserved : 9;
- 			};
- 			uint32_t uint32_all;
- 		};
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2114,6 +2114,12 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9003, 0xff) },	/* Simcom SIM7500/SIM7600 MBIM mode */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9011, 0xff),	/* Simcom SIM7500/SIM7600 RNDIS mode */
+ 	  .driver_info = RSVD(7) },
++	{ USB_DEVICE(0x1e0e, 0x9071),				/* Simcom SIM8230 RMNET mode */
++	  .driver_info = RSVD(3) | RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9078, 0xff),	/* Simcom SIM8230 ECM mode */
++	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x907b, 0xff),	/* Simcom SIM8230 RNDIS mode */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9205, 0xff) },	/* Simcom SIM7070/SIM7080/SIM7090 AT+ECM mode */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9206, 0xff) },	/* Simcom SIM7070/SIM7080/SIM7090 AT-only mode */
+ 	{ USB_DEVICE(ALCATEL_VENDOR_ID, ALCATEL_PRODUCT_X060S_X200),
 
 
 
