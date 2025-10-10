@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-183891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28385BCD21F
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:20:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E01BCD38C
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8C4014FD579
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:20:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13EE419E0896
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7516E2F363B;
-	Fri, 10 Oct 2025 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959872F747A;
+	Fri, 10 Oct 2025 13:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yuz+E6jo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCkY0NoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C4B2F5324;
-	Fri, 10 Oct 2025 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F512F363E;
+	Fri, 10 Oct 2025 13:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102279; cv=none; b=TDwU+noH5XiyY/xWynW5QA+tWxyaxg+MTnbKiaAPAQozig05sASQKFbNZf0kL8duu2KzmLL36icDrdA0Wy9F5xGUZL7DfDkOBW17SgrF2o8q9GTUk/eskpxxj42YN0G3UX4Oj9MLbzO8PgPCwHMIxwX2fLaV8Fbdx7Htcz7xVbU=
+	t=1760102425; cv=none; b=AOuppEPsAFIVl5HhOvE+hTfVmbJl1xXPaEHF1ringg0/+4QDMKw3DqHFKrshUvXYbsOAUN9jknMEg/5C4SBbE3Nss81sxXfcVYTFGgmEmkIy/LwepgloHflok166L1r3W4kF3O1hkRTJSth76ObH5Se6WHyvarPzSm36NoLlUaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102279; c=relaxed/simple;
-	bh=cidHAhLQK2BGEfwXKgdbHDJoUEkd7o35n5KfyIKUeds=;
+	s=arc-20240116; t=1760102425; c=relaxed/simple;
+	bh=DPrQ0OcMsC3Qo3ZYTwmPYQMiUA7jnzW2ShdGw1jNndg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z8LyMfI873lg44G+F8yHtp/o0ZkVKtuRumo8QTZqFuapHH1zzT/KgOooBYSeupittQK9qavmu98yO4HZV6bgKeKi4bKRbSLDwdIrd9n6ZxolKLWHFSTZTUuF3dcla0XMcG+SpS2BMssNR7zHx3R/WUlGYL+CF4V2I5kMpbUbBCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yuz+E6jo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0B9C4CEF8;
-	Fri, 10 Oct 2025 13:17:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mAiWwYdfLH1X6ZRk8lTXArq2ckb3iMfqJKXzM2k7jYc/bgyhkf7xiW6zBNW8DNKooQg5JfsUZP/+WBW9wcFYxn8rL2pVTAdcZi4prsNdBa7lzfdHRj2Yne3jT/ta3T+1lfHYzs2EZj4OTJ0BTANI08TxyIa90CUe/0mhpr/jNOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCkY0NoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD26FC4CEF1;
+	Fri, 10 Oct 2025 13:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102279;
-	bh=cidHAhLQK2BGEfwXKgdbHDJoUEkd7o35n5KfyIKUeds=;
+	s=korg; t=1760102425;
+	bh=DPrQ0OcMsC3Qo3ZYTwmPYQMiUA7jnzW2ShdGw1jNndg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yuz+E6joNalYfTs649vf0NUJdTRDMgFuj0DxTz+O7wJNR3xLLwUzZdpSyY8kdTojJ
-	 8IhrL711H6cE8zxcXb2WAFFkfI0XkD7r0uBXz4HAgUnNFxYfYnJGPYdMjK8I/zVlZa
-	 lhDMig5KfNRxpkdVFonRmHlbs9nRuSOxoopNxN6E=
+	b=QCkY0NoIrnIRBHN51+E5KthfDzg3CIMFzN3tSGgmMewwfA6BZpFTLMtlLIxxkyaCP
+	 8pNv7rjTcHHiPY3/FlLVZ7Cu7SvLvK7wNDWD0f/yLuekkBSqAFSL1LWhRWMRE/SFz2
+	 zEZ01UFxGZYlvv3LQN3RAIxLdThzvRfJHL+4MZfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Subject: [PATCH 6.17 17/26] staging: axis-fifo: flush RX FIFO on read errors
+	April Grimoire <aprilgrimoire@proton.me>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 10/35] platform/x86/amd/pmc: Add MECHREVO Yilong15Pro to spurious_8042 list
 Date: Fri, 10 Oct 2025 15:16:12 +0200
-Message-ID: <20251010131331.836270755@linuxfoundation.org>
+Message-ID: <20251010131332.165004198@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,91 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: aprilgrimoire <aprilgrimoire@proton.me>
 
-commit 82a051e2553b9e297cba82a975d9c538b882c79e upstream.
+[ Upstream commit 8822e8be86d40410ddd2ac8ff44f3050c9ecf9c6 ]
 
-Flush stale data from the RX FIFO in case of errors, to avoid reading
-old data when new packets arrive.
+The firmware of Mechrevo Yilong15Pro emits a spurious keyboard interrupt on
+events including closing the lid. When a user closes the lid on an already
+suspended system this causes the system to wake up.
+Add Mechrevo Yilong15Pro Series (GM5HG7A) to the list of quirk
+spurious_8042 to work around this issue.
 
-Commit c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for
-user errors") removed full FIFO resets from the read error paths, which
-fixed potential TX data losses, but introduced this RX issue.
-
-Fixes: c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for user errors")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Link: https://lore.kernel.org/r/20250912101322.1282507-2-ovidiu.panait.oss@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-pm/6ww4uu6Gl4F5n6VY5dl1ufASfKzs4DhMxAN8BuqUpCoqU3PQukVSVSBCl_lKIzkQ-S8kt1acPd58eyolhkWN32lMLFj4ViI0Tdu2jwhnYZ8=@proton.me/
+Signed-off-by: April Grimoire <aprilgrimoire@proton.me>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/IvSc_IN5Pa0wRXElTk_fEl-cTpMZxg6TCQk_7aRUkTd9vJUp_ZeC0NdXZ0z6Tn7B-XiqqqQvCH65lq6FqhuECBMEYWcHQmWm1Jo7Br8kpeg=@proton.me
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/axis-fifo/axis-fifo.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/staging/axis-fifo/axis-fifo.c
-+++ b/drivers/staging/axis-fifo/axis-fifo.c
-@@ -227,6 +227,7 @@ static ssize_t axis_fifo_read(struct fil
- 	}
- 
- 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
-+	words_available = bytes_available / sizeof(u32);
- 	if (!bytes_available) {
- 		dev_err(fifo->dt_device, "received a packet of length 0\n");
- 		ret = -EIO;
-@@ -237,7 +238,7 @@ static ssize_t axis_fifo_read(struct fil
- 		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
- 			bytes_available, len);
- 		ret = -EINVAL;
--		goto end_unlock;
-+		goto err_flush_rx;
- 	}
- 
- 	if (bytes_available % sizeof(u32)) {
-@@ -246,11 +247,9 @@ static ssize_t axis_fifo_read(struct fil
- 		 */
- 		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
- 		ret = -EIO;
--		goto end_unlock;
-+		goto err_flush_rx;
- 	}
- 
--	words_available = bytes_available / sizeof(u32);
--
- 	/* read data into an intermediate buffer, copying the contents
- 	 * to userspace when the buffer is full
- 	 */
-@@ -262,18 +261,23 @@ static ssize_t axis_fifo_read(struct fil
- 			tmp_buf[i] = ioread32(fifo->base_addr +
- 					      XLLF_RDFD_OFFSET);
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 6f5437d210a61..b872baf35808f 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -233,6 +233,14 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE14-GX4HRXL"),
  		}
-+		words_available -= copy;
- 
- 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
- 				 copy * sizeof(u32))) {
- 			ret = -EFAULT;
--			goto end_unlock;
-+			goto err_flush_rx;
- 		}
- 
- 		copied += copy;
--		words_available -= copy;
- 	}
-+	mutex_unlock(&fifo->read_lock);
-+
-+	return bytes_available;
- 
--	ret = bytes_available;
-+err_flush_rx:
-+	while (words_available--)
-+		ioread32(fifo->base_addr + XLLF_RDFD_OFFSET);
- 
- end_unlock:
- 	mutex_unlock(&fifo->read_lock);
+ 	},
++	{
++		.ident = "MECHREVO Yilong15Pro Series GM5HG7A",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MECHREVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Yilong15Pro Series GM5HG7A"),
++		}
++	},
+ 	/* https://bugzilla.kernel.org/show_bug.cgi?id=220116 */
+ 	{
+ 		.ident = "PCSpecialist Lafite Pro V 14M",
+-- 
+2.51.0
+
 
 
 
