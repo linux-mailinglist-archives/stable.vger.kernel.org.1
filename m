@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-183899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD79BCD29F
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC51BCD2CC
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 837E11A67A12
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 734DE1884343
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743512F3C1E;
-	Fri, 10 Oct 2025 13:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91A22F25EC;
+	Fri, 10 Oct 2025 13:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0WTf9i/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHtTvFJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDB82F3C1C;
-	Fri, 10 Oct 2025 13:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745CB2F25FD;
+	Fri, 10 Oct 2025 13:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102302; cv=none; b=e146bQL0VWCf7paCUTcrT5AjB/1P6ioK31YaRxyfkoswXVpsSVntcT/IWr2rHXe03OOZQgLUYt3xFNsPNDFfDS1j40qQrlMR6A3g0QhgGE3Qsa4ZdIvOTJUAY2GgJyBof0qXsoJDW4uElKtjamgU3wsuItzbk8m/NQRqlOVgHKg=
+	t=1760102333; cv=none; b=TGJBCsS9dijRwhYPB3c86tfW2zvf+UTrV+l2y824THbGrVaDF6KnBPCU1gHjP35tW/IktDGQ9+Q1AyLVeLFJtFGJj71i69KAelbhBcCAVv/RVdm6spgHZsROvAXcMwbiScZDnevWtjYywXtgnc8jTT8KDwqPV4o9kptNNR+7m3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102302; c=relaxed/simple;
-	bh=+TSqb09QHdN8xYvC10NmkN6WPa2puEROc/AL0mEPxnw=;
+	s=arc-20240116; t=1760102333; c=relaxed/simple;
+	bh=YrxyEoTgyWjhnD3IfHe9k7vMw/0OeZLfjiEnLzoJ+Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOGDXLf6FZlVtWZwfmOqQaevp6cJt7nfxGllxDHY9YAEXtSXfkDZ4k57FM+esjAjkhFaIQy9+ZAQz7ZHn2ZEdFoLGTb+2pSIpuZhol/DdjqBJFEMtWXENyemd5aW9d6aSqm0lgk9a7Qrx4J+AYRcuv4wm/DvpWCQSs/3GyjW4+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0WTf9i/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF796C4CEF1;
-	Fri, 10 Oct 2025 13:18:21 +0000 (UTC)
+	 MIME-Version; b=onHfO6Q1tSqeE9lhcFQHaHLZsBoyOJtxu548wembRwpa27mEK/YndV51EgW57pESNI4X5A5XCikWYIZKeqyn1BYvL34cuubzJuoCq966EhVZ0Ykfxf0M2nEDavmpzy4Ma5UENTqIk0+B4lRk/d0qzeDkxPbVgsw1Aqr9Y5hbOsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHtTvFJd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0E1C4CEF1;
+	Fri, 10 Oct 2025 13:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102302;
-	bh=+TSqb09QHdN8xYvC10NmkN6WPa2puEROc/AL0mEPxnw=;
+	s=korg; t=1760102333;
+	bh=YrxyEoTgyWjhnD3IfHe9k7vMw/0OeZLfjiEnLzoJ+Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0WTf9i/UXdOMRfd0xtEsHfq/XTYP7Oumh4/JtVTyQwloPaqWi69gpV6IQU9SOeGl0
-	 bKU2YyK6+32tojUEGeq6juPFF0oF3EKluZiH5nhXMsuCE4cd5iaHGPGlzVzjDIRjC3
-	 JSkQyUHzsIQObXPToEc63U/vjKJZbSmTXc5KEgjc=
+	b=PHtTvFJdYHkjdSKkDE+Tk1gZFBWHMZiYjm5aoezWKxRL3dsmEIKLSsDa5v0VHH5fQ
+	 b9GXzUrzZLL0jsT4FgNC91vLno/Ef6cnKvC0hkmH40pWrMmo/6B0O7jb5f9mbn6oyK
+	 xbO16E1wlPVZpfKOAhYeO9Sgm68WQoQhY/JIptbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Gergo Koteles <soyer@irl.hu>
-Subject: [PATCH 6.16 01/41] ALSA: hda/tas2781: Fix the order of TAS2781 calibrated-data
-Date: Fri, 10 Oct 2025 15:15:49 +0200
-Message-ID: <20251010131333.476298429@linuxfoundation.org>
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.16 02/41] drm/amdgpu: Enable MES lr_compute_wa by default
+Date: Fri, 10 Oct 2025 15:15:50 +0200
+Message-ID: <20251010131333.511557363@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
 References: <20251010131333.420766773@linuxfoundation.org>
@@ -66,72 +66,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 71d2893a235bf3b95baccead27b3d47f2f2cdc4c upstream.
+commit 1fb710793ce2619223adffaf981b1ff13cd48f17 upstream.
 
-A bug reported by one of my customers that the order of TAS2781
-calibrated-data is incorrect, the correct way is to move R0_Low
-and insert it between R0 and InvR0.
+The MES set resources packet has an optional bit 'lr_compute_wa'
+which can be used for preventing MES hangs on long compute jobs.
 
-Fixes: 4fe238513407 ("ALSA: hda/tas2781: Move and unified the calibrated-data getting function for SPI and I2C into the tas2781_hda lib")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://patch.msgid.link/20250907222728.988-1-shenghao-ding@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Cc: Gergo Koteles <soyer@irl.hu>
+Set this bit by default.
+
+Co-developed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/tas2781_hda.c |   25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mes_v11_0.c        |    6 ++++++
+ drivers/gpu/drm/amd/amdgpu/mes_v12_0.c        |    5 +++++
+ drivers/gpu/drm/amd/include/mes_v11_api_def.h |    3 ++-
+ drivers/gpu/drm/amd/include/mes_v12_api_def.h |    3 ++-
+ 4 files changed, 15 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/tas2781_hda.c
-+++ b/sound/pci/hda/tas2781_hda.c
-@@ -31,6 +31,23 @@ const efi_guid_t tasdev_fct_efi_guid[] =
- };
- EXPORT_SYMBOL_NS_GPL(tasdev_fct_efi_guid, "SND_HDA_SCODEC_TAS2781");
- 
-+/*
-+ * The order of calibrated-data writing function is a bit different from the
-+ * order in UEFI. Here is the conversion to match the order of calibrated-data
-+ * writing function.
-+ */
-+static void cali_cnv(unsigned char *data, unsigned int base, int offset)
-+{
-+	struct cali_reg reg_data;
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -711,6 +711,12 @@ static int mes_v11_0_set_hw_resources(st
+ 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
+ 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
+ 	mes_set_hw_res_pkt.oversubscription_timer = 50;
++	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x7f)
++		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
++	else
++		dev_info_once(mes->adev->dev,
++			      "MES FW version must be >= 0x7f to enable LR compute workaround.\n");
 +
-+	memcpy(&reg_data, &data[base], sizeof(reg_data));
-+	/* the data order has to be swapped between r0_low_reg and inv0_reg */
-+	swap(reg_data.r0_low_reg, reg_data.invr0_reg);
-+
-+	cpu_to_be32_array((__force __be32 *)(data + offset + 1),
-+		(u32 *)&reg_data, TASDEV_CALIB_N);
-+}
-+
- static void tas2781_apply_calib(struct tasdevice_priv *p)
- {
- 	struct calidata *cali_data = &p->cali_data;
-@@ -101,8 +118,7 @@ static void tas2781_apply_calib(struct t
+ 	if (amdgpu_mes_log_enable) {
+ 		mes_set_hw_res_pkt.enable_mes_event_int_logging = 1;
+ 		mes_set_hw_res_pkt.event_intr_history_gpu_mc_ptr =
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+@@ -738,6 +738,11 @@ static int mes_v12_0_set_hw_resources(st
+ 	mes_set_hw_res_pkt.use_different_vmid_compute = 1;
+ 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
+ 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
++	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x82)
++		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
++	else
++		dev_info_once(adev->dev,
++			      "MES FW version must be >= 0x82 to enable LR compute workaround.\n");
  
- 				data[l] = k;
- 				oft++;
--				for (i = 0; i < TASDEV_CALIB_N * 4; i++)
--					data[l + i + 1] = data[4 * oft + i];
-+				cali_cnv(data, 4 * oft, l);
- 				k++;
- 			}
- 		}
-@@ -128,9 +144,8 @@ static void tas2781_apply_calib(struct t
- 
- 		for (j = p->ndev - 1; j >= 0; j--) {
- 			l = j * (cali_data->cali_dat_sz_per_dev + 1);
--			for (i = TASDEV_CALIB_N * 4; i > 0 ; i--)
--				data[l + i] = data[p->index * 5 + i];
--			data[l+i] = j;
-+			cali_cnv(data, cali_data->cali_dat_sz_per_dev * j, l);
-+			data[l] = j;
- 		}
- 	}
- 
+ 	/*
+ 	 * Keep oversubscribe timer for sdma . When we have unmapped doorbell
+--- a/drivers/gpu/drm/amd/include/mes_v11_api_def.h
++++ b/drivers/gpu/drm/amd/include/mes_v11_api_def.h
+@@ -238,7 +238,8 @@ union MESAPI_SET_HW_RESOURCES {
+ 				uint32_t enable_mes_sch_stb_log : 1;
+ 				uint32_t limit_single_process : 1;
+ 				uint32_t is_strix_tmz_wa_enabled  :1;
+-				uint32_t reserved : 13;
++				uint32_t enable_lr_compute_wa : 1;
++				uint32_t reserved : 12;
+ 			};
+ 			uint32_t	uint32_t_all;
+ 		};
+--- a/drivers/gpu/drm/amd/include/mes_v12_api_def.h
++++ b/drivers/gpu/drm/amd/include/mes_v12_api_def.h
+@@ -286,7 +286,8 @@ union MESAPI_SET_HW_RESOURCES {
+ 				uint32_t limit_single_process : 1;
+ 				uint32_t unmapped_doorbell_handling: 2;
+ 				uint32_t enable_mes_fence_int: 1;
+-				uint32_t reserved : 10;
++				uint32_t enable_lr_compute_wa : 1;
++				uint32_t reserved : 9;
+ 			};
+ 			uint32_t uint32_all;
+ 		};
 
 
 
