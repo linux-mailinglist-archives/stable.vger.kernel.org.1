@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-183962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91A2BCD3D7
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:25:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37180BCD380
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 011C91B20ED1
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BDDC189EF31
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A99A2F5461;
-	Fri, 10 Oct 2025 13:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204942F7442;
+	Fri, 10 Oct 2025 13:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixfR5IF4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ycd1Mv7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3535226A1AB;
-	Fri, 10 Oct 2025 13:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D178E2EF664;
+	Fri, 10 Oct 2025 13:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102482; cv=none; b=C4ZY5TfXojOUIe/qHkROE6CWfJ5U2GAD2y6bOvPbMAKIW7vMn+yMgSnMxeGCUvv03CNezDI/TCsnfnMwwxyh46Fo8HRrnQr0OeNGDr/vSXSKP0YSbErRhOfnNXOqwpUdRMIHpCqcY0IBZtfDUYsat6tACDTcuwrC/0wvDw7694M=
+	t=1760102416; cv=none; b=jTtcT/lqg1rHgpXAZooOD1zJuW947l0C0+aUUTTeKJH2hvSKJzErDSZufezP+oP06SO/6g0UP/945K6DyvhftlZVZ92KUUd9TfSwfUdYYXpNbJSApZAmk+RiDOes41grR3k0LRYPMpkM/h5NRpoa7K3+3eXNuU4IcPnHmedyico=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102482; c=relaxed/simple;
-	bh=BS7aS3JGTOPUjQveXb6xFH6/zFuvc/3HEWeDNoqx2lc=;
+	s=arc-20240116; t=1760102416; c=relaxed/simple;
+	bh=4mSDTwAB2J/wIykZ0mUaOXG6Pjakmgw70q4adPCMbUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Re7MRci42WlVpPLw3C6tEMkwezXI1B6cTCGZHxQIMv0TuvJnT8163dBpiF4ya99qiOzryxnMOYrjVCkF8KRD5N3wA94vRV94Z5FeZG1Gvt3sdjQTS5Ktra/HeKvzJY9L6mmSkcvOGHCoc3ljNXo2Ihn35XSefhqqmdifYha4ZlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixfR5IF4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71EFC4CEF1;
-	Fri, 10 Oct 2025 13:21:21 +0000 (UTC)
+	 MIME-Version; b=WECVtT2sRQ2thJbMoBWg8vt3eXAd9Zz/JMZLnLJKFsUx2f8GrVQLQG26jZXEjUzgpTjW95nEdyly3BWQK/VirGpcU9K/pgsjGucCwK4r6FV7va8jL1dD2NtgSBC7lfut4moBV2dvuc0huYQTyqsbJ9nkozvVnMi4jjp3UW2gJXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ycd1Mv7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9E1C4CEF1;
+	Fri, 10 Oct 2025 13:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102482;
-	bh=BS7aS3JGTOPUjQveXb6xFH6/zFuvc/3HEWeDNoqx2lc=;
+	s=korg; t=1760102416;
+	bh=4mSDTwAB2J/wIykZ0mUaOXG6Pjakmgw70q4adPCMbUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixfR5IF4PSyU4Gfb8k9V8UKryyaOSQU7KnPYglJi+hARPQPnLBy4tOqkXdIOJqI+5
-	 6pBMOdXhDpvZl6AuXWSmFMSR9TNUo0KVJrTfHRxGHQ/JFMLoUWheSvdn5I6qa6ctbg
-	 cLoY/qYfTps1G07RHBnJSFlTM6UoxlN7rtQjpV3E=
+	b=Ycd1Mv7o3T2Z4HnyxSZOoD8e/plFvVvO4nOlpI2JSjk4S4Y0tJFvV9WGnFW8rKNXO
+	 QC98OTHpznDR349rIoAIljPzhDGFjpbHv1gh76h7IvF1RaqkAgAtTvLSHbf8cq1Ota
+	 duDOMw3kFrVEaOBRLg/gNz3efIu1RlnPXvwNfEUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.12 22/35] drm/amdgpu: Enable MES lr_compute_wa by default
-Date: Fri, 10 Oct 2025 15:16:24 +0200
-Message-ID: <20251010131332.594720110@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	stable <stable@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.16 37/41] driver core/PM: Set power.no_callbacks along with power.no_pm
+Date: Fri, 10 Oct 2025 15:16:25 +0200
+Message-ID: <20251010131334.750995295@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 1fb710793ce2619223adffaf981b1ff13cd48f17 upstream.
+commit c2ce2453413d429e302659abc5ace634e873f6f5 upstream.
 
-The MES set resources packet has an optional bit 'lr_compute_wa'
-which can be used for preventing MES hangs on long compute jobs.
+Devices with power.no_pm set are not expected to need any power
+management at all, so modify device_set_pm_not_required() to set
+power.no_callbacks for them too in case runtime PM will be enabled
+for any of them (which in principle may be done for convenience if
+such a device participates in a dependency chain).
 
-Set this bit by default.
+Since device_set_pm_not_required() must be called before device_add()
+or it would not have any effect, it can update power.no_callbacks
+without locking, unlike pm_runtime_no_callbacks() that can be called
+after registering the target device.
 
-Co-developed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/1950054.tdWV9SEqCh@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c        |    6 ++++++
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c        |    5 +++++
- drivers/gpu/drm/amd/include/mes_v11_api_def.h |    3 ++-
- drivers/gpu/drm/amd/include/mes_v12_api_def.h |    3 ++-
- 4 files changed, 15 insertions(+), 2 deletions(-)
+ include/linux/device.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -677,6 +677,12 @@ static int mes_v11_0_set_hw_resources(st
- 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
- 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
- 	mes_set_hw_res_pkt.oversubscription_timer = 50;
-+	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x7f)
-+		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
-+	else
-+		dev_info_once(mes->adev->dev,
-+			      "MES FW version must be >= 0x7f to enable LR compute workaround.\n");
-+
- 	if (amdgpu_mes_log_enable) {
- 		mes_set_hw_res_pkt.enable_mes_event_int_logging = 1;
- 		mes_set_hw_res_pkt.event_intr_history_gpu_mc_ptr =
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -610,6 +610,11 @@ static int mes_v12_0_set_hw_resources(st
- 	mes_set_hw_res_pkt.use_different_vmid_compute = 1;
- 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
- 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
-+	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x82)
-+		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
-+	else
-+		dev_info_once(adev->dev,
-+			      "MES FW version must be >= 0x82 to enable LR compute workaround.\n");
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -851,6 +851,9 @@ static inline bool device_pm_not_require
+ static inline void device_set_pm_not_required(struct device *dev)
+ {
+ 	dev->power.no_pm = true;
++#ifdef CONFIG_PM
++	dev->power.no_callbacks = true;
++#endif
+ }
  
- 	/*
- 	 * Keep oversubscribe timer for sdma . When we have unmapped doorbell
---- a/drivers/gpu/drm/amd/include/mes_v11_api_def.h
-+++ b/drivers/gpu/drm/amd/include/mes_v11_api_def.h
-@@ -238,7 +238,8 @@ union MESAPI_SET_HW_RESOURCES {
- 				uint32_t enable_mes_sch_stb_log : 1;
- 				uint32_t limit_single_process : 1;
- 				uint32_t is_strix_tmz_wa_enabled  :1;
--				uint32_t reserved : 13;
-+				uint32_t enable_lr_compute_wa : 1;
-+				uint32_t reserved : 12;
- 			};
- 			uint32_t	uint32_t_all;
- 		};
---- a/drivers/gpu/drm/amd/include/mes_v12_api_def.h
-+++ b/drivers/gpu/drm/amd/include/mes_v12_api_def.h
-@@ -286,7 +286,8 @@ union MESAPI_SET_HW_RESOURCES {
- 				uint32_t limit_single_process : 1;
- 				uint32_t unmapped_doorbell_handling: 2;
- 				uint32_t enable_mes_fence_int: 1;
--				uint32_t reserved : 10;
-+				uint32_t enable_lr_compute_wa : 1;
-+				uint32_t reserved : 9;
- 			};
- 			uint32_t uint32_all;
- 		};
+ static inline void dev_pm_syscore_device(struct device *dev, bool val)
 
 
 
