@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-183983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B8CBCD326
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5343BCD37A
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DA55D4FE6CB
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0088754044C
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F00E2F5485;
-	Fri, 10 Oct 2025 13:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC4D2F5479;
+	Fri, 10 Oct 2025 13:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOrm1E7y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKac+yQ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCF71F63FF;
-	Fri, 10 Oct 2025 13:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7AE2877DC;
+	Fri, 10 Oct 2025 13:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102541; cv=none; b=JNOAGvCXNtKkUuGQSdOkRLUPrykGQfnBFuR662afRi0iOt2WSf+L58YLe/4HXkuxzo5mzy9xQEwSFcy5NPF+F0KKRkTY57S/Pz+sVdaGYeFNKRC/GrI8gpF8HTx45qVw9uBoeTHUPg1QuYibd72yvOBJJLlfrhmsf12NouyexlA=
+	t=1760102485; cv=none; b=XbkT3bPUBiKf4uWzuMdup0w29AxDrZfVQo1WfziKHIqRvcxvAAIr21zXBu6nL8axMe5vXkfDEWY6C/HLLMFt+XNcid/89sRWy2tf4j9lt8F/5ynPC1YXaJ8BCG3ORAhSh3aTRgla1isnYiu0XImYDyu1Jm9S+NpIn8f2eOQ3S1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102541; c=relaxed/simple;
-	bh=sfM890oGsmg+JyxtdJ5WKRVz3gcCa6m/Z/htBJXZQEc=;
+	s=arc-20240116; t=1760102485; c=relaxed/simple;
+	bh=hYK1kkwU9f+mJrugw7LYcT8F1BcdPgZFRjPDA+8wTno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fuk7eojDp0fikdpaPpfwpegHXxigVfAWpTQhlFxUpxTmYkmjWd87jqSnyBgO5P3f9uxn4zS+wKV3syLTy0ROuQ9APV//4uuBOaz7UGtKcMrpvEAkOwvdiTmY1VjRz8B6D+PwrPst3/pdVeujDQA9I3Q0XmCLIubLBrpgVspEABg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOrm1E7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AD2C4CEF1;
-	Fri, 10 Oct 2025 13:22:21 +0000 (UTC)
+	 MIME-Version; b=rxJxaUDp0zdIVMQ+SCnGWNadckubQfO/Y7u18QbuHZyR2v6zbokiz3HzAixTlQWLUMcxBxg7T26yq51EdzN9efAmc+JmgfoNmnbc8wsZnx0AnWxz++YfPuIAd/VYGA+VyrORYB/oEz4KZOIlEGMZpuCd5F0K/e0oEy75BeK/AiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKac+yQ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46B1C4CEF1;
+	Fri, 10 Oct 2025 13:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102541;
-	bh=sfM890oGsmg+JyxtdJ5WKRVz3gcCa6m/Z/htBJXZQEc=;
+	s=korg; t=1760102485;
+	bh=hYK1kkwU9f+mJrugw7LYcT8F1BcdPgZFRjPDA+8wTno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SOrm1E7y9FeoSQsaZtrE1lAI8g1Zi5oamSRjtcpgXThKrwNpMCk9pmXgh9hGUlT+q
-	 hhgoJG0gUugZJMldpDZ7FFKj9BAH6VHWEluka4cqfb8RKBCgLefRsZQ5K4kh/NnQtA
-	 DnniWRUfDL6eocZaIxJDcQdJMuqDz5GPD/f5b9FQ=
+	b=eKac+yQ/5AkZYtIxJcuIOsWSQphWvQ0UEPEylm7WBLWSxbCY0CAku3dDSmIBnpvrt
+	 O6SW/H5omWS13psN+3TVFF8d6xaKZp6qQ7ix7g3ckymlPCR9SDX7IIX5l89OMv7J/C
+	 HtsOH00I97FG7Qu4QF+bu62x8jrE6mluiKfSGYMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 15/28] platform/x86/amd/pmc: Add Stellaris Slim Gen6 AMD to spurious 8042 quirks list
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 6.12 31/35] staging: axis-fifo: flush RX FIFO on read errors
 Date: Fri, 10 Oct 2025 15:16:33 +0200
-Message-ID: <20251010131330.918895639@linuxfoundation.org>
+Message-ID: <20251010131332.913634391@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +58,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 12a3dd4d2cd9232d4e4df3b9a5b3d745db559941 ]
+commit 82a051e2553b9e297cba82a975d9c538b882c79e upstream.
 
-Prevents instant wakeup ~1s after suspend
+Flush stale data from the RX FIFO in case of errors, to avoid reading
+old data when new packets arrive.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20250916164700.32896-1-wse@tuxedocomputers.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for
+user errors") removed full FIFO resets from the read error paths, which
+fixed potential TX data losses, but introduced this RX issue.
+
+Fixes: c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for user errors")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250912101322.1282507-2-ovidiu.panait.oss@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/staging/axis-fifo/axis-fifo.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index b872baf35808f..9fd2829ee2ab4 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -250,6 +250,13 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Lafite Pro V 14M"),
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -391,6 +391,7 @@ static ssize_t axis_fifo_read(struct fil
+ 	}
+ 
+ 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
++	words_available = bytes_available / sizeof(u32);
+ 	if (!bytes_available) {
+ 		dev_err(fifo->dt_device, "received a packet of length 0\n");
+ 		ret = -EIO;
+@@ -401,7 +402,7 @@ static ssize_t axis_fifo_read(struct fil
+ 		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
+ 			bytes_available, len);
+ 		ret = -EINVAL;
+-		goto end_unlock;
++		goto err_flush_rx;
+ 	}
+ 
+ 	if (bytes_available % sizeof(u32)) {
+@@ -410,11 +411,9 @@ static ssize_t axis_fifo_read(struct fil
+ 		 */
+ 		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
+ 		ret = -EIO;
+-		goto end_unlock;
++		goto err_flush_rx;
+ 	}
+ 
+-	words_available = bytes_available / sizeof(u32);
+-
+ 	/* read data into an intermediate buffer, copying the contents
+ 	 * to userspace when the buffer is full
+ 	 */
+@@ -426,18 +425,23 @@ static ssize_t axis_fifo_read(struct fil
+ 			tmp_buf[i] = ioread32(fifo->base_addr +
+ 					      XLLF_RDFD_OFFSET);
  		}
- 	},
-+	{
-+		.ident = "TUXEDO Stellaris Slim 15 AMD Gen6",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
-+		}
-+	},
- 	{
- 		.ident = "TUXEDO InfinityBook Pro 14/15 AMD Gen10",
- 		.driver_data = &quirk_spurious_8042,
--- 
-2.51.0
-
++		words_available -= copy;
+ 
+ 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
+ 				 copy * sizeof(u32))) {
+ 			ret = -EFAULT;
+-			goto end_unlock;
++			goto err_flush_rx;
+ 		}
+ 
+ 		copied += copy;
+-		words_available -= copy;
+ 	}
++	mutex_unlock(&fifo->read_lock);
++
++	return bytes_available;
+ 
+-	ret = bytes_available;
++err_flush_rx:
++	while (words_available--)
++		ioread32(fifo->base_addr + XLLF_RDFD_OFFSET);
+ 
+ end_unlock:
+ 	mutex_unlock(&fifo->read_lock);
 
 
 
