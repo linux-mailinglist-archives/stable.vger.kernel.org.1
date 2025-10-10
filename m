@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-183875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60ADBCD145
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB95BCD2DB
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0F393B7962
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 541FA4FE401
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFD428314A;
-	Fri, 10 Oct 2025 13:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2052F3C2B;
+	Fri, 10 Oct 2025 13:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zumNYNDM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRnqVU5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082B721257F;
-	Fri, 10 Oct 2025 13:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4FB285CB6;
+	Fri, 10 Oct 2025 13:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102233; cv=none; b=rEjPAiWV4s8gQfIlqbL3/N9oXwz4V7sZB7QBYmp5j3ewNsEvUelYgYS5888mU1R+LaU3KpV3Lkvv9ovvF/4WBLGHdAiNGwpgRk58O8hxLoogv/AVcgnM2ivKtdIZ65JnceemyFhXouOyyP1FmlcsQ7kMkzG6svGcK8IuNV3FpwM=
+	t=1760102465; cv=none; b=dJvkHFR9Azenr9z5SkT7E7Xx9B+N+As4q2hm3H7zyAOaTgY0K0i77O87zsSNRbC9nlJ3DGYJooZvibFQPdjLB7B4A5VEIFlS1oPnuQrm0miE0910nE4lKO/52bh338fG/SBCDv5wWxHmxvuCsUscJH+Fj3HTELebj8kUjslIsRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102233; c=relaxed/simple;
-	bh=OrYNtJdlxUFfCPEuw6QPru5vBBWlSPclK4I+8oXwg7E=;
+	s=arc-20240116; t=1760102465; c=relaxed/simple;
+	bh=VKadKl1gcy9GbvCbfjMzO6+LNRkl78qWdC1oCQvo6RE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nAeGorTD5PKoZYiPHy6eMrS3jEXwBjapfXazaii4krx56jPiUDI12ogs08CJsRbIt62e9496tRl8qy8LwCkvbOXUwWyTzfK6x4z4u4w0vGNtDYEnz0wOkdB7JE2OnfIXkawTx0mIef+r7ZuJyI2nROtdtXigU6xAHV6bVRx7xdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zumNYNDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D89BC4CEF1;
-	Fri, 10 Oct 2025 13:17:11 +0000 (UTC)
+	 MIME-Version; b=Uo5kKU0/2mV3b9GL/+yt66w+QgisDa26G4Tu4+6sL/aurt6iTearUFVN+FkzBdH18L23IeeiEXwrtBRQNfPAeMTa3joHn5wCuTPGLB/lkF8B48sh4UqXRyYmZ/AzdHjWTBwhPZyx23Y8SXSOe49ObrAF9hA0KrirYFoJwBp6r/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRnqVU5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451DFC4CEF1;
+	Fri, 10 Oct 2025 13:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102232;
-	bh=OrYNtJdlxUFfCPEuw6QPru5vBBWlSPclK4I+8oXwg7E=;
+	s=korg; t=1760102464;
+	bh=VKadKl1gcy9GbvCbfjMzO6+LNRkl78qWdC1oCQvo6RE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zumNYNDM2GUlrWKRgf+ZLltZ0H8sJh8pz+MpX0hb4Ab6U9YQlx9vrQIaNnKczhiJu
-	 PGDNmV+Prt7MPTeAsn6EEcBUcR4wwwYqNaWj/Rfl5iVNhVHd2JRW2CFS2o24dy1Tkq
-	 uljal9M6YthxD4YO3UFNjipudZB7Gigj6S+Y7jEc=
+	b=kRnqVU5qUSJ3YyAg4HQYieVud/tdLLnFAQY3D7/Krp5zbMBY5C3Fphr5arDgZkLEh
+	 zrLOSjXR2BwhCNHmHnRCLTDvnan/6ME+mjkByfAMrOSXS6vZfRfJ+j62sMSB48kXVH
+	 p6COoG0YE33U2hAHWPg24xMMrIQ/fpuefPNtspko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Akshay Gupta <Akshay.Gupta@amd.com>
-Subject: [PATCH 6.17 12/26] drivers/misc/amd-sbi/Kconfig: select REGMAP_I2C
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.12 05/35] wifi: rtlwifi: rtl8192cu: Dont claim USB ID 07b8:8188
 Date: Fri, 10 Oct 2025 15:16:07 +0200
-Message-ID: <20251010131331.656998496@linuxfoundation.org>
+Message-ID: <20251010131331.988064741@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 5f8f84e286f11af4c954c14a57daffc80a1c3510 upstream.
+commit e798f2ac6040f46a04795d7de977341fa9aeabae upstream.
 
-Without CONFIG_REGMAP, rmi-i2c.c fails to build because struct
-regmap_config is not defined:
+This ID appears to be RTL8188SU, not RTL8188CU. This is the wrong driver
+for RTL8188SU. The r8712u driver from staging used to handle this ID.
 
- drivers/misc/amd-sbi/rmi-i2c.c: In function ‘sbrmi_i2c_probe’:
- drivers/misc/amd-sbi/rmi-i2c.c:57:16: error: variable ‘sbrmi_i2c_regmap_config’ has initializer but incomplete type
-    57 |         struct regmap_config sbrmi_i2c_regmap_config = {
-       |                ^~~~~~~~~~~~~
-
-Additionally, CONFIG_REGMAP_I2C is needed for devm_regmap_init_i2c():
-
- ld: drivers/misc/amd-sbi/rmi-i2c.o: in function `sbrmi_i2c_probe':
- drivers/misc/amd-sbi/rmi-i2c.c:69:(.text+0x1c0): undefined reference to `__devm_regmap_init_i2c'
-
-Fixes: 013f7e7131bd ("misc: amd-sbi: Use regmap subsystem")
+Closes: https://lore.kernel.org/linux-wireless/ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de/
 Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Tested-by: Akshay Gupta <Akshay.Gupta@amd.com>
-Reviewed-by: Akshay Gupta <Akshay.Gupta@amd.com>
-Link: https://lore.kernel.org/r/20250829091442.1112106-1-max.kellermann@ionos.com
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/2e5e2348-bdb3-44b2-92b2-0231dbf464b0@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/amd-sbi/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/misc/amd-sbi/Kconfig
-+++ b/drivers/misc/amd-sbi/Kconfig
-@@ -2,6 +2,7 @@
- config AMD_SBRMI_I2C
- 	tristate "AMD side band RMI support"
- 	depends on I2C
-+	select REGMAP_I2C
- 	help
- 	  Side band RMI over I2C support for AMD out of band management.
- 
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+@@ -291,7 +291,6 @@ static const struct usb_device_id rtl819
+ 	{RTL_USB_DEVICE(0x050d, 0x1102, rtl92cu_hal_cfg)}, /*Belkin - Edimax*/
+ 	{RTL_USB_DEVICE(0x050d, 0x11f2, rtl92cu_hal_cfg)}, /*Belkin - ISY*/
+ 	{RTL_USB_DEVICE(0x06f8, 0xe033, rtl92cu_hal_cfg)}, /*Hercules - Edimax*/
+-	{RTL_USB_DEVICE(0x07b8, 0x8188, rtl92cu_hal_cfg)}, /*Abocom - Abocom*/
+ 	{RTL_USB_DEVICE(0x07b8, 0x8189, rtl92cu_hal_cfg)}, /*Funai - Abocom*/
+ 	{RTL_USB_DEVICE(0x0846, 0x9041, rtl92cu_hal_cfg)}, /*NetGear WNA1000M*/
+ 	{RTL_USB_DEVICE(0x0846, 0x9043, rtl92cu_hal_cfg)}, /*NG WNA1000Mv2*/
 
 
 
