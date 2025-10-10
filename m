@@ -1,222 +1,225 @@
-Return-Path: <stable+bounces-184000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3164BCD377
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01719BCD1C7
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:19:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1392A4FDD82
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB73D4F966E
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C122F3C3A;
-	Fri, 10 Oct 2025 13:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEB52F5A31;
+	Fri, 10 Oct 2025 13:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5hGrlm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWr9j7er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD152F25F6;
-	Fri, 10 Oct 2025 13:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC002F60CD;
+	Fri, 10 Oct 2025 13:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102591; cv=none; b=FI0T2jVMxiRIIabnY6WwLXLa/D8YxmbRtFUHxnJoYWJCNPw0Tagb6cPpkGakd1JrKCybLfrsbTu3jSn5vClzvTnWjD5liuOSMXz4rQ2y657h1GNMEptOk+ye9bQ04A6kPlgDyUanoyLmT8Zx4j0FpXaDSYN2zylQ93c9AJ/qqso=
+	t=1760102268; cv=none; b=ffvpzEyh3IRFcPHwWUwVXr008g7MUJM9ahPfh2Zcu1Jxy0QtO63PSIjLmV0wAYiAe6KBr+J6BOO74gULeNU4zDNTJ8gbT01F9QQpcjlGiAiwnR0GAWL5b6XltA7lagkh0Pl/o0zy7Ja58LK6hq0qLzcLX4+YEVFQiJUU5Gwvuig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102591; c=relaxed/simple;
-	bh=UOvgpvgHCJKzXQ+krMTH0HNnHMX0rn1QIWlOqs4vDcU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I/lScqbt5fXtGBb3DSDtHwE7Acre9Vg2Dxdp5S3eqQnNEbMdIInrmXS/Q3dP1Fr1zV/gc3xCzEXZRJvImWkPtCgKdbHe5RS06sIlm8mfBseERJ6PGV+YyVy0J0pz5I+EoGiMHfAI44ApKoMpAQ1nWo5CMSH/u17vwKhObuJM5EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5hGrlm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C83C4CEF1;
-	Fri, 10 Oct 2025 13:23:10 +0000 (UTC)
+	s=arc-20240116; t=1760102268; c=relaxed/simple;
+	bh=+lEpebIQQsG1H1UCUOg/C87FCT+edxk9ywzHNJAPb1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oiGCOv+B9OKbvD989ZX7stFugIA84p2v7EcttvJREG/dMvWPBvts/+5BrHODj1qXzJBuYJp21BBPAfk3QiwtiannaLPrNxRRsHXW4rQvPuTZZJh6F4Ss1Xmu7wj0psj6aXg/mAR3mkTPNa2E9KEqdDQslrA9Q1aSeBB2zpfe8BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWr9j7er; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4947FC4CEF9;
+	Fri, 10 Oct 2025 13:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102590;
-	bh=UOvgpvgHCJKzXQ+krMTH0HNnHMX0rn1QIWlOqs4vDcU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=U5hGrlm4+GXj62MbzJv+6Llm3JcIl7S9b2GPS7tWd4P+yRv+P3BqVW1IyyQhlPV3s
-	 Tyl03JVLu7Yo636YHI+K+xD6cT5MuWe/Hlo+lishv6qhujbeVod2EH88NNAaalfNYE
-	 N1x8gC6HzmzQK2Y/AHcTtkxeSbqH/RHIe631DmHw=
+	s=korg; t=1760102267;
+	bh=+lEpebIQQsG1H1UCUOg/C87FCT+edxk9ywzHNJAPb1w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jWr9j7er7NJ5aYj/laE2wy5GxqUUSU4bVl0vBSaHsXg+WC1zyS8BrD8W5+Bk6WvMV
+	 UWcq7FCqgRcukgkNtPQv/IS+sZS7B26v2EvvkLfI73qS0DMzvrEaQ3ZmSN3afaIOUG
+	 OOtGRnDldLb17GXqHFTv9aW0fCp2+P6uBYmz6wp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org
-Subject: [PATCH 6.6 00/28] 6.6.111-rc1 review
-Date: Fri, 10 Oct 2025 15:16:18 +0200
-Message-ID: <20251010131330.355311487@linuxfoundation.org>
+	syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.17 24/26] KVM: x86: Dont (re)check L1 intercepts when completing userspace I/O
+Date: Fri, 10 Oct 2025 15:16:19 +0200
+Message-ID: <20251010131332.085052566@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.111-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.6.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.6.111-rc1
-X-KernelTest-Deadline: 2025-10-12T13:13+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.6.111 release.
-There are 28 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Sun, 12 Oct 2025 13:13:18 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.111-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-and the diffstat can be found below.
+From: Sean Christopherson <seanjc@google.com>
 
-thanks,
+commit e750f85391286a4c8100275516973324b621a269 upstream.
 
-greg k-h
+When completing emulation of instruction that generated a userspace exit
+for I/O, don't recheck L1 intercepts as KVM has already finished that
+phase of instruction execution, i.e. has already committed to allowing L2
+to perform I/O.  If L1 (or host userspace) modifies the I/O permission
+bitmaps during the exit to userspace,  KVM will treat the access as being
+intercepted despite already having emulated the I/O access.
 
--------------
-Pseudo-Shortlog of commits:
+Pivot on EMULTYPE_NO_DECODE to detect that KVM is completing emulation.
+Of the three users of EMULTYPE_NO_DECODE, only complete_emulated_io() (the
+intended "recipient") can reach the code in question.  gp_interception()'s
+use is mutually exclusive with is_guest_mode(), and
+complete_emulated_insn_gp() unconditionally pairs EMULTYPE_NO_DECODE with
+EMULTYPE_SKIP.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.6.111-rc1
+The bad behavior was detected by a syzkaller program that toggles port I/O
+interception during the userspace I/O exit, ultimately resulting in a WARN
+on vcpu->arch.pio.count being non-zero due to KVM no completing emulation
+of the I/O instruction.
 
-Sean Christopherson <seanjc@google.com>
-    KVM: x86: Don't (re)check L1 intercepts when completing userspace I/O
+  WARNING: CPU: 23 PID: 1083 at arch/x86/kvm/x86.c:8039 emulator_pio_in_out+0x154/0x170 [kvm]
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 23 UID: 1000 PID: 1083 Comm: repro Not tainted 6.16.0-rc5-c1610d2d66b1-next-vm #74 NONE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:emulator_pio_in_out+0x154/0x170 [kvm]
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   kvm_fast_pio+0xd6/0x1d0 [kvm]
+   vmx_handle_exit+0x149/0x610 [kvm_intel]
+   kvm_arch_vcpu_ioctl_run+0xda8/0x1ac0 [kvm]
+   kvm_vcpu_ioctl+0x244/0x8c0 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0x5d/0xc60
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
 
-Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
-    net/9p: fix double req put in p9_fd_cancelled
+Reported-by: syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68790db4.a00a0220.3af5df.0020.GAE@google.com
+Fixes: 8a76d7f25f8f ("KVM: x86: Add x86 callback for intercept check")
+Cc: stable@vger.kernel.org
+Cc: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20250715190638.1899116-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/x86/kvm/emulate.c     |    9 ++++-----
+ arch/x86/kvm/kvm_emulate.h |    3 +--
+ arch/x86/kvm/x86.c         |   15 ++++++++-------
+ 3 files changed, 13 insertions(+), 14 deletions(-)
 
-Herbert Xu <herbert@gondor.apana.org.au>
-    crypto: rng - Ensure set_ent is always present
-
-Charlie Jenkins <charlie@rivosinc.com>
-    riscv: mm: Do not restrict mmap address based on hint
-
-Charlie Jenkins <charlie@rivosinc.com>
-    riscv: mm: Use hint address in mmap if available
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    driver core/PM: Set power.no_callbacks along with power.no_pm
-
-Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-    staging: axis-fifo: flush RX FIFO on read errors
-
-Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-    staging: axis-fifo: fix TX handling on copy_from_user() failure
-
-Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-    staging: axis-fifo: fix maximum TX packet length check
-
-Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-    serial: stm32: allow selecting console when the driver is module
-
-Arnaud Lecomte <contact@arnaud-lcm.com>
-    hid: fix I2C read buffer overflow in raw_event() for mcp2221
-
-Jeongjun Park <aha310510@gmail.com>
-    ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
-
-Takashi Iwai <tiwai@suse.de>
-    ALSA: usb-audio: Kill timer properly at removal
-
-Christoffer Sandberg <cs@tuxedo.de>
-    platform/x86/amd/pmc: Add Stellaris Slim Gen6 AMD to spurious 8042 quirks list
-
-Duy Nguyen <duy.nguyen.rh@renesas.com>
-    can: rcar_canfd: Fix controller mode setting
-
-Chen Yufeng <chenyufeng@iie.ac.cn>
-    can: hi311x: fix null pointer dereference when resuming from sleep before interface was enabled
-
-David Sterba <dsterba@suse.com>
-    btrfs: ref-verify: handle damaged extent root tree
-
-Jack Yu <jack.yu@realtek.com>
-    ASoC: rt5682s: Adjust SAR ADC button mode to fix noise issue
-
-hupu <hupu.gm@gmail.com>
-    perf subcmd: avoid crash in exclude_cmds when excludes is empty
-
-aprilgrimoire <aprilgrimoire@proton.me>
-    platform/x86/amd/pmc: Add MECHREVO Yilong15Pro to spurious_8042 list
-
-Mikulas Patocka <mpatocka@redhat.com>
-    dm-integrity: limit MAX_TAG_SIZE to 255
-
-Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-    ASoC: amd: acp: Adjust pdm gain value
-
-Bitterblue Smith <rtl8821cerfe2@gmail.com>
-    wifi: rtlwifi: rtl8192cu: Don't claim USB ID 07b8:8188
-
-Xiaowei Li <xiaowei.li@simcom.com>
-    USB: serial: option: add SIMCom 8230C compositions
-
-Duoming Zhou <duoming@zju.edu.cn>
-    media: i2c: tc358743: Fix use-after-free bugs caused by orphan timer in probe
-
-Duoming Zhou <duoming@zju.edu.cn>
-    media: tuner: xc5000: Fix use-after-free in xc5000_release
-
-Ricardo Ribalda <ribalda@chromium.org>
-    media: tunner: xc5000: Refactor firmware load
-
-Will Deacon <will@kernel.org>
-    KVM: arm64: Fix softirq masking in FPSIMD register saving sequence
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |  4 +-
- arch/arm64/kernel/fpsimd.c                         |  8 ++-
- arch/riscv/include/asm/processor.h                 | 33 ++---------
- arch/x86/kvm/emulate.c                             |  9 ++-
- arch/x86/kvm/kvm_emulate.h                         |  3 +-
- arch/x86/kvm/x86.c                                 | 15 ++---
- crypto/rng.c                                       |  8 +++
- drivers/hid/hid-mcp2221.c                          |  4 ++
- drivers/md/dm-integrity.c                          |  2 +-
- drivers/media/i2c/tc358743.c                       |  4 +-
- drivers/media/tuners/xc5000.c                      | 41 ++++++-------
- drivers/net/can/rcar/rcar_canfd.c                  |  7 ++-
- drivers/net/can/spi/hi311x.c                       | 33 ++++++-----
- .../net/wireless/realtek/rtlwifi/rtl8192cu/sw.c    |  1 -
- drivers/platform/x86/amd/pmc/pmc-quirks.c          | 15 +++++
- drivers/staging/axis-fifo/axis-fifo.c              | 68 ++++++++++------------
- drivers/tty/serial/Kconfig                         |  2 +-
- drivers/usb/serial/option.c                        |  6 ++
- fs/btrfs/ref-verify.c                              |  9 ++-
- include/linux/device.h                             |  3 +
- net/9p/trans_fd.c                                  |  8 +--
- sound/soc/amd/acp/amd.h                            |  2 +-
- sound/soc/codecs/rt5682s.c                         | 17 +++---
- sound/usb/midi.c                                   | 10 ++--
- tools/lib/subcmd/help.c                            |  3 +
- 25 files changed, 166 insertions(+), 149 deletions(-)
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -5107,12 +5107,11 @@ void init_decode_cache(struct x86_emulat
+ 	ctxt->mem_read.end = 0;
+ }
+ 
+-int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
++int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts)
+ {
+ 	const struct x86_emulate_ops *ops = ctxt->ops;
+ 	int rc = X86EMUL_CONTINUE;
+ 	int saved_dst_type = ctxt->dst.type;
+-	bool is_guest_mode = ctxt->ops->is_guest_mode(ctxt);
+ 
+ 	ctxt->mem_read.pos = 0;
+ 
+@@ -5160,7 +5159,7 @@ int x86_emulate_insn(struct x86_emulate_
+ 				fetch_possible_mmx_operand(&ctxt->dst);
+ 		}
+ 
+-		if (unlikely(is_guest_mode) && ctxt->intercept) {
++		if (unlikely(check_intercepts) && ctxt->intercept) {
+ 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
+ 						      X86_ICPT_PRE_EXCEPT);
+ 			if (rc != X86EMUL_CONTINUE)
+@@ -5189,7 +5188,7 @@ int x86_emulate_insn(struct x86_emulate_
+ 				goto done;
+ 		}
+ 
+-		if (unlikely(is_guest_mode) && (ctxt->d & Intercept)) {
++		if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
+ 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
+ 						      X86_ICPT_POST_EXCEPT);
+ 			if (rc != X86EMUL_CONTINUE)
+@@ -5243,7 +5242,7 @@ int x86_emulate_insn(struct x86_emulate_
+ 
+ special_insn:
+ 
+-	if (unlikely(is_guest_mode) && (ctxt->d & Intercept)) {
++	if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
+ 		rc = emulator_check_intercept(ctxt, ctxt->intercept,
+ 					      X86_ICPT_POST_MEMACCESS);
+ 		if (rc != X86EMUL_CONTINUE)
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -235,7 +235,6 @@ struct x86_emulate_ops {
+ 	void (*set_nmi_mask)(struct x86_emulate_ctxt *ctxt, bool masked);
+ 
+ 	bool (*is_smm)(struct x86_emulate_ctxt *ctxt);
+-	bool (*is_guest_mode)(struct x86_emulate_ctxt *ctxt);
+ 	int (*leave_smm)(struct x86_emulate_ctxt *ctxt);
+ 	void (*triple_fault)(struct x86_emulate_ctxt *ctxt);
+ 	int (*set_xcr)(struct x86_emulate_ctxt *ctxt, u32 index, u64 xcr);
+@@ -521,7 +520,7 @@ bool x86_page_table_writing_insn(struct
+ #define EMULATION_RESTART 1
+ #define EMULATION_INTERCEPTED 2
+ void init_decode_cache(struct x86_emulate_ctxt *ctxt);
+-int x86_emulate_insn(struct x86_emulate_ctxt *ctxt);
++int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts);
+ int emulator_task_switch(struct x86_emulate_ctxt *ctxt,
+ 			 u16 tss_selector, int idt_index, int reason,
+ 			 bool has_error_code, u32 error_code);
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8470,11 +8470,6 @@ static bool emulator_is_smm(struct x86_e
+ 	return is_smm(emul_to_vcpu(ctxt));
+ }
+ 
+-static bool emulator_is_guest_mode(struct x86_emulate_ctxt *ctxt)
+-{
+-	return is_guest_mode(emul_to_vcpu(ctxt));
+-}
+-
+ #ifndef CONFIG_KVM_SMM
+ static int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
+ {
+@@ -8558,7 +8553,6 @@ static const struct x86_emulate_ops emul
+ 	.guest_cpuid_is_intel_compatible = emulator_guest_cpuid_is_intel_compatible,
+ 	.set_nmi_mask        = emulator_set_nmi_mask,
+ 	.is_smm              = emulator_is_smm,
+-	.is_guest_mode       = emulator_is_guest_mode,
+ 	.leave_smm           = emulator_leave_smm,
+ 	.triple_fault        = emulator_triple_fault,
+ 	.set_xcr             = emulator_set_xcr,
+@@ -9143,7 +9137,14 @@ restart:
+ 		ctxt->exception.address = 0;
+ 	}
+ 
+-	r = x86_emulate_insn(ctxt);
++	/*
++	 * Check L1's instruction intercepts when emulating instructions for
++	 * L2, unless KVM is re-emulating a previously decoded instruction,
++	 * e.g. to complete userspace I/O, in which case KVM has already
++	 * checked the intercepts.
++	 */
++	r = x86_emulate_insn(ctxt, is_guest_mode(vcpu) &&
++				   !(emulation_type & EMULTYPE_NO_DECODE));
+ 
+ 	if (r == EMULATION_INTERCEPTED)
+ 		return 1;
 
 
 
