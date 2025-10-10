@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-183927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ECC3BCD32E
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B92BBCD263
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4211418952FF
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A8B03B4C52
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F75B2F6571;
-	Fri, 10 Oct 2025 13:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84512F3C13;
+	Fri, 10 Oct 2025 13:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PI/hPTeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogFAKDW5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5E02F6560;
-	Fri, 10 Oct 2025 13:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943EF2F3C04;
+	Fri, 10 Oct 2025 13:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102383; cv=none; b=TYut+IR3XS6f8i6OTGZN3eZ0cQgmPPBfOsGWVdZiaWvBRCnK114jHo6HnWrl5KonYDU0IDDOGfrcMnTLayXgMo18emiSqusv9gbLOZqjJkZ7RDZTQwJ+owMz6+SwOm57Ii2RqRY9PRVVCQeoTsWJQ7fts1hd2ggLHA+8VnVUMBk=
+	t=1760102293; cv=none; b=fayvIURt24XsiVSB3QE651MwwecwALb3qTfFz2EIsip7oeivzxsc5wiUZ+4qs/8hpAkngMUpNNaqYeCZD62cn0xwGjFRqdvEhZObFSNhpUFKk3Ph8bIpSdjIhJufDYRAxZXUuaPzOv3WK6Ku1fpehC0fZyPxJcNepIfBfKeFTiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102383; c=relaxed/simple;
-	bh=Byw/6oOdQ4SOxuBp3RlABKDtdO8BhNq67KHJ0V5+sBk=;
+	s=arc-20240116; t=1760102293; c=relaxed/simple;
+	bh=WlZV3hOjuoFtyFcDhu6LeejVQzLj8+8S29wtpS0hnCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tf7RIyhL2WWGuruzWReDW0hqgr/WooLu8DC8zCzhYcqRqG2/tGNbsCFryJcg56qg8pAaysGNrqLVfwp1gBs+Qcby1RLr8b4tLuDbHVMUFt84pW4x5EvKDXSnW0Bi9sFFzf9zO6IF4wbzrcq9tqUba/zpoVNL6UQ409sLb8KOEc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PI/hPTeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B113C4CEF8;
-	Fri, 10 Oct 2025 13:19:41 +0000 (UTC)
+	 MIME-Version; b=hmuKB4GCFFNnbpDqmWIEWgyoiosYO9Y9qk4xskQRqu9zyzMhZ1uCbnlGmHbkax4lIuyyI9Pj/Hxs6KeD+/IVDBJMHZ+c0jVO+67gssC1BbuWRbkVRW/55KDFkx05xDgyd5m2V1wHwty7tzeBNhX10TE/bZuK9Wt3KBI7x//BEc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogFAKDW5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE86C4CEF1;
+	Fri, 10 Oct 2025 13:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102382;
-	bh=Byw/6oOdQ4SOxuBp3RlABKDtdO8BhNq67KHJ0V5+sBk=;
+	s=korg; t=1760102293;
+	bh=WlZV3hOjuoFtyFcDhu6LeejVQzLj8+8S29wtpS0hnCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PI/hPTeEyEej4ZZpHxRwYDZ/PzMNjWowJZGNnLYnhyzKKNCp+3OuxiETs3hmM+tvr
-	 hE+ye4YFQe8h81YE56mpN0IG6fJf4/ZywEltpQT70sT2HPffxcKUjuzyH/Za0/aelj
-	 qlRLdxDw07hY8QobaZr9XR3VaArVUHX+UdgIlOcg=
+	b=ogFAKDW52Oo+nQEsqvpdrWYCi68gKzXOyGyw5kEPREJxGLk/qIax/nV/ysSDR9D06
+	 sYTluoarmHwkmzAM1goUfLWKuds40pUAGQdJPcSMGifAhr1zqlSqXgx78OjuFJdWLN
+	 iFqVuYr7grroXHTB3KHuBlmNbbCJH/25oG19ksE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.16 29/41] nvmem: layouts: fix automatic module loading
+	Yiqi Sun <sunyiqixm@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.17 22/26] crypto: rng - Ensure set_ent is always present
 Date: Fri, 10 Oct 2025 15:16:17 +0200
-Message-ID: <20251010131334.471831133@linuxfoundation.org>
+Message-ID: <20251010131332.013571812@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 810b790033ccc795d55cbef3927668fd01efdfdf upstream.
+commit c0d36727bf39bb16ef0a67ed608e279535ebf0da upstream.
 
-To support loading of a layout module automatically the MODALIAS
-variable in the uevent is needed. Add it.
+Ensure that set_ent is always set since only drbg provides it.
 
-Fixes: fc29fd821d9a ("nvmem: core: Rework layouts to become regular devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250912131347.303345-2-srini@kernel.org
+Fixes: 77ebdabe8de7 ("crypto: af_alg - add extra parameters for DRBG interface")
+Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/layouts.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ crypto/rng.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/nvmem/layouts.c
-+++ b/drivers/nvmem/layouts.c
-@@ -45,11 +45,24 @@ static void nvmem_layout_bus_remove(stru
- 	return drv->remove(layout);
- }
+--- a/crypto/rng.c
++++ b/crypto/rng.c
+@@ -168,6 +168,11 @@ out:
+ EXPORT_SYMBOL_GPL(crypto_del_default_rng);
+ #endif
  
-+static int nvmem_layout_bus_uevent(const struct device *dev,
-+				   struct kobj_uevent_env *env)
++static void rng_default_set_ent(struct crypto_rng *tfm, const u8 *data,
++				unsigned int len)
 +{
-+	int ret;
-+
-+	ret = of_device_uevent_modalias(dev, env);
-+	if (ret != ENODEV)
-+		return ret;
-+
-+	return 0;
 +}
 +
- static const struct bus_type nvmem_layout_bus_type = {
- 	.name		= "nvmem-layout",
- 	.match		= nvmem_layout_bus_match,
- 	.probe		= nvmem_layout_bus_probe,
- 	.remove		= nvmem_layout_bus_remove,
-+	.uevent		= nvmem_layout_bus_uevent,
- };
+ int crypto_register_rng(struct rng_alg *alg)
+ {
+ 	struct crypto_alg *base = &alg->base;
+@@ -179,6 +184,9 @@ int crypto_register_rng(struct rng_alg *
+ 	base->cra_flags &= ~CRYPTO_ALG_TYPE_MASK;
+ 	base->cra_flags |= CRYPTO_ALG_TYPE_RNG;
  
- int __nvmem_layout_driver_register(struct nvmem_layout_driver *drv,
++	if (!alg->set_ent)
++		alg->set_ent = rng_default_set_ent;
++
+ 	return crypto_register_alg(base);
+ }
+ EXPORT_SYMBOL_GPL(crypto_register_rng);
 
 
 
