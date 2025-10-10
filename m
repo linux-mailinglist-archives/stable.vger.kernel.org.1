@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-183996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756A9BCD410
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:26:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F595BCD2F6
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDF8A188EB91
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:24:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C42CD402DF1
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC5D2F3C25;
-	Fri, 10 Oct 2025 13:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5452F7467;
+	Fri, 10 Oct 2025 13:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVqkEjsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNWTwLXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA0021579F;
-	Fri, 10 Oct 2025 13:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1322EF664;
+	Fri, 10 Oct 2025 13:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102579; cv=none; b=AYqGbSf5yLgBW8+zKsnsPDQ8LWUpkmT9LPRmWVKAcGgM92LyUGNm9tTjRC/Q3UizUGq8nUmkl+MaO1iZ3Q6GdTOEW5vq1KbSJlGPaab528r68dPydOi5E6Y7mwPJkzwHSO4+5FycKO9xl2zhbD4ReYWO1/pKyZeODubu2H/zzE8=
+	t=1760102413; cv=none; b=c+zwGjLfIbbeDsbYtk6ZFjdn4RIJ5D5UwK23sEPdafgQqpK3S+Gr8v78Mgur0Hc44C890lwWtiW4/pFW+RyZD+LcWmSkmGQR16Qz1cKNI1VtcYqskqag4x+66yzW8Qgzgx7MEWA2ki5c/gPbScOylcPIi7SB/NkKXLfkK6axgN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102579; c=relaxed/simple;
-	bh=nc1WmZCo/6w4r11LcW78prOUUqwPDcQAlWKEuBOWUGU=;
+	s=arc-20240116; t=1760102413; c=relaxed/simple;
+	bh=JnAcFamxAWZ6EX22O7GEmTXb15OIzihsuZ7+zNmo3K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELVS+yfMNlzQM+BumUTPWml/VQBGzU1vHjZJ60uoqDOA5bmYoxQgtEm+VwDBZ6mGvSprS98R69CJR9mCt41fZNUkyD7c8CuCTfx5xq02RHZWxo8otFywhMtw18r5zdkvpv5Wa3Lxz2zCmM2cmYtWEYnyHojO6D1mbJwAeDyKQu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVqkEjsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C742EC4CEF1;
-	Fri, 10 Oct 2025 13:22:58 +0000 (UTC)
+	 MIME-Version; b=H6kOLzsYxYsF1ulA93w8xWyMqOiBY9AatKXy72Uj+yIg1ra/z7MwyJ852qS3OThTwNDbv/gGxkxmV2be97eurXFcJlAsUNqVrUQXUfGfUWjo/6u9ORu3g1l0zV7uGnwrdTs4Szlqbf9TDgCGAzywPyvwiRn9Pbd35Y+Wfev2heo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNWTwLXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC5AC4CEF1;
+	Fri, 10 Oct 2025 13:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102579;
-	bh=nc1WmZCo/6w4r11LcW78prOUUqwPDcQAlWKEuBOWUGU=;
+	s=korg; t=1760102413;
+	bh=JnAcFamxAWZ6EX22O7GEmTXb15OIzihsuZ7+zNmo3K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVqkEjsLtpY5pOIKfkzqy0PH5f5vcWAdMHxOUThAJy+F9EyPH1XqB/psmXbOss5gj
-	 Vy6bEIpIwILOzAgWW59E3NaZUoOCGvsqTgvOR1XBi378CNvPVQcopJfLVOUByx4MqO
-	 B5LJ0+e0qNbd7Qq8HRyRGmMkNwp0yNqqUbfGAV8A=
+	b=wNWTwLXVkDt2KrJio7h8zJv+jh/BqoOm9Jj+snHWv9TBPwR9L9ibFVLo9zaRSwzlZ
+	 5jPAMgaON8nuE9FwKMS20GvJEYXDz9uh3O2+jyvs6dkhamSEbJAFjivHqzTM9Lf03w
+	 GAuDgb8u2qa4r780uKcAngXDfzp3BHTkTihn94X0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.6 06/28] wifi: rtlwifi: rtl8192cu: Dont claim USB ID 07b8:8188
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	stable <stable@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.16 36/41] driver core: faux: Set power.no_pm for faux devices
 Date: Fri, 10 Oct 2025 15:16:24 +0200
-Message-ID: <20251010131330.594431498@linuxfoundation.org>
+Message-ID: <20251010131334.715999280@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit e798f2ac6040f46a04795d7de977341fa9aeabae upstream.
+commit 1ad926459970444af1140f9b393f416536e1a828 upstream.
 
-This ID appears to be RTL8188SU, not RTL8188CU. This is the wrong driver
-for RTL8188SU. The r8712u driver from staging used to handle this ID.
+Since faux devices are not supposed to be involved in any kind of
+power management, set the no_pm flag for all of them.
 
-Closes: https://lore.kernel.org/linux-wireless/ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de/
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/2e5e2348-bdb3-44b2-92b2-0231dbf464b0@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/6206518.lOV4Wx5bFT@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/base/faux.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-@@ -294,7 +294,6 @@ static const struct usb_device_id rtl819
- 	{RTL_USB_DEVICE(0x050d, 0x1102, rtl92cu_hal_cfg)}, /*Belkin - Edimax*/
- 	{RTL_USB_DEVICE(0x050d, 0x11f2, rtl92cu_hal_cfg)}, /*Belkin - ISY*/
- 	{RTL_USB_DEVICE(0x06f8, 0xe033, rtl92cu_hal_cfg)}, /*Hercules - Edimax*/
--	{RTL_USB_DEVICE(0x07b8, 0x8188, rtl92cu_hal_cfg)}, /*Abocom - Abocom*/
- 	{RTL_USB_DEVICE(0x07b8, 0x8189, rtl92cu_hal_cfg)}, /*Funai - Abocom*/
- 	{RTL_USB_DEVICE(0x0846, 0x9041, rtl92cu_hal_cfg)}, /*NetGear WNA1000M*/
- 	{RTL_USB_DEVICE(0x0846, 0x9043, rtl92cu_hal_cfg)}, /*NG WNA1000Mv2*/
+--- a/drivers/base/faux.c
++++ b/drivers/base/faux.c
+@@ -155,6 +155,7 @@ struct faux_device *faux_device_create_w
+ 		dev->parent = &faux_bus_root;
+ 	dev->bus = &faux_bus_type;
+ 	dev_set_name(dev, "%s", name);
++	device_set_pm_not_required(dev);
+ 
+ 	ret = device_add(dev);
+ 	if (ret) {
 
 
 
