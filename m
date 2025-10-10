@@ -1,112 +1,94 @@
-Return-Path: <stable+bounces-184022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A29DBCDEC3
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 18:10:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8156CBCDECD
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 18:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D14254063D
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 16:10:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23B0654080E
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 16:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D977A2FBDF8;
-	Fri, 10 Oct 2025 16:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FEB2FBDF8;
+	Fri, 10 Oct 2025 16:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZmR8skwC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T3s53mzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A200266595;
-	Fri, 10 Oct 2025 16:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0E9266595;
+	Fri, 10 Oct 2025 16:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760112603; cv=none; b=gombBVSLSrZc87DWJcUayd+mqfrZr3FaT+BYaIQJ2dA0/4g235/gRCV48XAPB2EXHErTAkaBQ08og48wb8aFoJlsmGH18eMjTrkrJOFI3rSqEW9OR51wMltWgh4S+EtTfcOwZRdbOGzzArFcYksOyINDirZrrQG6Qwd8I1uPVj4=
+	t=1760112618; cv=none; b=lKVvEW5Jjbw0sIcS1gscE77VX3BaahMU3ac5uZsLtwcSBJEuyZ7nQJbVSflJzXZ39HdKbQGH5yPJDKMPC0O9gYsZeQz4smt8XapnvMwPZwrldRuyvtfiOLwW5oSuf2rAGWRkRSzk3ziELj2o/V3pFti5T+9Kkvgh1uaoYZ9Asbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760112603; c=relaxed/simple;
-	bh=+467sjpUtpAmcgw6EnqNC3wdtS05FziNpH2+A71inkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OIerS6nW6R7i0mBMjlYxdVqTKTAANdZt31LXkd0hanRE1RPwfOvPd1GisRA+BKpO66iFH57VunpxnsBf/dKfPz74813JfJgjVCGc4aBjLLflK7BfWd1oXDF1eWHCNCbAaLEflAk7jiJWc4rjBJWnaya04BrUyFmpyotVoVMhuEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZmR8skwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E642AC4CEF1;
-	Fri, 10 Oct 2025 16:10:02 +0000 (UTC)
+	s=arc-20240116; t=1760112618; c=relaxed/simple;
+	bh=BYrNZj2WgdfO2F/sOzJIX3fMIOh78MZdybtGGqt65CM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=eb3DGcVX8JLOJvRAhf5LPa2WUWIoOL4FwgbeAA8KQL/jWGUoMK7DesxCNaK1gPivHy5qtOyuNxH+twaqjfinBM+XtUudxLiIKsEyYPOtecuTmHRZCy1/Y6Z7ueCr79GbaXjtDfeOjYkcGLCKxlasS8ioWjklAwtlgxk0GgmwvjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T3s53mzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA74C4CEF1;
+	Fri, 10 Oct 2025 16:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760112603;
-	bh=+467sjpUtpAmcgw6EnqNC3wdtS05FziNpH2+A71inkE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZmR8skwCG7R2zTgZH9aa+HccRKyvsbjD5ByIRUy0hRIDWpCACjve8dKSAq1/Z4TBM
-	 wuN2bLDC1kzzBZBPHZ/HJZTUpybdOP1pz+0OCx1JkNwa0QZcscF9mxRvslUlEFBVdu
-	 9kPF4UaaN0HjVXBqth2lR2UBILE+FRWj7V5MziR6zBOKNk888bB5JARjQ0ZoOdj8sy
-	 5ju3YwB3TpXWhVQCmYS4RCo1fz92uV/Gp1i4Jk/RHS1imMWxgX/+RHACnBKhCT+CFk
-	 D87sZCKWCUbtsQy8wFLxbm8HTVTra142I86CUXEEHceUGTl9UmXMnTAw1it+qx0QZ2
-	 bB6X+/rV1ATgA==
-Received: by pali.im (Postfix)
-	id AA2B0723; Fri, 10 Oct 2025 18:09:58 +0200 (CEST)
-Date: Fri, 10 Oct 2025 18:09:58 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2] exfat: fix out-of-bounds in exfat_nls_to_ucs2()
-Message-ID: <20251010160958.acejjdmr5a4ca752@pali>
-References: <20251010050329.796971-1-aha310510@gmail.com>
+	s=k20201202; t=1760112617;
+	bh=BYrNZj2WgdfO2F/sOzJIX3fMIOh78MZdybtGGqt65CM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=T3s53mzEmtixItjKB55IAS1viBVIlSNF7jtmzmn8+VmpxGgfvr1TmyK9TSjmo4XEG
+	 K8k1cBoYZB6D1J9w8zpVu2yrxonyiUzJ+bIgqKaF+gvqpzVTC7ofZSJwHL0Hu6lFhs
+	 u9KieecYaXl2DjEUoCMMPeBAuMZd5dewlBuxbFFf26Y+YwMgXbN/0i5UJFeO5ybGXJ
+	 gEH17QX/AdtiPNB3zb7UHCuu0MloPQfVEpm6Vc0OlYx99ykAYbn3Bjuvjvy2JozyAq
+	 ScsAo9Dc/Tf5sW0u98E0kSLl+37qJxyjey8lrSUi6PaDA7owMrQTM2FI+dYLuQeg+n
+	 ZAZpi7oNgXCxQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70CD93809A00;
+	Fri, 10 Oct 2025 16:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251010050329.796971-1-aha310510@gmail.com>
-User-Agent: NeoMutt/20180716
+Subject: Re: [f2fs-dev] [PATCH] f2fs: fix wrong block mapping for
+ multi-devices
+From: patchwork-bot+f2fs@kernel.org
+Message-Id: 
+ <176011260525.1033062.2407373127040917969.git-patchwork-notify@kernel.org>
+Date: Fri, 10 Oct 2025 16:10:05 +0000
+References: <20251007035343.806273-1-jaegeuk@kernel.org>
+In-Reply-To: <20251007035343.806273-1-jaegeuk@kernel.org>
+To: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+ stable@vger.kernel.org
 
-On Friday 10 October 2025 14:03:29 Jeongjun Park wrote:
-> In exfat_nls_to_ucs2(), if there is no NLS loss and the char-to-ucs2
-> conversion is successfully completed, the variable "i" will have the same
-> value as len. 
-> 
-> However, exfat_nls_to_ucs2() checks p_cstring[i] to determine whether nls
-> is lost immediately after the while loop ends, so if len is FSLABEL_MAX,
-> "i" will also be FSLABEL_MAX immediately after the while loop ends,
-> resulting in an out-of-bounds read of 1 byte from the p_cstring stack
-> memory.
-> 
-> Therefore, to prevent this and properly determine whether nls has been
-> lost, it should be modified to check if "i" and len are equal, rather than
-> dereferencing p_cstring.
-> 
-> Cc: <stable@vger.kernel.org>
-> Reported-by: syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=98cc76a76de46b3714d4
-> Fixes: 370e812b3ec1 ("exfat: add nls operations")
-> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> ---
->  fs/exfat/nls.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
-> index 8243d94ceaf4..de06abe426d7 100644
-> --- a/fs/exfat/nls.c
-> +++ b/fs/exfat/nls.c
-> @@ -616,7 +616,7 @@ static int exfat_nls_to_ucs2(struct super_block *sb,
->  		unilen++;
->  	}
->  
-> -	if (p_cstring[i] != '\0')
-> +	if (i != len)
->  		lossy |= NLS_NAME_OVERLEN;
->  
->  	*uniname = '\0';
-> --
+Hello:
 
-Looks good for me,
+This patch was applied to jaegeuk/f2fs.git (dev)
+by Jaegeuk Kim <jaegeuk@kernel.org>:
 
-Reviewed-by: Pali Rohár <pali@kernel.org>
+On Tue,  7 Oct 2025 03:53:43 +0000 you wrote:
+> Assuming the disk layout as below,
+> 
+> disk0: 0            --- 0x00035abfff
+> disk1: 0x00035ac000 --- 0x00037abfff
+> disk2: 0x00037ac000 --- 0x00037ebfff
+> 
+> and we want to read data from offset=13568 having len=128 across the block
+> devices, we can illustrate the block addresses like below.
+> 
+> [...]
+
+Here is the summary with links:
+  - [f2fs-dev] f2fs: fix wrong block mapping for multi-devices
+    https://git.kernel.org/jaegeuk/f2fs/c/7d9fdb3c9e5b
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
