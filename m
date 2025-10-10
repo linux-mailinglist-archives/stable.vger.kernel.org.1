@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-183896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B92BBCD263
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1598BCD2C7
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A8B03B4C52
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:20:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 864FF4FE456
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84512F3C13;
-	Fri, 10 Oct 2025 13:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ED12EF652;
+	Fri, 10 Oct 2025 13:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogFAKDW5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqGT3tmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943EF2F3C04;
-	Fri, 10 Oct 2025 13:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E812F39B4;
+	Fri, 10 Oct 2025 13:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102293; cv=none; b=fayvIURt24XsiVSB3QE651MwwecwALb3qTfFz2EIsip7oeivzxsc5wiUZ+4qs/8hpAkngMUpNNaqYeCZD62cn0xwGjFRqdvEhZObFSNhpUFKk3Ph8bIpSdjIhJufDYRAxZXUuaPzOv3WK6Ku1fpehC0fZyPxJcNepIfBfKeFTiM=
+	t=1760102442; cv=none; b=R0yX919DoKaouAluxCJb3Vobyva8MrnEihe7JaXbjn6j5PXnnv7yrQj/Gxw11wg7+LFiF4wK707+C44h88htGi/BK7T49g0g+m8IE2bE7J6JVuYsenlAd2/7Ibw0YGc+oAZbAcgWfQMIgRwM4RmVOZgi87/hMbieywzcEKyMZEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102293; c=relaxed/simple;
-	bh=WlZV3hOjuoFtyFcDhu6LeejVQzLj8+8S29wtpS0hnCE=;
+	s=arc-20240116; t=1760102442; c=relaxed/simple;
+	bh=dN5kPRzjXjTq6xAwAAPezDyNQig/asG37xprOW/mBLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmuKB4GCFFNnbpDqmWIEWgyoiosYO9Y9qk4xskQRqu9zyzMhZ1uCbnlGmHbkax4lIuyyI9Pj/Hxs6KeD+/IVDBJMHZ+c0jVO+67gssC1BbuWRbkVRW/55KDFkx05xDgyd5m2V1wHwty7tzeBNhX10TE/bZuK9Wt3KBI7x//BEc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogFAKDW5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE86C4CEF1;
-	Fri, 10 Oct 2025 13:18:12 +0000 (UTC)
+	 MIME-Version; b=Q6i4BaFDWUMlZFkwaWB0VQAC1HFJ3s18KfaZ6tz4C8Js6XBFV0LWNQxANq8YBjcJS5SRoijSY3AXkIW0TVc9oDCDfF3L8Zn+/LlcgwzR6NBhrWwBa+Pf5LvbKpOCLJMxxv034CqHQQa4zYgytxkfimjZR4aHNtIZHBpbMQxaVcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqGT3tmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06223C4CEF1;
+	Fri, 10 Oct 2025 13:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102293;
-	bh=WlZV3hOjuoFtyFcDhu6LeejVQzLj8+8S29wtpS0hnCE=;
+	s=korg; t=1760102442;
+	bh=dN5kPRzjXjTq6xAwAAPezDyNQig/asG37xprOW/mBLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogFAKDW52Oo+nQEsqvpdrWYCi68gKzXOyGyw5kEPREJxGLk/qIax/nV/ysSDR9D06
-	 sYTluoarmHwkmzAM1goUfLWKuds40pUAGQdJPcSMGifAhr1zqlSqXgx78OjuFJdWLN
-	 iFqVuYr7grroXHTB3KHuBlmNbbCJH/25oG19ksE0=
+	b=tqGT3tmPmJ8OvZBcfaO0nOHcldR2uV7JuQmXi6jhcEHIqRDwsRIW/OBbHH8R0gzfa
+	 Ab06dRiWEVwP2ixF2p0a3g2RuacJ2ywO4JmusmmnkAbgYbahCo3611THwcXvK09Y9L
+	 PBtxe433Xe2fW6p8toVtYyvAUaDPG7X1Cx/+VlgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiqi Sun <sunyiqixm@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.17 22/26] crypto: rng - Ensure set_ent is always present
-Date: Fri, 10 Oct 2025 15:16:17 +0200
-Message-ID: <20251010131332.013571812@linuxfoundation.org>
+	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 16/35] can: hi311x: fix null pointer dereference when resuming from sleep before interface was enabled
+Date: Fri, 10 Oct 2025 15:16:18 +0200
+Message-ID: <20251010131332.381102894@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Chen Yufeng <chenyufeng@iie.ac.cn>
 
-commit c0d36727bf39bb16ef0a67ed608e279535ebf0da upstream.
+[ Upstream commit 6b696808472197b77b888f50bc789a3bae077743 ]
 
-Ensure that set_ent is always set since only drbg provides it.
+This issue is similar to the vulnerability in the `mcp251x` driver,
+which was fixed in commit 03c427147b2d ("can: mcp251x: fix resume from
+sleep before interface was brought up").
 
-Fixes: 77ebdabe8de7 ("crypto: af_alg - add extra parameters for DRBG interface")
-Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the `hi311x` driver, when the device resumes from sleep, the driver
+schedules `priv->restart_work`. However, if the network interface was
+not previously enabled, the `priv->wq` (workqueue) is not allocated and
+initialized, leading to a null pointer dereference.
+
+To fix this, we move the allocation and initialization of the workqueue
+from the `hi3110_open` function to the `hi3110_can_probe` function.
+This ensures that the workqueue is properly initialized before it is
+used during device resume. And added logic to destroy the workqueue
+in the error handling paths of `hi3110_can_probe` and in the
+`hi3110_can_remove` function to prevent resource leaks.
+
+Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
+Link: https://patch.msgid.link/20250911150820.250-1-chenyufeng@iie.ac.cn
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/rng.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/can/spi/hi311x.c | 33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
---- a/crypto/rng.c
-+++ b/crypto/rng.c
-@@ -168,6 +168,11 @@ out:
- EXPORT_SYMBOL_GPL(crypto_del_default_rng);
- #endif
+diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
+index ff39afc77d7d2..c9eba1d37b0eb 100644
+--- a/drivers/net/can/spi/hi311x.c
++++ b/drivers/net/can/spi/hi311x.c
+@@ -545,8 +545,6 @@ static int hi3110_stop(struct net_device *net)
  
-+static void rng_default_set_ent(struct crypto_rng *tfm, const u8 *data,
-+				unsigned int len)
-+{
-+}
-+
- int crypto_register_rng(struct rng_alg *alg)
- {
- 	struct crypto_alg *base = &alg->base;
-@@ -179,6 +184,9 @@ int crypto_register_rng(struct rng_alg *
- 	base->cra_flags &= ~CRYPTO_ALG_TYPE_MASK;
- 	base->cra_flags |= CRYPTO_ALG_TYPE_RNG;
+ 	priv->force_quit = 1;
+ 	free_irq(spi->irq, priv);
+-	destroy_workqueue(priv->wq);
+-	priv->wq = NULL;
  
-+	if (!alg->set_ent)
-+		alg->set_ent = rng_default_set_ent;
+ 	mutex_lock(&priv->hi3110_lock);
+ 
+@@ -771,34 +769,23 @@ static int hi3110_open(struct net_device *net)
+ 		goto out_close;
+ 	}
+ 
+-	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
+-				   0);
+-	if (!priv->wq) {
+-		ret = -ENOMEM;
+-		goto out_free_irq;
+-	}
+-	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
+-	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
+-
+ 	ret = hi3110_hw_reset(spi);
+ 	if (ret)
+-		goto out_free_wq;
++		goto out_free_irq;
+ 
+ 	ret = hi3110_setup(net);
+ 	if (ret)
+-		goto out_free_wq;
++		goto out_free_irq;
+ 
+ 	ret = hi3110_set_normal_mode(spi);
+ 	if (ret)
+-		goto out_free_wq;
++		goto out_free_irq;
+ 
+ 	netif_wake_queue(net);
+ 	mutex_unlock(&priv->hi3110_lock);
+ 
+ 	return 0;
+ 
+- out_free_wq:
+-	destroy_workqueue(priv->wq);
+  out_free_irq:
+ 	free_irq(spi->irq, priv);
+ 	hi3110_hw_sleep(spi);
+@@ -910,6 +897,15 @@ static int hi3110_can_probe(struct spi_device *spi)
+ 	if (ret)
+ 		goto out_clk;
+ 
++	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
++				   0);
++	if (!priv->wq) {
++		ret = -ENOMEM;
++		goto out_clk;
++	}
++	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
++	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
 +
- 	return crypto_register_alg(base);
- }
- EXPORT_SYMBOL_GPL(crypto_register_rng);
+ 	priv->spi = spi;
+ 	mutex_init(&priv->hi3110_lock);
+ 
+@@ -945,6 +941,8 @@ static int hi3110_can_probe(struct spi_device *spi)
+ 	return 0;
+ 
+  error_probe:
++	destroy_workqueue(priv->wq);
++	priv->wq = NULL;
+ 	hi3110_power_enable(priv->power, 0);
+ 
+  out_clk:
+@@ -965,6 +963,9 @@ static void hi3110_can_remove(struct spi_device *spi)
+ 
+ 	hi3110_power_enable(priv->power, 0);
+ 
++	destroy_workqueue(priv->wq);
++	priv->wq = NULL;
++
+ 	clk_disable_unprepare(priv->clk);
+ 
+ 	free_candev(net);
+-- 
+2.51.0
+
 
 
 
