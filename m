@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-183908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA0CBCD2B4
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 412C1BCD142
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD3F91A67A6E
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEB023B6861
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD142F533F;
-	Fri, 10 Oct 2025 13:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7435828314A;
+	Fri, 10 Oct 2025 13:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lG55lMhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwvf944V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148FF2F2602;
-	Fri, 10 Oct 2025 13:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4901F63FF;
+	Fri, 10 Oct 2025 13:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102328; cv=none; b=bEW1U9IgSRBPSee+aspKjl5Fj2htcvfXoxBo3mAIGhRZqDeWMSe2yVAPZjNL7L7wpkRb+PD/KKmHSgP5umT3qAZEMBCPbIKYHtT9pjQWdZROBB/y13+JbMKFIKkrguf1W4HET4ZQxN67mxzHs2Vl/czLpy6i08gW3pB5hm8dhfM=
+	t=1760102230; cv=none; b=hwrl4yp1qPicwBM/H6CrJZECMVyyAq/Imxeq1Jl1NCYvZtkSfyeGjU2hH6ClDglA9X0VOy9vKYT36259ZpB8u2IrWWE746Sqb4MBtLa/GGr2o52Y6qltRGDBleKIIm5hymgObIzN66BckX9B66Px0QoRUKi9MXnGo3six25gITg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102328; c=relaxed/simple;
-	bh=WzZ0ZGeIEmazbAgND9zPmeNR1+XD8z/WE/tyrHtebdU=;
+	s=arc-20240116; t=1760102230; c=relaxed/simple;
+	bh=07UUzyLkQDoaXjRGUi9yGE44x6okjuM909djfxyH0v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OP+LhARqervrkCDHPy0I/KsE8hQpZzs2npp2b1GVQzeYvZAD4OtLvLFQPufuZOYnJrnGZCA4BZmJLMSErpIwWt1fqq5Muk0OKTGXUhQVJNHwDug0wyT2rPI92183IGt+2IA6oc9p7YaJlEuElfYLDX3JmXpSaHwxWkcyhWI6pH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lG55lMhc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4173DC4CEF1;
-	Fri, 10 Oct 2025 13:18:47 +0000 (UTC)
+	 MIME-Version; b=EsXBt1CdhmBKrdxoSc7Ysq2PCiiFzlfNUWc3lVWAadmpps85YamK+xcALnaEz4g/evLxGbkXoddf2onEwTQkbkJXncohYuCVQvB9z/7U/9t5JiSNihX+xtllgonAWZoMn9ph7z5e0DrFvGnHcStfuSciytLLrYw8EqQwer6cgGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwvf944V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE30C4CEF1;
+	Fri, 10 Oct 2025 13:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102327;
-	bh=WzZ0ZGeIEmazbAgND9zPmeNR1+XD8z/WE/tyrHtebdU=;
+	s=korg; t=1760102229;
+	bh=07UUzyLkQDoaXjRGUi9yGE44x6okjuM909djfxyH0v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lG55lMhcMvoOr/6KhgdvknfsYGh1SNdNK+SEbmj0ptoysQFibD0KIwQ56NDZ6WqkS
-	 CnKTtLXTPSA+DxNbRxrRuvR/cbt+/b7aDqLtETZYAqsvuADKXi6mLLMBNyeboBm9hl
-	 WFgtfKm2GJBUGLA/R6bcAkVa7g3p5iLg+AV4EHR0=
+	b=dwvf944Ve461hiZhsb6Kn9tu8oeWiJoxsHOSRs3rIaS/TZLmF1WiDq3+JyWug4wfl
+	 VEdFOYg6sWmubpv/asBHiXH83px957ksdAYeOYCPFm5oLNyBlNKdDFxJeTKlDRpWIc
+	 fcnUyqptI1J1KC/UhaTaWZBnMJd0cDleLHHMWko0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hupu <hupu.gm@gmail.com>,
-	Guilherme Amadio <amadio@gentoo.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 18/41] perf subcmd: avoid crash in exclude_cmds when excludes is empty
+	Michael Walle <mwalle@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.17 11/26] nvmem: layouts: fix automatic module loading
 Date: Fri, 10 Oct 2025 15:16:06 +0200
-Message-ID: <20251010131334.082671528@linuxfoundation.org>
+Message-ID: <20251010131331.621221854@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hupu <hupu.gm@gmail.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit a5edf3550f4260504b7e0ab3d40d13ffe924b773 ]
+commit 810b790033ccc795d55cbef3927668fd01efdfdf upstream.
 
-When cross-compiling the perf tool for ARM64, `perf help` may crash
-with the following assertion failure:
+To support loading of a layout module automatically the MODALIAS
+variable in the uevent is needed. Add it.
 
-  help.c:122: exclude_cmds: Assertion `cmds->names[ci] == NULL' failed.
-
-This happens when the perf binary is not named exactly "perf" or when
-multiple "perf-*" binaries exist in the same directory. In such cases,
-the `excludes` command list can be empty, which leads to the final
-assertion in exclude_cmds() being triggered.
-
-Add a simple guard at the beginning of exclude_cmds() to return early
-if excludes->cnt is zero, preventing the crash.
-
-Signed-off-by: hupu <hupu.gm@gmail.com>
-Reported-by: Guilherme Amadio <amadio@gentoo.org>
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20250909094953.106706-1-amadio@gentoo.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fc29fd821d9a ("nvmem: core: Rework layouts to become regular devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250912131347.303345-2-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/subcmd/help.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvmem/layouts.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index 9ef569492560e..ddaeb4eb3e249 100644
---- a/tools/lib/subcmd/help.c
-+++ b/tools/lib/subcmd/help.c
-@@ -75,6 +75,9 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 	size_t ci, cj, ei;
- 	int cmp;
+--- a/drivers/nvmem/layouts.c
++++ b/drivers/nvmem/layouts.c
+@@ -45,11 +45,24 @@ static void nvmem_layout_bus_remove(stru
+ 	return drv->remove(layout);
+ }
  
-+	if (!excludes->cnt)
-+		return;
++static int nvmem_layout_bus_uevent(const struct device *dev,
++				   struct kobj_uevent_env *env)
++{
++	int ret;
 +
- 	ci = cj = ei = 0;
- 	while (ci < cmds->cnt && ei < excludes->cnt) {
- 		cmp = strcmp(cmds->names[ci]->name, excludes->names[ei]->name);
--- 
-2.51.0
-
++	ret = of_device_uevent_modalias(dev, env);
++	if (ret != ENODEV)
++		return ret;
++
++	return 0;
++}
++
+ static const struct bus_type nvmem_layout_bus_type = {
+ 	.name		= "nvmem-layout",
+ 	.match		= nvmem_layout_bus_match,
+ 	.probe		= nvmem_layout_bus_probe,
+ 	.remove		= nvmem_layout_bus_remove,
++	.uevent		= nvmem_layout_bus_uevent,
+ };
+ 
+ int __nvmem_layout_driver_register(struct nvmem_layout_driver *drv,
 
 
 
