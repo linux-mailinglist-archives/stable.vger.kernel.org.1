@@ -1,271 +1,268 @@
-Return-Path: <stable+bounces-183854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDA3BCBB29
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 07:18:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38022BCBD1B
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 08:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1840B4EBA8D
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 05:18:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CCA019E4EB6
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 06:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056351F5827;
-	Fri, 10 Oct 2025 05:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A47271475;
+	Fri, 10 Oct 2025 06:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MVxWw1k6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pgc0SajS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB8F1A9F96;
-	Fri, 10 Oct 2025 05:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760073496; cv=fail; b=LTaKGazu+so0NIb/IzDclYcddtlaAZhI4nL8nK74lvqdB3Hao70ygVGVmKPqMRwZQK5YCZQ5WE/r3tXQN4uoUY4GYJv9Cq7zkZ/nsRzQQ0s8EgC6hNEtGjOaTh5zLlX54VeUfHocA5PGVSKROuudlkpyW9JIaMGOYZUCZ3Jzy3A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760073496; c=relaxed/simple;
-	bh=E7j14qcwzWpTxL+k0qaacvD1pC0B2f50TVA8EF8+v48=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mKwezC/Tegx7zaT7s1TXv965ny9fLHjzvmmakwtVCIiXY687ArHPImRqG9sHsFNJR1G5JqLE9NgGuTCEyorUi/2RUjqoHV1Xz6D+j8bmVOJfa2jDJull35mznMVue2yJl8oEPGD8QoGyMCCvJvE1CX3rd8tzmswVD8/u7x5R5Hc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MVxWw1k6; arc=fail smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760073494; x=1791609494;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=E7j14qcwzWpTxL+k0qaacvD1pC0B2f50TVA8EF8+v48=;
-  b=MVxWw1k6KR2SZRkaALyuYjg0PhHD2g9BOGxxH6a8aWyzvIFrmQqjNPBO
-   pJwuz8hMBZC6QhSJESg2sYiM+0wMy/OOncpWm+7U282XFo1fPQ+JNLb3i
-   MxwqoK8UgOSmpOUkKMKeL1rqoWw7PtvL+//W93xI3k2LbBfGPIOf9M30F
-   rez+kkeUnCjKMObyRjnUZWTcQr3joL5LUa/qIObgvvBg0AItBIXLbCbgY
-   0WwPB8xCVihE4SHtTUJLXUcDcbE+GqaumCLIdZRNn3c3WeqSSazbluxV8
-   RSCXZHo73kwfmzaZNtx/nEyvKlzWQ0sSp2OBP2ZTiI4JHmTIr4gTcKR0t
-   g==;
-X-CSE-ConnectionGUID: iTCa5gY7R7a2BPOCwHc/RQ==
-X-CSE-MsgGUID: gCq2vZMcRN6iYQjFHpsH+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="73634651"
-X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; 
-   d="scan'208";a="73634651"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 22:18:13 -0700
-X-CSE-ConnectionGUID: RkdhuccrQnOQ//kCk3TvnQ==
-X-CSE-MsgGUID: eK1ID/E9Ro+K0tdNluxQKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; 
-   d="scan'208";a="180479565"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 22:18:13 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 9 Oct 2025 22:18:12 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Thu, 9 Oct 2025 22:18:12 -0700
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.23) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 9 Oct 2025 22:18:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h5boiKLOgWHRYgc+lpxkhcyJDcDfDTVLxAhzmoX1scBYqu0YlekoJtzi/qqdTnpcgrs2evVwYuFY4wXE5D61geyata8r01EYGNAH12TZk59rM7OeQhNN5xSCMWQ5KnvENEnsWuK92ZXoVXqOiMN7qkQIKgdiz5Zukcm293soMwo4592MdOT3QCU6DA2n3+gtEKXUELuPWHsHfIcQBdVtWmmCDP0KYsBryEUatk3b68/DUnDinbZQ9YZG3u3vxuzkUd9GQ7/m1bsvLgYWtUNlor4Ir5uyv4RAai3A+jiVSFR8ccbKPQ0ye0XO2uU+b5YnkDyEXOBdG7sJmVvGQyXOgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aGlXz7D/WJKGc1zHLX27WxHmi9sV8NI+0SACgG+oyfU=;
- b=hUq97LCTZpbqqjoHcfVPOrkOB6oc/LZDYN8Vxkp4HPk4vJLEgxC9lVrwKJekQRGFtH3oHn3QFYW6kJUzhki/lNUaDVZdWEZ6bUAzXK/kxwt+BRf8J523tR5TE+Z2a4VVacfs54+jjpnJgDqvOa9Mu+rGEA4Q7+m9kOYkUZZf0i8Bo8+I9lSlupdvmE72RofbfAOtFsCrm7O8zbUZQtHwwBEAkQZlFRUqpB/UolktI8fPfmHwnnXpHiv47jI/6yDN9xWSN2nXB+ZGsUW6ymEnc2s2we3hPmYMZfUbEm2hc08wLlRTbfbGNFmZveWSiUY+rS9NdphmLSDvCrL0EZrYdw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by SA1PR11MB5827.namprd11.prod.outlook.com (2603:10b6:806:236::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Fri, 10 Oct
- 2025 05:18:10 +0000
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::7141:316f:77a0:9c44%6]) with mapi id 15.20.9203.007; Fri, 10 Oct 2025
- 05:18:10 +0000
-Date: Fri, 10 Oct 2025 00:18:03 -0500
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-CC: <intel-xe@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
-	<dri-devel@lists.freedesktop.org>, Icenowy Zheng <uwu@icenowy.me>, "Vivian
- Wang" <wangruikang@iscas.ac.cn>, Thomas =?utf-8?Q?Hellstr=C3=B6m?=
-	<thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Simon Richter
-	<Simon.Richter@hogyros.de>, LKML <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH 2/2] drm/xe: Move rebar to be done earlier
-Message-ID: <epq2fe6hanziuyhvcihcrpgjgp24aik2wospyga2cjzbgsjk2h@7fr5zatwnbfg>
-References: <20250918-xe-pci-rebar-2-v1-0-6c094702a074@intel.com>
- <20250918-xe-pci-rebar-2-v1-2-6c094702a074@intel.com>
- <5osrqzgrh47n6rpjulvsixwbhbh5vwxrrn6p6hpodnwisjfung@lmivgjb66oed>
- <dfdd45b2-5a8c-cfea-ecd3-495e947022d1@linux.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dfdd45b2-5a8c-cfea-ecd3-495e947022d1@linux.intel.com>
-X-ClientProxiedBy: SJ0PR05CA0161.namprd05.prod.outlook.com
- (2603:10b6:a03:339::16) To CY5PR11MB6139.namprd11.prod.outlook.com
- (2603:10b6:930:29::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C9314286
+	for <stable@vger.kernel.org>; Fri, 10 Oct 2025 06:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760079100; cv=none; b=YbXpKsRXg+PaUIE/T6kHmV4BUvD0WfnIFZ40YBAY/OZEfJv+lboQezje98rE/fkPMKFcoJ86L7YpKyBeMukHS2IM3/V4IoPWsuZ6mTlMbl/2yut11mp4yomGjL/Aa/Gom/u56TwROHSKtvZ7UQgcgT2avDde54jB/CngogcFUfs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760079100; c=relaxed/simple;
+	bh=JO89qedHC2MDzQioik5FsYyMVGDN4miABxDc+zrHX0Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bI6r9EnSlF7y7sB+XwtkTOwN/dSJNBKDpsgYQcgV2nhlv0nETrKGyvOrEyLBn/r996Jb0GMbDykpq3jYIjLd5Gm3ma4n8mq3qGjlaTUchSuB81CLUNuljWzI+oyoxwGRQEByABfCzC9FWlCXEq66WF6i6seeElNedbVmtRPDBo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pgc0SajS; arc=none smtp.client-ip=209.85.166.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-9335a918867so166436839f.2
+        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 23:51:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760079097; x=1760683897; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yg0e0l77VG71toCseTjv4ZWJcNOrsHbf0eyR2Vr6uWs=;
+        b=Pgc0SajS1Ybg2z6ik8kF0tAmXPhN1FnxZFTw5bc7cZ+nbSFWR8yturj4Weeo9aRqLY
+         ihNdsPN+jdOzCD6QQKHC7tnvQXqPsjOEq4TGtB8zNZzuSlUtxO5cnqVfSTUJtL3v/zcD
+         J+VaWO+tyKzMZdSMasxcgIUaYPIWa6vI8ZUNMa76ZE1EDoL5RVlfdPfnn3T17DWjXm3Z
+         ks687f9vxNO0Td82+b+yOOGTGY50n1+9H/KQ8D6U75lRLN53DkCW2Cx3HMv3I+hbLu04
+         AiGbG16s8QPa5iZZqFbFriwOs0Pd9uKuu5dZLFZ9Od4wq0cg120qDo/eCehHZ1j3niln
+         4/Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760079097; x=1760683897;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yg0e0l77VG71toCseTjv4ZWJcNOrsHbf0eyR2Vr6uWs=;
+        b=KtB8v3aa2GN9ZMlUw33LRCkDaFngKwmy9VOBFL3zWBDWRz1hushaFA1aAhFbtNVX74
+         I/WaIsmkcZBFNBXNnIecvZQXvHeGErbDPb45sso/IfGb6vDMeK+R0zQmONax0j/1O5lJ
+         +Mgh1BqmkAtvcFx42ibN51n/NPrHhNMtTLQh1JRCepj6eWVxt/C+8IUl/syK+3wBCLR6
+         eYJPAAGc9+eQolIROqjjD0eQZ8suu/fCHZlwcPzOX8WzxtCtnbohsjMnUrl8vJab2Euv
+         CLKF6eOKp4vOd8oH1rmMC3D9m3zBmi1YmFUVnvMyrqC4IhjvX4IhmEs1E4vUjF9n5MOh
+         Cptw==
+X-Forwarded-Encrypted: i=1; AJvYcCVgvgWNfcRZ4feShuTy+5g2OAN751PmM/iRrFs7fyyfUqXngQc/A8CKc0dVmMjfyr5N9GiIUrc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXiYgFcanFIJZ7hlM4YL7Tqs7ritmtSLQVAy+Z6ZKYSURmAjJo
+	14hV98YnllcBM8JTimeajIOMcjFwIJohWdAguwcNaBNb0I6zQ6NkHiGr6mt+spJXuLzS1cSDLPf
+	GQ+tssX1da1vmQwdmtykPQNMOMobTdRk=
+X-Gm-Gg: ASbGnctHVtpaRzK/KQt6iQ2ICcmHpNyN3E6acAwsjwuDc/QijPJk/qLfjKtIiCdVMFR
+	7diZN5g+q0rrfm4Crpjl1xViysR92Sy+o0Y2mv1N56pfPgYMKVOo8EvdbG71Z7bshxiXbU194LU
+	kJ75gj/HUiXzshGEjUhlMh81auwue4Kd20SbFP7RXXmxhQoQNRYvNGi88vXUaE/zneL5AriLzix
+	gkjN+WftAMrukbW2K/ppBgrLw==
+X-Google-Smtp-Source: AGHT+IEe8F2GZmi5p86X92Kgz6J3805Z1eNiHbQlhbqzs7s2OMXo54wa5LJlt3BYavvWRhltuJ3GA7pYmIhnRcbz9Fk=
+X-Received: by 2002:a05:6e02:471c:b0:42f:91aa:50df with SMTP id
+ e9e14a558f8ab-42f91aa5224mr58051315ab.30.1760079096925; Thu, 09 Oct 2025
+ 23:51:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|SA1PR11MB5827:EE_
-X-MS-Office365-Filtering-Correlation-Id: d312291e-cf31-4c7f-8e18-08de07bc6759
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?Ra4EtJH0FLbMr5elhncWG2RuxUgvoHDG/RR7z1mLArhIdknqyTwNDkMIUt?=
- =?iso-8859-1?Q?xWoOyL4IKf1Gn/Cp4zyVuyuuNe+KDDRdrPxD2rinvDGc8hH16CMOm8ZcTt?=
- =?iso-8859-1?Q?WmLeF5ay2nYilzk9+SaJA/G1kerSJnGJN0idOiwMR13xIPeGksB8dbSkMt?=
- =?iso-8859-1?Q?zXOIyUxZYdd5DJ3dlkMEfgkxglAG7ahcvZLj6o/sVEJwxI+F+rhSEyBlVS?=
- =?iso-8859-1?Q?1mB2SYoh1ipzJyMBNDYYcXbe5aw8uDO0xw17kY2kSlX9Dh4GKebdNLIMCX?=
- =?iso-8859-1?Q?TX+JQO00am2A2t3/UCRpA7ZPKnkmS2uHsuC5u9tontOiykn7vzhZq9xo16?=
- =?iso-8859-1?Q?esZqtOx+VIZxmOM7oPBr7EqVivzWrv9Lgp38l8kBCGrkQ/mAwoAOA7NaUS?=
- =?iso-8859-1?Q?Txip7Y7WHSrBoOBajxPNmAXAJbuSb5FVpMtBDOBZdX5e+gz31nqTy4rNpK?=
- =?iso-8859-1?Q?EaM/SdQef+spRM58kK3jySPMnLQtGL+Afkcl+7tfwotW6ZEdq7KvEcrYFg?=
- =?iso-8859-1?Q?gHjNd3RQDYABCUGJiQ7ABTBxiRWma86tqt6ruQoATudaStwpW65LiIxq58?=
- =?iso-8859-1?Q?cRrvqcYrrcY+uZVL+Kb+B2EXr2+s3xMj8dmRfWHMDFzpy96+q9MUs3BMRv?=
- =?iso-8859-1?Q?XNk+EN0hYV+pWs9vodq673LSGOhY4AelaJ8UfV+kUDAgLg0qzQOmaJv2/3?=
- =?iso-8859-1?Q?NEYgnGJ7+0XLySVmBrosM4kQm4ReKYYsjD8wJI34i/ZjauCNBCmXVamz2C?=
- =?iso-8859-1?Q?B0tHxb6FpYFCEvK3s75NnNN5cr+c1pA33EmFqxuVY69OamPk+XCRYYYWNK?=
- =?iso-8859-1?Q?M+EgCa6HUnnUm+UQgkXNDyi/Lkv53FR4rz24NSVZUWm3m/6l444GlYQ+IQ?=
- =?iso-8859-1?Q?fDg0vvIyXA3N/xEVzgkbP7rK+1V2hBWEr+sek6+2ae012QiKUggZJl73eY?=
- =?iso-8859-1?Q?O1WsyM9BBM/6Tji3/yGbS+yb4XK1k2aa3IvNdr1Uc2EMBQaCM0B/+F76NY?=
- =?iso-8859-1?Q?+IK8waDcfsXegk0jqfqLh+Ux92EtrHw150xpLqdFiFsMrjcg/jk1TdDZJY?=
- =?iso-8859-1?Q?036Sx4zLvjmGG1clXDxiIndRx3b9wIhPG00CGcCr2Nqb443qALYc1WY++x?=
- =?iso-8859-1?Q?zVJ5NEqofe3ZYuAbKpc3CVHjTzrHJn6ywlgo8wSgEZ/LNF6ZZTD1tIkwbk?=
- =?iso-8859-1?Q?qH9ZqnNz1lia4AGCr7E9fI1LKuhhBzo3MTRi2LKbJ6iN0zsZ0DJUPk4ZYh?=
- =?iso-8859-1?Q?nWxv3EE/MUJ7bzAbqOnTj+pKrjnpWaBmhtgHguPRIiGcqVrjTh4VFo2Ln+?=
- =?iso-8859-1?Q?kxPxKTBgCTRfxeXLsQCXKZxqgA7l4kh9xY2y6xn1YoNWUJsXWqKrIACRuN?=
- =?iso-8859-1?Q?qCtktRo5wfNFvHG1MqlJ46BaVWRpQNBsig4kKwDIMgVyKH/FTNctrfW0f/?=
- =?iso-8859-1?Q?UzApQPKzFlN1y/4a+GDlHrd6Jzz1NjJXi9UEtPc2pADO60ohedfJCVHrOj?=
- =?iso-8859-1?Q?nR8gUP1ac6nhZytTsnPBXG?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6139.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?g1n6JSnuCJJtRCfO10oTIEPyJMbfMglStxuwRUlIEuZ+dh1HUIE7ElR/SE?=
- =?iso-8859-1?Q?/hCU7sHz0Z/y3jmIVOmNKGLSGtPLXe7jpXpqgHBAKgjEX7ddy04RgYUBcO?=
- =?iso-8859-1?Q?CGdfootQ0cPtIkLuabFF/vqu26aCvKGPQV9ThSeHNPHoy0MQ4bjh31tLoY?=
- =?iso-8859-1?Q?MZ8EcljzvCbPLX67ZzhC9B1MgM9SJAp71nA2xLTkKTK8kzNO6rdA2gzoqW?=
- =?iso-8859-1?Q?4M9AT6UVlziFjV2Wr8fx93lPADGxIlQ7BKA3p/IsIdQDfBEANC7MxQF73j?=
- =?iso-8859-1?Q?CHKlOmFlr6533VTUhVjWHTAh70o8pWiZJ9xrRcjHD5lNNRoejk82C53Al9?=
- =?iso-8859-1?Q?LRU19SnEx59Mdqm9nRV/n4G/hsseC2dhZrireowmbuPpxGJikcrO66Nquz?=
- =?iso-8859-1?Q?qhK2Rd536uBz/Wk2uuioOpOLi4xSF53+wYSDC1fk+Q6ZMbdRCAhjiRPkB8?=
- =?iso-8859-1?Q?a1xeol8YqU60aMUZWYX91df7ZXgrzUqvus8UgDzPdyXxhY8c6jxArpmyZ1?=
- =?iso-8859-1?Q?CYUlmoKXDEWMx6WCxiQ4ekKhfhEtdSCWs9zCRR4YGTUEs3b8bmGrOk+Bry?=
- =?iso-8859-1?Q?QJqyrq/7TlGJp077md2+O2wV2SLvvAfKNdO2r4R4k7IJxwrGzunOm1Ru5F?=
- =?iso-8859-1?Q?gC3F7U1yS9/1qUo/puiG+sA0imLJm3j0cw8pMdwXExD5mLlZJ2303roEym?=
- =?iso-8859-1?Q?B6ebOKLElfHerUah7QUlqKovjvTIEBkuEuuwXmZs9J8+1GhNVxz8i9FSGR?=
- =?iso-8859-1?Q?+I0QopLTX8d7fI/bIBDhxV+6TdQSqv+c6bOS6QQgLMhfAUrDgWwhKTLSjG?=
- =?iso-8859-1?Q?FRDBMMgkWgTbZZ+wWUAoVUo2V29TIzdLyz2FbVpcgzSeKbKdaC7OWEdSX1?=
- =?iso-8859-1?Q?X9cw6NIZZ5aIgqVwKwtf0CWvG+vyGGAV/+5SXQE9MsRgmRrjNZRwPR4gJx?=
- =?iso-8859-1?Q?6hlDqG6Q+2HKYfbm+c4YlKdtIeV6qPezIRzqy6f3Gz4m83xbI1+a4GQIRe?=
- =?iso-8859-1?Q?0TmhMJJQirSkc1JnYLoF1gp64kFDdekrFiinoQ9eb4CV94x9ktrxlXQQA3?=
- =?iso-8859-1?Q?ofLsK0X1Sr5GTM+TJSrQHWbSLqIMsfgd2Ophas36iRu+3Bw9IiOgruf7Pu?=
- =?iso-8859-1?Q?ScpUCOE494slVVMV5Z+X9/+9gxA5tRw3K6cQk2xKaRyPlZ4sLZp8UXzGcG?=
- =?iso-8859-1?Q?zf3wGr1IYSaDsd3I1W/uI5tKx1MsNjD2BN8n53SdTGvNUK2kRHm6StlcvR?=
- =?iso-8859-1?Q?QPU+7W3v9+69WLWMqtCTjH9udy5d4fVj663SNFwmFP7fMlrDoDAD1tLIYP?=
- =?iso-8859-1?Q?7qU75AIEL0eerrvEci0uCfIiaCUvdDtRTx5+HyVURmbuE9kMEX/f5xsxQs?=
- =?iso-8859-1?Q?11bx4kn1SIm5wd6U7pzRL6ohyywDKNxMW2KeQ84LXtO6fIyYnFTWCbC9vH?=
- =?iso-8859-1?Q?CFOqSo8UlACJcNAmybC9JzIVaCXkgyAgCRJd6KiTOdL5iBYWjlKPB4brxV?=
- =?iso-8859-1?Q?Zj9zQTJgzqT39/o4Q0RX392u+howK4nQM2v9Cw2dPGH2Sz2/3wS1eVz6b9?=
- =?iso-8859-1?Q?wc4yo+VFmCDRWjHeE1O9foKr5Q63hq7BTN1VUp0Qdf4KFiSU/NYnIUZsaW?=
- =?iso-8859-1?Q?XnTE5T3ivFiXRHPAjt99nIzANuWJVA/LEqYH9kWH4ZHZXiRGEFUeUT6g?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d312291e-cf31-4c7f-8e18-08de07bc6759
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2025 05:18:10.5950
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TkW+PNXHSrHVg4gPUZtAl9yuDJ8Chz9j/df9O8fvKFoD53sH9Zo0jh87mhQXA4W+zPrY5f0+6QHYAIcQhlmabThdjZpFfgy6rwqL5PvMFa4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5827
-X-OriginatorOrg: intel.com
+References: <20251008165659.4141318-1-aleksander.lobakin@intel.com> <aOfGZvSxC8X2h8Zb@boxer>
+In-Reply-To: <aOfGZvSxC8X2h8Zb@boxer>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Fri, 10 Oct 2025 14:51:00 +0800
+X-Gm-Features: AS18NWDlKhy58lp8knSTyrYulXCXM8f_V3QUHqfkuv613BZKEyP79qxM1IO6OTw
+Message-ID: <CAL+tcoDJ3fCtgtrxwUnkgCPXkg9Zy6MKw-tNCuVEW2V1-yjvNw@mail.gmail.com>
+Subject: Re: [PATCH bpf] xsk: harden userspace-supplied &xdp_desc validation
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, 
+	Magnus Karlsson <magnus.karlsson@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kees Cook <kees@kernel.org>, nxne.cnse.osdt.itp.upstreaming@intel.com, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 29, 2025 at 04:56:03PM +0300, Ilpo Järvinen wrote:
->On Mon, 29 Sep 2025, Lucas De Marchi wrote:
+On Thu, Oct 9, 2025 at 10:28=E2=80=AFPM Maciej Fijalkowski
+<maciej.fijalkowski@intel.com> wrote:
 >
->> Hi,
->>
->> On Thu, Sep 18, 2025 at 01:58:57PM -0700, Lucas De Marchi wrote:
->> > There may be cases in which the BAR0 also needs to move to accommodate
->> > the bigger BAR2. However if it's not released, the BAR2 resize fails.
->> > During the vram probe it can't be released as it's already in use by
->> > xe_mmio for early register access.
->> >
->> > Add a new function in xe_vram and let xe_pci call it directly before
->> > even early device probe. This allows the BAR2 to resize in cases BAR0
->> > also needs to move:
->> >
->> > 	[] xe 0000:03:00.0: vgaarb: deactivate vga console
->> > 	[] xe 0000:03:00.0: [drm] Attempting to resize bar from 8192MiB ->
->> > 16384MiB
->> > 	[] xe 0000:03:00.0: BAR 0 [mem 0x83000000-0x83ffffff 64bit]: releasing
->> > 	[] xe 0000:03:00.0: BAR 2 [mem 0x4000000000-0x41ffffffff 64bit pref]:
->> > releasing
->> > 	[] pcieport 0000:02:01.0: bridge window [mem 0x4000000000-0x41ffffffff
->> > 64bit pref]: releasing
->> > 	[] pcieport 0000:01:00.0: bridge window [mem 0x4000000000-0x41ffffffff
->> > 64bit pref]: releasing
->> > 	[] pcieport 0000:01:00.0: bridge window [mem 0x4000000000-0x43ffffffff
->> > 64bit pref]: assigned
->> > 	[] pcieport 0000:02:01.0: bridge window [mem 0x4000000000-0x43ffffffff
->> > 64bit pref]: assigned
->> > 	[] xe 0000:03:00.0: BAR 2 [mem 0x4000000000-0x43ffffffff 64bit pref]:
->> > assigned
->> > 	[] xe 0000:03:00.0: BAR 0 [mem 0x83000000-0x83ffffff 64bit]: assigned
->> > 	[] pcieport 0000:00:01.0: PCI bridge to [bus 01-04]
->> > 	[] pcieport 0000:00:01.0:   bridge window [mem 0x83000000-0x840fffff]
->> > 	[] pcieport 0000:00:01.0:   bridge window [mem
->> > 0x4000000000-0x44007fffff 64bit pref]
->> > 	[] pcieport 0000:01:00.0: PCI bridge to [bus 02-04]
->> > 	[] pcieport 0000:01:00.0:   bridge window [mem 0x83000000-0x840fffff]
->> > 	[] pcieport 0000:01:00.0:   bridge window [mem
->> > 0x4000000000-0x43ffffffff 64bit pref]
->> > 	[] pcieport 0000:02:01.0: PCI bridge to [bus 03]
->> > 	[] pcieport 0000:02:01.0:   bridge window [mem 0x83000000-0x83ffffff]
->> > 	[] pcieport 0000:02:01.0:   bridge window [mem
->> > 0x4000000000-0x43ffffffff 64bit pref]
->> > 	[] xe 0000:03:00.0: [drm] BAR2 resized to 16384M
->> > 	[] xe 0000:03:00.0: [drm:xe_pci_probe [xe]] BATTLEMAGE  e221:0000
->> > dgfx:1 gfx:Xe2_HPG (20.02) ...
->> >
->> > As shown above, it happens even before we try to read any register for
->> > platform identification.
->> >
->> > All the rebar logic is more pci-specific than xe-specific and can be
->> > done very early in the probe sequence. In future it would be good to
->> > move it out of xe_vram.c, but this refactor is left for later.
->>
->> Ilpo, can you take a look on this patch? It fixed the issue that I had
->> with BMG. It needs the first patch for the full fix, but the fixes are
->> more or less orthogonal.
+> On Wed, Oct 08, 2025 at 06:56:59PM +0200, Alexander Lobakin wrote:
+> > Turned out certain clearly invalid values passed in &xdp_desc from
+> > userspace can pass xp_{,un}aligned_validate_desc() and then lead
+> > to UBs or just invalid frames to be queued for xmit.
+> >
+> > desc->len close to ``U32_MAX`` with a non-zero pool->tx_metadata_len
+> > can cause positive integer overflow and wraparound, the same way low
+> > enough desc->addr with a non-zero pool->tx_metadata_len can cause
+> > negative integer overflow. Both scenarios can then pass the
+> > validation successfully.
 >
->FWIW, it looks okay to me from PCI perspective,
+> Hmm, when underflow happens the addr would be enormous, passing
+> existing validation would really be rare. However let us fix it while at
+> it.
 >
->Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> > This doesn't happen with valid XSk applications, but can be used
+> > to perform attacks.
+> >
+> > Always promote desc->len to ``u64`` first to exclude positive
+> > overflows of it. Use explicit check_{add,sub}_overflow() when
+> > validating desc->addr (which is ``u64`` already).
+> >
+> > bloat-o-meter reports a little growth of the code size:
+> >
+> > add/remove: 0/0 grow/shrink: 2/1 up/down: 60/-16 (44)
+> > Function                                     old     new   delta
+> > xskq_cons_peek_desc                          299     330     +31
+> > xsk_tx_peek_release_desc_batch               973    1002     +29
+> > xsk_generic_xmit                            3148    3132     -16
+> >
+> > but hopefully this doesn't hurt the performance much.
+>
+> Let us be fully transparent and link the previous discussion here?
+>
+> I was commenting that breaking up single statement to multiple branches
+> might affect subtly performance as this code is executed per each
+> descriptor. Jason tested copy+aligned mode, let us see if zc+unaligned
+> mode is affected.
+>
+> <rant>
+> I am also thinking about test side, but xsk tx metadata came with a
+> separate test (xdp_hw_metadata), which was rather about testing positive
+> cases. That is probably a separate discussion, but metadata negative
+> tests should appear somewhere, I suppose xskxceiver would be a good fit,
+> but then, should we merge the existing logic from xdp_hw_metadata?
+> </rant>
+>
+> >
+> > Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
+> > Cc: stable@vger.kernel.org # 6.8+
+> > Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> > ---
+> >  net/xdp/xsk_queue.h | 45 +++++++++++++++++++++++++++++++++++----------
+> >  1 file changed, 35 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
+> > index f16f390370dc..1eb8d9f8b104 100644
+> > --- a/net/xdp/xsk_queue.h
+> > +++ b/net/xdp/xsk_queue.h
+> > @@ -143,14 +143,24 @@ static inline bool xp_unused_options_set(u32 opti=
+ons)
+> >  static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool=
+,
+> >                                           struct xdp_desc *desc)
+> >  {
+> > -     u64 addr =3D desc->addr - pool->tx_metadata_len;
+> > -     u64 len =3D desc->len + pool->tx_metadata_len;
+> > -     u64 offset =3D addr & (pool->chunk_size - 1);
+> > +     u64 len =3D desc->len;
+> > +     u64 addr, offset;
+> >
+> > -     if (!desc->len)
+> > +     if (!len)
+>
+> This is yet another thing being fixed here as for non-zero tx_metadata_le=
+n
+> we were allowing 0 length descriptors... :< overall feels like we relied
+> too much on contract with userspace WRT descriptor layout.
+>
+> If zc perf is fine, then:
 
-I'm pushing this to drm-xe-next. The first one may go through pci or drm
-tree when it's reviewed.
+Testing on IXGBE that can reach 10Gb/sec line rate, I didn't see any
+impact either. This time I used -u to cover the unaligned case.
 
-Merged to drm-xe-next, thanks!
+What I did was just like below:
+# sysctl -w vm.nr_hugepages=3D1024
+# taskset -c 1 ./xdpsock -i eth1 -t -z -u -s 64
 
-[2/2] drm/xe: Move rebar to be done earlier
-       commit: 45e33f220fd625492c11e15733d8e9b4f9db82a4
+Thanks,
+Jason
 
-thanks
-Lucas De Marchi
+> Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+>
+> >               return false;
+> >
+> > -     if (offset + len > pool->chunk_size)
+> > +     /* Can overflow if desc->addr < pool->tx_metadata_len */
+> > +     if (check_sub_overflow(desc->addr, pool->tx_metadata_len, &addr))
+> > +             return false;
+> > +
+> > +     offset =3D addr & (pool->chunk_size - 1);
+> > +
+> > +     /*
+> > +      * Can't overflow: @offset is guaranteed to be < ``U32_MAX``
+> > +      * (pool->chunk_size is ``u32``), @len is guaranteed
+> > +      * to be <=3D ``U32_MAX``.
+> > +      */
+> > +     if (offset + len + pool->tx_metadata_len > pool->chunk_size)
+> >               return false;
+> >
+> >       if (addr >=3D pool->addrs_cnt)
+> > @@ -158,27 +168,42 @@ static inline bool xp_aligned_validate_desc(struc=
+t xsk_buff_pool *pool,
+> >
+> >       if (xp_unused_options_set(desc->options))
+> >               return false;
+> > +
+> >       return true;
+> >  }
+> >
+> >  static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *po=
+ol,
+> >                                             struct xdp_desc *desc)
+> >  {
+> > -     u64 addr =3D xp_unaligned_add_offset_to_addr(desc->addr) - pool->=
+tx_metadata_len;
+> > -     u64 len =3D desc->len + pool->tx_metadata_len;
+> > +     u64 len =3D desc->len;
+> > +     u64 addr, end;
+> >
+> > -     if (!desc->len)
+> > +     if (!len)
+> >               return false;
+> >
+> > +     /* Can't overflow: @len is guaranteed to be <=3D ``U32_MAX`` */
+> > +     len +=3D pool->tx_metadata_len;
+> >       if (len > pool->chunk_size)
+> >               return false;
+> >
+> > -     if (addr >=3D pool->addrs_cnt || addr + len > pool->addrs_cnt ||
+> > -         xp_desc_crosses_non_contig_pg(pool, addr, len))
+> > +     /* Can overflow if desc->addr is close to 0 */
+> > +     if (check_sub_overflow(xp_unaligned_add_offset_to_addr(desc->addr=
+),
+> > +                            pool->tx_metadata_len, &addr))
+> > +             return false;
+> > +
+> > +     if (addr >=3D pool->addrs_cnt)
+> > +             return false;
+> > +
+> > +     /* Can overflow if pool->addrs_cnt is high enough */
+> > +     if (check_add_overflow(addr, len, &end) || end > pool->addrs_cnt)
+> > +             return false;
+> > +
+> > +     if (xp_desc_crosses_non_contig_pg(pool, addr, len))
+> >               return false;
+> >
+> >       if (xp_unused_options_set(desc->options))
+> >               return false;
+> > +
+> >       return true;
+> >  }
+> >
+> > --
+> > 2.51.0
+> >
+>
 
