@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-183931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B28BCD36B
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51194BCD305
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3C72189991B
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F4224FE5F5
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA152F5482;
-	Fri, 10 Oct 2025 13:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E85B2F5A10;
+	Fri, 10 Oct 2025 13:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="va9EaytC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTE60nUL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCECA1C84DE;
-	Fri, 10 Oct 2025 13:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3032F5A0F;
+	Fri, 10 Oct 2025 13:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102393; cv=none; b=hlk99rnS84FLyahbkdn0/v2etLvksP2+EHyHxR0uw6/ztLg+67QlajJjKBMvK9147Hwvdf9h3/u/XVJKHmB/+yUevWTbPUlC2Xiybsklgq5P1y3AYl83c4eA6IK1KNBJ+GN6I0oCnIM26vyK4w6oQbd+08AA+9TR+B1zEM8qun0=
+	t=1760102510; cv=none; b=QMSIDHNeNmxfY42Kcq+SNX+PcGTtpMytb9De4PLSRXZVlYpJNx+mVvYyGP4x139X4OTDZx3dDdPY+64kZEmHXYuwBCFkTL8lWM5TmH/ZlKSP9emRLELMfS1PU788L9htcLfedIT4mHipxRWhiVedzyJFTnujhiL3OgHnCEnqGts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102393; c=relaxed/simple;
-	bh=s2vBnt+KaDr1AXd7p/ZlELPpv4Y+hEuF0N1xmU2aj9A=;
+	s=arc-20240116; t=1760102510; c=relaxed/simple;
+	bh=uvesKUbSL58CxhjC8/Ic9//TUfF3eURI/9UMGP8hjgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I09T/DF0wdAMZcrTlsaowsnx13t0SQ4KAGwVHnZ2Xj1FOTJxXK4pR6ht4Z1bqI4OV83qhgPUfo8zq2UUsfNLg1kHuS9Y5J2bTkkDMMBCbgbkDhfdWCUJo1hYYBBS+6LYCJEyF9rlRLFwh3wwTruAHFifST60WEG8xUvwalWIeek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=va9EaytC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444E2C4CEF1;
-	Fri, 10 Oct 2025 13:19:53 +0000 (UTC)
+	 MIME-Version; b=kKklj2IzE/3kKgEXi1sxoTB3kcogQZri35Rhlaoy1IzNwvvRzTBlkSMyEOyO6n/7UOhKKpPeRE7Z+5vg3tEMLzFdCs7xYA173vccaaYJ+QcHTyHrPoF82afoCwJIrzhdPGD7LYOcE2u7XnG4hiMnK/KkCxHxyMNE2uglCcOCCrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTE60nUL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE03FC4CEF1;
+	Fri, 10 Oct 2025 13:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102393;
-	bh=s2vBnt+KaDr1AXd7p/ZlELPpv4Y+hEuF0N1xmU2aj9A=;
+	s=korg; t=1760102510;
+	bh=uvesKUbSL58CxhjC8/Ic9//TUfF3eURI/9UMGP8hjgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=va9EaytCdG6j0nnLuX3nZLGfm2nbfzCyQhsVEI6H3lso06Y5H+0C35UGv0kGPTJBD
-	 J9oAxliFvmAKJusU8V+b4LczOm9g/K+BV8R2UIWpPshuVvrA2ceeZVJ63qTWH4DBto
-	 LaVA2mGKdHHVwM5DxPktjPMffTLt+uqRsJmD8smc=
+	b=KTE60nULUL/O0PLFa8TWdTtS8SxKhI7HSx9uHdLPu//b2DyrORLohrYQRNxIm4JGS
+	 pJ8H/7u2d2vGT8LUirUqNbDj1gNuiFRJR5X2jjjRqCxrbThCKkD7pHhMbe+4Yj//OE
+	 RrvK6Aoxh8mWDPFZIFE36nH/WlXaoKX+uYauU/8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	syzbot+ddc001b92c083dbf2b97@syzkaller.appspotmail.com,
-	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.16 41/41] ring buffer: Propagate __rb_map_vma return value to caller
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Tiffany Yang <ynaffit@google.com>
+Subject: [PATCH 6.12 27/35] binder: fix double-free in dbitmap
 Date: Fri, 10 Oct 2025 15:16:29 +0200
-Message-ID: <20251010131334.890825324@linuxfoundation.org>
+Message-ID: <20251010131332.771838738@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit de4cbd704731778a2dc833ce5a24b38e5d672c05 upstream.
+commit 3ebcd3460cad351f198c39c6edb4af519a0ed934 upstream.
 
-The return value from `__rb_map_vma()`, which rejects writable or
-executable mappings (VM_WRITE, VM_EXEC, or !VM_MAYSHARE), was being
-ignored. As a result the caller of `__rb_map_vma` always returned 0
-even when the mapping had actually failed, allowing it to proceed
-with an invalid VMA.
+A process might fail to allocate a new bitmap when trying to expand its
+proc->dmap. In that case, dbitmap_grow() fails and frees the old bitmap
+via dbitmap_free(). However, the driver calls dbitmap_free() again when
+the same process terminates, leading to a double-free error:
+
+  ==================================================================
+  BUG: KASAN: double-free in binder_proc_dec_tmpref+0x2e0/0x55c
+  Free of addr ffff00000b7c1420 by task kworker/9:1/209
+
+  CPU: 9 UID: 0 PID: 209 Comm: kworker/9:1 Not tainted 6.17.0-rc6-dirty #5 PREEMPT
+  Hardware name: linux,dummy-virt (DT)
+  Workqueue: events binder_deferred_func
+  Call trace:
+   kfree+0x164/0x31c
+   binder_proc_dec_tmpref+0x2e0/0x55c
+   binder_deferred_func+0xc24/0x1120
+   process_one_work+0x520/0xba4
+  [...]
+
+  Allocated by task 448:
+   __kmalloc_noprof+0x178/0x3c0
+   bitmap_zalloc+0x24/0x30
+   binder_open+0x14c/0xc10
+  [...]
+
+  Freed by task 449:
+   kfree+0x184/0x31c
+   binder_inc_ref_for_node+0xb44/0xe44
+   binder_transaction+0x29b4/0x7fbc
+   binder_thread_write+0x1708/0x442c
+   binder_ioctl+0x1b50/0x2900
+  [...]
+  ==================================================================
+
+Fix this issue by marking proc->map NULL in dbitmap_free().
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20251008172516.20697-1-ankitkhushwaha.linux@gmail.com
-Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
-Reported-by: syzbot+ddc001b92c083dbf2b97@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=194151be8eaebd826005329b2e123aecae714bdb
-Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Tiffany Yang <ynaffit@google.com>
+Link: https://lore.kernel.org/r/20250915221248.3470154-1-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/dbitmap.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -7180,7 +7180,7 @@ int ring_buffer_map(struct trace_buffer
- 		atomic_dec(&cpu_buffer->resize_disabled);
- 	}
- 
--	return 0;
-+	return err;
+diff --git a/drivers/android/dbitmap.h b/drivers/android/dbitmap.h
+index 956f1bd087d1..c7299ce8b374 100644
+--- a/drivers/android/dbitmap.h
++++ b/drivers/android/dbitmap.h
+@@ -37,6 +37,7 @@ static inline void dbitmap_free(struct dbitmap *dmap)
+ {
+ 	dmap->nbits = 0;
+ 	kfree(dmap->map);
++	dmap->map = NULL;
  }
  
- int ring_buffer_unmap(struct trace_buffer *buffer, int cpu)
+ /* Returns the nbits that a dbitmap can shrink to, 0 if not possible. */
+-- 
+2.51.0
+
 
 
 
