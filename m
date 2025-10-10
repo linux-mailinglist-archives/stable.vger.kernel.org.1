@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-183914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50228BCD2DE
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB369BCD245
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E14A11885F14
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A56F1A6755C
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A19A28314A;
-	Fri, 10 Oct 2025 13:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800B22F7AB5;
+	Fri, 10 Oct 2025 13:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRjNDmSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRxyl9oZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D2126A1AB;
-	Fri, 10 Oct 2025 13:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDE22F362F;
+	Fri, 10 Oct 2025 13:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102345; cv=none; b=oPsORRATEsMg/fjvuXkIRbRLNSdOHAPlSjb78yaYxkHwmnDsTTA7yVEVpWBwy1yV0soR2y6+B5uVbaX2nvV1d/7UoGmhSLE3xYf6otmLYpZl8wXBClqczAnTy3/c+g99oT8rzII6bc8gTwVeMoUFiWVtVAEkLpP4/MLJrtMheno=
+	t=1760102276; cv=none; b=RRJCEq2Oa3RARvMzNVrYnPKQfQARAUxpIeovguDf2Ao+CXsg248EDP6uUROuf+1gLD79eySW6tuOrfpdePiiuamxOC5yPjWPMs3bAqsK2TQ6TY5yb76OSOXGDrk0r6Zbf9GGKYyy6ri4LOoZSsGp6QkVrZYTpiNETkF9/OyTM9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102345; c=relaxed/simple;
-	bh=MMLit2jv84UBJ2z0hW39HADFFv2skvbnwy/uXJlf6nM=;
+	s=arc-20240116; t=1760102276; c=relaxed/simple;
+	bh=MhHt6VuMliNWLDZyFH/O4l3jjHT/6Mw097Lw/14iFVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBzYXhwT1r6HD/iyL9Hpvf4sXu4dg0dEeWmgn+V2I6LYWxq4NL/JGfNaEYMjjQAaEtdS+6nA73FpA39EdNfNR9+ZL5B/ul90GRclNW/wkrTsrBeehppoBdXgluYYufCNAohm2A+eFr9pnQIfqsIJk34x2KnpBpoBtcODiJyfbbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRjNDmSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5424AC4CEF1;
-	Fri, 10 Oct 2025 13:19:04 +0000 (UTC)
+	 MIME-Version; b=up6HC5nsn0o7Re7Zp4rzbJlwaLwUM0kvbuBSwCGm5M2qPqpHEbRTZOyqqhdeaQscSeDVQ0JzhsoS49sTPwL+B9sWeZsUzazQdi10WhDjIe2LdqJXZV3dlI3sZbgkYnUwvtY5uQahC39vk7Ifn3xqxuuGI0talXF8H2fv6Dlqq4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRxyl9oZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC06DC4CEF8;
+	Fri, 10 Oct 2025 13:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102344;
-	bh=MMLit2jv84UBJ2z0hW39HADFFv2skvbnwy/uXJlf6nM=;
+	s=korg; t=1760102276;
+	bh=MhHt6VuMliNWLDZyFH/O4l3jjHT/6Mw097Lw/14iFVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRjNDmSLP2jdH6egMsA3KJ9MUwUMFHFXkHZS1qdHpfWhmdBIw0j0B2ZzpiwaP6m9b
-	 CV0xrqvx9mKlO3DZoz8g3oadqFcOO2P7nowEs8DJN2gffBBa1m61h7iaGPrkKug3DZ
-	 bchGaNmLx1nOqMvhN5B0t965xxYIniBXp9dNTZW0=
+	b=hRxyl9oZHvV8Prp0DTFVP/aMqEqwSryAMQ9vVB7MNTjQykT6Xf233os2tg6SwCUa8
+	 ste8WysHP0j3ooC2nJrmfSPsNaaioRTBIESrwXQHXGptTyw1VoRFxq3aWGWPBicJOk
+	 jcXJAaP+xBtcbDrkWy3Zogs/ZdnZzx24732bPXqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b73c7d94a151e2ee1e9b@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 23/41] netfs: Prevent duplicate unlocking
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 6.17 16/26] staging: axis-fifo: fix TX handling on copy_from_user() failure
 Date: Fri, 10 Oct 2025 15:16:11 +0200
-Message-ID: <20251010131334.259366344@linuxfoundation.org>
+Message-ID: <20251010131331.800357543@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 66d938e89e940e512f4c3deac938ecef399c13f9 ]
+commit 6d07bee10e4bdd043ec7152cbbb9deb27033c9e2 upstream.
 
-The filio lock has been released here, so there is no need to jump to
-error_folio_unlock to release it again.
+If copy_from_user() fails, write() currently returns -EFAULT, but any
+partially written data leaves the TX FIFO in an inconsistent state.
+Subsequent write() calls then fail with "transmit length mismatch"
+errors.
 
-Reported-by: syzbot+b73c7d94a151e2ee1e9b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b73c7d94a151e2ee1e9b
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Acked-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Once partial data is written to the hardware FIFO, it cannot be removed
+without a TX reset. Commit c6e8d85fafa7 ("staging: axis-fifo: Remove
+hardware resets for user errors") removed a full FIFO reset for this case,
+which fixed a potential RX data loss, but introduced this TX issue.
+
+Fix this by introducing a bounce buffer: copy the full packet from
+userspace first, and write to the hardware FIFO only if the copy
+was successful.
+
+Fixes: c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for user errors")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250912101322.1282507-1-ovidiu.panait.oss@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/buffered_write.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/axis-fifo/axis-fifo.c |   36 +++++++++-------------------------
+ 1 file changed, 10 insertions(+), 26 deletions(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index f27ea5099a681..09394ac2c180d 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -347,7 +347,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		folio_put(folio);
- 		ret = filemap_write_and_wait_range(mapping, fpos, fpos + flen - 1);
- 		if (ret < 0)
--			goto error_folio_unlock;
-+			goto out;
- 		continue;
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -43,7 +43,6 @@
+ #define DRIVER_NAME "axis_fifo"
  
- 	copied:
--- 
-2.51.0
-
+ #define READ_BUF_SIZE 128U /* read buffer length in words */
+-#define WRITE_BUF_SIZE 128U /* write buffer length in words */
+ 
+ #define AXIS_FIFO_DEBUG_REG_NAME_MAX_LEN	4
+ 
+@@ -302,11 +301,8 @@ static ssize_t axis_fifo_write(struct fi
+ {
+ 	struct axis_fifo *fifo = (struct axis_fifo *)f->private_data;
+ 	unsigned int words_to_write;
+-	unsigned int copied;
+-	unsigned int copy;
+-	unsigned int i;
++	u32 *txbuf;
+ 	int ret;
+-	u32 tmp_buf[WRITE_BUF_SIZE];
+ 
+ 	if (len % sizeof(u32)) {
+ 		dev_err(fifo->dt_device,
+@@ -371,32 +367,20 @@ static ssize_t axis_fifo_write(struct fi
+ 		}
+ 	}
+ 
+-	/* write data from an intermediate buffer into the fifo IP, refilling
+-	 * the buffer with userspace data as needed
+-	 */
+-	copied = 0;
+-	while (words_to_write > 0) {
+-		copy = min(words_to_write, WRITE_BUF_SIZE);
+-
+-		if (copy_from_user(tmp_buf, buf + copied * sizeof(u32),
+-				   copy * sizeof(u32))) {
+-			ret = -EFAULT;
+-			goto end_unlock;
+-		}
+-
+-		for (i = 0; i < copy; i++)
+-			iowrite32(tmp_buf[i], fifo->base_addr +
+-				  XLLF_TDFD_OFFSET);
+-
+-		copied += copy;
+-		words_to_write -= copy;
++	txbuf = vmemdup_user(buf, len);
++	if (IS_ERR(txbuf)) {
++		ret = PTR_ERR(txbuf);
++		goto end_unlock;
+ 	}
+ 
+-	ret = copied * sizeof(u32);
++	for (int i = 0; i < words_to_write; ++i)
++		iowrite32(txbuf[i], fifo->base_addr + XLLF_TDFD_OFFSET);
+ 
+ 	/* write packet size to fifo */
+-	iowrite32(ret, fifo->base_addr + XLLF_TLR_OFFSET);
++	iowrite32(len, fifo->base_addr + XLLF_TLR_OFFSET);
+ 
++	ret = len;
++	kvfree(txbuf);
+ end_unlock:
+ 	mutex_unlock(&fifo->write_lock);
+ 
 
 
 
