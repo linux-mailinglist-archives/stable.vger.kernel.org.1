@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-183980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E287BCD3F8
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:26:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DCBBCD3EF
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8895C1B21726
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 844471B21458
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778F12F60B4;
-	Fri, 10 Oct 2025 13:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424C62F5A2C;
+	Fri, 10 Oct 2025 13:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QEeATri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8X0yYsf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3314C2F3631;
-	Fri, 10 Oct 2025 13:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F352C2F290C;
+	Fri, 10 Oct 2025 13:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102533; cv=none; b=oCKGxFB8ibXnBE+lv0TG4/f5Ywq9OD4YiWRDcd0oWKopMctDsbhh4XZktID8ZvIuEZEa8rra+zK5zyYacITZq4HRtlhTnIPy2SUpREqfTOstEIlNOuG6yCpUDclq03fhx+rTe2wqlGeglwPEtlDTGHU6Bm4mn8Hy0VH7lwrKrC4=
+	t=1760102516; cv=none; b=fTNqvOUhsutsn5rhAlX3AZAAo7srpK10JItCnypRU99vPFP8RIzSdSx7W/CotF03yTVlTPa6l9GqYTJJG+FHsP+niY3ip6f+oe8hzdN+jkvq0HLzjfwgfMcuEDoYVGlNuuuPVHi2wRrld42z67/TU/AEJW00Ojwf/7hkHAJp0to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102533; c=relaxed/simple;
-	bh=YnpnUok3rdi5nU9KjQUzBegL9Yv/j7iyHdcd4UuMJMM=;
+	s=arc-20240116; t=1760102516; c=relaxed/simple;
+	bh=Ydfw/eaR58Dtyj696I8TsrH5k1sTouiM2UsL97oyQDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FP9f/5NIP94E3/ZW+Nc0WsR3XmqnOmfdbmCbOzn2mokFTQ7A4KaQAHMMifWsth1iUrPgmyWkAABDtYQOTTinzmXbhXQeoqcMMJom//D4qLxzY3qotKIdWBuBkAWR0O0lr3N+z1oLmxClrlpW1Fqw4XScr8l/RlaqlyoULx5EBNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QEeATri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7580BC4CEF1;
-	Fri, 10 Oct 2025 13:22:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jnik780eEua13CoTKcOsw0Q/MHQcsw7g2WrlSmu7KkzOmSH8I16/JJx3FNuqdXnAjX98+QIfRIPPBprVDdaMSwmbvjSnEbdIO1+Z2/fxiN3HA0ikH+LgoVLIkmLyEL7vaOYIX88obpWzAAm95eb5a4FGDBnT6Oho+u0bclcgv5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8X0yYsf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F16AC4CEF1;
+	Fri, 10 Oct 2025 13:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102532;
-	bh=YnpnUok3rdi5nU9KjQUzBegL9Yv/j7iyHdcd4UuMJMM=;
+	s=korg; t=1760102515;
+	bh=Ydfw/eaR58Dtyj696I8TsrH5k1sTouiM2UsL97oyQDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2QEeATriJ+WrZPGypdFYL0JOzLRkapWaFfqRqJ4N1uVkRQUHgMLvsykKhpxQC9UqM
-	 BI18lKM3aqvymmjE1KEBQr4etBT/2VMxSd8z22GydNwEt1mWgiYnJ0zu8/BDTNTlJG
-	 wv07I5FRnE7G/PTPT9SB+WMP9Q/a7htZMhz0CBCE=
+	b=r8X0yYsft28SIFSbV4fGP+mnGU7NJz+eyY8qMdlm2t1GrHTBc13ssMBEgFe5OLeRf
+	 Fn1lHysfsUEFgc0kTMiHf35I4mBlD0rY/HWTqUWvbYyuSu17XGDSC8uoFNY2wovNc2
+	 6v1ADKSbQ/QxdgGSIeHHjI/VDhqw7RQeJBD4Sa+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c3e0cdfbfe351b0bc0e@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 12/28] btrfs: ref-verify: handle damaged extent root tree
-Date: Fri, 10 Oct 2025 15:16:30 +0200
-Message-ID: <20251010131330.810123897@linuxfoundation.org>
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 6.12 29/35] staging: axis-fifo: fix maximum TX packet length check
+Date: Fri, 10 Oct 2025 15:16:31 +0200
+Message-ID: <20251010131332.842995293@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +58,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit ed4e6b5d644c4dd2bc2872ffec036b7da0ec2e27 ]
+commit 52ff2b840bc723f3be1f096f8017c78e0515858c upstream.
 
-Syzbot hits a problem with enabled ref-verify, ignorebadroots and a
-fuzzed/damaged extent tree. There's no fallback option like in other
-places that can deal with it so disable the whole ref-verify as it is
-just a debugging feature.
+Since commit 2ca34b508774 ("staging: axis-fifo: Correct handling of
+tx_fifo_depth for size validation"), write() operations with packets
+larger than 'tx_fifo_depth - 4' words are no longer rejected with -EINVAL.
 
-Reported-by: syzbot+9c3e0cdfbfe351b0bc0e@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/0000000000001b6052062139be1c@google.com/
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fortunately, the packets are not actually getting transmitted to hardware,
+otherwise they would be raising a 'Transmit Packet Overrun Error'
+interrupt, which requires a reset of the TX circuit to recover from.
+
+Instead, the request times out inside wait_event_interruptible_timeout()
+and always returns -EAGAIN, since the wake up condition can never be true
+for these packets. But still, they unnecessarily block other tasks from
+writing to the FIFO and the EAGAIN return code signals userspace to retry
+the write() call, even though it will always fail and time out.
+
+According to the AXI4-Stream FIFO reference manual (PG080), the maximum
+valid packet length is 'tx_fifo_depth - 4' words, so attempting to send
+larger packets is invalid and should not be happening in the first place:
+
+> The maximum packet that can be transmitted is limited by the size of
+> the FIFO, which is (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
+
+Therefore, bring back the old behavior and outright reject packets larger
+than 'tx_fifo_depth - 4' with -EINVAL. Add a comment to explain why the
+check is necessary. The dev_err() message was removed to avoid cluttering
+the dmesg log if an invalid packet is received from userspace.
+
+Fixes: 2ca34b508774 ("staging: axis-fifo: Correct handling of tx_fifo_depth for size validation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250817171350.872105-1-ovidiu.panait.oss@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ref-verify.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/staging/axis-fifo/axis-fifo.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/ref-verify.c b/fs/btrfs/ref-verify.c
-index 28ac7995716e0..b8122582d7555 100644
---- a/fs/btrfs/ref-verify.c
-+++ b/fs/btrfs/ref-verify.c
-@@ -990,11 +990,18 @@ int btrfs_build_ref_tree(struct btrfs_fs_info *fs_info)
- 	if (!btrfs_test_opt(fs_info, REF_VERIFY))
- 		return 0;
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -486,11 +486,17 @@ static ssize_t axis_fifo_write(struct fi
+ 		return -EINVAL;
+ 	}
  
-+	extent_root = btrfs_extent_root(fs_info, 0);
-+	/* If the extent tree is damaged we cannot ignore it (IGNOREBADROOTS). */
-+	if (IS_ERR(extent_root)) {
-+		btrfs_warn(fs_info, "ref-verify: extent tree not available, disabling");
-+		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
-+		return 0;
-+	}
-+
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
+-	if (words_to_write > fifo->tx_fifo_depth) {
+-		dev_err(fifo->dt_device, "tried to write more words [%u] than slots in the fifo buffer [%u]\n",
+-			words_to_write, fifo->tx_fifo_depth);
++	/*
++	 * In 'Store-and-Forward' mode, the maximum packet that can be
++	 * transmitted is limited by the size of the FIFO, which is
++	 * (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
++	 *
++	 * Do not attempt to send a packet larger than 'tx_fifo_depth - 4',
++	 * otherwise a 'Transmit Packet Overrun Error' interrupt will be
++	 * raised, which requires a reset of the TX circuit to recover.
++	 */
++	if (words_to_write > (fifo->tx_fifo_depth - 4))
+ 		return -EINVAL;
+-	}
  
--	extent_root = btrfs_extent_root(fs_info, 0);
- 	eb = btrfs_read_lock_root_node(extent_root);
- 	level = btrfs_header_level(eb);
- 	path->nodes[level] = eb;
--- 
-2.51.0
-
+ 	if (fifo->write_flags & O_NONBLOCK) {
+ 		/*
 
 
 
