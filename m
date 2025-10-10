@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-183887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01719BCD1C7
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:19:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AF9BCD3AA
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB73D4F966E
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:19:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95CBA540A71
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEB52F5A31;
-	Fri, 10 Oct 2025 13:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656B318872A;
+	Fri, 10 Oct 2025 13:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWr9j7er"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWdAfv0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC002F60CD;
-	Fri, 10 Oct 2025 13:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F971C84DE;
+	Fri, 10 Oct 2025 13:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102268; cv=none; b=ffvpzEyh3IRFcPHwWUwVXr008g7MUJM9ahPfh2Zcu1Jxy0QtO63PSIjLmV0wAYiAe6KBr+J6BOO74gULeNU4zDNTJ8gbT01F9QQpcjlGiAiwnR0GAWL5b6XltA7lagkh0Pl/o0zy7Ja58LK6hq0qLzcLX4+YEVFQiJUU5Gwvuig=
+	t=1760102526; cv=none; b=qV9ksOwcVpfPQTefcpfluuyqfrTwWDWbmfEZBtjItR6NLQ7jBxe4gr7xoc6KieFnQwmz7mjg4jaWObFULyGAsOGuLuEVFCQwiXWLXTf/r5Kd/UMb1+/Sl2JR67L6NgCVbEZI1qTuhM3u7lk2VtU+iPfaylcYqKp2rCjHM18Wc/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102268; c=relaxed/simple;
-	bh=+lEpebIQQsG1H1UCUOg/C87FCT+edxk9ywzHNJAPb1w=;
+	s=arc-20240116; t=1760102526; c=relaxed/simple;
+	bh=OhiPMaYrbUgAslF5D/ST/pz6K+RfEK/HXW9YwUAJtYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oiGCOv+B9OKbvD989ZX7stFugIA84p2v7EcttvJREG/dMvWPBvts/+5BrHODj1qXzJBuYJp21BBPAfk3QiwtiannaLPrNxRRsHXW4rQvPuTZZJh6F4Ss1Xmu7wj0psj6aXg/mAR3mkTPNa2E9KEqdDQslrA9Q1aSeBB2zpfe8BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWr9j7er; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4947FC4CEF9;
-	Fri, 10 Oct 2025 13:17:47 +0000 (UTC)
+	 MIME-Version; b=UKa7WjTpZ6lRhSa2gxHBkApRFaSdZyAA2EWjjS7ocOogKA0xUz6pLxjho+euuD0Bww/440orohPBsDukCboTYouZaLQHat85qlaxZGRfs1UwJ/X5hv2N6vTEMAtjR/ErUqZh8Ng/nvwsLDNbejK+LNKqWWtiqgymNZZYWjRnEKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWdAfv0c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA41C4CEF1;
+	Fri, 10 Oct 2025 13:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102267;
-	bh=+lEpebIQQsG1H1UCUOg/C87FCT+edxk9ywzHNJAPb1w=;
+	s=korg; t=1760102524;
+	bh=OhiPMaYrbUgAslF5D/ST/pz6K+RfEK/HXW9YwUAJtYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWr9j7er7NJ5aYj/laE2wy5GxqUUSU4bVl0vBSaHsXg+WC1zyS8BrD8W5+Bk6WvMV
-	 UWcq7FCqgRcukgkNtPQv/IS+sZS7B26v2EvvkLfI73qS0DMzvrEaQ3ZmSN3afaIOUG
-	 OOtGRnDldLb17GXqHFTv9aW0fCp2+P6uBYmz6wp0=
+	b=ZWdAfv0cb1JPmC5CncHr8J343iBiFA54+M+qCB1HvJaCxbWdYLjO3LL/vrYSJElEy
+	 CRF32Gu1Z4UL0bkwHrCdP8N/BtxGCKkPuPaxTFSHsGb6uI2iRVPBnV+W0K3YTzVyIL
+	 iRuskpSwLo8j4QpjALAhi2oQjmhoZTNeDLFGv3EY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.17 24/26] KVM: x86: Dont (re)check L1 intercepts when completing userspace I/O
+	Ard Biesheuvel <ardb@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Kenneth Van Alstyne <kvanals@kvanals.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 01/28] KVM: arm64: Fix softirq masking in FPSIMD register saving sequence
 Date: Fri, 10 Oct 2025 15:16:19 +0200
-Message-ID: <20251010131332.085052566@linuxfoundation.org>
+Message-ID: <20251010131330.412107519@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
+References: <20251010131330.355311487@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,164 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Will Deacon <will@kernel.org>
 
-commit e750f85391286a4c8100275516973324b621a269 upstream.
+Stable commit 28b82be094e2 ("KVM: arm64: Fix kernel BUG() due to bad
+backport of FPSIMD/SVE/SME fix") fixed a kernel BUG() caused by a bad
+backport of upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally
+save+flush host FPSIMD/SVE/SME state") by ensuring that softirqs are
+disabled/enabled across the fpsimd register save operation.
 
-When completing emulation of instruction that generated a userspace exit
-for I/O, don't recheck L1 intercepts as KVM has already finished that
-phase of instruction execution, i.e. has already committed to allowing L2
-to perform I/O.  If L1 (or host userspace) modifies the I/O permission
-bitmaps during the exit to userspace,  KVM will treat the access as being
-intercepted despite already having emulated the I/O access.
+Unfortunately, although this fixes the original issue, it can now lead
+to deadlock when re-enabling softirqs causes pending softirqs to be
+handled with locks already held:
 
-Pivot on EMULTYPE_NO_DECODE to detect that KVM is completing emulation.
-Of the three users of EMULTYPE_NO_DECODE, only complete_emulated_io() (the
-intended "recipient") can reach the code in question.  gp_interception()'s
-use is mutually exclusive with is_guest_mode(), and
-complete_emulated_insn_gp() unconditionally pairs EMULTYPE_NO_DECODE with
-EMULTYPE_SKIP.
+ | BUG: spinlock recursion on CPU#7, CPU 3/KVM/57616
+ |  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU 3/KVM/57616, .owner_cpu: 7
+ | CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O       6.1.152 #1
+ | Hardware name: SoftIron SoftIron Platform Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
+ | Call trace:
+ |  dump_backtrace+0xe4/0x110
+ |  show_stack+0x20/0x30
+ |  dump_stack_lvl+0x6c/0x88
+ |  dump_stack+0x18/0x34
+ |  spin_dump+0x98/0xac
+ |  do_raw_spin_lock+0x70/0x128
+ |  _raw_spin_lock+0x18/0x28
+ |  raw_spin_rq_lock_nested+0x18/0x28
+ |  update_blocked_averages+0x70/0x550
+ |  run_rebalance_domains+0x50/0x70
+ |  handle_softirqs+0x198/0x328
+ |  __do_softirq+0x1c/0x28
+ |  ____do_softirq+0x18/0x28
+ |  call_on_irq_stack+0x30/0x48
+ |  do_softirq_own_stack+0x24/0x30
+ |  do_softirq+0x74/0x90
+ |  __local_bh_enable_ip+0x64/0x80
+ |  fpsimd_save_and_flush_cpu_state+0x5c/0x68
+ |  kvm_arch_vcpu_put_fp+0x4c/0x88
+ |  kvm_arch_vcpu_put+0x28/0x88
+ |  kvm_sched_out+0x38/0x58
+ |  __schedule+0x55c/0x6c8
+ |  schedule+0x60/0xa8
 
-The bad behavior was detected by a syzkaller program that toggles port I/O
-interception during the userspace I/O exit, ultimately resulting in a WARN
-on vcpu->arch.pio.count being non-zero due to KVM no completing emulation
-of the I/O instruction.
+Take a tiny step towards the upstream fix in 9b19700e623f ("arm64:
+fpsimd: Drop unneeded 'busy' flag") by additionally disabling hardirqs
+while saving the fpsimd registers.
 
-  WARNING: CPU: 23 PID: 1083 at arch/x86/kvm/x86.c:8039 emulator_pio_in_out+0x154/0x170 [kvm]
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 23 UID: 1000 PID: 1083 Comm: repro Not tainted 6.16.0-rc5-c1610d2d66b1-next-vm #74 NONE
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:emulator_pio_in_out+0x154/0x170 [kvm]
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   kvm_fast_pio+0xd6/0x1d0 [kvm]
-   vmx_handle_exit+0x149/0x610 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xda8/0x1ac0 [kvm]
-   kvm_vcpu_ioctl+0x244/0x8c0 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0x5d/0xc60
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-
-Reported-by: syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68790db4.a00a0220.3af5df.0020.GAE@google.com
-Fixes: 8a76d7f25f8f ("KVM: x86: Add x86 callback for intercept check")
-Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20250715190638.1899116-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <stable@vger.kernel.org> # 6.6.y
+Fixes: 28b82be094e2 ("KVM: arm64: Fix kernel BUG() due to bad backport of FPSIMD/SVE/SME fix")
+Reported-by: Kenneth Van Alstyne <kvanals@kvanals.org>
+Link: https://lore.kernel.org/r/010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/emulate.c     |    9 ++++-----
- arch/x86/kvm/kvm_emulate.h |    3 +--
- arch/x86/kvm/x86.c         |   15 ++++++++-------
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ arch/arm64/kernel/fpsimd.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -5107,12 +5107,11 @@ void init_decode_cache(struct x86_emulat
- 	ctxt->mem_read.end = 0;
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index d0d836448a76..83827384982e 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1873,13 +1873,17 @@ static void fpsimd_flush_cpu_state(void)
+  */
+ void fpsimd_save_and_flush_cpu_state(void)
+ {
++	unsigned long flags;
++
+ 	if (!system_supports_fpsimd())
+ 		return;
+ 	WARN_ON(preemptible());
+-	get_cpu_fpsimd_context();
++	local_irq_save(flags);
++	__get_cpu_fpsimd_context();
+ 	fpsimd_save();
+ 	fpsimd_flush_cpu_state();
+-	put_cpu_fpsimd_context();
++	__put_cpu_fpsimd_context();
++	local_irq_restore(flags);
  }
  
--int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
-+int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts)
- {
- 	const struct x86_emulate_ops *ops = ctxt->ops;
- 	int rc = X86EMUL_CONTINUE;
- 	int saved_dst_type = ctxt->dst.type;
--	bool is_guest_mode = ctxt->ops->is_guest_mode(ctxt);
- 
- 	ctxt->mem_read.pos = 0;
- 
-@@ -5160,7 +5159,7 @@ int x86_emulate_insn(struct x86_emulate_
- 				fetch_possible_mmx_operand(&ctxt->dst);
- 		}
- 
--		if (unlikely(is_guest_mode) && ctxt->intercept) {
-+		if (unlikely(check_intercepts) && ctxt->intercept) {
- 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 						      X86_ICPT_PRE_EXCEPT);
- 			if (rc != X86EMUL_CONTINUE)
-@@ -5189,7 +5188,7 @@ int x86_emulate_insn(struct x86_emulate_
- 				goto done;
- 		}
- 
--		if (unlikely(is_guest_mode) && (ctxt->d & Intercept)) {
-+		if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
- 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 						      X86_ICPT_POST_EXCEPT);
- 			if (rc != X86EMUL_CONTINUE)
-@@ -5243,7 +5242,7 @@ int x86_emulate_insn(struct x86_emulate_
- 
- special_insn:
- 
--	if (unlikely(is_guest_mode) && (ctxt->d & Intercept)) {
-+	if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
- 		rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 					      X86_ICPT_POST_MEMACCESS);
- 		if (rc != X86EMUL_CONTINUE)
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -235,7 +235,6 @@ struct x86_emulate_ops {
- 	void (*set_nmi_mask)(struct x86_emulate_ctxt *ctxt, bool masked);
- 
- 	bool (*is_smm)(struct x86_emulate_ctxt *ctxt);
--	bool (*is_guest_mode)(struct x86_emulate_ctxt *ctxt);
- 	int (*leave_smm)(struct x86_emulate_ctxt *ctxt);
- 	void (*triple_fault)(struct x86_emulate_ctxt *ctxt);
- 	int (*set_xcr)(struct x86_emulate_ctxt *ctxt, u32 index, u64 xcr);
-@@ -521,7 +520,7 @@ bool x86_page_table_writing_insn(struct
- #define EMULATION_RESTART 1
- #define EMULATION_INTERCEPTED 2
- void init_decode_cache(struct x86_emulate_ctxt *ctxt);
--int x86_emulate_insn(struct x86_emulate_ctxt *ctxt);
-+int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts);
- int emulator_task_switch(struct x86_emulate_ctxt *ctxt,
- 			 u16 tss_selector, int idt_index, int reason,
- 			 bool has_error_code, u32 error_code);
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8470,11 +8470,6 @@ static bool emulator_is_smm(struct x86_e
- 	return is_smm(emul_to_vcpu(ctxt));
- }
- 
--static bool emulator_is_guest_mode(struct x86_emulate_ctxt *ctxt)
--{
--	return is_guest_mode(emul_to_vcpu(ctxt));
--}
--
- #ifndef CONFIG_KVM_SMM
- static int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
- {
-@@ -8558,7 +8553,6 @@ static const struct x86_emulate_ops emul
- 	.guest_cpuid_is_intel_compatible = emulator_guest_cpuid_is_intel_compatible,
- 	.set_nmi_mask        = emulator_set_nmi_mask,
- 	.is_smm              = emulator_is_smm,
--	.is_guest_mode       = emulator_is_guest_mode,
- 	.leave_smm           = emulator_leave_smm,
- 	.triple_fault        = emulator_triple_fault,
- 	.set_xcr             = emulator_set_xcr,
-@@ -9143,7 +9137,14 @@ restart:
- 		ctxt->exception.address = 0;
- 	}
- 
--	r = x86_emulate_insn(ctxt);
-+	/*
-+	 * Check L1's instruction intercepts when emulating instructions for
-+	 * L2, unless KVM is re-emulating a previously decoded instruction,
-+	 * e.g. to complete userspace I/O, in which case KVM has already
-+	 * checked the intercepts.
-+	 */
-+	r = x86_emulate_insn(ctxt, is_guest_mode(vcpu) &&
-+				   !(emulation_type & EMULTYPE_NO_DECODE));
- 
- 	if (r == EMULATION_INTERCEPTED)
- 		return 1;
+ #ifdef CONFIG_KERNEL_MODE_NEON
+-- 
+2.51.0.618.g983fd99d29-goog
+
 
 
 
