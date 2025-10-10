@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-183948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1598BCD2C7
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5D6BCD36E
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 864FF4FE456
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C3B189A28C
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ED12EF652;
-	Fri, 10 Oct 2025 13:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F0E2F744B;
+	Fri, 10 Oct 2025 13:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqGT3tmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2Udg07Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E812F39B4;
-	Fri, 10 Oct 2025 13:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1122F362F;
+	Fri, 10 Oct 2025 13:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102442; cv=none; b=R0yX919DoKaouAluxCJb3Vobyva8MrnEihe7JaXbjn6j5PXnnv7yrQj/Gxw11wg7+LFiF4wK707+C44h88htGi/BK7T49g0g+m8IE2bE7J6JVuYsenlAd2/7Ibw0YGc+oAZbAcgWfQMIgRwM4RmVOZgi87/hMbieywzcEKyMZEU=
+	t=1760102396; cv=none; b=MHUFc6YPI1hu6VRM95lHjlilKwL6yREMpSvSqEOdWNh9pUl6PUI/kjChWaQ+5iMfeczbK8wC95Qomc0PYZ9AfO2t8iobEGTBzMFF+cWcha6KIlgRsksDdKpGFU1zy0gwlidZ1wogseRKd7IU6E/+MgTIRtZiEbLiL/z5yRv/HI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102442; c=relaxed/simple;
-	bh=dN5kPRzjXjTq6xAwAAPezDyNQig/asG37xprOW/mBLs=;
+	s=arc-20240116; t=1760102396; c=relaxed/simple;
+	bh=cZPzY/3RXItD0Qk5Pjlv0deOUEKg3i3QX74M6zdX5c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6i4BaFDWUMlZFkwaWB0VQAC1HFJ3s18KfaZ6tz4C8Js6XBFV0LWNQxANq8YBjcJS5SRoijSY3AXkIW0TVc9oDCDfF3L8Zn+/LlcgwzR6NBhrWwBa+Pf5LvbKpOCLJMxxv034CqHQQa4zYgytxkfimjZR4aHNtIZHBpbMQxaVcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqGT3tmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06223C4CEF1;
-	Fri, 10 Oct 2025 13:20:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A3WsfjUhTjPBuAK76mMG/kBeLgHyqosYGLMK4ZIkZ2e5UJdbUFxqBCZklHW8VaY2d4/mm3Ob4wqclFq8O88IC/+gFpHzldAaXFMkPkm9YTsguM7OLtWZVjUhT1S62HiTLY//3P1AKNPOVgO7h+oNiNkhkc97nglkycZDv1o6PJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2Udg07Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FD0C4CEF1;
+	Fri, 10 Oct 2025 13:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102442;
-	bh=dN5kPRzjXjTq6xAwAAPezDyNQig/asG37xprOW/mBLs=;
+	s=korg; t=1760102396;
+	bh=cZPzY/3RXItD0Qk5Pjlv0deOUEKg3i3QX74M6zdX5c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqGT3tmPmJ8OvZBcfaO0nOHcldR2uV7JuQmXi6jhcEHIqRDwsRIW/OBbHH8R0gzfa
-	 Ab06dRiWEVwP2ixF2p0a3g2RuacJ2ywO4JmusmmnkAbgYbahCo3611THwcXvK09Y9L
-	 PBtxe433Xe2fW6p8toVtYyvAUaDPG7X1Cx/+VlgM=
+	b=S2Udg07ZIwbvm0BMJeq7pQXWovzCbc/s5ctBqLprwVghA9bp15HY4RloQ38qS0qlL
+	 UmBQWlCtQA4Fm7xX9j01EmbQdn4XeyjgQszRl2VyRGQNzjKlijYx9/WpI7EyAShGYf
+	 Kw36SwrX3D625IG1l9ZtdsT6PT3j0fSnO8mZv1Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 16/35] can: hi311x: fix null pointer dereference when resuming from sleep before interface was enabled
+	Max Kellermann <max.kellermann@ionos.com>,
+	Akshay Gupta <Akshay.Gupta@amd.com>
+Subject: [PATCH 6.16 30/41] drivers/misc/amd-sbi/Kconfig: select REGMAP_I2C
 Date: Fri, 10 Oct 2025 15:16:18 +0200
-Message-ID: <20251010131332.381102894@linuxfoundation.org>
+Message-ID: <20251010131334.506877659@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,126 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit 6b696808472197b77b888f50bc789a3bae077743 ]
+commit 5f8f84e286f11af4c954c14a57daffc80a1c3510 upstream.
 
-This issue is similar to the vulnerability in the `mcp251x` driver,
-which was fixed in commit 03c427147b2d ("can: mcp251x: fix resume from
-sleep before interface was brought up").
+Without CONFIG_REGMAP, rmi-i2c.c fails to build because struct
+regmap_config is not defined:
 
-In the `hi311x` driver, when the device resumes from sleep, the driver
-schedules `priv->restart_work`. However, if the network interface was
-not previously enabled, the `priv->wq` (workqueue) is not allocated and
-initialized, leading to a null pointer dereference.
+ drivers/misc/amd-sbi/rmi-i2c.c: In function ‘sbrmi_i2c_probe’:
+ drivers/misc/amd-sbi/rmi-i2c.c:57:16: error: variable ‘sbrmi_i2c_regmap_config’ has initializer but incomplete type
+    57 |         struct regmap_config sbrmi_i2c_regmap_config = {
+       |                ^~~~~~~~~~~~~
 
-To fix this, we move the allocation and initialization of the workqueue
-from the `hi3110_open` function to the `hi3110_can_probe` function.
-This ensures that the workqueue is properly initialized before it is
-used during device resume. And added logic to destroy the workqueue
-in the error handling paths of `hi3110_can_probe` and in the
-`hi3110_can_remove` function to prevent resource leaks.
+Additionally, CONFIG_REGMAP_I2C is needed for devm_regmap_init_i2c():
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://patch.msgid.link/20250911150820.250-1-chenyufeng@iie.ac.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ ld: drivers/misc/amd-sbi/rmi-i2c.o: in function `sbrmi_i2c_probe':
+ drivers/misc/amd-sbi/rmi-i2c.c:69:(.text+0x1c0): undefined reference to `__devm_regmap_init_i2c'
+
+Fixes: 013f7e7131bd ("misc: amd-sbi: Use regmap subsystem")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Tested-by: Akshay Gupta <Akshay.Gupta@amd.com>
+Reviewed-by: Akshay Gupta <Akshay.Gupta@amd.com>
+Link: https://lore.kernel.org/r/20250829091442.1112106-1-max.kellermann@ionos.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/hi311x.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ drivers/misc/amd-sbi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index ff39afc77d7d2..c9eba1d37b0eb 100644
---- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -545,8 +545,6 @@ static int hi3110_stop(struct net_device *net)
+diff --git a/drivers/misc/amd-sbi/Kconfig b/drivers/misc/amd-sbi/Kconfig
+index 4840831c84ca..4aae0733d0fc 100644
+--- a/drivers/misc/amd-sbi/Kconfig
++++ b/drivers/misc/amd-sbi/Kconfig
+@@ -2,6 +2,7 @@
+ config AMD_SBRMI_I2C
+ 	tristate "AMD side band RMI support"
+ 	depends on I2C
++	select REGMAP_I2C
+ 	help
+ 	  Side band RMI over I2C support for AMD out of band management.
  
- 	priv->force_quit = 1;
- 	free_irq(spi->irq, priv);
--	destroy_workqueue(priv->wq);
--	priv->wq = NULL;
- 
- 	mutex_lock(&priv->hi3110_lock);
- 
-@@ -771,34 +769,23 @@ static int hi3110_open(struct net_device *net)
- 		goto out_close;
- 	}
- 
--	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
--				   0);
--	if (!priv->wq) {
--		ret = -ENOMEM;
--		goto out_free_irq;
--	}
--	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
--	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
--
- 	ret = hi3110_hw_reset(spi);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	ret = hi3110_setup(net);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	ret = hi3110_set_normal_mode(spi);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	netif_wake_queue(net);
- 	mutex_unlock(&priv->hi3110_lock);
- 
- 	return 0;
- 
-- out_free_wq:
--	destroy_workqueue(priv->wq);
-  out_free_irq:
- 	free_irq(spi->irq, priv);
- 	hi3110_hw_sleep(spi);
-@@ -910,6 +897,15 @@ static int hi3110_can_probe(struct spi_device *spi)
- 	if (ret)
- 		goto out_clk;
- 
-+	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
-+				   0);
-+	if (!priv->wq) {
-+		ret = -ENOMEM;
-+		goto out_clk;
-+	}
-+	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
-+	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
-+
- 	priv->spi = spi;
- 	mutex_init(&priv->hi3110_lock);
- 
-@@ -945,6 +941,8 @@ static int hi3110_can_probe(struct spi_device *spi)
- 	return 0;
- 
-  error_probe:
-+	destroy_workqueue(priv->wq);
-+	priv->wq = NULL;
- 	hi3110_power_enable(priv->power, 0);
- 
-  out_clk:
-@@ -965,6 +963,9 @@ static void hi3110_can_remove(struct spi_device *spi)
- 
- 	hi3110_power_enable(priv->power, 0);
- 
-+	destroy_workqueue(priv->wq);
-+	priv->wq = NULL;
-+
- 	clk_disable_unprepare(priv->clk);
- 
- 	free_candev(net);
 -- 
 2.51.0
 
