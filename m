@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-183958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C93BCD32C
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCB3BCD296
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6F2B3B9266
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 428413C58E3
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6472F3C35;
-	Fri, 10 Oct 2025 13:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2CB2F5477;
+	Fri, 10 Oct 2025 13:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUy2Se/H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l28wzFZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7B221579F;
-	Fri, 10 Oct 2025 13:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB2A2F2602;
+	Fri, 10 Oct 2025 13:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102470; cv=none; b=pWh0mzZam+f/YcWAElspsn0+MsQ+FW+ezqCVLG7Yvza5mPPPeUYssOEHP0PntWmnCfz5fO193pI93UFj7w8xOYCdOjmavSRQeymA/QtO6YefgB5+Qhd6sMWdvsy5CsVQd0A94WY4b/CKf9G15ZWjJxRPEhnE8beoBalGU58dFuk=
+	t=1760102339; cv=none; b=RHaMG2Pv5wF4SEpW5XwRJsYt24iTr85vN6BOjqBswEGP7VyeBTTE6705sG8C91PA6DivKdncfV5aF7BuzzBM3uCmAOm1tXB22f7PBXEu7KaJVxAlFxtSi6MA2EtLDEp3FwNzkoTJahttEDw1XrrudCo9MvNHWR3gO/CKwK+walw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102470; c=relaxed/simple;
-	bh=TxiKniTyShNILoPK20mnLiWZyUgGLAGdOkY0dmVB1Lo=;
+	s=arc-20240116; t=1760102339; c=relaxed/simple;
+	bh=s/0lu1+tWeT3QK0fbk5nD+YiJQoNumZFW3a4NsxdMUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaZsgeOk/EurA4PJGjdIhquztIBC74wYUncBD5V7JOsVy9A6YpRoeLE1dbd+pwm9QktD3KG8Xh+IMc7e4sQiu32pBGXYO2gPwO8noNVZ6aI+KQv6QvEwFmM+l2T3v4xUNP0gIiVrNNen+VYvlsZFcUrxAUuOgqvmyT3gxGHEFME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUy2Se/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D75C4CEF1;
-	Fri, 10 Oct 2025 13:21:10 +0000 (UTC)
+	 MIME-Version; b=H4G0LAuQnhBr+G8/tN/EQMNikX/9pp56nyRDpDHl+GOh/0oLNZKY9O330eNU71LL0vAZVt1U+pDtsGo3fVQidHUyVgVDY+EJaYmY5TCRuuOoDzMXfNHenhIqZjFBf+BmSS0syFEwQRou89ezwdDmTtS9+42IoZqta2RcNrFzrj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l28wzFZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1CFC4CEF8;
+	Fri, 10 Oct 2025 13:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102470;
-	bh=TxiKniTyShNILoPK20mnLiWZyUgGLAGdOkY0dmVB1Lo=;
+	s=korg; t=1760102338;
+	bh=s/0lu1+tWeT3QK0fbk5nD+YiJQoNumZFW3a4NsxdMUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUy2Se/HQeHbTRIRPEtk9NaqquSPmCsi0g9lce3ponVWQO7CdjngBzDnveTxPjyXt
-	 YKMYsy+CuLQd2S2RKJprJ7O0mgc5cN9OQ+OmpsVAwx0+S34bllt83VWecwOQR+ANMt
-	 XUPzWkksNT1OT1BVRZf+EPpwAfVHD9Gq/pl88vCw=
+	b=l28wzFZPmgpDYTjaQ3mDN+ZUqsglL2ZnkxizMP+i7L9yIHE9kUd8Zwa4oYp2QzVwz
+	 YUgO0JlAQrXd79CFhlHlPv3dhKdke2k4jUsYOcyn11X7t3zy2a83YsaXTSStX5jjZ/
+	 QhfbW/upinvIy6ubNbvAKXlp098PvQtcULDiGua4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 07/35] rust: block: fix `srctree/` links
+	Jack Yu <jack.yu@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 21/41] ASoC: rt5682s: Adjust SAR ADC button mode to fix noise issue
 Date: Fri, 10 Oct 2025 15:16:09 +0200
-Message-ID: <20251010131332.059379765@linuxfoundation.org>
+Message-ID: <20251010131334.187706412@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Jack Yu <jack.yu@realtek.com>
 
-commit 208d7f788e84e80992d7b1c82ff17b620eb1371e upstream.
+[ Upstream commit 1dd28fd86c3fa4e395031dd6f2ba920242107010 ]
 
-This `srctree/` link pointed to a file with an underscore, but the header
-used a dash instead.
+Adjust register settings for SAR adc button detection mode
+to fix noise issue in headset.
 
-Thus fix it.
-
-This cleans a future warning that will check our `srctree/` links.
-
-Cc: stable@vger.kernel.org
-Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jack Yu <jack.yu@realtek.com>
+Link: https://patch.msgid.link/766cd1d2dd7a403ba65bb4cc44845f71@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/block/mq/gen_disk.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/rt5682s.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index cd54cd64ea88..e1af0fa302a3 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -3,7 +3,7 @@
- //! Generic disk abstraction.
- //!
- //! C header: [`include/linux/blkdev.h`](srctree/include/linux/blkdev.h)
--//! C header: [`include/linux/blk_mq.h`](srctree/include/linux/blk_mq.h)
-+//! C header: [`include/linux/blk-mq.h`](srctree/include/linux/blk-mq.h)
+diff --git a/sound/soc/codecs/rt5682s.c b/sound/soc/codecs/rt5682s.c
+index 73c4b3c31f8c4..d44f7574631dc 100644
+--- a/sound/soc/codecs/rt5682s.c
++++ b/sound/soc/codecs/rt5682s.c
+@@ -653,14 +653,15 @@ static void rt5682s_sar_power_mode(struct snd_soc_component *component, int mode
+ 	switch (mode) {
+ 	case SAR_PWR_SAVING:
+ 		snd_soc_component_update_bits(component, RT5682S_CBJ_CTRL_3,
+-			RT5682S_CBJ_IN_BUF_MASK, RT5682S_CBJ_IN_BUF_DIS);
++			RT5682S_CBJ_IN_BUF_MASK, RT5682S_CBJ_IN_BUF_EN);
+ 		snd_soc_component_update_bits(component, RT5682S_CBJ_CTRL_1,
+-			RT5682S_MB1_PATH_MASK | RT5682S_MB2_PATH_MASK,
+-			RT5682S_CTRL_MB1_REG | RT5682S_CTRL_MB2_REG);
++			RT5682S_MB1_PATH_MASK | RT5682S_MB2_PATH_MASK |
++			RT5682S_VREF_POW_MASK, RT5682S_CTRL_MB1_FSM |
++			RT5682S_CTRL_MB2_FSM | RT5682S_VREF_POW_FSM);
+ 		snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
+ 			RT5682S_SAR_BUTDET_MASK | RT5682S_SAR_BUTDET_POW_MASK |
+ 			RT5682S_SAR_SEL_MB1_2_CTL_MASK, RT5682S_SAR_BUTDET_DIS |
+-			RT5682S_SAR_BUTDET_POW_SAV | RT5682S_SAR_SEL_MB1_2_MANU);
++			RT5682S_SAR_BUTDET_POW_NORM | RT5682S_SAR_SEL_MB1_2_MANU);
+ 		usleep_range(5000, 5500);
+ 		snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
+ 			RT5682S_SAR_BUTDET_MASK, RT5682S_SAR_BUTDET_EN);
+@@ -688,7 +689,7 @@ static void rt5682s_sar_power_mode(struct snd_soc_component *component, int mode
+ 		snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
+ 			RT5682S_SAR_BUTDET_MASK | RT5682S_SAR_BUTDET_POW_MASK |
+ 			RT5682S_SAR_SEL_MB1_2_CTL_MASK, RT5682S_SAR_BUTDET_DIS |
+-			RT5682S_SAR_BUTDET_POW_SAV | RT5682S_SAR_SEL_MB1_2_MANU);
++			RT5682S_SAR_BUTDET_POW_NORM | RT5682S_SAR_SEL_MB1_2_MANU);
+ 		break;
+ 	default:
+ 		dev_err(component->dev, "Invalid SAR Power mode: %d\n", mode);
+@@ -725,7 +726,7 @@ static void rt5682s_disable_push_button_irq(struct snd_soc_component *component)
+ 	snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
+ 		RT5682S_SAR_BUTDET_MASK | RT5682S_SAR_BUTDET_POW_MASK |
+ 		RT5682S_SAR_SEL_MB1_2_CTL_MASK, RT5682S_SAR_BUTDET_DIS |
+-		RT5682S_SAR_BUTDET_POW_SAV | RT5682S_SAR_SEL_MB1_2_MANU);
++		RT5682S_SAR_BUTDET_POW_NORM | RT5682S_SAR_SEL_MB1_2_MANU);
+ }
  
- use crate::block::mq::{raw_writer::RawWriter, Operations, TagSet};
- use crate::{bindings, error::from_err_ptr, error::Result, sync::Arc};
+ /**
+@@ -786,7 +787,7 @@ static int rt5682s_headset_detect(struct snd_soc_component *component, int jack_
+ 			jack_type = SND_JACK_HEADSET;
+ 			snd_soc_component_write(component, RT5682S_SAR_IL_CMD_3, 0x024c);
+ 			snd_soc_component_update_bits(component, RT5682S_CBJ_CTRL_1,
+-				RT5682S_FAST_OFF_MASK, RT5682S_FAST_OFF_EN);
++				RT5682S_FAST_OFF_MASK, RT5682S_FAST_OFF_DIS);
+ 			snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
+ 				RT5682S_SAR_SEL_MB1_2_MASK, val << RT5682S_SAR_SEL_MB1_2_SFT);
+ 			rt5682s_enable_push_button_irq(component);
+@@ -966,7 +967,7 @@ static int rt5682s_set_jack_detect(struct snd_soc_component *component,
+ 			RT5682S_EMB_JD_MASK | RT5682S_DET_TYPE |
+ 			RT5682S_POL_FAST_OFF_MASK | RT5682S_MIC_CAP_MASK,
+ 			RT5682S_EMB_JD_EN | RT5682S_DET_TYPE |
+-			RT5682S_POL_FAST_OFF_HIGH | RT5682S_MIC_CAP_HS);
++			RT5682S_POL_FAST_OFF_LOW | RT5682S_MIC_CAP_HS);
+ 		regmap_update_bits(rt5682s->regmap, RT5682S_SAR_IL_CMD_1,
+ 			RT5682S_SAR_POW_MASK, RT5682S_SAR_POW_EN);
+ 		regmap_update_bits(rt5682s->regmap, RT5682S_GPIO_CTRL_1,
 -- 
 2.51.0
 
