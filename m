@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-184023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8156CBCDECD
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 18:10:25 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C38BCE0A6
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 19:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23B0654080E
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 16:10:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5ACFE34EB79
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 17:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FEB2FBDF8;
-	Fri, 10 Oct 2025 16:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA911205ABA;
+	Fri, 10 Oct 2025 17:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T3s53mzE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5uqWnVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0E9266595;
-	Fri, 10 Oct 2025 16:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F58842049;
+	Fri, 10 Oct 2025 17:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760112618; cv=none; b=lKVvEW5Jjbw0sIcS1gscE77VX3BaahMU3ac5uZsLtwcSBJEuyZ7nQJbVSflJzXZ39HdKbQGH5yPJDKMPC0O9gYsZeQz4smt8XapnvMwPZwrldRuyvtfiOLwW5oSuf2rAGWRkRSzk3ziELj2o/V3pFti5T+9Kkvgh1uaoYZ9Asbo=
+	t=1760116219; cv=none; b=MY7pgXs6lXgjUciayNsqxPKKqWEEDkuTr1cQwlZV6ymnbM1mPxVPZJ13u8yU/5d3N0UhuGmwgcK6texwEe04rrb3Xy8eNS3k2a3TuKwF0fzokQ/vOsB4bXUCpf+I3lK3bdt8ccSQkCsiZFnuzheromSS8BxJOR4rNzr1bs/+uNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760112618; c=relaxed/simple;
-	bh=BYrNZj2WgdfO2F/sOzJIX3fMIOh78MZdybtGGqt65CM=;
+	s=arc-20240116; t=1760116219; c=relaxed/simple;
+	bh=7N5j4MPGCNhqbzofGJ6iM7pLlyWv4XqbzW+i8bDy0VQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=eb3DGcVX8JLOJvRAhf5LPa2WUWIoOL4FwgbeAA8KQL/jWGUoMK7DesxCNaK1gPivHy5qtOyuNxH+twaqjfinBM+XtUudxLiIKsEyYPOtecuTmHRZCy1/Y6Z7ueCr79GbaXjtDfeOjYkcGLCKxlasS8ioWjklAwtlgxk0GgmwvjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T3s53mzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA74C4CEF1;
-	Fri, 10 Oct 2025 16:10:17 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=i8jPQog1WkRLuJszdVcQBjS0tDW/0BXQTtnZRun6/2AfSbrN46qvyR/ZAMrpRvdQP2S08/+JJwR59PLssT/oNw5Wqi+S33umbJQyJqDtj67OddGuACAq+v01zKJVpvnOrPzHZs8d/WTQAiSfTAhmMql2iGM2QRQg2/HSSvPnfuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5uqWnVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDE3C4CEF1;
+	Fri, 10 Oct 2025 17:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760112617;
-	bh=BYrNZj2WgdfO2F/sOzJIX3fMIOh78MZdybtGGqt65CM=;
+	s=k20201202; t=1760116219;
+	bh=7N5j4MPGCNhqbzofGJ6iM7pLlyWv4XqbzW+i8bDy0VQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=T3s53mzEmtixItjKB55IAS1viBVIlSNF7jtmzmn8+VmpxGgfvr1TmyK9TSjmo4XEG
-	 K8k1cBoYZB6D1J9w8zpVu2yrxonyiUzJ+bIgqKaF+gvqpzVTC7ofZSJwHL0Hu6lFhs
-	 u9KieecYaXl2DjEUoCMMPeBAuMZd5dewlBuxbFFf26Y+YwMgXbN/0i5UJFeO5ybGXJ
-	 gEH17QX/AdtiPNB3zb7UHCuu0MloPQfVEpm6Vc0OlYx99ykAYbn3Bjuvjvy2JozyAq
-	 ScsAo9Dc/Tf5sW0u98E0kSLl+37qJxyjey8lrSUi6PaDA7owMrQTM2FI+dYLuQeg+n
-	 ZAZpi7oNgXCxQ==
+	b=P5uqWnVt2YhV8yR6U0oE6I66EmWmGnEXLDTvOWY0j5tCcUkTkDfu7mG2rqsZ122kF
+	 3Jx226etWzqawljDd+vzOKRd1EeGR2ADlKDMPq79+pFkNY1XYBcsK3O3956fMfTKVk
+	 OVufiCAtHpwzx4kzV3kKN5RDfgFr2bXEsUAwNmPWgKGr7mg75Eeqc9mDs6AAvZbV25
+	 rlQIv7SoG7FZymaien3CIl/W6GtUHH8pyOuAD6EPG5DO78bMTiBDB4wiuTJUFCCDea
+	 uDnu3f2dWpIK2GNFhIFj7RzHFhEgEa03rOY85lR//GR/IsNJ2gqLAWkW7Uw1fxb+47
+	 5Vrpsx/Heijvg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70CD93809A00;
-	Fri, 10 Oct 2025 16:10:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE1543809A00;
+	Fri, 10 Oct 2025 17:10:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -52,38 +52,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH] f2fs: fix wrong block mapping for
- multi-devices
-From: patchwork-bot+f2fs@kernel.org
+Subject: Re: [PATCH bpf] xsk: harden userspace-supplied &xdp_desc validation
+From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176011260525.1033062.2407373127040917969.git-patchwork-notify@kernel.org>
-Date: Fri, 10 Oct 2025 16:10:05 +0000
-References: <20251007035343.806273-1-jaegeuk@kernel.org>
-In-Reply-To: <20251007035343.806273-1-jaegeuk@kernel.org>
-To: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- stable@vger.kernel.org
+ <176011620657.1050631.4250868223272428117.git-patchwork-notify@kernel.org>
+Date: Fri, 10 Oct 2025 17:10:06 +0000
+References: <20251008165659.4141318-1-aleksander.lobakin@intel.com>
+In-Reply-To: <20251008165659.4141318-1-aleksander.lobakin@intel.com>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, sdf@fomichev.me,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kees@kernel.org,
+ nxne.cnse.osdt.itp.upstreaming@intel.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-hardening@vger.kernel.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to jaegeuk/f2fs.git (dev)
-by Jaegeuk Kim <jaegeuk@kernel.org>:
+This patch was applied to bpf/bpf.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
 
-On Tue,  7 Oct 2025 03:53:43 +0000 you wrote:
-> Assuming the disk layout as below,
+On Wed,  8 Oct 2025 18:56:59 +0200 you wrote:
+> Turned out certain clearly invalid values passed in &xdp_desc from
+> userspace can pass xp_{,un}aligned_validate_desc() and then lead
+> to UBs or just invalid frames to be queued for xmit.
 > 
-> disk0: 0            --- 0x00035abfff
-> disk1: 0x00035ac000 --- 0x00037abfff
-> disk2: 0x00037ac000 --- 0x00037ebfff
-> 
-> and we want to read data from offset=13568 having len=128 across the block
-> devices, we can illustrate the block addresses like below.
+> desc->len close to ``U32_MAX`` with a non-zero pool->tx_metadata_len
+> can cause positive integer overflow and wraparound, the same way low
+> enough desc->addr with a non-zero pool->tx_metadata_len can cause
+> negative integer overflow. Both scenarios can then pass the
+> validation successfully.
+> This doesn't happen with valid XSk applications, but can be used
+> to perform attacks.
 > 
 > [...]
 
 Here is the summary with links:
-  - [f2fs-dev] f2fs: fix wrong block mapping for multi-devices
-    https://git.kernel.org/jaegeuk/f2fs/c/7d9fdb3c9e5b
+  - [bpf] xsk: harden userspace-supplied &xdp_desc validation
+    https://git.kernel.org/bpf/bpf/c/07ca98f906a4
 
 You are awesome, thank you!
 -- 
