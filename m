@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-183987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2DABCD404
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:26:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CC7BCD32F
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85230188B505
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 97D524FE830
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D807B2F39B4;
-	Fri, 10 Oct 2025 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA2628A1CC;
+	Fri, 10 Oct 2025 13:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXtLwpjh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zn6XK9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939D628A1CC;
-	Fri, 10 Oct 2025 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C5E2F39BC;
+	Fri, 10 Oct 2025 13:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102553; cv=none; b=Pr6o5UlGvtPpOLbfwD8CDsjh1j0aXLtAZ2LZ2cQmK0s/YKGA2m3DS6AEWGJUBWfg6gOHGAIDFR1ikMqYDY7TB5zLTxLcV4Aztph/CqGxQXgPcR7q5cMzL7rhjb2/agy9dtsFLSl0mSGVKm7lvu7kbaKiqW8lK/NPuIZKOJTaDpQ=
+	t=1760102559; cv=none; b=FJvPlVM+rh5JMWFyvRpus5RSiRRXnYMB6wq17vUw8oSL4PGee5cXcfbSDF7z59+snl6seUTF5TbWVSP8QXZZTQ9RUbtq6V/jwbTpvmdw4hAienCFwRjGg+Br1vu3/7nelQEQnOz1uMJrbifieQ0Nw/I4V3XC6R1Ir1B6r3IX9xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102553; c=relaxed/simple;
-	bh=DbOffwnFqxyKgI0gpKLMHpcWyz4sSR251QpSejwP+yA=;
+	s=arc-20240116; t=1760102559; c=relaxed/simple;
+	bh=frQj4bdUQ3XBMTg4vve3dgLr2kX3FUuaEC1bGJD0S68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9a0WTDU+LzbCA5OUQUuq9RnRKSnTElVze26V2byHO0pmzymtgBTL1QyKcp4X2L0phDcBA8jcxiyTN56juMcDwTjPHc2X+SrUGjrSCPZVissjH3t1YEfHvjTRQtySfVOfN3hALifnuD4BxQjNH14zyEUrfS1YXATRUbxizGR8zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXtLwpjh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1002C4CEF1;
-	Fri, 10 Oct 2025 13:22:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RX9O29/zDTX1EwYjKSVwi/SO0lpnuP7buojcO6uNR2jkgXwovUoMzvFHVN8vOQ4lieDaUCIp5rtbx2XUm2EtSkWI88xg8KOpzOUCpKUDc8rRosis4bu1aZeFT6RbQ3ei1V/zAAVjJKk60cnCG615FdmCYsRVA7eNGn3TSYHyDsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zn6XK9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7035AC4CEF1;
+	Fri, 10 Oct 2025 13:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102553;
-	bh=DbOffwnFqxyKgI0gpKLMHpcWyz4sSR251QpSejwP+yA=;
+	s=korg; t=1760102558;
+	bh=frQj4bdUQ3XBMTg4vve3dgLr2kX3FUuaEC1bGJD0S68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXtLwpjh4eCLn02mUEb61YhGfpfIF2uAFkJ8gB6omtI+aVYTBHHaxxSV8WF+TVmsV
-	 xH/G5qe2HkzhTBcAPZx2ilu1n0wHuWZouzFUOgwoyX9DaoxBzvjGdU1Urv2gEf7dYS
-	 RTMpgq00J3a8KHZf7fniUWOAUwgCHrIBemHSjZpI=
+	b=1zn6XK9NsjrKqwRPcWVZBrkmNDpQhYNKoOgmmdlXeDLiEbGvzBNd/HFTcu6C5qlLO
+	 FG9krhFt+RxsxbJpOCuOJwHRog3pTJKrDpUVCC/YSFHnCnCpkihlb7gxldGs28YbqX
+	 W7/Z1iz/XofJkT0N1aMQOKxXTnYSHO3MwUUP+Ze8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 6.6 19/28] serial: stm32: allow selecting console when the driver is module
-Date: Fri, 10 Oct 2025 15:16:37 +0200
-Message-ID: <20251010131331.063769311@linuxfoundation.org>
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 6.6 20/28] staging: axis-fifo: fix maximum TX packet length check
+Date: Fri, 10 Oct 2025 15:16:38 +0200
+Message-ID: <20251010131331.099776092@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
 References: <20251010131330.355311487@linuxfoundation.org>
@@ -58,39 +58,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-commit cc4d900d0d6d8dd5c41832a93ff3cfa629a78f9a upstream.
+commit 52ff2b840bc723f3be1f096f8017c78e0515858c upstream.
 
-Console can be enabled on the UART compile as module.
-Change dependency to allow console mode when the driver is built as module.
+Since commit 2ca34b508774 ("staging: axis-fifo: Correct handling of
+tx_fifo_depth for size validation"), write() operations with packets
+larger than 'tx_fifo_depth - 4' words are no longer rejected with -EINVAL.
 
-Fixes: 48a6092fb41fa ("serial: stm32-usart: Add STM32 USART Driver")
+Fortunately, the packets are not actually getting transmitted to hardware,
+otherwise they would be raising a 'Transmit Packet Overrun Error'
+interrupt, which requires a reset of the TX circuit to recover from.
+
+Instead, the request times out inside wait_event_interruptible_timeout()
+and always returns -EAGAIN, since the wake up condition can never be true
+for these packets. But still, they unnecessarily block other tasks from
+writing to the FIFO and the EAGAIN return code signals userspace to retry
+the write() call, even though it will always fail and time out.
+
+According to the AXI4-Stream FIFO reference manual (PG080), the maximum
+valid packet length is 'tx_fifo_depth - 4' words, so attempting to send
+larger packets is invalid and should not be happening in the first place:
+
+> The maximum packet that can be transmitted is limited by the size of
+> the FIFO, which is (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
+
+Therefore, bring back the old behavior and outright reject packets larger
+than 'tx_fifo_depth - 4' with -EINVAL. Add a comment to explain why the
+check is necessary. The dev_err() message was removed to avoid cluttering
+the dmesg log if an invalid packet is received from userspace.
+
+Fixes: 2ca34b508774 ("staging: axis-fifo: Correct handling of tx_fifo_depth for size validation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Link: https://lore.kernel.org/r/20250822141923.61133-1-raphael.gallais-pou@foss.st.com
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250817171350.872105-1-ovidiu.panait.oss@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/axis-fifo/axis-fifo.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -1405,7 +1405,7 @@ config SERIAL_STM32
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -491,11 +491,17 @@ static ssize_t axis_fifo_write(struct fi
+ 		return -EINVAL;
+ 	}
  
- config SERIAL_STM32_CONSOLE
- 	bool "Support for console on STM32"
--	depends on SERIAL_STM32=y
-+	depends on SERIAL_STM32
- 	select SERIAL_CORE_CONSOLE
- 	select SERIAL_EARLYCON
+-	if (words_to_write > fifo->tx_fifo_depth) {
+-		dev_err(fifo->dt_device, "tried to write more words [%u] than slots in the fifo buffer [%u]\n",
+-			words_to_write, fifo->tx_fifo_depth);
++	/*
++	 * In 'Store-and-Forward' mode, the maximum packet that can be
++	 * transmitted is limited by the size of the FIFO, which is
++	 * (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
++	 *
++	 * Do not attempt to send a packet larger than 'tx_fifo_depth - 4',
++	 * otherwise a 'Transmit Packet Overrun Error' interrupt will be
++	 * raised, which requires a reset of the TX circuit to recover.
++	 */
++	if (words_to_write > (fifo->tx_fifo_depth - 4))
+ 		return -EINVAL;
+-	}
  
+ 	if (fifo->write_flags & O_NONBLOCK) {
+ 		/*
 
 
 
