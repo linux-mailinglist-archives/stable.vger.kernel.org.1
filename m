@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-183911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FFDBCD2CF
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCA7BCD29C
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0E4F1884A90
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D84971A67D74
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DDE2F2617;
-	Fri, 10 Oct 2025 13:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A383A2F3C20;
+	Fri, 10 Oct 2025 13:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKUcudRC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CngeIvyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458EA2F25FD;
-	Fri, 10 Oct 2025 13:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6104E2F25F6;
+	Fri, 10 Oct 2025 13:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102336; cv=none; b=NEkGf1/A0FxWczmirjwug+e9ULFeWnajiWCf4KYF5SzfiVlT3aWM4OvA8kNfTKGdfpy4ApPCD0WTyvmYCqo3DJqYwgZNk9Nl+Z/7wIiuKvUtzIpQIP0xU0z9Kckj+kFPQ1HPXe0SNEUTrsXwdQNTFtGzhYu0Q5TUUzd8Lk6nhBY=
+	t=1760102299; cv=none; b=bBv/9Nlbmydy7FzmD1/jXV7gOpujLzdozjOBne/gR3U1/FONV1hGu0N5PGDuQ/YKlpBthlJKmWefB7ddS5ORRjzrwouX224Y2aEkr1o1pOrE6iIhJXPTTP6iaDdjhF5JP1fg4a247pD6WKENjWFy2L7M03VTwefZPH42WThsFE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102336; c=relaxed/simple;
-	bh=FeAlHTss76h8QCdm4tVvFLu41PSgLcu1qhOWf2CQj3k=;
+	s=arc-20240116; t=1760102299; c=relaxed/simple;
+	bh=gZbNCzFfNH12lpYMHc4seFl7xBQbRZw/A5b5YQeuw64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N7YFNfbStHgctaMueocJ08SKiVT/fhTAsptS2G5N6JWjsBSTwUox3IT5zbz9i1NCoaKRexvzeuFc2J/PuOO5I8E9nVe20q7G7H+poOVB2NHbp0/e1d1z0Xu0qHa87P2PjBSWqCjyxrto0jtiqs1VmLKz4raDthGveac6hdmnauc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKUcudRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3492C4CEF1;
-	Fri, 10 Oct 2025 13:18:55 +0000 (UTC)
+	 MIME-Version; b=MBbleOhcUH+Lfq6RGTJ8zN1Ipc935W63byKvBho2nO3Tlor9z1P+8T0jHf7RuOckqd5uUvue/jmWGt71lBIlAYyG/LdyAibNTAE3TUZM3PZ/T8I1vSCJ4r7PH0KYxiU3q+nR5ZVwp7DhkcEbS+GEQ2AWDxgcuZ9pLau16bulbtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CngeIvyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01B7C4CEFE;
+	Fri, 10 Oct 2025 13:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102336;
-	bh=FeAlHTss76h8QCdm4tVvFLu41PSgLcu1qhOWf2CQj3k=;
+	s=korg; t=1760102299;
+	bh=gZbNCzFfNH12lpYMHc4seFl7xBQbRZw/A5b5YQeuw64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZKUcudRCDrZwqWUWs1dIPAEUuX959E9K8zjxjfwdv2QNpI8gVK765BVmGhLYYxOIy
-	 Eyjzi3aiiO7/UN2KgKxdPxFF+JR/nqAHESbDPj6GGs+IBSQM74BlUKgnSWWMPYtdvl
-	 V26iMLR87YI3gk2D+aRA7uQR3+8OAaGTlAe5Wxds=
+	b=CngeIvyJ91CSzM/DKof/VXKQrqP6N8pwL58C/hv0LrbCOj0nIXtxChA86sHuZq1ik
+	 oZb/ardclXZGEmzq6L+RxkCac8OeyYtsui4CP/H0lOl83fchs0zHaGxV25neLp7u4q
+	 CFpsRyhB8f5QCLiCE/CogFwuLS4KgfxATh2BafjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 20/41] platform/x86/amd/pmf: Support new ACPI ID AMDI0108
-Date: Fri, 10 Oct 2025 15:16:08 +0200
-Message-ID: <20251010131334.153016626@linuxfoundation.org>
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH 6.17 14/26] serial: stm32: allow selecting console when the driver is module
+Date: Fri, 10 Oct 2025 15:16:09 +0200
+Message-ID: <20251010131331.728779369@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +58,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 
-[ Upstream commit 1b09d08866277677d11726116f5e786d5ba00173 ]
+commit cc4d900d0d6d8dd5c41832a93ff3cfa629a78f9a upstream.
 
-Include the ACPI ID AMDI0108, which is used on upcoming AMD platforms, in
-the PMF driver's list of supported devices.
+Console can be enabled on the UART compile as module.
+Change dependency to allow console mode when the driver is built as module.
 
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250915090546.2759130-1-Shyam-sundar.S-k@amd.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 48a6092fb41fa ("serial: stm32-usart: Add STM32 USART Driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Link: https://lore.kernel.org/r/20250822141923.61133-1-raphael.gallais-pou@foss.st.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmf/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index ef988605c4da6..bc544a4a5266e 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -403,6 +403,7 @@ static const struct acpi_device_id amd_pmf_acpi_ids[] = {
- 	{"AMDI0103", 0},
- 	{"AMDI0105", 0},
- 	{"AMDI0107", 0},
-+	{"AMDI0108", 0},
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, amd_pmf_acpi_ids);
--- 
-2.51.0
-
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -1412,7 +1412,7 @@ config SERIAL_STM32
+ 
+ config SERIAL_STM32_CONSOLE
+ 	bool "Support for console on STM32"
+-	depends on SERIAL_STM32=y
++	depends on SERIAL_STM32
+ 	select SERIAL_CORE_CONSOLE
+ 	select SERIAL_EARLYCON
+ 
 
 
 
