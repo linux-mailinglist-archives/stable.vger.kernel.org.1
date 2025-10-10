@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-183946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A333BCD311
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60832BCD302
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9E1D402DCB
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52860540611
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106AB28A1CC;
-	Fri, 10 Oct 2025 13:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046502F746C;
+	Fri, 10 Oct 2025 13:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcNZ+l0z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ay3tYod5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C102421579F;
-	Fri, 10 Oct 2025 13:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BA22EF664;
+	Fri, 10 Oct 2025 13:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102436; cv=none; b=M1pm3HGZb4tJ+4AKuUlVoBgX30AMRs34BzWaxth+K5991pqohFs0wrVZtUDTIQ/B7Nbr9dGhiX0sEeZpDLQHjrkbPlsjdUW9muW0e/fDjF4V5kmrPr4mzjww/u9D/xWQgqYakzu6sFR0AUcOtJvHngaqYoCpbYgw90CqzTQnzKA=
+	t=1760102419; cv=none; b=FsnFNmDw8iO1uEiqBoN+bKCytYNRzFUP78tuAhzMl/dRVT/G3oxzSJP2sr8sgw8zwjSA1nbbSqfmOU1TY0QhwIuqJzuZIB4quLpbTvLqSKIteJPaHd8dc+N0tS5lHQ8cMCuQbA8o6YPYbqDP4oMfbjlQ8yMT50OtjYnMxZKKDOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102436; c=relaxed/simple;
-	bh=wJGEE/+GCx++P98xxmGRsk4m8L/avcQH7/pWxciWDTY=;
+	s=arc-20240116; t=1760102419; c=relaxed/simple;
+	bh=rM7i4Vb1WcQYfDKRFKp5Wzkosl4D5VjxclSzMGKiags=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nigq41jbgObq2RjUUKawxr5c9vKoJphsrlox+PR840oIcydbUQfb05o9sHakhMRgu4L6ACA+AsyWXkfMRloF57IOcsz6N1xTZExI5W0bAcymvFpaVw0/gZW8HuiDXJTz/y6IwFyz3AtJXjs8s56jtuZrE/x92Nsnk5eUwjy3dSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcNZ+l0z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47822C4CEF8;
-	Fri, 10 Oct 2025 13:20:36 +0000 (UTC)
+	 MIME-Version; b=YnUTQU9HgavIgqwzwaKvChsy3EwckrIxKZSMkrUmPuOr3sCKibWZLsSoullWdZH1TiQRL5bLDgTq443L/ZMa1AbjL8OWbbc26leDYJ+lyHZw8ZuwR1CPasyUgCl8E6y0ob/VqwWWdok8j3Hmuf9GU4EO+eENG1rokxj9e41UWA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ay3tYod5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434DEC4CEF1;
+	Fri, 10 Oct 2025 13:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102436;
-	bh=wJGEE/+GCx++P98xxmGRsk4m8L/avcQH7/pWxciWDTY=;
+	s=korg; t=1760102419;
+	bh=rM7i4Vb1WcQYfDKRFKp5Wzkosl4D5VjxclSzMGKiags=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LcNZ+l0zzhZfSZ8lsFrCBJsHhS7HU3ihjf1/p0AKMeN5GL23OMZWdxm0GsVSRRoij
-	 BRtsL65Bada9zyQ2HhiWqQ/ekWlU45D711ErOKgTv7sX0M/6XzY6wdTC/RFx7KBUtc
-	 stw3gRWsusZ7mdmjr6oX+3RfjxlerePXLI2xM3N0=
+	b=ay3tYod57lBw4jC0wZBkBqZbEck4VlbpqxxiihXt1kPewV8xpNin8Nn1zyL/WPJL9
+	 dC1NJXMJwnKHWA9lIQGxM+056qEOCcz+bA7/eOi/TzAyt30EW7Cl3vG/kjIsTKMOg2
+	 5sUpqSoN2x3oir355ck+lTJNisbUf/uGjGP9DGdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c3e0cdfbfe351b0bc0e@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 14/35] btrfs: ref-verify: handle damaged extent root tree
+	syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Romain Sioen <romain.sioen@microchip.com>
+Subject: [PATCH 6.16 28/41] hid: fix I2C read buffer overflow in raw_event() for mcp2221
 Date: Fri, 10 Oct 2025 15:16:16 +0200
-Message-ID: <20251010131332.309244682@linuxfoundation.org>
+Message-ID: <20251010131334.436622059@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit ed4e6b5d644c4dd2bc2872ffec036b7da0ec2e27 ]
+commit b56cc41a3ae7323aa3c6165f93c32e020538b6d2 upstream.
 
-Syzbot hits a problem with enabled ref-verify, ignorebadroots and a
-fuzzed/damaged extent tree. There's no fallback option like in other
-places that can deal with it so disable the whole ref-verify as it is
-just a debugging feature.
+As reported by syzbot, mcp2221_raw_event lacked
+validation of incoming I2C read data sizes, risking buffer
+overflows in mcp->rxbuf during multi-part transfers.
+As highlighted in the DS20005565B spec, p44, we have:
+"The number of read-back data bytes to follow in this packet:
+from 0 to a maximum of 60 bytes of read-back bytes."
+This patch enforces we don't exceed this limit.
 
-Reported-by: syzbot+9c3e0cdfbfe351b0bc0e@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/0000000000001b6052062139be1c@google.com/
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=52c1a7d3e5b361ccd346
+Tested-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Link: https://patch.msgid.link/20250726220931.7126-1-contact@arnaud-lcm.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ref-verify.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/hid/hid-mcp2221.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/btrfs/ref-verify.c b/fs/btrfs/ref-verify.c
-index 2928abf7eb827..fc46190d26c8e 100644
---- a/fs/btrfs/ref-verify.c
-+++ b/fs/btrfs/ref-verify.c
-@@ -998,11 +998,18 @@ int btrfs_build_ref_tree(struct btrfs_fs_info *fs_info)
- 	if (!btrfs_test_opt(fs_info, REF_VERIFY))
- 		return 0;
- 
-+	extent_root = btrfs_extent_root(fs_info, 0);
-+	/* If the extent tree is damaged we cannot ignore it (IGNOREBADROOTS). */
-+	if (IS_ERR(extent_root)) {
-+		btrfs_warn(fs_info, "ref-verify: extent tree not available, disabling");
-+		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
-+		return 0;
-+	}
-+
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
- 
--	extent_root = btrfs_extent_root(fs_info, 0);
- 	eb = btrfs_read_lock_root_node(extent_root);
- 	level = btrfs_header_level(eb);
- 	path->nodes[level] = eb;
--- 
-2.51.0
-
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -816,6 +816,10 @@ static int mcp2221_raw_event(struct hid_
+ 			}
+ 			if (data[2] == MCP2221_I2C_READ_COMPL ||
+ 			    data[2] == MCP2221_I2C_READ_PARTIAL) {
++				if (!mcp->rxbuf || mcp->rxbuf_idx < 0 || data[3] > 60) {
++					mcp->status = -EINVAL;
++					break;
++				}
+ 				buf = mcp->rxbuf;
+ 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
+ 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
 
 
 
