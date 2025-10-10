@@ -1,186 +1,222 @@
-Return-Path: <stable+bounces-183897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE80BCD269
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:26 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3164BCD377
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E50323A3483
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:20:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1392A4FDD82
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434A02F3C12;
-	Fri, 10 Oct 2025 13:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C122F3C3A;
+	Fri, 10 Oct 2025 13:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWqLV6iS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5hGrlm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F283F2F3605;
-	Fri, 10 Oct 2025 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD152F25F6;
+	Fri, 10 Oct 2025 13:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102297; cv=none; b=hxiBnOfQ7MfcrSZB84+NakqXAH4K2x49/3iB8CpRKviuOd+LoZqJ5TVix7EoAcCINZnn7xqUjH+urdZjdK+DVygbivpLdqQzuGytQpguVbvNVijuNB2ZxaEIB/WrFcxs84WRCbUBhl8Ep1VqvN8YECBP+P4AOT+G1vYznKZDpl0=
+	t=1760102591; cv=none; b=FI0T2jVMxiRIIabnY6WwLXLa/D8YxmbRtFUHxnJoYWJCNPw0Tagb6cPpkGakd1JrKCybLfrsbTu3jSn5vClzvTnWjD5liuOSMXz4rQ2y657h1GNMEptOk+ye9bQ04A6kPlgDyUanoyLmT8Zx4j0FpXaDSYN2zylQ93c9AJ/qqso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102297; c=relaxed/simple;
-	bh=R18m1mh9APDC4pZwCN2GxG+lQh0BftKUch6P8yd/STA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8nDq0FFzwlA8srLMX+XB4k11umYerIMp7o5Az2rdyytJyizJ8Jm5VSSHJ/Fsszg1EdgdHraOn0xhhK274qXgxfyORIOyFaLTLYI1SZFCsOubvUOGh3jeGqo1ki6zJvDLhyEN4T6r2UWYgrbiu/DVYXovMzZrNI3nJq4f0NE/G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWqLV6iS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18221C4CEF1;
-	Fri, 10 Oct 2025 13:18:15 +0000 (UTC)
+	s=arc-20240116; t=1760102591; c=relaxed/simple;
+	bh=UOvgpvgHCJKzXQ+krMTH0HNnHMX0rn1QIWlOqs4vDcU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I/lScqbt5fXtGBb3DSDtHwE7Acre9Vg2Dxdp5S3eqQnNEbMdIInrmXS/Q3dP1Fr1zV/gc3xCzEXZRJvImWkPtCgKdbHe5RS06sIlm8mfBseERJ6PGV+YyVy0J0pz5I+EoGiMHfAI44ApKoMpAQ1nWo5CMSH/u17vwKhObuJM5EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5hGrlm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C83C4CEF1;
+	Fri, 10 Oct 2025 13:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102296;
-	bh=R18m1mh9APDC4pZwCN2GxG+lQh0BftKUch6P8yd/STA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWqLV6iSDK6Ve+6y2My1HGkiSW0RvWD2K0V07BJGvQ+ymzg/bcYxkl9cN706RF5T+
-	 IwbbGRBIBbK5kAVUKtDdaMcdJbq1w0ezmEiI7kvF3g6gmvgexl8/gPv3Tw5kWXXNQ0
-	 nFRyRA8l7iGxw8B/9GMsS9etEEP95nuws8/8uZeA=
+	s=korg; t=1760102590;
+	bh=UOvgpvgHCJKzXQ+krMTH0HNnHMX0rn1QIWlOqs4vDcU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=U5hGrlm4+GXj62MbzJv+6Llm3JcIl7S9b2GPS7tWd4P+yRv+P3BqVW1IyyQhlPV3s
+	 Tyl03JVLu7Yo636YHI+K+xD6cT5MuWe/Hlo+lishv6qhujbeVod2EH88NNAaalfNYE
+	 N1x8gC6HzmzQK2Y/AHcTtkxeSbqH/RHIe631DmHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 6.17 23/26] net/9p: fix double req put in p9_fd_cancelled
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org
+Subject: [PATCH 6.6 00/28] 6.6.111-rc1 review
 Date: Fri, 10 Oct 2025 15:16:18 +0200
-Message-ID: <20251010131332.049400104@linuxfoundation.org>
+Message-ID: <20251010131330.355311487@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.111-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.6.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.6.111-rc1
+X-KernelTest-Deadline: 2025-10-12T13:13+00:00
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.6.111 release.
+There are 28 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sun, 12 Oct 2025 13:13:18 +0000.
+Anything received after that time might be too late.
 
-From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.111-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+and the diffstat can be found below.
 
-commit 674b56aa57f9379854cb6798c3bbcef7e7b51ab7 upstream.
+thanks,
 
-Syzkaller reports a KASAN issue as below:
+greg k-h
 
-general protection fault, probably for non-canonical address 0xfbd59c0000000021: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: maybe wild-memory-access in range [0xdead000000000108-0xdead00000000010f]
-CPU: 0 PID: 5083 Comm: syz-executor.2 Not tainted 6.1.134-syzkaller-00037-g855bd1d7d838 #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:__list_del include/linux/list.h:114 [inline]
-RIP: 0010:__list_del_entry include/linux/list.h:137 [inline]
-RIP: 0010:list_del include/linux/list.h:148 [inline]
-RIP: 0010:p9_fd_cancelled+0xe9/0x200 net/9p/trans_fd.c:734
+-------------
+Pseudo-Shortlog of commits:
 
-Call Trace:
- <TASK>
- p9_client_flush+0x351/0x440 net/9p/client.c:614
- p9_client_rpc+0xb6b/0xc70 net/9p/client.c:734
- p9_client_version net/9p/client.c:920 [inline]
- p9_client_create+0xb51/0x1240 net/9p/client.c:1027
- v9fs_session_init+0x1f0/0x18f0 fs/9p/v9fs.c:408
- v9fs_mount+0xba/0xcb0 fs/9p/vfs_super.c:126
- legacy_get_tree+0x108/0x220 fs/fs_context.c:632
- vfs_get_tree+0x8e/0x300 fs/super.c:1573
- do_new_mount fs/namespace.c:3056 [inline]
- path_mount+0x6a6/0x1e90 fs/namespace.c:3386
- do_mount fs/namespace.c:3399 [inline]
- __do_sys_mount fs/namespace.c:3607 [inline]
- __se_sys_mount fs/namespace.c:3584 [inline]
- __x64_sys_mount+0x283/0x300 fs/namespace.c:3584
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.6.111-rc1
 
-This happens because of a race condition between:
+Sean Christopherson <seanjc@google.com>
+    KVM: x86: Don't (re)check L1 intercepts when completing userspace I/O
 
-- The 9p client sending an invalid flush request and later cleaning it up;
-- The 9p client in p9_read_work() canceled all pending requests.
+Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+    net/9p: fix double req put in p9_fd_cancelled
 
-      Thread 1                              Thread 2
-    ...
-    p9_client_create()
-    ...
-    p9_fd_create()
-    ...
-    p9_conn_create()
-    ...
-    // start Thread 2
-    INIT_WORK(&m->rq, p9_read_work);
-                                        p9_read_work()
-    ...
-    p9_client_rpc()
-    ...
-                                        ...
-                                        p9_conn_cancel()
-                                        ...
-                                        spin_lock(&m->req_lock);
-    ...
-    p9_fd_cancelled()
-    ...
-                                        ...
-                                        spin_unlock(&m->req_lock);
-                                        // status rewrite
-                                        p9_client_cb(m->client, req, REQ_STATUS_ERROR)
-                                        // first remove
-                                        list_del(&req->req_list);
-                                        ...
+Herbert Xu <herbert@gondor.apana.org.au>
+    crypto: rng - Ensure set_ent is always present
 
-    spin_lock(&m->req_lock)
-    ...
-    // second remove
-    list_del(&req->req_list);
-    spin_unlock(&m->req_lock)
-  ...
+Charlie Jenkins <charlie@rivosinc.com>
+    riscv: mm: Do not restrict mmap address based on hint
 
-Commit 74d6a5d56629 ("9p/trans_fd: Fix concurrency del of req_list in
-p9_fd_cancelled/p9_read_work") fixes a concurrency issue in the 9p filesystem
-client where the req_list could be deleted simultaneously by both
-p9_read_work and p9_fd_cancelled functions, but for the case where req->status
-equals REQ_STATUS_RCVD.
+Charlie Jenkins <charlie@rivosinc.com>
+    riscv: mm: Use hint address in mmap if available
 
-Update the check for req->status in p9_fd_cancelled to skip processing not
-just received requests, but anything that is not SENT, as whatever
-changed the state from SENT also removed the request from its list.
+Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+    driver core/PM: Set power.no_callbacks along with power.no_pm
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+    staging: axis-fifo: flush RX FIFO on read errors
 
-Fixes: afd8d6541155 ("9P: Add cancelled() to the transport functions.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
-Message-ID: <20250715154815.3501030-1-Sergey.Nalivayko@kaspersky.com>
-[updated the check from status == RECV || status == ERROR to status != SENT]
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/9p/trans_fd.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+    staging: axis-fifo: fix TX handling on copy_from_user() failure
 
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -726,10 +726,10 @@ static int p9_fd_cancelled(struct p9_cli
- 	p9_debug(P9_DEBUG_TRANS, "client %p req %p\n", client, req);
- 
- 	spin_lock(&m->req_lock);
--	/* Ignore cancelled request if message has been received
--	 * before lock.
--	 */
--	if (req->status == REQ_STATUS_RCVD) {
-+	/* Ignore cancelled request if status changed since the request was
-+	 * processed in p9_client_flush()
-+	*/
-+	if (req->status != REQ_STATUS_SENT) {
- 		spin_unlock(&m->req_lock);
- 		return 0;
- 	}
+Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+    staging: axis-fifo: fix maximum TX packet length check
+
+Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+    serial: stm32: allow selecting console when the driver is module
+
+Arnaud Lecomte <contact@arnaud-lcm.com>
+    hid: fix I2C read buffer overflow in raw_event() for mcp2221
+
+Jeongjun Park <aha310510@gmail.com>
+    ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
+
+Takashi Iwai <tiwai@suse.de>
+    ALSA: usb-audio: Kill timer properly at removal
+
+Christoffer Sandberg <cs@tuxedo.de>
+    platform/x86/amd/pmc: Add Stellaris Slim Gen6 AMD to spurious 8042 quirks list
+
+Duy Nguyen <duy.nguyen.rh@renesas.com>
+    can: rcar_canfd: Fix controller mode setting
+
+Chen Yufeng <chenyufeng@iie.ac.cn>
+    can: hi311x: fix null pointer dereference when resuming from sleep before interface was enabled
+
+David Sterba <dsterba@suse.com>
+    btrfs: ref-verify: handle damaged extent root tree
+
+Jack Yu <jack.yu@realtek.com>
+    ASoC: rt5682s: Adjust SAR ADC button mode to fix noise issue
+
+hupu <hupu.gm@gmail.com>
+    perf subcmd: avoid crash in exclude_cmds when excludes is empty
+
+aprilgrimoire <aprilgrimoire@proton.me>
+    platform/x86/amd/pmc: Add MECHREVO Yilong15Pro to spurious_8042 list
+
+Mikulas Patocka <mpatocka@redhat.com>
+    dm-integrity: limit MAX_TAG_SIZE to 255
+
+Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+    ASoC: amd: acp: Adjust pdm gain value
+
+Bitterblue Smith <rtl8821cerfe2@gmail.com>
+    wifi: rtlwifi: rtl8192cu: Don't claim USB ID 07b8:8188
+
+Xiaowei Li <xiaowei.li@simcom.com>
+    USB: serial: option: add SIMCom 8230C compositions
+
+Duoming Zhou <duoming@zju.edu.cn>
+    media: i2c: tc358743: Fix use-after-free bugs caused by orphan timer in probe
+
+Duoming Zhou <duoming@zju.edu.cn>
+    media: tuner: xc5000: Fix use-after-free in xc5000_release
+
+Ricardo Ribalda <ribalda@chromium.org>
+    media: tunner: xc5000: Refactor firmware load
+
+Will Deacon <will@kernel.org>
+    KVM: arm64: Fix softirq masking in FPSIMD register saving sequence
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |  4 +-
+ arch/arm64/kernel/fpsimd.c                         |  8 ++-
+ arch/riscv/include/asm/processor.h                 | 33 ++---------
+ arch/x86/kvm/emulate.c                             |  9 ++-
+ arch/x86/kvm/kvm_emulate.h                         |  3 +-
+ arch/x86/kvm/x86.c                                 | 15 ++---
+ crypto/rng.c                                       |  8 +++
+ drivers/hid/hid-mcp2221.c                          |  4 ++
+ drivers/md/dm-integrity.c                          |  2 +-
+ drivers/media/i2c/tc358743.c                       |  4 +-
+ drivers/media/tuners/xc5000.c                      | 41 ++++++-------
+ drivers/net/can/rcar/rcar_canfd.c                  |  7 ++-
+ drivers/net/can/spi/hi311x.c                       | 33 ++++++-----
+ .../net/wireless/realtek/rtlwifi/rtl8192cu/sw.c    |  1 -
+ drivers/platform/x86/amd/pmc/pmc-quirks.c          | 15 +++++
+ drivers/staging/axis-fifo/axis-fifo.c              | 68 ++++++++++------------
+ drivers/tty/serial/Kconfig                         |  2 +-
+ drivers/usb/serial/option.c                        |  6 ++
+ fs/btrfs/ref-verify.c                              |  9 ++-
+ include/linux/device.h                             |  3 +
+ net/9p/trans_fd.c                                  |  8 +--
+ sound/soc/amd/acp/amd.h                            |  2 +-
+ sound/soc/codecs/rt5682s.c                         | 17 +++---
+ sound/usb/midi.c                                   | 10 ++--
+ tools/lib/subcmd/help.c                            |  3 +
+ 25 files changed, 166 insertions(+), 149 deletions(-)
 
 
 
