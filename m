@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-183959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F17BCD3B8
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:25:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E99BBCD1BA
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01D2A1A6805B
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C3EEE4FD6A9
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE6521579F;
-	Fri, 10 Oct 2025 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D5D2F5A01;
+	Fri, 10 Oct 2025 13:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTM9OtPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkSIU9RA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A0D2F25EC;
-	Fri, 10 Oct 2025 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2B12F549B;
+	Fri, 10 Oct 2025 13:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102473; cv=none; b=j8+xoeZzbjJCiHefU5TT19O2ntd3YgRRtYCJVmSe8yceOV4Ntsb3bKE3JAf9uJ1lsjD07uw3GXZf+AcndCCi51vbJ0EhuNwbz78tCDMbcNGC2qsRObgKZpK8RsGQCf2nz+o5RttyyZoZOKyTJsbAuw7iB09bW4IzMiVITfVYiBQ=
+	t=1760102265; cv=none; b=t6Y1x+jcjzbBi/0fMbKHqW5E8gZDrufOI36C/0U3g4hbHgZdehXUFY3JdVwil0NbJ+Cq3lp242Iot0xOKqWcP/wlJemWQkRqmFFkq5utX/3OcChCuqhxLwatubzlL8FGRk7T1FDezL7Nwx5dSl4Crr2qH4hWRHaP6C64is3QQ9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102473; c=relaxed/simple;
-	bh=37276s9aDTKboCx1kq2wnDbrgnJOYp2BeIknOjZFlUk=;
+	s=arc-20240116; t=1760102265; c=relaxed/simple;
+	bh=dEpy/h3ziJC4mHAurEtPg4qfPUlolWZ2i3DWXP78aM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mh7KuP9k0to7dqDipvFVB9AgxLf+ZjSbtXEXt6lUt897j6y2xUMa5dvi87RRQe/vfCjZOrmswd/7H7Re81MxRFEswWK0jEJxunW65v9Rru5ElZgUzbC0ywYB4tDSfNEPRwpA3wJxAwn6zxjX8wHzvifY23xp+SjEY3XNz2VY/1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTM9OtPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042EBC4CEF9;
-	Fri, 10 Oct 2025 13:21:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kLOm1hsyFa8HWCarGHfNO5mrqt5+Bh2flHbWDvKeyq9KRN4iuXMAqGZd+TQrXwCvnibBdyLLYIAqNk6nfKeNZoo2gwIzlQyqwwvHXgd4GHUd2dalgpIiBQEOO5w783hi2XMDNh/ugAr6gOK4P32RtdSFqIrcm1SioFWRn2OI1Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkSIU9RA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723DBC4CEF1;
+	Fri, 10 Oct 2025 13:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102473;
-	bh=37276s9aDTKboCx1kq2wnDbrgnJOYp2BeIknOjZFlUk=;
+	s=korg; t=1760102264;
+	bh=dEpy/h3ziJC4mHAurEtPg4qfPUlolWZ2i3DWXP78aM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TTM9OtPOdQNo/P+8o5pYCg8xOKnZTyxkisfJfHysjz9RTJCtJI4Lr6mRiIXpBEMc7
-	 Z3A/lsbS5RJTcDmPrA5pGh6GBYMfsWEY+5akLV2XWok9FOtnfv0djy3mjf+WWnc1wR
-	 0iGMzS7aThl4G89sJUOQaza0sUcaHTl0iiz/oEfw=
+	b=rkSIU9RAyVtEU4lMxnJeS/RysYFdnHECzLWEkwLBHQkaiyW7g08SnmzT0bj1aDqRV
+	 1ljrHgH+O0xwVpv9M6GEkNX/kDYOSpLq9wJq0JMAV9w3BF+XNgEY4aohNa7h+HVdKV
+	 vmVERwzusTiT9QHfBzIazjv8i37Mo8rNaj8A+peE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 08/35] ASoC: amd: acp: Adjust pdm gain value
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 6.17 15/26] staging: axis-fifo: fix maximum TX packet length check
 Date: Fri, 10 Oct 2025 15:16:10 +0200
-Message-ID: <20251010131332.094312210@linuxfoundation.org>
+Message-ID: <20251010131331.764273452@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +58,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit f1d0260362d72f9f454dc1f9db2eeb80cb801f28 ]
+commit 52ff2b840bc723f3be1f096f8017c78e0515858c upstream.
 
-Set pdm gain value by setting PDM_MISC_CTRL_MASK value.
-To avoid low pdm gain value.
+Since commit 2ca34b508774 ("staging: axis-fifo: Correct handling of
+tx_fifo_depth for size validation"), write() operations with packets
+larger than 'tx_fifo_depth - 4' words are no longer rejected with -EINVAL.
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250821054606.1279178-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fortunately, the packets are not actually getting transmitted to hardware,
+otherwise they would be raising a 'Transmit Packet Overrun Error'
+interrupt, which requires a reset of the TX circuit to recover from.
+
+Instead, the request times out inside wait_event_interruptible_timeout()
+and always returns -EAGAIN, since the wake up condition can never be true
+for these packets. But still, they unnecessarily block other tasks from
+writing to the FIFO and the EAGAIN return code signals userspace to retry
+the write() call, even though it will always fail and time out.
+
+According to the AXI4-Stream FIFO reference manual (PG080), the maximum
+valid packet length is 'tx_fifo_depth - 4' words, so attempting to send
+larger packets is invalid and should not be happening in the first place:
+
+> The maximum packet that can be transmitted is limited by the size of
+> the FIFO, which is (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
+
+Therefore, bring back the old behavior and outright reject packets larger
+than 'tx_fifo_depth - 4' with -EINVAL. Add a comment to explain why the
+check is necessary. The dev_err() message was removed to avoid cluttering
+the dmesg log if an invalid packet is received from userspace.
+
+Fixes: 2ca34b508774 ("staging: axis-fifo: Correct handling of tx_fifo_depth for size validation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250817171350.872105-1-ovidiu.panait.oss@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/acp/amd.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/axis-fifo/axis-fifo.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/amd/acp/amd.h b/sound/soc/amd/acp/amd.h
-index 854269fea875f..aa0aa64202fe4 100644
---- a/sound/soc/amd/acp/amd.h
-+++ b/sound/soc/amd/acp/amd.h
-@@ -135,7 +135,7 @@
- #define PDM_DMA_INTR_MASK       0x10000
- #define PDM_DEC_64              0x2
- #define PDM_CLK_FREQ_MASK       0x07
--#define PDM_MISC_CTRL_MASK      0x10
-+#define PDM_MISC_CTRL_MASK      0x18
- #define PDM_ENABLE              0x01
- #define PDM_DISABLE             0x00
- #define DMA_EN_MASK             0x02
--- 
-2.51.0
-
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -322,11 +322,17 @@ static ssize_t axis_fifo_write(struct fi
+ 		return -EINVAL;
+ 	}
+ 
+-	if (words_to_write > fifo->tx_fifo_depth) {
+-		dev_err(fifo->dt_device, "tried to write more words [%u] than slots in the fifo buffer [%u]\n",
+-			words_to_write, fifo->tx_fifo_depth);
++	/*
++	 * In 'Store-and-Forward' mode, the maximum packet that can be
++	 * transmitted is limited by the size of the FIFO, which is
++	 * (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
++	 *
++	 * Do not attempt to send a packet larger than 'tx_fifo_depth - 4',
++	 * otherwise a 'Transmit Packet Overrun Error' interrupt will be
++	 * raised, which requires a reset of the TX circuit to recover.
++	 */
++	if (words_to_write > (fifo->tx_fifo_depth - 4))
+ 		return -EINVAL;
+-	}
+ 
+ 	if (fifo->write_flags & O_NONBLOCK) {
+ 		/*
 
 
 
