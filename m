@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-183876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFEC4BCD14B
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FFDBCD2CF
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F133B69CA
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0E4F1884A90
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AF82877DC;
-	Fri, 10 Oct 2025 13:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DDE2F2617;
+	Fri, 10 Oct 2025 13:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYWfFYvs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKUcudRC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CD621257F;
-	Fri, 10 Oct 2025 13:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458EA2F25FD;
+	Fri, 10 Oct 2025 13:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102235; cv=none; b=hP56jcECaHYsoTDu+1OA2MTvWz0/W35hitm4m19HKKtgDnJnZCU0oCh1EgbmwG5dhNQqG8slo2K9khd4aTVs/21UrVTKzROBIJzUVY8MRc8lHMxRWY6fhVQR1n6pncBRttoVahlTWL4po/Z2DGLRG6rWwkdesAjAZxEt7ELKu28=
+	t=1760102336; cv=none; b=NEkGf1/A0FxWczmirjwug+e9ULFeWnajiWCf4KYF5SzfiVlT3aWM4OvA8kNfTKGdfpy4ApPCD0WTyvmYCqo3DJqYwgZNk9Nl+Z/7wIiuKvUtzIpQIP0xU0z9Kckj+kFPQ1HPXe0SNEUTrsXwdQNTFtGzhYu0Q5TUUzd8Lk6nhBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102235; c=relaxed/simple;
-	bh=rP0HuVb0U6/f1beQaropGOTV1etLDBqxCLhmg0BJ3TA=;
+	s=arc-20240116; t=1760102336; c=relaxed/simple;
+	bh=FeAlHTss76h8QCdm4tVvFLu41PSgLcu1qhOWf2CQj3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNOETU1IcRQOlpIwf6IjG2tdxngneK4hegl0W965Iq9/1AQihIr6hqti5XcjdiqrwL6+I2veUbgPyzIrj5dYDcdyukjPsTRAI6RTbAMScjSqcFgG05eapG5/c9XXh+h9vgJ8lgqfIRIA7TYcORjKRtcQaM0QnMyqFrZQjSZHC0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYWfFYvs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074A1C4CEF1;
-	Fri, 10 Oct 2025 13:17:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N7YFNfbStHgctaMueocJ08SKiVT/fhTAsptS2G5N6JWjsBSTwUox3IT5zbz9i1NCoaKRexvzeuFc2J/PuOO5I8E9nVe20q7G7H+poOVB2NHbp0/e1d1z0Xu0qHa87P2PjBSWqCjyxrto0jtiqs1VmLKz4raDthGveac6hdmnauc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKUcudRC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3492C4CEF1;
+	Fri, 10 Oct 2025 13:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102235;
-	bh=rP0HuVb0U6/f1beQaropGOTV1etLDBqxCLhmg0BJ3TA=;
+	s=korg; t=1760102336;
+	bh=FeAlHTss76h8QCdm4tVvFLu41PSgLcu1qhOWf2CQj3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYWfFYvsTR/g/hhwTXsFCxXnFsgHN7jkPzFjkuD1XWKkxvYaB5sR4T4Ff9nHdVjMY
-	 ufpVQtTQYISGrem6eSS3VEnCLiMwnwBFWZ2FkX/8c5kmS/JMJd3Vjdb6X/VsDWMy2X
-	 zTpdGD7/hiqUEo2kq6VWmGYFy15F4YrqXugDSiX8=
+	b=ZKUcudRCDrZwqWUWs1dIPAEUuX959E9K8zjxjfwdv2QNpI8gVK765BVmGhLYYxOIy
+	 Eyjzi3aiiO7/UN2KgKxdPxFF+JR/nqAHESbDPj6GGs+IBSQM74BlUKgnSWWMPYtdvl
+	 V26iMLR87YI3gk2D+aRA7uQR3+8OAaGTlAe5Wxds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Tiffany Yang <ynaffit@google.com>
-Subject: [PATCH 6.17 13/26] binder: fix double-free in dbitmap
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 20/41] platform/x86/amd/pmf: Support new ACPI ID AMDI0108
 Date: Fri, 10 Oct 2025 15:16:08 +0200
-Message-ID: <20251010131331.693737314@linuxfoundation.org>
+Message-ID: <20251010131334.153016626@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-commit 3ebcd3460cad351f198c39c6edb4af519a0ed934 upstream.
+[ Upstream commit 1b09d08866277677d11726116f5e786d5ba00173 ]
 
-A process might fail to allocate a new bitmap when trying to expand its
-proc->dmap. In that case, dbitmap_grow() fails and frees the old bitmap
-via dbitmap_free(). However, the driver calls dbitmap_free() again when
-the same process terminates, leading to a double-free error:
+Include the ACPI ID AMDI0108, which is used on upcoming AMD platforms, in
+the PMF driver's list of supported devices.
 
-  ==================================================================
-  BUG: KASAN: double-free in binder_proc_dec_tmpref+0x2e0/0x55c
-  Free of addr ffff00000b7c1420 by task kworker/9:1/209
-
-  CPU: 9 UID: 0 PID: 209 Comm: kworker/9:1 Not tainted 6.17.0-rc6-dirty #5 PREEMPT
-  Hardware name: linux,dummy-virt (DT)
-  Workqueue: events binder_deferred_func
-  Call trace:
-   kfree+0x164/0x31c
-   binder_proc_dec_tmpref+0x2e0/0x55c
-   binder_deferred_func+0xc24/0x1120
-   process_one_work+0x520/0xba4
-  [...]
-
-  Allocated by task 448:
-   __kmalloc_noprof+0x178/0x3c0
-   bitmap_zalloc+0x24/0x30
-   binder_open+0x14c/0xc10
-  [...]
-
-  Freed by task 449:
-   kfree+0x184/0x31c
-   binder_inc_ref_for_node+0xb44/0xe44
-   binder_transaction+0x29b4/0x7fbc
-   binder_thread_write+0x1708/0x442c
-   binder_ioctl+0x1b50/0x2900
-  [...]
-  ==================================================================
-
-Fix this issue by marking proc->map NULL in dbitmap_free().
-
-Cc: stable@vger.kernel.org
-Fixes: 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Tiffany Yang <ynaffit@google.com>
-Link: https://lore.kernel.org/r/20250915221248.3470154-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/20250915090546.2759130-1-Shyam-sundar.S-k@amd.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/dbitmap.h |    1 +
+ drivers/platform/x86/amd/pmf/core.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/android/dbitmap.h
-+++ b/drivers/android/dbitmap.h
-@@ -37,6 +37,7 @@ static inline void dbitmap_free(struct d
- {
- 	dmap->nbits = 0;
- 	kfree(dmap->map);
-+	dmap->map = NULL;
- }
- 
- /* Returns the nbits that a dbitmap can shrink to, 0 if not possible. */
+diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
+index ef988605c4da6..bc544a4a5266e 100644
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -403,6 +403,7 @@ static const struct acpi_device_id amd_pmf_acpi_ids[] = {
+ 	{"AMDI0103", 0},
+ 	{"AMDI0105", 0},
+ 	{"AMDI0107", 0},
++	{"AMDI0108", 0},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, amd_pmf_acpi_ids);
+-- 
+2.51.0
+
 
 
 
