@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-183894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71893BCD248
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:20:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A333BCD311
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 85F814EE018
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:20:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9E1D402DCB
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C4E2F3C03;
-	Fri, 10 Oct 2025 13:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106AB28A1CC;
+	Fri, 10 Oct 2025 13:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BclmSP4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcNZ+l0z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F962F83B8;
-	Fri, 10 Oct 2025 13:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C102421579F;
+	Fri, 10 Oct 2025 13:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102287; cv=none; b=HLTWkbzWXQMU+d7N/NLuQqVWvrgvIuAuJZrFOzsF3tfBLD6gf/zoumuvR+fJE00koao/FFlLCXclpfhg7Qoz/wXIKIb2idRlcY85Nz9r+Uf3PDBw4PUfvt3DEGhEKM/qqdKYfB8TB1y2NUPcUaqx0n/vK8E+MepvAKZgIcnsAWU=
+	t=1760102436; cv=none; b=M1pm3HGZb4tJ+4AKuUlVoBgX30AMRs34BzWaxth+K5991pqohFs0wrVZtUDTIQ/B7Nbr9dGhiX0sEeZpDLQHjrkbPlsjdUW9muW0e/fDjF4V5kmrPr4mzjww/u9D/xWQgqYakzu6sFR0AUcOtJvHngaqYoCpbYgw90CqzTQnzKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102287; c=relaxed/simple;
-	bh=ohLUyIbuOzU9Me1i2n3TK1EBXSfBZQi4lIeJ/yUfwME=;
+	s=arc-20240116; t=1760102436; c=relaxed/simple;
+	bh=wJGEE/+GCx++P98xxmGRsk4m8L/avcQH7/pWxciWDTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjW/uz2vSfBWQ6S3kqvPdJ2ipDT7ZNaXQYLobeOBloWj3ZODL1XAEwyicF+rx9oKc/c29Ptf2g0oCqzwE2tWY1tuywIFqn7aC/M1apRF6M3QPjSliJOPazYFYSXoZqfAGwXlxlWUK4hv426OFXEgiz+Hnvo9lS9OlHqbPWDL47g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BclmSP4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A98C4CEF1;
-	Fri, 10 Oct 2025 13:18:07 +0000 (UTC)
+	 MIME-Version; b=nigq41jbgObq2RjUUKawxr5c9vKoJphsrlox+PR840oIcydbUQfb05o9sHakhMRgu4L6ACA+AsyWXkfMRloF57IOcsz6N1xTZExI5W0bAcymvFpaVw0/gZW8HuiDXJTz/y6IwFyz3AtJXjs8s56jtuZrE/x92Nsnk5eUwjy3dSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcNZ+l0z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47822C4CEF8;
+	Fri, 10 Oct 2025 13:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102287;
-	bh=ohLUyIbuOzU9Me1i2n3TK1EBXSfBZQi4lIeJ/yUfwME=;
+	s=korg; t=1760102436;
+	bh=wJGEE/+GCx++P98xxmGRsk4m8L/avcQH7/pWxciWDTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BclmSP4zs2cnNDGVcnm4b794b+6LwI3sE4VwiMrinSGq4lKvKD1Z2zuy3rfVrTX5c
-	 A27UuCgUqZYSbFwklRvEMwL6NFVI5imHeLFtrqKrq/YsYTOdVC90WESeR8i1VrVclP
-	 O24CwtPn9z8Eak3LFB0yl4ERiQiYfaA8upf2g8FI=
+	b=LcNZ+l0zzhZfSZ8lsFrCBJsHhS7HU3ihjf1/p0AKMeN5GL23OMZWdxm0GsVSRRoij
+	 BRtsL65Bada9zyQ2HhiWqQ/ekWlU45D711ErOKgTv7sX0M/6XzY6wdTC/RFx7KBUtc
+	 stw3gRWsusZ7mdmjr6oX+3RfjxlerePXLI2xM3N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Jon Kohler <jon@nutanix.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.17 20/26] Revert "crypto: testmgr - desupport SHA-1 for FIPS 140"
-Date: Fri, 10 Oct 2025 15:16:15 +0200
-Message-ID: <20251010131331.941774189@linuxfoundation.org>
+	syzbot+9c3e0cdfbfe351b0bc0e@syzkaller.appspotmail.com,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 14/35] btrfs: ref-verify: handle damaged extent root tree
+Date: Fri, 10 Oct 2025 15:16:16 +0200
+Message-ID: <20251010131332.309244682@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: David Sterba <dsterba@suse.com>
 
-commit ca1354f7999d30cf565e810b56cba688927107c6 upstream.
+[ Upstream commit ed4e6b5d644c4dd2bc2872ffec036b7da0ec2e27 ]
 
-This reverts commit 9d50a25eeb05c45fef46120f4527885a14c84fb2.
+Syzbot hits a problem with enabled ref-verify, ignorebadroots and a
+fuzzed/damaged extent tree. There's no fallback option like in other
+places that can deal with it so disable the whole ref-verify as it is
+just a debugging feature.
 
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Reported-by: Jon Kohler <jon@nutanix.com>
-Link: https://lore.kernel.org/all/05b7ef65-37bb-4391-9ec9-c382d51bae4d@kernel.org/
-Link: https://lore.kernel.org/all/26F8FCC9-B448-4A89-81DF-6BAADA03E174@nutanix.com/
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+9c3e0cdfbfe351b0bc0e@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/0000000000001b6052062139be1c@google.com/
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/testmgr.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/btrfs/ref-verify.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-index ee33ba21ae2b..3e284706152a 100644
---- a/crypto/testmgr.c
-+++ b/crypto/testmgr.c
-@@ -4186,6 +4186,7 @@ static const struct alg_test_desc alg_test_descs[] = {
- 		.alg = "authenc(hmac(sha1),cbc(aes))",
- 		.generic_driver = "authenc(hmac-sha1-lib,cbc(aes-generic))",
- 		.test = alg_test_aead,
-+		.fips_allowed = 1,
- 		.suite = {
- 			.aead = __VECS(hmac_sha1_aes_cbc_tv_temp)
- 		}
-@@ -4206,6 +4207,7 @@ static const struct alg_test_desc alg_test_descs[] = {
- 	}, {
- 		.alg = "authenc(hmac(sha1),ctr(aes))",
- 		.test = alg_test_null,
-+		.fips_allowed = 1,
- 	}, {
- 		.alg = "authenc(hmac(sha1),ecb(cipher_null))",
- 		.generic_driver = "authenc(hmac-sha1-lib,ecb-cipher_null)",
-@@ -4216,6 +4218,7 @@ static const struct alg_test_desc alg_test_descs[] = {
- 	}, {
- 		.alg = "authenc(hmac(sha1),rfc3686(ctr(aes)))",
- 		.test = alg_test_null,
-+		.fips_allowed = 1,
- 	}, {
- 		.alg = "authenc(hmac(sha224),cbc(des))",
- 		.generic_driver = "authenc(hmac-sha224-lib,cbc(des-generic))",
-@@ -5078,6 +5081,7 @@ static const struct alg_test_desc alg_test_descs[] = {
- 		.alg = "hmac(sha1)",
- 		.generic_driver = "hmac-sha1-lib",
- 		.test = alg_test_hash,
-+		.fips_allowed = 1,
- 		.suite = {
- 			.hash = __VECS(hmac_sha1_tv_template)
- 		}
-@@ -5448,6 +5452,7 @@ static const struct alg_test_desc alg_test_descs[] = {
- 		.alg = "sha1",
- 		.generic_driver = "sha1-lib",
- 		.test = alg_test_hash,
-+		.fips_allowed = 1,
- 		.suite = {
- 			.hash = __VECS(sha1_tv_template)
- 		}
+diff --git a/fs/btrfs/ref-verify.c b/fs/btrfs/ref-verify.c
+index 2928abf7eb827..fc46190d26c8e 100644
+--- a/fs/btrfs/ref-verify.c
++++ b/fs/btrfs/ref-verify.c
+@@ -998,11 +998,18 @@ int btrfs_build_ref_tree(struct btrfs_fs_info *fs_info)
+ 	if (!btrfs_test_opt(fs_info, REF_VERIFY))
+ 		return 0;
+ 
++	extent_root = btrfs_extent_root(fs_info, 0);
++	/* If the extent tree is damaged we cannot ignore it (IGNOREBADROOTS). */
++	if (IS_ERR(extent_root)) {
++		btrfs_warn(fs_info, "ref-verify: extent tree not available, disabling");
++		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
++		return 0;
++	}
++
+ 	path = btrfs_alloc_path();
+ 	if (!path)
+ 		return -ENOMEM;
+ 
+-	extent_root = btrfs_extent_root(fs_info, 0);
+ 	eb = btrfs_read_lock_root_node(extent_root);
+ 	level = btrfs_header_level(eb);
+ 	path->nodes[level] = eb;
 -- 
 2.51.0
 
