@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-183997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E1BBCD413
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B174BCD3E9
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:25:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A89F188F214
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:24:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF6DC1B21204
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631B02F2602;
-	Fri, 10 Oct 2025 13:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C842F549C;
+	Fri, 10 Oct 2025 13:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQVLfjxs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="px2uelCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E58721579F;
-	Fri, 10 Oct 2025 13:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32232F3601;
+	Fri, 10 Oct 2025 13:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102582; cv=none; b=iMpXg83+4ZnQ0OtNlgeYRL5CrnuleAtR9W49MCIeE3Qe0Gfl0cdU+BKhh1trMKIaZfsBHRv8+gSr5f8ucravIjXGLmHibsc0P//zDtZIXfh92QTuXDL+r0+B6q2fVRya8WbmMDo4OoB9+KwtnJ51lD5z3eGEk5VGhsROAbwSUo0=
+	t=1760102502; cv=none; b=jtgOoVR+bKhmSb3cauhqSNdvQhJ3YP/6HKoeDxvGqoh+0pVURPDQnTrRGkmimYp7rwzOuvojlsd5aweUV47wpOreZk6SA/GMXcJiYnC1KfeO555zZKkbPcGceBrfSN0uYGzF50R4HK+uJse+di2loggJIt6Uk867fYsuGPtw930=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102582; c=relaxed/simple;
-	bh=1bkbfkEF3NQ+nrFzG3M5quKiXrXj+elWzatjt6bpzbE=;
+	s=arc-20240116; t=1760102502; c=relaxed/simple;
+	bh=U66k5Cak2CQ3IZDtpn52/dFFOuE7GBKha4fEpGQeJao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPL3X32EV+dj2kciB/Hb84F9Z4SENsCDnv5xmA8N/VY5af6BbqHhFoZvFch0qoyHPV1DgudM5X69/FIQ/k2+zrnex+CbqIbJgeBUQv3kta1aCHnqmkwUa3q1hGvWYFENYo7Ng3SaRmYsL+TWR1uEvv8p4cjeTXRBdw8Iy0BuR5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQVLfjxs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9E4C4CEF1;
-	Fri, 10 Oct 2025 13:23:01 +0000 (UTC)
+	 MIME-Version; b=K30vQKjSR4vcumP4ROJAo5ALgaoQVVZE9jNVRoqjLWACSjUMVqbPFdDpQ0sPW9EAYTSD9nBi6vob+T0AfoHUnzsOyUCjK0ldsTY87yTpPXyqkKBDG4QgP1z2pweqA9IBHqLjAHpEbG5wBd0GjrpIrariSuS7zCBmVOSJe7jLpS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=px2uelCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0E4C4CEF1;
+	Fri, 10 Oct 2025 13:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102582;
-	bh=1bkbfkEF3NQ+nrFzG3M5quKiXrXj+elWzatjt6bpzbE=;
+	s=korg; t=1760102501;
+	bh=U66k5Cak2CQ3IZDtpn52/dFFOuE7GBKha4fEpGQeJao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQVLfjxs5ctPCuvU4V9HxrzQxDyD+vYn6UkmiyzgtfndxvHwKwYOH3YzjbOMKbWHS
-	 3dDeyHw4KZG1W3tDZDPW7ZuZ2POKFUGI29DY+68CiMlGyLKDbVuoWtO8Z4145gjMzC
-	 upe7OnQGWz3JV5qTkzwKHmSJa1LMzr4QyLqK4dXk=
+	b=px2uelCkE2ixKEAXHAjiEvsqhZp3QTm8przY+O6iTQk/7+FMCbGFsdMrbQlCGqQ3y
+	 SRi5oGDYNhvy0weuOFtxCyrb+q7VKprpskyWVX8ma80chyDYgTaiHzXx4/wLWxwPlb
+	 32dF/7aDwr51xCA2JMUAIpY9ECFTqzsjkMBAOhGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 07/28] ASoC: amd: acp: Adjust pdm gain value
-Date: Fri, 10 Oct 2025 15:16:25 +0200
-Message-ID: <20251010131330.630468368@linuxfoundation.org>
+	syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 24/35] ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
+Date: Fri, 10 Oct 2025 15:16:26 +0200
+Message-ID: <20251010131332.665649277@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit f1d0260362d72f9f454dc1f9db2eeb80cb801f28 ]
+commit 9f2c0ac1423d5f267e7f1d1940780fc764b0fee3 upstream.
 
-Set pdm gain value by setting PDM_MISC_CTRL_MASK value.
-To avoid low pdm gain value.
+The previous commit 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at
+removal") patched a UAF issue caused by the error timer.
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250821054606.1279178-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, because the error timer kill added in this patch occurs after the
+endpoint delete, a race condition to UAF still occurs, albeit rarely.
+
+Additionally, since kill-cleanup for urb is also missing, freed memory can
+be accessed in interrupt context related to urb, which can cause UAF.
+
+Therefore, to prevent this, error timer and urb must be killed before
+freeing the heap memory.
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f02665daa2abeef4a947
+Fixes: 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at removal")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/acp/amd.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/midi.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/amd/acp/amd.h b/sound/soc/amd/acp/amd.h
-index d6cfae6ec5f74..3f1761755b866 100644
---- a/sound/soc/amd/acp/amd.h
-+++ b/sound/soc/amd/acp/amd.h
-@@ -116,7 +116,7 @@
- #define PDM_DMA_INTR_MASK       0x10000
- #define PDM_DEC_64              0x2
- #define PDM_CLK_FREQ_MASK       0x07
--#define PDM_MISC_CTRL_MASK      0x10
-+#define PDM_MISC_CTRL_MASK      0x18
- #define PDM_ENABLE              0x01
- #define PDM_DISABLE             0x00
- #define DMA_EN_MASK             0x02
--- 
-2.51.0
-
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1522,15 +1522,14 @@ static void snd_usbmidi_free(struct snd_
+ {
+ 	int i;
+ 
++	if (!umidi->disconnected)
++		snd_usbmidi_disconnect(&umidi->list);
++
+ 	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
+ 		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
+-		if (ep->out)
+-			snd_usbmidi_out_endpoint_delete(ep->out);
+-		if (ep->in)
+-			snd_usbmidi_in_endpoint_delete(ep->in);
++		kfree(ep->out);
+ 	}
+ 	mutex_destroy(&umidi->mutex);
+-	timer_shutdown_sync(&umidi->error_timer);
+ 	kfree(umidi);
+ }
+ 
 
 
 
