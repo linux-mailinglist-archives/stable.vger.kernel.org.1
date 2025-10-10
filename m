@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-183968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CB9BCD386
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E1BBCD413
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5B103A5F74
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A89F188F214
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F82D2F5472;
-	Fri, 10 Oct 2025 13:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631B02F2602;
+	Fri, 10 Oct 2025 13:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQ5oYQW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQVLfjxs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06B52EF664;
-	Fri, 10 Oct 2025 13:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E58721579F;
+	Fri, 10 Oct 2025 13:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102499; cv=none; b=OViAvlWirwVPsv96oaivcdgc93fGChhslbFgQpighZOsi/ISUwxIc0hXl9nmdBD7ZY94wHECtcOiDHb16fKVSafwGwREJfXT5uGfVJewyi2HwIKOIkT5IB338HZLATMMFLaohULh/9IF9W2HRrk24yUBpakBwNMSBDz6mc5Ux/I=
+	t=1760102582; cv=none; b=iMpXg83+4ZnQ0OtNlgeYRL5CrnuleAtR9W49MCIeE3Qe0Gfl0cdU+BKhh1trMKIaZfsBHRv8+gSr5f8ucravIjXGLmHibsc0P//zDtZIXfh92QTuXDL+r0+B6q2fVRya8WbmMDo4OoB9+KwtnJ51lD5z3eGEk5VGhsROAbwSUo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102499; c=relaxed/simple;
-	bh=5XghcfwOY//jaN63uCUdQehLNrKg2GPKdGq/D+SbXUo=;
+	s=arc-20240116; t=1760102582; c=relaxed/simple;
+	bh=1bkbfkEF3NQ+nrFzG3M5quKiXrXj+elWzatjt6bpzbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWvCG0WBb1VIjG8kJ0mUqagS6YFXDhTx3qKZODHlAAq1NJe53O50PJn+xmDO9P3GEtQYqUPaGeMyrIx+/Mf8GyDaEzD8yfQj4hyADlPCrukqRS7dSReu33VJJRhmSgUGp5D8m3kbialH8g5bwgGyKIESMhINtnDouARJwtpcwkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQ5oYQW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC95C4CEF1;
-	Fri, 10 Oct 2025 13:21:38 +0000 (UTC)
+	 MIME-Version; b=VPL3X32EV+dj2kciB/Hb84F9Z4SENsCDnv5xmA8N/VY5af6BbqHhFoZvFch0qoyHPV1DgudM5X69/FIQ/k2+zrnex+CbqIbJgeBUQv3kta1aCHnqmkwUa3q1hGvWYFENYo7Ng3SaRmYsL+TWR1uEvv8p4cjeTXRBdw8Iy0BuR5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQVLfjxs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9E4C4CEF1;
+	Fri, 10 Oct 2025 13:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102498;
-	bh=5XghcfwOY//jaN63uCUdQehLNrKg2GPKdGq/D+SbXUo=;
+	s=korg; t=1760102582;
+	bh=1bkbfkEF3NQ+nrFzG3M5quKiXrXj+elWzatjt6bpzbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQ5oYQW4ptLOhre5w+cU+zHkb3vd1aP2Oo0GxnKAlOu0eCUfpjD7M0lvI3o2oMzWC
-	 tTP7RDx8nHaOZXZSQofr4uVO+g12NCNY3FtMgFsO8YuJ4NGnxbUXat5m53N6X9VWYQ
-	 wc/OrGJMKksVTNLy/WYarpfVWtTwdqn5km6IdO94=
+	b=DQVLfjxs5ctPCuvU4V9HxrzQxDyD+vYn6UkmiyzgtfndxvHwKwYOH3YzjbOMKbWHS
+	 3dDeyHw4KZG1W3tDZDPW7ZuZ2POKFUGI29DY+68CiMlGyLKDbVuoWtO8Z4145gjMzC
+	 upe7OnQGWz3JV5qTkzwKHmSJa1LMzr4QyLqK4dXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.12 23/35] ALSA: usb-audio: Kill timer properly at removal
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 07/28] ASoC: amd: acp: Adjust pdm gain value
 Date: Fri, 10 Oct 2025 15:16:25 +0200
-Message-ID: <20251010131332.630355663@linuxfoundation.org>
+Message-ID: <20251010131330.630468368@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
+References: <20251010131330.355311487@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
 
-commit 0718a78f6a9f04b88d0dc9616cc216b31c5f3cf1 upstream.
+[ Upstream commit f1d0260362d72f9f454dc1f9db2eeb80cb801f28 ]
 
-The USB-audio MIDI code initializes the timer, but in a rare case, the
-driver might be freed without the disconnect call.  This leaves the
-timer in an active state while the assigned object is released via
-snd_usbmidi_free(), which ends up with a kernel warning when the debug
-configuration is enabled, as spotted by fuzzer.
+Set pdm gain value by setting PDM_MISC_CTRL_MASK value.
+To avoid low pdm gain value.
 
-For avoiding the problem, put timer_shutdown_sync() at
-snd_usbmidi_free(), so that the timer can be killed properly.
-While we're at it, replace the existing timer_delete_sync() at the
-disconnect callback with timer_shutdown_sync(), too.
-
-Reported-by: syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/681c70d7.050a0220.a19a9.00c6.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250519212031.14436-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ del_timer vs timer_delete differences ]
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/20250821054606.1279178-1-venkataprasad.potturu@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/midi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/amd/acp/amd.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -1530,6 +1530,7 @@ static void snd_usbmidi_free(struct snd_
- 			snd_usbmidi_in_endpoint_delete(ep->in);
- 	}
- 	mutex_destroy(&umidi->mutex);
-+	timer_shutdown_sync(&umidi->error_timer);
- 	kfree(umidi);
- }
- 
-@@ -1553,7 +1554,7 @@ void snd_usbmidi_disconnect(struct list_
- 	spin_unlock_irq(&umidi->disc_lock);
- 	up_write(&umidi->disc_rwsem);
- 
--	del_timer_sync(&umidi->error_timer);
-+	timer_shutdown_sync(&umidi->error_timer);
- 
- 	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
- 		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
+diff --git a/sound/soc/amd/acp/amd.h b/sound/soc/amd/acp/amd.h
+index d6cfae6ec5f74..3f1761755b866 100644
+--- a/sound/soc/amd/acp/amd.h
++++ b/sound/soc/amd/acp/amd.h
+@@ -116,7 +116,7 @@
+ #define PDM_DMA_INTR_MASK       0x10000
+ #define PDM_DEC_64              0x2
+ #define PDM_CLK_FREQ_MASK       0x07
+-#define PDM_MISC_CTRL_MASK      0x10
++#define PDM_MISC_CTRL_MASK      0x18
+ #define PDM_ENABLE              0x01
+ #define PDM_DISABLE             0x00
+ #define DMA_EN_MASK             0x02
+-- 
+2.51.0
+
 
 
 
