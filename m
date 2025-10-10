@@ -1,296 +1,271 @@
-Return-Path: <stable+bounces-184034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9EDBCEA05
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 23:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F383BCEAC2
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 00:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB6E44E440F
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 21:40:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CE99D4F30D6
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 22:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F08303A1E;
-	Fri, 10 Oct 2025 21:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A61270EBC;
+	Fri, 10 Oct 2025 22:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="i36p5G9j"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="abXBkQkP"
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012026.outbound.protection.outlook.com [40.93.195.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8C72FA0F2;
-	Fri, 10 Oct 2025 21:40:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760132450; cv=fail; b=cnZE1MCM1psv2u5iN2qnvJcdU9C5Z1YLp+3LW66+aE0S88u0CI+AoRg5ZOTBC4dqanSXwj5zeIQ29eWqIPBzQcRXUZF04bEx4qKfPapGbwu//v5v8kmNMfuPXaBizV4I4thpv8ElGNX1x0P7SC2qlfDD62O72DfM+ZZbatXlF0s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760132450; c=relaxed/simple;
-	bh=ZUgNs4aQOSigYZ17AXNTncyljWDCAsPmQLXlWi4k854=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=uMN3gVt2hmuiN2354NfN/tzgOvOiO8mbsvyRqOioP6i0Iu6s8sLqzRaA5e1pc6k7BO2VsblIxjtRDQdyI+eh7QKagUr41TgEG+TQQUnXQetAdPKoElva5QFcdPpGJLiu3FmvSUQDK2ayAYAXuIoLZQ1gfdIo7Rmgjm/cHyyawlI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=i36p5G9j; arc=fail smtp.client-ip=40.93.195.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XJExEGLnArGrwoJ0+xDDv8DdZV3/QuQPZTAJJLhiZucUz0wpJ5tkhVnYToVhmnDBDAQ7VR0sQvdqUC/en4PjGvtzVvY3pRAyHAadL289biyh/Jj3aeQ5+ekLqxdY5N5IAW9gGvfWfCbBcbbTnKvf41W8tl79LYa8E1wjasogjvCBVlxTD2HodpW+67YfiaeWQ65Sfnx1kBAlNp5Zu5Bwhe4s3HChjL8dT9q2rhQ38OW6tHSTMrPE1GQ+n3JMmLYU3AxF1BYHy41LvrziHZXqSXLl8NfmsZMiq0pFi4354VyvH2XeYnPoCPSO7MEZKaCbF2AjYpcb1spzsAiAdLWxlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AaoUjcA4tz+4KAHTTGXWdk9Qn7nacsAeGeUY5rYYsxU=;
- b=p8E6BKRrH3kYKxr/hAfkMUGq4wrTvtQ2qJ3Sz1ZLb7VGu8t4bmbnGt/4duBdKgcpJquIoRF8A+qW3g31HWhG1AJR+EqBUE2lOSigs8zBFtqGJYhj8bNH8SxR264xtifJu+uUqDcak1j7wC6da1+ZJSGQcxHWziCNri9YXUtbgXTren33sPaFCw/mAsjGPgjBPFXxLvUEf8PFz76P0PIqTzQW4ib0xZCSN90LqYbEea6uibuTmNba8iUaXjvZ7yRoRhOjv1ov3B08NlgbNbS1lHr4qkdrzG46B+sqDqGdVYHyIky4pOVQC22CTS+SwSwAgKIxJxXk7uPyczmxnA6a3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AaoUjcA4tz+4KAHTTGXWdk9Qn7nacsAeGeUY5rYYsxU=;
- b=i36p5G9jUY7nTGYZnSgd3w4otalve4J/PVlJONNFqw3rC2cPDvqZnQ7DsK6LUsR+g82IzOAoqO5F8sRRf/VTi7F7fNApsZ08J41VTUPCTLUf8OHX27RHlBCRaqynClPaE5rgFQkUedXa3bm1xbma9PsqvBUgGi9jhOQyUrXkBdI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14)
- by IA4PR12MB9788.namprd12.prod.outlook.com (2603:10b6:208:5d5::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Fri, 10 Oct
- 2025 21:40:46 +0000
-Received: from BN9PR12MB5115.namprd12.prod.outlook.com
- ([fe80::9269:317f:e85:cf81]) by BN9PR12MB5115.namprd12.prod.outlook.com
- ([fe80::9269:317f:e85:cf81%6]) with mapi id 15.20.9203.007; Fri, 10 Oct 2025
- 21:40:46 +0000
-Message-ID: <43ddf3e4-d328-41ec-a8aa-f1b185645a31@amd.com>
-Date: Fri, 10 Oct 2025 17:40:44 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amdgpu: use atomic functions with memory barriers for
- vm fault info
-To: Gui-Dong Han <hanguidong02@gmail.com>, alexander.deucher@amd.com,
- christian.koenig@amd.com, airlied@gmail.com, simona@ffwll.ch
-Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, stable@vger.kernel.org
-References: <20251008034327.2475547-1-hanguidong02@gmail.com>
-Content-Language: en-US
-From: Felix Kuehling <felix.kuehling@amd.com>
-Organization: AMD Inc.
-In-Reply-To: <20251008034327.2475547-1-hanguidong02@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT4PR01CA0385.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:108::24) To BN9PR12MB5115.namprd12.prod.outlook.com
- (2603:10b6:408:118::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE2226B75B
+	for <stable@vger.kernel.org>; Fri, 10 Oct 2025 22:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760134109; cv=none; b=csNHzEirRta/KHxVjxan+Xv6zr3YyG9h3eeO069gZW5uq6ddzb+BdCqIm+xvFqgSG6LztHsnUbE46cL4pB4vgGUbDNrSzDGJ3yhtCGhhQbT/+vADJbUMk5sGjpbV53RBst6i+w43slK2r612KRmobzwj+rFZ97l0f2Dx/xLIzew=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760134109; c=relaxed/simple;
+	bh=Byb40PNzIM16B+ka0/oTWAt1pJki0ilc62do2H/m3p8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oYK+JrCcdbxzpAym6LIXX4N7em3sAPiWTboJm9Ql6TPBx6iAYPZh1sl6Gzg5dj6G5gikZhlgt0Nz2FCUaBMuBlui8tr6scyf6STOirftWeGXpHy9NDWWDDXrQIAUdfJzUlr+57k6xO8gcsspyQ8Xxu0mDcYmDpRE/tRHnTbEDG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=abXBkQkP; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b609a32a9b6so1602405a12.2
+        for <stable@vger.kernel.org>; Fri, 10 Oct 2025 15:08:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760134107; x=1760738907; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q3ghXW+owxj/7tyVLNLa7MqSxuYXRJwnK1KuHi/Rs3I=;
+        b=abXBkQkPjxdh2vgPbshoKI41Uh8rlqTrlPRFprW6UM4zf9TisTuyrHMYN61FVqVYBc
+         Zxwcfj8MgY3wZ0Uwbu/BCtuzxJAyxu5o4o0qilFRVcrPXKHE8esqnzS0dpDcwfAG39yz
+         JpcMUHSEKbxmIaSabVvT8IKGripCE/mgLkVjBzHzAcwitZwBLARph9OH86O3geoDJKU1
+         UyrZOhT5OW7uQnWa2lu1fty59cdO906uiTIHdbDijh0QWu0xSAH6h/Oob/1mAIAXe/LM
+         fP4L8QR3omiahqZsUoD2fkmzO2RIVcfA73nCsKZ2HOd6qlu3U0VukDt2tb387Ou+A45l
+         tQXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760134107; x=1760738907;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q3ghXW+owxj/7tyVLNLa7MqSxuYXRJwnK1KuHi/Rs3I=;
+        b=gdPtj9/2UHWlfPXVldM/rjAG6LaqHnYEu6YBIZeDK3vQw8BHXBe/cheH/sp6VU0ktj
+         R90XGRJkowzZKqRn3M/fJp+BvvAW+Di0Wb2WbBzeKP9oA6Apik0QBQs1rQ9SYPA7/7cQ
+         PzwIuYUagp81SpmDAWPdmdZ0TtK/Frpu0KgSA5Twma7IRXDFUBHAxyIesnC5LK0A38EH
+         0ST55GPD/UtWTXzYZj1DLVza7rDPUVCp5kqpi5g0dI+aVhmUz6pywApOWhDCHyO0GMi7
+         MZ1idIqvuEqsnK2cyAvDMSkNbJ2x6oJJfjcgUbTLXSWvb+5Auck/3LW7yKvM4/PXDr1a
+         iNfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWNLM/IxXOcOS29YiCIdtFyw4vjYjaxt7nyTq25Jfi4nULzKhHyvBCE8jRkbEaaktjKiC2OrPg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPYmqP9qfdC8OWJybW6R5Cvo3eqh02ICiVwcsutLZPQiOCPNEj
+	hC4BtZHHrWhi/SkRU19RNSPlkfYS+MWo4nL5oT+DwB9YEk66NZ+p7YmW
+X-Gm-Gg: ASbGncujmu7+LjfBcFQ4y+iyw6qJ2knJ87wC8HwJlAwFArmWrqtPhnPfKgM8j4E3DZk
+	T4PU8tbv/swdaQ2iHIAopA0aBnrTGhmkf0yBpLhed7e4MmEPTAcXD1gIv9Hoj1Fiu+5HAnr0VbU
+	HX6MNnsisLXYuoxvq4lLGlcnkymGOiavnFa/tJb8obDPhOQRt7xJruQC+MTNND7Pumy04IaAgaW
+	MKCB/0xDID1g/sKMqCe/bSRZdxgnS+/YJEWezDh/C9FM6Uh5bqPlYa4oD1QAY2DVPUKiM65lTga
+	+7aMnBic9QM1B34WgjraAxxGPXOp2OevofkQ1e34NTACabZeSA1Zs+qqHEel0FgZf0pYkQl6wW4
+	p/Ma9mgYK4BfCiOrfMIzDaS9VLB5xaOkpFWIFLFSpHK96pPKlgGKANA2L4I/a5m9Yyvo=
+X-Google-Smtp-Source: AGHT+IH6VtAl9Ey2i8kXWGhqLfrhQea7Yr+wCgX3YAw4h2wd4EB2TzMXg/ebaH5bbOxQF3W3gzafMQ==
+X-Received: by 2002:a17:903:252:b0:267:a231:34d0 with SMTP id d9443c01a7336-290272e3d1fmr156355205ad.42.1760134107145;
+        Fri, 10 Oct 2025 15:08:27 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:4::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034de6c70sm66736815ad.13.2025.10.10.15.08.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Oct 2025 15:08:26 -0700 (PDT)
+From: Joanne Koong <joannelkoong@gmail.com>
+To: miklos@szeredi.hu
+Cc: linux-fsdevel@vger.kernel.org,
+	amir73il@gmail.com,
+	osandov@fb.com,
+	hsiangkao@linux.alibaba.com,
+	kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/1] fuse: fix readahead reclaim deadlock
+Date: Fri, 10 Oct 2025 15:07:38 -0700
+Message-ID: <20251010220738.3674538-2-joannelkoong@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251010220738.3674538-1-joannelkoong@gmail.com>
+References: <20251010220738.3674538-1-joannelkoong@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5115:EE_|IA4PR12MB9788:EE_
-X-MS-Office365-Filtering-Correlation-Id: 887ddb1a-374d-423d-61d3-08de0845abcd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SDg5UHZCNkFJU3ovYVdURVVTd2dwbkJKRU85VDZiWnlrUlRlSmpUMXdyKzl6?=
- =?utf-8?B?MHFnWWk3bVB2SUk1QURZL1dtd2JvS2ExYlF4Q1k5L0dRMlBGdmVDSnVYMENu?=
- =?utf-8?B?cHkxL1VteWJUMVlmbzlVQTV2bFFHcW5aMzhwL1ViU01RRG9ua3hmWDVCUVEz?=
- =?utf-8?B?V3dEbEUwWmNNY1FYNHpVN2prUnNxN05hYmVtdGhXejdRZ0ROMXJoNlplcmo5?=
- =?utf-8?B?THZJc0FrVlBaUFhEenV0dlFJR3h0M3NKREFTdXRnSnUzUGI5eTVISWZsTWE5?=
- =?utf-8?B?UDN1bVRaRmVrMDJLcWtoVGV6Qk94QlgxRVNBNytHTkdvODJhMUV4Y2tzN2R0?=
- =?utf-8?B?V05ySnlvWlExcWVpenJWNW5Uc0R1K3YxQWdLTmN1Z040RklNWE5MZ01BNnNF?=
- =?utf-8?B?SWp2RGZTdis3VytNRzJ6L05USnA2SlBRbDk5Uk12cWx3WkR2enJRdzUxZEJF?=
- =?utf-8?B?WFJlODRScUFwQXdtUnA4ZGNXTHFUbkk4cGh4czBLN291N1dmcFNaSEd1YThL?=
- =?utf-8?B?N3lFUkZxeFhlMzVEdmtCSnU2WkJOZXRoYjRLYkN4c25PVlpKNXhqMmxtTjdJ?=
- =?utf-8?B?a0Z6cmE4WHVJWHQ3WEVMcGxRSC9xb1NMR3hEZFp4RHUwK1R2NXBuckNzdGpV?=
- =?utf-8?B?Y2VjVGw1TTNZZUN2YVZST0dvK3Y0L2VNNHpkNGF0dkthbEllT00rTWFjMnU0?=
- =?utf-8?B?OThWVlhJMHZzSWNZbkc4cjdjaWpnWDhuR2gzcyszVng2UWdxUmt1eUY5elVz?=
- =?utf-8?B?TnlhdEhyQ1NGYi80U1BVZGhxdjRGUW1qSGdqbEJzSzZwRU9yN2wyem1uWmFS?=
- =?utf-8?B?VkFGNC84ZTdPS0NHK3cwc1B2OXJpWExmU0V4cU50U05LNDhuUjJOS0MxVCtD?=
- =?utf-8?B?UUtLMjZiWTFHaE84MCtsUEhUdUt0UlhpaFk2Q1U2RHd1WFJBd1lZUHlkZUZs?=
- =?utf-8?B?MXdubS8rMVBpVi9ubnl3V1I0SENmY1dVbDBFSUJOUHRRakVsMkJQemtiUlgw?=
- =?utf-8?B?K3U0UFdzc04wR3JhMjUxdElnaDJ0NHN3cjU5ZlFkUytlZ2Y1OTlYakRTU2oy?=
- =?utf-8?B?b2dZWEtML28zMFU2WDk5eWJFRXR5a2txTWJzMFYzZG9WbzlpQ3p3dW9ZQ2tH?=
- =?utf-8?B?NVYzYng4NUZQQ3hGK0dhblNOc1N4emlNS0lwZC9hMFlqcGpuaWRHb0ZDemxz?=
- =?utf-8?B?UGpVTzM4c2MzaTJsZXl6bFRVK1NmMUV4dXJhQnh5SFg3SlhQRHNlRzdYRERB?=
- =?utf-8?B?SWhqdHQzenZ6Smw0Q0FETTZ6M2RFMFhsVmVBd1pxNWExbmlzZGh0VStxNWd0?=
- =?utf-8?B?dlBnYUc3UkI4UFl1ZVNoN1hpb21EQmlSbUxaS2JmYXEwbU5jNDQ5VTJkN0p5?=
- =?utf-8?B?RzQ3YWVnK0tRWEJqQVJjUUcvVVplS1EvWjBEVWUwRGRBL3loazIyaU96SzFC?=
- =?utf-8?B?WWhKb2RPSXVxT2E4NjRybVpkUEM0dS8vYTJUcnFDdndzYlFWekRQbEZPNXhZ?=
- =?utf-8?B?a2p1OHozY3lpankrR1lTUkt4eWk2TUlMVTNwdjhiZGY2QjVzR3BoOXR0elpm?=
- =?utf-8?B?Mm9td1N4cTdTaS9aOS9saDNwVm1HYkhNOGdrNnA4a3B1aURudnJjQUlRUVlw?=
- =?utf-8?B?ZmdsVUFpa0I1YmpubDY5Q2lybTEyRDE2VEV1WkNyeWFCOXI1TWFxbHJNTlkx?=
- =?utf-8?B?Rlg5bXJRZTZsUVNla2U2c2ZXWGppR2UxNkhXeDhXOGdmTUh1T2hCVUJpeWRs?=
- =?utf-8?B?QzRocEtjV1RCOGlKU1FkczJiQnBwZHR0ZTE1ODE5U0VsZkdzTElrSFh3N1dR?=
- =?utf-8?B?aklFSk5KM1dtQ1FESHpuWUVucjcrNXoyN2g5cDJ3T0FJbVhOQUtLVFkyUGdl?=
- =?utf-8?B?NmRhTGFsNmdpZHh1eVl5STN3b0g0KzgzbzFHRDBLTmdhQmN4TU9WTy93TmhS?=
- =?utf-8?Q?yahMbzrM9N7PxYDa2FNpI0i7FD4v08sw?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5115.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QnhONmtNZUMwakFWNTI4eGNHK0NybzYwUEdOdG8rcmIyWGxuMUFVYXdGK0Rz?=
- =?utf-8?B?WXJKaXplbHprZWhIRHN4ZGE5YTkvZzl0c1NncGtlbjFwZVhDK3hCMzg1eGJJ?=
- =?utf-8?B?VTRGam4vY3Nvdy83Z2ZDRzJRVDNibHplN0F2cnZTZndhTEVDb2JkUHhhbjlP?=
- =?utf-8?B?ZTY1aWNFb1RwZ3laUVdkdytLOTJTSlFQVnlKdHd6UWFTb0dCWUIwaGRzNDVN?=
- =?utf-8?B?Ulhsa0hyUE1lNjh4bDA3dXdsT3RJOGtjTk05M09za0dxbmwzVkpYMTVYVDIw?=
- =?utf-8?B?ZkJqMllDekFKd1gzSFpTQ0hWeFQ5RnVhVkNxUldxZy9pRVU3M0ZJNXF2anRY?=
- =?utf-8?B?WGFUNmgxdW5aYVNxanY0cEtQek05NTl1L2swSFRUSlQwVkZDWnE3ZjN3cEdU?=
- =?utf-8?B?MG1yc3U0dExIb0Voa2VvQkxGcDBzQUx2MitCRmFTdDQwMnBBNzhPZHpReW9t?=
- =?utf-8?B?YVVFazh5NkZvaEZKMjZWZmNHWkxOdkxaQ0s2TmtuSFV3ZDBiU1VUeUlxcXcy?=
- =?utf-8?B?QjN2QVVTMi9VSzY4eHJ0dnZXa3hCcGF1T0JlMFQwTVFwYmRzZTFZM3l0Mm9F?=
- =?utf-8?B?U25xNURjRlg0VnF2TzN1em56MElwUzdLeXJFeVlTODFXb3EyNldPbmswTDdh?=
- =?utf-8?B?bnVkUTlPb3o1aEJpN3VRTmNFcWE3ZzZlK2czakhIVUFYK1dCTDNPUUF5b1FE?=
- =?utf-8?B?M0F0dlgrYVdhUzFMcXFZQ3FEaTdtS1BtcjZRSCtRUEFmcStGV3M1TjlYRUhu?=
- =?utf-8?B?aEtqRlBOL2p2VVpkZzYxY0FjRmN1R001WU5yWEZzdzN1ZGNIZlhqUXJWVkdS?=
- =?utf-8?B?dGIyYW5wSFEwWVV6b1ZKUjJiVS8renlpZzVBWnUzNC95d2N3N2tsZ0JmRkRy?=
- =?utf-8?B?QkZ1eFRuZDFwQ3VqQ3l3bHNHMGdpcm8xYWhIZngvWWR4V0E2cGNzTTVBbWFy?=
- =?utf-8?B?QXhKRm9OeEVjaVY1ZU9aejJ6bWo2WGp6NkpJZUFBa040a0RGbG0zZmJwaDdl?=
- =?utf-8?B?Mk02SUM1SHo0bnZwU3VOYnZBbHRFNHBNdEtwQ0VpWUZRVFFORWlnRGJYMGVw?=
- =?utf-8?B?bmYweEZhSWZUVnFNTWMrNmFqdER4WkR6bU94MGNHV0dnd2pHMEs4d3I1V2VH?=
- =?utf-8?B?eVlkckxDNVNja0Y0RmpIRExZZE96WWpNNkJCZW10R1BqUEZiaHcyN2ZvMFNu?=
- =?utf-8?B?RUFObzlPSlZFOXNxSWpyRDg2TFhIbitLN1podzNwVE5RL0h3WTVzOHo0NVU1?=
- =?utf-8?B?VmhUbWhXNHUwL0FacTdpNlpZVEhsS2tKRmpCd3FMZDFNQ0EwVHBUMXQ1L2Js?=
- =?utf-8?B?RmxIMFR3U2t2STRHanZaTStaalFCSE4zSHIxbHVYWUtZZU1YZGphY2daOWVS?=
- =?utf-8?B?K0lSZERGeEl3SjJrMldQSUlIWVlleFFCNThlQ1BKZXNUZThZNVkxaUxBaGd0?=
- =?utf-8?B?ZmFwU3FwdjZVaUE1WUV4QWdaMzJZN0hoa3p3SksvL0Y1YWI3eUFQQnEvOHNx?=
- =?utf-8?B?N002WjExRnFqYWc1dE5GWDFjc3lMbVYvdHVWUGRXZ3lYY01xNXZlMW9mTGZa?=
- =?utf-8?B?ZW5pZXBPR0RsTGVLekpyb25GdEl6a2xMYkVoL2EyRjlKVzJoWnJvYzcxbTlL?=
- =?utf-8?B?Wk1GNUg5V2FVK3FKTzV3Ykw0c1dSTVQza1JtU3czRXNYdTFnb1NNT0tZQVhZ?=
- =?utf-8?B?bmh3NkFNdmdDQ3pWaURVN24zMENNUWxRUGk5RWxLSElXL25rZXFWbGZiSC92?=
- =?utf-8?B?Rll4NkV6dDlVdER2aE9oalBjS20rQndyVmJCZVc0dE9CVnBBOFp4YVhzMmNP?=
- =?utf-8?B?akg5cXRUVTB6dkwzSFR3ckZuTGxPT3JKYndKczFlSDFBRU1Ya29XNW0rc05D?=
- =?utf-8?B?WlJ5bEd6QmdHdk5zbElBZ0VSdVdBaEJlZEE0OVZQbjJRWmFqOHZta2k1Z0p1?=
- =?utf-8?B?QjkyNjFkbUJUK3hMVTVnQVhNNjV5QmIvTWI5UWRKK1N6ODdDTXNJOUY0NC9M?=
- =?utf-8?B?V2pGN3FkdFBBKzRHWGx3N1VXYWk0dXZHTlBURlVoVXVTR1E0amJtMjhHMUtm?=
- =?utf-8?B?aitDL21UTmFBdWg5Qjk0bEFxSFJ5N0ZvaUpKRU51b3l6bnZ4TWdDSDlidnRa?=
- =?utf-8?Q?G60mrjOHKL0U73PmxLpfuTK1V?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 887ddb1a-374d-423d-61d3-08de0845abcd
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5115.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2025 21:40:46.4158
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 00ZGSVUrNh/K+EBFV/KuIu5AM6M40GD7BUoOdal6nh+yAjikxUQmnRphPURowH3Ll0NlRiRdnSL9yMLAC+dBZw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9788
+Content-Transfer-Encoding: 8bit
 
-On 2025-10-07 23:43, Gui-Dong Han wrote:
-> The atomic variable vm_fault_info_updated is used to synchronize access to
-> adev->gmc.vm_fault_info between the interrupt handler and
-> get_vm_fault_info().
->
-> The default atomic functions like atomic_set() and atomic_read() do not
-> provide memory barriers. This allows for CPU instruction reordering,
-> meaning the memory accesses to vm_fault_info and the vm_fault_info_updated
-> flag are not guaranteed to occur in the intended order. This creates a
-> race condition that can lead to inconsistent or stale data being used.
->
-> The previous implementation, which used an explicit mb(), was incomplete
-> and inefficient. It failed to account for all potential CPU reorderings,
-> such as the access of vm_fault_info being reordered before the atomic_read
-> of the flag. This approach is also more verbose and less performant than
-> using the proper atomic functions with acquire/release semantics.
->
-> Fix this by switching to atomic_set_release() and atomic_read_acquire().
-> These functions provide the necessary acquire and release semantics,
-> which act as memory barriers to ensure the correct order of operations.
-> It is also more efficient and idiomatic than using explicit full memory
-> barriers.
->
-> Fixes: b97dfa27ef3a ("drm/amdgpu: save vm fault information for amdkfd")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Commit e26ee4efbc79 ("fuse: allocate ff->release_args only if release is
+needed") skips allocating ff->release_args if the server does not
+implement open. However in doing so, fuse_prepare_release() now skips
+grabbing the reference on the inode, which makes it possible for an
+inode to be evicted from the dcache while there are inflight readahead
+requests. This causes a deadlock if the server triggers reclaim while
+servicing the readahead request and reclaim attempts to evict the inode
+of the file being read ahead. Since the folio is locked during
+readahead, when reclaim evicts the fuse inode and fuse_evict_inode()
+attempts to remove all folios associated with the inode from the page
+cache (truncate_inode_pages_range()), reclaim will block forever waiting
+for the lock since readahead cannot relinquish the lock because it is
+itself blocked in reclaim:
 
-Thank you! The patch looks good to me. I'm applying it to 
-amd-staging-drm-next.
+>>> stack_trace(1504735)
+ folio_wait_bit_common (mm/filemap.c:1308:4)
+ folio_lock (./include/linux/pagemap.h:1052:3)
+ truncate_inode_pages_range (mm/truncate.c:336:10)
+ fuse_evict_inode (fs/fuse/inode.c:161:2)
+ evict (fs/inode.c:704:3)
+ dentry_unlink_inode (fs/dcache.c:412:3)
+ __dentry_kill (fs/dcache.c:615:3)
+ shrink_kill (fs/dcache.c:1060:12)
+ shrink_dentry_list (fs/dcache.c:1087:3)
+ prune_dcache_sb (fs/dcache.c:1168:2)
+ super_cache_scan (fs/super.c:221:10)
+ do_shrink_slab (mm/shrinker.c:435:9)
+ shrink_slab (mm/shrinker.c:626:10)
+ shrink_node (mm/vmscan.c:5951:2)
+ shrink_zones (mm/vmscan.c:6195:3)
+ do_try_to_free_pages (mm/vmscan.c:6257:3)
+ do_swap_page (mm/memory.c:4136:11)
+ handle_pte_fault (mm/memory.c:5562:10)
+ handle_mm_fault (mm/memory.c:5870:9)
+ do_user_addr_fault (arch/x86/mm/fault.c:1338:10)
+ handle_page_fault (arch/x86/mm/fault.c:1481:3)
+ exc_page_fault (arch/x86/mm/fault.c:1539:2)
+ asm_exc_page_fault+0x22/0x27
 
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Fix this deadlock by allocating ff->release_args and grabbing the
+reference on the inode when preparing the file for release even if the
+server does not implement open. The inode reference will be dropped when
+the last reference on the fuse file is dropped (see fuse_file_put() ->
+fuse_release_end()).
 
+Fixes: e26ee4efbc79 ("fuse: allocate ff->release_args only if release is needed")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Reported-by: Omar Sandoval <osandov@fb.com>
+---
+ fs/fuse/file.c | 40 ++++++++++++++++++++++++++--------------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
-> ---
->   drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 5 ++---
->   drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c            | 7 +++----
->   drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c            | 7 +++----
->   3 files changed, 8 insertions(+), 11 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-> index b16cce7c22c3..ac09bbe51634 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-> @@ -2325,10 +2325,9 @@ void amdgpu_amdkfd_gpuvm_unmap_gtt_bo_from_kernel(struct kgd_mem *mem)
->   int amdgpu_amdkfd_gpuvm_get_vm_fault_info(struct amdgpu_device *adev,
->   					  struct kfd_vm_fault_info *mem)
->   {
-> -	if (atomic_read(&adev->gmc.vm_fault_info_updated) == 1) {
-> +	if (atomic_read_acquire(&adev->gmc.vm_fault_info_updated) == 1) {
->   		*mem = *adev->gmc.vm_fault_info;
-> -		mb(); /* make sure read happened */
-> -		atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-> +		atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
->   	}
->   	return 0;
->   }
-> diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-> index a8d5795084fc..cf30d3332050 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-> @@ -1066,7 +1066,7 @@ static int gmc_v7_0_sw_init(struct amdgpu_ip_block *ip_block)
->   					GFP_KERNEL);
->   	if (!adev->gmc.vm_fault_info)
->   		return -ENOMEM;
-> -	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-> +	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
->   
->   	return 0;
->   }
-> @@ -1288,7 +1288,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
->   	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
->   			     VMID);
->   	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
-> -		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-> +		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
->   		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
->   		u32 protections = REG_GET_FIELD(status,
->   					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-> @@ -1304,8 +1304,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
->   		info->prot_read = protections & 0x8 ? true : false;
->   		info->prot_write = protections & 0x10 ? true : false;
->   		info->prot_exec = protections & 0x20 ? true : false;
-> -		mb();
-> -		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-> +		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
->   	}
->   
->   	return 0;
-> diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-> index b45fa0cea9d2..0d4c93ff6f74 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-> @@ -1179,7 +1179,7 @@ static int gmc_v8_0_sw_init(struct amdgpu_ip_block *ip_block)
->   					GFP_KERNEL);
->   	if (!adev->gmc.vm_fault_info)
->   		return -ENOMEM;
-> -	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-> +	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
->   
->   	return 0;
->   }
-> @@ -1474,7 +1474,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
->   	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
->   			     VMID);
->   	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
-> -		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-> +		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
->   		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
->   		u32 protections = REG_GET_FIELD(status,
->   					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-> @@ -1490,8 +1490,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
->   		info->prot_read = protections & 0x8 ? true : false;
->   		info->prot_write = protections & 0x10 ? true : false;
->   		info->prot_exec = protections & 0x20 ? true : false;
-> -		mb();
-> -		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-> +		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
->   	}
->   
->   	return 0;
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index f1ef77a0be05..654e21ee93fb 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -100,7 +100,7 @@ static void fuse_release_end(struct fuse_mount *fm, struct fuse_args *args,
+ 	kfree(ra);
+ }
+ 
+-static void fuse_file_put(struct fuse_file *ff, bool sync)
++static void fuse_file_put(struct fuse_file *ff, bool sync, bool isdir)
+ {
+ 	if (refcount_dec_and_test(&ff->count)) {
+ 		struct fuse_release_args *ra = &ff->args->release_args;
+@@ -110,7 +110,9 @@ static void fuse_file_put(struct fuse_file *ff, bool sync)
+ 			fuse_file_io_release(ff, ra->inode);
+ 
+ 		if (!args) {
+-			/* Do nothing when server does not implement 'open' */
++			/* Do nothing when server does not implement 'opendir' */
++		} else if (!isdir && ff->fm->fc->no_open) {
++			fuse_release_end(ff->fm, args, 0);
+ 		} else if (sync) {
+ 			fuse_simple_request(ff->fm, args);
+ 			fuse_release_end(ff->fm, args, 0);
+@@ -131,8 +133,17 @@ struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
+ 	struct fuse_file *ff;
+ 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
+ 	bool open = isdir ? !fc->no_opendir : !fc->no_open;
++	bool release = !isdir || open;
+ 
+-	ff = fuse_file_alloc(fm, open);
++	/*
++	 * ff->args->release_args still needs to be allocated (so we can hold an
++	 * inode reference while there are pending inflight file operations when
++	 * ->release() is called, see fuse_prepare_release()) even if
++	 * fc->no_open is set else it becomes possible for reclaim to deadlock
++	 * if while servicing the readahead request the server triggers reclaim
++	 * and reclaim evicts the inode of the file being read ahead.
++	 */
++	ff = fuse_file_alloc(fm, release);
+ 	if (!ff)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -152,13 +163,14 @@ struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
+ 			fuse_file_free(ff);
+ 			return ERR_PTR(err);
+ 		} else {
+-			/* No release needed */
+-			kfree(ff->args);
+-			ff->args = NULL;
+-			if (isdir)
++			if (isdir) {
++				/* No release needed */
++				kfree(ff->args);
++				ff->args = NULL;
+ 				fc->no_opendir = 1;
+-			else
++			} else {
+ 				fc->no_open = 1;
++			}
+ 		}
+ 	}
+ 
+@@ -363,7 +375,7 @@ void fuse_file_release(struct inode *inode, struct fuse_file *ff,
+ 	 * own ref to the file, the IO completion has to drop the ref, which is
+ 	 * how the fuse server can end up closing its clients' files.
+ 	 */
+-	fuse_file_put(ff, false);
++	fuse_file_put(ff, false, isdir);
+ }
+ 
+ void fuse_release_common(struct file *file, bool isdir)
+@@ -394,7 +406,7 @@ void fuse_sync_release(struct fuse_inode *fi, struct fuse_file *ff,
+ {
+ 	WARN_ON(refcount_read(&ff->count) > 1);
+ 	fuse_prepare_release(fi, ff, flags, FUSE_RELEASE, true);
+-	fuse_file_put(ff, true);
++	fuse_file_put(ff, true, false);
+ }
+ EXPORT_SYMBOL_GPL(fuse_sync_release);
+ 
+@@ -891,7 +903,7 @@ static void fuse_readpages_end(struct fuse_mount *fm, struct fuse_args *args,
+ 		folio_put(ap->folios[i]);
+ 	}
+ 	if (ia->ff)
+-		fuse_file_put(ia->ff, false);
++		fuse_file_put(ia->ff, false, false);
+ 
+ 	fuse_io_free(ia);
+ }
+@@ -1815,7 +1827,7 @@ static void fuse_writepage_free(struct fuse_writepage_args *wpa)
+ 	if (wpa->bucket)
+ 		fuse_sync_bucket_dec(wpa->bucket);
+ 
+-	fuse_file_put(wpa->ia.ff, false);
++	fuse_file_put(wpa->ia.ff, false, false);
+ 
+ 	kfree(ap->folios);
+ 	kfree(wpa);
+@@ -1968,7 +1980,7 @@ int fuse_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 	ff = __fuse_write_file_get(fi);
+ 	err = fuse_flush_times(inode, ff);
+ 	if (ff)
+-		fuse_file_put(ff, false);
++		fuse_file_put(ff, false, false);
+ 
+ 	return err;
+ }
+@@ -2186,7 +2198,7 @@ static int fuse_iomap_writeback_submit(struct iomap_writepage_ctx *wpc,
+ 	}
+ 
+ 	if (data->ff)
+-		fuse_file_put(data->ff, false);
++		fuse_file_put(data->ff, false, false);
+ 
+ 	return error;
+ }
+-- 
+2.47.3
+
 
