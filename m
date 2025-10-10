@@ -1,182 +1,159 @@
-Return-Path: <stable+bounces-184020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF34BCDB8B
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 17:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C22EBCDC62
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 17:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8922B3B8E70
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:05:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58EA3544052
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42562FB989;
-	Fri, 10 Oct 2025 15:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7402F8BFA;
+	Fri, 10 Oct 2025 15:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mAsA5XFC"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="NH4qBqrN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D74A2FB62C
-	for <stable@vger.kernel.org>; Fri, 10 Oct 2025 15:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBC92F9995;
+	Fri, 10 Oct 2025 15:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760108640; cv=none; b=cJAqVyEUPBkhg6DbOEebhBajE4/1SRFz+bi619xWxMQMOVICRHqluigFhlFKASRBj0q9vVnkaOFmu5jWwSaU0kyeLWtGqTtNlZ9lLPmW3iNoe5uorAefAqvzJuWJwUrihEP8QhcTtEgETk2gDcESuC82aszdQMLN5WgoWSvBRG8=
+	t=1760109310; cv=none; b=XsCqGOn7X+9MFlfcNikKucLP8Ji3hyQnMUvi8Ue83BTaHyBT+L22LM63xhJjgaeJROYvNQdQEVCplOZ3XBM+hSD1Najn53xL73dQVdixJDLPQjOVoIA+Vl5BOdLgIui/TDJHD7M1v/mstPdMdpPJOtjSC48GK92jB+N0Y0XPpMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760108640; c=relaxed/simple;
-	bh=wtM3KGXEQuicJ8O+1w9NeLqs1Q3c/AYVobYXG6O4xkU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Crm69TFVHRszOXRaoSpbl6r0ukYNmIQrGQkngvdbsqAnTzFqcxp3PEneeWUtJPQMywFk5w8yj+jcm7tRuNlukQ0XX01MLd/kSkV/h1boaB5Qpf7XNBDxDWHV3K8+8ROBNRFp6pdm1/mhoQdAJnYYNQQu5MG7LAi5aq2d+nwDPXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mAsA5XFC; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-796f9a8a088so1954704b3a.1
-        for <stable@vger.kernel.org>; Fri, 10 Oct 2025 08:03:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760108638; x=1760713438; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=avVd2rCSlmy3mzSueRF3eaj+JsVil8OR/Q+bsjGDE3A=;
-        b=mAsA5XFCTxYVzysL5NVpD1wZXp+XChV0uF2ldflFpa+zYSSukIxbSNlJ0La6Ye0GQ6
-         8pti4wD1xjGtiAKABlc4OBOCYVFPGcXrk0TUIYYRSmy0nTmziep8oDRwAgCogmIiGDpr
-         kmYX8NHduTUiv2YbDSCg93l8rPIhtjUS/SbW4X/fOz6KQyMSyDvEozgOM6o4qshmoT5h
-         VZUfng6v+E5oN+UJT1ywO5764iWQq5NeG1e391o0r/1Kc4Df4L4n2/sZALKMnGUtfhf8
-         VcpjtZz1sW6jIQCoryQs8RQ1/5uA1Wk/ZaGBygN0y7D/2+aR0lWOTuahdah7MyCyFjVm
-         lKnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760108638; x=1760713438;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=avVd2rCSlmy3mzSueRF3eaj+JsVil8OR/Q+bsjGDE3A=;
-        b=j5kT/1HfH5DjPySW9EkQ4k8pIdg+jPtVuV5NcpGdEj0QkgtVRVYIcjCfJpaEIgmvu5
-         SyUlazXm8FfzTtrvlHUPo0AOg27dFdQfPHwxHEa0+2J6mu8nLuyr6rd9VHKwiucESTro
-         Kq/D6A5Tfra0Mm+Wkkaup30/dPLtG4d6AOSVddg9b9w/9UKpvAnaLNNlpRAlcoyLIkKi
-         /nFyFvlY/7AMJw/B9TsMyOcdsKfIUzqU9NzwKe2hb9o8CLG+ZggKPBTs83MmX87ZIERt
-         skWh++2dwNaeIHGJeQfoaCiSoxfkmlAGOte7TxA3BVC8FaK8v63pIEH24sKJIzUqk4YD
-         jpNA==
-X-Gm-Message-State: AOJu0YxnS0AcFpKiNeHgVwsxzso3bLuAD01c50NMNi1nex48yVWGIoUT
-	CdMkOKM0S179GqDc1QfVRZjcDPtLMQfy6d2PKStSW3i2h2XWxWaYNjSY9C2Wwua+NRBW2Q==
-X-Gm-Gg: ASbGnct55YOJpR6LtA8DMbnUMJXRniRmCn+k2kWKavsssPlC5reTs1R5/4lYkIOoxBc
-	PdC8Yq9BmI7ulpA8iCPxkWw6GbT9fQYSdpBN4JJxUfxuDRqUyq1BfZ61h50uE7LxjmDpa12O69A
-	6Swm+0bBCusm6Jjv6GkA9k7doosroitX5/GxLG/RZZYos1kWU7jzcM9/zitk6jz3Glt0+GKCTfa
-	+7fqvzUGBOaFdwLYZg5HnS7c1vL+4vEvsmBvlNX3tICq6Lwcg33olirjWUpZ1yYHxIEXJ5W1yPK
-	0RKDXQ955N3W23JzggkkgwxuOPcNBrumt/8Jmzj0SZHOzaaibX1BWnEXQ6nej/cxcoeXJSnXrCo
-	wxH4+4rz+DcYFoYtujt/CjNz8l99V//THpiGPcz+PhuJV0IAv46ldNmFiglsywhORtGUGDtvP/L
-	PlAOM=
-X-Google-Smtp-Source: AGHT+IFXN/diK2DPzXd7rBmdO25/OaDRNzyiRkMUMQPIXVhrYKhY4WRAMZUZSE4jYyFbxCO9D8yEqw==
-X-Received: by 2002:a05:6a20:2451:b0:24a:b9e:4a6c with SMTP id adf61e73a8af0-32da845e56amr16399655637.44.1760108637682;
-        Fri, 10 Oct 2025 08:03:57 -0700 (PDT)
-Received: from name2965-Precision-7820-Tower.. ([121.185.186.233])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992b639cbcsm3266359b3a.18.2025.10.10.08.03.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 08:03:57 -0700 (PDT)
-From: Jeongjun Park <aha310510@gmail.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	tglx@linutronix.de,
-	Julia.Lawall@inria.fr,
-	akpm@linux-foundation.org,
-	anna-maria@linutronix.de,
-	arnd@arndb.de,
-	linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	luiz.dentz@gmail.com,
-	marcel@holtmann.org,
-	maz@kernel.org,
-	peterz@infradead.org,
-	rostedt@goodmis.org,
-	sboyd@kernel.org,
-	viresh.kumar@linaro.org,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.1.y 12/12] Bluetooth: hci_qca: Fix the teardown problem for real
-Date: Sat, 11 Oct 2025 00:02:52 +0900
-Message-Id: <20251010150252.1115788-13-aha310510@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251010150252.1115788-1-aha310510@gmail.com>
-References: <20251010150252.1115788-1-aha310510@gmail.com>
+	s=arc-20240116; t=1760109310; c=relaxed/simple;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P/wlfvfLkNTk2/tC18cU3ZDmOACmWQgzaI+qPBmPU9AyHvbFfzFS1LV24tpQeQFAjbNQOlZR1hnSfufccaxlK7giw1A1rJdnO4yCclsQFogJCsbskfsk0blycRkXHuCGFHs2cGYcOknaumt96YfBwmhrvLvNyhxPBUOU38uwVcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=NH4qBqrN; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1760109298; x=1760714098; i=rwarsow@gmx.de;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=NH4qBqrNfivTMyOZDKfLpvDwvxR1d/zh61pqMysH5mDcxevXOa7GsoKIM0o8T5J6
+	 pf9KlMWW3Jbghe1nTfGrMtGONt+jglNnsQxSpFhUlMHkyjj8ZMF8Nc9Sv1eWCo5El
+	 0WuFtkMSi/bOzRcyep3e8GevwWd00ZCocC955s6LmoXLvXximQC9q9kaZAbc/Hw99
+	 SvnkXOPyJWMXkufveb35grjUmMMJPuRRrZRMztztN9ddz90EBJzribyyEtgCiwYZy
+	 RMQxIN5E/W/FRHM65zZYwlVTQiLuJ7Slxp9QNAbhWmKr7ZN2sIckr6xi0BNYe1SSq
+	 NDclGH9aFYDEu45mAA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.32.48]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mj8qd-1udQO42qFp-00aydJ; Fri, 10
+ Oct 2025 17:14:57 +0200
+Message-ID: <31a32273-9d8c-40fa-9853-9436c2e1f077@gmx.de>
+Date: Fri, 10 Oct 2025 17:14:55 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.17 00/26] 6.17.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20251010131331.204964167@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:o00+2uT8W+MiKX7FrXifbtdLoO5KiBOeEyv5v+X5wM4WbBlQiQ0
+ 17MWEcNkqOWdmHXDd7zf1uPpUOtI2ptHVhkZBlVrXIzIVWa9Hq6jM0W9gy540GuOeCS0hxu
+ LibmNvEoRCse0aCLGlpX7R///czxInfwIKeARnNjbCjVY8x0k58CM1ebCWMutv+R12pZMyd
+ FbvqhFTQhpwlU4sZJNSrQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:qDNdFgtyHPY=;aE5s2vcthEZvW+9mhHn0oKdMQwg
+ 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
+ EBgTizIQglDaah7snYtgKZw==
 
-From: Thomas Gleixner <tglx@linutronix.de>
+Hi
 
-[ Upstream commit e0d3da982c96aeddc1bbf1cf9469dbb9ebdca657 ]
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-While discussing solutions for the teardown problem which results from
-circular dependencies between timers and workqueues, where timers schedule
-work from their timer callback and workqueues arm the timers from work
-items, it was discovered that the recent fix to the QCA code is incorrect.
+Thanks
 
-That commit fixes the obvious problem of using del_timer() instead of
-del_timer_sync() and reorders the teardown calls to
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
-   destroy_workqueue(wq);
-   del_timer_sync(t);
-
-This makes it less likely to explode, but it's still broken:
-
-   destroy_workqueue(wq);
-   /* After this point @wq cannot be touched anymore */
-
-   ---> timer expires
-         queue_work(wq) <---- Results in a NULL pointer dereference
-			      deep in the work queue core code.
-   del_timer_sync(t);
-
-Use the new timer_shutdown_sync() function to ensure that the timers are
-disarmed, no timer callbacks are running and the timers cannot be armed
-again. This restores the original teardown sequence:
-
-   timer_shutdown_sync(t);
-   destroy_workqueue(wq);
-
-which is now correct because the timer core silently ignores potential
-rearming attempts which can happen when destroy_workqueue() drains pending
-work before mopping up the workqueue.
-
-Fixes: 72ef98445aca ("Bluetooth: hci_qca: Use del_timer_sync() before freeing")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Acked-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Link: https://lore.kernel.org/all/87iljhsftt.ffs@tglx
-Link: https://lore.kernel.org/r/20221123201625.435907114@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
----
- drivers/bluetooth/hci_qca.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 66f416f59a8d..204ba1de624d 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -710,9 +710,15 @@ static int qca_close(struct hci_uart *hu)
- 	skb_queue_purge(&qca->tx_wait_q);
- 	skb_queue_purge(&qca->txq);
- 	skb_queue_purge(&qca->rx_memdump_q);
-+	/*
-+	 * Shut the timers down so they can't be rearmed when
-+	 * destroy_workqueue() drains pending work which in turn might try
-+	 * to arm a timer.  After shutdown rearm attempts are silently
-+	 * ignored by the timer core code.
-+	 */
-+	timer_shutdown_sync(&qca->tx_idle_timer);
-+	timer_shutdown_sync(&qca->wake_retrans_timer);
- 	destroy_workqueue(qca->workqueue);
--	del_timer_sync(&qca->tx_idle_timer);
--	del_timer_sync(&qca->wake_retrans_timer);
- 	qca->hu = NULL;
- 
- 	kfree_skb(qca->rx_skb);
---
 
