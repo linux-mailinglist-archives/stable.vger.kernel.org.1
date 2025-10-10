@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-183934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73451BCD374
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2697DBCD1FE
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9106E189B7BE
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A48242760F
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFF82F28EE;
-	Fri, 10 Oct 2025 13:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A7B2F747A;
+	Fri, 10 Oct 2025 13:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxaGVoQw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pwcd3/3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5B32F6585;
-	Fri, 10 Oct 2025 13:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72742F6196;
+	Fri, 10 Oct 2025 13:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102402; cv=none; b=osIJb3wsVXBBn07AcrxdqXxknAl3RJw4bTTz79qdJtRzTe2pN1zIEAtlh4rhlTueehdC0tvFRqhYLV1Wx3s+DHZUhIGsTFnRnKKiByD2QUaOBP3Klh2DAHr9g2Y8KGqYA0L/R/hvtGCG0ftMCnajviKQhLIPkiDU/LDp37cNwQs=
+	t=1760102273; cv=none; b=jYNRTrP6z0pUwHp21rK17YEqL9qjPE1fdsTdMXmOIIvTMrsi68aVHJCwup3d5tEc8uqYVkGUA2oYJkvSOm89NHBj4U5Ag0hyU3DADSTxNgm2RPe3BthQELhGvKGgwG6fab0tp4OrGNUdzLm1dex6nswl7hZFpGXP4W+d2I0F2jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102402; c=relaxed/simple;
-	bh=Npi6jpXvwnbsAQ6AGrp4Lu41mPWY7KZRLB3kZqlARTQ=;
+	s=arc-20240116; t=1760102273; c=relaxed/simple;
+	bh=ezmHTRoZz+VW30TmnIyZK81IPq3A8KqWQu8V0W2fYbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBy02OMnhqOsfpP+WdFJmiUJ8oziNabpOA+A0jTwfz4F7qAXZeR36LwTXCCQWFTmklguDJJZkWyroatAZKjA6gEHx6GXuJb+phpDNT1TFyr94DzX36U68fNFksnEPCTam1P0qrsmcQSETSBpgyRnlKxIInYh1YQAXa9c4gKEhTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxaGVoQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B40BC4CEF1;
-	Fri, 10 Oct 2025 13:20:01 +0000 (UTC)
+	 MIME-Version; b=GIOuRrDQcwdU4FjRdZ4fXl+C7bsF0RtbSZ4Jhk4trJGC/13V2j1jCnBGjDpTb0/8Lm6KkOqu0v9vxRmyzBCHTNdOpaZiffuDFTYCOCxDuN/yjDfq4m8h1VkFI9oUye4WYAYDTMvpmT07Jz4P3j+B9LDMQF9Y60bn3qwI5M9YJ7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pwcd3/3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038C0C4CEFE;
+	Fri, 10 Oct 2025 13:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102402;
-	bh=Npi6jpXvwnbsAQ6AGrp4Lu41mPWY7KZRLB3kZqlARTQ=;
+	s=korg; t=1760102273;
+	bh=ezmHTRoZz+VW30TmnIyZK81IPq3A8KqWQu8V0W2fYbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxaGVoQw4q0FOrb9pWfUl2nDgFIARg2qUR++wVNQAUw2HjCzDb87JixFs8BFQm1za
-	 xD7uwUhPg1KbNJsLQSPgySgawlPu2L0FcG+INtlGFT0Zd2E/6GivTWjGM2f7Dmfo5l
-	 JFTvqc1c6K7RUaCHYAPUJPN/CBC4f4jOysB7CP/M=
+	b=Pwcd3/3kXRShPDkeWQbreSJmMNCNeif1zGqbCDECOXsydLzwUvw15nmT0bYrUfdfg
+	 M9gnlKX4tPN+WGT9vzYZP1M/YMsrT+DSehEemdTVNE2+F7h0LVnB+UsJKxyoKvFNzJ
+	 Y86vLQnECsm7Vgi3fUfG7ZkcplFccc2hffEhmyEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 6.16 32/41] serial: stm32: allow selecting console when the driver is module
-Date: Fri, 10 Oct 2025 15:16:20 +0200
-Message-ID: <20251010131334.576515969@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	syzbot+ddc001b92c083dbf2b97@syzkaller.appspotmail.com,
+	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.17 26/26] ring buffer: Propagate __rb_map_vma return value to caller
+Date: Fri, 10 Oct 2025 15:16:21 +0200
+Message-ID: <20251010131332.156305992@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
 
-commit cc4d900d0d6d8dd5c41832a93ff3cfa629a78f9a upstream.
+commit de4cbd704731778a2dc833ce5a24b38e5d672c05 upstream.
 
-Console can be enabled on the UART compile as module.
-Change dependency to allow console mode when the driver is built as module.
+The return value from `__rb_map_vma()`, which rejects writable or
+executable mappings (VM_WRITE, VM_EXEC, or !VM_MAYSHARE), was being
+ignored. As a result the caller of `__rb_map_vma` always returned 0
+even when the mapping had actually failed, allowing it to proceed
+with an invalid VMA.
 
-Fixes: 48a6092fb41fa ("serial: stm32-usart: Add STM32 USART Driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Link: https://lore.kernel.org/r/20250822141923.61133-1-raphael.gallais-pou@foss.st.com
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20251008172516.20697-1-ankitkhushwaha.linux@gmail.com
+Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
+Reported-by: syzbot+ddc001b92c083dbf2b97@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=194151be8eaebd826005329b2e123aecae714bdb
+Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/Kconfig |    2 +-
+ kernel/trace/ring_buffer.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -1405,7 +1405,7 @@ config SERIAL_STM32
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -7273,7 +7273,7 @@ int ring_buffer_map(struct trace_buffer
+ 		atomic_dec(&cpu_buffer->resize_disabled);
+ 	}
  
- config SERIAL_STM32_CONSOLE
- 	bool "Support for console on STM32"
--	depends on SERIAL_STM32=y
-+	depends on SERIAL_STM32
- 	select SERIAL_CORE_CONSOLE
- 	select SERIAL_EARLYCON
+-	return 0;
++	return err;
+ }
  
+ int ring_buffer_unmap(struct trace_buffer *buffer, int cpu)
 
 
 
