@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-183917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A38BCD2BA
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85516BCD396
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1562427766
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2C9619E1697
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA752F5A37;
-	Fri, 10 Oct 2025 13:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362B92F747C;
+	Fri, 10 Oct 2025 13:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQxQnO+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UK4JkGoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A34C2F5482;
-	Fri, 10 Oct 2025 13:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E822A21579F;
+	Fri, 10 Oct 2025 13:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102353; cv=none; b=L5XNft3oYC59qjb/U6iQh15lqqJbVw4fXjCNOGY3NknW3zSlipfbmanxQhUYS9EiOYJWq0+1cfK0r8Ub1TSZv+wXcI5dKhLvcDUGJseoOH6wWRRIain0GargenrAP8djwOkS2QVyrVhmfPgtioGAxZf6SeI4RjcGUYtRz0N+kgw=
+	t=1760102431; cv=none; b=ui+wFfj/JUyw7zgFyQVyoTbnPa4qk48wHC5OWe83UH8boOLHdN8vBzMylxFZL6BBDI0jzCyYreMLoLRfRcZZLxl84cczE71dK5I7GrdrSPJKGjBH4tCPaiUNljfDvrJZMt/7/+WhuHPmVip6psLxcTOFDYhex6kDvmi0wBqQI8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102353; c=relaxed/simple;
-	bh=nyGGYOHrZJGUtDhhjuvpX8nHl7P+UyzPC1mfWxnp8zU=;
+	s=arc-20240116; t=1760102431; c=relaxed/simple;
+	bh=4L8qjw/4jslETTYyb78sq94BeD6cD5GClrNgaqM272I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8CZJpnUS9T77GlBLQa6JYzqdEf2fmc8HgcJ20t6RfCHNJaHWcN1zTlvueQUuhGnwG6IagwMo3u1Dme/5cT30qQxXLQWlSNyVCrZidIspqu0wN8bsBB0yPFwIkl/FFR4ysLJffmYTpTiYaN6wzsZ5P8MIs6rYkxbtSSVZAKozJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQxQnO+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3A2C4CEF1;
-	Fri, 10 Oct 2025 13:19:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RiLei/J0OHSzv+O899T6NzDFA5gLz2jHdOjlEmzByH4mNathfqM5S9DQzngmYeeXIOHoeoTCNvjFg9rBtHZiqXCOgZ9d7sFWl+5pTWlxmZJ/e5e4Fu8e4azZv76hypdsqQ4y7FpXXUW7VJQJyS220gtYjzjrciAS30YSqptvmEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UK4JkGoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D812C4CEF1;
+	Fri, 10 Oct 2025 13:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102353;
-	bh=nyGGYOHrZJGUtDhhjuvpX8nHl7P+UyzPC1mfWxnp8zU=;
+	s=korg; t=1760102430;
+	bh=4L8qjw/4jslETTYyb78sq94BeD6cD5GClrNgaqM272I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQxQnO+Zpr5EXo6kfLgjOIdmineO9i6yLaEf7dbKW+DITh/xMTWWJqiar0cltMIAl
-	 wO/9r516gGgR2uxKorkJup+3nnkJLNwE3+8dBwNlUkzPiWhycvJb0R2S+yByahqI5f
-	 a5dspMDR9jTWr91XkqpATDp5xyCAsyWvYX2+at/U=
+	b=UK4JkGoe7Z5g4RLtPNdtUDFT52/DdVW1jQtpHP7AlEckyVhZ55p347Z0AezmrD1nV
+	 IPDKV3cI6wnEjPfkCarZgUpYXKBJ3KHbhbFwIdZdUX8ub0ZgnodOHecGccpz3+Fwsn
+	 1NiE03RxTHJEbCMnPkv3F0sEtiHfsFATPAiekc2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duy Nguyen <duy.nguyen.rh@renesas.com>,
-	Tranh Ha <tranh.ha.xb@renesas.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 26/41] can: rcar_canfd: Fix controller mode setting
+Subject: [PATCH 6.12 12/35] platform/x86/amd/pmf: Support new ACPI ID AMDI0108
 Date: Fri, 10 Oct 2025 15:16:14 +0200
-Message-ID: <20251010131334.365158106@linuxfoundation.org>
+Message-ID: <20251010131332.235936334@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duy Nguyen <duy.nguyen.rh@renesas.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit 5cff263606a10102a0ea19ff579eaa18fd5577ad ]
+[ Upstream commit 1b09d08866277677d11726116f5e786d5ba00173 ]
 
-Driver configures register to choose controller mode before
-setting all channels to reset mode leading to failure.
-The patch corrects operation of mode setting.
+Include the ACPI ID AMDI0108, which is used on upcoming AMD platforms, in
+the PMF driver's list of supported devices.
 
-Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
-Signed-off-by: Tranh Ha <tranh.ha.xb@renesas.com>
-Link: https://patch.msgid.link/TYWPR01MB87434739F83E27EDCD23DF44B416A@TYWPR01MB8743.jpnprd01.prod.outlook.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/20250915090546.2759130-1-Shyam-sundar.S-k@amd.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/rcar/rcar_canfd.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/platform/x86/amd/pmf/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 7f10213738e5c..e2ae8d6a9de64 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -870,9 +870,6 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- 	/* Reset Global error flags */
- 	rcar_canfd_write(gpriv->base, RCANFD_GERFL, 0x0);
- 
--	/* Set the controller into appropriate mode */
--	rcar_canfd_set_mode(gpriv);
--
- 	/* Transition all Channels to reset mode */
- 	for_each_set_bit(ch, &gpriv->channels_mask, gpriv->info->max_channels) {
- 		rcar_canfd_clear_bit(gpriv->base,
-@@ -892,6 +889,10 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- 			return err;
- 		}
- 	}
-+
-+	/* Set the controller into appropriate mode */
-+	rcar_canfd_set_mode(gpriv);
-+
- 	return 0;
- }
- 
+diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
+index 719caa2a00f05..8a1e2268d301a 100644
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -406,6 +406,7 @@ static const struct acpi_device_id amd_pmf_acpi_ids[] = {
+ 	{"AMDI0103", 0},
+ 	{"AMDI0105", 0},
+ 	{"AMDI0107", 0},
++	{"AMDI0108", 0},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, amd_pmf_acpi_ids);
 -- 
 2.51.0
 
