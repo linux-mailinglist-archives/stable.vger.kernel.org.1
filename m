@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-183943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B17BCD2BD
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1CBBCD28D
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E24734FE0BD
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 444711A67722
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE832F747F;
-	Fri, 10 Oct 2025 13:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7302F99B5;
+	Fri, 10 Oct 2025 13:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzCVC6Yt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziASLCV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B54221579F;
-	Fri, 10 Oct 2025 13:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2852F8BFA;
+	Fri, 10 Oct 2025 13:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102428; cv=none; b=WpMVGHHDa91Jcuny6SgsGHN4RP/f+nlvCIMppUhR8edZ9bg4v3saTfF0yJqjFcPcM8ZyKfafpl0CX2bqIbOh5Id3MBmirswRXNa9LYrw98JR997OvyBgcYHyM5cqnwRG8P4iaCGhC1hyeaT4AxYXARTjBEap5bwkm1SvKHnQADA=
+	t=1760102285; cv=none; b=H0dZ/OluLVoNCW/4XrO93U/RxArlxC0ebKkXLA3MdEe5emo7vkYMjETS38Pub5k9SNZamA2TxspqDQbgwE5GSY0NaIGcmrJBWbeunX4INLFyYz1lv0R9jdoObKt/YPAB+wDejapqCOEXytdb8Gez5D5sujapsVojz7l8ZYNAJ9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102428; c=relaxed/simple;
-	bh=1BHjjyQNT/lTS7xxvhvBwqfr88hAUOMpVo5YpnQV4gk=;
+	s=arc-20240116; t=1760102285; c=relaxed/simple;
+	bh=ztRPJo/WTAPb+6zLcob4w7qV8sg+daiygRlFEIL6iLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1UM0k/awEcVuhMDgi6lUPzFgDmVgMVUxqwLDdqGZWPb/rHBUdQtZzYEeu8xSXS8cYxWsTRKXvRjRWolYmBg2kNlsKhYTb//XUPSpHJfUFeCbRFtW1FMbD+T9HdbP5LmzDqHu6qIkf8U1titJ4hobjKR0PvmqxOS1gD4Ma3m7nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzCVC6Yt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A117FC4CEF1;
-	Fri, 10 Oct 2025 13:20:27 +0000 (UTC)
+	 MIME-Version; b=TEGpQUbt2hCf5MWTcElS3Lj9dDoAM6lZGCkmXi+HePhcyActevS+Ef8zPuek9ghZaIRFnxjI+ldOWUGBwq3j7Q79qFxZ2cD5DGVIVLOChwZ8xzdVVq+U/kK6iVNQmTp3UZbfG0I84g0U9fVfevI2odqdgTMUY86UUdj3eFNpNZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziASLCV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E07C4CEF1;
+	Fri, 10 Oct 2025 13:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102428;
-	bh=1BHjjyQNT/lTS7xxvhvBwqfr88hAUOMpVo5YpnQV4gk=;
+	s=korg; t=1760102284;
+	bh=ztRPJo/WTAPb+6zLcob4w7qV8sg+daiygRlFEIL6iLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bzCVC6YtnVFAsRhftR6BJBrg+MYxKTI6T1A4gShJ515EQCyFfxCbjcm8/MmbrSlOe
-	 xX/tDGx1H8m9r3+w4y+LZfCJzVBDyJUr7NgHCbe2bk6qHgsuf/msA1NsRLBYxEoqH6
-	 3i0jnP0JhdzXS0kAmFzsMvFkBNx0JbUZVHrERQBY=
+	b=ziASLCV2dzYj1Br5wxlDZY4t4/fXcDMjmbegTeyq48XE4s4+XeASZIpkB05vkKqu+
+	 wUCk9MybsDxUGygYg9+XIvOt13QP/y78skihQO7lwoSS3v49gVU0FQHAp+hrDc0/5R
+	 vCLT7pmAF0SWZNV+W0iY+GP5vZrTDN4+eimh5TLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hupu <hupu.gm@gmail.com>,
-	Guilherme Amadio <amadio@gentoo.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 11/35] perf subcmd: avoid crash in exclude_cmds when excludes is empty
-Date: Fri, 10 Oct 2025 15:16:13 +0200
-Message-ID: <20251010131332.199727804@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	stable <stable@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.17 19/26] driver core/PM: Set power.no_callbacks along with power.no_pm
+Date: Fri, 10 Oct 2025 15:16:14 +0200
+Message-ID: <20251010131331.906612184@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hupu <hupu.gm@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit a5edf3550f4260504b7e0ab3d40d13ffe924b773 ]
+commit c2ce2453413d429e302659abc5ace634e873f6f5 upstream.
 
-When cross-compiling the perf tool for ARM64, `perf help` may crash
-with the following assertion failure:
+Devices with power.no_pm set are not expected to need any power
+management at all, so modify device_set_pm_not_required() to set
+power.no_callbacks for them too in case runtime PM will be enabled
+for any of them (which in principle may be done for convenience if
+such a device participates in a dependency chain).
 
-  help.c:122: exclude_cmds: Assertion `cmds->names[ci] == NULL' failed.
+Since device_set_pm_not_required() must be called before device_add()
+or it would not have any effect, it can update power.no_callbacks
+without locking, unlike pm_runtime_no_callbacks() that can be called
+after registering the target device.
 
-This happens when the perf binary is not named exactly "perf" or when
-multiple "perf-*" binaries exist in the same directory. In such cases,
-the `excludes` command list can be empty, which leads to the final
-assertion in exclude_cmds() being triggered.
-
-Add a simple guard at the beginning of exclude_cmds() to return early
-if excludes->cnt is zero, preventing the crash.
-
-Signed-off-by: hupu <hupu.gm@gmail.com>
-Reported-by: Guilherme Amadio <amadio@gentoo.org>
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20250909094953.106706-1-amadio@gentoo.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/1950054.tdWV9SEqCh@rafael.j.wysocki
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/subcmd/help.c | 3 +++
+ include/linux/device.h |    3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index 9ef569492560e..ddaeb4eb3e249 100644
---- a/tools/lib/subcmd/help.c
-+++ b/tools/lib/subcmd/help.c
-@@ -75,6 +75,9 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 	size_t ci, cj, ei;
- 	int cmp;
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -851,6 +851,9 @@ static inline bool device_pm_not_require
+ static inline void device_set_pm_not_required(struct device *dev)
+ {
+ 	dev->power.no_pm = true;
++#ifdef CONFIG_PM
++	dev->power.no_callbacks = true;
++#endif
+ }
  
-+	if (!excludes->cnt)
-+		return;
-+
- 	ci = cj = ei = 0;
- 	while (ci < cmds->cnt && ei < excludes->cnt) {
- 		cmp = strcmp(cmds->names[ci]->name, excludes->names[ei]->name);
--- 
-2.51.0
-
+ static inline void dev_pm_syscore_device(struct device *dev, bool val)
 
 
 
