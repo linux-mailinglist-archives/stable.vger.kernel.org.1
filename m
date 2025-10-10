@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-183976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78902BCD3A2
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756A9BCD410
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B7A8540580
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDF8A188EB91
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C72E2F5A3E;
-	Fri, 10 Oct 2025 13:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC5D2F3C25;
+	Fri, 10 Oct 2025 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEZiKJkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVqkEjsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F1D2F5A37;
-	Fri, 10 Oct 2025 13:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA0021579F;
+	Fri, 10 Oct 2025 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102523; cv=none; b=KgfAvfdbKzcaJoilAtW/h0rskutxSC6xFaJJGroidw756+2A7kJFvqbHREUMWuSaaLm6vA15WBblhb34fnEy7Wnh3Z3wJKy+liV2DOfqrjEBxxYDFtex1vTXmqIZ+wKOJ3IMfvptvnIV6hvD7h6amtmutBSPtSgnApBDvYXK4Xk=
+	t=1760102579; cv=none; b=AYqGbSf5yLgBW8+zKsnsPDQ8LWUpkmT9LPRmWVKAcGgM92LyUGNm9tTjRC/Q3UizUGq8nUmkl+MaO1iZ3Q6GdTOEW5vq1KbSJlGPaab528r68dPydOi5E6Y7mwPJkzwHSO4+5FycKO9xl2zhbD4ReYWO1/pKyZeODubu2H/zzE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102523; c=relaxed/simple;
-	bh=P1ZP170NpBeGyuM6KBN0NWWp4d5ztWYYvB14y5VoGrM=;
+	s=arc-20240116; t=1760102579; c=relaxed/simple;
+	bh=nc1WmZCo/6w4r11LcW78prOUUqwPDcQAlWKEuBOWUGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMpwk7DKENtZ/tYZaAefPe/JgCnMEcj7bk9ZaAWx7IyH7E9A5s4tgYrWeVJWJlpPbUofIoMunNuCEyVgX+FJGf4fYauV6zZQiSW+rlor3MwSPAkbGyzQlSQuRv8o9GjtsBCvOnjWZ0Qtu31hXt2xBn4+igiT/Ddxtbwt3cMvu6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEZiKJkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF20C4CEF1;
-	Fri, 10 Oct 2025 13:22:01 +0000 (UTC)
+	 MIME-Version; b=ELVS+yfMNlzQM+BumUTPWml/VQBGzU1vHjZJ60uoqDOA5bmYoxQgtEm+VwDBZ6mGvSprS98R69CJR9mCt41fZNUkyD7c8CuCTfx5xq02RHZWxo8otFywhMtw18r5zdkvpv5Wa3Lxz2zCmM2cmYtWEYnyHojO6D1mbJwAeDyKQu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVqkEjsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C742EC4CEF1;
+	Fri, 10 Oct 2025 13:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102521;
-	bh=P1ZP170NpBeGyuM6KBN0NWWp4d5ztWYYvB14y5VoGrM=;
+	s=korg; t=1760102579;
+	bh=nc1WmZCo/6w4r11LcW78prOUUqwPDcQAlWKEuBOWUGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEZiKJkOiL/UN+zccK9DTVIZjNIDGSsjFlAHGhMVme9GGbHeyBifzvNn/kbnAHYW+
-	 fVN9QH/8iTspq0XK3IJ9gGAywyUIjJ1vL9ELXEbA/O9KdHQSZ1iED1AG8rjIWGm5K6
-	 EsufOpigCJOMYieBORTMXzKay/aXwSHtwJTlIWwM=
+	b=tVqkEjsLtpY5pOIKfkzqy0PH5f5vcWAdMHxOUThAJy+F9EyPH1XqB/psmXbOss5gj
+	 Vy6bEIpIwILOzAgWW59E3NaZUoOCGvsqTgvOR1XBi378CNvPVQcopJfLVOUByx4MqO
+	 B5LJ0+e0qNbd7Qq8HRyRGmMkNwp0yNqqUbfGAV8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shaoyun Liu <shaoyun.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 21/35] drm/amd/include : Update MES v12 API for fence update
-Date: Fri, 10 Oct 2025 15:16:23 +0200
-Message-ID: <20251010131332.558812489@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.6 06/28] wifi: rtlwifi: rtl8192cu: Dont claim USB ID 07b8:8188
+Date: Fri, 10 Oct 2025 15:16:24 +0200
+Message-ID: <20251010131330.594431498@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
+References: <20251010131330.355311487@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaoyun Liu <shaoyun.liu@amd.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 15d8c92f107c17c2e585cb4888c67873538f9722 upstream.
+commit e798f2ac6040f46a04795d7de977341fa9aeabae upstream.
 
-MES fence_value will be updated in fence_addr if API success,
-otherwise upper 32 bit will be used to indicate error code.
-In any case, MES will trigger an EOP interrupt with 0xb1 as
-context id in the interrupt cookie
+This ID appears to be RTL8188SU, not RTL8188CU. This is the wrong driver
+for RTL8188SU. The r8712u driver from staging used to handle this ID.
 
-Signed-off-by: Shaoyun Liu <shaoyun.liu@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Closes: https://lore.kernel.org/linux-wireless/ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de/
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/2e5e2348-bdb3-44b2-92b2-0231dbf464b0@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/include/mes_v12_api_def.h |   40 +++++++++++++++++++++++++-
- 1 file changed, 39 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/include/mes_v12_api_def.h
-+++ b/drivers/gpu/drm/amd/include/mes_v12_api_def.h
-@@ -105,6 +105,43 @@ struct MES_API_STATUS {
- 	uint64_t api_completion_fence_value;
- };
- 
-+/*
-+ * MES will set api_completion_fence_value in api_completion_fence_addr
-+ * when it can successflly process the API. MES will also trigger
-+ * following interrupt when it finish process the API no matter success
-+ * or failed.
-+ *     Interrupt source id 181 (EOP) with context ID (DW 6 in the int
-+ *     cookie) set to 0xb1 and context type set to 8. Driver side need
-+ *     to enable TIME_STAMP_INT_ENABLE in CPC_INT_CNTL for MES pipe to
-+ *     catch this interrupt.
-+ *     Driver side also need to set enable_mes_fence_int = 1 in
-+ *     set_HW_resource package to enable this fence interrupt.
-+ * when the API process failed.
-+ *     lowre 32 bits set to 0.
-+ *     higher 32 bits set as follows (bit shift within high 32)
-+ *         bit 0  -  7    API specific error code.
-+ *         bit 8  - 15    API OPCODE.
-+ *         bit 16 - 23    MISC OPCODE if any
-+ *         bit 24 - 30    ERROR category (API_ERROR_XXX)
-+ *         bit 31         Set to 1 to indicate error status
-+ *
-+ */
-+enum { MES_SCH_ERROR_CODE_HEADER_SHIFT_12 = 8 };
-+enum { MES_SCH_ERROR_CODE_MISC_OP_SHIFT_12 = 16 };
-+enum { MES_ERROR_CATEGORY_SHIFT_12 = 24 };
-+enum { MES_API_STATUS_ERROR_SHIFT_12 = 31 };
-+
-+enum MES_ERROR_CATEGORY_CODE_12 {
-+	MES_ERROR_API                = 1,
-+	MES_ERROR_SCHEDULING         = 2,
-+	MES_ERROR_UNKNOWN            = 3,
-+};
-+
-+#define MES_ERR_CODE(api_err, opcode, misc_op, category) \
-+			((uint64) (api_err | opcode << MES_SCH_ERROR_CODE_HEADER_SHIFT_12 | \
-+			misc_op << MES_SCH_ERROR_CODE_MISC_OP_SHIFT_12 | \
-+			category << MES_ERROR_CATEGORY_SHIFT_12 | \
-+			1 << MES_API_STATUS_ERROR_SHIFT_12) << 32)
- 
- enum { MAX_COMPUTE_PIPES = 8 };
- enum { MAX_GFX_PIPES	 = 2 };
-@@ -248,7 +285,8 @@ union MESAPI_SET_HW_RESOURCES {
- 				uint32_t enable_mes_sch_stb_log : 1;
- 				uint32_t limit_single_process : 1;
- 				uint32_t unmapped_doorbell_handling: 2;
--				uint32_t reserved : 11;
-+				uint32_t enable_mes_fence_int: 1;
-+				uint32_t reserved : 10;
- 			};
- 			uint32_t uint32_all;
- 		};
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+@@ -294,7 +294,6 @@ static const struct usb_device_id rtl819
+ 	{RTL_USB_DEVICE(0x050d, 0x1102, rtl92cu_hal_cfg)}, /*Belkin - Edimax*/
+ 	{RTL_USB_DEVICE(0x050d, 0x11f2, rtl92cu_hal_cfg)}, /*Belkin - ISY*/
+ 	{RTL_USB_DEVICE(0x06f8, 0xe033, rtl92cu_hal_cfg)}, /*Hercules - Edimax*/
+-	{RTL_USB_DEVICE(0x07b8, 0x8188, rtl92cu_hal_cfg)}, /*Abocom - Abocom*/
+ 	{RTL_USB_DEVICE(0x07b8, 0x8189, rtl92cu_hal_cfg)}, /*Funai - Abocom*/
+ 	{RTL_USB_DEVICE(0x0846, 0x9041, rtl92cu_hal_cfg)}, /*NetGear WNA1000M*/
+ 	{RTL_USB_DEVICE(0x0846, 0x9043, rtl92cu_hal_cfg)}, /*NG WNA1000Mv2*/
 
 
 
