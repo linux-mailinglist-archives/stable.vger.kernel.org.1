@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-183985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7C0BCD3FC
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:26:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17DB3BCD3E0
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 053E8188AC54
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B88FF1B210B9
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37622EF652;
-	Fri, 10 Oct 2025 13:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665332F5487;
+	Fri, 10 Oct 2025 13:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spw2rTNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1BayIrh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F32F1F63FF;
-	Fri, 10 Oct 2025 13:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BB52EF664;
+	Fri, 10 Oct 2025 13:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102547; cv=none; b=J7Xgt35r80PJPiT5u416skGaei+1A2hHd7i/44UuyQIG3cmfR442a6xlgSxlCTPrDJZsBGFAQxeXKlSCG4BxLWVRTXQi4YPZPE3Fk0/FCBvAG8VW9WjhvdKF7h5ef1NW5AqrExaRxK0Ec0jaEEnuTGYgaSedz1dzS46CBnoyyFc=
+	t=1760102491; cv=none; b=VGIKKRGUmRp0Dc6/O4eUXCz68zV4lrZM908b+sCUk6J3UKqXYQr99ruGU8ePVRn2YiAVP20q76QLmRvoSgTHvLZEKVpbuOq5631JVMP9ZbTKCaFMbdJW+qH/DV+HDUiV0ITDBNa+g5DQu7CUfbHO9L4tCRTgg/QW8dQuKYpMhCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102547; c=relaxed/simple;
-	bh=UisoH2MNzCuXYYgskGtxxvzrsfIJNFsIaLNePb4JGok=;
+	s=arc-20240116; t=1760102491; c=relaxed/simple;
+	bh=XmZZZ6MaQFx3KoKMPeBFbyYmv8bye6hnowMLNBct4vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9j+E5r0UNxA8YACsyzNGg2m76pU4rmsoh6cy6S4IuMqWurLl+zE27h8LyCX54+1M8aeYLwJxBADRKGQWhxh0Z2mml4xiyIj8sDQWUM8bSqdBebPOzuXZRfu0TPGTdLHcWI4PF9Rcu0zykllFIXRkjFwIAUiwNOqrq7mglV+15g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spw2rTNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C9FC4CEFE;
-	Fri, 10 Oct 2025 13:22:26 +0000 (UTC)
+	 MIME-Version; b=Prkui8QdPaPPFZ5IEDpFMB7k+7NojX4U95VqFKTGkboWpXviiBMTYHQDfC0lApL8C6u3IjgJqMsMQpEGUu/NBKLlRAF/W14ZejqPI2CrmNUuSsqSHiHSJkVIjK6P/IBJ5dYFUTx+AVeylvdT1hUtcNg798RaT6G8IbYr1vos6tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1BayIrh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54518C4CEF1;
+	Fri, 10 Oct 2025 13:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102547;
-	bh=UisoH2MNzCuXYYgskGtxxvzrsfIJNFsIaLNePb4JGok=;
+	s=korg; t=1760102490;
+	bh=XmZZZ6MaQFx3KoKMPeBFbyYmv8bye6hnowMLNBct4vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=spw2rTNiNsrsn/xQy+RCg9PVpyMfqED/xI2o0F1AVPB9zxgFN1CBJtSvPosM3eAHS
-	 8LFuP7AIWFlpWisMjW8GNxNaHnvygY/etf8EtsQKk5H3Q8f9yH/QGcKtRr0eJ/BF2D
-	 XaVNRloMFVPOCiZSJjWxQO9r9N/aOQyS67FYvomw=
+	b=t1BayIrhzFIG4iaeJX0yNhE7RcR04jC2tsHMP3SmDRxcLnn8bu5O+TObwiyuAd9rI
+	 +rApuxj2h2g5lO7kRkSwHBWrtrLCgh3fwxW5cKV9cAcH4aFNSyQ9Xt7ut4acAV9rrN
+	 lNx6mh4LZtQGnH6s5yVD41dgLnGRrwdZhORAaMPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 17/28] ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
+	Yiqi Sun <sunyiqixm@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 33/35] crypto: rng - Ensure set_ent is always present
 Date: Fri, 10 Oct 2025 15:16:35 +0200
-Message-ID: <20251010131330.991248370@linuxfoundation.org>
+Message-ID: <20251010131332.983104472@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 9f2c0ac1423d5f267e7f1d1940780fc764b0fee3 upstream.
+commit c0d36727bf39bb16ef0a67ed608e279535ebf0da upstream.
 
-The previous commit 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at
-removal") patched a UAF issue caused by the error timer.
+Ensure that set_ent is always set since only drbg provides it.
 
-However, because the error timer kill added in this patch occurs after the
-endpoint delete, a race condition to UAF still occurs, albeit rarely.
-
-Additionally, since kill-cleanup for urb is also missing, freed memory can
-be accessed in interrupt context related to urb, which can cause UAF.
-
-Therefore, to prevent this, error timer and urb must be killed before
-freeing the heap memory.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f02665daa2abeef4a947
-Fixes: 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at removal")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 77ebdabe8de7 ("crypto: af_alg - add extra parameters for DRBG interface")
+Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/midi.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ crypto/rng.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -1522,15 +1522,14 @@ static void snd_usbmidi_free(struct snd_
- {
- 	int i;
+--- a/crypto/rng.c
++++ b/crypto/rng.c
+@@ -167,6 +167,11 @@ out:
+ EXPORT_SYMBOL_GPL(crypto_del_default_rng);
+ #endif
  
-+	if (!umidi->disconnected)
-+		snd_usbmidi_disconnect(&umidi->list);
++static void rng_default_set_ent(struct crypto_rng *tfm, const u8 *data,
++				unsigned int len)
++{
++}
 +
- 	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
- 		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
--		if (ep->out)
--			snd_usbmidi_out_endpoint_delete(ep->out);
--		if (ep->in)
--			snd_usbmidi_in_endpoint_delete(ep->in);
-+		kfree(ep->out);
- 	}
- 	mutex_destroy(&umidi->mutex);
--	timer_shutdown_sync(&umidi->error_timer);
- 	kfree(umidi);
- }
+ int crypto_register_rng(struct rng_alg *alg)
+ {
+ 	struct crypto_alg *base = &alg->base;
+@@ -178,6 +183,9 @@ int crypto_register_rng(struct rng_alg *
+ 	base->cra_flags &= ~CRYPTO_ALG_TYPE_MASK;
+ 	base->cra_flags |= CRYPTO_ALG_TYPE_RNG;
  
++	if (!alg->set_ent)
++		alg->set_ent = rng_default_set_ent;
++
+ 	return crypto_register_alg(base);
+ }
+ EXPORT_SYMBOL_GPL(crypto_register_rng);
 
 
 
