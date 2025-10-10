@@ -1,433 +1,133 @@
-Return-Path: <stable+bounces-183848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0501BCB420
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 02:05:42 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CE4BCB4AE
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 02:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB532403F31
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 00:04:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 138BD35489A
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 00:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCCB1EDA3C;
-	Fri, 10 Oct 2025 00:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1131EF0B0;
+	Fri, 10 Oct 2025 00:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NaHdpzfx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hd3AG4Ur"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA081547F2;
-	Fri, 10 Oct 2025 00:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1951B2868B;
+	Fri, 10 Oct 2025 00:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760054656; cv=none; b=EGFTelulFnXIHQPY77t7DzQn+FG6bRt/Yk4U4WX8X5lDQCDB83OVts3Tz17DynnN8vxVwIyaJj6uWCAzCrrsgXVLoVD+vi3l/lvCLjLU/ia/EC7ExSdh314eTf9+8kjZzDhiGm+ZQrmvLuShhuOGzACJzK+loI2cHl6weMaS+jM=
+	t=1760056557; cv=none; b=fFKetAlTASfY/+anGcWTnIfGGvRI6o0M73qr5eBbFBjQV8xyj9ui6ZhhoTqkRvLdIkCiF6AzZyH19rVNL5m8uA/lPrZ7Ufgg+JTQPdkq6sg8r1Q7GRiqOpxIRwfRYbyQiQ0SF6bVYUU+aWtHPOshhuc5PD1h9CmfGvqTxck4TXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760054656; c=relaxed/simple;
-	bh=GJMrjEcsZnm+4A1earTDzo1+f/eVV90GXue0FW/CVko=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nHGc6/kec/a0ThXY3QUkfW8Bwh7RczoJFZd9XUK7mj6F2kqplRHVBoSA+Q8Kqm7vbTmvxavhaNDxXwRVdCVJ2kAbv6A1QXzjfT4hQFNNjEsL102KYR/Dk4dw8JTVn9zBaomSBwhCwI3z/F+9EBwM6HESuKXMpEpvuC9soA25Muo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NaHdpzfx; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760054655; x=1791590655;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=GJMrjEcsZnm+4A1earTDzo1+f/eVV90GXue0FW/CVko=;
-  b=NaHdpzfxsgqVgRkW92M6C+G7SdeINyg7oMEftdac2A15HhusvyPUpAxv
-   G3lPrTSFPb8hUy8qCew4wiaxaj1UBmvNe/fPVvvhfgjdHk4+McZQHP/tU
-   pd+GLqbzM5hkdSCgtX+1jzhKdxrOPSIR5PZn//5QYW4KQ0jsk9/sLgXK1
-   4K7XdHjEAM2vUaD41sYFzg9RCGOjUWHq398/Tn53M3zvbB01pDYhKZy4P
-   NxTvXmnoRvsnK5OoeixJ2I6bzqlC4pJckCuVSZPrQ0AZTfUO/9Eo4IkZR
-   obf4maHFWuv6N4gOKB9d9PTMURs3mwm2+nqj3/Xb6kTDXC2KlmyayKwoO
-   A==;
-X-CSE-ConnectionGUID: /AZFRy1lQladpDsXYLIlQw==
-X-CSE-MsgGUID: fC0voUeoQWeT1zSyehtPyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="62316089"
-X-IronPort-AV: E=Sophos;i="6.19,217,1754982000"; 
-   d="scan'208";a="62316089"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 17:04:09 -0700
-X-CSE-ConnectionGUID: xitU3fU0SmekpQh72WCQ2w==
-X-CSE-MsgGUID: iHC2zFvwTaSMKPgGOO2oyA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,217,1754982000"; 
-   d="scan'208";a="180858277"
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 17:04:09 -0700
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 09 Oct 2025 17:03:49 -0700
-Subject: [PATCH net v3 4/6] ixgbevf: fix mailbox API compatibility by
- negotiating supported features
+	s=arc-20240116; t=1760056557; c=relaxed/simple;
+	bh=UJBKelWNaxJp1ghN/z8oNZD/T3CC150AKCBq79bvbuM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UU+nzK4NfKjkK3vBDPGcjoeFzpJ5vY3rrLLmgSmZ6J7KJye1OA6eh2zIVZ37bkbYZqaByS29OnwSCgqb15U/8tXue18vyIttq0Yrk+pZg7OxQaGpGtqaFD4zkUCGtYRzongb+8BGygvvHsO3Wb9Nw1zqDIr1dxN7ls53os6Z35w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hd3AG4Ur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAF8C4CEE7;
+	Fri, 10 Oct 2025 00:35:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760056556;
+	bh=UJBKelWNaxJp1ghN/z8oNZD/T3CC150AKCBq79bvbuM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Hd3AG4UrLs963sNA4gkrVp3KiLSzE8qrhXx8i3yhcqy64tqT/aNljv5Yhcvn8Zy4n
+	 EnayE0Mhr/hz6mEWn4mdwA0fGioKdhQnmQlm+dfFgWZXSt9AWsaytfj12yZycTduQT
+	 zl1L+RYx8LD8jYOuSUvP8+4pluuENV42Xmxry9WE9JzRR77I7DEplULoCpeQhuwpW1
+	 GbZ+d/cMfoWD2TnbLVnhXSt2/MnjjD5mKOEzhxsCwG+5UBxmsINHNt2wgGQVFTGh/3
+	 dyAvV9ZyKdgwSkQc9X/7ovvsuhmR/mEJ+266oUTsb2vm6IHvr+nIL3VhO63ggvuJhX
+	 QQRyFeo+tCUVA==
+Message-ID: <df12e818-5341-4964-9192-71c66d664454@kernel.org>
+Date: Fri, 10 Oct 2025 02:35:48 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251009-jk-iwl-net-2025-10-01-v3-4-ef32a425b92a@intel.com>
-References: <20251009-jk-iwl-net-2025-10-01-v3-0-ef32a425b92a@intel.com>
-In-Reply-To: <20251009-jk-iwl-net-2025-10-01-v3-0-ef32a425b92a@intel.com>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Emil Tantilov <emil.s.tantilov@intel.com>, 
- Alexander Lobakin <aleksander.lobakin@intel.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Sridhar Samudrala <sridhar.samudrala@intel.com>, 
- Phani Burra <phani.r.burra@intel.com>, 
- Piotr Kwapulinski <piotr.kwapulinski@intel.com>, 
- Simon Horman <horms@kernel.org>, Radoslaw Tyl <radoslawx.tyl@intel.com>, 
- Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Cc: Konstantin Ilichev <konstantin.ilichev@intel.com>, 
- Milena Olech <milena.olech@intel.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, stable@vger.kernel.org, 
- Rafal Romanowski <rafal.romanowski@intel.com>
-X-Mailer: b4 0.15-dev-89294
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12961;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=FOHZYctobMXLMCihiXUYZlPGi8uqnrgJ1tbuyH6sdNg=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhowXvuUz1ZXCHZc/X3vkUk56n4RosRHjlK19nlr72mcuS
- PzNu2BSRykLgxgXg6yYIouCQ8jK68YTwrTeOMvBzGFlAhnCwMUpABPRecnw32++seMO3tNbjx37
- pTQn6L3HZouDHpK8tyO/VahzbOyayc7IcD7cu6ile/71S68X1n29U2jdreJjnfNYx79/O0fzdld
- BJgA=
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/10] pmdomain: samsung: plug potential memleak during
+ probe
+To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Rob Herring <robh@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Peter Griffin <peter.griffin@linaro.org>,
+ Tudor Ambarus <tudor.ambarus@linaro.org>,
+ Will McVicker <willmcvicker@google.com>, kernel-team@android.com,
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, stable@vger.kernel.org
+References: <20251009-gs101-pd-v2-0-3f4a6db2af39@linaro.org>
+ <20251009-gs101-pd-v2-4-3f4a6db2af39@linaro.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251009-gs101-pd-v2-4-3f4a6db2af39@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+On 09/10/2025 00:25, André Draszik wrote:
+> of_genpd_add_provider_simple() could fail, in which case this code
+> leaks the domain name, pd->pd.name.
+> 
+> Use devm_kstrdup_const() to plug this leak. As a side-effect, we can
+> simplify existing error handling.
+> 
+> Fixes: c09a3e6c97f0 ("soc: samsung: pm_domains: Convert to regular platform driver")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+> Signed-off-by: André Draszik <andre.draszik@linaro.org>
 
-There was backward compatibility in the terms of mailbox API. Various
-drivers from various OSes supporting 10G adapters from Intel portfolio
-could easily negotiate mailbox API.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-This convention has been broken since introducing API 1.4.
-Commit 0062e7cc955e ("ixgbevf: add VF IPsec offload code") added support
-for IPSec which is specific only for the kernel ixgbe driver. None of the
-rest of the Intel 10G PF/VF drivers supports it. And actually lack of
-support was not included in the IPSec implementation - there were no such
-code paths. No possibility to negotiate support for the feature was
-introduced along with introduction of the feature itself.
-
-Commit 339f28964147 ("ixgbevf: Add support for new mailbox communication
-between PF and VF") increasing API version to 1.5 did the same - it
-introduced code supported specifically by the PF ESX driver. It altered API
-version for the VF driver in the same time not touching the version
-defined for the PF ixgbe driver. It led to additional discrepancies,
-as the code provided within API 1.6 cannot be supported for Linux ixgbe
-driver as it causes crashes.
-
-The issue was noticed some time ago and mitigated by Jake within the commit
-d0725312adf5 ("ixgbevf: stop attempting IPSEC offload on Mailbox API 1.5").
-As a result we have regression for IPsec support and after increasing API
-to version 1.6 ixgbevf driver stopped to support ESX MBX.
-
-To fix this mess add new mailbox op asking PF driver about supported
-features. Basing on a response determine whether to set support for IPSec
-and ESX-specific enhanced mailbox.
-
-New mailbox op, for compatibility purposes, must be added within new API
-revision, as API version of OOT PF & VF drivers is already increased to
-1.6 and doesn't incorporate features negotiate op.
-
-Features negotiation mechanism gives possibility to be extended with new
-features when needed in the future.
-
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Closes: https://lore.kernel.org/intel-wired-lan/20241101-jk-ixgbevf-mailbox-v1-5-fixes-v1-0-f556dc9a66ed@intel.com/
-Fixes: 0062e7cc955e ("ixgbevf: add VF IPsec offload code")
-Fixes: 339f28964147 ("ixgbevf: Add support for new mailbox communication between PF and VF")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
----
- drivers/net/ethernet/intel/ixgbevf/ixgbevf.h      |  7 ++++
- drivers/net/ethernet/intel/ixgbevf/mbx.h          |  4 ++
- drivers/net/ethernet/intel/ixgbevf/vf.h           |  1 +
- drivers/net/ethernet/intel/ixgbevf/ipsec.c        | 10 +++++
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c | 32 +++++++++++++++-
- drivers/net/ethernet/intel/ixgbevf/vf.c           | 45 ++++++++++++++++++++++-
- 6 files changed, 96 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-index 3a379e6a3a2a..039187607e98 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-@@ -363,6 +363,13 @@ struct ixgbevf_adapter {
- 	struct ixgbe_hw hw;
- 	u16 msg_enable;
- 
-+	u32 pf_features;
-+#define IXGBEVF_PF_SUP_IPSEC		BIT(0)
-+#define IXGBEVF_PF_SUP_ESX_MBX		BIT(1)
-+
-+#define IXGBEVF_SUPPORTED_FEATURES	(IXGBEVF_PF_SUP_IPSEC | \
-+					IXGBEVF_PF_SUP_ESX_MBX)
-+
- 	struct ixgbevf_hw_stats stats;
- 
- 	unsigned long state;
-diff --git a/drivers/net/ethernet/intel/ixgbevf/mbx.h b/drivers/net/ethernet/intel/ixgbevf/mbx.h
-index c1494fd1f67b..a8ed23ee66aa 100644
---- a/drivers/net/ethernet/intel/ixgbevf/mbx.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/mbx.h
-@@ -67,6 +67,7 @@ enum ixgbe_pfvf_api_rev {
- 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
- 	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
- 	ixgbe_mbox_api_16,      /* API version 1.6, linux/freebsd VF driver */
-+	ixgbe_mbox_api_17,	/* API version 1.7, linux/freebsd VF driver */
- 	/* This value should always be last */
- 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
- };
-@@ -106,6 +107,9 @@ enum ixgbe_pfvf_api_rev {
- /* mailbox API, version 1.6 VF requests */
- #define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
- 
-+/* mailbox API, version 1.7 VF requests */
-+#define IXGBE_VF_FEATURES_NEGOTIATE	0x12 /* get features supported by PF*/
-+
- /* length of permanent address message returned from PF */
- #define IXGBE_VF_PERMADDR_MSG_LEN	4
- /* word in permanent address message with the current multicast type */
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.h b/drivers/net/ethernet/intel/ixgbevf/vf.h
-index 2d791bc26ae4..4f19b8900c29 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.h
-@@ -26,6 +26,7 @@ struct ixgbe_mac_operations {
- 	s32 (*stop_adapter)(struct ixgbe_hw *);
- 	s32 (*get_bus_info)(struct ixgbe_hw *);
- 	s32 (*negotiate_api_version)(struct ixgbe_hw *hw, int api);
-+	int (*negotiate_features)(struct ixgbe_hw *hw, u32 *pf_features);
- 
- 	/* Link */
- 	s32 (*setup_link)(struct ixgbe_hw *, ixgbe_link_speed, bool, bool);
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ipsec.c b/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-index 65580b9cb06f..fce35924ff8b 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-@@ -273,6 +273,9 @@ static int ixgbevf_ipsec_add_sa(struct net_device *dev,
- 	adapter = netdev_priv(dev);
- 	ipsec = adapter->ipsec;
- 
-+	if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+		return -EOPNOTSUPP;
-+
- 	if (xs->id.proto != IPPROTO_ESP && xs->id.proto != IPPROTO_AH) {
- 		NL_SET_ERR_MSG_MOD(extack, "Unsupported protocol for IPsec offload");
- 		return -EINVAL;
-@@ -405,6 +408,9 @@ static void ixgbevf_ipsec_del_sa(struct net_device *dev,
- 	adapter = netdev_priv(dev);
- 	ipsec = adapter->ipsec;
- 
-+	if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+		return;
-+
- 	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
- 		sa_idx = xs->xso.offload_handle - IXGBE_IPSEC_BASE_RX_INDEX;
- 
-@@ -612,6 +618,10 @@ void ixgbevf_init_ipsec_offload(struct ixgbevf_adapter *adapter)
- 	size_t size;
- 
- 	switch (adapter->hw.api_version) {
-+	case ixgbe_mbox_api_17:
-+		if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+			return;
-+		break;
- 	case ixgbe_mbox_api_14:
- 		break;
- 	default:
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index 92671638b428..d5ce20f47def 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -2271,10 +2271,35 @@ static void ixgbevf_init_last_counter_stats(struct ixgbevf_adapter *adapter)
- 	adapter->stats.base_vfmprc = adapter->stats.last_vfmprc;
- }
- 
-+/**
-+ * ixgbevf_set_features - Set features supported by PF
-+ * @adapter: pointer to the adapter struct
-+ *
-+ * Negotiate with PF supported features and then set pf_features accordingly.
-+ */
-+static void ixgbevf_set_features(struct ixgbevf_adapter *adapter)
-+{
-+	u32 *pf_features = &adapter->pf_features;
-+	struct ixgbe_hw *hw = &adapter->hw;
-+	int err;
-+
-+	err = hw->mac.ops.negotiate_features(hw, pf_features);
-+	if (err && err != -EOPNOTSUPP)
-+		netdev_dbg(adapter->netdev,
-+			   "PF feature negotiation failed.\n");
-+
-+	/* Address also pre API 1.7 cases */
-+	if (hw->api_version == ixgbe_mbox_api_14)
-+		*pf_features |= IXGBEVF_PF_SUP_IPSEC;
-+	else if (hw->api_version == ixgbe_mbox_api_15)
-+		*pf_features |= IXGBEVF_PF_SUP_ESX_MBX;
-+}
-+
- static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
- {
- 	struct ixgbe_hw *hw = &adapter->hw;
- 	static const int api[] = {
-+		ixgbe_mbox_api_17,
- 		ixgbe_mbox_api_16,
- 		ixgbe_mbox_api_15,
- 		ixgbe_mbox_api_14,
-@@ -2295,8 +2320,9 @@ static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
- 		idx++;
- 	}
- 
--	/* Following is not supported by API 1.6, it is specific for 1.5 */
--	if (hw->api_version == ixgbe_mbox_api_15) {
-+	ixgbevf_set_features(adapter);
-+
-+	if (adapter->pf_features & IXGBEVF_PF_SUP_ESX_MBX) {
- 		hw->mbx.ops.init_params(hw);
- 		memcpy(&hw->mbx.ops, &ixgbevf_mbx_ops,
- 		       sizeof(struct ixgbe_mbx_operations));
-@@ -2654,6 +2680,7 @@ static void ixgbevf_set_num_queues(struct ixgbevf_adapter *adapter)
- 		case ixgbe_mbox_api_14:
- 		case ixgbe_mbox_api_15:
- 		case ixgbe_mbox_api_16:
-+		case ixgbe_mbox_api_17:
- 			if (adapter->xdp_prog &&
- 			    hw->mac.max_tx_queues == rss)
- 				rss = rss > 3 ? 2 : 1;
-@@ -4649,6 +4676,7 @@ static int ixgbevf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		netdev->max_mtu = IXGBE_MAX_JUMBO_FRAME_SIZE -
- 				  (ETH_HLEN + ETH_FCS_LEN);
- 		break;
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
-index f05246fb5a74..74d320879513 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -313,6 +313,7 @@ int ixgbevf_get_reta_locked(struct ixgbe_hw *hw, u32 *reta, int num_rx_queues)
- 	 * is not supported for this device type.
- 	 */
- 	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_14:
-@@ -383,6 +384,7 @@ int ixgbevf_get_rss_key_locked(struct ixgbe_hw *hw, u8 *rss_key)
- 	 * or if the operation is not supported for this device type.
- 	 */
- 	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_14:
-@@ -555,6 +557,7 @@ static s32 ixgbevf_update_xcast_mode(struct ixgbe_hw *hw, int xcast_mode)
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -646,6 +649,7 @@ static int ixgbevf_get_pf_link_state(struct ixgbe_hw *hw, ixgbe_link_speed *spee
- 
- 	switch (hw->api_version) {
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -669,6 +673,42 @@ static int ixgbevf_get_pf_link_state(struct ixgbe_hw *hw, ixgbe_link_speed *spee
- 	return err;
- }
- 
-+/**
-+ * ixgbevf_negotiate_features_vf - negotiate supported features with PF driver
-+ * @hw: pointer to the HW structure
-+ * @pf_features: bitmask of features supported by PF
-+ *
-+ * Return: IXGBE_ERR_MBX in the  case of mailbox error,
-+ * -EOPNOTSUPP if the op is not supported or 0 on success.
-+ */
-+static int ixgbevf_negotiate_features_vf(struct ixgbe_hw *hw, u32 *pf_features)
-+{
-+	u32 msgbuf[2] = {};
-+	int err;
-+
-+	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	msgbuf[0] = IXGBE_VF_FEATURES_NEGOTIATE;
-+	msgbuf[1] = IXGBEVF_SUPPORTED_FEATURES;
-+
-+	err = ixgbevf_write_msg_read_ack(hw, msgbuf, msgbuf,
-+					 ARRAY_SIZE(msgbuf));
-+
-+	if (err || (msgbuf[0] & IXGBE_VT_MSGTYPE_FAILURE)) {
-+		err = IXGBE_ERR_MBX;
-+		*pf_features = 0x0;
-+	} else {
-+		*pf_features = msgbuf[1];
-+	}
-+
-+	return err;
-+}
-+
- /**
-  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
-  *  @hw: pointer to the HW structure
-@@ -799,6 +839,7 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
- 				     bool *link_up,
- 				     bool autoneg_wait_to_complete)
- {
-+	struct ixgbevf_adapter *adapter = hw->back;
- 	struct ixgbe_mbx_info *mbx = &hw->mbx;
- 	struct ixgbe_mac_info *mac = &hw->mac;
- 	s32 ret_val = 0;
-@@ -825,7 +866,7 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
- 	 * until we are called again and don't report an error
- 	 */
- 	if (mbx->ops.read(hw, &in_msg, 1)) {
--		if (hw->api_version >= ixgbe_mbox_api_15)
-+		if (adapter->pf_features & IXGBEVF_PF_SUP_ESX_MBX)
- 			mac->get_link_status = false;
- 		goto out;
- 	}
-@@ -1026,6 +1067,7 @@ int ixgbevf_get_queues(struct ixgbe_hw *hw, unsigned int *num_tcs,
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return 0;
-@@ -1080,6 +1122,7 @@ static const struct ixgbe_mac_operations ixgbevf_mac_ops = {
- 	.setup_link		= ixgbevf_setup_mac_link_vf,
- 	.check_link		= ixgbevf_check_mac_link_vf,
- 	.negotiate_api_version	= ixgbevf_negotiate_api_version_vf,
-+	.negotiate_features	= ixgbevf_negotiate_features_vf,
- 	.set_rar		= ixgbevf_set_rar_vf,
- 	.update_mc_addr_list	= ixgbevf_update_mc_addr_list_vf,
- 	.update_xcast_mode	= ixgbevf_update_xcast_mode,
-
--- 
-2.51.0.rc1.197.g6d975e95c9d7
-
+Best regards,
+Krzysztof
 
