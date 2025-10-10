@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-183916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C8E6BCD278
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B17BCD2BD
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E6F944FE0D2
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E24734FE0BD
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E712F5A3E;
-	Fri, 10 Oct 2025 13:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE832F747F;
+	Fri, 10 Oct 2025 13:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAPAGSEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzCVC6Yt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FC42F5A31;
-	Fri, 10 Oct 2025 13:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B54221579F;
+	Fri, 10 Oct 2025 13:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102350; cv=none; b=QN4aw1V8hN9elLOhu0wJJYWJGAbQ+mUK4OoKtr05ULgNNypG+Qz361T8Z4b0H5zPkgy5n/s7eQPDfw7vA+Mmy6T6TB3OSPXIF/QD68L1aC9WSp6GxElseJOPWV8oVql2lTbx5B2Fk0sdeQOfQqubKs/thXe4K/yrtgxL6Ha6vaM=
+	t=1760102428; cv=none; b=WpMVGHHDa91Jcuny6SgsGHN4RP/f+nlvCIMppUhR8edZ9bg4v3saTfF0yJqjFcPcM8ZyKfafpl0CX2bqIbOh5Id3MBmirswRXNa9LYrw98JR997OvyBgcYHyM5cqnwRG8P4iaCGhC1hyeaT4AxYXARTjBEap5bwkm1SvKHnQADA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102350; c=relaxed/simple;
-	bh=H5VrpytArjlzzIF1zPfM3pxEBgvnpcQ81f6tN6vyqOE=;
+	s=arc-20240116; t=1760102428; c=relaxed/simple;
+	bh=1BHjjyQNT/lTS7xxvhvBwqfr88hAUOMpVo5YpnQV4gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSyH8JNBNealsN+MCtLrs9FHnTVOxOt96zY/Zc+fnWqbCG/oxam17NVWlSnv2Fnr8WfROhoTPsAaunwqeWyMNSIMYbH/oD62QTRANEmWueVkCi+zw1wIomeWAd3MT6uUMVG+XD+BzhXdawmYuoOOgsF/d1BgFMVlk8bXUMs7D2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAPAGSEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EADEC4CEF1;
-	Fri, 10 Oct 2025 13:19:09 +0000 (UTC)
+	 MIME-Version; b=k1UM0k/awEcVuhMDgi6lUPzFgDmVgMVUxqwLDdqGZWPb/rHBUdQtZzYEeu8xSXS8cYxWsTRKXvRjRWolYmBg2kNlsKhYTb//XUPSpHJfUFeCbRFtW1FMbD+T9HdbP5LmzDqHu6qIkf8U1titJ4hobjKR0PvmqxOS1gD4Ma3m7nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzCVC6Yt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A117FC4CEF1;
+	Fri, 10 Oct 2025 13:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102350;
-	bh=H5VrpytArjlzzIF1zPfM3pxEBgvnpcQ81f6tN6vyqOE=;
+	s=korg; t=1760102428;
+	bh=1BHjjyQNT/lTS7xxvhvBwqfr88hAUOMpVo5YpnQV4gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eAPAGSEMbVgdA2yItxjFL3jxaLyA03xDP444uuoXoUufZYS6sF2tMd74lisTZ1NsD
-	 R3VQZCKeVqWuJXjhWD4X2l6zfsurEiU6kVNRYhAnQ1Ey0+dB3FvjmR2FfQyn9b0Nsc
-	 ntCodSUhThSWfN3sTOFeECxmK1q2oBeci4T/Zyr4=
+	b=bzCVC6YtnVFAsRhftR6BJBrg+MYxKTI6T1A4gShJ515EQCyFfxCbjcm8/MmbrSlOe
+	 xX/tDGx1H8m9r3+w4y+LZfCJzVBDyJUr7NgHCbe2bk6qHgsuf/msA1NsRLBYxEoqH6
+	 3i0jnP0JhdzXS0kAmFzsMvFkBNx0JbUZVHrERQBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	hupu <hupu.gm@gmail.com>,
+	Guilherme Amadio <amadio@gentoo.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 25/41] can: hi311x: fix null pointer dereference when resuming from sleep before interface was enabled
+Subject: [PATCH 6.12 11/35] perf subcmd: avoid crash in exclude_cmds when excludes is empty
 Date: Fri, 10 Oct 2025 15:16:13 +0200
-Message-ID: <20251010131334.329701003@linuxfoundation.org>
+Message-ID: <20251010131332.199727804@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,124 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: hupu <hupu.gm@gmail.com>
 
-[ Upstream commit 6b696808472197b77b888f50bc789a3bae077743 ]
+[ Upstream commit a5edf3550f4260504b7e0ab3d40d13ffe924b773 ]
 
-This issue is similar to the vulnerability in the `mcp251x` driver,
-which was fixed in commit 03c427147b2d ("can: mcp251x: fix resume from
-sleep before interface was brought up").
+When cross-compiling the perf tool for ARM64, `perf help` may crash
+with the following assertion failure:
 
-In the `hi311x` driver, when the device resumes from sleep, the driver
-schedules `priv->restart_work`. However, if the network interface was
-not previously enabled, the `priv->wq` (workqueue) is not allocated and
-initialized, leading to a null pointer dereference.
+  help.c:122: exclude_cmds: Assertion `cmds->names[ci] == NULL' failed.
 
-To fix this, we move the allocation and initialization of the workqueue
-from the `hi3110_open` function to the `hi3110_can_probe` function.
-This ensures that the workqueue is properly initialized before it is
-used during device resume. And added logic to destroy the workqueue
-in the error handling paths of `hi3110_can_probe` and in the
-`hi3110_can_remove` function to prevent resource leaks.
+This happens when the perf binary is not named exactly "perf" or when
+multiple "perf-*" binaries exist in the same directory. In such cases,
+the `excludes` command list can be empty, which leads to the final
+assertion in exclude_cmds() being triggered.
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://patch.msgid.link/20250911150820.250-1-chenyufeng@iie.ac.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Add a simple guard at the beginning of exclude_cmds() to return early
+if excludes->cnt is zero, preventing the crash.
+
+Signed-off-by: hupu <hupu.gm@gmail.com>
+Reported-by: Guilherme Amadio <amadio@gentoo.org>
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20250909094953.106706-1-amadio@gentoo.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/hi311x.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ tools/lib/subcmd/help.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index 6441ff3b41987..963ea8510dd9b 100644
---- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -545,8 +545,6 @@ static int hi3110_stop(struct net_device *net)
+diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
+index 9ef569492560e..ddaeb4eb3e249 100644
+--- a/tools/lib/subcmd/help.c
++++ b/tools/lib/subcmd/help.c
+@@ -75,6 +75,9 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
+ 	size_t ci, cj, ei;
+ 	int cmp;
  
- 	priv->force_quit = 1;
- 	free_irq(spi->irq, priv);
--	destroy_workqueue(priv->wq);
--	priv->wq = NULL;
- 
- 	mutex_lock(&priv->hi3110_lock);
- 
-@@ -770,34 +768,23 @@ static int hi3110_open(struct net_device *net)
- 		goto out_close;
- 	}
- 
--	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
--				   0);
--	if (!priv->wq) {
--		ret = -ENOMEM;
--		goto out_free_irq;
--	}
--	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
--	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
--
- 	ret = hi3110_hw_reset(spi);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	ret = hi3110_setup(net);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	ret = hi3110_set_normal_mode(spi);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	netif_wake_queue(net);
- 	mutex_unlock(&priv->hi3110_lock);
- 
- 	return 0;
- 
-- out_free_wq:
--	destroy_workqueue(priv->wq);
-  out_free_irq:
- 	free_irq(spi->irq, priv);
- 	hi3110_hw_sleep(spi);
-@@ -909,6 +896,15 @@ static int hi3110_can_probe(struct spi_device *spi)
- 	if (ret)
- 		goto out_clk;
- 
-+	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
-+				   0);
-+	if (!priv->wq) {
-+		ret = -ENOMEM;
-+		goto out_clk;
-+	}
-+	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
-+	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
++	if (!excludes->cnt)
++		return;
 +
- 	priv->spi = spi;
- 	mutex_init(&priv->hi3110_lock);
- 
-@@ -944,6 +940,8 @@ static int hi3110_can_probe(struct spi_device *spi)
- 	return 0;
- 
-  error_probe:
-+	destroy_workqueue(priv->wq);
-+	priv->wq = NULL;
- 	hi3110_power_enable(priv->power, 0);
- 
-  out_clk:
-@@ -964,6 +962,9 @@ static void hi3110_can_remove(struct spi_device *spi)
- 
- 	hi3110_power_enable(priv->power, 0);
- 
-+	destroy_workqueue(priv->wq);
-+	priv->wq = NULL;
-+
- 	clk_disable_unprepare(priv->clk);
- 
- 	free_candev(net);
+ 	ci = cj = ei = 0;
+ 	while (ci < cmds->cnt && ei < excludes->cnt) {
+ 		cmp = strcmp(cmds->names[ci]->name, excludes->names[ei]->name);
 -- 
 2.51.0
 
