@@ -1,184 +1,140 @@
-Return-Path: <stable+bounces-183856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F37BCBF4A
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 09:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 625E3BCBF71
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 09:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 406304F75E1
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 07:40:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 20D284ED235
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 07:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71D9278E63;
-	Fri, 10 Oct 2025 07:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25931275111;
+	Fri, 10 Oct 2025 07:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="JnEPpBhB";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wBiK3mBo";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="w8XVwUaj";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wDm94fF2"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="qFSrUJhm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB09F2773E9
-	for <stable@vger.kernel.org>; Fri, 10 Oct 2025 07:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAB4273D8D;
+	Fri, 10 Oct 2025 07:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760081954; cv=none; b=R+0lDYGJzP52BihIWwvZKVPawSfYIhq9Q30afM7co3+nlVadghKm0Sy2GqBmQdwQDGLKCkYoqxIymnmgAOmNit06pFH/ViagQwu4Hik4rSnPZcNpXd0lgkFmY00nydLx5oLZqm0gOnDEHkJBycrid9Nez+AgFL/WEFmrmWVZfTM=
+	t=1760082225; cv=none; b=hzq/cBJq6yLcotZ3uzup9j8Ror0+ulTqQzRublgMOK+A5IMixLV5kCdoRPE/GyZ779ZXV6091ISl1DwhJ6F35N7BStKL7dlOuPV86q1731zLzo8MiVhw+ZN6caue/cxZAOYopyqDoiNX2pSdxo0vW9etY6J51CxbYlSGzd7Swys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760081954; c=relaxed/simple;
-	bh=kT9YVemjzzhAAN5e2M0Qz7Wi09RuV71T6B1Sb/HtrtQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=juLuU/ZN/dGMOuUWt14RkrjcV8J8xssuIANqdQ0ciTFmPRIm3wNi6kgw/se5k+QdawKKQxeHEM6PDJaEpkMNDxI+Dzi/Ap0WzDhefWXDIyevEPPDFBJ0zP9/qZ56enwCwvS0TqGVLb66Lw4isa8rbqKKUjyGVf57hYprtrCWJ9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=JnEPpBhB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wBiK3mBo; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=w8XVwUaj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wDm94fF2; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B72BE22023;
-	Fri, 10 Oct 2025 07:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760081950; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PXUUf9UPJHpPGdwbQIJ6NG0AXh/4W4yjOiF3IUrv3io=;
-	b=JnEPpBhBRkLDQLxGm38oa40reqYWKwK/Epg4HN8+IQPG60qwmfYrNw23aTdUsmNWhtMUrX
-	E9Z/2i+mBDeevyI8qyvvnsS+fRXQd+VsstC9gIwx9Iwilo3rICX2jZnL3DQMFLuVKg1eC6
-	PZaG3yLkrO58GzhcL9pODsZixjQWav8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760081950;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PXUUf9UPJHpPGdwbQIJ6NG0AXh/4W4yjOiF3IUrv3io=;
-	b=wBiK3mBoKAjKKGhsFKUuOPOK31RPXNQJlmBtrJNy1H1aF28gt88atoJ7+aP2yo18zNZpNh
-	9lMtbpZy6jqC0aDQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=w8XVwUaj;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wDm94fF2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760081949; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PXUUf9UPJHpPGdwbQIJ6NG0AXh/4W4yjOiF3IUrv3io=;
-	b=w8XVwUaj/92adQTwbZl9cDyYYNRSyM6XqECEKyfK7mfGXr+VlaZ+9eXlGtlMqkn2XeJcqk
-	zEgD+ZxxQxvJAIYifv+MIikppJZ6IyAsvTQ0x4w7ByEBamvHaFTfG/bcbyN+iNKTL2KeMg
-	l70nYfAnFclvEnWOiCB3Cw5ScLCKeyY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760081949;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PXUUf9UPJHpPGdwbQIJ6NG0AXh/4W4yjOiF3IUrv3io=;
-	b=wDm94fF2fD8MG0lDX7ES+YOL+du7Ng4hR9btpwIrN17JAjX1K203U+UDNftq5PRAqbhzXY
-	tw4pOzYybD0tKdBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A4C2C1375D;
-	Fri, 10 Oct 2025 07:39:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dr48Jx246GhVBwAAD6G6ig
-	(envelope-from <dwagner@suse.de>); Fri, 10 Oct 2025 07:39:09 +0000
-Date: Fri, 10 Oct 2025 09:39:05 +0200
-From: Daniel Wagner <dwagner@suse.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org, 
-	Daniel Wagner <wagi@kernel.org>, Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>, 
-	Hannes Reinecke <hare@suse.de>, Keith Busch <kbusch@kernel.org>, justin.tee@broadcom.com, 
-	nareshgottumukkala83@gmail.com, paul.ely@broadcom.com, sagi@grimberg.me, kch@nvidia.com, 
-	linux-nvme@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.17-5.15] nvmet-fc: avoid scheduling association
- deletion twice
-Message-ID: <8bed9f7a-ad84-40e8-a275-09b19a917155@flourine.local>
-References: <20251009155752.773732-1-sashal@kernel.org>
- <20251009155752.773732-15-sashal@kernel.org>
+	s=arc-20240116; t=1760082225; c=relaxed/simple;
+	bh=3A2EGFLTM971QVCxPoquHgIyEqh4wjem+jnI3wK3TrE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=s6ZHM7oflIE93kXEbbR4ZeFjpB4JF0Ih2rlxlth2n6tX5202ruhiRl4wpjqwnPr/ugDFs6aKDaEYWzuFTgXb9dNfl/f/MM5iI2tDhd7+RyGat6s0rdk8zxh2PjlqmY8Oxqe1zho7rRwntG2ddbVB0uasJUYa5cljhDs67WAl5Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=qFSrUJhm; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 59A7h9A8717190;
+	Fri, 10 Oct 2025 02:43:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1760082189;
+	bh=OFHaJMRCGTbH1ynZiPBQNjStBPjTRzsryo3/+riboCc=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=qFSrUJhmgUCsUC+RY3Adb3GufRoCIt1R9PU1vp9L152451g0nAzDIIGiXYI3iWkLK
+	 i47qtlSQP1WnOTX10zs2iv6ac9PlF+RA/nlpaYO3Mmh+sTp+xcGPaY9q65KLULnTvx
+	 Lwn4ZfPsdTx0IJoV+DyFTLet2pjovZAXvGCgTJ60=
+Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 59A7h89a625699
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Fri, 10 Oct 2025 02:43:08 -0500
+Received: from DLEE214.ent.ti.com (157.170.170.117) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 10
+ Oct 2025 02:43:08 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE214.ent.ti.com
+ (157.170.170.117) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Fri, 10 Oct 2025 02:43:08 -0500
+Received: from [10.249.128.221] ([10.249.128.221])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 59A7gwGp1307479;
+	Fri, 10 Oct 2025 02:42:59 -0500
+Message-ID: <7b728ed9-4aaf-4e79-b8be-d355f82cb96b@ti.com>
+Date: Fri, 10 Oct 2025 13:12:57 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251009155752.773732-15-sashal@kernel.org>
-X-Rspamd-Queue-Id: B72BE22023
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,wdc.com,suse.de,broadcom.com,gmail.com,grimberg.me,nvidia.com,lists.infradead.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,wdc.com:email,suse.de:email,suse.de:dkim];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] drm/tidss: Fixes data edge sampling
+To: Louis Chauvet <louis.chauvet@bootlin.com>, Jyri Sarha <jyri.sarha@iki.fi>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Rob Herring <robh@kernel.org>,
+        "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, "Sam
+ Ravnborg" <sam@ravnborg.org>,
+        Benoit Parrot <bparrot@ti.com>, Lee Jones
+	<lee@kernel.org>,
+        Nishanth Menon <nm@ti.com>, Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>, <devarsht@ti.com>
+CC: <thomas.petazzoni@bootlin.com>, Jyri Sarha <jsarha@ti.com>,
+        Tomi Valkeinen
+	<tomi.valkeinen@ti.com>,
+        <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <stable@vger.kernel.org>
+References: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
+Content-Language: en-US
+From: Swamil Jain <s-jain1@ti.com>
+In-Reply-To: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Sasha,
+Hi Louis,
 
-On Thu, Oct 09, 2025 at 11:54:41AM -0400, Sasha Levin wrote:
-> From: Daniel Wagner <wagi@kernel.org>
+On 30-07-2025 22:32, Louis Chauvet wrote:
+> Currently the driver only configure the data edge sampling partially. The
+> AM62 require it to be configured in two distincts registers: one in tidss
+> and one in the general device registers.
 > 
-> [ Upstream commit f2537be4f8421f6495edfa0bc284d722f253841d ]
+> Introduce a new dt property to link the proper syscon node from the main
+> device registers into the tidss driver.
 > 
-> When forcefully shutting down a port via the configfs interface,
-> nvmet_port_subsys_drop_link() first calls nvmet_port_del_ctrls() and
-> then nvmet_disable_port(). Both functions will eventually schedule all
-> remaining associations for deletion.
+> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+> ---
+> Cc: stable@vger.kernel.org
 > 
-> The current implementation checks whether an association is about to be
-> removed, but only after the work item has already been scheduled. As a
-> result, it is possible for the first scheduled work item to free all
-> resources, and then for the same work item to be scheduled again for
-> deletion.
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > 
-> Because the association list is an RCU list, it is not possible to take
-> a lock and remove the list entry directly, so it cannot be looked up
-> again. Instead, a flag (terminating) must be used to determine whether
-> the association is already in the process of being deleted.
+> ---
+
+Just wanted to check if you're planning to send a v2?
+
+Regards,
+Swamil
+
+> Louis Chauvet (4):
+>        dt-bindings: display: ti,am65x-dss: Add clk property for data edge synchronization
+>        dt-bindings: mfd: syscon: Add ti,am625-dss-clk-ctrl
+>        arm64: dts: ti: k3-am62-main: Add tidss clk-ctrl property
+>        drm/tidss: Fix sampling edge configuration
 > 
-> Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-> Closes: https://lore.kernel.org/all/rsdinhafrtlguauhesmrrzkybpnvwantwmyfq2ih5aregghax5@mhr7v3eryci3/
-> Reviewed-by: Hannes Reinecke <hare@suse.de>
-> Signed-off-by: Daniel Wagner <wagi@kernel.org>
-> Signed-off-by: Keith Busch <kbusch@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>   .../devicetree/bindings/display/ti/ti,am65x-dss.yaml       |  6 ++++++
+>   Documentation/devicetree/bindings/mfd/syscon.yaml          |  3 ++-
+>   arch/arm64/boot/dts/ti/k3-am62-main.dtsi                   |  6 ++++++
+>   drivers/gpu/drm/tidss/tidss_dispc.c                        | 14 ++++++++++++++
+>   4 files changed, 28 insertions(+), 1 deletion(-)
+> ---
+> base-commit: 85c23f28905cf20a86ceec3cfd7a0a5572c9eb13
+> change-id: 20250730-fix-edge-handling-9123f7438910
+> 
+> Best regards,
 
-This patch is part of a whole series:
-
-https://lore.kernel.org/all/20250902-fix-nvmet-fc-v3-0-1ae1ecb798d8@kernel.org/
-
-IMO, all should all be backported:
-
-db5a5406fb7e nvmet-fc: move lsop put work to nvmet_fc_ls_req_op
-f2537be4f842 nvmet-fc: avoid scheduling association deletion twice
-10c165af35d2 nvmet-fcloop: call done callback even when remote port is gone
-891cdbb162cc nvme-fc: use lock accessing port_state and rport state
-
-Thanks,
-Daniel
 
