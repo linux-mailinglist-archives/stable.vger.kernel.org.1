@@ -1,139 +1,132 @@
-Return-Path: <stable+bounces-183850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A97ABCB5D2
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 03:37:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8E2BCB67F
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 04:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD98C3C7257
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 01:37:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BF9B4E12F5
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 02:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBF7211499;
-	Fri, 10 Oct 2025 01:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB89224245;
+	Fri, 10 Oct 2025 02:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0LRi9nCY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NGKJ56yQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DF24414;
-	Fri, 10 Oct 2025 01:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D234E1DFE09
+	for <stable@vger.kernel.org>; Fri, 10 Oct 2025 02:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760060240; cv=none; b=UbJMHz/4NNYzGM6aXRejhXZaUEBp/vvQwq8C70d0vmyh9DLC/uXwblDs4YQr4W+FqTKq5uMedLpzvCZkaa2riPvP2Is2e4GDXFxNj4c3d3w3yJOEs6h9WO9652av4gc3q0TS/meSpvtdEdcBHbdK2+uPdHrJx8R1Ur5yyox4FWM=
+	t=1760062946; cv=none; b=TiKSnF6lkeo0qI5c41ZeVDhhLveufAJGSjAdMdwHCBBvYYJLoflGo02xF29/q7QwWEal9EHgPkFcnA3D7S7r71Su+ly2zRE1guMWYCj1QEPNSecjmMcYgH2d9fs3K2j56oGb+EaJRVgZmJVfsryLOKfveuJTkZrKykJjXgaqEqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760060240; c=relaxed/simple;
-	bh=ICGtdc+W283AJLCbLKZ0mN7CGUAWKw0o1yda3RxRAW4=;
-	h=Date:To:From:Subject:Message-Id; b=Ug5iDWgxrt7jUpLcjQdQSWTnvJZuq7aAxKLLLUOYlC30sWlDw+WjwmaJO6F/kCLu5k7qyTcEaDG1xFG8Hv4Z1yJfcQa5gAILUjsZZVcgn0SCCdR79AeeQE8Q4o64hkyXrrqab4py3c7kl5aKVJK1ck+lwh+7bcd8x0IOtgsBKL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0LRi9nCY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49996C4CEE7;
-	Fri, 10 Oct 2025 01:37:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760060239;
-	bh=ICGtdc+W283AJLCbLKZ0mN7CGUAWKw0o1yda3RxRAW4=;
-	h=Date:To:From:Subject:From;
-	b=0LRi9nCYfL9qKA07PFbiWyY867/sotNmd370PDOH2PaguFXpYbM8SfxrZ/6Su2b88
-	 W/tjRbS45in30u7hzKjZNtG4Og+3M5DPnR6t+g+JqsicuU4wPtqJsGi+2XvV2aJJc8
-	 oC9ETApOQ4AdclubQFTw1fwCqkziLEUurefs3t0w=
-Date: Thu, 09 Oct 2025 18:37:18 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,kartikey406@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-clear-extent-cache-after-moving-defragmenting-extents.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251010013719.49996C4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1760062946; c=relaxed/simple;
+	bh=Poc8CSat8DKSOJybm3/cRmwyiOaA5NMqn/oRePUZbI4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aXFGoYjeKdCeZS3biaAiplf3TL4pfeeplY4cEXfBQGfn1tWf5zfkJiBg2RL2vLVwdr3UBBDG17sH5WVgd73DEAVTa0cl3ehKACPRu5/gIAL8g1TPEdsrL2hptRhlhf0Xi5QcOxHQ68393YLlxlis9/cQQqW+e9zjseYdny/Cp1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NGKJ56yQ; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-26a0a694ea8so12142665ad.3
+        for <stable@vger.kernel.org>; Thu, 09 Oct 2025 19:22:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760062944; x=1760667744; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Poc8CSat8DKSOJybm3/cRmwyiOaA5NMqn/oRePUZbI4=;
+        b=NGKJ56yQgJjTan3iftmRVDRP+FxtKTbVXlrWzrp2zcDH6CsTjP9kbWW8YUCSn0wgKh
+         UF9/IDGU4g4AldPP7Il6AIERtSTdzTqKd0rwE/lMPO3gjqSqnUXs+RpsWeQonxP/U0LW
+         KoeAOmA1pRSGfceQMg5IaQRKfs45vxECBagkDjN/N6/bkcQ//h6bwNcCXEzHqVJk3LPc
+         yj2A+MGkSFOCBnrUvq1NCywViXQQzYSCEZM2gLd1lvBdPPbgqFc9OOZcPpznMKzx68DB
+         bW4KVlTtfE86AvBa+AyZ5Ygljx7z9UgGCsaolOUseJCTGu9O5gED3VQk+TpVucM5iykP
+         YvBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760062944; x=1760667744;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Poc8CSat8DKSOJybm3/cRmwyiOaA5NMqn/oRePUZbI4=;
+        b=NJWJTH8uG4O46XI+z2/JF8IveiOBYEOPGBxOKXHJhS1P+7jFng9XT7ifGSQehO+0vJ
+         jm/XkBk9eZ1rwGdCK2YF77uqTb77fpKXLFkFINojlhJqzg28WIMMUbQcwAXIEWxMH8oO
+         Q7WNcPz/STfN/I58c7VGg/Nfx3cOV/stS8bzc4guBoF+cO5BX/NRihHQSIGbuGzPeLzL
+         QX+rMRE2yyZr+Te3OCY1LoXACr2JAq5yJGaq3Ha/cq216npA0F3bsE77tfkd64T0NEB+
+         fgRO9UrGRHck7kKJht8dqxdoaUgqqufraS9g7vrcUsCIXRsZb3gJs7B6QU4gWP+lMy+R
+         6qbw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtsW9lNJvs+zateImLtDKDttVhYlAJ52LM/0vPIuCxyV9IdhLmBODbiIVDMLMv5gdFmHNdEko=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJEbmGDrUmxzg/aDaHZtv09h2Ixetg3vLYIERS2gVLO6fP+2OK
+	yaGN6ATyG2B+uZH+P/B7JV8sdLz8X9qMkBkKw7o4ZQFZ6QScxOX0IkBd
+X-Gm-Gg: ASbGncuzmWHLK2esq8VCsBmpF0TA87sULCKnvwPH8lbZyABNz5c3Cr76nHAlZ0jc8mY
+	3Quo0BVWjieT4yCmt/GGtmDOuN9rqMDPLUsQzErp0HLl1qAv9xPr886Onf55RY1kG/Fi2BgjDDz
+	E30Ch1ZLl5t9P95rqy6ytg1uVVFPkvePPz08i5MVnAa0JPtCyU7R40S5T30IOK2FKj7GasNkxyG
+	c4TBfoxmY32OTmkFyU7i+1hy+KzdlBo8VBoAw38x9M/JNHm6KOOyPk8rG4xoqfclB8DaWOexLlm
+	iH+6xRzEhHU+SHqtxVB6sVrI7GbMf1VpY3ChZU+UXlz2CREdfKXa7MOFFf/PrRs6e71HcWq2QNX
+	IcwCAmgwKYb4y+m3Xm93ts03jQkoXMI6IMFs3ozMqjimb1sru1svToCCdZoL+2KcaEPfa
+X-Google-Smtp-Source: AGHT+IG+Pf+n9YF9gI8OUfcmQ9dndEj32A/PkFqo3oluXmEOwiiZZVb7VASeukYYSqQxTR1LizxeTg==
+X-Received: by 2002:a17:902:cec2:b0:25c:2a4c:1ca3 with SMTP id d9443c01a7336-290273448c7mr124825125ad.30.1760062943936;
+        Thu, 09 Oct 2025 19:22:23 -0700 (PDT)
+Received: from [192.168.1.110] ([59.188.211.98])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034e18557sm41839285ad.39.2025.10.09.19.22.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Oct 2025 19:22:23 -0700 (PDT)
+Message-ID: <28f4950a-e3eb-4a54-b867-67bd269b8407@gmail.com>
+Date: Fri, 10 Oct 2025 10:22:18 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.17-6.12] soc: apple: mailbox: Add Apple A11 and
+ T2 mailbox support
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
+ stable@vger.kernel.org
+Cc: Sven Peter <sven@kernel.org>, j@jannau.net, asahi@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20251009155752.773732-1-sashal@kernel.org>
+ <20251009155752.773732-9-sashal@kernel.org>
+Content-Language: en-US
+From: Nick Chan <towinchenmi@gmail.com>
+In-Reply-To: <20251009155752.773732-9-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
-The patch titled
-     Subject: ocfs2: clear extent cache after moving/defragmenting extents
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     ocfs2-clear-extent-cache-after-moving-defragmenting-extents.patch
+Sasha Levin 於 2025/10/9 晚上11:54 寫道:
+> From: Nick Chan <towinchenmi@gmail.com>
+>
+> [ Upstream commit fee2e558b4884df08fad8dd0e5e12466dce89996 ]
+>
+> Add ASC mailbox support for Apple A11 and T2 SoCs, which is used for
+> coprocessors in the system.
+>
+> Reviewed-by: Sven Peter <sven@kernel.org>
+> Signed-off-by: Nick Chan <towinchenmi@gmail.com>
+> Link: https://lore.kernel.org/r/20250821-t8015-nvme-v3-2-14a4178adf68@gmail.com
+> Signed-off-by: Sven Peter <sven@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>
+> LLM Generated explanations, may be completely bogus:
+>
+> ## Backport Analysis: Apple A11 and T2 Mailbox Support
+>
+> **ANSWER: YES**
+>
+> This commit should be backported to stable kernel trees (and has already
+> been backported as commit 37b630a26d235).
+>
+> ---
+This patch adds support for new hardware which is not just a device ID
+addition. None of the hardware that depends on this mailbox is supported
+in stable either. Please drop.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-clear-extent-cache-after-moving-defragmenting-extents.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: ocfs2: clear extent cache after moving/defragmenting extents
-Date: Thu, 9 Oct 2025 21:19:03 +0530
-
-The extent map cache can become stale when extents are moved or
-defragmented, causing subsequent operations to see outdated extent flags. 
-This triggers a BUG_ON in ocfs2_refcount_cal_cow_clusters().
-
-The problem occurs when:
-1. copy_file_range() creates a reflinked extent with OCFS2_EXT_REFCOUNTED
-2. ioctl(FITRIM) triggers ocfs2_move_extents()
-3. __ocfs2_move_extents_range() reads and caches the extent (flags=0x2)
-4. ocfs2_move_extent()/ocfs2_defrag_extent() calls __ocfs2_move_extent()
-   which clears OCFS2_EXT_REFCOUNTED flag on disk (flags=0x0)
-5. The extent map cache is not invalidated after the move
-6. Later write() operations read stale cached flags (0x2) but disk has
-   updated flags (0x0), causing a mismatch
-7. BUG_ON(!(rec->e_flags & OCFS2_EXT_REFCOUNTED)) triggers
-
-Fix by clearing the extent map cache after each extent move/defrag
-operation in __ocfs2_move_extents_range().  This ensures subsequent
-operations read fresh extent data from disk.
-
-Link: https://lore.kernel.org/all/20251009142917.517229-1-kartikey406@gmail.com/T/
-Link: https://lkml.kernel.org/r/20251009154903.522339-1-kartikey406@gmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Tested-by: syzbot+6fdd8fa3380730a4b22c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=2959889e1f6e216585ce522f7e8bc002b46ad9e7
-Reviewed-by: Mark Fasheh <mark@fasheh.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/move_extents.c |    5 +++++
- 1 file changed, 5 insertions(+)
-
---- a/fs/ocfs2/move_extents.c~ocfs2-clear-extent-cache-after-moving-defragmenting-extents
-+++ a/fs/ocfs2/move_extents.c
-@@ -867,6 +867,11 @@ static int __ocfs2_move_extents_range(st
- 			mlog_errno(ret);
- 			goto out;
- 		}
-+		/*
-+		 * Invalidate extent cache after moving/defragging to prevent
-+		 * stale cached data with outdated extent flags.
-+		 */
-+		ocfs2_extent_map_trunc(inode, cpos);
- 
- 		context->clusters_moved += alloc_size;
- next:
-_
-
-Patches currently in -mm which might be from kartikey406@gmail.com are
-
-hugetlbfs-check-for-shareable-lock-before-calling-huge_pmd_unshare.patch
-ocfs2-clear-extent-cache-after-moving-defragmenting-extents.patch
+Best,
+Nick Chan
 
 
