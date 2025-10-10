@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-183884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB45DBCD17E
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AC4BCD257
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1A901A670EB
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:18:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E25894FDEB1
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265EE2F3600;
-	Fri, 10 Oct 2025 13:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BEF2F5320;
+	Fri, 10 Oct 2025 13:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nE7vdrYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FzGKqqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48A21F63FF;
-	Fri, 10 Oct 2025 13:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269A82F3C09;
+	Fri, 10 Oct 2025 13:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102258; cv=none; b=uH8XDjhu13AYD/d1IzfxdKjNzHbht92PS4fybwD5YUTUrWwNy2P9RTy7uNvgj7L0MRoZuA+N/JGT4+gtOt7Cnkd2t/d8jdbsq3bNEbpSk59CBAEzCTeXbUERB6k4UQ29mN4zDZSX+DmQ4ZQ0ZlpL768Ta+Dp7TXr7UMgp4jhpYE=
+	t=1760102322; cv=none; b=DOrkZ48PnU8ryPguZIDRdxd1U0lKVqJ+/szkXwp31M7JfTGxfkqN81HkLDTxqou7oG6NNZRX/8ELkOXxG/gVyFLyzMlvyMc6y/1AYrRJXCWfFSEM6BpKeHMR/Ml0b6p+ykVikW08+6bpZysss89RC7Iw0AwjPi0CKw1zD9fFNdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102258; c=relaxed/simple;
-	bh=G+2f6cW64bjKBogqmN1KiCmyvVNaEVIexNNHy6syRQo=;
+	s=arc-20240116; t=1760102322; c=relaxed/simple;
+	bh=RZ7OGUEYxImJRHLfwqGhQ+2J7CfqsdYdXkygZ2xw0Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUzptN8+j+AhoyzwB2CnmlhiFNU0gw6Ft4gTFYTa8UgnwFEWc2/pQ0IypohXeQUskw3VVwXiQBhRkVPK/qVzWHBJp6d8Q+IVRvxBGxQMzYM9pI2Evb8wsyOISfEZNMEMFdf3QpnBuf4vTYoeme+/mC/Z0vRr4DQglnvZqYTXtSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nE7vdrYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A87C4CEF9;
-	Fri, 10 Oct 2025 13:17:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ov81CI0BZkp4KTQwfFbz3hmkb00YgVPsNBDt/jOIPa4BBk+T9oYp0GlgjMqJwaEXtOvATUWUMGluKeHwrKpB/sM4YIzXBKDrTNC2jAqN9v0jCkKqJTma8PFucyUI360NvVhcUNrgVA7a3/ua5NxRE6xzgM2Ssoy7QgTMpy1S3bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FzGKqqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8A1C4CEF1;
+	Fri, 10 Oct 2025 13:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102258;
-	bh=G+2f6cW64bjKBogqmN1KiCmyvVNaEVIexNNHy6syRQo=;
+	s=korg; t=1760102322;
+	bh=RZ7OGUEYxImJRHLfwqGhQ+2J7CfqsdYdXkygZ2xw0Ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nE7vdrYfxtlpza8ZqgZnc6dX9J1f0huy/Rk/5eFu6Vcc/g5RUu4RRgd1SBdXKscGT
-	 AWPQUr95tMn7WYQdmi62w/EGCwW86eCiXZ4ZOt+gu6FT5sUfnTk90ORq/Svd4Q46Zm
-	 lyPGCqfxhABT3ixRQPsdFqVIVNenR74BCwUyDOfk=
+	b=2FzGKqqzjYY6UqvZ+0gkl1YorcRMxdCrzh2W1o+TpNCrwVkl9zfp7oGlrWkxdTsbQ
+	 m1BRNrE7rOJravRrVlQQbOT8xlTNUMFHq9yjJQ2qje4honnukdQNHklXvx9D62m0OU
+	 n6gfm5NuIMd+OKzd9gTl+KdWCHbQW9y0skSikxtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Rahul Rameshbabu <sergeantsagara@protonmail.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.17 09/26] rust: pci: fix incorrect platform reference in PCI driver unbind doc comment
+	April Grimoire <aprilgrimoire@proton.me>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 16/41] platform/x86/amd/pmc: Add MECHREVO Yilong15Pro to spurious_8042 list
 Date: Fri, 10 Oct 2025 15:16:04 +0200
-Message-ID: <20251010131331.548001275@linuxfoundation.org>
+Message-ID: <20251010131334.011397323@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-References: <20251010131331.204964167@linuxfoundation.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+From: aprilgrimoire <aprilgrimoire@proton.me>
 
-commit a404d099554d17206d1f283c9a91f0616324f691 upstream.
+[ Upstream commit 8822e8be86d40410ddd2ac8ff44f3050c9ecf9c6 ]
 
-Substitute 'platform' with 'pci'.
+The firmware of Mechrevo Yilong15Pro emits a spurious keyboard interrupt on
+events including closing the lid. When a user closes the lid on an already
+suspended system this causes the system to wake up.
+Add Mechrevo Yilong15Pro Series (GM5HG7A) to the list of quirk
+spurious_8042 to work around this issue.
 
-Fixes: 18ebb25dfa18 ("rust: pci: implement Driver::unbind()")
-Cc: stable@kernel.org
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-pm/6ww4uu6Gl4F5n6VY5dl1ufASfKzs4DhMxAN8BuqUpCoqU3PQukVSVSBCl_lKIzkQ-S8kt1acPd58eyolhkWN32lMLFj4ViI0Tdu2jwhnYZ8=@proton.me/
+Signed-off-by: April Grimoire <aprilgrimoire@proton.me>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/IvSc_IN5Pa0wRXElTk_fEl-cTpMZxg6TCQk_7aRUkTd9vJUp_ZeC0NdXZ0z6Tn7B-XiqqqQvCH65lq6FqhuECBMEYWcHQmWm1Jo7Br8kpeg=@proton.me
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/pci.rs |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -244,7 +244,7 @@ pub trait Driver: Send {
-     /// attempt to initialize the device here.
-     fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> Result<Pin<KBox<Self>>>;
- 
--    /// Platform driver unbind.
-+    /// PCI driver unbind.
-     ///
-     /// Called when a [`Device`] is unbound from its bound [`Driver`]. Implementing this callback
-     /// is optional.
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 18fb44139de25..4d0a38e06f083 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -239,6 +239,14 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE14-GX4HRXL"),
+ 		}
+ 	},
++	{
++		.ident = "MECHREVO Yilong15Pro Series GM5HG7A",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MECHREVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Yilong15Pro Series GM5HG7A"),
++		}
++	},
+ 	/* https://bugzilla.kernel.org/show_bug.cgi?id=220116 */
+ 	{
+ 		.ident = "PCSpecialist Lafite Pro V 14M",
+-- 
+2.51.0
+
 
 
 
