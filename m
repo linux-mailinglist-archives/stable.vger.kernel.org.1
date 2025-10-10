@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-183904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11AFBCD279
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:21:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3C0BCD163
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 246243BB920
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49F331A66E82
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FF42F49F1;
-	Fri, 10 Oct 2025 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098C126A1AB;
+	Fri, 10 Oct 2025 13:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tW8ZP9PU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCvl5CFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E75D2F2601;
-	Fri, 10 Oct 2025 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3C11F63FF;
+	Fri, 10 Oct 2025 13:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102316; cv=none; b=n9gv6TjVXhdPZBWxYehMzp9EKBzhbr5AVweR+e5Mh+dzHQIB++8hjfZ669Pj0vMFQyDW2+z+wmsWvG6f4aMJD4bguOoHDvuceA57TI9ZQh2bD1UmYbGI70LANMs73P9twZuQgDqbSpSK+JIIK1sc79105dHPe9PN482so0uRcA8=
+	t=1760102252; cv=none; b=qFG1gxWIhHnN+wSqeLfX0Hw9VbMAlqwTJmNlmop7eedqfdCVV0diccmnGGA1SdWuWs06ZnxqAQc06EHMTRbnnZxFJfO5HGDUqva3q+01lO6QouITezu5E9uVMmMqwXYPgQGcXibVAAwOQwl86U0nckI8iBH/RBgq80fMPG/jFNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102316; c=relaxed/simple;
-	bh=brwyBQU0RPObKxSBlLSHXcTmSA/zYtOFBTIQKeTtUck=;
+	s=arc-20240116; t=1760102252; c=relaxed/simple;
+	bh=NN7AHrie72/4YnSrW/gJfkoI52/BNrwbnDjXpBJP6Tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhdTEPaUDi7JmsxAvHIV/HjJ2PUWwph3BT4QDvGxLbTsaKgtPw43Oei2AWLhN0KF5gnKtrM4tNUQoWuIoHFhjdLkq2vZtW7jD9y0Xbh/HxzZ5ym5R5CLb9D7N3UEltxlDg2Vn258j4ykkUuhizKWmMzPe86p9VTrlv5MpJh65KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tW8ZP9PU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0F6C4CEF8;
-	Fri, 10 Oct 2025 13:18:35 +0000 (UTC)
+	 MIME-Version; b=dLFsgt+5JwFL7WWx4cy6oj0VussmdgJOlag8zIt2qruFyPsPGIoWoLO7DvlrP34AQtlwF0I4GamnHeuLXw/nbMtKb5u2aHbR5E9zqxk57D5/mTzOFIMjqpoxh9CAZeTOQzworORsFM4CbStcKSHMhYJBhwdogffrEEs2GEI+rPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCvl5CFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B68C4CEF1;
+	Fri, 10 Oct 2025 13:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102316;
-	bh=brwyBQU0RPObKxSBlLSHXcTmSA/zYtOFBTIQKeTtUck=;
+	s=korg; t=1760102252;
+	bh=NN7AHrie72/4YnSrW/gJfkoI52/BNrwbnDjXpBJP6Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tW8ZP9PUtUbvwL89F14oWDirhrL7B3YDAjPMFu4J2wFSRDwa0vVDXpOAbN6J/Xcg0
-	 E/Sbc/XuqQ7MzU6ub1miLGKxAucQ/PyOC5WgFpt98SkMRzkPmq/+b46VsHRwRTxcJl
-	 50EHYbcIyGOIQXAaE3kdPFE23tM/CvcVZNiA9Qto=
+	b=bCvl5CFMlQQx+d0PiZrpIkNKXYFdr8cIhPBce4XdX1QR9HK+Z5lK6cy6AEvzrcxXC
+	 0tHcZ98ETJGcrruzyjjuMUEDGTy+8NeIgL0PSLHXm+MxwGVtIThXoXfqdgm2AcR0/O
+	 Ko+DypRdHQdW5f2St1Cx+t6AIJzS9Oizn7B5tPU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 14/41] ASoC: amd: acp: Adjust pdm gain value
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.17 07/26] rust: block: fix `srctree/` links
 Date: Fri, 10 Oct 2025 15:16:02 +0200
-Message-ID: <20251010131333.941029574@linuxfoundation.org>
+Message-ID: <20251010131331.476902319@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit f1d0260362d72f9f454dc1f9db2eeb80cb801f28 ]
+commit 208d7f788e84e80992d7b1c82ff17b620eb1371e upstream.
 
-Set pdm gain value by setting PDM_MISC_CTRL_MASK value.
-To avoid low pdm gain value.
+This `srctree/` link pointed to a file with an underscore, but the header
+used a dash instead.
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250821054606.1279178-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thus fix it.
+
+This cleans a future warning that will check our `srctree/` links.
+
+Cc: stable@vger.kernel.org
+Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/acp/amd.h | 2 +-
+ rust/kernel/block/mq/gen_disk.rs |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp/amd.h b/sound/soc/amd/acp/amd.h
-index cb8d97122f95c..73a028e672462 100644
---- a/sound/soc/amd/acp/amd.h
-+++ b/sound/soc/amd/acp/amd.h
-@@ -130,7 +130,7 @@
- #define PDM_DMA_INTR_MASK       0x10000
- #define PDM_DEC_64              0x2
- #define PDM_CLK_FREQ_MASK       0x07
--#define PDM_MISC_CTRL_MASK      0x10
-+#define PDM_MISC_CTRL_MASK      0x18
- #define PDM_ENABLE              0x01
- #define PDM_DISABLE             0x00
- #define DMA_EN_MASK             0x02
--- 
-2.51.0
-
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -3,7 +3,7 @@
+ //! Generic disk abstraction.
+ //!
+ //! C header: [`include/linux/blkdev.h`](srctree/include/linux/blkdev.h)
+-//! C header: [`include/linux/blk_mq.h`](srctree/include/linux/blk_mq.h)
++//! C header: [`include/linux/blk-mq.h`](srctree/include/linux/blk-mq.h)
+ 
+ use crate::block::mq::{raw_writer::RawWriter, Operations, TagSet};
+ use crate::{bindings, error::from_err_ptr, error::Result, sync::Arc};
 
 
 
