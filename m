@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-183900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5E6BCD2A3
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:22:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 696CABCD157
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A593F1A67A26
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:21:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 61B7C4FD178
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695002F3C1C;
-	Fri, 10 Oct 2025 13:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD28285CB6;
+	Fri, 10 Oct 2025 13:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeaAfxft"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2JmiQth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256792F3C2D;
-	Fri, 10 Oct 2025 13:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C401F63FF;
+	Fri, 10 Oct 2025 13:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102305; cv=none; b=FO7FqAHr7Dqu/4W0hLsUGtXvZqbircChlGMeliJrClMLoDM8mNkbQUP5ZkJBKFQegMBDX1A6jYGHHT+puRpG0WH1ez+0AHiInYeRuOVh/rDwDkx6q0KEcYRIsCc4KGTvYl8EwSerObejfK7iuUJmseTt4iiNrW0MldC+cvSflFU=
+	t=1760102244; cv=none; b=gOQo5M74l/3gZeF+B1jR6DPAA2OEfUqRAIQUuEoqdjfTUD/M12qRbECWxwxSoQkEATEoffBazBpu9vyk29JILjDg2K/XOGkJ1fBYFvhGnwNGlxL6i4t3TtICfWPIMcuXaxAOc+edABjdv5pCIbsgzyW7lF1uTdyq5KQH+c/bdOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102305; c=relaxed/simple;
-	bh=v0ym/9DXTK9zq/kctuk9Inz48kdTAO9oz4qm2/TSkXQ=;
+	s=arc-20240116; t=1760102244; c=relaxed/simple;
+	bh=4JVdz5GmVEFn3nzg/cJJC9DUvYP/SPewI+mUm6ytvpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5ltcsA56dz8GYZx4sSpTPBWjpz1Wgn86/pkIHBlE2CCX+1eKVq/aBCfqXwVqSRFKgL6pRCsJG/A39Wb+rJrZuHXqJhHKB8/VWhmlS0sUHkpBatsGf40ou5INaoNzNJ4w+i5W+9dMyeqc+pFVwmKhuCBAWYJkdc5YoZlYvnarsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeaAfxft; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2176C4CEF9;
-	Fri, 10 Oct 2025 13:18:24 +0000 (UTC)
+	 MIME-Version; b=Uz/XNMdUCA29VzUXWq+Tz7UUgN36G09A5X6JgmeZKUo8XEwcMby+xWHnbgQ/uB2KDFOs0G3rgxVASqsR8HCfG3EtZBvpFpMSdRFmi5eqcKyeOr7ion8qWLU4oZQiVUur67bryZBnA5Yjq/Y0J3FfCTe3bts+Cu3IagbYmZBCW9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2JmiQth; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3051C4CEF1;
+	Fri, 10 Oct 2025 13:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102305;
-	bh=v0ym/9DXTK9zq/kctuk9Inz48kdTAO9oz4qm2/TSkXQ=;
+	s=korg; t=1760102244;
+	bh=4JVdz5GmVEFn3nzg/cJJC9DUvYP/SPewI+mUm6ytvpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UeaAfxftuZ5MKkzhtDE6K4AquDSCRJjBqqTDckO2jM756PYbZAIjEitU//7r5W9FN
-	 0Ug2AgOAbmcG9+NjKe7j0W1vJOLLZaYMasJ7HWDWgeR99EvyPANWVyf0uNwkLWpS5p
-	 XdtxUnaBpp7YW9aJuqhFe4YJee+YgvqAUVll1RBk=
+	b=B2JmiQthgKsdKs/qbvXGsZYG8mBJ45rrj2o9c8XYKN0KEdOexDMMfkJwVXOTElToG
+	 OHHeiNa7ro6r3fcw3ryqeo8tcaI+ZFlUObA0gNNyOv3mCtLlLmIPeJu9Zsev7z7Arp
+	 ciD0wdNguOrDYgDMyIyU3ssMOxY4WgDNy3+Ps4Cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.16 10/41] rust: block: fix `srctree/` links
-Date: Fri, 10 Oct 2025 15:15:58 +0200
-Message-ID: <20251010131333.797450620@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.17 04/26] wifi: rtlwifi: rtl8192cu: Dont claim USB ID 07b8:8188
+Date: Fri, 10 Oct 2025 15:15:59 +0200
+Message-ID: <20251010131331.369720372@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
-References: <20251010131333.420766773@linuxfoundation.org>
+In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
+References: <20251010131331.204964167@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 208d7f788e84e80992d7b1c82ff17b620eb1371e upstream.
+commit e798f2ac6040f46a04795d7de977341fa9aeabae upstream.
 
-This `srctree/` link pointed to a file with an underscore, but the header
-used a dash instead.
+This ID appears to be RTL8188SU, not RTL8188CU. This is the wrong driver
+for RTL8188SU. The r8712u driver from staging used to handle this ID.
 
-Thus fix it.
-
-This cleans a future warning that will check our `srctree/` links.
-
+Closes: https://lore.kernel.org/linux-wireless/ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de/
 Cc: stable@vger.kernel.org
-Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/2e5e2348-bdb3-44b2-92b2-0231dbf464b0@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/block/mq/gen_disk.rs |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -3,7 +3,7 @@
- //! Generic disk abstraction.
- //!
- //! C header: [`include/linux/blkdev.h`](srctree/include/linux/blkdev.h)
--//! C header: [`include/linux/blk_mq.h`](srctree/include/linux/blk_mq.h)
-+//! C header: [`include/linux/blk-mq.h`](srctree/include/linux/blk-mq.h)
- 
- use crate::block::mq::{raw_writer::RawWriter, Operations, TagSet};
- use crate::{bindings, error::from_err_ptr, error::Result, sync::Arc};
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+@@ -291,7 +291,6 @@ static const struct usb_device_id rtl819
+ 	{RTL_USB_DEVICE(0x050d, 0x1102, rtl92cu_hal_cfg)}, /*Belkin - Edimax*/
+ 	{RTL_USB_DEVICE(0x050d, 0x11f2, rtl92cu_hal_cfg)}, /*Belkin - ISY*/
+ 	{RTL_USB_DEVICE(0x06f8, 0xe033, rtl92cu_hal_cfg)}, /*Hercules - Edimax*/
+-	{RTL_USB_DEVICE(0x07b8, 0x8188, rtl92cu_hal_cfg)}, /*Abocom - Abocom*/
+ 	{RTL_USB_DEVICE(0x07b8, 0x8189, rtl92cu_hal_cfg)}, /*Funai - Abocom*/
+ 	{RTL_USB_DEVICE(0x0846, 0x9041, rtl92cu_hal_cfg)}, /*NetGear WNA1000M*/
+ 	{RTL_USB_DEVICE(0x0846, 0x9043, rtl92cu_hal_cfg)}, /*NG WNA1000Mv2*/
 
 
 
