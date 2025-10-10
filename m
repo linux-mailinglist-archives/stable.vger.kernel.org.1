@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-183979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-183973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF30BCD3F5
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:26:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 288C6BCD39E
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 15:24:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 222A31B216A0
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 583DD540999
+	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 13:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8585C2F5A37;
-	Fri, 10 Oct 2025 13:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710CE2F3617;
+	Fri, 10 Oct 2025 13:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="accS6SNt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaHEzGmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3941E2F28EE;
-	Fri, 10 Oct 2025 13:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0752F290C;
+	Fri, 10 Oct 2025 13:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760102530; cv=none; b=KCDIeVZUhYRGWZrJct8qzcjUPprSw5o4AZdJgiAA64M6EtoQZjgWEbg/nOj9jOF8gI974ekDOv1P4b8moLf9fdNdWMIZr4WVJE6bRsPxCON/2Gc/W8RpCV6oyqtVOhLfJetB0NjfsCoNWknSfBLN04ZcdDXI87eiKR1va04262w=
+	t=1760102513; cv=none; b=UeEw+t9tcoezRJLaXDXwdc3FsWlSFbLTmih73YjE/Uj23haCMViZuW0y9t+xwcOx76+beL1SDHhT42gTwXaj5MpMHBpttARkqw5R7PaAYOkSVZT9ult0+tUAbvBEz3ESwJK7SXSPHPvpKvNxV81skVP8oXOtG3j9+/ow5wOo7+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760102530; c=relaxed/simple;
-	bh=7LmJNf7qVSiFc+VGKdY0Osj5VPdo/Lq8+zbm6mmEXcY=;
+	s=arc-20240116; t=1760102513; c=relaxed/simple;
+	bh=jcy4ZMm+lc1P2ONlGgUZ88uv9Z9+bQajzziK6y1704g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EgPfrUyciaZyDynDJzdNUNgO8VtMCoCfaz10ioPuMGXdhJYPv8h6/OI58TnljdiI40yF5/vj79tMqcKDqFY3Mf13U0dGadQcTzG7cFwygYxWImevyMzsCTP8p9Zndr3tA09112bUUSSkO7Ha37LBm07bpdxufR8wwGfP58SakrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=accS6SNt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE28C4CEF9;
-	Fri, 10 Oct 2025 13:22:09 +0000 (UTC)
+	 MIME-Version; b=CkppBsinBELxt+PGYnnmhIb+yiM3T1ojWBGQxK4ODFSpLh5zXvAzL+MWWs/9sVbirXnPL2oOeISGDQGGARY9cVLqsVjZSLYypjpclxTYup1xfMZsLyUB2hgDri74i/YMoTIhZzoAH8JXTAmfJLg0lKWmpxoPV+wQplMf0mAAeTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaHEzGmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC05BC4CEF1;
+	Fri, 10 Oct 2025 13:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760102530;
-	bh=7LmJNf7qVSiFc+VGKdY0Osj5VPdo/Lq8+zbm6mmEXcY=;
+	s=korg; t=1760102513;
+	bh=jcy4ZMm+lc1P2ONlGgUZ88uv9Z9+bQajzziK6y1704g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=accS6SNtUu1vax2JZV5u8spC7Sl775C4k/jvXmRl21TfaaOKa+QP6bEHRiVmi673F
-	 6VPpKVLCPkYLCqPvm45JxYksTG3gxtrvyw9cHfh3K8FLEtyz1QQdxK1UbUbKqIp7Ff
-	 RaOqFFx+SouyDyTvu3GvznmtpnF2fdKKbQMEt5F0=
+	b=IaHEzGmNGNbPlU0jC2uZsPtvUgcU0YL15oC8US7sxE5Ye2YAMxB5QzltHbEYlnagy
+	 c1GYLwJf3wURnITY+FQSshlKUIDkwdcLuSVJzRXzj9WNLPE0PZ22N+l+DQOMGqb5rp
+	 eUMO9SrlBoA4OHMuVVmNEeZJp7uEYoDt8oJWSnwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Yu <jack.yu@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 11/28] ASoC: rt5682s: Adjust SAR ADC button mode to fix noise issue
-Date: Fri, 10 Oct 2025 15:16:29 +0200
-Message-ID: <20251010131330.773591838@linuxfoundation.org>
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH 6.12 28/35] serial: stm32: allow selecting console when the driver is module
+Date: Fri, 10 Oct 2025 15:16:30 +0200
+Message-ID: <20251010131332.807968138@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
+In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
+References: <20251010131331.785281312@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Yu <jack.yu@realtek.com>
+From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 
-[ Upstream commit 1dd28fd86c3fa4e395031dd6f2ba920242107010 ]
+commit cc4d900d0d6d8dd5c41832a93ff3cfa629a78f9a upstream.
 
-Adjust register settings for SAR adc button detection mode
-to fix noise issue in headset.
+Console can be enabled on the UART compile as module.
+Change dependency to allow console mode when the driver is built as module.
 
-Signed-off-by: Jack Yu <jack.yu@realtek.com>
-Link: https://patch.msgid.link/766cd1d2dd7a403ba65bb4cc44845f71@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 48a6092fb41fa ("serial: stm32-usart: Add STM32 USART Driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Link: https://lore.kernel.org/r/20250822141923.61133-1-raphael.gallais-pou@foss.st.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt5682s.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/tty/serial/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt5682s.c b/sound/soc/codecs/rt5682s.c
-index 92c647d439ec7..89de427c19e79 100644
---- a/sound/soc/codecs/rt5682s.c
-+++ b/sound/soc/codecs/rt5682s.c
-@@ -653,14 +653,15 @@ static void rt5682s_sar_power_mode(struct snd_soc_component *component, int mode
- 	switch (mode) {
- 	case SAR_PWR_SAVING:
- 		snd_soc_component_update_bits(component, RT5682S_CBJ_CTRL_3,
--			RT5682S_CBJ_IN_BUF_MASK, RT5682S_CBJ_IN_BUF_DIS);
-+			RT5682S_CBJ_IN_BUF_MASK, RT5682S_CBJ_IN_BUF_EN);
- 		snd_soc_component_update_bits(component, RT5682S_CBJ_CTRL_1,
--			RT5682S_MB1_PATH_MASK | RT5682S_MB2_PATH_MASK,
--			RT5682S_CTRL_MB1_REG | RT5682S_CTRL_MB2_REG);
-+			RT5682S_MB1_PATH_MASK | RT5682S_MB2_PATH_MASK |
-+			RT5682S_VREF_POW_MASK, RT5682S_CTRL_MB1_FSM |
-+			RT5682S_CTRL_MB2_FSM | RT5682S_VREF_POW_FSM);
- 		snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
- 			RT5682S_SAR_BUTDET_MASK | RT5682S_SAR_BUTDET_POW_MASK |
- 			RT5682S_SAR_SEL_MB1_2_CTL_MASK, RT5682S_SAR_BUTDET_DIS |
--			RT5682S_SAR_BUTDET_POW_SAV | RT5682S_SAR_SEL_MB1_2_MANU);
-+			RT5682S_SAR_BUTDET_POW_NORM | RT5682S_SAR_SEL_MB1_2_MANU);
- 		usleep_range(5000, 5500);
- 		snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
- 			RT5682S_SAR_BUTDET_MASK, RT5682S_SAR_BUTDET_EN);
-@@ -688,7 +689,7 @@ static void rt5682s_sar_power_mode(struct snd_soc_component *component, int mode
- 		snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
- 			RT5682S_SAR_BUTDET_MASK | RT5682S_SAR_BUTDET_POW_MASK |
- 			RT5682S_SAR_SEL_MB1_2_CTL_MASK, RT5682S_SAR_BUTDET_DIS |
--			RT5682S_SAR_BUTDET_POW_SAV | RT5682S_SAR_SEL_MB1_2_MANU);
-+			RT5682S_SAR_BUTDET_POW_NORM | RT5682S_SAR_SEL_MB1_2_MANU);
- 		break;
- 	default:
- 		dev_err(component->dev, "Invalid SAR Power mode: %d\n", mode);
-@@ -725,7 +726,7 @@ static void rt5682s_disable_push_button_irq(struct snd_soc_component *component)
- 	snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
- 		RT5682S_SAR_BUTDET_MASK | RT5682S_SAR_BUTDET_POW_MASK |
- 		RT5682S_SAR_SEL_MB1_2_CTL_MASK, RT5682S_SAR_BUTDET_DIS |
--		RT5682S_SAR_BUTDET_POW_SAV | RT5682S_SAR_SEL_MB1_2_MANU);
-+		RT5682S_SAR_BUTDET_POW_NORM | RT5682S_SAR_SEL_MB1_2_MANU);
- }
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -1401,7 +1401,7 @@ config SERIAL_STM32
  
- /**
-@@ -786,7 +787,7 @@ static int rt5682s_headset_detect(struct snd_soc_component *component, int jack_
- 			jack_type = SND_JACK_HEADSET;
- 			snd_soc_component_write(component, RT5682S_SAR_IL_CMD_3, 0x024c);
- 			snd_soc_component_update_bits(component, RT5682S_CBJ_CTRL_1,
--				RT5682S_FAST_OFF_MASK, RT5682S_FAST_OFF_EN);
-+				RT5682S_FAST_OFF_MASK, RT5682S_FAST_OFF_DIS);
- 			snd_soc_component_update_bits(component, RT5682S_SAR_IL_CMD_1,
- 				RT5682S_SAR_SEL_MB1_2_MASK, val << RT5682S_SAR_SEL_MB1_2_SFT);
- 			rt5682s_enable_push_button_irq(component);
-@@ -966,7 +967,7 @@ static int rt5682s_set_jack_detect(struct snd_soc_component *component,
- 			RT5682S_EMB_JD_MASK | RT5682S_DET_TYPE |
- 			RT5682S_POL_FAST_OFF_MASK | RT5682S_MIC_CAP_MASK,
- 			RT5682S_EMB_JD_EN | RT5682S_DET_TYPE |
--			RT5682S_POL_FAST_OFF_HIGH | RT5682S_MIC_CAP_HS);
-+			RT5682S_POL_FAST_OFF_LOW | RT5682S_MIC_CAP_HS);
- 		regmap_update_bits(rt5682s->regmap, RT5682S_SAR_IL_CMD_1,
- 			RT5682S_SAR_POW_MASK, RT5682S_SAR_POW_EN);
- 		regmap_update_bits(rt5682s->regmap, RT5682S_GPIO_CTRL_1,
--- 
-2.51.0
-
+ config SERIAL_STM32_CONSOLE
+ 	bool "Support for console on STM32"
+-	depends on SERIAL_STM32=y
++	depends on SERIAL_STM32
+ 	select SERIAL_CORE_CONSOLE
+ 	select SERIAL_EARLYCON
+ 
 
 
 
