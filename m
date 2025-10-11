@@ -1,150 +1,110 @@
-Return-Path: <stable+bounces-184057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D374BCF1AE
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 09:58:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB7CBCF227
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 10:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DC9C034CB2F
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 07:58:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5547542668C
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 08:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938092367D1;
-	Sat, 11 Oct 2025 07:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97E32367CF;
+	Sat, 11 Oct 2025 08:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sjoerd@collabora.com header.b="hiki661m"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="TTmvfZe5"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725682367B5;
-	Sat, 11 Oct 2025 07:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760169475; cv=pass; b=T1snV7P6z08MYQAYImHSGEIyR2lAnGa0t7Ge37oAbzBKgTKbx20DSR10JKQaKNsoA5bv7Y8/bdvSInR0mkeC7+d2lGB7aHoHz34cIIRiVXfgzTN0uSgVCYgcYyJQkyMLRJDTYIIQTsz0bcBShs5kUvLAe4a+dq45HOFCsyyDx0s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760169475; c=relaxed/simple;
-	bh=uZRQZy0oMNeA7ShdMfkq03Evjw3bTuH1YwjVhZwPVf8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QzUtJa26htZfs0yb4nL9/vzbVlJaoWPAwOzi6MVPw51kWBPsveTooU3db0qh2oqgAr+l8WIsKk3tUxbEk4xF64Zi3P5iALOQtc1eUV1EdJk8BLlimIczN94QM322wG8Ok1OQNYJdYC2Y09a5XxBkuYV7W6pyonYWZyWKwmijID0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sjoerd@collabora.com header.b=hiki661m; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1760169446; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=KLl1+e+W9DzaoLYJzbMiO+O4s8HsZP3p9CwUndYoD+5DAstyBx7vEDq6NO9esSXLuGBmO4vjde+as/e0soTpuf7kAnK+8E7IJx+E5oCM3HmHiaeukGrrhiJk6bMc0VePbLVuMtmz3/E2UwZG5GZT2v+qNdJg2Vlx1GCvfFaZL3o=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1760169446; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=T8D9JSmjoAYBStsc1vhdarg1O0rJKit5HAJi7BCHXNI=; 
-	b=YMujKQP4mm5PtNOhEaGYZ5xuDL/TUvVWfuIX7aciWq6fbNWyZZoRneJVOMl4k+ZoCWeK6qpMKj49CVm/gEvQpNZekC8MOjKAsNMMMr8y6+7PuKlAwFTL8Y0KTVnjxWE3jfrCFUbotjPuFtj38umH+V5cMBUaGPD2fVFasjDAArg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sjoerd@collabora.com;
-	dmarc=pass header.from=<sjoerd@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760169446;
-	s=zohomail; d=collabora.com; i=sjoerd@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=T8D9JSmjoAYBStsc1vhdarg1O0rJKit5HAJi7BCHXNI=;
-	b=hiki661mfVPG5vQuxCUrKp4b9mhLeonNq8bnkGxHq05iBV7aBX4Z7ACWoYFpcFqc
-	dJxjLUptDbelZ0S6Kf6A7s8tg6h6ii+NL7ThCswSP57Qjyds/lC6I0/cxZ5uZNGHitK
-	5cRsY1j0zQ1hFKZ7XwfQ7TZnDzmlnVtYD9OBeKVM=
-Received: by mx.zohomail.com with SMTPS id 1760169443955726.6866621828841;
-	Sat, 11 Oct 2025 00:57:23 -0700 (PDT)
-Message-ID: <5137227fee0bb06dac3558b0d2db47972785df48.camel@collabora.com>
-Subject: Re: [PATCH] drm/mediatek: fix device use-after-free on unbind
-From: Sjoerd Simons <sjoerd@collabora.com>
-To: Johan Hovold <johan@kernel.org>, Chun-Kuang Hu
- <chunkuang.hu@kernel.org>,  Philipp Zabel <p.zabel@pengutronix.de>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>,  CK Hu <ck.hu@mediatek.com>, Ma
- Ke <make24@iscas.ac.cn>, dri-devel@lists.freedesktop.org, 
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Sat, 11 Oct 2025 09:57:20 +0200
-In-Reply-To: <20251006093937.27869-1-johan@kernel.org>
-References: <20251006093937.27869-1-johan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-5 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182AB2045B7;
+	Sat, 11 Oct 2025 08:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760171111; cv=none; b=uBrAF+sSaFb+bTJ3oyK4PahmJqCow3E6J6UDu5Fj7HMh7e5+BKveTilfqkHJccChN7xrxhYDZmv8CjXhbFyF03uHV3SK1LpSFO+SRGfgYr1mJzmP9dBpjx3po5FTIsSrjI7fOXj3gEOhvLwqX1GKMaEZNzfrtaHMxAcFmEN2/eY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760171111; c=relaxed/simple;
+	bh=7+Y8h6gXG2SuDe1E/iknJtQNKxJeFP7rvXWOL/4bjjU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CYFYZwcMCp7EX4weOJ8KPtvRyQnq7G3KjoYwPnKS8zrCTbptp69VdhVPbM4U3U0OutO2LQY9hJ8GzhlTUz+COIvtbOVjjOu3vuPgdKgkNlnyV6sC3LvoDSoV56CPi6E160MnJPaR+G8hCtrifvdUgtc3unoJzShDhRrFXzauCdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=TTmvfZe5; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=wn
+	raGndEW17agKJvHcNVi4M70SQfTkop2yVtlgiy4zk=; b=TTmvfZe5vFrGqWjPPP
+	ELwdz9pu/oOgs2t0HSNCQMELhKRKajV2qFF9EBGlb5gCqYhato781FcnS/42o/lH
+	/mqz64gBl1y8b/hkxHB4baqp+fEMeFHKKUg7oBcY70LxHzLMHi2SMGSRgWDaLi/4
+	AmIta4PDZx2BdcZO37KzCJvqk=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3LyUxFOpojB64DQ--.7680S2;
+	Sat, 11 Oct 2025 16:24:17 +0800 (CST)
+From: yicongsrfy@163.com
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	oneukum@suse.com
+Cc: horms@kernel.org,
+	kuba@kernel.org,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yi Cong <yicong@kylinos.cn>
+Subject: [PATCH net v3] r8152: add error handling in rtl8152_driver_init
+Date: Sat, 11 Oct 2025 16:24:15 +0800
+Message-Id: <20251011082415.580740-1-yicongsrfy@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3LyUxFOpojB64DQ--.7680S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKFWrGFWfur1UXr1fJw43Wrg_yoWkuwbEkr
+	y0ga43Xr1DuFW5Kr15Wr4avrySkan0vFn3Zr1xt3sIgwnrXrn5Gr15Zr9xXw4UWryfZF9x
+	Ca1UGFyxCr129jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8xwIDUUUUU==
+X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/1tbixwTj22jqDAYbEgABs7
 
-On Mon, 2025-10-06 at 11:39 +0200, Johan Hovold wrote:
-> A recent change fixed device reference leaks when looking up drm
-> platform device driver data during bind() but failed to remove a partial
-> fix which had been added by commit 80805b62ea5b ("drm/mediatek: Fix
-> kobject put for component sub-drivers").
->=20
-> This results in a reference imbalance on component bind() failures and
-> on unbind() which could lead to a user-after-free.
->=20
-> Make sure to only drop the references after retrieving the driver data
-> by effectively reverting the previous partial fix.
->=20
-> Note that holding a reference to a device does not prevent its driver
-> data from going away so there is no point in keeping the reference.
+From: Yi Cong <yicong@kylinos.cn>
 
-Thanks for correcting my "fix". This looks better and i can confirm it fixe=
-s the issue :)
+rtl8152_driver_init missing error handling.
+If cannot register rtl8152_driver, rtl8152_cfgselector_driver
+should be deregistered.
 
-Reviewed-By: Sjoerd Simons <sjoerd@collabora.com>
-Tested-By: Sjoerd Simons <sjoerd@collabora.com>
-=20
->=20
-> Fixes: 1f403699c40f ("drm/mediatek: Fix device/node reference count leaks=
- in
-> mtk_drm_get_all_drm_priv")
-> Reported-by: Sjoerd Simons <sjoerd@collabora.com>
-> Link: https://lore.kernel.org/r/20251003-mtk-drm-refcount-v1-1-3b3f2813b0=
-db@collabora.com
-> Cc: stable@vger.kernel.org
-> Cc: Ma Ke <make24@iscas.ac.cn>
-> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
-> =C2=A0drivers/gpu/drm/mediatek/mtk_drm_drv.c | 10 ----------
-> =C2=A01 file changed, 10 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/med=
-iatek/mtk_drm_drv.c
-> index 384b0510272c..a94c51a83261 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-> @@ -686,10 +686,6 @@ static int mtk_drm_bind(struct device *dev)
-> =C2=A0	for (i =3D 0; i < private->data->mmsys_dev_num; i++)
-> =C2=A0		private->all_drm_private[i]->drm =3D NULL;
-> =C2=A0err_put_dev:
-> -	for (i =3D 0; i < private->data->mmsys_dev_num; i++) {
-> -		/* For device_find_child in mtk_drm_get_all_priv() */
-> -		put_device(private->all_drm_private[i]->dev);
-> -	}
-> =C2=A0	put_device(private->mutex_dev);
-> =C2=A0	return ret;
-> =C2=A0}
-> @@ -697,18 +693,12 @@ static int mtk_drm_bind(struct device *dev)
-> =C2=A0static void mtk_drm_unbind(struct device *dev)
-> =C2=A0{
-> =C2=A0	struct mtk_drm_private *private =3D dev_get_drvdata(dev);
-> -	int i;
-> =C2=A0
-> =C2=A0	/* for multi mmsys dev, unregister drm dev in mmsys master */
-> =C2=A0	if (private->drm_master) {
-> =C2=A0		drm_dev_unregister(private->drm);
-> =C2=A0		mtk_drm_kms_deinit(private->drm);
-> =C2=A0		drm_dev_put(private->drm);
-> -
-> -		for (i =3D 0; i < private->data->mmsys_dev_num; i++) {
-> -			/* For device_find_child in mtk_drm_get_all_priv() */
-> -			put_device(private->all_drm_private[i]->dev);
-> -		}
-> =C2=A0		put_device(private->mutex_dev);
-> =C2=A0	}
-> =C2=A0	private->mtk_drm_bound =3D false;
+Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yi Cong <yicong@kylinos.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+---
+v2: replacing return 0 with return ret and adding Cc stable
+v3: delete the redundant return ret
+---
+ drivers/net/usb/r8152.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 44cba7acfe7d..a22d4bb2cf3b 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10122,7 +10122,12 @@ static int __init rtl8152_driver_init(void)
+ 	ret = usb_register_device_driver(&rtl8152_cfgselector_driver, THIS_MODULE);
+ 	if (ret)
+ 		return ret;
+-	return usb_register(&rtl8152_driver);
++
++	ret = usb_register(&rtl8152_driver);
++	if (ret)
++		usb_deregister_device_driver(&rtl8152_cfgselector_driver);
++
++	return ret;
+ }
+ 
+ static void __exit rtl8152_driver_exit(void)
+-- 
+2.25.1
+
 
