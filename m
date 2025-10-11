@@ -1,124 +1,200 @@
-Return-Path: <stable+bounces-184039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5EFBCEB0E
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 00:21:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F99FBCEDD4
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 03:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 327225458AE
-	for <lists+stable@lfdr.de>; Fri, 10 Oct 2025 22:21:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E299F4E4CFF
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 01:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3079B2737FB;
-	Fri, 10 Oct 2025 22:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689F756B81;
+	Sat, 11 Oct 2025 01:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDP/9T42"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BI9bp86n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012045.outbound.protection.outlook.com [52.101.48.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CC6275AF3
-	for <stable@vger.kernel.org>; Fri, 10 Oct 2025 22:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760134902; cv=none; b=Brx2N2ll6DMqkEW6/gN9YgTFPMz2fjgSvRk1Nwsy4U43dNAvcm7UTH37vx5gNvNLglHWAeLYfjADH4qngmCGqeQwH59otmSd0rTavjuLYDYMyJd27SVtmbzhhSg3MMBHTxymjovZFidXAsT3IoFpNSbbCrGvvFHBue5a246793c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760134902; c=relaxed/simple;
-	bh=XhP/COLjObDz+ZGPI9jHrKcT9w6Zfqb+6aYc6UIknSI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZZNEU7q+fZr8Dy6oCKuseUMoPxv13a2Y10VpAe/9R6iI8wMxtdf8nugJAr1la8v5X7oO9JbRvFBF23ZvCPnyYSapXMP+pBcu3X4Ak7pHS4lUGIbaJ26sCQGhwt+/korFLqUdZ6GCixu7VfIvCBr/0kNvljCIIBj39fFyl9Ok/cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDP/9T42; arc=none smtp.client-ip=209.85.166.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-42d8ad71a51so26868565ab.1
-        for <stable@vger.kernel.org>; Fri, 10 Oct 2025 15:21:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1760134899; x=1760739699; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1XN8BJ2wM10+ueceH639Pxl3TfZtOWY8UGM70jB/ZlU=;
-        b=dDP/9T42hjBTOwLrz5iyBZtdmpoLadYP6g1PiyqTgBfk2heNHoHlB2Oif9LFSzwaO/
-         iZZrj7GnvRXllUKTczi5NkY9g0LEceJMobyxTIlK5Ub4fQWhQf9n+V5bzImJ3GY/bWMn
-         wvZaBKwv3dhijnS2R6CY/KDkdmtm75SGs8NQs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760134899; x=1760739699;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1XN8BJ2wM10+ueceH639Pxl3TfZtOWY8UGM70jB/ZlU=;
-        b=n8YjUmc4A+XV+qw52Yv6z8G1RnCezyxdG1mkE/dbnQFbIiiFS9gAW5WTjPdiboA2i7
-         XlrFCzEQecnymsVY7lxUxGZq/geORK8s0cILldFdn1dABTvzDDrSL6ekm41fCijetptj
-         2DwSKYrtoYP/P+3j3AAPGXtZoTtZxrA/2NBpVaggSKah/plaR9jRr0GzZW65KdM7l1xJ
-         /R6vN82HPa4Emqq8k6JD07nzzJo7Gg26qIw+dKlNOw8GeZ8JR+BIVX1s6PckT3zx/Q9v
-         RgKTlqmhl0962CgOrNvBOSY1wBwU8oheg6H5BHb8Kh3dz3DVfZ66RqApViLTrmSxTEfR
-         6tLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWWxqt8AAkgGm2jsXH7l6MQGr7nRCTlOwWMQRSy0tweste0bOQM14VgGDiLszAeYTDxorGjWsg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyps33gRNmIk28Rsw/6kNwFjzj582JrK/gsj/h69+kl+wiMJhR+
-	2l7IMjMsgKOmPC/l7gE/OV9OuRo6aTxKx0xRZCIfAEW8zyIKZDC+npxMODkGU3bBnrw=
-X-Gm-Gg: ASbGnctHcKYCWIJHBl1KSrJGcBQSxTvDvCUX82rkgVpHFm6u8G6OdIu1dXx26VK/QQe
-	HaVDnUfXnrKar+ialptYFgaUF8q0rDn19ihLC8j9YId/lNqIcbXzgFpleajh2Vy9JxH/jyk2oC/
-	DNZNtejowIdCB99ssDWO0kOAHOmagbqgDjqmIgXnnnmRw7TO6RjKgW4kzBmG/7VVzfgAkQODRx5
-	nlhbXOATXhMLttR2sO6hDcHYbLwtWjkwwM0SAiwWbbV9vn4WdNlZub0KXGIBfGHKybnd+4Hgnk2
-	Qkx1AXBXnVCuG5lcdF3meBce3geeS4pryHtz29hYdRP0H+KyrYtraDvBgqdj4vGS4icTc5zQ0Ot
-	EMa8N6fWFhLQwZFvfiKWGGttNUUYS7SR7C/4F2ci6vNgLaWd3aC3RQQ==
-X-Google-Smtp-Source: AGHT+IEaOdM6AjtKS6UO4o7mdcrBSBEqizYrTv7AtuOpOFMXKvh2X+ICbaotUhVQZwNOfyX/mRTl/g==
-X-Received: by 2002:a05:6e02:2286:b0:42f:94f5:465f with SMTP id e9e14a558f8ab-42f94f5485emr99584845ab.29.1760134899305;
-        Fri, 10 Oct 2025 15:21:39 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-42f90367296sm23828295ab.30.2025.10.10.15.21.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Oct 2025 15:21:38 -0700 (PDT)
-Message-ID: <1c714af6-fc9c-4de9-8f8e-347c3ca14b34@linuxfoundation.org>
-Date: Fri, 10 Oct 2025 16:21:38 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEEF249EB
+	for <stable@vger.kernel.org>; Sat, 11 Oct 2025 01:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760145990; cv=fail; b=SHrnmKrVZCh/RVgeJHpkTtgG9I4qeZHybnQ6Uf652jVA46rJrnhgxDgjKq+F0vppTxqsj0ZjRO/Pn6fOTVMYbPZq2Yoq8OQh6nq49iR2/u+m1yahZd5VF6TsWb4XRKUyko4gR75jf+L384VZvTfB9mi2PrsZv8E34nvBhB0DcKw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760145990; c=relaxed/simple;
+	bh=nS9onhdfvAOrnEqyh5YZaECEAAKNT9pPw5YI1skv2ek=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XNoyZd1eZzlk3nSJDYTUI45aBxudu4MG8KDMeby0+6JCdAi6PnCRIpyShIMPMgxngZSWYjdID3D1GXSGZcS0pWRLBMuViiWdOeYWpN4wDWG3kU9n+9CRr2kwvcKaNI17ICSlwe/RrojxyRscNTBMJYFMIPbWQNi+lDAPVLwKdMA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BI9bp86n; arc=fail smtp.client-ip=52.101.48.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lHFIooPt4AnElbLh63jjnjc2c7m825yFZGCErXPK/CNOuoqSGxlfExrIIf9+fdVuQ+Arlyds6XruwrrqXZDoBjih7NRdsNBVhVAzbWVJ6O+Ca/H0OivDCBNHQvRaI0eN4n5tUjRM0+UZwSpbnpZwliC3WQpYWfzwLkSS6q7ycbP9yde24RCtBy65fufpANrgEmBCDLjJ/sMH9Dd1AbxZRqburp2+59MRU7MtGb3ehMMbIfdDp1z3UL/a3lV6wFDYiKgnBsPDp+cJF5HHlvAkphvA7T1GrzmQx7+NSern/QUM/+2cqUAhEK+RUvwkxrhaJ3tIl/iZIMwDyX37facT0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0UNkzQrUqA71VvRK8vuikHy9/d9hgvzD5R4If6P9xoY=;
+ b=zOpIwPYLO6LImrawKbUW/k3ZxvoYjopqcjaXLPEB7D7V1gkXMxuSROLEAUVt9A9Qn2AQE/r4MYsTrKqbYX6ERng5iV0BFCbG2Mue8Yb+R5DV0LGZ4phgduXjX4vcPB0LO9fkC1/YBvQfim0RIiqzqPVD2MvJJDD/FF03lzrYPCjs0QEuCbt/Nz1tGzAfG69zbbktI3GMLNWbWHzJDTf5txANraf4lKcQeYxoIZ8l0S2vOoF5XZhlsRVpEPQAA/obHpYopmu0Ty80itBcYspvHeRLeniyYHQCOVnESTywyZ/14TysKoYdey4BML5JE1IaoKaHP4T35BusDI+6hUPwkA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0UNkzQrUqA71VvRK8vuikHy9/d9hgvzD5R4If6P9xoY=;
+ b=BI9bp86nwesmUcvlrQSanpgwXhJHbkN3nZVRiph+HAr4uqZUMlGu+Sc2LB6XqRXOOoTV4vEsyMmeO0z6fMHZZkx24fkQYt5jUrtixZonlfdYYtjYOixVtfWV2CM0Syhad6pfadDxyqD7owb0VwCofWcDeJh4B6HKzWKBBMOmPQE=
+Received: from BYAPR06CA0036.namprd06.prod.outlook.com (2603:10b6:a03:d4::49)
+ by CH3PR12MB9145.namprd12.prod.outlook.com (2603:10b6:610:19b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Sat, 11 Oct
+ 2025 01:26:22 +0000
+Received: from CO1PEPF000066ED.namprd05.prod.outlook.com
+ (2603:10b6:a03:d4:cafe::d4) by BYAPR06CA0036.outlook.office365.com
+ (2603:10b6:a03:d4::49) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9203.10 via Frontend Transport; Sat,
+ 11 Oct 2025 01:26:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CO1PEPF000066ED.mail.protection.outlook.com (10.167.249.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9228.7 via Frontend Transport; Sat, 11 Oct 2025 01:26:22 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 10 Oct
+ 2025 18:25:49 -0700
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 10 Oct
+ 2025 18:25:48 -0700
+Received: from xhdlc190345.xilinx.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Fri, 10 Oct 2025 18:25:46 -0700
+From: Sai Krishna Musham <sai.krishna.musham@amd.com>
+To: <git-dev@amd.com>, <michal.simek@amd.com>
+CC: <nagaradhesh.yeleswarapu@amd.com>, <sai.krishna.musham@amd.com>, "Jani
+ Nurminen" <jani.nurminen@windriver.com>, Manivannan Sadhasivam
+	<mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	<stable@vger.kernel.org>
+Subject: [LINUX PATCH] PCI: xilinx-nwl: Fix ECAM programming
+Date: Sat, 11 Oct 2025 06:55:39 +0530
+Message-ID: <20251011012539.548340-1-sai.krishna.musham@amd.com>
+X-Mailer: git-send-email 2.44.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/28] 6.6.111-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20251010131330.355311487@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20251010131330.355311487@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066ED:EE_|CH3PR12MB9145:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1dd07a12-a6d3-4a41-1523-08de08653011
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026|7053199007|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?M+HOIxHSMHt/SF+wpJANhP4kSjeE2QLMLWYJJ/yfT8xtBTrAzQO7K4708hgP?=
+ =?us-ascii?Q?RSdGd8sowUFNG9iRW+z5Bwdj2fzqnXzS5puDs3Uh8+LOp0K4EVBtXKHdnCX+?=
+ =?us-ascii?Q?MpUYq1ickR4GowpyCbMPFPC9vZ/423SSPjQesnATD49IqyEykTTyvRh84tCx?=
+ =?us-ascii?Q?XRHmEmQC1IbVq0gS7H5mAX4Km4balLN/c17XlvkLSO3vuyZEaGxZgikQmXZc?=
+ =?us-ascii?Q?9vFMdrXxAWSwzfVYluIKOPsehdaZJMDZsADDvvnOKR+wm8gh6Ynmg7iuelBU?=
+ =?us-ascii?Q?QyUs0Vp1F7UP/MlalmiD23pv/MPuDSl2J3s7RxpAnDNupBZWi55Wv+wLxWqF?=
+ =?us-ascii?Q?Gr8BKXsowxVBHrBSoTK3drdMwpGQ0839MwjNiWPTqH8/bwAn6FRSej2g4HhS?=
+ =?us-ascii?Q?5uRHoFAqgFEyKJFaNEnFDWxgogYOiws6s9/4usFGSpP21oqNcRWdfta7zhee?=
+ =?us-ascii?Q?hw/+41A6IVvmIE6KvSQYAHLW/w/zYd8eSZdw7C00DYgKXZWwiF3TFpJuPixR?=
+ =?us-ascii?Q?ZAKXT47rqfBNbe/PNK90mDpurcfS+lr31GC9E57IET2WwV/YKZE10u4Yzap3?=
+ =?us-ascii?Q?vjIjMj/aV9aw3YZAOGyEUSicdJXANz5Fb3oAMDpgEF+EtqJMkQxALOcIfkOB?=
+ =?us-ascii?Q?acVXbkdOOyriY8oD1VH3rcsavU3TeW8tBrZw76oyPyy9aq124jHGD0ehRGDM?=
+ =?us-ascii?Q?RKjKUIp3Qa3KiLGceQY7KNmxYBDnsncioDef3Co2agu3rpUU8Aq7rcMk//CF?=
+ =?us-ascii?Q?xzz/ABXoA7vbf9Zv61weitoIbAhdMSAxov2EJA/YeMCgQ+52aC6sMY1XoLyf?=
+ =?us-ascii?Q?B4K/1WhSAkaNja2HjG0RWqnuvxWUm8HZpCCGrb3MTy8kjxms36IoQe5mnfGv?=
+ =?us-ascii?Q?hbamJoFv3UXaw9aDOy/QJLmqdJ6eHZ1oKexFGPxsNwzW5ya32LubwDZAFzYJ?=
+ =?us-ascii?Q?AYSddT63/QZAB29l2STrK+G2KKrGsYWI2ayRJVkb2VEmbnvbekvsB4Ie99vD?=
+ =?us-ascii?Q?acTHzR+fgif6fTwJpdUEL+qTuXrc60IQhF8J5IynrJ8rJ+9ruyR9IKNhndmn?=
+ =?us-ascii?Q?tGyS1+nDTqD9mW1DpZ9lXQmZrFyvsFFo9OH+akvLD24H5MiqIJeV+kKSffL8?=
+ =?us-ascii?Q?C3ycro66VHVzxoXU+i2l4u3NFAL9gtOWmzWPzmihnNPTgFbsYibn/9xf11yZ?=
+ =?us-ascii?Q?fP9f9Ie+rjbvybHDNTccfmHcfbwBjn6fR65GQWY2j7OxkjppoAkjlrvHFjab?=
+ =?us-ascii?Q?cKEzLyS5CPrz0MiBf6+TS8PqajlCwQ5VC94pdeerTikkvJX/0BUCSqJjJsT7?=
+ =?us-ascii?Q?COnwa9XB99Po787tg8HL6VzBgQUfYs4p/lslmOlON2n7naOrWoMvSK4vSmgu?=
+ =?us-ascii?Q?Kk2VRQsAli9hfmuV2bqugtA001xH+frMqvyhRxqB6ysP/e7TG5UxU/QFj/ZV?=
+ =?us-ascii?Q?swzw032f3RVceOWpWgmKoGvSztewYkO1uimvFnU/QeKJK46Z8m6sAxgK1KZz?=
+ =?us-ascii?Q?3FCMrl5Mej5zfRsfaFHpor7z9E7YX395lLnd?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026)(7053199007)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2025 01:26:22.2999
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1dd07a12-a6d3-4a41-1523-08de08653011
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000066ED.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9145
 
-On 10/10/25 07:16, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.111 release.
-> There are 28 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 12 Oct 2025 13:13:18 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.111-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+From: Jani Nurminen <jani.nurminen@windriver.com>
 
-Compiled and booted on my test system. No dmesg regressions.
+When PCIe has been set up by the bootloader, the ecam_size field in the
+E_ECAM_CONTROL register already contains a value.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+The driver previously programmed it to 0xc (for 16 busses; 16 MB), but
+bumped to 0x10 (for 256 busses; 256 MB) by the commit 2fccd11518f1 ("PCI:
+xilinx-nwl: Modify ECAM size to enable support for 256 buses").
 
-thanks,
--- Shuah
+Regardless of what the bootloader has programmed, the driver ORs in a
+new maximal value without doing a proper RMW sequence. This can lead to
+problems.
+
+For example, if the bootloader programs in 0xc and the driver uses 0x10,
+the ORed result is 0x1c, which is beyond the ecam_max_size limit of 0x10
+(from E_ECAM_CAPABILITIES).
+
+Avoid the problems by doing a proper RMW.
+
+Fixes: 2fccd11518f1 ("PCI: xilinx-nwl: Modify ECAM size to enable support for 256 buses")
+Signed-off-by: Jani Nurminen <jani.nurminen@windriver.com>
+[mani: added stable tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/e83a2af2-af0b-4670-bcf5-ad408571c2b0@windriver.com
+---
+CR: CR-1250694
+Branch: master-next-test
+---
+ drivers/pci/controller/pcie-xilinx-nwl.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index a91eed8812c8..63494b67e42b 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -665,9 +665,10 @@ static int nwl_pcie_bridge_init(struct nwl_pcie *pcie)
+ 	nwl_bridge_writel(pcie, nwl_bridge_readl(pcie, E_ECAM_CONTROL) |
+ 			  E_ECAM_CR_ENABLE, E_ECAM_CONTROL);
+ 
+-	nwl_bridge_writel(pcie, nwl_bridge_readl(pcie, E_ECAM_CONTROL) |
+-			  (NWL_ECAM_MAX_SIZE << E_ECAM_SIZE_SHIFT),
+-			  E_ECAM_CONTROL);
++	ecam_val = nwl_bridge_readl(pcie, E_ECAM_CONTROL);
++	ecam_val &= ~E_ECAM_SIZE_LOC;
++	ecam_val |= NWL_ECAM_MAX_SIZE << E_ECAM_SIZE_SHIFT;
++	nwl_bridge_writel(pcie, ecam_val, E_ECAM_CONTROL);
+ 
+ 	nwl_bridge_writel(pcie, lower_32_bits(pcie->phys_ecam_base),
+ 			  E_ECAM_BASE_LO);
+-- 
+2.44.1
+
 
