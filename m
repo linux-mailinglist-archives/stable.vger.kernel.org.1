@@ -1,127 +1,100 @@
-Return-Path: <stable+bounces-184065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CED2BCF34C
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 11:51:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1306EBCF361
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 11:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21E8F42655E
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 09:51:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DFCFE4E3857
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 09:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606B623E342;
-	Sat, 11 Oct 2025 09:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E53252917;
+	Sat, 11 Oct 2025 09:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HVFFH7t4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gSs1crIB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CE92264BA;
-	Sat, 11 Oct 2025 09:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D212512D7
+	for <stable@vger.kernel.org>; Sat, 11 Oct 2025 09:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760176284; cv=none; b=ju33NXQKdLl4HqlfgsrtVc1t5Ywrm6c2u/2LvNcl9l6tPgUH+oLWgzgoJk7QJ2sWmnv2q2bs9NIQRojVBATmYke7das3JaXXMrUmC6AwXwVOtuXUT+GrfwtGX6hgWZRPjh5HY446pcS4uNNLuFwBvk1kV7B/Ba2PcazmqK1Meh4=
+	t=1760176426; cv=none; b=mLpag0UMx+NWXgHgOpupRdCQfKyeJRY+/AwU3RWXTIPFRyos/Ilvl0nEetzK14Y/L4MdyKnWPe2cl05mWgAqoMEYbUWRTT7Xc8fE5245AJlgg39yOAUlIZthe3RwwNViaI3tujC0qn2wRciJYvYRwEo7vkvIp/KvdJCS1nlU6xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760176284; c=relaxed/simple;
-	bh=c9Dv+k+WMCSOf8X6lgtRzh+GIEDTCEfsKKsqpy5DtgY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LFZ1LpSYMQMj+WlCna053Lc0yREEtvToQY12ALvBJFf/TteoKOKVgnswZlU3QGKt/zB+MILPu4lfPzgwE0m8S6rwUdYTWtGAJJQQ2i2SLP+RIYNLRDKJfIhhIKgxsHHfOhFj/zf6YlD+1h28NCE710BkB9bF8wxsuxKfOmvA+Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HVFFH7t4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7D9C3C4CEF4;
-	Sat, 11 Oct 2025 09:51:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1760176283; bh=c9Dv+k+WMCSOf8X6lgtRzh+GIEDTCEfsKKsqpy5DtgY=;
-	h=From:Date:Subject:To:Cc:From;
-	b=HVFFH7t4IbeOeYpE7oFhoTrTSTiq+JB44fZO3iNJxrgAwB0rcKL+vpsllW3JEJgPw
-	 ijA87JB9sMAM3SpGOTzuPb192g6A7vqnJg37V3/oNXnIr0zBziMIJEF4wVyRGzZdJ5
-	 yctVVcMVQZCvNb9GDeKqb8XmVQJsyEIa11aKmJeg=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 738DFCCA476;
-	Sat, 11 Oct 2025 09:51:23 +0000 (UTC)
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Date: Sat, 11 Oct 2025 17:51:18 +0800
-Subject: [PATCH] ALSA: usb-audio: apply quirk for Huawei Technologies Co.,
- Ltd. CM-Q3
+	s=arc-20240116; t=1760176426; c=relaxed/simple;
+	bh=z7LGzMn4N9AC/A6cVaoGYLEAI5yk2bouLK3Ejle43s0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=aO0zK7gO+sYpasiRW28qUIYDMG7AP3pCksuukgmZlgTVdPoJbiqTMHpqsYslC7ygYY6x5LdRlH4p61ie7Gek8GEU9MZMN8iwic4Z2pUX0pqLBK0dU5AePNjD8qcE0C0tUu8ZHAMLNLZGGNbt6wpp4ozWcr0UsJRfk7xXvMZMqQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gSs1crIB; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760176419; x=1791712419;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=z7LGzMn4N9AC/A6cVaoGYLEAI5yk2bouLK3Ejle43s0=;
+  b=gSs1crIBFOKeYV9wnC7InqCf/p19cWH4X11sunRgQVSnCFo/0V4st5z4
+   KSpvlJJUJd4/NA3qE4BjOhYXfQI6WrXZEFTWdP1VLLMoJBbS/73HWWMUz
+   ktu5nlr3Nu4di+gfqmlGU2xA2RpmewRkL6oXJIjciNN/Na947My0VgJx5
+   kxRCOz+MND0wcZw/aTF282AAQ45rQnWIfTxE0ERjOe08nBj14Ezfe+S8W
+   +psBy/QGNOvgqi+iHMzyGb3JcWynNbiqu3BM9VHKJE5wXqQbqAkI9x5qq
+   MlHVgGMd/N5iFsYS7r8/DJ4AsBMpaFnbxt+kiPRIwgUUQ/zRvUnZrtaeD
+   w==;
+X-CSE-ConnectionGUID: qr54C81QSDSZORMZr9C5Dg==
+X-CSE-MsgGUID: k1xGoWw1Qpy7dGEhqwh5qw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11578"; a="73487275"
+X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
+   d="scan'208";a="73487275"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2025 02:53:38 -0700
+X-CSE-ConnectionGUID: 9LLbqgjNSwGU5Yi2OWx5hQ==
+X-CSE-MsgGUID: qqD49qW1QLiuYqmTBYM+wA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
+   d="scan'208";a="185427868"
+Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 11 Oct 2025 02:53:39 -0700
+Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v7WIB-0003h3-2x;
+	Sat, 11 Oct 2025 09:53:35 +0000
+Date: Sat, 11 Oct 2025 17:52:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] ALSA: usb-audio: apply quirk for Huawei Technologies
+ Co., Ltd. CM-Q3
+Message-ID: <aOoo9didj7h3g56G@3b2fe27d8fe3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251011-sound_quirk-v1-1-d693738108ee@linux.dev>
-X-B4-Tracking: v=1; b=H4sIAJUo6mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDA0ND3eL80ryU+MLSzKJsXbNEC2MjM2MjUxNTQyWgjoKi1LTMCrBp0bG
- 1tQD01tW+XQAAAA==
-X-Change-ID: 20251011-sound_quirk-6a8326325451
-To: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Cryolitia PukNgae <cryolitia@uniontech.com>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, zhanjun@uniontech.com, niecheng1@uniontech.com, 
- anguoli@uniontech.com, zhaochengyi@uniontech.com, fengyuan@uniontech.com, 
- Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760176282; l=1832;
- i=cryolitia.pukngae@linux.dev; s=20250730; h=from:subject:message-id;
- bh=c9Dv+k+WMCSOf8X6lgtRzh+GIEDTCEfsKKsqpy5DtgY=;
- b=wbp7xEW18wbmtw1ngB9hiPnogk1zwwypB0R5ze/0nCz7RPFSzg38kofd2SAaZfo+CLgutOA/t
- +SKFP291munD1kixPWbiEcz6xwMIQ5abOt9OQ3Pq9q3D4bahtbTm5MD
-X-Developer-Key: i=cryolitia.pukngae@linux.dev; a=ed25519;
- pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
-X-Endpoint-Received: by B4 Relay for cryolitia.pukngae@linux.dev/20250730
- with auth_id=540
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251011-sound_quirk-v1-1-d693738108ee@linux.dev>
 
-There're several different actual hardwares sold by Huawei, using the
-same USB ID 12d1:3a07.
+Hi,
 
-The first one we found, having a volume control named "Headset Playback
-Volume", reports a min value -15360, and will mute iff setting it to
--15360. It can be simply fixed by quirk flag MIXER_PLAYBACK_MIN_MUTE,
-which we have already submitted previously.[1]
+Thanks for your patch.
 
-The second one we found today, having a volume control named "PCM
-Playback Volume", reports its min -11520 and res 256, and will mute
-when less than -11008. Because of the already existing quirk flag, we
-can just set its min to -11264, and the new minimum value will still
-not be available to userspace, so that userspace's minimum will be the
-correct -11008.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-1. https://lore.kernel.org/all/20250903-sound-v1-3-d4ca777b8512@uniontech.com/
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Tested-by: Guoli An <anguoli@uniontech.com>
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
----
- sound/usb/mixer.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] ALSA: usb-audio: apply quirk for Huawei Technologies Co., Ltd. CM-Q3
+Link: https://lore.kernel.org/stable/20251011-sound_quirk-v1-1-d693738108ee%40linux.dev
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 34bcbfd8b54e66abc0229eefd354eb7bc4c01576..ae412e651faf905c9f7d600de8e19c51995cd3f9 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1189,6 +1189,13 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
- 			cval->min = -14208; /* Mute under it */
- 		}
- 		break;
-+	case USB_ID(0x12d1, 0x3a07): /* Huawei Technologies Co., Ltd. CM-Q3 */
-+		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
-+			usb_audio_info(chip,
-+				       "set volume quirk for Huawei Technologies Co., Ltd. CM-Q3\n");
-+			cval->min = -11264; /* Mute under it */
-+		}
-+		break;
- 	}
- }
- 
-
----
-base-commit: 7e9827afc78073096149cf3565ba668fe2ef4831
-change-id: 20251011-sound_quirk-6a8326325451
-
-Best regards,
 -- 
-Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
 
 
