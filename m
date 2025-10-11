@@ -1,110 +1,131 @@
-Return-Path: <stable+bounces-184058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB7CBCF227
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 10:25:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB831BCF251
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 10:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5547542668C
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 08:25:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D490A19A2C9D
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 08:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97E32367CF;
-	Sat, 11 Oct 2025 08:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B78A2367CF;
+	Sat, 11 Oct 2025 08:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="TTmvfZe5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P+mu330a"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182AB2045B7;
-	Sat, 11 Oct 2025 08:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C976176AC8
+	for <stable@vger.kernel.org>; Sat, 11 Oct 2025 08:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760171111; cv=none; b=uBrAF+sSaFb+bTJ3oyK4PahmJqCow3E6J6UDu5Fj7HMh7e5+BKveTilfqkHJccChN7xrxhYDZmv8CjXhbFyF03uHV3SK1LpSFO+SRGfgYr1mJzmP9dBpjx3po5FTIsSrjI7fOXj3gEOhvLwqX1GKMaEZNzfrtaHMxAcFmEN2/eY=
+	t=1760171514; cv=none; b=ULJAMCpcvOBCj3CABZEL197lArANj/mNPObFTdsOFvNfck1gPj4/f0EDCNzI5nWpts/rcLrvE+hNP67QI+hNNJbAOatF41WgaNvDVf790Hezt1qNFqKBKSKEE0rt/smjyREmkQ8QHQ7R2hmg36rpEvGzq0QuLC27ZxUply1vXKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760171111; c=relaxed/simple;
-	bh=7+Y8h6gXG2SuDe1E/iknJtQNKxJeFP7rvXWOL/4bjjU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CYFYZwcMCp7EX4weOJ8KPtvRyQnq7G3KjoYwPnKS8zrCTbptp69VdhVPbM4U3U0OutO2LQY9hJ8GzhlTUz+COIvtbOVjjOu3vuPgdKgkNlnyV6sC3LvoDSoV56CPi6E160MnJPaR+G8hCtrifvdUgtc3unoJzShDhRrFXzauCdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=TTmvfZe5; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=wn
-	raGndEW17agKJvHcNVi4M70SQfTkop2yVtlgiy4zk=; b=TTmvfZe5vFrGqWjPPP
-	ELwdz9pu/oOgs2t0HSNCQMELhKRKajV2qFF9EBGlb5gCqYhato781FcnS/42o/lH
-	/mqz64gBl1y8b/hkxHB4baqp+fEMeFHKKUg7oBcY70LxHzLMHi2SMGSRgWDaLi/4
-	AmIta4PDZx2BdcZO37KzCJvqk=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3LyUxFOpojB64DQ--.7680S2;
-	Sat, 11 Oct 2025 16:24:17 +0800 (CST)
-From: yicongsrfy@163.com
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	oneukum@suse.com
-Cc: horms@kernel.org,
-	kuba@kernel.org,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yi Cong <yicong@kylinos.cn>
-Subject: [PATCH net v3] r8152: add error handling in rtl8152_driver_init
-Date: Sat, 11 Oct 2025 16:24:15 +0800
-Message-Id: <20251011082415.580740-1-yicongsrfy@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1760171514; c=relaxed/simple;
+	bh=XgCQ9pI6qjLRbY6gYT8jTdFJ43IhBMEiV2kVAMWGn90=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=hUUf4ROLpGk2A0X/JWlS0TKLCZOUtbmOD/+tpRGskugUk6dKMw9J61vYjxXPtbZLpGDRb1k85dao1IpHj9VhOLFXK1Ovb1kFgagEul8itBIMLIdZzA+/1cmbREJq7I15LLeLu4mGOyHYFd6Zy2ZvKppdWmJHRLxoUYR0A6HOxrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P+mu330a; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-54bc6356624so2742260e0c.1
+        for <stable@vger.kernel.org>; Sat, 11 Oct 2025 01:31:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760171508; x=1760776308; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XgCQ9pI6qjLRbY6gYT8jTdFJ43IhBMEiV2kVAMWGn90=;
+        b=P+mu330aSNpI/2ALViKsC2i6zYP+8pDZqWOm6lCCZgoPmZ1VkAw/7eCOvfqBUU0F85
+         //kBGn5PhqWz1J3VHhJDHcK7gaY0rzmohHuk78Am4Y0F/d2k8U3JWFR5V1jktgz8XYhJ
+         1AwQD9RwD776UMSNoCBcYH1Gi2YvF4e0sXZ2EX8yvi+WrIrckaOOPAulre+Vux3KYnLX
+         0yFn4Zf6jo5jokhcnTU9uIbgZfK6dBCMY7jZYChVYxYsuI9nQ5n6zm0tEPa6jofto0Td
+         3VHItanKyFbBA5dar09dihgugttJCOlGk+bAyrVmcOxBm7B1U95ce47QBtxaGYdz+c7B
+         URKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760171508; x=1760776308;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XgCQ9pI6qjLRbY6gYT8jTdFJ43IhBMEiV2kVAMWGn90=;
+        b=SGbbS9gY9bPhinNEqWHtNCRaLuakHqD6sdrhI7ZzaxEuFtP9BxmeoUgX22iTsQjwRT
+         YNOYxwcPieSfmKY/TgCMEmdJjVhrd3PbjVJeNi6fg1S0JuKnsFqTtEDwak8U71UYwBmY
+         NnJPENW5i3hiKiiqYQ3vYEqZ5ig1wgwJESZPuDwBaj00qu1xKT/h9AIHXTvl+yNo8GGQ
+         euQtTF5iVMVMeyuBbxJslzL+Au5J9thDs9rYMtE2iI9GHEODXBjBfK987VRrwOV4Q9zf
+         4doomeWfkq69G5Ns4W0FXM6s4uyGNj1VdtgeIHoVubgrjwgvrnardnEkYkqPtAJSX3HS
+         +lrQ==
+X-Gm-Message-State: AOJu0YwiiPP0GaOc/O0Cg6EXwIVyKAMzqNYrDOqcNccbXpxkx2oQTVl2
+	bekEgxc6JgFG9CGbjz95kQz0QsYe/5cU5mFb/7pq6MWHsV9NO8RmMZdGIvzXPpmTREU7iekYvMl
+	xqgNWM2NYr5Cif0urRZa+2CyvMip9cIw/d8me
+X-Gm-Gg: ASbGncvr9981m8MXspoiNa7wtpiTXkVPjKMdbc9p9arR0gUIw+KoVwwcmPOY+rWCgqc
+	ZiAlmwMEbGU1yC9tQWg+1+o77VUi93oqLUS/FDma4sNhnN/aTIuS6IOYeZPS4Mq/C/2kK2NAMO0
+	hFRTRjdni86rQffQmh0yuRVSALIMMjpsp9sgcr0w51EdazVNWeFZQld7FhWUd5dJzwq7HzPkrCP
+	EaJjt0Ja7QKicmUPvE0l4WMKMM3xeNtCpsjWkc7nCoNj9q12acZdFQkkSrfUkYsxe6xK8gmCK1e
+	DIlZWFyDYjO5YxTWJBMinqObOw==
+X-Google-Smtp-Source: AGHT+IFejl2oruWpHZ0awY4yEWw3zCcPlWZ16r46QzwtfB7PY9nnCyu3jvPHC5L7g+95uxSL/bKMRFASRVgMxtquJdI=
+X-Received: by 2002:a05:6122:a0e:b0:552:361e:25fd with SMTP id
+ 71dfb90a1353d-554b9193d05mr6615340e0c.2.1760171508129; Sat, 11 Oct 2025
+ 01:31:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3LyUxFOpojB64DQ--.7680S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKFWrGFWfur1UXr1fJw43Wrg_yoWkuwbEkr
-	y0ga43Xr1DuFW5Kr15Wr4avrySkan0vFn3Zr1xt3sIgwnrXrn5Gr15Zr9xXw4UWryfZF9x
-	Ca1UGFyxCr129jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8xwIDUUUUU==
-X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/1tbixwTj22jqDAYbEgABs7
+From: Octavia Togami <octavia.togami@gmail.com>
+Date: Sat, 11 Oct 2025 01:31:37 -0700
+X-Gm-Features: AS18NWByaqnuJUTWmTTuzsDkaPpU8PWj6jMDq5RN-D7gigcpvQ72G62InwV-zrI
+Message-ID: <CAHPNGSQpXEopYreir+uDDEbtXTBvBvi8c6fYXJvceqtgTPao3Q@mail.gmail.com>
+Subject: [REGRESSION] bisected: perf: hang when using async-profiler caused by
+ perf: Fix the POLL_HUP delivery breakage
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, peterz@infradead.org, 
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Yi Cong <yicong@kylinos.cn>
+Using async-profiler
+(https://github.com/async-profiler/async-profiler/) on Linux
+6.17.1-arch1-1 causes a complete hang of the CPU. This has been
+reported by many people at https://github.com/lucko/spark/issues/530.
+spark is a piece of software that uses async-profiler internally.
 
-rtl8152_driver_init missing error handling.
-If cannot register rtl8152_driver, rtl8152_cfgselector_driver
-should be deregistered.
+As seen in https://github.com/lucko/spark/issues/530#issuecomment-3339974827,
+this was bisected to 18dbcbfabfffc4a5d3ea10290c5ad27f22b0d240 perf:
+Fix the POLL_HUP delivery breakage. Reverting this commit on 6.17.1
+fixed the issue for me.
 
-Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yi Cong <yicong@kylinos.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Steps to reproduce:
+1. Get a copy of async-profiler. I tested both v3 (affects older spark
+versions) and v4.1 (latest at time of writing). Unarchive it, this is
+<async-profiler-dir>.
+2. Set kernel parameters kernel.perf_event_paranoid=1 and
+kernel.kptr_restrict=0 as instructed by
+https://github.com/async-profiler/async-profiler/blob/fb673227c7fb311f872ce9566769b006b357ecbe/docs/GettingStarted.md
+3. Install a version of Java that comes with jshell, i.e. Java 9 or
+newer. Note: jshell is used for ease of reproduction. Any Java
+application that is actively running will work.
+4. Run `printf 'int acc; while (true) { acc++; }' | jshell -`. This
+will start an infinitely running Java process.
+5. Run `jps` and take the PID next to the text RemoteExecutionControl
+-- this is the process that was just started.
+6. Attach async-profiler to this process by running
+`<async-profiler-dir>/bin/asprof -d 1 <PID>`. This will run for one
+second, then the system should freeze entirely shortly thereafter.
 
----
-v2: replacing return 0 with return ret and adding Cc stable
-v3: delete the redundant return ret
----
- drivers/net/usb/r8152.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+I triggered a sysrq crash while the system was frozen, and the output
+I found in journalctl afterwards is at
+https://gist.github.com/octylFractal/76611ee76060051e5efc0c898dd0949e
+I'm not sure if that text is actually from the triggered crash, but it
+seems relevant. If needed, please tell me how to get the actual crash
+report, I'm not sure where it is.
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 44cba7acfe7d..a22d4bb2cf3b 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -10122,7 +10122,12 @@ static int __init rtl8152_driver_init(void)
- 	ret = usb_register_device_driver(&rtl8152_cfgselector_driver, THIS_MODULE);
- 	if (ret)
- 		return ret;
--	return usb_register(&rtl8152_driver);
-+
-+	ret = usb_register(&rtl8152_driver);
-+	if (ret)
-+		usb_deregister_device_driver(&rtl8152_cfgselector_driver);
-+
-+	return ret;
- }
- 
- static void __exit rtl8152_driver_exit(void)
--- 
-2.25.1
+I'm using an AMD Ryzen 9 5900X 12-Core Processor. Given that I've seen
+no Intel reports, it may be AMD specific. I don't have an Intel CPU on
+hand to test with.
 
+/proc/version: Linux version 6.17.1-arch1-1 (linux@archlinux) (gcc
+(GCC) 15.2.1 20250813, GNU ld (GNU Binutils) 2.45.0) #1 SMP
+PREEMPT_DYNAMIC Mon, 06 Oct 2025 18:48:29 +0000
+Operating System: Arch Linux
+uname -mi: x86_64 unknown
 
