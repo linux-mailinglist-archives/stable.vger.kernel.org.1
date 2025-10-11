@@ -1,117 +1,119 @@
-Return-Path: <stable+bounces-184047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D943BCEF7B
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 05:49:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75726BCEF81
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 05:52:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B0B684E6640
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 03:49:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981783E6E53
+	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 03:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB99F191484;
-	Sat, 11 Oct 2025 03:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2871DF985;
+	Sat, 11 Oct 2025 03:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tw53tR5X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDSmyB6s"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1358B3D6F;
-	Sat, 11 Oct 2025 03:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C475E1A76BC;
+	Sat, 11 Oct 2025 03:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760154544; cv=none; b=dJeFO8yFjwwAbLi2MQectRJZq3U9v+wggxAPF9gWMnH0fHzR5tThxRzuTRvmLXia/DqZEZAfLw5x3a0x3mzZjeM5P0sNKFHX7WD/bW5b4XOSHchZIThakjbBneRPd2c98bulshM4wU6+ZH7c1zpPPFRFOm5VcYm4YB7jr219Qe8=
+	t=1760154759; cv=none; b=Ki2mxi2yRB+IYS9vef2/jkN3j0oQuHUOLq+9K0djsz0XUyzy4DbfHwjvnC7l70R68B2+qtHEwrYZeJhtMgYtrISVC88MAOjKQPlmm5S1OEHz2IH08nWm0mOuic4p1V/h6FESvqsEm9ts8bzBBuCcGynQXmlzmWL9vHpDE9zoFn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760154544; c=relaxed/simple;
-	bh=rnrQ3OGk44itas8W4eJo4nmGnOlFqBBc9NPO6lnnEDA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bEYdLgnjK6XY5iYgciYqhyI3aarWbZ6HC/cDI8z9cYnY59eD39J5CAjdwdxqvUcKwzlX03UYK98AitWXkgQ/VkKl581NcpfTVd9cl/56HybiGt07zPeXpCHRvfsb+d11i1iDTz0dlyC5RiDAjjz3YPUvo4MQeB8XPY44pJEKMUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tw53tR5X; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760154543; x=1791690543;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=rnrQ3OGk44itas8W4eJo4nmGnOlFqBBc9NPO6lnnEDA=;
-  b=Tw53tR5X+oOqiWli0E0V87VHh0FLrd+N7vi5AIZ1w9jnTh+X2Du6K5Za
-   tCHX+DH5lLr3EtL70n5yYn7US0iyLMoBi6IE/zQSrLUEVRUY1Qraqw77E
-   L9+M2dI7nKgbTwuLWuNEUMAGPYLXdZ3MOKPUY6pEnP4458CtqwG08QWOz
-   OIaAudqUcVCmBeJqC9Ad/+XU2NFJyx7KB0YKpNiXuis3vIeclTaCL2HbZ
-   ysicmxsJV+wxDXE2Ge3KE/zJMIOBGgY82iGlih0W2WBiiW2t18bcPRtPP
-   YHtJDoVA6jh/bz6SoVWQu1k0/k5C2F+lo45SXEaYlaHDIxYCLGwCju+Ms
-   A==;
-X-CSE-ConnectionGUID: JUsCNzkdQK6eM/HTTeXe6A==
-X-CSE-MsgGUID: u4aVOm/STk2j9YLBZj5nOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66200985"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="66200985"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 20:49:03 -0700
-X-CSE-ConnectionGUID: EexjwlGBQFW2ha7So1UJag==
-X-CSE-MsgGUID: BNBriDgxQWeMF3uoqckbCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
-   d="scan'208";a="180812312"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.232.209]) ([10.124.232.209])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 20:48:58 -0700
-Message-ID: <4ecf3e76-27f8-47fd-a07d-7da2489af55f@linux.intel.com>
-Date: Sat, 11 Oct 2025 11:48:56 +0800
+	s=arc-20240116; t=1760154759; c=relaxed/simple;
+	bh=o8tTvTn6Jw4Ls8asZavAxXg3pyAe0oCWkJfumpXw6eA=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=a+YtL6XOXayH5Igz/Yvj8vvdODmBoN3HZIDJltRT9AnyUw45YQtXx+ihCkpex/9/pq3zA26IdYMWjuZbE5OaEtshJqaeJgb9XKnM4DJZlPIxy+9O8QO5IHaOecIOwKOVWNokZU1wTgYCPfwvTiw89Q95dTWLHR5t7+D0DaQ9bkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDSmyB6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8ECC116B1;
+	Sat, 11 Oct 2025 03:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760154759;
+	bh=o8tTvTn6Jw4Ls8asZavAxXg3pyAe0oCWkJfumpXw6eA=;
+	h=Date:From:To:Cc:Subject:References:From;
+	b=hDSmyB6sgHvNZAC4SfP1WQ+/wWjLsScSo6ohMi7yYtNtJhxQG5urCfhNuMGlDGGmW
+	 LZP9SWeskW3/NQdlyjGPYVfRhwMgD9FCeONQ/DVbdyrUjxKuruArjoS8S9Cg85Ho7/
+	 fbry3ADiGBTGg919Ak/CQCXa//D40wFt1ogocaaVnsLSUSpwRYV/sMTrJ+mBVtQyGQ
+	 N93mhz2kVP0soOjbdTWq5PUROvADLcAi2HK2wc2RP2wJ0SBWJL07WI3voaJVqVQALl
+	 3X+XKmTSpfxXF1z5JbTOHQxPe43v6THFKDM3P5eeEz8xAsX1Do7jc9+w2xGobTKcIQ
+	 /ahNv3BPqzoJg==
+Received: from rostedt by gandalf with local (Exim 4.98.2)
+	(envelope-from <rostedt@kernel.org>)
+	id 1v7Qex-00000000jgG-2EaM;
+	Fri, 10 Oct 2025 23:52:43 -0400
+Message-ID: <20251011035243.386098147@kernel.org>
+User-Agent: quilt/0.68
+Date: Fri, 10 Oct 2025 23:51:42 -0400
+From: Steven Rostedt <rostedt@kernel.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ syzbot+9a2ede1643175f350105@syzkaller.appspotmail.com
+Subject: [PATCH 1/2] tracing: Fix tracing_mark_raw_write() to use buf and not ubuf
+References: <20251011035141.552201166@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] perf tools: Fix bool return value in gzip_is_compressed()
-To: Miaoqian Lin <linmq006@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20250828104652.53724-1-linmq006@gmail.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20250828104652.53724-1-linmq006@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+From: Steven Rostedt <rostedt@goodmis.org>
 
-On 8/28/2025 6:46 PM, Miaoqian Lin wrote:
-> gzip_is_compressed() returns -1 on error but is declared as bool.
-> And -1 gets converted to true, which could be misleading.
-> Return false instead to match the declared type.
->
-> Fixes: 88c74dc76a30 ("perf tools: Add gzip_is_compressed function")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->  tools/perf/util/zlib.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
-> index 78d2297c1b67..1f7c06523059 100644
-> --- a/tools/perf/util/zlib.c
-> +++ b/tools/perf/util/zlib.c
-> @@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
->  	ssize_t rc;
->  
->  	if (fd < 0)
-> -		return -1;
-> +		return false;
->  
->  	rc = read(fd, buf, sizeof(buf));
->  	close(fd);
+The fix to use a per CPU buffer to read user space tested only the writes
+to trace_marker. But it appears that the selftests are missing tests to
+the trace_maker_raw file. The trace_maker_raw file is used by applications
+that writes data structures and not strings into the file, and the tools
+read the raw ring buffer to process the structures it writes.
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+The fix that reads the per CPU buffers passes the new per CPU buffer to
+the trace_marker file writes, but the update to the trace_marker_raw write
+read the data from user space into the per CPU buffer, but then still used
+then passed the user space address to the function that records the data.
+
+Pass in the per CPU buffer and not the user space address.
+
+TODO: Add a test to better test trace_marker_raw.
+
+Cc: stable@vger.kernel.org
+Fixes: 64cf7d058a00 ("tracing: Have trace_marker use per-cpu data to read user space")
+Reported-by: syzbot+9a2ede1643175f350105@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68e973f5.050a0220.1186a4.0010.GAE@google.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 0fd582651293..bbb89206a891 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -7497,12 +7497,12 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
+ 	if (tr == &global_trace) {
+ 		guard(rcu)();
+ 		list_for_each_entry_rcu(tr, &marker_copies, marker_list) {
+-			written = write_raw_marker_to_buffer(tr, ubuf, cnt);
++			written = write_raw_marker_to_buffer(tr, buf, cnt);
+ 			if (written < 0)
+ 				break;
+ 		}
+ 	} else {
+-		written = write_raw_marker_to_buffer(tr, ubuf, cnt);
++		written = write_raw_marker_to_buffer(tr, buf, cnt);
+ 	}
+ 
+ 	return written;
+-- 
+2.51.0
 
 
 
