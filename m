@@ -1,120 +1,100 @@
-Return-Path: <stable+bounces-184118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507C3BD085F
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 19:16:26 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2735BBD086F
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 19:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C743188DB17
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 17:16:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 20CA94E3C77
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 17:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F6318FC80;
-	Sun, 12 Oct 2025 17:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8152ECEB9;
+	Sun, 12 Oct 2025 17:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="KUX2Jsh7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2vx+H1V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A0D28E59E;
-	Sun, 12 Oct 2025 17:16:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFE72EC55C;
+	Sun, 12 Oct 2025 17:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760289381; cv=none; b=Ejc8qF/Qc3Mm4qE5j16QPSr4inB7DzliiFScDFAZcaake9MeX0ogXVzb2hNrFdYUZV6vmqUiAvcxBBXjcNE9O8L/MjK78b2iuz5T31Ttn7OKJv7o1j3JxEuXeiQa7XaVaOXujqznuDXZWDOy9qgSzGQm+yuTSVHWgotGBdc/OTs=
+	t=1760289619; cv=none; b=VvBTcmltJMT/krG17MeQms7awMJMNTG7eussTBYXXodqx2+42Ey+bONbsr4AUDQvy0a3lTDVgJxYfFuvf2MCBRTXjeDj1jEb9w+eJE+iHwV84GNGeRH04YQhAd0nGEcJcxxpV2mzPoQkoHDtE8ZsLPg7f86JQMAKF1PjT/aHVic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760289381; c=relaxed/simple;
-	bh=pVxdOaIHWzcPmKNyVn3Do6N1fn+JU3YXVNV/4S+Zdd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dtWdVdD7EPqV3Q0WpIUMKKgQAhqjVXjzPQo+S5HwOlxGae8HUAsp+WQ4FU1CNfb3VxtE41JmIUreQR1jmkKILHgMNfZyCNACgxQ5iQHGzVtyCoVbpK2TlrUueKoCd0+9G4TQeHteGDTmTyBED36eI5ia6noBVWPwnooeXJXC7/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=KUX2Jsh7; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A4BFF40E01C9;
-	Sun, 12 Oct 2025 17:16:15 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Go3UW1Q9FCRe; Sun, 12 Oct 2025 17:16:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1760289368; bh=vaCBfOCy0QkUe7pv8PrCZw3GFNaYZJqKUhITngbIbHA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KUX2Jsh7Zk2uCSXJmguYKeHL3qS2z9uNQxDFLzRPc6z8UDMJd2+R6pqdlnMbx73uD
-	 bMB7vmheROkBbcsKKhYyras9m58AZOhF7yndodsjtThFWOFs9cjMMckD1O+6tcL2mr
-	 KT+RAiRWKcixvzyoL4T4PgzjcML77JfIY6YuQGjvqsYhKrIDnTqEFhuQxRjC/POMWX
-	 +Fo6RlbzKH3m2E52lhP7zkDqPtUx0OVWVataQy1SElgShdN9hdKwKVtiuSKXYoY1wp
-	 4cf97NbF5I13Fv9TsbfrGlAxXmnfak+QeZKDs9Cmf8vzAQk+Svh3EdP5Rzvl/LKV5j
-	 NVaAWk2r4Ku2ALJoPQAozybOrKZWz9yAnDdO06jwoKE/Ph5EvyhxNjtQYbb/+spKyr
-	 zoHTGPbieSqOiwbwwJQulhJYMC86KLMPEibsufJc7leK+cJInyVTG2tq1denMSNPvb
-	 1glqTAPcrHrgKhx3Ly2R5Aa7SqZnj7qvUz+p/PSVS8fTvADeL0ebhETrkNYL9nLyT/
-	 0RmhNtvHhzj5gPihaMNeLkvyu4TyuKN/RuWLBNT+wJOWLHjzHB34e07SDTbVHYaq66
-	 SkE4PFSqS6EsuKyHWUpZXaXNIkWq9DQnv4ipZNQ/cAAMHs6LLOiTWj05NldDrwR53D
-	 fzQ8zdWrODt1L+Xi0vPInLqs=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 4271940E019B;
-	Sun, 12 Oct 2025 17:15:59 +0000 (UTC)
-Date: Sun, 12 Oct 2025 19:15:53 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Uros Bizjak <ubizjak@gmail.com>, stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>, stable-commits@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
-Subject: Re: Patch "x86/vdso: Fix output operand size of RDPID" has been
- added to the 6.16-stable tree
-Message-ID: <20251012171553.GBaOviScvp-9gtgwnk@fat_crate.local>
-References: <20251012142017.2901623-1-sashal@kernel.org>
- <723ACFFB-1E5A-45ED-8753-9044A645D5C7@zytor.com>
- <CAFULd4b1oey5YntK9aY0HubiE21gQWqToC7F4HUCYX0GKEKuSQ@mail.gmail.com>
- <627794F9-8F8C-409B-876B-BF465D8A12C9@zytor.com>
- <20251012161733.GAaOvUnV8pgVvLs2i_@fat_crate.local>
- <ACA49E7E-D6B9-412C-9C04-64738FEA92CB@zytor.com>
+	s=arc-20240116; t=1760289619; c=relaxed/simple;
+	bh=0Yhqw/WpUTQj+vAuDvTHp3aIUOR0Gj80cWsQtkFzs3M=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=TZnBiCyXlmJ2oLNLygdyLp+9J5QZthSfpgA3VU1RKpEBeqBajVqp9C3m8MnxIWdSnA0vooqnGlG7mrGgwEDySVfq3LTlAtQX3soCV6aLa5ITs0Ovw/4M9QFuY+x4vS4RR+qmBtZJ9vlk/JKXkxrW+z+1YrhC3ok7Ko+8iR49dNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2vx+H1V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EBFBC4CEE7;
+	Sun, 12 Oct 2025 17:20:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760289619;
+	bh=0Yhqw/WpUTQj+vAuDvTHp3aIUOR0Gj80cWsQtkFzs3M=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=a2vx+H1VW3lHb0/EWN4Y+UwNY060kww2kdLP3SWRi4AThtcAwW3CkS6GJCV0SE8aB
+	 HgoOetpYACGBrEq1NN0zUl7SF6/hGpXxhUsiVkx7K3rULqc1Mx9Wgq062w3jyKpwfx
+	 y6DhyXWdDX50WT4dN4uGXCCxRcYJMJBudHfh4FjIibK1BEKiXhzxntVjZWCxQHOo/5
+	 mwS6sTY3jMeBXcNQII5+K2txf46uoeksG4sQcL3tXjNKtml5/gMxiIvB3wZrT63i6C
+	 IHR8fs6vXqfM50OW2doCyDqIy264vF3OYtBwJKBauaQyaj44nltJkCuj4upMdOe/XG
+	 cVBLCh/rj//Zw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD5A3809A1C;
+	Sun, 12 Oct 2025 17:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ACA49E7E-D6B9-412C-9C04-64738FEA92CB@zytor.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: usb: lan78xx: Fix lost EEPROM write timeout
+ error(-ETIMEDOUT) in lan78xx_write_raw_eeprom
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176028960551.1702266.1263953075322899185.git-patchwork-notify@kernel.org>
+Date: Sun, 12 Oct 2025 17:20:05 +0000
+References: <20251009053009.5427-1-bhanuseshukumar@gmail.com>
+In-Reply-To: <20251009053009.5427-1-bhanuseshukumar@gmail.com>
+To: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+Cc: Thangaraj.S@microchip.com, Rengarajan.S@microchip.com,
+ UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ o.rempel@pengutronix.de, netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, khalid@kernel.org,
+ linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org,
+ david.hunter.linux@gmail.com, stable@vger.kernel.org
 
-On Sun, Oct 12, 2025 at 09:21:44AM -0700, H. Peter Anvin wrote:
-> MSR_TSC_AUX is a 32-bit register,
+Hello:
 
-Every MSR is 64-bit. This one has bits [63:32] reserved. :-P :-P But yeah,
-TscAux is [31:0]...
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-> so the two actions are *exactly identical*. This seems like
-> a misunderstanding that has propagated through multiple texts, or perhaps
-> someone thought it was more "future proof" this way.
+On Thu,  9 Oct 2025 11:00:09 +0530 you wrote:
+> The function lan78xx_write_raw_eeprom failed to properly propagate EEPROM
+> write timeout errors (-ETIMEDOUT). In the timeout  fallthrough path, it first
+> attempted to restore the pin configuration for LED outputs and then
+> returned only the status of that restore operation, discarding the
+> original timeout error saved in ret.
 > 
-> I think the Intel documentation is even crazier and says "the low 32 bits of
-> IA32_TSC_AUX"...
+> As a result, callers could mistakenly treat EEPROM write operation as
+> successful even though the EEPROM write had actually timed out with no
+> or partial data write.
+> 
+> [...]
 
-Well, funny you should mention that - this raises a good question: what
-happens in the future if we want to put the whole u64 into the destination reg
-of RDPID?
+Here is the summary with links:
+  - net: usb: lan78xx: Fix lost EEPROM write timeout error(-ETIMEDOUT) in lan78xx_write_raw_eeprom
+    https://git.kernel.org/netdev/net/c/d5d790ba1558
 
-Should we extend the insn now, while the high u32 is reserved and is a don't
-care?
-
-Because I can already see the CPUID bits and such saying: "this RDPID flavor
-reads the whole u64 MSR, yadda yadda..."
-
-If we fix it now, there's no need for any of that.
-
+You are awesome, thank you!
 -- 
-Regards/Gruss,
-    Boris.
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
 
