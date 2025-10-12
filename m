@@ -1,50 +1,60 @@
-Return-Path: <stable+bounces-184119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2735BBD086F
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 19:20:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B2BBD0C19
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 22:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 20CA94E3C77
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 17:20:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E13111895F53
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 20:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8152ECEB9;
-	Sun, 12 Oct 2025 17:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1736F235041;
+	Sun, 12 Oct 2025 20:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2vx+H1V"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ve1Cgubv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFE72EC55C;
-	Sun, 12 Oct 2025 17:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E4D2192F4
+	for <stable@vger.kernel.org>; Sun, 12 Oct 2025 20:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760289619; cv=none; b=VvBTcmltJMT/krG17MeQms7awMJMNTG7eussTBYXXodqx2+42Ey+bONbsr4AUDQvy0a3lTDVgJxYfFuvf2MCBRTXjeDj1jEb9w+eJE+iHwV84GNGeRH04YQhAd0nGEcJcxxpV2mzPoQkoHDtE8ZsLPg7f86JQMAKF1PjT/aHVic=
+	t=1760301551; cv=none; b=a0LFXDUwCWNks/hB/d32iieqkCUzcNj3lfYyZUt9alQxMwFJidDq1ubz4uQl/LPQFlmDY6kNqt/xneG0YF8Ec2XoI+KVaG/yyuEf6ORnlJ/JYfS39WrV9TsoKbnwesIpSaDklXJZTVuR82Hq6LZ/cRyr7DZDt+gEYyoffAOOsvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760289619; c=relaxed/simple;
-	bh=0Yhqw/WpUTQj+vAuDvTHp3aIUOR0Gj80cWsQtkFzs3M=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TZnBiCyXlmJ2oLNLygdyLp+9J5QZthSfpgA3VU1RKpEBeqBajVqp9C3m8MnxIWdSnA0vooqnGlG7mrGgwEDySVfq3LTlAtQX3soCV6aLa5ITs0Ovw/4M9QFuY+x4vS4RR+qmBtZJ9vlk/JKXkxrW+z+1YrhC3ok7Ko+8iR49dNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2vx+H1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EBFBC4CEE7;
-	Sun, 12 Oct 2025 17:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760289619;
-	bh=0Yhqw/WpUTQj+vAuDvTHp3aIUOR0Gj80cWsQtkFzs3M=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=a2vx+H1VW3lHb0/EWN4Y+UwNY060kww2kdLP3SWRi4AThtcAwW3CkS6GJCV0SE8aB
-	 HgoOetpYACGBrEq1NN0zUl7SF6/hGpXxhUsiVkx7K3rULqc1Mx9Wgq062w3jyKpwfx
-	 y6DhyXWdDX50WT4dN4uGXCCxRcYJMJBudHfh4FjIibK1BEKiXhzxntVjZWCxQHOo/5
-	 mwS6sTY3jMeBXcNQII5+K2txf46uoeksG4sQcL3tXjNKtml5/gMxiIvB3wZrT63i6C
-	 IHR8fs6vXqfM50OW2doCyDqIy264vF3OYtBwJKBauaQyaj44nltJkCuj4upMdOe/XG
-	 cVBLCh/rj//Zw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD5A3809A1C;
-	Sun, 12 Oct 2025 17:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1760301551; c=relaxed/simple;
+	bh=YIkTgYn9i2yw0iFaIALqYXIa9CMh1bynZaoWnsC+ihU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PyyGvGYxasjDOgilTEhWngQhGHqCp2h/znw7F803LiTbOguXu7LulvkgnTvPayoPXqTQrrgyOAm9FgnC0nxh8F0AqGsSV76QVsAbFAVAeVgpq7oA8517EjUB+Sgm6LHXE9qABI5fJ71UbGn3VtiwUlq2nHNKBRPPaeNG1tBakks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ve1Cgubv; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760301538;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FKhJ/WufXxLbU2grf7XLNEYhgrmN020loyUIXPWxv7U=;
+	b=ve1Cgubv0YcbugdHFD/N9LGuipVUBqST1XmwsuU84PKVu2uM3x+m1bkJTcWy2AAarJi8+l
+	c7hO7tTAUiGx2wGD4AH7FzxgTuboVUdpgh7uNLpfzF6T5/ZIpDTGqrojsT0uGVSiGDBRvD
+	JCcCTaLZvjt7DEBEcWZn77cEA2mT55U=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: David Howells <dhowells@redhat.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Vivek Goyal <vgoyal@redhat.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	stable@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
+Date: Sun, 12 Oct 2025 22:38:40 +0200
+Message-ID: <20251012203841.60230-1-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,49 +62,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: usb: lan78xx: Fix lost EEPROM write timeout
- error(-ETIMEDOUT) in lan78xx_write_raw_eeprom
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176028960551.1702266.1263953075322899185.git-patchwork-notify@kernel.org>
-Date: Sun, 12 Oct 2025 17:20:05 +0000
-References: <20251009053009.5427-1-bhanuseshukumar@gmail.com>
-In-Reply-To: <20251009053009.5427-1-bhanuseshukumar@gmail.com>
-To: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
-Cc: Thangaraj.S@microchip.com, Rengarajan.S@microchip.com,
- UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- o.rempel@pengutronix.de, netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, khalid@kernel.org,
- linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org,
- david.hunter.linux@gmail.com, stable@vger.kernel.org
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
+Use check_add_overflow() to guard against a potential integer overflow
+when adding the binary blob lengths in asymmetric_key_generate_id() and
+return -EOVERFLOW accordingly. This prevents a possible buffer overflow
+when copying data from potentially malicious X.509 fields that can be
+arbitrarily large, such as ASN.1 INTEGER serial numbers, issuer names,
+etc.
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+Also use struct_size() to calculate the number of bytes to allocate for
+the new asymmetric key id.
 
-On Thu,  9 Oct 2025 11:00:09 +0530 you wrote:
-> The function lan78xx_write_raw_eeprom failed to properly propagate EEPROM
-> write timeout errors (-ETIMEDOUT). In the timeout  fallthrough path, it first
-> attempted to restore the pin configuration for LED outputs and then
-> returned only the status of that restore operation, discarding the
-> original timeout error saved in ret.
-> 
-> As a result, callers could mistakenly treat EEPROM write operation as
-> successful even though the EEPROM write had actually timed out with no
-> or partial data write.
-> 
-> [...]
+Cc: stable@vger.kernel.org
+Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+Changes in v2:
+- Use check_add_overflow() and error out as suggested by Lukas
+- Update patch description
+- Add Fixes: tag and @stable for backporting
+- Link to v1: https://lore.kernel.org/lkml/20251007185220.234611-2-thorsten.blum@linux.dev/
+---
+ crypto/asymmetric_keys/asymmetric_type.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Here is the summary with links:
-  - net: usb: lan78xx: Fix lost EEPROM write timeout error(-ETIMEDOUT) in lan78xx_write_raw_eeprom
-    https://git.kernel.org/netdev/net/c/d5d790ba1558
-
-You are awesome, thank you!
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index ba2d9d1ea235..bd96f799757d 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -11,6 +11,7 @@
+ #include <crypto/public_key.h>
+ #include <linux/seq_file.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/ctype.h>
+ #include <keys/system_keyring.h>
+@@ -141,12 +142,14 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
+ 						     size_t len_2)
+ {
+ 	struct asymmetric_key_id *kid;
++	size_t len;
+ 
+-	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
+-		      GFP_KERNEL);
++	if (check_add_overflow(len_1, len_2, &len))
++		return ERR_PTR(-EOVERFLOW);
++	kid = kmalloc(struct_size(kid, data, len), GFP_KERNEL);
+ 	if (!kid)
+ 		return ERR_PTR(-ENOMEM);
+-	kid->len = len_1 + len_2;
++	kid->len = len;
+ 	memcpy(kid->data, val_1, len_1);
+ 	memcpy(kid->data + len_1, val_2, len_2);
+ 	return kid;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.51.0
 
 
