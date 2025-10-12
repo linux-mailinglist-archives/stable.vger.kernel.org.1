@@ -1,42 +1,43 @@
-Return-Path: <stable+bounces-184102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23101BD0175
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 13:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 794CBBD017B
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 13:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF6C23BCB45
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 11:25:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C87F3A5B94
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 11:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE80273D8A;
-	Sun, 12 Oct 2025 11:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4FA275B1F;
+	Sun, 12 Oct 2025 11:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqQkzExH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWRzaGqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148AE273D6C;
-	Sun, 12 Oct 2025 11:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DBA2749CA;
+	Sun, 12 Oct 2025 11:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760268276; cv=none; b=Oj2fe6vy12Kg1Od0eF9ZkxQCD57J1dmFTyo5JFIUfxFOrcihsMiu9bdBnxmWFMkzWCd2LviOSe/WkAZYCvKLOZ2MZhkSAqlJ+WxJph/5apzBZmbaLmaXxBCy6EvM3cWO+kUJK/wi0pbkz34OtrYB1dL1Zmd0amRPf92gGmRCWZ4=
+	t=1760268282; cv=none; b=ogsPuaWRPp1InjT7RR6oCzaWvEF2cB2Rp97B8/awQxcpPwOirSJV74FR8wvQ9rTKjb8QbxDqEbG+AbwU/GOl0L2rsMytvPQ0bvVrId2RgFaifEq4y9+WHXmOEjjhGxeo7bTuU0PsPZHsSCztmUEV1D4uSlOKBNsG7rnucQibjJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760268276; c=relaxed/simple;
-	bh=bfx46x7pmVa+9048jfO4sVEH8O4VYYgVQ2A8fZfWZBA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=atqef6FLwjo3W14SqCz5rw5TelEIUH69tjoQjHlAQRqhdWhEk24LuqgqWgpgIgoLDN2wmC5CbaRGcq09el/4YXMGvz8vzJlARPIRIK35puNK1ZZ8HH01W6DrKRT1KesncgFk/+BEBHDt73oNNmovUeHH6tIHhG70vBBMsc1BU7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqQkzExH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2E4C4CEF1;
-	Sun, 12 Oct 2025 11:24:35 +0000 (UTC)
+	s=arc-20240116; t=1760268282; c=relaxed/simple;
+	bh=TZNB4VN0j2aNTbA8qxyoG9cxVM2e31OhFIcqa2WpGbs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dNkXuGl4ENXTYUErYA95GRxYHO2ANfg1vTGyfTTzzBTUOWduhy/WDC3oz9jJ57E0tp0farhEqkade4BH8wn2TF567pl/SSYPTBSQ8hw7t6l/etFStSAFDb0Y8lAijhTIORHEdega//Ys65PgZVQDRdLHMm6ngFKBUgh8VNXZ4Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWRzaGqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150B5C4CEE7;
+	Sun, 12 Oct 2025 11:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760268275;
-	bh=bfx46x7pmVa+9048jfO4sVEH8O4VYYgVQ2A8fZfWZBA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=lqQkzExHjRZ64Bwk9Tx9aK2TTD+BkL4jV14ySBbrWj/IPI6Xz8JIIgFqXrIjKtNpr
-	 1DDDbiXpii966028/MJdYrd6IQMclJBnXiPQzI5jCZsYuuCzyDJTlWVLVSRWqX47Ai
-	 MHWWM4tqp+dUJRYTkn3q4VNtMYx6GHL6X6lyA7hI=
+	s=korg; t=1760268281;
+	bh=TZNB4VN0j2aNTbA8qxyoG9cxVM2e31OhFIcqa2WpGbs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MWRzaGqf5xJiRWekundX0VkiX4toxVUJNgCXWrptwdpAKH71KvY5qnLq9tTze+B8k
+	 5v5BCRnu5PoLMWj96OxLd0/jP9L8alGBnr0UIpGfo/dN8AQfhRSF/y1jlFPLalYVRL
+	 2Ke6bA65ykc9C/9v1klWuuGA/etrdGN9cUMVVBqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -45,135 +46,1200 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Linux 6.17.2
-Date: Sun, 12 Oct 2025 13:24:28 +0200
-Message-ID: <2025101229-hypnotism-thimble-b140@gregkh>
+Subject: Re: Linux 6.17.2
+Date: Sun, 12 Oct 2025 13:24:29 +0200
+Message-ID: <2025101229-oak-calculate-7f6a@gregkh>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101229-hypnotism-thimble-b140@gregkh>
+References: <2025101229-hypnotism-thimble-b140@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-I'm announcing the release of the 6.17.2 kernel.
-
-All users of the 6.17 kernel series must upgrade.
-
-The updated 6.17.y git tree can be found at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.17.y
-and can be browsed at the normal kernel.org git web browser:
-	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-
-thanks,
-
-greg k-h
-
-------------
-
- Makefile                                            |    2 
- arch/x86/kvm/emulate.c                              |    9 -
- arch/x86/kvm/kvm_emulate.h                          |    3 
- arch/x86/kvm/x86.c                                  |   15 -
- crypto/rng.c                                        |    8 
- crypto/testmgr.c                                    |    5 
- crypto/zstd.c                                       |    2 
- drivers/android/dbitmap.h                           |    1 
- drivers/base/faux.c                                 |    1 
- drivers/bluetooth/btusb.c                           |    2 
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c              |    6 
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c              |    5 
- drivers/gpu/drm/amd/include/mes_v11_api_def.h       |    3 
- drivers/gpu/drm/amd/include/mes_v12_api_def.h       |    3 
- drivers/misc/amd-sbi/Kconfig                        |    1 
- drivers/net/wireless/realtek/rtl8xxxu/core.c        |    2 
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c |    1 
- drivers/nvmem/layouts.c                             |   13 +
- drivers/staging/axis-fifo/axis-fifo.c               |   68 +++----
- drivers/tty/serial/Kconfig                          |    2 
- drivers/tty/serial/qcom_geni_serial.c               |  176 +-------------------
- drivers/usb/serial/option.c                         |    6 
- fs/f2fs/f2fs.h                                      |    4 
- fs/f2fs/gc.c                                        |    4 
- fs/f2fs/node.c                                      |   58 ++++--
- fs/f2fs/node.h                                      |    1 
- fs/f2fs/recovery.c                                  |    2 
- include/linux/device.h                              |    3 
- kernel/trace/ring_buffer.c                          |    2 
- net/9p/trans_fd.c                                   |    8 
- rust/kernel/block/mq/gen_disk.rs                    |    2 
- rust/kernel/drm/device.rs                           |    2 
- rust/kernel/drm/driver.rs                           |    2 
- rust/kernel/drm/file.rs                             |    2 
- rust/kernel/drm/gem/mod.rs                          |    2 
- rust/kernel/drm/ioctl.rs                            |    2 
- rust/kernel/pci.rs                                  |    6 
- 37 files changed, 178 insertions(+), 256 deletions(-)
-
-Ankit Khushwaha (1):
-      ring buffer: Propagate __rb_map_vma return value to caller
-
-Bitterblue Smith (2):
-      wifi: rtlwifi: rtl8192cu: Don't claim USB ID 07b8:8188
-      wifi: rtl8xxxu: Don't claim USB ID 07b8:8188
-
-Carlos Llamas (1):
-      binder: fix double-free in dbitmap
-
-Chao Yu (1):
-      f2fs: fix to do sanity check on node footer for non inode dnode
-
-Greg Kroah-Hartman (1):
-      Linux 6.17.2
-
-Herbert Xu (3):
-      Revert "crypto: testmgr - desupport SHA-1 for FIPS 140"
-      crypto: zstd - Fix compression bug caused by truncation
-      crypto: rng - Ensure set_ent is always present
-
-Krzysztof Kozlowski (1):
-      serial: qcom-geni: Fix blocked task
-
-Mario Limonciello (1):
-      drm/amdgpu: Enable MES lr_compute_wa by default
-
-Max Kellermann (1):
-      drivers/misc/amd-sbi/Kconfig: select REGMAP_I2C
-
-Michael Walle (1):
-      nvmem: layouts: fix automatic module loading
-
-Miguel Ojeda (2):
-      rust: drm: fix `srctree/` links
-      rust: block: fix `srctree/` links
-
-Nalivayko Sergey (1):
-      net/9p: fix double req put in p9_fd_cancelled
-
-Ovidiu Panait (3):
-      staging: axis-fifo: fix maximum TX packet length check
-      staging: axis-fifo: fix TX handling on copy_from_user() failure
-      staging: axis-fifo: flush RX FIFO on read errors
-
-Rafael J. Wysocki (2):
-      driver core: faux: Set power.no_pm for faux devices
-      driver core/PM: Set power.no_callbacks along with power.no_pm
-
-Rahul Rameshbabu (2):
-      rust: pci: fix incorrect platform reference in PCI driver probe doc comment
-      rust: pci: fix incorrect platform reference in PCI driver unbind doc comment
-
-Raphael Gallais-Pou (1):
-      serial: stm32: allow selecting console when the driver is module
-
-Sean Christopherson (1):
-      KVM: x86: Don't (re)check L1 intercepts when completing userspace I/O
-
-Xiaowei Li (1):
-      USB: serial: option: add SIMCom 8230C compositions
-
-Zenm Chen (1):
-      Bluetooth: btusb: Add USB ID 2001:332a for D-Link AX9U rev. A1
-
+diff --git a/Makefile b/Makefile
+index 389bfac0adaa..a04d0223dc84 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ VERSION = 6
+ PATCHLEVEL = 17
+-SUBLEVEL = 1
++SUBLEVEL = 2
+ EXTRAVERSION =
+ NAME = Baby Opossum Posse
+ 
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 1349e278cd2a..542d3664afa3 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -5107,12 +5107,11 @@ void init_decode_cache(struct x86_emulate_ctxt *ctxt)
+ 	ctxt->mem_read.end = 0;
+ }
+ 
+-int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
++int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts)
+ {
+ 	const struct x86_emulate_ops *ops = ctxt->ops;
+ 	int rc = X86EMUL_CONTINUE;
+ 	int saved_dst_type = ctxt->dst.type;
+-	bool is_guest_mode = ctxt->ops->is_guest_mode(ctxt);
+ 
+ 	ctxt->mem_read.pos = 0;
+ 
+@@ -5160,7 +5159,7 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
+ 				fetch_possible_mmx_operand(&ctxt->dst);
+ 		}
+ 
+-		if (unlikely(is_guest_mode) && ctxt->intercept) {
++		if (unlikely(check_intercepts) && ctxt->intercept) {
+ 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
+ 						      X86_ICPT_PRE_EXCEPT);
+ 			if (rc != X86EMUL_CONTINUE)
+@@ -5189,7 +5188,7 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
+ 				goto done;
+ 		}
+ 
+-		if (unlikely(is_guest_mode) && (ctxt->d & Intercept)) {
++		if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
+ 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
+ 						      X86_ICPT_POST_EXCEPT);
+ 			if (rc != X86EMUL_CONTINUE)
+@@ -5243,7 +5242,7 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
+ 
+ special_insn:
+ 
+-	if (unlikely(is_guest_mode) && (ctxt->d & Intercept)) {
++	if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
+ 		rc = emulator_check_intercept(ctxt, ctxt->intercept,
+ 					      X86_ICPT_POST_MEMACCESS);
+ 		if (rc != X86EMUL_CONTINUE)
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index c1df5acfacaf..7b5ddb787a25 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -235,7 +235,6 @@ struct x86_emulate_ops {
+ 	void (*set_nmi_mask)(struct x86_emulate_ctxt *ctxt, bool masked);
+ 
+ 	bool (*is_smm)(struct x86_emulate_ctxt *ctxt);
+-	bool (*is_guest_mode)(struct x86_emulate_ctxt *ctxt);
+ 	int (*leave_smm)(struct x86_emulate_ctxt *ctxt);
+ 	void (*triple_fault)(struct x86_emulate_ctxt *ctxt);
+ 	int (*set_xcr)(struct x86_emulate_ctxt *ctxt, u32 index, u64 xcr);
+@@ -521,7 +520,7 @@ bool x86_page_table_writing_insn(struct x86_emulate_ctxt *ctxt);
+ #define EMULATION_RESTART 1
+ #define EMULATION_INTERCEPTED 2
+ void init_decode_cache(struct x86_emulate_ctxt *ctxt);
+-int x86_emulate_insn(struct x86_emulate_ctxt *ctxt);
++int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts);
+ int emulator_task_switch(struct x86_emulate_ctxt *ctxt,
+ 			 u16 tss_selector, int idt_index, int reason,
+ 			 bool has_error_code, u32 error_code);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 706b6fd56d3c..e6ae226704cb 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8470,11 +8470,6 @@ static bool emulator_is_smm(struct x86_emulate_ctxt *ctxt)
+ 	return is_smm(emul_to_vcpu(ctxt));
+ }
+ 
+-static bool emulator_is_guest_mode(struct x86_emulate_ctxt *ctxt)
+-{
+-	return is_guest_mode(emul_to_vcpu(ctxt));
+-}
+-
+ #ifndef CONFIG_KVM_SMM
+ static int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
+ {
+@@ -8558,7 +8553,6 @@ static const struct x86_emulate_ops emulate_ops = {
+ 	.guest_cpuid_is_intel_compatible = emulator_guest_cpuid_is_intel_compatible,
+ 	.set_nmi_mask        = emulator_set_nmi_mask,
+ 	.is_smm              = emulator_is_smm,
+-	.is_guest_mode       = emulator_is_guest_mode,
+ 	.leave_smm           = emulator_leave_smm,
+ 	.triple_fault        = emulator_triple_fault,
+ 	.set_xcr             = emulator_set_xcr,
+@@ -9143,7 +9137,14 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 		ctxt->exception.address = 0;
+ 	}
+ 
+-	r = x86_emulate_insn(ctxt);
++	/*
++	 * Check L1's instruction intercepts when emulating instructions for
++	 * L2, unless KVM is re-emulating a previously decoded instruction,
++	 * e.g. to complete userspace I/O, in which case KVM has already
++	 * checked the intercepts.
++	 */
++	r = x86_emulate_insn(ctxt, is_guest_mode(vcpu) &&
++				   !(emulation_type & EMULTYPE_NO_DECODE));
+ 
+ 	if (r == EMULATION_INTERCEPTED)
+ 		return 1;
+diff --git a/crypto/rng.c b/crypto/rng.c
+index b8ae6ebc091d..ee1768c5a400 100644
+--- a/crypto/rng.c
++++ b/crypto/rng.c
+@@ -168,6 +168,11 @@ int crypto_del_default_rng(void)
+ EXPORT_SYMBOL_GPL(crypto_del_default_rng);
+ #endif
+ 
++static void rng_default_set_ent(struct crypto_rng *tfm, const u8 *data,
++				unsigned int len)
++{
++}
++
+ int crypto_register_rng(struct rng_alg *alg)
+ {
+ 	struct crypto_alg *base = &alg->base;
+@@ -179,6 +184,9 @@ int crypto_register_rng(struct rng_alg *alg)
+ 	base->cra_flags &= ~CRYPTO_ALG_TYPE_MASK;
+ 	base->cra_flags |= CRYPTO_ALG_TYPE_RNG;
+ 
++	if (!alg->set_ent)
++		alg->set_ent = rng_default_set_ent;
++
+ 	return crypto_register_alg(base);
+ }
+ EXPORT_SYMBOL_GPL(crypto_register_rng);
+diff --git a/crypto/testmgr.c b/crypto/testmgr.c
+index ee33ba21ae2b..3e284706152a 100644
+--- a/crypto/testmgr.c
++++ b/crypto/testmgr.c
+@@ -4186,6 +4186,7 @@ static const struct alg_test_desc alg_test_descs[] = {
+ 		.alg = "authenc(hmac(sha1),cbc(aes))",
+ 		.generic_driver = "authenc(hmac-sha1-lib,cbc(aes-generic))",
+ 		.test = alg_test_aead,
++		.fips_allowed = 1,
+ 		.suite = {
+ 			.aead = __VECS(hmac_sha1_aes_cbc_tv_temp)
+ 		}
+@@ -4206,6 +4207,7 @@ static const struct alg_test_desc alg_test_descs[] = {
+ 	}, {
+ 		.alg = "authenc(hmac(sha1),ctr(aes))",
+ 		.test = alg_test_null,
++		.fips_allowed = 1,
+ 	}, {
+ 		.alg = "authenc(hmac(sha1),ecb(cipher_null))",
+ 		.generic_driver = "authenc(hmac-sha1-lib,ecb-cipher_null)",
+@@ -4216,6 +4218,7 @@ static const struct alg_test_desc alg_test_descs[] = {
+ 	}, {
+ 		.alg = "authenc(hmac(sha1),rfc3686(ctr(aes)))",
+ 		.test = alg_test_null,
++		.fips_allowed = 1,
+ 	}, {
+ 		.alg = "authenc(hmac(sha224),cbc(des))",
+ 		.generic_driver = "authenc(hmac-sha224-lib,cbc(des-generic))",
+@@ -5078,6 +5081,7 @@ static const struct alg_test_desc alg_test_descs[] = {
+ 		.alg = "hmac(sha1)",
+ 		.generic_driver = "hmac-sha1-lib",
+ 		.test = alg_test_hash,
++		.fips_allowed = 1,
+ 		.suite = {
+ 			.hash = __VECS(hmac_sha1_tv_template)
+ 		}
+@@ -5448,6 +5452,7 @@ static const struct alg_test_desc alg_test_descs[] = {
+ 		.alg = "sha1",
+ 		.generic_driver = "sha1-lib",
+ 		.test = alg_test_hash,
++		.fips_allowed = 1,
+ 		.suite = {
+ 			.hash = __VECS(sha1_tv_template)
+ 		}
+diff --git a/crypto/zstd.c b/crypto/zstd.c
+index c2a19cb0879d..ac318d333b68 100644
+--- a/crypto/zstd.c
++++ b/crypto/zstd.c
+@@ -83,7 +83,7 @@ static void zstd_exit(struct crypto_acomp *acomp_tfm)
+ static int zstd_compress_one(struct acomp_req *req, struct zstd_ctx *ctx,
+ 			     const void *src, void *dst, unsigned int *dlen)
+ {
+-	unsigned int out_len;
++	size_t out_len;
+ 
+ 	ctx->cctx = zstd_init_cctx(ctx->wksp, ctx->wksp_size);
+ 	if (!ctx->cctx)
+diff --git a/drivers/android/dbitmap.h b/drivers/android/dbitmap.h
+index 956f1bd087d1..c7299ce8b374 100644
+--- a/drivers/android/dbitmap.h
++++ b/drivers/android/dbitmap.h
+@@ -37,6 +37,7 @@ static inline void dbitmap_free(struct dbitmap *dmap)
+ {
+ 	dmap->nbits = 0;
+ 	kfree(dmap->map);
++	dmap->map = NULL;
+ }
+ 
+ /* Returns the nbits that a dbitmap can shrink to, 0 if not possible. */
+diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+index f5fbda0a9a44..21dd02124231 100644
+--- a/drivers/base/faux.c
++++ b/drivers/base/faux.c
+@@ -155,6 +155,7 @@ struct faux_device *faux_device_create_with_groups(const char *name,
+ 		dev->parent = &faux_bus_root;
+ 	dev->bus = &faux_bus_type;
+ 	dev_set_name(dev, "%s", name);
++	device_set_pm_not_required(dev);
+ 
+ 	ret = device_add(dev);
+ 	if (ret) {
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 8085fabadde8..3595a8bad6bd 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -522,6 +522,8 @@ static const struct usb_device_id quirks_table[] = {
+ 	/* Realtek 8851BU Bluetooth devices */
+ 	{ USB_DEVICE(0x3625, 0x010b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 
+ 	/* Realtek 8852AE Bluetooth devices */
+ 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
+diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+index 3f6a828cad8a..1445da1f53af 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -711,6 +711,12 @@ static int mes_v11_0_set_hw_resources(struct amdgpu_mes *mes)
+ 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
+ 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
+ 	mes_set_hw_res_pkt.oversubscription_timer = 50;
++	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x7f)
++		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
++	else
++		dev_info_once(mes->adev->dev,
++			      "MES FW version must be >= 0x7f to enable LR compute workaround.\n");
++
+ 	if (amdgpu_mes_log_enable) {
+ 		mes_set_hw_res_pkt.enable_mes_event_int_logging = 1;
+ 		mes_set_hw_res_pkt.event_intr_history_gpu_mc_ptr =
+diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+index 6b222630f3fa..39caac14d5fe 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+@@ -738,6 +738,11 @@ static int mes_v12_0_set_hw_resources(struct amdgpu_mes *mes, int pipe)
+ 	mes_set_hw_res_pkt.use_different_vmid_compute = 1;
+ 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
+ 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
++	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x82)
++		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
++	else
++		dev_info_once(adev->dev,
++			      "MES FW version must be >= 0x82 to enable LR compute workaround.\n");
+ 
+ 	/*
+ 	 * Keep oversubscribe timer for sdma . When we have unmapped doorbell
+diff --git a/drivers/gpu/drm/amd/include/mes_v11_api_def.h b/drivers/gpu/drm/amd/include/mes_v11_api_def.h
+index 15680c3f4970..ab1cfc92dbeb 100644
+--- a/drivers/gpu/drm/amd/include/mes_v11_api_def.h
++++ b/drivers/gpu/drm/amd/include/mes_v11_api_def.h
+@@ -238,7 +238,8 @@ union MESAPI_SET_HW_RESOURCES {
+ 				uint32_t enable_mes_sch_stb_log : 1;
+ 				uint32_t limit_single_process : 1;
+ 				uint32_t is_strix_tmz_wa_enabled  :1;
+-				uint32_t reserved : 13;
++				uint32_t enable_lr_compute_wa : 1;
++				uint32_t reserved : 12;
+ 			};
+ 			uint32_t	uint32_t_all;
+ 		};
+diff --git a/drivers/gpu/drm/amd/include/mes_v12_api_def.h b/drivers/gpu/drm/amd/include/mes_v12_api_def.h
+index d85ffab2aff9..a402974939d6 100644
+--- a/drivers/gpu/drm/amd/include/mes_v12_api_def.h
++++ b/drivers/gpu/drm/amd/include/mes_v12_api_def.h
+@@ -286,7 +286,8 @@ union MESAPI_SET_HW_RESOURCES {
+ 				uint32_t limit_single_process : 1;
+ 				uint32_t unmapped_doorbell_handling: 2;
+ 				uint32_t enable_mes_fence_int: 1;
+-				uint32_t reserved : 10;
++				uint32_t enable_lr_compute_wa : 1;
++				uint32_t reserved : 9;
+ 			};
+ 			uint32_t uint32_all;
+ 		};
+diff --git a/drivers/misc/amd-sbi/Kconfig b/drivers/misc/amd-sbi/Kconfig
+index 4840831c84ca..4aae0733d0fc 100644
+--- a/drivers/misc/amd-sbi/Kconfig
++++ b/drivers/misc/amd-sbi/Kconfig
+@@ -2,6 +2,7 @@
+ config AMD_SBRMI_I2C
+ 	tristate "AMD side band RMI support"
+ 	depends on I2C
++	select REGMAP_I2C
+ 	help
+ 	  Side band RMI over I2C support for AMD out of band management.
+ 
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index 831b5025c634..018f5afcd50d 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -8172,8 +8172,6 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+-{USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8188, 0xff, 0xff, 0xff),
+-	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8189, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9041, 0xff, 0xff, 0xff),
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+index 00a6778df704..9480823af838 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+@@ -291,7 +291,6 @@ static const struct usb_device_id rtl8192c_usb_ids[] = {
+ 	{RTL_USB_DEVICE(0x050d, 0x1102, rtl92cu_hal_cfg)}, /*Belkin - Edimax*/
+ 	{RTL_USB_DEVICE(0x050d, 0x11f2, rtl92cu_hal_cfg)}, /*Belkin - ISY*/
+ 	{RTL_USB_DEVICE(0x06f8, 0xe033, rtl92cu_hal_cfg)}, /*Hercules - Edimax*/
+-	{RTL_USB_DEVICE(0x07b8, 0x8188, rtl92cu_hal_cfg)}, /*Abocom - Abocom*/
+ 	{RTL_USB_DEVICE(0x07b8, 0x8189, rtl92cu_hal_cfg)}, /*Funai - Abocom*/
+ 	{RTL_USB_DEVICE(0x0846, 0x9041, rtl92cu_hal_cfg)}, /*NetGear WNA1000M*/
+ 	{RTL_USB_DEVICE(0x0846, 0x9043, rtl92cu_hal_cfg)}, /*NG WNA1000Mv2*/
+diff --git a/drivers/nvmem/layouts.c b/drivers/nvmem/layouts.c
+index 65d39e19f6ec..f381ce1e84bd 100644
+--- a/drivers/nvmem/layouts.c
++++ b/drivers/nvmem/layouts.c
+@@ -45,11 +45,24 @@ static void nvmem_layout_bus_remove(struct device *dev)
+ 	return drv->remove(layout);
+ }
+ 
++static int nvmem_layout_bus_uevent(const struct device *dev,
++				   struct kobj_uevent_env *env)
++{
++	int ret;
++
++	ret = of_device_uevent_modalias(dev, env);
++	if (ret != ENODEV)
++		return ret;
++
++	return 0;
++}
++
+ static const struct bus_type nvmem_layout_bus_type = {
+ 	.name		= "nvmem-layout",
+ 	.match		= nvmem_layout_bus_match,
+ 	.probe		= nvmem_layout_bus_probe,
+ 	.remove		= nvmem_layout_bus_remove,
++	.uevent		= nvmem_layout_bus_uevent,
+ };
+ 
+ int __nvmem_layout_driver_register(struct nvmem_layout_driver *drv,
+diff --git a/drivers/staging/axis-fifo/axis-fifo.c b/drivers/staging/axis-fifo/axis-fifo.c
+index 57ed58065eba..b6261b96e465 100644
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -43,7 +43,6 @@
+ #define DRIVER_NAME "axis_fifo"
+ 
+ #define READ_BUF_SIZE 128U /* read buffer length in words */
+-#define WRITE_BUF_SIZE 128U /* write buffer length in words */
+ 
+ #define AXIS_FIFO_DEBUG_REG_NAME_MAX_LEN	4
+ 
+@@ -228,6 +227,7 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
+ 	}
+ 
+ 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
++	words_available = bytes_available / sizeof(u32);
+ 	if (!bytes_available) {
+ 		dev_err(fifo->dt_device, "received a packet of length 0\n");
+ 		ret = -EIO;
+@@ -238,7 +238,7 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
+ 		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
+ 			bytes_available, len);
+ 		ret = -EINVAL;
+-		goto end_unlock;
++		goto err_flush_rx;
+ 	}
+ 
+ 	if (bytes_available % sizeof(u32)) {
+@@ -247,11 +247,9 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
+ 		 */
+ 		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
+ 		ret = -EIO;
+-		goto end_unlock;
++		goto err_flush_rx;
+ 	}
+ 
+-	words_available = bytes_available / sizeof(u32);
+-
+ 	/* read data into an intermediate buffer, copying the contents
+ 	 * to userspace when the buffer is full
+ 	 */
+@@ -263,18 +261,23 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
+ 			tmp_buf[i] = ioread32(fifo->base_addr +
+ 					      XLLF_RDFD_OFFSET);
+ 		}
++		words_available -= copy;
+ 
+ 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
+ 				 copy * sizeof(u32))) {
+ 			ret = -EFAULT;
+-			goto end_unlock;
++			goto err_flush_rx;
+ 		}
+ 
+ 		copied += copy;
+-		words_available -= copy;
+ 	}
++	mutex_unlock(&fifo->read_lock);
++
++	return bytes_available;
+ 
+-	ret = bytes_available;
++err_flush_rx:
++	while (words_available--)
++		ioread32(fifo->base_addr + XLLF_RDFD_OFFSET);
+ 
+ end_unlock:
+ 	mutex_unlock(&fifo->read_lock);
+@@ -302,11 +305,8 @@ static ssize_t axis_fifo_write(struct file *f, const char __user *buf,
+ {
+ 	struct axis_fifo *fifo = (struct axis_fifo *)f->private_data;
+ 	unsigned int words_to_write;
+-	unsigned int copied;
+-	unsigned int copy;
+-	unsigned int i;
++	u32 *txbuf;
+ 	int ret;
+-	u32 tmp_buf[WRITE_BUF_SIZE];
+ 
+ 	if (len % sizeof(u32)) {
+ 		dev_err(fifo->dt_device,
+@@ -322,11 +322,17 @@ static ssize_t axis_fifo_write(struct file *f, const char __user *buf,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (words_to_write > fifo->tx_fifo_depth) {
+-		dev_err(fifo->dt_device, "tried to write more words [%u] than slots in the fifo buffer [%u]\n",
+-			words_to_write, fifo->tx_fifo_depth);
++	/*
++	 * In 'Store-and-Forward' mode, the maximum packet that can be
++	 * transmitted is limited by the size of the FIFO, which is
++	 * (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
++	 *
++	 * Do not attempt to send a packet larger than 'tx_fifo_depth - 4',
++	 * otherwise a 'Transmit Packet Overrun Error' interrupt will be
++	 * raised, which requires a reset of the TX circuit to recover.
++	 */
++	if (words_to_write > (fifo->tx_fifo_depth - 4))
+ 		return -EINVAL;
+-	}
+ 
+ 	if (fifo->write_flags & O_NONBLOCK) {
+ 		/*
+@@ -365,32 +371,20 @@ static ssize_t axis_fifo_write(struct file *f, const char __user *buf,
+ 		}
+ 	}
+ 
+-	/* write data from an intermediate buffer into the fifo IP, refilling
+-	 * the buffer with userspace data as needed
+-	 */
+-	copied = 0;
+-	while (words_to_write > 0) {
+-		copy = min(words_to_write, WRITE_BUF_SIZE);
+-
+-		if (copy_from_user(tmp_buf, buf + copied * sizeof(u32),
+-				   copy * sizeof(u32))) {
+-			ret = -EFAULT;
+-			goto end_unlock;
+-		}
+-
+-		for (i = 0; i < copy; i++)
+-			iowrite32(tmp_buf[i], fifo->base_addr +
+-				  XLLF_TDFD_OFFSET);
+-
+-		copied += copy;
+-		words_to_write -= copy;
++	txbuf = vmemdup_user(buf, len);
++	if (IS_ERR(txbuf)) {
++		ret = PTR_ERR(txbuf);
++		goto end_unlock;
+ 	}
+ 
+-	ret = copied * sizeof(u32);
++	for (int i = 0; i < words_to_write; ++i)
++		iowrite32(txbuf[i], fifo->base_addr + XLLF_TDFD_OFFSET);
+ 
+ 	/* write packet size to fifo */
+-	iowrite32(ret, fifo->base_addr + XLLF_TLR_OFFSET);
++	iowrite32(len, fifo->base_addr + XLLF_TLR_OFFSET);
+ 
++	ret = len;
++	kvfree(txbuf);
+ end_unlock:
+ 	mutex_unlock(&fifo->write_lock);
+ 
+diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+index 44427415a80d..2829950d5bcb 100644
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -1412,7 +1412,7 @@ config SERIAL_STM32
+ 
+ config SERIAL_STM32_CONSOLE
+ 	bool "Support for console on STM32"
+-	depends on SERIAL_STM32=y
++	depends on SERIAL_STM32
+ 	select SERIAL_CORE_CONSOLE
+ 	select SERIAL_EARLYCON
+ 
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 32ec632fd080..81f385d900d0 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -11,7 +11,6 @@
+ #include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/pm_domain.h>
+ #include <linux/pm_opp.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+@@ -100,16 +99,10 @@
+ #define DMA_RX_BUF_SIZE		2048
+ 
+ static DEFINE_IDA(port_ida);
+-#define DOMAIN_IDX_POWER	0
+-#define DOMAIN_IDX_PERF		1
+ 
+ struct qcom_geni_device_data {
+ 	bool console;
+ 	enum geni_se_xfer_mode mode;
+-	struct dev_pm_domain_attach_data pd_data;
+-	int (*resources_init)(struct uart_port *uport);
+-	int (*set_rate)(struct uart_port *uport, unsigned int baud);
+-	int (*power_state)(struct uart_port *uport, bool state);
+ };
+ 
+ struct qcom_geni_private_data {
+@@ -147,7 +140,6 @@ struct qcom_geni_serial_port {
+ 
+ 	struct qcom_geni_private_data private_data;
+ 	const struct qcom_geni_device_data *dev_data;
+-	struct dev_pm_domain_list *pd_list;
+ };
+ 
+ static const struct uart_ops qcom_geni_console_pops;
+@@ -1370,42 +1362,6 @@ static int geni_serial_set_rate(struct uart_port *uport, unsigned int baud)
+ 	return 0;
+ }
+ 
+-static int geni_serial_set_level(struct uart_port *uport, unsigned int baud)
+-{
+-	struct qcom_geni_serial_port *port = to_dev_port(uport);
+-	struct device *perf_dev = port->pd_list->pd_devs[DOMAIN_IDX_PERF];
+-
+-	/*
+-	 * The performance protocol sets UART communication
+-	 * speeds by selecting different performance levels
+-	 * through the OPP framework.
+-	 *
+-	 * Supported perf levels for baudrates in firmware are below
+-	 * +---------------------+--------------------+
+-	 * |  Perf level value   |  Baudrate values   |
+-	 * +---------------------+--------------------+
+-	 * |      300            |      300           |
+-	 * |      1200           |      1200          |
+-	 * |      2400           |      2400          |
+-	 * |      4800           |      4800          |
+-	 * |      9600           |      9600          |
+-	 * |      19200          |      19200         |
+-	 * |      38400          |      38400         |
+-	 * |      57600          |      57600         |
+-	 * |      115200         |      115200        |
+-	 * |      230400         |      230400        |
+-	 * |      460800         |      460800        |
+-	 * |      921600         |      921600        |
+-	 * |      2000000        |      2000000       |
+-	 * |      3000000        |      3000000       |
+-	 * |      3200000        |      3200000       |
+-	 * |      4000000        |      4000000       |
+-	 * +---------------------+--------------------+
+-	 */
+-
+-	return dev_pm_opp_set_level(perf_dev, baud);
+-}
+-
+ static void qcom_geni_serial_set_termios(struct uart_port *uport,
+ 					 struct ktermios *termios,
+ 					 const struct ktermios *old)
+@@ -1424,7 +1380,7 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
+ 	/* baud rate */
+ 	baud = uart_get_baud_rate(uport, termios, old, 300, 8000000);
+ 
+-	ret = port->dev_data->set_rate(uport, baud);
++	ret = geni_serial_set_rate(uport, baud);
+ 	if (ret)
+ 		return;
+ 
+@@ -1711,27 +1667,8 @@ static int geni_serial_resources_off(struct uart_port *uport)
+ 	return 0;
+ }
+ 
+-static int geni_serial_resource_state(struct uart_port *uport, bool power_on)
+-{
+-	return power_on ? geni_serial_resources_on(uport) : geni_serial_resources_off(uport);
+-}
+-
+-static int geni_serial_pwr_init(struct uart_port *uport)
+-{
+-	struct qcom_geni_serial_port *port = to_dev_port(uport);
+-	int ret;
+-
+-	ret = dev_pm_domain_attach_list(port->se.dev,
+-					&port->dev_data->pd_data, &port->pd_list);
+-	if (ret <= 0)
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+-static int geni_serial_resource_init(struct uart_port *uport)
++static int geni_serial_resource_init(struct qcom_geni_serial_port *port)
+ {
+-	struct qcom_geni_serial_port *port = to_dev_port(uport);
+ 	int ret;
+ 
+ 	port->se.clk = devm_clk_get(port->se.dev, "se");
+@@ -1776,10 +1713,10 @@ static void qcom_geni_serial_pm(struct uart_port *uport,
+ 		old_state = UART_PM_STATE_OFF;
+ 
+ 	if (new_state == UART_PM_STATE_ON && old_state == UART_PM_STATE_OFF)
+-		pm_runtime_resume_and_get(uport->dev);
++		geni_serial_resources_on(uport);
+ 	else if (new_state == UART_PM_STATE_OFF &&
+ 		 old_state == UART_PM_STATE_ON)
+-		pm_runtime_put_sync(uport->dev);
++		geni_serial_resources_off(uport);
+ 
+ }
+ 
+@@ -1882,16 +1819,13 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 	port->se.dev = &pdev->dev;
+ 	port->se.wrapper = dev_get_drvdata(pdev->dev.parent);
+ 
+-	ret = port->dev_data->resources_init(uport);
++	ret = geni_serial_resource_init(port);
+ 	if (ret)
+ 		return ret;
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		ret = -EINVAL;
+-		goto error;
+-	}
+-
++	if (!res)
++		return -EINVAL;
+ 	uport->mapbase = res->start;
+ 
+ 	uport->rs485_config = qcom_geni_rs485_config;
+@@ -1903,26 +1837,19 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 	if (!data->console) {
+ 		port->rx_buf = devm_kzalloc(uport->dev,
+ 					    DMA_RX_BUF_SIZE, GFP_KERNEL);
+-		if (!port->rx_buf) {
+-			ret = -ENOMEM;
+-			goto error;
+-		}
++		if (!port->rx_buf)
++			return -ENOMEM;
+ 	}
+ 
+ 	port->name = devm_kasprintf(uport->dev, GFP_KERNEL,
+ 			"qcom_geni_serial_%s%d",
+ 			uart_console(uport) ? "console" : "uart", uport->line);
+-	if (!port->name) {
+-		ret = -ENOMEM;
+-		goto error;
+-	}
++	if (!port->name)
++		return -ENOMEM;
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto error;
+-	}
+-
++	if (irq < 0)
++		return irq;
+ 	uport->irq = irq;
+ 	uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_QCOM_GENI_CONSOLE);
+ 
+@@ -1944,18 +1871,16 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 			IRQF_TRIGGER_HIGH, port->name, uport);
+ 	if (ret) {
+ 		dev_err(uport->dev, "Failed to get IRQ ret %d\n", ret);
+-		goto error;
++		return ret;
+ 	}
+ 
+ 	ret = uart_get_rs485_mode(uport);
+ 	if (ret)
+ 		return ret;
+ 
+-	devm_pm_runtime_enable(port->se.dev);
+-
+ 	ret = uart_add_one_port(drv, uport);
+ 	if (ret)
+-		goto error;
++		return ret;
+ 
+ 	if (port->wakeup_irq > 0) {
+ 		device_init_wakeup(&pdev->dev, true);
+@@ -1965,15 +1890,11 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 			device_init_wakeup(&pdev->dev, false);
+ 			ida_free(&port_ida, uport->line);
+ 			uart_remove_one_port(drv, uport);
+-			goto error;
++			return ret;
+ 		}
+ 	}
+ 
+ 	return 0;
+-
+-error:
+-	dev_pm_domain_detach_list(port->pd_list);
+-	return ret;
+ }
+ 
+ static void qcom_geni_serial_remove(struct platform_device *pdev)
+@@ -1986,31 +1907,6 @@ static void qcom_geni_serial_remove(struct platform_device *pdev)
+ 	device_init_wakeup(&pdev->dev, false);
+ 	ida_free(&port_ida, uport->line);
+ 	uart_remove_one_port(drv, &port->uport);
+-	dev_pm_domain_detach_list(port->pd_list);
+-}
+-
+-static int __maybe_unused qcom_geni_serial_runtime_suspend(struct device *dev)
+-{
+-	struct qcom_geni_serial_port *port = dev_get_drvdata(dev);
+-	struct uart_port *uport = &port->uport;
+-	int ret = 0;
+-
+-	if (port->dev_data->power_state)
+-		ret = port->dev_data->power_state(uport, false);
+-
+-	return ret;
+-}
+-
+-static int __maybe_unused qcom_geni_serial_runtime_resume(struct device *dev)
+-{
+-	struct qcom_geni_serial_port *port = dev_get_drvdata(dev);
+-	struct uart_port *uport = &port->uport;
+-	int ret = 0;
+-
+-	if (port->dev_data->power_state)
+-		ret = port->dev_data->power_state(uport, true);
+-
+-	return ret;
+ }
+ 
+ static int qcom_geni_serial_suspend(struct device *dev)
+@@ -2048,46 +1944,14 @@ static int qcom_geni_serial_resume(struct device *dev)
+ static const struct qcom_geni_device_data qcom_geni_console_data = {
+ 	.console = true,
+ 	.mode = GENI_SE_FIFO,
+-	.resources_init = geni_serial_resource_init,
+-	.set_rate = geni_serial_set_rate,
+-	.power_state = geni_serial_resource_state,
+ };
+ 
+ static const struct qcom_geni_device_data qcom_geni_uart_data = {
+ 	.console = false,
+ 	.mode = GENI_SE_DMA,
+-	.resources_init = geni_serial_resource_init,
+-	.set_rate = geni_serial_set_rate,
+-	.power_state = geni_serial_resource_state,
+-};
+-
+-static const struct qcom_geni_device_data sa8255p_qcom_geni_console_data = {
+-	.console = true,
+-	.mode = GENI_SE_FIFO,
+-	.pd_data = {
+-		.pd_flags = PD_FLAG_DEV_LINK_ON,
+-		.pd_names = (const char*[]) { "power", "perf" },
+-		.num_pd_names = 2,
+-	},
+-	.resources_init = geni_serial_pwr_init,
+-	.set_rate = geni_serial_set_level,
+-};
+-
+-static const struct qcom_geni_device_data sa8255p_qcom_geni_uart_data = {
+-	.console = false,
+-	.mode = GENI_SE_DMA,
+-	.pd_data = {
+-		.pd_flags = PD_FLAG_DEV_LINK_ON,
+-		.pd_names = (const char*[]) { "power", "perf" },
+-		.num_pd_names = 2,
+-	},
+-	.resources_init = geni_serial_pwr_init,
+-	.set_rate = geni_serial_set_level,
+ };
+ 
+ static const struct dev_pm_ops qcom_geni_serial_pm_ops = {
+-	SET_RUNTIME_PM_OPS(qcom_geni_serial_runtime_suspend,
+-			   qcom_geni_serial_runtime_resume, NULL)
+ 	SYSTEM_SLEEP_PM_OPS(qcom_geni_serial_suspend, qcom_geni_serial_resume)
+ };
+ 
+@@ -2096,18 +1960,10 @@ static const struct of_device_id qcom_geni_serial_match_table[] = {
+ 		.compatible = "qcom,geni-debug-uart",
+ 		.data = &qcom_geni_console_data,
+ 	},
+-	{
+-		.compatible = "qcom,sa8255p-geni-debug-uart",
+-		.data = &sa8255p_qcom_geni_console_data,
+-	},
+ 	{
+ 		.compatible = "qcom,geni-uart",
+ 		.data = &qcom_geni_uart_data,
+ 	},
+-	{
+-		.compatible = "qcom,sa8255p-geni-uart",
+-		.data = &sa8255p_qcom_geni_uart_data,
+-	},
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, qcom_geni_serial_match_table);
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+index fc869b7f803f..62e984d20e59 100644
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2114,6 +2114,12 @@ static const struct usb_device_id option_ids[] = {
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9003, 0xff) },	/* Simcom SIM7500/SIM7600 MBIM mode */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9011, 0xff),	/* Simcom SIM7500/SIM7600 RNDIS mode */
+ 	  .driver_info = RSVD(7) },
++	{ USB_DEVICE(0x1e0e, 0x9071),				/* Simcom SIM8230 RMNET mode */
++	  .driver_info = RSVD(3) | RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9078, 0xff),	/* Simcom SIM8230 ECM mode */
++	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x907b, 0xff),	/* Simcom SIM8230 RNDIS mode */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9205, 0xff) },	/* Simcom SIM7070/SIM7080/SIM7090 AT+ECM mode */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9206, 0xff) },	/* Simcom SIM7070/SIM7080/SIM7090 AT-only mode */
+ 	{ USB_DEVICE(ALCATEL_VENDOR_ID, ALCATEL_PRODUCT_X060S_X200),
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 46be7560548c..b4b62ac46bc6 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3764,6 +3764,7 @@ void f2fs_hash_filename(const struct inode *dir, struct f2fs_filename *fname);
+  * node.c
+  */
+ struct node_info;
++enum node_type;
+ 
+ int f2fs_check_nid_range(struct f2fs_sb_info *sbi, nid_t nid);
+ bool f2fs_available_free_memory(struct f2fs_sb_info *sbi, int type);
+@@ -3786,7 +3787,8 @@ int f2fs_remove_inode_page(struct inode *inode);
+ struct folio *f2fs_new_inode_folio(struct inode *inode);
+ struct folio *f2fs_new_node_folio(struct dnode_of_data *dn, unsigned int ofs);
+ void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid);
+-struct folio *f2fs_get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid);
++struct folio *f2fs_get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
++						enum node_type node_type);
+ struct folio *f2fs_get_inode_folio(struct f2fs_sb_info *sbi, pgoff_t ino);
+ struct folio *f2fs_get_xnode_folio(struct f2fs_sb_info *sbi, pgoff_t xnid);
+ int f2fs_move_node_folio(struct folio *node_folio, int gc_type);
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 098e9f71421e..c0f209f74688 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1071,7 +1071,7 @@ static int gc_node_segment(struct f2fs_sb_info *sbi,
+ 		}
+ 
+ 		/* phase == 2 */
+-		node_folio = f2fs_get_node_folio(sbi, nid);
++		node_folio = f2fs_get_node_folio(sbi, nid, NODE_TYPE_REGULAR);
+ 		if (IS_ERR(node_folio))
+ 			continue;
+ 
+@@ -1145,7 +1145,7 @@ static bool is_alive(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+ 	nid = le32_to_cpu(sum->nid);
+ 	ofs_in_node = le16_to_cpu(sum->ofs_in_node);
+ 
+-	node_folio = f2fs_get_node_folio(sbi, nid);
++	node_folio = f2fs_get_node_folio(sbi, nid, NODE_TYPE_REGULAR);
+ 	if (IS_ERR(node_folio))
+ 		return false;
+ 
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 27743b93e186..92054dcbe20d 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -871,7 +871,8 @@ int f2fs_get_dnode_of_data(struct dnode_of_data *dn, pgoff_t index, int mode)
+ 		}
+ 
+ 		if (!done) {
+-			nfolio[i] = f2fs_get_node_folio(sbi, nids[i]);
++			nfolio[i] = f2fs_get_node_folio(sbi, nids[i],
++						NODE_TYPE_NON_INODE);
+ 			if (IS_ERR(nfolio[i])) {
+ 				err = PTR_ERR(nfolio[i]);
+ 				f2fs_folio_put(nfolio[0], false);
+@@ -989,7 +990,7 @@ static int truncate_dnode(struct dnode_of_data *dn)
+ 		return 1;
+ 
+ 	/* get direct node */
+-	folio = f2fs_get_node_folio(sbi, dn->nid);
++	folio = f2fs_get_node_folio(sbi, dn->nid, NODE_TYPE_NON_INODE);
+ 	if (PTR_ERR(folio) == -ENOENT)
+ 		return 1;
+ 	else if (IS_ERR(folio))
+@@ -1033,7 +1034,8 @@ static int truncate_nodes(struct dnode_of_data *dn, unsigned int nofs,
+ 
+ 	trace_f2fs_truncate_nodes_enter(dn->inode, dn->nid, dn->data_blkaddr);
+ 
+-	folio = f2fs_get_node_folio(F2FS_I_SB(dn->inode), dn->nid);
++	folio = f2fs_get_node_folio(F2FS_I_SB(dn->inode), dn->nid,
++						NODE_TYPE_NON_INODE);
+ 	if (IS_ERR(folio)) {
+ 		trace_f2fs_truncate_nodes_exit(dn->inode, PTR_ERR(folio));
+ 		return PTR_ERR(folio);
+@@ -1111,7 +1113,8 @@ static int truncate_partial_nodes(struct dnode_of_data *dn,
+ 	/* get indirect nodes in the path */
+ 	for (i = 0; i < idx + 1; i++) {
+ 		/* reference count'll be increased */
+-		folios[i] = f2fs_get_node_folio(F2FS_I_SB(dn->inode), nid[i]);
++		folios[i] = f2fs_get_node_folio(F2FS_I_SB(dn->inode), nid[i],
++							NODE_TYPE_NON_INODE);
+ 		if (IS_ERR(folios[i])) {
+ 			err = PTR_ERR(folios[i]);
+ 			idx = i - 1;
+@@ -1496,21 +1499,37 @@ static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
+ 					struct folio *folio, pgoff_t nid,
+ 					enum node_type ntype)
+ {
+-	if (unlikely(nid != nid_of_node(folio) ||
+-		(ntype == NODE_TYPE_INODE && !IS_INODE(folio)) ||
+-		(ntype == NODE_TYPE_XATTR &&
+-		!f2fs_has_xattr_block(ofs_of_node(folio))) ||
+-		time_to_inject(sbi, FAULT_INCONSISTENT_FOOTER))) {
+-		f2fs_warn(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
+-			  "node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
+-			  ntype, nid, nid_of_node(folio), ino_of_node(folio),
+-			  ofs_of_node(folio), cpver_of_node(folio),
+-			  next_blkaddr_of_node(folio));
+-		set_sbi_flag(sbi, SBI_NEED_FSCK);
+-		f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
+-		return -EFSCORRUPTED;
++	if (unlikely(nid != nid_of_node(folio)))
++		goto out_err;
++
++	switch (ntype) {
++	case NODE_TYPE_INODE:
++		if (!IS_INODE(folio))
++			goto out_err;
++		break;
++	case NODE_TYPE_XATTR:
++		if (!f2fs_has_xattr_block(ofs_of_node(folio)))
++			goto out_err;
++		break;
++	case NODE_TYPE_NON_INODE:
++		if (IS_INODE(folio))
++			goto out_err;
++		break;
++	default:
++		break;
+ 	}
++	if (time_to_inject(sbi, FAULT_INCONSISTENT_FOOTER))
++		goto out_err;
+ 	return 0;
++out_err:
++	f2fs_warn(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
++		  "node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
++		  ntype, nid, nid_of_node(folio), ino_of_node(folio),
++		  ofs_of_node(folio), cpver_of_node(folio),
++		  next_blkaddr_of_node(folio));
++	set_sbi_flag(sbi, SBI_NEED_FSCK);
++	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
++	return -EFSCORRUPTED;
+ }
+ 
+ static struct folio *__get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
+@@ -1567,9 +1586,10 @@ static struct folio *__get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
+ 	return ERR_PTR(err);
+ }
+ 
+-struct folio *f2fs_get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid)
++struct folio *f2fs_get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
++						enum node_type node_type)
+ {
+-	return __get_node_folio(sbi, nid, NULL, 0, NODE_TYPE_REGULAR);
++	return __get_node_folio(sbi, nid, NULL, 0, node_type);
+ }
+ 
+ struct folio *f2fs_get_inode_folio(struct f2fs_sb_info *sbi, pgoff_t ino)
+diff --git a/fs/f2fs/node.h b/fs/f2fs/node.h
+index 030390543b54..9cb8dcf8d417 100644
+--- a/fs/f2fs/node.h
++++ b/fs/f2fs/node.h
+@@ -57,6 +57,7 @@ enum node_type {
+ 	NODE_TYPE_REGULAR,
+ 	NODE_TYPE_INODE,
+ 	NODE_TYPE_XATTR,
++	NODE_TYPE_NON_INODE,
+ };
+ 
+ /*
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index 4cb3a91801b4..215e442db72c 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -548,7 +548,7 @@ static int check_index_in_prev_nodes(struct f2fs_sb_info *sbi,
+ 	}
+ 
+ 	/* Get the node page */
+-	node_folio = f2fs_get_node_folio(sbi, nid);
++	node_folio = f2fs_get_node_folio(sbi, nid, NODE_TYPE_REGULAR);
+ 	if (IS_ERR(node_folio))
+ 		return PTR_ERR(node_folio);
+ 
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 0470d19da7f2..b031ff71a5bd 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -851,6 +851,9 @@ static inline bool device_pm_not_required(struct device *dev)
+ static inline void device_set_pm_not_required(struct device *dev)
+ {
+ 	dev->power.no_pm = true;
++#ifdef CONFIG_PM
++	dev->power.no_callbacks = true;
++#endif
+ }
+ 
+ static inline void dev_pm_syscore_device(struct device *dev, bool val)
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 43460949ad3f..1244d2c5c384 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -7273,7 +7273,7 @@ int ring_buffer_map(struct trace_buffer *buffer, int cpu,
+ 		atomic_dec(&cpu_buffer->resize_disabled);
+ 	}
+ 
+-	return 0;
++	return err;
+ }
+ 
+ int ring_buffer_unmap(struct trace_buffer *buffer, int cpu)
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index 339ec4e54778..8992d8bebbdd 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -726,10 +726,10 @@ static int p9_fd_cancelled(struct p9_client *client, struct p9_req_t *req)
+ 	p9_debug(P9_DEBUG_TRANS, "client %p req %p\n", client, req);
+ 
+ 	spin_lock(&m->req_lock);
+-	/* Ignore cancelled request if message has been received
+-	 * before lock.
+-	 */
+-	if (req->status == REQ_STATUS_RCVD) {
++	/* Ignore cancelled request if status changed since the request was
++	 * processed in p9_client_flush()
++	*/
++	if (req->status != REQ_STATUS_SENT) {
+ 		spin_unlock(&m->req_lock);
+ 		return 0;
+ 	}
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index cd54cd64ea88..e1af0fa302a3 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -3,7 +3,7 @@
+ //! Generic disk abstraction.
+ //!
+ //! C header: [`include/linux/blkdev.h`](srctree/include/linux/blkdev.h)
+-//! C header: [`include/linux/blk_mq.h`](srctree/include/linux/blk_mq.h)
++//! C header: [`include/linux/blk-mq.h`](srctree/include/linux/blk-mq.h)
+ 
+ use crate::block::mq::{raw_writer::RawWriter, Operations, TagSet};
+ use crate::{bindings, error::from_err_ptr, error::Result, sync::Arc};
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index d29c477e89a8..f8f1db5eeb0f 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -2,7 +2,7 @@
+ 
+ //! DRM device.
+ //!
+-//! C header: [`include/linux/drm/drm_device.h`](srctree/include/linux/drm/drm_device.h)
++//! C header: [`include/drm/drm_device.h`](srctree/include/drm/drm_device.h)
+ 
+ use crate::{
+     alloc::allocator::Kmalloc,
+diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
+index fe7e8d06961a..d2dad77274c4 100644
+--- a/rust/kernel/drm/driver.rs
++++ b/rust/kernel/drm/driver.rs
+@@ -2,7 +2,7 @@
+ 
+ //! DRM driver core.
+ //!
+-//! C header: [`include/linux/drm/drm_drv.h`](srctree/include/linux/drm/drm_drv.h)
++//! C header: [`include/drm/drm_drv.h`](srctree/include/drm/drm_drv.h)
+ 
+ use crate::{
+     bindings, device, devres, drm,
+diff --git a/rust/kernel/drm/file.rs b/rust/kernel/drm/file.rs
+index e8789c9110d6..8c46f8d51951 100644
+--- a/rust/kernel/drm/file.rs
++++ b/rust/kernel/drm/file.rs
+@@ -2,7 +2,7 @@
+ 
+ //! DRM File objects.
+ //!
+-//! C header: [`include/linux/drm/drm_file.h`](srctree/include/linux/drm/drm_file.h)
++//! C header: [`include/drm/drm_file.h`](srctree/include/drm/drm_file.h)
+ 
+ use crate::{bindings, drm, error::Result, prelude::*, types::Opaque};
+ use core::marker::PhantomData;
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index b71821cfb5ea..b9f3248876ba 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -2,7 +2,7 @@
+ 
+ //! DRM GEM API
+ //!
+-//! C header: [`include/linux/drm/drm_gem.h`](srctree/include/linux/drm/drm_gem.h)
++//! C header: [`include/drm/drm_gem.h`](srctree/include/drm/drm_gem.h)
+ 
+ use crate::{
+     alloc::flags::*,
+diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+index fdec01c37168..8431cdcd3ae0 100644
+--- a/rust/kernel/drm/ioctl.rs
++++ b/rust/kernel/drm/ioctl.rs
+@@ -2,7 +2,7 @@
+ 
+ //! DRM IOCTL definitions.
+ //!
+-//! C header: [`include/linux/drm/drm_ioctl.h`](srctree/include/linux/drm/drm_ioctl.h)
++//! C header: [`include/drm/drm_ioctl.h`](srctree/include/drm/drm_ioctl.h)
+ 
+ use crate::ioctl;
+ 
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 887ee611b553..658e806a5da7 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -240,11 +240,11 @@ pub trait Driver: Send {
+ 
+     /// PCI driver probe.
+     ///
+-    /// Called when a new platform device is added or discovered.
+-    /// Implementers should attempt to initialize the device here.
++    /// Called when a new pci device is added or discovered. Implementers should
++    /// attempt to initialize the device here.
+     fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> Result<Pin<KBox<Self>>>;
+ 
+-    /// Platform driver unbind.
++    /// PCI driver unbind.
+     ///
+     /// Called when a [`Device`] is unbound from its bound [`Driver`]. Implementing this callback
+     /// is optional.
 
