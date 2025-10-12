@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-184093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002A8BD00AE
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 11:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76489BD00BA
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 11:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43629189305E
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 09:31:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5BE018938FA
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 09:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C10233721;
-	Sun, 12 Oct 2025 09:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D773925B662;
+	Sun, 12 Oct 2025 09:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jjWvMBOC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I2gKVLJ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849BF15A85A;
-	Sun, 12 Oct 2025 09:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821FE257835;
+	Sun, 12 Oct 2025 09:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760261454; cv=none; b=dxzaZUI+dAixxc42VSOA6TcNXzHFIx/jJnmpQfWJ73rUwF88iLs3KmvQ+LyOvCqg9NFUpg/WAn1rAfAFBRIo9FzZQcqOqCwSqVQ52LNu/hRlZ/Plb4T+QSRbIG/5nOThDNGazmbqJKE+oaUh90etxrwFa5jSKSnfYc9IouO3IBs=
+	t=1760261771; cv=none; b=i/kDDTSS7OOwx5Kp6Xz63tvOS0IJjAxTDHWCzL/S2WZHNjW9f5YMtS1KkVGnkBgLWupi3G358lqG3Z4lc3CyWgncruVyHND1FGEGqGFmWvxXVSZwkaZBXOTOoFH0pbZiyG9knfQWi42fAFY51OOXkXq/SDGEeZDHY/1a6K53z7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760261454; c=relaxed/simple;
-	bh=G9YCG5n8HREVl7xKZQ7GLsP2lDoz+LbQ65wI+JJRjPY=;
+	s=arc-20240116; t=1760261771; c=relaxed/simple;
+	bh=lT8dXl2OHQdoyls/7ZAdocD3D+q/jleayrMH5gDAgbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mEbedfyvmc0vU/O9OehCYAfA+TuqArOXT6bEfFqeUgGnPjXr6JGf+VBamdMmtTK4n/USwsChVXQUFIkH2n19LP3Qcu8ENW5/2VNC7XBRNpaZTtCr9BaUXOgWfvanqrZ9QyBVs4cbEnms9Xp35a1oGP0Zji2G6P5y3Scp+WxHaLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jjWvMBOC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862C5C4CEE7;
-	Sun, 12 Oct 2025 09:30:49 +0000 (UTC)
+	 MIME-Version; b=tXFJ93YfzqkgMQaXFpZaR2vLoDyDav1jhIXqq7TM07NxmfuxYm5KCFtH1CFxA2Vj8QhyyhxARL0yuVgtvxgkB5E0IBW1tB+F+yaOzSG+c8Et/Ht8gARV9HSAHpLxHOKRJRBENTLOhSODunhgAAIQEr6sEnpa6oWQv8Gd0Rt2i+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I2gKVLJ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96160C4CEE7;
+	Sun, 12 Oct 2025 09:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760261454;
-	bh=G9YCG5n8HREVl7xKZQ7GLsP2lDoz+LbQ65wI+JJRjPY=;
+	s=k20201202; t=1760261770;
+	bh=lT8dXl2OHQdoyls/7ZAdocD3D+q/jleayrMH5gDAgbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jjWvMBOCKr2TaUJ0QrUr8OBDkxH6neI5rwHZNMxR5sIAg9IXdjh9Xksyi5wRivyCo
-	 KOFeHWFi7tOWW9Qm3Vvi4T/Ee/nXIIk62FoyirC8hkHazD7X6jVIHx0C/C5rBGTCSE
-	 eCuWgNLWm9NiE0GrTOQa1YUqBMZjuB5A/KNqAV9M7GolEzK0VO6LNBNDEeb19/D33k
-	 fDHgb0ReTK/9og+ayz9GLwjQjKtbDzJZa9I2fCSoJ+W52cV+KBo5gohaNRhS7znD8m
-	 wETeJk981w2EqhE0vbLGxaCfPg1Z77qThJTcin4f4RiCGMjCC0y9G+i6FuICVq8fPw
-	 vUWmGNFZ9o70A==
+	b=I2gKVLJ9Is5hLZCPS+SFvMkL+PP2acakq7YeE1uL436ipjyJNbxqlyTNeH6JAMxIS
+	 wyW84SRBZyLy+syvaQmQYD/Rh3M0+Gn+2PEor+RHwWrjORWrrESfjcTHR/ZLL7Fvek
+	 67hH+/EktUURtfbCFMdrRN2rciuq3VM6fTL1njqgm6xgZCqdWG7IG4wKQ/cwZ1Bojy
+	 TS+4lQzWcc/lH6exytlFgsikX70Aaj1VEw1GXQSqB6HsyniOlqQ8EH9FguUgK32uvh
+	 JcpOLHM1wYKzQgT2Paoc2moCrBFhSzcjaRVDirjMxtP2bEn0/aDOCWOnJR6Oq9B9yH
+	 Ktfy3zBjaAwtg==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: gregkh@linuxfoundation.org
 Cc: achill@achill.org,
@@ -62,11 +62,11 @@ Cc: achill@achill.org,
 	sudipm.mukherjee@gmail.com,
 	torvalds@linux-foundation.org,
 	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.12 00/35] 6.12.52-rc1 review
-Date: Sun, 12 Oct 2025 11:30:43 +0200
-Message-ID: <20251012093043.997888-1-ojeda@kernel.org>
-In-Reply-To: <20251010131331.785281312@linuxfoundation.org>
-References: <20251010131331.785281312@linuxfoundation.org>
+Subject: Re: [PATCH 6.16 00/41] 6.16.12-rc1 review
+Date: Sun, 12 Oct 2025 11:35:13 +0200
+Message-ID: <20251012093513.998332-1-ojeda@kernel.org>
+In-Reply-To: <20251010131333.420766773@linuxfoundation.org>
+References: <20251010131333.420766773@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,10 +75,10 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Fri, 10 Oct 2025 15:16:02 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Fri, 10 Oct 2025 15:15:48 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.12.52 release.
-> There are 35 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.16.12 release.
+> There are 41 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -86,7 +86,7 @@ On Fri, 10 Oct 2025 15:16:02 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.or
 > Anything received after that time might be too late.
 
 Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64:
+for arm and loongarch64:
 
 Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
