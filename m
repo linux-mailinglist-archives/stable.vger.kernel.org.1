@@ -1,124 +1,182 @@
-Return-Path: <stable+bounces-184090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4F2BCFCEE
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 23:59:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6AEBCFF4D
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 05:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EBBFA4E150C
-	for <lists+stable@lfdr.de>; Sat, 11 Oct 2025 21:59:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B44F3BEAF7
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 03:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C95FBF0;
-	Sat, 11 Oct 2025 21:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642B11E5B68;
+	Sun, 12 Oct 2025 03:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Skt3jRJv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mRPqo80Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F57821770C
-	for <stable@vger.kernel.org>; Sat, 11 Oct 2025 21:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1593E286A9;
+	Sun, 12 Oct 2025 03:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760219951; cv=none; b=E5WJrob7JDRSVuikvKTTx+loDRfcoreYv4IoVNiizsgXaRTFJst5QLLKHFNeg+gTGEzczS/OXxENFJ2OWJnPU5oAh2FOV3Yay9merhaavlSlGRaA/eKhLz2WRZ7OXOl11TbD9TC7MZ21NsxKqO6H6QgarPtAE1ud9m+j6YMveMM=
+	t=1760240054; cv=none; b=hWIsNe/a5+/jdpoRoXYYlzUzebB6n8JEJMxUAgOKIoJ6xBcheutVrS50rtkHkW5djckkxnaJlDDF5dMPPh4/o8gvqynJCxhmK1dMs4tMMz23fDOK9t7uhDpYf/VTg45uCzQJ6k4+4izq0GN9NwWQ9ksVkmJxGKSMmdjy1yOj3/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760219951; c=relaxed/simple;
-	bh=2huGcfbPwSh50phjR6U4KnFgcmdQ/b5O6KDcOTP5300=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h6kb8Nzo4ps0cB3jHc7gx1uEPmLgpOtJCpEeJwa8Uqd3jTVp1NMaZOYNmtbA+78LFMkkSuO2kV1WoPgWQtj6e5bxCS9+1zPlH0frlZl1Lle5CSp+IW5SaQ2f6K0Uq/LN+a1y/9FgnSYvmOe5ItYw4C4cqMTNG1MHO0yJK6mUT7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Skt3jRJv; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-46e5980471eso15885595e9.2
-        for <stable@vger.kernel.org>; Sat, 11 Oct 2025 14:59:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1760219947; x=1760824747; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MHThunLmw18bkcxxk1/kwdh40gHKEqGwgzIfI1FE8xY=;
-        b=Skt3jRJvuIyUKzW9KxhIfEjoB2i+X5XOGcgx1rCruiyeEQILRADAHfKweUtJK7LZ5Q
-         o/RWjr32fCZrRZeUKuFfqgHia3+mDxIvx5QW6A51OCVYg6eNg+XzKHHiLK19S35vAVTi
-         usWlKG7+j88hpi0cw/QlKR6XZxc9XSECOD1p6IYU4ol5/KB8uOBvvdJ2MBvUPa/DQ0zq
-         Wwx9vcvsEdjvepivbY3dKquTI2qALMgjbHHLBx+QUkYsX4NmKW5Z0GQO1OZM88LDyopD
-         DMlVWsVgN6cRWMrxNx8+sR8ZH9GbetnZYJ/tjyDzxt4U9KeezD4NXE1m4xrqz8iGpCaj
-         5APw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760219947; x=1760824747;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MHThunLmw18bkcxxk1/kwdh40gHKEqGwgzIfI1FE8xY=;
-        b=Br+6c8lZBo/4A+Hz/YkbrN0qMDiTr4htubBgZ6DqhZo3NO9xLCOqnJAHL645r7yjcG
-         TS9RJrdQixywr2IHFdPq17ZeIJhAXJ0cU8Q63CIg+33DupzyLplXPKQf1WPGS74eVkNv
-         dzdSqLAjCqZIc/pvx/XRaEpFpBT+KPn1W1fOHkQ1ne10quvhiJcOc4UFUWlmGM3tWmaw
-         HeElO3lBIvl6FZxo7NSChI/4INsYY+p+kDSqJHKDXukzAg2ZG91rLqhLO6zE3YqzizZm
-         FqzpVHoAZsTRiOpDyZsn/moSu79igq224O/DND5twQwgNoNmqu1E0Kvk0M/VP0+VmZP+
-         X6Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCWwoTKftR8c6QX7edk/ecfXnX1t+K8CFOrnhkTowTnAUKegQ/1TesfJ1JMbQx1QgBmhtLjWXLE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAKD3xPZvzTKhUh1eDREgNqA88qhQZPvHgQnKK92pFyf0cKWE+
-	JDh2uwGVJg0KtntAo38nIIPCuMqPAFWSKY+SAmfngDv8rpqHnvkZ7ws=
-X-Gm-Gg: ASbGncuzzciClkYRKh/driS/PCjkhe+cy+WRs3JQiQyLPCynyhhwwdtCiC+XgAYKXfw
-	IP3kCbsXr3vcCUfuVJxeyLmo8pKtXv3aaaEsOiTv6lpwGeSx7Xh8+gWoWdhEWSFVTctoLA3Ij7d
-	y5cE3s2+69RivZtaSMS5MAzoWDEVImefLwFTHSiZlu/PlCSw634eQ3vgdF0Y3gSE7HBX5SFsgUj
-	IOIhB0ff5E2E1IBg1q8Xhd2YHeNlWG9y+dGBSBAxP4riO4vMDJfAuOrL330uxN1ALmCjVxqV28x
-	L8OAO/GmmHUstelgMiVEKVUQ095pGlXvAIJB31sKzIEvCmOuxRjH6Yc/9IMRKLwZxrUSs3XOrXr
-	vA0K3iQpnGDGn/dQDSYfY9hEyvclO3LxOYrn+4y/FFLRzDwz6qxojNdo1Ovz8xzdnwfYe1pUPXk
-	f9C/jlSy0xMPtE7IbChOQB++z8rsEmMZBkrEZ3zJw=
-X-Google-Smtp-Source: AGHT+IFY8BvUEE5h0xt52mM8sCae3x2299mFEpXNCOJQAjgaAdK8tGVw0x5V3Un4+D2uFHAuzg4xjw==
-X-Received: by 2002:a05:600c:4688:b0:46e:5df4:6f16 with SMTP id 5b1f17b1804b1-46fa9b1788amr111462435e9.35.1760219947277;
-        Sat, 11 Oct 2025 14:59:07 -0700 (PDT)
-Received: from [192.168.1.3] (p5b057b9b.dip0.t-ipconnect.de. [91.5.123.155])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb49bd977sm108385825e9.11.2025.10.11.14.59.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Oct 2025 14:59:07 -0700 (PDT)
-Message-ID: <3992ab53-474d-4031-a601-259ba3966bec@googlemail.com>
-Date: Sat, 11 Oct 2025 23:59:06 +0200
+	s=arc-20240116; t=1760240054; c=relaxed/simple;
+	bh=z2OYcA3V2me4qlj2emP9p1AWMNG3Zl5eQHSowZFmIHs=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=lVi+hYCX1D5OM14bncDvHbeUqTpBOGq+uWiAleEJB5+8A/hs5KsBFiyj+JgKBdvoGnKWzNTKG9mayDtMrd2Pu5w5PhiMJAGNT5zW5WorEFF69Xsmp2AGnnK5fbnoDVbOT8TMiLkTNS/JENu9qmGB+0lRuKNXI01qiCoaQWb4tDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mRPqo80Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440B3C4CEE7;
+	Sun, 12 Oct 2025 03:34:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760240053;
+	bh=z2OYcA3V2me4qlj2emP9p1AWMNG3Zl5eQHSowZFmIHs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mRPqo80QHVXULRxzudeHJWmO4uI5hmWsN4m0nFZMrLHl2pWnQSEBH1DqNWFPpBB7i
+	 Q9mmcHipRCh/pj1K4meMk2nr9hAddOlEPgIIYzeAMjyUUcMnmPwG3sZzDIb1FQ/IYh
+	 WucogYEyaBC/eL0rdLpnf3mi0mypKM5y3IYQjhVMeVKjBF5UAf//nCd6exxlhK0ex/
+	 MwF5GfSiCuEE6INrHL/JU4kRpgRb0gGo1ICIyc1f34uKuep0N+giLU6Le6r7x8izN5
+	 bOF6u8w2Ui7G9/oUZXqgNduz/XWTnUy3+5hchtfRJ5N/nmHBMX4aO8GN1/Cf9G74pE
+	 LwfFzUh+gFiGA==
+Date: Sun, 12 Oct 2025 12:34:08 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Steven Rostedt <rostedt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Masami
+ Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Morton
+ <akpm@linux-foundation.org>, stable@vger.kernel.org,
+ syzbot+9a2ede1643175f350105@syzkaller.appspotmail.com
+Subject: Re: [PATCH 2/2] tracing: Stop fortify-string from warning in
+ tracing_mark_raw_write()
+Message-Id: <20251012123408.b50aad1b5abb8a63565067f5@kernel.org>
+In-Reply-To: <20251011035243.552866788@kernel.org>
+References: <20251011035141.552201166@kernel.org>
+	<20251011035243.552866788@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.17 00/26] 6.17.2-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20251010131331.204964167@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20251010131331.204964167@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Am 10.10.2025 um 15:15 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.17.2 release.
-> There are 26 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, 10 Oct 2025 23:51:43 -0400
+Steven Rostedt <rostedt@kernel.org> wrote:
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+> From: Steven Rostedt <rostedt@goodmis.org>
+> 
+> The way tracing_mark_raw_write() records its data is that it has the
+> following structure:
+> 
+>   struct {
+> 	struct trace_entry;
+> 	int id;
+> 	char dynamic_array[];
+>   };
+> 
+> But memcpy(&entry->id, buf, size) triggers the following warning when the
+> size is greater than the id:
+> 
+>  ------------[ cut here ]------------
+>  memcpy: detected field-spanning write (size 6) of single field "&entry->id" at kernel/trace/trace.c:7458 (size 4)
+>  WARNING: CPU: 7 PID: 995 at kernel/trace/trace.c:7458 write_raw_marker_to_buffer.isra.0+0x1f9/0x2e0
+>  Modules linked in:
+>  CPU: 7 UID: 0 PID: 995 Comm: bash Not tainted 6.17.0-test-00007-g60b82183e78a-dirty #211 PREEMPT(voluntary)
+>  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+>  RIP: 0010:write_raw_marker_to_buffer.isra.0+0x1f9/0x2e0
+>  Code: 04 00 75 a7 b9 04 00 00 00 48 89 de 48 89 04 24 48 c7 c2 e0 b1 d1 b2 48 c7 c7 40 b2 d1 b2 c6 05 2d 88 6a 04 01 e8 f7 e8 bd ff <0f> 0b 48 8b 04 24 e9 76 ff ff ff 49 8d 7c 24 04 49 8d 5c 24 08 48
+>  RSP: 0018:ffff888104c3fc78 EFLAGS: 00010292
+>  RAX: 0000000000000000 RBX: 0000000000000006 RCX: 0000000000000000
+>  RDX: 0000000000000000 RSI: 1ffffffff6b363b4 RDI: 0000000000000001
+>  RBP: ffff888100058a00 R08: ffffffffb041d459 R09: ffffed1020987f40
+>  R10: 0000000000000007 R11: 0000000000000001 R12: ffff888100bb9010
+>  R13: 0000000000000000 R14: 00000000000003e3 R15: ffff888134800000
+>  FS:  00007fa61d286740(0000) GS:ffff888286cad000(0000) knlGS:0000000000000000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  CR2: 0000560d28d509f1 CR3: 00000001047a4006 CR4: 0000000000172ef0
+>  Call Trace:
+>   <TASK>
+>   tracing_mark_raw_write+0x1fe/0x290
+>   ? __pfx_tracing_mark_raw_write+0x10/0x10
+>   ? security_file_permission+0x50/0xf0
+>   ? rw_verify_area+0x6f/0x4b0
+>   vfs_write+0x1d8/0xdd0
+>   ? __pfx_vfs_write+0x10/0x10
+>   ? __pfx_css_rstat_updated+0x10/0x10
+>   ? count_memcg_events+0xd9/0x410
+>   ? fdget_pos+0x53/0x5e0
+>   ksys_write+0x182/0x200
+>   ? __pfx_ksys_write+0x10/0x10
+>   ? do_user_addr_fault+0x4af/0xa30
+>   do_syscall_64+0x63/0x350
+>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>  RIP: 0033:0x7fa61d318687
+>  Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+>  RSP: 002b:00007ffd87fe0120 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+>  RAX: ffffffffffffffda RBX: 00007fa61d286740 RCX: 00007fa61d318687
+>  RDX: 0000000000000006 RSI: 0000560d28d509f0 RDI: 0000000000000001
+>  RBP: 0000560d28d509f0 R08: 0000000000000000 R09: 0000000000000000
+>  R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000006
+>  R13: 00007fa61d4715c0 R14: 00007fa61d46ee80 R15: 0000000000000000
+>   </TASK>
+>  ---[ end trace 0000000000000000 ]---
+> 
+> This is because fortify string sees that the size of entry->id is only 4
+> bytes, but it is writing more than that. But this is OK as the
+> dynamic_array is allocated to handle that copy.
+> 
+> Use a void pointer and get the offset via offsetof() to keep fortify
+> string from warning about this copy.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 64cf7d058a00 ("tracing: Have trace_marker use per-cpu data to read user space")
+> Reported-by: syzbot+9a2ede1643175f350105@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/68e973f5.050a0220.1186a4.0010.GAE@google.com/
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Ah, fixed already.
 
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-Beste Grüße,
-Peter Schneider
+> ---
+>  kernel/trace/trace.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+> index bbb89206a891..27855fc9e0f2 100644
+> --- a/kernel/trace/trace.c
+> +++ b/kernel/trace/trace.c
+> @@ -7440,6 +7440,7 @@ static ssize_t write_raw_marker_to_buffer(struct trace_array *tr,
+>  	struct raw_data_entry *entry;
+>  	ssize_t written;
+>  	size_t size;
+> +	void *ptr;
+>  
+>  	size = sizeof(*entry) + cnt;
+>  
+> @@ -7455,7 +7456,10 @@ static ssize_t write_raw_marker_to_buffer(struct trace_array *tr,
+>  		return -EBADF;
+>  
+>  	entry = ring_buffer_event_data(event);
+> -	memcpy(&entry->id, buf, cnt);
+> +	/* Do not let fortify-string warn copying to &entry->id */
+> +	ptr = (void *)entry;
+> +	ptr += offsetof(typeof(*entry), id);
+> +	memcpy(ptr, buf, cnt);
+>  	written = cnt;
+>  
+>  	__buffer_unlock_commit(buffer, event);
+> -- 
+> 2.51.0
+> 
+> 
+
 
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
