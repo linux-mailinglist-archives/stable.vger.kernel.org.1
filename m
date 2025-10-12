@@ -1,111 +1,203 @@
-Return-Path: <stable+bounces-184104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66B9BD03D4
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 16:29:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 403C4BD0644
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 17:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5088818962C2
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 14:29:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F3F41892A47
+	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 15:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9F4288C9D;
-	Sun, 12 Oct 2025 14:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67E5279918;
+	Sun, 12 Oct 2025 15:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mdESWMMo"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC86F28725C
-	for <stable@vger.kernel.org>; Sun, 12 Oct 2025 14:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619E81DE4CD;
+	Sun, 12 Oct 2025 15:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760279336; cv=none; b=t4O0CoHpjvzXlGzSxVU5oJsfCiKbX9AceVSz3wMH9UtZiIdXQ9tdN5v77xrZq5zeX9w8UcQPjnNklmEyWio13avBVtTUXe9R3WsEKH0QhX64HyRIw7aCgbleBad6dwnGyOg/2ldxDyvGRqE3PuyoBZ5FWFLYTPc2ivwERVbIE0o=
+	t=1760283309; cv=none; b=RnUh6bqw0DdBmMlNHG5aGamVCdQEL/7qvy3AFgeFfBk0zci4KXieOAKhhf6DMssZUXZ0pWfn3eyOvYxo5BcFZPlAK9EI1SBg73f05FAqtNCiKSqf3Q2FFspyQaIsH6uUJj2HHtZ5sSvZWJ5LmpBdZi3U+h0khO2z4jfmTcqU/uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760279336; c=relaxed/simple;
-	bh=V4741N7mWje9GwplW/wE4MaPFAZiPIK/txjYm32qFvk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0PXxpj7q/One9qQXVVN6KPi8Ln0cLtEfysg+GCbpziamOfNI0R2AEHWfOU0wXtscp18egQ0b3fuI6KEUroxU60WS54vhBUfkEPc3Ve3LuXJEpSr++RXDJfAgWSLhrAI3ApewRKUAQSXHOL0/575QsQoUXv3GGwYlNXTOm7wU4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1v7x3w-00044j-8W; Sun, 12 Oct 2025 16:28:40 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1v7x3v-003EUk-1Q;
-	Sun, 12 Oct 2025 16:28:39 +0200
-Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 1937848405F;
-	Sun, 12 Oct 2025 14:28:39 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Celeste Liu <uwu@coelacanthus.name>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 2/9] can: gs_usb: gs_make_candev(): populate net_device->dev_port
-Date: Sun, 12 Oct 2025 16:20:46 +0200
-Message-ID: <20251012142836.285370-3-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251012142836.285370-1-mkl@pengutronix.de>
-References: <20251012142836.285370-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1760283309; c=relaxed/simple;
+	bh=jkzRyD0M+rX8FkE1Fy5xESx0UidGLH1V50DYjgtANNc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gSvFmhQDK17NhGS1tcT/y87NFbn6NYjoG701aUQBe17i+uvbfx8jyu9y451vltGeKVWMo0XRkYYK6gjf/+Me2HCfdzpXqjs4yrVB/T0IhzSxryloDWDGmeFB9XNPm0m0ysZj4wxfe2363IeqbBDhGcOROEVRIbTn53iOsbbG114=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mdESWMMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBAC8C4CEE7;
+	Sun, 12 Oct 2025 15:35:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760283307;
+	bh=jkzRyD0M+rX8FkE1Fy5xESx0UidGLH1V50DYjgtANNc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mdESWMMoARpIYYflnu8I1//THTR6vxdrHpz0FtVoQXx+gP8wAJHxaRXX/bvOe7uQT
+	 moAcepFjJVXu98lrCJhAmLl8mH4sdp7wFH0abEGndyXEwkT4x9T/zMvcHknaRyhnxy
+	 YAU26S9UKvjpz3VRMXB1QuAq6KZ5N10eWogef5A0w7cM9Eb4nQYkHEF+XEcGVqCdKl
+	 eI4QABqT8c7kXmANlPvgBvCiH2V7RLRRtB4qsiQUdoxI71bBWaOB5i4urkVbK6LUNi
+	 6tm80LVW7ea/2y0DdJGmaiWtK3Ah2bc8wZHX/Dn4pVH3ZJ5Sj+TScoW4g4ebG+nqiI
+	 B2a8q45G2xTGQ==
+Date: Sun, 12 Oct 2025 16:34:59 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com,
+ linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] iio: buffer: Fix DMABUF mapping in some systems
+Message-ID: <20251012163459.4fa71c50@jic23-huawei>
+In-Reply-To: <b49f3216d1ba1925f19d78b5f6c38126b7473d76.camel@gmail.com>
+References: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
+	<7eeb3072-b54e-46c7-9fb2-c4d2422188d8@baylibre.com>
+	<2fe00df37ad75591e437813f1c618c3decbdf2cb.camel@gmail.com>
+	<118c3551-df86-4c23-b385-6f75d9bd5388@baylibre.com>
+	<b49f3216d1ba1925f19d78b5f6c38126b7473d76.camel@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Celeste Liu <uwu@coelacanthus.name>
+On Tue, 07 Oct 2025 09:25:19 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-The gs_usb driver supports USB devices with more than 1 CAN channel.
-In old kernel before 3.15, it uses net_device->dev_id to distinguish
-different channel in userspace, which was done in commit
-acff76fa45b4 ("can: gs_usb: gs_make_candev(): set netdev->dev_id").
-But since 3.15, the correct way is populating net_device->dev_port.
-And according to documentation, if network device support multiple
-interface, lack of net_device->dev_port SHALL be treated as a bug.
+> On Mon, 2025-10-06 at 11:44 -0500, David Lechner wrote:
+> > On 10/6/25 11:25 AM, Nuno S=C3=A1 wrote: =20
+> > > On Mon, 2025-10-06 at 11:18 -0500, David Lechner wrote: =20
+> > > > On 10/6/25 11:06 AM, Nuno S=C3=A1 via B4 Relay wrote: =20
+> > > > > This series fixes an issue with DMABUF support in the IIO subsyst=
+em
+> > > > > where
+> > > > > the wrong DMA device could be used for buffer mapping operations.=
+ This
+> > > > > becomes critical on systems like Xilinx/AMD ZynqMP Ultrascale whe=
+re
+> > > > > memory
+> > > > > can be mapped above the 32-bit address range.
+> > > > >=20
+> > > > > Problem:
+> > > > > --------
+> > > > > The current IIO DMABUF implementation assumes it can use the pare=
+nt
+> > > > > device
+> > > > > of the IIO device for DMA operations. However, this device may no=
+t have
+> > > > > the appropriate DMA mask configuration for accessing high memory
+> > > > > addresses.
+> > > > > On systems where memory is mapped above 32-bits, this leads to th=
+e use
+> > > > > of
+> > > > > bounce buffers through swiotlb, significantly impacting performan=
+ce.
+> > > > >=20
+> > > > > Solution:
+> > > > > ---------
+> > > > > This series introduces a new .get_dma_dev() callback in the buffer
+> > > > > access
+> > > > > functions that allows buffer implementations to specify the corre=
+ct DMA
+> > > > > device that should be used for DMABUF operations. The DMA buffer
+> > > > > infrastructure implements this callback to return the device that
+> > > > > actually
+> > > > > owns the DMA channel, ensuring proper memory mapping without boun=
+ce
+> > > > > buffers.
+> > > > >=20
+> > > > > Changes:
+> > > > > --------
+> > > > > 1. Add .get_dma_dev() callback to iio_buffer_access_funcs and upd=
+ate
+> > > > > core
+> > > > > =C2=A0=C2=A0 DMABUF code to use it when available
+> > > > > 2. Implement the callback in the DMA buffer infrastructure
+> > > > > 3. Wire up the callback in the dmaengine buffer implementation
+> > > > >=20
+> > > > > This ensures that DMABUF operations use the device with the corre=
+ct DMA
+> > > > > configuration, eliminating unnecessary bounce buffer usage and im=
+proving
+> > > > > performance on high-memory systems.
+> > > > >=20
+> > > > > (AI generated cover. I would not be this formal but I guess is not
+> > > > > that bad :))
+> > > > >=20
+> > > > > ---
+> > > > > Changes in v2:
+> > > > > - Dropped Fixes tags on the first two patches and Cc stable them =
+instead
+> > > > > =C2=A0 (as prerequisites for the third patch).=20
+> > > > > - Link to v1:
+> > > > > https://lore.kernel.org/r/20251002-fix-iio-dmabuf-get-dma-device-=
+v1-0-c1c9945029d0@analog.com =20
+> > > >=20
+> > > > Did you not care for my other suggestions in v1? =20
+> > >=20
+> > > Completely missed them, sorry! I kind of stop reading in the stable s=
+tuff.
 
-Fixes: acff76fa45b4 ("can: gs_usb: gs_make_candev(): set netdev->dev_id")
-Cc: stable@vger.kernel.org
-Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-Link: https://patch.msgid.link/20250930-gs-usb-populate-net_device-dev_port-v1-1-68a065de6937@coelacanthus.name
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/usb/gs_usb.c | 1 +
- 1 file changed, 1 insertion(+)
+On that 'stable' stuff I'm very unclear on the logic for +CC a dependency to
+stable@vger.kernel.org =20
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 9fb4cbbd6d6d..69b8d6da651b 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -1245,6 +1245,7 @@ static struct gs_can *gs_make_candev(unsigned int channel,
- 
- 	netdev->flags |= IFF_ECHO; /* we support full roundtrip echo */
- 	netdev->dev_id = channel;
-+	netdev->dev_port = channel;
- 
- 	/* dev setup */
- 	strcpy(dev->bt_const.name, KBUILD_MODNAME);
--- 
-2.51.0
+The +CC is IIUC the thing that gets a patch queued rather than the fixes
+tag and if you don't provide a fixes tag assumption is that it goes back as=
+ far
+as it can be applied.   That concerns me as they could therefore get pushed
+back further than the thing dependent on them.
+Ah well. I guess they do some magic stuff on series though as the
+stable-rules.rst calls out the case you have here.
+
+So applied as is but I marked the final patch for stable. Would have have
+been a weird situation if I decided not to do that for some reason.
+
+Applied to the fixes-togreg branch of iio.git.  That has a weird mid merge =
+window
+base at the moment so I'll rebase on rc1 once available and push out at tha=
+t point.
+
+Jonathan
+
+
+
+> > > I'm
+> > > ok with the helper function. For the clarification I feel it's redund=
+ant.
+> > > The =20
+> >=20
+> > I was thinking extra clarification could be helpful for someone new to =
+the IIO
+> > subsystem. But it would be quite rare to add a new buffer implementation
+> > anyway.
+> > So probably not too many people would actually ever read it. :-) =20
+>=20
+> I mean, it does not harm. If you want to add it, I'll hack it (as I feel =
+it
+> should be a separate patch also covering the other .ops related to DMA bu=
+ffers).
+>=20
+> >  =20
+> > > field is called .get_dma_dev() and the description "called to get the=
+ DMA
+> > > channel associated with this buffer" already implies is for DMA buffe=
+r. Same
+> > > as
+> > > ops like .enqueue_dmabuf().
+> > >=20
+> > > - Nuno S=C3=A1 =20
+> >=20
+> > I don't feel too strongly about either change, so either way,
+> >=20
+> > Reviewed-by: David Lechner <dlechner@baylibre.com>
+> >  =20
+>=20
+> Thx!
+>=20
+> - Nuno S=C3=A1
 
 
