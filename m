@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F0FBD3E1D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:07:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0858EBD4162
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DBEC34FE60B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A4C264F659A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1AB3093A1;
-	Mon, 13 Oct 2025 14:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F6721E0AD;
+	Mon, 13 Oct 2025 15:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGtijXNR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MUybptm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B115265CAD;
-	Mon, 13 Oct 2025 14:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FD3309EFD;
+	Mon, 13 Oct 2025 15:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367121; cv=none; b=M5awfP9Mf5HWoAmizUAc2gnHjZrVhpKsXMExsx6TKbw2yVE/EjHQyemIPod2R3Y8R3xnHCSFjFgA5BJJlIa02/4aba7Vd0Pe4g1fe9saEEPNAKnGBX0t2xpwsw2xYfrLm0yuW82cVoxma36pmwE/c+cjxswTPJWtIxVieFva7XE=
+	t=1760367638; cv=none; b=qlDa7LZj8PCR53R5wxF/w1rX4OQy9suse776xaTLWnbsmN1S/mW3lCWPk3KmVbJB2xpGxReKsgrfcry2oqzeVeXuGZFrmdE8lHtjFNhmOB7Bb4kgSuP8qMuJPLS2968bRpTONTorso+Q/Lx/T9ldb/3yQaKFc5X4gFBKhzb9DKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367121; c=relaxed/simple;
-	bh=p4WRCroPxbLYC+PBn0efKicAz54qcBzsH6QimDlXj5U=;
+	s=arc-20240116; t=1760367638; c=relaxed/simple;
+	bh=y2RCJGMr6nQw0rZYXAt7Jt6CdsclQluBxMiHTun9TnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwwVwjdn+5o5CQN20v041rYvfhBInDk8seeh6E1UfBa4WkFa/Q7s7b+uMyy5gKwh7N8oftB1j7GhII6giwuzteTSFmNMmrujzTejL6NhdWhby/IKyDrr95tautJFwagIOeUVC42PHVu/GebVrFexqS/mpPm19yi40gKHY4yatGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGtijXNR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5D1C4CEFE;
-	Mon, 13 Oct 2025 14:52:00 +0000 (UTC)
+	 MIME-Version; b=oyt+td3+QOFTiwApZ7tDeZ8nkWbqn34P8bi32JAbEaWzJq70hy9cW5BtY6Z8Ewl4RYVB1bdinFpTcdyJRwbru2QobgnPCttl6xPXnL5j1UeTia1R7tjavqkZXRaORl0OJ2WFTxahXoJReMeePC9UYoaPdCtNrFtL2mZ/Fdaco1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MUybptm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD35C4CEE7;
+	Mon, 13 Oct 2025 15:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367121;
-	bh=p4WRCroPxbLYC+PBn0efKicAz54qcBzsH6QimDlXj5U=;
+	s=korg; t=1760367638;
+	bh=y2RCJGMr6nQw0rZYXAt7Jt6CdsclQluBxMiHTun9TnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGtijXNRLZjrPsU5j8qe72mlUl90k1GK/omb58E8kkn05PzpG5EtjZi22pAVml2FN
-	 d3dxm8OD3kXbg0wjAzVP9AFjUZ2qxjealeF8n9SrWVGWxEUYQ4rQOC1UnKDp9dvfK9
-	 wovZffFXoXrpZhcV6KVmp/nddpgSpcfzpcCvFQLQ=
+	b=2MUybptm4jU4PA+Xxgsx8ExUxkcUWQAsAI5di+eD4LPF6strq0qsSVLHb3W00jvsH
+	 7hqvvgeVMCV5M2PMtPGkvDxWRzO7tjpqQGLK07p4IbcdHBhBlF6zn2vvwkAJ62bFFk
+	 YoUdqIM68Gg2YHAb7dH8GIgurSEbVoEeIGscsAVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Zhushuai Yin <yinzhushuai@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/196] media: st-delta: avoid excessive stack usage
+Subject: [PATCH 6.6 082/196] crypto: hisilicon/qm - check whether the input function and PF are on the same device
 Date: Mon, 13 Oct 2025 16:44:33 +0200
-Message-ID: <20251013144318.317464279@linuxfoundation.org>
+Message-ID: <20251013144318.281510310@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Zhushuai Yin <yinzhushuai@huawei.com>
 
-[ Upstream commit 5954ad7d1af92cb6244c5f31216e43af55febbb7 ]
+[ Upstream commit 6a2c9164b52e6bc134127fd543461fdef95cc8ec ]
 
-Building with a reduced stack warning limit shows that delta_mjpeg_decode()
-copies a giant structure to the stack each time but only uses three of
-its members:
+Function rate limiting is set through physical function driver.
+Users configure by providing function information and rate limit values.
+Before configuration, it is necessary to check whether the
+provided function and PF belong to the same device.
 
-drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c: In function 'delta_mjpeg_decode':
-drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c:427:1: error: the frame size of 1296 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
-
-Open-code the passing of the structure members that are actually used here.
-
-Fixes: 433ff5b4a29b ("[media] st-delta: add mjpeg support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 22d7a6c39cab ("crypto: hisilicon/qm - add pci bdf number check")
+Signed-off-by: Zhushuai Yin <yinzhushuai@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/st/sti/delta/delta-mjpeg-dec.c   | 20 ++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/crypto/hisilicon/qm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c b/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
-index 0533d4a083d24..a078f1107300e 100644
---- a/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
-+++ b/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
-@@ -239,7 +239,7 @@ static int delta_mjpeg_ipc_open(struct delta_ctx *pctx)
- 	return 0;
- }
- 
--static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, struct delta_au *au)
-+static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, dma_addr_t pstart, dma_addr_t pend)
- {
- 	struct delta_dev *delta = pctx->dev;
- 	struct delta_mjpeg_ctx *ctx = to_ctx(pctx);
-@@ -256,8 +256,8 @@ static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, struct delta_au *au)
- 
- 	memset(params, 0, sizeof(*params));
- 
--	params->picture_start_addr_p = (u32)(au->paddr);
--	params->picture_end_addr_p = (u32)(au->paddr + au->size - 1);
-+	params->picture_start_addr_p = pstart;
-+	params->picture_end_addr_p = pend;
- 
- 	/*
- 	 * !WARNING!
-@@ -374,12 +374,14 @@ static int delta_mjpeg_decode(struct delta_ctx *pctx, struct delta_au *pau)
- 	struct delta_dev *delta = pctx->dev;
- 	struct delta_mjpeg_ctx *ctx = to_ctx(pctx);
- 	int ret;
--	struct delta_au au = *pau;
-+	void *au_vaddr = pau->vaddr;
-+	dma_addr_t au_dma = pau->paddr;
-+	size_t au_size = pau->size;
- 	unsigned int data_offset = 0;
- 	struct mjpeg_header *header = &ctx->header_struct;
- 
- 	if (!ctx->header) {
--		ret = delta_mjpeg_read_header(pctx, au.vaddr, au.size,
-+		ret = delta_mjpeg_read_header(pctx, au_vaddr, au_size,
- 					      header, &data_offset);
- 		if (ret) {
- 			pctx->stream_errors++;
-@@ -405,17 +407,17 @@ static int delta_mjpeg_decode(struct delta_ctx *pctx, struct delta_au *pau)
- 			goto err;
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index 183885619eb8b..203240e78f6ad 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -3748,6 +3748,10 @@ static ssize_t qm_get_qos_value(struct hisi_qm *qm, const char *buf,
  	}
  
--	ret = delta_mjpeg_read_header(pctx, au.vaddr, au.size,
-+	ret = delta_mjpeg_read_header(pctx, au_vaddr, au_size,
- 				      ctx->header, &data_offset);
- 	if (ret) {
- 		pctx->stream_errors++;
- 		goto err;
- 	}
+ 	pdev = container_of(dev, struct pci_dev, dev);
++	if (pci_physfn(pdev) != qm->pdev) {
++		pci_err(qm->pdev, "the pdev input does not match the pf!\n");
++		return -EINVAL;
++	}
  
--	au.paddr += data_offset;
--	au.vaddr += data_offset;
-+	au_dma += data_offset;
-+	au_vaddr += data_offset;
- 
--	ret = delta_mjpeg_ipc_decode(pctx, &au);
-+	ret = delta_mjpeg_ipc_decode(pctx, au_dma, au_dma + au_size - 1);
- 	if (ret)
- 		goto err;
+ 	*fun_index = pdev->devfn;
  
 -- 
 2.51.0
