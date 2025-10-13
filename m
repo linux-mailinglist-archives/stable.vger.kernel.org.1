@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33528BD41CB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2EBCBD3CD5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D487D34ED71
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8174218A0DCD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CE630CD8E;
-	Mon, 13 Oct 2025 15:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660B93090DE;
+	Mon, 13 Oct 2025 14:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bP6KY6BE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKCwRSQr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE131E9B0D;
-	Mon, 13 Oct 2025 15:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084AF309F12;
+	Mon, 13 Oct 2025 14:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368375; cv=none; b=GhbBN5e3oOwKwm0Aj80/HHh30OMei2CS8td6e8USUfWdGGTOC5cxlV0vEXOBAFw6CMRcx1HF7lnXK3rYVSXe5f3bJa0/vx0qiC3CoCEq3ndYVaMBxpZsrIb+xvInCsBhZbDin0BTX6W1U6FyHClN13XA8h/FXjOhdZBat7PUljM=
+	t=1760367147; cv=none; b=pE8DFpD0gbu5w1FHj3TSa6w+FmQDJuux5H7+SrXczvJ9uKf65o7Kc2seUMT95u6KCVlXq6l+cP1jqRM+ij3l1F369aIB6aV95SveA+vAxybhNT8Htsq/WNsceedldtUZJvh6ioWuvFT7NAhKcaROFHRDhx3wOf1d09uclvReVqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368375; c=relaxed/simple;
-	bh=hCWkR1NbqzeO10SZ5pgHXH2JRcv0VgyZFE5n55llmm4=;
+	s=arc-20240116; t=1760367147; c=relaxed/simple;
+	bh=LPJpApwL/Apm6K0cyXnM0wPBOZ8I0BYJsdWRO4ioUek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ss6OIhs/xCKJtYG+KAAjDGLqyfurqD1328SsgLAs+b3PUrLepWbV/fDhNPd0mRp68esbrU8B8iuQ6igg/rPeaUTHtSQGePj4212YD0CVBuZASj+30aL4r4Gk5jUxv7t0w+iQMGYxmvH5di9HLwqZj6FSefjua4DkedmSnGDlkyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bP6KY6BE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910B7C4CEE7;
-	Mon, 13 Oct 2025 15:12:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JeLJvAgO/R+Ggl4Z/6i1wGrClcN0VX8dLsWrGwzjVMZmROZ4aQN0PnuRPm+xe8znQ1I3FzU35riJkgmktFsBkolFfcZ22Yd5dcRhC7TzYPHi24i7QxxE+IcVltb84mjHJW7MABX5A7jpq9zO/GUxencPrL4d1ePxqNeszOont8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKCwRSQr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802F2C4CEE7;
+	Mon, 13 Oct 2025 14:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368374;
-	bh=hCWkR1NbqzeO10SZ5pgHXH2JRcv0VgyZFE5n55llmm4=;
+	s=korg; t=1760367146;
+	bh=LPJpApwL/Apm6K0cyXnM0wPBOZ8I0BYJsdWRO4ioUek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bP6KY6BE7yEfQCSCHlTPFwKlmDfUx2unkbmDoME7QJeKSZ7pVBJTWwAzFpjsNp4gj
-	 zdCKWrb/lUFm+JPYdEY4F1B77n+ceOi3dn/+WD4Fsnw+UR9I+D4XsWczPORlnBiQNp
-	 hgiNNvqCAOTmrvwB541ZmkzP/sqXO20aA6O1DtFA=
+	b=VKCwRSQrPIpYPeT5pgiX/XjSqfnkZTmsnetx4SRpTJ+4HKgA4uWB8S+UdI3aWg4qA
+	 BoQdERIhNSchepWqsCf1+l5ECVS/ogJEERAk2G75aAWYT6euorouPZf8uLrH0r5tvV
+	 VWgzcGHWP++DVvzB1h1KK/MAgCZVqeKXv9b3tqa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 138/262] fs: ntfs3: Fix integer overflow in run_unpack()
-Date: Mon, 13 Oct 2025 16:44:40 +0200
-Message-ID: <20251013144331.093781958@linuxfoundation.org>
+Subject: [PATCH 6.1 108/196] drm/amd/pm: Disable MCLK switching with non-DC at 120 Hz+ (v2)
+Date: Mon, 13 Oct 2025 16:44:41 +0200
+Message-ID: <20251013144318.606218521@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 736fc7bf5f68f6b74a0925b7e072c571838657d2 ]
+[ Upstream commit ed3803533c7bf7df88bc3fc9f70bd317e1228ea8 ]
 
-The MFT record relative to the file being opened contains its runlist,
-an array containing information about the file's location on the physical
-disk. Analysis of all Call Stack paths showed that the values of the
-runlist array, from which LCNs are calculated, are not validated before
-run_unpack function.
+According to pp_pm_compute_clocks the non-DC display code
+has "issues with mclk switching with refresh rates over 120 hz".
+The workaround is to disable MCLK switching in this case.
 
-The run_unpack function decodes the compressed runlist data format
-from MFT attributes (for example, $DATA), converting them into a runs_tree
-structure, which describes the mapping of virtual clusters (VCN) to
-logical clusters (LCN). The NTFS3 subsystem also has a shortcut for
-deleting files from MFT records - in this case, the RUN_DEALLOCATE
-command is sent to the run_unpack input, and the function logic
-provides that all data transferred to the runlist about file or
-directory is deleted without creating a runs_tree structure.
+Do the same for legacy DPM.
 
-Substituting the runlist in the $DATA attribute of the MFT record for an
-arbitrary file can lead either to access to arbitrary data on the disk
-bypassing access checks to them (since the inode access check
-occurs above) or to destruction of arbitrary data on the disk.
-
-Add overflow check for addition operation.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 6ddbd37f1074 ("drm/amd/pm: optimize the amdgpu_pm_compute_clocks() implementations")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/run.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
-index 48566dff0dc92..662add939da78 100644
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -9,6 +9,7 @@
- #include <linux/blkdev.h>
- #include <linux/fs.h>
- #include <linux/log2.h>
-+#include <linux/overflow.h>
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
+index 42efe838fa85c..2d2d2d5e67634 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
+@@ -66,6 +66,13 @@ u32 amdgpu_dpm_get_vblank_time(struct amdgpu_device *adev)
+ 					(amdgpu_crtc->v_border * 2));
  
- #include "debug.h"
- #include "ntfs.h"
-@@ -982,14 +983,18 @@ int run_unpack(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- 
- 			if (!dlcn)
- 				return -EINVAL;
--			lcn = prev_lcn + dlcn;
+ 				vblank_time_us = vblank_in_pixels * 1000 / amdgpu_crtc->hw_mode.clock;
 +
-+			if (check_add_overflow(prev_lcn, dlcn, &lcn))
-+				return -EINVAL;
- 			prev_lcn = lcn;
- 		} else {
- 			/* The size of 'dlcn' can't be > 8. */
- 			return -EINVAL;
++				/* we have issues with mclk switching with
++				 * refresh rates over 120 hz on the non-DC code.
++				 */
++				if (drm_mode_vrefresh(&amdgpu_crtc->hw_mode) > 120)
++					vblank_time_us = 0;
++
+ 				break;
+ 			}
  		}
- 
--		next_vcn = vcn64 + len;
-+		if (check_add_overflow(vcn64, len, &next_vcn))
-+			return -EINVAL;
-+
- 		/* Check boundary. */
- 		if (next_vcn > evcn + 1)
- 			return -EINVAL;
-@@ -1153,7 +1158,8 @@ int run_get_highest_vcn(CLST vcn, const u8 *run_buf, u64 *highest_vcn)
- 			return -EINVAL;
- 
- 		run_buf += size_size + offset_size;
--		vcn64 += len;
-+		if (check_add_overflow(vcn64, len, &vcn64))
-+			return -EINVAL;
- 
- #ifndef CONFIG_NTFS3_64BIT_CLUSTER
- 		if (vcn64 > 0x100000000ull)
 -- 
 2.51.0
 
