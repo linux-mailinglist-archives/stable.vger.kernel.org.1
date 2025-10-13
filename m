@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-184843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7859FBD43D5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30486BD4159
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 228D61885BDA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3374D189266B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6862ECEBB;
-	Mon, 13 Oct 2025 15:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6132E30C347;
+	Mon, 13 Oct 2025 15:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxrHqhcJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgqt2QrL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5C1221F00;
-	Mon, 13 Oct 2025 15:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8B0279DCE;
+	Mon, 13 Oct 2025 15:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368595; cv=none; b=J3FIzbcdakTFxGbQ2YiAEIWSBWOl5gxxgyZ30mz6+6HkVw1pJ4XorG+yILbjuB1u73xgT7N5Nsz/dTxuSug+F4OmBJXpp51+EWza5JT370lVEGCZ4XNduz5hz0IUsHr2WVst6A8aNMcCBRPwAmHgLpKOoEz4cyh9EEEwW2/d+NA=
+	t=1760367793; cv=none; b=NEWKJY2g3taBPiA+MKAY0mnz29/aXU10VlU/SngHvwoLpVOPn1zJvo5RUvrYkZwBJoo3ZEx9oeC2Zwi+MSuLU+jqolM/AWysJo9ZmLrecq8yu9gVNyMxYrEn2T3bp+CvyE/DxGDQBNNIguiRmu2JjBLl/YBenNq3nFLlUQuhHGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368595; c=relaxed/simple;
-	bh=fgVtJs/sAab0R9tK7JfmOcVErXJqH07VFcQmKEgUXZU=;
+	s=arc-20240116; t=1760367793; c=relaxed/simple;
+	bh=UhaXPcoo8x+unNZ9BaoQhwuKTbL1brSRATr9HOROGkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q+ZK6yr+pAA4I4YnwymMhXcE5cWDh28j20zf74rWSgUEu3SiCX64leS5cib4EiNLnG5e3AyomjUi4uEfaTKyZteuUDwvfVpWbRWFWcNFA/06l7oqqHQQ+axtsU1B+IR+/fu2hBcX3S3g+3+ktsHBRz/WUDW2bU+uISN3T6FTlFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxrHqhcJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDFDC4CEE7;
-	Mon, 13 Oct 2025 15:16:34 +0000 (UTC)
+	 MIME-Version; b=a2O3DbAhqBy9V1e80I80YcG7XEqfxV5Ex2ulfNPF5+NBSMG0Eq8arJk7DDZStyBbb1J6/kQc0vhe9Ov3BzTB932a7KrVotlCDvg5y47Bdb+qzSDqwPEl4+VeAyP73zTgoL+hEVHjKPy7gwHTYYoVPgZIw25wH8I4HmVRkS75wwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgqt2QrL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEF1C4CEE7;
+	Mon, 13 Oct 2025 15:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368595;
-	bh=fgVtJs/sAab0R9tK7JfmOcVErXJqH07VFcQmKEgUXZU=;
+	s=korg; t=1760367792;
+	bh=UhaXPcoo8x+unNZ9BaoQhwuKTbL1brSRATr9HOROGkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxrHqhcJJDKRfI9TFL/vEIzA/XesLPZXogE1k2OxeBnGx1eY7bweULW6Fj2zkeJh4
-	 UO7lu30PT072n6ddj7FHIs7/nKDFn0H3csSaM4KoOCir0c0rUYstDsrTS11/D7ZmYe
-	 +SWAJjD5Glx4FvMCjVpNyRIHwOmrWsTEINX4fg1Y=
+	b=wgqt2QrL/Yj4aps3ib1fNddtLmWHaUR0ol5tqfKgn6vIDOT7ZfwRUNRJ4UNadfc3z
+	 S7J0k7zIaOZShL01tuR9zNsojSPZqMGJ7A6FcfjK1PstEs1KqASFntY6DtMDeKcARA
+	 QWxNm2DM+d55OcawKrdwLL6NEprq6x3bI6rsbZrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 183/262] coresight: tmc: Support atclk
+Subject: [PATCH 6.6 134/196] vfio/pds: replace bitmap_free with vfree
 Date: Mon, 13 Oct 2025 16:45:25 +0200
-Message-ID: <20251013144332.718989370@linuxfoundation.org>
+Message-ID: <20251013144320.163166897@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 8a79026926b329d4ab0c6d0921373a80ec8aab6e ]
+[ Upstream commit acb59a4bb8ed34e738a4c3463127bf3f6b5e11a9 ]
 
-The atclk is an optional clock for the CoreSight TMC, but the driver
-misses to initialize it.  In most cases, TMC shares the atclk clock with
-other CoreSight components.  Since these components enable the clock
-before the TMC device is initialized, the TMC continues properly,
-which is why we don’t observe any lockup issues.
+host_seq_bmp is allocated with vzalloc but is currently freed with
+bitmap_free, which uses kfree internally. This mismach prevents the
+resource from being released properly and may result in memory leaks
+or other issues.
 
-This change enables atclk in probe of the TMC driver.  Given the clock
-is optional, it is possible to return NULL if the clock does not exist.
-IS_ERR() is tolerant for this case.
+Fix this by freeing host_seq_bmp with vfree to match the vzalloc
+allocation.
 
-Dynamically disable and enable atclk during suspend and resume.  The
-clock pointers will never be error values if the driver has successfully
-probed, and the case of a NULL pointer case will be handled by the clock
-core layer.  The driver data is always valid after probe. Therefore,
-remove the related checks.  Also in the resume flow adds error handling.
-
-Fixes: bc4bf7fe98da ("coresight-tmc: add CoreSight TMC driver")
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250731-arm_cs_fix_clock_v4-v6-1-1dfe10bb3f6f@arm.com
+Fixes: f232836a9152 ("vfio/pds: Add support for dirty page tracking")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://lore.kernel.org/r/20250913153154.1028835-1-zilin@seu.edu.cn
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hwtracing/coresight/coresight-tmc-core.c  | 22 ++++++++++++++-----
- drivers/hwtracing/coresight/coresight-tmc.h   |  2 ++
- 2 files changed, 19 insertions(+), 5 deletions(-)
+ drivers/vfio/pci/pds/dirty.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
-index 475fa4bb6813b..96ef2517dd439 100644
---- a/drivers/hwtracing/coresight/coresight-tmc-core.c
-+++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
-@@ -480,6 +480,10 @@ static int __tmc_probe(struct device *dev, struct resource *res)
- 	struct coresight_desc desc = { 0 };
- 	struct coresight_dev_list *dev_list = NULL;
+diff --git a/drivers/vfio/pci/pds/dirty.c b/drivers/vfio/pci/pds/dirty.c
+index 27607d7b9030a..6adc5f1ae2eb9 100644
+--- a/drivers/vfio/pci/pds/dirty.c
++++ b/drivers/vfio/pci/pds/dirty.c
+@@ -81,7 +81,7 @@ static int pds_vfio_dirty_alloc_bitmaps(struct pds_vfio_dirty *dirty,
  
-+	drvdata->atclk = devm_clk_get_optional_enabled(dev, "atclk");
-+	if (IS_ERR(drvdata->atclk))
-+		return PTR_ERR(drvdata->atclk);
-+
- 	ret = -ENOMEM;
+ 	host_ack_bmp = vzalloc(bytes);
+ 	if (!host_ack_bmp) {
+-		bitmap_free(host_seq_bmp);
++		vfree(host_seq_bmp);
+ 		return -ENOMEM;
+ 	}
  
- 	/* Validity for the resource is already checked by the AMBA core */
-@@ -700,18 +704,26 @@ static int tmc_runtime_suspend(struct device *dev)
- {
- 	struct tmc_drvdata *drvdata = dev_get_drvdata(dev);
- 
--	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
--		clk_disable_unprepare(drvdata->pclk);
-+	clk_disable_unprepare(drvdata->atclk);
-+	clk_disable_unprepare(drvdata->pclk);
-+
- 	return 0;
- }
- 
- static int tmc_runtime_resume(struct device *dev)
- {
- 	struct tmc_drvdata *drvdata = dev_get_drvdata(dev);
-+	int ret;
- 
--	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
--		clk_prepare_enable(drvdata->pclk);
--	return 0;
-+	ret = clk_prepare_enable(drvdata->pclk);
-+	if (ret)
-+		return ret;
-+
-+	ret = clk_prepare_enable(drvdata->atclk);
-+	if (ret)
-+		clk_disable_unprepare(drvdata->pclk);
-+
-+	return ret;
- }
- #endif
- 
-diff --git a/drivers/hwtracing/coresight/coresight-tmc.h b/drivers/hwtracing/coresight/coresight-tmc.h
-index 2671926be62a3..2a53acbb5990b 100644
---- a/drivers/hwtracing/coresight/coresight-tmc.h
-+++ b/drivers/hwtracing/coresight/coresight-tmc.h
-@@ -166,6 +166,7 @@ struct etr_buf {
- 
- /**
-  * struct tmc_drvdata - specifics associated to an TMC component
-+ * @atclk:	optional clock for the core parts of the TMC.
-  * @pclk:	APB clock if present, otherwise NULL
-  * @base:	memory mapped base address for this component.
-  * @csdev:	component vitals needed by the framework.
-@@ -191,6 +192,7 @@ struct etr_buf {
-  * @perf_buf:	PERF buffer for ETR.
-  */
- struct tmc_drvdata {
-+	struct clk		*atclk;
- 	struct clk		*pclk;
- 	void __iomem		*base;
- 	struct coresight_device	*csdev;
 -- 
 2.51.0
 
