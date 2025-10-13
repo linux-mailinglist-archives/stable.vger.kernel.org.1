@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-184869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8286EBD4E22
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E230BD5158
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D1C814F2BB2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:30:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 421AA500599
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F3030AAD0;
-	Mon, 13 Oct 2025 15:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4203315786;
+	Mon, 13 Oct 2025 15:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKjT4ntW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wN3ELFRT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02053309EFB;
-	Mon, 13 Oct 2025 15:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B244A1F91E3;
+	Mon, 13 Oct 2025 15:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368670; cv=none; b=ht3xwxEfhySIPTyU0gj/lcTYWoGf/JCZ6AT3sLFBIKq9JrnBLfRr9wPELNefMdE1SJw+9gJ6Iv5rTFeVN5QCcdZq/slpKs2+G164M0P8f187fQ3wlCkYTb0IooRLY6/AoHhaH144SClTPte5AuJbk1WQbWD3zF65rCDULl1ct1E=
+	t=1760370300; cv=none; b=QqjuFBZHk1tjf7+gZsAKI+qYD6EgTZdzj6EEuUOCT4esguQak1M0H7Dwn1B/CQVs5OtPaQWmJi4hHhha5AFsM5BvI+C3Ucp1sE8n/Z8o/cWEjNuRL0GCLND8IorPzZNnlsNVPyoIyg0yvJSpejwUe5lTnd9DtlrWC+KGLLVBxxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368670; c=relaxed/simple;
-	bh=xLi/MnsewopkYbgdb04AaLD89EieCnHYB2xrjY3w8Zg=;
+	s=arc-20240116; t=1760370300; c=relaxed/simple;
+	bh=gJDDbiZC5scABqr3gZrotMNaHOpmLRLjaV3qoFIykGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4DoM5BMOvJjwHfhst8fUEYPFra0IY6OH+CKYt1Jn2NsB6qszFTvQpqDqst2YlPoytdSMEUn51QVY0wUTJIA+/YxzghKaLCFkqU0vcZ/pjG6pr5nHGMa/0UiR/lGN4aq7pMSJPBjO0oaAwtiUf7qmohegVi1j/HwqYuYZUxV2e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKjT4ntW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22633C4CEE7;
-	Mon, 13 Oct 2025 15:17:48 +0000 (UTC)
+	 MIME-Version; b=jVA0h8hf7Tg/zMiM7KzFNTio8eHxhhVnvncNPHXskh8ZP+Bi6CIuUyZOc1LM8NdWwObl5UqP9DrygT6kGTbUvVsP6b9DbnW8Zp3vLVGSLvyGxkQYgaE4zKwrqbandjqHpHWnt5QWiE49eCeD+JWupswHZiao9FoZXuJy4YO/j18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wN3ELFRT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AEAC4CEE7;
+	Mon, 13 Oct 2025 15:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368669;
-	bh=xLi/MnsewopkYbgdb04AaLD89EieCnHYB2xrjY3w8Zg=;
+	s=korg; t=1760370300;
+	bh=gJDDbiZC5scABqr3gZrotMNaHOpmLRLjaV3qoFIykGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HKjT4ntWAUeHRbc8koYYD8tViy+0Hl6mYGpKoJ4LtHiNaozYTowiCCVNn5KpTHlK9
-	 Z4qB4KTQxEskGIWFdEEWtY0ueh5MrfsmiCrkyQi5k+FYApVtGsKxcrw9ag6d/QijPc
-	 D9DYBmS/Aa/maO8smaKRGEjOk/QgeOx0hneW+ZVI=
+	b=wN3ELFRTwC/p1E9AxU5xC7kfeAyeO2QZ0RkP5gYgPnFcXfJyJG5vAj+aJ6F0V17By
+	 JanQAdqZmXs9lP+B8BeNvPTp5dwYuP4kwbkalHkuVZS3b5apKtBCA6tp3vs5Eo+DSt
+	 kDg7wquE0qI7lONhJ7SU/rIGYfqeu4NkeXFnTcJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matvey Kovalev <matvey.kovalev@ispras.ru>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 240/262] ksmbd: fix error code overwriting in smb2_get_info_filesystem()
+	Youling Tang <tangyouling@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.17 521/563] LoongArch: Automatically disable kaslr if boot from kexec_file
 Date: Mon, 13 Oct 2025 16:46:22 +0200
-Message-ID: <20251013144334.881693368@linuxfoundation.org>
+Message-ID: <20251013144430.186696640@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matvey Kovalev <matvey.kovalev@ispras.ru>
+From: Youling Tang <tangyouling@kylinos.cn>
 
-commit 88daf2f448aad05a2e6df738d66fe8b0cf85cee0 upstream.
+commit c8168b4faf1d62cbb320a3e518ad31cdd567cb05 upstream.
 
-If client doesn't negotiate with SMB3.1.1 POSIX Extensions,
-then proper error code won't be returned due to overwriting.
+Automatically disable kaslr when the kernel loads from kexec_file.
 
-Return error immediately.
+kexec_file loads the secondary kernel image to a non-linked address,
+inherently providing KASLR-like randomization.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+However, on LoongArch where System RAM may be non-contiguous, enabling
+KASLR for the second kernel may relocate it to an invalid memory region
+and cause a boot failure. Thus, we disable KASLR when "kexec_file" is
+detected in the command line.
 
-Fixes: e2f34481b24db ("cifsd: add server-side procedures for SMB3")
+To ensure compatibility with older kernels loaded via kexec_file, this
+patch should be backported to stable branches.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Matvey Kovalev <matvey.kovalev@ispras.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Youling Tang <tangyouling@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/relocate.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5600,7 +5600,8 @@ static int smb2_get_info_filesystem(stru
+--- a/arch/loongarch/kernel/relocate.c
++++ b/arch/loongarch/kernel/relocate.c
+@@ -166,6 +166,10 @@ static inline __init bool kaslr_disabled
+ 		return true;
+ #endif
  
- 		if (!work->tcon->posix_extensions) {
- 			pr_err("client doesn't negotiate with SMB3.1.1 POSIX Extensions\n");
--			rc = -EOPNOTSUPP;
-+			path_put(&path);
-+			return -EOPNOTSUPP;
- 		} else {
- 			info = (struct filesystem_posix_info *)(rsp->Buffer);
- 			info->OptimalTransferSize = cpu_to_le32(stfs.f_bsize);
++	str = strstr(boot_command_line, "kexec_file");
++	if (str == boot_command_line || (str > boot_command_line && *(str - 1) == ' '))
++		return true;
++
+ 	return false;
+ }
+ 
 
 
 
