@@ -1,117 +1,131 @@
-Return-Path: <stable+bounces-184177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D83BD20FF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E17DBD2177
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:35:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E878C3BF27E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 08:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C47933A2DDF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 08:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C272F5A2E;
-	Mon, 13 Oct 2025 08:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796E62F90D3;
+	Mon, 13 Oct 2025 08:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBPA9FmX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shHnDBB4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAABD2EACF0;
-	Mon, 13 Oct 2025 08:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E932F8BF7
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 08:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760344339; cv=none; b=tBk7hE5t10QVH2yvEPhKVHQ81gauzfHVHqgz+OBXKqaZzRbEFSlreh++BdVur9DLcMElAQly9hY+ZyaifiRyjIVc86qyReJiyo7Ehw4uOQxb+47nRV53BLaev9tpeDV+7GwWjG/KauHlL5g/GmREOpbxVEPfXKKFIkx8iBJ0GG0=
+	t=1760344517; cv=none; b=ZJ92EbRRugFV8JIH9mk7FBgn2vI6+8TUfDEbN2/Hgza3eLWY29zkQ/x8DxRZ9ApQNmtCI2cZx/aS1XCDGx5mzQDGG7k1g0Eh8MzN5R2aA94XzlOBV+S3QyxXKDKxntREHBPIuiv5VXs3SQ9TilB2S70Xw2tBsUtPxI9a+Asqwb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760344339; c=relaxed/simple;
-	bh=D5mMnchbyvZg4t4adKmnSUlfgUWF0WYaKcUhZLciJSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFTAGFhIjF4Sv9hyW99e9zXipv1RzBLWyASw4fAI66YGkYYcYVnRa6DQJN6qWxIqJ0nLMk1o/yFRuF2qEyaA8A7I9sNA98Njwm1c+ZNKc9vnqJLBNVUpZgDeyM0QjVotRK5mpwkYpKHvP7WyzpsfsKbeYori9vupBLwPQho2UG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBPA9FmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DFEC116B1;
-	Mon, 13 Oct 2025 08:32:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760344338;
-	bh=D5mMnchbyvZg4t4adKmnSUlfgUWF0WYaKcUhZLciJSI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PBPA9FmXsfbsP6M+MZ8IeDralkp5eT036+ENvP6mubgarjnY9ZN4EVmASFsGY6P6n
-	 DY1P5zwuBaOhL0aDZV8/Smc+5p53PAouyd5yA3BU6siKgAm1sDltClg9TZOCYhunBX
-	 zmzXfJQPePW95oshLj/t+7ArZMzI3P8c1O3t9oYMkbIws/Y7Ny+viaPW0xkS2CZFdj
-	 D1ocjZE1H11OJ0cngGyUoWtUM4gmsMYOvOavxm79GDyNu1r/nTW05u/6YZWy9OsmOs
-	 TTvHackZ96ZeOeFP0pEkXwCbK+RMhCD8ywwPjURBgdlXQrq68aodN0OyOZUYk6VbrQ
-	 dqUOjRGJ4Qa2Q==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1v8Dya-0000000DRrP-3TOs;
-	Mon, 13 Oct 2025 08:32:16 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/3] KVM: arm64: Make ID_PFR1_EL1.GIC writable
-Date: Mon, 13 Oct 2025 09:32:05 +0100
-Message-ID: <20251013083207.518998-2-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251013083207.518998-1-maz@kernel.org>
-References: <20251013083207.518998-1-maz@kernel.org>
+	s=arc-20240116; t=1760344517; c=relaxed/simple;
+	bh=LGNZeRxhRYFerzKSbqthx3nzX+J2vmWDi1lGD0r0XPY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=u7BkYClQYJd1RfgS2S0J+75uElxf8NsbYD6eJ4mLEgDZx+R4gxwPjyAnDfgSPIXScvnLSa917Qvvl4apqAvpG0JMe3ASE4uAZI7CTpClQjtaw32Kwqi3/rF+8rS5Eqm0xBvQyY4kbeFaTtH3fo/a8AOKCwhUgdHxk4jLolVTTXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shHnDBB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B054FC4CEFE;
+	Mon, 13 Oct 2025 08:35:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760344517;
+	bh=LGNZeRxhRYFerzKSbqthx3nzX+J2vmWDi1lGD0r0XPY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=shHnDBB4dr1oB6hvIoznK3AZsyeJh2ddsitqB3uHN7eoI4EEpHrgz/CFWZeWpAXbX
+	 RTzxSwWZOYw3Oh6NFNsWKOgbmzKg4SRK4hmhBvfw6bnaxz9hDb8t7vNJCzj02doKoi
+	 s6ciYGVgUmDX+myLqKJH2lK6guMDWeLOSpRP4jJI=
+Subject: FAILED: patch "[PATCH] tracing: Fix tracing_mark_raw_write() to use buf and not ubuf" failed to apply to 6.12-stable tree
+To: rostedt@goodmis.org,akpm@linux-foundation.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Oct 2025 10:35:08 +0200
+Message-ID: <2025101308-chip-shredding-7707@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, peter.maydell@linaro.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Similarly to ID_AA64PFR0_EL1.GIC, relax ID_PFR1_EL1.GIC to be writable.
 
-Fixes: 5cb57a1aff755 ("KVM: arm64: Zero ID_AA64PFR0_EL1.GIC when no GICv3 is presented to the guest")
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x bda745ee8fbb63330d8f2f2ea4157229a5df959e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101308-chip-shredding-7707@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From bda745ee8fbb63330d8f2f2ea4157229a5df959e Mon Sep 17 00:00:00 2001
+From: Steven Rostedt <rostedt@goodmis.org>
+Date: Fri, 10 Oct 2025 23:51:42 -0400
+Subject: [PATCH] tracing: Fix tracing_mark_raw_write() to use buf and not ubuf
+
+The fix to use a per CPU buffer to read user space tested only the writes
+to trace_marker. But it appears that the selftests are missing tests to
+the trace_maker_raw file. The trace_maker_raw file is used by applications
+that writes data structures and not strings into the file, and the tools
+read the raw ring buffer to process the structures it writes.
+
+The fix that reads the per CPU buffers passes the new per CPU buffer to
+the trace_marker file writes, but the update to the trace_marker_raw write
+read the data from user space into the per CPU buffer, but then still used
+then passed the user space address to the function that records the data.
+
+Pass in the per CPU buffer and not the user space address.
+
+TODO: Add a test to better test trace_marker_raw.
+
 Cc: stable@vger.kernel.org
----
- arch/arm64/kvm/sys_regs.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20251011035243.386098147@kernel.org
+Fixes: 64cf7d058a00 ("tracing: Have trace_marker use per-cpu data to read user space")
+Reported-by: syzbot+9a2ede1643175f350105@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68e973f5.050a0220.1186a4.0010.GAE@google.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index b29f72478a50d..73dcefe51a3e7 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -2528,6 +2528,12 @@ static bool bad_redir_trap(struct kvm_vcpu *vcpu,
- 	.val = mask,				\
- }
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 0fd582651293..bbb89206a891 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -7497,12 +7497,12 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
+ 	if (tr == &global_trace) {
+ 		guard(rcu)();
+ 		list_for_each_entry_rcu(tr, &marker_copies, marker_list) {
+-			written = write_raw_marker_to_buffer(tr, ubuf, cnt);
++			written = write_raw_marker_to_buffer(tr, buf, cnt);
+ 			if (written < 0)
+ 				break;
+ 		}
+ 	} else {
+-		written = write_raw_marker_to_buffer(tr, ubuf, cnt);
++		written = write_raw_marker_to_buffer(tr, buf, cnt);
+ 	}
  
-+#define AA32_ID_WRITABLE(name, mask) {		\
-+	ID_DESC(name),				\
-+	.visibility = aa32_id_visibility,	\
-+	.val = mask,				\
-+}
-+
- /* sys_reg_desc initialiser for cpufeature ID registers that need filtering */
- #define ID_FILTERED(sysreg, name, mask) {	\
- 	ID_DESC(sysreg),				\
-@@ -3040,7 +3046,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 	/* AArch64 mappings of the AArch32 ID registers */
- 	/* CRm=1 */
- 	AA32_ID_SANITISED(ID_PFR0_EL1),
--	AA32_ID_SANITISED(ID_PFR1_EL1),
-+	AA32_ID_WRITABLE(ID_PFR1_EL1, ID_PFR1_EL1_GIC),
- 	{ SYS_DESC(SYS_ID_DFR0_EL1),
- 	  .access = access_id_reg,
- 	  .get_user = get_id_reg,
--- 
-2.47.3
+ 	return written;
 
 
