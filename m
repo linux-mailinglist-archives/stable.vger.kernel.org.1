@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-185103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8C1BD4AF0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:01:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39745BD4A2E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 174465622A3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C9D9481574
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFE6299A96;
-	Mon, 13 Oct 2025 15:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7AB271479;
+	Mon, 13 Oct 2025 15:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6chcPj2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUWdomWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D9C201113;
-	Mon, 13 Oct 2025 15:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D67F21E0AD;
+	Mon, 13 Oct 2025 15:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369342; cv=none; b=OmKN1dnWIsSueLLO0V0EcHinSzWa+ifwB9U7vD7bVLkp2mltOLEicMXYr3zDWW81PQnnbAskCaBwJwYLLHraN4Dy87HEK9D7p4uoPjMMiy7AuOmSImZzNgfE87aH4m7U1ufcGzW6ZJqs1hTqPc72mq/GCW2R2SX84nziqSJWwaI=
+	t=1760369359; cv=none; b=DUFifWa28FrlJMniryZZZv1W/CWi9gXK/+zmTFWiUpXknNPOFmL9Fr8t3BgsPWEumXqKVPfExsiKTG5p00b9fLk+erBiUsiZw6GiCxXv9IcK+u+ajp4ZLBm2OBx11etJHLLO5yETEuBU03UUMAx8TQZQPQg8F8NgzMktm+RDcxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369342; c=relaxed/simple;
-	bh=02qBdE6iynxB68yGFgdFZw2CnCjVMlad3Ut0377o97Q=;
+	s=arc-20240116; t=1760369359; c=relaxed/simple;
+	bh=ZcqYtLUmYVA5dRgxbyCg2txqtUzeJwcKgMkllfUVmsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3l8/j7NThDABgbFmnR2+JYgWUW73V8G4NLfMt3Nll+q4tTZIuY9rKod0iVw6uQYZcoV8MR5m6Nq500yYqTZmqvyXQqFlFXpc9pRXKXv1ZvvZ+l1MyPjPNxjBpgrpJ1cC40RvXhhkwG/pLChDgmV0Uvf7sLmjGHG75Rza9QAL+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6chcPj2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0018C4CEE7;
-	Mon, 13 Oct 2025 15:29:01 +0000 (UTC)
+	 MIME-Version; b=b9SN/0ybk9sAFscQWqu8I1XI2VsxMWj1+INi6PikobvLZmaQRsF0h6YWeR8cKLLOfCuPHThksFyYXKvP92pgcsrLDOprU1BHyK2orjKEsHotuLdJ1UgnSG69eoBtuPge9HDBVHQ9YZ9IW5OKxYde7wxeBu2e2NNErXrCEzMX5J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUWdomWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40AFC4CEE7;
+	Mon, 13 Oct 2025 15:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369342;
-	bh=02qBdE6iynxB68yGFgdFZw2CnCjVMlad3Ut0377o97Q=;
+	s=korg; t=1760369359;
+	bh=ZcqYtLUmYVA5dRgxbyCg2txqtUzeJwcKgMkllfUVmsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6chcPj2Cu1sd2YL/TlXBOaAakZBCsp0atMYqcbioOZ9h0wejwCe6Edbd6cSCjwyO
-	 t3YidlDtF7KEkc8RIGMOCBVWGhXqTbNQPCeWZ1XgDele8K3BBlLPksznfspaldcSFD
-	 X54O/Z1DgYKbZ/XIhYKiwa3dAuYUxlQ/6qwYJ6+s=
+	b=ZUWdomWIvWd/xeS3JEMIkp2+9ErP2vAwN8MMDgtvgwG8f6ks+Sg3QQJeQVvNt0xmZ
+	 GLp0DI4uETXT8rJ69VZ+zZKOa35rjUclpwcRjSKhivVGwP/oSkMxN6WJhikRGR6V0s
+	 Y+lhOGCNlLF8/HBxQaPBR2MXVVatEYpIyMFGza8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 213/563] drm/display: bridge-connector: correct CEC bridge pointers in drm_bridge_connector_init
-Date: Mon, 13 Oct 2025 16:41:14 +0200
-Message-ID: <20251013144419.000698581@linuxfoundation.org>
+Subject: [PATCH 6.17 218/563] drm/amdgpu: fix link error for !PM_SLEEP
+Date: Mon, 13 Oct 2025 16:41:19 +0200
+Message-ID: <20251013144419.180855194@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,48 +67,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 92e34a5241ddf4b084df20e6953275d16f156aa8 ]
+[ Upstream commit 4d22db6d070ed3934f02ed15391283f6feb258ad ]
 
-The bridge used in drm_bridge_connector_init() for CEC init does not
-correctly point to the required HDMI CEC bridge, which can lead to
-errors during CEC initialization.
+When power management is not enabled in the kernel build, the newly
+added hibernation changes cause a link failure:
 
-Fixes: 65a2575a68e4 ("drm/display: bridge-connector: hook in CEC notifier support")
-Fixes: a74288c8ded7 ("drm/display: bridge-connector: handle CEC adapters")
-Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Closes: http://lore.kernel.org/r/20250718164156.194702d9@booty/
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://lore.kernel.org/r/20250719-fix-cec-bridges-v1-1-a60b1333c87d@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+arm-linux-gnueabi-ld: drivers/gpu/drm/amd/amdgpu/amdgpu_drv.o: in function `amdgpu_pmops_thaw':
+amdgpu_drv.c:(.text+0x1514): undefined reference to `pm_hibernate_is_recovering'
+
+Make the power management code in this driver conditional on
+CONFIG_PM and CONFIG_PM_SLEEP
+
+Fixes: 530694f54dd5 ("drm/amdgpu: do not resume device in thaw for normal hibernation")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20250714081635.4071570-1-arnd@kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_bridge_connector.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
-index 5eb7e9bfe3611..8c915427d0538 100644
---- a/drivers/gpu/drm/display/drm_bridge_connector.c
-+++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-@@ -816,6 +816,8 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 395c6be901ce7..dbbb3407fa13b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2964,15 +2964,15 @@ long amdgpu_drm_ioctl(struct file *filp,
+ }
  
- 	if (bridge_connector->bridge_hdmi_cec &&
- 	    bridge_connector->bridge_hdmi_cec->ops & DRM_BRIDGE_OP_HDMI_CEC_NOTIFIER) {
-+		bridge = bridge_connector->bridge_hdmi_cec;
-+
- 		ret = drmm_connector_hdmi_cec_notifier_register(connector,
- 								NULL,
- 								bridge->hdmi_cec_dev);
-@@ -825,6 +827,8 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
- 
- 	if (bridge_connector->bridge_hdmi_cec &&
- 	    bridge_connector->bridge_hdmi_cec->ops & DRM_BRIDGE_OP_HDMI_CEC_ADAPTER) {
-+		bridge = bridge_connector->bridge_hdmi_cec;
-+
- 		ret = drmm_connector_hdmi_cec_register(connector,
- 						       &drm_bridge_connector_hdmi_cec_funcs,
- 						       bridge->hdmi_cec_adapter_name,
+ static const struct dev_pm_ops amdgpu_pm_ops = {
+-	.prepare = amdgpu_pmops_prepare,
+-	.complete = amdgpu_pmops_complete,
+-	.suspend = amdgpu_pmops_suspend,
+-	.suspend_noirq = amdgpu_pmops_suspend_noirq,
+-	.resume = amdgpu_pmops_resume,
+-	.freeze = amdgpu_pmops_freeze,
+-	.thaw = amdgpu_pmops_thaw,
+-	.poweroff = amdgpu_pmops_poweroff,
+-	.restore = amdgpu_pmops_restore,
++	.prepare = pm_sleep_ptr(amdgpu_pmops_prepare),
++	.complete = pm_sleep_ptr(amdgpu_pmops_complete),
++	.suspend = pm_sleep_ptr(amdgpu_pmops_suspend),
++	.suspend_noirq = pm_sleep_ptr(amdgpu_pmops_suspend_noirq),
++	.resume = pm_sleep_ptr(amdgpu_pmops_resume),
++	.freeze = pm_sleep_ptr(amdgpu_pmops_freeze),
++	.thaw = pm_sleep_ptr(amdgpu_pmops_thaw),
++	.poweroff = pm_sleep_ptr(amdgpu_pmops_poweroff),
++	.restore = pm_sleep_ptr(amdgpu_pmops_restore),
+ 	.runtime_suspend = amdgpu_pmops_runtime_suspend,
+ 	.runtime_resume = amdgpu_pmops_runtime_resume,
+ 	.runtime_idle = amdgpu_pmops_runtime_idle,
+@@ -3117,7 +3117,7 @@ static struct pci_driver amdgpu_kms_pci_driver = {
+ 	.probe = amdgpu_pci_probe,
+ 	.remove = amdgpu_pci_remove,
+ 	.shutdown = amdgpu_pci_shutdown,
+-	.driver.pm = &amdgpu_pm_ops,
++	.driver.pm = pm_ptr(&amdgpu_pm_ops),
+ 	.err_handler = &amdgpu_pci_err_handler,
+ 	.dev_groups = amdgpu_sysfs_groups,
+ };
 -- 
 2.51.0
 
