@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4981CBD3E7F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:09:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1577BD444A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 920B04FE5F6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5EBD654061C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A119C2F5A2E;
-	Mon, 13 Oct 2025 14:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE9230CD8D;
+	Mon, 13 Oct 2025 15:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvpP/dkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQjBvKrh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBD324A06A;
-	Mon, 13 Oct 2025 14:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46188306B3C;
+	Mon, 13 Oct 2025 15:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367118; cv=none; b=WZ70mrUrxufU/eySeSXFoBTljiLFWvAbxBXnaEJnyUqKxbdBRNA0+7l4kKZLt+rxeAavLaiV5dE3YAS1GqVg2UhHOY7n0GFKGepkZf4bWIzjuo8NS1xqbWtXqqQHHnnCAETxVkLC6igCHO4tcDRLGH64paQFyIL0zuyVvqJXqCY=
+	t=1760368352; cv=none; b=SW4PB676Ml0McrwEbsswRVFsArmO7Ya3AJcuiukdlWStvLMwEktJGo7UVjLNysl/ufaYRRAi3qQEH0lTAv+EPHQCfGfiWTABlT8s48TQKRztbujrwUftqiSSTthnoDLrIhszMFkRD+1gkpHFZNIfba0gGwl4zLcnhCfovul9Eoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367118; c=relaxed/simple;
-	bh=rZRdaDsImWEcHCCdRjtrkhNrTJn+v0ENrySxl8TScmg=;
+	s=arc-20240116; t=1760368352; c=relaxed/simple;
+	bh=ymFmd0GvUoFnpNYNYrs/7rostoS/SuCESRW2a7/2pTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZlG4DccPHYZ70PHaSf3bGxOedJhwH4rtIulFEI1p7fMEBK7eA+WTLMESFf4bS10S6ti3C8TbFpHG7DomqLUf2KZss15160ZpZ6I+5N7+qe29h87UfuNzhP07iJ1iva/LLDYB3ywfOr0YYCgNrdDuLTLcjs1xzcYFRKnC3kNAZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvpP/dkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F0FC4CEE7;
-	Mon, 13 Oct 2025 14:51:57 +0000 (UTC)
+	 MIME-Version; b=ledNgKkTzZkjVGGkK8Yvy1TVnFBGiUv47IzeORMTydvxvzMHbmQe1J1ROGAohKskSkAZtMCOMFNccSbCKS7ZN3RjflniJpkFXd70bWF0HJ4QrZ0usFnfk1PzBYYKDD1agO0brqW2PdRX1Z+DT/pKpCMi2aJW0vqgC6XcVeCirNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQjBvKrh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CFEC4CEE7;
+	Mon, 13 Oct 2025 15:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367118;
-	bh=rZRdaDsImWEcHCCdRjtrkhNrTJn+v0ENrySxl8TScmg=;
+	s=korg; t=1760368352;
+	bh=ymFmd0GvUoFnpNYNYrs/7rostoS/SuCESRW2a7/2pTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvpP/dkYcUOW3SdkqQXuF2aipY5/NKw0vdrl+fQ2H5vHebOAxUCdLhYgy4c2ycaVd
-	 FPJ04sx3lR5sFjEJZ1oj/GSYq9LnoCSQGem8+zLDE2NPEEk/WXoiLR5GYUru0PQgH6
-	 RrPjWMsBUigPdUrUjlavnZs8dD9UKtIWV6SttK78=
+	b=FQjBvKrhhraCxaD3ge7z2d9xAup1ZOThosAM1ugIis4vcq55xCNKMVFX6PYB0uFR8
+	 6M1kM0p4mi5U11fzBfGjD3YxVI5VgNl5rYTQK0OZ+oSUqdFV3+lu52KDyj3pTsnZtl
+	 6EVfesi3m7LkroDCp7gnTP9tc8PQokTFy31KPmuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Wang Liang <wangliang74@huawei.com>,
+	Calvin Owens <calvin@wbinvd.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/196] ALSA: lx_core: use int type to store negative error codes
-Date: Mon, 13 Oct 2025 16:44:32 +0200
-Message-ID: <20251013144318.281300111@linuxfoundation.org>
+Subject: [PATCH 6.12 131/262] pps: fix warning in pps_register_cdev when register device fail
+Date: Mon, 13 Oct 2025 16:44:33 +0200
+Message-ID: <20251013144330.842031088@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit 4ef353d546cda466fc39b7daca558d7bcec21c09 ]
+[ Upstream commit b0531cdba5029f897da5156815e3bdafe1e9b88d ]
 
-Change the 'ret' variable from u16 to int to store negative error codes or
-zero returned by lx_message_send_atomic().
+Similar to previous commit 2a934fdb01db ("media: v4l2-dev: fix error
+handling in __video_register_device()"), the release hook should be set
+before device_register(). Otherwise, when device_register() return error
+and put_device() try to callback the release function, the below warning
+may happen.
 
-Storing the negative error codes in unsigned type, doesn't cause an issue
-at runtime but it's ugly as pants. Additionally, assigning negative error
-codes to unsigned type may trigger a GCC warning when the -Wsign-conversion
-flag is enabled.
+  ------------[ cut here ]------------
+  WARNING: CPU: 1 PID: 4760 at drivers/base/core.c:2567 device_release+0x1bd/0x240 drivers/base/core.c:2567
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 4760 Comm: syz.4.914 Not tainted 6.17.0-rc3+ #1 NONE
+  RIP: 0010:device_release+0x1bd/0x240 drivers/base/core.c:2567
+  Call Trace:
+   <TASK>
+   kobject_cleanup+0x136/0x410 lib/kobject.c:689
+   kobject_release lib/kobject.c:720 [inline]
+   kref_put include/linux/kref.h:65 [inline]
+   kobject_put+0xe9/0x130 lib/kobject.c:737
+   put_device+0x24/0x30 drivers/base/core.c:3797
+   pps_register_cdev+0x2da/0x370 drivers/pps/pps.c:402
+   pps_register_source+0x2f6/0x480 drivers/pps/kapi.c:108
+   pps_tty_open+0x190/0x310 drivers/pps/clients/pps-ldisc.c:57
+   tty_ldisc_open+0xa7/0x120 drivers/tty/tty_ldisc.c:432
+   tty_set_ldisc+0x333/0x780 drivers/tty/tty_ldisc.c:563
+   tiocsetd drivers/tty/tty_io.c:2429 [inline]
+   tty_ioctl+0x5d1/0x1700 drivers/tty/tty_io.c:2728
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:598 [inline]
+   __se_sys_ioctl fs/ioctl.c:584 [inline]
+   __x64_sys_ioctl+0x194/0x210 fs/ioctl.c:584
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x5f/0x2a0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
 
-No effect on runtime.
+Before commit c79a39dc8d06 ("pps: Fix a use-after-free"),
+pps_register_cdev() call device_create() to create pps->dev, which will
+init dev->release to device_create_release(). Now the comment is outdated,
+just remove it.
 
-Fixes: 02bec4904508 ("ALSA: lx6464es - driver for the digigram lx6464es interface")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Link: https://patch.msgid.link/20250828081312.393148-1-rongqianfeng@vivo.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Thanks for the reminder from Calvin Owens, 'kfree_pps' should be removed
+in pps_register_source() to avoid a double free in the failure case.
+
+Link: https://lore.kernel.org/all/20250827065010.3208525-1-wangliang74@huawei.com/
+Fixes: c79a39dc8d06 ("pps: Fix a use-after-free")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-By: Calvin Owens <calvin@wbinvd.org>
+Link: https://lore.kernel.org/r/20250830075023.3498174-1-wangliang74@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/lx6464es/lx_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pps/kapi.c | 5 +----
+ drivers/pps/pps.c  | 5 ++---
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/sound/pci/lx6464es/lx_core.c b/sound/pci/lx6464es/lx_core.c
-index b5b0d43bb8dcd..c3f2717aebf25 100644
---- a/sound/pci/lx6464es/lx_core.c
-+++ b/sound/pci/lx6464es/lx_core.c
-@@ -316,7 +316,7 @@ static int lx_message_send_atomic(struct lx6464es *chip, struct lx_rmh *rmh)
- /* low-level dsp access */
- int lx_dsp_get_version(struct lx6464es *chip, u32 *rdsp_version)
- {
--	u16 ret;
-+	int ret;
+diff --git a/drivers/pps/kapi.c b/drivers/pps/kapi.c
+index 92d1b62ea239d..e9389876229ea 100644
+--- a/drivers/pps/kapi.c
++++ b/drivers/pps/kapi.c
+@@ -109,16 +109,13 @@ struct pps_device *pps_register_source(struct pps_source_info *info,
+ 	if (err < 0) {
+ 		pr_err("%s: unable to create char device\n",
+ 					info->name);
+-		goto kfree_pps;
++		goto pps_register_source_exit;
+ 	}
  
- 	mutex_lock(&chip->msg_lock);
+ 	dev_dbg(&pps->dev, "new PPS source %s\n", info->name);
  
-@@ -330,10 +330,10 @@ int lx_dsp_get_version(struct lx6464es *chip, u32 *rdsp_version)
+ 	return pps;
  
- int lx_dsp_get_clock_frequency(struct lx6464es *chip, u32 *rfreq)
- {
--	u16 ret = 0;
- 	u32 freq_raw = 0;
- 	u32 freq = 0;
- 	u32 frequency = 0;
-+	int ret;
+-kfree_pps:
+-	kfree(pps);
+-
+ pps_register_source_exit:
+ 	pr_err("%s: unable to register source\n", info->name);
  
- 	mutex_lock(&chip->msg_lock);
+diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
+index 9463232af8d2e..c6b8b64782761 100644
+--- a/drivers/pps/pps.c
++++ b/drivers/pps/pps.c
+@@ -374,6 +374,7 @@ int pps_register_cdev(struct pps_device *pps)
+ 			       pps->info.name);
+ 			err = -EBUSY;
+ 		}
++		kfree(pps);
+ 		goto out_unlock;
+ 	}
+ 	pps->id = err;
+@@ -383,13 +384,11 @@ int pps_register_cdev(struct pps_device *pps)
+ 	pps->dev.devt = MKDEV(pps_major, pps->id);
+ 	dev_set_drvdata(&pps->dev, pps);
+ 	dev_set_name(&pps->dev, "pps%d", pps->id);
++	pps->dev.release = pps_device_destruct;
+ 	err = device_register(&pps->dev);
+ 	if (err)
+ 		goto free_idr;
+ 
+-	/* Override the release function with our own */
+-	pps->dev.release = pps_device_destruct;
+-
+ 	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name, pps_major,
+ 		 pps->id);
  
 -- 
 2.51.0
