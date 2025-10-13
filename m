@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0796ABD433C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A322BD435D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B5634016AC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1258C4F625D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281FE30FC05;
-	Mon, 13 Oct 2025 15:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472A030DD3B;
+	Mon, 13 Oct 2025 14:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMz8BRD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKxH0vOg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D570D30FC00;
-	Mon, 13 Oct 2025 15:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041123081A8;
+	Mon, 13 Oct 2025 14:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367924; cv=none; b=QzNj9alpnyCSVvS8nOUADCm5gb4fhBIVx1ZlcPEbcypRPv5WzYrsdgZY2NFW455IP/yWHaiKSfziV1WTB9r/0Cyl6stTG4M6fYxSGYsAYqcX1nfhz0QYgdyigAVEG3DgOwfxli9B1HsqV4VJfFMDLB/fLwsltC1aLQ8xbx2nz58=
+	t=1760367392; cv=none; b=u+zMPWLjwtRZonOIDNtGMcVRg1iG+U1aMwHe0UtW55W0/e4rRK2cRjlwtlM3nthBQapzbJyzc58rur7tk0Lo06i2KIePbxjL4q8Fi0krW/DGM3eH0WAihnnJK9tPpr/QyMG8CyAMUzKMebRU6KGfk2j7ACmjgQ9bHttkjOL+FF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367924; c=relaxed/simple;
-	bh=BHbupUf+uXWtUaex00Y1V7MTzorpfF4adpjGNJHO9xU=;
+	s=arc-20240116; t=1760367392; c=relaxed/simple;
+	bh=dlAHIWq7AeTcknK8hxTo6DjKYQH8jXOuMJS06zZ0LCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UrWcumc+Rd4euvZcXWuJMbF4sdVmhdeHo+5t7jQNo6R5XGLqHTjYhYKwA+OYfl/ZFhMS32r3kAZQuYwggcvCYXlBKWWdfgDUI+n4NTf5pAciXS0hhQvJcdg7+HVSbysDgbaHdULYUwKYMbO7CMi+f/TqiGNoqNQahMTOsFh1tG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMz8BRD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E25C4CEE7;
-	Mon, 13 Oct 2025 15:05:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MURyljUDqXz2jfWhQdu4VuFBaX8MJdOyjhvmOD2i6+BKo9H+vUOW4sbeXGcBL0mQzrTMFtMBAKK7jWgeVWOa6VjpmD9kJU7wCLzCrxjx6s6Hc62l10XVXoKFi0fH4hTMl7h9fZEsS8ZxGCbRIZL112e5OYQt6TyMjbI3mlNpY+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKxH0vOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B48EC4CEE7;
+	Mon, 13 Oct 2025 14:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367924;
-	bh=BHbupUf+uXWtUaex00Y1V7MTzorpfF4adpjGNJHO9xU=;
+	s=korg; t=1760367391;
+	bh=dlAHIWq7AeTcknK8hxTo6DjKYQH8jXOuMJS06zZ0LCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMz8BRD1Acoa3umrjlqQZqcI9m10cepqOnFp3khG3Dlh2Nqc62ndAFyvoGh8nz0AO
-	 twUXwMiKv/NrfhkNHCVL1EaK6m//X7Ryr/sSV2oBe7/m+pQJnrio1tai/qq8NZEQZr
-	 0oBmHDMFuWIOM7DXBFOtHkMvpg6edA6R3AQ1lWf8=
+	b=qKxH0vOghs2Ag+X+WMu8joT76ExJdjbbduN1/P2INIXMk3ow0xOBVoBJIoFPAnoPh
+	 wGZlTxnd8XmwbBbugjOP+Yn+AzS1Azv7F4aRy8d2NVibLQx9u2YvVke8JGu6fE1fuJ
+	 B+CCTuyjmpHCpRIPOhY34v0epXFpdIo6tGtmyJ3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com,
-	Larshin Sergey <Sergey.Larshin@kaspersky.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.6 173/196] fs: udf: fix OOB read in lengthAllocDescs handling
+	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 191/196] net: usb: asix: hold PM usage ref to avoid PM/MDIO + RTNL deadlock
 Date: Mon, 13 Oct 2025 16:46:04 +0200
-Message-ID: <20251013144321.567788922@linuxfoundation.org>
+Message-ID: <20251013144321.600758432@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +61,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larshin Sergey <Sergey.Larshin@kaspersky.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 3bd5e45c2ce30e239d596becd5db720f7eb83c99 upstream.
+commit 3d3c4cd5c62f24bb3cb4511b7a95df707635e00a upstream.
 
-When parsing Allocation Extent Descriptor, lengthAllocDescs comes from
-on-disk data and must be validated against the block size. Crafted or
-corrupted images may set lengthAllocDescs so that the total descriptor
-length (sizeof(allocExtDesc) + lengthAllocDescs) exceeds the buffer,
-leading udf_update_tag() to call crc_itu_t() on out-of-bounds memory and
-trigger a KASAN use-after-free read.
+Prevent USB runtime PM (autosuspend) for AX88772* in bind.
 
-BUG: KASAN: use-after-free in crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
-Read of size 1 at addr ffff888041e7d000 by task syz-executor317/5309
+usbnet enables runtime PM (autosuspend) by default, so disabling it via
+the usb_driver flag is ineffective. On AX88772B, autosuspend shows no
+measurable power saving with current driver (no link partner, admin
+up/down). The ~0.453 W -> ~0.248 W drop on v6.1 comes from phylib powering
+the PHY off on admin-down, not from USB autosuspend.
 
-CPU: 0 UID: 0 PID: 5309 Comm: syz-executor317 Not tainted 6.12.0-rc4-syzkaller-00261-g850925a8133c #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
- udf_update_tag+0x70/0x6a0 fs/udf/misc.c:261
- udf_write_aext+0x4d8/0x7b0 fs/udf/inode.c:2179
- extent_trunc+0x2f7/0x4a0 fs/udf/truncate.c:46
- udf_truncate_tail_extent+0x527/0x7e0 fs/udf/truncate.c:106
- udf_release_file+0xc1/0x120 fs/udf/file.c:185
- __fput+0x23f/0x880 fs/file_table.c:431
- task_work_run+0x24f/0x310 kernel/task_work.c:239
- exit_task_work include/linux/task_work.h:43 [inline]
- do_exit+0xa2f/0x28e0 kernel/exit.c:939
- do_group_exit+0x207/0x2c0 kernel/exit.c:1088
- __do_sys_exit_group kernel/exit.c:1099 [inline]
- __se_sys_exit_group kernel/exit.c:1097 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
- x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+The real hazard is that with runtime PM enabled, ndo_open() (under RTNL)
+may synchronously trigger autoresume (usb_autopm_get_interface()) into
+asix_resume() while the USB PM lock is held. Resume paths then invoke
+phylink/phylib and MDIO, which also expect RTNL, leading to possible
+deadlocks or PM lock vs MDIO wake issues.
 
-Validate the computed total length against epos->bh->b_size.
+To avoid this, keep the device runtime-PM active by taking a usage
+reference in ax88772_bind() and dropping it in unbind(). A non-zero PM
+usage count blocks runtime suspend regardless of userspace policy
+(.../power/control - pm_runtime_allow/forbid), making this approach
+robust against sysfs overrides.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Holding a runtime-PM usage ref does not affect system-wide suspend;
+system sleep/resume callbacks continue to run as before.
 
-Reported-by: syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8743fca924afed42f93e
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC")
+Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Closes: https://lore.kernel.org/all/DCGHG5UJT9G3.2K1GHFZ3H87T0@gmail.com
+Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Larshin Sergey <Sergey.Larshin@kaspersky.com>
-Link: https://patch.msgid.link/20250922131358.745579-1-Sergey.Larshin@kaspersky.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20251005081203.3067982-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/asix_devices.c |   29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -2265,6 +2265,9 @@ int udf_current_aext(struct inode *inode
- 		if (check_add_overflow(sizeof(struct allocExtDesc),
- 				le32_to_cpu(header->lengthAllocDescs), &alen))
- 			return -1;
-+
-+		if (alen > epos->bh->b_size)
-+			return -1;
- 	}
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -625,6 +625,21 @@ static void ax88772_suspend(struct usbne
+ 		   asix_read_medium_status(dev, 1));
+ }
  
- 	switch (iinfo->i_alloc_type) {
++/* Notes on PM callbacks and locking context:
++ *
++ * - asix_suspend()/asix_resume() are invoked for both runtime PM and
++ *   system-wide suspend/resume. For struct usb_driver the ->resume()
++ *   callback does not receive pm_message_t, so the resume type cannot
++ *   be distinguished here.
++ *
++ * - The MAC driver must hold RTNL when calling phylink interfaces such as
++ *   phylink_suspend()/resume(). Those calls will also perform MDIO I/O.
++ *
++ * - Taking RTNL and doing MDIO from a runtime-PM resume callback (while
++ *   the USB PM lock is held) is fragile. Since autosuspend brings no
++ *   measurable power saving here, we block it by holding a PM usage
++ *   reference in ax88772_bind().
++ */
+ static int asix_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct usbnet *dev = usb_get_intfdata(intf);
+@@ -922,6 +937,13 @@ static int ax88772_bind(struct usbnet *d
+ 	if (ret)
+ 		goto initphy_err;
+ 
++	/* Keep this interface runtime-PM active by taking a usage ref.
++	 * Prevents runtime suspend while bound and avoids resume paths
++	 * that could deadlock (autoresume under RTNL while USB PM lock
++	 * is held, phylink/MDIO wants RTNL).
++	 */
++	pm_runtime_get_noresume(&intf->dev);
++
+ 	return 0;
+ 
+ initphy_err:
+@@ -951,6 +973,8 @@ static void ax88772_unbind(struct usbnet
+ 	phylink_destroy(priv->phylink);
+ 	ax88772_mdio_unregister(priv);
+ 	asix_rx_fixup_common_free(dev->driver_priv);
++	/* Drop the PM usage ref taken in bind() */
++	pm_runtime_put(&intf->dev);
+ }
+ 
+ static void ax88178_unbind(struct usbnet *dev, struct usb_interface *intf)
+@@ -1575,6 +1599,11 @@ static struct usb_driver asix_driver = {
+ 	.resume =	asix_resume,
+ 	.reset_resume =	asix_resume,
+ 	.disconnect =	usbnet_disconnect,
++	/* usbnet enables autosuspend by default (supports_autosuspend=1).
++	 * We keep runtime-PM active for AX88772* by taking a PM usage
++	 * reference in ax88772_bind() (pm_runtime_get_noresume()) and
++	 * dropping it in unbind(), which effectively blocks autosuspend.
++	 */
+ 	.supports_autosuspend = 1,
+ 	.disable_hub_initiated_lpm = 1,
+ };
 
 
 
