@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550E8BD4447
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9E0BD4096
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1C10B504C2C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6054188421E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E240630C631;
-	Mon, 13 Oct 2025 15:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCB3309DCF;
+	Mon, 13 Oct 2025 15:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lm8JQuqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpLuR/5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3F130C610;
-	Mon, 13 Oct 2025 15:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3BC308F11;
+	Mon, 13 Oct 2025 15:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368300; cv=none; b=JlH9GJnsaQ59D4UsqphjxaxjUewxwbqULGwVMZ9x62bk5Eesqr/vHBgEzoUjUZFd4E+4aIzWOJuIfcJMPwkSZFanB2t8/acZizBiXmTWIbvYo8BAiDb0AJ/l8ge1WBXSLfjjSrhReYStQ0llg0iZ7SOMNKJ403ggLs2ttc/YyeY=
+	t=1760367613; cv=none; b=a7SYHq+MOlSXmusR047RMskOGmHNVUf9aXNqNyxYCV3g22AhrUN7jAtukaPOM/t++2uv6tFTyaxhcV8c9jvH+IYcarsdnMa57Bn1GBrDPP2BF4W6gB0uku6rymD69uHFsDuBG0aHB1TY7AUlHluhbRBjcPOM9OvFaHlkvaYP1Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368300; c=relaxed/simple;
-	bh=yYU1aA2NoN+YpkOqK4vn/f+j1PSWfAyOb7de26ReN7w=;
+	s=arc-20240116; t=1760367613; c=relaxed/simple;
+	bh=TGEykBH46IFAONrfnOVixLB+AEn0AnIZecAgOPWtOoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8wd/5JcRpfIlY+0vGl2QJXq7xpyG1NSbrp5Ug6mzOc8u9V5ap6kvAZne9bppuygtH88If5xh4dUdR1Jq1R27gktyVhvbDxLCPuh92HrTzL5WBr2crwBmELoLyh1yD7G3cSrDnVUjweNFZbrMCAzsGLxvbi/sSQENY//WfSAwIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lm8JQuqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6A0C4CEE7;
-	Mon, 13 Oct 2025 15:11:39 +0000 (UTC)
+	 MIME-Version; b=RhYYVARdNHFsqLSyJyhH74mV1AqFP0M+wincgVhvJssQTX3ubcnQPKbWGQnpktfn2CAUtCzFDM0Uvg7plAaa3A4f8qCkBdI4+Jk3IMBRpsLu/jdh+4iAjITD59UvV5PChDooxbHyec8irxxuMTjNFTJSly37AKIQXgQgIg0zPsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpLuR/5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1C6C4CEE7;
+	Mon, 13 Oct 2025 15:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368300;
-	bh=yYU1aA2NoN+YpkOqK4vn/f+j1PSWfAyOb7de26ReN7w=;
+	s=korg; t=1760367613;
+	bh=TGEykBH46IFAONrfnOVixLB+AEn0AnIZecAgOPWtOoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lm8JQuqEkUYs9cbqN+7aJ2tokaPFjl+Wd9aporuieOPD0Ml5lsouhnrEOOA494Y+A
-	 ZNF8BD8UREpbDb2A6QpI58XvKw0O2tvaQu3qUqUany/NR7HG3TRSgE0k3KQYsHGMMi
-	 NWUX3vuDcr6JDN/jqmUovuMLzKQYPSpNpfwp6LnU=
+	b=MpLuR/5yjRLTCocNsKUmhnaAeBn9+x5nzj2S9o4/T0I/GnF0RexShDHr5qtlbTsKE
+	 lDkludgSA+sRl/s00BR4q0LzGUwTd8qhyXtNgOr5iXvZSRzxihBju6lppYUEUR3Cmx
+	 8+3tmaDnfivQTnXljWNoo2uhJy+e/WWhQugT+Sm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 114/262] inet: ping: check sock_net() in ping_get_port() and ping_lookup()
+Subject: [PATCH 6.6 065/196] drm/bridge: it6505: select REGMAP_I2C
 Date: Mon, 13 Oct 2025 16:44:16 +0200
-Message-ID: <20251013144330.231240896@linuxfoundation.org>
+Message-ID: <20251013144317.547485805@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Chia-I Wu <olvaffe@gmail.com>
 
-[ Upstream commit 59f26d86b2a16f1406f3b42025062b6d1fba5dd5 ]
+[ Upstream commit 21b137f651cf9d981e22d2c60a2a8105f50a6361 ]
 
-We need to check socket netns before considering them in ping_get_port().
-Otherwise, one malicious netns could 'consume' all ports.
+Fix
 
-Add corresponding check in ping_lookup().
+  aarch64-linux-gnu-ld: drivers/gpu/drm/bridge/ite-it6505.o: in function `it6505_i2c_probe':
+  ite-it6505.c:(.text+0x754): undefined reference to `__devm_regmap_init_i2c'
 
-Fixes: c319b4d76b9e ("net: ipv4: add IPPROTO_ICMP socket kind")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250829153054.474201-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20250610235825.3113075-1-olvaffe@gmail.com
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ping.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
-index 619ddc087957f..37a3fa98d904f 100644
---- a/net/ipv4/ping.c
-+++ b/net/ipv4/ping.c
-@@ -77,6 +77,7 @@ static inline struct hlist_head *ping_hashslot(struct ping_table *table,
+diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
+index 3e6a4e2044c0e..5a4d574b37b89 100644
+--- a/drivers/gpu/drm/bridge/Kconfig
++++ b/drivers/gpu/drm/bridge/Kconfig
+@@ -85,6 +85,7 @@ config DRM_ITE_IT6505
+ 	select EXTCON
+ 	select CRYPTO
+ 	select CRYPTO_HASH
++	select REGMAP_I2C
+ 	help
+ 	  ITE IT6505 DisplayPort bridge chip driver.
  
- int ping_get_port(struct sock *sk, unsigned short ident)
- {
-+	struct net *net = sock_net(sk);
- 	struct inet_sock *isk, *isk2;
- 	struct hlist_head *hlist;
- 	struct sock *sk2 = NULL;
-@@ -90,9 +91,10 @@ int ping_get_port(struct sock *sk, unsigned short ident)
- 		for (i = 0; i < (1L << 16); i++, result++) {
- 			if (!result)
- 				result++; /* avoid zero */
--			hlist = ping_hashslot(&ping_table, sock_net(sk),
--					    result);
-+			hlist = ping_hashslot(&ping_table, net, result);
- 			sk_for_each(sk2, hlist) {
-+				if (!net_eq(sock_net(sk2), net))
-+					continue;
- 				isk2 = inet_sk(sk2);
- 
- 				if (isk2->inet_num == result)
-@@ -108,8 +110,10 @@ int ping_get_port(struct sock *sk, unsigned short ident)
- 		if (i >= (1L << 16))
- 			goto fail;
- 	} else {
--		hlist = ping_hashslot(&ping_table, sock_net(sk), ident);
-+		hlist = ping_hashslot(&ping_table, net, ident);
- 		sk_for_each(sk2, hlist) {
-+			if (!net_eq(sock_net(sk2), net))
-+				continue;
- 			isk2 = inet_sk(sk2);
- 
- 			/* BUG? Why is this reuse and not reuseaddr? ping.c
-@@ -129,7 +133,7 @@ int ping_get_port(struct sock *sk, unsigned short ident)
- 		pr_debug("was not hashed\n");
- 		sk_add_node_rcu(sk, hlist);
- 		sock_set_flag(sk, SOCK_RCU_FREE);
--		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
-+		sock_prot_inuse_add(net, sk->sk_prot, 1);
- 	}
- 	spin_unlock(&ping_table.lock);
- 	return 0;
-@@ -188,6 +192,8 @@ static struct sock *ping_lookup(struct net *net, struct sk_buff *skb, u16 ident)
- 	}
- 
- 	sk_for_each_rcu(sk, hslot) {
-+		if (!net_eq(sock_net(sk), net))
-+			continue;
- 		isk = inet_sk(sk);
- 
- 		pr_debug("iterate\n");
 -- 
 2.51.0
 
