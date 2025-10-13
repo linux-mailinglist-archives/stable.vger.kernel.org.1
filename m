@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81479BD4B34
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:02:44 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B24BD3F2A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:14:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3C9DC501168
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C360E34E0B4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E772830C625;
-	Mon, 13 Oct 2025 15:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA313081D3;
+	Mon, 13 Oct 2025 14:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrENIHb5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4BySYBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A3E31281C;
-	Mon, 13 Oct 2025 15:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4D827A10D;
+	Mon, 13 Oct 2025 14:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368274; cv=none; b=qw8rDZnnJxHKAEtlUA4N8w1fUG32fc8lae7IZrwYVlUyYY1w/74a5eZVo4L29oo9gutQrbATkLOVkfD8cQ/40fgNSghLF8uCKrqGQfmCkK4HPYtLn3AvpLmaWsHSX+AsKCzQdJB3DvvjUYQefR9LGA/YWwBFOu+AaPRClHFwUM0=
+	t=1760367471; cv=none; b=qANlx+kXWKIdW88bgOZhIZmrHRjlpDYygjU3NBwN4xuv95g0wQp3mZhlxpiJmSnrSOju7FK6J3HqmYCvpL9NvUTQ1h662grU0mNPpuQKDLyN2M0JsQ4vxfJ38uZq/ZjxsmKnD7CT9/0r+60TZHl/Xu+0AQCM2PQFmebBfw9Ndzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368274; c=relaxed/simple;
-	bh=J9eQOsZ8SEKCl6SvgD8gReJsk6iMEM5BYrmGLAMnyQI=;
+	s=arc-20240116; t=1760367471; c=relaxed/simple;
+	bh=/Xn5P4ZvV4UgEiFYqCht+x244CmA/ep4dSt8YTf1BKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oUcBmBYZnfMBZc2I3JiRWG2BVGPKfIMvI5wTaTGZAECBmty/NbiqBsoI4ZPixVa/PP5hSMcSayMsJXXOkKCy7Dmu9fkgfpFdvi/5Xj0cx9a/u2B4wD3Mm5sduTo4jzqTbSE+6UPGEXlpj1lwnBk+8xJcaYRRjGsRR7MCEF+CD8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrENIHb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC59C4CEE7;
-	Mon, 13 Oct 2025 15:11:14 +0000 (UTC)
+	 MIME-Version; b=a6rVWekmYQeab1Jpvixyy4qf0SMarb8+3XeEM84uB3cSCDrkFlXMhIDpJluAdfYzmMQK8mAU1y1gEE/V3CfWlo6jn1cg90DmgOU3lrJSFmyRy+VjPjcmmYUkfNTY5asnb2lCfk++NzU9n/xFGci+NfRPyXUHfdQN8BC9THnuvaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4BySYBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA75C4CEE7;
+	Mon, 13 Oct 2025 14:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368274;
-	bh=J9eQOsZ8SEKCl6SvgD8gReJsk6iMEM5BYrmGLAMnyQI=;
+	s=korg; t=1760367471;
+	bh=/Xn5P4ZvV4UgEiFYqCht+x244CmA/ep4dSt8YTf1BKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vrENIHb5+Ivj264HGugSrv1SADt3a4GTb0aB0cVr1dLCMcoDToJ+60d5oYhz2TnBS
-	 Ak53n5/Mdzl6Drffjgw+4uujr6lHI36nQPVVNmZON52rd1SyHQrw4MTbymMGGBSZoN
-	 K5v7FvtmdapuP+kShvAQBU3Rn9s9nnRSgRgfwwqU=
+	b=b4BySYBDoKybyTjtnzOHPCw0frGmalXkt6WMUIvreyYeLv/6/ShblOw9DV54z4o15
+	 4fQgwIbQnM9aUGOi5PSW4DiGCyDj7FbcF+6w6EkoaHyxQfoyWO+Kg/vgl9+mqFmE+k
+	 FgPzvmmSprMWB7CdLqZgHwkVr5UThcijEZ/a8phE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+	Da Xue <da@libre.computer>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/262] nvmet-fc: move lsop put work to nvmet_fc_ls_req_op
-Date: Mon, 13 Oct 2025 16:43:33 +0200
-Message-ID: <20251013144328.684062825@linuxfoundation.org>
+Subject: [PATCH 6.6 023/196] pinctrl: meson-gxl: add missing i2c_d pinmux
+Date: Mon, 13 Oct 2025 16:43:34 +0200
+Message-ID: <20251013144316.035042084@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Da Xue <da@libre.computer>
 
-[ Upstream commit db5a5406fb7e5337a074385c7a3e53c77f2c1bd3 ]
+[ Upstream commit d8c2a9edd181f0cc4a66eec954b3d8f6a1d954a7 ]
 
-It’s possible for more than one async command to be in flight from
-__nvmet_fc_send_ls_req. For each command, a tgtport reference is taken.
+Amlogic GXL has 4 I2C attached to gpio-periphs. I2C_D is on GPIOX_10/11.
 
-In the current code, only one put work item is queued at a time, which
-results in a leaked reference.
+Add the relevant func 3 pinmux per the datasheet for S805X/S905X/S905D.
 
-To fix this, move the work item to the nvmet_fc_ls_req_op struct, which
-already tracks all resources related to the command.
-
-Fixes: 710c69dbaccd ("nvmet-fc: avoid deadlock on delete association path")
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 0f15f500ff2c ("pinctrl: meson: Add GXL pinctrl definitions")
+Signed-off-by: Da Xue <da@libre.computer>
+Link: https://lore.kernel.org/20250821233335.1707559-1-da@libre.computer
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fc.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/pinctrl/meson/pinctrl-meson-gxl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index ef8c5961e10c8..0ade23610ae64 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -54,6 +54,8 @@ struct nvmet_fc_ls_req_op {		/* for an LS RQST XMT */
- 	int				ls_error;
- 	struct list_head		lsreq_list; /* tgtport->ls_req_list */
- 	bool				req_queued;
+diff --git a/drivers/pinctrl/meson/pinctrl-meson-gxl.c b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
+index 51408996255bd..e2601e45935e6 100644
+--- a/drivers/pinctrl/meson/pinctrl-meson-gxl.c
++++ b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
+@@ -187,6 +187,9 @@ static const unsigned int i2c_sda_c_pins[]	= { GPIODV_28 };
+ static const unsigned int i2c_sck_c_dv19_pins[] = { GPIODV_19 };
+ static const unsigned int i2c_sda_c_dv18_pins[] = { GPIODV_18 };
+ 
++static const unsigned int i2c_sck_d_pins[]	= { GPIOX_11 };
++static const unsigned int i2c_sda_d_pins[]	= { GPIOX_10 };
 +
-+	struct work_struct		put_work;
+ static const unsigned int eth_mdio_pins[]	= { GPIOZ_0 };
+ static const unsigned int eth_mdc_pins[]	= { GPIOZ_1 };
+ static const unsigned int eth_clk_rx_clk_pins[] = { GPIOZ_2 };
+@@ -411,6 +414,8 @@ static struct meson_pmx_group meson_gxl_periphs_groups[] = {
+ 	GPIO_GROUP(GPIO_TEST_N),
+ 
+ 	/* Bank X */
++	GROUP(i2c_sda_d,	5,	5),
++	GROUP(i2c_sck_d,	5,	4),
+ 	GROUP(sdio_d0,		5,	31),
+ 	GROUP(sdio_d1,		5,	30),
+ 	GROUP(sdio_d2,		5,	29),
+@@ -651,6 +656,10 @@ static const char * const i2c_c_groups[] = {
+ 	"i2c_sck_c", "i2c_sda_c", "i2c_sda_c_dv18", "i2c_sck_c_dv19",
  };
  
- 
-@@ -111,8 +113,6 @@ struct nvmet_fc_tgtport {
- 	struct nvmet_fc_port_entry	*pe;
- 	struct kref			ref;
- 	u32				max_sg_cnt;
--
--	struct work_struct		put_work;
- };
- 
- struct nvmet_fc_port_entry {
-@@ -235,12 +235,13 @@ static int nvmet_fc_tgt_a_get(struct nvmet_fc_tgt_assoc *assoc);
- static void nvmet_fc_tgt_q_put(struct nvmet_fc_tgt_queue *queue);
- static int nvmet_fc_tgt_q_get(struct nvmet_fc_tgt_queue *queue);
- static void nvmet_fc_tgtport_put(struct nvmet_fc_tgtport *tgtport);
--static void nvmet_fc_put_tgtport_work(struct work_struct *work)
-+static void nvmet_fc_put_lsop_work(struct work_struct *work)
- {
--	struct nvmet_fc_tgtport *tgtport =
--		container_of(work, struct nvmet_fc_tgtport, put_work);
-+	struct nvmet_fc_ls_req_op *lsop =
-+		container_of(work, struct nvmet_fc_ls_req_op, put_work);
- 
--	nvmet_fc_tgtport_put(tgtport);
-+	nvmet_fc_tgtport_put(lsop->tgtport);
-+	kfree(lsop);
- }
- static int nvmet_fc_tgtport_get(struct nvmet_fc_tgtport *tgtport);
- static void nvmet_fc_handle_fcp_rqst(struct nvmet_fc_tgtport *tgtport,
-@@ -367,7 +368,7 @@ __nvmet_fc_finish_ls_req(struct nvmet_fc_ls_req_op *lsop)
- 				  DMA_BIDIRECTIONAL);
- 
- out_putwork:
--	queue_work(nvmet_wq, &tgtport->put_work);
-+	queue_work(nvmet_wq, &lsop->put_work);
- }
- 
- static int
-@@ -388,6 +389,7 @@ __nvmet_fc_send_ls_req(struct nvmet_fc_tgtport *tgtport,
- 	lsreq->done = done;
- 	lsop->req_queued = false;
- 	INIT_LIST_HEAD(&lsop->lsreq_list);
-+	INIT_WORK(&lsop->put_work, nvmet_fc_put_lsop_work);
- 
- 	lsreq->rqstdma = fc_dma_map_single(tgtport->dev, lsreq->rqstaddr,
- 				  lsreq->rqstlen + lsreq->rsplen,
-@@ -447,8 +449,6 @@ nvmet_fc_disconnect_assoc_done(struct nvmefc_ls_req *lsreq, int status)
- 	__nvmet_fc_finish_ls_req(lsop);
- 
- 	/* fc-nvme target doesn't care about success or failure of cmd */
--
--	kfree(lsop);
- }
- 
- /*
-@@ -1412,7 +1412,6 @@ nvmet_fc_register_targetport(struct nvmet_fc_port_info *pinfo,
- 	kref_init(&newrec->ref);
- 	ida_init(&newrec->assoc_cnt);
- 	newrec->max_sg_cnt = template->max_sgl_segments;
--	INIT_WORK(&newrec->put_work, nvmet_fc_put_tgtport_work);
- 
- 	ret = nvmet_fc_alloc_ls_iodlist(newrec);
- 	if (ret) {
++static const char * const i2c_d_groups[] = {
++	"i2c_sck_d", "i2c_sda_d",
++};
++
+ static const char * const eth_groups[] = {
+ 	"eth_mdio", "eth_mdc", "eth_clk_rx_clk", "eth_rx_dv",
+ 	"eth_rxd0", "eth_rxd1", "eth_rxd2", "eth_rxd3",
+@@ -777,6 +786,7 @@ static struct meson_pmx_func meson_gxl_periphs_functions[] = {
+ 	FUNCTION(i2c_a),
+ 	FUNCTION(i2c_b),
+ 	FUNCTION(i2c_c),
++	FUNCTION(i2c_d),
+ 	FUNCTION(eth),
+ 	FUNCTION(pwm_a),
+ 	FUNCTION(pwm_b),
 -- 
 2.51.0
 
