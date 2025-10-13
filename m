@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-184476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A878CBD404B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA8EBD42CC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8620E188991C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C42188CDED
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0630027AC54;
-	Mon, 13 Oct 2025 14:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DD331280E;
+	Mon, 13 Oct 2025 15:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1CGzyFZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wmd44jqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8CC2580F2;
-	Mon, 13 Oct 2025 14:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7FA31280A;
+	Mon, 13 Oct 2025 15:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367546; cv=none; b=hdLPYxbgyoWNXLcxqYNQF9ki5rbHlFknYg3c/NbjsODIp140OXkrCrbmLfkGEoVbT8WlP4hOhAd7GWkcPYU5u+X9q0EzmiV8AuRz63a+0ZSkulqVvv1d4Kk/P0Rk5HLpDM68mh6f+f+k/yjrGQZb7ONelhVVZjzvurcK0fet49I=
+	t=1760368260; cv=none; b=ekr+lqJnFGPzdBXI6BPXV30/eIgNgsf/E8DgSKLpTuiynnq52rtupkc6REPkzYhMcB5l0Lz0cZkvnuVcpQuEBeS1tPVjUWdtC+lUcpM2+RmdaHAAU3YvpoPD/EUbGD3lXS+k+JJVzzKOSTYgyp9tcnoblINkikvZ0RkE+Xta8nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367546; c=relaxed/simple;
-	bh=Ycis8vmIwAzRvUPrJlfRIt6VjBJBwPS7+JBdlUzMr4E=;
+	s=arc-20240116; t=1760368260; c=relaxed/simple;
+	bh=ojwbqnOxXX7T/kqGh1o0+iRLjfumX5kZmM5e3C07a28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P07S+ZoeV9tIeb+cgo/IktrJS71y4QtTdvejXf5kB1Y3WwEBxQZRZOQBCCU9OjNpslUcnIy3a4qjdjN1AfLyWktnrJ/2k8mTOPnTDM/P2nWCxIx0fx31b5KSeJ2Uby7lMkcSmZgxaitLYU+5DWST73xpA6FeQhRKVgUMmBzd5Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1CGzyFZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAF1C4CEE7;
-	Mon, 13 Oct 2025 14:59:05 +0000 (UTC)
+	 MIME-Version; b=T0AwOX+5XyNveDCYrvmZUW7q9KXsnP8XBpYdAjMZgS3PQKjYTIpB9+SytILCnDMgU0iK1kmbNSrDNRvPyr4KUvgkPp0kNDZ9tuTComMZLkhy3t0/xnfERmU94RTe8yuTcA3Lh5koYqZyZHxpsH2NuBNPM+D+wKLxKEMnWUTMXxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wmd44jqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BCFC4CEE7;
+	Mon, 13 Oct 2025 15:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367546;
-	bh=Ycis8vmIwAzRvUPrJlfRIt6VjBJBwPS7+JBdlUzMr4E=;
+	s=korg; t=1760368260;
+	bh=ojwbqnOxXX7T/kqGh1o0+iRLjfumX5kZmM5e3C07a28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1CGzyFZMhQBVFvEQSZgDWJRuftrwVEdCf1g/vS5M1nJ1k2nFClrLSFppdmQRiEG+
-	 c7QBolb3VyUSPZL1XHZv2EmvdJXcxFlaVOETf0HXXIjXl22LEvocsj8Px7ZH3srV6p
-	 l1o4s3XX2Pt9SyN5OEzLN+4vWxEHxJvwzvZF7LA8=
+	b=Wmd44jqiSp2JG48MeKBI2uBoPZEo4Y35Ke3uTklBuNxIJhSAX9/iLQZuw+0G0M5uL
+	 tIMuhAv9nKFmfqL41bAvM4HVhxAawrTg6ZFUKcsDHtLhwYaLd1bOXRoUfZlsWCA5HC
+	 /hz46D813EOyyR6LplwI0v9DYHwU4U7pWkqN4BUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/196] i3c: master: svc: Recycle unused IBI slot
+Subject: [PATCH 6.12 098/262] serial: max310x: Add error checking in probe()
 Date: Mon, 13 Oct 2025 16:44:00 +0200
-Message-ID: <20251013144316.975178701@linuxfoundation.org>
+Message-ID: <20251013144329.657732354@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <stanley.chuys@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 3448a934ba6f803911ac084d05a2ffce507ea6c6 ]
+[ Upstream commit 672a37ba8af1f2ebcedeb94aea2cdd047f805f30 ]
 
-In svc_i3c_master_handle_ibi(), an IBI slot is fetched from the pool
-to store the IBI payload. However, when an error condition is encountered,
-the function returns without recycling the IBI slot, resulting in an IBI
-slot leak.
+Check if devm_i2c_new_dummy_device() fails.
 
-Fixes: c85e209b799f ("i3c: master: svc: fix ibi may not return mandatory data byte")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250829012309.3562585-3-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJTMPZiKqeXSE-KM@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/max310x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 1cfc8f480d15c..277884b5e1ca4 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -369,6 +369,7 @@ static int svc_i3c_master_handle_ibi(struct svc_i3c_master *master,
- 						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
- 	if (ret) {
- 		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
-+		i3c_generic_ibi_recycle_slot(data->ibi_pool, slot);
- 		return ret;
- 	}
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index 35369a2f77b29..2f8e3ea4fe128 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -1641,6 +1641,8 @@ static int max310x_i2c_probe(struct i2c_client *client)
+ 		port_client = devm_i2c_new_dummy_device(&client->dev,
+ 							client->adapter,
+ 							port_addr);
++		if (IS_ERR(port_client))
++			return PTR_ERR(port_client);
  
+ 		regcfg_i2c.name = max310x_regmap_name(i);
+ 		regmaps[i] = devm_regmap_init_i2c(port_client, &regcfg_i2c);
 -- 
 2.51.0
 
