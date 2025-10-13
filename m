@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-185116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE939BD4B82
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E02CBD485F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8B759562520
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D90F0188586F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FD32566;
-	Mon, 13 Oct 2025 15:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B3A2D2384;
+	Mon, 13 Oct 2025 15:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6lhhqKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swbanb4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6230B1F1313;
-	Mon, 13 Oct 2025 15:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2882EC574;
+	Mon, 13 Oct 2025 15:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369379; cv=none; b=ZxEjdaUDOVnzQ8lrgFoQaArzoOXG5s2PAVaiN10s9JF4RdDTV80BPjEINzXgWPflvoxjNrUoJm8Z2jq3CVuqqdxsZRIviQrWwWtyaLWZpJm/vgswMoG6i3vRIokyED33Qnd17TvrXrrnCj9tWxLYTuf8kBn41KFoQ0Y8jOhZW50=
+	t=1760369388; cv=none; b=fX9f8qQqehLlrXME8Bh48xrq02xW1vAesqphwDshIJJib0klWmnIBL86vTKy58OfzZBXx5kzHXhbhe06uXGVMB45LBAn09TLDoU8mHTMy464CuzJCumvKn1W+fNZhUsPx1NRGVxlBRb4X5gBEdt0sp87SEkuWBQY09Mv1K3geps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369379; c=relaxed/simple;
-	bh=trki4HoO2/2grsRiEiyigVekJTmhCsVP22jms6ynXJ8=;
+	s=arc-20240116; t=1760369388; c=relaxed/simple;
+	bh=xC5sy1ovZOx3Nv71FEQXjAf1RHBZILqDA7YidY28gpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y01RjfLwm6DdAiCUEGgcRolgbRQ7dH3k26Vp9xqs/PbopQZ1+boCCAUn1FLup75623UL9y/e+jVB/AvlamD+poI2mGDErenu0wBVdkw1e+jNpiQmrtqhtf5W6AQYvIiM6pGXAHzk+BAsoJ/hTrQ36B8DUyuJefqClEy+P6JLJ9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6lhhqKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E112CC4CEE7;
-	Mon, 13 Oct 2025 15:29:38 +0000 (UTC)
+	 MIME-Version; b=Onl0uzpGnsqUgPg/IVS5l6dVI0aUftQfwbeIE/kE0rjIXg89yTYNmrzJUZnoGzYWlht2YgKoT4F9lgPoGUeqfxDMwj48K5qthJUajohrL/YznbAj9JYCyD4eW9XhP4YmUrHGQRwkw5w5UoSjxLT8UUvW1a3k9bOXbqg6LWxvRNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swbanb4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C746C4CEE7;
+	Mon, 13 Oct 2025 15:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369379;
-	bh=trki4HoO2/2grsRiEiyigVekJTmhCsVP22jms6ynXJ8=;
+	s=korg; t=1760369387;
+	bh=xC5sy1ovZOx3Nv71FEQXjAf1RHBZILqDA7YidY28gpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6lhhqKt6KextZwBGCz284BtRvaixPhb+V+T1du0iHSFVDYic6awX7PK6w2b/u+Io
-	 klfolk8d0sLEfau0Pl1eEurXRMb6Pnrlc7pVK/JdTKS6K4ZrfZJnukg1CPVkz/nyOV
-	 U1uoo9MONgyIsZGLtFxGkEIZmjPWvTsvfYvUWWAs=
+	b=swbanb4CvV3AqlJ/6wdW4ZyvZRnkGg2FsTJT2U1LzcA9HSOIsMruKNCxrh8VHO6w9
+	 eLdUucG0bFcq0uyDwf8cCyF2VSyW55LHmyS0/KItwSdvgWYKQMa506sbuhHvJF35y/
+	 f2EQSwqDDf3Lh1oBtwV0z+bB3b4DJP9CAjQb7IxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 225/563] f2fs: fix to avoid overflow while left shift operation
-Date: Mon, 13 Oct 2025 16:41:26 +0200
-Message-ID: <20251013144419.432543031@linuxfoundation.org>
+Subject: [PATCH 6.17 227/563] drm/bridge: it6505: select REGMAP_I2C
+Date: Mon, 13 Oct 2025 16:41:28 +0200
+Message-ID: <20251013144419.505329977@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,34 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Chia-I Wu <olvaffe@gmail.com>
 
-[ Upstream commit 0fe1c6bec54ea68ed8c987b3890f2296364e77bb ]
+[ Upstream commit 21b137f651cf9d981e22d2c60a2a8105f50a6361 ]
 
-Should cast type of folio->index from pgoff_t to loff_t to avoid overflow
-while left shift operation.
+Fix
 
-Fixes: 3265d3db1f16 ("f2fs: support partial truncation on compressed inode")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+  aarch64-linux-gnu-ld: drivers/gpu/drm/bridge/ite-it6505.o: in function `it6505_i2c_probe':
+  ite-it6505.c:(.text+0x754): undefined reference to `__devm_regmap_init_i2c'
+
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20250610235825.3113075-1-olvaffe@gmail.com
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 5c1f47e45dab4..6cd8902849cf6 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1245,7 +1245,7 @@ int f2fs_truncate_partial_cluster(struct inode *inode, u64 from, bool lock)
+diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
+index b9e0ca85226a6..a6d6e62071a0e 100644
+--- a/drivers/gpu/drm/bridge/Kconfig
++++ b/drivers/gpu/drm/bridge/Kconfig
+@@ -122,6 +122,7 @@ config DRM_ITE_IT6505
+ 	select EXTCON
+ 	select CRYPTO
+ 	select CRYPTO_HASH
++	select REGMAP_I2C
+ 	help
+ 	  ITE IT6505 DisplayPort bridge chip driver.
  
- 		for (i = cluster_size - 1; i >= 0; i--) {
- 			struct folio *folio = page_folio(rpages[i]);
--			loff_t start = folio->index << PAGE_SHIFT;
-+			loff_t start = (loff_t)folio->index << PAGE_SHIFT;
- 
- 			if (from <= start) {
- 				folio_zero_segment(folio, 0, folio_size(folio));
 -- 
 2.51.0
 
