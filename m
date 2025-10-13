@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-184249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09C1BD3AD4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:51:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5337ABD4AA7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 265A534D64F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:51:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2AB456383E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA93222587;
-	Mon, 13 Oct 2025 14:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1890030C638;
+	Mon, 13 Oct 2025 15:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/MwVSQH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqZT25hA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01ED2566;
-	Mon, 13 Oct 2025 14:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE24830C363;
+	Mon, 13 Oct 2025 15:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366890; cv=none; b=X1gHjBZznvfoziE57fvdUOR9d/Qe0iHDU/GOvPWZONMMCGkgBCsdVL91B9E3gA1hDRvhrzNvrXkiNmoINJTPSwTgYNWrBLraOXd9Fke/GgXhGNHTnid/GBhLxDTmlZnxMHjXLyB+WoFXeWmmg2b9gHDkLKc1POderqATr7HrcCQ=
+	t=1760369648; cv=none; b=Kwn2HxTg5NKfx5TlWB+Yth+Ibiw+Zl2K5EBedZgSfCSf7lJSOxKAgs/J71dg4UsDbwdcGcxsE8KRwXVuCAi0FQF3w7FJxCCfIGi5CGbgU2in0AJPq6FE8L8wL5fPYgYN9S6989fQmLvAnvpRlBk/Pz2Pte+sPcf9d1AO4VzXwQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366890; c=relaxed/simple;
-	bh=RF++pWrGn4UUuMdfowyls9YsuVTeJ/sUOu2RJsGXdhw=;
+	s=arc-20240116; t=1760369648; c=relaxed/simple;
+	bh=Ijyjvc0xX5prMaTmkzxQ3M9MQenBzEwfB05K29BEn3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtbRxxMHma2vzECtWVyhcGdguIm5M2I02E+0O5xReTyURwOmfJwG8H8PXtRwVqjTnBnL+iFMaEvOUkSjV9PVvqMzwtp6xIw6hbpklDKMXddQ3RcMrs9HONPQuvCPNZuTjjYegiLpMO4IxkaSPZtNXaMmXaqwKY8DVplOgp7W5WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/MwVSQH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511E9C4CEE7;
-	Mon, 13 Oct 2025 14:48:10 +0000 (UTC)
+	 MIME-Version; b=V0KNHunVI2Jkywo2kG7vpbtp+vLedN0exfgwbC1VW4ijPNeWg8QSMzFzndYMAQpOhTnhwSW34WkPHIbJp70HVL7sR7wpz2IwoX0vbgA5H4al2at3Kvsl4GoPW7S4gjjbPHy7qNYyM7dTbTdEcPy5++ZodfUBHyPZoa1mqtqmuJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqZT25hA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A056C4CEE7;
+	Mon, 13 Oct 2025 15:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366890;
-	bh=RF++pWrGn4UUuMdfowyls9YsuVTeJ/sUOu2RJsGXdhw=;
+	s=korg; t=1760369648;
+	bh=Ijyjvc0xX5prMaTmkzxQ3M9MQenBzEwfB05K29BEn3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/MwVSQHfX7Iu28tmcjgAdYG4xH7Gd30T//HlX3Xnuv6xEJMD2jtGAdAWwnob33HK
-	 RJp3ux7FIaaoU40RgoKkBzHx6+TCQRHZMAsKIu7f6NpPa7TB6NYxhUAverAWNjthy4
-	 BjnhzI0dlwzHuvnkFv7YEmGIQTZvU8DryvJLw7q8=
+	b=wqZT25hAs/SVvvcuJFEHAZaCsTJ36wT5qzI8b4BWC70K0rYyyKmOuOmCrJ0hxaQ3o
+	 orRKJR3u3/H6O5q66uweH2PXzibVngDhIIwJdspzaq1YRIzwb8aI4fpxULH9iHhLRG
+	 wLjLYV2qYtR7wdCRGGG3vSepWf7qlT7PPArOp+yA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.1 008/196] arch_topology: Build cacheinfo from primary CPU
-Date: Mon, 13 Oct 2025 16:43:01 +0200
-Message-ID: <20251013144314.863513655@linuxfoundation.org>
+	Seppo Takalo <seppo.takalo@nordicsemi.no>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 321/563] tty: n_gsm: Dont block input queue by waiting MSC
+Date: Mon, 13 Oct 2025 16:43:02 +0200
+Message-ID: <20251013144422.893989893@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,246 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Seppo Takalo <seppo.takalo@nordicsemi.no>
 
-commit 5944ce092b97caed5d86d961e963b883b5c44ee2 upstream.
+[ Upstream commit 3cf0b3c243e56bc43be560617416c1d9f301f44c ]
 
-commit 3fcbf1c77d08 ("arch_topology: Fix cache attributes detection
-in the CPU hotplug path")
-adds a call to detect_cache_attributes() to populate the cacheinfo
-before updating the siblings mask. detect_cache_attributes() allocates
-memory and can take the PPTT mutex (on ACPI platforms). On PREEMPT_RT
-kernels, on secondary CPUs, this triggers a:
-  'BUG: sleeping function called from invalid context' [1]
-as the code is executed with preemption and interrupts disabled.
+Currently gsm_queue() processes incoming frames and when opening
+a DLC channel it calls gsm_dlci_open() which calls gsm_modem_update().
+If basic mode is used it calls gsm_modem_upd_via_msc() and it
+cannot block the input queue by waiting the response to come
+into the same input queue.
 
-The primary CPU was previously storing the cache information using
-the now removed (struct cpu_topology).llc_id:
-commit 5b8dc787ce4a ("arch_topology: Drop LLC identifier stash from
-the CPU topology")
+Instead allow sending Modem Status Command without waiting for remote
+end to respond. Define a new function gsm_modem_send_initial_msc()
+for this purpose. As MSC is only valid for basic encoding, it does
+not do anything for advanced or when convergence layer type 2 is used.
 
-allocate_cache_info() tries to build the cacheinfo from the primary
-CPU prior secondary CPUs boot, if the DT/ACPI description
-contains cache information.
-If allocate_cache_info() fails, then fallback to the current state
-for the cacheinfo allocation. [1] will be triggered in such case.
-
-When unplugging a CPU, the cacheinfo memory cannot be freed. If it
-was, then the memory would be allocated early by the re-plugged
-CPU and would trigger [1].
-
-Note that populate_cache_leaves() might be called multiple times
-due to populate_leaves being moved up. This is required since
-detect_cache_attributes() might be called with per_cpu_cacheinfo(cpu)
-being allocated but not populated.
-
-[1]:
- | BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
- | in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/111
- | preempt_count: 1, expected: 0
- | RCU nest depth: 1, expected: 1
- | 3 locks held by swapper/111/0:
- |  #0:  (&pcp->lock){+.+.}-{3:3}, at: get_page_from_freelist+0x218/0x12c8
- |  #1:  (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x48/0xf0
- |  #2:  (&zone->lock){+.+.}-{3:3}, at: rmqueue_bulk+0x64/0xa80
- | irq event stamp: 0
- | hardirqs last  enabled at (0):  0x0
- | hardirqs last disabled at (0):  copy_process+0x5dc/0x1ab8
- | softirqs last  enabled at (0):  copy_process+0x5dc/0x1ab8
- | softirqs last disabled at (0):  0x0
- | Preemption disabled at:
- |  migrate_enable+0x30/0x130
- | CPU: 111 PID: 0 Comm: swapper/111 Tainted: G        W          6.0.0-rc4-rt6-[...]
- | Call trace:
- |  __kmalloc+0xbc/0x1e8
- |  detect_cache_attributes+0x2d4/0x5f0
- |  update_siblings_masks+0x30/0x368
- |  store_cpu_topology+0x78/0xb8
- |  secondary_start_kernel+0xd0/0x198
- |  __secondary_switched+0xb0/0xb4
-
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lore.kernel.org/r/20230104183033.755668-7-pierre.gondois@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Wen Yang <wen.yang@linux.dev>
+Fixes: 48473802506d ("tty: n_gsm: fix missing update of modem controls after DLCI open")
+Signed-off-by: Seppo Takalo <seppo.takalo@nordicsemi.no>
+Link: https://lore.kernel.org/r/20250827123221.1148666-1-seppo.takalo@nordicsemi.no
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cacheinfo.c |    5 --
- drivers/base/arch_topology.c  |   12 +++++--
- drivers/base/cacheinfo.c      |   71 +++++++++++++++++++++++++++++++-----------
- include/linux/cacheinfo.h     |    1 
- 4 files changed, 65 insertions(+), 24 deletions(-)
+ drivers/tty/n_gsm.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
---- a/arch/riscv/kernel/cacheinfo.c
-+++ b/arch/riscv/kernel/cacheinfo.c
-@@ -113,11 +113,6 @@ static void fill_cacheinfo(struct cachei
- 	}
+diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
+index 7fc535452c0b3..553d8c70352b1 100644
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -461,6 +461,7 @@ static int gsm_send_packet(struct gsm_mux *gsm, struct gsm_msg *msg);
+ static struct gsm_dlci *gsm_dlci_alloc(struct gsm_mux *gsm, int addr);
+ static void gsmld_write_trigger(struct gsm_mux *gsm);
+ static void gsmld_write_task(struct work_struct *work);
++static int gsm_modem_send_initial_msc(struct gsm_dlci *dlci);
+ 
+ /**
+  *	gsm_fcs_add	-	update FCS
+@@ -2174,7 +2175,7 @@ static void gsm_dlci_open(struct gsm_dlci *dlci)
+ 		pr_debug("DLCI %d goes open.\n", dlci->addr);
+ 	/* Send current modem state */
+ 	if (dlci->addr) {
+-		gsm_modem_update(dlci, 0);
++		gsm_modem_send_initial_msc(dlci);
+ 	} else {
+ 		/* Start keep-alive control */
+ 		gsm->ka_num = 0;
+@@ -4161,6 +4162,28 @@ static int gsm_modem_upd_via_msc(struct gsm_dlci *dlci, u8 brk)
+ 	return gsm_control_wait(dlci->gsm, ctrl);
  }
  
--int init_cache_level(unsigned int cpu)
--{
--	return init_of_cache_level(cpu);
--}
--
- int populate_cache_leaves(unsigned int cpu)
- {
- 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -736,7 +736,7 @@ void update_siblings_masks(unsigned int
- 
- 	ret = detect_cache_attributes(cpuid);
- 	if (ret && ret != -ENOENT)
--		pr_info("Early cacheinfo failed, ret = %d\n", ret);
-+		pr_info("Early cacheinfo allocation failed, ret = %d\n", ret);
- 
- 	/* update core and thread sibling masks */
- 	for_each_online_cpu(cpu) {
-@@ -825,7 +825,7 @@ __weak int __init parse_acpi_topology(vo
- #if defined(CONFIG_ARM64) || defined(CONFIG_RISCV)
- void __init init_cpu_topology(void)
- {
--	int ret;
-+	int cpu, ret;
- 
- 	reset_cpu_topology();
- 	ret = parse_acpi_topology();
-@@ -840,6 +840,14 @@ void __init init_cpu_topology(void)
- 		reset_cpu_topology();
- 		return;
- 	}
-+
-+	for_each_possible_cpu(cpu) {
-+		ret = fetch_cache_info(cpu);
-+		if (ret) {
-+			pr_err("Early cacheinfo failed, ret = %d\n", ret);
-+			break;
-+		}
-+	}
- }
- 
- void store_cpu_topology(unsigned int cpuid)
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -412,10 +412,6 @@ static void free_cache_attributes(unsign
- 		return;
- 
- 	cache_shared_cpu_map_remove(cpu);
--
--	kfree(per_cpu_cacheinfo(cpu));
--	per_cpu_cacheinfo(cpu) = NULL;
--	cache_leaves(cpu) = 0;
- }
- 
- int __weak init_cache_level(unsigned int cpu)
-@@ -428,29 +424,71 @@ int __weak populate_cache_leaves(unsigne
- 	return -ENOENT;
- }
- 
-+static inline
-+int allocate_cache_info(int cpu)
++/**
++ * gsm_modem_send_initial_msc - Send initial modem status message
++ *
++ * @dlci channel
++ *
++ * Send an initial MSC message after DLCI open to set the initial
++ * modem status lines. This is only done for basic mode.
++ * Does not wait for a response as we cannot block the input queue
++ * processing.
++ */
++static int gsm_modem_send_initial_msc(struct gsm_dlci *dlci)
 +{
-+	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),
-+					 sizeof(struct cacheinfo), GFP_ATOMIC);
-+	if (!per_cpu_cacheinfo(cpu)) {
-+		cache_leaves(cpu) = 0;
-+		return -ENOMEM;
-+	}
++	u8 modembits[2];
 +
-+	return 0;
++	if (dlci->adaption != 1 || dlci->gsm->encoding != GSM_BASIC_OPT)
++		return 0;
++
++	modembits[0] = (dlci->addr << 2) | 2 | EA; /* DLCI, Valid, EA */
++	modembits[1] = (gsm_encode_modem(dlci) << 1) | EA;
++	return gsm_control_command(dlci->gsm, CMD_MSC, (const u8 *)&modembits, 2);
 +}
 +
-+int fetch_cache_info(unsigned int cpu)
-+{
-+	struct cpu_cacheinfo *this_cpu_ci;
-+	unsigned int levels, split_levels;
-+	int ret;
-+
-+	if (acpi_disabled) {
-+		ret = init_of_cache_level(cpu);
-+		if (ret < 0)
-+			return ret;
-+	} else {
-+		ret = acpi_get_cache_info(cpu, &levels, &split_levels);
-+		if (ret < 0)
-+			return ret;
-+
-+		this_cpu_ci = get_cpu_cacheinfo(cpu);
-+		this_cpu_ci->num_levels = levels;
-+		/*
-+		 * This assumes that:
-+		 * - there cannot be any split caches (data/instruction)
-+		 *   above a unified cache
-+		 * - data/instruction caches come by pair
-+		 */
-+		this_cpu_ci->num_leaves = levels + split_levels;
-+	}
-+	if (!cache_leaves(cpu))
-+		return -ENOENT;
-+
-+	return allocate_cache_info(cpu);
-+}
-+
- int detect_cache_attributes(unsigned int cpu)
- {
- 	int ret;
- 
--	/* Since early detection of the cacheinfo is allowed via this
--	 * function and this also gets called as CPU hotplug callbacks via
--	 * cacheinfo_cpu_online, the initialisation can be skipped and only
--	 * CPU maps can be updated as the CPU online status would be update
--	 * if called via cacheinfo_cpu_online path.
-+	/* Since early initialization/allocation of the cacheinfo is allowed
-+	 * via fetch_cache_info() and this also gets called as CPU hotplug
-+	 * callbacks via cacheinfo_cpu_online, the init/alloc can be skipped
-+	 * as it will happen only once (the cacheinfo memory is never freed).
-+	 * Just populate the cacheinfo.
- 	 */
- 	if (per_cpu_cacheinfo(cpu))
--		goto update_cpu_map;
-+		goto populate_leaves;
- 
- 	if (init_cache_level(cpu) || !cache_leaves(cpu))
- 		return -ENOENT;
- 
--	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),
--					 sizeof(struct cacheinfo), GFP_ATOMIC);
--	if (per_cpu_cacheinfo(cpu) == NULL) {
--		cache_leaves(cpu) = 0;
--		return -ENOMEM;
--	}
-+	ret = allocate_cache_info(cpu);
-+	if (ret)
-+		return ret;
- 
-+populate_leaves:
- 	/*
- 	 * populate_cache_leaves() may completely setup the cache leaves and
- 	 * shared_cpu_map or it may leave it partially setup.
-@@ -459,7 +497,6 @@ int detect_cache_attributes(unsigned int
- 	if (ret)
- 		goto free_ci;
- 
--update_cpu_map:
- 	/*
- 	 * For systems using DT for cache hierarchy, fw_token
- 	 * and shared_cpu_map will be set up here only if they are
---- a/include/linux/cacheinfo.h
-+++ b/include/linux/cacheinfo.h
-@@ -85,6 +85,7 @@ int populate_cache_leaves(unsigned int c
- int cache_setup_acpi(unsigned int cpu);
- bool last_level_cache_is_valid(unsigned int cpu);
- bool last_level_cache_is_shared(unsigned int cpu_x, unsigned int cpu_y);
-+int fetch_cache_info(unsigned int cpu);
- int detect_cache_attributes(unsigned int cpu);
- #ifndef CONFIG_ACPI_PPTT
- /*
+ /**
+  *	gsm_modem_update	-	send modem status line state
+  *	@dlci: channel
+-- 
+2.51.0
+
 
 
 
