@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A536BD3EEE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:13:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DF5BD47F0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CB819343643
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A965D5069C5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320BB307AE6;
-	Mon, 13 Oct 2025 14:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C43830F55A;
+	Mon, 13 Oct 2025 15:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6QKXjub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzZg/A9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79CF30DD1E;
-	Mon, 13 Oct 2025 14:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A36271473;
+	Mon, 13 Oct 2025 15:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367370; cv=none; b=PlZTC4Tqp6VrE8xwqGv+W10raWQUSbWzyDZ8iHIna/qIGllHO6ABHtHWQa6jrCEjF+x/19IknHciqu+QQDwj1c7lA6/Qo8FmgLj0WcRLYde+iA+Pm9ZdlpCJEwTNcVw+nWQMMGZ+tMd80kscVyeOE7XBYATX1A8uXcqgjz4qgOI=
+	t=1760367891; cv=none; b=hU4+7I0186/q7UCfWILyzw19w/+dfSm0QOyYxPmaHWrXXcfmb3oRwOwJUD6pLkAdVWFln2O6BsXgSgrHmpSDy6BWFciZy2D+qMRAeXKFcrTIEcSEX+F0yg6rFd3OWRSirqNo+M8pd0Cdmx0I/wJ6WH6/NGoMydA5/7QPi3PKtOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367370; c=relaxed/simple;
-	bh=maw307nq1PXyc7LvQmlZTdXZuEu4YqdRlMQEEH9Oyco=;
+	s=arc-20240116; t=1760367891; c=relaxed/simple;
+	bh=pi5/Y0Drbw02GRsbMgh3g7RqAQ6YtyTXveGYhJRDv8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVgL796h7RoH6pe9I0ijjkf4NfCtGQfMa4E2J4vuNvkjLzMPSyMHtnj+1wC/flmLZecbi1PYGXXLnb/ZC+1RncEqwZJcw7ddaEwOvSTv9KGRMgv61xrPqR53bkXRvWDcqYrSHAXIa1vSTVWUjnZc7djUcnFO0D1EI/0GjJRQWOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6QKXjub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBA1C4CEE7;
-	Mon, 13 Oct 2025 14:56:10 +0000 (UTC)
+	 MIME-Version; b=RFbxXxdkEvQbktWXhjPEiglNLCbuQNZnOZqCDlD9pQTXkLfsiX4IXEuQaN5a4O/uYgIh/gVEaK7QgjFrq7/KJk86QcVBC2irRjbvrcVOXFzI72ZdA/Xc3kbTflvCRxdgWTJZcw/LUKH839eDXeL0Be5TdQ6c2X0bqCkJVOkYfuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzZg/A9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE0DC4CEE7;
+	Mon, 13 Oct 2025 15:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367370;
-	bh=maw307nq1PXyc7LvQmlZTdXZuEu4YqdRlMQEEH9Oyco=;
+	s=korg; t=1760367890;
+	bh=pi5/Y0Drbw02GRsbMgh3g7RqAQ6YtyTXveGYhJRDv8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6QKXjubGpl9Ljql8QN2wkCP2Ri6Ua5kfL7dOxbTtYQw4Tzhk1lPw80V3cMDQstRg
-	 xrSOoGwvoaUTkgQKlchRJi0US27+6honwpXC8Yx/ULjecZ+38sD5Zjwrc4haoghsAl
-	 Txr/PqalS4Qw6n9T+TlqgZWs+P5qg0J3gvZPJ9bo=
+	b=NzZg/A9nqTlKLOTDnjvfSwdo1Na/wJQuwCmfJB5lxRfxNUvOsFn/fte26v6TdewT4
+	 +aA1Am2eZhOAj8srEOkU693In7G0LK7PusXpQP1DfkbsIvmFJ5o9dvQAQ46Q5EkDLF
+	 gw9F8MXZZHL2Q/B9aRzWriDYk3hh3nsAP1PDR+E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	Ling Xu <quic_lxu5@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.1 185/196] misc: fastrpc: fix possible map leak in fastrpc_put_args
+	"Stefano Garzarella" <sgarzare@redhat.com>,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 167/196] vhost: vringh: Modify the return value check
 Date: Mon, 13 Oct 2025 16:45:58 +0200
-Message-ID: <20251013144321.385730409@linuxfoundation.org>
+Message-ID: <20251013144321.351481908@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ling Xu <quic_lxu5@quicinc.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-commit da1ba64176e0138f2bfa96f9e43e8c3640d01e1e upstream.
+[ Upstream commit 82a8d0fda55b35361ee7f35b54fa2b66d7847d2b ]
 
-copy_to_user() failure would cause an early return without cleaning up
-the fdlist, which has been updated by the DSP. This could lead to map
-leak. Fix this by redirecting to a cleanup path on failure, ensuring
-that all mapped buffers are properly released before returning.
+The return value of copy_from_iter and copy_to_iter can't be negative,
+check whether the copied lengths are equal.
 
-Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
-Cc: stable@kernel.org
-Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250912131236.303102-4-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 309bba39c945 ("vringh: iterate on iotlb_translate to handle large translations")
+Cc: "Stefano Garzarella" <sgarzare@redhat.com>
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Message-Id: <20250910091739.2999-1-zhangjiao2@cmss.chinamobile.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/vhost/vringh.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1018,6 +1018,7 @@ static int fastrpc_put_args(struct fastr
- 	struct fastrpc_phy_page *pages;
- 	u64 *fdlist;
- 	int i, inbufs, outbufs, handles;
-+	int ret = 0;
+diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
+index 60961c65fd472..134cc10af776b 100644
+--- a/drivers/vhost/vringh.c
++++ b/drivers/vhost/vringh.c
+@@ -1191,6 +1191,7 @@ static inline int copy_from_iotlb(const struct vringh *vrh, void *dst,
+ 		struct iov_iter iter;
+ 		u64 translated;
+ 		int ret;
++		size_t size;
  
- 	inbufs = REMOTE_SCALARS_INBUFS(ctx->sc);
- 	outbufs = REMOTE_SCALARS_OUTBUFS(ctx->sc);
-@@ -1033,14 +1034,17 @@ static int fastrpc_put_args(struct fastr
- 			u64 len = rpra[i].buf.len;
- 
- 			if (!kernel) {
--				if (copy_to_user((void __user *)dst, src, len))
--					return -EFAULT;
-+				if (copy_to_user((void __user *)dst, src, len)) {
-+					ret = -EFAULT;
-+					goto cleanup_fdlist;
-+				}
- 			} else {
- 				memcpy(dst, src, len);
- 			}
+ 		ret = iotlb_translate(vrh, (u64)(uintptr_t)src,
+ 				      len - total_translated, &translated,
+@@ -1208,9 +1209,9 @@ static inline int copy_from_iotlb(const struct vringh *vrh, void *dst,
+ 				      translated);
  		}
- 	}
  
-+cleanup_fdlist:
- 	/* Clean up fdlist which is updated by DSP */
- 	for (i = 0; i < FASTRPC_MAX_FDLIST; i++) {
- 		if (!fdlist[i])
-@@ -1049,7 +1053,7 @@ static int fastrpc_put_args(struct fastr
- 			fastrpc_map_put(mmap);
- 	}
+-		ret = copy_from_iter(dst, translated, &iter);
+-		if (ret < 0)
+-			return ret;
++		size = copy_from_iter(dst, translated, &iter);
++		if (size != translated)
++			return -EFAULT;
  
--	return 0;
-+	return ret;
- }
- 
- static int fastrpc_invoke_send(struct fastrpc_session_ctx *sctx,
+ 		src += translated;
+ 		dst += translated;
+-- 
+2.51.0
+
 
 
 
