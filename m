@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BD69BD4228
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AC6BD43D2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A52242284E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E63405D26
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BA43081C8;
-	Mon, 13 Oct 2025 14:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6A9311945;
+	Mon, 13 Oct 2025 15:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZ6zmeaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKYylAZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A225B3081AA;
-	Mon, 13 Oct 2025 14:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8412FE564;
+	Mon, 13 Oct 2025 15:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367445; cv=none; b=dUJzc3LNeomXU0ew4sGhFvomfeB239PUE/YJhwTGtnqvyQgMcks07R9QcvFmsFWM2GfaexuYIYyIgo03pKz3PFF5ByIiNBaM06GyfzhkU5eJiUi3ncA8gRPpPn4QOz4wxCZBeXf/eA7zE8TOyuIy6JX/8AhpOyWZ+ApplWghEmA=
+	t=1760368162; cv=none; b=Gt+M29XZQD5pAhqPGRuxj9YuZ1j+pkY6LNexsKOQNhESX82mMnjdVKAxAI0TGUHl4t+q8Wlr5Dyi6zKjtMuMiMPgcMuK4xcrRbz9Cjvwbo50voORJ1v1LedHftkKMxGcM350X398PTTJrh4gJCBrKELotsLgU9qaSNliaFvNB2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367445; c=relaxed/simple;
-	bh=pIdHAC2T6E5pCn+CFIxlcndPeLQvhEM9G6Ny+PZfvBQ=;
+	s=arc-20240116; t=1760368162; c=relaxed/simple;
+	bh=1su5Nfhgaxt+EEE0HHj2sn2J8H2bTvnXGA2Ht/tK9j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2tsfZh2vf6lz5pPTHrlg036o/Wk2/3+CEtA9dlhjFevrIg1zUYjBqeyNdWWhBN5cnVezyNI4/Ivc66rGrS+3BSJ4nvkFJtvZIQPuSXQZfgBfGKGZrZXUNlkTELNs170YbrHUjPd1G+EK4bWyeGKjYwK5gHI3JVFxKEHIMpCInY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZ6zmeaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6D6C4CEE7;
-	Mon, 13 Oct 2025 14:57:25 +0000 (UTC)
+	 MIME-Version; b=qCQltS2Cny6lF06ZinDx18fCjKc6qBNiCWEzO9dKdjUrTaNwy/GjBM5gJGe33J1PHYPAeRMwB5JV3SpTM8AeFyrd77wefIW5Wyj430YbGWrcHNKYhlJs3BpJFeg8CFoq35oRcFHFMDjjHzCZS49h23EZk0KDn/WdCdiENYjjZhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKYylAZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60D7C4CEE7;
+	Mon, 13 Oct 2025 15:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367445;
-	bh=pIdHAC2T6E5pCn+CFIxlcndPeLQvhEM9G6Ny+PZfvBQ=;
+	s=korg; t=1760368162;
+	bh=1su5Nfhgaxt+EEE0HHj2sn2J8H2bTvnXGA2Ht/tK9j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZ6zmeaWem3KSz7gjBAaYZu8LC1hMFJ+7hpyv6hG4poBe9tE56SjzOLQFhosp/Y/I
-	 6JUYgYP2ViG1QST4BaycRmfxKw81Dmtb4nWTtF598uZOS+jfKon2oWptJzQ+WqJzAV
-	 aMB+KZLlv9S0fBOV1to0sGFgGrbUNlMmcSapx/Tw=
+	b=UKYylAZry7EMs0eHT9Gf8PcdS9tq+RLUUW1m7lTPYleezoMYTjr+JaZO1wgJztOZP
+	 xC8Q94SwJAskJDE6gygrYQNWpDeAIA/PSNZoIxj7gZ/G40PBahEh88JVBTLVtMlTOu
+	 4GaZ9XlERYlaiyQlh+8NhtzMJLOUjqbtPMB20Edc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yureka Lilian <yuka@yuka.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Fei Shao <fshao@chromium.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/196] libbpf: Fix reuse of DEVMAP
+Subject: [PATCH 6.12 064/262] arm64: dts: mediatek: mt8516-pumpkin: Fix machine compatible
 Date: Mon, 13 Oct 2025 16:43:26 +0200
-Message-ID: <20251013144315.748225451@linuxfoundation.org>
+Message-ID: <20251013144328.433392319@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yureka Lilian <yuka@yuka.dev>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 6c6b4146deb12d20f42490d5013f2043df942161 ]
+[ Upstream commit ffe6a5d1dd4d4d8af0779526cf4e40522647b25f ]
 
-Previously, re-using pinned DEVMAP maps would always fail, because
-get_map_info on a DEVMAP always returns flags with BPF_F_RDONLY_PROG set,
-but BPF_F_RDONLY_PROG being set on a map during creation is invalid.
+This devicetree contained only the SoC compatible but lacked the
+machine specific one: add a "mediatek,mt8516-pumpkin" compatible
+to the list to fix dtbs_check warnings.
 
-Thus, ignore the BPF_F_RDONLY_PROG flag in the flags returned from
-get_map_info when checking for compatibility with an existing DEVMAP.
-
-The same problem is handled in a third-party ebpf library:
-- https://github.com/cilium/ebpf/issues/925
-- https://github.com/cilium/ebpf/pull/930
-
-Fixes: 0cdbb4b09a06 ("devmap: Allow map lookups from eBPF")
-Signed-off-by: Yureka Lilian <yuka@yuka.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250814180113.1245565-3-yuka@yuka.dev
+Fixes: 9983822c8cf9 ("arm64: dts: mediatek: add pumpkin board dts")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20250724083914.61351-39-angelogioacchino.delregno@collabora.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index aefbfa2df6207..95f2ffefff3ff 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -5013,6 +5013,16 @@ static bool map_is_reuse_compat(const struct bpf_map *map, int map_fd)
- 		return false;
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
+index cce642c538128..3d3db33a64dc6 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
+@@ -11,7 +11,7 @@
  
-+	/*
-+	 * bpf_get_map_info_by_fd() for DEVMAP will always return flags with
-+	 * BPF_F_RDONLY_PROG set, but it generally is not set at map creation time.
-+	 * Thus, ignore the BPF_F_RDONLY_PROG flag in the flags returned from
-+	 * bpf_get_map_info_by_fd() when checking for compatibility with an
-+	 * existing DEVMAP.
-+	 */
-+	if (map->def.type == BPF_MAP_TYPE_DEVMAP || map->def.type == BPF_MAP_TYPE_DEVMAP_HASH)
-+		map_info.map_flags &= ~BPF_F_RDONLY_PROG;
-+
- 	return (map_info.type == map->def.type &&
- 		map_info.key_size == map->def.key_size &&
- 		map_info.value_size == map->def.value_size &&
+ / {
+ 	model = "Pumpkin MT8516";
+-	compatible = "mediatek,mt8516";
++	compatible = "mediatek,mt8516-pumpkin", "mediatek,mt8516";
+ 
+ 	memory@40000000 {
+ 		device_type = "memory";
 -- 
 2.51.0
 
