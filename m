@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED645BD3CCC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:00:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39364BD46DE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B14718A08D8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 478415004CE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED43309F0D;
-	Mon, 13 Oct 2025 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27DF299AA9;
+	Mon, 13 Oct 2025 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wbfd1Iqq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cP+XRhy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BF6309EF9;
-	Mon, 13 Oct 2025 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D91B34BA40;
+	Mon, 13 Oct 2025 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367144; cv=none; b=iOloCydGOsyz2Otj1DJsFxYklOknF8ib2T2KIzQJTrH2NdC5tJkHIzRmRHxr12kmQ3IMnHRUdv3OsdeNtsTQ67Amk/U1UUrApYgLpW/kMhyOwknd8ToDsj/JG1p+U4NfHNMdxQJZXbuSL2V/Njgu8pCFfTvLgvbzNuRdfr8rK1g=
+	t=1760367661; cv=none; b=dUbz5bTma/jkojSnghON+fJ5XzEQY1dltSzIo9MEnUODmGWzyd0lRwGHYIX7gPZ+jaIdjGRXPFQfkv8ozMx2PyTaSJLr2WAh0A6YvQor+PfXemrVhdQyusmoXBRmM8+HKyjUu/UMBWfuVC80z7NmWJhrqw+lqqn4XF8WOhO5nQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367144; c=relaxed/simple;
-	bh=gqXG975p1Yrkl1hEr5Wzn+OxhsQMMhMPUY/Qh308FN4=;
+	s=arc-20240116; t=1760367661; c=relaxed/simple;
+	bh=hlhFP6MtNaPxb2rz1OzGYzopiK09Ehz2ZtphqMrVjNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kozCx1SQvXjUoX+yxQc42ZrZweAXLEhTDppBmCvkz0KyPSPXb9sBPANmH/3BMr5bW7k75v7Z/KRkrSCIweQuBZuINQ5fyijWiRbOc9nQijUcxfLJbNMT0pGs5pfZsRI1JK+n2laqFu7KoI07esh6rAWvQNc03Lv976dkWm0Br8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wbfd1Iqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B76E1C4CEE7;
-	Mon, 13 Oct 2025 14:52:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fS8WZ5OeFiHvJzVBsHRyny5ASET3kGyAL6WktBDjY3UwNeAk9sJncQh9FKUkAPQmZql/tx2n0DgNXs58k++s/mKUk99IbZCkOLYeiJMFOSYVcuneJ5Okh8eNJeEhcTOIexkwOAblOghBG7ubaAbXJt6Zat0bfTGqEAYiGQPqQek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cP+XRhy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CACC4CEE7;
+	Mon, 13 Oct 2025 15:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367144;
-	bh=gqXG975p1Yrkl1hEr5Wzn+OxhsQMMhMPUY/Qh308FN4=;
+	s=korg; t=1760367661;
+	bh=hlhFP6MtNaPxb2rz1OzGYzopiK09Ehz2ZtphqMrVjNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wbfd1Iqqx+W4yxdMmCRBZy/dERCj/Kpld3PnUjrQ/a8gGwy8RBuCz7FwhJ/RxnEl3
-	 2syDywcwue0V1zzA/EkWX4Q1kzMQ/se7E3plYvJ8LvSDCT3pyV/VBD1uZgGQOR8w/2
-	 /A5Oh1fTAaW6nno8YLl+QUpiyG8yvXtcIIK/uH1g=
+	b=cP+XRhy0UUojStEuBf9iDCLPLrLSC6aHJTQg81QoQXPI+4MkEU8W7NQkvpWNPI/WR
+	 BZs3cbmCKZzwF3Q8QG/cvDqdPN83U35CNBmR26qR30A/Omyea4JR4HHuEF8KUdW8Gf
+	 qoT1fVRW+8A6gESsEFljO1O+eItdD/91iYBpHkgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/196] drm/amd/pm: Treat zero vblank time as too short in si_dpm (v3)
+Subject: [PATCH 6.6 089/196] drm/amd/pm: Treat zero vblank time as too short in si_dpm (v3)
 Date: Mon, 13 Oct 2025 16:44:40 +0200
-Message-ID: <20251013144318.570208941@linuxfoundation.org>
+Message-ID: <20251013144318.537028313@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,7 +91,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 267aa96edc890..b3c011542daf7 100644
+index 3ce9396900f7f..075d183bb1bb9 100644
 --- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
 +++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
 @@ -3066,7 +3066,13 @@ static bool si_dpm_vblank_too_short(void *handle)
