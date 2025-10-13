@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9DDBD42CE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E004EBD3C32
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A14FF188D8DB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 601B41889ECC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FB6312826;
-	Mon, 13 Oct 2025 15:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BAE308F19;
+	Mon, 13 Oct 2025 14:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TkAtPs3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6Q58DXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3135930C624;
-	Mon, 13 Oct 2025 15:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F423081DE;
+	Mon, 13 Oct 2025 14:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368283; cv=none; b=thYsGdtNG301/UPuXAz7DPgkQUo0Jhk3p6NNlat6aQhPvz5/+Qv9MqR49CjY/qmqy6Oq76IXkudsbDjERmOPTlYDgMd+86IRPbsuSCIXxfUIvJSBtZ0BXw75Tkw3N00ldJ9l4gPJ2hD0TSeMFRFPy/5ZmVqI4R+zNIQQzziLBys=
+	t=1760366961; cv=none; b=dvfFtHRSnZb/L0r9mfPNToJX15cO43JVD2BEn/kmG6yffbIQZDKvsfHp9uiEf7jL/l4ABvkzunLcPIKZL7GPSHGF9By/dAK4JbeXJ2yOpvXir0dpbY406R86uz3yaEXNuwxPRBb9gQ9WCiM00R0EYjUn+yo68E5ZwQCR2RvlysE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368283; c=relaxed/simple;
-	bh=ihTj8WGjg8MDAXw1fCR5ThdAFlmxE59iBS3s4t0P7qE=;
+	s=arc-20240116; t=1760366961; c=relaxed/simple;
+	bh=yMsH2Hf6adJLu0wtBWpyRoOSa1zYJ+tGldR6Bl8UXqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8h53s1Zx7LiLs8kjjR8HxoeH5O2WobaFoVfkuj+YS1eVFZDASRYIo2N9oBmlk7dZBjYuJyF8FJJGuWlXvGyPS80oHe06Di3JFq7qVX6S3F7tk5DPAu+sBj5fmxQNsenq0UeqDIPsu1OPwHX+9bUF99cQdGOFHpFPjcU9Xf5OJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TkAtPs3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7DEC4CEE7;
-	Mon, 13 Oct 2025 15:11:22 +0000 (UTC)
+	 MIME-Version; b=MIxt7SUsHlhuVEEQKFv+pYRNLYb5syzcmiYYL27Wc9hXZJP9okuRwJXQyCwAuBXfAkhNDtuH+Fzqnvn8dSxOuxeOfwqoRCxer2P0Na+WDlbyULWvmGxZ4GN+FefyCfnDm1h2XxoOnlefP/6ody6zrk23/33alaSMNQJG5Y7GOHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6Q58DXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4710CC4CEE7;
+	Mon, 13 Oct 2025 14:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368283;
-	bh=ihTj8WGjg8MDAXw1fCR5ThdAFlmxE59iBS3s4t0P7qE=;
+	s=korg; t=1760366960;
+	bh=yMsH2Hf6adJLu0wtBWpyRoOSa1zYJ+tGldR6Bl8UXqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TkAtPs33eX3iLEbkXQcWKsyBvCrRBL9XhHf2Tx36C1PfapISd4DtaDjAZjbple3S
-	 XSWCme/7QB/nrj3Fwk3/2ZBZKnfV17ciWm02hvXsBM7awMW7Ugc4kqHDc1KGj3yeYY
-	 aY5W06nRtxXQrUVsRTrYWuP2Qbbh1A9BMTJQxyfI=
+	b=V6Q58DXLHiom3MYcAFe5wL8rfZ4bGIzd4BQ7SJqxbwdIFk/vFMAhccqZOadZrW4mh
+	 QbdPeiyUSkfiNoqoLiHMNLlqf8GZ0TBIcJ0uRKyWV2bsXfq8swMjhLckrO2eNdYJp3
+	 JUhk7/GmiNoQKhuIrpgMJf196B4ocuYOYK6uYXp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/262] selftests: watchdog: skip ping loop if WDIOF_KEEPALIVEPING not supported
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	stable <stable@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.1 043/196] driver core/PM: Set power.no_callbacks along with power.no_pm
 Date: Mon, 13 Oct 2025 16:43:36 +0200
-Message-ID: <20251013144328.790702764@linuxfoundation.org>
+Message-ID: <20251013144316.143260581@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit e8cfc524eaf3c0ed88106177edb6961e202e6716 ]
+commit c2ce2453413d429e302659abc5ace634e873f6f5 upstream.
 
-Check if watchdog device supports WDIOF_KEEPALIVEPING option before
-entering keep_alive() ping test loop. Fix watchdog-test silently looping
-if ioctl based ping is not supported by the device. Exit from test in
-such case instead of getting stuck in loop executing failing keep_alive()
+Devices with power.no_pm set are not expected to need any power
+management at all, so modify device_set_pm_not_required() to set
+power.no_callbacks for them too in case runtime PM will be enabled
+for any of them (which in principle may be done for convenience if
+such a device participates in a dependency chain).
 
-watchdog_info:
- identity:              m41t93 rtc Watchdog
- firmware_version:      0
-Support/Status: Set timeout (in seconds)
-Support/Status: Watchdog triggers a management or other external alarm not a reboot
+Since device_set_pm_not_required() must be called before device_add()
+or it would not have any effect, it can update power.no_callbacks
+without locking, unlike pm_runtime_no_callbacks() that can be called
+after registering the target device.
 
-Watchdog card disabled.
-Watchdog timeout set to 5 seconds.
-Watchdog ping rate set to 2 seconds.
-Watchdog card enabled.
-WDIOC_KEEPALIVE not supported by this device
-
-without this change
-Watchdog card disabled.
-Watchdog timeout set to 5 seconds.
-Watchdog ping rate set to 2 seconds.
-Watchdog card enabled.
-Watchdog Ticking Away!
-(Where test stuck here forver silently)
-
-Updated change log at commit time:
-Shuah Khan <skhan@linuxfoundation.org>
-
-Link: https://lore.kernel.org/r/20250914152840.GA3047348@bhairav-test.ee.iitb.ac.in
-Fixes: d89d08ffd2c5 ("selftests: watchdog: Fix ioctl SET* error paths to take oneshot exit path")
-Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/1950054.tdWV9SEqCh@rafael.j.wysocki
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/device.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
-index a1f506ba55786..4f09c5db0c7f3 100644
---- a/tools/testing/selftests/watchdog/watchdog-test.c
-+++ b/tools/testing/selftests/watchdog/watchdog-test.c
-@@ -332,6 +332,12 @@ int main(int argc, char *argv[])
- 	if (oneshot)
- 		goto end;
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -813,6 +813,9 @@ static inline bool device_pm_not_require
+ static inline void device_set_pm_not_required(struct device *dev)
+ {
+ 	dev->power.no_pm = true;
++#ifdef CONFIG_PM
++	dev->power.no_callbacks = true;
++#endif
+ }
  
-+	/* Check if WDIOF_KEEPALIVEPING is supported */
-+	if (!(info.options & WDIOF_KEEPALIVEPING)) {
-+		printf("WDIOC_KEEPALIVE not supported by this device\n");
-+		goto end;
-+	}
-+
- 	printf("Watchdog Ticking Away!\n");
- 
- 	/*
--- 
-2.51.0
-
+ static inline void dev_pm_syscore_device(struct device *dev, bool val)
 
 
 
