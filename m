@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-184442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0075ABD3F1B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:14:06 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E03EBD4504
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A17EA34E0AE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E435F4FBBCC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA5A30E0DD;
-	Mon, 13 Oct 2025 14:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E91130C613;
+	Mon, 13 Oct 2025 15:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+u6dULI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuyfiXqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01353081BE;
-	Mon, 13 Oct 2025 14:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B26330C60A;
+	Mon, 13 Oct 2025 15:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367449; cv=none; b=he0MmDDia37R8VZtCUIBJEwMYJAdlCpQBABQN8ifXWN5h9KaokJuvrwg0vodqRo/CwI5g0Q4DxzR1Ps5UqYKXpCiVE+7Lt/zgJITIaoRPXeTr3rlOK3dH4YAjzgQqbZ5FGrWk28RmD9u8yKf6LnrnI/bPFkiVmu4gFftVS2L2mk=
+	t=1760368165; cv=none; b=ZAzHCEV7TxYT05oZOhyPqhkPqujXzIAjvtjmyVbMh2pf1jyBav7M01U742MPFgTS8pt7m8dMVhLQVLtOpa8rGXVhGWzKmauUivw1DR8TUAd3Gx75zTPBabqW8SaaJqg2gQ7PLt33+ShvZuEweQvOeWGjGUnCaXwm5lWrqFQTqdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367449; c=relaxed/simple;
-	bh=8s0w+i6rUoTGGdHzLxE8E4e4WHfZzKDOc/r7U+AMJ7g=;
+	s=arc-20240116; t=1760368165; c=relaxed/simple;
+	bh=gUhGGwCoCjOeDyU9iFJGGIt+1sBSrtkrNKAN0xuu4DE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbU7NeT/WXIXHcS1uTH8iiflCbwTTOTdI0Ux21mxI49pYj2jl74+Q1G5aRvk5LObf0xVNEwdg6JoCrObvxAbZDbBGWJnzrN7yJXQ8aNBXekbiMCXZQxZrxnSwodMOsfRX+3zOpZH66oNJJ+k6OkSmXOopJFjkzaPYLkxZNRaqVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+u6dULI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5BBC4CEE7;
-	Mon, 13 Oct 2025 14:57:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pZcROCJYxq6Cnp5attRicaZI3Norfig60SONMKYBhTIYBmIjwA7QGuqYigo/qRUxTVD7xBJS978qMmtbfjRicU4aBAWAv9Pj3eZ12GWrmtoPIpbJjFiZ2uAn2RIP+DuvmAV/gs+Mh/CLbhbroJDrOIF0nNZJ/ivPTGI+PfhmN3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuyfiXqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3585C4CEE7;
+	Mon, 13 Oct 2025 15:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367448;
-	bh=8s0w+i6rUoTGGdHzLxE8E4e4WHfZzKDOc/r7U+AMJ7g=;
+	s=korg; t=1760368165;
+	bh=gUhGGwCoCjOeDyU9iFJGGIt+1sBSrtkrNKAN0xuu4DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+u6dULIaH++l3YQedNdrKscuPBHXi4Ev6LF9prZBKmx7HE6xzNAdO/EQCuaK3WlC
-	 I2JsOo3/ZIlVtDGRX7tCHx1OKKn7+iy/xZUywcDIbUO7OcpnI1NfaN0l698y7SvCSo
-	 ctM/TxKuTyEkcQI6wpyEaPbFT+iDVrjTbyUQAVcI=
+	b=UuyfiXqnirah4ajw7u1iADAjz7BBDQvk6DSmGDU4mS8qXUhSljGOHdwkSes3/AvWP
+	 fa+feJD7X9x6wbzuUrNqAga7gYVsfALwI7VwBPvi0D0rtTcrXxlMzN+vFLkR1GrUSM
+	 7p5dXdZoH9gIeGRdoc4x1Tz+9akajLKRKkuEDLIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/196] ARM: dts: renesas: porter: Fix CAN pin group
+Subject: [PATCH 6.12 065/262] pwm: tiehrpwm: Dont drop runtime PM reference in .free()
 Date: Mon, 13 Oct 2025 16:43:27 +0200
-Message-ID: <20251013144315.783884763@linuxfoundation.org>
+Message-ID: <20251013144328.468714983@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 287066b295051729fb08c3cff12ae17c6fe66133 ]
+[ Upstream commit 21a5e91fda50fc662ce1a12bd0aae9d103455b43 ]
 
-According to the schematics, the CAN transceiver is connected to pins
-GP7_3 and GP7_4, which correspond to CAN0 data group B.
+The pwm driver calls pm_runtime_get_sync() when the hardware becomes
+enabled and pm_runtime_put_sync() when it becomes disabled. The PWM's
+state is kept when a consumer goes away, so the call to
+pm_runtime_put_sync() in the .free() callback is unbalanced resulting in
+a non-functional device and a reference underlow for the second consumer.
 
-Fixes: 0768fbad7fba1d27 ("ARM: shmobile: porter: add CAN0 DT support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/70ad9bc44d6cea92197c42eedcad6b3d0641d26a.1751032025.git.geert+renesas@glider.be
+The easiest fix for that issue is to just not drop the runtime PM
+reference in .free(), so do that.
+
+Fixes: 19891b20e7c2 ("pwm: pwm-tiehrpwm: PWM driver support for EHRPWM")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/bbb089c4b5650cc1f7b25cf582d817543fd25384.1754927682.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/renesas/r8a7791-porter.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-tiehrpwm.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/renesas/r8a7791-porter.dts b/arch/arm/boot/dts/renesas/r8a7791-porter.dts
-index fcc9a2313e1df..0cd08f7b8d8e0 100644
---- a/arch/arm/boot/dts/renesas/r8a7791-porter.dts
-+++ b/arch/arm/boot/dts/renesas/r8a7791-porter.dts
-@@ -266,7 +266,7 @@ vin0_pins: vin0 {
- 	};
+diff --git a/drivers/pwm/pwm-tiehrpwm.c b/drivers/pwm/pwm-tiehrpwm.c
+index 0125e73b98dfb..5e674a7bbf3be 100644
+--- a/drivers/pwm/pwm-tiehrpwm.c
++++ b/drivers/pwm/pwm-tiehrpwm.c
+@@ -391,11 +391,6 @@ static void ehrpwm_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+ {
+ 	struct ehrpwm_pwm_chip *pc = to_ehrpwm_pwm_chip(chip);
  
- 	can0_pins: can0 {
--		groups = "can0_data";
-+		groups = "can0_data_b";
- 		function = "can0";
- 	};
- 
+-	if (pwm_is_enabled(pwm)) {
+-		dev_warn(pwmchip_parent(chip), "Removing PWM device without disabling\n");
+-		pm_runtime_put_sync(pwmchip_parent(chip));
+-	}
+-
+ 	/* set period value to zero on free */
+ 	pc->period_cycles[pwm->hwpwm] = 0;
+ }
 -- 
 2.51.0
 
