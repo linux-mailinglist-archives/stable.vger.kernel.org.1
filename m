@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-184564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F767BD4438
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB041BD43D8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0E42950263B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70892188C3A0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6084279DCE;
-	Mon, 13 Oct 2025 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937EA24466C;
+	Mon, 13 Oct 2025 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuabf7ub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axhWDVqv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726EF30E849;
-	Mon, 13 Oct 2025 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DFE2566;
+	Mon, 13 Oct 2025 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367795; cv=none; b=jIkbSE7F+onAansRYQfCo7Bge3iunlNnnAKPweg8mtuNnTkVSzftS84ueeEWAYtOWOk9T80CIV+Avkq+rj07RHN5IQE8xrOGPjE9zvpEsOFl1eHZTdyhGfPWi3dE2Tl4uQhN5c6iGBDoOxQFaEx7JDmxwk5B32jBXyaSamcYqIk=
+	t=1760368598; cv=none; b=qrA+cKkIJzzo+5Cpkh0sFq4yJgu/C1oMo4IMRPuqB7nlAdlW1mqBsReykoCrM/sCltDDaB08WGqmP2i70EOPeRqxziZfz/w/M6yonBPdHBxEbYPjpiiyjzdawhBYiYwJ2sKunPqZWxheuzIf4k+xof0Pho4kypMbMFqeXWLtpeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367795; c=relaxed/simple;
-	bh=5VZa6XCmUNXRN87xcFHT470lLuEBoyT/gKPaON3yqp4=;
+	s=arc-20240116; t=1760368598; c=relaxed/simple;
+	bh=lBeYqI3q0xqorbvc4Y38kLueYjUD6u9igsX/tGddTMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W89lAScPWF2YULJxMYrM4PH01OdQ7k46xHAd2cbZAxSXGRthb5yBg8r/Hc/W2B/HmpRzgiH9ndcU1mUkisYLnC2uHG7dAkXU1xzv0HrhvRJ2WZIFN49RwWtvHrbhZZh8soFjdSx+/tbxGDuwrdqnBORO18ABXWb7pMuOhxUmQw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuabf7ub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF40C4CEE7;
-	Mon, 13 Oct 2025 15:03:14 +0000 (UTC)
+	 MIME-Version; b=Ah/W7vCfsqJSvC+qHyYZIZ+ycr7+jVowrTGwEZjR2bUS3rGwppKp0kAo0K/7wbDTTQz/beGhQAvhJ4Q2Ec5Kcg89bQsa2g+KyPSeq2x1r7/Su39NcKc16oHGprOle89Hia3AQYsB71+wAbSKPCfXjMBOC50lQJ8ngAAYI12NOAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axhWDVqv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1C3C4CEE7;
+	Mon, 13 Oct 2025 15:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367795;
-	bh=5VZa6XCmUNXRN87xcFHT470lLuEBoyT/gKPaON3yqp4=;
+	s=korg; t=1760368598;
+	bh=lBeYqI3q0xqorbvc4Y38kLueYjUD6u9igsX/tGddTMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kuabf7ubU8SpzsZ4F8nUoQTlFu5koghRzxGTBMteNQosN5it+r0T9R9tUdZWFsZSL
-	 YTEcpUEJIvDUTLfV0WALy/cfo8FBGXOkZcDwLAKxmXOhUst1UuLWKh1p7cZhUsZTkm
-	 6prKnpiraPvcig4ylAZ8SX+TP/ggFtYm1EWwkmDA=
+	b=axhWDVqvr/F9AM6K0C8poYc30IWyn69oSN5h43DLh7jwCMKmgWauLqUyELEIn1Yu3
+	 PW1YTrNY0SD0vNDvztl1LScgfDw0DHnlfkOHT1zS2iQEINtpX1g7Pkb9ut+pTiNsZC
+	 gaD08QhN+ss3JYTcP4el59Oglf8+wyjiE1qDENoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/196] crypto: hisilicon/qm - set NULL to qm->debug.qm_diff_regs
+Subject: [PATCH 6.12 184/262] coresight: catu: Support atclk
 Date: Mon, 13 Oct 2025 16:45:26 +0200
-Message-ID: <20251013144320.198587730@linuxfoundation.org>
+Message-ID: <20251013144332.754325015@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit f0cafb02de883b3b413d34eb079c9680782a9cc1 ]
+[ Upstream commit 5483624effea2e893dc0df6248253a6a2a085451 ]
 
-When the initialization of qm->debug.acc_diff_reg fails,
-the probe process does not exit. However, after qm->debug.qm_diff_regs is
-freed, it is not set to NULL. This can lead to a double free when the
-remove process attempts to free it again. Therefore, qm->debug.qm_diff_regs
-should be set to NULL after it is freed.
+The atclk is an optional clock for the CoreSight CATU, but the driver
+misses to initialize it.
 
-Fixes: 8be091338971 ("crypto: hisilicon/debugfs - Fix debugfs uninit process issue")
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+This change enables atclk in probe of the CATU driver, and dynamically
+control the clock during suspend and resume.
+
+The checks for driver data and clocks in suspend and resume are not
+needed, remove them.  Add error handling in the resume function.
+
+Fixes: fcacb5c154ba ("coresight: Introduce support for Coresight Address Translation Unit")
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250731-arm_cs_fix_clock_v4-v6-2-1dfe10bb3f6f@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/debugfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwtracing/coresight/coresight-catu.c | 22 +++++++++++++++-----
+ drivers/hwtracing/coresight/coresight-catu.h |  1 +
+ 2 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/debugfs.c b/drivers/crypto/hisilicon/debugfs.c
-index bd205f1f2279e..573c0033a5afe 100644
---- a/drivers/crypto/hisilicon/debugfs.c
-+++ b/drivers/crypto/hisilicon/debugfs.c
-@@ -865,6 +865,7 @@ static int qm_diff_regs_init(struct hisi_qm *qm,
- 		dfx_regs_uninit(qm, qm->debug.qm_diff_regs, ARRAY_SIZE(qm_diff_regs));
- 		ret = PTR_ERR(qm->debug.acc_diff_regs);
- 		qm->debug.acc_diff_regs = NULL;
-+		qm->debug.qm_diff_regs = NULL;
- 		return ret;
- 	}
+diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+index 25fd02955c38d..abfff42b20c93 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.c
++++ b/drivers/hwtracing/coresight/coresight-catu.c
+@@ -521,6 +521,10 @@ static int __catu_probe(struct device *dev, struct resource *res)
+ 	struct coresight_platform_data *pdata = NULL;
+ 	void __iomem *base;
  
++	drvdata->atclk = devm_clk_get_optional_enabled(dev, "atclk");
++	if (IS_ERR(drvdata->atclk))
++		return PTR_ERR(drvdata->atclk);
++
+ 	catu_desc.name = coresight_alloc_device_name(&catu_devs, dev);
+ 	if (!catu_desc.name)
+ 		return -ENOMEM;
+@@ -668,18 +672,26 @@ static int catu_runtime_suspend(struct device *dev)
+ {
+ 	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+ 
+-	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+-		clk_disable_unprepare(drvdata->pclk);
++	clk_disable_unprepare(drvdata->atclk);
++	clk_disable_unprepare(drvdata->pclk);
++
+ 	return 0;
+ }
+ 
+ static int catu_runtime_resume(struct device *dev)
+ {
+ 	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
++	int ret;
+ 
+-	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+-		clk_prepare_enable(drvdata->pclk);
+-	return 0;
++	ret = clk_prepare_enable(drvdata->pclk);
++	if (ret)
++		return ret;
++
++	ret = clk_prepare_enable(drvdata->atclk);
++	if (ret)
++		clk_disable_unprepare(drvdata->pclk);
++
++	return ret;
+ }
+ #endif
+ 
+diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
+index 755776cd19c5b..6e6b7aac206dc 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.h
++++ b/drivers/hwtracing/coresight/coresight-catu.h
+@@ -62,6 +62,7 @@
+ 
+ struct catu_drvdata {
+ 	struct clk *pclk;
++	struct clk *atclk;
+ 	void __iomem *base;
+ 	struct coresight_device *csdev;
+ 	int irq;
 -- 
 2.51.0
 
