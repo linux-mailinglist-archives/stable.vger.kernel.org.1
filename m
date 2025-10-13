@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D1BBD48AD
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:51:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3F9BD4624
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:40:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 978A24063CA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8C871888745
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685D730C605;
-	Mon, 13 Oct 2025 15:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE2630C353;
+	Mon, 13 Oct 2025 15:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFWaSd7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbqXM6Lk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258ED3081B4;
-	Mon, 13 Oct 2025 15:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82803081C3;
+	Mon, 13 Oct 2025 15:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369136; cv=none; b=nEioalgRT+9stFcwD3BYxS6ziYDf2JQqkvqfBGInged9//EexnFzR9WoVRC6brXQyBdD8u6P8piGhPFZexYxXjnJn+adS/7i9/+agch2w5c/m8zmwW6ydPhaEWC7RYHdNeiEPNBZeifqL8ywPNXsoR0ew3m11jRd1pzaJsrqOU4=
+	t=1760369147; cv=none; b=pSYEn5fuh3S3hXK9I49IX3geTn5fhHbddc8ekLHrkocibpMizVrmkN3MyrEvgcvjTIpcaUiCeqOSXpVChH2TCuOB8SqIQqqXawjIFjwwclx2MN7JKpR2IKDAPPB8ovYXVY4XMbqOziRqymOY82HM3/U3QQ/vvXjIhvIEZ18iek8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369136; c=relaxed/simple;
-	bh=I5/u7paM7pjZ+7egrkxK9v/EAQJMbbHSz22lz39vQqA=;
+	s=arc-20240116; t=1760369147; c=relaxed/simple;
+	bh=k65OPWpR9O2rtGbWHz9ACcS01m7lpkzTnzv9c7/uHl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nh+BxH+ODbYovSJYhXGOifITT+KmJCofR0Sl7OiFsBr+sW93BkzHgtqPdgDsmEcbExf4jkSudPdPkzDolLPEx0mqbM0J0F9SD0/F73tTFdoUfsVgzLR2id97RzQraZSDXKhwXvRQJlrYyNAWiyINghbe8BKzErla768HGQDAkS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFWaSd7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A247EC116B1;
-	Mon, 13 Oct 2025 15:25:35 +0000 (UTC)
+	 MIME-Version; b=M9okkTAfcYL9hHdExwY8JlmFwxBwsVeXQ3WMcuvFbhzXQjmx+xakDowS+4miXEJCRm3aA0iK1nmn3oR6gIGgamhqnpvJCPykyUOFLzz0H96oFEq4E0X1l2Vpdz9ONFDKa3idmur6n4cMJxwQZqKGSA9kCKBXUZDUawGPb/2W/84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbqXM6Lk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D6EC4CEE7;
+	Mon, 13 Oct 2025 15:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369136;
-	bh=I5/u7paM7pjZ+7egrkxK9v/EAQJMbbHSz22lz39vQqA=;
+	s=korg; t=1760369147;
+	bh=k65OPWpR9O2rtGbWHz9ACcS01m7lpkzTnzv9c7/uHl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFWaSd7xnDd26qtpuS8lIHKv3oyoDWy71YSYkNS3RTmMPCponUAWbcygLvbtKpgJR
-	 in9Vb95YdNiiNeFIpfY/cydyfZMfTynW9yA31ORSaT0MLQpEwONPWenzP6Pn6II97V
-	 A7HztYqGkOktex5HfmQv/uofpcbRZQheTvdOEy8Y=
+	b=hbqXM6LkPdZbBn3EONmNNe8WUc/pn+FN/zG6iNYvpuzGXM0dQM057yUP8F91ThjSF
+	 9E8yCwFDHaJprTpTfEuqW7JBtVgrkB0ux0LQ2Xu+/YZYKe7bLtOma6USQORCIfjwlf
+	 VpSG71iVg31fQHd8BQj0A6AowSfCAkKjt09WUqE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 141/563] arm64: dts: mediatek: mt8188: Change efuse fallback compatible to mt8186
-Date: Mon, 13 Oct 2025 16:40:02 +0200
-Message-ID: <20251013144416.400776578@linuxfoundation.org>
+Subject: [PATCH 6.17 144/563] arm64: dts: renesas: r9a09g047e57-smarc: Fix gpio keys pin control node
+Date: Mon, 13 Oct 2025 16:40:05 +0200
+Message-ID: <20251013144416.507729917@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,42 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit c881d1c37b2c159d908203dba5c4920bc776046f ]
+[ Upstream commit 3e5df910b592d47734b6dcd03d57498d4766bf6c ]
 
-The efuse block in the MT8188 contains the GPU speed bin cell, and like
-the MT8186 one, has the same conversion scheme to work with the GPU OPP
-binding. This was reflected in a corresponding change to the efuse DT
-binding.
+Adding pin control node to the child won't parse the pins during driver
+bind. Fix the issue by moving it to parent node.
 
-Change the fallback compatible of the MT8188's efuse block from the
-generic one to the MT8186 one. This also makes GPU DVFS work properly.
+This issue is observed while adding Schmitt input enable for PS0 pin on
+later patch. Currently the reset value of the PIN is set to NMI function
+and hence there is no breakage.
 
-Fixes: d39aacd1021a ("arm64: dts: mediatek: mt8188: add lvts definitions")
-Fixes: 50e7592cb696 ("arm64: dts: mediatek: mt8188: Add GPU speed bin NVMEM cells")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250610063431.2955757-3-wenst@chromium.org
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Fixes: 9e95446b0cf9 ("arm64: dts: renesas: r9a09g047e57-smarc: Add gpio keys")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250817145135.166591-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8188.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r9a09g047e57-smarc.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8188.dtsi b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-index 202478407727e..90c388f1890f5 100644
---- a/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-@@ -2183,7 +2183,7 @@ imp_iic_wrap_en: clock-controller@11ec2000 {
- 		};
+diff --git a/arch/arm64/boot/dts/renesas/r9a09g047e57-smarc.dts b/arch/arm64/boot/dts/renesas/r9a09g047e57-smarc.dts
+index 1e67f0a2a945c..9f6716fa10860 100644
+--- a/arch/arm64/boot/dts/renesas/r9a09g047e57-smarc.dts
++++ b/arch/arm64/boot/dts/renesas/r9a09g047e57-smarc.dts
+@@ -90,10 +90,10 @@ &i2c0 {
+ };
  
- 		efuse: efuse@11f20000 {
--			compatible = "mediatek,mt8188-efuse", "mediatek,efuse";
-+			compatible = "mediatek,mt8188-efuse", "mediatek,mt8186-efuse";
- 			reg = <0 0x11f20000 0 0x1000>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
+ &keys {
+-	key-sleep {
+-		pinctrl-0 = <&nmi_pins>;
+-		pinctrl-names = "default";
++	pinctrl-0 = <&nmi_pins>;
++	pinctrl-names = "default";
+ 
++	key-sleep {
+ 		interrupts-extended = <&icu 0 IRQ_TYPE_EDGE_FALLING>;
+ 		linux,code = <KEY_SLEEP>;
+ 		label = "SLEEP";
 -- 
 2.51.0
 
