@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-184935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD0DBD4FB7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:25:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB03BD4F3F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9E8A74F99DB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2C314F5D75
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B246F30C366;
-	Mon, 13 Oct 2025 15:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F1D30F80E;
+	Mon, 13 Oct 2025 15:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMCrveQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJxBfu+f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D32630F7E4;
-	Mon, 13 Oct 2025 15:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448BA30F808;
+	Mon, 13 Oct 2025 15:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368861; cv=none; b=bOWiiIntu6ErXJvnSMK6BuFLbz5KCCRr9iiM7pcz4jIlnAK5e9nQvpWj7832vObtl4jkeQHmKFCEFj+Cs5PY14B9Hpj4j8kqvKJ5Jv0bzhNWgTQBnpQIOsWvntHZTyuUwRUNBWqYXJcfo6OnR2fUDOW2hKHCDkBqM0yR4BkRQ3g=
+	t=1760368873; cv=none; b=M90tRBiBrvvfd39AdHbLuahpFVa5NlMLIr3Lc+BpoclpPKfSp6F2lRK7/ZAhF7R1+sFr5FacuMQMDW37y5JkF+UZStl5hN6O1seq+wbQrvIe39pf+g/d/Z1ixyFmoLwglS3aFzoDiMlBKtPRBABGdx1L43YluHDB1OyvSse1ghA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368861; c=relaxed/simple;
-	bh=e+eceK+a/Sgx52nypJviumHp4m+YouhSmRVLWU94Txw=;
+	s=arc-20240116; t=1760368873; c=relaxed/simple;
+	bh=C+5qYh6iusVCb1cI8icX82WYTlcxc1f6eQfns+rJ4Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCo4dYm6HrBP37/3FcJfOBtB6BaYRJL6ZzzGEDngt05LzeWlnj0MFNWSCn99vpeNo80k+UcyxV/9p2Qp3dtCQaDRYp/3m0yuLowIkM+W3VQZnPfeYN3bez1Lo14LPA072hpY2ck+pw+q9rPePlOsG303gPP6Xo76dQPWRNX9x24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMCrveQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5019C4CEE7;
-	Mon, 13 Oct 2025 15:21:00 +0000 (UTC)
+	 MIME-Version; b=s4NiU+4Z/gjRmKeXg0RgpI7SZc52VASqM6Iq/3pMu7/A7zhhgSMrbzuICDmILBc0gyJqtN06DVxOSuphipHCesGr4QZUjCE7XJqvC7Xsg8xRBQO5BLKnX0riEpuwwIp8Ra8h7vW/AEL3jUX+gvzi23BQabXmaZs2GOmonC8KwIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJxBfu+f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEED2C4CEE7;
+	Mon, 13 Oct 2025 15:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368861;
-	bh=e+eceK+a/Sgx52nypJviumHp4m+YouhSmRVLWU94Txw=;
+	s=korg; t=1760368873;
+	bh=C+5qYh6iusVCb1cI8icX82WYTlcxc1f6eQfns+rJ4Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vMCrveQOxu0qasF8vCfLjIzwIMVLRM0N3YXmleJLx3LwNAG3+duKnpUXoThtkygQF
-	 TiXijAWqWmOWVbn7IawEusswI8BdQLKQVY1NZC9JFn4A0Io6NXWUsMsFFkC2uwr2T1
-	 O86FYEcHEpW24u7tKSMYoda+MFft4FEFz3OlD6fE=
+	b=EJxBfu+fYZhNb8kbwPJ2+ywhty6KP44MnEzYQTbJ3XvXGUjktGCFKawYL6PdmxSqJ
+	 al9BQoJWf38MgG6bO9S5gTzWF52TBO8dSJCIqbTBTFIl3pfU9hNQTX7K7UPvcepmDE
+	 RTEBIuZmPmsPeY+QHshIsZcEKPIcjNNTn2DcZLUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 044/563] regmap: Remove superfluous check for !config in __regmap_init()
-Date: Mon, 13 Oct 2025 16:38:25 +0200
-Message-ID: <20251013144412.889373021@linuxfoundation.org>
+Subject: [PATCH 6.17 047/563] bpf/selftests: Fix test_tcpnotify_user
+Date: Mon, 13 Oct 2025 16:38:28 +0200
+Message-ID: <20251013144412.997578572@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,35 +67,137 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit 5c36b86d2bf68fbcad16169983ef7ee8c537db59 ]
+[ Upstream commit c80d79720647ed77ebc0198abd5a0807efdaff0b ]
 
-The first thing __regmap_init() do is check if config is non-NULL,
-so there is no need to check for this again later.
+Based on a bisect, it appears that commit 7ee988770326 ("timers:
+Implement the hierarchical pull model") has somehow inadvertently
+broken BPF selftest test_tcpnotify_user. The error that is being
+generated by this test is as follows:
 
-Fixes: d77e745613680c54 ("regmap: Add bulk read/write callbacks into regmap_config")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/a154d9db0f290dda96b48bd817eb743773e846e1.1755090330.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+	FAILED: Wrong stats Expected 10 calls, got 8
+
+It looks like the change allows timer functions to be run on CPUs
+different from the one they are armed on. The test had pinned itself
+to CPU 0, and in the past the retransmit attempts also occurred on CPU
+0. The test had set the max_entries attribute for
+BPF_MAP_TYPE_PERF_EVENT_ARRAY to 2 and was calling
+bpf_perf_event_output() with BPF_F_CURRENT_CPU, so the entry was
+likely to be in range. With the change to allow timers to run on other
+CPUs, the current CPU tasked with performing the retransmit might be
+bumped and in turn fall out of range, as the event will be filtered
+out via __bpf_perf_event_output() using:
+
+    if (unlikely(index >= array->map.max_entries))
+            return -E2BIG;
+
+A possible change would be to explicitly set the max_entries attribute
+for perf_event_map in test_tcpnotify_kern.c to a value that's at least
+as large as the number of CPUs. As it turns out however, if the field
+is left unset, then the libbpf will determine the number of CPUs available
+on the underlying system and update the max_entries attribute accordingly
+in map_set_def_max_entries().
+
+A further problem with the test is that it has a thread that continues
+running up until the program exits. The main thread cleans up some
+LIBBPF data structures, while the other thread continues to use them,
+which inevitably will trigger a SIGSEGV. This can be dealt with by
+telling the thread to run for as long as necessary and doing a
+pthread_join on it before exiting the program.
+
+Finally, I don't think binding the process to CPU 0 is meaningful for
+this test any more, so get rid of that.
+
+Fixes: 435f90a338ae ("selftests/bpf: add a test case for sock_ops perf-event notification")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/aJ8kHhwgATmA3rLf@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/bpf/progs/test_tcpnotify_kern.c |  1 -
+ .../selftests/bpf/test_tcpnotify_user.c       | 20 +++++++++----------
+ 2 files changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 1f3f782a04ba2..6883e1a43fe5d 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -827,7 +827,7 @@ struct regmap *__regmap_init(struct device *dev,
- 		map->read_flag_mask = bus->read_flag_mask;
- 	}
+diff --git a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
+index 540181c115a85..ef00d38b0a8d2 100644
+--- a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
++++ b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
+@@ -23,7 +23,6 @@ struct {
  
--	if (config && config->read && config->write) {
-+	if (config->read && config->write) {
- 		map->reg_read  = _regmap_bus_read;
- 		if (config->reg_update_bits)
- 			map->reg_update_bits = config->reg_update_bits;
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+-	__uint(max_entries, 2);
+ 	__type(key, int);
+ 	__type(value, __u32);
+ } perf_event_map SEC(".maps");
+diff --git a/tools/testing/selftests/bpf/test_tcpnotify_user.c b/tools/testing/selftests/bpf/test_tcpnotify_user.c
+index 595194453ff8f..35b4893ccdf8a 100644
+--- a/tools/testing/selftests/bpf/test_tcpnotify_user.c
++++ b/tools/testing/selftests/bpf/test_tcpnotify_user.c
+@@ -15,20 +15,18 @@
+ #include <bpf/libbpf.h>
+ #include <sys/ioctl.h>
+ #include <linux/rtnetlink.h>
+-#include <signal.h>
+ #include <linux/perf_event.h>
+-#include <linux/err.h>
+ 
+-#include "bpf_util.h"
+ #include "cgroup_helpers.h"
+ 
+ #include "test_tcpnotify.h"
+-#include "trace_helpers.h"
+ #include "testing_helpers.h"
+ 
+ #define SOCKET_BUFFER_SIZE (getpagesize() < 8192L ? getpagesize() : 8192L)
+ 
+ pthread_t tid;
++static bool exit_thread;
++
+ int rx_callbacks;
+ 
+ static void dummyfn(void *ctx, int cpu, void *data, __u32 size)
+@@ -45,7 +43,7 @@ void tcp_notifier_poller(struct perf_buffer *pb)
+ {
+ 	int err;
+ 
+-	while (1) {
++	while (!exit_thread) {
+ 		err = perf_buffer__poll(pb, 100);
+ 		if (err < 0 && err != -EINTR) {
+ 			printf("failed perf_buffer__poll: %d\n", err);
+@@ -78,15 +76,10 @@ int main(int argc, char **argv)
+ 	int error = EXIT_FAILURE;
+ 	struct bpf_object *obj;
+ 	char test_script[80];
+-	cpu_set_t cpuset;
+ 	__u32 key = 0;
+ 
+ 	libbpf_set_strict_mode(LIBBPF_STRICT_ALL);
+ 
+-	CPU_ZERO(&cpuset);
+-	CPU_SET(0, &cpuset);
+-	pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
+-
+ 	cg_fd = cgroup_setup_and_join(cg_path);
+ 	if (cg_fd < 0)
+ 		goto err;
+@@ -151,6 +144,13 @@ int main(int argc, char **argv)
+ 
+ 	sleep(10);
+ 
++	exit_thread = true;
++	int ret = pthread_join(tid, NULL);
++	if (ret) {
++		printf("FAILED: pthread_join\n");
++		goto err;
++	}
++
+ 	if (verify_result(&g)) {
+ 		printf("FAILED: Wrong stats Expected %d calls, got %d\n",
+ 			g.ncalls, rx_callbacks);
 -- 
 2.51.0
 
