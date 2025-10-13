@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE38BBD4868
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB252BD43BD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A88F507DA6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DCA0422875
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D0731159A;
-	Mon, 13 Oct 2025 15:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA0530E0EC;
+	Mon, 13 Oct 2025 14:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDBIEXa9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c86MBTi/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2256D30C608;
-	Mon, 13 Oct 2025 15:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE61277C8D;
+	Mon, 13 Oct 2025 14:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368122; cv=none; b=OFkzyqhkU7+zEwtgCa1Hb1YFSCEI3D0chmZD1Gxh6l1yvmFYeclaGdPdQ3BaEcifUVkjcy26D0DdLcNQuXFxJyzJWEDwYCpqxCo5FgWP6F+A6aEllr/enlQkohXo3HbPzigL6zqUrKL6h66frL40Aq5ZOyiUYu0TCdl2Z0PiPI4=
+	t=1760367460; cv=none; b=iT0EL2WPvMAkqObxtilIeIpXRLNK6MxEDdiknkzSxPm8gp7DMh0iEZiWcnZmD9wHhwLtBGy+2ArBAO592y5sMv/uaa6W/GPJeQNzLJTz9kAZTnxJIHuh2H4Cg8eZNKdzxpF/0ieFUlXnAny7dbgCIMh1kbSgzLiE8vI39mtcrss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368122; c=relaxed/simple;
-	bh=6jZvPQxLp5OKhTphoNXMqvHT6Tj87R0kVPZJlUa7WVY=;
+	s=arc-20240116; t=1760367460; c=relaxed/simple;
+	bh=gsvY83+6RnqglEN/DjpCp5AZNvFRsrU4robCg0i4k74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=spctYSIpUs4L9K/yTpjHNlsxq0VyGW5X1pamjySHrLwfCX2qsYbSHfm/m3/hmyUVaj2/P/7HWj4aipRA4FRKQ/k/bbJ/QbnZPS5VlEapx4qCcu7UI8X4/CqmY/TR2t49ZQo0w4EZDL2hOPPlhzXoRI5l0lINzD5Gw6YKG8RP0rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDBIEXa9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFAAC4CEE7;
-	Mon, 13 Oct 2025 15:08:41 +0000 (UTC)
+	 MIME-Version; b=OOEBMfyl7bINtZUoBRsbKxHk6ImcklZwZrjD6Quo6JGvUjKahAQvbeg3kWRaY67FYg5r/SQKIBZZgK5jAToBzAeHL6doY9fV1bn+XqmODfMIe16hF2xClibkNr8LtewTM/DsuSzUvEGmgzWlnxPlihglT1WD7JrPFmbhShYTY7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c86MBTi/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8792EC113D0;
+	Mon, 13 Oct 2025 14:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368121;
-	bh=6jZvPQxLp5OKhTphoNXMqvHT6Tj87R0kVPZJlUa7WVY=;
+	s=korg; t=1760367459;
+	bh=gsvY83+6RnqglEN/DjpCp5AZNvFRsrU4robCg0i4k74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDBIEXa9O37zLdOqX4P4Yr1y1kF/X/F+BwQ1oF3gr66yoqgZxdgXZyKFmIJWqEd9O
-	 JnnH7/mGqgtX2sFhbiCjHIr7RqgBT/Eqow41InW6bQ+ABmmOUJo0ZGezD0fSWujBwX
-	 YqMGGUM5Lu3LILfrYsNtDvQyDQhn0JM+SQeRcukU=
+	b=c86MBTi/g9tZqtKQe+jAXvNiMgxLTl2sXpWzhJa1IGb6rr0cwArbjS1n5sMaHwERl
+	 dSFvK1xBQfgJTMUii7R/RCeFnDbxmLK/c0MuQj8p7TwlO9+risc0z7f/uzs7xYJ0pS
+	 Gk4TzGb6KE+FNH/cvk6mxkqPEEJNz6LaI3+bSQig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Martin Wilck <mwilck@suse.com>,
+	David Disseldorp <ddiss@suse.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/262] selftests: vDSO: vdso_test_abi: Correctly skip whole test with missing vDSO
+Subject: [PATCH 6.6 002/196] init: INITRAMFS_PRESERVE_MTIME should depend on BLK_DEV_INITRD
 Date: Mon, 13 Oct 2025 16:43:13 +0200
-Message-ID: <20251013144327.967008913@linuxfoundation.org>
+Message-ID: <20251013144315.276235986@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 4b59a9f7628fd82b24f2148f62cf327a84d26555 ]
+[ Upstream commit 74792608606a525a0e0df7e8d48acd8000561389 ]
 
-If AT_SYSINFO_EHDR is missing the whole test needs to be skipped.
-Currently this results in the following output:
+INITRAMFS_PRESERVE_MTIME is only used in init/initramfs.c and
+init/initramfs_test.c.  Hence add a dependency on BLK_DEV_INITRD, to
+prevent asking the user about this feature when configuring a kernel
+without initramfs support.
 
-	TAP version 13
-	1..16
-	# AT_SYSINFO_EHDR is not present!
-
-This output is incorrect, as "1..16" still requires the subtest lines to
-be printed, which isn't done however.
-
-Switch to the correct skipping functions, so the output now correctly
-indicates that no subtests are being run:
-
-	TAP version 13
-	1..0 # SKIP AT_SYSINFO_EHDR is not present!
-
-Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250812-vdso-tests-fixes-v2-2-90f499dd35f8@linutronix.de
+Fixes: 1274aea127b2e8c9 ("initramfs: add INITRAMFS_PRESERVE_MTIME Kconfig option")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin Wilck <mwilck@suse.com>
+Reviewed-by: David Disseldorp <ddiss@suse.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/vdso_test_abi.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ init/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_test_abi.c b/tools/testing/selftests/vDSO/vdso_test_abi.c
-index a54424e2336f4..67cbfc56e4e1b 100644
---- a/tools/testing/selftests/vDSO/vdso_test_abi.c
-+++ b/tools/testing/selftests/vDSO/vdso_test_abi.c
-@@ -182,12 +182,11 @@ int main(int argc, char **argv)
- 	unsigned long sysinfo_ehdr = getauxval(AT_SYSINFO_EHDR);
+diff --git a/init/Kconfig b/init/Kconfig
+index 8b630143c720f..461591503bf43 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1367,6 +1367,7 @@ config BOOT_CONFIG_EMBED_FILE
  
- 	ksft_print_header();
--	ksft_set_plan(VDSO_TEST_PLAN);
- 
--	if (!sysinfo_ehdr) {
--		ksft_print_msg("AT_SYSINFO_EHDR is not present!\n");
--		return KSFT_SKIP;
--	}
-+	if (!sysinfo_ehdr)
-+		ksft_exit_skip("AT_SYSINFO_EHDR is not present!\n");
-+
-+	ksft_set_plan(VDSO_TEST_PLAN);
- 
- 	version = versions[VDSO_VERSION];
- 	name = (const char **)&names[VDSO_NAMES];
+ config INITRAMFS_PRESERVE_MTIME
+ 	bool "Preserve cpio archive mtimes in initramfs"
++	depends on BLK_DEV_INITRD
+ 	default y
+ 	help
+ 	  Each entry in an initramfs cpio archive carries an mtime value. When
 -- 
 2.51.0
 
