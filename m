@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-184974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314DBBD4F45
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:23:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8439ABD4D02
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:11:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 512F34F448D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:35:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD3F6426C2E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5167030FF3A;
-	Mon, 13 Oct 2025 15:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A8F3101C9;
+	Mon, 13 Oct 2025 15:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8ZJbjjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtaBpBht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC9C243969;
-	Mon, 13 Oct 2025 15:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E70430EF83;
+	Mon, 13 Oct 2025 15:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368973; cv=none; b=NOJ4r/qa3kZAjtukQT3CqPPvbglzy9rhH4emGQ36EVcyymFIIvM76r0UP9sOphjP6nvKkHsBc2sIp91Q8mXxZ3XfYy55AbKDi/+1QbT5ZhHNFM2D5E1SZe9+Pq1ngs/ek9ZcWHydnp4rK7dsJQSGq5POYKT0uDmV/qMijO4SPFc=
+	t=1760368987; cv=none; b=N3EFHcWtXUcrd8kGNPaWj2JEhTNYkQfYt5FuX+VNglOvyPevftx2N2ARcyvDiZin4RA2m52iY6CVdupO9d35sxmYKDgWWQ2s0v+avKyWSUlNZGplPAaiWdFPYBs3hYkWzKURF1PHovaT+eOHzShuU0OSnLcSoExIJstvkhicBK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368973; c=relaxed/simple;
-	bh=EeQSzAsx2khvZnIDmJ92PqldPKw47wL8c1Jxns+z5UA=;
+	s=arc-20240116; t=1760368987; c=relaxed/simple;
+	bh=b9/ohJC6hr2fwmsOoqA3U5n9equOPc36p9/BYcqmEY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHqHKCTKNj7MOxwhhGXdfiwlwICCSAIfqrQRp0rtGi9mtfhBXPtJesylIlqpQ0g6IqatvZlBUiTqA3p04JSKAcj8uhvnpuwWe0S0Sov0ZtvoPoLg7drdIUSf6DVY6phhKaY806EsgtR8bcKjwldw6sCEpXRAQQSBjktmmbFvj/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8ZJbjjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A35C4CEE7;
-	Mon, 13 Oct 2025 15:22:52 +0000 (UTC)
+	 MIME-Version; b=qLaMA3qXj33HVLiGJ3e5kYYCUEsiV70REQBOdJeyVs4cOjRVDdvss1o7sqB0zVoc6F8+ihRw9/DJiNn3oNcom8nClMSFhZQtK4iRDt7qKR5mtaOe35v95BTXbUlb7/SxMUexCV6H4umypSV/7yWagdLp6R6gKKl9I6d9xebHRj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtaBpBht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC20C116B1;
+	Mon, 13 Oct 2025 15:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368972;
-	bh=EeQSzAsx2khvZnIDmJ92PqldPKw47wL8c1Jxns+z5UA=;
+	s=korg; t=1760368987;
+	bh=b9/ohJC6hr2fwmsOoqA3U5n9equOPc36p9/BYcqmEY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I8ZJbjjQ42m3kd1HrMX8D3TNhn9SWT3chL4XCf4yu450fUHSWnqyTFq2eitrvY1im
-	 csR02/6ilYnapjZBv6wzaH75NK40ntFKUP9gNmtf8NRG+mkO4svyW5zg/BpGn4zSf3
-	 2EGUYysaszKpah3zxi+Gel0Vqg95FoM873daHC6Q=
+	b=TtaBpBhtx5DB+rO1O5aFFe2OLMQbyJn+dUUv7E6R3a0hzETHD/kW3oeEO3AMvtm4O
+	 hR8V5sEOTbQ0ZjHMiVU4T4JV42N7ALr5O5NxOEdtrl2/8/aB2A6QcZKoHYfCt7uMeE
+	 ls5G59ozM2jclTu5YauQ//C4Y20rL11nVew+Iflc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Wei Fang <wei.fang@nxp.com>,
-	Inochi Amaoto <inochiama@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Brian Norris <briannorris@chromium.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chen Wang <unicorn_wang@outlook.com>
-Subject: [PATCH 6.17 082/563] PCI/MSI: Check MSI_FLAG_PCI_MSI_MASK_PARENT in cond_[startup|shutdown]_parent()
-Date: Mon, 13 Oct 2025 16:39:03 +0200
-Message-ID: <20251013144414.267007528@linuxfoundation.org>
+	David Gow <davidgow@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 087/563] genirq/test: Select IRQ_DOMAIN
+Date: Mon, 13 Oct 2025 16:39:08 +0200
+Message-ID: <20251013144414.448993097@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -72,63 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Brian Norris <briannorris@chromium.org>
 
-[ Upstream commit 727e914bbfbbda9e6efa5cb1abe4e96a949d576f ]
+[ Upstream commit f8a44f9babd054ff19e20a30cab661d716ad5459 ]
 
-For MSI controllers which only support MSI_FLAG_PCI_MSI_MASK_PARENT, the
-newly added callback irq_startup() and irq_shutdown() for
-pci_msi[x]_template will not unmask or mask the interrupt when startup()
-resp.  shutdown() is invoked. This prevents the interrupt from being
-enabled resp. disabled.
+These tests use irq_domain_alloc_descs() and so require CONFIG_IRQ_DOMAIN.
 
-Invoke irq_[un]mask_parent() in cond_[startup|shutdown]_parent(), when the
-interrupt has the MSI_FLAG_PCI_MSI_MASK_PARENT flag set.
-
-Fixes: 54f45a30c0d0 ("PCI/MSI: Add startup/shutdown for per device domains")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Reported-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Fixes: 66067c3c8a1e ("genirq: Add kunit tests for depth counts")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Wei Fang <wei.fang@nxp.com>
-Tested-by: Chen Wang <unicorn_wang@outlook.com> # Pioneerbox/SG2042
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/all/20250827230943.17829-1-inochiama@gmail.com
-Closes: https://lore.kernel.org/regressions/aK4O7Hl8NCVEMznB@monster/
-Closes: https://lore.kernel.org/regressions/20250826220959.GA4119563@ax162/
-Closes: https://lore.kernel.org/all/20250827093911.1218640-1-wei.fang@nxp.com/
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: David Gow <davidgow@google.com>
+Link: https://lore.kernel.org/all/20250822190140.2154646-2-briannorris@chromium.org
+Closes: https://lore.kernel.org/lkml/ded44edf-eeb7-420c-b8a8-d6543b955e6e@roeck-us.net/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/msi/irqdomain.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/irq/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
-index e0a800f918e81..b11b7f63f0d6f 100644
---- a/drivers/pci/msi/irqdomain.c
-+++ b/drivers/pci/msi/irqdomain.c
-@@ -154,6 +154,8 @@ static void cond_shutdown_parent(struct irq_data *data)
- 
- 	if (unlikely(info->flags & MSI_FLAG_PCI_MSI_STARTUP_PARENT))
- 		irq_chip_shutdown_parent(data);
-+	else if (unlikely(info->flags & MSI_FLAG_PCI_MSI_MASK_PARENT))
-+		irq_chip_mask_parent(data);
- }
- 
- static unsigned int cond_startup_parent(struct irq_data *data)
-@@ -162,6 +164,9 @@ static unsigned int cond_startup_parent(struct irq_data *data)
- 
- 	if (unlikely(info->flags & MSI_FLAG_PCI_MSI_STARTUP_PARENT))
- 		return irq_chip_startup_parent(data);
-+	else if (unlikely(info->flags & MSI_FLAG_PCI_MSI_MASK_PARENT))
-+		irq_chip_unmask_parent(data);
-+
- 	return 0;
- }
- 
+diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
+index 1da5e9d9da719..08088b8e95ae9 100644
+--- a/kernel/irq/Kconfig
++++ b/kernel/irq/Kconfig
+@@ -148,6 +148,7 @@ config IRQ_KUNIT_TEST
+ 	bool "KUnit tests for IRQ management APIs" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT=y
+ 	default KUNIT_ALL_TESTS
++	select IRQ_DOMAIN
+ 	imply SMP
+ 	help
+ 	  This option enables KUnit tests for the IRQ subsystem API. These are
 -- 
 2.51.0
 
