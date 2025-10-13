@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0828EBD4018
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA12BD3F66
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8504734E342
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D47F1889A77
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F0230E851;
-	Mon, 13 Oct 2025 15:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C8F30CD8B;
+	Mon, 13 Oct 2025 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnUEExDc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fpa8bPXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB7B30BF6E;
-	Mon, 13 Oct 2025 15:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C65314D3D;
+	Mon, 13 Oct 2025 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367801; cv=none; b=NrgOPppA9GUefnAvAzOojmux+mo9srgzvAfswjuPNmxIGOT5DjMHtpirPnrLjhMbJ6Ur3Gs9rjej0PwtZms6OkYurCnCtvjcHhQAvXMtEa2TK2drRcc3QhXjRJIrZxcmZyeSE8a8q7BpjxrAFjsDD6lofYitQ8kIVR365nIVroY=
+	t=1760367272; cv=none; b=J7SXwesJA3i6zKW52MoHmWbrXWI0vK/B+v0bYkqwt+zjl9V4iWXkD36jpH8v0h0Pk19OMEjODB2DKGczmApzSpaDwVeHOZnMHJB8/XcFUrbZ3A+zLnCkQthFFgDK3GIErPlsXji4l4aEc7bbwtXfGeVokA5fVVllkrHDB+ZtLNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367801; c=relaxed/simple;
-	bh=U6fKqyIzDpd+KRgEAZ2Ua9t9Wm4dDopisqpaR4UZtX4=;
+	s=arc-20240116; t=1760367272; c=relaxed/simple;
+	bh=gwgOxX8Mm5y2YLuv5qm30q2s4jFushv14o7oV115BR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hsfw44YWN8MjiuTS5ZVgqN0CZeRthwPypiIh5kz+cRgCMwU1Kj1HAz4UB4J0IqXBUTvnLnBCCs4/fYoMWdLPFpRL+rxP6Pzeje2Gq7pLTLfMMIgB6ftNkwOrY/x1tUsZhC1I9D+2wkQsxYG7O93rLaStU+ryhcCUTDEulSEdQXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnUEExDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5C6C4CEE7;
-	Mon, 13 Oct 2025 15:03:20 +0000 (UTC)
+	 MIME-Version; b=WASUu4Q167xzXLLlzObBnvNQjNobXbFMnMPJWU71Ldndzshw18QC5Z7HF1c/PqlqU+IdCNYBkoMKNY23GsNDYVYqm6M0lNFPoGfOFESk+cwD/PC8Pv5vTTufHwOtJjse1wOVfQaCgw5uYmJYnSzObNwDtoJk1yQ0VdN+nJPM3IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fpa8bPXD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21DDC113D0;
+	Mon, 13 Oct 2025 14:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367800;
-	bh=U6fKqyIzDpd+KRgEAZ2Ua9t9Wm4dDopisqpaR4UZtX4=;
+	s=korg; t=1760367272;
+	bh=gwgOxX8Mm5y2YLuv5qm30q2s4jFushv14o7oV115BR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cnUEExDcaYbi+x4tF/NKms/gHMyXuKQ5lOdSBFQVycO62ZIgpzteIXRDdDdwee7j9
-	 AUg5NkXD8OVZq9IPUxwAk/33/n/xleDa8ESGeLNKQm4/Fa7A6fIibptfC5Ekbxtx6P
-	 eS0apF8BLTJWcHpFprhpxQLnAh98yneCF47r/Iqg=
+	b=Fpa8bPXD8iu4samQiilO4rsV0oo0iDM4ZZEAW/s/a6r2/Ejo5MBkDPQprzqyvUeJ5
+	 FoHGvzMQ8mg/kF1UuPevrN9V9aZxYIwhpisIMrFlDrKPzYAW6g0HTVuLN0LAFalPj7
+	 RBz8JDxAOuoQJ2CIEMriHw+WBGGgxxLluuq8zZPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Phil Sutter <phil@nwl.cc>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/196] fs: ntfs3: Fix integer overflow in run_unpack()
-Date: Mon, 13 Oct 2025 16:44:56 +0200
-Message-ID: <20251013144319.113232072@linuxfoundation.org>
+Subject: [PATCH 6.1 124/196] netfilter: ipset: Remove unused htable_bits in macro ahash_region
+Date: Mon, 13 Oct 2025 16:44:57 +0200
+Message-ID: <20251013144319.181589625@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit 736fc7bf5f68f6b74a0925b7e072c571838657d2 ]
+[ Upstream commit ba941796d7cd1e81f51eed145dad1b47240ff420 ]
 
-The MFT record relative to the file being opened contains its runlist,
-an array containing information about the file's location on the physical
-disk. Analysis of all Call Stack paths showed that the values of the
-runlist array, from which LCNs are calculated, are not validated before
-run_unpack function.
+Since the ahash_region() macro was redefined to calculate the region
+index solely from HTABLE_REGION_BITS, the htable_bits parameter became
+unused.
 
-The run_unpack function decodes the compressed runlist data format
-from MFT attributes (for example, $DATA), converting them into a runs_tree
-structure, which describes the mapping of virtual clusters (VCN) to
-logical clusters (LCN). The NTFS3 subsystem also has a shortcut for
-deleting files from MFT records - in this case, the RUN_DEALLOCATE
-command is sent to the run_unpack input, and the function logic
-provides that all data transferred to the runlist about file or
-directory is deleted without creating a runs_tree structure.
+Remove the unused htable_bits argument and its call sites, simplifying
+the code without changing semantics.
 
-Substituting the runlist in the $DATA attribute of the MFT record for an
-arbitrary file can lead either to access to arbitrary data on the disk
-bypassing access checks to them (since the inode access check
-occurs above) or to destruction of arbitrary data on the disk.
-
-Add overflow check for addition operation.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 8478a729c046 ("netfilter: ipset: fix region locking in hash types")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/run.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/netfilter/ipset/ip_set_hash_gen.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
-index 44e93ad491ba7..0139124578d9e 100644
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -9,6 +9,7 @@
- #include <linux/blkdev.h>
- #include <linux/fs.h>
- #include <linux/log2.h>
-+#include <linux/overflow.h>
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index 0bd6bf46f05f3..1f9ca5040982d 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -62,7 +62,7 @@ struct hbucket {
+ 		: jhash_size((htable_bits) - HTABLE_REGION_BITS))
+ #define ahash_sizeof_regions(htable_bits)		\
+ 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
+-#define ahash_region(n, htable_bits)		\
++#define ahash_region(n)		\
+ 	((n) / jhash_size(HTABLE_REGION_BITS))
+ #define ahash_bucket_start(h,  htable_bits)	\
+ 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
+@@ -689,7 +689,7 @@ mtype_resize(struct ip_set *set, bool retried)
+ #endif
+ 				key = HKEY(data, h->initval, htable_bits);
+ 				m = __ipset_dereference(hbucket(t, key));
+-				nr = ahash_region(key, htable_bits);
++				nr = ahash_region(key);
+ 				if (!m) {
+ 					m = kzalloc(sizeof(*m) +
+ 					    AHASH_INIT_SIZE * dsize,
+@@ -839,7 +839,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	elements = t->hregion[r].elements;
+ 	maxelem = t->maxelem;
+@@ -1037,7 +1037,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	rcu_read_unlock_bh();
  
- #include "debug.h"
- #include "ntfs.h"
-@@ -982,12 +983,16 @@ int run_unpack(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- 
- 			if (!dlcn)
- 				return -EINVAL;
--			lcn = prev_lcn + dlcn;
-+
-+			if (check_add_overflow(prev_lcn, dlcn, &lcn))
-+				return -EINVAL;
- 			prev_lcn = lcn;
- 		} else
- 			return -EINVAL;
- 
--		next_vcn = vcn64 + len;
-+		if (check_add_overflow(vcn64, len, &next_vcn))
-+			return -EINVAL;
-+
- 		/* Check boundary. */
- 		if (next_vcn > evcn + 1)
- 			return -EINVAL;
-@@ -1151,7 +1156,8 @@ int run_get_highest_vcn(CLST vcn, const u8 *run_buf, u64 *highest_vcn)
- 			return -EINVAL;
- 
- 		run_buf += size_size + offset_size;
--		vcn64 += len;
-+		if (check_add_overflow(vcn64, len, &vcn64))
-+			return -EINVAL;
- 
- #ifndef CONFIG_NTFS3_64BIT_CLUSTER
- 		if (vcn64 > 0x100000000ull)
 -- 
 2.51.0
 
