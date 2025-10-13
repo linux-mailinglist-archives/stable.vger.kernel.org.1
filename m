@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-184425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FFCBD40D8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:21:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48CDBD4B8E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C40C43E338F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 96357541AC4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46FA30DEB1;
-	Mon, 13 Oct 2025 14:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133B726E6F2;
+	Mon, 13 Oct 2025 15:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uY3wA6C7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWWrwoAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D1E30DEB2;
-	Mon, 13 Oct 2025 14:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44AD20125F;
+	Mon, 13 Oct 2025 15:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367400; cv=none; b=dU0UUi2Hwj8CuXj5UMgCfCzYcIQ2MZzPjt31U3uFw6FITFVLQvJENPPH67b4lHpx7s9jTsVJ9zg2QXXfQ/F0AGklzgGjwKuydneGM9w55qTndTa8srnpAdGchGDZrI/GD4bY0BshFozmeiDbIbuf4vqGZm25NRrP5/GoXFT+4M0=
+	t=1760368528; cv=none; b=AFSasGQAKZ2iyjP0vgvRy88isdk8on4n9r5JB0HsMhyzYH7/FAxCqG2i98IQOOftQENn8TNRo114uN9RGq7FCceO+lGqKF4Qiw84jAH27t9KvAzFW/4p19C1UmcGv0utWqEoIN/qlxIE29QdpvwhnbHNJQhLfsoyP8wQ8HfETfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367400; c=relaxed/simple;
-	bh=uorLUQrmCpj3zaBZnO1GHjmeeJiGQNVScMOTjhRsnHg=;
+	s=arc-20240116; t=1760368528; c=relaxed/simple;
+	bh=wAN4dR44f05Ty1Ubmnuw2fuAlCttf8VxI7t8lWnrF6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AhnDMmhGFKbAdrqn88+xhdMNlv8cxDV36Dmu1g/L6u0EJAxn63sKSci6nmuqaY8xR63CEcDeSsrvp8MqeVH4EZRnNSFU4kcuu55j7lH4YGZDn1ukPytcMLhyiL/fbu8edTC7MH4W0huziRm5hlEAPSfD79PQ5Qt1Fn5MEqYXVKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uY3wA6C7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44AAC4CEE7;
-	Mon, 13 Oct 2025 14:56:39 +0000 (UTC)
+	 MIME-Version; b=Exff43NOW7NUGJVf288MSbT5i7EorapGkFnforiW+S2aM+RauL1qLNKFG9+FuOVQW/PEsq8+F7JfzCG1gmzORvjFsa+6zhKt3RGGIWFNlzEKjSnj1mqhQk2g+1YcQ9IcHgeU9aASZeIJDM16oTApprnoIXjaHsv7bewQ/cz5nk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWWrwoAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53157C4CEE7;
+	Mon, 13 Oct 2025 15:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367400;
-	bh=uorLUQrmCpj3zaBZnO1GHjmeeJiGQNVScMOTjhRsnHg=;
+	s=korg; t=1760368528;
+	bh=wAN4dR44f05Ty1Ubmnuw2fuAlCttf8VxI7t8lWnrF6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uY3wA6C75indbq/El5Q5AfzT3O0I4149M8ZtUa0ut4xRJX/IIeG1NRMQmaf678ztJ
-	 kJ6m24E6RBlPeGPwMDUW9bw/PzC+MgKGAtUsCZ/QEMsqyu0M5r0kj2sXbXO9vI50le
-	 s32P2+sdYnkRkjdsFCL7qIdsUrFnkZHfn1o+3qsU=
+	b=sWWrwoAa3xC84OOeyaXmNMpL8gGOSxJc6pxTDjxaAVnzQDiHmufigbeFK0Nwo2CY8
+	 molbPQ4BFtwarG5cKWvbV7sg1h3gIrGU9cF+KQwJ76Hzq/Rp6VQA1B4V9KtAI87dKB
+	 uKFFtvb4i5QkN/W/Ki0R+plOhnd3Fvviot0VBAe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Goldwyn Rodrigues <rgoldwyn@suse.de>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/196] ocfs2: fix double free in user_cluster_connect()
+Subject: [PATCH 6.12 193/262] usb: vhci-hcd: Prevent suspending virtually attached devices
 Date: Mon, 13 Oct 2025 16:45:35 +0200
-Message-ID: <20251013144320.559609547@linuxfoundation.org>
+Message-ID: <20251013144333.199359674@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,46 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 8f45f089337d924db24397f55697cda0e6960516 ]
+[ Upstream commit e40b984b6c4ce3f80814f39f86f87b2a48f2e662 ]
 
-user_cluster_disconnect() frees "conn->cc_private" which is "lc" but then
-the error handling frees "lc" a second time.  Set "lc" to NULL on this
-path to avoid a double free.
+The VHCI platform driver aims to forbid entering system suspend when at
+least one of the virtual USB ports are bound to an active USB/IP
+connection.
 
-Link: https://lkml.kernel.org/r/aNKDz_7JF7aycZ0k@stanley.mountain
-Fixes: c994c2ebdbbc ("ocfs2: use the new DLM operation callbacks while requesting new lockspace")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Goldwyn Rodrigues <rgoldwyn@suse.de>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+However, in some cases, the detection logic doesn't work reliably, i.e.
+when all devices attached to the virtual root hub have been already
+suspended, leading to a broken suspend state, with unrecoverable resume.
+
+Ensure the virtually attached devices do not enter suspend by setting
+the syscore PM flag.  Note this is currently limited to the client side
+only, since the server side doesn't implement system suspend prevention.
+
+Fixes: 04679b3489e0 ("Staging: USB/IP: add client driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250902-vhci-hcd-suspend-fix-v3-1-864e4e833559@collabora.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/stack_user.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/usbip/vhci_hcd.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/fs/ocfs2/stack_user.c b/fs/ocfs2/stack_user.c
-index 64e6ddcfe329a..e28905e58bd6a 100644
---- a/fs/ocfs2/stack_user.c
-+++ b/fs/ocfs2/stack_user.c
-@@ -1024,6 +1024,7 @@ static int user_cluster_connect(struct ocfs2_cluster_connection *conn)
- 			printk(KERN_ERR "ocfs2: Could not determine"
- 					" locking version\n");
- 			user_cluster_disconnect(conn);
-+			lc = NULL;
+diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
+index 8dac1edc74d4e..a793e30d46b78 100644
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -764,6 +764,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ 				 ctrlreq->wValue, vdev->rhport);
+ 
+ 			vdev->udev = usb_get_dev(urb->dev);
++			/*
++			 * NOTE: A similar operation has been done via
++			 * USB_REQ_GET_DESCRIPTOR handler below, which is
++			 * supposed to always precede USB_REQ_SET_ADDRESS.
++			 *
++			 * It's not entirely clear if operating on a different
++			 * usb_device instance here is a real possibility,
++			 * otherwise this call and vdev->udev assignment above
++			 * should be dropped.
++			 */
++			dev_pm_syscore_device(&vdev->udev->dev, true);
+ 			usb_put_dev(old);
+ 
+ 			spin_lock(&vdev->ud.lock);
+@@ -784,6 +795,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+ 
+ 			vdev->udev = usb_get_dev(urb->dev);
++			/*
++			 * Set syscore PM flag for the virtually attached
++			 * devices to ensure they will not enter suspend on
++			 * the client side.
++			 *
++			 * Note this doesn't have any impact on the physical
++			 * devices attached to the host system on the server
++			 * side, hence there is no need to undo the operation
++			 * on disconnect.
++			 */
++			dev_pm_syscore_device(&vdev->udev->dev, true);
+ 			usb_put_dev(old);
  			goto out;
- 		}
- 		wait_event(lc->oc_wait, (atomic_read(&lc->oc_this_node) > 0));
+ 
 -- 
 2.51.0
 
