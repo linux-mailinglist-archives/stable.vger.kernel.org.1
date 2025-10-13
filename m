@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-185386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56AFBD4BA0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DE8BD4754
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C1E518A5EB5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 668DB5436C6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE013148D6;
-	Mon, 13 Oct 2025 15:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65705313552;
+	Mon, 13 Oct 2025 15:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+SQgxi4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dburz5Bb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF4F3148D2;
-	Mon, 13 Oct 2025 15:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E3130BB8C;
+	Mon, 13 Oct 2025 15:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370145; cv=none; b=T43K3E98b2X5DefFNIi34U5y+U6UfjYmtPu1ngU53vvBUwfp9lL9F1UbBuN7n3/2t1GISAI+vTlWJiTMBes3e/kDoZhkc1RlpMO69O1+Q/MOR1gnv4tVh7YucmO046GHlfQVBFFee1aZnzNXpdFv+RsXzUvqAgymit/G47s57sA=
+	t=1760368690; cv=none; b=qL9wia052hc7H4cfZKb4dwwtngclKF8OiZVxf5GR8TCaXBpkDrmGH9sgI3UNu590Fc5SCNZziCq5l0yuvI4ukpKEUwz9NLlNR9qy1U0AWIA5LmsBJL154j/RPQQWOdAO6HmSMcCenUsmMqvqDLJpgScm4hNF1oIvx2uY8x2jOwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370145; c=relaxed/simple;
-	bh=ObO8EMCKe+U2uLKqeSHXp/hCHM31dNhcXY5NtRu7cgA=;
+	s=arc-20240116; t=1760368690; c=relaxed/simple;
+	bh=jiSViDFd+WizyWgRqMkj2Dsr9UhRYbOB0p9HOoYt898=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXRBFAq+aMZqB6m91DKsZ/l99NuC9lRjygLddhLqbevMSLZvISuZXCs7Ii2b8aYZQse9Vi04Z/RMEGoR6DnfviUdYPpJA+rCXIWIeaY/03kyGOcXYJKWGJ6xyWCw38oAVuxFHDWDAF9vSfSK3fXMzIZWK7lDAc/b2iHO7UpRxUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+SQgxi4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EC9C4CEE7;
-	Mon, 13 Oct 2025 15:42:24 +0000 (UTC)
+	 MIME-Version; b=hEQj+phvojNjNBQmKoQVKSadLCLGpbqeGuqd0BP1gwlXcuYfps1mAhdpw1rrfH5Nzq25vBGeEl9v4D31G5LGlANhy2IQeZrbtymx9tnrIdg0TLl3/8SQ4rukUhhQfEgOKEnd4i2RWtzZ+I0eXj78dB/YpHMWr2I3FsCD/ZycPBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dburz5Bb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53926C4CEE7;
+	Mon, 13 Oct 2025 15:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370145;
-	bh=ObO8EMCKe+U2uLKqeSHXp/hCHM31dNhcXY5NtRu7cgA=;
+	s=korg; t=1760368689;
+	bh=jiSViDFd+WizyWgRqMkj2Dsr9UhRYbOB0p9HOoYt898=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+SQgxi4buumryDNbIBAUYOcbPqNOU+sZl8k1oUVOGLVitlaWBl0IEBjm+aMUKUK6
-	 gVSMxZf82B2R74iUDPhPRFgIfmG/dbDMQubjK44S9J3mCJGq6NWE0Ja8LrnK7IBDP1
-	 N43M0/c1d6sNGOVTO9ua2WxA1LZV9v2bv/2a2I5k=
+	b=dburz5BbscPkYsW6Yd7ZXrLR7wftynvKUXLVF/7p6x8S3ycVAXL7X/df3PBgX9GiK
+	 RCYlgXuX+/mgyReBD48r51v7AOWn6P666pP/nrSMCIysuE/+GQNU024B0ZjjZT/jJI
+	 +wLtkQFxlJmIKHWU9ylt9fYpZnsm2OJ9iJEQlq3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaden Berger <kadenb816@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.17 495/563] ALSA: hda/realtek: Add quirk for HP Spectre 14t-ea100
-Date: Mon, 13 Oct 2025 16:45:56 +0200
-Message-ID: <20251013144429.226795576@linuxfoundation.org>
+	Kohei Enju <enjuk@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 215/262] net: ena: return 0 in ena_get_rxfh_key_size() when RSS hash key is not configurable
+Date: Mon, 13 Oct 2025 16:45:57 +0200
+Message-ID: <20251013144333.988136941@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Kohei Enju <enjuk@amazon.com>
 
-commit 50a098e3e9b1bb30cefc43cdfba3c7b9b32e14a7 upstream.
+[ Upstream commit f017156aea60db8720e47591ed1e041993381ad2 ]
 
-HP-Spectre 14t-ea100 model has no speaker output unless booting
-previously from Windows on dual boot, a reboot while on Linux will
-stop the speakers working.  Applying the existing quirk for HP Spectre
-X360 EU0xxx seems fixing this speaker problem.
+In EC2 instances where the RSS hash key is not configurable, ethtool
+shows bogus RSS hash key since ena_get_rxfh_key_size() unconditionally
+returns ENA_HASH_KEY_SIZE.
 
-Reported-by: Kaden Berger <kadenb816@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/aMxdGAmfOQ6VPNU8@archlinux
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Commit 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not
+supported") added proper handling for devices that don't support RSS
+hash key configuration, but ena_get_rxfh_key_size() has been unchanged.
+
+When the RSS hash key is not configurable, return 0 instead of
+ENA_HASH_KEY_SIZE to clarify getting the value is not supported.
+
+Tested on m5 instance families.
+
+Without patch:
+ # ethtool -x ens5 | grep -A 1 "RSS hash key"
+ RSS hash key:
+ 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
+
+With patch:
+ # ethtool -x ens5 | grep -A 1 "RSS hash key"
+ RSS hash key:
+ Operation not supported
+
+Fixes: 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not supported")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Link: https://patch.msgid.link/20250929050247.51680-1-enjuk@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/amazon/ena/ena_ethtool.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6487,6 +6487,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x89c6, "Zbook Fury 17 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x89ca, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x89d3, "HP EliteBook 645 G9 (MB 89D2)", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x89da, "HP Spectre x360 14t-ea100", ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX),
- 	SND_PCI_QUIRK(0x103c, 0x89e7, "HP Elite x2 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8a0f, "HP Pavilion 14-ec1xxx", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8a20, "HP Laptop 15s-fq5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+diff --git a/drivers/net/ethernet/amazon/ena/ena_ethtool.c b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
+index 60fb35ec4b15a..0b2e257b591f0 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_ethtool.c
++++ b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
+@@ -869,7 +869,10 @@ static u32 ena_get_rxfh_indir_size(struct net_device *netdev)
+ 
+ static u32 ena_get_rxfh_key_size(struct net_device *netdev)
+ {
+-	return ENA_HASH_KEY_SIZE;
++	struct ena_adapter *adapter = netdev_priv(netdev);
++	struct ena_rss *rss = &adapter->ena_dev->rss;
++
++	return rss->hash_key ? ENA_HASH_KEY_SIZE : 0;
+ }
+ 
+ static int ena_indirection_table_set(struct ena_adapter *adapter,
+-- 
+2.51.0
+
 
 
 
