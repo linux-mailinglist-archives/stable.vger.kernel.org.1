@@ -1,196 +1,197 @@
-Return-Path: <stable+bounces-184187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AF3BD21D1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:38:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44CB2BD21DA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B8CD3B67EB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 08:36:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB0684ECF6E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 08:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4D52F9DB8;
-	Mon, 13 Oct 2025 08:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C562EC0B7;
+	Mon, 13 Oct 2025 08:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGKRhoW0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lkUIJutH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785262F9D9E
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 08:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456962F90CE;
+	Mon, 13 Oct 2025 08:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760344544; cv=none; b=QVCN1X8YboenWCs6Fg/ySSuIH5Nnq794uX+xEoCWp8Xq2jixtfatH9QlGAgvdu/aICkNmLS9UiY7j4HiLvgBIcNX8RjU1eOR/LFoZaIXKHhpw2bE7lyQ2MCFWE+OKw/T0I6Oo6UzZN4ZG4Y8/Dqmd+2hrGTDYzJ+yipvafsm46o=
+	t=1760344703; cv=none; b=TD7yJSTXWtJuK34JBBfsm83thGsVTlgkFP6N5JMcM2L7bQYvcfhSZuGrrnJergtQa8uzJypJ8WyNxOPdS/fk/q7EL89beX8I5HF+5Fot0Y+E9Wm0yBkBTdGN4ona8ZTQlKl/yNex3l9DahUVrsDcoOLoX4FKI4axoc4NmqwqZr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760344544; c=relaxed/simple;
-	bh=EHXno5Sz4yoGVDRbSGkfvCoMveLdbrKzraTBwpIh9gw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cRUcLoiTgjIV0QL7PQLIzq3JcP8GPp2cIMWlIEZUqg4LF7r6dMkfW85I1+iedxGzronPiRzGLpbDD0YOrHLp4heV8I7bgpOZO9aTG6ZcPYPmxPrP3u1gvIcOYITj3JGvV+eOWNGn5UTfmg6f6ZOke1WYw4XUsUYOguCDcyiGX54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGKRhoW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF7EC4CEE7;
-	Mon, 13 Oct 2025 08:35:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760344544;
-	bh=EHXno5Sz4yoGVDRbSGkfvCoMveLdbrKzraTBwpIh9gw=;
-	h=Subject:To:Cc:From:Date:From;
-	b=CGKRhoW0BpkWix2VCrkhZpzgTjuCTrfsqkzydCJa4fWfK2Rw5Gmdz/Arhrk79miOe
-	 BFuvu9fD2QPoSJG0Jw73oq+7rX6O116/ZRpSs1tudK8sBPVbHJh5oi2r9ZIHSs9a+0
-	 /uO9U2FFJ+Zavkznit0XMHzr717Gr+4hMq0gq9fM=
-Subject: FAILED: patch "[PATCH] tracing: Stop fortify-string from warning in" failed to apply to 5.10-stable tree
-To: rostedt@goodmis.org,akpm@linux-foundation.org,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Oct 2025 10:35:37 +0200
-Message-ID: <2025101336-mortality-parched-3105@gregkh>
+	s=arc-20240116; t=1760344703; c=relaxed/simple;
+	bh=26t7Q08DL+2PT4vvqMsKQUPvVz73YGp900Us8qtoeII=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q1jfAkSqnqLls9amXrpSEA6K8WbQIyvUc8T+K+9PNXwLdgpZxHmhWbVOpOl9Y4cx0DUnn6psA8p2L83U0MRKHgQvje4LRADtIxDW8Za+SS4DGPCyLMXv7R8hhXcvpxfrk46Gpt47vijcsi97PyP/x+7uPl+noRppjziNgwVrO2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lkUIJutH; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760344701; x=1791880701;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=26t7Q08DL+2PT4vvqMsKQUPvVz73YGp900Us8qtoeII=;
+  b=lkUIJutHr9yY0H/ZYB3i2JISsNxIOfPMlTo3lDBpoVCyABBWHo6cmGGx
+   q2JXr2O9kiLGcvJiQiDo/eC0+hNpDW9uohAJN0NRsaO6CA4Mo1A7Z4rgY
+   TM3tpC5rlB2TbohWxmN79GFKSSw4aRor4+1d3Am4bf7zPk1a3icQodqmW
+   +UMR5wFNcMZ4+CLH1TotzznxNSTOkr1HB3i8DbcgWkbAEe1vyeJnk6GPP
+   1iMu5MqgrSdi0RzVMIZUGEDd/QTHqq8Po8XshtanPNHPY48ByaBfssWYE
+   ImPv9PMxp0HuThN94j4STTsiRjZHp33qCfvBgENdwqxD/LfX1vh7vT13q
+   g==;
+X-CSE-ConnectionGUID: DlGtR1eORQWz1VTKepLVpQ==
+X-CSE-MsgGUID: xaivkSxtQtKYH4So7K6qtw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11580"; a="66332243"
+X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; 
+   d="scan'208";a="66332243"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 01:38:20 -0700
+X-CSE-ConnectionGUID: NM7kJcUdShCh09p123QYuA==
+X-CSE-MsgGUID: 1AgSA781SSGWq/B2gxPzRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; 
+   d="scan'208";a="212172484"
+Received: from unknown (HELO [10.238.2.75]) ([10.238.2.75])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 01:38:18 -0700
+Message-ID: <30c62dee-2219-4b39-94c7-b9cc81130c9e@linux.intel.com>
+Date: Mon, 13 Oct 2025 16:38:15 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] bisected: perf: hang when using async-profiler
+ caused by perf: Fix the POLL_HUP delivery breakage
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Octavia Togami <octavia.togami@gmail.com>, stable@vger.kernel.org,
+ regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org
+References: <CAHPNGSQpXEopYreir+uDDEbtXTBvBvi8c6fYXJvceqtgTPao3Q@mail.gmail.com>
+ <8aed5e69-57b1-4a01-b90c-56402eb27b37@linux.intel.com>
+ <20251013080531.GJ3245006@noisy.programming.kicks-ass.net>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20251013080531.GJ3245006@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 10/13/2025 4:05 PM, Peter Zijlstra wrote:
+> On Mon, Oct 13, 2025 at 10:34:27AM +0800, Mi, Dapeng wrote:
+>
+>> It looks the issue described in the link
+>> (https://lore.kernel.org/all/20250606192546.915765-1-kan.liang@linux.intel.com/T/#u)
+>> happens again but in a different way. :(
+>>
+>> As the commit message above link described,  cpu-clock (and task-clock) is
+>> a specific SW event which rely on hrtimer. The hrtimer handler calls
+>> __perf_event_overflow() and then event_stop (cpu_clock_event_stop()) and
+>> eventually call hrtimer_cancel() which traps into a dead loop which waits
+>> for the calling hrtimer handler finishes.
+>>
+>> As the
+>> change (https://lore.kernel.org/all/20250606192546.915765-1-kan.liang@linux.intel.com/T/#u),
+>> it should be enough to just disable the event and don't need an extra event
+>> stop.
+>>
+>> @Octavia, could you please check if the change below can fix this issue?
+>> Thanks.
+>>
+>> diff --git a/kernel/events/core.c b/kernel/events/core.c
+>> index 7541f6f85fcb..883b0e1fa5d3 100644
+>> --- a/kernel/events/core.c
+>> +++ b/kernel/events/core.c
+>> @@ -10343,7 +10343,20 @@ static int __perf_event_overflow(struct perf_event
+>> *event,
+>>                 ret = 1;
+>>                 event->pending_kill = POLL_HUP;
+>>                 perf_event_disable_inatomic(event);
+>> -               event->pmu->stop(event, 0);
+>> +
+>> +               /*
+>> +                * The cpu-clock and task-clock are two special SW events,
+>> +                * which rely on the hrtimer. The __perf_event_overflow()
+>> +                * is invoked from the hrtimer handler for these 2 events.
+>> +                * Avoid to call event_stop()->hrtimer_cancel() for these
+>> +                * 2 events since hrtimer_cancel() waits for the hrtimer
+>> +                * handler to finish, which would trigger a deadlock.
+>> +                * Only disabling the events is enough to stop the hrtimer.
+>> +                * See perf_swevent_cancel_hrtimer().
+>> +                */
+>> +               if (event->attr.config != PERF_COUNT_SW_CPU_CLOCK &&
+>> +                   event->attr.config != PERF_COUNT_SW_TASK_CLOCK)
+>> +                       event->pmu->stop(event, 0);
+> This is broken though; you cannot test config without first knowing
+> which PMU you're dealing with.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 54b91e54b113d4f15ab023a44f508251db6e22e7
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101336-mortality-parched-3105@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
+Ah, yes. Just ignore this.
 
 
+>
+> Also, that timer really should get stopped, we can't know for certain
+> this overflow is of the timer itself or not, it could be a related
+> event.
+>
+> Something like the below might do -- but please carefully consider the
+> cases where hrtimer_try_to_cancel() might fail; in those cases we'll
+> have set HES_STOPPED and the hrtimer callback *SHOULD* observe this and
+> NORESTART.
+>
+> But I didn't check all the details.
 
-thanks,
+The only reason that hrtimer_try_to_cancel() could fail is that the hrtimer
+callback is currently executing, so current change should be fine. 
 
-greg k-h
 
------------------- original commit in Linus's tree ------------------
+>
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index 820127536e62..a91481d57841 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -11756,7 +11756,8 @@ static enum hrtimer_restart perf_swevent_hrtimer(struct hrtimer *hrtimer)
+>  
+>  	event = container_of(hrtimer, struct perf_event, hw.hrtimer);
+>  
+> -	if (event->state != PERF_EVENT_STATE_ACTIVE)
+> +	if (event->state != PERF_EVENT_STATE_ACTIVE ||
+> +	    event->hw.state & PERF_HES_STOPPED)
+>  		return HRTIMER_NORESTART;
+>  
+>  	event->pmu->read(event);
+> @@ -11810,7 +11811,7 @@ static void perf_swevent_cancel_hrtimer(struct perf_event *event)
+>  		ktime_t remaining = hrtimer_get_remaining(&hwc->hrtimer);
+>  		local64_set(&hwc->period_left, ktime_to_ns(remaining));
+>  
+> -		hrtimer_cancel(&hwc->hrtimer);
+> +		hrtimer_try_to_cancel(&hwc->hrtimer);
+>  	}
+>  }
+>  
+> @@ -11854,12 +11855,14 @@ static void cpu_clock_event_update(struct perf_event *event)
+>  
+>  static void cpu_clock_event_start(struct perf_event *event, int flags)
+>  {
+> +	event->hw.state = 0;
+>  	local64_set(&event->hw.prev_count, local_clock());
+>  	perf_swevent_start_hrtimer(event);
+>  }
+>  
+>  static void cpu_clock_event_stop(struct perf_event *event, int flags)
+>  {
+> +	event->hw.state = PERF_HES_STOPPED;
+>  	perf_swevent_cancel_hrtimer(event);
+>  	if (flags & PERF_EF_UPDATE)
+>  		cpu_clock_event_update(event);
 
-From 54b91e54b113d4f15ab023a44f508251db6e22e7 Mon Sep 17 00:00:00 2001
-From: Steven Rostedt <rostedt@goodmis.org>
-Date: Sat, 11 Oct 2025 11:20:32 -0400
-Subject: [PATCH] tracing: Stop fortify-string from warning in
- tracing_mark_raw_write()
+Besides cpu-clock, task-clock should need similar change as well. I would
+post a complete change later. 
 
-The way tracing_mark_raw_write() records its data is that it has the
-following structure:
-
-  struct {
-	struct trace_entry;
-	int id;
-	char buf[];
-  };
-
-But memcpy(&entry->id, buf, size) triggers the following warning when the
-size is greater than the id:
-
- ------------[ cut here ]------------
- memcpy: detected field-spanning write (size 6) of single field "&entry->id" at kernel/trace/trace.c:7458 (size 4)
- WARNING: CPU: 7 PID: 995 at kernel/trace/trace.c:7458 write_raw_marker_to_buffer.isra.0+0x1f9/0x2e0
- Modules linked in:
- CPU: 7 UID: 0 PID: 995 Comm: bash Not tainted 6.17.0-test-00007-g60b82183e78a-dirty #211 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
- RIP: 0010:write_raw_marker_to_buffer.isra.0+0x1f9/0x2e0
- Code: 04 00 75 a7 b9 04 00 00 00 48 89 de 48 89 04 24 48 c7 c2 e0 b1 d1 b2 48 c7 c7 40 b2 d1 b2 c6 05 2d 88 6a 04 01 e8 f7 e8 bd ff <0f> 0b 48 8b 04 24 e9 76 ff ff ff 49 8d 7c 24 04 49 8d 5c 24 08 48
- RSP: 0018:ffff888104c3fc78 EFLAGS: 00010292
- RAX: 0000000000000000 RBX: 0000000000000006 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: 1ffffffff6b363b4 RDI: 0000000000000001
- RBP: ffff888100058a00 R08: ffffffffb041d459 R09: ffffed1020987f40
- R10: 0000000000000007 R11: 0000000000000001 R12: ffff888100bb9010
- R13: 0000000000000000 R14: 00000000000003e3 R15: ffff888134800000
- FS:  00007fa61d286740(0000) GS:ffff888286cad000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000560d28d509f1 CR3: 00000001047a4006 CR4: 0000000000172ef0
- Call Trace:
-  <TASK>
-  tracing_mark_raw_write+0x1fe/0x290
-  ? __pfx_tracing_mark_raw_write+0x10/0x10
-  ? security_file_permission+0x50/0xf0
-  ? rw_verify_area+0x6f/0x4b0
-  vfs_write+0x1d8/0xdd0
-  ? __pfx_vfs_write+0x10/0x10
-  ? __pfx_css_rstat_updated+0x10/0x10
-  ? count_memcg_events+0xd9/0x410
-  ? fdget_pos+0x53/0x5e0
-  ksys_write+0x182/0x200
-  ? __pfx_ksys_write+0x10/0x10
-  ? do_user_addr_fault+0x4af/0xa30
-  do_syscall_64+0x63/0x350
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7fa61d318687
- Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
- RSP: 002b:00007ffd87fe0120 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
- RAX: ffffffffffffffda RBX: 00007fa61d286740 RCX: 00007fa61d318687
- RDX: 0000000000000006 RSI: 0000560d28d509f0 RDI: 0000000000000001
- RBP: 0000560d28d509f0 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000006
- R13: 00007fa61d4715c0 R14: 00007fa61d46ee80 R15: 0000000000000000
-  </TASK>
- ---[ end trace 0000000000000000 ]---
-
-This is because fortify string sees that the size of entry->id is only 4
-bytes, but it is writing more than that. But this is OK as the
-dynamic_array is allocated to handle that copy.
-
-The size allocated on the ring buffer was actually a bit too big:
-
-  size = sizeof(*entry) + cnt;
-
-But cnt includes the 'id' and the buffer data, so adding cnt to the size
-of *entry actually allocates too much on the ring buffer.
-
-Change the allocation to:
-
-  size = struct_size(entry, buf, cnt - sizeof(entry->id));
-
-and the memcpy() to unsafe_memcpy() with an added justification.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/20251011112032.77be18e4@gandalf.local.home
-Fixes: 64cf7d058a00 ("tracing: Have trace_marker use per-cpu data to read user space")
-Reported-by: syzbot+9a2ede1643175f350105@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68e973f5.050a0220.1186a4.0010.GAE@google.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index bbb89206a891..eb256378e65b 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7441,7 +7441,8 @@ static ssize_t write_raw_marker_to_buffer(struct trace_array *tr,
- 	ssize_t written;
- 	size_t size;
- 
--	size = sizeof(*entry) + cnt;
-+	/* cnt includes both the entry->id and the data behind it. */
-+	size = struct_size(entry, buf, cnt - sizeof(entry->id));
- 
- 	buffer = tr->array_buffer.buffer;
- 
-@@ -7455,7 +7456,10 @@ static ssize_t write_raw_marker_to_buffer(struct trace_array *tr,
- 		return -EBADF;
- 
- 	entry = ring_buffer_event_data(event);
--	memcpy(&entry->id, buf, cnt);
-+	unsafe_memcpy(&entry->id, buf, cnt,
-+		      "id and content already reserved on ring buffer"
-+		      "'buf' includes the 'id' and the data."
-+		      "'entry' was allocated with cnt from 'id'.");
- 	written = cnt;
- 
- 	__buffer_unlock_commit(buffer, event);
 
 
