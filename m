@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFACDBD3E31
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:07:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F56BD4519
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B6AC4F57F2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13838422A16
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA30277CB0;
-	Mon, 13 Oct 2025 14:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F107C3090D7;
+	Mon, 13 Oct 2025 14:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQdOo8Yn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyUKzTY6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAFB221F20;
-	Mon, 13 Oct 2025 14:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86333090CC;
+	Mon, 13 Oct 2025 14:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367092; cv=none; b=la80Lngvh+BAZd/gDW7wsgaiU7NxcruYSbjJxk4/EgLmP1o6ezAwxYaVt8P1D98J83Eed+Z+vLFl7NYjrYmKZBle3jEsrEqtqIQF8KNAU5nDhdZfZ+FC3ejbzDiwug9iQ7bxOhu8yq0iMchgsWoJTNi0jjjtbdjW2/jcLwFu+pc=
+	t=1760367511; cv=none; b=D+knd1w5Bb7Pd/KHAZmUW/Yuab25rgxG9PyPj7kvsNAhUUai2NIqpxAM6cZqTP+xec3gVeefKRYo7c7yg/UdbEAQ/O243X/Casn1Pxjdo8idTdyBhGSoCMt6tb11InksQti1I9O9zUTQVntE2Ewr6ppQloJabUzwYzV4Y/Nyc/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367092; c=relaxed/simple;
-	bh=yyGVQFbPyqgF939vUDqu+kJTknj8zD6zab8Gz5WMezU=;
+	s=arc-20240116; t=1760367511; c=relaxed/simple;
+	bh=VC4cNFj/BvMiMQy3lxUh4kQnN5K9KB0Tq7Ag584OQ1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OgH96iLxZEM0Ekdr8oJL+aclJn5eAtVELa0ekr+3WtQVTNy4ThdsPt04fGe7Ue0R9yfqtp5PmkE2oC+gkDqAfvidpWObqrvLUPaYRsLO1fmM9/PAwT408Hfr1q4gQ+p4zv2hNTcoclWDPEA6E2M0JrUk9J1DmCPzVr8uS3iyUrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQdOo8Yn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CC7C4CEE7;
-	Mon, 13 Oct 2025 14:51:32 +0000 (UTC)
+	 MIME-Version; b=aquzSFt2Zaa3HkEO4pYPNze7QCwENCGJ2tgzp1vpanHkq8zfrpnuv5jzc3tfx0HxqPheG2yN4q7N0VPXQkIBUx/y2FSPLTCPooTapNYcKo3yQfrxpcw++O8g94l8BVVSmMhhB2Li+e+440mbfLoigo4dGB4nugABC41fB4V6ehI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyUKzTY6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3299CC4CEFE;
+	Mon, 13 Oct 2025 14:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367092;
-	bh=yyGVQFbPyqgF939vUDqu+kJTknj8zD6zab8Gz5WMezU=;
+	s=korg; t=1760367511;
+	bh=VC4cNFj/BvMiMQy3lxUh4kQnN5K9KB0Tq7Ag584OQ1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQdOo8YnJDQUKNKiYXKgMT64zC2DX/YFo+fuIr9S4mLWpBZkGVdrx0IP/nMJPB/NO
-	 rCO/xcb0Nogk+prsavRZ/ywxztIPgG/UGmX1YbOXOL1ZonjpQl11iQtEVzs0gGNPKy
-	 VujEfE83mCkxe72SmecHFCQts0cROY7PXXmzJnb0=
+	b=CyUKzTY6jxcJq3uYisKCxDEphPvDfwCytOrgKL38BwFfbgGvrcnLKMCD+nTKa/jBT
+	 nBObl1W9M3Nokj6HdtKwdhK62VjdeRMiHPhYdFLZCV4y0NEnYBge9vw1TlzoK+7Tky
+	 cWX1quO0O1SBn2Xmx3ApJYEmj6VifAllUrH8bt/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Guoqing Jiang <guoqing.jiang@canonical.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Macpaul Lin <macpaul.lin@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/196] bpf/selftests: Fix test_tcpnotify_user
+Subject: [PATCH 6.6 038/196] arm64: dts: mediatek: mt8195: Remove suspend-breaking reset from pcie0
 Date: Mon, 13 Oct 2025 16:43:49 +0200
-Message-ID: <20251013144316.610065700@linuxfoundation.org>
+Message-ID: <20251013144316.580391438@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Guoqing Jiang <guoqing.jiang@canonical.com>
 
-[ Upstream commit c80d79720647ed77ebc0198abd5a0807efdaff0b ]
+[ Upstream commit 3374b5fb26b300809ecd6aed9f414987dd17c313 ]
 
-Based on a bisect, it appears that commit 7ee988770326 ("timers:
-Implement the hierarchical pull model") has somehow inadvertently
-broken BPF selftest test_tcpnotify_user. The error that is being
-generated by this test is as follows:
+When test suspend resume with 6.8 based kernel, system can't resume
+and I got below error which can be also reproduced with 6.16 rc6+
+kernel.
 
-	FAILED: Wrong stats Expected 10 calls, got 8
+mtk-pcie-gen3 112f0000.pcie: PCIe link down, current LTSSM state: detect.quiet (0x0)
+mtk-pcie-gen3 112f0000.pcie: PM: dpm_run_callback(): genpd_resume_noirq returns -110
+mtk-pcie-gen3 112f0000.pcie: PM: failed to resume noirq: error -110
 
-It looks like the change allows timer functions to be run on CPUs
-different from the one they are armed on. The test had pinned itself
-to CPU 0, and in the past the retransmit attempts also occurred on CPU
-0. The test had set the max_entries attribute for
-BPF_MAP_TYPE_PERF_EVENT_ARRAY to 2 and was calling
-bpf_perf_event_output() with BPF_F_CURRENT_CPU, so the entry was
-likely to be in range. With the change to allow timers to run on other
-CPUs, the current CPU tasked with performing the retransmit might be
-bumped and in turn fall out of range, as the event will be filtered
-out via __bpf_perf_event_output() using:
+After investigation, looks pcie0 has the same problem as pcie1 as
+decribed in commit 3d7fdd8e38aa ("arm64: dts: mediatek: mt8195:
+Remove suspend-breaking reset from pcie1").
 
-    if (unlikely(index >= array->map.max_entries))
-            return -E2BIG;
-
-A possible change would be to explicitly set the max_entries attribute
-for perf_event_map in test_tcpnotify_kern.c to a value that's at least
-as large as the number of CPUs. As it turns out however, if the field
-is left unset, then the libbpf will determine the number of CPUs available
-on the underlying system and update the max_entries attribute accordingly
-in map_set_def_max_entries().
-
-A further problem with the test is that it has a thread that continues
-running up until the program exits. The main thread cleans up some
-LIBBPF data structures, while the other thread continues to use them,
-which inevitably will trigger a SIGSEGV. This can be dealt with by
-telling the thread to run for as long as necessary and doing a
-pthread_join on it before exiting the program.
-
-Finally, I don't think binding the process to CPU 0 is meaningful for
-this test any more, so get rid of that.
-
-Fixes: 435f90a338ae ("selftests/bpf: add a test case for sock_ops perf-event notification")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/aJ8kHhwgATmA3rLf@google.com
+Fixes: ecc0af6a3fe6 ("arm64: dts: mt8195: Add pcie and pcie phy nodes")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@canonical.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Link: https://lore.kernel.org/r/20250721095959.57703-1-guoqing.jiang@canonical.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/progs/test_tcpnotify_kern.c |  1 -
- .../selftests/bpf/test_tcpnotify_user.c       | 20 +++++++++----------
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
-index 540181c115a85..ef00d38b0a8d2 100644
---- a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
-+++ b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
-@@ -23,7 +23,6 @@ struct {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 22604d3abde3b..4b701afe995e2 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -1524,9 +1524,6 @@ pcie0: pcie@112f0000 {
  
- struct {
- 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
--	__uint(max_entries, 2);
- 	__type(key, int);
- 	__type(value, __u32);
- } perf_event_map SEC(".maps");
-diff --git a/tools/testing/selftests/bpf/test_tcpnotify_user.c b/tools/testing/selftests/bpf/test_tcpnotify_user.c
-index 595194453ff8f..35b4893ccdf8a 100644
---- a/tools/testing/selftests/bpf/test_tcpnotify_user.c
-+++ b/tools/testing/selftests/bpf/test_tcpnotify_user.c
-@@ -15,20 +15,18 @@
- #include <bpf/libbpf.h>
- #include <sys/ioctl.h>
- #include <linux/rtnetlink.h>
--#include <signal.h>
- #include <linux/perf_event.h>
--#include <linux/err.h>
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_PCIE_MAC_P0>;
  
--#include "bpf_util.h"
- #include "cgroup_helpers.h"
- 
- #include "test_tcpnotify.h"
--#include "trace_helpers.h"
- #include "testing_helpers.h"
- 
- #define SOCKET_BUFFER_SIZE (getpagesize() < 8192L ? getpagesize() : 8192L)
- 
- pthread_t tid;
-+static bool exit_thread;
-+
- int rx_callbacks;
- 
- static void dummyfn(void *ctx, int cpu, void *data, __u32 size)
-@@ -45,7 +43,7 @@ void tcp_notifier_poller(struct perf_buffer *pb)
- {
- 	int err;
- 
--	while (1) {
-+	while (!exit_thread) {
- 		err = perf_buffer__poll(pb, 100);
- 		if (err < 0 && err != -EINTR) {
- 			printf("failed perf_buffer__poll: %d\n", err);
-@@ -78,15 +76,10 @@ int main(int argc, char **argv)
- 	int error = EXIT_FAILURE;
- 	struct bpf_object *obj;
- 	char test_script[80];
--	cpu_set_t cpuset;
- 	__u32 key = 0;
- 
- 	libbpf_set_strict_mode(LIBBPF_STRICT_ALL);
- 
--	CPU_ZERO(&cpuset);
--	CPU_SET(0, &cpuset);
--	pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
+-			resets = <&infracfg_ao MT8195_INFRA_RST2_PCIE_P0_SWRST>;
+-			reset-names = "mac";
 -
- 	cg_fd = cgroup_setup_and_join(cg_path);
- 	if (cg_fd < 0)
- 		goto err;
-@@ -151,6 +144,13 @@ int main(int argc, char **argv)
- 
- 	sleep(10);
- 
-+	exit_thread = true;
-+	int ret = pthread_join(tid, NULL);
-+	if (ret) {
-+		printf("FAILED: pthread_join\n");
-+		goto err;
-+	}
-+
- 	if (verify_result(&g)) {
- 		printf("FAILED: Wrong stats Expected %d calls, got %d\n",
- 			g.ncalls, rx_callbacks);
+ 			#interrupt-cells = <1>;
+ 			interrupt-map-mask = <0 0 0 7>;
+ 			interrupt-map = <0 0 0 1 &pcie_intc0 0>,
 -- 
 2.51.0
 
