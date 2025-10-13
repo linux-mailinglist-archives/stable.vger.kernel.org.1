@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5758BD535C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:49:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E35D1BD5083
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:29:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72C0B542E8D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CD68A5666C7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8564F31B828;
-	Mon, 13 Oct 2025 15:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A533112A0;
+	Mon, 13 Oct 2025 15:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1w/i2LQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byxr73UG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A2B310650;
-	Mon, 13 Oct 2025 15:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E1030C61D;
+	Mon, 13 Oct 2025 15:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369788; cv=none; b=ezcgxmBcKargpuSrDjN+D90X8XCxO9sk7wJ8NwpgXrBGYz+RBeTWK2TGpRYG+5rUscH+1Jbbh2r2xfV5Q8d4r3vUKJSI/Zq+Q27GWMpSlDDbYSCGhvBru+ORQZwnRWg1l9wbSA6CMahDtiJGNO/V+3Nl83fmQIv7+DJEG01einc=
+	t=1760369799; cv=none; b=M5VaUX/dr3OqOBBmvDhh/IflQ7ro9OmAApTzGf/hnILcrI+ISJ3DjYNGYn9fDw9V4HzqzqVUJqL76QJGwdboOvjIN8C0r/6uot8ESac0TS8xNxu7gOGaOitJ0pdAsaObyWGzKlBVZEZ/BRmTxNj0WCfSMWO+GL3dZCdheTLmhaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369788; c=relaxed/simple;
-	bh=2JP9fn9ENeDPveAsIb3k1WhEXd9/6xMUnNNW7utVzTY=;
+	s=arc-20240116; t=1760369799; c=relaxed/simple;
+	bh=eedAXoRqqXz/z0suBO7t4xhvz85YjpXtbrSd86Qu3Qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsB/pAIQMEN1c0AS84sxHLzm7w9DuW+Yhr1erSIvGYXQbA+pJ5/G3A21lxXo3uVv4wVYg7/lzpSpEaBaN53QGR68cD5RugJXQgmEwyoPOZnluE7Cwqp4IggeEWThqTVrrp99sJJvXlQuafQ4BVF5upaHytg66iGrdgN/JRcQT6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1w/i2LQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED4CC4CEE7;
-	Mon, 13 Oct 2025 15:36:27 +0000 (UTC)
+	 MIME-Version; b=ISQtpg7+ci3wT+k/8pu387urfByiwr5g0k4kCN0v122PWLy2IcK7IAFLfz3DmkIOQuK9Id1qWxFaqYTT6NY2qJkfrnLNr3NBMbZsjzLWLAJZfkJWeVlTlNCpPnyR1IuDDaRJfUpS28g4iFJYKN9jUYeBL93sI8nRhtUcriBkaiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byxr73UG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01ACDC4CEE7;
+	Mon, 13 Oct 2025 15:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369787;
-	bh=2JP9fn9ENeDPveAsIb3k1WhEXd9/6xMUnNNW7utVzTY=;
+	s=korg; t=1760369799;
+	bh=eedAXoRqqXz/z0suBO7t4xhvz85YjpXtbrSd86Qu3Qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1w/i2LQ5ntah21V35oHGoRLEGHv1YAzj0V1zYtv0TK+Oz3DqAHAXFs7DcMKsbmgu
-	 a/1WbXjbHiqYgatUGlWD93Pp6aALdYEDAA9zMkBMlTTGGpXTVh3x/r3GRK2W1ixSX6
-	 yWjTbMUHBomFh9dNR1PNPq/7SMndVSrtV5/64244=
+	b=byxr73UG+PTD/GV85Lgo3HeVQ9OeHU1o0n80szwwZSDADwhEz46VUZkY49sDw1F8c
+	 5bFqyFlGbWyMY/1EtI7N7jSxGIlRImfQJgUo0v0V2KSmZbT0hrhko3kG1T+lRl8hzd
+	 VlcK7M7ZncebUqkGU8vz1UgV8nfANv00RWdwR+84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	syzbot+10b4363fb0f46527f3f3@syzkaller.appspotmail.com,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 368/563] f2fs: fix to avoid migrating empty section
-Date: Mon, 13 Oct 2025 16:43:49 +0200
-Message-ID: <20251013144424.609605351@linuxfoundation.org>
+Subject: [PATCH 6.17 371/563] ALSA: pcm: Disable bottom softirqs as part of spin_lock_irq() on PREEMPT_RT
+Date: Mon, 13 Oct 2025 16:43:52 +0200
+Message-ID: <20251013144424.715569077@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,92 +67,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit d625a2b08c089397d3a03bff13fa8645e4ec7a01 ]
+[ Upstream commit 9fc4a3da9a0259a0500848b5d8657918efde176b ]
 
-It reports a bug from device w/ zufs:
+snd_pcm_group_lock_irq() acquires a spinlock_t and disables interrupts
+via spin_lock_irq(). This also implicitly disables the handling of
+softirqs such as TIMER_SOFTIRQ.
+On PREEMPT_RT softirqs are preemptible and spin_lock_irq() does not
+disable them. That means a timer can be invoked during spin_lock_irq()
+on the same CPU. Due to synchronisations reasons local_bh_disable() has
+a per-CPU lock named softirq_ctrl.lock which synchronizes individual
+softirq against each other.
+syz-bot managed to trigger a lockdep report where softirq_ctrl.lock is
+acquired in hrtimer_cancel() in addition to hrtimer_run_softirq(). This
+is a possible deadlock.
 
-F2FS-fs (dm-64): Inconsistent segment (173822) type [1, 0] in SSA and SIT
-F2FS-fs (dm-64): Stopped filesystem due to reason: 4
+The softirq_ctrl.lock can not be made part of spin_lock_irq() as this
+would lead to too much synchronisation against individual threads on the
+system. To avoid the possible deadlock, softirqs must be manually
+disabled before the lock is acquired.
 
-Thread A				Thread B
-- f2fs_expand_inode_data
- - f2fs_allocate_pinning_section
-  - f2fs_gc_range
-   - do_garbage_collect w/ segno #x
-					- writepage
-					 - f2fs_allocate_data_block
-					  - new_curseg
-					   - allocate segno #x
+Disable softirqs before the lock is acquired on PREEMPT_RT.
 
-The root cause is: fallocate on pinning file may race w/ block allocation
-as above, result in do_garbage_collect() from fallocate() may migrate
-segment which is just allocated by a log, the log will update segment type
-in its in-memory structure, however GC will get segment type from on-disk
-SSA block, once segment type changes by log, we can detect such
-inconsistency, then shutdown filesystem.
-
-In this case, on-disk SSA shows type of segno #173822 is 1 (SUM_TYPE_NODE),
-however segno #173822 was just allocated as data type segment, so in-memory
-SIT shows type of segno #173822 is 0 (SUM_TYPE_DATA).
-
-Change as below to fix this issue:
-- check whether current section is empty before gc
-- add sanity checks on do_garbage_collect() to avoid any race case, result
-in migrating segment used by log.
-- btw, it fixes misc issue in printed logs: "SSA and SIT" -> "SIT and SSA".
-
-Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reported-by: syzbot+10b4363fb0f46527f3f3@syzkaller.appspotmail.com
+Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ sound/core/pcm_native.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index c0f209f746882..5734e03864685 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1794,6 +1794,13 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
- 		struct folio *sum_folio = filemap_get_folio(META_MAPPING(sbi),
- 					GET_SUM_BLOCK(sbi, segno));
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index 1eab940fa2e5a..68bee40c9adaf 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -84,19 +84,24 @@ void snd_pcm_group_init(struct snd_pcm_group *group)
+ }
  
-+		if (is_cursec(sbi, GET_SEC_FROM_SEG(sbi, segno))) {
-+			f2fs_err(sbi, "%s: segment %u is used by log",
-+							__func__, segno);
-+			f2fs_bug_on(sbi, 1);
-+			goto skip;
-+		}
+ /* define group lock helpers */
+-#define DEFINE_PCM_GROUP_LOCK(action, mutex_action) \
++#define DEFINE_PCM_GROUP_LOCK(action, bh_lock, bh_unlock, mutex_action) \
+ static void snd_pcm_group_ ## action(struct snd_pcm_group *group, bool nonatomic) \
+ { \
+-	if (nonatomic) \
++	if (nonatomic) { \
+ 		mutex_ ## mutex_action(&group->mutex); \
+-	else \
+-		spin_ ## action(&group->lock); \
+-}
+-
+-DEFINE_PCM_GROUP_LOCK(lock, lock);
+-DEFINE_PCM_GROUP_LOCK(unlock, unlock);
+-DEFINE_PCM_GROUP_LOCK(lock_irq, lock);
+-DEFINE_PCM_GROUP_LOCK(unlock_irq, unlock);
++	} else { \
++		if (IS_ENABLED(CONFIG_PREEMPT_RT) && bh_lock)   \
++			local_bh_disable();			\
++		spin_ ## action(&group->lock);			\
++		if (IS_ENABLED(CONFIG_PREEMPT_RT) && bh_unlock) \
++			local_bh_enable();                      \
++	}							\
++}
 +
- 		if (get_valid_blocks(sbi, segno, false) == 0)
- 			goto freed;
- 		if (gc_type == BG_GC && __is_large_section(sbi) &&
-@@ -1805,7 +1812,7 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
++DEFINE_PCM_GROUP_LOCK(lock, false, false, lock);
++DEFINE_PCM_GROUP_LOCK(unlock, false, false, unlock);
++DEFINE_PCM_GROUP_LOCK(lock_irq, true, false, lock);
++DEFINE_PCM_GROUP_LOCK(unlock_irq, false, true, unlock);
  
- 		sum = folio_address(sum_folio);
- 		if (type != GET_SUM_TYPE((&sum->footer))) {
--			f2fs_err(sbi, "Inconsistent segment (%u) type [%d, %d] in SSA and SIT",
-+			f2fs_err(sbi, "Inconsistent segment (%u) type [%d, %d] in SIT and SSA",
- 				 segno, type, GET_SUM_TYPE((&sum->footer)));
- 			f2fs_stop_checkpoint(sbi, false,
- 				STOP_CP_REASON_CORRUPTED_SUMMARY);
-@@ -2068,6 +2075,13 @@ int f2fs_gc_range(struct f2fs_sb_info *sbi,
- 			.iroot = RADIX_TREE_INIT(gc_list.iroot, GFP_NOFS),
- 		};
- 
-+		/*
-+		 * avoid migrating empty section, as it can be allocated by
-+		 * log in parallel.
-+		 */
-+		if (!get_valid_blocks(sbi, segno, true))
-+			continue;
-+
- 		if (is_cursec(sbi, GET_SEC_FROM_SEG(sbi, segno)))
- 			continue;
- 
+ /**
+  * snd_pcm_stream_lock - Lock the PCM stream
 -- 
 2.51.0
 
