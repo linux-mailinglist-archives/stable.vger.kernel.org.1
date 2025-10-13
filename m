@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-184738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4824DBD4748
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D26CBD4970
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:55:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94EAF502299
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 68F4A540381
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CDA31282A;
-	Mon, 13 Oct 2025 15:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2CBF312836;
+	Mon, 13 Oct 2025 15:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4ARp/Ye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WA2z30bX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CBC30C628;
-	Mon, 13 Oct 2025 15:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703C61EF36E;
+	Mon, 13 Oct 2025 15:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368294; cv=none; b=TlyezGJjQXcPHhe7KsNY0q52jtD4UhdOWRc1CZqKLFRoMiFmDqTR+EaDg10Zrwnbe1wo9m7nGZ3oQUggYD2GwJlUbvGUWzq/9e33Uzpz3bu4gUSnkmCILpEDK1DBhHZUaLr23Mi3Q4/DVSsgSfMDH/uYSiW4gaAbTawgaMaFwYQ=
+	t=1760368326; cv=none; b=FyXcq7p+eojFgOuB9eIH1NELcU0dc/q3QnSby54+IMV8egX5rwKGPNutEBaleO7CpCuBO3ChX8lelv7QcOg53cElikZIgTXpFiS91cK6/6EmQHNO+RPfeVKyp2W7q0pGVPRygQr7uRC5bYYjIAAnHpsGYruqgkYP0S7TpbcxsB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368294; c=relaxed/simple;
-	bh=KELxqXfJY8BSCv7XCetA6CQGdZXkJf67Zb7Kz3ZDMoo=;
+	s=arc-20240116; t=1760368326; c=relaxed/simple;
+	bh=Ob2wnkrS94X4Q/2XrVHk2giantw+BfOMNA9d+woGGVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lcn+ZgwapUnV1I4sVo2JKpumLLmWprlxqc+uNZpP87HYCzshMbtocmQuxa0locSp2A3ZOb5LmoqwAIrOsZ1pSONGNn+TXNIzNh6Q0zHZz29rxO9561j02XEoxXrjcW7jYBnoVpOBsC7Fo2eGlqY57QTfwofdVIiJbVdf/gMdgbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4ARp/Ye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227AAC4CEE7;
-	Mon, 13 Oct 2025 15:11:33 +0000 (UTC)
+	 MIME-Version; b=hYftP1Wc/Vr9tVhwHUIeuiPfMB83KbRpQBGwu92qKti5pBf6aSjeUtuwNcjRHktrEQDklUfM7/ZAZjjZfJ+wP29pQcUh1kieDwG6Rsb6IC4NUHD8H6LTao2l+Mrr3AYjiyVq/6Qqp3Zu/XSi8FbSIVNuRxzFJfjqKPSzFFxbD/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WA2z30bX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FE2C4CEE7;
+	Mon, 13 Oct 2025 15:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368294;
-	bh=KELxqXfJY8BSCv7XCetA6CQGdZXkJf67Zb7Kz3ZDMoo=;
+	s=korg; t=1760368326;
+	bh=Ob2wnkrS94X4Q/2XrVHk2giantw+BfOMNA9d+woGGVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4ARp/YeDY/XM7xynL458bOckfgnDVQpkzL/eJ5EFrow69lnkX1XTAY3GlSlbCvzQ
-	 DtLFWD59KVfoe/dDlYA+WI5sgvM5rdAy77ALe2DBXWy0AKMMev63spCEMY8P3tZRJj
-	 +QT2TFlF32l7+oN813YQeLABvGdjWGsua7w6uYmA=
+	b=WA2z30bXvW/UCBlq9gnpjWJ55/qiLrIYVDahnEmzvCV1pg8NYF0GDWeucTNLQ3xPK
+	 LHGe7AB2XExkdyF6PeOu0aULKIlcmIlrXxDzg2qBAUQnRMWopcoc7Gdw1UW8wd+7hH
+	 DzPI8faAnwopT8xKAmD66ZKzOlFmJY6P0jZ3eQnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Zhang Shurong <zhang_shurong@foxmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/262] crypto: octeontx2 - Call strscpy() with correct size argument
-Date: Mon, 13 Oct 2025 16:44:06 +0200
-Message-ID: <20251013144329.873810361@linuxfoundation.org>
+Subject: [PATCH 6.12 105/262] media: rj54n1cb0c: Fix memleak in rj54n1_probe()
+Date: Mon, 13 Oct 2025 16:44:07 +0200
+Message-ID: <20251013144329.909384165@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
 References: <20251013144326.116493600@linuxfoundation.org>
@@ -66,40 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 361fa7f813e7056cecdb24f3582ab0ad4a088e4e ]
+[ Upstream commit fda55673ecdabf25f5ecc61b5ab17239257ac252 ]
 
-In otx2_cpt_dl_custom_egrp_create(), strscpy() is called with the length
-of the source string rather than the size of the destination buffer.
+rj54n1_probe() won't clean all the allocated resources in fail
+path, which may causes the memleaks. Add v4l2_ctrl_handler_free() to
+prevent memleak.
 
-This is fine as long as the destination buffer is larger than the source
-string, but we should still use the destination buffer size instead to
-call strscpy() as intended. And since 'tmp_buf' is a fixed-size buffer,
-we can safely omit the size argument and let strscpy() infer it using
-sizeof().
-
-Fixes: d9d7749773e8 ("crypto: octeontx2 - add apis for custom engine groups")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: f187352dcd45 ("media: i2c: Copy rj54n1cb0c soc_camera sensor driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/rj54n1cb0c.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-index 1493a373baf71..cf68b213c3e62 100644
---- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-@@ -1614,7 +1614,7 @@ int otx2_cpt_dl_custom_egrp_create(struct otx2_cptpf_dev *cptpf,
- 		return -EINVAL;
- 	}
- 	err_msg = "Invalid engine group format";
--	strscpy(tmp_buf, ctx->val.vstr, strlen(ctx->val.vstr) + 1);
-+	strscpy(tmp_buf, ctx->val.vstr);
- 	start = tmp_buf;
+diff --git a/drivers/media/i2c/rj54n1cb0c.c b/drivers/media/i2c/rj54n1cb0c.c
+index b7ca39f63dba8..6dfc912168510 100644
+--- a/drivers/media/i2c/rj54n1cb0c.c
++++ b/drivers/media/i2c/rj54n1cb0c.c
+@@ -1329,10 +1329,13 @@ static int rj54n1_probe(struct i2c_client *client)
+ 			V4L2_CID_GAIN, 0, 127, 1, 66);
+ 	v4l2_ctrl_new_std(&rj54n1->hdl, &rj54n1_ctrl_ops,
+ 			V4L2_CID_AUTO_WHITE_BALANCE, 0, 1, 1, 1);
+-	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
+-	if (rj54n1->hdl.error)
+-		return rj54n1->hdl.error;
  
- 	has_se = has_ie = has_ae = false;
++	if (rj54n1->hdl.error) {
++		ret = rj54n1->hdl.error;
++		goto err_free_ctrl;
++	}
++
++	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
+ 	rj54n1->clk_div		= clk_div;
+ 	rj54n1->rect.left	= RJ54N1_COLUMN_SKIP;
+ 	rj54n1->rect.top	= RJ54N1_ROW_SKIP;
 -- 
 2.51.0
 
