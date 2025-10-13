@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228BEBD459A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4ABBD3BC4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:56:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD19C404104
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 34CEE4F8392
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15A93112C0;
-	Mon, 13 Oct 2025 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829252749D7;
+	Mon, 13 Oct 2025 14:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIoDYzrB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAdok2U9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7BA3112B7;
-	Mon, 13 Oct 2025 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D305273D6B;
+	Mon, 13 Oct 2025 14:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368087; cv=none; b=lCsKy33Mx3dAIm+dpIcxKLqOBW4XGoIao113LkVqi6n1tLBpOuX8MB8FgtRuX+e0B9BTBzMhHH2si8868KKtsNU3vs/LlzIfzFdXvbfKrpfcRuKY3r1Lfk5YH8U/vqbUV4KwaPDYoHE6CsCKtVlk6cT9udn2Y6vFEUQd41BMgMY=
+	t=1760366859; cv=none; b=KdsHhnyYVgfxu994CO95famiiJvo7aERHvo0OogaV2dK5IMIXGZr3R9QRrJx3LqkLfh+0xLGQHLGlZbmpf7BSAvaHLOCxEwy8MYnBdC7PzL1R+zDJkCMBrfFM0ZTBYZCg06aNUHTyvrCUhaqH8a3HbMUcd1nlT8J2uH2fnf57dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368087; c=relaxed/simple;
-	bh=IXSUWtI9j6i5CK2364GiXtBquU57sl35cqaID5ADqZ0=;
+	s=arc-20240116; t=1760366859; c=relaxed/simple;
+	bh=NOnedFGvdCd0oXHmveVDpO1fYdnBK/rQ8Vqv8O2bnTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bH6R9PqO5paZP8JIaswDXC84Dekq2DOdm9czjqBopnwZicu6njP9NbNUMoQcymyctVGNr+2eikZIffPBBURQplUuY98Ncof25z08I6ox0CW3qQ/0joRzA49pxQ+BnVkVnUuCMWxoKGTaT/TA65HtJ3/qzCnR7gJW/QLDSv7xwhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIoDYzrB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DB0C4CEE7;
-	Mon, 13 Oct 2025 15:08:06 +0000 (UTC)
+	 MIME-Version; b=K9/2Xab31fFGsqEZdCdOYgg/ZaU5P8JlROTkqRXoAzJbz4wfnU8Uxzai/S/nrdzTZtNcDSRSONtI6qwokm/0KxlCod0lXcAto+egDw3DrI6eFK2K10Zrb2vAlKtkLklM6+6wIXemdIvqdx7Alqbywpk6AIZi1BoxKY3rxPjWqjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAdok2U9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55392C4CEE7;
+	Mon, 13 Oct 2025 14:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368087;
-	bh=IXSUWtI9j6i5CK2364GiXtBquU57sl35cqaID5ADqZ0=;
+	s=korg; t=1760366858;
+	bh=NOnedFGvdCd0oXHmveVDpO1fYdnBK/rQ8Vqv8O2bnTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EIoDYzrB0x/HXlyIMsswTP4Q03RqJAs2u1gfgQoQKx7D+3SDz4Y/VoXzzXNLYGHkR
-	 D2nRWxrOHQPnLiiA/JVCJbAk4P0ZBdeWWDzR1oRvq/+dvwau2PSmPFaab8TJTXnhe8
-	 qrfokdrkaGXmEyqOU+DpuZnJLrZ6V5YNuS1142Hc=
+	b=lAdok2U9zFq+XwoVHJfoCQI+hPppCzMauEbasq154RPWxrGdSR+ECjpQ5nzNmAAbu
+	 e25D7LIT3/4YDPVywaGbfCWanI94WncomLmEX5cjqYE8AM5lgo2joVaIblbzqfIrOI
+	 zVXAe0eSKKnRVsmWCAeE+XedJ4NQbSYMKwREEIXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/262] soc: qcom: rpmh-rsc: Unconditionally clear _TRIGGER bit for TCS
+	Breno Leitao <leitao@debian.org>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.1 001/196] crypto: sha256 - fix crash at kexec
 Date: Mon, 13 Oct 2025 16:42:54 +0200
-Message-ID: <20251013144327.290240471@linuxfoundation.org>
+Message-ID: <20251013144314.606419114@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit f87412d18edb5b8393eb8cb1c2d4a54f90185a21 ]
+Loading a large (~2.1G) files with kexec crashes the host with when
+running:
 
-Unconditionally clear the TCS_AMC_MODE_TRIGGER bit when a
-transaction completes. Previously this bit was only cleared when
-a wake TCS was borrowed as an AMC TCS but not for dedicated
-AMC TCS. Leaving this bit set for AMC TCS and entering deeper low
-power modes can generate a false completion IRQ.
+  # kexec --load kernel --initrd initrd_with_2G_or_more
 
-Prevent this scenario by always clearing the TCS_AMC_MODE_TRIGGER
-bit upon receiving a completion IRQ.
+  UBSAN: signed-integer-overflow in ./include/crypto/sha256_base.h:64:19
+  34152083 * 64 cannot be represented in type 'int'
+  ...
+  BUG: unable to handle page fault for address: ff9fffff83b624c0
+  sha256_update (lib/crypto/sha256.c:137)
+  crypto_sha256_update (crypto/sha256_generic.c:40)
+  kexec_calculate_store_digests (kernel/kexec_file.c:769)
+  __se_sys_kexec_file_load (kernel/kexec_file.c:397 kernel/kexec_file.c:332)
+  ...
 
-Fixes: 15b3bf61b8d4 ("soc: qcom: rpmh-rsc: Clear active mode configuration for wake TCS")
-Signed-off-by: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250825-rpmh_rsc_change-v1-1-138202c31bf6@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+(Line numbers based on commit da274362a7bd9 ("Linux 6.12.49")
+
+This started happening after commit f4da7afe07523f
+("kexec_file: increase maximum file size to 4G") that landed in v6.0,
+which increased the file size for kexec.
+
+This is not happening upstream (v6.16+), given that `block` type was
+upgraded from "int" to "size_t" in commit 74a43a2cf5e8 ("crypto:
+lib/sha256 - Move partial block handling out")
+
+Upgrade the block type similar to the commit above, avoiding hitting the
+overflow.
+
+This patch is only suitable for the stable tree, and before 6.16, which
+got commit 74a43a2cf5e8 ("crypto: lib/sha256 - Move partial block
+handling out"). This is not required before f4da7afe07523f ("kexec_file:
+increase maximum file size to 4G"). In other words, this fix is required
+between versions v6.0 and v6.16.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Fixes: f4da7afe07523f ("kexec_file: increase maximum file size to 4G") # Before v6.16
+Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+Reported-by: Tobias Fleig <tfleig@meta.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/rpmh-rsc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ include/crypto/sha256_base.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
-index 641f29a98cbd2..cc72a31a450e4 100644
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -453,13 +453,10 @@ static irqreturn_t tcs_tx_done(int irq, void *p)
+--- a/include/crypto/sha256_base.h
++++ b/include/crypto/sha256_base.h
+@@ -46,7 +46,7 @@ static inline int sha256_base_do_update(
+ 	sctx->count += len;
  
- 		trace_rpmh_tx_done(drv, i, req);
+ 	if (unlikely((partial + len) >= SHA256_BLOCK_SIZE)) {
+-		int blocks;
++		unsigned int blocks;
  
--		/*
--		 * If wake tcs was re-purposed for sending active
--		 * votes, clear AMC trigger & enable modes and
-+		/* Clear AMC trigger & enable modes and
- 		 * disable interrupt for this TCS
- 		 */
--		if (!drv->tcs[ACTIVE_TCS].num_tcs)
--			__tcs_set_trigger(drv, i, false);
-+		__tcs_set_trigger(drv, i, false);
- skip:
- 		/* Reclaim the TCS */
- 		write_tcs_reg(drv, drv->regs[RSC_DRV_CMD_ENABLE], i, 0);
--- 
-2.51.0
-
+ 		if (partial) {
+ 			int p = SHA256_BLOCK_SIZE - partial;
 
 
 
