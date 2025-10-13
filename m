@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-184925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91DCBD4D4F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD0DBD4FB7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A7768504A7B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:33:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9E8A74F99DB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1833930EF96;
-	Mon, 13 Oct 2025 15:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B246F30C366;
+	Mon, 13 Oct 2025 15:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBZ6LThw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMCrveQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88AD30C361;
-	Mon, 13 Oct 2025 15:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D32630F7E4;
+	Mon, 13 Oct 2025 15:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368831; cv=none; b=MwNvGbv7m55VQteb+K83AeZ1mWo+r7Ubgb/upd3rj3PEXu1cXhx1uoChpcsEn5EcSoG4g0QYivpEl6YJ2Um9dQv/mA65f8SNZlXPQcN7ioA1jqqn72168ftxcgwR+t4aRj9NMea6GflbCS1hb/+hzIN/Q+T1Nmj7G3k7JIH5gUw=
+	t=1760368861; cv=none; b=bOWiiIntu6ErXJvnSMK6BuFLbz5KCCRr9iiM7pcz4jIlnAK5e9nQvpWj7832vObtl4jkeQHmKFCEFj+Cs5PY14B9Hpj4j8kqvKJ5Jv0bzhNWgTQBnpQIOsWvntHZTyuUwRUNBWqYXJcfo6OnR2fUDOW2hKHCDkBqM0yR4BkRQ3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368831; c=relaxed/simple;
-	bh=DNXDzLrw0LgMRjFv+B+6qxxmbF3HZxLHLSz1VzQsn60=;
+	s=arc-20240116; t=1760368861; c=relaxed/simple;
+	bh=e+eceK+a/Sgx52nypJviumHp4m+YouhSmRVLWU94Txw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=drDKiD1BoEMH/jpJgni/R3VodcfS/CXydraX+WoRmRB9wSablqsGkVFAvxyeHBjanc/n2jYdtKIYhjsPq0/vC0s6KoTYLwcYI6Qbx95gK50g9BOryzb2lQ5jMtW6gpaMi8hew76PNTsip0MKYXZI23OnzQeDPdxMu1MrG91NfrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBZ6LThw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5374FC4CEE7;
-	Mon, 13 Oct 2025 15:20:31 +0000 (UTC)
+	 MIME-Version; b=MCo4dYm6HrBP37/3FcJfOBtB6BaYRJL6ZzzGEDngt05LzeWlnj0MFNWSCn99vpeNo80k+UcyxV/9p2Qp3dtCQaDRYp/3m0yuLowIkM+W3VQZnPfeYN3bez1Lo14LPA072hpY2ck+pw+q9rPePlOsG303gPP6Xo76dQPWRNX9x24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMCrveQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5019C4CEE7;
+	Mon, 13 Oct 2025 15:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368831;
-	bh=DNXDzLrw0LgMRjFv+B+6qxxmbF3HZxLHLSz1VzQsn60=;
+	s=korg; t=1760368861;
+	bh=e+eceK+a/Sgx52nypJviumHp4m+YouhSmRVLWU94Txw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBZ6LThwXgtvGgAOLTxHBD1Hu18owNOLIWYr1DlwraCdChOJzhKol6a+VIrg6PWdK
-	 XEpZesFrL/FYtI8giIKEl1BxLk1HmqaEcGrnceUCnq55jGtKIiPRfmiEepayUU+L1P
-	 7x1pHHsaLWatC2Nk6jTZbmyYTwztuc4ItRdLpVHY=
+	b=vMCrveQOxu0qasF8vCfLjIzwIMVLRM0N3YXmleJLx3LwNAG3+duKnpUXoThtkygQF
+	 TiXijAWqWmOWVbn7IawEusswI8BdQLKQVY1NZC9JFn4A0Io6NXWUsMsFFkC2uwr2T1
+	 O86FYEcHEpW24u7tKSMYoda+MFft4FEFz3OlD6fE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Sebastian Chlad <sebastian.chlad@suse.com>,
-	Tejun Heo <tj@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 035/563] selftests: cgroup: Make test_pids backwards compatible
-Date: Mon, 13 Oct 2025 16:38:16 +0200
-Message-ID: <20251013144412.561721890@linuxfoundation.org>
+Subject: [PATCH 6.17 044/563] regmap: Remove superfluous check for !config in __regmap_init()
+Date: Mon, 13 Oct 2025 16:38:25 +0200
+Message-ID: <20251013144412.889373021@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -61,84 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Koutný <mkoutny@suse.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 3b0dec689a6301845761681b852f9538cb75a1d2 ]
+[ Upstream commit 5c36b86d2bf68fbcad16169983ef7ee8c537db59 ]
 
-The predicates in test expect event counting from 73e75e6fc352b
-("cgroup/pids: Separate semantics of pids.events related to pids.max")
-and the test would fail on older kernels. We want to have one version of
-tests for all, so detect the feature and skip the test on old kernels.
-(The test could even switch to check v1 semantics based on the flag but
-keep it simple for now.)
+The first thing __regmap_init() do is check if config is non-NULL,
+so there is no need to check for this again later.
 
-Fixes: 9f34c566027b6 ("selftests: cgroup: Add basic tests for pids controller")
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
-Tested-by: Sebastian Chlad <sebastian.chlad@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: d77e745613680c54 ("regmap: Add bulk read/write callbacks into regmap_config")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/a154d9db0f290dda96b48bd817eb743773e846e1.1755090330.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/cgroup/lib/cgroup_util.c     | 12 ++++++++++++
- .../selftests/cgroup/lib/include/cgroup_util.h       |  1 +
- tools/testing/selftests/cgroup/test_pids.c           |  3 +++
- 3 files changed, 16 insertions(+)
+ drivers/base/regmap/regmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/cgroup/lib/cgroup_util.c b/tools/testing/selftests/cgroup/lib/cgroup_util.c
-index 0e89fcff4d05d..44c52f620fda1 100644
---- a/tools/testing/selftests/cgroup/lib/cgroup_util.c
-+++ b/tools/testing/selftests/cgroup/lib/cgroup_util.c
-@@ -522,6 +522,18 @@ int proc_mount_contains(const char *option)
- 	return strstr(buf, option) != NULL;
- }
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 1f3f782a04ba2..6883e1a43fe5d 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -827,7 +827,7 @@ struct regmap *__regmap_init(struct device *dev,
+ 		map->read_flag_mask = bus->read_flag_mask;
+ 	}
  
-+int cgroup_feature(const char *feature)
-+{
-+	char buf[PAGE_SIZE];
-+	ssize_t read;
-+
-+	read = read_text("/sys/kernel/cgroup/features", buf, sizeof(buf));
-+	if (read < 0)
-+		return read;
-+
-+	return strstr(buf, feature) != NULL;
-+}
-+
- ssize_t proc_read_text(int pid, bool thread, const char *item, char *buf, size_t size)
- {
- 	char path[PATH_MAX];
-diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-index c69cab66254b4..9dc90a1b386d7 100644
---- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-+++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-@@ -60,6 +60,7 @@ extern int cg_run_nowait(const char *cgroup,
- extern int cg_wait_for_proc_count(const char *cgroup, int count);
- extern int cg_killall(const char *cgroup);
- int proc_mount_contains(const char *option);
-+int cgroup_feature(const char *feature);
- extern ssize_t proc_read_text(int pid, bool thread, const char *item, char *buf, size_t size);
- extern int proc_read_strstr(int pid, bool thread, const char *item, const char *needle);
- extern pid_t clone_into_cgroup(int cgroup_fd);
-diff --git a/tools/testing/selftests/cgroup/test_pids.c b/tools/testing/selftests/cgroup/test_pids.c
-index 9ecb83c6cc5cb..d8a1d1cd50072 100644
---- a/tools/testing/selftests/cgroup/test_pids.c
-+++ b/tools/testing/selftests/cgroup/test_pids.c
-@@ -77,6 +77,9 @@ static int test_pids_events(const char *root)
- 	char *cg_parent = NULL, *cg_child = NULL;
- 	int pid;
- 
-+	if (cgroup_feature("pids_localevents") <= 0)
-+		return KSFT_SKIP;
-+
- 	cg_parent = cg_name(root, "pids_parent");
- 	cg_child = cg_name(cg_parent, "pids_child");
- 	if (!cg_parent || !cg_child)
+-	if (config && config->read && config->write) {
++	if (config->read && config->write) {
+ 		map->reg_read  = _regmap_bus_read;
+ 		if (config->reg_update_bits)
+ 			map->reg_update_bits = config->reg_update_bits;
 -- 
 2.51.0
 
