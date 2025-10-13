@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89580BD432D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4220EBD43C3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 636A54070E3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97BC0188BDEC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F2D30F7E4;
-	Mon, 13 Oct 2025 15:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195B22868AD;
+	Mon, 13 Oct 2025 15:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ie05328w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrXGDk/z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26AF30B515;
-	Mon, 13 Oct 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBC7145B3F;
+	Mon, 13 Oct 2025 15:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367847; cv=none; b=Z870p+7oIr5/lZsm4wVNq5EmlpCkEsngyUrFatHCepHCm6P3c84cQ4mYki7mwgKipUmRqLfck8tRM4p72MYPYc7F72XNF5C66R5BE2dxZ48p02r78hB2UzjQXokK6OI/gP6Ala+w2I3i2wVQ3SEIgtohbAB0BZBNDUAROLTSXd0=
+	t=1760368564; cv=none; b=XoD0obDiJuCwMgcGWY8DcuhHinTtqBMbrTxit0BB65gxgbmEt+WaW54QXNiOsiiGEuX9qezpk20Vw6BJc3GonAmrmWTEQILPX7c28w3YC5CY5zZHiyDuLdEI8vgfXozrdKdAUR5s/pL0fibsc27UFqbzj1ssubzWEVu2DRFOfLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367847; c=relaxed/simple;
-	bh=/Y7BiWTPEMThRoo2V97sd+KINCJ0LcZFN/CFVpeSs24=;
+	s=arc-20240116; t=1760368564; c=relaxed/simple;
+	bh=ixIYP91m5OrsNUyym9BmDO+P3O/dKDkl+qJaYLUBqSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFifQ9fMwVTsyyk7+T0xIvd3Zsl1hAVU8QCsEDfk1T3XgKIw1FjANdYpGmqgPLUm0nBEwjoiL8Z68B28JLdxDx2iChM3AKoyabG0j+EFXu2R1Qq6F+SyPuWWtHCbv3y5t91TbRVURIWgHU9LpOBC/P6qy106mrfDS/YigZTm44w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ie05328w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D5DC4CEE7;
-	Mon, 13 Oct 2025 15:04:05 +0000 (UTC)
+	 MIME-Version; b=Hjhys0vc/TvNbAijMJ4SbBw7a+P92Se4ougAcw8vSo3mHqKISjiQDkAlPTUP17KT+RBu3y3ChNQvT3nLT87mt+9R76Uncw3+FLZ+pyi7NlYYQzVT8T+ASAt+u5V3KWY7TnW4MSvVfoNO5bPnaumytbvIuZm06oxXiUQ15GLaPm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrXGDk/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79EFC4CEE7;
+	Mon, 13 Oct 2025 15:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367846;
-	bh=/Y7BiWTPEMThRoo2V97sd+KINCJ0LcZFN/CFVpeSs24=;
+	s=korg; t=1760368564;
+	bh=ixIYP91m5OrsNUyym9BmDO+P3O/dKDkl+qJaYLUBqSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ie05328weNVnV8QiNxb3QsxT5QIlIMo17eD1oot68CeKKJaleTx3lrMW6eJlVNNi4
-	 77UzG2s0PjUyCARDF7Q+/zsim10WJYDUI+Lw7majXEjCg+S0qmySAJojIaTtR/Sys+
-	 xFaLKXulkeDYsy8MG9xtNpwlsWIlSwiZQxfoEkL0=
+	b=UrXGDk/zqO7mvlQdw8tfIGfhkVgJdZ3rorq7f2BKVs38G8VhEM7fPqh6BdatWYi5H
+	 f8ZIwdEoTp19jjxdcn3hzBxxWfWfuD5YFgbYc1PKQyJ4Z236wpM1XuIbid1deTRm3b
+	 dlLLfhjRgoigZBjclCUHjKTb5PBQFEaPy58B8ijY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nishanth Menon <nm@ti.com>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/196] hwrng: ks-sa - fix division by zero in ks_sa_rng_init
+Subject: [PATCH 6.12 204/262] Bluetooth: ISO: free rx_skb if not consumed
 Date: Mon, 13 Oct 2025 16:45:46 +0200
-Message-ID: <20251013144320.917900084@linuxfoundation.org>
+Message-ID: <20251013144333.591322678@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Menon <nm@ti.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 612b1dfeb414dfa780a6316014ceddf9a74ff5c0 ]
+[ Upstream commit 6ba85da5804efffe15c89b03742ea868f20b4172 ]
 
-Fix division by zero in ks_sa_rng_init caused by missing clock
-pointer initialization. The clk_get_rate() call is performed on
-an uninitialized clk pointer, resulting in division by zero when
-calculating delay values.
+If iso_conn is freed when RX is incomplete, free any leftover skb piece.
 
-Add clock initialization code before using the clock.
-
-Fixes: 6d01d8511dce ("hwrng: ks-sa - Add minimum sleep time before ready-polling")
-Signed-off-by: Nishanth Menon <nm@ti.com>
-
- drivers/char/hw_random/ks-sa-rng.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: dc26097bdb86 ("Bluetooth: ISO: Use kref to track lifetime of iso_conn")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/ks-sa-rng.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/bluetooth/iso.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/char/hw_random/ks-sa-rng.c b/drivers/char/hw_random/ks-sa-rng.c
-index 2f2f21f1b659e..d7b42888f25c2 100644
---- a/drivers/char/hw_random/ks-sa-rng.c
-+++ b/drivers/char/hw_random/ks-sa-rng.c
-@@ -240,6 +240,10 @@ static int ks_sa_rng_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index df21c79800fb6..e38f52638627d 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -111,6 +111,8 @@ static void iso_conn_free(struct kref *ref)
+ 	/* Ensure no more work items will run since hci_conn has been dropped */
+ 	disable_delayed_work_sync(&conn->timeout_work);
  
-+	ks_sa_rng->clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(ks_sa_rng->clk))
-+		return dev_err_probe(dev, PTR_ERR(ks_sa_rng->clk), "Failed to get clock\n");
++	kfree_skb(conn->rx_skb);
 +
- 	pm_runtime_enable(dev);
- 	ret = pm_runtime_resume_and_get(dev);
- 	if (ret < 0) {
+ 	kfree(conn);
+ }
+ 
 -- 
 2.51.0
 
