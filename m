@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-185348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8DFBD4B3D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:03:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D11BD439F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F32911883930
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25234188919E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8806130DECB;
-	Mon, 13 Oct 2025 15:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38D830E0DB;
+	Mon, 13 Oct 2025 15:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOmB4zV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GP3o3n1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4570430DD37;
-	Mon, 13 Oct 2025 15:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603B030CD9E;
+	Mon, 13 Oct 2025 15:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370038; cv=none; b=X96/InJQ6zxV6DD4U8HCRIBmFqX7Qrzy2XR3DmxJ6WKqUlwbhRRz9THyLF+ndbS3Lkuo4uq6Y63KT6rhjJOL1vgWLrvaOIjB9CXfOcyUhh2IZvpYmUHsxz64Jdara9CnBpi5yMNY03MFS4srBRQhDcWwQ6YhWIlKGT7qySZ4bx8=
+	t=1760368535; cv=none; b=MVwO3scWYTZs+iGOGL1SbMnW+DPfc6rDUJNPRFlJJlXCOV2hhUlX6VbsxRbPYtD/Ae2j+40QSHqC2fQgoiZx7KtGfG9mSSk5LuEQ43QOnV/FRzFydL8f4ZWKsU9fY7utQ200fW5/bpF5SW5UpT8fslG6+cAKuTtOwlWekFwxIbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370038; c=relaxed/simple;
-	bh=nGcLR6LwLtiDngUW9kmi2x2GWvm4ige/JsNBObdpP/U=;
+	s=arc-20240116; t=1760368535; c=relaxed/simple;
+	bh=dpzqSZFdY6XIsVzkEmzhi2EFkn5boy3RYp5nikdoTao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3YmkZMESJvHwYHLvlUM4CHFlVo5pxlXzkegylf+7/mleBIDTj0jUxNM7xtXKU3gb1fXXxBH/mUaCFCEySw+v5/1U5uBFjWliRY3GXMF21FSyjsK1V7Od4NN048I9pmLDhQFT6gToFn/DpB1yejAvU5uROR3gcXXG148FDQKuoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOmB4zV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A81C4CEE7;
-	Mon, 13 Oct 2025 15:40:37 +0000 (UTC)
+	 MIME-Version; b=CaCHBh3rQISvhGZLhCn2p4lV66KjBIh4WJiD/r2qubcSHNa1v5TKOWnmHEVjpkOQdEhDzBLYmcvzyytqdic0LUd1rqvlhj484gmkPdfABd3hZm0ndPlUW80EyRAR+OXotIFcGkZGIyhjbuAq47q6H9rnsptFZImOfibcj89OpxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GP3o3n1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76850C4CEE7;
+	Mon, 13 Oct 2025 15:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370038;
-	bh=nGcLR6LwLtiDngUW9kmi2x2GWvm4ige/JsNBObdpP/U=;
+	s=korg; t=1760368534;
+	bh=dpzqSZFdY6XIsVzkEmzhi2EFkn5boy3RYp5nikdoTao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOmB4zV8kQ21nf5owHmex+//IZZrXep1ntb9v/+R559kPFV+tZ8Xf01Dylj1pqksm
-	 xib+m8/137MG+FeIC1G+sk3B97Uiev1uYN2HTc6AmD9sOcy7UWZzqd4J+Da/v205+6
-	 HkcbWnTRmZgBtGTN4BM0M4ghWfX5HxGV6MImFLCA=
+	b=GP3o3n1dFTkpb9HZe8hfVfycBU5qeJYUOB81EhjPey7chYalRxxMvK3aSRGD//Hzt
+	 M8Kfd4CnthFZyISsfmNtzFVM+O6A3k27kmqyUjzJyFJMs8jJI1AWS/hact8rORPmf7
+	 FBO5JID3KCpxeYzCa/bojcbM8LQtkLjuE3hPvVq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 457/563] Bluetooth: MGMT: Fix not exposing debug UUID on MGMT_OP_READ_EXP_FEATURES_INFO
-Date: Mon, 13 Oct 2025 16:45:18 +0200
-Message-ID: <20251013144427.840255116@linuxfoundation.org>
+Subject: [PATCH 6.12 177/262] RDMA/rxe: Fix race in do_task() when draining
+Date: Mon, 13 Oct 2025 16:45:19 +0200
+Message-ID: <20251013144332.503166731@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 79e562a52adea4afa0601a15964498fae66c823c ]
+[ Upstream commit 8ca7eada62fcfabf6ec1dc7468941e791c1d8729 ]
 
-The debug UUID was only getting set if MGMT_OP_READ_EXP_FEATURES_INFO
-was not called with a specific index which breaks the likes of
-bluetoothd since it only invokes MGMT_OP_READ_EXP_FEATURES_INFO when an
-adapter is plugged, so instead of depending hdev not to be set just
-enable the UUID on any index like it was done with iso_sock_uuid.
+When do_task() exhausts its iteration budget (!ret), it sets the state
+to TASK_STATE_IDLE to reschedule, without a secondary check on the
+current task->state. This can overwrite the TASK_STATE_DRAINING state
+set by a concurrent call to rxe_cleanup_task() or rxe_disable_task().
 
-Fixes: e625e50ceee1 ("Bluetooth: Introduce debug feature when dynamic debug is disabled")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+While state changes are protected by a spinlock, both rxe_cleanup_task()
+and rxe_disable_task() release the lock while waiting for the task to
+finish draining in the while(!is_done(task)) loop. The race occurs if
+do_task() hits its iteration limit and acquires the lock in this window.
+The cleanup logic may then proceed while the task incorrectly
+reschedules itself, leading to a potential use-after-free.
+
+This bug was introduced during the migration from tasklets to workqueues,
+where the special handling for the draining case was lost.
+
+Fix this by restoring the original pre-migration behavior. If the state is
+TASK_STATE_DRAINING when iterations are exhausted, set cont to 1 to
+force a new loop iteration. This allows the task to finish its work, so
+that a subsequent iteration can reach the switch statement and correctly
+transition the state to TASK_STATE_DRAINED, stopping the task as intended.
+
+Fixes: 9b4b7c1f9f54 ("RDMA/rxe: Add workqueue support for rxe tasks")
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20250919025212.1682087-1-hanguidong02@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_task.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 225140fcb3d6c..a3d16eece0d23 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -4542,13 +4542,11 @@ static int read_exp_features_info(struct sock *sk, struct hci_dev *hdev,
- 		return -ENOMEM;
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
+index 80332638d9e3a..be6cd8ce4d97e 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.c
++++ b/drivers/infiniband/sw/rxe/rxe_task.c
+@@ -132,8 +132,12 @@ static void do_task(struct rxe_task *task)
+ 		 * yield the cpu and reschedule the task
+ 		 */
+ 		if (!ret) {
+-			task->state = TASK_STATE_IDLE;
+-			resched = 1;
++			if (task->state != TASK_STATE_DRAINING) {
++				task->state = TASK_STATE_IDLE;
++				resched = 1;
++			} else {
++				cont = 1;
++			}
+ 			goto exit;
+ 		}
  
- #ifdef CONFIG_BT_FEATURE_DEBUG
--	if (!hdev) {
--		flags = bt_dbg_get() ? BIT(0) : 0;
-+	flags = bt_dbg_get() ? BIT(0) : 0;
- 
--		memcpy(rp->features[idx].uuid, debug_uuid, 16);
--		rp->features[idx].flags = cpu_to_le32(flags);
--		idx++;
--	}
-+	memcpy(rp->features[idx].uuid, debug_uuid, 16);
-+	rp->features[idx].flags = cpu_to_le32(flags);
-+	idx++;
- #endif
- 
- 	if (hdev && hci_dev_le_state_simultaneous(hdev)) {
 -- 
 2.51.0
 
