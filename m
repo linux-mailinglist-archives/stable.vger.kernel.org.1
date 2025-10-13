@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7E6BD3F81
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:16:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 249BFBD462A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DAF8188BEED
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7C2364FA88B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E1030CD81;
-	Mon, 13 Oct 2025 14:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD43230F53A;
+	Mon, 13 Oct 2025 15:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVMD3oe3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKMot0HS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249A030648C;
-	Mon, 13 Oct 2025 14:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DD530F531;
+	Mon, 13 Oct 2025 15:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367301; cv=none; b=KxfS8h7988/uNhOvasl5ApWXdwSciWDqnkP4Gub18QB9Hr7h/KBs4pGhkq0C1dGHRl97Qo6bszz8WNnl+3XiqkT2A88TDdFETzybt5434q0UeHsZIurI7rbrXni9qLeFQV7lJ+OKxMOr9oDNc0zXiyVFog8zaOFkFIx7jkPHbq8=
+	t=1760367815; cv=none; b=pbLxPBj4yTz+Wsh/GCT7UCKJOfBNx41dujF/yU3ozzjI92W4ae5pn5nkWoNCXNqIt0hA9S6fO+qKQ+yaOLW5UtyzvtVjTH8sjGk1BdMXtAhnZP7gXxiFcSMdwjOEq+LdyJU6VB1Kwe+qxK58Ap8rSwnRXNnQz5aiQ0F7J+e2QuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367301; c=relaxed/simple;
-	bh=LvW3JjA0xNgLdVgv/OT+Ymxgv43R9HScYAmEprQ2RSc=;
+	s=arc-20240116; t=1760367815; c=relaxed/simple;
+	bh=I8COHu1S6ms/Jxr5xJ1Mu3E7zhCIplFjSRZyedjSrxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJuiHChl50iKLIvlSCb5u7x8K07v9Aglx/8QaBQ9GSfpyhwOA7Z2Pi/P/mKtZdpRKq/o+J3szbXgHBP3ry6Vng/T2RFrgvULAdO8CM9fWPVez2eTLPUTrWbNLRoOlvv8pdrGBGdu5VQ8XTbDuxMkPAow9w9xLSScGwZLyqJuNU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVMD3oe3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBBAC4CEE7;
-	Mon, 13 Oct 2025 14:55:00 +0000 (UTC)
+	 MIME-Version; b=r8pfISqrM/ZrBhX2b35QN3NUTEVC50UuW1Frg4FKSGu9xsxp9QafvA7K9SM589lZIvI9PMGKixW9cS3ccXypsL3Uq1OtVhSgZIx6rAYcLz/uV5PFbF38gOQ/fbLmgcnbdJzj4gsFjWZrIkYETRudKxZMedsxum2ZySYvFmTikY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKMot0HS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AD3C4CEE7;
+	Mon, 13 Oct 2025 15:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367301;
-	bh=LvW3JjA0xNgLdVgv/OT+Ymxgv43R9HScYAmEprQ2RSc=;
+	s=korg; t=1760367815;
+	bh=I8COHu1S6ms/Jxr5xJ1Mu3E7zhCIplFjSRZyedjSrxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVMD3oe37Dy9WhqQ2DrTK2J3kkanc9bVBpDI/uHEGMep5V/N7PS7+dvldOIKNmTV0
-	 cAQNEM5bJSXqDjaWTPxGb6iIM/9uRmuoVBdP6ddhExfCiLzxAZuofhTtE0gj5ntjm/
-	 eAHiNeAJbNdoZ05mb8YAn3v8kNLrNzO3ema/SASY=
+	b=vKMot0HS2HAo5Q4sZNdNX/0+NOPwa9NluXyVAbMyqXQ2XYariCmBPY1iGZLh4/d+X
+	 LSioXvoH0+sXusTmryHluIdtisbX5BpJFyUfq+Px26GZioDePP/dN7qE7ynSPB77VI
+	 uCFCktrTWY13U0pA+ClHPF42ewE4bnCVZcmSqVCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	syzbot+1651b5234028c294c339@syzkaller.appspotmail.com,
+	Julian Anastasov <ja@ssi.bg>,
+	Zhang Tengfei <zhtfdev@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/196] wifi: mt76: fix potential memory leak in mt76_wmac_probe()
+Subject: [PATCH 6.6 110/196] ipvs: Use READ_ONCE/WRITE_ONCE for ipvs->enable
 Date: Mon, 13 Oct 2025 16:45:01 +0200
-Message-ID: <20251013144319.325431184@linuxfoundation.org>
+Message-ID: <20251013144319.292038307@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Zhang Tengfei <zhtfdev@gmail.com>
 
-[ Upstream commit 42754b7de2b1a2cf116c5e3f1e8e78392f4ed700 ]
+[ Upstream commit 944b6b216c0387ac3050cd8b773819ae360bfb1c ]
 
-In mt76_wmac_probe(), when the mt76_alloc_device() call succeeds, memory
-is allocated for both struct ieee80211_hw and a workqueue. However, on
-the error path, the workqueue is not freed. Fix that by calling
-mt76_free_device() on the error path.
+KCSAN reported a data-race on the `ipvs->enable` flag, which is
+written in the control path and read concurrently from many other
+contexts.
 
-Fixes: c8846e101502 ("mt76: add driver for MT7603E and MT7628/7688")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://patch.msgid.link/20250709145532.41246-1-abdun.nihaal@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Following a suggestion by Julian, this patch fixes the race by
+converting all accesses to use `WRITE_ONCE()/READ_ONCE()`.
+This lightweight approach ensures atomic access and acts as a
+compiler barrier, preventing unsafe optimizations where the flag
+is checked in loops (e.g., in ip_vs_est.c).
+
+Additionally, the `enable` checks in the fast-path hooks
+(`ip_vs_in_hook`, `ip_vs_out_hook`, `ip_vs_forward_icmp`) are
+removed. These are unnecessary since commit 857ca89711de
+("ipvs: register hooks only with services"). The `enable=0`
+condition they check for can only occur in two rare and non-fatal
+scenarios: 1) after hooks are registered but before the flag is set,
+and 2) after hooks are unregistered on cleanup_net. In the worst
+case, a single packet might be mishandled (e.g., dropped), which
+does not lead to a system crash or data corruption. Adding a check
+in the performance-critical fast-path to handle this harmless
+condition is not a worthwhile trade-off.
+
+Fixes: 857ca89711de ("ipvs: register hooks only with services")
+Reported-by: syzbot+1651b5234028c294c339@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1651b5234028c294c339
+Suggested-by: Julian Anastasov <ja@ssi.bg>
+Link: https://lore.kernel.org/lvs-devel/2189fc62-e51e-78c9-d1de-d35b8e3657e3@ssi.bg/
+Signed-off-by: Zhang Tengfei <zhtfdev@gmail.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7603/soc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_conn.c |  4 ++--
+ net/netfilter/ipvs/ip_vs_core.c | 11 ++++-------
+ net/netfilter/ipvs/ip_vs_ctl.c  |  6 +++---
+ net/netfilter/ipvs/ip_vs_est.c  | 16 ++++++++--------
+ 4 files changed, 17 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
-index ba927033bbe8c..1206769cdc7fd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
-@@ -48,7 +48,7 @@ mt76_wmac_probe(struct platform_device *pdev)
+diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
+index 8182833a35828..d9c3eefe8cbb0 100644
+--- a/net/netfilter/ipvs/ip_vs_conn.c
++++ b/net/netfilter/ipvs/ip_vs_conn.c
+@@ -884,7 +884,7 @@ static void ip_vs_conn_expire(struct timer_list *t)
+ 			 * conntrack cleanup for the net.
+ 			 */
+ 			smp_rmb();
+-			if (ipvs->enable)
++			if (READ_ONCE(ipvs->enable))
+ 				ip_vs_conn_drop_conntrack(cp);
+ 		}
  
- 	return 0;
- error:
--	ieee80211_free_hw(mt76_hw(dev));
-+	mt76_free_device(mdev);
- 	return ret;
- }
+@@ -1432,7 +1432,7 @@ void ip_vs_expire_nodest_conn_flush(struct netns_ipvs *ipvs)
+ 		cond_resched_rcu();
  
+ 		/* netns clean up started, abort delayed work */
+-		if (!ipvs->enable)
++		if (!READ_ONCE(ipvs->enable))
+ 			break;
+ 	}
+ 	rcu_read_unlock();
+diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+index 3230506ae3ffd..34c4648ba36ec 100644
+--- a/net/netfilter/ipvs/ip_vs_core.c
++++ b/net/netfilter/ipvs/ip_vs_core.c
+@@ -1353,9 +1353,6 @@ ip_vs_out_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *stat
+ 	if (unlikely(!skb_dst(skb)))
+ 		return NF_ACCEPT;
+ 
+-	if (!ipvs->enable)
+-		return NF_ACCEPT;
+-
+ 	ip_vs_fill_iph_skb(af, skb, false, &iph);
+ #ifdef CONFIG_IP_VS_IPV6
+ 	if (af == AF_INET6) {
+@@ -1936,7 +1933,7 @@ ip_vs_in_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *state
+ 		return NF_ACCEPT;
+ 	}
+ 	/* ipvs enabled in this netns ? */
+-	if (unlikely(sysctl_backup_only(ipvs) || !ipvs->enable))
++	if (unlikely(sysctl_backup_only(ipvs)))
+ 		return NF_ACCEPT;
+ 
+ 	ip_vs_fill_iph_skb(af, skb, false, &iph);
+@@ -2104,7 +2101,7 @@ ip_vs_forward_icmp(void *priv, struct sk_buff *skb,
+ 	int r;
+ 
+ 	/* ipvs enabled in this netns ? */
+-	if (unlikely(sysctl_backup_only(ipvs) || !ipvs->enable))
++	if (unlikely(sysctl_backup_only(ipvs)))
+ 		return NF_ACCEPT;
+ 
+ 	if (state->pf == NFPROTO_IPV4) {
+@@ -2291,7 +2288,7 @@ static int __net_init __ip_vs_init(struct net *net)
+ 		return -ENOMEM;
+ 
+ 	/* Hold the beast until a service is registered */
+-	ipvs->enable = 0;
++	WRITE_ONCE(ipvs->enable, 0);
+ 	ipvs->net = net;
+ 	/* Counters used for creating unique names */
+ 	ipvs->gen = atomic_read(&ipvs_netns_cnt);
+@@ -2363,7 +2360,7 @@ static void __net_exit __ip_vs_dev_cleanup_batch(struct list_head *net_list)
+ 		ipvs = net_ipvs(net);
+ 		ip_vs_unregister_hooks(ipvs, AF_INET);
+ 		ip_vs_unregister_hooks(ipvs, AF_INET6);
+-		ipvs->enable = 0;	/* Disable packet reception */
++		WRITE_ONCE(ipvs->enable, 0);	/* Disable packet reception */
+ 		smp_wmb();
+ 		ip_vs_sync_net_cleanup(ipvs);
+ 	}
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index ae76542de3e98..c82dcbb4dabce 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -256,7 +256,7 @@ static void est_reload_work_handler(struct work_struct *work)
+ 		struct ip_vs_est_kt_data *kd = ipvs->est_kt_arr[id];
+ 
+ 		/* netns clean up started, abort delayed work */
+-		if (!ipvs->enable)
++		if (!READ_ONCE(ipvs->enable))
+ 			goto unlock;
+ 		if (!kd)
+ 			continue;
+@@ -1482,9 +1482,9 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
+ 
+ 	*svc_p = svc;
+ 
+-	if (!ipvs->enable) {
++	if (!READ_ONCE(ipvs->enable)) {
+ 		/* Now there is a service - full throttle */
+-		ipvs->enable = 1;
++		WRITE_ONCE(ipvs->enable, 1);
+ 
+ 		/* Start estimation for first time */
+ 		ip_vs_est_reload_start(ipvs);
+diff --git a/net/netfilter/ipvs/ip_vs_est.c b/net/netfilter/ipvs/ip_vs_est.c
+index c5970ba416aea..b48d3a09e2174 100644
+--- a/net/netfilter/ipvs/ip_vs_est.c
++++ b/net/netfilter/ipvs/ip_vs_est.c
+@@ -230,7 +230,7 @@ static int ip_vs_estimation_kthread(void *data)
+ void ip_vs_est_reload_start(struct netns_ipvs *ipvs)
+ {
+ 	/* Ignore reloads before first service is added */
+-	if (!ipvs->enable)
++	if (!READ_ONCE(ipvs->enable))
+ 		return;
+ 	ip_vs_est_stopped_recalc(ipvs);
+ 	/* Bump the kthread configuration genid */
+@@ -304,7 +304,7 @@ static int ip_vs_est_add_kthread(struct netns_ipvs *ipvs)
+ 	int i;
+ 
+ 	if ((unsigned long)ipvs->est_kt_count >= ipvs->est_max_threads &&
+-	    ipvs->enable && ipvs->est_max_threads)
++	    READ_ONCE(ipvs->enable) && ipvs->est_max_threads)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&ipvs->est_mutex);
+@@ -341,7 +341,7 @@ static int ip_vs_est_add_kthread(struct netns_ipvs *ipvs)
+ 	}
+ 
+ 	/* Start kthread tasks only when services are present */
+-	if (ipvs->enable && !ip_vs_est_stopped(ipvs)) {
++	if (READ_ONCE(ipvs->enable) && !ip_vs_est_stopped(ipvs)) {
+ 		ret = ip_vs_est_kthread_start(ipvs, kd);
+ 		if (ret < 0)
+ 			goto out;
+@@ -484,7 +484,7 @@ int ip_vs_start_estimator(struct netns_ipvs *ipvs, struct ip_vs_stats *stats)
+ 	struct ip_vs_estimator *est = &stats->est;
+ 	int ret;
+ 
+-	if (!ipvs->est_max_threads && ipvs->enable)
++	if (!ipvs->est_max_threads && READ_ONCE(ipvs->enable))
+ 		ipvs->est_max_threads = ip_vs_est_max_threads(ipvs);
+ 
+ 	est->ktid = -1;
+@@ -661,7 +661,7 @@ static int ip_vs_est_calc_limits(struct netns_ipvs *ipvs, int *chain_max)
+ 			/* Wait for cpufreq frequency transition */
+ 			wait_event_idle_timeout(wq, kthread_should_stop(),
+ 						HZ / 50);
+-			if (!ipvs->enable || kthread_should_stop())
++			if (!READ_ONCE(ipvs->enable) || kthread_should_stop())
+ 				goto stop;
+ 		}
+ 
+@@ -679,7 +679,7 @@ static int ip_vs_est_calc_limits(struct netns_ipvs *ipvs, int *chain_max)
+ 		rcu_read_unlock();
+ 		local_bh_enable();
+ 
+-		if (!ipvs->enable || kthread_should_stop())
++		if (!READ_ONCE(ipvs->enable) || kthread_should_stop())
+ 			goto stop;
+ 		cond_resched();
+ 
+@@ -755,7 +755,7 @@ static void ip_vs_est_calc_phase(struct netns_ipvs *ipvs)
+ 	mutex_lock(&ipvs->est_mutex);
+ 	for (id = 1; id < ipvs->est_kt_count; id++) {
+ 		/* netns clean up started, abort */
+-		if (!ipvs->enable)
++		if (!READ_ONCE(ipvs->enable))
+ 			goto unlock2;
+ 		kd = ipvs->est_kt_arr[id];
+ 		if (!kd)
+@@ -785,7 +785,7 @@ static void ip_vs_est_calc_phase(struct netns_ipvs *ipvs)
+ 	id = ipvs->est_kt_count;
+ 
+ next_kt:
+-	if (!ipvs->enable || kthread_should_stop())
++	if (!READ_ONCE(ipvs->enable) || kthread_should_stop())
+ 		goto unlock;
+ 	id--;
+ 	if (id < 0)
 -- 
 2.51.0
 
