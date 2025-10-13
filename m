@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20AB3BD43CF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE036BD3F57
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:15:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88DF418830E3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2144A1888DD6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197F52EA171;
-	Mon, 13 Oct 2025 15:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CED31578B;
+	Mon, 13 Oct 2025 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sj3G+Vu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/OL1GST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C8B2D5924;
-	Mon, 13 Oct 2025 15:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE3F30C63F;
+	Mon, 13 Oct 2025 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368589; cv=none; b=FdOBoiLqvgSx9xFI+iUC7J92/+N4IZrww5cz0dyVHcxrmtpHihMr4e8uVECROq9LnsYiRnssAox52dqd/GdBEQB3gQZJX+VVYCiZsi167+pZD0uaLv7U7Siu1kS2wJBIuMc1qb/Ay3rn1fKqfesuBGTFCLEMFnIq7vd//0cdckE=
+	t=1760367269; cv=none; b=Ez3tim8Zrfc3whPNbQJZZ2Exhqa9sl7VWFae1dJxGBUbRrDaV+yiYQ0dHykmGww16iwo1Wgq/qJOAUoGW2kJxqVKuY6q7xVqaSWHyjC/5B2/hJF12uNITgovP5gvG77ChvLi1xOvJai4qzNw4U0jCCmIzN8qhzv9s7tqVL2yzyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368589; c=relaxed/simple;
-	bh=5JTLJzMQblWjxor6KX3+JnK/59mcEaseGiyU8u6E8SA=;
+	s=arc-20240116; t=1760367269; c=relaxed/simple;
+	bh=HucGJrqNmmajxGFkKAEkxSR/ilrNqP5UGSkxYHSGoaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjAVYFKFVjEUvcLdmp5u9Ig3dSejehXpiVLAnPqS0EjjKzt6enFUPx+4dQbZAlB3VfF5XMGGIuA+AUhRrUJKBgcqV2BvQT3EB//MsgYj0zfMTE1Sjox7L9fXMo4Ip3VzM1/P1Gd2x5TOoxMa3u3P5OP5TOM+kx/1FXr69QOjBZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sj3G+Vu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558F9C4CEE7;
-	Mon, 13 Oct 2025 15:16:29 +0000 (UTC)
+	 MIME-Version; b=EnLUf3aS3Sf/iu/C4rsORYh4/RoTN4nXc8xsgWypnQjt6dQCp0nRj3y2zH+3Fg/MQUmuk920gurhA0uI44sas7vKP8/iR4O8MKySlazLrwIUAPSpO8aIPC8khfB6xsUf8+9hoAELgnrtMJSlVM1CIN/WnMdr+ghi4vYh0Cye4OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/OL1GST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D09C4CEFE;
+	Mon, 13 Oct 2025 14:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368589;
-	bh=5JTLJzMQblWjxor6KX3+JnK/59mcEaseGiyU8u6E8SA=;
+	s=korg; t=1760367269;
+	bh=HucGJrqNmmajxGFkKAEkxSR/ilrNqP5UGSkxYHSGoaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sj3G+Vu12f06tuB6Z3AJ2g1Dp2LuIVDm1T8JiDadZM87ulovh9Mo3SO+Cj7U+rYWJ
-	 UUQBbPrrgRZK0g3Gv7TOJahMi3mnKjN5E8qUMs8C1B6oyH8Sb6vM71dGO5fdJoQ3kK
-	 c17WTNPpJ8nSQulNjpyupfcIk4OXcgtmM33st7AM=
+	b=c/OL1GST1FFCq+7DEp7aKccKIey2/prvia07upi2DNgOJd+5raBffo6nW9g83awTT
+	 rmaiKpQBak5s3b7LsYGRidkUgqo0lmaJDGdt1qrClIDSDVcN8a8jxfkU9ebfViFakH
+	 CfN2V91ujWTJEsMi4We+rLCEKph5M0ociGrrLBUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Matthew Sakai <msakai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Anthony Iliopoulos <ailiop@suse.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/262] dm vdo: return error on corrupted metadata in start_restoring_volume functions
+Subject: [PATCH 6.1 150/196] NFSv4.1: fix backchannel max_resp_sz verification check
 Date: Mon, 13 Oct 2025 16:45:23 +0200
-Message-ID: <20251013144332.646025398@linuxfoundation.org>
+Message-ID: <20251013144320.124225917@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit 9ddf6d3fcbe0b96e318da364cf7e6b59cd4cb5a2 ]
+[ Upstream commit 191512355e520dfc45c8bc3b56d4de59c3ade33e ]
 
-The return values of VDO_ASSERT calls that validate metadata are not acted
-upon.
+When the client max_resp_sz is larger than what the server encodes in
+its reply, the nfs4_verify_back_channel_attrs() check fails and this
+causes nfs4_proc_create_session() to fail, in cases where the client
+page size is larger than that of the server and the server does not want
+to negotiate upwards.
 
-Return UDS_CORRUPT_DATA in case of an error.
+While this is not a problem with the linux nfs server that will reflect
+the proposed value in its reply irrespective of the local page size,
+other nfs server implementations may insist on their own max_resp_sz
+value, which could be smaller.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix this by accepting smaller max_resp_sz values from the server, as
+this does not violate the protocol. The server is allowed to decrease
+but not increase proposed the size, and as such values smaller than the
+client-proposed ones are valid.
 
-Fixes: a4eb7e255517 ("dm vdo: implement the volume index")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Reviewed-by: Matthew Sakai <msakai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 43c2e885be25 ("nfs4: fix channel attribute sanity-checks")
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-vdo/indexer/volume-index.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-vdo/indexer/volume-index.c b/drivers/md/dm-vdo/indexer/volume-index.c
-index 12f954a0c5325..afb062e1f1fb4 100644
---- a/drivers/md/dm-vdo/indexer/volume-index.c
-+++ b/drivers/md/dm-vdo/indexer/volume-index.c
-@@ -836,7 +836,7 @@ static int start_restoring_volume_sub_index(struct volume_sub_index *sub_index,
- 				    "%zu bytes decoded of %zu expected", offset,
- 				    sizeof(buffer));
- 		if (result != VDO_SUCCESS)
--			result = UDS_CORRUPT_DATA;
-+			return UDS_CORRUPT_DATA;
- 
- 		if (memcmp(header.magic, MAGIC_START_5, MAGIC_SIZE) != 0) {
- 			return vdo_log_warning_strerror(UDS_CORRUPT_DATA,
-@@ -928,7 +928,7 @@ static int start_restoring_volume_index(struct volume_index *volume_index,
- 				    "%zu bytes decoded of %zu expected", offset,
- 				    sizeof(buffer));
- 		if (result != VDO_SUCCESS)
--			result = UDS_CORRUPT_DATA;
-+			return UDS_CORRUPT_DATA;
- 
- 		if (memcmp(header.magic, MAGIC_START_6, MAGIC_SIZE) != 0)
- 			return vdo_log_warning_strerror(UDS_CORRUPT_DATA,
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index f8a91d15982dc..cbcff4603232b 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -9231,7 +9231,7 @@ static int nfs4_verify_back_channel_attrs(struct nfs41_create_session_args *args
+ 		goto out;
+ 	if (rcvd->max_rqst_sz > sent->max_rqst_sz)
+ 		return -EINVAL;
+-	if (rcvd->max_resp_sz < sent->max_resp_sz)
++	if (rcvd->max_resp_sz > sent->max_resp_sz)
+ 		return -EINVAL;
+ 	if (rcvd->max_resp_sz_cached > sent->max_resp_sz_cached)
+ 		return -EINVAL;
 -- 
 2.51.0
 
