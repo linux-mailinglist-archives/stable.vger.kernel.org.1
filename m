@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-185179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21029BD48AA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:51:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E12BD4739
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66B1318A205C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC9CE3B847D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03DD30B525;
-	Mon, 13 Oct 2025 15:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9892FB978;
+	Mon, 13 Oct 2025 15:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VsfEbim"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNIxn0CJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6E230B505;
-	Mon, 13 Oct 2025 15:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EF4310782;
+	Mon, 13 Oct 2025 15:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369557; cv=none; b=aO7FNuVoqOPBdsMGrdohst8Bm/eYDiQ8JUISx+6bWrCGGW42GFvT1yDVJhkYKcZo1nohANZ5v/YT72ZdAcZLjg4xH6YYxaaY8zdRgvRi7dNaVZfBrYbonBKcLFcbfKJDsDRjTpHuymA98JUhkcx8Hd70DuO00EFcvmk8QDxN0Lk=
+	t=1760368077; cv=none; b=eVaV2W4khaLEOrcjYG8thwnhmeBDj3rGWIIOflkxCdoD24ojlYwp2KnWOR9sHetDjJtJVTAe3/hWvUtAh34C7f6M4X5z+Zbuy2iOTaU56sxrW51tRjzbL0C/bPpkcS1WAsVShpcl215Bochj5AG/W0kentgyBsLIzBQ+YAvWycA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369557; c=relaxed/simple;
-	bh=/l7Fli2oW1wZuYentZU1HRlFULM1utPjkFd/6zZgfjA=;
+	s=arc-20240116; t=1760368077; c=relaxed/simple;
+	bh=m5dHlExasWVNvJj2pvuDZ4rq/j7xD/7W5PUwje/u5ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpATth1YiRQVyfm31b1k7prKpVfIfmDssIuCB4ccwXe1jw/qwHxhzdFo3I6PwRT6j4D9nuBcbF1atqbkHfROQRMRX7b50jjQSp9D+vbipYvfVPriULIS1qa8QcECOscusI6+UgNNRNNMBI17KAqdqLQjBjNo2jaILEb1FdROZG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VsfEbim; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A607C4CEE7;
-	Mon, 13 Oct 2025 15:32:36 +0000 (UTC)
+	 MIME-Version; b=HHdSJs5mj/mT0aKsDmlkvVCcIdZ2QA56sfcskGZNa8/X/ozV/Zam7PofCt46voVQO6ePWtwoJMUMYNwcB8Mz4zNH7B1jpmu1dUa884MoEER8/dtGyRL4EBFUxKPkgYoTDWo1Uac+pZJAnklpxBzNB0vHlO5hdc4YRFDYi/TwtUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNIxn0CJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8813DC4CEE7;
+	Mon, 13 Oct 2025 15:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369557;
-	bh=/l7Fli2oW1wZuYentZU1HRlFULM1utPjkFd/6zZgfjA=;
+	s=korg; t=1760368075;
+	bh=m5dHlExasWVNvJj2pvuDZ4rq/j7xD/7W5PUwje/u5ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VsfEbimVyzwBvsvkgonOMQfif6e8zOtWfTf+swiKnfGAjrBr9RtUad4HgX/hncA6
-	 KhskMl7HKH/1sIcB94dXaDt/vJpGjceli+S4OnY+TTbJS7B4tZ9VXW8zIqhJhQJQPT
-	 ApktsYju/QCq4qNFNcVKHDuuYc4p7jj4uj8LZiRw=
+	b=nNIxn0CJdfq+dzXAix+NxgsFUHx0UPaHaMZ+XNuJgsZ51iGi70oyrysruz3CW9e9n
+	 RxADH/d8zKv/ztUXT6lCxf62bg1ZIra/IFvxV6C1wHLvRpXuV9XSArW8Ym8Ld3hawH
+	 f5OXb3qAE1bNABQRdE91dF6DaWoODuvN4cN+sns4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 288/563] ipv6: use RCU in ip6_output()
+Subject: [PATCH 6.12 007/262] powerpc/603: Really copy kernel PGD entries into all PGDIRs
 Date: Mon, 13 Oct 2025 16:42:29 +0200
-Message-ID: <20251013144421.702654451@linuxfoundation.org>
+Message-ID: <20251013144326.389781154@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 11709573cc4e48dc34c80fc7ab9ce5b159e29695 ]
+[ Upstream commit f2863371f017eb03c230addc253783fa4c7e90f5 ]
 
-Use RCU in ip6_output() in order to use dst_dev_rcu() to prevent
-possible UAF.
+Commit 82ef440f9a38 ("powerpc/603: Copy kernel PGD entries into all
+PGDIRs and preallocate execmem page tables") was supposed to extend
+to powerpc 603 the copy of kernel PGD entries into all PGDIRs
+implemented in a previous patch on the 8xx. But 603 is book3s/32 and
+uses a duplicate of pgd_alloc() defined in another header.
 
-We can remove rcu_read_lock()/rcu_read_unlock() pairs
-from ip6_finish_output2().
+So really do the copy at the correct place for the 603.
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 82ef440f9a38 ("powerpc/603: Copy kernel PGD entries into all PGDIRs and preallocate execmem page tables")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/752ab7514cae089a2dd7cc0f3d5e35849f76adb9.1755757797.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ arch/powerpc/include/asm/book3s/32/pgalloc.h | 10 ++++++++--
+ arch/powerpc/include/asm/nohash/pgalloc.h    |  2 +-
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index e234640433d6b..9d64c13bab5ea 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -60,7 +60,7 @@
- static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *skb)
+diff --git a/arch/powerpc/include/asm/book3s/32/pgalloc.h b/arch/powerpc/include/asm/book3s/32/pgalloc.h
+index dd4eb30631758..f4390704d5ba2 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgalloc.h
++++ b/arch/powerpc/include/asm/book3s/32/pgalloc.h
+@@ -7,8 +7,14 @@
+ 
+ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
  {
- 	struct dst_entry *dst = skb_dst(skb);
--	struct net_device *dev = dst_dev(dst);
-+	struct net_device *dev = dst_dev_rcu(dst);
- 	struct inet6_dev *idev = ip6_dst_idev(dst);
- 	unsigned int hh_len = LL_RESERVED_SPACE(dev);
- 	const struct in6_addr *daddr, *nexthop;
-@@ -70,15 +70,12 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
- 
- 	/* Be paranoid, rather than too clever. */
- 	if (unlikely(hh_len > skb_headroom(skb)) && dev->header_ops) {
--		/* Make sure idev stays alive */
--		rcu_read_lock();
-+		/* idev stays alive because we hold rcu_read_lock(). */
- 		skb = skb_expand_head(skb, hh_len);
- 		if (!skb) {
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
--			rcu_read_unlock();
- 			return -ENOMEM;
- 		}
--		rcu_read_unlock();
- 	}
- 
- 	hdr = ipv6_hdr(skb);
-@@ -123,7 +120,6 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
- 
- 	IP6_UPD_PO_STATS(net, idev, IPSTATS_MIB_OUT, skb->len);
- 
--	rcu_read_lock();
- 	nexthop = rt6_nexthop(dst_rt6_info(dst), daddr);
- 	neigh = __ipv6_neigh_lookup_noref(dev, nexthop);
- 
-@@ -131,7 +127,6 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
- 		if (unlikely(!neigh))
- 			neigh = __neigh_create(&nd_tbl, nexthop, dev, false);
- 		if (IS_ERR(neigh)) {
--			rcu_read_unlock();
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTNOROUTES);
- 			kfree_skb_reason(skb, SKB_DROP_REASON_NEIGH_CREATEFAIL);
- 			return -EINVAL;
-@@ -139,7 +134,6 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
- 	}
- 	sock_confirm_neigh(skb, neigh);
- 	ret = neigh_output(neigh, skb, false);
--	rcu_read_unlock();
- 	return ret;
+-	return kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
+-			pgtable_gfp_flags(mm, GFP_KERNEL));
++	pgd_t *pgd = kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
++				      pgtable_gfp_flags(mm, GFP_KERNEL));
++
++#ifdef CONFIG_PPC_BOOK3S_603
++	memcpy(pgd + USER_PTRS_PER_PGD, swapper_pg_dir + USER_PTRS_PER_PGD,
++	       (MAX_PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
++#endif
++	return pgd;
  }
  
-@@ -233,22 +227,29 @@ static int ip6_finish_output(struct net *net, struct sock *sk, struct sk_buff *s
- int ip6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
- 	struct dst_entry *dst = skb_dst(skb);
--	struct net_device *dev = dst_dev(dst), *indev = skb->dev;
--	struct inet6_dev *idev = ip6_dst_idev(dst);
-+	struct net_device *dev, *indev = skb->dev;
-+	struct inet6_dev *idev;
-+	int ret;
+ static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+diff --git a/arch/powerpc/include/asm/nohash/pgalloc.h b/arch/powerpc/include/asm/nohash/pgalloc.h
+index bb5f3e8ea912d..4ef780b291bc3 100644
+--- a/arch/powerpc/include/asm/nohash/pgalloc.h
++++ b/arch/powerpc/include/asm/nohash/pgalloc.h
+@@ -22,7 +22,7 @@ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
+ 	pgd_t *pgd = kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
+ 			pgtable_gfp_flags(mm, GFP_KERNEL));
  
- 	skb->protocol = htons(ETH_P_IPV6);
-+	rcu_read_lock();
-+	dev = dst_dev_rcu(dst);
-+	idev = ip6_dst_idev(dst);
- 	skb->dev = dev;
- 
- 	if (unlikely(!idev || READ_ONCE(idev->cnf.disable_ipv6))) {
- 		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
-+		rcu_read_unlock();
- 		kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED);
- 		return 0;
- 	}
- 
--	return NF_HOOK_COND(NFPROTO_IPV6, NF_INET_POST_ROUTING,
--			    net, sk, skb, indev, dev,
--			    ip6_finish_output,
--			    !(IP6CB(skb)->flags & IP6SKB_REROUTED));
-+	ret = NF_HOOK_COND(NFPROTO_IPV6, NF_INET_POST_ROUTING,
-+			   net, sk, skb, indev, dev,
-+			   ip6_finish_output,
-+			   !(IP6CB(skb)->flags & IP6SKB_REROUTED));
-+	rcu_read_unlock();
-+	return ret;
- }
- EXPORT_SYMBOL(ip6_output);
- 
+-#if defined(CONFIG_PPC_8xx) || defined(CONFIG_PPC_BOOK3S_603)
++#ifdef CONFIG_PPC_8xx
+ 	memcpy(pgd + USER_PTRS_PER_PGD, swapper_pg_dir + USER_PTRS_PER_PGD,
+ 	       (MAX_PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
+ #endif
 -- 
 2.51.0
 
