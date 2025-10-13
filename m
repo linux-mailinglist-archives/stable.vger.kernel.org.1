@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC77BD4862
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D74BD4898
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D2601883CA3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A646F18A0721
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F263081CC;
-	Mon, 13 Oct 2025 15:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375B330AD10;
+	Mon, 13 Oct 2025 15:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYdgkGNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUXuA4xG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943052F9D82;
-	Mon, 13 Oct 2025 15:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E638030AD0A;
+	Mon, 13 Oct 2025 15:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369396; cv=none; b=XYIw1R6CO/xOp6cObhrm8tGvvpDqlWkG/HTB0LYyagQUpdME2aXtoV9zggMiutjBSNSmxeO8f1NVZ4eDJy/bK7IbOx1mfd7BFFSfxxg6QQtHRdhj5dSk/dlFx4Cxm8XdiXNQo8pMFnGhHT9+Dyv0/FcqZOsat1ncn1WaIcUyOLw=
+	t=1760369518; cv=none; b=nrTjHyDKQQPPDrlgs4Mt4KISfJm98SRG5YbNYoHMNO3VtaYz48HHXFN+nzci9pCGJT6ffo4BRk7Q5KtB0ihrGI1+DbEmRNltses1HRgxehQe1sBq+CO2Y33eI208sN3fmeVcG8pJvqxsVBKCQlMd2lVoTmTVYxqfjuJzGvmHiRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369396; c=relaxed/simple;
-	bh=BJqrm4wJOjXzULBitfsV2VCiqRWpaeGdrYQ89U/D1W4=;
+	s=arc-20240116; t=1760369518; c=relaxed/simple;
+	bh=VduOUgxLjaM6q7ftryzAQd6bgOfO8ETAEhTZO3KKBFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXRFpJ4f7L3PgoBBrQQAO7MH0Pmi5ZdeN5U9Tu2Qb308AAx+9tP7nu4a7o8NCY6ZM2HMa+xQvKpZRN8CO8tv6qan7oZTLWcmf1NPHuKoXj2kSHwckftoq7KDEI26NcQuitLXegixMi+wxfdJOTsygt6qliUVmhltWZ5eJVHQcX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYdgkGNU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC78C4CEFE;
-	Mon, 13 Oct 2025 15:29:55 +0000 (UTC)
+	 MIME-Version; b=o1bxHttvSxm05vZ9Jvqx5q4KJ7I0RGQgesAyku/npIZTi0rteUnUHofaIrKJzeQyRpJkqBb+dqEBpGYHbb2vg+vXvn/4o7j+1b4GlsgqtUR3wuYzLv1k5GdllJbn38ev0ko+0IBETOuUZTycG3R0Tbwtl/3V15DuR6XkW01q96o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUXuA4xG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E85C4CEE7;
+	Mon, 13 Oct 2025 15:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369396;
-	bh=BJqrm4wJOjXzULBitfsV2VCiqRWpaeGdrYQ89U/D1W4=;
+	s=korg; t=1760369517;
+	bh=VduOUgxLjaM6q7ftryzAQd6bgOfO8ETAEhTZO3KKBFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eYdgkGNU7vdOFxxoXbTTT/XtfxQPlvXaxkUUJfb9hiatHF6w9GqXJLNWSXv42hazP
-	 tdi/nvt1iD2LuNg+U/ENobsppxUvncRJrxcubagUqFvUnfp/eNguCgiAv332JkIU2N
-	 dfnNxk4zFd/zaWhHiJwhVhEA7ZOkZz0xUn5/fnhs=
+	b=kUXuA4xGWsweh925hzchbKrwSKk5D3vRprGsD2zY/gYd1RJPR2Nqby4Wd+mgOEwDP
+	 g7/4y30pLciX7jg/Bf6/XZlgqkYyS0HZqSF5qhp0DXICwKXVSOAgLKUiCeRgatkc3g
+	 o4UHfJypL9SAQzvBaRCMSec2vpNJHVQZIg40XgVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Xiao <Jack.Xiao@amd.com>,
-	Likun Gao <Likun.Gao@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 230/563] drm/amdgpu: fix incorrect vm flags to map bo
-Date: Mon, 13 Oct 2025 16:41:31 +0200
-Message-ID: <20251013144419.612649904@linuxfoundation.org>
+Subject: [PATCH 6.17 232/563] phy: rockchip: naneng-combphy: Enable U3 OTG port for RK3568
+Date: Mon, 13 Oct 2025 16:41:33 +0200
+Message-ID: <20251013144419.684986683@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,37 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jack Xiao <Jack.Xiao@amd.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit b08425fa77ad2f305fe57a33dceb456be03b653f ]
+[ Upstream commit 7bb14b61b7d03db770b7e8871493f5b9b2be2b79 ]
 
-It should use vm flags instead of pte flags
-to specify bo vm attributes.
+The boot firmware may disable the U3 port early during boot and leave it
+up to the controller or PHY driver to re-enable U3 when needed.
 
-Fixes: 7946340fa389 ("drm/amdgpu: Move csa related code to separate file")
-Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
-Reviewed-by: Likun Gao <Likun.Gao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The Rockchip USBDP PHY driver currently does this for RK3576 and RK3588,
+something the Rockchip Naneng Combo PHY driver never does for RK3568.
+This may result in USB 3.0 ports being limited to only using USB 2.0 or
+in special cases not working at all on RK3568.
+
+Write to PIPE_GRF USB3OTGx_CON1 reg to ensure the U3 port is enabled
+when a PHY with PHY_TYPE_USB3 mode is used.
+
+Fixes: 7160820d742a ("phy: rockchip: add naneng combo phy for RK3568")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20250723072324.2246498-1-jonas@kwiboo.se
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-naneng-combphy.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-index 02138aa557935..dfb6cfd837606 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-@@ -88,8 +88,8 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
- 	}
+diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+index ce91fb1d51671..17c6310f4b54b 100644
+--- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+@@ -137,6 +137,8 @@ struct rockchip_combphy_grfcfg {
+ 	struct combphy_reg pipe_xpcs_phy_ready;
+ 	struct combphy_reg pipe_pcie1l0_sel;
+ 	struct combphy_reg pipe_pcie1l1_sel;
++	struct combphy_reg u3otg0_port_en;
++	struct combphy_reg u3otg1_port_en;
+ };
  
- 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
--			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
--			     AMDGPU_PTE_EXECUTABLE);
-+			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
-+			     AMDGPU_VM_PAGE_EXECUTABLE);
+ struct rockchip_combphy_cfg {
+@@ -594,6 +596,14 @@ static int rk3568_combphy_cfg(struct rockchip_combphy_priv *priv)
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_txcomp_sel, false);
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_txelec_sel, false);
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->usb_mode_set, true);
++		switch (priv->id) {
++		case 0:
++			rockchip_combphy_param_write(priv->pipe_grf, &cfg->u3otg0_port_en, true);
++			break;
++		case 1:
++			rockchip_combphy_param_write(priv->pipe_grf, &cfg->u3otg1_port_en, true);
++			break;
++		}
+ 		break;
  
- 	if (r) {
- 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
+ 	case PHY_TYPE_SATA:
+@@ -737,6 +747,8 @@ static const struct rockchip_combphy_grfcfg rk3568_combphy_grfcfgs = {
+ 	/* pipe-grf */
+ 	.pipe_con0_for_sata	= { 0x0000, 15, 0, 0x00, 0x2220 },
+ 	.pipe_xpcs_phy_ready	= { 0x0040, 2, 2, 0x00, 0x01 },
++	.u3otg0_port_en		= { 0x0104, 15, 0, 0x0181, 0x1100 },
++	.u3otg1_port_en		= { 0x0144, 15, 0, 0x0181, 0x1100 },
+ };
+ 
+ static const struct rockchip_combphy_cfg rk3568_combphy_cfgs = {
 -- 
 2.51.0
 
