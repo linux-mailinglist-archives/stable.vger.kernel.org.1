@@ -1,159 +1,100 @@
-Return-Path: <stable+bounces-185541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE02BD6AF9
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 01:03:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF93BD6B29
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 01:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CA9018A7EBC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 23:03:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EFC918A81BE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 23:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC3D2FE575;
-	Mon, 13 Oct 2025 23:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333742EC56F;
+	Mon, 13 Oct 2025 23:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QJPDswOB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YMS/WQgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86A82FE058;
-	Mon, 13 Oct 2025 23:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E505B2E06ED
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 23:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760396580; cv=none; b=c/LB9llE1PHD7LyhBSpD1IhBHOIPGFN2uxpGuPIXe8ltjyvCcB0Tx4aCPiooXVrDQznZT5/rvrbTPEOWC3uzy8YK5kCI2j8j0QaAorIoBCBUjk5sjEaTlU6oW/xbh7NU8HD1V7S0Zr8nhTnSOwm81GSY10GSO1o/GMX6YpR/dvo=
+	t=1760396867; cv=none; b=nSKE67lT6vcuzGEC4Ma/zMpWOqilXQCdsH01q5L27TNn+Zw7DLsOFj9/D04ihUSnrQ+v+XuYEDtjbrF/Wz+b62t1EjlyBQ2dqsfRJ7L9mvScF7LriEyyF5IHsDf4ZinDn1Whms6pn2o+NaGwER3zXmCPFa1B9Zvs8iFZ1oKzyVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760396580; c=relaxed/simple;
-	bh=f6n6SX5y5y/14RlIb6Cbh0wyuy4ECH9GThF4DSAzwy8=;
-	h=Date:To:From:Subject:Message-Id; b=R3frUH3UtFtvad4fwM+PqNwr6cWxyXajdS42GdogogPabzNEs4iSto15ntnFcCToC4FEi+qN//A9Bzcg3d8qQetkr341WFnF0D4rKl8l0Fk4gVSpDb6RbKUF3YeyrnYmPkgi/7mUKoMJn+VvtB0GErUhc4bXR/Jp5Q6OYjVvEPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QJPDswOB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A59EC4CEE7;
-	Mon, 13 Oct 2025 23:03:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760396580;
-	bh=f6n6SX5y5y/14RlIb6Cbh0wyuy4ECH9GThF4DSAzwy8=;
-	h=Date:To:From:Subject:From;
-	b=QJPDswOBp1KtCtmTjNUA0ExpRbi4/V0ihzFyy+Dem9eQShhFh8Z+iqVHGyUNgXZPq
-	 IYTRteynp0vXZv84E3XAhE6Q95mG4VrIIGellhZx0WOyipmFCq04Grdc95G0wvvbN+
-	 9Uf8UIVsL6RhRfwqm+QyXPb9bLEXlSNddKRfCz+8=
-Date: Mon, 13 Oct 2025 16:02:59 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,liam.howlett@oracle.com,jannh@google.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-mremap-correctly-account-old-mapping-after-mremap_dontunmap-remap.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251013230300.0A59EC4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1760396867; c=relaxed/simple;
+	bh=6SAy4c37I38+X6vfn9wK6wQCalDV/wL8zd/wSFtw4aM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=biVayXa6h2WvPalOfhP9HdmUov2nNh+RV/V3BUsl0J/K7yjP5MvUI1hTBr3xwC1UqFZkImEnN3SNddFHGs0sVE3FkrfRXcLgweGnapfO+R28gY4+Xri5eA2X6r3/0xGoydKJr9AEW4Pk0xUnyBqc57sozlU9SICy70O2bw5Phqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YMS/WQgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB182C4CEE7;
+	Mon, 13 Oct 2025 23:07:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760396866;
+	bh=6SAy4c37I38+X6vfn9wK6wQCalDV/wL8zd/wSFtw4aM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YMS/WQgJhK4z8p1DqQ6uqCQJexg8HHagETmW6Kia/q+qB2IcNPWUnXGvQ0RIBnrkY
+	 gJai6nfneOh4nu7erca4EvCvCl0xZcOIKK4JXV9ySW+WTDv0VmIObXEeqXqJqx3gmz
+	 yOtgsS0bGcZ37LX5WCy6JAb+IsmGgKp1UMzPUuW6zOikMnBxFMmjbnG/g7jsJYJPMi
+	 JPtfP3M522vqKgt0BBHusfjxIFR4BqqeVtveFLq2lN5HWTJ6eAn5jC9uZHfQBZrbkJ
+	 pU7V8Vg+74S6zFdDwOaZm+/lyOWBQKWL9XaOem/JmKeLkmBAw1fIz7DuSALWtdXsbZ
+	 1ABY5X4E8HQaQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/3] mfd: intel_soc_pmic_chtdc_ti: Fix invalid regmap-config max_register value
+Date: Mon, 13 Oct 2025 19:07:42 -0400
+Message-ID: <20251013230744.3697280-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101307-little-reseal-5a13@gregkh>
+References: <2025101307-little-reseal-5a13@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Hans de Goede <hdegoede@redhat.com>
 
-The patch titled
-     Subject: mm/mremap: correctly account old mapping after MREMAP_DONTUNMAP remap
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-mremap-correctly-account-old-mapping-after-mremap_dontunmap-remap.patch
+[ Upstream commit 70e997e0107e5ed85c1a3ef2adfccbe351c29d71 ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mremap-correctly-account-old-mapping-after-mremap_dontunmap-remap.patch
+The max_register = 128 setting in the regmap config is not valid.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The Intel Dollar Cove TI PMIC has an eeprom unlock register at address 0x88
+and a number of EEPROM registers at 0xF?. Increase max_register to 0xff so
+that these registers can be accessed.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: mm/mremap: correctly account old mapping after MREMAP_DONTUNMAP remap
-Date: Mon, 13 Oct 2025 17:58:36 +0100
-
-Commit b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
-mistakenly introduced a new behaviour - clearing the VM_ACCOUNT flag of
-the old mapping when a mapping is mremap()'d with the MREMAP_DONTUNMAP
-flag set.
-
-While we always clear the VM_LOCKED and VM_LOCKONFAULT flags for the old
-mapping (the page tables have been moved, so there is no data that could
-possibly be locked in memory), there is no reason to touch any other VMA
-flags.
-
-This is because after the move the old mapping is in a state as if it were
-freshly mapped.  This implies that the attributes of the mapping ought to
-remain the same, including whether or not the mapping is accounted.
-
-Link: https://lkml.kernel.org/r/20251013165836.273113-1-lorenzo.stoakes@oracle.com
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20241208150028.325349-1-hdegoede@redhat.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/mfd/intel_soc_pmic_chtdc_ti.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- mm/mremap.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
-
---- a/mm/mremap.c~mm-mremap-correctly-account-old-mapping-after-mremap_dontunmap-remap
-+++ a/mm/mremap.c
-@@ -1237,10 +1237,10 @@ static int copy_vma_and_data(struct vma_
- }
+diff --git a/drivers/mfd/intel_soc_pmic_chtdc_ti.c b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+index 282b8fd08009b..0387d7b843e75 100644
+--- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
++++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+@@ -81,7 +81,7 @@ static struct mfd_cell chtdc_ti_dev[] = {
+ static const struct regmap_config chtdc_ti_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+-	.max_register = 128,
++	.max_register = 0xff,
+ 	.cache_type = REGCACHE_NONE,
+ };
  
- /*
-- * Perform final tasks for MADV_DONTUNMAP operation, clearing mlock() and
-- * account flags on remaining VMA by convention (it cannot be mlock()'d any
-- * longer, as pages in range are no longer mapped), and removing anon_vma_chain
-- * links from it (if the entire VMA was copied over).
-+ * Perform final tasks for MADV_DONTUNMAP operation, clearing mlock() flag on
-+ * remaining VMA by convention (it cannot be mlock()'d any longer, as pages in
-+ * range are no longer mapped), and removing anon_vma_chain links from it if the
-+ * entire VMA was copied over.
-  */
- static void dontunmap_complete(struct vma_remap_struct *vrm,
- 			       struct vm_area_struct *new_vma)
-@@ -1250,11 +1250,8 @@ static void dontunmap_complete(struct vm
- 	unsigned long old_start = vrm->vma->vm_start;
- 	unsigned long old_end = vrm->vma->vm_end;
- 
--	/*
--	 * We always clear VM_LOCKED[ONFAULT] | VM_ACCOUNT on the old
--	 * vma.
--	 */
--	vm_flags_clear(vrm->vma, VM_LOCKED_MASK | VM_ACCOUNT);
-+	/* We always clear VM_LOCKED[ONFAULT] on the old VMA. */
-+	vm_flags_clear(vrm->vma, VM_LOCKED_MASK);
- 
- 	/*
- 	 * anon_vma links of the old vma is no longer needed after its page
-_
-
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
-
-mm-mremap-correctly-account-old-mapping-after-mremap_dontunmap-remap.patch
-mm-shmem-update-shmem-to-use-mmap_prepare.patch
-device-dax-update-devdax-to-use-mmap_prepare.patch
-mm-add-vma_desc_size-vma_desc_pages-helpers.patch
-relay-update-relay-to-use-mmap_prepare.patch
-mm-vma-rename-__mmap_prepare-function-to-avoid-confusion.patch
-mm-add-remap_pfn_range_prepare-remap_pfn_range_complete.patch
-mm-abstract-io_remap_pfn_range-based-on-pfn.patch
-mm-introduce-io_remap_pfn_range_.patch
-mm-introduce-io_remap_pfn_range_-fix.patch
-mm-add-ability-to-take-further-action-in-vm_area_desc.patch
-doc-update-porting-vfs-documentation-for-mmap_prepare-actions.patch
-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch
-mm-add-shmem_zero_setup_desc.patch
-mm-update-mem-char-driver-to-use-mmap_prepare.patch
-mm-update-resctl-to-use-mmap_prepare.patch
+-- 
+2.51.0
 
 
