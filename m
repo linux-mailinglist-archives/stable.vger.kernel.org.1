@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9226BD3D05
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:01:52 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 119E2BD4216
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 378D9188016A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:01:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0EB134FABC1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559C930B51B;
-	Mon, 13 Oct 2025 14:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2382830BF5A;
+	Mon, 13 Oct 2025 15:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgsRZlVP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nz04NYjs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5A530B512;
-	Mon, 13 Oct 2025 14:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FB130BF54;
+	Mon, 13 Oct 2025 15:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367207; cv=none; b=UJoY+FkRLW/qdCUpi2AEuDBsVmXFfhVRHz8CWQgzEpfIsSBxss3gK6+gaDD33OZlls9jwqcW9aLejLJTD99U64kNyArCyJEJg3HGUfCnqmAeX5GE1cqIRoUbtoOb6r0QKseGhuFDerpg9AYCy4I5Atpv2l1KZa7Zs5NPXXbokl4=
+	t=1760367782; cv=none; b=VjzW2EM5+htdfxdv0Qxp6M2YtsYDhbZIgtnX9hQ1GmYeCz9Xcnb1ACuKQNT942/n9z/uv7x8HEi5J6y+zVnI/Mjf92s1WGxGvutfHrzbYegOGYDouGmyMieYH87iozXXd0+zKA5NYw8t7RpC488G5TGp52xIhwDB4zju+Sc1moQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367207; c=relaxed/simple;
-	bh=74tKqXOWownIlsEOOBwhdSdrfnd4Qe61YRpk9b1KDGc=;
+	s=arc-20240116; t=1760367782; c=relaxed/simple;
+	bh=PCjItww/6P8Ldd/+Xzy/ip2/7ybv7kKMbRZ2hT1/lng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OI5RVKDiCbeoUEXjsUFLSjdOl++htL19+HpIBX9/oMDAO31Ls5ORiRsu3JAtwZGorynhe/lqWsaYXkc1Ty/YMZGTsw9Q73PEARohI3H4ICRjDOupJ2u+6FIeJpz761PwE+U0qDHqQiFOysJtDz67VO4KG8B2BqWAtc+qLCd+pHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgsRZlVP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61217C16AAE;
-	Mon, 13 Oct 2025 14:53:26 +0000 (UTC)
+	 MIME-Version; b=bhvKwiHkujjaGV/jMiROA3E++/vnVRO3ouFdpRQrmBwG0mfHKH52YMqLPQU6IRSvIWViGshnHZwB2iVj8mNBaVouIco7WGPLxfeVJdYAE61zHJ0JD3Z+2CTrUO/op24ZyF5gQ9Rz9CjC5/RPeKknMUPpAAm3VtoZOzfFIbmE7n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nz04NYjs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFB8C4CEE7;
+	Mon, 13 Oct 2025 15:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367206;
-	bh=74tKqXOWownIlsEOOBwhdSdrfnd4Qe61YRpk9b1KDGc=;
+	s=korg; t=1760367781;
+	bh=PCjItww/6P8Ldd/+Xzy/ip2/7ybv7kKMbRZ2hT1/lng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GgsRZlVPNyWIiLYPwWE5x0CWmG9+vEOqw6Rm/df1gIShwjuypRkcDUItAT3qOvLPc
-	 FL2osNwD5D8RlYqRPjZW4AibsX8FWsLiMAALln5Kog0uyk6JN/3D4cuUKGsj0AOXs8
-	 te9E23sR8/F8AEu7kC+CHbYYfOgADZWPWuuPHIps=
+	b=Nz04NYjsmWGTiWlzDC01+NU8YKUeUbQCVyQQbBhloDOhg9Eb0QtQAmaHfj2h5yg1B
+	 RNB1ho5NMOtN9sLZ1xJmAyIkwjWqmNZCrMeya0Y/ORKvX7YGXNxzMYEV5ZSjZC89Ne
+	 yYoacMZrCLT9LkYdgYiV0z4Y0djHP4sv+31nXGCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/196] fs: ntfs3: Fix integer overflow in run_unpack()
+Subject: [PATCH 6.6 104/196] drm/msm/dpu: fix incorrect type for ret
 Date: Mon, 13 Oct 2025 16:44:55 +0200
-Message-ID: <20251013144319.109444587@linuxfoundation.org>
+Message-ID: <20251013144319.076984264@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 736fc7bf5f68f6b74a0925b7e072c571838657d2 ]
+[ Upstream commit 88ec0e01a880e3326794e149efae39e3aa4dbbec ]
 
-The MFT record relative to the file being opened contains its runlist,
-an array containing information about the file's location on the physical
-disk. Analysis of all Call Stack paths showed that the values of the
-runlist array, from which LCNs are calculated, are not validated before
-run_unpack function.
+Change 'ret' from unsigned long to int, as storing negative error codes
+in an unsigned long makes it never equal to -ETIMEDOUT, causing logical
+errors.
 
-The run_unpack function decodes the compressed runlist data format
-from MFT attributes (for example, $DATA), converting them into a runs_tree
-structure, which describes the mapping of virtual clusters (VCN) to
-logical clusters (LCN). The NTFS3 subsystem also has a shortcut for
-deleting files from MFT records - in this case, the RUN_DEALLOCATE
-command is sent to the run_unpack input, and the function logic
-provides that all data transferred to the runlist about file or
-directory is deleted without creating a runs_tree structure.
-
-Substituting the runlist in the $DATA attribute of the MFT record for an
-arbitrary file can lead either to access to arbitrary data on the disk
-bypassing access checks to them (since the inode access check
-occurs above) or to destruction of arbitrary data on the disk.
-
-Add overflow check for addition operation.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: d7d0e73f7de3 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/671100/
+Link: https://lore.kernel.org/r/20250826092047.224341-1-rongqianfeng@vivo.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/run.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
-index 12d8682f33b53..340a4cbe8b5ca 100644
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -9,6 +9,7 @@
- #include <linux/blkdev.h>
- #include <linux/fs.h>
- #include <linux/log2.h>
-+#include <linux/overflow.h>
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+index 0a45c546b03f2..a5cd41c9224d7 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+@@ -433,7 +433,7 @@ static void _dpu_encoder_phys_wb_handle_wbdone_timeout(
+ static int dpu_encoder_phys_wb_wait_for_commit_done(
+ 		struct dpu_encoder_phys *phys_enc)
+ {
+-	unsigned long ret;
++	int ret;
+ 	struct dpu_encoder_wait_info wait_info;
+ 	struct dpu_encoder_phys_wb *wb_enc = to_dpu_encoder_phys_wb(phys_enc);
  
- #include "debug.h"
- #include "ntfs.h"
-@@ -982,12 +983,16 @@ int run_unpack(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- 
- 			if (!dlcn)
- 				return -EINVAL;
--			lcn = prev_lcn + dlcn;
-+
-+			if (check_add_overflow(prev_lcn, dlcn, &lcn))
-+				return -EINVAL;
- 			prev_lcn = lcn;
- 		} else
- 			return -EINVAL;
- 
--		next_vcn = vcn64 + len;
-+		if (check_add_overflow(vcn64, len, &next_vcn))
-+			return -EINVAL;
-+
- 		/* Check boundary. */
- 		if (next_vcn > evcn + 1)
- 			return -EINVAL;
-@@ -1148,7 +1153,8 @@ int run_get_highest_vcn(CLST vcn, const u8 *run_buf, u64 *highest_vcn)
- 			return -EINVAL;
- 
- 		run_buf += size_size + offset_size;
--		vcn64 += len;
-+		if (check_add_overflow(vcn64, len, &vcn64))
-+			return -EINVAL;
- 
- #ifndef CONFIG_NTFS3_64BIT_CLUSTER
- 		if (vcn64 > 0x100000000ull)
 -- 
 2.51.0
 
