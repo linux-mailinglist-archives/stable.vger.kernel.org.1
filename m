@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-185008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330A6BD45D6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56D8BD45E5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45537188605D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0FCA1886304
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55EC3112DD;
-	Mon, 13 Oct 2025 15:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5243E3112DC;
+	Mon, 13 Oct 2025 15:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2F79Esx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIlA0Dsn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E3B3112B8;
-	Mon, 13 Oct 2025 15:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB9A30C621;
+	Mon, 13 Oct 2025 15:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369070; cv=none; b=eLrZayUU7wMGBsMYhx2F7OxvBtYwjlTS0WrmDuodDmWgUhnLQJQOgXqL69XQQCAK8aLyKCBwxGxPOW0s3Oup8KqW+/n4oKSXKiXi68eLH+puL1SH9oF0qcBep6Dxeyu/DL5/SjXeVfeODc66zEAnYnzdvtfUYTVdTiCzELgt7Xg=
+	t=1760369076; cv=none; b=PxbnVT9MpZWA7gMP0+gFwZgYYLamvjbz30ixhweA7y8gg26GNtlAcA5BwajrATo4ghEM07KHXHHyB9Y5HN3y/wdRS/76n927lYMhPVUl0fzub/aVK0yFM4xt7bcx6kxWIydTdDEGugNDWv4lxQCgl1l33zNoVeGhBwr/xfUHft8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369070; c=relaxed/simple;
-	bh=k8j9BfqzH5uyccw8XtD0woJ5C1p5zp3B8pnFo0rlTH4=;
+	s=arc-20240116; t=1760369076; c=relaxed/simple;
+	bh=utYeBJCj45mMRJrcQ7WxHH3O9uIe5rFgJgMXkz7De7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQ9kEsMoXbfhAdu+3t1iATNdA/03VJ6B5A6xUEFnmVKfsr69dXRBI7ddV06Nhz8UR50AHMrTdvDqaGDZ0pIK0GWhXC+W71yqE3GW5shX63YngCRd3YCVAoC/Hs+FgZ7LzR5q41hl3iGZwJJiWmiXZ15y8sL7UHXsSD4AwUgdpG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2F79Esx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7790C4CEE7;
-	Mon, 13 Oct 2025 15:24:29 +0000 (UTC)
+	 MIME-Version; b=ob5w6Tt2T/Y9k3gG+eevhggGEvZM9CsP8+Hu8cBnMzQn0DAzzMwx3kmBaX7r0E8LC6stDHgWFMKBzqm4g0jebCPtI0G/J8XrEgY7X5ttFXqkSxVZ3grm3rVzQ08rSf/K5wPy2aSpY65Fm3wq3J8TK7bfGefvW5A69/4hB1ADiJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIlA0Dsn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E90C4CEE7;
+	Mon, 13 Oct 2025 15:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369070;
-	bh=k8j9BfqzH5uyccw8XtD0woJ5C1p5zp3B8pnFo0rlTH4=;
+	s=korg; t=1760369075;
+	bh=utYeBJCj45mMRJrcQ7WxHH3O9uIe5rFgJgMXkz7De7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2F79EsxHhBzDhv5ywRt02W44HLr8oZ0IJkgHJRxbulpAUcp7+eRu3DoMJZbv+5u/
-	 x0Hw60QrWraYTqnjiCShiO4wELXV20IqZ7+45q1gG97333jcBCAsdTnXU9DCDWk3lV
-	 KHmlvmXqFWsRh44My/rWJYUxgtdfBDjPQaf3M9/E=
+	b=rIlA0Dsn73TqxurGfkKmd++3KrVHhYBIe+BZlDRYwz9FHoiN2XpMZLfYgg5q0/rNg
+	 qqgsQjmYOCW0EpHhPIBl3fPG9GzERPrqp2NtdwTpjOQDTm4IESkT7drgJpOhywYRkv
+	 rqcLCAisQ3NBx/Xo2t6zgHbcOah2H2OV2zpnviJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 117/563] soc: mediatek: mtk-svs: fix device leaks on mt8183 probe failure
-Date: Mon, 13 Oct 2025 16:39:38 +0200
-Message-ID: <20251013144415.533361066@linuxfoundation.org>
+Subject: [PATCH 6.17 118/563] soc: mediatek: mtk-svs: fix device leaks on mt8192 probe failure
+Date: Mon, 13 Oct 2025 16:39:39 +0200
+Message-ID: <20251013144415.569575396@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -70,56 +70,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 6ab4f79ea92324f7f2eb22692054a34bbba7cf35 ]
+[ Upstream commit f1a68ba5739e42353609438e27a83b08d7f5cfd6 ]
 
 Make sure to drop the references taken by of_find_device_by_node() when
 looking up the thermal sensor and opp devices during probe on probe
 failure (e.g. probe deferral) and on driver unbind.
 
-Fixes: 681a02e95000 ("soc: mediatek: SVS: introduce MTK SVS engine")
+Fixes: 0bbb09b2af9d ("soc: mediatek: SVS: add mt8192 SVS GPU driver")
 Cc: Roger Lu <roger.lu@mediatek.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250909095651.5530-2-johan@kernel.org
+Link: https://lore.kernel.org/r/20250909095651.5530-3-johan@kernel.org
 Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-svs.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/soc/mediatek/mtk-svs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/drivers/soc/mediatek/mtk-svs.c b/drivers/soc/mediatek/mtk-svs.c
-index 7c349a94b45c0..48804e1e5a6c8 100644
+index 48804e1e5a6c8..f45537546553e 100644
 --- a/drivers/soc/mediatek/mtk-svs.c
 +++ b/drivers/soc/mediatek/mtk-svs.c
-@@ -2165,6 +2165,13 @@ static struct device *svs_add_device_link(struct svs_platform *svsp,
- 	return dev;
- }
- 
-+static void svs_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int svs_mt8192_platform_probe(struct svs_platform *svsp)
- {
- 	struct device *dev;
-@@ -2216,11 +2223,13 @@ static int svs_mt8183_platform_probe(struct svs_platform *svsp)
+@@ -2176,6 +2176,7 @@ static int svs_mt8192_platform_probe(struct svs_platform *svsp)
  {
  	struct device *dev;
  	u32 idx;
 +	int ret;
  
- 	dev = svs_add_device_link(svsp, "thermal-sensor");
+ 	svsp->rst = devm_reset_control_get_optional(svsp->dev, "svs_rst");
+ 	if (IS_ERR(svsp->rst))
+@@ -2186,6 +2187,7 @@ static int svs_mt8192_platform_probe(struct svs_platform *svsp)
  	if (IS_ERR(dev))
  		return dev_err_probe(svsp->dev, PTR_ERR(dev),
- 				     "failed to get thermal device\n");
+ 				     "failed to get lvts device\n");
 +	put_device(dev);
  
  	for (idx = 0; idx < svsp->bank_max; idx++) {
  		struct svs_bank *svsb = &svsp->banks[idx];
-@@ -2230,6 +2239,7 @@ static int svs_mt8183_platform_probe(struct svs_platform *svsp)
+@@ -2195,6 +2197,7 @@ static int svs_mt8192_platform_probe(struct svs_platform *svsp)
  		case SVSB_SWID_CPU_LITTLE:
  		case SVSB_SWID_CPU_BIG:
  			svsb->opp_dev = get_cpu_device(bdata->cpu_id);
@@ -127,7 +115,7 @@ index 7c349a94b45c0..48804e1e5a6c8 100644
  			break;
  		case SVSB_SWID_CCI:
  			svsb->opp_dev = svs_add_device_link(svsp, "cci");
-@@ -2246,6 +2256,11 @@ static int svs_mt8183_platform_probe(struct svs_platform *svsp)
+@@ -2214,6 +2217,11 @@ static int svs_mt8192_platform_probe(struct svs_platform *svsp)
  			return dev_err_probe(svsp->dev, PTR_ERR(svsb->opp_dev),
  					     "failed to get OPP device for bank %d\n",
  					     idx);
