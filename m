@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3032BD3C87
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0025ABD44BC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B751818A09ED
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A76D03E432D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BE12727E2;
-	Mon, 13 Oct 2025 14:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D9127979A;
+	Mon, 13 Oct 2025 14:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8NU50+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxPPz8Vm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A0A26560B;
-	Mon, 13 Oct 2025 14:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266F72248A5;
+	Mon, 13 Oct 2025 14:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367055; cv=none; b=nkqs9UPIQ4XudNImvmyKvyyMDSa+w16AYZPe+Kc5+0BAApD0h+owJ5sEjuf7klqI6Go3i4vci5in8NxjJNb6s28nCMwbrUwUBnatRIW1Y+ZsijrQE5QiWaW7u03sVfnveV1NCazo4IJRBlLanrGTBZG0I4+PAdyeKMcJiueG9E0=
+	t=1760367578; cv=none; b=JtyKjR8wLRLJbw4By/tz7X1HOdnMvM0MFQTILn0jnyl8YBO90q5s3SG4gBmA7wM4RsZr5XEosfThpyTv72fWi6KpJNazBRTpU97O87WV9eU2lFhyN/Iys/vg4qvHJk1K5HJgmzEzkf0i3ICSks7DBaku9Gaj3TbPaC3W095Ivek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367055; c=relaxed/simple;
-	bh=BYc745sVAG9KQd81OmPOtIXDnA0TDdmhHnfzEnb44Oo=;
+	s=arc-20240116; t=1760367578; c=relaxed/simple;
+	bh=XnuOr/RmAVBt5WijjpKFXlDIGoFNH89zU85Qo13jdRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bupwWPG/7dr/lMtU2Rj8uU69/Bc4fa/KDHBDkCokCc8MZwsID2gVgR9a9lL01uFMdkZ0jY1i4DBwXCGWe9AlY0XGqW3Va+kyIcoGUnvxf0n66+ygF2bQFeX6mxA9yjeWR9k/OM8zjt09Tpxm/UPY11UuOzsbZXEZc7pLzOHLKdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8NU50+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF40C4CEE7;
-	Mon, 13 Oct 2025 14:50:54 +0000 (UTC)
+	 MIME-Version; b=O23hJUKRBn1JIkd7jw7i1U6Xo7zm7vu3I2P2G0wsMVSKQ/MLROBDWvBsJgw++D5Bl5rIG7fIw9XZ7M59snCcouVqJNEfr3ZLi1Xnk0U6hJdFwTnnaQ5xe+RAFMDl1DsRfKRGj/JEIsXJZDCteCDiIZAZbP6J6SCKW7zcU9kJ7gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxPPz8Vm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D82EC4CEFE;
+	Mon, 13 Oct 2025 14:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367055;
-	bh=BYc745sVAG9KQd81OmPOtIXDnA0TDdmhHnfzEnb44Oo=;
+	s=korg; t=1760367578;
+	bh=XnuOr/RmAVBt5WijjpKFXlDIGoFNH89zU85Qo13jdRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8NU50+Zx+8vAloZNxrt9TBoCmIqQDZ263xlPG4shoIfvSTYTlV1j6FKMbS5plNZ4
-	 UJb5ccK1sPtjXkkRMGWo0FHVdaQr7T5JIkqwcPCBojO09pM31tQ0myz1fxg6xc3vD0
-	 Atx9Ue++l9CWhdGfP+9JGdeucl+ki+bDuYJlcimg=
+	b=KxPPz8Vm6UDPhCtTB1UTooHBQX2YwkGgX+P3njzTT3w0+YjG4HQEfrVYAUYh5+nJ7
+	 1rsTjfGqKiyUujhmTaDIzWRg+zTfwSIdFVKr2JmVyJclzQaoafhrlSNpBWL7KY+fkv
+	 lvCHYz6ObkyasXjUIFM6zvU1VsBIpTUg0hy7a0rI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Kohei Ito <ito.kohei@socionext.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/196] pwm: tiehrpwm: Fix corner case in clock divisor calculation
-Date: Mon, 13 Oct 2025 16:44:09 +0200
-Message-ID: <20251013144317.326008566@linuxfoundation.org>
+Subject: [PATCH 6.6 059/196] i2c: designware: Fix clock issue when PM is disabled
+Date: Mon, 13 Oct 2025 16:44:10 +0200
+Message-ID: <20251013144317.331323260@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit 00f83f0e07e44e2f1fb94b223e77ab7b18ee2d7d ]
+[ Upstream commit 70e633bedeeb4a7290d3b1dd9d49cc2bae25a46f ]
 
-The function set_prescale_div() is responsible for calculating the clock
-divisor settings such that the input clock rate is divided down such that
-the required period length is at most 0x10000 clock ticks. If period_cycles
-is an integer multiple of 0x10000, the divisor period_cycles / 0x10000 is
-good enough. So round up in the calculation of the required divisor and
-compare it using >= instead of >.
+When the driver is removed, the clocks are first enabled by
+calling pm_runtime_get_sync(), and then disabled with
+pm_runtime_put_sync().
 
-Fixes: 19891b20e7c2 ("pwm: pwm-tiehrpwm: PWM driver support for EHRPWM")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/85488616d7bfcd9c32717651d0be7e330e761b9c.1754927682.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+If CONFIG_PM=y, clocks for this controller are disabled when it's in
+the idle state. So the clocks are properly disabled when the driver
+exits.
+
+Othewise, the clocks are always enabled and the PM functions have
+no effect. Therefore, the driver exits without disabling the clocks.
+
+    # cat /sys/kernel/debug/clk/clk-pclk/clk_enable_count
+    18
+    # echo 1214a000.i2c > /sys/bus/platform/drivers/i2c_designware/bind
+    # cat /sys/kernel/debug/clk/clk-pclk/clk_enable_count
+    20
+    # echo 1214a000.i2c > /sys/bus/platform/drivers/i2c_designware/unbind
+    # cat /sys/kernel/debug/clk/clk-pclk/clk_enable_count
+    20
+
+To ensure that the clocks can be disabled correctly even without
+CONFIG_PM=y, should add the following fixes:
+
+- Replace with pm_runtime_put_noidle(), which only decrements the runtime
+  PM usage count.
+- Call i2c_dw_prepare_clk(false) to explicitly disable the clocks.
+
+Fixes: 7272194ed391f ("i2c-designware: add minimal support for runtime PM")
+Co-developed-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-tiehrpwm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-designware-platdrv.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-tiehrpwm.c b/drivers/pwm/pwm-tiehrpwm.c
-index 48ca0ff690ae2..6b3248be2bf10 100644
---- a/drivers/pwm/pwm-tiehrpwm.c
-+++ b/drivers/pwm/pwm-tiehrpwm.c
-@@ -167,7 +167,7 @@ static int set_prescale_div(unsigned long rqst_prescaler, u16 *prescale_div,
+diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
+index 1ebcf5673a06b..ca6e1991ad13f 100644
+--- a/drivers/i2c/busses/i2c-designware-platdrv.c
++++ b/drivers/i2c/busses/i2c-designware-platdrv.c
+@@ -411,9 +411,11 @@ static void dw_i2c_plat_remove(struct platform_device *pdev)
+ 	i2c_dw_disable(dev);
  
- 			*prescale_div = (1 << clkdiv) *
- 					(hspclkdiv ? (hspclkdiv * 2) : 1);
--			if (*prescale_div > rqst_prescaler) {
-+			if (*prescale_div >= rqst_prescaler) {
- 				*tb_clk_div = (clkdiv << TBCTL_CLKDIV_SHIFT) |
- 					(hspclkdiv << TBCTL_HSPCLKDIV_SHIFT);
- 				return 0;
-@@ -266,7 +266,7 @@ static int ehrpwm_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	pc->period_cycles[pwm->hwpwm] = period_cycles;
+ 	pm_runtime_dont_use_autosuspend(device);
+-	pm_runtime_put_sync(device);
++	pm_runtime_put_noidle(device);
+ 	dw_i2c_plat_pm_cleanup(dev);
  
- 	/* Configure clock prescaler to support Low frequency PWM wave */
--	if (set_prescale_div(period_cycles/PERIOD_MAX, &ps_divval,
-+	if (set_prescale_div(DIV_ROUND_UP(period_cycles, PERIOD_MAX), &ps_divval,
- 			     &tb_divval)) {
- 		dev_err(chip->dev, "Unsupported values\n");
- 		return -EINVAL;
++	i2c_dw_prepare_clk(dev, false);
++
+ 	i2c_dw_remove_lock_support(dev);
+ 
+ 	reset_control_assert(dev->rst);
 -- 
 2.51.0
 
