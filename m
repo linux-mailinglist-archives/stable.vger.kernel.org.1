@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-185123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C448DBD4FDB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:25:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F59BD52A5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0848D4854F7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 577AB547471
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42F82EC574;
-	Mon, 13 Oct 2025 15:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C30E309DCD;
+	Mon, 13 Oct 2025 15:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xtk5Uz71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5CsVdhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFB8286890;
-	Mon, 13 Oct 2025 15:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD9A17A2EC;
+	Mon, 13 Oct 2025 15:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369399; cv=none; b=Q2jzBQtk5hzXhQcKcXwc0kC3vS+GkgqfjWMQy28DrPPLsxTIOVG5cgfd+le2Onji7cC1X0Z3tOBMpnONoQhVH1srUOQRIY2z0asGx70P9G6/GBkYeGKhrw+Xk9Ia+IP9GcEOmTqVJdvYE/9FlIEIvtOlOR8xcdDjo5h1SMG74PM=
+	t=1760369422; cv=none; b=t7XeZW5H9+V968JLK7e4EPTqsA8+ajR3SF0QuyX+Eq2RvZKG+iufL+U1vN7Pgi9X/FXLUFsKLqSe1mqMBA6FS5lIwGISQCMWiXoFN3f8W2estktuNtXdS8SQy3ZdZxaL1ItSp8idAQPO2N8YJoJdKYB68CtjWsuqQsWR6lAyvvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369399; c=relaxed/simple;
-	bh=YZkBU7qvkhA9pnBbQC5zBdLiFiWYAtmYFjFjcM7m1po=;
+	s=arc-20240116; t=1760369422; c=relaxed/simple;
+	bh=t9HuVU1QIqGWlyNzrWCGlK3ZKS2uf3bRkQS/L5H0BaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3o15iYl1Y8C7JTyjn4e25WCG98sv+LBIPQw23Be/38mpXuDO9JDGv7CWhDV7Gty/TO4KxAEyKbqlN5/Mhv9hh34YWx6igwWntKVWeDIuC/BJhOgkDwVpbyV/2G+BMLjzKy9m1KHEU3Z71T4odqiMPsWkUo/Hcn4Zs5XGYuBQoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xtk5Uz71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E423AC4CEE7;
-	Mon, 13 Oct 2025 15:29:58 +0000 (UTC)
+	 MIME-Version; b=N3fn8edSUKG5fpzFOBY7J+bJ8n266uQXIkMx9pdHRvq+vbVaiYE0O4wmICD7c++xsuroocXJIXs7BlCGsf6bDV9cMnufnYfQEnEYtIGqjxcpO7HQFHpiWoNc+6rGFRGFneUrFJF7QTSxfV62kgQHqqhFZFLXRXatTzFT9t0IJfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5CsVdhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74300C4CEE7;
+	Mon, 13 Oct 2025 15:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369399;
-	bh=YZkBU7qvkhA9pnBbQC5zBdLiFiWYAtmYFjFjcM7m1po=;
+	s=korg; t=1760369421;
+	bh=t9HuVU1QIqGWlyNzrWCGlK3ZKS2uf3bRkQS/L5H0BaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xtk5Uz71u1nDtoCN+6yAQGW1qu3zNnDERYd9Trzsd86ljRMyxedUf7M1AMZt53u+D
-	 pM2RMdK9SReG4hzOJjM0og3jtRmMTa2yIWr3rGetXqwPYnjMw5gUxBEN4D7flLyqpf
-	 MWjzsatlCa0uK5Qht2rpnx5oZBJtyG+IXSqsXBNU=
+	b=R5CsVdhuRmmnmI1tEWcoBsgEuICEm5OSR7OO9OtAZsL30Kyvk49dFKKFeQOEM0X9M
+	 GwK5ZJpZFQv4O4Itk33F5+/5AIvbiswJ48Br4AzaYvZNHKhTXkVEXimApDHIOKUHgp
+	 pGIsdSdwsW+8M1isVXCskzAOPMfob53hCRVs/AOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 231/563] media: zoran: Remove zoran_fh structure
-Date: Mon, 13 Oct 2025 16:41:32 +0200
-Message-ID: <20251013144419.649255980@linuxfoundation.org>
+Subject: [PATCH 6.17 233/563] drm/bridge: cdns-dsi: Fix the _atomic_check()
+Date: Mon, 13 Oct 2025 16:41:34 +0200
+Message-ID: <20251013144419.720989474@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,61 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+From: Aradhya Bhatia <aradhya.bhatia@linux.dev>
 
-[ Upstream commit dc322d13cf417552b59e313e809a6da40b8b36ef ]
+[ Upstream commit 04864af849d9ae0dd020798f5b3632d9cf26fa03 ]
 
-The zoran_fh structure is a wrapper around v4l2_fh. Its usage has been
-mostly removed by commit 83f89a8bcbc3 ("media: zoran: convert to vb2"),
-but the structure stayed by mistake. It is now used in a single
-location, assigned from a void pointer and then recast to a void
-pointer, without being every accessed. Drop it.
+Use the "adjusted_mode" for the dsi configuration check, as that is the
+more appropriate display_mode for validation, and later bridge enable.
 
-Fixes: 83f89a8bcbc3 ("media: zoran: convert to vb2")
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Also, fix the mode_valid_check parameter from false to true, as the dsi
+configuration check is taking place during the check-phase, and the
+crtc_* mode values are not expected to be populated yet.
+
+Fixes: a53d987756ea ("drm/bridge: cdns-dsi: Move DSI mode check to _atomic_check()")
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-1-e61cc06074c2@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/zoran/zoran.h        | 6 ------
- drivers/media/pci/zoran/zoran_driver.c | 3 +--
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/zoran/zoran.h b/drivers/media/pci/zoran/zoran.h
-index 1cd990468d3de..d05e222b39215 100644
---- a/drivers/media/pci/zoran/zoran.h
-+++ b/drivers/media/pci/zoran/zoran.h
-@@ -154,12 +154,6 @@ struct zoran_jpg_settings {
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+index a57ca8c3bdaea..695b6246b280f 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -997,10 +997,10 @@ static int cdns_dsi_bridge_atomic_check(struct drm_bridge *bridge,
+ 	struct cdns_dsi_input *input = bridge_to_cdns_dsi_input(bridge);
+ 	struct cdns_dsi *dsi = input_to_dsi(input);
+ 	struct cdns_dsi_bridge_state *dsi_state = to_cdns_dsi_bridge_state(bridge_state);
+-	const struct drm_display_mode *mode = &crtc_state->mode;
++	const struct drm_display_mode *adjusted_mode = &crtc_state->adjusted_mode;
+ 	struct cdns_dsi_cfg *dsi_cfg = &dsi_state->dsi_cfg;
  
- struct zoran;
+-	return cdns_dsi_check_conf(dsi, mode, dsi_cfg, false);
++	return cdns_dsi_check_conf(dsi, adjusted_mode, dsi_cfg, true);
+ }
  
--/* zoran_fh contains per-open() settings */
--struct zoran_fh {
--	struct v4l2_fh fh;
--	struct zoran *zr;
--};
--
- struct card_info {
- 	enum card_type type;
- 	char name[32];
-diff --git a/drivers/media/pci/zoran/zoran_driver.c b/drivers/media/pci/zoran/zoran_driver.c
-index f42f596d3e629..ec7fc1da4cc02 100644
---- a/drivers/media/pci/zoran/zoran_driver.c
-+++ b/drivers/media/pci/zoran/zoran_driver.c
-@@ -511,12 +511,11 @@ static int zoran_s_fmt_vid_cap(struct file *file, void *__fh,
- 			       struct v4l2_format *fmt)
- {
- 	struct zoran *zr = video_drvdata(file);
--	struct zoran_fh *fh = __fh;
- 	int i;
- 	int res = 0;
- 
- 	if (fmt->fmt.pix.pixelformat == V4L2_PIX_FMT_MJPEG)
--		return zoran_s_fmt_vid_out(file, fh, fmt);
-+		return zoran_s_fmt_vid_out(file, __fh, fmt);
- 
- 	for (i = 0; i < NUM_FORMATS; i++)
- 		if (fmt->fmt.pix.pixelformat == zoran_formats[i].fourcc)
+ static struct drm_bridge_state *
 -- 
 2.51.0
 
