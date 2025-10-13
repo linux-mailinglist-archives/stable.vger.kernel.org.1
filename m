@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEC9BD545B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9548BD4E2E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C51654248C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9D0BD545CE1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC8F3112BE;
-	Mon, 13 Oct 2025 15:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47FF322A;
+	Mon, 13 Oct 2025 15:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lL+UasWr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzCJu8Y3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE83530C614;
-	Mon, 13 Oct 2025 15:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6184E274669;
+	Mon, 13 Oct 2025 15:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369810; cv=none; b=uQL4cq70rGYTWDLl6hUI5BtR+06WXdqOmO0/XxPPWfebK0/Opm3YF/vOb7fLvv4yx/wuLwS9dWG1vdxCrTLr0eTDB4vuTuZQck0kUiAdr31d+m9vxBsg+Mtyp2KHu9MPqOOqxUn5kO7GW1UyTztEO2UzE+OYLtam1D9W2RLyevQ=
+	t=1760369819; cv=none; b=HvxrOceCZfcwPpXwH2hE0mH2/GjBBAaYaH1p9VPTguKPULxTDlc4nVWZo1J4P9oE5n3KtwMmkCH7RD20cDNgjX0UTD5X3iJBLJ59rmkWFcvcoMDZ9moUafYz1Tj0jBuWobcdQxVLbPCQNibXvZ9sx5p8mMnQQzhkgzX070l1hXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369810; c=relaxed/simple;
-	bh=241kqRbkJsTjz0tqmrgNVgTHOd1xXZn953hMDZp/dwI=;
+	s=arc-20240116; t=1760369819; c=relaxed/simple;
+	bh=5teCdA5xFef1wOWUkl+8i6B8a/Lx1fVGFO1hMO495g8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=meYzomCCg0G9RSS8barkU4NAXn4mrK57H4sJWx1hO9xOX28676DDmRtBemA8JM2FMTzh/1VbjYahDT00KADBsMrgoq4/MC+2eVe79gHOC1NkZlzJXUqWqFxd0er0fhzLNt14487WDE9xgMmEwSKMNJ4IEsRPkNH/yisYuoYxDV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lL+UasWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1883EC4CEE7;
-	Mon, 13 Oct 2025 15:36:49 +0000 (UTC)
+	 MIME-Version; b=QYeYuMUCPBKV1TM0Ie8iAp/gfj2D+uUTQjyqxr9FgbesCX4YSspQwCSHQqFlu0FbxpHXGNsMZCPv/te3V0UN8lN7dMjMz+84DSrzfzPlGDb9VlzuQofNt5ApaMsoUiTExv07i3F217B3oyPmN3y4d8PBfV5IjbkiS3xmk89FmIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzCJu8Y3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9457DC4CEE7;
+	Mon, 13 Oct 2025 15:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369810;
-	bh=241kqRbkJsTjz0tqmrgNVgTHOd1xXZn953hMDZp/dwI=;
+	s=korg; t=1760369819;
+	bh=5teCdA5xFef1wOWUkl+8i6B8a/Lx1fVGFO1hMO495g8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lL+UasWrB9sVL1aUoFyUM6b59IXWNu3qaWbGaJJhd47YttHtX1R2Qjwho2X5Wo5Mi
-	 6kx9H2eUsmhqAsnkN2OFcGKODrujTh1RjCK82Bbu1PVXEz81PHhOo5Krb87+5Hj2BW
-	 PHm4eKwLfKcUF3ec+ZiecK9j5+uQ2dXHkd98lHys=
+	b=IzCJu8Y3atTAjsSGF6wcOu0k7wZPUkWwemE9iDHMB7SeSkMvywhfrUy5lP5ikgtra
+	 AG5zrywyQWF/rZ/0Zmu3DYhtMu7UtUlK2xsPc3wBXysTX5REOkUDZEsBePb5usYTFw
+	 KzWz+ovZAwKJl37V/q2g0Bpwn/wLJhy+ERJnCTQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Srouji <edwards@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 344/563] RDMA/mlx5: Fix page size bitmap calculation for KSM mode
-Date: Mon, 13 Oct 2025 16:43:25 +0200
-Message-ID: <20251013144423.732584269@linuxfoundation.org>
+Subject: [PATCH 6.17 347/563] HID: steelseries: Fix STEELSERIES_SRWS1 handling in steelseries_remove()
+Date: Mon, 13 Oct 2025 16:43:28 +0200
+Message-ID: <20251013144423.840646292@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,44 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Edward Srouji <edwards@nvidia.com>
+From: Jiri Kosina <jkosina@suse.com>
 
-[ Upstream commit 372fdb5c75b61f038f4abf596abdcf01acbdb7af ]
+[ Upstream commit 2910913ef87dd9b9ce39e844c7295e1896b3b039 ]
 
-When using KSM (Key Scatter-gather Memory) access mode, the HW requires
-the IOVA to be aligned to the selected page size.
-Without this alignment, the HW may not function correctly.
+srws1_remove label can be only reached only if LEDS subsystem is enabled. To
+avoid putting horryfing ifdef second time around the label, just perform
+the cleanup and exit immediately directly.
 
-Currently, mlx5_umem_mkc_find_best_pgsz() does not filter out page sizes
-that would result in misaligned IOVAs for KSM mode. This can lead to
-selecting page sizes that are incompatible with the given IOVA.
-
-Fix this by filtering the page size bitmap when in KSM mode, keeping
-only page sizes to which the IOVA is aligned to.
-
-Fixes: fcfb03597b7d ("RDMA/mlx5: Align mkc page size capability check to PRM")
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/20250824144839.154717-1-edwards@nvidia.com
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: a84eeacbf9325 ("HID: steelseries: refactor probe() and remove()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202509090334.76D4qGtW-lkp@intel.com/
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mlx5_ib.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-steelseries.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 8d21ecf8a996f..15e3962633dc3 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -1803,6 +1803,10 @@ mlx5_umem_mkc_find_best_pgsz(struct mlx5_ib_dev *dev, struct ib_umem *umem,
+diff --git a/drivers/hid/hid-steelseries.c b/drivers/hid/hid-steelseries.c
+index 8af98d67959e0..f98435631aa18 100644
+--- a/drivers/hid/hid-steelseries.c
++++ b/drivers/hid/hid-steelseries.c
+@@ -582,7 +582,7 @@ static void steelseries_remove(struct hid_device *hdev)
+ 	if (hdev->product == USB_DEVICE_ID_STEELSERIES_SRWS1) {
+ #if IS_BUILTIN(CONFIG_LEDS_CLASS) || \
+     (IS_MODULE(CONFIG_LEDS_CLASS) && IS_MODULE(CONFIG_HID_STEELSERIES))
+-		goto srws1_remove;
++		hid_hw_stop(hdev);
+ #endif
+ 		return;
+ 	}
+@@ -596,7 +596,6 @@ static void steelseries_remove(struct hid_device *hdev)
+ 	cancel_delayed_work_sync(&sd->battery_work);
  
- 	bitmap = GENMASK_ULL(max_log_entity_size_cap, min_log_entity_size_cap);
- 
-+	/* In KSM mode HW requires IOVA and mkey's page size to be aligned */
-+	if (access_mode == MLX5_MKC_ACCESS_MODE_KSM && iova)
-+		bitmap &= GENMASK_ULL(__ffs64(iova), 0);
-+
- 	return ib_umem_find_best_pgsz(umem, bitmap, iova);
+ 	hid_hw_close(hdev);
+-srws1_remove:
+ 	hid_hw_stop(hdev);
  }
  
 -- 
