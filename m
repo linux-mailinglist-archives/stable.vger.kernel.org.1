@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-184449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6C8BD3FE2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C5DBD3DC2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E7E11884008
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0D0664F43B2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD8630E0EF;
-	Mon, 13 Oct 2025 14:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C1C308F0E;
+	Mon, 13 Oct 2025 14:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AidcNs2k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPDUh4Y/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A516A3081AA;
-	Mon, 13 Oct 2025 14:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B8E3081DC;
+	Mon, 13 Oct 2025 14:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367468; cv=none; b=onGAecIZcv8YhyKI/19pdfCwhFfsnv8+3A/VO3R8H0RN7L4VqouFog/QyTtKRiZ++JGZLUvvTJnFM5GOyjCyhq1JF2BpBfmroYT+U31CtH5hWGzKcVMVmAtWpy1cMJ6Y9jTqhwB8t59qX4htmWtN2USIMeGWxN/R16XFmflw9fY=
+	t=1760366952; cv=none; b=HBcesY0iIG7CBlWxjfjO7B+wAlFbKQ+ncl6iBBMDEjc/EHC+5GLe4wXUfM0NfUp76XjOQLFHXCCzlieX1zE2MZNeCLC5niiazS5QU/qnamcHcoBd1dreK1WBqzZYt0Np3S5ptxtRcQsoylqaVHb3Qac5hiyN6mHNLMhb2bFh2qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367468; c=relaxed/simple;
-	bh=NG+kSPl+tKoxbbWbKWDSdmtxFouarvH8wJ0z4odU+p4=;
+	s=arc-20240116; t=1760366952; c=relaxed/simple;
+	bh=zHp5lVvsu1ckZ2dDqtCy7V3lmPCovNyX9ES3HyRzpew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/6Z8uw9YMls8GqqZ0+85Gqdvba8xRrMpsN8bgjKD2thxRDeYnb+KE/EruYD4TkYdsQqtAmGf0z8518226b7Zt+IWSD/X4bncslARyHOp1KO6QRu5/h9bEiSRApyqSVl137LjPoGVqz203nyKhIBTVNCePXSyugs1D/q4oA6GxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AidcNs2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E5CC113D0;
-	Mon, 13 Oct 2025 14:57:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N4zUnk8H9AsgePnf9R1uQ+SVYVHROHQNrEW32S/dOJiy/v985D/x5PGdKWYBfbouHFQSN/kWyVeoERXuo8to4vulZPQz7vlQWSR4RGW3taispcnCZCjaXIqmXURSCZJAiE3tbO2mIwp3HcAPvLQSWr0+AFMs73iBMmXLh7b7eEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPDUh4Y/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C64C4CEE7;
+	Mon, 13 Oct 2025 14:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367468;
-	bh=NG+kSPl+tKoxbbWbKWDSdmtxFouarvH8wJ0z4odU+p4=;
+	s=korg; t=1760366952;
+	bh=zHp5lVvsu1ckZ2dDqtCy7V3lmPCovNyX9ES3HyRzpew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AidcNs2kxsEp4Tgzvy1tlZi9vD8L2MTm49k7C4Vym01L6VY7GLsruCCbT+c6Vm1iC
-	 t2l3eQaO0Mdmc3tc30UjgWiz57nWSGWk71J6T0H5M3mRkU049LKYAmzcoMueCAMSRO
-	 VqehKOApOJw3/Y+W8PLjFTVw6aCwq652tBS0pjDA=
+	b=UPDUh4Y/OyJZN70fiu//eVMXjEcit/Ba2HHdiUhh8B+h/rW222ulToOqNkhRtMz7T
+	 neBXWdu2ir+Nfqn1xBS+7mxLA5C1fAYX+yAryOz79q3xPhLZbcCvg3r/SetxLApaXB
+	 3W6S93nxmCueqG4dLgD1pR7GseGhgtPlE/SlOqdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/196] soc: qcom: rpmh-rsc: Unconditionally clear _TRIGGER bit for TCS
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 6.1 040/196] staging: axis-fifo: fix maximum TX packet length check
 Date: Mon, 13 Oct 2025 16:43:33 +0200
-Message-ID: <20251013144315.999370723@linuxfoundation.org>
+Message-ID: <20251013144316.036319895@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +58,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit f87412d18edb5b8393eb8cb1c2d4a54f90185a21 ]
+commit 52ff2b840bc723f3be1f096f8017c78e0515858c upstream.
 
-Unconditionally clear the TCS_AMC_MODE_TRIGGER bit when a
-transaction completes. Previously this bit was only cleared when
-a wake TCS was borrowed as an AMC TCS but not for dedicated
-AMC TCS. Leaving this bit set for AMC TCS and entering deeper low
-power modes can generate a false completion IRQ.
+Since commit 2ca34b508774 ("staging: axis-fifo: Correct handling of
+tx_fifo_depth for size validation"), write() operations with packets
+larger than 'tx_fifo_depth - 4' words are no longer rejected with -EINVAL.
 
-Prevent this scenario by always clearing the TCS_AMC_MODE_TRIGGER
-bit upon receiving a completion IRQ.
+Fortunately, the packets are not actually getting transmitted to hardware,
+otherwise they would be raising a 'Transmit Packet Overrun Error'
+interrupt, which requires a reset of the TX circuit to recover from.
 
-Fixes: 15b3bf61b8d4 ("soc: qcom: rpmh-rsc: Clear active mode configuration for wake TCS")
-Signed-off-by: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250825-rpmh_rsc_change-v1-1-138202c31bf6@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead, the request times out inside wait_event_interruptible_timeout()
+and always returns -EAGAIN, since the wake up condition can never be true
+for these packets. But still, they unnecessarily block other tasks from
+writing to the FIFO and the EAGAIN return code signals userspace to retry
+the write() call, even though it will always fail and time out.
+
+According to the AXI4-Stream FIFO reference manual (PG080), the maximum
+valid packet length is 'tx_fifo_depth - 4' words, so attempting to send
+larger packets is invalid and should not be happening in the first place:
+
+> The maximum packet that can be transmitted is limited by the size of
+> the FIFO, which is (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
+
+Therefore, bring back the old behavior and outright reject packets larger
+than 'tx_fifo_depth - 4' with -EINVAL. Add a comment to explain why the
+check is necessary. The dev_err() message was removed to avoid cluttering
+the dmesg log if an invalid packet is received from userspace.
+
+Fixes: 2ca34b508774 ("staging: axis-fifo: Correct handling of tx_fifo_depth for size validation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250817171350.872105-1-ovidiu.panait.oss@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/rpmh-rsc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/staging/axis-fifo/axis-fifo.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
-index 163a58eb02e0a..d0ec42ec0d041 100644
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -453,13 +453,10 @@ static irqreturn_t tcs_tx_done(int irq, void *p)
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -493,11 +493,17 @@ static ssize_t axis_fifo_write(struct fi
+ 		return -EINVAL;
+ 	}
  
- 		trace_rpmh_tx_done(drv, i, req);
+-	if (words_to_write > fifo->tx_fifo_depth) {
+-		dev_err(fifo->dt_device, "tried to write more words [%u] than slots in the fifo buffer [%u]\n",
+-			words_to_write, fifo->tx_fifo_depth);
++	/*
++	 * In 'Store-and-Forward' mode, the maximum packet that can be
++	 * transmitted is limited by the size of the FIFO, which is
++	 * (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
++	 *
++	 * Do not attempt to send a packet larger than 'tx_fifo_depth - 4',
++	 * otherwise a 'Transmit Packet Overrun Error' interrupt will be
++	 * raised, which requires a reset of the TX circuit to recover.
++	 */
++	if (words_to_write > (fifo->tx_fifo_depth - 4))
+ 		return -EINVAL;
+-	}
  
--		/*
--		 * If wake tcs was re-purposed for sending active
--		 * votes, clear AMC trigger & enable modes and
-+		/* Clear AMC trigger & enable modes and
- 		 * disable interrupt for this TCS
- 		 */
--		if (!drv->tcs[ACTIVE_TCS].num_tcs)
--			__tcs_set_trigger(drv, i, false);
-+		__tcs_set_trigger(drv, i, false);
- skip:
- 		/* Reclaim the TCS */
- 		write_tcs_reg(drv, drv->regs[RSC_DRV_CMD_ENABLE], i, 0);
--- 
-2.51.0
-
+ 	if (fifo->write_flags & O_NONBLOCK) {
+ 		/*
 
 
 
