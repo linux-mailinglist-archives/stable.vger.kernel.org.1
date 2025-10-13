@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-185205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB05BBD48E3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 261ECBD4270
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31F3A1886F19
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:52:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DCA9188B857
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8850A30C347;
-	Mon, 13 Oct 2025 15:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF303115BE;
+	Mon, 13 Oct 2025 15:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7fx4Qf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zafesFda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4312A279DC9;
-	Mon, 13 Oct 2025 15:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4882D3093C9;
+	Mon, 13 Oct 2025 15:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369631; cv=none; b=XICFP1N692gZ9Eqibi5ehz4jU0Rfv2g1vULm/YRh92iN1I8HCJEeSDdSRXz3NDISZvJ243ft+QnmWyszUcjgnYveERrAfYKMa6l+BF+Z2IFV562qz4QUwswAz7OxhcmaEm16ssYhlaC7i8DTzdLhXYWYE4mmNGhZsxVhd+8IP1Q=
+	t=1760368150; cv=none; b=V4NiMyg63y59mbf1wTTTNjSoAILyr/e89z+noGZGGvQK1HNwcory8aN3tTmqIQ+v23dzaSjbhUPRRTxlBn0QFD51axF8cWQA8z+Af970Y7WbUyvFkv0Ktr5uELGKKMdpGAItVCXYy7MafBIcRukSv6E3fXggCvk4NDOBJzm4sBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369631; c=relaxed/simple;
-	bh=bGE3GGZaPgveyj7IYW+iVsrp4w5FL8wm+F3biMWsZLY=;
+	s=arc-20240116; t=1760368150; c=relaxed/simple;
+	bh=NtA3/qUiiiW3/uyIBGENbGS/UGfwire103ZVDwNF4xU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QK0ejca66gjgzOPkB+hx1mIQgyUQJLo6qt8W4MZan68F3GfSu2LHSW5Hc3yex4BFun+hgtBDfsiId+mj6S3R0P09KDzI/+CZ79Ze8adEL3Mj6JE4YhL/CNcNJzQ+eeRQeBPU6MG82SwJEsVd6dzGvSY9PlHx5MqnP80ol1CRfAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7fx4Qf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF75C4CEE7;
-	Mon, 13 Oct 2025 15:33:50 +0000 (UTC)
+	 MIME-Version; b=gW+kPy1Sw2HMXhWPhvsFMuiT3hexg7XID3OHZ/NGRQ2iwc9PN+eJ7fmz9NCxi2WUkJt3ciOQnLQPrH96B4Gzm8460GxJejq28e8cJ+Xw2GyVyG71SQyqpDjpO3N58paTwGnRBfOaZWgRbj1DLLxngmB7OwDHV0qE66G7CPIwDtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zafesFda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB96C4CEE7;
+	Mon, 13 Oct 2025 15:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369631;
-	bh=bGE3GGZaPgveyj7IYW+iVsrp4w5FL8wm+F3biMWsZLY=;
+	s=korg; t=1760368150;
+	bh=NtA3/qUiiiW3/uyIBGENbGS/UGfwire103ZVDwNF4xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7fx4Qf+I2DfhCBHBRWmOfEeTDBrRZRfLVCbPu8n55HiPaqk4RiKm/1PvXZ4aG5FZ
-	 hH6PrOhQln39NhTSrYZvSJ2Xhk8fuBzp3KDYXBihBak7q84DtUbLFwLe8QXCSw9OCI
-	 VC7v2enempLAhu3RO5+iKady8UvB2R6TjsVmcK5Q=
+	b=zafesFdaY5UDtFaS6Iogc3WE8ykTixHg9ho/V9xcO+NDAQt+DqFVCJ9wYGa3YzMO/
+	 d0yjO+MTmYWkWzM1cue4tmHlEYNmsWQzGHsLfM57Xm0M4+Cp9p6q6bGgxu3WzxpmY3
+	 vdAH588sVJkYqSuQ6ybWhAQJ8mbs3s+C/WSLrAXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Yu <qiang.yu@oss.qualcomm.com>,
-	Ziyue Zhang <ziyue.zhang@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 315/563] PCI: qcom: Add equalization settings for 8.0 GT/s and 32.0 GT/s
+Subject: [PATCH 6.12 034/262] blk-mq: check kobject state_in_sysfs before deleting in blk_mq_unregister_hctx
 Date: Mon, 13 Oct 2025 16:42:56 +0200
-Message-ID: <20251013144422.676821006@linuxfoundation.org>
+Message-ID: <20251013144327.361243078@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,185 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyue Zhang <ziyue.zhang@oss.qualcomm.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 37bf0f4e39de9b53bc6f8d3702b021e2c6b5bae3 ]
+[ Upstream commit 4c7ef92f6d4d08a27d676e4c348f4e2922cab3ed ]
 
-Add lane equalization setting for 8.0 GT/s and 32.0 GT/s to enhance link
-stability and avoid AER Correctable Errors reported on some platforms
-(eg. SA8775P).
+In __blk_mq_update_nr_hw_queues() the return value of
+blk_mq_sysfs_register_hctxs() is not checked. If sysfs creation for hctx
+fails, later changing the number of hw_queues or removing disk will
+trigger the following warning:
 
-8.0 GT/s, 16.0 GT/s and 32.0 GT/s require the same equalization setting.
-This setting is programmed into a group of shadow registers, which can be
-switched to configure equalization for different speeds by writing 00b,
-01b and 10b to `RATE_SHADOW_SEL`.
+  kernfs: can not remove 'nr_tags', no directory
+  WARNING: CPU: 2 PID: 637 at fs/kernfs/dir.c:1707 kernfs_remove_by_name_ns+0x13f/0x160
+  Call Trace:
+   remove_files.isra.1+0x38/0xb0
+   sysfs_remove_group+0x4d/0x100
+   sysfs_remove_groups+0x31/0x60
+   __kobject_del+0x23/0xf0
+   kobject_del+0x17/0x40
+   blk_mq_unregister_hctx+0x5d/0x80
+   blk_mq_sysfs_unregister_hctxs+0x94/0xd0
+   blk_mq_update_nr_hw_queues+0x124/0x760
+   nullb_update_nr_hw_queues+0x71/0xf0 [null_blk]
+   nullb_device_submit_queues_store+0x92/0x120 [null_blk]
 
-Hence, program equalization registers in a loop using link speed as index,
-so that equalization setting can be programmed for 8.0 GT/s, 16.0 GT/s
-and 32.0 GT/s.
+kobjct_del() was called unconditionally even if sysfs creation failed.
+Fix it by checkig the kobject creation statusbefore deleting it.
 
-Fixes: 489f14be0e0a ("arm64: dts: qcom: sa8775p: Add pcie0 and pcie1 nodes")
-Co-developed-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
-Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
-Signed-off-by: Ziyue Zhang <ziyue.zhang@oss.qualcomm.com>
-[mani: wrapped the warning to fit 100 columns, used post-increment for loop]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20250904065225.1762793-2-ziyue.zhang@oss.qualcomm.com
+Fixes: 477e19dedc9d ("blk-mq: adjust debugfs and sysfs register when updating nr_hw_queues")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250826084854.1030545-1-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware.h  |  1 -
- drivers/pci/controller/dwc/pcie-qcom-common.c | 58 +++++++++++--------
- drivers/pci/controller/dwc/pcie-qcom-common.h |  2 +-
- drivers/pci/controller/dwc/pcie-qcom-ep.c     |  6 +-
- drivers/pci/controller/dwc/pcie-qcom.c        |  6 +-
- 5 files changed, 41 insertions(+), 32 deletions(-)
+ block/blk-mq-sysfs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index 00f52d472dcdd..cc71a2d90cd48 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -123,7 +123,6 @@
- #define GEN3_RELATED_OFF_GEN3_EQ_DISABLE	BIT(16)
- #define GEN3_RELATED_OFF_RATE_SHADOW_SEL_SHIFT	24
- #define GEN3_RELATED_OFF_RATE_SHADOW_SEL_MASK	GENMASK(25, 24)
--#define GEN3_RELATED_OFF_RATE_SHADOW_SEL_16_0GT	0x1
+diff --git a/block/blk-mq-sysfs.c b/block/blk-mq-sysfs.c
+index 156e9bb07abf1..2fb234ab467b1 100644
+--- a/block/blk-mq-sysfs.c
++++ b/block/blk-mq-sysfs.c
+@@ -150,9 +150,11 @@ static void blk_mq_unregister_hctx(struct blk_mq_hw_ctx *hctx)
+ 		return;
  
- #define GEN3_EQ_CONTROL_OFF			0x8A8
- #define GEN3_EQ_CONTROL_OFF_FB_MODE		GENMASK(3, 0)
-diff --git a/drivers/pci/controller/dwc/pcie-qcom-common.c b/drivers/pci/controller/dwc/pcie-qcom-common.c
-index 3aad19b56da8f..0c6f4514f922f 100644
---- a/drivers/pci/controller/dwc/pcie-qcom-common.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom-common.c
-@@ -8,9 +8,11 @@
- #include "pcie-designware.h"
- #include "pcie-qcom-common.h"
+ 	hctx_for_each_ctx(hctx, ctx, i)
+-		kobject_del(&ctx->kobj);
++		if (ctx->kobj.state_in_sysfs)
++			kobject_del(&ctx->kobj);
  
--void qcom_pcie_common_set_16gt_equalization(struct dw_pcie *pci)
-+void qcom_pcie_common_set_equalization(struct dw_pcie *pci)
- {
-+	struct device *dev = pci->dev;
- 	u32 reg;
-+	u16 speed;
- 
- 	/*
- 	 * GEN3_RELATED_OFF register is repurposed to apply equalization
-@@ -19,32 +21,40 @@ void qcom_pcie_common_set_16gt_equalization(struct dw_pcie *pci)
- 	 * determines the data rate for which these equalization settings are
- 	 * applied.
- 	 */
--	reg = dw_pcie_readl_dbi(pci, GEN3_RELATED_OFF);
--	reg &= ~GEN3_RELATED_OFF_GEN3_ZRXDC_NONCOMPL;
--	reg &= ~GEN3_RELATED_OFF_RATE_SHADOW_SEL_MASK;
--	reg |= FIELD_PREP(GEN3_RELATED_OFF_RATE_SHADOW_SEL_MASK,
--			  GEN3_RELATED_OFF_RATE_SHADOW_SEL_16_0GT);
--	dw_pcie_writel_dbi(pci, GEN3_RELATED_OFF, reg);
- 
--	reg = dw_pcie_readl_dbi(pci, GEN3_EQ_FB_MODE_DIR_CHANGE_OFF);
--	reg &= ~(GEN3_EQ_FMDC_T_MIN_PHASE23 |
--		GEN3_EQ_FMDC_N_EVALS |
--		GEN3_EQ_FMDC_MAX_PRE_CUSROR_DELTA |
--		GEN3_EQ_FMDC_MAX_POST_CUSROR_DELTA);
--	reg |= FIELD_PREP(GEN3_EQ_FMDC_T_MIN_PHASE23, 0x1) |
--		FIELD_PREP(GEN3_EQ_FMDC_N_EVALS, 0xd) |
--		FIELD_PREP(GEN3_EQ_FMDC_MAX_PRE_CUSROR_DELTA, 0x5) |
--		FIELD_PREP(GEN3_EQ_FMDC_MAX_POST_CUSROR_DELTA, 0x5);
--	dw_pcie_writel_dbi(pci, GEN3_EQ_FB_MODE_DIR_CHANGE_OFF, reg);
-+	for (speed = PCIE_SPEED_8_0GT; speed <= pcie_link_speed[pci->max_link_speed]; speed++) {
-+		if (speed > PCIE_SPEED_32_0GT) {
-+			dev_warn(dev, "Skipped equalization settings for unsupported data rate\n");
-+			break;
-+		}
- 
--	reg = dw_pcie_readl_dbi(pci, GEN3_EQ_CONTROL_OFF);
--	reg &= ~(GEN3_EQ_CONTROL_OFF_FB_MODE |
--		GEN3_EQ_CONTROL_OFF_PHASE23_EXIT_MODE |
--		GEN3_EQ_CONTROL_OFF_FOM_INC_INITIAL_EVAL |
--		GEN3_EQ_CONTROL_OFF_PSET_REQ_VEC);
--	dw_pcie_writel_dbi(pci, GEN3_EQ_CONTROL_OFF, reg);
-+		reg = dw_pcie_readl_dbi(pci, GEN3_RELATED_OFF);
-+		reg &= ~GEN3_RELATED_OFF_GEN3_ZRXDC_NONCOMPL;
-+		reg &= ~GEN3_RELATED_OFF_RATE_SHADOW_SEL_MASK;
-+		reg |= FIELD_PREP(GEN3_RELATED_OFF_RATE_SHADOW_SEL_MASK,
-+			  speed - PCIE_SPEED_8_0GT);
-+		dw_pcie_writel_dbi(pci, GEN3_RELATED_OFF, reg);
-+
-+		reg = dw_pcie_readl_dbi(pci, GEN3_EQ_FB_MODE_DIR_CHANGE_OFF);
-+		reg &= ~(GEN3_EQ_FMDC_T_MIN_PHASE23 |
-+			GEN3_EQ_FMDC_N_EVALS |
-+			GEN3_EQ_FMDC_MAX_PRE_CUSROR_DELTA |
-+			GEN3_EQ_FMDC_MAX_POST_CUSROR_DELTA);
-+		reg |= FIELD_PREP(GEN3_EQ_FMDC_T_MIN_PHASE23, 0x1) |
-+			FIELD_PREP(GEN3_EQ_FMDC_N_EVALS, 0xd) |
-+			FIELD_PREP(GEN3_EQ_FMDC_MAX_PRE_CUSROR_DELTA, 0x5) |
-+			FIELD_PREP(GEN3_EQ_FMDC_MAX_POST_CUSROR_DELTA, 0x5);
-+		dw_pcie_writel_dbi(pci, GEN3_EQ_FB_MODE_DIR_CHANGE_OFF, reg);
-+
-+		reg = dw_pcie_readl_dbi(pci, GEN3_EQ_CONTROL_OFF);
-+		reg &= ~(GEN3_EQ_CONTROL_OFF_FB_MODE |
-+			GEN3_EQ_CONTROL_OFF_PHASE23_EXIT_MODE |
-+			GEN3_EQ_CONTROL_OFF_FOM_INC_INITIAL_EVAL |
-+			GEN3_EQ_CONTROL_OFF_PSET_REQ_VEC);
-+		dw_pcie_writel_dbi(pci, GEN3_EQ_CONTROL_OFF, reg);
-+	}
+-	kobject_del(&hctx->kobj);
++	if (hctx->kobj.state_in_sysfs)
++		kobject_del(&hctx->kobj);
  }
--EXPORT_SYMBOL_GPL(qcom_pcie_common_set_16gt_equalization);
-+EXPORT_SYMBOL_GPL(qcom_pcie_common_set_equalization);
  
- void qcom_pcie_common_set_16gt_lane_margining(struct dw_pcie *pci)
- {
-diff --git a/drivers/pci/controller/dwc/pcie-qcom-common.h b/drivers/pci/controller/dwc/pcie-qcom-common.h
-index 7d88d29e47661..7f5ca2fd9a72f 100644
---- a/drivers/pci/controller/dwc/pcie-qcom-common.h
-+++ b/drivers/pci/controller/dwc/pcie-qcom-common.h
-@@ -8,7 +8,7 @@
- 
- struct dw_pcie;
- 
--void qcom_pcie_common_set_16gt_equalization(struct dw_pcie *pci);
-+void qcom_pcie_common_set_equalization(struct dw_pcie *pci);
- void qcom_pcie_common_set_16gt_lane_margining(struct dw_pcie *pci);
- 
- #endif
-diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-index bf7c6ac0f3e39..aaf060bf39d40 100644
---- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-@@ -511,10 +511,10 @@ static int qcom_pcie_perst_deassert(struct dw_pcie *pci)
- 		goto err_disable_resources;
- 	}
- 
--	if (pcie_link_speed[pci->max_link_speed] == PCIE_SPEED_16_0GT) {
--		qcom_pcie_common_set_16gt_equalization(pci);
-+	qcom_pcie_common_set_equalization(pci);
-+
-+	if (pcie_link_speed[pci->max_link_speed] == PCIE_SPEED_16_0GT)
- 		qcom_pcie_common_set_16gt_lane_margining(pci);
--	}
- 
- 	/*
- 	 * The physical address of the MMIO region which is exposed as the BAR
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index fbed7130d7475..a93740ae602f2 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -322,10 +322,10 @@ static int qcom_pcie_start_link(struct dw_pcie *pci)
- {
- 	struct qcom_pcie *pcie = to_qcom_pcie(pci);
- 
--	if (pcie_link_speed[pci->max_link_speed] == PCIE_SPEED_16_0GT) {
--		qcom_pcie_common_set_16gt_equalization(pci);
-+	qcom_pcie_common_set_equalization(pci);
-+
-+	if (pcie_link_speed[pci->max_link_speed] == PCIE_SPEED_16_0GT)
- 		qcom_pcie_common_set_16gt_lane_margining(pci);
--	}
- 
- 	/* Enable Link Training state machine */
- 	if (pcie->cfg->ops->ltssm_enable)
+ static int blk_mq_register_hctx(struct blk_mq_hw_ctx *hctx)
 -- 
 2.51.0
 
