@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-184959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FC5BD49D6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:00 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B28BD4877
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3BB0750687B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E39A95448B1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EFF30F94C;
-	Mon, 13 Oct 2025 15:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05C730F956;
+	Mon, 13 Oct 2025 15:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IViqpjlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEMbuZwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADB030C37D;
-	Mon, 13 Oct 2025 15:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6738E2FB978;
+	Mon, 13 Oct 2025 15:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368930; cv=none; b=OFjKtwwy5E/Fll5L6e+Nq4GlxA4mJqYGjgjY8BUDP7667tPXdWJMksmrR0kySlc7aIbZvdUt+ktrsTF8PLtzlnLf0r5MyGsABpNlbFzoY3X9aWAIllfVZWeuHZMuIZC0fN5yc3aOIhq6gOvvvPqH7ritghVHXYofHEsaE2jj/Es=
+	t=1760368936; cv=none; b=SxBs1FlokS78rL+ohiroFjjXO60vlFnigkDeLbfLDlDqXCgYJveCwRtdkiEaS6AmgpBqx+mZyUqXPHRppw3ZTy4MKx72rFPgy66/nMivmlbKTOhFazn8ncvoqZWe8MCTX5LnduxmnTZOoDIxTIMYzegoyU31cF9XVxan90KlXKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368930; c=relaxed/simple;
-	bh=xr7vP+jSfK6pT9J/+yVYGZ0nrOrfHFnZ5PB9Egam4aA=;
+	s=arc-20240116; t=1760368936; c=relaxed/simple;
+	bh=lSo3+/Tl4u93n7hhFsdozMZfk6fFTE/wb9eUxZUC4cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qni3a0ZbNhSDIhBbeC+ucVpEgsTeK7r3S97A3OycXARRO9IeJf6vcrq8Fa6OodcFOiQ3OmjRhws+uBjiz6ZRkS6TDg72+3NgewZR04YoxAQAg7WphjAJCONBZ+6V5XPZDAM479PdD4E2CxPoQuHPjkgy8CADltq9NM0hESdZovo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IViqpjlb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D682BC4CEE7;
-	Mon, 13 Oct 2025 15:22:09 +0000 (UTC)
+	 MIME-Version; b=P5MBYYLuJJWQzV4m/rwYNADwtvlf6DqEFRiTlGQ+JHEwbR3ZXP8IqE8FeqiQ57dxKALXqUJ5GbyxWBq4OEGe6AlP2AcEs7BcV0tmXqCs/siifHLJVWQwDLu8WkKkGEADvdQ21TchBgy/ZlWCd5Yr+VT8GpltRaeKGdcTJSNuXQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEMbuZwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DFEC116B1;
+	Mon, 13 Oct 2025 15:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368930;
-	bh=xr7vP+jSfK6pT9J/+yVYGZ0nrOrfHFnZ5PB9Egam4aA=;
+	s=korg; t=1760368935;
+	bh=lSo3+/Tl4u93n7hhFsdozMZfk6fFTE/wb9eUxZUC4cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IViqpjlbRKjtmiELR/ydUW4spQIRrMi5YZotth1nXm+26yHgM+U5yN86KZPJI1mQ+
-	 hi9djNR0DIjcN4YlQpWONpuLZ8LBKogFW4DlT1j3rR8WkggTE4IiVwKssJd5jDcKIS
-	 zQ5mCgSVJA4DvXSg5fQdEkEEklknUKOByJZxN5WU=
+	b=zEMbuZwggB97Y1nEEuBrfH5Qii58F0gZrtzYSL+AdiMdXmFTxfM08wKzGuT9dvkVM
+	 zDuLlD4aEDA4R78ru2moVqbS0dF+AeGvZcZ7LUne2MjrfTQaOTiqgu4l7h4R5ZwKOq
+	 1FXMpprmBxQ+veWMXCe8KO2n/Ssb6wV38U3iyuDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Han Gao <rabenda.cn@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Chen Wang <unicorn_wang@outlook.com>,
+	Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 069/563] irqchip/sg2042-msi: Fix broken affinity setting
-Date: Mon, 13 Oct 2025 16:38:50 +0200
-Message-ID: <20251013144413.791453540@linuxfoundation.org>
+Subject: [PATCH 6.17 071/563] soc: qcom: rpmh-rsc: Unconditionally clear _TRIGGER bit for TCS
+Date: Mon, 13 Oct 2025 16:38:52 +0200
+Message-ID: <20251013144413.864602044@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,85 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
 
-[ Upstream commit 9d8c41816bac518b4824f83b346ae30a1be83f68 ]
+[ Upstream commit f87412d18edb5b8393eb8cb1c2d4a54f90185a21 ]
 
-When using NVME on SG2044, the NVME drvier always complains about "I/O tag
-XXX (XXX) QID XX timeout, completion polled", which is caused by the broken
-affinity setting mechanism of the sg2042-msi driver.
+Unconditionally clear the TCS_AMC_MODE_TRIGGER bit when a
+transaction completes. Previously this bit was only cleared when
+a wake TCS was borrowed as an AMC TCS but not for dedicated
+AMC TCS. Leaving this bit set for AMC TCS and entering deeper low
+power modes can generate a false completion IRQ.
 
-The PLIC driver can only the set the affinity when enabled, but the
-sg2042-msi driver invokes the affinity setter in disabled state, which
-causes the change to be lost.
+Prevent this scenario by always clearing the TCS_AMC_MODE_TRIGGER
+bit upon receiving a completion IRQ.
 
-Cure this by implementing the irq_startup()/shutdown() callbacks, which
-allow to startup (enabled) the underlying PLIC first.
-
-Fixes: e96b93a97c90 ("irqchip/sg2042-msi: Add the Sophgo SG2044 MSI interrupt controller")
-Reported-by: Han Gao <rabenda.cn@gmail.com>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Chen Wang <unicorn_wang@outlook.com> # Pioneerbox
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Link: https://lore.kernel.org/all/20250813232835.43458-4-inochiama@gmail.com
+Fixes: 15b3bf61b8d4 ("soc: qcom: rpmh-rsc: Clear active mode configuration for wake TCS")
+Signed-off-by: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250825-rpmh_rsc_change-v1-1-138202c31bf6@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-sg2042-msi.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/soc/qcom/rpmh-rsc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/irqchip/irq-sg2042-msi.c b/drivers/irqchip/irq-sg2042-msi.c
-index bcfddc51bc6a1..2fd4d94f9bd76 100644
---- a/drivers/irqchip/irq-sg2042-msi.c
-+++ b/drivers/irqchip/irq-sg2042-msi.c
-@@ -85,6 +85,8 @@ static void sg2042_msi_irq_compose_msi_msg(struct irq_data *d, struct msi_msg *m
+diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
+index fdab2b1067dbb..c6f7d5c9c493d 100644
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -453,13 +453,10 @@ static irqreturn_t tcs_tx_done(int irq, void *p)
  
- static const struct irq_chip sg2042_msi_middle_irq_chip = {
- 	.name			= "SG2042 MSI",
-+	.irq_startup		= irq_chip_startup_parent,
-+	.irq_shutdown		= irq_chip_shutdown_parent,
- 	.irq_ack		= sg2042_msi_irq_ack,
- 	.irq_mask		= irq_chip_mask_parent,
- 	.irq_unmask		= irq_chip_unmask_parent,
-@@ -114,6 +116,8 @@ static void sg2044_msi_irq_compose_msi_msg(struct irq_data *d, struct msi_msg *m
+ 		trace_rpmh_tx_done(drv, i, req);
  
- static struct irq_chip sg2044_msi_middle_irq_chip = {
- 	.name			= "SG2044 MSI",
-+	.irq_startup		= irq_chip_startup_parent,
-+	.irq_shutdown		= irq_chip_shutdown_parent,
- 	.irq_ack		= sg2044_msi_irq_ack,
- 	.irq_mask		= irq_chip_mask_parent,
- 	.irq_unmask		= irq_chip_unmask_parent,
-@@ -185,8 +189,10 @@ static const struct irq_domain_ops sg204x_msi_middle_domain_ops = {
- 	.select	= msi_lib_irq_domain_select,
- };
- 
--#define SG2042_MSI_FLAGS_REQUIRED (MSI_FLAG_USE_DEF_DOM_OPS |	\
--				   MSI_FLAG_USE_DEF_CHIP_OPS)
-+#define SG2042_MSI_FLAGS_REQUIRED (MSI_FLAG_USE_DEF_DOM_OPS |		\
-+				   MSI_FLAG_USE_DEF_CHIP_OPS |		\
-+				   MSI_FLAG_PCI_MSI_MASK_PARENT |	\
-+				   MSI_FLAG_PCI_MSI_STARTUP_PARENT)
- 
- #define SG2042_MSI_FLAGS_SUPPORTED MSI_GENERIC_FLAGS_MASK
- 
-@@ -200,10 +206,12 @@ static const struct msi_parent_ops sg2042_msi_parent_ops = {
- 	.init_dev_msi_info	= msi_lib_init_dev_msi_info,
- };
- 
--#define SG2044_MSI_FLAGS_REQUIRED (MSI_FLAG_USE_DEF_DOM_OPS |	\
--				   MSI_FLAG_USE_DEF_CHIP_OPS)
-+#define SG2044_MSI_FLAGS_REQUIRED (MSI_FLAG_USE_DEF_DOM_OPS |		\
-+				   MSI_FLAG_USE_DEF_CHIP_OPS |		\
-+				   MSI_FLAG_PCI_MSI_MASK_PARENT |	\
-+				   MSI_FLAG_PCI_MSI_STARTUP_PARENT)
- 
--#define SG2044_MSI_FLAGS_SUPPORTED (MSI_GENERIC_FLAGS_MASK |	\
-+#define SG2044_MSI_FLAGS_SUPPORTED (MSI_GENERIC_FLAGS_MASK |		\
- 				    MSI_FLAG_PCI_MSIX)
- 
- static const struct msi_parent_ops sg2044_msi_parent_ops = {
+-		/*
+-		 * If wake tcs was re-purposed for sending active
+-		 * votes, clear AMC trigger & enable modes and
++		/* Clear AMC trigger & enable modes and
+ 		 * disable interrupt for this TCS
+ 		 */
+-		if (!drv->tcs[ACTIVE_TCS].num_tcs)
+-			__tcs_set_trigger(drv, i, false);
++		__tcs_set_trigger(drv, i, false);
+ skip:
+ 		/* Reclaim the TCS */
+ 		write_tcs_reg(drv, drv->regs[RSC_DRV_CMD_ENABLE], i, 0);
 -- 
 2.51.0
 
