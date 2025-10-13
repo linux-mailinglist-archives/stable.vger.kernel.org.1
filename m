@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-185196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E98BD48CB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:51:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8CEBD489B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 706D434CE0D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23D3C18A0791
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E5F30BBB0;
-	Mon, 13 Oct 2025 15:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DA230AD1A;
+	Mon, 13 Oct 2025 15:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+xQnaHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDJc0Ezo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F305C30BBAE;
-	Mon, 13 Oct 2025 15:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A626530AD0A;
+	Mon, 13 Oct 2025 15:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369606; cv=none; b=d970MZEs5WVfz6cALNEjRluYlPtT+kWb8/VmYgIOwrE9bkPyTUvODlkF45SQoqhfDKiFDBjEiQaH0wg8wzhBRCzP82LTInoo0imX+QJVXOVf2vds+xulVJwjk6rbrPX6FRt/xG+dzpToq1Ts1Gc8arH9cLa3Jkac+YtFA+LQSBY=
+	t=1760369526; cv=none; b=bhE3BUcFQwdfrFUL+S8Q65MyZRXmid/OFUjlmvqvgO0WGaiccTdoWfr6bsV+u+JnAoD+aaYxe69TD54ZBufgAlqtxNVCeMGgKi7v3ehgx2+e/KRBvzb7Bmyx1kYc9cg0wd49FlzZbWTPK1r1Qy83OdT1rOB39ozYrHHf8rH2TNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369606; c=relaxed/simple;
-	bh=AvdWLoYiwwDW8A3HHAGQ6AtA2KrfmJW4uL8TdRTkUxY=;
+	s=arc-20240116; t=1760369526; c=relaxed/simple;
+	bh=H+jHcfjguSScUxMImuQcwgth0HfB5HRgR3Oe/pVJJm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fj6l2iespKOtt9pKlrn/Jx25DI+y8gl1tQmYEQ7YrACyKgkS0AgHdyF3K/rbCbsrTcxLDmIApKTRYa8cEMEoHTyBpqKVOlLAhSiVNhcaH6HHNd5tmMNWqU+YmSNdI96c6ZmXfaxQqxYSbhBne7jDd2TM98HPSwgBOd2rcYFJ98w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+xQnaHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C824C4CEE7;
-	Mon, 13 Oct 2025 15:33:25 +0000 (UTC)
+	 MIME-Version; b=M/un3T3Tjwnjdna7ovN4CUOZRhV5S+07mlDxHQBy16unR5IBDZ00yPEIenQded+PCUbbgaz5lWtK7PmUvhM1u3XKOdmAMPkk3+UNkQZzelhZYXKzOToKAxvK/mw6tC4QamE5Uv7akUjJY+KShUmT5FNJoQLO8eWSh1/WAvhN1Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDJc0Ezo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DC2C4CEE7;
+	Mon, 13 Oct 2025 15:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369605;
-	bh=AvdWLoYiwwDW8A3HHAGQ6AtA2KrfmJW4uL8TdRTkUxY=;
+	s=korg; t=1760369526;
+	bh=H+jHcfjguSScUxMImuQcwgth0HfB5HRgR3Oe/pVJJm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+xQnaHG7q1fzMmE5xs38Pc3boVPpjMfxcsvpLNStsKBqAcD7AVLBmPxx32lNTtxM
-	 uJmz+hKX+9kYXvvMWSMFYuvTUF/RY6/YGL2awIBhQoz/p3fDKDkgTDmw1i5znWA4eP
-	 OIJagHZf8bsaEr8N8Cyoe+xAPhsk8z4Hsn6SOfdo=
+	b=qDJc0EzoSniCPwIOCfkH3fONH3MSit0QQiUY3ZfCD9YZlRnpp/RfCJKMjTXvHi1og
+	 Buj60AN2PYKE/jXubuqEjF7fmsJZEQ7Ve7q7nW4L0fRM9W09wYt6tXEg7R7fcQD9mI
+	 vRs6KKA9bhsx16EmFHyn2scPSFHbOPPMUf7ao2Ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 272/563] fuse: remove unneeded offset assignment when filling write pages
-Date: Mon, 13 Oct 2025 16:42:13 +0200
-Message-ID: <20251013144421.127849651@linuxfoundation.org>
+Subject: [PATCH 6.17 278/563] media: st-delta: avoid excessive stack usage
+Date: Mon, 13 Oct 2025 16:42:19 +0200
+Message-ID: <20251013144421.343069931@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,35 +66,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 6fd26f50857698c6f07a9e6b149247925fadb8fd ]
+[ Upstream commit 5954ad7d1af92cb6244c5f31216e43af55febbb7 ]
 
-With the change in aee03ea7ff98 ("fuse: support large folios for
-writethrough writes"), this old line for setting ap->descs[0].offset is
-now obsolete and unneeded. This should have been removed as part of
-aee03ea7ff98.
+Building with a reduced stack warning limit shows that delta_mjpeg_decode()
+copies a giant structure to the stack each time but only uses three of
+its members:
 
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Fixes: aee03ea7ff98 ("fuse: support large folios for writethrough writes")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c: In function 'delta_mjpeg_decode':
+drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c:427:1: error: the frame size of 1296 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
+
+Open-code the passing of the structure members that are actually used here.
+
+Fixes: 433ff5b4a29b ("[media] st-delta: add mjpeg support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c | 1 -
- 1 file changed, 1 deletion(-)
+ .../platform/st/sti/delta/delta-mjpeg-dec.c   | 20 ++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 4adcf09d4b01a..c7351ca070652 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1175,7 +1175,6 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
- 	num = min(iov_iter_count(ii), fc->max_write);
+diff --git a/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c b/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
+index 0533d4a083d24..a078f1107300e 100644
+--- a/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
++++ b/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
+@@ -239,7 +239,7 @@ static int delta_mjpeg_ipc_open(struct delta_ctx *pctx)
+ 	return 0;
+ }
  
- 	ap->args.in_pages = true;
--	ap->descs[0].offset = offset;
+-static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, struct delta_au *au)
++static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, dma_addr_t pstart, dma_addr_t pend)
+ {
+ 	struct delta_dev *delta = pctx->dev;
+ 	struct delta_mjpeg_ctx *ctx = to_ctx(pctx);
+@@ -256,8 +256,8 @@ static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, struct delta_au *au)
  
- 	while (num && ap->num_folios < max_folios) {
- 		size_t tmp;
+ 	memset(params, 0, sizeof(*params));
+ 
+-	params->picture_start_addr_p = (u32)(au->paddr);
+-	params->picture_end_addr_p = (u32)(au->paddr + au->size - 1);
++	params->picture_start_addr_p = pstart;
++	params->picture_end_addr_p = pend;
+ 
+ 	/*
+ 	 * !WARNING!
+@@ -374,12 +374,14 @@ static int delta_mjpeg_decode(struct delta_ctx *pctx, struct delta_au *pau)
+ 	struct delta_dev *delta = pctx->dev;
+ 	struct delta_mjpeg_ctx *ctx = to_ctx(pctx);
+ 	int ret;
+-	struct delta_au au = *pau;
++	void *au_vaddr = pau->vaddr;
++	dma_addr_t au_dma = pau->paddr;
++	size_t au_size = pau->size;
+ 	unsigned int data_offset = 0;
+ 	struct mjpeg_header *header = &ctx->header_struct;
+ 
+ 	if (!ctx->header) {
+-		ret = delta_mjpeg_read_header(pctx, au.vaddr, au.size,
++		ret = delta_mjpeg_read_header(pctx, au_vaddr, au_size,
+ 					      header, &data_offset);
+ 		if (ret) {
+ 			pctx->stream_errors++;
+@@ -405,17 +407,17 @@ static int delta_mjpeg_decode(struct delta_ctx *pctx, struct delta_au *pau)
+ 			goto err;
+ 	}
+ 
+-	ret = delta_mjpeg_read_header(pctx, au.vaddr, au.size,
++	ret = delta_mjpeg_read_header(pctx, au_vaddr, au_size,
+ 				      ctx->header, &data_offset);
+ 	if (ret) {
+ 		pctx->stream_errors++;
+ 		goto err;
+ 	}
+ 
+-	au.paddr += data_offset;
+-	au.vaddr += data_offset;
++	au_dma += data_offset;
++	au_vaddr += data_offset;
+ 
+-	ret = delta_mjpeg_ipc_decode(pctx, &au);
++	ret = delta_mjpeg_ipc_decode(pctx, au_dma, au_dma + au_size - 1);
+ 	if (ret)
+ 		goto err;
+ 
 -- 
 2.51.0
 
