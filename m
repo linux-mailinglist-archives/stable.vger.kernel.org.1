@@ -1,60 +1,48 @@
-Return-Path: <stable+bounces-185489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A95DBD58B5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 19:39:18 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 856D2BD58FD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 19:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A95D83ADD0F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:37:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 12B594E79D9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD2E306483;
-	Mon, 13 Oct 2025 17:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+ZD/6Ol"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB54304BDD;
+	Mon, 13 Oct 2025 17:43:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4538B2D249A
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 17:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332431A23A0
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 17:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760377013; cv=none; b=oEt1VVLpvASb7NA60fiVKj+gZWCXXc745OtzrWq3q7ySj0nzKA1T49XkRKeV59Fl05lKi0mvZHqodg74RCqL66MD4rHJ6ZsosqnWA7poz3WgiANdXS+kuUg6LmjVNfUkD78qQMs5uxqbxxg2lMJgsBmTkgN+FYckSFXfWyL1Nh0=
+	t=1760377408; cv=none; b=Hjifd3+9IhLprMY06edA5Pd6PqjXfs9M0gLPEbO+mzb6Azjy3kgXhlIHgN/qSxY3IKYdN9UEW/AMLiCb6GIHpci4PWUHMOKGP0B1nQLfN/YKBYYpg0zpp8FiNzgveEJ6jjga0TenyYA5n01SK4YtYPaWNxCKkqyNA5V/3uDg4dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760377013; c=relaxed/simple;
-	bh=U99zOOjgIIaw1j6ANIlYgzC69zrQoXk1xebwZlR1V/I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmQhM1WKQUz6IOnSHlWo0h02rPyBzOQyi/jjxdB4TZKDfI+4EQ3sZ0BX796dBpXRa7jTDsNWS6vdj1cI2v2JCoeG/rYJ64DBU3ZIq+KCdw8RCNpCONMyTYQLLW5eLP5CmfQODfRL7MBr5vFyFbzjrJwO1d1VNUn8si4vCjZR7GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+ZD/6Ol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15503C116C6;
-	Mon, 13 Oct 2025 17:36:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760377012;
-	bh=U99zOOjgIIaw1j6ANIlYgzC69zrQoXk1xebwZlR1V/I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+ZD/6Ol1ROcXTGcp9KRdRUbuCKHCHGLIHH2196PE29kqL83vW/+NHavQaUv2fPjT
-	 tAmi48+OG7ChG3wC/fgi4BikPWWFLEMmvXc2Wvy1CWivuxgIeIaizEqtiEzQQbIYpy
-	 lzmPPKvm4TsFlMudIqxdKwmld9vXBw8nLdA+glcFwe6Vr8K9J1NgRhO7NwDyDUk+i3
-	 eLpoVak4jtkb4lW4zHkrsUq9OHB8b1+AlE6dVSoAr6FGgYlSOcRpSgn6RcTlFzagkW
-	 Bdvg7Rp3E7QC7kmnnVRUCNQUOreruyLsr8+6HoJB/hGvpc1pBJuxAbsid+CWIqAKhT
-	 OP1VUZPbQgJzg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Phillip Lougher <phillip@squashfs.org.uk>,
-	syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com,
-	Amir Goldstein <amir73il@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 2/2] Squashfs: reject negative file sizes in squashfs_read_inode()
-Date: Mon, 13 Oct 2025 13:36:49 -0400
-Message-ID: <20251013173649.3404578-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013173649.3404578-1-sashal@kernel.org>
-References: <2025101319-anything-blob-1499@gregkh>
- <20251013173649.3404578-1-sashal@kernel.org>
+	s=arc-20240116; t=1760377408; c=relaxed/simple;
+	bh=w/CWRQ4+Yh109UMB+ginDZIxXzHTiyzRKP33YxgpgKI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OrzSkvj9139pxk1RkZsDjNyYq/NXrVpCdd/rjzKjvCDmHcWkWgFIaQiaNCM3/P8sNo16IsK3PzN4jllcIsC8aWVfkjFMETp3QOtcbPfl3FdmoizYJvEKToZnAyzo7+k8a3G31yEeLhqHBxqXvYYt4M5o23byDSHJCLOUcILmXVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22C38113E;
+	Mon, 13 Oct 2025 10:43:17 -0700 (PDT)
+Received: from e137867.cambridge.arm.com (e137867.arm.com [10.1.31.178])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7D12D3F66E;
+	Mon, 13 Oct 2025 10:43:23 -0700 (PDT)
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] arm64: debug: always unmask interrupts in el0_softstp()
+Date: Mon, 13 Oct 2025 18:43:17 +0100
+Message-ID: <20251013174317.74791-1-ada.coupriediaz@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,48 +51,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+EL0 exception handlers should always call `exit_to_user_mode()` with
+interrupts unmasked.
+When handling a completed single-step, we skip the if block and
+`local_daif_restore(DAIF_PROCCTX)` never gets called,
+which ends up calling `exit_to_user_mode()` with interrupts masked.
 
-[ Upstream commit 9f1c14c1de1bdde395f6cc893efa4f80a2ae3b2b ]
+This is broken if pNMI is in use, as `do_notify_resume()` will try
+to enable interrupts, but `local_irq_enable()` will only change the PMR,
+leaving interrupts masked via DAIF.
 
-Syskaller reports a "WARNING in ovl_copy_up_file" in overlayfs.
+Move the call to `try_step_suspended_breakpoints()` outside of the check
+so that interrupts can be unmasked even if we don't call the step handler.
 
-This warning is ultimately caused because the underlying Squashfs file
-system returns a file with a negative file size.
-
-This commit checks for a negative file size and returns EINVAL.
-
-[phillip@squashfs.org.uk: only need to check 64 bit quantity]
-  Link: https://lkml.kernel.org/r/20250926222305.110103-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20250926215935.107233-1-phillip@squashfs.org.uk
-Fixes: 6545b246a2c8 ("Squashfs: inode operations")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68d580e5.a00a0220.303701.0019.GAE@google.com/
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0ac7584c08ce ("arm64: debug: split single stepping exception entry")
+Cc: <stable@vger.kernel.org> # 6.17
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+----
+This was already broken in a similar fashion in kernels prior to v6.17,
+as `local_daif_restore()` was called _after_ the debug handlers, with some
+calling `send_user_sigtrap()` which would unmask interrupts via PMR
+while leaving them masked by DAIF.
 ---
- fs/squashfs/inode.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/kernel/entry-common.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index 77eec1772998b..de8657a77703a 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -192,6 +192,10 @@ int squashfs_read_inode(struct inode *inode, long long ino)
- 			goto failed_read;
+diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
+index 2b0c5925502e..780cbcf12695 100644
+--- a/arch/arm64/kernel/entry-common.c
++++ b/arch/arm64/kernel/entry-common.c
+@@ -832,6 +832,7 @@ static void noinstr el0_breakpt(struct pt_regs *regs, unsigned long esr)
  
- 		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
-+		if (inode->i_size < 0) {
-+			err = -EINVAL;
-+			goto failed_read;
-+		}
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
- 			/*
+ static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
+ {
++	bool step_done;
+ 	if (!is_ttbr0_addr(regs->pc))
+ 		arm64_apply_bp_hardening();
+ 
+@@ -842,10 +843,11 @@ static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
+ 	 * If we are stepping a suspended breakpoint there's nothing more to do:
+ 	 * the single-step is complete.
+ 	 */
+-	if (!try_step_suspended_breakpoints(regs)) {
+-		local_daif_restore(DAIF_PROCCTX);
++	step_done = try_step_suspended_breakpoints(regs)
++	local_daif_restore(DAIF_PROCCTX);
++	if (!step_done)
+ 		do_el0_softstep(esr, regs);
+-	}
++
+ 	exit_to_user_mode(regs);
+ }
+ 
+
+base-commit: 449d48b1b99fdaa076166e200132705ac2bee711
 -- 
-2.51.0
+2.43.0
 
 
