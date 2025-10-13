@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-184854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66B9BD43E6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8C0BD438A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06FCE188E923
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A4311500506
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D852F5A37;
-	Mon, 13 Oct 2025 15:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CBF3101A7;
+	Mon, 13 Oct 2025 15:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uivy4isq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9ltX55I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA94A307AF5;
-	Mon, 13 Oct 2025 15:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C7330FF34;
+	Mon, 13 Oct 2025 15:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368627; cv=none; b=hgeXjbZP5JbDcjkrhUDohNiXlw6OOlAMCQ9pWcBG3k8ciBFkxLdqJdMr9sR8tOvuXw96zAs3l5owvrw46sXcSGYB/C6DAn38nw3c1WZ0Qfm0hP2Trn3HsDJ/Y7qN3LDsBdnazApZ/bgSCODbcdraA5vqEjL3yI5Few/77D8hRpE=
+	t=1760367987; cv=none; b=cIJOz7ikC/FJKk/QrRjkfXAwXMR64y2bGSzQrIsDbLPelAyQyJZziSdNAzFe9nmRynEsd+9uekWhBYPJgfOMbwm/iyDFNgEaDG8DVnxFqlao1ckpG4dryOrHNT7kaBAuzLQOCaWZ4hPfIIvaYfwKI8UaFSjWPan3WMEWH/ZhgMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368627; c=relaxed/simple;
-	bh=6znLhvq8TCo6NQ7VrSGWVTKkX4dMPFFlDvz9AlAzqNw=;
+	s=arc-20240116; t=1760367987; c=relaxed/simple;
+	bh=wtUFZ3dIXdIZSr2LYfeiPx49pVoBeeenTvOWn1c1V7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTEriLMabGxPX0NHCTh6ZBF8YN0rhIcBcTPBw/w3Cyp2jwEQHd+B0++cCuiqZgHYqV552f5haVlN8T+lGLB90yanTOwPcLFKrdVux9uXZVexC6fBE2q30utTMUgxlmx+aD3FD7MIEL9y1H0wzB+z83zgFVSysysQaw4QnmVW7R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uivy4isq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C56C4CEE7;
-	Mon, 13 Oct 2025 15:17:05 +0000 (UTC)
+	 MIME-Version; b=hhH+JmgBbz4IvhXYZkTx7TzyzmW7SwRVLRtU2PlJZkUjsNDW7PDyJTshfRkNWjArZ4wFxJb0kQoZMwT9ZfA9Wi+BbKvX/N/8/7F95lsgPJ3qsGeicKC2PttqzR+JFx/zoCWCDEh7cxfxtVPSugSWTQIgcNnSlo9Xomd7OwQCEFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9ltX55I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AF3C4CEE7;
+	Mon, 13 Oct 2025 15:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368626;
-	bh=6znLhvq8TCo6NQ7VrSGWVTKkX4dMPFFlDvz9AlAzqNw=;
+	s=korg; t=1760367986;
+	bh=wtUFZ3dIXdIZSr2LYfeiPx49pVoBeeenTvOWn1c1V7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uivy4isqt2rsZ0GeMQF9YALEkNb6njxOPuU+oD7z19ZGStym+nsoVPadTtgbifqqR
-	 R6cTRHHsY8VlgQeL7N3MiG/1j0S3SwbOW/4PGlTfB9MXfY+dqmbVurNYicmbrEi0iw
-	 GI0Pm6dqnHFO3YA0/EDIhNEhH60YoBrFFc3hvmAk=
+	b=d9ltX55ICwtNrzu2oWDMwOQzVFlzZqVosPeOIXNgx25uDP7q61waXk3m1+NxNzvDZ
+	 SPdqAbne2ggCOxSgBkw6Yg/GKo8e3fFkhsLyImCBbQ1PtxefERHadCpJMfKLgyLmgk
+	 KxTujDV0XG+x+JVRr6bY2mxpD9+CK91ELHhMMhLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b9e83021d9c642a33d8c@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 227/262] io_uring/waitid: always prune wait queue entry in io_waitid_wait()
-Date: Mon, 13 Oct 2025 16:46:09 +0200
-Message-ID: <20251013144334.418120151@linuxfoundation.org>
+	Youling Tang <tangyouling@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 179/196] LoongArch: Automatically disable kaslr if boot from kexec_file
+Date: Mon, 13 Oct 2025 16:46:10 +0200
+Message-ID: <20251013144321.783912248@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Youling Tang <tangyouling@kylinos.cn>
 
-commit 2f8229d53d984c6a05b71ac9e9583d4354e3b91f upstream.
+commit c8168b4faf1d62cbb320a3e518ad31cdd567cb05 upstream.
 
-For a successful return, always remove our entry from the wait queue
-entry list. Previously this was skipped if a cancelation was in
-progress, but this can race with another invocation of the wait queue
-entry callback.
+Automatically disable kaslr when the kernel loads from kexec_file.
+
+kexec_file loads the secondary kernel image to a non-linked address,
+inherently providing KASLR-like randomization.
+
+However, on LoongArch where System RAM may be non-contiguous, enabling
+KASLR for the second kernel may relocate it to an invalid memory region
+and cause a boot failure. Thus, we disable KASLR when "kexec_file" is
+detected in the command line.
+
+To ensure compatibility with older kernels loaded via kexec_file, this
+patch should be backported to stable branches.
 
 Cc: stable@vger.kernel.org
-Fixes: f31ecf671ddc ("io_uring: add IORING_OP_WAITID support")
-Reported-by: syzbot+b9e83021d9c642a33d8c@syzkaller.appspotmail.com
-Tested-by: syzbot+b9e83021d9c642a33d8c@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/io-uring/68e5195e.050a0220.256323.001f.GAE@google.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Youling Tang <tangyouling@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/waitid.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/relocate.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/io_uring/waitid.c
-+++ b/io_uring/waitid.c
-@@ -272,13 +272,14 @@ static int io_waitid_wait(struct wait_qu
- 	if (!pid_child_should_wake(wo, p))
- 		return 0;
+--- a/arch/loongarch/kernel/relocate.c
++++ b/arch/loongarch/kernel/relocate.c
+@@ -124,6 +124,10 @@ static inline __init bool kaslr_disabled
+ 	if (str == boot_command_line || (str > boot_command_line && *(str - 1) == ' '))
+ 		return true;
  
-+	list_del_init(&wait->entry);
++	str = strstr(boot_command_line, "kexec_file");
++	if (str == boot_command_line || (str > boot_command_line && *(str - 1) == ' '))
++		return true;
 +
- 	/* cancel is in progress */
- 	if (atomic_fetch_inc(&iw->refs) & IO_WAITID_REF_MASK)
- 		return 1;
- 
- 	req->io_task_work.func = io_waitid_cb;
- 	io_req_task_work_add(req);
--	list_del_init(&wait->entry);
- 	return 1;
+ 	return false;
  }
  
 
