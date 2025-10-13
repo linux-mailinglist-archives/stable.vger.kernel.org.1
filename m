@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-184578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69C0BD4546
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:36:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11531BD4751
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E14C42335A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B57394F6D8D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678F630F54F;
-	Mon, 13 Oct 2025 15:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDCF3128AC;
+	Mon, 13 Oct 2025 15:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Xgh4ujR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5RmEtg5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1828E3093DD;
-	Mon, 13 Oct 2025 15:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC663128A6;
+	Mon, 13 Oct 2025 15:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367835; cv=none; b=PmXSwD/oeQg1zvWQU8FXp/mdehOeD2B+4hsZDZY7dQbK6ScfTGhsb9Cr5GhudtAUpvp2TCt1Iuf9cSKAs0K5WLd3zkL8MOdz8KfjtJHOzg27UkCaZudBGNO6/1xcj6vb8kFrTwV1ypQzYHDDNn8r6GFKo4HBfSwJ3dwNX5XO21I=
+	t=1760368552; cv=none; b=PU4Seyura4z7Eec5LeEmtsL0x+OCYClrdpzX1nQaYN7SuS0IrC11n3lI/5IvDTTYRIKD1nZR9aZAOG0nRFkFK/GEFdUKTZRX8EsYYtf0AfgtcEzdMYoQWeEn8rklZ8W1p4MmMPg2IicP9itwmLlgjnD7BF7gQeNc0rcgspWDhHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367835; c=relaxed/simple;
-	bh=eQrqAOyVT1g3louU1IYmXpgSDQh9zrvR5GQA1mORR1I=;
+	s=arc-20240116; t=1760368552; c=relaxed/simple;
+	bh=K9alUFH6YHvYyacjxI9qQi8N4mG0uvagCmsEhF1jEgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oM+V5IQYZjo6yxH1RYEJbl3TrEIxL0NfRxipkGtVNryR3pOzPByTy4+YVhgQEmXgdZ42fmk7BPOgdjyNtA1p0+yN8ytuVwNVR7JAaqLL1IIHqt/XGdpJT2iRMoijHoghR6VS12+B/7bXVY0ccBi+rtXCYi/FzgPiuZxHNHtzhFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Xgh4ujR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DEFC4CEE7;
-	Mon, 13 Oct 2025 15:03:54 +0000 (UTC)
+	 MIME-Version; b=UACUWS2XFxuoSF6QVa09UUqSwDcPZv/2auE4kAN6PgW88nw7/P1K/nAJj/dVkepLQ0qNbvVqTHEyKD+fyjpvN5//B6Yvf4wr29RZqH6RiPwI0f34FsnXkFVZhq6bO02mZdtZjRyQfSQsELMq/meCygr+uJMKfHCfNiOQqoV3hws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5RmEtg5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AEBC116C6;
+	Mon, 13 Oct 2025 15:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367835;
-	bh=eQrqAOyVT1g3louU1IYmXpgSDQh9zrvR5GQA1mORR1I=;
+	s=korg; t=1760368552;
+	bh=K9alUFH6YHvYyacjxI9qQi8N4mG0uvagCmsEhF1jEgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Xgh4ujRgM7er7smrMzSir7Rm7vlahKdwedhQB0k1TMEuteGXfsjHGLJM7IdTUUhi
-	 Xv6o0CF5Wvtm7JMedKu4NCuNykSFcVFJrOTQ9SiLjyisG3QJPBUH8J9tQ24AitomZ2
-	 /KqPl9xjF+AZPMQww2dIeG1+YignMja/WtxJF4BE=
+	b=W5RmEtg5jdhWrNZXj36E4YOTdZyqxxRAOrnOhaifZEYzA2ruXRO4mmIltLMXklHi0
+	 Obew/aDypjGjs9MqnnnPEiVC84woLAks6ehbJlCFp/xYlt+s7Axu7IcCj4BvCDrq2w
+	 7NS0upL6HrVXRMpqdGeduq1fINyHs6BshCwL8lkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com,
+	I Viswanath <viswanathiyyappan@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/196] Bluetooth: ISO: Fix possible UAF on iso_conn_free
+Subject: [PATCH 6.12 200/262] ptp: Add a upper bound on max_vclocks
 Date: Mon, 13 Oct 2025 16:45:42 +0200
-Message-ID: <20251013144320.773459099@linuxfoundation.org>
+Message-ID: <20251013144333.449619105@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit 9950f095d6c875dbe0c9ebfcf972ec88fdf26fc8 ]
+[ Upstream commit e9f35294e18da82162004a2f35976e7031aaf7f9 ]
 
-This attempt to fix similar issue to sco_conn_free where if the
-conn->sk is not set to NULL may lead to UAF on iso_conn_free.
+syzbot reported WARNING in max_vclocks_store.
 
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This occurs when the argument max is too large for kcalloc to handle.
+
+Extend the guard to guard against values that are too large for
+kcalloc
+
+Reported-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=94d20db923b9f51be0df
+Tested-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
+Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://patch.msgid.link/20250925155908.5034-1-viswanathiyyappan@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/ptp/ptp_private.h | 1 +
+ drivers/ptp/ptp_sysfs.c   | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index b94d202bf3745..be71082d9eafa 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -718,6 +718,13 @@ static void iso_sock_kill(struct sock *sk)
+diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
+index b352df4cd3f97..f329263f33aa1 100644
+--- a/drivers/ptp/ptp_private.h
++++ b/drivers/ptp/ptp_private.h
+@@ -22,6 +22,7 @@
+ #define PTP_MAX_TIMESTAMPS 128
+ #define PTP_BUF_TIMESTAMPS 30
+ #define PTP_DEFAULT_MAX_VCLOCKS 20
++#define PTP_MAX_VCLOCKS_LIMIT (KMALLOC_MAX_SIZE/(sizeof(int)))
+ #define PTP_MAX_CHANNELS 2048
  
- 	BT_DBG("sk %p state %d", sk, sk->sk_state);
+ enum {
+diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
+index 6b1b8f57cd951..200eaf5006968 100644
+--- a/drivers/ptp/ptp_sysfs.c
++++ b/drivers/ptp/ptp_sysfs.c
+@@ -284,7 +284,7 @@ static ssize_t max_vclocks_store(struct device *dev,
+ 	size_t size;
+ 	u32 max;
  
-+	/* Sock is dead, so set conn->sk to NULL to avoid possible UAF */
-+	if (iso_pi(sk)->conn) {
-+		iso_conn_lock(iso_pi(sk)->conn);
-+		iso_pi(sk)->conn->sk = NULL;
-+		iso_conn_unlock(iso_pi(sk)->conn);
-+	}
-+
- 	/* Kill poor orphan */
- 	bt_sock_unlink(&iso_sk_list, sk);
- 	sock_set_flag(sk, SOCK_DEAD);
+-	if (kstrtou32(buf, 0, &max) || max == 0)
++	if (kstrtou32(buf, 0, &max) || max == 0 || max > PTP_MAX_VCLOCKS_LIMIT)
+ 		return -EINVAL;
+ 
+ 	if (max == ptp->max_vclocks)
 -- 
 2.51.0
 
