@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-184700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C98BBD4288
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228BEBD459A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB82218867A4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD19C404104
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA7030C618;
-	Mon, 13 Oct 2025 15:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15A93112C0;
+	Mon, 13 Oct 2025 15:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJVhvATk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIoDYzrB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8642A311958;
-	Mon, 13 Oct 2025 15:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7BA3112B7;
+	Mon, 13 Oct 2025 15:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368188; cv=none; b=QFssIbv16r+9iKnQtqhMYwqvK9g7jyNhH/fufRZuGrw/QAYLvkGvyyn7bltC8ozrMKKsWj0tkKhGvj22oFKbf17q6qu9LqrJerGDhcfu/855e+y1GiuQqTv5Lvs4y0Qqz9C+QwZbAOgY3sN1lmf8XfGYH1FBDoyYVB7RrEsKDwg=
+	t=1760368087; cv=none; b=lCsKy33Mx3dAIm+dpIcxKLqOBW4XGoIao113LkVqi6n1tLBpOuX8MB8FgtRuX+e0B9BTBzMhHH2si8868KKtsNU3vs/LlzIfzFdXvbfKrpfcRuKY3r1Lfk5YH8U/vqbUV4KwaPDYoHE6CsCKtVlk6cT9udn2Y6vFEUQd41BMgMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368188; c=relaxed/simple;
-	bh=7VdeC7ODruayH2jsWSJ+H0HDohUQ4ODNOu4BE4sssPs=;
+	s=arc-20240116; t=1760368087; c=relaxed/simple;
+	bh=IXSUWtI9j6i5CK2364GiXtBquU57sl35cqaID5ADqZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPV2TODgGo69tL5dk43e4Uc3iOp/zvWOCSforrHWHj5ZvjUBR9M1gQJaYQZ22dLf3wSR/kDglbzfVF45kjfSg2yQPdQ5BcxIQ83PVNqAHcQUCi3vpOrD0oa30mT3iVh7TlytmdHrtPb7ruJmIW8Sn9mx7RhMMbQn7fouQAUde/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJVhvATk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021E9C4CEFE;
-	Mon, 13 Oct 2025 15:09:47 +0000 (UTC)
+	 MIME-Version; b=bH6R9PqO5paZP8JIaswDXC84Dekq2DOdm9czjqBopnwZicu6njP9NbNUMoQcymyctVGNr+2eikZIffPBBURQplUuY98Ncof25z08I6ox0CW3qQ/0joRzA49pxQ+BnVkVnUuCMWxoKGTaT/TA65HtJ3/qzCnR7gJW/QLDSv7xwhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIoDYzrB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DB0C4CEE7;
+	Mon, 13 Oct 2025 15:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368188;
-	bh=7VdeC7ODruayH2jsWSJ+H0HDohUQ4ODNOu4BE4sssPs=;
+	s=korg; t=1760368087;
+	bh=IXSUWtI9j6i5CK2364GiXtBquU57sl35cqaID5ADqZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJVhvATkj4naSbU5KuEiB5WPj6kCFqmwBix32vruoJybPQC9gG4/VSe+wX1/gybjU
-	 jk/u2vlQLVAIo18cWP9iZ10T9IlieAeMbStQ7V8CgfSkxeaS3+ck72br5xxiX04cl4
-	 jtrqVvBNeVSJg51PTpmeFZUFA03sdTO75jmbHdIM=
+	b=EIoDYzrB0x/HXlyIMsswTP4Q03RqJAs2u1gfgQoQKx7D+3SDz4Y/VoXzzXNLYGHkR
+	 D2nRWxrOHQPnLiiA/JVCJbAk4P0ZBdeWWDzR1oRvq/+dvwau2PSmPFaab8TJTXnhe8
+	 qrfokdrkaGXmEyqOU+DpuZnJLrZ6V5YNuS1142Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huisong Li <lihuisong@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/262] ACPI: processor: idle: Fix memory leak when register cpuidle device failed
-Date: Mon, 13 Oct 2025 16:42:53 +0200
-Message-ID: <20251013144327.254081743@linuxfoundation.org>
+Subject: [PATCH 6.12 032/262] soc: qcom: rpmh-rsc: Unconditionally clear _TRIGGER bit for TCS
+Date: Mon, 13 Oct 2025 16:42:54 +0200
+Message-ID: <20251013144327.290240471@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
 References: <20251013144326.116493600@linuxfoundation.org>
@@ -66,38 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Huisong Li <lihuisong@huawei.com>
+From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
 
-[ Upstream commit 11b3de1c03fa9f3b5d17e6d48050bc98b3704420 ]
+[ Upstream commit f87412d18edb5b8393eb8cb1c2d4a54f90185a21 ]
 
-The cpuidle device's memory is leaked when cpuidle device registration
-fails in acpi_processor_power_init().  Free it as appropriate.
+Unconditionally clear the TCS_AMC_MODE_TRIGGER bit when a
+transaction completes. Previously this bit was only cleared when
+a wake TCS was borrowed as an AMC TCS but not for dedicated
+AMC TCS. Leaving this bit set for AMC TCS and entering deeper low
+power modes can generate a false completion IRQ.
 
-Fixes: 3d339dcbb56d ("cpuidle / ACPI : move cpuidle_device field out of the acpi_processor_power structure")
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
-Link: https://patch.msgid.link/20250728070612.1260859-2-lihuisong@huawei.com
-[ rjw: Changed the order of the new statements, added empty line after if () ]
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Prevent this scenario by always clearing the TCS_AMC_MODE_TRIGGER
+bit upon receiving a completion IRQ.
+
+Fixes: 15b3bf61b8d4 ("soc: qcom: rpmh-rsc: Clear active mode configuration for wake TCS")
+Signed-off-by: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250825-rpmh_rsc_change-v1-1-138202c31bf6@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_idle.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/soc/qcom/rpmh-rsc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 0888e4d618d53..b524cf27213d4 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1410,6 +1410,9 @@ int acpi_processor_power_init(struct acpi_processor *pr)
- 		if (retval) {
- 			if (acpi_processor_registered == 0)
- 				cpuidle_unregister_driver(&acpi_idle_driver);
-+
-+			per_cpu(acpi_cpuidle_device, pr->id) = NULL;
-+			kfree(dev);
- 			return retval;
- 		}
- 		acpi_processor_registered++;
+diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
+index 641f29a98cbd2..cc72a31a450e4 100644
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -453,13 +453,10 @@ static irqreturn_t tcs_tx_done(int irq, void *p)
+ 
+ 		trace_rpmh_tx_done(drv, i, req);
+ 
+-		/*
+-		 * If wake tcs was re-purposed for sending active
+-		 * votes, clear AMC trigger & enable modes and
++		/* Clear AMC trigger & enable modes and
+ 		 * disable interrupt for this TCS
+ 		 */
+-		if (!drv->tcs[ACTIVE_TCS].num_tcs)
+-			__tcs_set_trigger(drv, i, false);
++		__tcs_set_trigger(drv, i, false);
+ skip:
+ 		/* Reclaim the TCS */
+ 		write_tcs_reg(drv, drv->regs[RSC_DRV_CMD_ENABLE], i, 0);
 -- 
 2.51.0
 
