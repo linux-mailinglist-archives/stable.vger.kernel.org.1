@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF9FBD458B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCECBD46EA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 66D66506CD0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 476D8407B56
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D329E30C36A;
-	Mon, 13 Oct 2025 15:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0130E309DA4;
+	Mon, 13 Oct 2025 15:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdD0+FHI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pen0o6Gw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9023F30FC03;
-	Mon, 13 Oct 2025 15:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ABF221F20;
+	Mon, 13 Oct 2025 15:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367930; cv=none; b=hHJ/fh3bTclHimirjfma8tOKOOPwn7A2tt/UN+6zIIQPEPjmE10nGdnkJl/zffB4Lkz302bEScJVwgZj4SxTys4Zjenk0ymwPIqoAMWIIVWqe3gSc6eHh82X0+RsaPtYRgU9sprSlSrQQQcAy036Hvz+jEaNPPMRQ1SPGnBBw2s=
+	t=1760368643; cv=none; b=pGPeT93sqRUctdyNyHzw+Z8ONYVWo8hea9DbCooFr8z+ojYqUcEseA0KoVySf0jmUVv8bqvm4nXcAc2GFv2gjvT/5j/AG1XdMRUGoK7oq8H78SYMMbRG6mXTvPaQ8R/l2A0yY/atVxLExRik7yeE8oa2ie43X+9/qwA1IIwBSac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367930; c=relaxed/simple;
-	bh=FZP9Ysg9Jrf3N1uDpouGJvH28kYv0DFuzHFU6t9feBI=;
+	s=arc-20240116; t=1760368643; c=relaxed/simple;
+	bh=WGV7kEK9xESmv+bl0j67+iUce9A7KP61P35nZbPNqT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEkRWCt6oqkjgdJd0nQ9ycwf7Ew67bycvAXRLoq6bjM02+jR/PiMHJ/M3hCKTa6Cne0StRySzChzoG/ClQW5Z4iIAon3lBr8iMlf2ln4/nz5ObYn+wdwL126n1wPCbT03hWf8e/zYKDRtWh1ScWplKfbhwxqeHJXP6m0QlYtm8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdD0+FHI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181C3C4CEE7;
-	Mon, 13 Oct 2025 15:05:29 +0000 (UTC)
+	 MIME-Version; b=giUNdVg0tD2D3hzLAbQwyJ2/0ZpCRAbAg/DL6Oa/LkIOaEhXwrgTLnWl6PFtPQwKD8wks0Am6HSwpvZYZAjzc0gvhj8/e5eje9Nx0DAr4B+xU2bduufT+w/6T3R2tWUeDKZbqxcZebLVNaYamX3MRS1L9E1wEtAcy2YfapAwEHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pen0o6Gw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3734BC4CEE7;
+	Mon, 13 Oct 2025 15:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367930;
-	bh=FZP9Ysg9Jrf3N1uDpouGJvH28kYv0DFuzHFU6t9feBI=;
+	s=korg; t=1760368643;
+	bh=WGV7kEK9xESmv+bl0j67+iUce9A7KP61P35nZbPNqT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hdD0+FHIFNo9sczgn+alQlol9uN5XU+EjXcAo+54OlPGKa5wOqEDCqZCq5cOV6Vzu
-	 IjQHKPezGe287OkXkLZalBMcpenUhrVmY8s2DYZaE2bpAEE9fGXg+Z/21omgjlC92h
-	 Zb1vSrc4fix4oEtgISjMJIWPtXXmEgFta6S1oc5c=
+	b=pen0o6Gwb3MdHj7OWM1MKwzT/hWZeySz8mOMeE+nbf+vSt3vBD26wYCrA+08Syi/a
+	 o6yN40Deckya8NEEQKOWvhFkbv2Ew/ZPLD4ubRftptx8uPHUVjmsNX71y8HvtIlTpz
+	 BWMPp6fbpt84eRSisw4EcyXE/33/SsLVO/rJ+Z5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.6 183/196] nvdimm: ndtest: Return -ENOMEM if devm_kcalloc() fails in ndtest_probe()
+	syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com,
+	Larshin Sergey <Sergey.Larshin@kaspersky.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.12 232/262] fs: udf: fix OOB read in lengthAllocDescs handling
 Date: Mon, 13 Oct 2025 16:46:14 +0200
-Message-ID: <20251013144321.927892146@linuxfoundation.org>
+Message-ID: <20251013144334.596375991@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Larshin Sergey <Sergey.Larshin@kaspersky.com>
 
-commit a9e6aa994917ee602798bbb03180a194b37865bb upstream.
+commit 3bd5e45c2ce30e239d596becd5db720f7eb83c99 upstream.
 
-devm_kcalloc() may fail. ndtest_probe() allocates three DMA address
-arrays (dcr_dma, label_dma, dimm_dma) and later unconditionally uses
-them in ndtest_nvdimm_init(), which can lead to a NULL pointer
-dereference under low-memory conditions.
+When parsing Allocation Extent Descriptor, lengthAllocDescs comes from
+on-disk data and must be validated against the block size. Crafted or
+corrupted images may set lengthAllocDescs so that the total descriptor
+length (sizeof(allocExtDesc) + lengthAllocDescs) exceeds the buffer,
+leading udf_update_tag() to call crc_itu_t() on out-of-bounds memory and
+trigger a KASAN use-after-free read.
 
-Check all three allocations and return -ENOMEM if any allocation fails,
-jumping to the common error path. Do not emit an extra error message
-since the allocator already warns on allocation failure.
+BUG: KASAN: use-after-free in crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
+Read of size 1 at addr ffff888041e7d000 by task syz-executor317/5309
 
-Fixes: 9399ab61ad82 ("ndtest: Add dimms to the two buses")
+CPU: 0 UID: 0 PID: 5309 Comm: syz-executor317 Not tainted 6.12.0-rc4-syzkaller-00261-g850925a8133c #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
+ udf_update_tag+0x70/0x6a0 fs/udf/misc.c:261
+ udf_write_aext+0x4d8/0x7b0 fs/udf/inode.c:2179
+ extent_trunc+0x2f7/0x4a0 fs/udf/truncate.c:46
+ udf_truncate_tail_extent+0x527/0x7e0 fs/udf/truncate.c:106
+ udf_release_file+0xc1/0x120 fs/udf/file.c:185
+ __fput+0x23f/0x880 fs/file_table.c:431
+ task_work_run+0x24f/0x310 kernel/task_work.c:239
+ exit_task_work include/linux/task_work.h:43 [inline]
+ do_exit+0xa2f/0x28e0 kernel/exit.c:939
+ do_group_exit+0x207/0x2c0 kernel/exit.c:1088
+ __do_sys_exit_group kernel/exit.c:1099 [inline]
+ __se_sys_exit_group kernel/exit.c:1097 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
+ x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+Validate the computed total length against epos->bh->b_size.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Reported-by: syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8743fca924afed42f93e
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Larshin Sergey <Sergey.Larshin@kaspersky.com>
+Link: https://patch.msgid.link/20250922131358.745579-1-Sergey.Larshin@kaspersky.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/nvdimm/test/ndtest.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/udf/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/nvdimm/test/ndtest.c
-+++ b/tools/testing/nvdimm/test/ndtest.c
-@@ -845,11 +845,22 @@ static int ndtest_probe(struct platform_
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -2265,6 +2265,9 @@ int udf_current_aext(struct inode *inode
+ 		if (check_add_overflow(sizeof(struct allocExtDesc),
+ 				le32_to_cpu(header->lengthAllocDescs), &alen))
+ 			return -1;
++
++		if (alen > epos->bh->b_size)
++			return -1;
+ 	}
  
- 	p->dcr_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
- 				 sizeof(dma_addr_t), GFP_KERNEL);
-+	if (!p->dcr_dma) {
-+		rc = -ENOMEM;
-+		goto err;
-+	}
- 	p->label_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
- 				   sizeof(dma_addr_t), GFP_KERNEL);
-+	if (!p->label_dma) {
-+		rc = -ENOMEM;
-+		goto err;
-+	}
- 	p->dimm_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
- 				  sizeof(dma_addr_t), GFP_KERNEL);
--
-+	if (!p->dimm_dma) {
-+		rc = -ENOMEM;
-+		goto err;
-+	}
- 	rc = ndtest_nvdimm_init(p);
- 	if (rc)
- 		goto err;
+ 	switch (iinfo->i_alloc_type) {
 
 
 
