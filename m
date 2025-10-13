@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786A2BD45C2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D3DDBD3BC7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3D649507ADA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4A3484F47C8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856193112C7;
-	Mon, 13 Oct 2025 15:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F135299A96;
+	Mon, 13 Oct 2025 14:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cx9PR6zR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsSkjW1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4086F3112B7;
-	Mon, 13 Oct 2025 15:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084C3273D6B;
+	Mon, 13 Oct 2025 14:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368090; cv=none; b=OIIVqhp5pzULMPQmKqECVHwlNep0KZJ1xLWE6moeqlFw2FM5o1v/FBhxpD7QIX18okE5AujZZ6GpweJGZovC0UQ8sYCSN6JkGjHKnn5D4a7yFGZKg7w3rFTQdUh+sW2Zr/BhMgYsEAZNs6xJy21E9gsGp8uZ4CkSSkA3ZfPWsCA=
+	t=1760366862; cv=none; b=QC0ykVKjD7CMJUB4+6DaYneZOlydvMFF9WcrIBN5T7Q9Z24wT11j+qDv8xsQ1JgI7yjMNmKjNGa5WBxw8TxordSyZHyTEM6TqP9xqQYvo4l2cyaw9ykXPbwnJ+WdbSLfpw7NXUmDSULMGUPl01FmHdkBuoav/EGQ7xlp1X7n02I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368090; c=relaxed/simple;
-	bh=PL/3IJ5BNNyk4Rv4W+oJKtqIC3dW0ve6eoRGuZvKl48=;
+	s=arc-20240116; t=1760366862; c=relaxed/simple;
+	bh=RjOEXcl0Wux6GVKIPupxMPAFyb3AOOSo8hxnZzEWerU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoCe8aja3oKyjk2gm6L/uODDoFp6esf3ScqEj3P0fhbuaHf3jw4IQ/pR7eI0GBy9LjB5EXlYLdf3zVf/KN7zafGo3co4GKvHXUgdBu2m/ROXESG3QpgALk/4+VtIxJq5DHjtGG1OLqDjeAbxNXO3Zkc9xb0aUXubzN2H6Ypeu7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cx9PR6zR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA2DC4CEE7;
-	Mon, 13 Oct 2025 15:08:09 +0000 (UTC)
+	 MIME-Version; b=WUydS9k+nHh19v0WZTosZYyt2eDXdde6rw78h966STVLGpMbNLNOtsWk7J8jMkx1PtQnIoo1tipXMXPO9RJEbsXoqWNJAULh9466v+Tvf7zXCi+t2mw1MNo8wTuBF44w93xbQeXS9UYB1porso++JWeFhdgxaLWZTXqSFYDCMYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsSkjW1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428C2C4CEE7;
+	Mon, 13 Oct 2025 14:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368090;
-	bh=PL/3IJ5BNNyk4Rv4W+oJKtqIC3dW0ve6eoRGuZvKl48=;
+	s=korg; t=1760366861;
+	bh=RjOEXcl0Wux6GVKIPupxMPAFyb3AOOSo8hxnZzEWerU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cx9PR6zRnpDm91p9siJfyDp7T+rGFYUrxB/M87msZBUqXD/rUxDlSEZILj5WxCfQc
-	 wqEIOcI5NcvZYty5s+4vB9lh2i4+dWfkS2z/Qi09Ssf+0xtwoLIf+M85NQ6xYP0sfO
-	 GYMIuQEHd/S0EprDTTR4B+UYdvWHOzPXFTDqQ/v8=
+	b=XsSkjW1fTblnK8abcub4HKULYdwX3uz641j7TyTPtKtWQoVg/OaLHAQu2ZrBjoIi3
+	 IfDRcFlaq1yB8Xp/isQsYsPPGrdeBmcX00l4c7dAM2T8qsax7t34O6WEi4uBOU62Yg
+	 7i/+3RWGAqrczjAXxZYz08KeXK2lHkGsCemlvfA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/262] PM: sleep: core: Clear power.must_resume in noirq suspend error path
+	Wang Haoran <haoranwangsec@gmail.com>,
+	ziiiro <yuanmingbuaa@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 010/196] scsi: target: target_core_configfs: Add length check to avoid buffer overflow
 Date: Mon, 13 Oct 2025 16:43:03 +0200
-Message-ID: <20251013144327.611375307@linuxfoundation.org>
+Message-ID: <20251013144314.935141716@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Wang Haoran <haoranwangsec@gmail.com>
 
-[ Upstream commit be82483d1b60baf6747884bd74cb7de484deaf76 ]
+commit 27e06650a5eafe832a90fd2604f0c5e920857fae upstream.
 
-If system suspend is aborted in the "noirq" phase (for instance, due to
-an error returned by one of the device callbacks), power.is_noirq_suspended
-will not be set for some devices and device_resume_noirq() will return
-early for them.  Consequently, noirq resume callbacks will not run for
-them at all because the noirq suspend callbacks have not run for them
-yet.
+A buffer overflow arises from the usage of snprintf to write into the
+buffer "buf" in target_lu_gp_members_show function located in
+/drivers/target/target_core_configfs.c. This buffer is allocated with
+size LU_GROUP_NAME_BUF (256 bytes).
 
-If any of them has power.must_resume set and late suspend has been
-skipped for it (due to power.smart_suspend), early resume should be
-skipped for it either, or its state may become inconsistent (for
-instance, if the early resume assumes that it will always follow
-noirq resume).
+snprintf(...) formats multiple strings into buf with the HBA name
+(hba->hba_group.cg_item), a slash character, a devicename (dev->
+dev_group.cg_item) and a newline character, the total formatted string
+length may exceed the buffer size of 256 bytes.
 
-Make that happen by clearing power.must_resume in device_resume_noirq()
-for devices with power.is_noirq_suspended clear that have been left in
-suspend by device_suspend_late(), which will subsequently cause
-device_resume_early() to leave the device in suspend and avoid
-changing its state.
+Since snprintf() returns the total number of bytes that would have been
+written (the length of %s/%sn ), this value may exceed the buffer length
+(256 bytes) passed to memcpy(), this will ultimately cause function
+memcpy reporting a buffer overflow error.
 
-Fixes: 0d4b54c6fee8 ("PM / core: Add LEAVE_SUSPENDED driver flag")
-Link: https://lore.kernel.org/linux-pm/5d692b81-6f58-4e86-9cb0-ede69a09d799@rowland.harvard.edu/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/3381776.aeNJFYEL58@rafael.j.wysocki
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+An additional check of the return value of snprintf() can avoid this
+buffer overflow.
+
+Reported-by: Wang Haoran <haoranwangsec@gmail.com>
+Reported-by: ziiiro <yuanmingbuaa@gmail.com>
+Signed-off-by: Wang Haoran <haoranwangsec@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/main.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/target/target_core_configfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index faf4cdec23f04..abb16a5bb7967 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -628,8 +628,20 @@ static void device_resume_noirq(struct device *dev, pm_message_t state, bool asy
- 	if (dev->power.syscore || dev->power.direct_complete)
- 		goto Out;
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -2691,7 +2691,7 @@ static ssize_t target_lu_gp_members_show
+ 			config_item_name(&dev->dev_group.cg_item));
+ 		cur_len++; /* Extra byte for NULL terminator */
  
--	if (!dev->power.is_noirq_suspended)
-+	if (!dev->power.is_noirq_suspended) {
-+		/*
-+		 * This means that system suspend has been aborted in the noirq
-+		 * phase before invoking the noirq suspend callback for the
-+		 * device, so if device_suspend_late() has left it in suspend,
-+		 * device_resume_early() should leave it in suspend either in
-+		 * case the early resume of it depends on the noirq resume that
-+		 * has not run.
-+		 */
-+		if (dev_pm_skip_suspend(dev))
-+			dev->power.must_resume = false;
-+
- 		goto Out;
-+	}
- 
- 	if (!dpm_wait_for_superior(dev, async))
- 		goto Out;
--- 
-2.51.0
-
+-		if ((cur_len + len) > PAGE_SIZE) {
++		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
+ 			pr_warn("Ran out of lu_gp_show_attr"
+ 				"_members buffer\n");
+ 			break;
 
 
 
