@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BFDBD435A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66771BD4561
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:36:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35CF53B600D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B0AE4223DA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A7E30F92E;
-	Mon, 13 Oct 2025 15:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A969B30DD09;
+	Mon, 13 Oct 2025 14:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3le9NN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5vU6v7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED0130F928;
-	Mon, 13 Oct 2025 15:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67444307AF4;
+	Mon, 13 Oct 2025 14:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367864; cv=none; b=KfIysyhO3hnscMZLwr5pYmSM8w0iFYQCGZrCwB1brgqvX4+uCsj90EO5K/ptErfnfMWpRg95TRSzjTOCa1jkT2NZxnSL4L1UmSsODXslcOnKhM1bxQ2GNacLY8OMSWrqLwOxp30waAoJ7/4ZBdrWirP5wbeHTi4lyUugs3C6CnE=
+	t=1760367347; cv=none; b=m0yRl/O3j/XALvL7AJrSsmQeckbWtfWsIltPCfisJepyq6qKDqXUwzcN2QgoLQsB3AsoevRaCC7RNNXLUhG+FdBV5hRTo2etg0aFGsZWSKkskhds2g/H64H9y9ik0N0pYmC3R4DfR0RN0n2XnE6pgHNaXp9elv/UHi5n75QhqRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367864; c=relaxed/simple;
-	bh=xeumYXNmw8DpOFXH3G27ju8KQ7Jat/QBAyZLvZe0Nds=;
+	s=arc-20240116; t=1760367347; c=relaxed/simple;
+	bh=/xnOoXMqhwsGL+Ys22+axOnvvWJnFeyxKqSsV7YsdW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgMKZrUVxS0knqrIQvJpZONDStx9CmWB+aqwtQTFYJwuN3pW+fcmBV3+JDFogWxTbzIzNOlcW0VH8BoA7pIQ0dneip2jhCH2KPaU6UPYJ/TtVXDlhjnVsIKQmk9Z7CjGed6/lataMuofTxZC2UAqYkGYsBAMnOtpo4lChXFNxsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3le9NN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96A1C4CEFE;
-	Mon, 13 Oct 2025 15:04:23 +0000 (UTC)
+	 MIME-Version; b=FgLjhnNQsGhkwHp7eI1ipkVLg4rlwzH5ZSk7Hwcob7kMuOKobVx0nDFQt+OO6pHEpSlIy/ZhuuOGRyM5p+G+ltOpcU3tmg1vtkCHqKAkGiPmsntnNCzm4bHeeyWeYKdiddqASaWy9ie+A6+cBvRem4JqF0JFSQk7CZM1uPtAmAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5vU6v7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7D5C4CEE7;
+	Mon, 13 Oct 2025 14:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367864;
-	bh=xeumYXNmw8DpOFXH3G27ju8KQ7Jat/QBAyZLvZe0Nds=;
+	s=korg; t=1760367346;
+	bh=/xnOoXMqhwsGL+Ys22+axOnvvWJnFeyxKqSsV7YsdW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v3le9NN9QQthoJpX++98C3ek6vKprldPki90q+YkSmaxrZjlHPQzNXLPwlyPfZPQH
-	 H1Bq9FN+z1b0I0+rg2OdcjxwCZlYrnAo/ka3g8F2iY+g1Cg3/hpko5B/wbnR/eVc2D
-	 RWDsDrf3hXNqos6RvdvjM1cYfohLwK0bypIAmi0M=
+	b=E5vU6v7cmnVoXaQ8u8ufFZh+zMTW9FujmTZvhAKxgJwMbJfSchdTmd8cYe/4j6uJp
+	 WbHwSr17QUXxgZpd8WFYVSojZDc1VsLf7Ob3R2AHVDvDuocGt0fInqJ3u1tWTqNfXE
+	 vna2IF9whvw+nyLLKPtuYI23saMSX4CjWTgaBbFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/196] nfp: fix RSS hash key size when RSS is not supported
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 177/196] mfd: vexpress-sysreg: Check the return value of devm_gpiochip_add_data()
 Date: Mon, 13 Oct 2025 16:45:50 +0200
-Message-ID: <20251013144321.063485781@linuxfoundation.org>
+Message-ID: <20251013144321.098643766@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 8425161ac1204d2185e0a10f5ae652bae75d2451 ]
+commit 1efbee6852f1ff698a9981bd731308dd027189fb upstream.
 
-The nfp_net_get_rxfh_key_size() function returns -EOPNOTSUPP when
-devices don't support RSS, and callers treat the negative value as a
-large positive value since the return type is u32.
+Commit 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+removed the return value check from the call to gpiochip_add_data() (or
+rather gpiochip_add() back then and later converted to devres) with no
+explanation. This function however can still fail, so check the return
+value and bail-out if it does.
 
-Return 0 when devices don't support RSS, aligning with the ethtool
-interface .get_rxfh_key_size() that requires returning 0 in such cases.
-
-Fixes: 9ff304bfaf58 ("nfp: add support for reporting CRC32 hash function")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Link: https://patch.msgid.link/20250929054230.68120-1-enjuk@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/vexpress-sysreg.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-index e75cbb287625f..87383f9d09ce3 100644
---- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-@@ -1413,7 +1413,7 @@ static u32 nfp_net_get_rxfh_key_size(struct net_device *netdev)
- 	struct nfp_net *nn = netdev_priv(netdev);
+--- a/drivers/mfd/vexpress-sysreg.c
++++ b/drivers/mfd/vexpress-sysreg.c
+@@ -98,6 +98,7 @@ static int vexpress_sysreg_probe(struct
+ 	struct resource *mem;
+ 	void __iomem *base;
+ 	struct gpio_chip *mmc_gpio_chip;
++	int ret;
  
- 	if (!(nn->cap & NFP_NET_CFG_CTRL_RSS_ANY))
--		return -EOPNOTSUPP;
-+		return 0;
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!mem)
+@@ -118,7 +119,10 @@ static int vexpress_sysreg_probe(struct
+ 	bgpio_init(mmc_gpio_chip, &pdev->dev, 0x4, base + SYS_MCI,
+ 			NULL, NULL, NULL, NULL, 0);
+ 	mmc_gpio_chip->ngpio = 2;
+-	devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
++
++	ret = devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
++	if (ret)
++		return ret;
  
- 	return nfp_net_rss_key_sz(nn);
- }
--- 
-2.51.0
-
+ 	return devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
+ 			vexpress_sysreg_cells,
 
 
 
