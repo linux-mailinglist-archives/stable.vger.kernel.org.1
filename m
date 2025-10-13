@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-185253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18BE2BD4D67
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2F7BD5047
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9F8E482DE5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34ECC403746
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1D630C60A;
-	Mon, 13 Oct 2025 15:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5383101D4;
+	Mon, 13 Oct 2025 15:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLTvX5hc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N17CGu/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293C52F998D;
-	Mon, 13 Oct 2025 15:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8903101CD;
+	Mon, 13 Oct 2025 15:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369771; cv=none; b=Ofs8Ik+gQ7XQEccdk7N/4hAW8wDuymxMYd+2KDPtgYnCCQwawVFW4M0fppwvQcX63NGpMQkHW060VpxN39X4+k19tktf90t/OsRgIlFn8OGgriGxNDAqZRBqjmX1ddcDn4AN9MygHMS4KLi83zXRVnGiwFiXuMj1JldxN9Kg6Pk=
+	t=1760369776; cv=none; b=tYM3NerWx+IPhBchFdFtZNOx2ARaz49y/3daaiEsZVWOzHLbi+gmntjQSgHL1tWXzH+zGha5IqQNIH7Wggu2AFSrs7gps5Pa209qwOCgJ8B11agMXHHnfvsFKIOHwUMcN9NmP8eGFVdXX8UPRFJdeXlizZ4rMfEbic9mx/tBxA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369771; c=relaxed/simple;
-	bh=pvQ8KeFyNtkbbaB5v+nrPUku7mxp+qqWE1YGujxVzK4=;
+	s=arc-20240116; t=1760369776; c=relaxed/simple;
+	bh=NycFdmMRU5WpcYudxxq7wPCMh7JX/XP+RvLHAKbIFF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2+BAUNyZTQFi0AKmuUG1ycbQXRgktfv6QTi7gpkLewFphFFrGzA7iS7CbhdUmzHNT4RfLCk5P9ZbtgPaDWUfBIYsTnSfuzx/gkosWfJWEujCOug9ZF25o2LBPDiINRP+NXf0jPUa8vnM1iXe6PZ6dN/V1B6cB7S55vtf7mgMHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLTvX5hc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F17C4CEE7;
-	Mon, 13 Oct 2025 15:36:10 +0000 (UTC)
+	 MIME-Version; b=ixWaPWyFcfC1vuCgu+clDtN9MOjISZ2RU/1J6FTrQimrsgw/bwhkOaTHMfOx3eOZZL2nlsv9Jvym5iBRWCcsEJW/Q8iKjGdbPq3hddYC6ySdFQo1IlKd0E3+1yoPeVPqX7auAsZY3ZC4KTe2AQYjcrwdnZFhgzuXaccmm9p4TcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N17CGu/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B41C4CEE7;
+	Mon, 13 Oct 2025 15:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369771;
-	bh=pvQ8KeFyNtkbbaB5v+nrPUku7mxp+qqWE1YGujxVzK4=;
+	s=korg; t=1760369776;
+	bh=NycFdmMRU5WpcYudxxq7wPCMh7JX/XP+RvLHAKbIFF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLTvX5hcAi36qnRGSAUsPDfW3opTXquW4dQ/WddEp8TRcNueg7Xm8t8CqyEYZa0NW
-	 HiwsEq9QYao1nMzwsizhzXu5r+abahCtWNyefeNkQSaInJXXkudPsSha2VbWTPGoU6
-	 e+X4c9/bUPB5OBQ5z/RrylPtpQKRhURxaPEGqdoM=
+	b=N17CGu/ak2HOdnnLIQCO6WWtoAGNB8EscO9+bzhu2Y+UKy6JscC25nWy8taKz12vV
+	 A5BPKNbywsLprasb3nj5m41R4qaZTPpTCqt7wmhWV0ApRaVLUZNba+QTUTx9VBzAd+
+	 OHWgO+jGICMkymfPbo/+A/OS0YILRgEvtC0UCfr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Zqiang <qiang.zhang@linux.dev>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 362/563] wifi: mt76: mt7996: remove redundant per-phy mac80211 calls during restart
-Date: Mon, 13 Oct 2025 16:43:43 +0200
-Message-ID: <20251013144424.393525078@linuxfoundation.org>
+Subject: [PATCH 6.17 364/563] srcu/tiny: Remove preempt_disable/enable() in srcu_gp_start_if_needed()
+Date: Mon, 13 Oct 2025 16:43:45 +0200
+Message-ID: <20251013144424.464811624@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -65,272 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Zqiang <qiang.zhang@linux.dev>
 
-[ Upstream commit 0a5df0ec47f7edc04957925a9644101682041d27 ]
+[ Upstream commit e6a43aeb71852a39432332dcc3a6d11bb464b075 ]
 
-There is only one wiphy, so extra calls must be removed.
-For calls that need to remain per-wiphy, use mt7996_for_each_phy
+Currently, the srcu_gp_start_if_needed() is always be invoked in
+preempt disable's critical section, this commit therefore remove
+redundant preempt_disable/enable() in srcu_gp_start_if_needed()
+and adds a call to lockdep_assert_preemption_disabled() in order
+to enable lockdep to diagnose mistaken invocations of this function
+from preempts-enabled code.
 
-Fixes: 69d54ce7491d ("wifi: mt76: mt7996: switch to single multi-radio wiphy")
-Link: https://patch.msgid.link/20250915075910.47558-1-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 65b4a59557f6 ("srcu: Make Tiny SRCU explicitly disable preemption")
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 137 +++++-------------
- 1 file changed, 35 insertions(+), 102 deletions(-)
+ kernel/rcu/srcutiny.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index b3fcca9bbb958..28477702c18b3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1766,13 +1766,10 @@ void mt7996_tx_token_put(struct mt7996_dev *dev)
- static int
- mt7996_mac_restart(struct mt7996_dev *dev)
+diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+index 6e9fe2ce1075d..e3b64a5e0ec7e 100644
+--- a/kernel/rcu/srcutiny.c
++++ b/kernel/rcu/srcutiny.c
+@@ -176,10 +176,9 @@ static void srcu_gp_start_if_needed(struct srcu_struct *ssp)
  {
--	struct mt7996_phy *phy2, *phy3;
- 	struct mt76_dev *mdev = &dev->mt76;
-+	struct mt7996_phy *phy;
- 	int i, ret;
+ 	unsigned long cookie;
  
--	phy2 = mt7996_phy2(dev);
--	phy3 = mt7996_phy3(dev);
--
- 	if (dev->hif2) {
- 		mt76_wr(dev, MT_INT1_MASK_CSR, 0x0);
- 		mt76_wr(dev, MT_INT1_SOURCE_CSR, ~0);
-@@ -1784,20 +1781,14 @@ mt7996_mac_restart(struct mt7996_dev *dev)
- 			mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE, 0x0);
+-	preempt_disable();  // Needed for PREEMPT_LAZY
++	lockdep_assert_preemption_disabled(); // Needed for PREEMPT_LAZY
+ 	cookie = get_state_synchronize_srcu(ssp);
+ 	if (ULONG_CMP_GE(READ_ONCE(ssp->srcu_idx_max), cookie)) {
+-		preempt_enable();
+ 		return;
  	}
- 
--	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
-+	mt7996_for_each_phy(dev, phy)
-+		set_bit(MT76_RESET, &phy->mt76->state);
- 	wake_up(&dev->mt76.mcu.wait);
--	if (phy2)
--		set_bit(MT76_RESET, &phy2->mt76->state);
--	if (phy3)
--		set_bit(MT76_RESET, &phy3->mt76->state);
- 
- 	/* lock/unlock all queues to ensure that no tx is pending */
--	mt76_txq_schedule_all(&dev->mphy);
--	if (phy2)
--		mt76_txq_schedule_all(phy2->mt76);
--	if (phy3)
--		mt76_txq_schedule_all(phy3->mt76);
-+	mt7996_for_each_phy(dev, phy)
-+		mt76_txq_schedule_all(phy->mt76);
- 
- 	/* disable all tx/rx napi */
- 	mt76_worker_disable(&dev->mt76.tx_worker);
-@@ -1855,36 +1846,25 @@ mt7996_mac_restart(struct mt7996_dev *dev)
- 		goto out;
- 
- 	mt7996_mac_init(dev);
--	mt7996_init_txpower(&dev->phy);
--	mt7996_init_txpower(phy2);
--	mt7996_init_txpower(phy3);
-+	mt7996_for_each_phy(dev, phy)
-+		mt7996_init_txpower(phy);
- 	ret = mt7996_txbf_init(dev);
-+	if (ret)
-+		goto out;
- 
--	if (test_bit(MT76_STATE_RUNNING, &dev->mphy.state)) {
--		ret = mt7996_run(&dev->phy);
--		if (ret)
--			goto out;
--	}
--
--	if (phy2 && test_bit(MT76_STATE_RUNNING, &phy2->mt76->state)) {
--		ret = mt7996_run(phy2);
--		if (ret)
--			goto out;
--	}
-+	mt7996_for_each_phy(dev, phy) {
-+		if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
-+			continue;
- 
--	if (phy3 && test_bit(MT76_STATE_RUNNING, &phy3->mt76->state)) {
--		ret = mt7996_run(phy3);
-+		ret = mt7996_run(&dev->phy);
- 		if (ret)
- 			goto out;
+ 	WRITE_ONCE(ssp->srcu_idx_max, cookie);
+@@ -189,7 +188,6 @@ static void srcu_gp_start_if_needed(struct srcu_struct *ssp)
+ 		else if (list_empty(&ssp->srcu_work.entry))
+ 			list_add(&ssp->srcu_work.entry, &srcu_boot_list);
  	}
- 
- out:
- 	/* reset done */
--	clear_bit(MT76_RESET, &dev->mphy.state);
--	if (phy2)
--		clear_bit(MT76_RESET, &phy2->mt76->state);
--	if (phy3)
--		clear_bit(MT76_RESET, &phy3->mt76->state);
-+	mt7996_for_each_phy(dev, phy)
-+		clear_bit(MT76_RESET, &phy->mt76->state);
- 
- 	napi_enable(&dev->mt76.tx_napi);
- 	local_bh_disable();
-@@ -1898,26 +1878,18 @@ mt7996_mac_restart(struct mt7996_dev *dev)
- static void
- mt7996_mac_full_reset(struct mt7996_dev *dev)
- {
--	struct mt7996_phy *phy2, *phy3;
-+	struct ieee80211_hw *hw = mt76_hw(dev);
-+	struct mt7996_phy *phy;
- 	int i;
- 
--	phy2 = mt7996_phy2(dev);
--	phy3 = mt7996_phy3(dev);
- 	dev->recovery.hw_full_reset = true;
- 
- 	wake_up(&dev->mt76.mcu.wait);
--	ieee80211_stop_queues(mt76_hw(dev));
--	if (phy2)
--		ieee80211_stop_queues(phy2->mt76->hw);
--	if (phy3)
--		ieee80211_stop_queues(phy3->mt76->hw);
-+	ieee80211_stop_queues(hw);
- 
- 	cancel_work_sync(&dev->wed_rro.work);
--	cancel_delayed_work_sync(&dev->mphy.mac_work);
--	if (phy2)
--		cancel_delayed_work_sync(&phy2->mt76->mac_work);
--	if (phy3)
--		cancel_delayed_work_sync(&phy3->mt76->mac_work);
-+	mt7996_for_each_phy(dev, phy)
-+		cancel_delayed_work_sync(&phy->mt76->mac_work);
- 
- 	mutex_lock(&dev->mt76.mutex);
- 	for (i = 0; i < 10; i++) {
-@@ -1930,40 +1902,23 @@ mt7996_mac_full_reset(struct mt7996_dev *dev)
- 		dev_err(dev->mt76.dev, "chip full reset failed\n");
- 
- 	ieee80211_restart_hw(mt76_hw(dev));
--	if (phy2)
--		ieee80211_restart_hw(phy2->mt76->hw);
--	if (phy3)
--		ieee80211_restart_hw(phy3->mt76->hw);
--
- 	ieee80211_wake_queues(mt76_hw(dev));
--	if (phy2)
--		ieee80211_wake_queues(phy2->mt76->hw);
--	if (phy3)
--		ieee80211_wake_queues(phy3->mt76->hw);
- 
- 	dev->recovery.hw_full_reset = false;
--	ieee80211_queue_delayed_work(mt76_hw(dev),
--				     &dev->mphy.mac_work,
--				     MT7996_WATCHDOG_TIME);
--	if (phy2)
--		ieee80211_queue_delayed_work(phy2->mt76->hw,
--					     &phy2->mt76->mac_work,
--					     MT7996_WATCHDOG_TIME);
--	if (phy3)
--		ieee80211_queue_delayed_work(phy3->mt76->hw,
--					     &phy3->mt76->mac_work,
-+	mt7996_for_each_phy(dev, phy)
-+		ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
- 					     MT7996_WATCHDOG_TIME);
+-	preempt_enable();
  }
  
- void mt7996_mac_reset_work(struct work_struct *work)
- {
--	struct mt7996_phy *phy2, *phy3;
-+	struct ieee80211_hw *hw;
- 	struct mt7996_dev *dev;
-+	struct mt7996_phy *phy;
- 	int i;
- 
- 	dev = container_of(work, struct mt7996_dev, reset_work);
--	phy2 = mt7996_phy2(dev);
--	phy3 = mt7996_phy3(dev);
-+	hw = mt76_hw(dev);
- 
- 	/* chip full reset */
- 	if (dev->recovery.restart) {
-@@ -1994,7 +1949,7 @@ void mt7996_mac_reset_work(struct work_struct *work)
- 		return;
- 
- 	dev_info(dev->mt76.dev,"\n%s L1 SER recovery start.",
--		 wiphy_name(dev->mt76.hw->wiphy));
-+		 wiphy_name(hw->wiphy));
- 
- 	if (mtk_wed_device_active(&dev->mt76.mmio.wed_hif2))
- 		mtk_wed_device_stop(&dev->mt76.mmio.wed_hif2);
-@@ -2003,25 +1958,17 @@ void mt7996_mac_reset_work(struct work_struct *work)
- 		mtk_wed_device_stop(&dev->mt76.mmio.wed);
- 
- 	ieee80211_stop_queues(mt76_hw(dev));
--	if (phy2)
--		ieee80211_stop_queues(phy2->mt76->hw);
--	if (phy3)
--		ieee80211_stop_queues(phy3->mt76->hw);
- 
- 	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 
- 	cancel_work_sync(&dev->wed_rro.work);
--	cancel_delayed_work_sync(&dev->mphy.mac_work);
--	if (phy2) {
--		set_bit(MT76_RESET, &phy2->mt76->state);
--		cancel_delayed_work_sync(&phy2->mt76->mac_work);
--	}
--	if (phy3) {
--		set_bit(MT76_RESET, &phy3->mt76->state);
--		cancel_delayed_work_sync(&phy3->mt76->mac_work);
-+	mt7996_for_each_phy(dev, phy) {
-+		set_bit(MT76_RESET, &phy->mt76->state);
-+		cancel_delayed_work_sync(&phy->mt76->mac_work);
- 	}
-+
- 	mt76_worker_disable(&dev->mt76.tx_worker);
- 	mt76_for_each_q_rx(&dev->mt76, i) {
- 		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
-@@ -2074,11 +2021,8 @@ void mt7996_mac_reset_work(struct work_struct *work)
- 	}
- 
- 	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
--	clear_bit(MT76_RESET, &dev->mphy.state);
--	if (phy2)
--		clear_bit(MT76_RESET, &phy2->mt76->state);
--	if (phy3)
--		clear_bit(MT76_RESET, &phy3->mt76->state);
-+	mt7996_for_each_phy(dev, phy)
-+		clear_bit(MT76_RESET, &phy->mt76->state);
- 
- 	mt76_for_each_q_rx(&dev->mt76, i) {
- 		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
-@@ -2100,25 +2044,14 @@ void mt7996_mac_reset_work(struct work_struct *work)
- 	napi_schedule(&dev->mt76.tx_napi);
- 	local_bh_enable();
- 
--	ieee80211_wake_queues(mt76_hw(dev));
--	if (phy2)
--		ieee80211_wake_queues(phy2->mt76->hw);
--	if (phy3)
--		ieee80211_wake_queues(phy3->mt76->hw);
-+	ieee80211_wake_queues(hw);
- 
- 	mutex_unlock(&dev->mt76.mutex);
- 
- 	mt7996_update_beacons(dev);
- 
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
--				     MT7996_WATCHDOG_TIME);
--	if (phy2)
--		ieee80211_queue_delayed_work(phy2->mt76->hw,
--					     &phy2->mt76->mac_work,
--					     MT7996_WATCHDOG_TIME);
--	if (phy3)
--		ieee80211_queue_delayed_work(phy3->mt76->hw,
--					     &phy3->mt76->mac_work,
-+	mt7996_for_each_phy(dev, phy)
-+		ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
- 					     MT7996_WATCHDOG_TIME);
- 	dev_info(dev->mt76.dev,"\n%s L1 SER recovery completed.",
- 		 wiphy_name(dev->mt76.hw->wiphy));
+ /*
 -- 
 2.51.0
 
