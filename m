@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A67BD4E91
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:19:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0724BD5365
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 279E1543918
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 292FE406467
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F67730BF53;
-	Mon, 13 Oct 2025 15:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BEE314D3C;
+	Mon, 13 Oct 2025 15:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMDyLf3o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHynKQnB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C648230BBBF;
-	Mon, 13 Oct 2025 15:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC043090CE;
+	Mon, 13 Oct 2025 15:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368735; cv=none; b=Rt5ZIcdck9j/nWavO1kFPueJOgjx+XMvuGC70ZRI6X75mUz/GC6Z8Uu5MXVu1ZUwfStpeJd3Z7sWwltgKp0L439ziNqrOAbv9nG908YxbhCPUkKdZMDBRCA6yLJvjEKYZhf0of/RDJfO/B8KzlJgxflXQGzeIC/mW7ese7S6XZs=
+	t=1760370248; cv=none; b=CdEt6O30NGCPm5VRpeJihlZ8p9PcFJdGc0Xn6ZBUgQwxM8pSrHS6pZ1K2UeE008e/yvpYU/fQkNsPXvzzYQDMxHb7MZQ7tCVpdxQGLLONsTH8J4rY0UcjacNRI3ERihH/qG6vDABwLfbn7SS2CZpGAWzsWkgGjFdIR5xZ/X793w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368735; c=relaxed/simple;
-	bh=tAnqS3HtAVLBlCT9epBbMksJ2ysgUARIaSY2Ueh9Mxk=;
+	s=arc-20240116; t=1760370248; c=relaxed/simple;
+	bh=7p1ZL2AeWDkfGEDiKXME8HdzUKTkNTBrht6OxyYQHTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZrGoZN269LjdCpnuKgPFelASis/dyCuZLDroyJkvWg/VPqCtx2CEBsSz/dbDZnecjo18LWi4aV+SCJxXfVoieGQNmuGPdFA3DJ9mDf1ZAvsBuhEhRPp5hL4cwJhIxTilm2Zlhm4aEfFQPUu/gQz6sgtQ/UvsR/WAg3TCDqCF8IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMDyLf3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED55C4CEE7;
-	Mon, 13 Oct 2025 15:18:54 +0000 (UTC)
+	 MIME-Version; b=UWNRI3V9iVZ47B22IxXd5fZUNool5DP5RfxNpfTxyZi+CbtP7rcpdXdB3FlRZuovI5EyyF9AGrZmZ/HmVMQiCZ6SJnRGlOXiXej16rDeGkFo8GbNz6rYScmEYC6J3Ba6DIB0kuwoGwB6GaPXYS5PvfN5ctzeRMq/Ej8NRKaLS9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHynKQnB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF165C4CEE7;
+	Mon, 13 Oct 2025 15:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368735;
-	bh=tAnqS3HtAVLBlCT9epBbMksJ2ysgUARIaSY2Ueh9Mxk=;
+	s=korg; t=1760370248;
+	bh=7p1ZL2AeWDkfGEDiKXME8HdzUKTkNTBrht6OxyYQHTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMDyLf3o+P266U7jH0v6fffK4i0kwWWWD3HqihpCOA+ClsIiB/EY7+ZTPjxU93BdM
-	 hM/ACAmRXKhbp7KbQWRpWzUY2qs3ST/ib0hjvwvVP3ptQqpfTtwd+mglam+aobdiHF
-	 YcjuK8/ExEKRQTLLkLw/9lghHszAVCZr+LpjGQEM=
+	b=hHynKQnBy4o0bbQ7oUYJRUsG/zRO9JKvu1j4AhQFjHA7zXP4A9m570AB/JBy3t7Wa
+	 lz2CToGjUXsrOkQcN/jRYPn6iMkPk6qLYAXaHQm+ko5mI3hJNqeXhuGow6rBavNNSn
+	 K3J24BMAnQ7FQfnvZHUYREeg/CliqilWa+GToH2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	Ling Xu <quic_lxu5@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.12 250/262] misc: fastrpc: Skip reference for DMA handles
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.17 531/563] LoongArch: BPF: Fix uninitialized symbol retval_off
 Date: Mon, 13 Oct 2025 16:46:32 +0200
-Message-ID: <20251013144335.240676592@linuxfoundation.org>
+Message-ID: <20251013144430.546943707@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,132 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ling Xu <quic_lxu5@quicinc.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 10df039834f84a297c72ec962c0f9b7c8c5ca31a upstream.
+commit 7b6c2d172d023d344527d3cb4516d0d6b29f4919 upstream.
 
-If multiple dma handles are passed with same fd over a remote call
-the kernel driver takes a reference and expects that put for the
-map will be called as many times to free the map. But DSP only
-updates the fd one time in the fd list when the DSP refcount
-goes to zero and hence kernel make put call only once for the
-fd. This can cause SMMU fault issue as the same fd can be used
-in future for some other call.
+In __arch_prepare_bpf_trampoline(), retval_off is meaningful only when
+save_ret is not 0, so the current logic is correct. But it may cause a
+build warning:
 
-Fixes: 35a82b87135d ("misc: fastrpc: Add dma handle implementation")
-Cc: stable@kernel.org
-Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250912131236.303102-5-srini@kernel.org
+arch/loongarch/net/bpf_jit.c:1547 __arch_prepare_bpf_trampoline() error: uninitialized symbol 'retval_off'.
+
+So initialize retval_off unconditionally to fix it.
+
+Cc: stable@vger.kernel.org
+Fixes: f9b6b41f0cf3 ("LoongArch: BPF: Add basic bpf trampoline support")
+Closes: https://lore.kernel.org/r/202508191020.PBBh07cK-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |   45 +++++++++++++++++++++++++++------------------
- 1 file changed, 27 insertions(+), 18 deletions(-)
+ arch/loongarch/net/bpf_jit.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -363,9 +363,8 @@ static int fastrpc_map_get(struct fastrp
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -1538,11 +1538,10 @@ static int __arch_prepare_bpf_trampoline
+ 	stack_size = 16;
  
- 
- static int fastrpc_map_lookup(struct fastrpc_user *fl, int fd,
--			    struct fastrpc_map **ppmap, bool take_ref)
-+			    struct fastrpc_map **ppmap)
- {
--	struct fastrpc_session_ctx *sess = fl->sctx;
- 	struct fastrpc_map *map = NULL;
- 	struct dma_buf *buf;
- 	int ret = -ENOENT;
-@@ -379,15 +378,6 @@ static int fastrpc_map_lookup(struct fas
- 		if (map->fd != fd || map->buf != buf)
- 			continue;
- 
--		if (take_ref) {
--			ret = fastrpc_map_get(map);
--			if (ret) {
--				dev_dbg(sess->dev, "%s: Failed to get map fd=%d ret=%d\n",
--					__func__, fd, ret);
--				break;
--			}
--		}
--
- 		*ppmap = map;
- 		ret = 0;
- 		break;
-@@ -757,7 +747,7 @@ static const struct dma_buf_ops fastrpc_
- 	.release = fastrpc_release,
- };
- 
--static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
-+static int fastrpc_map_attach(struct fastrpc_user *fl, int fd,
- 			      u64 len, u32 attr, struct fastrpc_map **ppmap)
- {
- 	struct fastrpc_session_ctx *sess = fl->sctx;
-@@ -766,9 +756,6 @@ static int fastrpc_map_create(struct fas
- 	struct scatterlist *sgl = NULL;
- 	int err = 0, sgl_index = 0;
- 
--	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
--		return 0;
--
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (!map)
- 		return -ENOMEM;
-@@ -853,6 +840,24 @@ get_err:
- 	return err;
- }
- 
-+static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
-+			      u64 len, u32 attr, struct fastrpc_map **ppmap)
-+{
-+	struct fastrpc_session_ctx *sess = fl->sctx;
-+	int err = 0;
+ 	save_ret = flags & (BPF_TRAMP_F_CALL_ORIG | BPF_TRAMP_F_RET_FENTRY_RET);
+-	if (save_ret) {
+-		/* Save BPF R0 and A0 */
+-		stack_size += 16;
+-		retval_off = stack_size;
+-	}
++	if (save_ret)
++		stack_size += 16; /* Save BPF R0 and A0 */
 +
-+	if (!fastrpc_map_lookup(fl, fd, ppmap)) {
-+		if (!fastrpc_map_get(*ppmap))
-+			return 0;
-+		dev_dbg(sess->dev, "%s: Failed to get map fd=%d\n",
-+			__func__, fd);
-+	}
-+
-+	err = fastrpc_map_attach(fl, fd, len, attr, ppmap);
-+
-+	return err;
-+}
-+
- /*
-  * Fastrpc payload buffer with metadata looks like:
-  *
-@@ -925,8 +930,12 @@ static int fastrpc_create_maps(struct fa
- 		    ctx->args[i].length == 0)
- 			continue;
++	retval_off = stack_size;
  
--		err = fastrpc_map_create(ctx->fl, ctx->args[i].fd,
--			 ctx->args[i].length, ctx->args[i].attr, &ctx->maps[i]);
-+		if (i < ctx->nbufs)
-+			err = fastrpc_map_create(ctx->fl, ctx->args[i].fd,
-+				 ctx->args[i].length, ctx->args[i].attr, &ctx->maps[i]);
-+		else
-+			err = fastrpc_map_attach(ctx->fl, ctx->args[i].fd,
-+				 ctx->args[i].length, ctx->args[i].attr, &ctx->maps[i]);
- 		if (err) {
- 			dev_err(dev, "Error Creating map %d\n", err);
- 			return -EINVAL;
-@@ -1116,7 +1125,7 @@ cleanup_fdlist:
- 	for (i = 0; i < FASTRPC_MAX_FDLIST; i++) {
- 		if (!fdlist[i])
- 			break;
--		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap, false))
-+		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap))
- 			fastrpc_map_put(mmap);
- 	}
- 
+ 	/* Room of trampoline frame to store args */
+ 	nargs = m->nr_args;
 
 
 
