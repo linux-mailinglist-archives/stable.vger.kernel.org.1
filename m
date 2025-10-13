@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-184937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D706BD4705
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:18 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC99BD44B0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 24822544359
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9C93934F9DB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ADC130F7F8;
-	Mon, 13 Oct 2025 15:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C541E30F92A;
+	Mon, 13 Oct 2025 15:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g13aPm8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XASV/aup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAAF30F7ED;
-	Mon, 13 Oct 2025 15:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B8830F921;
+	Mon, 13 Oct 2025 15:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368866; cv=none; b=IccmKE3ibzV+b1iNI1RnMvpY+gy8RXuZbAdV9nG9e9JeQNqfqZgtcozxW2ip/JZu8I/ChOSPndqlpbROTnAjEPuhT6U/ueD6PiPv28PL6fRVf2sg712oExqhKIFxZWbWGDiW6nOLGY/bcp1JaJOXsBs+6A4mTo3BkpqqDsuQUUI=
+	t=1760368887; cv=none; b=Oul+DghtGv21L+gaH0O3d3gj7Q81zP1wI9P64+1ySmGZgYZMWW3fL9ThGNt+MMNf8mWs3B2y0FY8i0tiDG98LneM/xtuLvuVQx0/gDi27igVEvwtTGVy9V2TrEZukiQAu2sft71bd7S3AVwStTKgwHyN/TxTYskLmjfID4cIn4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368866; c=relaxed/simple;
-	bh=zNBag5aX+0AAyAez4VoEUL5J6b8fZqwwdIuOWGYMEPg=;
+	s=arc-20240116; t=1760368887; c=relaxed/simple;
+	bh=twvoxi7SeblshpbjzrbcxtL3omHW1jRtCKH3NvAfbXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBINlWldJShGh3Cd7/tk+S1in+dq3JdSs+KlwdBnEs1/am5WelF5au/hS7WmAMKgUzAh354lElUhOcAqwRkdGm5jYaMDvZGx4NFR9XEn9XskK7nT1t8tE1aR/i4tQTr/4qCIffnUYwNXeCt9bfQiaBoiT1uwGk6RAjwLrUo+niE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g13aPm8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54885C4CEE7;
-	Mon, 13 Oct 2025 15:21:06 +0000 (UTC)
+	 MIME-Version; b=Pf/2z83i+vaq4ANp4dmL1Oe22Nb/xFDtJpsoaQjzEcux5SECVhL1qi7yTUffDNZgGI6fhoHinGoDrmLCyU+QP2gBloCh/68b5sZAn0eWzyai7GOmutvWUi0x1qTJws4uGR5jEiK8HU5G1y2kQi8ErBg9pTmhoaDgaURnmnN/REg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XASV/aup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9E6C4CEE7;
+	Mon, 13 Oct 2025 15:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368866;
-	bh=zNBag5aX+0AAyAez4VoEUL5J6b8fZqwwdIuOWGYMEPg=;
+	s=korg; t=1760368887;
+	bh=twvoxi7SeblshpbjzrbcxtL3omHW1jRtCKH3NvAfbXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g13aPm8L259VjQ7PXk9Hsf7Q2Kcnh+VV9a32+WCxk9jU0UXexhCiTTzzuV2Z2ttZ2
-	 GDzxbYsRI7VjGtRzFJL3KfxrTJu+VQY1ydXCJXxkCottHedtUonP6kAkFqEgqwCh4e
-	 kydYe9AqOJiOCbKZ5aLZ347izfhhv2EwPRbQ5+xc=
+	b=XASV/auphLJJnDjVDZ2tARfrAO6s5R4SUoIFco6Rdgg6DOUXRMDtZLqwfRMXNEYGa
+	 sckcgONqErZ0j/f4ZWYZKRcZwTR3bUU/auLcoi8Z9EoKOmHYv05+W5h2TSqR5HroV2
+	 2D5TsUabpB0PrCeqEJH5qab8ybmOO7jil9QXaYRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Price <anprice@redhat.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 019/563] gfs2: Add proper lockspace locking
-Date: Mon, 13 Oct 2025 16:38:00 +0200
-Message-ID: <20251013144411.986387117@linuxfoundation.org>
+Subject: [PATCH 6.17 020/563] powerpc/8xx: Remove left-over instruction and comments in DataStoreTLBMiss handler
+Date: Mon, 13 Oct 2025 16:38:01 +0200
+Message-ID: <20251013144412.022580776@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,210 +66,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 6ab26555c9ffef96c56ca16356e55ac5ab61ec93 ]
+[ Upstream commit d9e46de4bf5c5f987075afd5f240bb2a8a5d71ed ]
 
-GFS2 has been calling functions like dlm_lock() even after the lockspace
-that these functions operate on has been released with
-dlm_release_lockspace().  It has always assumed that those functions
-would return -EINVAL in that case, but that was never guaranteed, and it
-certainly is no longer the case since commit 4db41bf4f04f ("dlm: remove
-ls_local_handle from struct dlm_ls").
+Commit ac9f97ff8b32 ("powerpc/8xx: Inconditionally use task PGDIR in
+DTLB misses") removed the test that needed the valeur in SPRN_EPN but
+failed to remove the read.
 
-To fix that, add proper lockspace locking.
+Remove it.
 
-Fixes: 3e11e5304150 ("GFS2: ignore unlock failures after withdraw")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andrew Price <anprice@redhat.com>
+And remove related comments, including the very same comment
+in InstructionTLBMiss that should have been removed by
+commit 33c527522f39 ("powerpc/8xx: Inconditionally use task PGDIR in
+ITLB misses").
+
+Also update the comment about absence of a second level table which
+has been handled implicitely since commit 5ddb75cee5af ("powerpc/8xx:
+remove tests on PGDIR entry validity").
+
+Fixes: ac9f97ff8b32 ("powerpc/8xx: Inconditionally use task PGDIR in DTLB misses")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/5811c8d1d6187f280ad140d6c0ad6010e41eeaeb.1755361995.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/file.c     | 23 +++++++++++++++--------
- fs/gfs2/glock.c    |  5 ++---
- fs/gfs2/incore.h   |  2 ++
- fs/gfs2/lock_dlm.c | 46 +++++++++++++++++++++++++++++++++++++---------
- 4 files changed, 56 insertions(+), 20 deletions(-)
+ arch/powerpc/kernel/head_8xx.S | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
-index 72d95185a39f6..bc67fa058c845 100644
---- a/fs/gfs2/file.c
-+++ b/fs/gfs2/file.c
-@@ -1442,6 +1442,7 @@ static int gfs2_lock(struct file *file, int cmd, struct file_lock *fl)
- 	struct gfs2_inode *ip = GFS2_I(file->f_mapping->host);
- 	struct gfs2_sbd *sdp = GFS2_SB(file->f_mapping->host);
- 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
-+	int ret;
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 56c5ebe21b99a..613606400ee99 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -162,7 +162,7 @@ instruction_counter:
+  * For the MPC8xx, this is a software tablewalk to load the instruction
+  * TLB.  The task switch loads the M_TWB register with the pointer to the first
+  * level table.
+- * If we discover there is no second level table (value is zero) or if there
++ * If there is no second level table (value is zero) or if there
+  * is an invalid pte, we load that into the TLB, which causes another fault
+  * into the TLB Error interrupt where we can handle such problems.
+  * We have to use the MD_xxx registers for the tablewalk because the
+@@ -183,9 +183,6 @@ instruction_counter:
+ 	mtspr	SPRN_SPRG_SCRATCH2, r10
+ 	mtspr	SPRN_M_TW, r11
  
- 	if (!(fl->c.flc_flags & FL_POSIX))
- 		return -ENOLCK;
-@@ -1450,14 +1451,20 @@ static int gfs2_lock(struct file *file, int cmd, struct file_lock *fl)
- 			locks_lock_file_wait(file, fl);
- 		return -EIO;
- 	}
--	if (cmd == F_CANCELLK)
--		return dlm_posix_cancel(ls->ls_dlm, ip->i_no_addr, file, fl);
--	else if (IS_GETLK(cmd))
--		return dlm_posix_get(ls->ls_dlm, ip->i_no_addr, file, fl);
--	else if (lock_is_unlock(fl))
--		return dlm_posix_unlock(ls->ls_dlm, ip->i_no_addr, file, fl);
--	else
--		return dlm_posix_lock(ls->ls_dlm, ip->i_no_addr, file, cmd, fl);
-+	down_read(&ls->ls_sem);
-+	ret = -ENODEV;
-+	if (likely(ls->ls_dlm != NULL)) {
-+		if (cmd == F_CANCELLK)
-+			ret = dlm_posix_cancel(ls->ls_dlm, ip->i_no_addr, file, fl);
-+		else if (IS_GETLK(cmd))
-+			ret = dlm_posix_get(ls->ls_dlm, ip->i_no_addr, file, fl);
-+		else if (lock_is_unlock(fl))
-+			ret = dlm_posix_unlock(ls->ls_dlm, ip->i_no_addr, file, fl);
-+		else
-+			ret = dlm_posix_lock(ls->ls_dlm, ip->i_no_addr, file, cmd, fl);
-+	}
-+	up_read(&ls->ls_sem);
-+	return ret;
- }
+-	/* If we are faulting a kernel address, we have to use the
+-	 * kernel page tables.
+-	 */
+ 	mfspr	r10, SPRN_SRR0	/* Get effective address of fault */
+ 	INVALIDATE_ADJACENT_PAGES_CPU15(r10, r11)
+ 	mtspr	SPRN_MD_EPN, r10
+@@ -228,10 +225,6 @@ instruction_counter:
+ 	mtspr	SPRN_SPRG_SCRATCH2, r10
+ 	mtspr	SPRN_M_TW, r11
  
- static void __flock_holder_uninit(struct file *file, struct gfs2_holder *fl_gh)
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 54c011ff00ddc..a6535413a0b46 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -800,9 +800,8 @@ __acquires(&gl->gl_lockref.lock)
- 		}
- 		clear_bit(GLF_PENDING_REPLY, &gl->gl_flags);
+-	/* If we are faulting a kernel address, we have to use the
+-	 * kernel page tables.
+-	 */
+-	mfspr	r10, SPRN_MD_EPN
+ 	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
+ 	lwz	r11, (swapper_pg_dir-PAGE_OFFSET)@l(r10)	/* Get level 1 entry */
  
--		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
--		    target == LM_ST_UNLOCKED &&
--		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
-+		if (ret == -ENODEV && gl->gl_target == LM_ST_UNLOCKED &&
-+		    target == LM_ST_UNLOCKED) {
- 			/*
- 			 * The lockspace has been released and the lock has
- 			 * been unlocked implicitly.
-diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index c390f208654c1..3fcb7ab198d47 100644
---- a/fs/gfs2/incore.h
-+++ b/fs/gfs2/incore.h
-@@ -657,6 +657,8 @@ struct lm_lockstruct {
- 	struct completion ls_sync_wait; /* {control,mounted}_{lock,unlock} */
- 	char *ls_lvb_bits;
- 
-+	struct rw_semaphore ls_sem;
-+
- 	spinlock_t ls_recover_spin; /* protects following fields */
- 	unsigned long ls_recover_flags; /* DFL_ */
- 	uint32_t ls_recover_mount; /* gen in first recover_done cb */
-diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-index 5daaeaaaf18dd..6db37c20587d1 100644
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -329,8 +329,13 @@ static int gdlm_lock(struct gfs2_glock *gl, unsigned int req_state,
- 	 */
- 
- again:
--	error = dlm_lock(ls->ls_dlm, req, &gl->gl_lksb, lkf, strname,
--			GDLM_STRNAME_BYTES - 1, 0, gdlm_ast, gl, gdlm_bast);
-+	down_read(&ls->ls_sem);
-+	error = -ENODEV;
-+	if (likely(ls->ls_dlm != NULL)) {
-+		error = dlm_lock(ls->ls_dlm, req, &gl->gl_lksb, lkf, strname,
-+				GDLM_STRNAME_BYTES - 1, 0, gdlm_ast, gl, gdlm_bast);
-+	}
-+	up_read(&ls->ls_sem);
- 	if (error == -EBUSY) {
- 		msleep(20);
- 		goto again;
-@@ -379,8 +384,13 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 		flags |= DLM_LKF_VALBLK;
- 
- again:
--	error = dlm_unlock(ls->ls_dlm, gl->gl_lksb.sb_lkid, flags,
--			   NULL, gl);
-+	down_read(&ls->ls_sem);
-+	error = -ENODEV;
-+	if (likely(ls->ls_dlm != NULL)) {
-+		error = dlm_unlock(ls->ls_dlm, gl->gl_lksb.sb_lkid, flags,
-+				   NULL, gl);
-+	}
-+	up_read(&ls->ls_sem);
- 	if (error == -EBUSY) {
- 		msleep(20);
- 		goto again;
-@@ -396,7 +406,12 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- static void gdlm_cancel(struct gfs2_glock *gl)
- {
- 	struct lm_lockstruct *ls = &gl->gl_name.ln_sbd->sd_lockstruct;
--	dlm_unlock(ls->ls_dlm, gl->gl_lksb.sb_lkid, DLM_LKF_CANCEL, NULL, gl);
-+
-+	down_read(&ls->ls_sem);
-+	if (likely(ls->ls_dlm != NULL)) {
-+		dlm_unlock(ls->ls_dlm, gl->gl_lksb.sb_lkid, DLM_LKF_CANCEL, NULL, gl);
-+	}
-+	up_read(&ls->ls_sem);
- }
- 
- /*
-@@ -577,7 +592,11 @@ static int sync_unlock(struct gfs2_sbd *sdp, struct dlm_lksb *lksb, char *name)
- 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
- 	int error;
- 
--	error = dlm_unlock(ls->ls_dlm, lksb->sb_lkid, 0, lksb, ls);
-+	down_read(&ls->ls_sem);
-+	error = -ENODEV;
-+	if (likely(ls->ls_dlm != NULL))
-+		error = dlm_unlock(ls->ls_dlm, lksb->sb_lkid, 0, lksb, ls);
-+	up_read(&ls->ls_sem);
- 	if (error) {
- 		fs_err(sdp, "%s lkid %x error %d\n",
- 		       name, lksb->sb_lkid, error);
-@@ -604,9 +623,14 @@ static int sync_lock(struct gfs2_sbd *sdp, int mode, uint32_t flags,
- 	memset(strname, 0, GDLM_STRNAME_BYTES);
- 	snprintf(strname, GDLM_STRNAME_BYTES, "%8x%16x", LM_TYPE_NONDISK, num);
- 
--	error = dlm_lock(ls->ls_dlm, mode, lksb, flags,
--			 strname, GDLM_STRNAME_BYTES - 1,
--			 0, sync_wait_cb, ls, NULL);
-+	down_read(&ls->ls_sem);
-+	error = -ENODEV;
-+	if (likely(ls->ls_dlm != NULL)) {
-+		error = dlm_lock(ls->ls_dlm, mode, lksb, flags,
-+				 strname, GDLM_STRNAME_BYTES - 1,
-+				 0, sync_wait_cb, ls, NULL);
-+	}
-+	up_read(&ls->ls_sem);
- 	if (error) {
- 		fs_err(sdp, "%s lkid %x flags %x mode %d error %d\n",
- 		       name, lksb->sb_lkid, flags, mode, error);
-@@ -1333,6 +1357,7 @@ static int gdlm_mount(struct gfs2_sbd *sdp, const char *table)
- 	 */
- 
- 	INIT_DELAYED_WORK(&sdp->sd_control_work, gfs2_control_func);
-+	ls->ls_dlm = NULL;
- 	spin_lock_init(&ls->ls_recover_spin);
- 	ls->ls_recover_flags = 0;
- 	ls->ls_recover_mount = 0;
-@@ -1367,6 +1392,7 @@ static int gdlm_mount(struct gfs2_sbd *sdp, const char *table)
- 	 * create/join lockspace
- 	 */
- 
-+	init_rwsem(&ls->ls_sem);
- 	error = dlm_new_lockspace(fsname, cluster, flags, GDLM_LVB_SIZE,
- 				  &gdlm_lockspace_ops, sdp, &ops_result,
- 				  &ls->ls_dlm);
-@@ -1446,10 +1472,12 @@ static void gdlm_unmount(struct gfs2_sbd *sdp)
- 
- 	/* mounted_lock and control_lock will be purged in dlm recovery */
- release:
-+	down_write(&ls->ls_sem);
- 	if (ls->ls_dlm) {
- 		dlm_release_lockspace(ls->ls_dlm, 2);
- 		ls->ls_dlm = NULL;
- 	}
-+	up_write(&ls->ls_sem);
- 
- 	free_recover_size(ls);
- }
 -- 
 2.51.0
 
