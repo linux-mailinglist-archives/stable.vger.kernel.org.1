@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A940CBD4558
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:36:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A368BD3C78
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4E584000E9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3536718A060F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A954030C620;
-	Mon, 13 Oct 2025 15:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AC927055F;
+	Mon, 13 Oct 2025 14:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMY9NK5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5HLgDNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6607330C601;
-	Mon, 13 Oct 2025 15:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268EE2153E7;
+	Mon, 13 Oct 2025 14:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368208; cv=none; b=lz07d3MtdxLnjyXeYmUxVPysMAbVW7cQXzdnXS2qiETYt/ksH9QQSH3hFL3zNmB5qRKdYWy/eEM02Jrm0XGUJCCJy2t0qq9N4LOG7zcUUX3+FTf72JHcrcd7R2gjM2rQ2nDw0IHqlxQm27Oy5Pw3dwqPXb2O1bcGU5jDul2Hqog=
+	t=1760367033; cv=none; b=pYfSoXtSCGgIPK53CsV/uWU3I+DYr10nIHlqQmmqo8pm4gy+4GpJ9sIW+C9JWAZhozLr0U8Ib6Z02C4hm3U0nRA/YKRvdQ1mXN/n84fGrRDKv+9BGMHIIfE8o1dnOtgFQMsYX/B4VESdSLDRBfIoczvp3LaKKEy8mglI6NA96iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368208; c=relaxed/simple;
-	bh=5gGelTspZKYoEbrC8QtDlVQcjbcBeSM9ZdaOwN1r/eo=;
+	s=arc-20240116; t=1760367033; c=relaxed/simple;
+	bh=DcLSX1fzGE0WgES0ZqMV6meYOZ3ylkY5AEHrfx7l+og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWtE+1Qo3mpQs0XeSOiMOcpco/9pIYGSrmpMaCFEWlYD3JdIVjm2DNNtT6Xljj9vDMRT8rEgvOff577rKEUraOqv3AldcpYVj1Wbxc2hfIqI1FUXyamyk2hKrJAAA+81MiQDxr1tGEIrJv57o4ForyL0Ma8XLUvmi0cgCPATkjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMY9NK5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7713C4CEE7;
-	Mon, 13 Oct 2025 15:10:07 +0000 (UTC)
+	 MIME-Version; b=O9Z7BJROLN3awH1jXsitdH7KCiyK/Pln7XhUY/vx3nRa36IdnmqpvSDyOPnyE6LuNt47TK1pXk3CGyTzoNFYHTXXe7aLpn36r+aXaeG6D2CSjHOhvJN2SDenjCHiEqxdyRac/JIWon//2feRoTiIns8/M56ZhTNyjJbF235+8zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5HLgDNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8E9C4CEE7;
+	Mon, 13 Oct 2025 14:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368208;
-	bh=5gGelTspZKYoEbrC8QtDlVQcjbcBeSM9ZdaOwN1r/eo=;
+	s=korg; t=1760367032;
+	bh=DcLSX1fzGE0WgES0ZqMV6meYOZ3ylkY5AEHrfx7l+og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMY9NK5ixnaQiij4dFfh5WEs5Pznrf2ciYkcOSCHimnaxIE/5OxAtuVmM0aoou4zS
-	 3aM7uLBsojrYsFL/8umsSgUzLiwzcK4A/94jfyiKvqSXRLEzYG7P94+4JoLuO0mdcV
-	 wA4qP5ZowpcAjJh+2xcx5mSq7way47U8YcJXRVUE=
+	b=y5HLgDNdAT4DYXFMzAvDzQAJjml/YvCLdnRr10Frm/z0IRNgekLqIuETHi/qXoLjK
+	 WPqJ3lifdRZ36bkuL3/7i6xfUzDZaJsyZkAf5ZWAPewGj3nzz1zWwDuiYJYuzUCYBf
+	 BsNUyRJdh5RGScm1VKTTO4y+F8PAFF585Y5NM2OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Leo Yan <leo.yan@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/262] hwmon: (mlxreg-fan) Separate methods of fan setting coming from different subsystems
+Subject: [PATCH 6.1 051/196] perf: arm_spe: Prevent overflow in PERF_IDX2OFF()
 Date: Mon, 13 Oct 2025 16:43:44 +0200
-Message-ID: <20251013144329.081754860@linuxfoundation.org>
+Message-ID: <20251013144316.431692234@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit c02e4644f8ac9c501077ef5ac53ae7fc51472d49 ]
+[ Upstream commit a29fea30dd93da16652930162b177941abd8c75e ]
 
-Distinct between fan speed setting request coming for hwmon and
-thermal subsystems.
+Cast nr_pages to unsigned long to avoid overflow when handling large
+AUX buffer sizes (>= 2 GiB).
 
-There are fields 'last_hwmon_state' and 'last_thermal_state' in the
-structure 'mlxreg_fan_pwm', which respectively store the cooling state
-set by the 'hwmon' and 'thermal' subsystem.
-The purpose is to make arbitration of fan speed setting. For example, if
-fan speed required to be not lower than some limit, such setting is to
-be performed through 'hwmon' subsystem, thus 'thermal' subsystem will
-not set fan below this limit.
-
-Currently, the 'last_thermal_state' is also be updated by 'hwmon' causing
-cooling state to never be set to a lower value.
-
-Eliminate update of 'last_thermal_state', when request is coming from
-'hwmon' subsystem.
-
-Fixes: da74944d3a46 ("hwmon: (mlxreg-fan) Use pwm attribute for setting fan speed low limit")
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/20250113084859.27064-2-vadimp@nvidia.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: d5d9696b0380 ("drivers/perf: Add support for ARMv8.2 Statistical Profiling Extension")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/mlxreg-fan.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/perf/arm_spe_pmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/mlxreg-fan.c b/drivers/hwmon/mlxreg-fan.c
-index c25a54d5b39ad..0ba9195c9d713 100644
---- a/drivers/hwmon/mlxreg-fan.c
-+++ b/drivers/hwmon/mlxreg-fan.c
-@@ -113,8 +113,8 @@ struct mlxreg_fan {
- 	int divider;
- };
+diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
+index 00e3a637f7b63..815bf2e2dffa4 100644
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -95,7 +95,8 @@ struct arm_spe_pmu {
+ #define to_spe_pmu(p) (container_of(p, struct arm_spe_pmu, pmu))
  
--static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
--				    unsigned long state);
-+static int _mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
-+				     unsigned long state, bool thermal);
+ /* Convert a free-running index from perf into an SPE buffer offset */
+-#define PERF_IDX2OFF(idx, buf)	((idx) % ((buf)->nr_pages << PAGE_SHIFT))
++#define PERF_IDX2OFF(idx, buf) \
++	((idx) % ((unsigned long)(buf)->nr_pages << PAGE_SHIFT))
  
- static int
- mlxreg_fan_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
-@@ -224,8 +224,9 @@ mlxreg_fan_write(struct device *dev, enum hwmon_sensor_types type, u32 attr,
- 				 * last thermal state.
- 				 */
- 				if (pwm->last_hwmon_state >= pwm->last_thermal_state)
--					return mlxreg_fan_set_cur_state(pwm->cdev,
--									pwm->last_hwmon_state);
-+					return _mlxreg_fan_set_cur_state(pwm->cdev,
-+									 pwm->last_hwmon_state,
-+									 false);
- 				return 0;
- 			}
- 			return regmap_write(fan->regmap, pwm->reg, val);
-@@ -357,9 +358,8 @@ static int mlxreg_fan_get_cur_state(struct thermal_cooling_device *cdev,
- 	return 0;
- }
- 
--static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
--				    unsigned long state)
--
-+static int _mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
-+				     unsigned long state, bool thermal)
- {
- 	struct mlxreg_fan_pwm *pwm = cdev->devdata;
- 	struct mlxreg_fan *fan = pwm->fan;
-@@ -369,7 +369,8 @@ static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
- 		return -EINVAL;
- 
- 	/* Save thermal state. */
--	pwm->last_thermal_state = state;
-+	if (thermal)
-+		pwm->last_thermal_state = state;
- 
- 	state = max_t(unsigned long, state, pwm->last_hwmon_state);
- 	err = regmap_write(fan->regmap, pwm->reg,
-@@ -381,6 +382,13 @@ static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
- 	return 0;
- }
- 
-+static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
-+				    unsigned long state)
-+
-+{
-+	return _mlxreg_fan_set_cur_state(cdev, state, true);
-+}
-+
- static const struct thermal_cooling_device_ops mlxreg_fan_cooling_ops = {
- 	.get_max_state	= mlxreg_fan_get_max_state,
- 	.get_cur_state	= mlxreg_fan_get_cur_state,
+ /* Keep track of our dynamic hotplug state */
+ static enum cpuhp_state arm_spe_pmu_online;
 -- 
 2.51.0
 
