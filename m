@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3AABD4051
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8AEBD3E28
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3864118A49B6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1AF73E5A36
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AED239562;
-	Mon, 13 Oct 2025 14:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD75C27280E;
+	Mon, 13 Oct 2025 14:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1X0ladP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3mJu3O+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802D425DAF0;
-	Mon, 13 Oct 2025 14:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A4D1F91E3;
+	Mon, 13 Oct 2025 14:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367552; cv=none; b=ee9vgvyuvtwWapHNDViN1ow2MtZIU5EDOeZ36RtSOLwoYXdqfGFaQXzLiXkr8iS12gy3JJe56Izba7yYFU+4KbnzEXFxfK5dkGjc0yXm+9eN6Dg3Yrq/1D3UUfUq6evke1QiOw0Igu4ajth2ypfG+okfdx6gjsQKizSBNCWZrDw=
+	t=1760367035; cv=none; b=E8osxetWVZHVpTPl5ShIvvahewfjyjoF/wKNZi85IQ4obyMNIFF+eziVrmu/2bFWhCnIY7KuWRTpUfCwtQ7329OHqbCxUoJgUfWyGi25Yh+EpOdxtHzX0gEp0Fak5dyBcxyTd168BC3b3MvrW9yucNAeDGN36lV6iWZqIDmBNZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367552; c=relaxed/simple;
-	bh=u5jr6tc03Zs8to21XcncneidQRWDx0qP/S5vWMn3aR0=;
+	s=arc-20240116; t=1760367035; c=relaxed/simple;
+	bh=VFV3DYtz5VhCuyuCY9XoeRGycwnAWfqh49Yh30SjW5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtHd8oBU8L/qZ5F2Zeaegvt20wodB5FlDikLhIVj7A08L++j2mSlncrOoZLJ9WJlU6Hdd2ZaRf7H4hoWRn+MjztSdTiYHWbbpCnfVRuFUJTfIcQ5e6418YjZChDiK5KGvUHnDy8DQGJEI9vmV1XJbSI1HlNS8Wq1g7ElDr9RA80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1X0ladP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DA6C4CEE7;
-	Mon, 13 Oct 2025 14:59:11 +0000 (UTC)
+	 MIME-Version; b=O4yba9UnTbn1cw5Qnnt4N7zG5PSVib5fDyQHMc7I+4ys8GfwOpFH1MxMZyKyaNc5ZSaON0oa1ggqGHB42RrLSgfBenviO7oTxyQH+FaHuuNwtLJCDSBUUeeSj79sek4PUze2vFC9jt9RDHAwDOW35tHY82BMD1YCiIWnHwBiymA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3mJu3O+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26569C4CEE7;
+	Mon, 13 Oct 2025 14:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367552;
-	bh=u5jr6tc03Zs8to21XcncneidQRWDx0qP/S5vWMn3aR0=;
+	s=korg; t=1760367035;
+	bh=VFV3DYtz5VhCuyuCY9XoeRGycwnAWfqh49Yh30SjW5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1X0ladPbaTcIfVStdOfg0euFFwVBV7zGDSutPS+25fp0MTIQXBetyBagdX6Ahsoa
-	 aE2TdtpeqnufEatAUPZFM5q1ALfeYB1IzKdnBKxNAwNK89mkEubp3lZevKjrMSHAvK
-	 2usgwio4RrmEDlJgRZTlZpsVQGPTPVycuL5+373M=
+	b=R3mJu3O+8KKMVbZcqPHuCJT0cT2wE1qfcXcDRMnOPmomjlJCl0U0WI5dBM2hdNB3t
+	 tV6vu40THLh63YfjcOEv3CEvTIbFypCyNoHvHf1nR/bFDH01DUEwxoynjHgBlJXBe7
+	 7FPGu/ynCMJ622inw7RM/gXfW8/NAxL9VOnRbVDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Andy Yan <andyshrk@163.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/196] bpf: Explicitly check accesses to bpf_sock_addr
+Subject: [PATCH 6.1 069/196] power: supply: cw2015: Fix a alignment coding style issue
 Date: Mon, 13 Oct 2025 16:44:02 +0200
-Message-ID: <20251013144317.047236769@linuxfoundation.org>
+Message-ID: <20251013144317.075683279@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Andy Yan <andyshrk@163.com>
 
-[ Upstream commit 6fabca2fc94d33cdf7ec102058983b086293395f ]
+[ Upstream commit def5612170a8c6c4c6a3ea5bd6c3cfc8de6ba4b1 ]
 
-Syzkaller found a kernel warning on the following sock_addr program:
+Fix the checkpatch warning:
+CHECK: Alignment should match open parenthesis
 
-    0: r0 = 0
-    1: r2 = *(u32 *)(r1 +60)
-    2: exit
-
-which triggers:
-
-    verifier bug: error during ctx access conversion (0)
-
-This is happening because offset 60 in bpf_sock_addr corresponds to an
-implicit padding of 4 bytes, right after msg_src_ip4. Access to this
-padding isn't rejected in sock_addr_is_valid_access and it thus later
-fails to convert the access.
-
-This patch fixes it by explicitly checking the various fields of
-bpf_sock_addr in sock_addr_is_valid_access.
-
-I checked the other ctx structures and is_valid_access functions and
-didn't find any other similar cases. Other cases of (properly handled)
-padding are covered in new tests in a subsequent patch.
-
-Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
-Reported-by: syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://syzkaller.appspot.com/bug?extid=136ca59d411f92e821b7
-Link: https://lore.kernel.org/bpf/b58609d9490649e76e584b0361da0abd3c2c1779.1758094761.git.paul.chaignon@gmail.com
+Fixes: 0cb172a4918e ("power: supply: cw2015: Use device managed API to simplify the code")
+Signed-off-by: Andy Yan <andyshrk@163.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/power/supply/cw2015_battery.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 7afb7658c3883..b6dbcef649654 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -9156,13 +9156,17 @@ static bool sock_addr_is_valid_access(int off, int size,
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
- 		break;
--	default:
--		if (type == BPF_READ) {
--			if (size != size_default)
--				return false;
--		} else {
-+	case bpf_ctx_range(struct bpf_sock_addr, user_family):
-+	case bpf_ctx_range(struct bpf_sock_addr, family):
-+	case bpf_ctx_range(struct bpf_sock_addr, type):
-+	case bpf_ctx_range(struct bpf_sock_addr, protocol):
-+		if (type != BPF_READ)
- 			return false;
--		}
-+		if (size != size_default)
-+			return false;
-+		break;
-+	default:
-+		return false;
- 	}
+diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
+index 9d957cf8edf07..ae6f46b452101 100644
+--- a/drivers/power/supply/cw2015_battery.c
++++ b/drivers/power/supply/cw2015_battery.c
+@@ -702,8 +702,7 @@ static int cw_bat_probe(struct i2c_client *client)
+ 	if (!cw_bat->battery_workqueue)
+ 		return -ENOMEM;
  
- 	return true;
+-	devm_delayed_work_autocancel(&client->dev,
+-							  &cw_bat->battery_delay_work, cw_bat_work);
++	devm_delayed_work_autocancel(&client->dev, &cw_bat->battery_delay_work, cw_bat_work);
+ 	queue_delayed_work(cw_bat->battery_workqueue,
+ 			   &cw_bat->battery_delay_work, msecs_to_jiffies(10));
+ 	return 0;
 -- 
 2.51.0
 
