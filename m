@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3DDBD3BC7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:56:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD1ABD464B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4A3484F47C8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:50:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E97674075F2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F135299A96;
-	Mon, 13 Oct 2025 14:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DC43112D1;
+	Mon, 13 Oct 2025 15:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsSkjW1f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOyPp33T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084C3273D6B;
-	Mon, 13 Oct 2025 14:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402DC3112BE;
+	Mon, 13 Oct 2025 15:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366862; cv=none; b=QC0ykVKjD7CMJUB4+6DaYneZOlydvMFF9WcrIBN5T7Q9Z24wT11j+qDv8xsQ1JgI7yjMNmKjNGa5WBxw8TxordSyZHyTEM6TqP9xqQYvo4l2cyaw9ykXPbwnJ+WdbSLfpw7NXUmDSULMGUPl01FmHdkBuoav/EGQ7xlp1X7n02I=
+	t=1760368093; cv=none; b=uaPLLLyznx+ACfqFla1ahFjIWvg2WWOBsYNkc2Jpy+QzkNHWfoNQ9hntI7vqAQB3l0K7NggU1yZN2gn6O35HxpsDV76ekGPkhIe//dMPZ01SjsZP98iwud93Fdi2+1nE207GCGdjo0O7CiNCvlWmE8n+IrqE+t8KmuNTI1F6o+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366862; c=relaxed/simple;
-	bh=RjOEXcl0Wux6GVKIPupxMPAFyb3AOOSo8hxnZzEWerU=;
+	s=arc-20240116; t=1760368093; c=relaxed/simple;
+	bh=8zrh3NYIh7q0KM9Ad7J82K8f+3NTPVCXERFTTr4Sl34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUydS9k+nHh19v0WZTosZYyt2eDXdde6rw78h966STVLGpMbNLNOtsWk7J8jMkx1PtQnIoo1tipXMXPO9RJEbsXoqWNJAULh9466v+Tvf7zXCi+t2mw1MNo8wTuBF44w93xbQeXS9UYB1porso++JWeFhdgxaLWZTXqSFYDCMYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsSkjW1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428C2C4CEE7;
-	Mon, 13 Oct 2025 14:47:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZBa0HBBUT8JrTI8PITcjEZWFzYK4BQNi/AyQrP2oq3/nCn9+cNXnHcDwxTSgN64x3zRMrLcmJ3ttGgpIDcK8pWRonL9AXpTjwAR7n946ndTIe1y4mRlip7knmGEzv6BbisngDwVc51Fd36FpoAnn2cWVQ8pT7RPXt4KHNx4k3TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOyPp33T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5226C4CEE7;
+	Mon, 13 Oct 2025 15:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366861;
-	bh=RjOEXcl0Wux6GVKIPupxMPAFyb3AOOSo8hxnZzEWerU=;
+	s=korg; t=1760368093;
+	bh=8zrh3NYIh7q0KM9Ad7J82K8f+3NTPVCXERFTTr4Sl34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XsSkjW1fTblnK8abcub4HKULYdwX3uz641j7TyTPtKtWQoVg/OaLHAQu2ZrBjoIi3
-	 IfDRcFlaq1yB8Xp/isQsYsPPGrdeBmcX00l4c7dAM2T8qsax7t34O6WEi4uBOU62Yg
-	 7i/+3RWGAqrczjAXxZYz08KeXK2lHkGsCemlvfA8=
+	b=UOyPp33TkvD6wbIzTx4xj+1UwpD/SGbZ/B+vi4dksBHyjPHuwbjyyohmfw4Jp4zd1
+	 5RhJz2jwcL0CNlIHggMM/2aLT5VnnkAY29Fo+rKfC6x4sI24cpXXK4J4Uwe1Eq9O+B
+	 o1PApcFNo8+XxGDEbviV5bRpxoYWUHQb0SNZiTXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Haoran <haoranwangsec@gmail.com>,
-	ziiiro <yuanmingbuaa@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 010/196] scsi: target: target_core_configfs: Add length check to avoid buffer overflow
-Date: Mon, 13 Oct 2025 16:43:03 +0200
-Message-ID: <20251013144314.935141716@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 042/262] vdso: Add struct __kernel_old_timeval forward declaration to gettime.h
+Date: Mon, 13 Oct 2025 16:43:04 +0200
+Message-ID: <20251013144327.646677871@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Haoran <haoranwangsec@gmail.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 27e06650a5eafe832a90fd2604f0c5e920857fae upstream.
+[ Upstream commit 437054b1bbe11be87ab0a522b8ccbae3f785c642 ]
 
-A buffer overflow arises from the usage of snprintf to write into the
-buffer "buf" in target_lu_gp_members_show function located in
-/drivers/target/target_core_configfs.c. This buffer is allocated with
-size LU_GROUP_NAME_BUF (256 bytes).
+The prototype of __vdso_gettimeofday() uses this struct.  However
+gettime.h's own includes do not provide a definition for it.
 
-snprintf(...) formats multiple strings into buf with the HBA name
-(hba->hba_group.cg_item), a slash character, a devicename (dev->
-dev_group.cg_item) and a newline character, the total formatted string
-length may exceed the buffer size of 256 bytes.
+Add a forward declaration, similar to other used structs.
 
-Since snprintf() returns the total number of bytes that would have been
-written (the length of %s/%sn ), this value may exceed the buffer length
-(256 bytes) passed to memcpy(), this will ultimately cause function
-memcpy reporting a buffer overflow error.
-
-An additional check of the return value of snprintf() can avoid this
-buffer overflow.
-
-Reported-by: Wang Haoran <haoranwangsec@gmail.com>
-Reported-by: ziiiro <yuanmingbuaa@gmail.com>
-Signed-off-by: Wang Haoran <haoranwangsec@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 42874e4eb35b ("arch: vdso: consolidate gettime prototypes")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250815-vdso-sparc64-generic-2-v2-1-b5ff80672347@linutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_configfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/vdso/gettime.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -2691,7 +2691,7 @@ static ssize_t target_lu_gp_members_show
- 			config_item_name(&dev->dev_group.cg_item));
- 		cur_len++; /* Extra byte for NULL terminator */
+diff --git a/include/vdso/gettime.h b/include/vdso/gettime.h
+index c50d152e7b3e0..9ac161866653a 100644
+--- a/include/vdso/gettime.h
++++ b/include/vdso/gettime.h
+@@ -5,6 +5,7 @@
+ #include <linux/types.h>
  
--		if ((cur_len + len) > PAGE_SIZE) {
-+		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
- 			pr_warn("Ran out of lu_gp_show_attr"
- 				"_members buffer\n");
- 			break;
+ struct __kernel_timespec;
++struct __kernel_old_timeval;
+ struct timezone;
+ 
+ #if !defined(CONFIG_64BIT) || defined(BUILD_VDSO32_64)
+-- 
+2.51.0
+
 
 
 
