@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-184589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA69DBD419B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:33 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE58BD4411
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B46AC1894414
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:45 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9A33A34F85F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C5030F928;
-	Mon, 13 Oct 2025 15:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6D730BB94;
+	Mon, 13 Oct 2025 15:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDCJU8d1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRn2cjxI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC63271473;
-	Mon, 13 Oct 2025 15:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE078279DC9;
+	Mon, 13 Oct 2025 15:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367870; cv=none; b=GCzjopc8H3+63Csz+eg5pJBByOIicgHJda2DlhMgXqdAQROqihbs+BhHCC4EV2r51c7X3nKoWSkqasSdypnreuNPMi9e2E8aRjHtW5M3cZ+3G2ph5gpgyCFMU1u2eGbc18OZ6ZAEjNfeO5N9lZTXfJcB/p1gkAQb4LpVaDPn6JM=
+	t=1760368703; cv=none; b=ZE9fGrUqzx08Dyib8dKP8FF3qOAAasPNb953O2QokKuPEBBzHfgfQnaKccly3Forjkak4rPnYSIq93GvoYDDxbe6KXP8j5TMrdjdp0OKD7wq4UBetKhmkMKp1b9to1W58RGggTgQulbbT9JXMqyf5nZvpcuxMgbAtBN5XbAJTMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367870; c=relaxed/simple;
-	bh=cPYkXvX1gquYL+3EqPshm2NsEkr91ormqI4KRjh/UPI=;
+	s=arc-20240116; t=1760368703; c=relaxed/simple;
+	bh=YpGXcaS8FzxPHNKTysxUDRMWoueuD8432H8tatgQlMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjTR4bLSkrpMmu4yUyUM+kf0kLt2BVIrxB+EyxuvsUijf3KOFnI9PQzQ3dS78k4ofAl/3TBlOIq4WSRO9ECH+IxJcQeAzp/Rm3lCaoIBl8n1mrxYSECuaDWPJNFhkjW4O2SiMUTIrkoFmvN9B+kvnu7VPWaOP/tapjDae2u2d6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDCJU8d1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11617C4CEE7;
-	Mon, 13 Oct 2025 15:04:29 +0000 (UTC)
+	 MIME-Version; b=Y2zwYxh2XjlJL2OY7ln0QSAZb7AzJwz5vtnbTX3D3Gs6HXpCwMfwmhr+Qbb+EJ6w3bsW68Wyw0lddE9QxQqwqtb0w/HU/SpNstBS759zgra5lNnVwwKIIglBrjKCFqByaVSshQ+UbzC0aCO9ceekVa2M8i9Lsy6g+KNm1+guh5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRn2cjxI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3258CC4CEE7;
+	Mon, 13 Oct 2025 15:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367870;
-	bh=cPYkXvX1gquYL+3EqPshm2NsEkr91ormqI4KRjh/UPI=;
+	s=korg; t=1760368703;
+	bh=YpGXcaS8FzxPHNKTysxUDRMWoueuD8432H8tatgQlMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yDCJU8d1oO8crFB/Okcy5D0sGfXeCSK8yHlR7S5wk1IbenVOQZHDRDYBdP0GirriN
-	 zIWTyzfNRb0NsLfFdhb5KIeheNJFwnrtYud3LwuowQ6fYnNPBz38P96ufkKNdVfVhU
-	 /eUqJ3CVQ1LV0CYgsDaw85OndP5EMw8aEVNpeEDE=
+	b=qRn2cjxIsogRQytbYQ7w4YgpFqx2I+APPoBB5JjjBwZAHCbRpr1LFjQZ8ovzw31pD
+	 4L288I50b22kYCSpMSYOBqwbEBuJS66MB/pZ84GVYPgotaAyig25WJ2enUS7Ux3qZB
+	 1fZqLHojySXEvmPh3LbLE77JXuIrXD7K6Hb8BqMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Donet Tom <donettom@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Chris Mason <clm@meta.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/196] net: dlink: handle copy_thresh allocation failure
+Subject: [PATCH 6.12 210/262] drivers/base/node: fix double free in register_one_node()
 Date: Mon, 13 Oct 2025 16:45:52 +0200
-Message-ID: <20251013144321.135795668@linuxfoundation.org>
+Message-ID: <20251013144333.806344904@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +73,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeounsu Moon <yyyynoom@gmail.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit 8169a6011c5fecc6cb1c3654c541c567d3318de8 ]
+[ Upstream commit 0efdedfa537eb534c251a5b4794caaf72cc55869 ]
 
-The driver did not handle failure of `netdev_alloc_skb_ip_align()`.
-If the allocation failed, dereferencing `skb->protocol` could lead to
-a NULL pointer dereference.
+When device_register() fails in register_node(), it calls
+put_device(&node->dev).  This triggers node_device_release(), which calls
+kfree(to_node(dev)), thereby freeing the entire node structure.
 
-This patch tries to allocate `skb`. If the allocation fails, it falls
-back to the normal path.
+As a result, when register_node() returns an error, the node memory has
+already been freed.  Calling kfree(node) again in register_one_node()
+leads to a double free.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Tested-on: D-Link DGE-550T Rev-A3
-Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250928190124.1156-1-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch removes the redundant kfree(node) from register_one_node() to
+prevent the double free.
+
+Link: https://lkml.kernel.org/r/20250918054144.58980-1-donettom@linux.ibm.com
+Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Chris Mason <clm@meta.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
+Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/base/node.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index f1208591ed67e..1c3a5cf379cd0 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -954,15 +954,18 @@ receive_packet (struct net_device *dev)
- 		} else {
- 			struct sk_buff *skb;
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 6f09aa8e32237..deccfe68214ec 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -881,7 +881,6 @@ int __register_one_node(int nid)
+ 	error = register_node(node_devices[nid], nid);
+ 	if (error) {
+ 		node_devices[nid] = NULL;
+-		kfree(node);
+ 		return error;
+ 	}
  
-+			skb = NULL;
- 			/* Small skbuffs for short packets */
--			if (pkt_len > copy_thresh) {
-+			if (pkt_len <= copy_thresh)
-+				skb = netdev_alloc_skb_ip_align(dev, pkt_len);
-+			if (!skb) {
- 				dma_unmap_single(&np->pdev->dev,
- 						 desc_to_dma(desc),
- 						 np->rx_buf_sz,
- 						 DMA_FROM_DEVICE);
- 				skb_put (skb = np->rx_skbuff[entry], pkt_len);
- 				np->rx_skbuff[entry] = NULL;
--			} else if ((skb = netdev_alloc_skb_ip_align(dev, pkt_len))) {
-+			} else {
- 				dma_sync_single_for_cpu(&np->pdev->dev,
- 							desc_to_dma(desc),
- 							np->rx_buf_sz,
 -- 
 2.51.0
 
