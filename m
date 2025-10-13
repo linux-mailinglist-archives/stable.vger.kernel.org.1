@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968A1BD3C99
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DB8BD454C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67A5A18A0A69
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F03D9504F7D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29192741B3;
-	Mon, 13 Oct 2025 14:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0364C309DCC;
+	Mon, 13 Oct 2025 14:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRhX+VpA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhOkJEE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9472727E3;
-	Mon, 13 Oct 2025 14:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FB9309DC0;
+	Mon, 13 Oct 2025 14:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367070; cv=none; b=czFA/M6Xdpt9D1TQeI2gx9IPEoAASWTFtnGmQh20/1rgGEjpNtK17nhCz9ogLCRZLfU+TJxc7QfYV1xA3pu/IKUI8OqVEaXc349FY5mLuFX7j1ChBWxxageOPVMRSOocpeRTN4Uy09X/ztvURO/3xm2LvYVyyiZU+y4IyVKREao=
+	t=1760367586; cv=none; b=Eht7B9/aBced9Jw4UqDk7QuEQmyo4nd0BmquLXGeUbEosy4bI7IS/Tm9xGSYJcNOxJCdu9DXkoCD8Rj4RbC02WxleB5wLIyHSN0gcK/FBVxiYTvfKzcwWydm9NkS3SGtWCgOoGclnpKN0y1GQbfhpQ4WeAkhrScq8EtXKt2NP2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367070; c=relaxed/simple;
-	bh=2DonojuFFLQbJo9qmAXhS5f4D8wlIqpTwlaQPctx6uY=;
+	s=arc-20240116; t=1760367586; c=relaxed/simple;
+	bh=6z/UT84n9sx431eCOFQqUvHkg70wyjy+D7RRZfGRNWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5C5VVSDjcksQyD1lQt5vpzi/rBqR58Hl9b5TOmYse1M1+C87peolEHOEw4ytLnV8B2LdRNj1MwO5m0oLeOSbnWdTsrK+Bb4v7u04Osh+heYsI8SQmCnJz02p+1tXkvjz4wo14f5wrg5fG6INBuHUDnA0o9Yrgg/FXBNFUWnC9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRhX+VpA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2CBC4CEE7;
-	Mon, 13 Oct 2025 14:51:09 +0000 (UTC)
+	 MIME-Version; b=bEaif9+FpaUEWP5MPYBe7tjTo/Ao1zp8wDDZLXKedJECoSszRu2aq0PsGqR1USd4aSdBlbQjdVIvhZYhYryscgi3UcgU227h3r5c40g19NiFCNM0HOQ7AAK+9zC3YmvTfZgzEjMK1opalkwgO2XFhVaElPhAWKKL3gTTxeidK6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhOkJEE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14677C4CEE7;
+	Mon, 13 Oct 2025 14:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367070;
-	bh=2DonojuFFLQbJo9qmAXhS5f4D8wlIqpTwlaQPctx6uY=;
+	s=korg; t=1760367586;
+	bh=6z/UT84n9sx431eCOFQqUvHkg70wyjy+D7RRZfGRNWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRhX+VpArbpKOPREU7XCAN9X3TcKBjI+hozAR0O5MeLizEb13zfIQ44JVMYmf1wY3
-	 PdCZb8tsPu9vSVBBYeYqBko6UeTebjnJMONWJRcgNEFs8Cy1HPsG4ZL6ea35uAk1LN
-	 GcAKloD+a66gaR3m4so/zUk7fjrUoQSBNp0GnU9Y=
+	b=HhOkJEE7LxODPbrJcIjrk8cEMYDPZOV42PZD1xi648Y15VwLQ06Iz3wpeR5SKqcQM
+	 l8IktIRb19P0xgUqcsnR7RZ8XuvruqWiitsriSqZtVTqrfpCSrCQ6AAxTF9bQJtLjT
+	 ZCNQy3qb5pvuOhdaXTiI6BfBu28uQFiSamiYGzwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Brigham Campbell <me@brighamcampbell.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/196] selftests: watchdog: skip ping loop if WDIOF_KEEPALIVEPING not supported
+Subject: [PATCH 6.6 062/196] drm/panel: novatek-nt35560: Fix invalid return value
 Date: Mon, 13 Oct 2025 16:44:13 +0200
-Message-ID: <20251013144317.469272238@linuxfoundation.org>
+Message-ID: <20251013144317.439485778@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+From: Brigham Campbell <me@brighamcampbell.com>
 
-[ Upstream commit e8cfc524eaf3c0ed88106177edb6961e202e6716 ]
+[ Upstream commit 125459e19ec654924e472f3ff5aeea40358dbebf ]
 
-Check if watchdog device supports WDIOF_KEEPALIVEPING option before
-entering keep_alive() ping test loop. Fix watchdog-test silently looping
-if ioctl based ping is not supported by the device. Exit from test in
-such case instead of getting stuck in loop executing failing keep_alive()
+Fix bug in nt35560_set_brightness() which causes the function to
+erroneously report an error. mipi_dsi_dcs_write() returns either a
+negative value when an error occurred or a positive number of bytes
+written when no error occurred. The buggy code reports an error under
+either condition.
 
-watchdog_info:
- identity:              m41t93 rtc Watchdog
- firmware_version:      0
-Support/Status: Set timeout (in seconds)
-Support/Status: Watchdog triggers a management or other external alarm not a reboot
-
-Watchdog card disabled.
-Watchdog timeout set to 5 seconds.
-Watchdog ping rate set to 2 seconds.
-Watchdog card enabled.
-WDIOC_KEEPALIVE not supported by this device
-
-without this change
-Watchdog card disabled.
-Watchdog timeout set to 5 seconds.
-Watchdog ping rate set to 2 seconds.
-Watchdog card enabled.
-Watchdog Ticking Away!
-(Where test stuck here forver silently)
-
-Updated change log at commit time:
-Shuah Khan <skhan@linuxfoundation.org>
-
-Link: https://lore.kernel.org/r/20250914152840.GA3047348@bhairav-test.ee.iitb.ac.in
-Fixes: d89d08ffd2c5 ("selftests: watchdog: Fix ioctl SET* error paths to take oneshot exit path")
-Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 8152c2bfd780 ("drm/panel: Add driver for Sony ACX424AKP panel")
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250731032343.1258366-2-me@brighamcampbell.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/panel/panel-novatek-nt35560.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
-index 09773695d219f..4056706d63f7e 100644
---- a/tools/testing/selftests/watchdog/watchdog-test.c
-+++ b/tools/testing/selftests/watchdog/watchdog-test.c
-@@ -240,6 +240,12 @@ int main(int argc, char *argv[])
- 	if (oneshot)
- 		goto end;
- 
-+	/* Check if WDIOF_KEEPALIVEPING is supported */
-+	if (!(info.options & WDIOF_KEEPALIVEPING)) {
-+		printf("WDIOC_KEEPALIVE not supported by this device\n");
-+		goto end;
-+	}
-+
- 	printf("Watchdog Ticking Away!\n");
- 
- 	/*
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35560.c b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
+index 5bbea734123bc..ee04c55175bb8 100644
+--- a/drivers/gpu/drm/panel/panel-novatek-nt35560.c
++++ b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
+@@ -161,7 +161,7 @@ static int nt35560_set_brightness(struct backlight_device *bl)
+ 		par = 0x00;
+ 		ret = mipi_dsi_dcs_write(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY,
+ 					 &par, 1);
+-		if (ret) {
++		if (ret < 0) {
+ 			dev_err(nt->dev, "failed to disable display backlight (%d)\n", ret);
+ 			return ret;
+ 		}
 -- 
 2.51.0
 
