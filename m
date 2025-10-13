@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6108CBD3CF4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:01:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CD8BD42E8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F9AF18A0E6C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:01:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AE4B14EA7F2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDBC10942;
-	Mon, 13 Oct 2025 14:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC86C30AD13;
+	Mon, 13 Oct 2025 15:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhQbZKvO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErlTGxRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE1C30ACED;
-	Mon, 13 Oct 2025 14:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB8930ACF8;
+	Mon, 13 Oct 2025 15:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367190; cv=none; b=IrFEvl5SofSG2yViMDMk/nOOLeEwC5xKjZ52dyCzf9Nrplt1T8JgAN5ENZWW24LV7H5F+QR/uojl1eGCDOI/2PlLlbAAPWrnWbe7vsKfvR1C4KbLwDkwhvPpeKk/1uFuCjxaA2bhfuXpXqx+xICjouhEOOhlVrOudqMcCfMrYgc=
+	t=1760367710; cv=none; b=ddJsZcWfQMM2gtppa+04nT8CQS+kUgJhRkVH5mHJ6AtP/jpNJPqmA+GVxE2Pt64V2VDH/9RNm02yY+6O6S7urjG+gVpCjGsKtk8sZviNnn1TcifgxBBQ0qFum3Qd7j+fqN9ROSYJMreWqq1pH67x10aLMl9dYGhJrSTM4WtSAyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367190; c=relaxed/simple;
-	bh=T0YKKcwbdluc1qleqSsIRso61JsupwuAdqdNyP30E+k=;
+	s=arc-20240116; t=1760367710; c=relaxed/simple;
+	bh=SkEMIjjaBoH2/etsIEx0CHFH3rTCDRcOxvVmtpQNwDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDeY/WDR5mgpbJYwzk3qtsduLiGZTOB65/x5HEvgDC1ThzUKk7tDmMwRza8K+5XpQlq3E7X5ERreQ9mGsNn6aNFdDHrsjZoPfIzz6LmpwHdEcJ1r91ak2SCGVHkBplvmDcp4TRM1v7cuzxuBnYzS3h0u3wZBNrbVfvsAq1Uyo0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhQbZKvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278C9C4CEE7;
-	Mon, 13 Oct 2025 14:53:08 +0000 (UTC)
+	 MIME-Version; b=adjF0MfFrfEiEPR3MXPlc+aDWx6Z6ur1CAvX0yn7OV7l3QCVdQO07/rStw5ae4rW649PGyHAsEauY3kmmH9jnApY8BcbsI99zh0fUvO5Zb8IgXuxo7cnDQu92hLKyo0gflLvbieTneUYCazyFel9ZIOGHzJ1wuIm9rm2lZmvO5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErlTGxRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6BEC4CEE7;
+	Mon, 13 Oct 2025 15:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367189;
-	bh=T0YKKcwbdluc1qleqSsIRso61JsupwuAdqdNyP30E+k=;
+	s=korg; t=1760367710;
+	bh=SkEMIjjaBoH2/etsIEx0CHFH3rTCDRcOxvVmtpQNwDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhQbZKvOhFiHX5a18uX2E6t6AH+nf4Hwv3VK070zae+ZI2nJhdDKTN5m3y5n8qeqm
-	 7hTwBSHtN//BXIUs9eCSIi6ar9apqmr2QkzDDIR7+XteumnLKWa6hhMyrhkFh2Lmn9
-	 9+UIy245i+RLvCzgAp/a08gA5uMHNSxoElPN/fLI=
+	b=ErlTGxRoNyrp6DuxKEQu5xG5HXXD09UClEUFFq9hpPPjZXIgEf/QiHx9YcYy7ubeN
+	 kardLurm0Xl/RKH0aaNN0PYDkDFIL4w/Nn8QK3k26Y5aOn8qRy0gRMCHlo9cjumbgu
+	 vKUMquj8jYCCoMNOmt9l2CsnRN+RCI080Medwm5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Brigham Campbell <me@brighamcampbell.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/196] drm/panel: novatek-nt35560: Fix invalid return value
+Subject: [PATCH 6.6 072/196] crypto: keembay - Add missing check after sg_nents_for_len()
 Date: Mon, 13 Oct 2025 16:44:23 +0200
-Message-ID: <20251013144317.827205446@linuxfoundation.org>
+Message-ID: <20251013144317.796284023@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brigham Campbell <me@brighamcampbell.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 125459e19ec654924e472f3ff5aeea40358dbebf ]
+[ Upstream commit 4e53be21dd0315c00eaf40cc8f8c0facd4d9a6b2 ]
 
-Fix bug in nt35560_set_brightness() which causes the function to
-erroneously report an error. mipi_dsi_dcs_write() returns either a
-negative value when an error occurred or a positive number of bytes
-written when no error occurred. The buggy code reports an error under
-either condition.
+sg_nents_for_len() returns an int which is negative in case of error.
 
-Fixes: 8152c2bfd780 ("drm/panel: Add driver for Sony ACX424AKP panel")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250731032343.1258366-2-me@brighamcampbell.com
+Fixes: 472b04444cd3 ("crypto: keembay - Add Keem Bay OCS HCU driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-novatek-nt35560.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35560.c b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
-index cc7f96d708263..52df7e776fae0 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt35560.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
-@@ -162,7 +162,7 @@ static int nt35560_set_brightness(struct backlight_device *bl)
- 		par = 0x00;
- 		ret = mipi_dsi_dcs_write(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY,
- 					 &par, 1);
--		if (ret) {
-+		if (ret < 0) {
- 			dev_err(nt->dev, "failed to disable display backlight (%d)\n", ret);
- 			return ret;
- 		}
+diff --git a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
+index b732223035399..3b5d5b64e1414 100644
+--- a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
++++ b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
+@@ -232,7 +232,7 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
+ 	struct device *dev = rctx->hcu_dev->dev;
+ 	unsigned int remainder = 0;
+ 	unsigned int total;
+-	size_t nents;
++	int nents;
+ 	size_t count;
+ 	int rc;
+ 	int i;
+@@ -253,6 +253,9 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
+ 	/* Determine the number of scatter gather list entries to process. */
+ 	nents = sg_nents_for_len(req->src, rctx->sg_data_total - remainder);
+ 
++	if (nents < 0)
++		return nents;
++
+ 	/* If there are entries to process, map them. */
+ 	if (nents) {
+ 		rctx->sg_dma_nents = dma_map_sg(dev, req->src, nents,
 -- 
 2.51.0
 
