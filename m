@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-185433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36230BD53C4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:52:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8EDBBD4C69
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 728C654839E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:06:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A90993E1F6C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D0F315D46;
-	Mon, 13 Oct 2025 15:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD2C30BBB6;
+	Mon, 13 Oct 2025 15:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MszchaSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/GR4JsS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D112949E0;
-	Mon, 13 Oct 2025 15:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D4C30BBA0;
+	Mon, 13 Oct 2025 15:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370280; cv=none; b=lNGSoMxu5lY1EeddM7gJRJ+PD0h7mC3brSgQ6VHUY/tG/eL9URuLWYqpucQoUDm5+LzmKE0zxzG3PVRCgLeaR/aWyYqXMRBQeyek9tfy1HA+qCu/prz5zI3Wo8UDsGC1xC2sOR12Bvv6UNEpj96Fs8QkQr8E6lxEk4Ao2DYe3Vo=
+	t=1760368724; cv=none; b=sKfIqRAx3K3Voed0vySurblqq538xMey1T4sy3/hxgrw8pO8Ztzk+rXsoLQQ5ENBLxK2MsI0K5g5aLqxT61Vm+XnTitXbsQhMMqZYY5uujjHxW94X/sicehNE5i/Y/MmbZ9+gMoojiIm+JRkMkp7k5UI+lwjsN4c0RfqnwyDHew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370280; c=relaxed/simple;
-	bh=vZiWltL4NN1aq0mYsfGW/uCIzTTz0+1vh9eSvqz4Tx4=;
+	s=arc-20240116; t=1760368724; c=relaxed/simple;
+	bh=WRINBG5sbQHnZxXSN9tKb/8hOtwMuP9+twPu47z0efc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0LpONHQ304JyGRaGW7UkPTcYpNVT8jiyy8YF1KPT9uUvzZnPn/766wfk9qYlwinejVVFr/3fPrOHRpcIWZMK/o4sueufdGJi200UclU7PRsrkSQRo6PZSG9G4QPDz94plBHcX4tnJldAIwgYCttksFI+Rb6iORgFzu7T1xulG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MszchaSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32BEC4CEE7;
-	Mon, 13 Oct 2025 15:44:39 +0000 (UTC)
+	 MIME-Version; b=IocBT+v/kxk/+cJjU/hKJL9RISIS6Yqk0tmp8gLvwM9/OW6iN+ECorrnGF6xWS2CxmOM9Ma/wXibJn+m6uu/vKq1WMay6ax38147XfNke02KQsmQAgwnLRKiTgg562978uoFrQij5dHbx3DCF3iJkKAv3OVfrF/6oCcrVKegYQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/GR4JsS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED42C4CEE7;
+	Mon, 13 Oct 2025 15:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370280;
-	bh=vZiWltL4NN1aq0mYsfGW/uCIzTTz0+1vh9eSvqz4Tx4=;
+	s=korg; t=1760368723;
+	bh=WRINBG5sbQHnZxXSN9tKb/8hOtwMuP9+twPu47z0efc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MszchaSq2jVG5z56NSka00+8pfykKmUl//e70mQsTEy2ufIFzcKOnyYvES0Rfxhjm
-	 TXX/xj5sUfnal5hfLnpK5PlQ2Z7HiRs2pvEKQsnU/aPy5v69WgxQQZEx1WT/CpxKLf
-	 LJZsZNKGIVhwdP5c+17zQrDvuXawY9MYubMRUH3Q=
+	b=r/GR4JsSJr4V1j8VRWifRn/urBeU+GXRI/XPB76APYroBgPTtklhQvO/jM86PVJFc
+	 UcxsjvGGV2z3aZQ4DV6DqAwCD35O2irjB3TeYaGirO5iUmT27Q7KCL20qNJfogl/Fa
+	 JDVnU+550+EAnFXhBv+lRcrBsAwOWe8uA+aSMuTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Yang <lance.yang@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 541/563] selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
-Date: Mon, 13 Oct 2025 16:46:42 +0200
-Message-ID: <20251013144430.907574291@linuxfoundation.org>
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 261/262] arm64: dts: qcom: qcm2290: Disable USB SS bus instances in park mode
+Date: Mon, 13 Oct 2025 16:46:43 +0200
+Message-ID: <20251013144335.632503778@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,133 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lance Yang <lance.yang@linux.dev>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-commit 0389c305ef56cbadca4cbef44affc0ec3213ed30 upstream.
+commit 27f94b71532203b079537180924023a5f636fca1 upstream.
 
-The madv_populate and soft-dirty kselftests currently fail on systems
-where CONFIG_MEM_SOFT_DIRTY is disabled.
+2290 was found in the field to also require this quirk, as long &
+high-bandwidth workloads (e.g. USB ethernet) are consistently able to
+crash the controller otherwise.
 
-Introduce a new helper softdirty_supported() into vm_util.c/h to ensure
-tests are properly skipped when the feature is not enabled.
+The same change has been made for a number of SoCs in [1], but QCM2290
+somehow escaped the list (even though the very closely related SM6115
+was there).
 
-Link: https://lkml.kernel.org/r/20250917133137.62802-1-lance.yang@linux.dev
-Fixes: 9f3265db6ae8 ("selftests: vm: add test for Soft-Dirty PTE bit")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Gabriel Krisman Bertazi <krisman@collabora.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Upon a controller crash, the log would read:
+
+xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
+xhci-hcd.12.auto: xHCI host controller not responding, assume dead
+xhci-hcd.12.auto: HC died; cleaning up
+
+Add snps,parkmode-disable-ss-quirk to the DWC3 instance in order to
+prevent the aforementioned breakage.
+
+[1] https://lore.kernel.org/all/20240704152848.3380602-1-quic_kriskura@quicinc.com/
+
+Cc: stable@vger.kernel.org
+Reported-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: a64a0192b70c ("arm64: dts: qcom: Add initial QCM2290 device tree")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250708-topic-2290_usb-v1-1-661e70a63339@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/madv_populate.c |   21 ++-------------------
- tools/testing/selftests/mm/soft-dirty.c    |    5 ++++-
- tools/testing/selftests/mm/vm_util.c       |   17 +++++++++++++++++
- tools/testing/selftests/mm/vm_util.h       |    1 +
- 4 files changed, 24 insertions(+), 20 deletions(-)
+ arch/arm64/boot/dts/qcom/qcm2290.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/mm/madv_populate.c
-+++ b/tools/testing/selftests/mm/madv_populate.c
-@@ -264,23 +264,6 @@ static void test_softdirty(void)
- 	munmap(addr, SIZE);
- }
- 
--static int system_has_softdirty(void)
--{
--	/*
--	 * There is no way to check if the kernel supports soft-dirty, other
--	 * than by writing to a page and seeing if the bit was set. But the
--	 * tests are intended to check that the bit gets set when it should, so
--	 * doing that check would turn a potentially legitimate fail into a
--	 * skip. Fortunately, we know for sure that arm64 does not support
--	 * soft-dirty. So for now, let's just use the arch as a corse guide.
--	 */
--#if defined(__aarch64__)
--	return 0;
--#else
--	return 1;
--#endif
--}
--
- int main(int argc, char **argv)
- {
- 	int nr_tests = 16;
-@@ -288,7 +271,7 @@ int main(int argc, char **argv)
- 
- 	pagesize = getpagesize();
- 
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		nr_tests += 5;
- 
- 	ksft_print_header();
-@@ -300,7 +283,7 @@ int main(int argc, char **argv)
- 	test_holes();
- 	test_populate_read();
- 	test_populate_write();
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		test_softdirty();
- 
- 	err = ksft_get_fail_cnt();
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -200,8 +200,11 @@ int main(int argc, char **argv)
- 	int pagesize;
- 
- 	ksft_print_header();
--	ksft_set_plan(15);
- 
-+	if (!softdirty_supported())
-+		ksft_exit_skip("soft-dirty is not support\n");
-+
-+	ksft_set_plan(15);
- 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
- 	if (pagemap_fd < 0)
- 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -426,6 +426,23 @@ bool check_vmflag_io(void *addr)
- 	}
- }
- 
-+bool softdirty_supported(void)
-+{
-+	char *addr;
-+	bool supported = false;
-+	const size_t pagesize = getpagesize();
-+
-+	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
-+	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (!addr)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	supported = check_vmflag(addr, "sd");
-+	munmap(addr, pagesize);
-+	return supported;
-+}
-+
- /*
-  * Open an fd at /proc/$pid/maps and configure procmap_out ready for
-  * PROCMAP_QUERY query. Returns 0 on success, or an error code otherwise.
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -99,6 +99,7 @@ bool find_vma_procmap(struct procmap_fd
- int close_procmap(struct procmap_fd *procmap);
- int write_sysfs(const char *file_path, unsigned long val);
- int read_sysfs(const char *file_path, unsigned long *val);
-+bool softdirty_supported(void);
- 
- static inline int open_self_procmap(struct procmap_fd *procmap_out)
- {
+--- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
+@@ -1405,6 +1405,7 @@
+ 				snps,has-lpm-erratum;
+ 				snps,hird-threshold = /bits/ 8 <0x10>;
+ 				snps,usb3_lpm_capable;
++				snps,parkmode-disable-ss-quirk;
+ 				maximum-speed = "super-speed";
+ 				dr_mode = "otg";
+ 				usb-role-switch;
 
 
 
