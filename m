@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4200DBD416E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:57 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDD3BD3C93
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B4B9E34EC7C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9941B34DD4F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552F03126AD;
-	Mon, 13 Oct 2025 15:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3723D25D546;
+	Mon, 13 Oct 2025 14:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EpDGRnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4p2R6Nq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1203722257E;
-	Mon, 13 Oct 2025 15:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E668B221F20;
+	Mon, 13 Oct 2025 14:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368217; cv=none; b=dfAU86wezMl+JaOMZzJvdzK1mSGZ/1vfnyyVRYKeBgCdugZxYDw+pirzRKv8FtY7/q7e0FbjTcR+zO5AZZZZFENKViMgR1uo7JYrDKrb94dLoDLwyxdIdZeP+/FjaeUFs8nVVxG+2jTEPpyRCimPwiZD6EB0wkeGqGlV5dBCSLE=
+	t=1760367087; cv=none; b=Ack3dIIG2ZmlVCgydslgRthriE2eIL+fvICQhLZk84mv2nJ7Kt1A3mmr11SIWFOf/xji6/gonHqV2kcxOYF+TIRpjr24UASne8hQ6GjzE5aHowO66SlUeTY14K21kmB1MB/AjvZCe7SR0gHSxjZLWiGIpqxbdYpPXDWqWM3SS50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368217; c=relaxed/simple;
-	bh=gIxdF2xdZFhXXz9Kfygt+8GVDtUS/d/nBs3muQMsJJs=;
+	s=arc-20240116; t=1760367087; c=relaxed/simple;
+	bh=rznG/JWZU0cCSXpoA7wsuyk0O6o5BhIzwKTLMX8hFqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tG3r/+NAExU1P+kAdw9o+UHXdJGzMsGrJF1nJY0molEK++uvO+sMheTUizPGhhx/kkhSvBt+rwTAezYFPj+2RVglACRWh4YSdi/IOdBXope7G/znU1DZu6HhiZ6qO3Jh5cR6m/xQUXFzHBdfKofJ+WVOMDszP8CTFDFboaUYz2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EpDGRnK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9705AC4CEE7;
-	Mon, 13 Oct 2025 15:10:16 +0000 (UTC)
+	 MIME-Version; b=GujqxMWdYlbGe2eiixYkYJJwDOeemLZzrXQF49x2Z9mXRpqYWErmENQu0y+4GMgu0NVUwFbtzJstRV6VLrEJqs6mjEGQt0chFaRKpjo5epGEfE5IdnczCdoI1YWSWo9T76G6VdGbuLC2Pze0utln9GXgnLuOSVsuLRDWxu6N64Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4p2R6Nq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706BDC113D0;
+	Mon, 13 Oct 2025 14:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368216;
-	bh=gIxdF2xdZFhXXz9Kfygt+8GVDtUS/d/nBs3muQMsJJs=;
+	s=korg; t=1760367086;
+	bh=rznG/JWZU0cCSXpoA7wsuyk0O6o5BhIzwKTLMX8hFqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2EpDGRnK9lOW1Aj4U9chIHlpqaI4hSOrP5bFs9UYY9bQQQQaurEHZHaq/y45doRt9
-	 o3uZk2/yKlniOUN+HdmqxO9lwEI68BXllWjtWY5NqYjlPuoyc5a7j2OI+KLaKnV/KD
-	 kVbb1y+ILHphk9SxRKmf7pAU3VwbYf6AF/bZmJ+8=
+	b=j4p2R6Nqi9HcrvE64m8sZRx9SyBg4/J4rsRnG6Vqq+yucGXG3IwOuYttFeqLk11qv
+	 bVfil7z3KEDRpJYVbhwWQP1A47FiGbU4SjNbgme1RtLp5T0HvdBgMijT/TSVB+JGmm
+	 yBLabzxKWdBUCpxDj94H6/zHqUUlQmSQUvOWdY3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Leilk.Liu" <leilk.liu@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/262] i2c: mediatek: fix potential incorrect use of I2C_MASTER_WRRD
+Subject: [PATCH 6.1 054/196] arm64: dts: renesas: rzg2lc-smarc: Disable CAN-FD channel0
 Date: Mon, 13 Oct 2025 16:43:47 +0200
-Message-ID: <20251013144329.190995960@linuxfoundation.org>
+Message-ID: <20251013144316.538814307@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leilk.Liu <leilk.liu@mediatek.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit b492183652808e0f389272bf63dc836241b287ff ]
+[ Upstream commit ae014fbc99c7f986ee785233e7a5336834e39af4 ]
 
-The old IC does not support the I2C_MASTER_WRRD (write-then-read)
-function, but the current code’s handling of i2c->auto_restart may
-potentially lead to entering the I2C_MASTER_WRRD software flow,
-resulting in unexpected bugs.
+On RZ/G2LC SMARC EVK, CAN-FD channel0 is not populated, and currently we
+are deleting a wrong and nonexistent node.  Fixing the wrong node would
+invoke a dtb warning message, as channel0 is a required property.
+Disable CAN-FD channel0 instead of deleting the node.
 
-Instead of repurposing the auto_restart flag, add a separate flag
-to signal I2C_MASTER_WRRD operations.
-
-Also fix handling of msgs. If the operation (i2c->op) is
-I2C_MASTER_WRRD, then the msgs pointer is incremented by 2.
-For all other operations, msgs is simply incremented by 1.
-
-Fixes: b2ed11e224a2 ("I2C: mediatek: Add driver for MediaTek MT8173 I2C controller")
-Signed-off-by: Leilk.Liu <leilk.liu@mediatek.com>
-Suggested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: 46da632734a5 ("arm64: dts: renesas: rzg2lc-smarc: Enable CANFD channel 1")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250801121959.267424-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-mt65xx.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-mt65xx.c b/drivers/i2c/busses/i2c-mt65xx.c
-index e0ba653dec2d6..8beef73960c74 100644
---- a/drivers/i2c/busses/i2c-mt65xx.c
-+++ b/drivers/i2c/busses/i2c-mt65xx.c
-@@ -1243,6 +1243,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
- {
- 	int ret;
- 	int left_num = num;
-+	bool write_then_read_en = false;
- 	struct mtk_i2c *i2c = i2c_get_adapdata(adap);
- 
- 	ret = clk_bulk_enable(I2C_MT65XX_CLK_MAX, i2c->clocks);
-@@ -1256,6 +1257,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
- 		if (!(msgs[0].flags & I2C_M_RD) && (msgs[1].flags & I2C_M_RD) &&
- 		    msgs[0].addr == msgs[1].addr) {
- 			i2c->auto_restart = 0;
-+			write_then_read_en = true;
- 		}
- 	}
- 
-@@ -1280,12 +1282,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
- 		else
- 			i2c->op = I2C_MASTER_WR;
- 
--		if (!i2c->auto_restart) {
--			if (num > 1) {
--				/* combined two messages into one transaction */
--				i2c->op = I2C_MASTER_WRRD;
--				left_num--;
--			}
-+		if (write_then_read_en) {
-+			/* combined two messages into one transaction */
-+			i2c->op = I2C_MASTER_WRRD;
-+			left_num--;
- 		}
- 
- 		/* always use DMA mode. */
-@@ -1293,7 +1293,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
- 		if (ret < 0)
- 			goto err_exit;
- 
--		msgs++;
-+		if (i2c->op == I2C_MASTER_WRRD)
-+			msgs += 2;
-+		else
-+			msgs++;
- 	}
- 	/* the return value is number of executed messages */
- 	ret = num;
+diff --git a/arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi b/arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi
+index 6be25a8a28db7..866f1358d57a4 100644
+--- a/arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi
++++ b/arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi
+@@ -50,7 +50,10 @@ aliases {
+ #if (SW_SCIF_CAN || SW_RSPI_CAN)
+ &canfd {
+ 	pinctrl-0 = <&can1_pins>;
+-	/delete-node/ channel@0;
++
++	channel0 {
++		status = "disabled";
++	};
+ };
+ #else
+ &canfd {
 -- 
 2.51.0
 
