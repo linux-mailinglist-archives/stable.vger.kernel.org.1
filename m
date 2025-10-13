@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC71BD3F7E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:15:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4992EBD4760
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDE45188BCE8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E53B42307E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E893093D5;
-	Mon, 13 Oct 2025 14:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD3730EF6D;
+	Mon, 13 Oct 2025 15:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crwABT12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fczdiZ3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168B41E9B0D;
-	Mon, 13 Oct 2025 14:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B6C30EF71;
+	Mon, 13 Oct 2025 15:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367298; cv=none; b=ZXcXp33qsyqBV38zIIlb5sBFUBcR2LbskQu0O6wJepqlWlVjcqdLcnjRgUFT1I9j8G6mquID7u7yQIv57jp4RgovVVKyGT3FyEyL9EGT/UhRZgcvFV2zYcne+6kupT155NGdoy/CP9byNGM0GG48ehDdPeKBdlfo4hDC6OovCdc=
+	t=1760367812; cv=none; b=QIyVWO4njWx8M4dGE0lzefkFzD0UXtuxJSlcPPrWy7uvJehmjmmpGdE767k1mWniWDuXjYfGNu9D2SkZ8qSS7ZsN4nXXepWwIsICypBuUfWAHYXiwH+1Q5x2uXgAG7+ImzocouDhKtDalJg47SiCVIgbZmEY8TveIcscL9VxI8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367298; c=relaxed/simple;
-	bh=O+xP23Pk5f6QBw06ggrnDim4FUVxNmk7pQbi7PFGM8M=;
+	s=arc-20240116; t=1760367812; c=relaxed/simple;
+	bh=kIrLs1rb8KT4NZIEUsy8efqo/hedApX1DqMkQHXtX+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L3o6cvi5ZIzsXGkCRNQrKPoCIj+xkT2AJsU6Ya7LX+zeXR/4omb/VojD5IyD9MRe9iDtBKhPMAub6WKO9nhW6mBtxV91DsYMU5uxH2/ZcuHPFF1jcrj24uOxoBBkQy1SBR87TIj7wjFC8maHwb9s2vBcbj/ZiyQ8dcOx8qknsOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crwABT12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7783EC4CEE7;
-	Mon, 13 Oct 2025 14:54:57 +0000 (UTC)
+	 MIME-Version; b=K3zFR2y9MQHds+Rsm03044qjrbw54nS2npVFcDAT41AaE6aGXJIAO774gfZRqfw1eo370wJSQdW8fa2fspfEIj2uwD1zta8Y9YcPwPEhDUObvO1rm/aAFuk8j3AxrvFmrHvhyssE9zZZdiuet7oDtUFUQIotAMXxZ+C/OpvoY8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fczdiZ3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C97C4CEFE;
+	Mon, 13 Oct 2025 15:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367297;
-	bh=O+xP23Pk5f6QBw06ggrnDim4FUVxNmk7pQbi7PFGM8M=;
+	s=korg; t=1760367812;
+	bh=kIrLs1rb8KT4NZIEUsy8efqo/hedApX1DqMkQHXtX+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crwABT12NUq/C2fovJlQlbfCdW5M9buBtbIlgfYnDznlciSEfxNy2AlOiCr0+/vXi
-	 +mKbFcd/fBZ+RJTpFc6a4v8OMppU7EAcl2OL1Hw+Hi92Wn/WQIr6xBJ8g/RRg4mM80
-	 rTXhsX+u5syjbRjvegpkRjM+CSNq3/pYa+dvAwWU=
+	b=fczdiZ3p4qp3ZKJL95el4LRTy+Qh0tVTgGJ4VbSijB7dKWoowuz/EFDxbHmpprgyj
+	 BwFz1fvjcaNLUYZtW+lxW2j2qMxI/DSKGFxqxkITTEFCr5D2qBEf2RdL3gU0wppeZ8
+	 9ACdZQOqQryNB3Ekege7sPL694Qvv9S9glCFYyiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Phil Sutter <phil@nwl.cc>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/196] RDMA/cm: Rate limit destroy CM ID timeout error message
+Subject: [PATCH 6.6 109/196] netfilter: ipset: Remove unused htable_bits in macro ahash_region
 Date: Mon, 13 Oct 2025 16:45:00 +0200
-Message-ID: <20251013144319.289475275@linuxfoundation.org>
+Message-ID: <20251013144319.256192017@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Håkon Bugge <haakon.bugge@oracle.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit 2bbe1255fcf19c5eb300efb6cb5ad98d66fdae2e ]
+[ Upstream commit ba941796d7cd1e81f51eed145dad1b47240ff420 ]
 
-When the destroy CM ID timeout kicks in, you typically get a storm of
-them which creates a log flooding. Hence, change pr_err() to
-pr_err_ratelimited() in cm_destroy_id_wait_timeout().
+Since the ahash_region() macro was redefined to calculate the region
+index solely from HTABLE_REGION_BITS, the htable_bits parameter became
+unused.
 
-Fixes: 96d9cbe2f2ff ("RDMA/cm: add timeout to cm_destroy_id wait")
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Link: https://patch.msgid.link/20250912100525.531102-1-haakon.bugge@oracle.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Remove the unused htable_bits argument and its call sites, simplifying
+the code without changing semantics.
+
+Fixes: 8478a729c046 ("netfilter: ipset: fix region locking in hash types")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/ipset/ip_set_hash_gen.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
-index 0a113d0d6b08f..5c336ab12ee1d 100644
---- a/drivers/infiniband/core/cm.c
-+++ b/drivers/infiniband/core/cm.c
-@@ -1032,8 +1032,8 @@ static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id,
- 	struct cm_id_private *cm_id_priv;
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index c2d88b1b06b87..20b223e6e93b9 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -62,7 +62,7 @@ struct hbucket {
+ 		: jhash_size((htable_bits) - HTABLE_REGION_BITS))
+ #define ahash_sizeof_regions(htable_bits)		\
+ 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
+-#define ahash_region(n, htable_bits)		\
++#define ahash_region(n)		\
+ 	((n) / jhash_size(HTABLE_REGION_BITS))
+ #define ahash_bucket_start(h,  htable_bits)	\
+ 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
+@@ -701,7 +701,7 @@ mtype_resize(struct ip_set *set, bool retried)
+ #endif
+ 				key = HKEY(data, h->initval, htable_bits);
+ 				m = __ipset_dereference(hbucket(t, key));
+-				nr = ahash_region(key, htable_bits);
++				nr = ahash_region(key);
+ 				if (!m) {
+ 					m = kzalloc(sizeof(*m) +
+ 					    AHASH_INIT_SIZE * dsize,
+@@ -851,7 +851,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	elements = t->hregion[r].elements;
+ 	maxelem = t->maxelem;
+@@ -1049,7 +1049,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	rcu_read_unlock_bh();
  
- 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
--	pr_err("%s: cm_id=%p timed out. state %d -> %d, refcnt=%d\n", __func__,
--	       cm_id, old_state, cm_id->state, refcount_read(&cm_id_priv->refcount));
-+	pr_err_ratelimited("%s: cm_id=%p timed out. state %d -> %d, refcnt=%d\n", __func__,
-+			   cm_id, old_state, cm_id->state, refcount_read(&cm_id_priv->refcount));
- }
- 
- static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
 -- 
 2.51.0
 
