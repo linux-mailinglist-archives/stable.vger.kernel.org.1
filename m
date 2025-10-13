@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-185487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42315BD58C4
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D406BD58C5
 	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 19:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D85803AC8BC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:37:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE0093AD2CB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA1F3081CE;
-	Mon, 13 Oct 2025 17:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800C93081B7;
+	Mon, 13 Oct 2025 17:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GsRSYJnm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVKZ29Lr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3ED13AD26
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 17:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E85D3081B1
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 17:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760377005; cv=none; b=E2NVJl8cgkyB72J/ifTBLAFFhBFgQnxGXrGobGTKCN0/00DBR/GnW3brCpuUYwsUkfa4LVzWQfSZoSApUoeMvB6Rp/xQmSvhtg16Xq4nFvmRsa8F26GT9Hbpmd71t96OvNlu4Tu8yIKFgtq2B0mx43l6+u3756aDk27e0z0C/Yg=
+	t=1760377012; cv=none; b=ZnkhuYvWLHcnWHFOFB3GN6qPGF59Lik3mBL0mjKKjNhcJJRV5bRW7qvhC2cTgW9F0xDd1QHbWszCjM4NdO8N3TVnkUw8H/qj6H15MkHZYu3+REdrhZgSJRMgZNV08uWqoJsnWpjPV36W3vYgZCrVUhbrVDreyAv/q+ka8PjUxvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760377005; c=relaxed/simple;
-	bh=yfryrst7aMAI7pNNcfPWfpYJk1n7ro4eOjd5sJGJuLM=;
+	s=arc-20240116; t=1760377012; c=relaxed/simple;
+	bh=kTaNcQsuwfNc7EdxtK4dQZXXPYvRfBZzzVLecscWQh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScZ6ubAqq+HleWi0a4eF9meSgwBvFpCHLvbmGahOOSIKhrLoAjo/zzsLYVuaiZZGpaIfTuumTriGjHs4tnEZxRmnB/BjLwuEdB1MYMjfvkVhrUbQdhQZ4HYUmJaDs3z8bVUielZKg5cDgmlFtDFX3nIGTgHfpyLppy/44/zc3PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GsRSYJnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F321CC4CEE7;
-	Mon, 13 Oct 2025 17:36:43 +0000 (UTC)
+	 MIME-Version; b=H9mGg6sjFTyWfioO6G1l/h2LammWgGquQzCaAdfUJA6g1WfaG+Ez24iwuD1vhxzbS8wq+YE+OBRimZXAysnSAdOVbFIViXTGNer43RZMdDahZNcu6ZrtJ2cFaFkysVJWbXmj0bwhy5ckJkeFAHLbxAFXzQ6HYaX1RpsfuYMAssg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVKZ29Lr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C051C4CEE7;
+	Mon, 13 Oct 2025 17:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760377004;
-	bh=yfryrst7aMAI7pNNcfPWfpYJk1n7ro4eOjd5sJGJuLM=;
+	s=k20201202; t=1760377011;
+	bh=kTaNcQsuwfNc7EdxtK4dQZXXPYvRfBZzzVLecscWQh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsRSYJnmAYGKSsrJhkKfpK5DYtwYSYAo21mzJalIYZ94ZUU/X34MQ7msjKKhKTpn8
-	 a5mQ9LZzdDys+wcBfXWtDaCgx/nB2foFZBZ42C7kpkeLu2gZwANdbVlWaVTHrNYtOG
-	 3RjaF/4AYP415F35Ux500oROTwQg6z/L3msD2xf1k7GfZjnpUsBiTY7skMoxjuVSI+
-	 32xXjtz6wd6+mBe8kFsfG8wmOBQomkRYPLjWwwHCs51j6164raKxx0uICBSqIXPd0S
-	 l6jH/qJNWapkbvyUQmmLTo3fz0PdrG1XkIFse787QLYAfyK4nDaDgaP9pm50jPqLvG
-	 ln1keGLpyIiWg==
+	b=SVKZ29LryvD2lxEkHt4RIoEyRGA1RKPbUXoZoNtu/Q2BLDthjtdkO5w2t2LqTOlf0
+	 a2PF271Vg5NrAMN7xpUHh/5Sn4cA/aYoqwh79xEx7cexo5VT99TAZ4sBtydAffRGgp
+	 zpEuaoKquDb6e21obj8LHQR2wDICTAZ49TqLMmkr/k6XIvviDvAcxQ1ZEMdEEz6N2r
+	 p6pjwKCban5dVduNGsz1AboKCh6bYsUlAJoz0vcNTFYZE5weLJsVN2nFodTawO7mVT
+	 UNCbqR7B3cBEATTefPKxRfJ059/KcO/joTHmHFZI57xpq9efDoElXJSWa31Um1r16M
+	 JgSXc2B2s1RQg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com,
-	Jim Mattson <jmattson@google.com>,
+Cc: Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] KVM: x86: Don't (re)check L1 intercepts when completing userspace I/O
-Date: Mon, 13 Oct 2025 13:36:41 -0400
-Message-ID: <20251013173641.3404405-1-sashal@kernel.org>
+Subject: [PATCH 6.17.y 1/2] Squashfs: add additional inode sanity checking
+Date: Mon, 13 Oct 2025 13:36:48 -0400
+Message-ID: <20251013173649.3404578-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101006-moonwalk-smilingly-3725@gregkh>
-References: <2025101006-moonwalk-smilingly-3725@gregkh>
+In-Reply-To: <2025101319-anything-blob-1499@gregkh>
+References: <2025101319-anything-blob-1499@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,148 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit e750f85391286a4c8100275516973324b621a269 ]
+[ Upstream commit 9ee94bfbe930a1b39df53fa2d7b31141b780eb5a ]
 
-When completing emulation of instruction that generated a userspace exit
-for I/O, don't recheck L1 intercepts as KVM has already finished that
-phase of instruction execution, i.e. has already committed to allowing L2
-to perform I/O.  If L1 (or host userspace) modifies the I/O permission
-bitmaps during the exit to userspace,  KVM will treat the access as being
-intercepted despite already having emulated the I/O access.
+Patch series "Squashfs: performance improvement and a sanity check".
 
-Pivot on EMULTYPE_NO_DECODE to detect that KVM is completing emulation.
-Of the three users of EMULTYPE_NO_DECODE, only complete_emulated_io() (the
-intended "recipient") can reach the code in question.  gp_interception()'s
-use is mutually exclusive with is_guest_mode(), and
-complete_emulated_insn_gp() unconditionally pairs EMULTYPE_NO_DECODE with
-EMULTYPE_SKIP.
+This patchset adds an additional sanity check when reading regular file
+inodes, and adds support for SEEK_DATA/SEEK_HOLE lseek() whence values.
 
-The bad behavior was detected by a syzkaller program that toggles port I/O
-interception during the userspace I/O exit, ultimately resulting in a WARN
-on vcpu->arch.pio.count being non-zero due to KVM no completing emulation
-of the I/O instruction.
+This patch (of 2):
 
-  WARNING: CPU: 23 PID: 1083 at arch/x86/kvm/x86.c:8039 emulator_pio_in_out+0x154/0x170 [kvm]
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 23 UID: 1000 PID: 1083 Comm: repro Not tainted 6.16.0-rc5-c1610d2d66b1-next-vm #74 NONE
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:emulator_pio_in_out+0x154/0x170 [kvm]
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   kvm_fast_pio+0xd6/0x1d0 [kvm]
-   vmx_handle_exit+0x149/0x610 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xda8/0x1ac0 [kvm]
-   kvm_vcpu_ioctl+0x244/0x8c0 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0x5d/0xc60
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
+Add an additional sanity check when reading regular file inodes.
 
-Reported-by: syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68790db4.a00a0220.3af5df.0020.GAE@google.com
-Fixes: 8a76d7f25f8f ("KVM: x86: Add x86 callback for intercept check")
-Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20250715190638.1899116-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ is_guest_mode() was open coded ]
+A regular file if the file size is an exact multiple of the filesystem
+block size cannot have a fragment.  This is because by definition a
+fragment block stores tailends which are not a whole block in size.
+
+Link: https://lkml.kernel.org/r/20250923220652.568416-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20250923220652.568416-2-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 9f1c14c1de1b ("Squashfs: reject negative file sizes in squashfs_read_inode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/emulate.c     | 11 ++++-------
- arch/x86/kvm/kvm_emulate.h |  2 +-
- arch/x86/kvm/x86.c         |  9 ++++++++-
- 3 files changed, 13 insertions(+), 9 deletions(-)
+ fs/squashfs/inode.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 98b25a7af8ce8..dae68691f4248 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -5452,12 +5452,11 @@ void init_decode_cache(struct x86_emulate_ctxt *ctxt)
- 	ctxt->mem_read.end = 0;
- }
+diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
+index d5918eba27e37..77eec1772998b 100644
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -140,8 +140,17 @@ int squashfs_read_inode(struct inode *inode, long long ino)
+ 		if (err < 0)
+ 			goto failed_read;
  
--int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
-+int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts)
- {
- 	const struct x86_emulate_ops *ops = ctxt->ops;
- 	int rc = X86EMUL_CONTINUE;
- 	int saved_dst_type = ctxt->dst.type;
--	unsigned emul_flags;
- 
- 	ctxt->mem_read.pos = 0;
- 
-@@ -5471,8 +5470,6 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
- 		rc = emulate_ud(ctxt);
- 		goto done;
- 	}
--
--	emul_flags = ctxt->ops->get_hflags(ctxt);
- 	if (unlikely(ctxt->d &
- 		     (No64|Undefined|Sse|Mmx|Intercept|CheckPerm|Priv|Prot|String))) {
- 		if ((ctxt->mode == X86EMUL_MODE_PROT64 && (ctxt->d & No64)) ||
-@@ -5506,7 +5503,7 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
- 				fetch_possible_mmx_operand(&ctxt->dst);
++		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -155,7 +164,6 @@ int squashfs_read_inode(struct inode *inode, long long ino)
  		}
  
--		if (unlikely(emul_flags & X86EMUL_GUEST_MASK) && ctxt->intercept) {
-+		if (unlikely(check_intercepts) && ctxt->intercept) {
- 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 						      X86_ICPT_PRE_EXCEPT);
- 			if (rc != X86EMUL_CONTINUE)
-@@ -5535,7 +5532,7 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
- 				goto done;
- 		}
+ 		set_nlink(inode, 1);
+-		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
+ 		inode->i_blocks = ((inode->i_size - 1) >> 9) + 1;
+@@ -183,8 +191,17 @@ int squashfs_read_inode(struct inode *inode, long long ino)
+ 		if (err < 0)
+ 			goto failed_read;
  
--		if (unlikely(emul_flags & X86EMUL_GUEST_MASK) && (ctxt->d & Intercept)) {
-+		if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
- 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 						      X86_ICPT_POST_EXCEPT);
- 			if (rc != X86EMUL_CONTINUE)
-@@ -5589,7 +5586,7 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
++		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -199,7 +216,6 @@ int squashfs_read_inode(struct inode *inode, long long ino)
  
- special_insn:
- 
--	if (unlikely(emul_flags & X86EMUL_GUEST_MASK) && (ctxt->d & Intercept)) {
-+	if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
- 		rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 					      X86_ICPT_POST_MEMACCESS);
- 		if (rc != X86EMUL_CONTINUE)
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index fb09cd22cb7f5..6507340513cdd 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -496,7 +496,7 @@ bool x86_page_table_writing_insn(struct x86_emulate_ctxt *ctxt);
- #define EMULATION_RESTART 1
- #define EMULATION_INTERCEPTED 2
- void init_decode_cache(struct x86_emulate_ctxt *ctxt);
--int x86_emulate_insn(struct x86_emulate_ctxt *ctxt);
-+int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts);
- int emulator_task_switch(struct x86_emulate_ctxt *ctxt,
- 			 u16 tss_selector, int idt_index, int reason,
- 			 bool has_error_code, u32 error_code);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 2ba297da7bdec..648f80f73e66c 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8209,7 +8209,14 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 		ctxt->exception.address = 0;
- 	}
- 
--	r = x86_emulate_insn(ctxt);
-+	/*
-+	 * Check L1's instruction intercepts when emulating instructions for
-+	 * L2, unless KVM is re-emulating a previously decoded instruction,
-+	 * e.g. to complete userspace I/O, in which case KVM has already
-+	 * checked the intercepts.
-+	 */
-+	r = x86_emulate_insn(ctxt, is_guest_mode(vcpu) &&
-+				   !(emulation_type & EMULTYPE_NO_DECODE));
- 
- 	if (r == EMULATION_INTERCEPTED)
- 		return 1;
+ 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+-		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		inode->i_op = &squashfs_inode_ops;
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
 -- 
 2.51.0
 
