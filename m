@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-184551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DE6BD3FF1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 774B1BD3EC2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1B73534E163
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBD0C1888652
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2ED30BBA6;
-	Mon, 13 Oct 2025 15:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772A3313E28;
+	Mon, 13 Oct 2025 14:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ql95rFRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgXiO5e4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF9530BB9E;
-	Mon, 13 Oct 2025 15:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80A1313E1A;
+	Mon, 13 Oct 2025 14:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367759; cv=none; b=VGWBL3zq0rMsNkoF+aJuKBZxGgUIHtuuJMFgNUoiKLPaW5WKmpvEnznKdguHs5YVUUbaOs7bFsIj49WTu0jBojbESOf/OslUOb37F5tYxmVW5rcaoJH9XNZqqU9sk5okC+qRoTE0vmnqMRf7qEMrLNlifwW38ODBYUhSiDSKYdY=
+	t=1760367243; cv=none; b=DwlX2q7bPmgmeghmDmGRJ5KXaze6kbzmhiaSZvoX3Zqi7pX6D0rkQaSNRN8S896GciGs1CvAQMxufJvCoVHYrLFIsfhG0e7LP9N8Lrm0iZug8JFwsxrfUSNg/0vjjuIZMaVUoeod47Y7CVlF6UYJjJRk48SL38kuT6fKqUHq2lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367759; c=relaxed/simple;
-	bh=282EpwjOuz2ApXAkvDt8kCVK3AbDoc4o+nbiinolGys=;
+	s=arc-20240116; t=1760367243; c=relaxed/simple;
+	bh=u0LYykkE2auTIeMHz16O2a4NAIEkzM5afEg4s+0cgyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjPBgPaYy4lrwzpBNSi/HgZ01OOA+Dj2aVlHCln3s8V3bIPWJK3HimuMH9SRWNVlbZhvhUMjXrbu7epBOOEg7C0z9nNU3fanvl1DqwPo+SRvE6WiPKadTwjeI4LGHS1XrzSfRZDXEuEnz1CsQ8TQb10/mW6JrVCbd9PIPvlDKns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql95rFRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11AAC4CEE7;
-	Mon, 13 Oct 2025 15:02:38 +0000 (UTC)
+	 MIME-Version; b=MXtM6xPKkx5qXdtJ2AvIy7C7HsFmO+heYzTWt1oeKXE662vXyCo5SjDVCaT558hFy+rmSO19/Zty60PGWVM/WEGvgtYhrVA0pR683QYlLLHxmU/MHfgIN+Q8LqerDRIpdMBhBj1JvQXneqEIhGT0IwufR0VCAQ5IvJAdL3xkaLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgXiO5e4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C312FC113D0;
+	Mon, 13 Oct 2025 14:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367759;
-	bh=282EpwjOuz2ApXAkvDt8kCVK3AbDoc4o+nbiinolGys=;
+	s=korg; t=1760367243;
+	bh=u0LYykkE2auTIeMHz16O2a4NAIEkzM5afEg4s+0cgyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ql95rFRd76UZSHdHu/GrgkhbHqWsWRVNLHJeH8dCpZRalp+F9aOVNmb/iFTRuAAc4
-	 b4ujvGrkBWZ3AjiC3t9jo9gq+bio/1ASWVdCXMLviIFPjo6NauuzcgpHLjzQVgTbHB
-	 P2rar7kxLCLukkc5JC7z8sP6emR1sJ6FdcwkKns0=
+	b=xgXiO5e4BXyMsLnQpYHvaSY3TIUiNg3CkRc55QZI5rtcOnZyotyyV7LEFqYEkeafu
+	 dMp+c9oLUFtW1zZB3lwYw4eyzr++3y/jINTHbvDjV0gT1vHnqEYCsajFzgkDOtf5+k
+	 zPdaxdwnHFiW3bkId78QkP0G4SkoUZYQpghb79JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/196] Revert "usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running"
+	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Sasha Levin <sashal@kernel.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Ethan Hawke <ehawk@ember.systems>,
+	Ken Link <iissmart@numberzero.org>
+Subject: [PATCH 6.1 141/196] sparc: fix accurate exception reporting in copy_{from_to}_user for Niagara
 Date: Mon, 13 Oct 2025 16:45:14 +0200
-Message-ID: <20251013144319.758531580@linuxfoundation.org>
+Message-ID: <20251013144319.796712106@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +66,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
 
-[ Upstream commit 08fa726e66039dfa80226dfa112931f60ad4c898 ]
+[ Upstream commit 0b67c8fc10b13a9090340c5f8a37d308f4e1571c ]
 
-This reverts commit 28a76fcc4c85dd39633fb96edb643c91820133e3.
+The referenced commit introduced exception handlers on user-space memory
+references in copy_from_user and copy_to_user. These handlers return from
+the respective function and calculate the remaining bytes left to copy
+using the current register contents. This commit fixes a couple of bad
+calculations and a broken epilogue in the exception handlers. This will
+prevent crashes and ensure correct return values of copy_from_user and
+copy_to_user in the faulting case. The behaviour of memcpy stays unchanged.
 
-No actual HW bugs are known where Endpoint Context shows Running state
-but Stop Endpoint fails repeatedly with Context State Error and leaves
-the endpoint state unchanged. Stop Endpoint retries on Running EPs have
-been performed since early 2021 with no such issues reported so far.
-
-Trying to handle this hypothetical case brings a more realistic danger:
-if Stop Endpoint fails on an endpoint which hasn't yet started after a
-doorbell ring and enough latency occurs before this completion event is
-handled, the driver may time out and begin removing cancelled TDs from
-a running endpoint, even though one more retry would stop it reliably.
-
-Such high latency is rare but not impossible, and removing TDs from a
-running endpoint can cause more damage than not giving back a cancelled
-URB (which wasn't happening anyway). So err on the side of caution and
-revert to the old policy of always retrying if the EP appears running.
-
-[Remove stable tag as we are dealing with theoretical cases -Mathias]
-
-Fixes: 28a76fcc4c85d ("usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running")
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250917210726.97100-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ae3aaf53f16 ("sparc64: Convert NGcopy_{from,to}_user to accurate exception reporting.")
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on SPARC T4 with modified kernel to use Niagara 1 code
+Tested-by: Magnus Lindholm <linmag7@gmail.com> # on Sun Fire T2000
+Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+Tested-by: Ethan Hawke <ehawk@ember.systems> # on Sun Fire T2000
+Tested-by: Ken Link <iissmart@numberzero.org> # on Sun Fire T1000
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-3-1ca72dda195b@mkarcher.dialup.fu-berlin.de
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ arch/sparc/lib/NGmemcpy.S | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index a21ac9d80275f..6443e11eaac04 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1224,19 +1224,16 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 			 * Stopped state, but it will soon change to Running.
- 			 *
- 			 * Assume this bug on unexpected Stop Endpoint failures.
--			 * Keep retrying until the EP starts and stops again.
-+			 * Keep retrying until the EP starts and stops again, on
-+			 * chips where this is known to help. Wait for 100ms.
- 			 */
-+			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
-+				break;
- 			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
- 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
- 					GET_EP_CTX_STATE(ep_ctx));
--			/*
--			 * Don't retry forever if we guessed wrong or a defective HC never starts
--			 * the EP or says 'Running' but fails the command. We must give back TDs.
--			 */
--			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
--				break;
+diff --git a/arch/sparc/lib/NGmemcpy.S b/arch/sparc/lib/NGmemcpy.S
+index ee51c12306894..bbd3ea0a64822 100644
+--- a/arch/sparc/lib/NGmemcpy.S
++++ b/arch/sparc/lib/NGmemcpy.S
+@@ -79,8 +79,8 @@
+ #ifndef EX_RETVAL
+ #define EX_RETVAL(x)	x
+ __restore_asi:
+-	ret
+ 	wr	%g0, ASI_AIUS, %asi
++	ret
+ 	 restore
+ ENTRY(NG_ret_i2_plus_i4_plus_1)
+ 	ba,pt	%xcc, __restore_asi
+@@ -125,15 +125,16 @@ ENTRY(NG_ret_i2_plus_g1_minus_56)
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %g1, %i0
+ ENDPROC(NG_ret_i2_plus_g1_minus_56)
+-ENTRY(NG_ret_i2_plus_i4)
++ENTRY(NG_ret_i2_plus_i4_plus_16)
++        add     %i4, 16, %i4
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %i4, %i0
+-ENDPROC(NG_ret_i2_plus_i4)
+-ENTRY(NG_ret_i2_plus_i4_minus_8)
+-	sub	%i4, 8, %i4
++ENDPROC(NG_ret_i2_plus_i4_plus_16)
++ENTRY(NG_ret_i2_plus_i4_plus_8)
++	add	%i4, 8, %i4
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %i4, %i0
+-ENDPROC(NG_ret_i2_plus_i4_minus_8)
++ENDPROC(NG_ret_i2_plus_i4_plus_8)
+ ENTRY(NG_ret_i2_plus_8)
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, 8, %i0
+@@ -160,6 +161,12 @@ ENTRY(NG_ret_i2_and_7_plus_i4)
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %i4, %i0
+ ENDPROC(NG_ret_i2_and_7_plus_i4)
++ENTRY(NG_ret_i2_and_7_plus_i4_plus_8)
++	and	%i2, 7, %i2
++	add	%i4, 8, %i4
++	ba,pt	%xcc, __restore_asi
++	 add	%i2, %i4, %i0
++ENDPROC(NG_ret_i2_and_7_plus_i4)
+ #endif
  
- 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 			if (!command) {
+ 	.align		64
+@@ -405,13 +412,13 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
+ 	andn		%i2, 0xf, %i4
+ 	and		%i2, 0xf, %i2
+ 1:	subcc		%i4, 0x10, %i4
+-	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4)
++	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4_plus_16)
+ 	add		%i1, 0x08, %i1
+-	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4)
++	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4_plus_16)
+ 	sub		%i1, 0x08, %i1
+-	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4)
++	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4_plus_16)
+ 	add		%i1, 0x8, %i1
+-	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_minus_8)
++	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_plus_8)
+ 	bgu,pt		%XCC, 1b
+ 	 add		%i1, 0x8, %i1
+ 73:	andcc		%i2, 0x8, %g0
+@@ -468,7 +475,7 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
+ 	subcc		%i4, 0x8, %i4
+ 	srlx		%g3, %i3, %i5
+ 	or		%i5, %g2, %i5
+-	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4)
++	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4_plus_8)
+ 	add		%o0, 0x8, %o0
+ 	bgu,pt		%icc, 1b
+ 	 sllx		%g3, %g1, %g2
 -- 
 2.51.0
 
