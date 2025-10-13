@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D60BD482A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:48:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A05BD4462
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79CD0406055
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28F0B3E434A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2984B30E0D0;
-	Mon, 13 Oct 2025 15:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB82230F546;
+	Mon, 13 Oct 2025 15:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtMdN3fC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzR4ih2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB452580F2;
-	Mon, 13 Oct 2025 15:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71B330EF7B;
+	Mon, 13 Oct 2025 15:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368537; cv=none; b=PiNpgRju+dT0GAMndcOQm4WiK1o4sXXtY4FSoWs4zVyfG/OOjFDjmRO1xlmOxvR303IY7XOL4Z85sJlXhbOXRjV8rZwd6F1sMP5nrGsRwZKZqxrYGmb94eOSTljEUBWOjUXjcClGjzvDxuvzYt48KrW5GLFs/rXhZFA8Ec6XQ9Q=
+	t=1760367823; cv=none; b=JY6WS2iB8mCmIQh5Hj8YLxyhSzofoQccTM0ylcCjszGRL0/spXQ+0nKSDxsX8Akp89eVokvZWjCNAYM0npuRWX00v9M6kw9+HCu1hYBxCqvGKfTxRxJSLcuhYfcWa0NJiZJaS5lTeHndbriWeJgz8Jlh+yXZkxN0gRwZ/78FErg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368537; c=relaxed/simple;
-	bh=QrmdgupOwnAcELOuuXGTiV0vi308PSAkxHGd/pyR15k=;
+	s=arc-20240116; t=1760367823; c=relaxed/simple;
+	bh=jIqUX2LOrJXvhzY2u5lLMhCriosgeiyTPtPmf7xk8Dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAfmv+uv35GNE/91o31Ik534bBLkghg3X0mOKJYrSSxLESo7t+R8t5iaouKolmepSaYs9I3R27VP0ub+xOb7fj6M8BhbEi08p84vnmBUhARAzsJY8muM58NttrFUtDWZlh/nr0ebyE080BfE5tpLD7S1AqUajlnqc+aNv++M+RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtMdN3fC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67882C4CEE7;
-	Mon, 13 Oct 2025 15:15:37 +0000 (UTC)
+	 MIME-Version; b=uBtDm1qwVFMyUe4VhPjKdVidFkBfjqGMcZ8fPMoQG8dzlCP3gO0gStpveS92w5BTs4UN5CJdx64dV/ppVS7LRT9bxbvlOtT7ck2Z/U/Tmyj18HaEjQ2KjC90HoXK79gWDcPf0jZCn7tflG63WjFcCN4n91+veWbQlGt5bCU5zew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzR4ih2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33220C4CEE7;
+	Mon, 13 Oct 2025 15:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368537;
-	bh=QrmdgupOwnAcELOuuXGTiV0vi308PSAkxHGd/pyR15k=;
+	s=korg; t=1760367823;
+	bh=jIqUX2LOrJXvhzY2u5lLMhCriosgeiyTPtPmf7xk8Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtMdN3fC0AwkUv9U/QoaCIy4sz25RRbCMFNxgD1yAHILWpwMGyydv8pdUiZjSd3Cd
-	 8mm+GuQXyKLxC+XABzzfXLhnKdVxF0IUKX0sFUFognr6ykmvILdeyV8XMH6Q/GWmxM
-	 Nv0Jg+JvQ7EnYwZK1gLfXZpe2AyWeECJuixByV5U=
+	b=FzR4ih2vpHK8EPjpLANnXr6uSOQLORAgTNOykoPCy0cDI/1GQI9D6X/1v86/VRA09
+	 GHhdtKHSqu9FCqaQ4AvO9Kcta2kwlE2rNqu+AZG3sLmpR23r8BYJfxlp1aVTrvnfs2
+	 oX/F1dZPClYqLC06krwEgG6aPv3vEn/6bbVe9b00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Stefan Metzmacher <metze@samba.org>,
+	Bernard Metzler <bernard.metzler@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/262] PCI: rcar-gen4: Assure reset occurs before DBI access
-Date: Mon, 13 Oct 2025 16:45:37 +0200
-Message-ID: <20251013144333.270349671@linuxfoundation.org>
+Subject: [PATCH 6.6 147/196] RDMA/siw: Always report immediate post SQ errors
+Date: Mon, 13 Oct 2025 16:45:38 +0200
+Message-ID: <20251013144320.629573330@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Bernard Metzler <bernard.metzler@linux.dev>
 
-[ Upstream commit 0056d29f8c1b13d7e60d60cdb159767ac8f6a883 ]
+[ Upstream commit fdd0fe94d68649322e391c5c27dd9f436b4e955e ]
 
-Assure the reset is latched and the core is ready for DBI access. On R-Car
-V4H, the PCIe reset is asynchronous and does not take effect immediately,
-but needs a short time to complete. In case DBI access happens in that
-short time, that access generates an SError. Make sure that condition can
-never happen, read back the state of the reset, which should turn the
-asynchronous reset into a synchronous one, and wait a little over 1ms to
-add additional safety margin.
+In siw_post_send(), any immediate error encountered during processing of
+the work request list must be reported to the caller, even if previous
+work requests in that list were just accepted and added to the send queue.
 
-Fixes: 0d0c551011df ("PCI: rcar-gen4: Add R-Car Gen4 PCIe controller support for host mode")
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250924005610.96484-1-marek.vasut+renesas@mailbox.org
+Not reporting those errors confuses the caller, which would wait
+indefinitely for the failing and potentially subsequently aborted work
+requests completion.
+
+This fixes a case where immediate errors were overwritten by subsequent
+code in siw_post_send().
+
+Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
+Link: https://patch.msgid.link/r/20250923144536.103825-1-bernard.metzler@linux.dev
+Suggested-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Bernard Metzler <bernard.metzler@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-rcar-gen4.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/infiniband/sw/siw/siw_verbs.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-index 5382008e366ec..30d16f85f6465 100644
---- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-+++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-@@ -213,6 +213,19 @@ static int rcar_gen4_pcie_common_init(struct rcar_gen4_pcie *rcar)
- 	if (ret)
- 		goto err_unprepare;
+diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
+index fdbef3254e308..1768b8695c45a 100644
+--- a/drivers/infiniband/sw/siw/siw_verbs.c
++++ b/drivers/infiniband/sw/siw/siw_verbs.c
+@@ -761,7 +761,7 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
+ 	struct siw_wqe *wqe = tx_wqe(qp);
  
-+	/*
-+	 * Assure the reset is latched and the core is ready for DBI access.
-+	 * On R-Car V4H, the PCIe reset is asynchronous and does not take
-+	 * effect immediately, but needs a short time to complete. In case
-+	 * DBI access happens in that short time, that access generates an
-+	 * SError. To make sure that condition can never happen, read back the
-+	 * state of the reset, which should turn the asynchronous reset into
-+	 * synchronous one, and wait a little over 1ms to add additional
-+	 * safety margin.
-+	 */
-+	reset_control_status(dw->core_rsts[DW_PCIE_PWR_RST].rstc);
-+	fsleep(1000);
-+
- 	if (rcar->drvdata->additional_common_init)
- 		rcar->drvdata->additional_common_init(rcar);
+ 	unsigned long flags;
+-	int rv = 0;
++	int rv = 0, imm_err = 0;
  
+ 	if (wr && !rdma_is_kernel_res(&qp->base_qp.res)) {
+ 		siw_dbg_qp(qp, "wr must be empty for user mapped sq\n");
+@@ -947,9 +947,17 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
+ 	 * Send directly if SQ processing is not in progress.
+ 	 * Eventual immediate errors (rv < 0) do not affect the involved
+ 	 * RI resources (Verbs, 8.3.1) and thus do not prevent from SQ
+-	 * processing, if new work is already pending. But rv must be passed
+-	 * to caller.
++	 * processing, if new work is already pending. But rv and pointer
++	 * to failed work request must be passed to caller.
+ 	 */
++	if (unlikely(rv < 0)) {
++		/*
++		 * Immediate error
++		 */
++		siw_dbg_qp(qp, "Immediate error %d\n", rv);
++		imm_err = rv;
++		*bad_wr = wr;
++	}
+ 	if (wqe->wr_status != SIW_WR_IDLE) {
+ 		spin_unlock_irqrestore(&qp->sq_lock, flags);
+ 		goto skip_direct_sending;
+@@ -974,15 +982,10 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
+ 
+ 	up_read(&qp->state_lock);
+ 
+-	if (rv >= 0)
+-		return 0;
+-	/*
+-	 * Immediate error
+-	 */
+-	siw_dbg_qp(qp, "error %d\n", rv);
++	if (unlikely(imm_err))
++		return imm_err;
+ 
+-	*bad_wr = wr;
+-	return rv;
++	return (rv >= 0) ? 0 : rv;
+ }
+ 
+ /*
 -- 
 2.51.0
 
