@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D144BD4372
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B0EBD43C9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B79263E2BA2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 72CE65032F0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEFF30BF7A;
-	Mon, 13 Oct 2025 15:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C4630CD8F;
+	Mon, 13 Oct 2025 14:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGFqi9xJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1zbjnlx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B3B30BF59;
-	Mon, 13 Oct 2025 15:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4425E30C60F;
+	Mon, 13 Oct 2025 14:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367789; cv=none; b=Y5FUMgelYFRX/21kv8bo0LxIRMdb7/lO1bH/XNaNXv5anPeadGE4goBQ+PnDysfJ8gY3MyvXLVHaWyu0iq1AJW1kXmn/ncT91EGum7Pf3bUHM1CI8jAVbRe36fg1ER5VzyzbGEiNjS+ywbvcCuHc5WsQtLPYbaHc2a+/JpuuD9c=
+	t=1760367275; cv=none; b=ab5qe5GFyfsp48OaFNhBAFgnGD6vskqpdA1AB5eV4iQUG7WX9sNKERCyUANN/4t/Hg8gI34KYH69eKQvE7uYWeOL1/DYDAA4eCyyaEojexGT9nrX8RijPfrfbcM/3e5t0CIm+nYcf/nBjTdXW4W83okWLtXktl6ygtseJw1NWaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367789; c=relaxed/simple;
-	bh=8EA+i/+ubFZaTqGbWu2QVibi3a/pOg9Dw4gs/F6EwQM=;
+	s=arc-20240116; t=1760367275; c=relaxed/simple;
+	bh=IExKoojoE4V4lpcaS0BwynnJo+9sAbZ/XGpqplYpVvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfBRER0znPQdE/ESHXF2FwcOhgqEiVlC+4iOO8v76JYNWKr0C4pVDML0RpBTxMXjDWsxpFLkT/NHTgSlLKMjICZyZMadbXmxo/J1G6r98DfrW3qf4Cf0QhcyCpFF512DOdvYi3AJU/oaAOJehj/rOFpsFROf3seu7VJpaoAAUIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGFqi9xJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608B3C4CEE7;
-	Mon, 13 Oct 2025 15:03:09 +0000 (UTC)
+	 MIME-Version; b=L7KMGXATz3rUrr8o5kzYfCE+7AHD8XwlZ72WaXeEizYpiG29coehjzuAacRKcCcgCtXCtxtuvIaQb6K69DMZ2Vq5zHBV1Is7an9qeomiJOwx3QRDAK33Eszo6foW9K3GT8GbfVttYvsopKenXpMu878WwkBJZDQz6nSE3LhJ8RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1zbjnlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9603C4CEE7;
+	Mon, 13 Oct 2025 14:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367789;
-	bh=8EA+i/+ubFZaTqGbWu2QVibi3a/pOg9Dw4gs/F6EwQM=;
+	s=korg; t=1760367275;
+	bh=IExKoojoE4V4lpcaS0BwynnJo+9sAbZ/XGpqplYpVvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bGFqi9xJPW85iiEXL0w2kcXGKapkAwBi1kJT1i5XoCswXByzKV3IXcId6crFokvtX
-	 HneDcwLDh6DJmP5P0TTHc7FAQNa1RjJKMBnDEzID8x4GUDmNHfMaOKvnMYKezwYUhx
-	 rxV9TaeXgcNA32K6/+8d9mN8FW2EHnhZ117n8IEY=
+	b=O1zbjnlxS2JBMN4yVzoEjvc9BCK25B1l6HWRqnYrPk1o6b2OddkN30vKlbJe4x+sF
+	 1WLcBSMjGxJ+KDt8vPx2Km5A+Fz2BYFZSd1BQlJGi+7IQeT8c8OL8Rs57v9SXy20mU
+	 HszUXsaiG8sKBbxONy3eYqyZhr798tXPcK4qXLWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Tony Rodriguez <unixpro1970@gmail.com>
-Subject: [PATCH 6.6 133/196] sparc: fix accurate exception reporting in copy_{from,to}_user for M7
+	Julian Anastasov <ja@ssi.bg>,
+	Slavin Liu <slavin452@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 151/196] ipvs: Defer ip_vs_ftp unregister during netns cleanup
 Date: Mon, 13 Oct 2025 16:45:24 +0200
-Message-ID: <20251013144320.124859233@linuxfoundation.org>
+Message-ID: <20251013144320.161230710@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+From: Slavin Liu <slavin452@gmail.com>
 
-[ Upstream commit 936fb512752af349fc30ccbe0afe14a2ae6d7159 ]
+[ Upstream commit 134121bfd99a06d44ef5ba15a9beb075297c0821 ]
 
-The referenced commit introduced exception handlers on user-space memory
-references in copy_from_user and copy_to_user. These handlers return from
-the respective function and calculate the remaining bytes left to copy
-using the current register contents. This commit fixes a couple of bad
-calculations. This will fix the return value of copy_from_user and
-copy_to_user in the faulting case. The behaviour of memcpy stays unchanged.
+On the netns cleanup path, __ip_vs_ftp_exit() may unregister ip_vs_ftp
+before connections with valid cp->app pointers are flushed, leading to a
+use-after-free.
 
-Fixes: 34060b8fffa7 ("arch/sparc: Add accurate exception reporting in M7memcpy")
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on Oracle SPARC S7
-Tested-by: Tony Rodriguez <unixpro1970@gmail.com> # S7, see https://lore.kernel.org/r/98564e2e68df2dda0e00c67a75c7f7dfedb33c7e.camel@physik.fu-berlin.de
-Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-5-1ca72dda195b@mkarcher.dialup.fu-berlin.de
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Fix this by introducing a global `exiting_module` flag, set to true in
+ip_vs_ftp_exit() before unregistering the pernet subsystem. In
+__ip_vs_ftp_exit(), skip ip_vs_ftp unregister if called during netns
+cleanup (when exiting_module is false) and defer it to
+__ip_vs_cleanup_batch(), which unregisters all apps after all connections
+are flushed. If called during module exit, unregister ip_vs_ftp
+immediately.
+
+Fixes: 61b1ab4583e2 ("IPVS: netns, add basic init per netns.")
+Suggested-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Slavin Liu <slavin452@gmail.com>
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/lib/M7memcpy.S     | 20 ++++++++++----------
- arch/sparc/lib/Memcpy_utils.S |  9 +++++++++
- 2 files changed, 19 insertions(+), 10 deletions(-)
+ net/netfilter/ipvs/ip_vs_ftp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/lib/M7memcpy.S b/arch/sparc/lib/M7memcpy.S
-index cbd42ea7c3f7c..99357bfa8e82a 100644
---- a/arch/sparc/lib/M7memcpy.S
-+++ b/arch/sparc/lib/M7memcpy.S
-@@ -696,16 +696,16 @@ FUNC_NAME:
- 	EX_LD_FP(LOAD(ldd, %o4+40, %f26), memcpy_retl_o2_plus_o5_plus_40)
- 	faligndata %f24, %f26, %f10
- 	EX_ST_FP(STORE(std, %f6, %o0+24), memcpy_retl_o2_plus_o5_plus_40)
--	EX_LD_FP(LOAD(ldd, %o4+48, %f28), memcpy_retl_o2_plus_o5_plus_40)
-+	EX_LD_FP(LOAD(ldd, %o4+48, %f28), memcpy_retl_o2_plus_o5_plus_32)
- 	faligndata %f26, %f28, %f12
--	EX_ST_FP(STORE(std, %f8, %o0+32), memcpy_retl_o2_plus_o5_plus_40)
-+	EX_ST_FP(STORE(std, %f8, %o0+32), memcpy_retl_o2_plus_o5_plus_32)
- 	add	%o4, 64, %o4
--	EX_LD_FP(LOAD(ldd, %o4-8, %f30), memcpy_retl_o2_plus_o5_plus_40)
-+	EX_LD_FP(LOAD(ldd, %o4-8, %f30), memcpy_retl_o2_plus_o5_plus_24)
- 	faligndata %f28, %f30, %f14
--	EX_ST_FP(STORE(std, %f10, %o0+40), memcpy_retl_o2_plus_o5_plus_40)
--	EX_ST_FP(STORE(std, %f12, %o0+48), memcpy_retl_o2_plus_o5_plus_40)
-+	EX_ST_FP(STORE(std, %f10, %o0+40), memcpy_retl_o2_plus_o5_plus_24)
-+	EX_ST_FP(STORE(std, %f12, %o0+48), memcpy_retl_o2_plus_o5_plus_16)
- 	add	%o0, 64, %o0
--	EX_ST_FP(STORE(std, %f14, %o0-8), memcpy_retl_o2_plus_o5_plus_40)
-+	EX_ST_FP(STORE(std, %f14, %o0-8), memcpy_retl_o2_plus_o5_plus_8)
- 	fsrc2	%f30, %f14
- 	bgu,pt	%xcc, .Lunalign_sloop
- 	 prefetch [%o4 + (8 * BLOCK_SIZE)], 20
-@@ -728,7 +728,7 @@ FUNC_NAME:
- 	add	%o4, 8, %o4
- 	faligndata %f0, %f2, %f16
- 	subcc	%o5, 8, %o5
--	EX_ST_FP(STORE(std, %f16, %o0), memcpy_retl_o2_plus_o5)
-+	EX_ST_FP(STORE(std, %f16, %o0), memcpy_retl_o2_plus_o5_plus_8)
- 	fsrc2	%f2, %f0
- 	bgu,pt	%xcc, .Lunalign_by8
- 	 add	%o0, 8, %o0
-@@ -772,7 +772,7 @@ FUNC_NAME:
- 	subcc	%o5, 0x20, %o5
- 	EX_ST(STORE(stx, %o3, %o0 + 0x00), memcpy_retl_o2_plus_o5_plus_32)
- 	EX_ST(STORE(stx, %g2, %o0 + 0x08), memcpy_retl_o2_plus_o5_plus_24)
--	EX_ST(STORE(stx, %g7, %o0 + 0x10), memcpy_retl_o2_plus_o5_plus_24)
-+	EX_ST(STORE(stx, %g7, %o0 + 0x10), memcpy_retl_o2_plus_o5_plus_16)
- 	EX_ST(STORE(stx, %o4, %o0 + 0x18), memcpy_retl_o2_plus_o5_plus_8)
- 	bne,pt	%xcc, 1b
- 	 add	%o0, 0x20, %o0
-@@ -804,12 +804,12 @@ FUNC_NAME:
- 	brz,pt	%o3, 2f
- 	 sub	%o2, %o3, %o2
+diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
+index ef1f45e43b630..61d3797fb7995 100644
+--- a/net/netfilter/ipvs/ip_vs_ftp.c
++++ b/net/netfilter/ipvs/ip_vs_ftp.c
+@@ -53,6 +53,7 @@ enum {
+ 	IP_VS_FTP_EPSV,
+ };
  
--1:	EX_LD(LOAD(ldub, %o1 + 0x00, %g2), memcpy_retl_o2_plus_g1)
-+1:	EX_LD(LOAD(ldub, %o1 + 0x00, %g2), memcpy_retl_o2_plus_o3)
- 	add	%o1, 1, %o1
- 	subcc	%o3, 1, %o3
- 	add	%o0, 1, %o0
- 	bne,pt	%xcc, 1b
--	 EX_ST(STORE(stb, %g2, %o0 - 0x01), memcpy_retl_o2_plus_g1_plus_1)
-+	 EX_ST(STORE(stb, %g2, %o0 - 0x01), memcpy_retl_o2_plus_o3_plus_1)
- 2:
- 	and	%o1, 0x7, %o3
- 	brz,pn	%o3, .Lmedium_noprefetch_cp
-diff --git a/arch/sparc/lib/Memcpy_utils.S b/arch/sparc/lib/Memcpy_utils.S
-index 64fbac28b3db1..207343367bb2d 100644
---- a/arch/sparc/lib/Memcpy_utils.S
-+++ b/arch/sparc/lib/Memcpy_utils.S
-@@ -137,6 +137,15 @@ ENTRY(memcpy_retl_o2_plus_63_8)
- 	ba,pt	%xcc, __restore_asi
- 	 add	%o2, 8, %o0
- ENDPROC(memcpy_retl_o2_plus_63_8)
-+ENTRY(memcpy_retl_o2_plus_o3)
-+	ba,pt	%xcc, __restore_asi
-+	 add	%o2, %o3, %o0
-+ENDPROC(memcpy_retl_o2_plus_o3)
-+ENTRY(memcpy_retl_o2_plus_o3_plus_1)
-+	add	%o3, 1, %o3
-+	ba,pt	%xcc, __restore_asi
-+	 add	%o2, %o3, %o0
-+ENDPROC(memcpy_retl_o2_plus_o3_plus_1)
- ENTRY(memcpy_retl_o2_plus_o5)
- 	ba,pt	%xcc, __restore_asi
- 	 add	%o2, %o5, %o0
++static bool exiting_module;
+ /*
+  * List of ports (up to IP_VS_APP_MAX_PORTS) to be handled by helper
+  * First port is set to the default port.
+@@ -605,7 +606,7 @@ static void __ip_vs_ftp_exit(struct net *net)
+ {
+ 	struct netns_ipvs *ipvs = net_ipvs(net);
+ 
+-	if (!ipvs)
++	if (!ipvs || !exiting_module)
+ 		return;
+ 
+ 	unregister_ip_vs_app(ipvs, &ip_vs_ftp);
+@@ -627,6 +628,7 @@ static int __init ip_vs_ftp_init(void)
+  */
+ static void __exit ip_vs_ftp_exit(void)
+ {
++	exiting_module = true;
+ 	unregister_pernet_subsys(&ip_vs_ftp_ops);
+ 	/* rcu_barrier() is called by netns */
+ }
 -- 
 2.51.0
 
