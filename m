@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D539CBD4EE8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:21:08 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F273BD5125
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 697E7480407
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0CE91562B49
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02142309F1E;
-	Mon, 13 Oct 2025 15:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39595309F10;
+	Mon, 13 Oct 2025 15:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pP2cKfNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUQi77q9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B391B309F10;
-	Mon, 13 Oct 2025 15:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CDE30AAC0;
+	Mon, 13 Oct 2025 15:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369464; cv=none; b=t8k2gxdPrORLvob/CxshQcqh7UwnV8lAovmgW9f+DalFrp/gYKk9GsYZQ1+3CBoZBpWl/YD5D8N5cqB7AC/dghldC6NO+Dlx8AGXZ0238h2AInHd5bIzgUdXEd9lR4Pz6AdTyTXmhM8UrZoTEVjh23rYQmOLyIC4vBPN+DSSO+4=
+	t=1760369470; cv=none; b=qqHqY23v1mMVe5juDufuR5NX+Xo7rN2ya6ymrSC/CvHX5/jLBRBB+SbBxBGgYJOnDnw7g32J8/lnWoUm0kvSze5Pyz7/i2kgaQq4EQ+ZvZSlu+s0pRe9LpV5iIyyhk+1osSyl4M5pRjYAKYTgVq1Dp/CU5L4+ao+hO6kuUmLQkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369464; c=relaxed/simple;
-	bh=pRbHE63nhPV10hUgdA8KGsvcaEXiNeeOYKs+3SsNl2E=;
+	s=arc-20240116; t=1760369470; c=relaxed/simple;
+	bh=td3/PoSQATC12nR6t7ymnPxLhZV/RPHlJ2DqLMjeeq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j4DBoP2xwbQXi6/WrNc8eB8q+ZNiXWYV7KhgdVU2L7tzxawfIAaNKSZvUS2+QMKJKjsrb/Y25Ey5IxAAdLFf46ro+4ZPOVo7W6nLhlcr/va1LZ8LvGcIZBXyA19SwEyo97NE2Jn83Q2CvGPAkjJHxrWd4XOcgGro0OucWej/tnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pP2cKfNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BBFC4CEE7;
-	Mon, 13 Oct 2025 15:31:03 +0000 (UTC)
+	 MIME-Version; b=BJunFsHQvEFeZDYsX1ez8Rkliftih6j2w2eiutBasXOOxbeIPgV4ezaZsOJB1LhOn+UqtyekC3IkMDqQOO0uZxWwd85crzNx/yUaUbQ5p2Xc4Fn1k5DiNiGYTjUvIJKCqGFDen23nFHYKW6VotK1Rr6N9goFq5W48GbZgIB/APo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUQi77q9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BB1C4CEE7;
+	Mon, 13 Oct 2025 15:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369464;
-	bh=pRbHE63nhPV10hUgdA8KGsvcaEXiNeeOYKs+3SsNl2E=;
+	s=korg; t=1760369469;
+	bh=td3/PoSQATC12nR6t7ymnPxLhZV/RPHlJ2DqLMjeeq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pP2cKfNWJq70L4OYRTaq/jLyztHVCpmf8C+lEM7WGseN9RYOrDfItvXrWrh0vKAx/
-	 k9fzGAov8XkfBahs9HEwOBnLJABvSQgRsgyeUbxE1geBjhFX1J6ly7AO388AByVAKZ
-	 nqXGC5eYdt8Ee5mtxS3xvKRwe99gmdPcsZUSsabg=
+	b=OUQi77q9FZBetcThA7SGX2PQlgNrJuryb/n6xb6rV9Q9u+0/FlrowULXHI76q0r4U
+	 naw6AyNTb4Am4jroo6pC8EFO/+Kk9TPDuZrodIVlItFtgB0+ywPOOquH54Aqe42g7d
+	 zH1opd3Eni5qbcOPc+rLIn/2Qew9PJvsGHZPZjmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 255/563] f2fs: fix to allow removing qf_name
-Date: Mon, 13 Oct 2025 16:41:56 +0200
-Message-ID: <20251013144420.517667398@linuxfoundation.org>
+Subject: [PATCH 6.17 257/563] crypto: octeontx2 - Call strscpy() with correct size argument
+Date: Mon, 13 Oct 2025 16:41:58 +0200
+Message-ID: <20251013144420.589810038@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,67 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit ff11d8701b77e303593fd86cf9ef74ef3ac4048e ]
+[ Upstream commit 361fa7f813e7056cecdb24f3582ab0ad4a088e4e ]
 
-The mount behavior changed after commit d18535132523 ("f2fs: separate the
-options parsing and options checking"), let's fix it.
+In otx2_cpt_dl_custom_egrp_create(), strscpy() is called with the length
+of the source string rather than the size of the destination buffer.
 
-[Scripts]
-mkfs.f2fs -f /dev/vdb
-mount -t f2fs -o usrquota /dev/vdb /mnt/f2fs
-quotacheck -uc /mnt/f2fs
-umount /mnt/f2fs
-mount -t f2fs -o usrjquota=aquota.user,jqfmt=vfsold /dev/vdb /mnt/f2fs
-mount|grep f2fs
-mount -t f2fs -o remount,usrjquota=,jqfmt=vfsold /dev/vdb /mnt/f2fs
-mount|grep f2fs
-dmesg
+This is fine as long as the destination buffer is larger than the source
+string, but we should still use the destination buffer size instead to
+call strscpy() as intended. And since 'tmp_buf' is a fixed-size buffer,
+we can safely omit the size argument and let strscpy() infer it using
+sizeof().
 
-[Before commit]
-mount#1: ...,quota,jqfmt=vfsold,usrjquota=aquota.user,...
-mount#2: ...,quota,jqfmt=vfsold,...
-kmsg: no output
-
-[After commit]
-mount#1: ...,quota,jqfmt=vfsold,usrjquota=aquota.user,...
-mount#2: ...,quota,jqfmt=vfsold,usrjquota=aquota.user,...
-kmsg: "user quota file already specified"
-
-[After patch]
-mount#1: ...,quota,jqfmt=vfsold,usrjquota=aquota.user,...
-mount#2: ...,quota,jqfmt=vfsold,...
-kmsg: "remove qf_name aquota.user"
-
-Fixes: d18535132523 ("f2fs: separate the options parsing and options checking")
-Cc: Hongbo Li <lihongbo22@huawei.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: d9d7749773e8 ("crypto: octeontx2 - add apis for custom engine groups")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index bf0497187bdff..8086a3456e4d3 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1189,8 +1189,11 @@ static int f2fs_check_quota_consistency(struct fs_context *fc,
- 				goto err_jquota_change;
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+index cc47e361089a0..ebdf4efa09d4d 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+@@ -1615,7 +1615,7 @@ int otx2_cpt_dl_custom_egrp_create(struct otx2_cptpf_dev *cptpf,
+ 		return -EINVAL;
+ 	}
+ 	err_msg = "Invalid engine group format";
+-	strscpy(tmp_buf, ctx->val.vstr, strlen(ctx->val.vstr) + 1);
++	strscpy(tmp_buf, ctx->val.vstr);
+ 	start = tmp_buf;
  
- 			if (old_qname) {
--				if (new_qname &&
--					strcmp(old_qname, new_qname) == 0) {
-+				if (!new_qname) {
-+					f2fs_info(sbi, "remove qf_name %s",
-+								old_qname);
-+					continue;
-+				} else if (strcmp(old_qname, new_qname) == 0) {
- 					ctx->qname_mask &= ~(1 << i);
- 					continue;
- 				}
+ 	has_se = has_ie = has_ae = false;
 -- 
 2.51.0
 
