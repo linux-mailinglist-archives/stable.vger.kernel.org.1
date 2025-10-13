@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE81BD4EDF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DC8BD536B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8F81C5438CE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D220B4FFD87
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBD430BBBE;
-	Mon, 13 Oct 2025 15:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09590315D2F;
+	Mon, 13 Oct 2025 15:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HT9R53mo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gl4nJw3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A82930BBA6;
-	Mon, 13 Oct 2025 15:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA55827A123;
+	Mon, 13 Oct 2025 15:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368729; cv=none; b=oej4UAEABwIzHcDON3CznHgltTBel/KWYv4U2UWQ4lJ5IdO5tJGjbMrq+pynHIA2TZfapOL9AS8i8BuStQ7XG/+EJY/dFvMe5uuxdUPv4gDv3pw2TAd276fZWGqAZ0e6VFr0TMRODXiuwVHmo5h3TEGO2rnviMChZlwdwSO5lsY=
+	t=1760370242; cv=none; b=OsAAwbE+lpEWV7xwSR755C4HlpncR63qHloZjHeTjRiUzSnHkN3n1C0x9V8wOnGHkqV8C1TRqj4MKE82F685L/eEYNZXjqiqw1vmJbTeAn8CEMNrUVm+RwgEEFSrr45ZXM9SDTVAF9WRn8Gtu13OWFtvDL292Hot8wBOhiudp5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368729; c=relaxed/simple;
-	bh=hYSpS6HD/YbHmiGzshUpepi9P0PQIfUPpUWariizyhk=;
+	s=arc-20240116; t=1760370242; c=relaxed/simple;
+	bh=kjrxBdW9H7YQYpEqfTT/RiK4PMIYgREFNdkX7/PimFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDxMUnVLUgA/VedR0QA1plp54uhzunMi6asP1A3+UPjGfDi0vqGIPLpfvDjwOmQrb/CLJp7hEBaQ2pCqsUatsGxVifEsKAhtWABWNScG3LoSlK7ypDKKjeARM04OWSeDfqKF28wl7HKRlw44I8jnryl7k6RR53xr+Fzk7+q/oTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HT9R53mo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5876C4CEE7;
-	Mon, 13 Oct 2025 15:18:48 +0000 (UTC)
+	 MIME-Version; b=SssAdjXvEt78j6rDC4uHEWOQK9ERJ/r+QddjZmfim3TxC5wOaDTfudS075cnm6T7JZ7ZYaEd9+1CiDznr/oTvSiIHuUCN7P5A5gYr1drN/ueX9GkdQK8hfuHmhKde9XyXDZ91amb8iEdbSRQro9ZAYRFNPjGPQaKxwqbzIk5feo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gl4nJw3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3F5C4CEE7;
+	Mon, 13 Oct 2025 15:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368729;
-	bh=hYSpS6HD/YbHmiGzshUpepi9P0PQIfUPpUWariizyhk=;
+	s=korg; t=1760370242;
+	bh=kjrxBdW9H7YQYpEqfTT/RiK4PMIYgREFNdkX7/PimFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HT9R53moLfmD4Olpo5iQhOWzXpKLAo5PDuvl7ujVYweYqZq6uEv+JxMzdBebLyj+1
-	 7I2q0dOQXusJF4XBsLSQxF0fTdfxDlTFkyROgf+toC7IUxYGjXUrQ32xP8d38wsheg
-	 X1LGH2TPTSASwteYsVUG/ewyjuqKB6oxJx9yTgdQ=
+	b=Gl4nJw3pHDsNt7w/E5Dwt7MgsPpwCskRI+OxCEDGrssLr5NuoPU5Aoeramde4CRz3
+	 lSQ62J3/vi8mk3F4BjXOWFrDgUorCGYzEgEJ2LVCySvDdFEwKIsASkjWOlakOXyKU8
+	 zLMze28QCi6MOM4SFf2IdzqtmVKKV/VzCe3jS4rM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	Ling Xu <quic_lxu5@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.12 248/262] misc: fastrpc: Fix fastrpc_map_lookup operation
+	Vincent Li <vincent.mc.li@gmail.com>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.17 529/563] LoongArch: BPF: No text_poke() for kernel text
 Date: Mon, 13 Oct 2025 16:46:30 +0200
-Message-ID: <20251013144335.169008481@linuxfoundation.org>
+Message-ID: <20251013144430.474247039@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ling Xu <quic_lxu5@quicinc.com>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-commit 9031626ade38b092b72638dfe0c6ffce8d8acd43 upstream.
+commit 3d770bd11b943066db11dba7be0b6f0d81cb5d50 upstream.
 
-Fastrpc driver creates maps for user allocated fd buffers. Before
-creating a new map, the map list is checked for any already existing
-maps using map fd. Checking with just map fd is not sufficient as the
-user can pass offsetted buffer with less size when the map is created
-and then a larger size the next time which could result in memory
-issues. Check for dma_buf object also when looking up for the map.
+The current implementation of bpf_arch_text_poke() requires 5 nops
+at patch site which is not applicable for kernel/module functions.
+Because LoongArch reserves ONLY 2 nops at the function entry. With
+CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS=y, this can be done by ftrace
+instead.
 
-Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
-Cc: stable@kernel.org
-Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250912131236.303102-3-srini@kernel.org
+See the following commit for details:
+  * commit b91e014f078e ("bpf: Make BPF trampoline use register_ftrace_direct() API")
+  * commit 9cdc3b6a299c ("LoongArch: ftrace: Add direct call support")
+
+Cc: stable@vger.kernel.org
+Tested-by: Vincent Li <vincent.mc.li@gmail.com>
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/loongarch/net/bpf_jit.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -367,11 +367,16 @@ static int fastrpc_map_lookup(struct fas
- {
- 	struct fastrpc_session_ctx *sess = fl->sctx;
- 	struct fastrpc_map *map = NULL;
-+	struct dma_buf *buf;
- 	int ret = -ENOENT;
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -1294,8 +1294,10 @@ int bpf_arch_text_poke(void *ip, enum bp
+ 	u32 old_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
+ 	u32 new_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
  
-+	buf = dma_buf_get(fd);
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
-+
- 	spin_lock(&fl->lock);
- 	list_for_each_entry(map, &fl->maps, node) {
--		if (map->fd != fd)
-+		if (map->fd != fd || map->buf != buf)
- 			continue;
+-	if (!is_kernel_text((unsigned long)ip) &&
+-		!is_bpf_text_address((unsigned long)ip))
++	/* Only poking bpf text is supported. Since kernel function entry
++	 * is set up by ftrace, we rely on ftrace to poke kernel functions.
++	 */
++	if (!is_bpf_text_address((unsigned long)ip))
+ 		return -ENOTSUPP;
  
- 		if (take_ref) {
+ 	ret = emit_jump_or_nops(old_addr, ip, old_insns, is_call);
 
 
 
