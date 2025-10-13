@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5344BD42D0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:19 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5BCBD3FBE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 507D1188DDD0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4DA2B34E31C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E1C30C62F;
-	Mon, 13 Oct 2025 15:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90AD830AD17;
+	Mon, 13 Oct 2025 15:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tQkEee1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiYMY8O3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F020D30C611;
-	Mon, 13 Oct 2025 15:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0D430ACEA;
+	Mon, 13 Oct 2025 15:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368298; cv=none; b=XsphwBeQmskhqtRdDY2n+L7iPfbhZBNvEVVs1lyUDuPEfBdJbENJ2WMDq0Cfyu6mCcy55i2gP1PydfwuPZugcXi+ZeYqt+tRSs8zcfFhaKLPLCzWhsOSXxL172LIy6ozUfn1jMxgjdpbu9U/PjNZRhb1jb7g03DdEqxqI7Li3AA=
+	t=1760367716; cv=none; b=gflc96AwkNdWm1/fWpe5GDKducyEtud73sHv9YDkIIXBxYkPniQW4CwVXjzxY3V9OEUsi3Oc/inklcwx4nc+TwzUHIOJggaTnJPb/lxpsz2DwFozUeF3ldUr8dXmrEkve4AKGFlQJ/WIRitk41PfLjF2QQvoZyXFIa2qObF3wQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368298; c=relaxed/simple;
-	bh=csxZDkJkBq7OCqlnRiqthjgHCyDPNTmub2/nf74bSkE=;
+	s=arc-20240116; t=1760367716; c=relaxed/simple;
+	bh=fOnjbeODVetse5ljQwi61eDC2coiM6k4NbWHor4W6uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NI6UxbbYxB9MnaXA6Mkh8QMIYeXoQtgJYF+dO7i+zS7K9EvMnLhbZBMLDdeuA4aalA4KeCW6/RwPR9QP50200+eCKIPrF7K/QGTOpek5EgobaoVTQHRJMZO4YwY61yw2pnwNoAu26J+4vsyo2fTmrVSHFCGsk96b42RQ3T1cooM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tQkEee1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C71EC4CEE7;
-	Mon, 13 Oct 2025 15:11:36 +0000 (UTC)
+	 MIME-Version; b=tG1UgpaE13unEU+Os43fjbw8wyDDKcbTmtxojgUctvdtxAkxl17v/XKAxlxppUEVLX1vZhyQfjj6Q5X4WDkfPQThCgbyLNhElU4fZjtFGtuWAMVNEIq7k4vSmvufOvLf7+aL/cIEM8t9SuVNQgrF9i8hby4wFGqglS9BMjqh4VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiYMY8O3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FA4C4CEE7;
+	Mon, 13 Oct 2025 15:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368297;
-	bh=csxZDkJkBq7OCqlnRiqthjgHCyDPNTmub2/nf74bSkE=;
+	s=korg; t=1760367716;
+	bh=fOnjbeODVetse5ljQwi61eDC2coiM6k4NbWHor4W6uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2tQkEee1DbUv4x3WByKh3Ui0QYTceIrcNNBGY/BQpCRdyeEsAPK2xdclsMyH3wxKj
-	 N+GsmaFS27riksG0ancNnFhy3Gt+KJdQEsrhMS1sfPsetpRg1wVld1No3MJ/Wceg8R
-	 X5t1op1xrWJjg2KQ/gtHZqugjQemlWJrqAImwQQY=
+	b=BiYMY8O3ThkvKnmdMUQpt6NtJqIVPe/vZTU2ZFU1tvrclDSkQfT4BMYYhp7/GYHXv
+	 cI2L6cCBIGnDTMZUvPXYYzeXVOX0KT87LVPNtecvXfhwTtmy6PcUOCqU/oXZt30YAW
+	 X4wpI8WMStwRxKvTIQb8ibIXuFZDsWD7Wt0kDTsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhushuai Yin <yinzhushuai@huawei.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/262] crypto: hisilicon/qm - check whether the input function and PF are on the same device
+Subject: [PATCH 6.6 064/196] f2fs: fix condition in __allow_reserved_blocks()
 Date: Mon, 13 Oct 2025 16:44:15 +0200
-Message-ID: <20251013144330.194614490@linuxfoundation.org>
+Message-ID: <20251013144317.511773764@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhushuai Yin <yinzhushuai@huawei.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 6a2c9164b52e6bc134127fd543461fdef95cc8ec ]
+[ Upstream commit e75ce117905d2830976a289e718470f3230fa30a ]
 
-Function rate limiting is set through physical function driver.
-Users configure by providing function information and rate limit values.
-Before configuration, it is necessary to check whether the
-provided function and PF belong to the same device.
+If reserve_root mount option is not assigned, __allow_reserved_blocks()
+will return false, it's not correct, fix it.
 
-Fixes: 22d7a6c39cab ("crypto: hisilicon/qm - add pci bdf number check")
-Signed-off-by: Zhushuai Yin <yinzhushuai@huawei.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 7e65be49ed94 ("f2fs: add reserved blocks for root user")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/f2fs/f2fs.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index 5bbb2759a6691..a9550a05dfbd3 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -3657,6 +3657,10 @@ static ssize_t qm_get_qos_value(struct hisi_qm *qm, const char *buf,
- 	}
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 7329f706da83c..ab2ddd09d8131 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -2296,8 +2296,6 @@ static inline bool __allow_reserved_blocks(struct f2fs_sb_info *sbi,
+ {
+ 	if (!inode)
+ 		return true;
+-	if (!test_opt(sbi, RESERVE_ROOT))
+-		return false;
+ 	if (IS_NOQUOTA(inode))
+ 		return true;
+ 	if (uid_eq(F2FS_OPTION(sbi).s_resuid, current_fsuid()))
+@@ -2318,7 +2316,7 @@ static inline unsigned int get_available_block_count(struct f2fs_sb_info *sbi,
+ 	avail_user_block_count = sbi->user_block_count -
+ 					sbi->current_reserved_blocks;
  
- 	pdev = container_of(dev, struct pci_dev, dev);
-+	if (pci_physfn(pdev) != qm->pdev) {
-+		pci_err(qm->pdev, "the pdev input does not match the pf!\n");
-+		return -EINVAL;
-+	}
+-	if (!__allow_reserved_blocks(sbi, inode, cap))
++	if (test_opt(sbi, RESERVE_ROOT) && !__allow_reserved_blocks(sbi, inode, cap))
+ 		avail_user_block_count -= F2FS_OPTION(sbi).root_reserved_blocks;
  
- 	*fun_index = pdev->devfn;
- 
+ 	if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
 -- 
 2.51.0
 
