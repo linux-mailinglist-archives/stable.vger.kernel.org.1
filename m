@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-184840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1489BBD49D0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:56:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B0DBD4147
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9274A4F6569
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E56061891E8F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673872E7BCB;
-	Mon, 13 Oct 2025 15:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0C030BF67;
+	Mon, 13 Oct 2025 15:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muRwF2EV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHh+ejD5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF8D1F1313;
-	Mon, 13 Oct 2025 15:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4EF279DCE;
+	Mon, 13 Oct 2025 15:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368587; cv=none; b=CH4CxAQ8u3Sxresu3nkhS6hn71Z700nJUwf0AdmOtBgNuDPWfwdjtCeG1eyAzWg326VvbNnr9IFqZiBqYi8aeQsamfK+D1RNOEm8xJr1e+MrUQGvgr5I5aWsq9P2GaetEQBScjyFZqkOzfP15jKfufU7jLq4BLTeWueFaIc0BV4=
+	t=1760367784; cv=none; b=UBM8RBh5IT0UDBgtPL7ZPldCSHZM/SkjOaB8UB2Hpv5KBZuxpD049IIMiIyekbpODOmI/V8IxgFxnl7FyWCb2p1NChcd/wACR+loroseT5hO9D5kZ3rduT9jrRHold0kkoX6yUHlhyreTaYZHyxbD2XrhXQr92FCXSGJ56yxwo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368587; c=relaxed/simple;
-	bh=/8eZ5vNuKvykCOAN6353C2aAfPc5hZrCTYWyMTdc81E=;
+	s=arc-20240116; t=1760367784; c=relaxed/simple;
+	bh=pssk8PUv7M174dySH7s7UrCiFXZktX+We9OcAPfIrnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJpKac6l/4detB8WhtU+OsgJ3klRoaxG62hiFWDiG9FfpqwNfvx3sQAZWIR3okFZ1v2d3iBevogODpPezjwDpuRppVHIAuwR2Q1omNy9pmBgM4idZ+LpI1FmQqgUz7THTiWApCugSsBc7XQxO/ulfGKfQfUR4v/PIItPSGsiCPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muRwF2EV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D295C4CEE7;
-	Mon, 13 Oct 2025 15:16:26 +0000 (UTC)
+	 MIME-Version; b=O4nIkZ9PdFprlOUzdDtrQK7g2MGHU6wNm4CkKp+dLXNK3JxgZKlORZBVR2AwdxnRpdiIozU+KxLlzEigj0ubUtsgYdKRG7ZA+CpHHtdkhmDYGPERqPnyhAYSwmbp/jIgewdbToUieeCfY/jrfmUyfFhimhz52cArqDi/aXmCyTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHh+ejD5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D4EC4CEE7;
+	Mon, 13 Oct 2025 15:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368586;
-	bh=/8eZ5vNuKvykCOAN6353C2aAfPc5hZrCTYWyMTdc81E=;
+	s=korg; t=1760367784;
+	bh=pssk8PUv7M174dySH7s7UrCiFXZktX+We9OcAPfIrnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=muRwF2EVWuxYkiCl3y5FVcE0eDEhkoe84PlIjI23O2GJ2MnzAjUX0hc9HUwX4QAu0
-	 rCrn5MjI10NQgIQlWzKtNOvYIXHNbB6EX1hv2tYl8KaODzkzjoOyz9JX18C8wl+pKl
-	 x+ePO0GmDhU4PWQljuAwQN7+sZM82nQcEdxa3x40=
+	b=DHh+ejD58teILshyu5UDsWAYLR8WBBOIgLEcJJgUKpq3N6ejqC0DAaba7l0yOHueH
+	 nWGGlcV0uTRHARWmM6p01Ew60oIkS3DpjvwJhfrf84ddkp0aj52wSnSMrGCyeOii34
+	 JsNQp8inZAZ3E2RtJfmhez+5kov2wr2UuxwpGXZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/262] remoteproc: qcom: q6v5: Avoid disabling handover IRQ twice
+	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Sasha Levin <sashal@kernel.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Ethan Hawke <ehawk@ember.systems>,
+	Ken Link <iissmart@numberzero.org>
+Subject: [PATCH 6.6 131/196] sparc: fix accurate exception reporting in copy_{from_to}_user for Niagara
 Date: Mon, 13 Oct 2025 16:45:22 +0200
-Message-ID: <20251013144332.610617003@linuxfoundation.org>
+Message-ID: <20251013144320.050656048@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +66,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
 
-[ Upstream commit 110be46f5afe27b66caa2d12473a84cd397b1925 ]
+[ Upstream commit 0b67c8fc10b13a9090340c5f8a37d308f4e1571c ]
 
-enable_irq() and disable_irq() are reference counted, so we must make sure
-that each enable_irq() is always paired with a single disable_irq(). If we
-call disable_irq() twice followed by just a single enable_irq(), the IRQ
-will remain disabled forever.
+The referenced commit introduced exception handlers on user-space memory
+references in copy_from_user and copy_to_user. These handlers return from
+the respective function and calculate the remaining bytes left to copy
+using the current register contents. This commit fixes a couple of bad
+calculations and a broken epilogue in the exception handlers. This will
+prevent crashes and ensure correct return values of copy_from_user and
+copy_to_user in the faulting case. The behaviour of memcpy stays unchanged.
 
-For the error handling path in qcom_q6v5_wait_for_start(), disable_irq()
-will end up being called twice, because disable_irq() also happens in
-qcom_q6v5_unprepare() when rolling back the call to qcom_q6v5_prepare().
-
-Fix this by dropping disable_irq() in qcom_q6v5_wait_for_start(). Since
-qcom_q6v5_prepare() is the function that calls enable_irq(), it makes more
-sense to have the rollback handled always by qcom_q6v5_unprepare().
-
-Fixes: 3b415c8fb263 ("remoteproc: q6v5: Extract common resource handling")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-1-910b1a3aff71@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 7ae3aaf53f16 ("sparc64: Convert NGcopy_{from,to}_user to accurate exception reporting.")
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on SPARC T4 with modified kernel to use Niagara 1 code
+Tested-by: Magnus Lindholm <linmag7@gmail.com> # on Sun Fire T2000
+Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+Tested-by: Ethan Hawke <ehawk@ember.systems> # on Sun Fire T2000
+Tested-by: Ken Link <iissmart@numberzero.org> # on Sun Fire T1000
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-3-1ca72dda195b@mkarcher.dialup.fu-berlin.de
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/sparc/lib/NGmemcpy.S | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
-index 4ee5e67a9f03f..769c6d6d6a731 100644
---- a/drivers/remoteproc/qcom_q6v5.c
-+++ b/drivers/remoteproc/qcom_q6v5.c
-@@ -156,9 +156,6 @@ int qcom_q6v5_wait_for_start(struct qcom_q6v5 *q6v5, int timeout)
- 	int ret;
+diff --git a/arch/sparc/lib/NGmemcpy.S b/arch/sparc/lib/NGmemcpy.S
+index ee51c12306894..bbd3ea0a64822 100644
+--- a/arch/sparc/lib/NGmemcpy.S
++++ b/arch/sparc/lib/NGmemcpy.S
+@@ -79,8 +79,8 @@
+ #ifndef EX_RETVAL
+ #define EX_RETVAL(x)	x
+ __restore_asi:
+-	ret
+ 	wr	%g0, ASI_AIUS, %asi
++	ret
+ 	 restore
+ ENTRY(NG_ret_i2_plus_i4_plus_1)
+ 	ba,pt	%xcc, __restore_asi
+@@ -125,15 +125,16 @@ ENTRY(NG_ret_i2_plus_g1_minus_56)
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %g1, %i0
+ ENDPROC(NG_ret_i2_plus_g1_minus_56)
+-ENTRY(NG_ret_i2_plus_i4)
++ENTRY(NG_ret_i2_plus_i4_plus_16)
++        add     %i4, 16, %i4
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %i4, %i0
+-ENDPROC(NG_ret_i2_plus_i4)
+-ENTRY(NG_ret_i2_plus_i4_minus_8)
+-	sub	%i4, 8, %i4
++ENDPROC(NG_ret_i2_plus_i4_plus_16)
++ENTRY(NG_ret_i2_plus_i4_plus_8)
++	add	%i4, 8, %i4
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %i4, %i0
+-ENDPROC(NG_ret_i2_plus_i4_minus_8)
++ENDPROC(NG_ret_i2_plus_i4_plus_8)
+ ENTRY(NG_ret_i2_plus_8)
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, 8, %i0
+@@ -160,6 +161,12 @@ ENTRY(NG_ret_i2_and_7_plus_i4)
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %i4, %i0
+ ENDPROC(NG_ret_i2_and_7_plus_i4)
++ENTRY(NG_ret_i2_and_7_plus_i4_plus_8)
++	and	%i2, 7, %i2
++	add	%i4, 8, %i4
++	ba,pt	%xcc, __restore_asi
++	 add	%i2, %i4, %i0
++ENDPROC(NG_ret_i2_and_7_plus_i4)
+ #endif
  
- 	ret = wait_for_completion_timeout(&q6v5->start_done, timeout);
--	if (!ret)
--		disable_irq(q6v5->handover_irq);
--
- 	return !ret ? -ETIMEDOUT : 0;
- }
- EXPORT_SYMBOL_GPL(qcom_q6v5_wait_for_start);
+ 	.align		64
+@@ -405,13 +412,13 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
+ 	andn		%i2, 0xf, %i4
+ 	and		%i2, 0xf, %i2
+ 1:	subcc		%i4, 0x10, %i4
+-	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4)
++	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4_plus_16)
+ 	add		%i1, 0x08, %i1
+-	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4)
++	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4_plus_16)
+ 	sub		%i1, 0x08, %i1
+-	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4)
++	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4_plus_16)
+ 	add		%i1, 0x8, %i1
+-	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_minus_8)
++	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_plus_8)
+ 	bgu,pt		%XCC, 1b
+ 	 add		%i1, 0x8, %i1
+ 73:	andcc		%i2, 0x8, %g0
+@@ -468,7 +475,7 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
+ 	subcc		%i4, 0x8, %i4
+ 	srlx		%g3, %i3, %i5
+ 	or		%i5, %g2, %i5
+-	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4)
++	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4_plus_8)
+ 	add		%o0, 0x8, %o0
+ 	bgu,pt		%icc, 1b
+ 	 sllx		%g3, %g1, %g2
 -- 
 2.51.0
 
