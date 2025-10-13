@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1577BD444A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F0FBD3E1D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:07:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5EBD654061C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DBEC34FE60B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE9230CD8D;
-	Mon, 13 Oct 2025 15:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1AB3093A1;
+	Mon, 13 Oct 2025 14:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQjBvKrh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGtijXNR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46188306B3C;
-	Mon, 13 Oct 2025 15:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B115265CAD;
+	Mon, 13 Oct 2025 14:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368352; cv=none; b=SW4PB676Ml0McrwEbsswRVFsArmO7Ya3AJcuiukdlWStvLMwEktJGo7UVjLNysl/ufaYRRAi3qQEH0lTAv+EPHQCfGfiWTABlT8s48TQKRztbujrwUftqiSSTthnoDLrIhszMFkRD+1gkpHFZNIfba0gGwl4zLcnhCfovul9Eoc=
+	t=1760367121; cv=none; b=M5awfP9Mf5HWoAmizUAc2gnHjZrVhpKsXMExsx6TKbw2yVE/EjHQyemIPod2R3Y8R3xnHCSFjFgA5BJJlIa02/4aba7Vd0Pe4g1fe9saEEPNAKnGBX0t2xpwsw2xYfrLm0yuW82cVoxma36pmwE/c+cjxswTPJWtIxVieFva7XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368352; c=relaxed/simple;
-	bh=ymFmd0GvUoFnpNYNYrs/7rostoS/SuCESRW2a7/2pTM=;
+	s=arc-20240116; t=1760367121; c=relaxed/simple;
+	bh=p4WRCroPxbLYC+PBn0efKicAz54qcBzsH6QimDlXj5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ledNgKkTzZkjVGGkK8Yvy1TVnFBGiUv47IzeORMTydvxvzMHbmQe1J1ROGAohKskSkAZtMCOMFNccSbCKS7ZN3RjflniJpkFXd70bWF0HJ4QrZ0usFnfk1PzBYYKDD1agO0brqW2PdRX1Z+DT/pKpCMi2aJW0vqgC6XcVeCirNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQjBvKrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CFEC4CEE7;
-	Mon, 13 Oct 2025 15:12:31 +0000 (UTC)
+	 MIME-Version; b=pwwVwjdn+5o5CQN20v041rYvfhBInDk8seeh6E1UfBa4WkFa/Q7s7b+uMyy5gKwh7N8oftB1j7GhII6giwuzteTSFmNMmrujzTejL6NhdWhby/IKyDrr95tautJFwagIOeUVC42PHVu/GebVrFexqS/mpPm19yi40gKHY4yatGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGtijXNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5D1C4CEFE;
+	Mon, 13 Oct 2025 14:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368352;
-	bh=ymFmd0GvUoFnpNYNYrs/7rostoS/SuCESRW2a7/2pTM=;
+	s=korg; t=1760367121;
+	bh=p4WRCroPxbLYC+PBn0efKicAz54qcBzsH6QimDlXj5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQjBvKrhhraCxaD3ge7z2d9xAup1ZOThosAM1ugIis4vcq55xCNKMVFX6PYB0uFR8
-	 6M1kM0p4mi5U11fzBfGjD3YxVI5VgNl5rYTQK0OZ+oSUqdFV3+lu52KDyj3pTsnZtl
-	 6EVfesi3m7LkroDCp7gnTP9tc8PQokTFy31KPmuo=
+	b=VGtijXNRLZjrPsU5j8qe72mlUl90k1GK/omb58E8kkn05PzpG5EtjZi22pAVml2FN
+	 d3dxm8OD3kXbg0wjAzVP9AFjUZ2qxjealeF8n9SrWVGWxEUYQ4rQOC1UnKDp9dvfK9
+	 wovZffFXoXrpZhcV6KVmp/nddpgSpcfzpcCvFQLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Calvin Owens <calvin@wbinvd.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 131/262] pps: fix warning in pps_register_cdev when register device fail
+Subject: [PATCH 6.1 100/196] media: st-delta: avoid excessive stack usage
 Date: Mon, 13 Oct 2025 16:44:33 +0200
-Message-ID: <20251013144330.842031088@linuxfoundation.org>
+Message-ID: <20251013144318.317464279@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b0531cdba5029f897da5156815e3bdafe1e9b88d ]
+[ Upstream commit 5954ad7d1af92cb6244c5f31216e43af55febbb7 ]
 
-Similar to previous commit 2a934fdb01db ("media: v4l2-dev: fix error
-handling in __video_register_device()"), the release hook should be set
-before device_register(). Otherwise, when device_register() return error
-and put_device() try to callback the release function, the below warning
-may happen.
+Building with a reduced stack warning limit shows that delta_mjpeg_decode()
+copies a giant structure to the stack each time but only uses three of
+its members:
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 1 PID: 4760 at drivers/base/core.c:2567 device_release+0x1bd/0x240 drivers/base/core.c:2567
-  Modules linked in:
-  CPU: 1 UID: 0 PID: 4760 Comm: syz.4.914 Not tainted 6.17.0-rc3+ #1 NONE
-  RIP: 0010:device_release+0x1bd/0x240 drivers/base/core.c:2567
-  Call Trace:
-   <TASK>
-   kobject_cleanup+0x136/0x410 lib/kobject.c:689
-   kobject_release lib/kobject.c:720 [inline]
-   kref_put include/linux/kref.h:65 [inline]
-   kobject_put+0xe9/0x130 lib/kobject.c:737
-   put_device+0x24/0x30 drivers/base/core.c:3797
-   pps_register_cdev+0x2da/0x370 drivers/pps/pps.c:402
-   pps_register_source+0x2f6/0x480 drivers/pps/kapi.c:108
-   pps_tty_open+0x190/0x310 drivers/pps/clients/pps-ldisc.c:57
-   tty_ldisc_open+0xa7/0x120 drivers/tty/tty_ldisc.c:432
-   tty_set_ldisc+0x333/0x780 drivers/tty/tty_ldisc.c:563
-   tiocsetd drivers/tty/tty_io.c:2429 [inline]
-   tty_ioctl+0x5d1/0x1700 drivers/tty/tty_io.c:2728
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:598 [inline]
-   __se_sys_ioctl fs/ioctl.c:584 [inline]
-   __x64_sys_ioctl+0x194/0x210 fs/ioctl.c:584
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0x5f/0x2a0 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c: In function 'delta_mjpeg_decode':
+drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c:427:1: error: the frame size of 1296 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
 
-Before commit c79a39dc8d06 ("pps: Fix a use-after-free"),
-pps_register_cdev() call device_create() to create pps->dev, which will
-init dev->release to device_create_release(). Now the comment is outdated,
-just remove it.
+Open-code the passing of the structure members that are actually used here.
 
-Thanks for the reminder from Calvin Owens, 'kfree_pps' should be removed
-in pps_register_source() to avoid a double free in the failure case.
-
-Link: https://lore.kernel.org/all/20250827065010.3208525-1-wangliang74@huawei.com/
-Fixes: c79a39dc8d06 ("pps: Fix a use-after-free")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-By: Calvin Owens <calvin@wbinvd.org>
-Link: https://lore.kernel.org/r/20250830075023.3498174-1-wangliang74@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 433ff5b4a29b ("[media] st-delta: add mjpeg support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pps/kapi.c | 5 +----
- drivers/pps/pps.c  | 5 ++---
- 2 files changed, 3 insertions(+), 7 deletions(-)
+ .../platform/st/sti/delta/delta-mjpeg-dec.c   | 20 ++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pps/kapi.c b/drivers/pps/kapi.c
-index 92d1b62ea239d..e9389876229ea 100644
---- a/drivers/pps/kapi.c
-+++ b/drivers/pps/kapi.c
-@@ -109,16 +109,13 @@ struct pps_device *pps_register_source(struct pps_source_info *info,
- 	if (err < 0) {
- 		pr_err("%s: unable to create char device\n",
- 					info->name);
--		goto kfree_pps;
-+		goto pps_register_source_exit;
+diff --git a/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c b/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
+index 0533d4a083d24..a078f1107300e 100644
+--- a/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
++++ b/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
+@@ -239,7 +239,7 @@ static int delta_mjpeg_ipc_open(struct delta_ctx *pctx)
+ 	return 0;
+ }
+ 
+-static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, struct delta_au *au)
++static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, dma_addr_t pstart, dma_addr_t pend)
+ {
+ 	struct delta_dev *delta = pctx->dev;
+ 	struct delta_mjpeg_ctx *ctx = to_ctx(pctx);
+@@ -256,8 +256,8 @@ static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, struct delta_au *au)
+ 
+ 	memset(params, 0, sizeof(*params));
+ 
+-	params->picture_start_addr_p = (u32)(au->paddr);
+-	params->picture_end_addr_p = (u32)(au->paddr + au->size - 1);
++	params->picture_start_addr_p = pstart;
++	params->picture_end_addr_p = pend;
+ 
+ 	/*
+ 	 * !WARNING!
+@@ -374,12 +374,14 @@ static int delta_mjpeg_decode(struct delta_ctx *pctx, struct delta_au *pau)
+ 	struct delta_dev *delta = pctx->dev;
+ 	struct delta_mjpeg_ctx *ctx = to_ctx(pctx);
+ 	int ret;
+-	struct delta_au au = *pau;
++	void *au_vaddr = pau->vaddr;
++	dma_addr_t au_dma = pau->paddr;
++	size_t au_size = pau->size;
+ 	unsigned int data_offset = 0;
+ 	struct mjpeg_header *header = &ctx->header_struct;
+ 
+ 	if (!ctx->header) {
+-		ret = delta_mjpeg_read_header(pctx, au.vaddr, au.size,
++		ret = delta_mjpeg_read_header(pctx, au_vaddr, au_size,
+ 					      header, &data_offset);
+ 		if (ret) {
+ 			pctx->stream_errors++;
+@@ -405,17 +407,17 @@ static int delta_mjpeg_decode(struct delta_ctx *pctx, struct delta_au *pau)
+ 			goto err;
  	}
  
- 	dev_dbg(&pps->dev, "new PPS source %s\n", info->name);
- 
- 	return pps;
- 
--kfree_pps:
--	kfree(pps);
--
- pps_register_source_exit:
- 	pr_err("%s: unable to register source\n", info->name);
- 
-diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
-index 9463232af8d2e..c6b8b64782761 100644
---- a/drivers/pps/pps.c
-+++ b/drivers/pps/pps.c
-@@ -374,6 +374,7 @@ int pps_register_cdev(struct pps_device *pps)
- 			       pps->info.name);
- 			err = -EBUSY;
- 		}
-+		kfree(pps);
- 		goto out_unlock;
+-	ret = delta_mjpeg_read_header(pctx, au.vaddr, au.size,
++	ret = delta_mjpeg_read_header(pctx, au_vaddr, au_size,
+ 				      ctx->header, &data_offset);
+ 	if (ret) {
+ 		pctx->stream_errors++;
+ 		goto err;
  	}
- 	pps->id = err;
-@@ -383,13 +384,11 @@ int pps_register_cdev(struct pps_device *pps)
- 	pps->dev.devt = MKDEV(pps_major, pps->id);
- 	dev_set_drvdata(&pps->dev, pps);
- 	dev_set_name(&pps->dev, "pps%d", pps->id);
-+	pps->dev.release = pps_device_destruct;
- 	err = device_register(&pps->dev);
- 	if (err)
- 		goto free_idr;
  
--	/* Override the release function with our own */
--	pps->dev.release = pps_device_destruct;
--
- 	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name, pps_major,
- 		 pps->id);
+-	au.paddr += data_offset;
+-	au.vaddr += data_offset;
++	au_dma += data_offset;
++	au_vaddr += data_offset;
+ 
+-	ret = delta_mjpeg_ipc_decode(pctx, &au);
++	ret = delta_mjpeg_ipc_decode(pctx, au_dma, au_dma + au_size - 1);
+ 	if (ret)
+ 		goto err;
  
 -- 
 2.51.0
