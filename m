@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3E3BD47B4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:46:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D791BD40E6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 361053E65B7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F1C89504A1F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23783126BF;
-	Mon, 13 Oct 2025 15:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AA73093D8;
+	Mon, 13 Oct 2025 14:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euTE0LCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikrhjKAh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E53930C614;
-	Mon, 13 Oct 2025 15:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A912A20125F;
+	Mon, 13 Oct 2025 14:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368240; cv=none; b=rdYtBoFce2YQkyaojtohJ8FfB++wCw0lQdoH81VRZwn4+qUP00h+q6EcdoSPkChqk1bDVta+9fu1aAJpI1c/tcSJbyPr+IhdT2kQLLLH6ammWg1NJVJDqaVSX/GKOBpEI9O7VdMdZJg01G4/ShmFPR/ZA8ls8cCrN2K+DHWzvf0=
+	t=1760367525; cv=none; b=iKM0HiMVMYY7YHILNVarVrzOePKWEjpZv7ip1zvH10cvpBQzTqAucPFnAPFv3ihYxHgnArvr3/v7j1hRk2GxT5E9xKkz9fgvzpqSj+mxaqAsaEHCwOLPqRGaSbl8PF9fq3EgLmi/40JwdfouCLfsvBbONDtY+dI7Ysbg2FJHTAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368240; c=relaxed/simple;
-	bh=1epM/zyXAKlkXBB2VaSlwjmm2W99oypffgxQglBji2s=;
+	s=arc-20240116; t=1760367525; c=relaxed/simple;
+	bh=VJsAv2zgDDaRV4mfkwKEzkZlAxZ6V3oFjH4anLdMGvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnA88JdWvfnEDSOVDhUWSvfcBGnJoUVikawZxtuxhN6ufh8s4iGHSbX+4Bgn4c+WvaAnpPFHVSv92m/Bv7CG0DrpQXMEv+34fyM6EnCAITO/CHUvaP+yMO9Qq2uXDHwPnubdW4VLm/uvPB48h2fl//f5FG/ESDlGjZLlcWO6vxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euTE0LCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E522CC4CEFE;
-	Mon, 13 Oct 2025 15:10:39 +0000 (UTC)
+	 MIME-Version; b=WvpVPMpF6H0tDRmQFEAxHbhboJBN7PjZ9Hd5H90DA2MXABYxy9D9+7oY8R5hllD0eLgrqyzF0Ge5a1jLSaSMQQp/g/URpHHkUHAw4bcSla2EgfOhnrVcLMAmytwQnzFqeo+Z+MZZ+Mp7iU5zkMqzaSvIgwd7ei7fcLpJInaqYnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikrhjKAh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2696AC4CEE7;
+	Mon, 13 Oct 2025 14:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368240;
-	bh=1epM/zyXAKlkXBB2VaSlwjmm2W99oypffgxQglBji2s=;
+	s=korg; t=1760367525;
+	bh=VJsAv2zgDDaRV4mfkwKEzkZlAxZ6V3oFjH4anLdMGvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=euTE0LCTxS9latSXNk76mUjLohhHKwWzSGacJ6HrI1n4jFj0DV4o3eOlLuAQou2Er
-	 gplZz57L3gyjBN69pvb51wPdi7/TdfrJDBXYV+fnXlV2WV3sFSBpIoqxDiS+mPM/SE
-	 h12HOEu52qL+QgVz2N8GGpNIwMEaU3mg73E3SHvE=
+	b=ikrhjKAhKfI4DsKJjBOOX+29/+P/MMq+XwIC4OfzaVqepw630MRWKhbr6BUvx4RTN
+	 qi5P688CzZujFStePOjNBCqYw4hTO7PSJX1sNu1TfvXP4gqeQ/m6SlzkVgozlUPCTB
+	 O6TDRzSZiemCwnbZpEt+LekfJNQBsaENeWW5swbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/262] f2fs: fix condition in __allow_reserved_blocks()
+Subject: [PATCH 6.6 043/196] arm64: dts: mediatek: mt6795-xperia-m5: Fix mmc0 latch-ck value
 Date: Mon, 13 Oct 2025 16:43:54 +0200
-Message-ID: <20251013144329.441871825@linuxfoundation.org>
+Message-ID: <20251013144316.762214193@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit e75ce117905d2830976a289e718470f3230fa30a ]
+[ Upstream commit 236681fb64102f25ed11df55999e6985c1bc2f7d ]
 
-If reserve_root mount option is not assigned, __allow_reserved_blocks()
-will return false, it's not correct, fix it.
+Change the latch-ck value from 0x14 to 4: as only bits [0-3] are
+actually used, the final value that gets written to the register
+field for DAT_LATCH_CK_SEL is just 0x4.
 
-Fixes: 7e65be49ed94 ("f2fs: add reserved blocks for root user")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+This also fixes dtbs_check warnings.
+
+Fixes: 5a65dcccf483 ("arm64: dts: mediatek: mt6795-xperia-m5: Add eMMC, MicroSD slot, SDIO")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250724083914.61351-21-angelogioacchino.delregno@collabora.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 2dec22f2ea639..0d3ef487f72ac 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2331,8 +2331,6 @@ static inline bool __allow_reserved_blocks(struct f2fs_sb_info *sbi,
- {
- 	if (!inode)
- 		return true;
--	if (!test_opt(sbi, RESERVE_ROOT))
--		return false;
- 	if (IS_NOQUOTA(inode))
- 		return true;
- 	if (uid_eq(F2FS_OPTION(sbi).s_resuid, current_fsuid()))
-@@ -2353,7 +2351,7 @@ static inline unsigned int get_available_block_count(struct f2fs_sb_info *sbi,
- 	avail_user_block_count = sbi->user_block_count -
- 					sbi->current_reserved_blocks;
+diff --git a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
+index b5746e6d0b15a..110fae4ec11c9 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
++++ b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
+@@ -136,7 +136,7 @@ proximity@48 {
  
--	if (!__allow_reserved_blocks(sbi, inode, cap))
-+	if (test_opt(sbi, RESERVE_ROOT) && !__allow_reserved_blocks(sbi, inode, cap))
- 		avail_user_block_count -= F2FS_OPTION(sbi).root_reserved_blocks;
- 
- 	if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
+ &mmc0 {
+ 	/* eMMC controller */
+-	mediatek,latch-ck = <0x14>; /* hs400 */
++	mediatek,latch-ck = <4>; /* hs400 */
+ 	mediatek,hs200-cmd-int-delay = <1>;
+ 	mediatek,hs400-cmd-int-delay = <1>;
+ 	mediatek,hs400-ds-dly3 = <0x1a>;
 -- 
 2.51.0
 
