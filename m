@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-184416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44990BD4429
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF68BD46F1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A25C3E4CA0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DADC401E9E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA3630DD20;
-	Mon, 13 Oct 2025 14:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1682630BB91;
+	Mon, 13 Oct 2025 15:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAFW2wKH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ql4IITw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDF130DD1E;
-	Mon, 13 Oct 2025 14:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C704A30B52A;
+	Mon, 13 Oct 2025 15:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367374; cv=none; b=lUXkl0+X+wUTf2vCTTzGJI/rPVkDhWMbHVqTXJe3mEoKKQA/JZtijg1i7MWwYFdLfUJdc3E9FyXysoo2GFbRbLkOYaUk5M4wdQW8yYMS7cD9/NakiDLbWMMyw+ORyUY8EZHfT7MFuaJaaUqTqk36LHKzwzcNBKU7LoxpxPCs03g=
+	t=1760368698; cv=none; b=EXJ5UKSVqGclLZeXmUG79clirB6bGAI726kVFsOnVyVN/4ouGjOUO5kN5MXlZUFnBA+FYzRqnvwavoeEwhQPCpbMrov+e854ZGrS9hYb1c6IiNjbAZmVwWPsQyXnR5vWjfkHT2CGXTW5rsiIcqAndttKXJgzZ1wKHMSeBVIdjRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367374; c=relaxed/simple;
-	bh=Af8dOZ/wOGYaWvYUBNBGjgnK7UOCrHArNAgGlvCfRnA=;
+	s=arc-20240116; t=1760368698; c=relaxed/simple;
+	bh=D4HfO59nSRc2DDqFPC+cg07zikyuy+PfV3V7qpwa2VA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YocS2rFhOTLYkLIODk4ZSBQDIzcVLePwqBp3b4epRf+ql7IsaEOpI/N8yyBRY3i3QY66wO0+tGn3MZpRTrz7/ZnwtuDe6WftRzlAyAPpuPF2GoJmHhn3SIZrzUt5wpEIta+EXbD08VkJggQ45wBkgfUgvCHig0/HxBHNZAmsmAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAFW2wKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1A8C113D0;
-	Mon, 13 Oct 2025 14:56:13 +0000 (UTC)
+	 MIME-Version; b=tIPwel0SZRCjvL96OBT6DgnoOJsn378QOQGbJcY3fGVij23PNVUTXw8XZNlzClFukGwiR0D1sfWVHaVN0/xGhNsB7oLDcR3J+Fr5nRQLTducMTEi6Yml/sDaLNaJyPYJ7srBigc2bwd56vT/vsochEDaiipQmhV1ujr7RhP8nYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ql4IITw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD39EC4CEE7;
+	Mon, 13 Oct 2025 15:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367374;
-	bh=Af8dOZ/wOGYaWvYUBNBGjgnK7UOCrHArNAgGlvCfRnA=;
+	s=korg; t=1760368698;
+	bh=D4HfO59nSRc2DDqFPC+cg07zikyuy+PfV3V7qpwa2VA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAFW2wKHe2Q4R9DhxiW43+mjgAw2iswqiImZpEHYLu1MxVoKBgdnV+yyKXoj///U8
-	 lAF+8AzJEuJeT2Qx0k2QzpMsr/8iCLTArMtQ6mSZZEEDmwgg2aLU55eDY34r2XAhOm
-	 1Pj18+1uJi/haLvy+OeQff+qx6Cf3LpPfWxJF1CE=
+	b=0ql4IITwTBb5qxF68Ks+aFTQHCGnhXlmLV/mXNhytuMLhR5g52arx3dhHMBq0cLep
+	 83Pn5xI2SMyc/O8DfIOi1pvQp6v216DQ5BYVIdKRAu6d/iCzsdlSnC/JVkqraF9ZqY
+	 1qugejtfiFdByVDdwu58YiGb8S1sWAk0weB7WV4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	Ling Xu <quic_lxu5@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.1 186/196] misc: fastrpc: Skip reference for DMA handles
-Date: Mon, 13 Oct 2025 16:45:59 +0200
-Message-ID: <20251013144321.421474060@linuxfoundation.org>
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 218/262] net/mlx5: pagealloc: Fix reclaim race during command interface teardown
+Date: Mon, 13 Oct 2025 16:46:00 +0200
+Message-ID: <20251013144334.094964468@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,132 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ling Xu <quic_lxu5@quicinc.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit 10df039834f84a297c72ec962c0f9b7c8c5ca31a upstream.
+[ Upstream commit 79a0e32b32ac4e4f9e4bb22be97f371c8c116c88 ]
 
-If multiple dma handles are passed with same fd over a remote call
-the kernel driver takes a reference and expects that put for the
-map will be called as many times to free the map. But DSP only
-updates the fd one time in the fd list when the DSP refcount
-goes to zero and hence kernel make put call only once for the
-fd. This can cause SMMU fault issue as the same fd can be used
-in future for some other call.
+The reclaim_pages_cmd() function sends a command to the firmware to
+reclaim pages if the command interface is active.
 
-Fixes: 35a82b87135d ("misc: fastrpc: Add dma handle implementation")
-Cc: stable@kernel.org
-Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250912131236.303102-5-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A race condition can occur if the command interface goes down (e.g., due
+to a PCI error) while the mlx5_cmd_do() call is in flight. In this
+case, mlx5_cmd_do() will return an error. The original code would
+propagate this error immediately, bypassing the software-based page
+reclamation logic that is supposed to run when the command interface is
+down.
+
+Fix this by checking whether mlx5_cmd_do() returns -ENXIO, which mark
+that command interface is down. If this is the case, fall through to
+the software reclamation path. If the command failed for any another
+reason, or finished successfully, return as before.
+
+Fixes: b898ce7bccf1 ("net/mlx5: cmdif, Avoid skipping reclaim pages if FW is not accessible")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |   45 +++++++++++++++++++++++++++------------------
- 1 file changed, 27 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -342,9 +342,8 @@ static int fastrpc_map_get(struct fastrp
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+index 9bc9bd83c2324..cd68c4b2c0bf9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+@@ -489,9 +489,12 @@ static int reclaim_pages_cmd(struct mlx5_core_dev *dev,
+ 	u32 func_id;
+ 	u32 npages;
+ 	u32 i = 0;
++	int err;
  
+-	if (!mlx5_cmd_is_down(dev))
+-		return mlx5_cmd_do(dev, in, in_size, out, out_size);
++	err = mlx5_cmd_do(dev, in, in_size, out, out_size);
++	/* If FW is gone (-ENXIO), proceed to forceful reclaim */
++	if (err != -ENXIO)
++		return err;
  
- static int fastrpc_map_lookup(struct fastrpc_user *fl, int fd,
--			    struct fastrpc_map **ppmap, bool take_ref)
-+			    struct fastrpc_map **ppmap)
- {
--	struct fastrpc_session_ctx *sess = fl->sctx;
- 	struct fastrpc_map *map = NULL;
- 	struct dma_buf *buf;
- 	int ret = -ENOENT;
-@@ -358,15 +357,6 @@ static int fastrpc_map_lookup(struct fas
- 		if (map->fd != fd || map->buf != buf)
- 			continue;
- 
--		if (take_ref) {
--			ret = fastrpc_map_get(map);
--			if (ret) {
--				dev_dbg(sess->dev, "%s: Failed to get map fd=%d ret=%d\n",
--					__func__, fd, ret);
--				break;
--			}
--		}
--
- 		*ppmap = map;
- 		ret = 0;
- 		break;
-@@ -711,7 +701,7 @@ static const struct dma_buf_ops fastrpc_
- 	.release = fastrpc_release,
- };
- 
--static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
-+static int fastrpc_map_attach(struct fastrpc_user *fl, int fd,
- 			      u64 len, u32 attr, struct fastrpc_map **ppmap)
- {
- 	struct fastrpc_session_ctx *sess = fl->sctx;
-@@ -719,9 +709,6 @@ static int fastrpc_map_create(struct fas
- 	struct sg_table *table;
- 	int err = 0;
- 
--	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
--		return 0;
--
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (!map)
- 		return -ENOMEM;
-@@ -789,6 +776,24 @@ get_err:
- 	return err;
- }
- 
-+static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
-+			      u64 len, u32 attr, struct fastrpc_map **ppmap)
-+{
-+	struct fastrpc_session_ctx *sess = fl->sctx;
-+	int err = 0;
-+
-+	if (!fastrpc_map_lookup(fl, fd, ppmap)) {
-+		if (!fastrpc_map_get(*ppmap))
-+			return 0;
-+		dev_dbg(sess->dev, "%s: Failed to get map fd=%d\n",
-+			__func__, fd);
-+	}
-+
-+	err = fastrpc_map_attach(fl, fd, len, attr, ppmap);
-+
-+	return err;
-+}
-+
- /*
-  * Fastrpc payload buffer with metadata looks like:
-  *
-@@ -861,8 +866,12 @@ static int fastrpc_create_maps(struct fa
- 		    ctx->args[i].length == 0)
- 			continue;
- 
--		err = fastrpc_map_create(ctx->fl, ctx->args[i].fd,
--			 ctx->args[i].length, ctx->args[i].attr, &ctx->maps[i]);
-+		if (i < ctx->nbufs)
-+			err = fastrpc_map_create(ctx->fl, ctx->args[i].fd,
-+				 ctx->args[i].length, ctx->args[i].attr, &ctx->maps[i]);
-+		else
-+			err = fastrpc_map_attach(ctx->fl, ctx->args[i].fd,
-+				 ctx->args[i].length, ctx->args[i].attr, &ctx->maps[i]);
- 		if (err) {
- 			dev_err(dev, "Error Creating map %d\n", err);
- 			return -EINVAL;
-@@ -1049,7 +1058,7 @@ cleanup_fdlist:
- 	for (i = 0; i < FASTRPC_MAX_FDLIST; i++) {
- 		if (!fdlist[i])
- 			break;
--		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap, false))
-+		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap))
- 			fastrpc_map_put(mmap);
- 	}
- 
+ 	/* No hard feelings, we want our pages back! */
+ 	npages = MLX5_GET(manage_pages_in, in, input_num_entries);
+-- 
+2.51.0
+
 
 
 
