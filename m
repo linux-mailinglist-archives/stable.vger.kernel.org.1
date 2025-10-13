@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E6BBD46BA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D03BD42E9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2C81D5013DC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94EC118841A3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE53D30ACF8;
-	Mon, 13 Oct 2025 15:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1F5312831;
+	Mon, 13 Oct 2025 15:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0he5A2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vo/zKhVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BADA26F2B6;
-	Mon, 13 Oct 2025 15:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAEE30C617;
+	Mon, 13 Oct 2025 15:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367713; cv=none; b=MIV6zrgRHzxfEE4P4P/Ys8cWpXDvKU4BechOcFlJmhlATgZuZN1Pe/9+K6DvS3822za6RE19V6uetKxiWtzlasTLcBkmM2/kOuID9W3/PDphlncIRqHyItHYSrKw3yQjiFAohUZjRrPMlTOFaDAcJ0YWDnKLxprXIEiojf2nsMI=
+	t=1760368324; cv=none; b=as4PuE/KpLriBIaITANRQPQMca4u1cz/uDacCMOabhN/8cBIH/gixRuObiBqESISeoGPppFq8ZrT4xqaLLBpNzFuCZjik5HXamottpTvWOiwCVXCRXyZUMgmPQLE+fFPVVHvvnfh9+yNcbn1EvJJzWykXk2Z+qw/Ql0SLQ6UdzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367713; c=relaxed/simple;
-	bh=H8rXO36gjAXKImzST7gMS5/1QR9m8aeaDY/79KdQNVo=;
+	s=arc-20240116; t=1760368324; c=relaxed/simple;
+	bh=IGt0n38gy2snRZfM8eAUD4VnpOts/gJPxjYyNHSieoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtWHLj+IS2cieptRNa6HCxinJTbM1iH8dsiKly+k99Rj55yDySSX6URLRG7HgPYi0jRiTkbTAGb3wS3WEoGrrqDmin+hfB6qYKnPUpz5ULqPn+3w5UP5brAKk+LnabCXtwSVWX/1Ya6IE5VKc9wLwDh8f2HCCUwLpBiFZ5FEz8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0he5A2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26FBC4CEE7;
-	Mon, 13 Oct 2025 15:01:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=peVC8pVQiRlvwfST8W9N7iQo6YFz5BGYO9Se++OYxYuxCbyI/5tBJpuIwFKOIzU0XT/vSy04H6RhmYFJTYSVCyhm0X/0IgAs4EU5R0gs5SMluTnk1CIlw0fP+I2d4j7it2IVC80y30nfNKtEeF78bk59HD26+e6ErDBawpEtmwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vo/zKhVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317A8C113D0;
+	Mon, 13 Oct 2025 15:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367713;
-	bh=H8rXO36gjAXKImzST7gMS5/1QR9m8aeaDY/79KdQNVo=;
+	s=korg; t=1760368323;
+	bh=IGt0n38gy2snRZfM8eAUD4VnpOts/gJPxjYyNHSieoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m0he5A2KhohrQkzsPSgobTwTQDz9jYskJYVY00Wogmb7iCJ2KTOFYzwYdgOMG5Nqw
-	 PV2Av9k/AgsgyNM/NW1bhBbkgV/h8fakuX0E/RIHBn8cDV/H+zk/oVITks42AabiTe
-	 IZ2AbiouY+YFDHGiqzk501r+NjcR/mQeaJ7sEmr0=
+	b=vo/zKhVGar19Cu7S4mUeZg/lfs/XcOaR9iFJwfZ4gVxySVtN617RjlOGh0NkTgtD7
+	 tNAeNNtaOjzCa3aE2mMmxS6dlj+2zjTXn+YWjONCvNs3U8IvlY1z7k3nBOCFHoVUwF
+	 6ZZ89lEjFwNBbPF85tG8OSxSjCBrtt6d1gTPCRqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/196] hwrng: nomadik - add ARM_AMBA dependency
+Subject: [PATCH 6.12 122/262] drm/amd/pm: Disable SCLK switching on Oland with high pixel clocks (v3)
 Date: Mon, 13 Oct 2025 16:44:24 +0200
-Message-ID: <20251013144317.831518127@linuxfoundation.org>
+Message-ID: <20251013144330.518847876@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit efaa2d815a0e4d1c06750e587100f6f7f4ee5497 ]
+[ Upstream commit 7009e3af0474aca5f64262b3c72fb6e23b232f9b ]
 
-Compile-testing this driver is only possible when the AMBA bus driver is
-available in the kernel:
+Port of commit 227545b9a08c ("drm/radeon/dpm: Disable sclk
+switching on Oland when two 4K 60Hz monitors are connected")
 
-x86_64-linux-ld: drivers/char/hw_random/nomadik-rng.o: in function `nmk_rng_remove':
-nomadik-rng.c:(.text+0x67): undefined reference to `amba_release_regions'
-x86_64-linux-ld: drivers/char/hw_random/nomadik-rng.o: in function `nmk_rng_probe':
-nomadik-rng.c:(.text+0xee): undefined reference to `amba_request_regions'
-x86_64-linux-ld: nomadik-rng.c:(.text+0x18d): undefined reference to `amba_release_regions'
+This is an ad-hoc DPM fix, necessary because we don't have
+proper bandwidth calculation for DCE 6.
 
-The was previously implied by the 'depends on ARCH_NOMADIK', but needs to be
-specified for the COMPILE_TEST case.
+We define "high pixelclock" for SI as higher than necessary
+for 4K 30Hz. For example, 4K 60Hz and 1080p 144Hz fall into
+this category.
 
-Fixes: d5e93b3374e4 ("hwrng: Kconfig - Add helper dependency on COMPILE_TEST")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+When two high pixel clock displays are connected to Oland,
+additionally disable shader clock switching, which results in
+a higher voltage, thereby addressing some visible flickering.
+
+v2:
+Add more comments.
+v3:
+Split into two commits for easier review.
+
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 31 ++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/char/hw_random/Kconfig b/drivers/char/hw_random/Kconfig
-index 8de74dcfa18cf..ece2d794174d4 100644
---- a/drivers/char/hw_random/Kconfig
-+++ b/drivers/char/hw_random/Kconfig
-@@ -286,6 +286,7 @@ config HW_RANDOM_INGENIC_TRNG
- config HW_RANDOM_NOMADIK
- 	tristate "ST-Ericsson Nomadik Random Number Generator support"
- 	depends on ARCH_NOMADIK || COMPILE_TEST
-+	depends on ARM_AMBA
- 	default HW_RANDOM
- 	help
- 	  This driver provides kernel-side support for the Random Number
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 76fc08cda7480..82167eca26683 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -3430,12 +3430,14 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ {
+ 	struct  si_ps *ps = si_get_ps(rps);
+ 	struct amdgpu_clock_and_voltage_limits *max_limits;
++	struct amdgpu_connector *conn;
+ 	bool disable_mclk_switching = false;
+ 	bool disable_sclk_switching = false;
+ 	u32 mclk, sclk;
+ 	u16 vddc, vddci, min_vce_voltage = 0;
+ 	u32 max_sclk_vddc, max_mclk_vddci, max_mclk_vddc;
+ 	u32 max_sclk = 0, max_mclk = 0;
++	u32 high_pixelclock_count = 0;
+ 	int i;
+ 
+ 	if (adev->asic_type == CHIP_HAINAN) {
+@@ -3463,6 +3465,35 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 		}
+ 	}
+ 
++	/* We define "high pixelclock" for SI as higher than necessary for 4K 30Hz.
++	 * For example, 4K 60Hz and 1080p 144Hz fall into this category.
++	 * Find number of such displays connected.
++	 */
++	for (i = 0; i < adev->mode_info.num_crtc; i++) {
++		if (!(adev->pm.dpm.new_active_crtcs & (1 << i)) ||
++			!adev->mode_info.crtcs[i]->enabled)
++			continue;
++
++		conn = to_amdgpu_connector(adev->mode_info.crtcs[i]->connector);
++
++		if (conn->pixelclock_for_modeset > 297000)
++			high_pixelclock_count++;
++	}
++
++	/* These are some ad-hoc fixes to some issues observed with SI GPUs.
++	 * They are necessary because we don't have something like dce_calcs
++	 * for these GPUs to calculate bandwidth requirements.
++	 */
++	if (high_pixelclock_count) {
++		/* On Oland, we observe some flickering when two 4K 60Hz
++		 * displays are connected, possibly because voltage is too low.
++		 * Raise the voltage by requiring a higher SCLK.
++		 * (Voltage cannot be adjusted independently without also SCLK.)
++		 */
++		if (high_pixelclock_count > 1 && adev->asic_type == CHIP_OLAND)
++			disable_sclk_switching = true;
++	}
++
+ 	if (rps->vce_active) {
+ 		rps->evclk = adev->pm.dpm.vce_states[adev->pm.dpm.vce_level].evclk;
+ 		rps->ecclk = adev->pm.dpm.vce_states[adev->pm.dpm.vce_level].ecclk;
 -- 
 2.51.0
 
