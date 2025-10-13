@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-184897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF14BD4432
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:37 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E682BD4663
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8AC4A34F935
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83EE25437E5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AC030BF63;
-	Mon, 13 Oct 2025 15:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E793C30BB9D;
+	Mon, 13 Oct 2025 15:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAXaHSUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncEKfYtm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F15308F39;
-	Mon, 13 Oct 2025 15:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EEA30B51A;
+	Mon, 13 Oct 2025 15:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368751; cv=none; b=I71iUExn5bbwSX7Q1JGfsetUfIl6gvPT4tp0926n2IXXfc+O2kZUFjvnLfyhaCZJJtLyimZoK80mVE/9DazrastBm7FBRMqZQNDX8TMqcGwjHosGAQKSs1H6chc0fu4LVL0jq4WJV+Gx9SRGUXWkn/GbLaEYfW4PFpf0T4PYSIo=
+	t=1760368709; cv=none; b=uxLxuah/tbbm3nZ+HGvihbbLjWnL7IxSS2vZWcSWKp2fLPyEfEan19G7mg8wUDP9a3pVGL7jVbjEoJxUmzyGvmB6crjciU14DtKiLZDAW0nwpmt7h4upeJoL6P8nvDhpZYzqemgEI69/1YM5gtyOCaBoWeZ0Bv3973Z8PKoCiYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368751; c=relaxed/simple;
-	bh=gCG/bMa82WBCH9tHm/xlBTRdOypZ1INjdAFqt+W0P3Q=;
+	s=arc-20240116; t=1760368709; c=relaxed/simple;
+	bh=JwBaw6JHTUllkPIpDjd8wmRreb0QRhsJZtpDMQ7ssfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMrRA5CQ4ARCR1JiCV2pAplgN2niwXvAXV97mSnJk9xYmincGHu7JLbkIw/+dF/okFiXkroa1jPK8LfGCChbX42FUOchiFr7kEZSSP6JFNgQRMowq78iKsL6SlG8px9nkvTiPsBH/diW4Jz5T/ncHn5ac3l3HxYfFqDkZhdZNeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAXaHSUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A53FC4CEE7;
-	Mon, 13 Oct 2025 15:19:09 +0000 (UTC)
+	 MIME-Version; b=CdRWmtRK1ZVbekzPZJxc4HkLzGr+Z7ZJNdjPQXtn2Xyv9VoJbAlZDUruCo7FCZi8ngBDUHZjdAcl4eSsPwb7hWMTcZccA/5Iou7JbhQ1C5WcrAcmdFT0AcBgn6PJWZv+0sfUf4eSwZRJT1MbApObStl3EByFD+/+q2ylc2ogYss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncEKfYtm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED07C4CEE7;
+	Mon, 13 Oct 2025 15:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368749;
-	bh=gCG/bMa82WBCH9tHm/xlBTRdOypZ1INjdAFqt+W0P3Q=;
+	s=korg; t=1760368709;
+	bh=JwBaw6JHTUllkPIpDjd8wmRreb0QRhsJZtpDMQ7ssfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAXaHSUBcMCQhiyQHjAQKumSkTGqv1kDqp7Vc1L+CWLsbNv7/ia/0jz4K36ufFP6O
-	 WFuPStM1J1IJlThmtnZpBJAr0SYFzS/YrmneTQHJzgGfgG38gufpqMDVTEiHD6VahV
-	 jIr/ig/Ne5R3eVEeoKFaLIzTEY2D5WqtvdSAmCd0=
+	b=ncEKfYtmZgCNCWfNaEi0a8a6QXdrLrKzj2uJ1LfjlPyJv084goytOOfSj92dJvOD8
+	 PUN0Uqy43shBcYRHGVIYsHVyjl2TaZ/JByKA6rqNOBNKp3hZe+PjzxsyJEbnlzqTr8
+	 TLDmXrTOfifIEuLgp+vLpKBqRPlkkx7fq3QkqDZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Ichikawa <masami256@gmail.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>
-Subject: [PATCH 6.12 255/262] tee: fix register_shm_helper()
-Date: Mon, 13 Oct 2025 16:46:37 +0200
-Message-ID: <20251013144335.418043539@linuxfoundation.org>
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.12 256/262] pinctrl: check the return value of pinmux_ops::get_function_name()
+Date: Mon, 13 Oct 2025 16:46:38 +0200
+Message-ID: <20251013144335.453565082@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
 References: <20251013144326.116493600@linuxfoundation.org>
@@ -65,46 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jens Wiklander <jens.wiklander@linaro.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit d5cf5b37064b1699d946e8b7ab4ac7d7d101814c upstream.
+commit 4002ee98c022d671ecc1e4a84029e9ae7d8a5603 upstream.
 
-In register_shm_helper(), fix incorrect error handling for a call to
-iov_iter_extract_pages(). A case is missing for when
-iov_iter_extract_pages() only got some pages and return a number larger
-than 0, but not the requested amount.
-
-This fixes a possible NULL pointer dereference following a bad input from
-ioctl(TEE_IOC_SHM_REGISTER) where parts of the buffer isn't mapped.
+While the API contract in docs doesn't specify it explicitly, the
+generic implementation of the get_function_name() callback from struct
+pinmux_ops - pinmux_generic_get_function_name() - can fail and return
+NULL. This is already checked in pinmux_check_ops() so add a similar
+check in pinmux_func_name_to_selector() instead of passing the returned
+pointer right down to strcmp() where the NULL can get dereferenced. This
+is normal operation when adding new pinfunctions.
 
 Cc: stable@vger.kernel.org
-Reported-by: Masami Ichikawa <masami256@gmail.com>
-Closes: https://lore.kernel.org/op-tee/CACOXgS-Bo2W72Nj1_44c7bntyNYOavnTjJAvUbEiQfq=u9W+-g@mail.gmail.com/
-Tested-by: Masami Ichikawa <masami256@gmail.com>
-Fixes: 7bdee4157591 ("tee: Use iov_iter to better support shared buffer registration")
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tee/tee_shm.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pinctrl/pinmux.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tee/tee_shm.c
-+++ b/drivers/tee/tee_shm.c
-@@ -321,6 +321,14 @@ register_shm_helper(struct tee_context *
- 	if (unlikely(len <= 0)) {
- 		ret = len ? ERR_PTR(len) : ERR_PTR(-ENOMEM);
- 		goto err_free_shm_pages;
-+	} else if (DIV_ROUND_UP(len + off, PAGE_SIZE) != num_pages) {
-+		/*
-+		 * If we only got a few pages, update to release the
-+		 * correct amount below.
-+		 */
-+		shm->num_pages = len / PAGE_SIZE;
-+		ret = ERR_PTR(-ENOMEM);
-+		goto err_put_shm_pages;
- 	}
+--- a/drivers/pinctrl/pinmux.c
++++ b/drivers/pinctrl/pinmux.c
+@@ -337,7 +337,7 @@ static int pinmux_func_name_to_selector(
+ 	while (selector < nfuncs) {
+ 		const char *fname = ops->get_function_name(pctldev, selector);
  
- 	/*
+-		if (!strcmp(function, fname))
++		if (fname && !strcmp(function, fname))
+ 			return selector;
+ 
+ 		selector++;
 
 
 
