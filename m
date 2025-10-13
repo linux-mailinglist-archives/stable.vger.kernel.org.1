@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-184294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5469DBD3C6C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6EEBD4684
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A05B618936EA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 642384238FC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15F5309EE0;
-	Mon, 13 Oct 2025 14:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0902C312806;
+	Mon, 13 Oct 2025 15:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BX7wRGzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCpSVq2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF615309DB0;
-	Mon, 13 Oct 2025 14:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CA8253954;
+	Mon, 13 Oct 2025 15:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367020; cv=none; b=oQ6W5tUWZb1i6uwhvu5Dcoibv5T46pZHDy7om3yxVwy7c5pLAEf0frDF0Z5fq4nYZjTl4R7wis+PI+JPzeV0u6+vwkoNJKsuCN+RJzMNpRS8Fr2jjJ7loUVNP6bTBdnLTAwSDpjr+iefinjSt2xo5UuqW7h6f4el5FxZMF35o/8=
+	t=1760368251; cv=none; b=sqj7zfbI4rXuCA8lpB6yG/4gnfu0TJQr7L4lrJNI2yK2KBWZkCFVNlVbFCsNRjdBYos1X9rZ5X4ovNenX5hC1sq/LW153iGoLJSEtiQaGWQkYrTdL4PVcFC+7py7XKeuCGw8zi/nfW500PPmgT9A2UnGZMTge6xQzAFlfbZHd64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367020; c=relaxed/simple;
-	bh=LZ/jNo4V87JC9cJgtCTfcOdBLrwF/Ec81vp5x+ArzsA=;
+	s=arc-20240116; t=1760368251; c=relaxed/simple;
+	bh=WA4DTqZnawzJ8LdiHabiwiMKrg3OOZOWUCfiN9lXsiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aaBN+BKfhbivnM4YudvN9QBBtVxV6IJxWfGNG4gKl9OoJRGt5moIKmcyfOF0PfWTm9Q6JzLP2TIvoaMUagFBUgBaVwKjCPAS7/dOHh5A4XfzC7/OZU9tjEzkAadDXpxwbvAVF8KFxD/5G3dEfYfkw2kkdpc1CgVSDCrO5DGUE9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BX7wRGzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB18C4CEE7;
-	Mon, 13 Oct 2025 14:50:20 +0000 (UTC)
+	 MIME-Version; b=Pi1K8rDz2JOg0t79LWqqdPeYadFMZNV6A5jREbnDW8NMgB2Da6WeeMTyXfjsWc+EKNXKDg1N0z4R+YlFWrUkolNBXEKMmY6cyXVoIjIZ2VC08qWkTsxurAUeWGtwmpH9CyeLZ2nwMrj0oeXQnhYf2ANGUbqSZZY+L+VUmxuZHVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCpSVq2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E28C4CEE7;
+	Mon, 13 Oct 2025 15:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367020;
-	bh=LZ/jNo4V87JC9cJgtCTfcOdBLrwF/Ec81vp5x+ArzsA=;
+	s=korg; t=1760368251;
+	bh=WA4DTqZnawzJ8LdiHabiwiMKrg3OOZOWUCfiN9lXsiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BX7wRGzQUr1tHOTZ3gDj9kJYqonPjTbYJAHKAHbGVAJVczmcPoCFsRGOq4eRfR6QB
-	 ZJl+7DGztP7gFHMe+BqG0uW2RfdFQY11uFdrQ66GqwUAxAEkvL1Ke2qS9l4LTExDuR
-	 Hwnxv3BSPm0XgWP1G8F5BeJzRbewnxcitYtSmVSg=
+	b=vCpSVq2PMkxLu7TKG2xkZPV3G10ndlEII5g9A4ZZ5H+BA9Osv9gF8zUOfgy0i4f7P
+	 WjygEFHiLBQ8uy0Bzr4nFBCF1fK1s2j08Q0H1XqaOKQhzDEyD3feTYbiwkAX/lYy+j
+	 tYjilt1rmeKenXq58wCEFlrPQSKj+tYzepJHXGjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/196] regulator: scmi: Use int type to store negative error codes
+Subject: [PATCH 6.12 096/262] usb: host: max3421-hcd: Fix error pointer dereference in probe cleanup
 Date: Mon, 13 Oct 2025 16:43:58 +0200
-Message-ID: <20251013144316.932919162@linuxfoundation.org>
+Message-ID: <20251013144329.585536267@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 9d35d068fb138160709e04e3ee97fe29a6f8615b ]
+[ Upstream commit 186e8f2bdba551f3ae23396caccd452d985c23e3 ]
 
-Change the 'ret' variable from u32 to int to store negative error codes or
-zero returned by of_property_read_u32().
+The kthread_run() function returns error pointers so the
+max3421_hcd->spi_thread pointer can be either error pointers or NULL.
+Check for both before dereferencing it.
 
-Storing the negative error codes in unsigned type, doesn't cause an issue
-at runtime but it's ugly as pants. Additionally, assigning negative error
-codes to unsigned type may trigger a GCC warning when the -Wsign-conversion
-flag is enabled.
-
-No effect on runtime.
-
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Fixes: 0fbeae70ee7c ("regulator: add SCMI driver")
-Link: https://patch.msgid.link/20250829101411.625214-1-rongqianfeng@vivo.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 05dfa5c9bc37 ("usb: host: max3421-hcd: fix "spi_rd8" uses dynamic stack allocation warning")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJTMVAPtRe5H6jug@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/scmi-regulator.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/max3421-hcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
-index b9918f4fd2418..7252fa32cf054 100644
---- a/drivers/regulator/scmi-regulator.c
-+++ b/drivers/regulator/scmi-regulator.c
-@@ -257,7 +257,8 @@ static int process_scmi_regulator_of_node(struct scmi_device *sdev,
- 					  struct device_node *np,
- 					  struct scmi_regulator_info *rinfo)
- {
--	u32 dom, ret;
-+	u32 dom;
-+	int ret;
- 
- 	ret = of_property_read_u32(np, "reg", &dom);
- 	if (ret)
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index dcf31a592f5d1..4b5f03f683f77 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1916,7 +1916,7 @@ max3421_probe(struct spi_device *spi)
+ 	if (hcd) {
+ 		kfree(max3421_hcd->tx);
+ 		kfree(max3421_hcd->rx);
+-		if (max3421_hcd->spi_thread)
++		if (!IS_ERR_OR_NULL(max3421_hcd->spi_thread))
+ 			kthread_stop(max3421_hcd->spi_thread);
+ 		usb_put_hcd(hcd);
+ 	}
 -- 
 2.51.0
 
