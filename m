@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA12BD3F66
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:15:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5F5BD4814
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D47F1889A77
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 981954FC6F1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C8F30CD8B;
-	Mon, 13 Oct 2025 14:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDCA3081C5;
+	Mon, 13 Oct 2025 15:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fpa8bPXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PW9lPMR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C65314D3D;
-	Mon, 13 Oct 2025 14:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECEF3081A8;
+	Mon, 13 Oct 2025 15:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367272; cv=none; b=J7SXwesJA3i6zKW52MoHmWbrXWI0vK/B+v0bYkqwt+zjl9V4iWXkD36jpH8v0h0Pk19OMEjODB2DKGczmApzSpaDwVeHOZnMHJB8/XcFUrbZ3A+zLnCkQthFFgDK3GIErPlsXji4l4aEc7bbwtXfGeVokA5fVVllkrHDB+ZtLNY=
+	t=1760368417; cv=none; b=ib6nlMQ/pc1LETzu/pqyjBVpNBPGL/hRYL0iVfjVgfs+I84LYgj6WorAXiOjw/qIZAsA8wOGeO2iEsx+6LW+XTfRruDz90eMVNvjAnq1VTaiyhqsOD5KkvF/Gw3h5zgUDuoq5i52fF3nDks0LjhQmS9VhEKHbTdiNs598wqM6qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367272; c=relaxed/simple;
-	bh=gwgOxX8Mm5y2YLuv5qm30q2s4jFushv14o7oV115BR8=;
+	s=arc-20240116; t=1760368417; c=relaxed/simple;
+	bh=K36APKBQv/nxXd5G2UvUEFKbPL3CKptXHLVEqJci4Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WASUu4Q167xzXLLlzObBnvNQjNobXbFMnMPJWU71Ldndzshw18QC5Z7HF1c/PqlqU+IdCNYBkoMKNY23GsNDYVYqm6M0lNFPoGfOFESk+cwD/PC8Pv5vTTufHwOtJjse1wOVfQaCgw5uYmJYnSzObNwDtoJk1yQ0VdN+nJPM3IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fpa8bPXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21DDC113D0;
-	Mon, 13 Oct 2025 14:54:31 +0000 (UTC)
+	 MIME-Version; b=svyAU0H0Lay2PrCLwknmIwxU5e+pmTYRcDjnULViqLaNAv/iTBpUStUkgaC9h1fboQxJIetJ66rcdgpBGJ8vH5PcM7TgxWiJ9e+S52HyjI0ClUXULi9t5t4azE3/1n2Wbd2uBTqrwGIIlO5w1gLUZTtMuWg1/g8iFQMfrUUOjNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW9lPMR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32FFAC4CEE7;
+	Mon, 13 Oct 2025 15:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367272;
-	bh=gwgOxX8Mm5y2YLuv5qm30q2s4jFushv14o7oV115BR8=;
+	s=korg; t=1760368417;
+	bh=K36APKBQv/nxXd5G2UvUEFKbPL3CKptXHLVEqJci4Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fpa8bPXD8iu4samQiilO4rsV0oo0iDM4ZZEAW/s/a6r2/Ejo5MBkDPQprzqyvUeJ5
-	 FoHGvzMQ8mg/kF1UuPevrN9V9aZxYIwhpisIMrFlDrKPzYAW6g0HTVuLN0LAFalPj7
-	 RBz8JDxAOuoQJ2CIEMriHw+WBGGgxxLluuq8zZPc=
+	b=PW9lPMR9Jom9cYDbYupONDTQzLUXYCqslSgdWi7hstA6R5KyPvjBRbDmTJd74dqpF
+	 Y7TiDH+r4cIC/r/OdM8NCqc84+z5oqw9q2KwSCwxPmfrjUReQW3/klsS681J+QdtvI
+	 xF4mF7l8CbdYdQgOi5Gox/r8k1s5nyZZw+8yoCdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Phil Sutter <phil@nwl.cc>,
-	Florian Westphal <fw@strlen.de>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/196] netfilter: ipset: Remove unused htable_bits in macro ahash_region
+Subject: [PATCH 6.12 155/262] ACPI: NFIT: Fix incorrect ndr_desc being reportedin dev_err message
 Date: Mon, 13 Oct 2025 16:44:57 +0200
-Message-ID: <20251013144319.181589625@linuxfoundation.org>
+Message-ID: <20251013144331.703050542@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit ba941796d7cd1e81f51eed145dad1b47240ff420 ]
+[ Upstream commit d1a599a8136b16522b5afebd122395524496d549 ]
 
-Since the ahash_region() macro was redefined to calculate the region
-index solely from HTABLE_REGION_BITS, the htable_bits parameter became
-unused.
+There appears to be a cut-n-paste error with the incorrect field
+ndr_desc->numa_node being reported for the target node. Fix this by
+using ndr_desc->target_node instead.
 
-Remove the unused htable_bits argument and its call sites, simplifying
-the code without changing semantics.
-
-Fixes: 8478a729c046 ("netfilter: ipset: fix region locking in hash types")
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Reviewed-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: f060db99374e ("ACPI: NFIT: Use fallback node id when numa info in NFIT table is incorrect")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_hash_gen.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/acpi/nfit/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
-index 0bd6bf46f05f3..1f9ca5040982d 100644
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -62,7 +62,7 @@ struct hbucket {
- 		: jhash_size((htable_bits) - HTABLE_REGION_BITS))
- #define ahash_sizeof_regions(htable_bits)		\
- 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
--#define ahash_region(n, htable_bits)		\
-+#define ahash_region(n)		\
- 	((n) / jhash_size(HTABLE_REGION_BITS))
- #define ahash_bucket_start(h,  htable_bits)	\
- 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
-@@ -689,7 +689,7 @@ mtype_resize(struct ip_set *set, bool retried)
- #endif
- 				key = HKEY(data, h->initval, htable_bits);
- 				m = __ipset_dereference(hbucket(t, key));
--				nr = ahash_region(key, htable_bits);
-+				nr = ahash_region(key);
- 				if (!m) {
- 					m = kzalloc(sizeof(*m) +
- 					    AHASH_INIT_SIZE * dsize,
-@@ -839,7 +839,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 	rcu_read_lock_bh();
- 	t = rcu_dereference_bh(h->table);
- 	key = HKEY(value, h->initval, t->htable_bits);
--	r = ahash_region(key, t->htable_bits);
-+	r = ahash_region(key);
- 	atomic_inc(&t->uref);
- 	elements = t->hregion[r].elements;
- 	maxelem = t->maxelem;
-@@ -1037,7 +1037,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 	rcu_read_lock_bh();
- 	t = rcu_dereference_bh(h->table);
- 	key = HKEY(value, h->initval, t->htable_bits);
--	r = ahash_region(key, t->htable_bits);
-+	r = ahash_region(key);
- 	atomic_inc(&t->uref);
- 	rcu_read_unlock_bh();
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index ae035b93da087..3eb56b77cb6d9 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -2637,7 +2637,7 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
+ 	if (ndr_desc->target_node == NUMA_NO_NODE) {
+ 		ndr_desc->target_node = phys_to_target_node(spa->address);
+ 		dev_info(acpi_desc->dev, "changing target node from %d to %d for nfit region [%pa-%pa]",
+-			NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
++			NUMA_NO_NODE, ndr_desc->target_node, &res.start, &res.end);
+ 	}
  
+ 	/*
 -- 
 2.51.0
 
