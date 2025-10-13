@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-184426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D136BD3FB8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:17:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 967EDBD42A1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C00D518844D9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E30E3406C48
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D762A30C353;
-	Mon, 13 Oct 2025 14:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAF430F957;
+	Mon, 13 Oct 2025 15:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXtJHwgJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1i+KaqaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9334B30DEB2;
-	Mon, 13 Oct 2025 14:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254B330C36A;
+	Mon, 13 Oct 2025 15:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367403; cv=none; b=RZ8zVNf+w+k+nueFXCWN07g+fcXGR2XWTOjJidP9UOb1RUi7Hc2nno6uxhbespAFxvcy2grxZFUs5NdExg/IO/m8K8gmfeFPoQA7SgLd5S2Gk2neMfUxI9dd9inVfvlueh8VnsjZl0bcLMO2R9rR+LFZZTlDP+hJEQNzvWmdemE=
+	t=1760367919; cv=none; b=IFbzZTWvuoowkgCDOsGz1GjokEh5zYTNPI0O2K6YLungaxOsZjaiK3wdwmy5WyPCVxviaSh6PGJjsq+Qcf9FCnLx/+xjJGfDqoHtFuT7jF5N90lbm+F/2z1bTlEc7eS/HZc1YJeUb+E6yQfMvr8EfKbdVkeGlwbaYu2rsEgcpLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367403; c=relaxed/simple;
-	bh=LEnHzOzRRaeg5kgKX5AdWlc+0aSt2WPbKws0maYZs64=;
+	s=arc-20240116; t=1760367919; c=relaxed/simple;
+	bh=QXX6gnmouB7ge5PrXPu2VOhpdq8R1AewafLw6xi1P1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cm5035U5xoMZ4d8uaaiedhEps13SLixiqQuVt1i4T8KXvZP2l+/xpSvALPeqtC/MwA6NGQQG/VK78pKHljCQCF1O0kLQtz/jUbsPNNTSj9n3y0b7avTrg0inHbb3uGXQ2NQRkPKiSVUHz52g5BSyFx73AYek62mdfA+i7sRYI/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXtJHwgJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99B9C4CEE7;
-	Mon, 13 Oct 2025 14:56:42 +0000 (UTC)
+	 MIME-Version; b=jy4dz43RNTFS77FoQFKRco0/UKpyz96IVG7qeUi6yecG4GwvyKJ4GW0dUo3CFpWWqR1JGrgA5dboKKUxt1pnkl+lRtwioT+/77l8NUQQyqPekVfP8DoiWE5ua7xU2GWMzzWNmQNwzlyiQb6b8sKf16xC05QfA6DxwxFxGhuwmGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1i+KaqaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A513FC4CEE7;
+	Mon, 13 Oct 2025 15:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367403;
-	bh=LEnHzOzRRaeg5kgKX5AdWlc+0aSt2WPbKws0maYZs64=;
+	s=korg; t=1760367919;
+	bh=QXX6gnmouB7ge5PrXPu2VOhpdq8R1AewafLw6xi1P1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yXtJHwgJAHh5KaKz8SBilOSxTfYnknlA9S8nxM8cZLikpITYnUqGSB65UEIp+MfMr
-	 TBbaBiLch3OMNoSaOO6ckh45kx4VylIrwSU0e9fTBJzCTA4rKPDM2wyirNyuERFCO+
-	 Ok21CLDupksVWDuz908NC6lYEt25yshB6hgNdAlI=
+	b=1i+KaqaS5+FAq9mZm1S/Bq40//KAd0kkqDHuxYHaAwOeggNPgfgFGpqOttSbz+V2d
+	 bd4ZmxTWAmq2IEBrNIRcyRmdeCHNXDfCUSpPmU2gDeohyQJe0RAOACOvupg/3FAaw2
+	 mw9E78byIPC0A6gaW7OBALq5UjaIViNCjxDa9QdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Chris Mason <clm@meta.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/196] drivers/base/node: fix double free in register_one_node()
-Date: Mon, 13 Oct 2025 16:45:36 +0200
-Message-ID: <20251013144320.595506887@linuxfoundation.org>
+Subject: [PATCH 6.6 146/196] usb: vhci-hcd: Prevent suspending virtually attached devices
+Date: Mon, 13 Oct 2025 16:45:37 +0200
+Message-ID: <20251013144320.593347202@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,57 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 0efdedfa537eb534c251a5b4794caaf72cc55869 ]
+[ Upstream commit e40b984b6c4ce3f80814f39f86f87b2a48f2e662 ]
 
-When device_register() fails in register_node(), it calls
-put_device(&node->dev).  This triggers node_device_release(), which calls
-kfree(to_node(dev)), thereby freeing the entire node structure.
+The VHCI platform driver aims to forbid entering system suspend when at
+least one of the virtual USB ports are bound to an active USB/IP
+connection.
 
-As a result, when register_node() returns an error, the node memory has
-already been freed.  Calling kfree(node) again in register_one_node()
-leads to a double free.
+However, in some cases, the detection logic doesn't work reliably, i.e.
+when all devices attached to the virtual root hub have been already
+suspended, leading to a broken suspend state, with unrecoverable resume.
 
-This patch removes the redundant kfree(node) from register_one_node() to
-prevent the double free.
+Ensure the virtually attached devices do not enter suspend by setting
+the syscore PM flag.  Note this is currently limited to the client side
+only, since the server side doesn't implement system suspend prevention.
 
-Link: https://lkml.kernel.org/r/20250918054144.58980-1-donettom@linux.ibm.com
-Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Chris Mason <clm@meta.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
-Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 04679b3489e0 ("Staging: USB/IP: add client driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250902-vhci-hcd-suspend-fix-v3-1-864e4e833559@collabora.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/usbip/vhci_hcd.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index cbaa4e2eddcef..6153dbd5be903 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -871,7 +871,6 @@ int __register_one_node(int nid)
- 	error = register_node(node_devices[nid], nid);
- 	if (error) {
- 		node_devices[nid] = NULL;
--		kfree(node);
- 		return error;
- 	}
+diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
+index 14a5f55f24fc8..b22e0881bfaf3 100644
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -764,6 +764,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ 				 ctrlreq->wValue, vdev->rhport);
+ 
+ 			vdev->udev = usb_get_dev(urb->dev);
++			/*
++			 * NOTE: A similar operation has been done via
++			 * USB_REQ_GET_DESCRIPTOR handler below, which is
++			 * supposed to always precede USB_REQ_SET_ADDRESS.
++			 *
++			 * It's not entirely clear if operating on a different
++			 * usb_device instance here is a real possibility,
++			 * otherwise this call and vdev->udev assignment above
++			 * should be dropped.
++			 */
++			dev_pm_syscore_device(&vdev->udev->dev, true);
+ 			usb_put_dev(old);
+ 
+ 			spin_lock(&vdev->ud.lock);
+@@ -784,6 +795,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+ 
+ 			vdev->udev = usb_get_dev(urb->dev);
++			/*
++			 * Set syscore PM flag for the virtually attached
++			 * devices to ensure they will not enter suspend on
++			 * the client side.
++			 *
++			 * Note this doesn't have any impact on the physical
++			 * devices attached to the host system on the server
++			 * side, hence there is no need to undo the operation
++			 * on disconnect.
++			 */
++			dev_pm_syscore_device(&vdev->udev->dev, true);
+ 			usb_put_dev(old);
+ 			goto out;
  
 -- 
 2.51.0
