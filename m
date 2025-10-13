@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9379BD547F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65065BD4E4F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34AE6546A12
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF780540BE3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9991314A73;
-	Mon, 13 Oct 2025 15:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1893314A77;
+	Mon, 13 Oct 2025 15:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZFFIze7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmrM9NKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9712630E0D3;
-	Mon, 13 Oct 2025 15:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E29C3081D7;
+	Mon, 13 Oct 2025 15:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370165; cv=none; b=m5irVkDQQX3epSg/Hq5AU4i04lqXPzPrelMNUHNwqrYcVUlB88CwotG9+LRmR2PYid8btdf9Mb0+W1JoXnOZbsD2VdDG0n2EnIRoCxUuQ0sLgenJi21m7N8jUsCoqEgdisFkBkuZnxfYYSAn+BMmX40/I4Kv1A0H8m08OiuuuJc=
+	t=1760370171; cv=none; b=QQnku9PV9/LRboY+DSpHI/My9JLrLSWZGAt3yb5uqwKoP0SDh5L7Ni2iVQ0nDj2ZKomVatr343vV6nE2OwJdw6/oKPkGC7r+ikfmQLuz5x83IOjClE7HfZfS7SnGiPSp9uxMnTlCk3cns6g0k2WRGdz4uWus0/Idob75hnJBMfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370165; c=relaxed/simple;
-	bh=olZ753+H1l/asDudg/gsbaXoVqc4RXMyOZMMxVBxWpg=;
+	s=arc-20240116; t=1760370171; c=relaxed/simple;
+	bh=qkvL1xmjGts9FD/+vobkAzVQXLX7ruZEimxTEYUSfhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=otoYUIXP37XjFpnVypN5hfTaXK7viesmJg9GmwQYXXkWyj2SaD9ZTp0c8f7zJxIJ4wjFvYpr8dRhD8SXLeqeTOiuIAwwLY41hQx2hW8XQYY+Y1AWZ4wCHscN2tlfHgPSc5CJun1OptJHwxrodJHbwIXcfuFdJyA1WspMSE7+wXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZFFIze7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3F2C4CEE7;
-	Mon, 13 Oct 2025 15:42:44 +0000 (UTC)
+	 MIME-Version; b=rldwy73O2xaUt1L5ha4nFB4E1n+u2mVxaa/XdpKt9oKshXu7WJZQ5RydMr+wbmLvppJOawd8dwdJFr6nsl3muvYJa0BfaRn5iuGf5gdJZ/9OBurgA21DJiZs2PFckNeUtQykQhmyfAm72TdcRTRaNXcChiMONHfWohI2BLraM8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmrM9NKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA452C4CEE7;
+	Mon, 13 Oct 2025 15:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370165;
-	bh=olZ753+H1l/asDudg/gsbaXoVqc4RXMyOZMMxVBxWpg=;
+	s=korg; t=1760370171;
+	bh=qkvL1xmjGts9FD/+vobkAzVQXLX7ruZEimxTEYUSfhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZFFIze7UIRIH5cx3LBtpjVLkNN8MjrxsquQvqbgZ76Jrh0mCvG8ihPjvnydt1F4s
-	 GhUOBYR7iJOlivyNFHgRB7eaEheFa1or65nyttYVclU/QspvKziwnfJTjgXJU0vm0M
-	 RklxFvAxE0AAs5wYtAEPHJmktFj2UrWi9NJQZ09I=
+	b=AmrM9NKSKTWHtmJn7dF6VM0ZMIOXWVqHB820LFEoDgL5zwOXEUz8FP9dQIfWD/xiK
+	 yua3KfpC0yapEtJVM1cgyIwlY1o3Mhzksd75nvIhF7Cur2WJ4SJDlIWs8n8dM57Ybr
+	 YJYySqNDJ6B3oCr4mDWqJImyK93N9GsG0GzruxZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.17 502/563] ASoC: SOF: ipc3-topology: Fix multi-core and static pipelines tear down
-Date: Mon, 13 Oct 2025 16:46:03 +0200
-Message-ID: <20251013144429.495774549@linuxfoundation.org>
+Subject: [PATCH 6.17 503/563] ASoC: codecs: wcd937x: set the comp soundwire port correctly
+Date: Mon, 13 Oct 2025 16:46:04 +0200
+Message-ID: <20251013144429.532681993@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -61,62 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 59abe7bc7e7c70e9066b3e46874d1b7e6a13de14 upstream.
+commit 66a940b1bf48a7095162688332d725ba160154eb upstream.
 
-In the case of static pipelines, freeing the widgets in the pipelines
-that were not suspended after freeing the scheduler widgets results in
-errors because the secondary cores are powered off when the scheduler
-widgets are freed. Fix this by tearing down the leftover pipelines before
-powering off the secondary cores.
+For some reason we endup with setting soundwire port for
+HPHL_COMP and HPHR_COMP as zero, this can potentially result
+in a memory corruption due to accessing and setting -1 th element of
+port_map array.
 
-Cc: stable@vger.kernel.org
-Fixes: d7332c4a4f1a ("ASoC: SOF: ipc3-topology: Fix pipeline tear down logic")
-Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20251002073125.32471-1-peter.ujfalusi@linux.intel.com
+Fixes: 82be8c62a38c ("ASoC: codecs: wcd937x: add basic controls")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Reviewed-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20250909121954.225833-2-srinivas.kandagatla@oss.qualcomm.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/ipc3-topology.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/soc/codecs/wcd937x.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/sof/ipc3-topology.c
-+++ b/sound/soc/sof/ipc3-topology.c
-@@ -2473,11 +2473,6 @@ static int sof_ipc3_tear_down_all_pipeli
- 	if (ret < 0)
- 		return ret;
+--- a/sound/soc/codecs/wcd937x.c
++++ b/sound/soc/codecs/wcd937x.c
+@@ -2046,9 +2046,9 @@ static const struct snd_kcontrol_new wcd
+ 	SOC_ENUM_EXT("RX HPH Mode", rx_hph_mode_mux_enum,
+ 		     wcd937x_rx_hph_mode_get, wcd937x_rx_hph_mode_put),
  
--	/* free all the scheduler widgets now */
--	ret = sof_ipc3_free_widgets_in_list(sdev, true, &dyn_widgets, verify);
--	if (ret < 0)
--		return ret;
--
- 	/*
- 	 * Tear down all pipelines associated with PCMs that did not get suspended
- 	 * and unset the prepare flag so that they can be set up again during resume.
-@@ -2493,6 +2488,11 @@ static int sof_ipc3_tear_down_all_pipeli
- 		}
- 	}
+-	SOC_SINGLE_EXT("HPHL_COMP Switch", SND_SOC_NOPM, 0, 1, 0,
++	SOC_SINGLE_EXT("HPHL_COMP Switch", WCD937X_COMP_L, 0, 1, 0,
+ 		       wcd937x_get_compander, wcd937x_set_compander),
+-	SOC_SINGLE_EXT("HPHR_COMP Switch", SND_SOC_NOPM, 1, 1, 0,
++	SOC_SINGLE_EXT("HPHR_COMP Switch", WCD937X_COMP_R, 1, 1, 0,
+ 		       wcd937x_get_compander, wcd937x_set_compander),
  
-+	/* free all the scheduler widgets now. This will also power down the secondary cores */
-+	ret = sof_ipc3_free_widgets_in_list(sdev, true, &dyn_widgets, verify);
-+	if (ret < 0)
-+		return ret;
-+
- 	list_for_each_entry(sroute, &sdev->route_list, list)
- 		sroute->setup = false;
- 
+ 	SOC_SINGLE_TLV("HPHL Volume", WCD937X_HPH_L_EN, 0, 20, 1, line_gain),
 
 
 
