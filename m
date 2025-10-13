@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A15CBD479C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:46:18 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1338BD44E3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD4D04FE6B9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82DAA4FFE97
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B690C3126B8;
-	Mon, 13 Oct 2025 15:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3FD309DA4;
+	Mon, 13 Oct 2025 14:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="za2byTeo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4VCw27x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7321F22257E;
-	Mon, 13 Oct 2025 15:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EFA3081CC;
+	Mon, 13 Oct 2025 14:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368234; cv=none; b=RIFtxz6iROUItDRApNdzRyULDabYhJFnm1PA3D9UroSZq1VGoxlki8C67A2S5URwjSILIotkQSbjuEzHPjdjfW8id6KHhaJVCXcei71DsPz5kjpS0+yF1qcR43YPePbLQv/6OPCjZYuvD0akDwRs3lVjIGYYAbcsx+BCtfDkr1g=
+	t=1760367520; cv=none; b=euevnnCw8DihoxHXW1EquJNaQSNGnN8jP7VlKaoYTdCIS4zjsIDcV4sTBlZ+MVP2zf8giVp0Qd6xiR4TtbWvkpCcShQpbpZVRYCIxILplZae/zcCJD3911T0dZB9QzD4i7l+AxQygATuVHix9Z3k2wYaCVtsmWbKZzLDpYD3BbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368234; c=relaxed/simple;
-	bh=in/3Luai7Cw9+zlj25Es7gqJBcuEmx+0NLl1oEBNOTc=;
+	s=arc-20240116; t=1760367520; c=relaxed/simple;
+	bh=ROcEf038plncaEgmhp3k/rT53Uj4lxj8PUkmCW5h7Bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/VmipOUIYKAsLfWdVwAUIZufclTP8HhX18kS1krH0BepZXWINTEhFPKYzr9giZC7/r7qUXx3mCHkNau09z81aaOMLHVq8AxY26Zfmqiivb1zQmgEHqfIvrGiTl8PEnpeoxSs9ZTEfa0asvek1ol9EFvz9z1q+mbXt6u+AFTB28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=za2byTeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019EBC113D0;
-	Mon, 13 Oct 2025 15:10:33 +0000 (UTC)
+	 MIME-Version; b=DO0hvoF/F4eSEZrHyNE75l06ULczKe63eGm2wWtHR+pEXB9yffy5DsfdkWPndK3SkIrPv2NHueKga1pqH2UVU55dQJg4JV9IXdLVopJX+rhm5uLo6tblMDS49mKSkTuQSZdbDIiWLpvariQf6C7OigU5tCoragtDIeofehmd4Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4VCw27x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A4CC4CEE7;
+	Mon, 13 Oct 2025 14:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368234;
-	bh=in/3Luai7Cw9+zlj25Es7gqJBcuEmx+0NLl1oEBNOTc=;
+	s=korg; t=1760367520;
+	bh=ROcEf038plncaEgmhp3k/rT53Uj4lxj8PUkmCW5h7Bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=za2byTeoi/eW8jJDuJR7HP1y0YQRqTlqKK18DqxJKOGZ5NKt2Exr3TIlEEVI7tS08
-	 7TyUW7lsPxSK+UjhO1gCJPeEJkhkUvogqPFbCxKyMugrvlSTh3loMd6y+zRS4J21mO
-	 T3QDO7AZ5BCIZBTENrh+mu5g9aLxCcn/BG+uJkFI=
+	b=F4VCw27xJR7N4vl2ehvJ+myxWkQb6YZrqpmw4rn4SmIlkc/mVbxFfmv77Ld2tsTEa
+	 y8YfEJKHm+EVHOlKSKMnVdRsMoVBUDqF/7GSzVsIpcCFT859a3sv1oqKHOkoyc+FB5
+	 wTbxGe3ZjI6dbp7tXrRnFf6QlxrcYhh1D9DLZhTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Brigham Campbell <me@brighamcampbell.com>,
+	Johan Hovold <johan@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/262] drm/panel: novatek-nt35560: Fix invalid return value
+Subject: [PATCH 6.6 041/196] cpuidle: qcom-spm: fix device and OF node leaks at probe
 Date: Mon, 13 Oct 2025 16:43:52 +0200
-Message-ID: <20251013144329.370966199@linuxfoundation.org>
+Message-ID: <20251013144316.688679306@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brigham Campbell <me@brighamcampbell.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 125459e19ec654924e472f3ff5aeea40358dbebf ]
+[ Upstream commit cdc06f912670c8c199d5fa9e78b64b7ed8e871d0 ]
 
-Fix bug in nt35560_set_brightness() which causes the function to
-erroneously report an error. mipi_dsi_dcs_write() returns either a
-negative value when an error occurred or a positive number of bytes
-written when no error occurred. The buggy code reports an error under
-either condition.
+Make sure to drop the reference to the saw device taken by
+of_find_device_by_node() after retrieving its driver data during
+probe().
 
-Fixes: 8152c2bfd780 ("drm/panel: Add driver for Sony ACX424AKP panel")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250731032343.1258366-2-me@brighamcampbell.com
+Also drop the reference to the CPU node sooner to avoid leaking it in
+case there is no saw node or device.
+
+Fixes: 60f3692b5f0b ("cpuidle: qcom_spm: Detach state machine from main SPM handling")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-novatek-nt35560.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpuidle/cpuidle-qcom-spm.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35560.c b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
-index 5bbea734123bc..ee04c55175bb8 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt35560.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
-@@ -161,7 +161,7 @@ static int nt35560_set_brightness(struct backlight_device *bl)
- 		par = 0x00;
- 		ret = mipi_dsi_dcs_write(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY,
- 					 &par, 1);
--		if (ret) {
-+		if (ret < 0) {
- 			dev_err(nt->dev, "failed to disable display backlight (%d)\n", ret);
- 			return ret;
- 		}
+diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
+index 1fc9968eae199..b6b06a510fd86 100644
+--- a/drivers/cpuidle/cpuidle-qcom-spm.c
++++ b/drivers/cpuidle/cpuidle-qcom-spm.c
+@@ -96,20 +96,23 @@ static int spm_cpuidle_register(struct device *cpuidle_dev, int cpu)
+ 		return -ENODEV;
+ 
+ 	saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
++	of_node_put(cpu_node);
+ 	if (!saw_node)
+ 		return -ENODEV;
+ 
+ 	pdev = of_find_device_by_node(saw_node);
+ 	of_node_put(saw_node);
+-	of_node_put(cpu_node);
+ 	if (!pdev)
+ 		return -ENODEV;
+ 
+ 	data = devm_kzalloc(cpuidle_dev, sizeof(*data), GFP_KERNEL);
+-	if (!data)
++	if (!data) {
++		put_device(&pdev->dev);
+ 		return -ENOMEM;
++	}
+ 
+ 	data->spm = dev_get_drvdata(&pdev->dev);
++	put_device(&pdev->dev);
+ 	if (!data->spm)
+ 		return -EINVAL;
+ 
 -- 
 2.51.0
 
