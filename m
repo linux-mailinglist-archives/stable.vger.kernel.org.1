@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DE8BD4754
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B850BD4208
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 668DB5436C6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 770F53C7356
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65705313552;
-	Mon, 13 Oct 2025 15:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743013081AF;
+	Mon, 13 Oct 2025 14:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dburz5Bb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FO5VLFqG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E3130BB8C;
-	Mon, 13 Oct 2025 15:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CE7307AE6;
+	Mon, 13 Oct 2025 14:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368690; cv=none; b=qL9wia052hc7H4cfZKb4dwwtngclKF8OiZVxf5GR8TCaXBpkDrmGH9sgI3UNu590Fc5SCNZziCq5l0yuvI4ukpKEUwz9NLlNR9qy1U0AWIA5LmsBJL154j/RPQQWOdAO6HmSMcCenUsmMqvqDLJpgScm4hNF1oIvx2uY8x2jOwM=
+	t=1760367368; cv=none; b=kocpHomDgDPqU1dCwCf4BvIAa/Hu7dsVGfrfLgNvy64Ycyo7pRO8/tvi6Y4S3bu1FFBX80wYfuKw0lwJmsv7YsTzdcI+uATKljZgzZp+Y3FWQoYvOOCXniYIFieCPPrkNYP9cJ3Zn18pEHreLfu4VPrtJPCDQFWiC1jpgq8yinQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368690; c=relaxed/simple;
-	bh=jiSViDFd+WizyWgRqMkj2Dsr9UhRYbOB0p9HOoYt898=;
+	s=arc-20240116; t=1760367368; c=relaxed/simple;
+	bh=l9uapisybX8hf/uMYxvD6nkctmV6InbHYtTTyWe38i4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEQj+phvojNjNBQmKoQVKSadLCLGpbqeGuqd0BP1gwlXcuYfps1mAhdpw1rrfH5Nzq25vBGeEl9v4D31G5LGlANhy2IQeZrbtymx9tnrIdg0TLl3/8SQ4rukUhhQfEgOKEnd4i2RWtzZ+I0eXj78dB/YpHMWr2I3FsCD/ZycPBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dburz5Bb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53926C4CEE7;
-	Mon, 13 Oct 2025 15:18:09 +0000 (UTC)
+	 MIME-Version; b=CotzDz4O7XBaKpIYMylDQaYlgU9rOwy7Isr+lmREAiHU9QtDJoW41scMir0c/57hZ1uWuKlqK9euT4E1zIgO2I/lYX2Zi6rAmoh7T20PhYhIfQ1DEW6TRH0mxKkbq+n7wPPa1zjVjzk/gkfh+ZZODMTeO2XPUoVYi5+xg95Aqn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FO5VLFqG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BA1C113D0;
+	Mon, 13 Oct 2025 14:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368689;
-	bh=jiSViDFd+WizyWgRqMkj2Dsr9UhRYbOB0p9HOoYt898=;
+	s=korg; t=1760367367;
+	bh=l9uapisybX8hf/uMYxvD6nkctmV6InbHYtTTyWe38i4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dburz5BbscPkYsW6Yd7ZXrLR7wftynvKUXLVF/7p6x8S3ycVAXL7X/df3PBgX9GiK
-	 RCYlgXuX+/mgyReBD48r51v7AOWn6P666pP/nrSMCIysuE/+GQNU024B0ZjjZT/jJI
-	 +wLtkQFxlJmIKHWU9ylt9fYpZnsm2OJ9iJEQlq3g=
+	b=FO5VLFqGmHwDSDad6BJlrbEc+GwfP8RM8vbTCtRBdVS7Vp/6FLX+Jl38XiWG7CksZ
+	 E64xisRdSm5t1jU2bwO45CbnNBIASdpSH9d6vmwTPYUZlE9he3MJzuLRtvb1oNJvEH
+	 pS46vdGQkS2XQXiiaog5qK8MjNqAe+NebGjCj+FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 215/262] net: ena: return 0 in ena_get_rxfh_key_size() when RSS hash key is not configurable
+	stable@kernel.org,
+	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
+	Ling Xu <quic_lxu5@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.1 184/196] misc: fastrpc: Fix fastrpc_map_lookup operation
 Date: Mon, 13 Oct 2025 16:45:57 +0200
-Message-ID: <20251013144333.988136941@linuxfoundation.org>
+Message-ID: <20251013144321.349841408@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Ling Xu <quic_lxu5@quicinc.com>
 
-[ Upstream commit f017156aea60db8720e47591ed1e041993381ad2 ]
+commit 9031626ade38b092b72638dfe0c6ffce8d8acd43 upstream.
 
-In EC2 instances where the RSS hash key is not configurable, ethtool
-shows bogus RSS hash key since ena_get_rxfh_key_size() unconditionally
-returns ENA_HASH_KEY_SIZE.
+Fastrpc driver creates maps for user allocated fd buffers. Before
+creating a new map, the map list is checked for any already existing
+maps using map fd. Checking with just map fd is not sufficient as the
+user can pass offsetted buffer with less size when the map is created
+and then a larger size the next time which could result in memory
+issues. Check for dma_buf object also when looking up for the map.
 
-Commit 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not
-supported") added proper handling for devices that don't support RSS
-hash key configuration, but ena_get_rxfh_key_size() has been unchanged.
-
-When the RSS hash key is not configurable, return 0 instead of
-ENA_HASH_KEY_SIZE to clarify getting the value is not supported.
-
-Tested on m5 instance families.
-
-Without patch:
- # ethtool -x ens5 | grep -A 1 "RSS hash key"
- RSS hash key:
- 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
-
-With patch:
- # ethtool -x ens5 | grep -A 1 "RSS hash key"
- RSS hash key:
- Operation not supported
-
-Fixes: 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not supported")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Link: https://patch.msgid.link/20250929050247.51680-1-enjuk@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
+Cc: stable@kernel.org
+Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250912131236.303102-3-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_ethtool.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_ethtool.c b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-index 60fb35ec4b15a..0b2e257b591f0 100644
---- a/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-@@ -869,7 +869,10 @@ static u32 ena_get_rxfh_indir_size(struct net_device *netdev)
- 
- static u32 ena_get_rxfh_key_size(struct net_device *netdev)
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -346,11 +346,16 @@ static int fastrpc_map_lookup(struct fas
  {
--	return ENA_HASH_KEY_SIZE;
-+	struct ena_adapter *adapter = netdev_priv(netdev);
-+	struct ena_rss *rss = &adapter->ena_dev->rss;
-+
-+	return rss->hash_key ? ENA_HASH_KEY_SIZE : 0;
- }
+ 	struct fastrpc_session_ctx *sess = fl->sctx;
+ 	struct fastrpc_map *map = NULL;
++	struct dma_buf *buf;
+ 	int ret = -ENOENT;
  
- static int ena_indirection_table_set(struct ena_adapter *adapter,
--- 
-2.51.0
-
++	buf = dma_buf_get(fd);
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
+ 	spin_lock(&fl->lock);
+ 	list_for_each_entry(map, &fl->maps, node) {
+-		if (map->fd != fd)
++		if (map->fd != fd || map->buf != buf)
+ 			continue;
+ 
+ 		if (take_ref) {
 
 
 
