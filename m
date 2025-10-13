@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8CDBD4322
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D48BD46F6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD9CF18A40B2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:26:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8E66B505774
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C0130DD09;
-	Mon, 13 Oct 2025 15:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803CD30B510;
+	Mon, 13 Oct 2025 15:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUEXBi1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgUL3X2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8F22FF641;
-	Mon, 13 Oct 2025 15:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE37299948;
+	Mon, 13 Oct 2025 15:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368448; cv=none; b=ElxTyO5J8PSVoUs+rYZLovw/B11qBxQfbXrQpacIQy/dBTQoj1R4UkZVFBlZLCjXVTLoqa+qHlkmKPVTKceRiIbl82xLcYu9AK32baAlf27ulFpuKDbBbsgoi4GM3lmD/AnLCYIU6+OC7+X0x/03N1eoGGgwcob0GAy9eekbLI8=
+	t=1760367736; cv=none; b=Ejfa5g6DzGPCONpJvQ+Rg+38fCXUQavwdruMTXtojinr4wFJv9y0GbyaHMmhTTpX0pMqFy/rLD2Q/it3RH2U94hHTV2OlWQqKUWeLH0WHps0a3PtnSCd0wtOuTiqxlkd92FwL0ro9hbTPPe4cyqDhXEBwSCKVooUHuquqyh9DII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368448; c=relaxed/simple;
-	bh=ZYum/W4llIgPFp3VJCAw850iyFvPrpGiapdrCvi8hX8=;
+	s=arc-20240116; t=1760367736; c=relaxed/simple;
+	bh=o76ZkAKGjwwOich42hTAb5srdrxbscIygpBr6LFSNuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJUPOlpZoWXZLi+hyF6Qi+ryldNU8x+cmX5E6lzaH9od6dSbDVRG96eJ+0G81g8qEADrcvb3UjrRnw3tm8wrbX5guhpAX+tdEds6PPz0+JIn2y/CXv0RT1bYkLK5o+G5nZ3YNTfwbexfin2kel/SgU/1l1LD9syE+cbRvVdrX0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUEXBi1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D8FC4CEFE;
-	Mon, 13 Oct 2025 15:14:08 +0000 (UTC)
+	 MIME-Version; b=hWLBzw5x2qp2jf/hR6Er440QAYq5osDqFvcHzvWun3DPC4sMPqE5xuSdvuiMLjFMyjzjwM2s/k62PqVJ8vhFs7fjhULTcxX4TKyMr4BJy30gRXltTxmHDA4n1bloCybnnFnVBgNmo86wb06HCbg+ZaViWKE2YzJ8LVBHhdqUkT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgUL3X2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77D2C4CEE7;
+	Mon, 13 Oct 2025 15:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368448;
-	bh=ZYum/W4llIgPFp3VJCAw850iyFvPrpGiapdrCvi8hX8=;
+	s=korg; t=1760367736;
+	bh=o76ZkAKGjwwOich42hTAb5srdrxbscIygpBr6LFSNuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUEXBi1rIB6brscT8MSTIeqF+jlwdk3fUhPnNxzEKMWH/RGjCkXYWVeuebFZt+vDs
-	 QeJs9ZJJ3HNfm9weWdsdAKzX05LO/ZQFBaCAyzCE5U+eNjsSKwfGbh6w444nPCSe07
-	 vbQ870VkiVoYzyo5OFd9h9hg8XinFA06W5ogX6sw=
+	b=rgUL3X2ak08H0eY8bG9xsHRV22oWyqYcufIw4ROUgTfQbPQvdv2E9E+BKwpb2PWh/
+	 8aizw21RJs4guavpd1Pi1EkwDjX75A2i8+nJrum8mebDEaShzYn/1yZllT5WlOmKjB
+	 OcyDynKKB+iafI1+7qX1OHgORMvH67O9eLSFpGLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	syzbot+90266696fe5daacebd35@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/262] wifi: ath12k: fix wrong logging ID used for CE
+Subject: [PATCH 6.6 116/196] f2fs: fix to truncate first page in error path of f2fs_truncate()
 Date: Mon, 13 Oct 2025 16:45:07 +0200
-Message-ID: <20251013144332.067750688@linuxfoundation.org>
+Message-ID: <20251013144319.506808672@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 43746f13fec67f6f223d64cfe96c095c9b468e70 ]
+[ Upstream commit 9251a9e6e871cb03c4714a18efa8f5d4a8818450 ]
 
-ATH12K_DBG_AHB is used for CE logging which is not proper. Add
-ATH12K_DBG_CE and replace ATH12K_DBG_AHB with it.
+syzbot reports a bug as below:
 
-Compile tested only.
+loop0: detected capacity change from 0 to 40427
+F2FS-fs (loop0): Wrong SSA boundary, start(3584) end(4096) blocks(3072)
+F2FS-fs (loop0): Can't find valid F2FS filesystem in 1th superblock
+F2FS-fs (loop0): invalid crc value
+F2FS-fs (loop0): f2fs_convert_inline_folio: corrupted inline inode ino=3, i_addr[0]:0x1601, run fsck to fix.
+------------[ cut here ]------------
+kernel BUG at fs/inode.c:753!
+RIP: 0010:clear_inode+0x169/0x190 fs/inode.c:753
+Call Trace:
+ <TASK>
+ evict+0x504/0x9c0 fs/inode.c:810
+ f2fs_fill_super+0x5612/0x6fa0 fs/f2fs/super.c:5047
+ get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1692
+ vfs_get_tree+0x8f/0x2b0 fs/super.c:1815
+ do_new_mount+0x2a2/0x9e0 fs/namespace.c:3808
+ do_mount fs/namespace.c:4136 [inline]
+ __do_sys_mount fs/namespace.c:4347 [inline]
+ __se_sys_mount+0x317/0x410 fs/namespace.c:4324
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250815-ath-dont-warn-on-ce-enqueue-fail-v1-2-f955ddc3ba7a@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+During f2fs_evict_inode(), clear_inode() detects that we missed to truncate
+all page cache before destorying inode, that is because in below path, we
+will create page #0 in cache, but missed to drop it in error path, let's fix
+it.
+
+- evict
+ - f2fs_evict_inode
+  - f2fs_truncate
+   - f2fs_convert_inline_inode
+    - f2fs_grab_cache_folio
+    : create page #0 in cache
+    - f2fs_convert_inline_folio
+    : sanity check failed, return -EFSCORRUPTED
+  - clear_inode detects that inode->i_data.nrpages is not zero
+
+Fixes: 92dffd01790a ("f2fs: convert inline_data when i_size becomes large")
+Reported-by: syzbot+90266696fe5daacebd35@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/68c09802.050a0220.3c6139.000e.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/ce.c    | 2 +-
- drivers/net/wireless/ath/ath12k/debug.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/file.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
-index b66d23d6b2bd9..bd21e8fe9c90b 100644
---- a/drivers/net/wireless/ath/ath12k/ce.c
-+++ b/drivers/net/wireless/ath/ath12k/ce.c
-@@ -388,7 +388,7 @@ static void ath12k_ce_recv_process_cb(struct ath12k_ce_pipe *pipe)
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 031015823acb2..20d102009f715 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -844,8 +844,16 @@ int f2fs_truncate(struct inode *inode)
+ 	/* we should check inline_data size */
+ 	if (!f2fs_may_inline_data(inode)) {
+ 		err = f2fs_convert_inline_inode(inode);
+-		if (err)
++		if (err) {
++			/*
++			 * Always truncate page #0 to avoid page cache
++			 * leak in evict() path.
++			 */
++			truncate_inode_pages_range(inode->i_mapping,
++					F2FS_BLK_TO_BYTES(0),
++					F2FS_BLK_END_BYTES(0));
+ 			return err;
++		}
  	}
  
- 	while ((skb = __skb_dequeue(&list))) {
--		ath12k_dbg(ab, ATH12K_DBG_AHB, "rx ce pipe %d len %d\n",
-+		ath12k_dbg(ab, ATH12K_DBG_CE, "rx ce pipe %d len %d\n",
- 			   pipe->pipe_num, skb->len);
- 		pipe->recv_cb(ab, skb);
- 	}
-diff --git a/drivers/net/wireless/ath/ath12k/debug.h b/drivers/net/wireless/ath/ath12k/debug.h
-index f7005917362c6..ea711e02ca03c 100644
---- a/drivers/net/wireless/ath/ath12k/debug.h
-+++ b/drivers/net/wireless/ath/ath12k/debug.h
-@@ -26,6 +26,7 @@ enum ath12k_debug_mask {
- 	ATH12K_DBG_DP_TX	= 0x00002000,
- 	ATH12K_DBG_DP_RX	= 0x00004000,
- 	ATH12K_DBG_WOW		= 0x00008000,
-+	ATH12K_DBG_CE		= 0x00010000,
- 	ATH12K_DBG_ANY		= 0xffffffff,
- };
- 
+ 	err = f2fs_truncate_blocks(inode, i_size_read(inode), true);
 -- 
 2.51.0
 
