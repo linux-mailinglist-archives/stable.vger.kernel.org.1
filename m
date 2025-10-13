@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774B1BD3EC2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:11:44 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22996BD424F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBD0C1888652
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:09:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9D55634F2D9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772A3313E28;
-	Mon, 13 Oct 2025 14:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7E030E0C3;
+	Mon, 13 Oct 2025 15:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgXiO5e4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLIuu2r/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80A1313E1A;
-	Mon, 13 Oct 2025 14:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A519308F0C;
+	Mon, 13 Oct 2025 15:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367243; cv=none; b=DwlX2q7bPmgmeghmDmGRJ5KXaze6kbzmhiaSZvoX3Zqi7pX6D0rkQaSNRN8S896GciGs1CvAQMxufJvCoVHYrLFIsfhG0e7LP9N8Lrm0iZug8JFwsxrfUSNg/0vjjuIZMaVUoeod47Y7CVlF6UYJjJRk48SL38kuT6fKqUHq2lA=
+	t=1760368473; cv=none; b=kFnMCQrfFGsBLUKQ9EBaxunr4Fu6odDznzcwrGSp++nLU1TTWK3wdB2ny0AayiSr0PjcJ22X45h8/7G+uFH+ze79MOQJFhfbmp5Srl1YKU1F58iH5qqpaWxurB2Pvh1avKWQZWL/8wehVHTWxZPR1rU91XejCQbTwMO1oBmqWEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367243; c=relaxed/simple;
-	bh=u0LYykkE2auTIeMHz16O2a4NAIEkzM5afEg4s+0cgyE=;
+	s=arc-20240116; t=1760368473; c=relaxed/simple;
+	bh=wWMm634zhoF0BnCHtKpxWsO2fBiOzE1vcKFEuYrWDkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXtM6xPKkx5qXdtJ2AvIy7C7HsFmO+heYzTWt1oeKXE662vXyCo5SjDVCaT558hFy+rmSO19/Zty60PGWVM/WEGvgtYhrVA0pR683QYlLLHxmU/MHfgIN+Q8LqerDRIpdMBhBj1JvQXneqEIhGT0IwufR0VCAQ5IvJAdL3xkaLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgXiO5e4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C312FC113D0;
-	Mon, 13 Oct 2025 14:54:02 +0000 (UTC)
+	 MIME-Version; b=QUM4LqwvWfUMP0sTS44ITxZGay0QeV/7gi8QrLPPRezrN2hdKGGGHcFNiTwR6JBQu4ED0sX4jThgjxSJQRPVueYIoMQs3MAXO5I8bFshY0wlqiI6rlxEeNEnl5KB6aHTQizycYTHIQkO/T+RI7rMKyTxhgT9O4Ag9eYeg6xF1l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLIuu2r/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A492AC4CEE7;
+	Mon, 13 Oct 2025 15:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367243;
-	bh=u0LYykkE2auTIeMHz16O2a4NAIEkzM5afEg4s+0cgyE=;
+	s=korg; t=1760368473;
+	bh=wWMm634zhoF0BnCHtKpxWsO2fBiOzE1vcKFEuYrWDkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgXiO5e4BXyMsLnQpYHvaSY3TIUiNg3CkRc55QZI5rtcOnZyotyyV7LEFqYEkeafu
-	 dMp+c9oLUFtW1zZB3lwYw4eyzr++3y/jINTHbvDjV0gT1vHnqEYCsajFzgkDOtf5+k
-	 zPdaxdwnHFiW3bkId78QkP0G4SkoUZYQpghb79JA=
+	b=zLIuu2r/Im/ypJUytg/2633APfIkYhSh0jXUuYp6oMGCXVgX14IVrh3jZRyzeBOR2
+	 LRcfZ26QW6iW9AFKRBTku/I66UYLAVdFTShgkBZFtOLaIAXt3yIv/3Kf0njmI2M8xs
+	 EwFVZZ5hQb/orIgb4IGYXfSvKUCLgTV4iYGglrwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Magnus Lindholm <linmag7@gmail.com>,
 	Ethan Hawke <ehawk@ember.systems>,
 	Ken Link <iissmart@numberzero.org>
-Subject: [PATCH 6.1 141/196] sparc: fix accurate exception reporting in copy_{from_to}_user for Niagara
+Subject: [PATCH 6.12 172/262] sparc: fix accurate exception reporting in copy_{from_to}_user for Niagara
 Date: Mon, 13 Oct 2025 16:45:14 +0200
-Message-ID: <20251013144319.796712106@linuxfoundation.org>
+Message-ID: <20251013144332.320175602@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
