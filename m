@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-185187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3997BD5143
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:33:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9211ABD4CB4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C5623E42CE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1BB486860
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEF130BBA8;
-	Mon, 13 Oct 2025 15:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D522E92DD;
+	Mon, 13 Oct 2025 15:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5v/mHmm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvirrEDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDCC2E6CA5;
-	Mon, 13 Oct 2025 15:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35AA270568;
+	Mon, 13 Oct 2025 15:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369580; cv=none; b=LQ0WLyc6qCWSWLMSmGAEbEzCMN3Ee0sbLdiwEeWL/FGSfdOcMV9F/fc33DMxUwj9bCPCh2nvKvyZ64uq+urXjPDvazbdxEirvE7p4FRQeE3pvAfK5dQFdqALC++UR6Sun0jonmzZylAtN1111pmhN0S5E2RO2j9L8q4VbUk8Tm8=
+	t=1760369586; cv=none; b=F6pzpLS8ZD8PdvSZgYaQc//xme0xBZfgKGOZ/PINqMOM3IfIvNdWZrgo9T/GNMVlrZvMWzdquAlSfK24s354uBfQLmmKwWkBXLkitO5k6t/KLnuioad04gKawV/ZkcfZ0kbXyblicxrglOy12YZM07Ud7SYXeo2k5gcIrhNUgtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369580; c=relaxed/simple;
-	bh=KQcMPe8kydWcFkjcw1U10Q/4AawTXIvZuv+eo76oWi0=;
+	s=arc-20240116; t=1760369586; c=relaxed/simple;
+	bh=bYYZvU9ktkNEZ4yHO/0h3oj5biW4LQzI/5E8U0pIaXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cxu7JdcSHs/m6qfyZRXY16snX33rbgRhQI2o1BIfspd6RDtDk1XIR1HA6ivvE3hac8K9RBnC47wt2m0b8LY19fA5M0EC3zGIwAYU+72TmyAauWVyD6JGLsDijtp/LcslHwfy7aA0v7rkJ8j7BTbF4ARfmgrlC+GUMmj/g/SMRPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5v/mHmm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5444C4CEE7;
-	Mon, 13 Oct 2025 15:32:59 +0000 (UTC)
+	 MIME-Version; b=oVxn7xDqbDUN1YNKU7JdECcpbHfs9LeAmEns2xURPlSpuW95jH0+++SrY4e3aIBZq+IvtpH7w+S/PVpzlriWQc4xs4UAdsOs34hVVo+v8Ckebu6ueP0H0PNlp2EPTm7giOmYkWiXDJVaYoavFYwD3KC5dF+EZgLqUL0otY5W62M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvirrEDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E6AC4CEE7;
+	Mon, 13 Oct 2025 15:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369580;
-	bh=KQcMPe8kydWcFkjcw1U10Q/4AawTXIvZuv+eo76oWi0=;
+	s=korg; t=1760369585;
+	bh=bYYZvU9ktkNEZ4yHO/0h3oj5biW4LQzI/5E8U0pIaXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5v/mHmmybd3PEAFLoRmqUPPnXii/5iRcWlYw3WglrDzgR8lYyc5aI6hGS+Ld78qY
-	 VDEPJFggWlqUvGtnVOvZnh3XQPynqe0AU3I/8ScS6cECF8FmT0N8U4jbyRP6bMA0Pt
-	 XAH2Bmsd8C+LTKxVw49sXZ9utLZ/mlwg+0rn7Fh8=
+	b=cvirrEDBZ/x7ekqSeV0SMcE6x91XbKWF/EssnFr7JKr0XUGgD/mYSiu+0ryVmQoNI
+	 raQWHgLl4MMlqYi+IRr3JcJkSNbo4GBubrFeEn/AymCrcHITxnowwuotJVXSRV4J0h
+	 64YtwMAoty1m48dyP8vRngUaqOfmeCyYjILkcEXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weili Qian <qianweili@huawei.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 296/563] crypto: hisilicon/qm - request reserved interrupt for virtual function
-Date: Mon, 13 Oct 2025 16:42:37 +0200
-Message-ID: <20251013144421.992605593@linuxfoundation.org>
+Subject: [PATCH 6.17 297/563] inet: ping: check sock_net() in ping_get_port() and ping_lookup()
+Date: Mon, 13 Oct 2025 16:42:38 +0200
+Message-ID: <20251013144422.027970728@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,110 +68,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Weili Qian <qianweili@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9228facb308157ac0bdd264b873187896f7a9c7a ]
+[ Upstream commit 59f26d86b2a16f1406f3b42025062b6d1fba5dd5 ]
 
-The device interrupt vector 3 is an error interrupt for
-physical function and a reserved interrupt for virtual function.
-However, the driver has not registered the reserved interrupt for
-virtual function. When allocating interrupts, the number of interrupts
-is allocated based on powers of two, which includes this interrupt.
-When the system enables GICv4 and the virtual function passthrough
-to the virtual machine, releasing the interrupt in the driver
-triggers a warning.
+We need to check socket netns before considering them in ping_get_port().
+Otherwise, one malicious netns could 'consume' all ports.
 
-The WARNING report is:
-WARNING: CPU: 62 PID: 14889 at arch/arm64/kvm/vgic/vgic-its.c:852 its_free_ite+0x94/0xb4
+Add corresponding check in ping_lookup().
 
-Therefore, register a reserved interrupt for VF and set the
-IRQF_NO_AUTOEN flag to avoid that warning.
-
-Fixes: 3536cc55cada ("crypto: hisilicon/qm - support get device irq information from hardware registers")
-Signed-off-by: Weili Qian <qianweili@huawei.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c319b4d76b9e ("net: ipv4: add IPPROTO_ICMP socket kind")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Yue Haibing <yuehaibing@huawei.com>
+Link: https://patch.msgid.link/20250829153054.474201-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c | 38 +++++++++++++++++++++++++++++------
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ net/ipv4/ping.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index 2f96c673b60a5..102aff9ea19a0 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -4732,6 +4732,15 @@ void hisi_qm_reset_done(struct pci_dev *pdev)
- }
- EXPORT_SYMBOL_GPL(hisi_qm_reset_done);
+diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
+index 031df4c19fcc5..d2c3480df8f77 100644
+--- a/net/ipv4/ping.c
++++ b/net/ipv4/ping.c
+@@ -77,6 +77,7 @@ static inline struct hlist_head *ping_hashslot(struct ping_table *table,
  
-+static irqreturn_t qm_rsvd_irq(int irq, void *data)
-+{
-+	struct hisi_qm *qm = data;
-+
-+	dev_info(&qm->pdev->dev, "Reserved interrupt, ignore!\n");
-+
-+	return IRQ_HANDLED;
-+}
-+
- static irqreturn_t qm_abnormal_irq(int irq, void *data)
+ int ping_get_port(struct sock *sk, unsigned short ident)
  {
- 	struct hisi_qm *qm = data;
-@@ -5015,7 +5024,7 @@ static void qm_unregister_abnormal_irq(struct hisi_qm *qm)
- 	struct pci_dev *pdev = qm->pdev;
- 	u32 irq_vector, val;
++	struct net *net = sock_net(sk);
+ 	struct inet_sock *isk, *isk2;
+ 	struct hlist_head *hlist;
+ 	struct sock *sk2 = NULL;
+@@ -90,9 +91,10 @@ int ping_get_port(struct sock *sk, unsigned short ident)
+ 		for (i = 0; i < (1L << 16); i++, result++) {
+ 			if (!result)
+ 				result++; /* avoid zero */
+-			hlist = ping_hashslot(&ping_table, sock_net(sk),
+-					    result);
++			hlist = ping_hashslot(&ping_table, net, result);
+ 			sk_for_each(sk2, hlist) {
++				if (!net_eq(sock_net(sk2), net))
++					continue;
+ 				isk2 = inet_sk(sk2);
  
--	if (qm->fun_type == QM_HW_VF)
-+	if (qm->fun_type == QM_HW_VF && qm->ver < QM_HW_V3)
- 		return;
+ 				if (isk2->inet_num == result)
+@@ -108,8 +110,10 @@ int ping_get_port(struct sock *sk, unsigned short ident)
+ 		if (i >= (1L << 16))
+ 			goto fail;
+ 	} else {
+-		hlist = ping_hashslot(&ping_table, sock_net(sk), ident);
++		hlist = ping_hashslot(&ping_table, net, ident);
+ 		sk_for_each(sk2, hlist) {
++			if (!net_eq(sock_net(sk2), net))
++				continue;
+ 			isk2 = inet_sk(sk2);
  
- 	val = qm->cap_tables.qm_cap_table[QM_ABNORMAL_IRQ].cap_val;
-@@ -5032,17 +5041,28 @@ static int qm_register_abnormal_irq(struct hisi_qm *qm)
- 	u32 irq_vector, val;
- 	int ret;
+ 			/* BUG? Why is this reuse and not reuseaddr? ping.c
+@@ -129,7 +133,7 @@ int ping_get_port(struct sock *sk, unsigned short ident)
+ 		pr_debug("was not hashed\n");
+ 		sk_add_node_rcu(sk, hlist);
+ 		sock_set_flag(sk, SOCK_RCU_FREE);
+-		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
++		sock_prot_inuse_add(net, sk->sk_prot, 1);
+ 	}
+ 	spin_unlock(&ping_table.lock);
+ 	return 0;
+@@ -188,6 +192,8 @@ static struct sock *ping_lookup(struct net *net, struct sk_buff *skb, u16 ident)
+ 	}
  
--	if (qm->fun_type == QM_HW_VF)
--		return 0;
--
- 	val = qm->cap_tables.qm_cap_table[QM_ABNORMAL_IRQ].cap_val;
- 	if (!((val >> QM_IRQ_TYPE_SHIFT) & QM_ABN_IRQ_TYPE_MASK))
- 		return 0;
--
- 	irq_vector = val & QM_IRQ_VECTOR_MASK;
-+
-+	/* For VF, this is a reserved interrupt in V3 version. */
-+	if (qm->fun_type == QM_HW_VF) {
-+		if (qm->ver < QM_HW_V3)
-+			return 0;
-+
-+		ret = request_irq(pci_irq_vector(pdev, irq_vector), qm_rsvd_irq,
-+				  IRQF_NO_AUTOEN, qm->dev_name, qm);
-+		if (ret) {
-+			dev_err(&pdev->dev, "failed to request reserved irq, ret = %d!\n", ret);
-+			return ret;
-+		}
-+		return 0;
-+	}
-+
- 	ret = request_irq(pci_irq_vector(pdev, irq_vector), qm_abnormal_irq, 0, qm->dev_name, qm);
- 	if (ret)
--		dev_err(&qm->pdev->dev, "failed to request abnormal irq, ret = %d", ret);
-+		dev_err(&qm->pdev->dev, "failed to request abnormal irq, ret = %d!\n", ret);
+ 	sk_for_each_rcu(sk, hslot) {
++		if (!net_eq(sock_net(sk), net))
++			continue;
+ 		isk = inet_sk(sk);
  
- 	return ret;
- }
-@@ -5408,6 +5428,12 @@ static int hisi_qm_pci_init(struct hisi_qm *qm)
- 	pci_set_master(pdev);
- 
- 	num_vec = qm_get_irq_num(qm);
-+	if (!num_vec) {
-+		dev_err(dev, "Device irq num is zero!\n");
-+		ret = -EINVAL;
-+		goto err_get_pci_res;
-+	}
-+	num_vec = roundup_pow_of_two(num_vec);
- 	ret = pci_alloc_irq_vectors(pdev, num_vec, num_vec, PCI_IRQ_MSI);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to enable MSI vectors!\n");
+ 		pr_debug("iterate\n");
 -- 
 2.51.0
 
