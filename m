@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C4ABD4459
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:33:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B74BD4A11
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89A814F53D9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 546E818A60B9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC2C30C639;
-	Mon, 13 Oct 2025 15:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE28E309DD2;
+	Mon, 13 Oct 2025 15:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7MaZ1PJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPPvxyoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBF930C619;
-	Mon, 13 Oct 2025 15:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB3230BB97;
+	Mon, 13 Oct 2025 15:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368309; cv=none; b=rJokIkqeTb/RDjeXziRYfu7ZgpROLMhoOTPisPEyn63gE3Eels/cJ6u4K34dYQlIxaqLkw6PEpBAnZbUa+pPTf4NWcWTpcbCcrHtAGtNaRwn3UQGFRQe3+6WXT1oYEmeKF+LoJtiJ1AcwP3DX6zDJ5CXh7cA1gQPLFgCFzpJEG8=
+	t=1760369875; cv=none; b=IvoYRCbemVSh+fckf7SmVqqI3s/9TpSLf1gB+zDw5OAG4pIsAcdWWgRiSdKrUyY3s4hVr9+19Se86mzzIoGYuerr8yCGP496xm0OMzUMky4dxpAui0uLLcBMP+9AOU5+XKN+dbZJ4EijhTx8XqZBFE8/FowY0kYjyUBrwn8oq5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368309; c=relaxed/simple;
-	bh=5sHWTdvPeke7pUB/ZX4qCXhvaERqr3d/Bp4Zdv33Q2Q=;
+	s=arc-20240116; t=1760369875; c=relaxed/simple;
+	bh=2EzzSjR0RZZcQMIrSWyPVu9B9774uBvS7xoOZTwfO+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RyQQ7sWHbwFCxPQDWZNOBKazr+IgBWXxcL9rd882+E3bkp+PFG8a1cUHH2mSRodU2M8eJlE7G7+VFGew+jLNYVUXmotXLx1uWrkZMUZLrShMR23e2tr0hLZFk50F5SYHt8jh/UlBxM3btdT962gQth72DS99fKXuTgTyE2ixq04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7MaZ1PJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0954C4CEE7;
-	Mon, 13 Oct 2025 15:11:48 +0000 (UTC)
+	 MIME-Version; b=qd9QyvenHs1zxAIIbi+TIk5XSNZ334wQFNKD1Pgeoj1YnCvFcxe2Rd4OmwaEFK5KLF1dG2Pgv+FJH3Zk8aBBpZiIt+Fwj5RaZ4dZP8kvGcM/EO7YuNTlp9/MTFPHDF/TcnwqUoZNVx/Y5KwZSm5P8dmKr0StQPI7hzV5euJ7tqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPPvxyoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BCBC4CEE7;
+	Mon, 13 Oct 2025 15:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368309;
-	bh=5sHWTdvPeke7pUB/ZX4qCXhvaERqr3d/Bp4Zdv33Q2Q=;
+	s=korg; t=1760369873;
+	bh=2EzzSjR0RZZcQMIrSWyPVu9B9774uBvS7xoOZTwfO+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7MaZ1PJLu5OsYQo6BSg1xDyBdqZNBw9YISuW3YQrFNpUZKX2mwTbk2h6NcMkTlC3
-	 tYetX1g3ao/XaUcKcE7Q223ipfWT1EZmGO7corEi+tOOUUo1ViEeqp6I8dGY/x01mT
-	 D5NbK+GNROZwMVbhvkkKr/E/M1qFmQeQ2TUiFpQY=
+	b=lPPvxyoK9NRwRwxxLV6TrpQxqVPOKIAUjrn0jjGk2eW8i7Z2Ka3o2b1O6Q1tuFziJ
+	 15PfPHSV6gXet0YV5NwmspACM6RTQzYIn6qS1OP7S2Z/y1T1Wa4CrT2CtPhKiFmyIx
+	 PTZ7LWpcY9V7ySb0mtZNxa40/aD2+aMhVQiM8lrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	"Vineeth Pillai (Google)" <vineeth@bitbyteword.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/262] drm/amd/pm: Disable ULV even if unsupported (v3)
+Subject: [PATCH 6.17 398/563] iommu/vt-d: debugfs: Fix legacy mode page table dump logic
 Date: Mon, 13 Oct 2025 16:44:19 +0200
-Message-ID: <20251013144330.338717849@linuxfoundation.org>
+Message-ID: <20251013144425.701441476@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
 
-[ Upstream commit 3a0c3a4035f995e1f993dfaf4d63dc19e9b4bc1c ]
+[ Upstream commit fbe6070c73badca726e4ff7877320e6c62339917 ]
 
-Always send PPSMC_MSG_DisableULV to the SMC, even if ULV mode
-is unsupported, to make sure it is properly turned off.
+In legacy mode, SSPTPTR is ignored if TT is not 00b or 01b. SSPTPTR
+maybe uninitialized or zero in that case and may cause oops like:
 
-v3:
-Simplify si_disable_ulv further.
-Always check the return value of amdgpu_si_send_msg_to_smc.
+ Oops: general protection fault, probably for non-canonical address
+       0xf00087d3f000f000: 0000 [#1] SMP NOPTI
+ CPU: 2 UID: 0 PID: 786 Comm: cat Not tainted 6.16.0 #191 PREEMPT(voluntary)
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-5.fc42 04/01/2014
+ RIP: 0010:pgtable_walk_level+0x98/0x150
+ RSP: 0018:ffffc90000f279c0 EFLAGS: 00010206
+ RAX: 0000000040000000 RBX: ffffc90000f27ab0 RCX: 000000000000001e
+ RDX: 0000000000000003 RSI: f00087d3f000f000 RDI: f00087d3f0010000
+ RBP: ffffc90000f27a00 R08: ffffc90000f27a98 R09: 0000000000000002
+ R10: 0000000000000000 R11: 0000000000000000 R12: f00087d3f000f000
+ R13: 0000000000000000 R14: 0000000040000000 R15: ffffc90000f27a98
+ FS:  0000764566dcb740(0000) GS:ffff8881f812c000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000764566d44000 CR3: 0000000109d81003 CR4: 0000000000772ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  pgtable_walk_level+0x88/0x150
+  domain_translation_struct_show.isra.0+0x2d9/0x300
+  dev_domain_translation_struct_show+0x20/0x40
+  seq_read_iter+0x12d/0x490
+...
 
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Avoid walking the page table if TT is not 00b or 01b.
+
+Fixes: 2b437e804566 ("iommu/vt-d: debugfs: Support dumping a specified page table")
+Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20250814163153.634680-1-vineeth@bitbyteword.org
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/iommu/intel/debugfs.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index a5ad1b60597e6..6a97ddcd695b5 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -5613,14 +5613,10 @@ static int si_populate_smc_t(struct amdgpu_device *adev,
+diff --git a/drivers/iommu/intel/debugfs.c b/drivers/iommu/intel/debugfs.c
+index affbf4a1558de..5aa7f46a420b5 100644
+--- a/drivers/iommu/intel/debugfs.c
++++ b/drivers/iommu/intel/debugfs.c
+@@ -435,8 +435,21 @@ static int domain_translation_struct_show(struct seq_file *m,
+ 			}
+ 			pgd &= VTD_PAGE_MASK;
+ 		} else { /* legacy mode */
+-			pgd = context->lo & VTD_PAGE_MASK;
+-			agaw = context->hi & 7;
++			u8 tt = (u8)(context->lo & GENMASK_ULL(3, 2)) >> 2;
++
++			/*
++			 * According to Translation Type(TT),
++			 * get the page table pointer(SSPTPTR).
++			 */
++			switch (tt) {
++			case CONTEXT_TT_MULTI_LEVEL:
++			case CONTEXT_TT_DEV_IOTLB:
++				pgd = context->lo & VTD_PAGE_MASK;
++				agaw = context->hi & 7;
++				break;
++			default:
++				goto iommu_unlock;
++			}
+ 		}
  
- static int si_disable_ulv(struct amdgpu_device *adev)
- {
--	struct si_power_info *si_pi = si_get_pi(adev);
--	struct si_ulv_param *ulv = &si_pi->ulv;
-+	PPSMC_Result r;
- 
--	if (ulv->supported)
--		return (amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV) == PPSMC_Result_OK) ?
--			0 : -EINVAL;
--
--	return 0;
-+	r = amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV);
-+	return (r == PPSMC_Result_OK) ? 0 : -EINVAL;
- }
- 
- static bool si_is_state_ulv_compatible(struct amdgpu_device *adev,
+ 		seq_printf(m, "Device %04x:%02x:%02x.%x ",
 -- 
 2.51.0
 
