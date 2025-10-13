@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-185044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F8CBD48E0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:51:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD594BD4630
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 296DA545E8E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1792A189DD10
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925371A9B46;
-	Mon, 13 Oct 2025 15:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4874630CDB6;
+	Mon, 13 Oct 2025 15:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MV0EZxGZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpEDWDxV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F30A3081AE;
-	Mon, 13 Oct 2025 15:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AEF30CDB4;
+	Mon, 13 Oct 2025 15:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369173; cv=none; b=ttcytQ6xZt9o2Vo4cRRi5lgBS04RMdrhcXk1bx45tf0Sw2LjSzl4BUnfJf0yPfUfwz5OZktSN6vm0MPNTJnYvuy3407+lUi1tjl3cl1/noUh+LNWesF9cTqOyFunnG5iDM2CHF7BML0OI2Kc7SDS9o0NsLTpQv7K6EW8UGBgG7I=
+	t=1760369179; cv=none; b=e62l8H9HiEYh6lxQZ4nBnYlKSSLt/ghADemvyQbxjgS+ql1oGpw3K+gag/wqYXd/q2ymuCes995IrxLLz5/pYTaKkPpAvEpYGq621+MXzPp1mN/PIt0GxHidA9TyWv9TadEnMh5DCtb3QJg8pfJys3Kie5vy5IgwbUPUkvdwFXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369173; c=relaxed/simple;
-	bh=NY8ImeykUexv8hE+10CJW6RTlCJoMSau7LpXm/FOBbM=;
+	s=arc-20240116; t=1760369179; c=relaxed/simple;
+	bh=hPWnCJBobnXomezOyb07Od+ZyBOyRW2w+Fit/v2OQhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBaOYhgb8eb2dszueQSg7jNoMF1vddsFE7ROmlem1XSEjSw5iNGcv7EpmH8kWgBRlEZVYxxlF0B+ZzsLoishBTfg9Ao6qOPLKtyTzgOuxgllp3S6efkhiEBH6zGITpPIohWCxKoKVMv/wrvjNmu/vxePUD2w3u+KUECnM7ky7W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MV0EZxGZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC80C4CEE7;
-	Mon, 13 Oct 2025 15:26:12 +0000 (UTC)
+	 MIME-Version; b=XDBUuiTol6eSqbMk5LO4HM0GPN9mWMGlFym2UGB7DJb58kL+IvEQttGbkdRfFHuzbNtvHDfemCi4rAS4/NUCwz47vSRUSwtTiP9+4PSluvy24xAuPDHAk27dXlbMKUv7zypxgxmMHKrj5t6JpUxSFMBfH1xt1JyIRfmdqbHqkdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpEDWDxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E3DC4CEE7;
+	Mon, 13 Oct 2025 15:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369173;
-	bh=NY8ImeykUexv8hE+10CJW6RTlCJoMSau7LpXm/FOBbM=;
+	s=korg; t=1760369178;
+	bh=hPWnCJBobnXomezOyb07Od+ZyBOyRW2w+Fit/v2OQhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MV0EZxGZRK98ykTgAB0hWs2zkvrR2AfM2xjxlYniRH4UUB6Y1fFNNw+HfQvO54Xh4
-	 Xax3ljc440Y26/TTIQQ5/UpBK959soL5Iq2sCTUE54ncDbamZFwJM+kVw2Ev/YXxW4
-	 DRMs6nbDQdE+KIuDYBR6lAZ6nStuhGkwWzRwOEpA=
+	b=ZpEDWDxVK/Jr0NXXWYMO1ZK6MWnh5NxqKeyNUpVRkitYSzcOwWk+t0zikdPSwwq5m
+	 1yTRZMV4+Jo2WhiUWwe4LV+c1Zhdd5F6MtPiHRWpk+kLJbmGuVxzVimsw7tu2TaXaQ
+	 2fvOEC3Ak8VDCQVpW5AMRpSu9j/axQzp2nAHcPKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jernej Skrabec <jernej.skrabec@gmail.com>,
 	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 153/563] arm64: dts: allwinner: t527: avaota-a1: hook up external 32k crystal
-Date: Mon, 13 Oct 2025 16:40:14 +0200
-Message-ID: <20251013144416.832161060@linuxfoundation.org>
+Subject: [PATCH 6.17 154/563] arm64: dts: allwinner: t527: orangepi-4a: hook up external 32k crystal
+Date: Mon, 13 Oct 2025 16:40:15 +0200
+Message-ID: <20251013144416.868172091@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,7 +68,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wens@csie.org>
 
-[ Upstream commit 3d5e1ba00af8dd34ae1e573c2c07e00b5ec65267 ]
+[ Upstream commit bd1ce7ef6aef4ee7349eb3124166e712693650ce ]
 
 When the board was added, its external 32.768 KHz crystal was described
 but not hooked up correctly. This meant the device had to fall back to
@@ -78,21 +78,21 @@ RTC clock will drift badly.
 
 Hook the crystal up to the RTC block and request the correct clock rate.
 
-Fixes: dbe54efa32af ("arm64: dts: allwinner: a523: add Avaota-A1 router support")
+Fixes: de713ccb9934 ("arm64: dts: allwinner: t527: Add OrangePi 4A board")
 Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20250913102450.3935943-2-wens@kernel.org
+Link: https://patch.msgid.link/20250913102450.3935943-3-wens@kernel.org
 Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts | 8 ++++++++
+ arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-index e7713678208d4..4e71055fbd159 100644
---- a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-@@ -309,6 +309,14 @@ &r_pio {
- 	vcc-pm-supply = <&reg_aldo3>;
+diff --git a/arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts b/arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts
+index d07bb9193b438..b5483bd7b8d5d 100644
+--- a/arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts
++++ b/arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts
+@@ -346,6 +346,14 @@ &r_pio {
+ 	vcc-pm-supply = <&reg_bldo2>;
  };
  
 +&rtc {
