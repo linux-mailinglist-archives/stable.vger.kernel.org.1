@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-184271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D92BD3DB3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:05:36 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6740BD41A7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88EC14F632E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:57:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 512AE34EDE3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB499308F03;
-	Mon, 13 Oct 2025 14:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EDD312821;
+	Mon, 13 Oct 2025 15:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOUa90nl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHXewjkT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74729308F09;
-	Mon, 13 Oct 2025 14:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B14431280A;
+	Mon, 13 Oct 2025 15:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366955; cv=none; b=nd/0xbkhmWUuSgJUJ+LJ3CfP1QnbCV/+4AoXLogLbbFHL+obg6MPuOGPmLakNxQBFLytx5q4ccSKpafmU+O80yz1sZSz/ag3HbxPpsQ8CqTD/VLTuyMUME0cr63uFc4YJUmb86u8aWX2ibQ2s75T2OnJOsSHMcUVs4f3Et/S7cQ=
+	t=1760368277; cv=none; b=BCQMsEKwGJEVLIniUGJ3vaZAyBordyIHioInY8AQ4SuTgC7C7NjNohqMVh+VmpIes61lgKJ4h/GPeI98DT6IyNq3pkiCkU1mZNa7wR8cdw2VviVi2dC6kocKQii1C82QvnRUoZolY9+rICUPq1LD858qfbfF1v0wkXEQQEHL6ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366955; c=relaxed/simple;
-	bh=vUicEagmKcYIdkX3jiffEN/Cy/IngjMX4REhp1Sj3J0=;
+	s=arc-20240116; t=1760368277; c=relaxed/simple;
+	bh=JTJJ4xVkghIwdg8GNyvlbwZEBhSvHbc7Y4d/YFJMjnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYukkCnUFDr2Gypqc1bFXqXDwBoAZkkMdJD4B6cTZ52ZYJhB400PoP2rbVh3G5AAmzS6bjOLC4KQOX7esHJC3Nn/1zJ1xHgLszypJEi3iy1BIHRzImv5WDvXy8xnHKghhd53ZhhVxx3FAqiojYVDAXas0D3mU7or2DVn0xxdmcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOUa90nl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56F9C4CEE7;
-	Mon, 13 Oct 2025 14:49:14 +0000 (UTC)
+	 MIME-Version; b=S14gEXsbhuZ6FGmSNo7hKZRL++HheS2ng6tYaWUxvijUMuVHsrQnagpRyuKWuVZh3Pv0m8lhYlymslKgoUs8qAMMRl0y5J6zukgstgRMrXw08XeEcoynQMSSEEevZ64nEbhqG+v9/pbIJmDAKhkblOy+oLZfcSo4vu7g0e6UKv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHXewjkT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5539C4CEE7;
+	Mon, 13 Oct 2025 15:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366955;
-	bh=vUicEagmKcYIdkX3jiffEN/Cy/IngjMX4REhp1Sj3J0=;
+	s=korg; t=1760368277;
+	bh=JTJJ4xVkghIwdg8GNyvlbwZEBhSvHbc7Y4d/YFJMjnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOUa90nlba6p0XNK9hrhCF13yHxN0xrTzwPFeueFX+Fbaq4MyiwnlsufK7c2op/Ck
-	 h12/OWNyjrvXkXpb5M1zTzK2RQiR8qNLThFj3vfO8R4SzFQbuw2+9V87qq9wgArKg4
-	 N6zB7oSAD9gyiK/Lu814ber4yf8WiJyxr5vdCYlQ=
+	b=HHXewjkTp6f7T0pETLz2AVY7yJjEapVwgLB9RFoaIS+BtO4M+ayC4w2TTODtJTtJV
+	 3DvLo6pSxDHrT7MdOCT1aMDLbyOGxdtd2l+8MRReFb3CoKsTC0JAq59Q1EhvwnptZS
+	 2J7nT1rQG/Bp0vvZJz/IcLC34YucX01kMYkkOess=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Subject: [PATCH 6.1 041/196] staging: axis-fifo: fix TX handling on copy_from_user() failure
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 072/262] i3c: master: svc: Use manual response for IBI events
 Date: Mon, 13 Oct 2025 16:43:34 +0200
-Message-ID: <20251013144316.071582630@linuxfoundation.org>
+Message-ID: <20251013144328.719936706@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Stanley Chu <yschu@nuvoton.com>
 
-commit 6d07bee10e4bdd043ec7152cbbb9deb27033c9e2 upstream.
+[ Upstream commit a7869b0a2540fd122eccec00ae7d4243166b0a60 ]
 
-If copy_from_user() fails, write() currently returns -EFAULT, but any
-partially written data leaves the TX FIFO in an inconsistent state.
-Subsequent write() calls then fail with "transmit length mismatch"
-errors.
+Driver wants to nack the IBI request when the target is not in the
+known address list. In below code, svc_i3c_master_nack_ibi() will
+cause undefined behavior when using AUTOIBI with auto response rule,
+because hw always auto ack the IBI request.
 
-Once partial data is written to the hardware FIFO, it cannot be removed
-without a TX reset. Commit c6e8d85fafa7 ("staging: axis-fifo: Remove
-hardware resets for user errors") removed a full FIFO reset for this case,
-which fixed a potential RX data loss, but introduced this TX issue.
+    switch (ibitype) {
+    case SVC_I3C_MSTATUS_IBITYPE_IBI:
+            dev = svc_i3c_master_dev_from_addr(master, ibiaddr);
+            if (!dev || !is_events_enabled(master, SVC_I3C_EVENT_IBI))
+                    svc_i3c_master_nack_ibi(master);
+            ...
+            break;
 
-Fix this by introducing a bounce buffer: copy the full packet from
-userspace first, and write to the hardware FIFO only if the copy
-was successful.
+AutoIBI has another issue that the controller doesn't quit AutoIBI state
+after IBIWON polling timeout when there is a SDA glitch(high->low->high).
+1. SDA high->low: raising an interrupt to execute IBI ISR
+2. SDA low->high
+3. Driver writes an AutoIBI request
+4. AutoIBI process does not start because SDA is not low
+5. IBIWON polling times out
+6. Controller reamins in AutoIBI state and doesn't accept EmitStop request
 
-Fixes: c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for user errors")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Link: https://lore.kernel.org/r/20250912101322.1282507-1-ovidiu.panait.oss@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Emitting broadcast address with IBIRESP_MANUAL avoids both issues.
+
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250829012309.3562585-2-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/axis-fifo/axis-fifo.c |   36 +++++++++-------------------------
- 1 file changed, 10 insertions(+), 26 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 30 ++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
---- a/drivers/staging/axis-fifo/axis-fifo.c
-+++ b/drivers/staging/axis-fifo/axis-fifo.c
-@@ -44,7 +44,6 @@
- #define DRIVER_NAME "axis_fifo"
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 474a96ebda226..7d8e1540f02ae 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -438,9 +438,24 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
+ 	 */
+ 	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
  
- #define READ_BUF_SIZE 128U /* read buffer length in words */
--#define WRITE_BUF_SIZE 128U /* write buffer length in words */
+-	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
+-	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
+-	       SVC_I3C_MCTRL_IBIRESP_AUTO,
++	/*
++	 * Write REQUEST_START_ADDR request to emit broadcast address for arbitration,
++	 * instend of using AUTO_IBI.
++	 *
++	 * Using AutoIBI request may cause controller to remain in AutoIBI state when
++	 * there is a glitch on SDA line (high->low->high).
++	 * 1. SDA high->low, raising an interrupt to execute IBI isr.
++	 * 2. SDA low->high.
++	 * 3. IBI isr writes an AutoIBI request.
++	 * 4. The controller will not start AutoIBI process because SDA is not low.
++	 * 5. IBIWON polling times out.
++	 * 6. Controller reamins in AutoIBI state and doesn't accept EmitStop request.
++	 */
++	writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
++	       SVC_I3C_MCTRL_TYPE_I3C |
++	       SVC_I3C_MCTRL_IBIRESP_MANUAL |
++	       SVC_I3C_MCTRL_DIR(SVC_I3C_MCTRL_DIR_WRITE) |
++	       SVC_I3C_MCTRL_ADDR(I3C_BROADCAST_ADDR),
+ 	       master->regs + SVC_I3C_MCTRL);
  
- /* ----------------------------
-  *     IP register offsets
-@@ -473,11 +472,8 @@ static ssize_t axis_fifo_write(struct fi
- {
- 	struct axis_fifo *fifo = (struct axis_fifo *)f->private_data;
- 	unsigned int words_to_write;
--	unsigned int copied;
--	unsigned int copy;
--	unsigned int i;
-+	u32 *txbuf;
- 	int ret;
--	u32 tmp_buf[WRITE_BUF_SIZE];
- 
- 	if (len % sizeof(u32)) {
- 		dev_err(fifo->dt_device,
-@@ -542,32 +538,20 @@ static ssize_t axis_fifo_write(struct fi
- 		}
- 	}
- 
--	/* write data from an intermediate buffer into the fifo IP, refilling
--	 * the buffer with userspace data as needed
--	 */
--	copied = 0;
--	while (words_to_write > 0) {
--		copy = min(words_to_write, WRITE_BUF_SIZE);
--
--		if (copy_from_user(tmp_buf, buf + copied * sizeof(u32),
--				   copy * sizeof(u32))) {
--			ret = -EFAULT;
--			goto end_unlock;
--		}
--
--		for (i = 0; i < copy; i++)
--			iowrite32(tmp_buf[i], fifo->base_addr +
--				  XLLF_TDFD_OFFSET);
--
--		copied += copy;
--		words_to_write -= copy;
-+	txbuf = vmemdup_user(buf, len);
-+	if (IS_ERR(txbuf)) {
-+		ret = PTR_ERR(txbuf);
-+		goto end_unlock;
- 	}
- 
--	ret = copied * sizeof(u32);
-+	for (int i = 0; i < words_to_write; ++i)
-+		iowrite32(txbuf[i], fifo->base_addr + XLLF_TDFD_OFFSET);
- 
- 	/* write packet size to fifo */
--	iowrite32(ret, fifo->base_addr + XLLF_TLR_OFFSET);
-+	iowrite32(len, fifo->base_addr + XLLF_TLR_OFFSET);
- 
-+	ret = len;
-+	kvfree(txbuf);
- end_unlock:
- 	mutex_unlock(&fifo->write_lock);
- 
+ 	/* Wait for IBIWON, should take approximately 100us */
+@@ -460,10 +475,15 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
+ 	switch (ibitype) {
+ 	case SVC_I3C_MSTATUS_IBITYPE_IBI:
+ 		dev = svc_i3c_master_dev_from_addr(master, ibiaddr);
+-		if (!dev || !is_events_enabled(master, SVC_I3C_EVENT_IBI))
++		if (!dev || !is_events_enabled(master, SVC_I3C_EVENT_IBI)) {
+ 			svc_i3c_master_nack_ibi(master);
+-		else
++		} else {
++			if (dev->info.bcr & I3C_BCR_IBI_PAYLOAD)
++				svc_i3c_master_ack_ibi(master, true);
++			else
++				svc_i3c_master_ack_ibi(master, false);
+ 			svc_i3c_master_handle_ibi(master, dev);
++		}
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_HOT_JOIN:
+ 		if (is_events_enabled(master, SVC_I3C_EVENT_HOTJOIN))
+-- 
+2.51.0
+
 
 
 
