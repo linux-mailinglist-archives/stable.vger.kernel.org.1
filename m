@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-185098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0AA9BD51E2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:39:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D9EBD5281
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:43:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7DBD484996
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:48:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31F93484F79
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27954273D6C;
-	Mon, 13 Oct 2025 15:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC86E274B55;
+	Mon, 13 Oct 2025 15:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wN87pZL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0J0M+0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D351B222587;
-	Mon, 13 Oct 2025 15:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8859E279DAF;
+	Mon, 13 Oct 2025 15:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369327; cv=none; b=sScXnoIrNTpWytqyufsQm2ou97kM9ABC0JU2KTiI1G9Zu8UFIwMIjrfGKLqhBxVozM3ZsvC5cAsxGwFAHPkSo40PoCL/c4s8TH46Fo9CFw9u+uRK3Tx1Ri4fhFLUemxmwjfmpGpalFHOeGtMqcCEKP5rVRngXW1WbinnWiXSCN8=
+	t=1760369336; cv=none; b=K/xhOnu5b7oBVLzPcWS8sr9YIvgTZO7VldRtRVa0lPvahnWValbrFeuxLNix/7pqNszY1Tg8hSUikRGpfJADnJz0k1EF9RD+oyEtRet5hgqgGerYxD8ghhblHTJwtXP58ihcR1VRD7A+5W0CubdiRRvomKnlrD9xNW25cCXi1iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369327; c=relaxed/simple;
-	bh=4SFj6E+CUYiuLIVHpjG/2/WLKKcLL4eSwDwvhGIYByY=;
+	s=arc-20240116; t=1760369336; c=relaxed/simple;
+	bh=hnI5s/FycRJEGna1oHiE6UAy5iUqypB9gmh2uWV6yek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dd07ySVOixLEjsBlCc5eqTDkcNjd1b7HIc+OkeRbbLJg8PkpOh2LBjGWwFn5tngOxaLm65Dyqhge5eMmXsOMpWpjToyAMdvZPT6NAsrcMLrSeq85B5Fn4y+zffO/0OX+EdD1eMbGW2CHVeORFbZjN08J2HV8OQbRcoIoDhi1fco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wN87pZL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CD7C4CEFE;
-	Mon, 13 Oct 2025 15:28:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mhgIPDZ9IwqbCF32PvOkxlpP2zqb+7joQ9F0AosB+OMHojQ5bTl1rbhox/DHSxVncuGyA2Wh9AwyT6AemaxdLKZtZwP4C/spkuhaK1IohZu9Srzo3lgF7UeKakycomPJE72kfqXOScXIl0yHGxoKTdfNIwJkhED9g6ybIo/AQtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0J0M+0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061FDC4CEE7;
+	Mon, 13 Oct 2025 15:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369327;
-	bh=4SFj6E+CUYiuLIVHpjG/2/WLKKcLL4eSwDwvhGIYByY=;
+	s=korg; t=1760369336;
+	bh=hnI5s/FycRJEGna1oHiE6UAy5iUqypB9gmh2uWV6yek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wN87pZL+EjubMwnytQCj4EsXsHdDDdy5UUOx6ICHlZaoQ/zGGvxdb/oG+7Q3TV6id
-	 qfcs+A6a9pdPSPoJAebVG6e1Nbu27SwWqHmd9RcxCoUjEe1AlgIrB9jjZ7QEOt1acB
-	 bhzEFBN813ZeTs8dkea4ceColWoVNRxdc2Kx0gXI=
+	b=F0J0M+0xTdjMnEssDCyQhQB684KcwMb2a72DzksW8JAlBa5afIJegiM5wT4I2e4rt
+	 u94756W9+iyp/GtCplXSqIArc7TO3XgQ2rMPFJWgImVFchC1NXaL2OwHboRm1BqjLy
+	 hwT/ZTG7oGqhKVRhROLrpxGTgtAU71nUdkBnhEuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Philipp Stanner <phasta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 208/563] bpf: Enforce expected_attach_type for tailcall compatibility
-Date: Mon, 13 Oct 2025 16:41:09 +0200
-Message-ID: <20251013144418.821103745@linuxfoundation.org>
+Subject: [PATCH 6.17 211/563] drm/sched: Fix a race in DRM_GPU_SCHED_STAT_NO_HANG test
+Date: Mon, 13 Oct 2025 16:41:12 +0200
+Message-ID: <20251013144418.928427152@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -63,97 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 4540aed51b12bc13364149bf95f6ecef013197c0 ]
+[ Upstream commit 2650bc4007c15e05f995f472b4fc89e793162bc4 ]
 
-Yinhao et al. recently reported:
+The "skip reset" test waits for the timeout handler to run for the
+duration of 2 * MOCK_TIMEOUT, and because the mock scheduler opted to
+remove the "skip reset" flag once it fires, this gives opportunity for the
+timeout handler to run twice. Second time the job will be removed from the
+mock scheduler job list and the drm_mock_sched_advance() call in the test
+will fail.
 
-  Our fuzzer tool discovered an uninitialized pointer issue in the
-  bpf_prog_test_run_xdp() function within the Linux kernel's BPF subsystem.
-  This leads to a NULL pointer dereference when a BPF program attempts to
-  deference the txq member of struct xdp_buff object.
+Fix it by making the "don't reset" flag persist for the lifetime of the
+job and add a new flag to verify that the code path had executed as
+expected.
 
-The test initializes two programs of BPF_PROG_TYPE_XDP: progA acts as the
-entry point for bpf_prog_test_run_xdp() and its expected_attach_type can
-neither be of be BPF_XDP_DEVMAP nor BPF_XDP_CPUMAP. progA calls into a slot
-of a tailcall map it owns. progB's expected_attach_type must be BPF_XDP_DEVMAP
-to pass xdp_is_valid_access() validation. The program returns struct xdp_md's
-egress_ifindex, and the latter is only allowed to be accessed under mentioned
-expected_attach_type. progB is then inserted into the tailcall which progA
-calls.
-
-The underlying issue goes beyond XDP though. Another example are programs
-of type BPF_PROG_TYPE_CGROUP_SOCK_ADDR. sock_addr_is_valid_access() as well
-as sock_addr_func_proto() have different logic depending on the programs'
-expected_attach_type. Similarly, a program attached to BPF_CGROUP_INET4_GETPEERNAME
-should not be allowed doing a tailcall into a program which calls bpf_bind()
-out of BPF which is only enabled for BPF_CGROUP_INET4_CONNECT.
-
-In short, specifying expected_attach_type allows to open up additional
-functionality or restrictions beyond what the basic bpf_prog_type enables.
-The use of tailcalls must not violate these constraints. Fix it by enforcing
-expected_attach_type in __bpf_prog_map_compatible().
-
-Note that we only enforce this for tailcall maps, but not for BPF devmaps or
-cpumaps: There, the programs are invoked through dev_map_bpf_prog_run*() and
-cpu_map_bpf_prog_run*() which set up a new environment / context and therefore
-these situations are not prone to this issue.
-
-Fixes: 5e43f899b03a ("bpf: Check attach type at prog load time")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250926171201.188490-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: 1472e7549f84 ("drm/sched: Add new test for DRM_GPU_SCHED_STAT_NO_HANG")
+Cc: Maíra Canal <mcanal@igalia.com>
+Cc: Philipp Stanner <phasta@kernel.org>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://lore.kernel.org/r/20250716084817.56797-1-tvrtko.ursulin@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h | 1 +
- kernel/bpf/core.c   | 5 +++++
- 2 files changed, 6 insertions(+)
+ drivers/gpu/drm/scheduler/tests/mock_scheduler.c | 2 +-
+ drivers/gpu/drm/scheduler/tests/sched_tests.h    | 7 ++++---
+ drivers/gpu/drm/scheduler/tests/tests_basic.c    | 4 ++--
+ 3 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index cc700925b802f..84826dc0a3268 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -285,6 +285,7 @@ struct bpf_map_owner {
- 	bool xdp_has_frags;
- 	u64 storage_cookie[MAX_BPF_CGROUP_STORAGE_TYPE];
- 	const struct btf_type *attach_func_proto;
-+	enum bpf_attach_type expected_attach_type;
- };
+diff --git a/drivers/gpu/drm/scheduler/tests/mock_scheduler.c b/drivers/gpu/drm/scheduler/tests/mock_scheduler.c
+index 65acffc3fea82..8e9ae7d980eb2 100644
+--- a/drivers/gpu/drm/scheduler/tests/mock_scheduler.c
++++ b/drivers/gpu/drm/scheduler/tests/mock_scheduler.c
+@@ -219,7 +219,7 @@ mock_sched_timedout_job(struct drm_sched_job *sched_job)
+ 	unsigned long flags;
  
- struct bpf_map {
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index e4568d44e8279..f6dd071f5e38c 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2393,6 +2393,7 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
- 		map->owner->type  = prog_type;
- 		map->owner->jited = fp->jited;
- 		map->owner->xdp_has_frags = aux->xdp_has_frags;
-+		map->owner->expected_attach_type = fp->expected_attach_type;
- 		map->owner->attach_func_proto = aux->attach_func_proto;
- 		for_each_cgroup_storage_type(i) {
- 			map->owner->storage_cookie[i] =
-@@ -2404,6 +2405,10 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
- 		ret = map->owner->type  == prog_type &&
- 		      map->owner->jited == fp->jited &&
- 		      map->owner->xdp_has_frags == aux->xdp_has_frags;
-+		if (ret &&
-+		    map->map_type == BPF_MAP_TYPE_PROG_ARRAY &&
-+		    map->owner->expected_attach_type != fp->expected_attach_type)
-+			ret = false;
- 		for_each_cgroup_storage_type(i) {
- 			if (!ret)
- 				break;
+ 	if (job->flags & DRM_MOCK_SCHED_JOB_DONT_RESET) {
+-		job->flags &= ~DRM_MOCK_SCHED_JOB_DONT_RESET;
++		job->flags |= DRM_MOCK_SCHED_JOB_RESET_SKIPPED;
+ 		return DRM_GPU_SCHED_STAT_NO_HANG;
+ 	}
+ 
+diff --git a/drivers/gpu/drm/scheduler/tests/sched_tests.h b/drivers/gpu/drm/scheduler/tests/sched_tests.h
+index 63d4f2ac70749..5b262126b7760 100644
+--- a/drivers/gpu/drm/scheduler/tests/sched_tests.h
++++ b/drivers/gpu/drm/scheduler/tests/sched_tests.h
+@@ -95,9 +95,10 @@ struct drm_mock_sched_job {
+ 
+ 	struct completion	done;
+ 
+-#define DRM_MOCK_SCHED_JOB_DONE		0x1
+-#define DRM_MOCK_SCHED_JOB_TIMEDOUT	0x2
+-#define DRM_MOCK_SCHED_JOB_DONT_RESET	0x4
++#define DRM_MOCK_SCHED_JOB_DONE			0x1
++#define DRM_MOCK_SCHED_JOB_TIMEDOUT		0x2
++#define DRM_MOCK_SCHED_JOB_DONT_RESET		0x4
++#define DRM_MOCK_SCHED_JOB_RESET_SKIPPED	0x8
+ 	unsigned long		flags;
+ 
+ 	struct list_head	link;
+diff --git a/drivers/gpu/drm/scheduler/tests/tests_basic.c b/drivers/gpu/drm/scheduler/tests/tests_basic.c
+index 55eb142bd7c5d..82a41a456b0a8 100644
+--- a/drivers/gpu/drm/scheduler/tests/tests_basic.c
++++ b/drivers/gpu/drm/scheduler/tests/tests_basic.c
+@@ -317,8 +317,8 @@ static void drm_sched_skip_reset(struct kunit *test)
+ 	KUNIT_ASSERT_FALSE(test, done);
+ 
+ 	KUNIT_ASSERT_EQ(test,
+-			job->flags & DRM_MOCK_SCHED_JOB_DONT_RESET,
+-			0);
++			job->flags & DRM_MOCK_SCHED_JOB_RESET_SKIPPED,
++			DRM_MOCK_SCHED_JOB_RESET_SKIPPED);
+ 
+ 	i = drm_mock_sched_advance(sched, 1);
+ 	KUNIT_ASSERT_EQ(test, i, 1);
 -- 
 2.51.0
 
