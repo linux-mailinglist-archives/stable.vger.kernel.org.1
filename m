@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-184346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C260EBD3E34
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:08:02 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E354BD4A40
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BCB54FCFBB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3A46634FEB0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4425E309F1D;
-	Mon, 13 Oct 2025 14:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DECA30DD0B;
+	Mon, 13 Oct 2025 15:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18qyuRCF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1er6s/a0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013BF279DCE;
-	Mon, 13 Oct 2025 14:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F0530DD05;
+	Mon, 13 Oct 2025 15:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367170; cv=none; b=QZlA69mY4g0IiuYhWNsmOJ+5t/Tb6WviFqqx2MbXv+DnohdtZ6zecMf/yfgKeA5ObOKo6jb3ac5OA+Ufu5lOtHdHruG9l07VDwQG4CFv6cgG2fX2refaj5Mk6IhNw4Rh4iT5e0iMxknuxIVZvr2Cr7Hv+BD5TStbwuB1jcxAPfk=
+	t=1760369953; cv=none; b=jZmdznmf500iXYNSYq+aheifs6EmRE/Od+SPuVCfQma1BFZMSuJ8zW/H3SRfRuFi9kiFYHTwFBdIxLvWBBBsuPx4pfWMXftyrHl8MCiwkZqcG5rH1yG4z/GN6gvkBDAabdQdGnrTbCN+UEkeY3CY+FIA3WJs1ZczSK4LiOiXoOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367170; c=relaxed/simple;
-	bh=0ErED4saSnGr63Ht+kDDSIFJnVPuGGOgckghfV3X1Os=;
+	s=arc-20240116; t=1760369953; c=relaxed/simple;
+	bh=p3X79ZP5TpNvCMSut6jVJ8IirNjJPydEngYugawmqhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6PupUyyhJLsSv/xPT/DIXpOHfzDqsXYizhtXZPzyceDB3Bbkw7X497kc4iYVX8+VXBiH0ZtbevcnIY7Yc2tybsgf3MYGyziA7Ebz9KugZxalf5mzk7WZR38UOVfZTcG991nf7EdLoLKo4H9dbwb2nj14GA0WLhWhbN6V6oYZD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18qyuRCF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4A1C4CEE7;
-	Mon, 13 Oct 2025 14:52:49 +0000 (UTC)
+	 MIME-Version; b=I6dXpXx0Q5LFJdTRiWKe+GNZa9Cljmy/t8PcwEWHEUVNLRwdHsj0wT3NEjW2sy5RewDuVicC9dJ2r/C7XnC/3N9RnvyGk3mUjDuD/aIOspoht2olpk3vAiPYGciiIxikpjwZyzAbgbO1UY15dl7IsamVlHE0NoiSHz9wSW3tcgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1er6s/a0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06A2C4CEE7;
+	Mon, 13 Oct 2025 15:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367169;
-	bh=0ErED4saSnGr63Ht+kDDSIFJnVPuGGOgckghfV3X1Os=;
+	s=korg; t=1760369953;
+	bh=p3X79ZP5TpNvCMSut6jVJ8IirNjJPydEngYugawmqhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18qyuRCF2BRtRsV00EBLW0TYXjeEBmI8Stw/1ISlIr+7TgrvEM8USio6fJAMHOKaQ
-	 lwdPmzgFrVRNb0eBr6Te1O9vUEX1SuU8AN7Gm20ed3vRo+fGPYuapZ26kUPuKEMThR
-	 l9T+oZodVClxCS9AkGwjwZ0ozERfuTZ80eANtV20=
+	b=1er6s/a0xXFTfpGeC0+eZBzIJu4GI+s2KYsiokVSGA3fnbEs6k4IT6WavYitAe9nP
+	 vYzSHoyXqy+NN9sW7y5IULdYMWomVL33RWY8nnPtyulppCSVcY/yT5KBHT8qEeg+Q6
+	 A/LfV3Z8YkwSMePzhP6D0cTn+CLjpoZq8A6Z6rBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Wu <william.wu@rock-chips.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/196] usb: gadget: configfs: Correctly set use_os_string at bind
+Subject: [PATCH 6.17 427/563] coresight: etm4x: Support atclk
 Date: Mon, 13 Oct 2025 16:44:48 +0200
-Message-ID: <20251013144318.858295646@linuxfoundation.org>
+Message-ID: <20251013144426.755679012@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +65,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Wu <william.wu@rock-chips.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit e271cc0d25015f4be6c88bd7731444644eb352c2 ]
+[ Upstream commit 40c0cdc9cbbebae9f43bef1cab9ce152318d0cce ]
 
-Once the use_os_string flag is set to true for some functions
-(e.g. adb/mtp) which need to response the OS string, and then
-if we re-bind the ConfigFS gadget to use the other functions
-(e.g. hid) which should not to response the OS string, however,
-because the use_os_string flag is still true, so the usb gadget
-response the OS string descriptor incorrectly, this can cause
-the USB device to be unrecognizable on the Windows system.
+The atclk is an optional clock for the CoreSight ETMv4, but the driver
+misses to initialize it.
 
-An example of this as follows:
+This change enables atclk in probe of the ETMv4 driver, and dynamically
+control the clock during suspend and resume.
 
-echo 1 > os_desc/use
-ln -s functions/ffs.adb configs/b.1/function0
-start adbd
-echo "<udc device>" > UDC   #succeed
+No need to check the driver data and clock pointer in the runtime
+suspend and resume, so remove checks.  And add error handling in the
+resume function.
 
-stop adbd
-rm configs/b.1/function0
-echo 0 > os_desc/use
-ln -s functions/hid.gs0 configs/b.1/function0
-echo "<udc device>" > UDC  #fail to connect on Windows
+Add a minor fix to the comment format when adding the atclk field.
 
-This patch sets the use_os_string flag to false at bind if
-the functions not support OS Descriptors.
-
-Signed-off-by: William Wu <william.wu@rock-chips.com>
-Fixes: 87213d388e92 ("usb: gadget: configfs: OS String support")
-Link: https://lore.kernel.org/r/1755833769-25434-1-git-send-email-william.wu@rock-chips.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250731-arm_cs_fix_clock_v4-v6-3-1dfe10bb3f6f@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/configfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../coresight/coresight-etm4x-core.c          | 20 ++++++++++++++-----
+ drivers/hwtracing/coresight/coresight-etm4x.h |  4 +++-
+ 2 files changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index cdbf12639dfa7..f55dcc3a40184 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -1356,6 +1356,8 @@ static int configfs_composite_bind(struct usb_gadget *gadget,
- 		cdev->use_os_string = true;
- 		cdev->b_vendor_code = gi->b_vendor_code;
- 		memcpy(cdev->qw_sign, gi->qw_sign, OS_STRING_QW_SIGN_LEN);
-+	} else {
-+		cdev->use_os_string = false;
- 	}
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index b4f1834a1af1e..81f20a167e001 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -2221,6 +2221,10 @@ static int etm4_probe(struct device *dev)
+ 	if (WARN_ON(!drvdata))
+ 		return -ENOMEM;
  
- 	if (gadget_is_otg(gadget) && !otg_desc[0]) {
++	drvdata->atclk = devm_clk_get_optional_enabled(dev, "atclk");
++	if (IS_ERR(drvdata->atclk))
++		return PTR_ERR(drvdata->atclk);
++
+ 	if (pm_save_enable == PARAM_PM_SAVE_FIRMWARE)
+ 		pm_save_enable = coresight_loses_context_with_cpu(dev) ?
+ 			       PARAM_PM_SAVE_SELF_HOSTED : PARAM_PM_SAVE_NEVER;
+@@ -2469,8 +2473,8 @@ static int etm4_runtime_suspend(struct device *dev)
+ {
+ 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
+ 
+-	if (drvdata->pclk && !IS_ERR(drvdata->pclk))
+-		clk_disable_unprepare(drvdata->pclk);
++	clk_disable_unprepare(drvdata->atclk);
++	clk_disable_unprepare(drvdata->pclk);
+ 
+ 	return 0;
+ }
+@@ -2478,11 +2482,17 @@ static int etm4_runtime_suspend(struct device *dev)
+ static int etm4_runtime_resume(struct device *dev)
+ {
+ 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
++	int ret;
++
++	ret = clk_prepare_enable(drvdata->pclk);
++	if (ret)
++		return ret;
+ 
+-	if (drvdata->pclk && !IS_ERR(drvdata->pclk))
+-		clk_prepare_enable(drvdata->pclk);
++	ret = clk_prepare_enable(drvdata->atclk);
++	if (ret)
++		clk_disable_unprepare(drvdata->pclk);
+ 
+-	return 0;
++	return ret;
+ }
+ #endif
+ 
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
+index 823914fefa90a..13ec9ecef46f5 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -920,7 +920,8 @@ struct etmv4_save_state {
+ 
+ /**
+  * struct etm4_drvdata - specifics associated to an ETM component
+- * @pclk        APB clock if present, otherwise NULL
++ * @pclk:       APB clock if present, otherwise NULL
++ * @atclk:      Optional clock for the core parts of the ETMv4.
+  * @base:       Memory mapped base address for this component.
+  * @csdev:      Component vitals needed by the framework.
+  * @spinlock:   Only one at a time pls.
+@@ -989,6 +990,7 @@ struct etmv4_save_state {
+  */
+ struct etmv4_drvdata {
+ 	struct clk			*pclk;
++	struct clk			*atclk;
+ 	void __iomem			*base;
+ 	struct coresight_device		*csdev;
+ 	raw_spinlock_t			spinlock;
 -- 
 2.51.0
 
