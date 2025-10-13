@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-185085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC89BD4BD3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:05:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3303BBD4BE5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 137783E6FD0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:47:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AF54B562317
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BBEC31815D;
-	Mon, 13 Oct 2025 15:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE37D2BF009;
+	Mon, 13 Oct 2025 15:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRiPNjb3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQnSVzSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A1E3195E5;
-	Mon, 13 Oct 2025 15:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCB722A4D5;
+	Mon, 13 Oct 2025 15:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369290; cv=none; b=V61ZAdDpqzeK5URBDAlDdGIYyGqd7QtJI4B7p05PTmozFSEys7w7WX/iBLgahTQ57dUpteFso6KWxaUK6GXEHnWDLCTFpG7Ehh0NlS88I6JHUa+sUxGmKXFk8CQP1W1QRP6Yum6JZFNHtgQ5gI3TpAnXr081uju9e9jtGo9xfUc=
+	t=1760369350; cv=none; b=EwujiDHAZNhSnMTht/I41MG5WCzbAM4arUejVPs57Jo2fUhagxSZ0gzgfark0701uNGvPKgZpguZsqBGTGsm6iK1Q6s2Zv3rr1MGyCh/znFxwj1bCIWrUOstI6ehpDsTb4ayijLXJx412KS4+n5DrqhzhqHP+pmoZDz9EBYBGf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369290; c=relaxed/simple;
-	bh=BmQkQi5TBCYJy2x2Y9ouQ0qZa2zzpXV9C4xMHL9B99U=;
+	s=arc-20240116; t=1760369350; c=relaxed/simple;
+	bh=RDPCOUxf69+xvClnECG92S0e190BCrCnAP2F2NjbC18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rL3c0pfX6U+WrRJUUqZWlud9uVt1DGqXzHLM7USpLnXNYOpLIt2ELcZWsw1Ujo4LkQo+2z79p+LIcW/7zTmVpIthPmwWpdNR3hc943yCxhHd5Mfi5T72UCnoduYM24OpxcZyoqAxI+fqMPqjDinf5YvG2kxELcTy2mILpA2N+/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRiPNjb3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10EDC4CEE7;
-	Mon, 13 Oct 2025 15:28:09 +0000 (UTC)
+	 MIME-Version; b=sIv1dv8IZU41rE0fwJd4l9ximUpRZIwreu2BunLSdbhDOSaY4RWafplADtHzudSxRwjarfcX+sbf7JcCTpUeEIeSRfEze7vN/d3R59w/Am0efGK463nOYkyyLgBx1F/4wAMvkwD7NjbCSXtnnucSBHyBkQAZAk5krarJbk8Xslc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQnSVzSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EB2C4CEE7;
+	Mon, 13 Oct 2025 15:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369290;
-	bh=BmQkQi5TBCYJy2x2Y9ouQ0qZa2zzpXV9C4xMHL9B99U=;
+	s=korg; t=1760369350;
+	bh=RDPCOUxf69+xvClnECG92S0e190BCrCnAP2F2NjbC18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRiPNjb3O8P5OILPT3QP8q0lOflemvRkovFrWs1lwLmV/ZHeDCcbO3pLmkBCnnJda
-	 vjDJq1hNwwW/2HRT4qi9Nm6CibyM3OQLGiHkZZlnvzDDE9Fr66JBvNeLJfXwdHQhJt
-	 djojo40FLeFiJgC8lzLXvwoQiIVRgXfHR3Z3xr4M=
+	b=nQnSVzSaSux1hr+xTWw5v2xBtQS1aJnJnshu+vBuk32Yg+wIpzCzGYjHj76VhgoEM
+	 5gZ8oR9Mhcny+gGv4oK8ijyjptCH20UisKdMWEALKK6kKl0LfQjYMxK+m4+3wrkgw4
+	 as1sIFJn5HAUFc56cKfdzwrxJWG6jP+KNxLwuNC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Vernet <void@manifault.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Andrea Righi <arighi@nvidia.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 193/563] bpf: Mark kfuncs as __noclone
-Date: Mon, 13 Oct 2025 16:40:54 +0200
-Message-ID: <20251013144418.273898304@linuxfoundation.org>
+Subject: [PATCH 6.17 198/563] thermal/drivers/qcom/lmh: Add missing IRQ includes
+Date: Mon, 13 Oct 2025 16:40:59 +0200
+Message-ID: <20251013144418.457837281@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,54 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit d4680a11e14c7baf683cb8453d91d71d2e0b9d3e ]
+[ Upstream commit b50b2c53f98fcdb6957e184eb488c16502db9575 ]
 
-Some distributions (e.g., CachyOS) support building the kernel with -O3,
-but doing so may break kfuncs, resulting in their symbols not being
-properly exported.
+As reported by LKP, the Qualcomm LMH driver needs to include several
+IRQ-related headers, which decrlare necessary IRQ functionality.
+Currently driver builds on ARM64 platforms, where the headers are pulled
+in implicitly by other headers, but fails to build on other platforms.
 
-In fact, with gcc -O3, some kfuncs may be optimized away despite being
-annotated as noinline. This happens because gcc can still clone the
-function during IPA optimizations, e.g., by duplicating or inlining it
-into callers, and then dropping the standalone symbol. This breaks BTF
-ID resolution since resolve_btfids relies on the presence of a global
-symbol for each kfunc.
-
-Currently, this is not an issue for upstream, because we don't allow
-building the kernel with -O3, but it may be safer to address it anyway,
-to prevent potential issues in the future if compilers become more
-aggressive with optimizations.
-
-Therefore, add __noclone to __bpf_kfunc to ensure kfuncs are never
-cloned and remain distinct, globally visible symbols, regardless of
-the optimization level.
-
-Fixes: 57e7c169cd6af ("bpf: Add __bpf_kfunc tag for marking kernel functions as kfuncs")
-Acked-by: David Vernet <void@manifault.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Link: https://lore.kernel.org/r/20250924081426.156934-1-arighi@nvidia.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507270042.KdK0KKht-lkp@intel.com/
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20250728-lmh-scm-v2-2-33bc58388ca5@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/btf.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/qcom/lmh.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/btf.h b/include/linux/btf.h
-index 9eda6b113f9b4..f06976ffb63f9 100644
---- a/include/linux/btf.h
-+++ b/include/linux/btf.h
-@@ -86,7 +86,7 @@
-  * as to avoid issues such as the compiler inlining or eliding either a static
-  * kfunc, or a global kfunc in an LTO build.
+diff --git a/drivers/thermal/qcom/lmh.c b/drivers/thermal/qcom/lmh.c
+index 75eaa9a68ab8a..c681a3c89ffa0 100644
+--- a/drivers/thermal/qcom/lmh.c
++++ b/drivers/thermal/qcom/lmh.c
+@@ -5,6 +5,8 @@
   */
--#define __bpf_kfunc __used __retain noinline
-+#define __bpf_kfunc __used __retain __noclone noinline
- 
- #define __bpf_kfunc_start_defs()					       \
- 	__diag_push();							       \
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/irqdesc.h>
+ #include <linux/irqdomain.h>
+ #include <linux/err.h>
+ #include <linux/platform_device.h>
 -- 
 2.51.0
 
