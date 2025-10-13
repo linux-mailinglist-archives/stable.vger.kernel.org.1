@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA60CBD46DB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3798BD3EB8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 767884FA3E4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64196402512
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6787E311586;
-	Mon, 13 Oct 2025 15:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5479B3090CC;
+	Mon, 13 Oct 2025 14:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHXlXpMZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xX6brBNa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2432030F81C;
-	Mon, 13 Oct 2025 15:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F01D3090C9;
+	Mon, 13 Oct 2025 14:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368102; cv=none; b=NAWDygMp5ztnQWjdad5N2vbTqYoWRKxLvF1zVtZ+LpA8k4fwICj1VcRkBg8F922SPL+bFIkvJerhfgL1x085zwEwM+rjiXWXDySthl5R/Tah1Q3gGNdjAilxF+ElJmLWmoHz3eDOf2WeY3lUblcMcun1ZJoQOhu4ZRz1l26FJLg=
+	t=1760366998; cv=none; b=m4c9lzqP9tWw7vHVkO7F3nCU4fNCX7Sem/goow4d6cZBHQELBQtHsHKVUYNpRMv+OwYVklw94sxf6F8Ftz0QHVSmedRfKGcG4ZlempsvzYJcufMJxZsG4Q7DGefzag3v41K+81ycDwAdNCPGiaj/ZZ4ucluOW6wWjlDCt/Z4kHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368102; c=relaxed/simple;
-	bh=NiDU+KCLuQUOomwb7ORvmTJQmUXj9DEJk/iUXlZr6r8=;
+	s=arc-20240116; t=1760366998; c=relaxed/simple;
+	bh=+KQUGPDgpYt7MH4t3EpA/cqsnB0plJdYJGoHdQAS3hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFZhaC1frZsuKJsH9Qzgf0g1AhZz+S41pGEPIQCSmcIT0BJRSJ9oXmFn7PnMOoy9YP7WmisxQkffvoPVObTGXyQZYHYsL//qpy31OAGAixTBz0RDq6AMxtm08UR2vG9en9d+WWMGYBgyN+aW5kXzYAkxZRfGEesiCKSdcefabWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHXlXpMZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F68C4CEE7;
-	Mon, 13 Oct 2025 15:08:21 +0000 (UTC)
+	 MIME-Version; b=tfHnqNPbUdsM6y/7jFjCCNQFM+AmMLBsGyZZnH0JyDipVNhh9O25zVV++tpIw+qa8M3Tr/nVGd7mxj2OFF4puH/2TRJwsN6MvVAERdLzUaT0OuLdm6lvOB8UanlAhVqWZulFP68ePFAcMATbqzOON0mJt9Ht1IgsS1aOH9dst9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xX6brBNa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86084C4CEE7;
+	Mon, 13 Oct 2025 14:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368101;
-	bh=NiDU+KCLuQUOomwb7ORvmTJQmUXj9DEJk/iUXlZr6r8=;
+	s=korg; t=1760366997;
+	bh=+KQUGPDgpYt7MH4t3EpA/cqsnB0plJdYJGoHdQAS3hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHXlXpMZ60KnEWd38O4LZ9MZy5uT5Ah6QaFlD8mP6BfPvQEkLS58YTUujkiIyvPNR
-	 vPkyZ/DENgMEfT1bllQLtexf/2vV68ygsnMcNH4Y/sXxBF6lKMtuOou+SPmR5gYAjo
-	 e4YRkKsV64S5UhTB9DCm3cJwTPgWxg4732d45jWU=
+	b=xX6brBNaxeEPVFs/FkuQH0qi/SgXxEw4ArWLYGdrKgMYGVrJk5mqIbc3ve76SEwAE
+	 HcevDtj39ArgQlsZgTk0l95BTIb94NNHt83uT2Opi1tflDVaRct/pP+GEizJaxFCFZ
+	 i8qFs156D3joR5li4clBihgmJvqKax1Gd5VjcnGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/262] ARM: dts: omap: am335x-cm-t335: Remove unused mcasp num-serializer property
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 014/196] ASoC: qcom: audioreach: fix potential null pointer dereference
 Date: Mon, 13 Oct 2025 16:43:07 +0200
-Message-ID: <20251013144327.753430339@linuxfoundation.org>
+Message-ID: <20251013144315.080615514@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit 27322753c8b913fba05250e7b5abb1da31e6ed23 ]
+commit 8318e04ab2526b155773313b66a1542476ce1106 upstream.
 
-The dtbs_check validation for am335x-cm-t335.dtb flags an error
-for an unevaluated 'num-serializer' property in the mcasp0 node.
+It is possible that the topology parsing function
+audioreach_widget_load_module_common() could return NULL or an error
+pointer. Add missing NULL check so that we do not dereference it.
 
-This property is obsolete; it is not defined in the davinci-mcasp-audio
-schema and is not used by the corresponding (or any) driver.
-
-Remove this unused property to fix the schema validation warning.
-
-Fixes: 48ab364478e77 ("ARM: dts: cm-t335: add audio support")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Link: https://lore.kernel.org/r/20250830215957.285694-1-jihed.chaibi.dev@gmail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Stable@vger.kernel.org
+Fixes: 36ad9bf1d93d ("ASoC: qdsp6: audioreach: add topology support")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250825101247.152619-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts | 2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/qcom/qdsp6/topology.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts b/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts
-index 06767ea164b59..ece7f7854f6aa 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts
-@@ -483,8 +483,6 @@ &mcasp1 {
+--- a/sound/soc/qcom/qdsp6/topology.c
++++ b/sound/soc/qcom/qdsp6/topology.c
+@@ -504,8 +504,8 @@ static int audioreach_widget_load_module
+ 		return PTR_ERR(cont);
  
- 		op-mode = <0>;          /* MCASP_IIS_MODE */
- 		tdm-slots = <2>;
--		/* 16 serializers */
--		num-serializer = <16>;
- 		serial-dir = <  /* 0: INACTIVE, 1: TX, 2: RX */
- 			0 0 2 1 0 0 0 0 0 0 0 0 0 0 0 0
- 		>;
--- 
-2.51.0
-
+ 	mod = audioreach_parse_common_tokens(apm, cont, &tplg_w->priv, w);
+-	if (IS_ERR(mod))
+-		return PTR_ERR(mod);
++	if (IS_ERR_OR_NULL(mod))
++		return mod ? PTR_ERR(mod) : -ENODEV;
+ 
+ 	dobj = &w->dobj;
+ 	dobj->private = mod;
 
 
 
