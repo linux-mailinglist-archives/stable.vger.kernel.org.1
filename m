@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-184432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BA9BD44BF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7388BBD41E0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C12DF4FC085
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91E701883625
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9069F30DEDD;
-	Mon, 13 Oct 2025 14:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6056E30FF32;
+	Mon, 13 Oct 2025 15:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqrpL0jL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1z87T0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1135A3081B3;
-	Mon, 13 Oct 2025 14:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6BD30FF2E;
+	Mon, 13 Oct 2025 15:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367420; cv=none; b=DCtTHC7Bdqwz1N+1SDmkqqm3aCZbbNGAVJV0Wcn6J9E8RtUhslX3Xpz8RLuf4HxtteXj9BQ5dWovFuF1Rv525qFoM9dDuJsU81e9J1jYNN3iVv/GPanNS6shJ/V/HQm8yCpmweAlfaXINDt/MVVuKg3y+R1BnHJ2tJzkAi+70jM=
+	t=1760367981; cv=none; b=A5nn12I3aSpchjljLVBJHAseJ2bi4dLfon7XM/DQKhkPf48N2MJMnOCNsQcWJ0sME4QvPpgGdVnxr1qC1yHS2wJ1DPacHohiV1h6FPbcWD6MwRcMDagXrceolXZR9qy3tDyyuM5h5aAp7D20ceJd17q1pwngE+jfY2xSYBRiw7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367420; c=relaxed/simple;
-	bh=q5CQu7NsdPDYOvHTTswwRtl6ABcGEqY/XR6/218t5O4=;
+	s=arc-20240116; t=1760367981; c=relaxed/simple;
+	bh=+GkBuIUVw9XziaXgu7LwyQ03f2sIS5nuzQRnJr/8vPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GU2JeE96cFYkDTMtb/IaxXMhmkUuT3Af7axY0x2Tsw8xqBHj/w+rJB/wsl3au1zZ3MMCuN1eo1htjxwv7oDxToTmEXLCaxtNrSrojLwTY42e5D5VUoSLXgqAReDFem/jicXrUNzzKo5+Vts2AEQ8PmEVZfTsPicpIK9U3u7nHh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqrpL0jL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C67BC4CEE7;
-	Mon, 13 Oct 2025 14:56:59 +0000 (UTC)
+	 MIME-Version; b=I8qPhfQzrvb2tMYUEhNXxIJ6Vm3uG/YppbfcViR6GiTXBsVoyojJ6ll/JicFGr1b1rk9J1fnj9GHeuTfJBfS6V81GbG4+INt8HCvXPBQ4ZzPOF/vTFRRD6DoClr25AxY91ypDJ9gikSBVm9HYM+/y1ZtN1rplNX1Njru5VXtnjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1z87T0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F61C4CEFE;
+	Mon, 13 Oct 2025 15:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367419;
-	bh=q5CQu7NsdPDYOvHTTswwRtl6ABcGEqY/XR6/218t5O4=;
+	s=korg; t=1760367981;
+	bh=+GkBuIUVw9XziaXgu7LwyQ03f2sIS5nuzQRnJr/8vPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqrpL0jL8yxPyr6WMjQgv+zH3aErOfkpTlKX+XFCGOZS4Wd9Ppz6+ClPs4vzR7RvH
-	 dzX8+oOUyqyTipIos14Hdy0o5FxdGoRkhnpznp4pD822V/CyZYX02lLY5Q7AoNg+za
-	 C59h/R66qdKXq7T0G5ggqFDVqhb03oWDOj5tAyNw=
+	b=M1z87T0dR9BkKI4ea9t+XFccGJzGU5l66XtVqVM5KkmgBmEMZEpCTR4MWqdsB6t7E
+	 ZKlh10Xekppfyv1R/ahv4Cg71rBDc0KFM8wbtXlrId9tuwcIWlSeeI6soMMX0kCE74
+	 XcRlA/LBVKrVzpLJGOriKupyjwvryg6ZDlUBHv1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.1 195/196] cacheinfo: Fix LLC is not exported through sysfs
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 177/196] dm: fix queue start/stop imbalance under suspend/load/resume races
 Date: Mon, 13 Oct 2025 16:46:08 +0200
-Message-ID: <20251013144321.744322113@linuxfoundation.org>
+Message-ID: <20251013144321.712179138@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-commit 5c2712387d4850e0b64121d5fd3e6c4e84ea3266 upstream.
+commit 7f597c2cdb9d3263a6fce07c4fc0a9eaa8e8fc43 upstream.
 
-After entering 6.3-rc1 the LLC cacheinfo is not exported on our ACPI
-based arm64 server. This is because the LLC cacheinfo is partly reset
-when secondary CPUs boot up. On arm64 the primary cpu will allocate
-and setup cacheinfo:
-init_cpu_topology()
-  for_each_possible_cpu()
-    fetch_cache_info() // Allocate cacheinfo and init levels
-detect_cache_attributes()
-  cache_shared_cpu_map_setup()
-    if (!last_level_cache_is_valid()) // not valid, setup LLC
-      cache_setup_properties() // setup LLC
+When suspend and load run concurrently, before q->mq_ops is set in
+blk_mq_init_allocated_queue(), __dm_suspend() skip dm_stop_queue(). As a
+result, the queue's quiesce depth is not incremented.
 
-On secondary CPU boot up:
-detect_cache_attributes()
-  populate_cache_leaves()
-    get_cache_type() // Get cache type from clidr_el1,
-                     // for LLC type=CACHE_TYPE_NOCACHE
-  cache_shared_cpu_map_setup()
-    if (!last_level_cache_is_valid()) // Valid and won't go to this branch,
-                                      // leave LLC's type=CACHE_TYPE_NOCACHE
+Later, once table load has finished and __dm_resume() runs, which triggers
+q->quiesce_depth ==0 warning in blk_mq_unquiesce_queue():
+Call Trace:
+ <TASK>
+ dm_start_queue+0x16/0x20 [dm_mod]
+ __dm_resume+0xac/0xb0 [dm_mod]
+ dm_resume+0x12d/0x150 [dm_mod]
+ do_resume+0x2c2/0x420 [dm_mod]
+ dev_suspend+0x30/0x130 [dm_mod]
+ ctl_ioctl+0x402/0x570 [dm_mod]
+ dm_ctl_ioctl+0x23/0x30 [dm_mod]
 
-The last_level_cache_is_valid() use cacheinfo->{attributes, fw_token} to
-test it's valid or not, but populate_cache_leaves() will only reset
-LLC's type, so we won't try to re-setup LLC's type and leave it
-CACHE_TYPE_NOCACHE and won't export it through sysfs.
+Fix this by explicitly tracking whether the request queue was
+stopped in __dm_suspend() via a new DMF_QUEUE_STOPPED flag.
+Only call dm_start_queue() in __dm_resume() if the queue was
+actually stopped.
 
-This patch tries to fix this by not re-populating the cache leaves if
-the LLC is valid.
-
-Fixes: 5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU")
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Reviewed-by: Pierre Gondois <pierre.gondois@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/20230328114915.33340-1-yangyicong@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e70feb8b3e68 ("blk-mq: support concurrent queue quiesce/unquiesce")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/cacheinfo.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/md/dm-core.h |    1 +
+ drivers/md/dm.c      |    8 +++++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -490,12 +490,18 @@ int detect_cache_attributes(unsigned int
+--- a/drivers/md/dm-core.h
++++ b/drivers/md/dm-core.h
+@@ -161,6 +161,7 @@ struct mapped_device {
+ #define DMF_SUSPENDED_INTERNALLY 7
+ #define DMF_POST_SUSPENDING 8
+ #define DMF_EMULATE_ZONE_APPEND 9
++#define DMF_QUEUE_STOPPED 10
  
- populate_leaves:
- 	/*
--	 * populate_cache_leaves() may completely setup the cache leaves and
--	 * shared_cpu_map or it may leave it partially setup.
-+	 * If LLC is valid the cache leaves were already populated so just go to
-+	 * update the cpu map.
+ void disable_discard(struct mapped_device *md);
+ void disable_write_zeroes(struct mapped_device *md);
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2740,8 +2740,10 @@ static int __dm_suspend(struct mapped_de
+ 	 * Stop md->queue before flushing md->wq in case request-based
+ 	 * dm defers requests to md->wq from md->queue.
  	 */
--	ret = populate_cache_leaves(cpu);
--	if (ret)
--		goto free_ci;
-+	if (!last_level_cache_is_valid(cpu)) {
-+		/*
-+		 * populate_cache_leaves() may completely setup the cache leaves and
-+		 * shared_cpu_map or it may leave it partially setup.
-+		 */
-+		ret = populate_cache_leaves(cpu);
-+		if (ret)
-+			goto free_ci;
+-	if (dm_request_based(md))
++	if (dm_request_based(md)) {
+ 		dm_stop_queue(md->queue);
++		set_bit(DMF_QUEUE_STOPPED, &md->flags);
 +	}
  
- 	/*
- 	 * For systems using DT for cache hierarchy, fw_token
+ 	flush_workqueue(md->wq);
+ 
+@@ -2763,7 +2765,7 @@ static int __dm_suspend(struct mapped_de
+ 	if (r < 0) {
+ 		dm_queue_flush(md);
+ 
+-		if (dm_request_based(md))
++		if (test_and_clear_bit(DMF_QUEUE_STOPPED, &md->flags))
+ 			dm_start_queue(md->queue);
+ 
+ 		unlock_fs(md);
+@@ -2847,7 +2849,7 @@ static int __dm_resume(struct mapped_dev
+ 	 * so that mapping of targets can work correctly.
+ 	 * Request-based dm is queueing the deferred I/Os in its request_queue.
+ 	 */
+-	if (dm_request_based(md))
++	if (test_and_clear_bit(DMF_QUEUE_STOPPED, &md->flags))
+ 		dm_start_queue(md->queue);
+ 
+ 	unlock_fs(md);
 
 
 
