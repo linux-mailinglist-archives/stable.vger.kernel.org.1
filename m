@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653AEBD40C9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:21:28 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98665BD3E8B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:10:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 510601889158
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A044E4FE8AE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4981A9B46;
-	Mon, 13 Oct 2025 15:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6477630AAC1;
+	Mon, 13 Oct 2025 14:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6lww2gi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hey5XJRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4702F5A37;
-	Mon, 13 Oct 2025 15:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFCF309F0A;
+	Mon, 13 Oct 2025 14:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367670; cv=none; b=tUsfbxD3d7DvS8FUxiYmgn8/Bw38SiT2zJ5Tr+yJFdQTmlDv/Qhpbq0O5mppeKHHMJwIjCgNaZAOMzHXYsRBGyokTNHGxiFzrrW9NiOICwNnXYil2i07DBCV9z1pXb/eHrTD2C+0d8Jd9m2fipU9IQ2x0s41dcmbQxGho7aCtac=
+	t=1760367153; cv=none; b=AvBBOFD7IYS8D1ipWkmhIBOjSV2U5HNKne4Y4s87Iq72cqFTKMz0R/kCBGnyPzSPdrpTYkNvGhxdxl0p4Phu+OTVwGI3i5PvBRmZF3uHwvLL3YSgyd1HUahAPJd4sjQkv5wCmHNGJn/6vx9du8dMSaHGOBoU2E8GQ6R5j0VAjk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367670; c=relaxed/simple;
-	bh=Fn2dWrSR+WpwQ8lL7XtJCapCss+ym1mFWXIdpOjG/iA=;
+	s=arc-20240116; t=1760367153; c=relaxed/simple;
+	bh=l5Q1HNxPkcqgZ1lkEGrjSv1asNVw+i33zN9lSSTmQ3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukdzC6f4j8Kvz+bm89DG15IcNmwign3X0BWu9d+Cx0VR+TJkMv/+meXME2yneLsSIoB1G9wYo/ThWo+Y9K1vgGuLBXIg1F710W4FbCaKCDW/aovIfEsZ5rFFup5wexZjjuZgEohy2h87tFguJP0IGBQTn0U+V4Gq0HdF6CVNPUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6lww2gi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB560C4CEE7;
-	Mon, 13 Oct 2025 15:01:09 +0000 (UTC)
+	 MIME-Version; b=o9azy5S6A0cSGEXsn2Pla7nfZDKftdyNazKSK6aay5OwWmBJirIhY/VdNtVIAmvo+EVrv4G7ajarh51CZKJrogizx5AwJzaTs4RpldWXh848/Y19gp9Xe4qV46VZUPVwX7vLOWLoCGswTDVj2JvMie9xCUp0SrBvDYZQ/7Zv5c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hey5XJRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEF8C4CEE7;
+	Mon, 13 Oct 2025 14:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367670;
-	bh=Fn2dWrSR+WpwQ8lL7XtJCapCss+ym1mFWXIdpOjG/iA=;
+	s=korg; t=1760367152;
+	bh=l5Q1HNxPkcqgZ1lkEGrjSv1asNVw+i33zN9lSSTmQ3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6lww2gi4CbVfnAh00cpwFAqdZcmpZ5bvMqQa96PwOB672r+7kBZm8Cd+q7OGM77Y
-	 ZD4rI/T1znNmekGPiw+zhk/ZyodI3RNiRRns4VyWGVpAAnkoNdxT3SBx1MJZZROKIP
-	 jf4blUh1wqfYg8jPSpdH8Hym8+Gu9d4tYil8H4IU=
+	b=Hey5XJRjj1SyKmXoVywxsY3rCM9dDFAgqSUHBYwII114/z2Y7VexS6Nzb6azqfgq3
+	 omgVM8umJfMlSLKfMSIjU/Y0++P5JctubZ6BEsNPKxreUWZ5lMOdxJhsyBANkVt1rP
+	 GrJV7TQs6oTjoC63cxhxylKCeZuYMvriWbTRW8Pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jeff Chen <jeff.chen_1@nxp.con>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/196] wifi: mwifiex: send world regulatory domain to driver
+Subject: [PATCH 6.1 110/196] wifi: mwifiex: send world regulatory domain to driver
 Date: Mon, 13 Oct 2025 16:44:43 +0200
-Message-ID: <20251013144318.644363055@linuxfoundation.org>
+Message-ID: <20251013144318.678300558@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,7 +86,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 69eea0628e670..df6e4a112ec48 100644
+index 5e25060647b2d..3b9b75eb4cdb8 100644
 --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
 +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
 @@ -659,10 +659,9 @@ static void mwifiex_reg_notifier(struct wiphy *wiphy,
