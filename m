@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2467BD3C07
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:57:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7E3BD4A64
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 532194F8BE7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:51:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BDCA4507CB3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176F130AADA;
-	Mon, 13 Oct 2025 14:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F35311587;
+	Mon, 13 Oct 2025 15:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ye5OIYl1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdnODYF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C226630AAD0;
-	Mon, 13 Oct 2025 14:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3590B30C606;
+	Mon, 13 Oct 2025 15:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366899; cv=none; b=aPxbU5XLCkOsNNXYDlfnXJfMfxvKKdOdII+burwSVlECZaela74H2gISrwbl54DuZegkKCySmHJpbaazi6cYkgYZhdbd+LJcVgDhuq2xpL5a1yXTKnvYHq7KTTNZxnhT9hFo+W3waI4R6zozhe9HLCI/BXn7wqtG2BexbTPBrRs=
+	t=1760368105; cv=none; b=EjoRJLJwJCrdATaF6MmE1cqW61cxeR4Rz4nsgN99xvjdrjucmPjnnmUQbWWXYIMGvarYgaeuxHAHCj22zBcupNdCCbKfGNyoKch/iURS/4IxyP8YZ+VseNYC1ytlD1/zjaSYmu3XLUBjfQfNER01rAF33n7nbz8iq7pmuGhYLNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366899; c=relaxed/simple;
-	bh=rrKltuquGOmoWYP1FrTr89lqU6jMHxBK+dgE1JcpVgM=;
+	s=arc-20240116; t=1760368105; c=relaxed/simple;
+	bh=BxNMKKsVKCO6dvlKcYX5VafShUCxLWHthB1ff/uf5NU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBRykszVkxjIDLQy5JQMHHiRkM4c1J+rrUzevMtZAOdWMikT+aQy3hg7aaHn3GqV0YQmbDHCad6x0lkbkBuR9W8Y8OMd1hJr2y2b0lqrtaRZLvkg2CMC6RFsBmg+8aPREBCzuIDSZZkyQoqbu0T0PrNUWXGvZOKPuGWn2rhEx6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ye5OIYl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B880C4CEE7;
-	Mon, 13 Oct 2025 14:48:18 +0000 (UTC)
+	 MIME-Version; b=lXpU9rRky6GmZRm20+W7SyiUZbO3BK+kfc1m6vDO7vml0jlmSOIhFVmNppGjcCYIi78zqsCHkbGo74OeyxFvFl357Eb0Ktt0dtTICKbXrnZfFIKQTDYZd/aRLwxX/e83NS7KbT8IqBBIH5PwP69PSpuGLwdSja3h5DP9ZdhnLiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdnODYF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FCEC4CEE7;
+	Mon, 13 Oct 2025 15:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366899;
-	bh=rrKltuquGOmoWYP1FrTr89lqU6jMHxBK+dgE1JcpVgM=;
+	s=korg; t=1760368104;
+	bh=BxNMKKsVKCO6dvlKcYX5VafShUCxLWHthB1ff/uf5NU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ye5OIYl1uhBmfJUhL8DnCOl+5n8ISak3k/mr3Bg5GBun9oBryRBLuvmOTT8GFIFss
-	 GK0xUxDtxVcIpYefj545GDRF2STF1zZf3ldRdLSyhRp9oppipJgkEEeTiqcsLnuZzd
-	 1+c4O7rkiAm0dyfoiz7v01+jVPQr8vQS9WIzF3QY=
+	b=SdnODYF2BIe/WFOGbkYiAtwrB6IkpcYRQe2w208YZG/7WT0phztBuyMgcqW7XZ2Su
+	 FcNvDOuc0vp9XvOnUBoe48HEbyW2jkf2DzhFgwLZF0uW4ynAaM3YH0NdMLU5VgA13r
+	 2eVW6hu5Y2oRJ85LvBkEia31XiWKJsjmeemyxZr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Kenneth Van Alstyne <kvanals@kvanals.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 015/196] KVM: arm64: Fix softirq masking in FPSIMD register saving sequence
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 046/262] PM / devfreq: mtk-cci: Fix potential error pointer dereference in probe()
 Date: Mon, 13 Oct 2025 16:43:08 +0200
-Message-ID: <20251013144315.116824412@linuxfoundation.org>
+Message-ID: <20251013144327.789202710@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-Stable commit 8f4dc4e54eed ("KVM: arm64: Fix kernel BUG() due to bad
-backport of FPSIMD/SVE/SME fix") fixed a kernel BUG() caused by a bad
-backport of upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally
-save+flush host FPSIMD/SVE/SME state") by ensuring that softirqs are
-disabled/enabled across the fpsimd register save operation.
+[ Upstream commit fc33bf0e097c6834646b98a7b3da0ae5b617f0f9 ]
 
-Unfortunately, although this fixes the original issue, it can now lead
-to deadlock when re-enabling softirqs causes pending softirqs to be
-handled with locks already held:
+The drv->sram_reg pointer could be set to ERR_PTR(-EPROBE_DEFER) which
+would lead to a error pointer dereference.  Use IS_ERR_OR_NULL() to check
+that the pointer is valid.
 
- | BUG: spinlock recursion on CPU#7, CPU 3/KVM/57616
- |  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU 3/KVM/57616, .owner_cpu: 7
- | CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O       6.1.152 #1
- | Hardware name: SoftIron SoftIron Platform Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
- | Call trace:
- |  dump_backtrace+0xe4/0x110
- |  show_stack+0x20/0x30
- |  dump_stack_lvl+0x6c/0x88
- |  dump_stack+0x18/0x34
- |  spin_dump+0x98/0xac
- |  do_raw_spin_lock+0x70/0x128
- |  _raw_spin_lock+0x18/0x28
- |  raw_spin_rq_lock_nested+0x18/0x28
- |  update_blocked_averages+0x70/0x550
- |  run_rebalance_domains+0x50/0x70
- |  handle_softirqs+0x198/0x328
- |  __do_softirq+0x1c/0x28
- |  ____do_softirq+0x18/0x28
- |  call_on_irq_stack+0x30/0x48
- |  do_softirq_own_stack+0x24/0x30
- |  do_softirq+0x74/0x90
- |  __local_bh_enable_ip+0x64/0x80
- |  fpsimd_save_and_flush_cpu_state+0x5c/0x68
- |  kvm_arch_vcpu_put_fp+0x4c/0x88
- |  kvm_arch_vcpu_put+0x28/0x88
- |  kvm_sched_out+0x38/0x58
- |  __schedule+0x55c/0x6c8
- |  schedule+0x60/0xa8
-
-Take a tiny step towards the upstream fix in 9b19700e623f ("arm64:
-fpsimd: Drop unneeded 'busy' flag") by additionally disabling hardirqs
-while saving the fpsimd registers.
-
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.1.y
-Fixes: 8f4dc4e54eed ("KVM: arm64: Fix kernel BUG() due to bad backport of FPSIMD/SVE/SME fix")
-Reported-by: Kenneth Van Alstyne <kvanals@kvanals.org>
-Link: https://lore.kernel.org/r/010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e09bd5757b52 ("PM / devfreq: mtk-cci: Handle sram regulator probe deferral")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Link: https://patchwork.kernel.org/project/linux-pm/patch/aJTNHz8kk8s6Q2os@stanley.mountain/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/fpsimd.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/devfreq/mtk-cci-devfreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1848,13 +1848,17 @@ static void fpsimd_flush_cpu_state(void)
-  */
- void fpsimd_save_and_flush_cpu_state(void)
- {
-+	unsigned long flags;
-+
- 	if (!system_supports_fpsimd())
- 		return;
- 	WARN_ON(preemptible());
--	get_cpu_fpsimd_context();
-+	local_irq_save(flags);
-+	__get_cpu_fpsimd_context();
- 	fpsimd_save();
- 	fpsimd_flush_cpu_state();
--	put_cpu_fpsimd_context();
-+	__put_cpu_fpsimd_context();
-+	local_irq_restore(flags);
- }
+diff --git a/drivers/devfreq/mtk-cci-devfreq.c b/drivers/devfreq/mtk-cci-devfreq.c
+index 7ad5225b0381d..6e608d92f7e66 100644
+--- a/drivers/devfreq/mtk-cci-devfreq.c
++++ b/drivers/devfreq/mtk-cci-devfreq.c
+@@ -386,7 +386,8 @@ static int mtk_ccifreq_probe(struct platform_device *pdev)
+ out_free_resources:
+ 	if (regulator_is_enabled(drv->proc_reg))
+ 		regulator_disable(drv->proc_reg);
+-	if (drv->sram_reg && regulator_is_enabled(drv->sram_reg))
++	if (!IS_ERR_OR_NULL(drv->sram_reg) &&
++	    regulator_is_enabled(drv->sram_reg))
+ 		regulator_disable(drv->sram_reg);
  
- #ifdef CONFIG_KERNEL_MODE_NEON
+ 	return ret;
+-- 
+2.51.0
+
 
 
 
