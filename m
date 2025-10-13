@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9005BD458E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:10 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32378BD4A00
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 116A3507FB9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D39DD34FE44
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE75130FF30;
-	Mon, 13 Oct 2025 15:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DBC3112C6;
+	Mon, 13 Oct 2025 15:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+DuOLGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDC2vYzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6413093C9;
-	Mon, 13 Oct 2025 15:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9111130C62B;
+	Mon, 13 Oct 2025 15:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368144; cv=none; b=qMBn7G+qjryKejhgR2QE/rDbwPzF0FuPZ0/MtPuSlCD7c3JeIa0uesz7MFqrZ7KJflcqolPSG/1Z/5ZpevvdAWJhPsxW2d8gwY2D8CxB0o7xaxPSFSJzDwa7UEQ5F2tf7OdzHPIHav+CCyaEFysjDEZGzZb8kr9Pm5wBbDgd5P4=
+	t=1760369827; cv=none; b=Shaa2CTYM0887omIuOo0NWEoCNBqkgvZ7X7HBkaMsq8+eMNCi0vWjhxhzKAu/MP8z+/Kr8AUNinXRaolHfMx3N32GldvVfQxazCYjwqT2Tstw8eaNp0NxUB4SnyCF3ore9ygkMAdAsvPaYPZxbhOutYzCrr4T42nFNugV3ir/w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368144; c=relaxed/simple;
-	bh=GIJ3Y/Jr/C7Jh1+dwbxIbgLg9M0rEiIXqfkOOrFeJ/Q=;
+	s=arc-20240116; t=1760369827; c=relaxed/simple;
+	bh=2C8x6WAEQHwOL4lP1+nooMQp7dr1UsgHSTtD23MyfhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abjer6FIm2qM94zBDGG/eA/rhuZqXW6xyexzsUW1chRjdXmxUkoAv78/dYtQcNnRS0OW4ZpMlghjFJ7OB9cGh/41gtUrIt36la63pqsRXdlSpgDQasCqnXAVpOFiuM3Ym1H2S7cz3gEDsHkGlUW2J69+zkEX8KSoXEmgdhFGbAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+DuOLGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F08BC4CEE7;
-	Mon, 13 Oct 2025 15:09:03 +0000 (UTC)
+	 MIME-Version; b=Ky2k6lrsCaji2XJbo18lsyLwYU4E/9TL6Q08yiQKNmgecOs5+E324avzQ4r5VK6Xhh4+Dp6R/5IJ0OJ7uRqovxp+Hg/nlu9t/QaYeOdcYyc2Y1TPFYCOLNRQD1vdvQxhWMpEgl++MH2F2gcft/MA9HQcb7ZjW5i4zTvsVxXz5ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDC2vYzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC4EC4CEE7;
+	Mon, 13 Oct 2025 15:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368144;
-	bh=GIJ3Y/Jr/C7Jh1+dwbxIbgLg9M0rEiIXqfkOOrFeJ/Q=;
+	s=korg; t=1760369827;
+	bh=2C8x6WAEQHwOL4lP1+nooMQp7dr1UsgHSTtD23MyfhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+DuOLGvlRLus//ukfJ+k64BDPSwf53Ge6XR8sPD4/0t6T8VVf8cbDI2BlbFEPJmD
-	 KXR0Pyx8NguwTnBxbIvMA7eSfgGmiI4PsFjaK467DccPurDP9Kqpcs6hcYJDQ43YTA
-	 2NoXAlnnDmkMuH4IdfVzz77p2+2fIiR5KUH3ID8U=
+	b=FDC2vYzKe4/3chtyILYQM6oib2rbRiNYPp+pVUuUmXAFIvJOynQN8hQ2E8vRxg4a8
+	 xq8Vc2LmDI1qtW/Aw+UmkDKxhHEnvcEixdR2x1opsL6Vv2/fGMqOqaYsiBTj7w+m38
+	 Vj6NO4++Li8E+3vx8iT86E7K4QXVzoeuXlXUbHOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/262] arm64: dts: mediatek: mt8186-tentacruel: Fix touchscreen model
+Subject: [PATCH 6.17 340/563] iio: consumers: Fix handling of negative channel scale in iio_convert_raw_to_processed()
 Date: Mon, 13 Oct 2025 16:43:21 +0200
-Message-ID: <20251013144328.255030889@linuxfoundation.org>
+Message-ID: <20251013144423.586677210@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +64,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 0370911565869384f19b35ea9e71ee7a57b48a33 ]
+[ Upstream commit 0f85406bf830eb8747dd555ab53c9d97ee4af293 ]
 
-The touchscreen controller used with the original Krabby design is the
-Elan eKTH6918, which is in the same family as eKTH6915, but supporting
-a larger screen size with more sense lines.
+There is an issue with the handling of negative channel scales
+in iio_convert_raw_to_processed_unlocked() when the channel-scale
+is of the IIO_VAL_INT_PLUS_[MICRO|NANO] type:
 
-OTOH, the touchscreen controller that actually shipped on the Tentacruel
-devices is the Elan eKTH6A12NAY. A compatible string was added for it
-specifically because it has different power sequencing timings.
+Things work for channel-scale values > -1.0 and < 0.0 because of
+the use of signed values in:
 
-Fix up the touchscreen nodes for both these. This also includes adding
-a previously missing reset line. Also add "no-reset-on-power-off" since
-the power is always on, and putting it in reset would consume more
-power.
+	*processed += div_s64(raw64 * (s64)scale_val2 * scale, 1000000LL);
 
-Fixes: 8855d01fb81f ("arm64: dts: mediatek: Add MT8186 Krabby platform based Tentacruel / Tentacool")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20250812090135.3310374-1-wenst@chromium.org
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Things will break however for scale values < -1.0. Lets for example say
+that raw = 2, (caller-provided)scale = 10 and (channel)scale_val = -1.5.
+
+The result should then be 2 * 10 * -1.5 = -30.
+
+channel-scale = -1.5 means scale_val = -1 and scale_val2 = 500000,
+now lets see what gets stored in processed:
+
+1. *processed = raw64 * scale_val * scale;
+2. *processed += raw64 * scale_val2 * scale / 1000000LL;
+
+1. Sets processed to 2 * -1 * 10 = -20
+2. Adds 2 * 500000 * 10 / 1000000 = 10 to processed
+
+And the end result is processed = -20 + 10 = -10, which is not correct.
+
+Fix this by always using the abs value of both scale_val and scale_val2
+and if either is negative multiply the end-result by -1.
+
+Note there seems to be an unwritten rule about negative
+IIO_VAL_INT_PLUS_[MICRO|NANO] values that:
+
+i.   values > -1.0 and < 0.0 are written as val=0 val2=-xxx
+ii.  values <= -1.0 are written as val=-xxx val2=xxx
+
+But iio_format_value() will also correctly display a third option:
+
+iii. values <= -1.0 written as val=-xxx val2=-xxx
+
+Since iio_format_value() uses abs(val) when val2 < 0.
+
+This fix also makes iio_convert_raw_to_processed() properly handle
+channel-scales using this third option.
+
+Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
+Cc: Matteo Martelli <matteomartelli3@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20250831104825.15097-2-hansg@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi   | 8 ++++----
- .../dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts  | 4 ++++
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/iio/inkern.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi b/arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi
-index 7c971198fa956..72a2a2bff0a93 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi
-@@ -71,14 +71,14 @@ &i2c1 {
- 	i2c-scl-internal-delay-ns = <10000>;
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index c174ebb7d5e6d..d36a80a7b8a93 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -11,6 +11,7 @@
+ #include <linux/mutex.h>
+ #include <linux/property.h>
+ #include <linux/slab.h>
++#include <linux/units.h>
  
- 	touchscreen: touchscreen@10 {
--		compatible = "hid-over-i2c";
-+		compatible = "elan,ekth6915";
- 		reg = <0x10>;
- 		interrupts-extended = <&pio 12 IRQ_TYPE_LEVEL_LOW>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&touchscreen_pins>;
--		post-power-on-delay-ms = <10>;
--		hid-descr-addr = <0x0001>;
--		vdd-supply = <&pp3300_s3>;
-+		reset-gpios = <&pio 60 GPIO_ACTIVE_LOW>;
-+		vcc33-supply = <&pp3300_s3>;
-+		no-reset-on-power-off;
- 	};
- };
+ #include <linux/iio/iio.h>
+ #include <linux/iio/iio-opaque.h>
+@@ -604,7 +605,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ {
+ 	int scale_type, scale_val, scale_val2;
+ 	int offset_type, offset_val, offset_val2;
+-	s64 raw64 = raw;
++	s64 denominator, raw64 = raw;
  
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts b/arch/arm64/boot/dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts
-index 26d3451a5e47c..24d9ede63eaa2 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts
-@@ -42,3 +42,7 @@ MATRIX_KEY(0x00, 0x04, KEY_VOLUMEUP)
- 		CROS_STD_MAIN_KEYMAP
- 	>;
- };
-+
-+&touchscreen {
-+	compatible = "elan,ekth6a12nay";
-+};
+ 	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
+ 				       IIO_CHAN_INFO_OFFSET);
+@@ -648,20 +649,19 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ 		*processed = raw64 * scale_val * scale;
+ 		break;
+ 	case IIO_VAL_INT_PLUS_MICRO:
+-		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val * scale;
+-		else
+-			*processed = raw64 * scale_val * scale;
+-		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+-				      1000000LL);
+-		break;
+ 	case IIO_VAL_INT_PLUS_NANO:
+-		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val * scale;
+-		else
+-			*processed = raw64 * scale_val * scale;
+-		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+-				      1000000000LL);
++		switch (scale_type) {
++		case IIO_VAL_INT_PLUS_MICRO:
++			denominator = MICRO;
++			break;
++		case IIO_VAL_INT_PLUS_NANO:
++			denominator = NANO;
++			break;
++		}
++		*processed = raw64 * scale * abs(scale_val);
++		*processed += div_s64(raw64 * scale * abs(scale_val2), denominator);
++		if (scale_val < 0 || scale_val2 < 0)
++			*processed *= -1;
+ 		break;
+ 	case IIO_VAL_FRACTIONAL:
+ 		*processed = div_s64(raw64 * (s64)scale_val * scale,
 -- 
 2.51.0
 
