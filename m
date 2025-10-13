@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5F5BD4814
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:48:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE44BD43E7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 981954FC6F1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAA2401AD5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDCA3081C5;
-	Mon, 13 Oct 2025 15:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6FE30E85D;
+	Mon, 13 Oct 2025 15:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PW9lPMR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fD9pGd+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECEF3081A8;
-	Mon, 13 Oct 2025 15:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BAF30E859;
+	Mon, 13 Oct 2025 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368417; cv=none; b=ib6nlMQ/pc1LETzu/pqyjBVpNBPGL/hRYL0iVfjVgfs+I84LYgj6WorAXiOjw/qIZAsA8wOGeO2iEsx+6LW+XTfRruDz90eMVNvjAnq1VTaiyhqsOD5KkvF/Gw3h5zgUDuoq5i52fF3nDks0LjhQmS9VhEKHbTdiNs598wqM6qc=
+	t=1760367804; cv=none; b=A4RAzy4sqvFEGYszypO+i3TCEB5kkt+CF+Ws7cJpOd8cxDU0MoU/6+WKwl/C8TbpJVyZDGbB6+yy05D9yBo4F529FVhBvWdEAOuk6PSokspj9UjeRvIgrF4WUQ6PN+iR7JJx1WO/y/70Mkm4kGPPMR1Kw+hH9vnFvt+Lu2qm6qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368417; c=relaxed/simple;
-	bh=K36APKBQv/nxXd5G2UvUEFKbPL3CKptXHLVEqJci4Jk=;
+	s=arc-20240116; t=1760367804; c=relaxed/simple;
+	bh=2Qljs/6GQ5kYpXFf7eAuoe/7XdV5B28KuLHFGC57YYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svyAU0H0Lay2PrCLwknmIwxU5e+pmTYRcDjnULViqLaNAv/iTBpUStUkgaC9h1fboQxJIetJ66rcdgpBGJ8vH5PcM7TgxWiJ9e+S52HyjI0ClUXULi9t5t4azE3/1n2Wbd2uBTqrwGIIlO5w1gLUZTtMuWg1/g8iFQMfrUUOjNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW9lPMR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32FFAC4CEE7;
-	Mon, 13 Oct 2025 15:13:37 +0000 (UTC)
+	 MIME-Version; b=gxMki7j+u15cuaV3Oy5Npse7TCnalSNO9yQH+Ch3G0WSkN8aecw0oDjsxTvd+FUXiwrS580uTlx1msMwywDY6mt1IZrTuHIFuOuDciZlF8ocVce1GoBxwlD275NvnNNICGv7AwRo8aQxEaMDMHsKDFRJlRUJZvYranpWF8NOzj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fD9pGd+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73288C4CEE7;
+	Mon, 13 Oct 2025 15:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368417;
-	bh=K36APKBQv/nxXd5G2UvUEFKbPL3CKptXHLVEqJci4Jk=;
+	s=korg; t=1760367803;
+	bh=2Qljs/6GQ5kYpXFf7eAuoe/7XdV5B28KuLHFGC57YYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PW9lPMR9Jom9cYDbYupONDTQzLUXYCqslSgdWi7hstA6R5KyPvjBRbDmTJd74dqpF
-	 Y7TiDH+r4cIC/r/OdM8NCqc84+z5oqw9q2KwSCwxPmfrjUReQW3/klsS681J+QdtvI
-	 xF4mF7l8CbdYdQgOi5Gox/r8k1s5nyZZw+8yoCdA=
+	b=fD9pGd+WE7S3yTFnZlU265pGIvEK3/dgIiRCrGabHShGAXvYXsUPVBQNOdzEO/Lz0
+	 CYpSFK5OiVlTnVtBbPzjRT/jJJurC7cBo4eIthkCoep7Ht323yPJX+f78kXGmFxFeR
+	 ORCDtBqG52rf+n5ofvD3RCPmfwvd0+hgGcOxFTwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+	syzbot+b0373017f711c06ada64@syzkaller.appspotmail.com,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/262] ACPI: NFIT: Fix incorrect ndr_desc being reportedin dev_err message
+Subject: [PATCH 6.6 106/196] fs/ntfs3: reject index allocation if $BITMAP is empty but blocks exist
 Date: Mon, 13 Oct 2025 16:44:57 +0200
-Message-ID: <20251013144331.703050542@linuxfoundation.org>
+Message-ID: <20251013144319.148685965@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit d1a599a8136b16522b5afebd122395524496d549 ]
+[ Upstream commit 0dc7117da8f92dd5fe077d712a756eccbe377d40 ]
 
-There appears to be a cut-n-paste error with the incorrect field
-ndr_desc->numa_node being reported for the target node. Fix this by
-using ndr_desc->target_node instead.
+Index allocation requires at least one bit in the $BITMAP attribute to
+track usage of index entries. If the bitmap is empty while index blocks
+are already present, this reflects on-disk corruption.
 
-Fixes: f060db99374e ("ACPI: NFIT: Use fallback node id when numa info in NFIT table is incorrect")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+syzbot triggered this condition using a malformed NTFS image. During a
+rename() operation involving a long filename (which spans multiple
+index entries), the empty bitmap allowed the name to be added without
+valid tracking. Subsequent deletion of the original entry failed with
+-ENOENT, due to unexpected index state.
+
+Reject such cases by verifying that the bitmap is not empty when index
+blocks exist.
+
+Reported-by: syzbot+b0373017f711c06ada64@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b0373017f711c06ada64
+Fixes: d99208b91933 ("fs/ntfs3: cancle set bad inode after removing name fails")
+Tested-by: syzbot+b0373017f711c06ada64@syzkaller.appspotmail.com
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/nfit/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/index.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index ae035b93da087..3eb56b77cb6d9 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -2637,7 +2637,7 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
- 	if (ndr_desc->target_node == NUMA_NO_NODE) {
- 		ndr_desc->target_node = phys_to_target_node(spa->address);
- 		dev_info(acpi_desc->dev, "changing target node from %d to %d for nfit region [%pa-%pa]",
--			NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
-+			NUMA_NO_NODE, ndr_desc->target_node, &res.start, &res.end);
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 191b91ffadbb2..f227db9f76c2b 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1510,6 +1510,16 @@ static int indx_add_allocate(struct ntfs_index *indx, struct ntfs_inode *ni,
+ 			bmp_size = bmp_size_v = le32_to_cpu(bmp->res.data_size);
+ 		}
+ 
++		/*
++		 * Index blocks exist, but $BITMAP has zero valid bits.
++		 * This implies an on-disk corruption and must be rejected.
++		 */
++		if (in->name == I30_NAME &&
++		    unlikely(bmp_size_v == 0 && indx->alloc_run.count)) {
++			err = -EINVAL;
++			goto out1;
++		}
++
+ 		bit = bmp_size << 3;
  	}
  
- 	/*
 -- 
 2.51.0
 
