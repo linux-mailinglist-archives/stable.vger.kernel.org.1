@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-185019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A73EEBD4EEB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:21:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE35BD4D8F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 81508503A6F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76AC34FA2C5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8689B30CD88;
-	Mon, 13 Oct 2025 15:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C24D31076D;
+	Mon, 13 Oct 2025 15:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xas9Gnz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3N+nyN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A1630CD82;
-	Mon, 13 Oct 2025 15:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDD931076C;
+	Mon, 13 Oct 2025 15:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369101; cv=none; b=h1O+fdANQB5J+QhQk8p17N6mRIMFQlEgPiOSc0vMHEvYVSHe3xC5eK5M6SBys328fly7vpG0v082fN0OpQiUWZkN7CG8YF+lOmI6xKdsJWgL7RSx1RtzCNr7a64xorbLae3mARMyQ217XeaMCCRWd0fhWaFq0IU+SooFOcOUj4Q=
+	t=1760369012; cv=none; b=IpnPpwI/OYBHEnRM+nbScvZgXNcokAle4YEpeKKfqsabrc7I6KfIefkQ4ELs0jTOsW+2KhJPiNVCtnSCtD3kP9q2mweco35onDuv9qJUHMgW3NTwgYnI2D+jmvZ6TKF5OaTqE+7CcSmJbyOPSEUfyTRYy6OjqG0OwETaWQJS7ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369101; c=relaxed/simple;
-	bh=hemfGLBTH6BcQVQI5v8hVZ05hye5a8wfJBxhtA1SMhg=;
+	s=arc-20240116; t=1760369012; c=relaxed/simple;
+	bh=qvOeCKUX8a1tDbJq+LoPfe68W55OwdIFfcfv7kt258U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KK8h8puEFfUlim672vMHYOyH0s+IO1kzj5+gI4gmwyf9+VV2K2WUDGwWngyZ1qwOt5qDwr5NpJPRaAhvK0CGtfutwK2M6AiPkTZK3SCxyskzEqIIC8crMUkAx+Y/dmFFTISwoT+EPnDp7YRPE2jkkuR3ggOU/8W0DgQx53Pk1Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xas9Gnz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF73FC4CEE7;
-	Mon, 13 Oct 2025 15:25:00 +0000 (UTC)
+	 MIME-Version; b=HdQgo42pudcFQDoqk/KkZLQLvJ0Pz8A7+CFz/C5k4p+w2ptoeXiRGmV+xEoVPCxAoFsZXXvkHyBye1jr3ktyGNTbNKtvwmBM1vuMgT7RGHsqVZgD9GeYJSCFz3T415Pw67GeTzEGXtbyfyjyPGbGE5uPJ0OTe5CFYotIgFe/PL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3N+nyN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DBAC4CEE7;
+	Mon, 13 Oct 2025 15:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369101;
-	bh=hemfGLBTH6BcQVQI5v8hVZ05hye5a8wfJBxhtA1SMhg=;
+	s=korg; t=1760369012;
+	bh=qvOeCKUX8a1tDbJq+LoPfe68W55OwdIFfcfv7kt258U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xas9Gnz2hUvke6eWh+zgptoI9geRMOtY/D6yDjG7H4iD2Fn0f4yIyKfxslR37bd4D
-	 UeKbgr5C25TK+7+cWLPellCd4HqwLjtooEYHmVKeQhyC3Cg3KgURlQ0zF00tWazdFp
-	 w6tgtwLSLzQIIjvd78hCAwcfQ7zMonloi4B+NW5o=
+	b=Z3N+nyN0KtshXomHhOKd++m+/meNo4Fb/nJhG1gyZAhddnicyD0FHAuYh75524eGe
+	 fEQdLhal1CKoBOgPj51Ng9hyzO0IkXbXY9khqKx9AQwmve1DFA3QrYs8aKRx3qEC69
+	 SwJDQmx/56AS+LEUELEBOR1Bn0OhHsBw7QRXgXXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 095/563] vdso: Add struct __kernel_old_timeval forward declaration to gettime.h
-Date: Mon, 13 Oct 2025 16:39:16 +0200
-Message-ID: <20251013144414.737176071@linuxfoundation.org>
+Subject: [PATCH 6.17 098/563] ARM: dts: omap: am335x-cm-t335: Remove unused mcasp num-serializer property
+Date: Mon, 13 Oct 2025 16:39:19 +0200
+Message-ID: <20251013144414.845478391@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -60,43 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit 437054b1bbe11be87ab0a522b8ccbae3f785c642 ]
+[ Upstream commit 27322753c8b913fba05250e7b5abb1da31e6ed23 ]
 
-The prototype of __vdso_gettimeofday() uses this struct.  However
-gettime.h's own includes do not provide a definition for it.
+The dtbs_check validation for am335x-cm-t335.dtb flags an error
+for an unevaluated 'num-serializer' property in the mcasp0 node.
 
-Add a forward declaration, similar to other used structs.
+This property is obsolete; it is not defined in the davinci-mcasp-audio
+schema and is not used by the corresponding (or any) driver.
 
-Fixes: 42874e4eb35b ("arch: vdso: consolidate gettime prototypes")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250815-vdso-sparc64-generic-2-v2-1-b5ff80672347@linutronix.de
+Remove this unused property to fix the schema validation warning.
+
+Fixes: 48ab364478e77 ("ARM: dts: cm-t335: add audio support")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Link: https://lore.kernel.org/r/20250830215957.285694-1-jihed.chaibi.dev@gmail.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/vdso/gettime.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/vdso/gettime.h b/include/vdso/gettime.h
-index c50d152e7b3e0..9ac161866653a 100644
---- a/include/vdso/gettime.h
-+++ b/include/vdso/gettime.h
-@@ -5,6 +5,7 @@
- #include <linux/types.h>
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts b/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts
+index 06767ea164b59..ece7f7854f6aa 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts
+@@ -483,8 +483,6 @@ &mcasp1 {
  
- struct __kernel_timespec;
-+struct __kernel_old_timeval;
- struct timezone;
- 
- #if !defined(CONFIG_64BIT) || defined(BUILD_VDSO32_64)
+ 		op-mode = <0>;          /* MCASP_IIS_MODE */
+ 		tdm-slots = <2>;
+-		/* 16 serializers */
+-		num-serializer = <16>;
+ 		serial-dir = <  /* 0: INACTIVE, 1: TX, 2: RX */
+ 			0 0 2 1 0 0 0 0 0 0 0 0 0 0 0 0
+ 		>;
 -- 
 2.51.0
 
