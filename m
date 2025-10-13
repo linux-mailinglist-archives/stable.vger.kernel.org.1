@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-184996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690D7BD4CCC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:10:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8816BD4CE7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D81DD503777
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9518E42756A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7131D30C61C;
-	Mon, 13 Oct 2025 15:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5DE3112B7;
+	Mon, 13 Oct 2025 15:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcRMAYVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgCQGA1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D15517F4F6;
-	Mon, 13 Oct 2025 15:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDE23112B4;
+	Mon, 13 Oct 2025 15:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369036; cv=none; b=faTGgqa/1xfEf36HxOTXChanMOdALUmF8pDBnagrSfiAw0/i8/DmB3sOHYfq0Ph/1gNSuq/Y16vd5Ocs/KHNOxLANqO1E31nTpRTZTqycbTbq8IaIN8DD8E56gtEWqqsMqXLX5fhJGaWSp+XWEMdgBxqXsmTmloBHqZGIppUUC8=
+	t=1760369050; cv=none; b=rYOQITDkIjzPqbBk7C5OABm8T2zPw5UIkNXCujc2Ev+z/1o0B0TdnhreMNpJTVYCORT70DWW13R6Q2tlc8sF9wvznjwT05y4WG0dpKJYOnIjXHo/x8oOfZc49VZNCxR6H/j3Q/PE5+TIB79NeC/ypjueFpOtJBa5Ca/8PcILHx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369036; c=relaxed/simple;
-	bh=DOJ8qt2Y+YJ9ityRo8iluviqW1OKx7FgQiMbvt+PPXI=;
+	s=arc-20240116; t=1760369050; c=relaxed/simple;
+	bh=xJogdsl6cmUWTs9ixDF5/KhfzW4bYvCjHpVOqvRpbdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kmNNa4RMLZrN6ac/kkCXftm19kXi2PmEenjRSx+viSJAJD47DqqFAsts5STcTKBYnv+M4KjvkFxdQVhvk1s14OJiv1pLRzUFUkGqdnl9KfaX8bmd5H9LF+G1wJCmDCcI1uAENdK+NRSYK2bYtL4DZL51yOkFBPgKBGUkDkJAQvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcRMAYVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C4EC4CEE7;
-	Mon, 13 Oct 2025 15:23:55 +0000 (UTC)
+	 MIME-Version; b=J1PRMqwB/QsTvvsr/QVEtBMhhddXdpdkVddgGd8wP8sCCHwc+Ja6TlFrectsJzcKlcf+ZXLsSrRyqXVLWtJUdeHj01Pv9pkg4NUpi3IgM5sSqoC98U7D8vS+c7wpAiHdXDVZwzYi9xMsLxC9atYvT5qfT8+Yhwly46g+qjKH+14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgCQGA1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62EEEC4CEFE;
+	Mon, 13 Oct 2025 15:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369035;
-	bh=DOJ8qt2Y+YJ9ityRo8iluviqW1OKx7FgQiMbvt+PPXI=;
+	s=korg; t=1760369049;
+	bh=xJogdsl6cmUWTs9ixDF5/KhfzW4bYvCjHpVOqvRpbdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcRMAYVCopuWd+EOsgNm9K9D8zBnvGiQPaawQ5z8EXdrvf2NN+AsC7PQwocFInf7L
-	 m3JYsqkkANl913BYI2A699+JMj2nkrhM4B3WSgDp6YLWdNRrmRs5GZYcgQk3xa/7vm
-	 wJgflskQHNH471h7hEyego3DjsM4HH9RrbrAmR1c=
+	b=xgCQGA1MxgZ7qJ26eDPxQRG5JEMdBrwZA3LNNutQJhXvpeGH7VLlkerkKBl5KxJGB
+	 37FH5uRfGrBeCTR/R+4VkTUTq+u76ERFO4vKaX3hZ4+qCeBahnOMLIM7lJP+Ghjk8h
+	 X2QRUZzHVMKgbKIvU4H+t0s/Ulgrdasc2TuCNos8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Bibo Mao <maobibo@loongson.cn>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 106/563] selftests: vDSO: Fix -Wunitialized in powerpc VDSO_CALL() wrapper
-Date: Mon, 13 Oct 2025 16:39:27 +0200
-Message-ID: <20251013144415.134205741@linuxfoundation.org>
+Subject: [PATCH 6.17 110/563] tick: Do not set device to detached state in tick_shutdown()
+Date: Mon, 13 Oct 2025 16:39:31 +0200
+Message-ID: <20251013144415.279043368@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -62,81 +61,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit 9f15e0f9ef514b8e1a80707931f6d07362e8ebc4 ]
+[ Upstream commit fe2a449a45b13df1562419e0104b4777b6ea5248 ]
 
-The _rval register variable is meant to be an output operand of the asm
-statement but is instead used as input operand.
-clang 20.1 notices this and triggers -Wuninitialized warnings:
+tick_shutdown() sets the state of the clockevent device to detached
+first and the invokes clockevents_exchange_device(), which in turn
+invokes clockevents_switch_state().
 
-tools/testing/selftests/timers/auxclock.c:154:10: error: variable '_rval' is uninitialized when used here [-Werror,-Wuninitialized]
-  154 |                 return VDSO_CALL(self->vdso_clock_gettime64, 2, clockid, ts);
-      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tools/testing/selftests/timers/../vDSO/vdso_call.h:59:10: note: expanded from macro 'VDSO_CALL'
-   59 |                 : "r" (_rval)                                           \
-      |                        ^~~~~
-tools/testing/selftests/timers/auxclock.c:154:10: note: variable '_rval' is declared here
-tools/testing/selftests/timers/../vDSO/vdso_call.h:47:2: note: expanded from macro 'VDSO_CALL'
-   47 |         register long _rval asm ("r3");                                 \
-      |         ^
+But clockevents_switch_state() returns without invoking the device shutdown
+callback as the device is already in detached state. As a consequence the
+timer device is not shutdown when a CPU goes offline.
 
-It seems the list of input and output operands have been switched around.
-However as the argument registers are not always initialized they can not
-be marked as pure inputs as that would trigger -Wuninitialized warnings.
-Adding _rval as another input and output operand does also not work as it
-would collide with the existing _r3 variable.
+tick_shutdown() does this because it was originally invoked on a online CPU
+and not on the outgoing CPU. It therefore could not access the clockevent
+device of the already offlined CPU and just set the state.
 
-Instead reuse _r3 for both the argument and the return value.
+Since commit 3b1596a21fbf tick_shutdown() is called on the outgoing CPU, so
+the hardware device can be accessed.
 
-Fixes: 6eda706a535c ("selftests: vDSO: fix the way vDSO functions are called for powerpc")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Remove the state set before calling clockevents_exchange_device(), so that
+the subsequent clockevents_switch_state() handles the state transition and
+invokes the shutdown callback of the clockevent device.
+
+[ tglx: Massaged change log ]
+
+Fixes: 3b1596a21fbf ("clockevents: Shutdown and unregister current clockevents at CPUHP_AP_TICK_DYING")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/all/20250812-vdso-tests-fixes-v2-1-90f499dd35f8@linutronix.de
-Closes: https://lore.kernel.org/oe-kbuild-all/202506180223.BOOk5jDK-lkp@intel.com/
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/all/20250906064952.3749122-2-maobibo@loongson.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/vdso_call.h | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ kernel/time/clockevents.c   |  2 +-
+ kernel/time/tick-common.c   | 16 +++++-----------
+ kernel/time/tick-internal.h |  2 +-
+ 3 files changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_call.h b/tools/testing/selftests/vDSO/vdso_call.h
-index bb237d771051b..e7205584cbdca 100644
---- a/tools/testing/selftests/vDSO/vdso_call.h
-+++ b/tools/testing/selftests/vDSO/vdso_call.h
-@@ -44,7 +44,6 @@
- 	register long _r6 asm ("r6");					\
- 	register long _r7 asm ("r7");					\
- 	register long _r8 asm ("r8");					\
--	register long _rval asm ("r3");					\
- 									\
- 	LOADARGS_##nr(fn, args);					\
- 									\
-@@ -54,13 +53,13 @@
- 		"	bns+	1f\n"					\
- 		"	neg	3, 3\n"					\
- 		"1:"							\
--		: "+r" (_r0), "=r" (_r3), "+r" (_r4), "+r" (_r5),	\
-+		: "+r" (_r0), "+r" (_r3), "+r" (_r4), "+r" (_r5),	\
- 		  "+r" (_r6), "+r" (_r7), "+r" (_r8)			\
--		: "r" (_rval)						\
-+		:							\
- 		: "r9", "r10", "r11", "r12", "cr0", "cr1", "cr5",	\
- 		  "cr6", "cr7", "xer", "lr", "ctr", "memory"		\
- 	);								\
--	_rval;								\
-+	_r3;								\
- })
+diff --git a/kernel/time/clockevents.c b/kernel/time/clockevents.c
+index f3e831f62906f..a59bc75ab7c5b 100644
+--- a/kernel/time/clockevents.c
++++ b/kernel/time/clockevents.c
+@@ -633,7 +633,7 @@ void tick_offline_cpu(unsigned int cpu)
+ 	raw_spin_lock(&clockevents_lock);
  
- #else
+ 	tick_broadcast_offline(cpu);
+-	tick_shutdown(cpu);
++	tick_shutdown();
+ 
+ 	/*
+ 	 * Unregister the clock event devices which were
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 9a3859443c042..7e33d3f2e889b 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -411,24 +411,18 @@ int tick_cpu_dying(unsigned int dying_cpu)
+ }
+ 
+ /*
+- * Shutdown an event device on a given cpu:
++ * Shutdown an event device on the outgoing CPU:
+  *
+- * This is called on a life CPU, when a CPU is dead. So we cannot
+- * access the hardware device itself.
+- * We just set the mode and remove it from the lists.
++ * Called by the dying CPU during teardown, with clockevents_lock held
++ * and interrupts disabled.
+  */
+-void tick_shutdown(unsigned int cpu)
++void tick_shutdown(void)
+ {
+-	struct tick_device *td = &per_cpu(tick_cpu_device, cpu);
++	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+ 	struct clock_event_device *dev = td->evtdev;
+ 
+ 	td->mode = TICKDEV_MODE_PERIODIC;
+ 	if (dev) {
+-		/*
+-		 * Prevent that the clock events layer tries to call
+-		 * the set mode function!
+-		 */
+-		clockevent_set_state(dev, CLOCK_EVT_STATE_DETACHED);
+ 		clockevents_exchange_device(dev, NULL);
+ 		dev->event_handler = clockevents_handle_noop;
+ 		td->evtdev = NULL;
+diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
+index faac36de35b9e..4e4f7bbe2a64b 100644
+--- a/kernel/time/tick-internal.h
++++ b/kernel/time/tick-internal.h
+@@ -26,7 +26,7 @@ extern void tick_setup_periodic(struct clock_event_device *dev, int broadcast);
+ extern void tick_handle_periodic(struct clock_event_device *dev);
+ extern void tick_check_new_device(struct clock_event_device *dev);
+ extern void tick_offline_cpu(unsigned int cpu);
+-extern void tick_shutdown(unsigned int cpu);
++extern void tick_shutdown(void);
+ extern void tick_suspend(void);
+ extern void tick_resume(void);
+ extern bool tick_check_replacement(struct clock_event_device *curdev,
 -- 
 2.51.0
 
