@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8816BD4CE7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:11:09 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 255E9BD4D4A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:13:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9518E42756A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7B9DC54568E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5DE3112B7;
-	Mon, 13 Oct 2025 15:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109AC299A9E;
+	Mon, 13 Oct 2025 15:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgCQGA1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ECQ20P9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDE23112B4;
-	Mon, 13 Oct 2025 15:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C256230C36B;
+	Mon, 13 Oct 2025 15:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369050; cv=none; b=rYOQITDkIjzPqbBk7C5OABm8T2zPw5UIkNXCujc2Ev+z/1o0B0TdnhreMNpJTVYCORT70DWW13R6Q2tlc8sF9wvznjwT05y4WG0dpKJYOnIjXHo/x8oOfZc49VZNCxR6H/j3Q/PE5+TIB79NeC/ypjueFpOtJBa5Ca/8PcILHx8=
+	t=1760369067; cv=none; b=J9GkGxGy3PROEYqfUYoprUxNN6Gf2Ftspcm/pkM2lb1wKNreWXeUq12Vc0OBgV1qIBHS0tvXAglxrsPQzccW/znGJ/NyW+mncuZz6qSn/H9AtsXYvOhHfisJ+heKUkrZHmGo//nzulg4r+mItCE1BXy66N09It981X7C+f70HO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369050; c=relaxed/simple;
-	bh=xJogdsl6cmUWTs9ixDF5/KhfzW4bYvCjHpVOqvRpbdI=;
+	s=arc-20240116; t=1760369067; c=relaxed/simple;
+	bh=UhWpqT2i2nclpC5jaF8eYBDEWOcS1HgoQQDLWF/3Hyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1PRMqwB/QsTvvsr/QVEtBMhhddXdpdkVddgGd8wP8sCCHwc+Ja6TlFrectsJzcKlcf+ZXLsSrRyqXVLWtJUdeHj01Pv9pkg4NUpi3IgM5sSqoC98U7D8vS+c7wpAiHdXDVZwzYi9xMsLxC9atYvT5qfT8+Yhwly46g+qjKH+14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgCQGA1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62EEEC4CEFE;
-	Mon, 13 Oct 2025 15:24:09 +0000 (UTC)
+	 MIME-Version; b=aj0kSz1w6PiDlc5osRys+0w+RUAo8aJy4iwErUzVqVhragI0JO2EJw76tRMvs/KKZVafuQR5WWRidh/fmS8GnYjCZ9bCc30XiELON11YfdQuRSyJXONBytxQlVOYqRGlY7VqKFNtk2yxes//TEvjNf1dSb/8ZD5eTfddmaj4yfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ECQ20P9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42C6C4CEE7;
+	Mon, 13 Oct 2025 15:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369049;
-	bh=xJogdsl6cmUWTs9ixDF5/KhfzW4bYvCjHpVOqvRpbdI=;
+	s=korg; t=1760369067;
+	bh=UhWpqT2i2nclpC5jaF8eYBDEWOcS1HgoQQDLWF/3Hyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgCQGA1MxgZ7qJ26eDPxQRG5JEMdBrwZA3LNNutQJhXvpeGH7VLlkerkKBl5KxJGB
-	 37FH5uRfGrBeCTR/R+4VkTUTq+u76ERFO4vKaX3hZ4+qCeBahnOMLIM7lJP+Ghjk8h
-	 X2QRUZzHVMKgbKIvU4H+t0s/Ulgrdasc2TuCNos8=
+	b=0ECQ20P9F7b0R3E9qcedZVFHfD3orTlvPwdZ7sxt4Z5YZE1wCeQ8iVv3L2VrbISz6
+	 2IltQ7zKutlOXwwqP/Cmhtr+maD7HH6x0A4g2lVC+5vaJtYEVg0ht+v7M+H2dOEjhF
+	 8w2vHFD09Uo13iwlas5uFJpgNWKZ5pj6KOzJPmcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 110/563] tick: Do not set device to detached state in tick_shutdown()
-Date: Mon, 13 Oct 2025 16:39:31 +0200
-Message-ID: <20251013144415.279043368@linuxfoundation.org>
+Subject: [PATCH 6.17 116/563] dts: arm: amlogic: fix pwm node for c3
+Date: Mon, 13 Oct 2025 16:39:37 +0200
+Message-ID: <20251013144415.497378635@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,103 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-[ Upstream commit fe2a449a45b13df1562419e0104b4777b6ea5248 ]
+[ Upstream commit f8c9fabf2f3d87773613734a8479d0ef9b662b11 ]
 
-tick_shutdown() sets the state of the clockevent device to detached
-first and the invokes clockevents_exchange_device(), which in turn
-invokes clockevents_switch_state().
+Fix reg address for c3 pwm node.
 
-But clockevents_switch_state() returns without invoking the device shutdown
-callback as the device is already in detached state. As a consequence the
-timer device is not shutdown when a CPU goes offline.
-
-tick_shutdown() does this because it was originally invoked on a online CPU
-and not on the outgoing CPU. It therefore could not access the clockevent
-device of the already offlined CPU and just set the state.
-
-Since commit 3b1596a21fbf tick_shutdown() is called on the outgoing CPU, so
-the hardware device can be accessed.
-
-Remove the state set before calling clockevents_exchange_device(), so that
-the subsequent clockevents_switch_state() handles the state transition and
-invokes the shutdown callback of the clockevent device.
-
-[ tglx: Massaged change log ]
-
-Fixes: 3b1596a21fbf ("clockevents: Shutdown and unregister current clockevents at CPUHP_AP_TICK_DYING")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/all/20250906064952.3749122-2-maobibo@loongson.cn
+Fixes: be90cd4bd422 ("arm64: dts: amlogic: Add Amlogic C3 PWM")
+Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250717-fix-pwm-node-v2-1-7365ac7d5320@amlogic.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/clockevents.c   |  2 +-
- kernel/time/tick-common.c   | 16 +++++-----------
- kernel/time/tick-internal.h |  2 +-
- 3 files changed, 7 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/clockevents.c b/kernel/time/clockevents.c
-index f3e831f62906f..a59bc75ab7c5b 100644
---- a/kernel/time/clockevents.c
-+++ b/kernel/time/clockevents.c
-@@ -633,7 +633,7 @@ void tick_offline_cpu(unsigned int cpu)
- 	raw_spin_lock(&clockevents_lock);
- 
- 	tick_broadcast_offline(cpu);
--	tick_shutdown(cpu);
-+	tick_shutdown();
- 
- 	/*
- 	 * Unregister the clock event devices which were
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 9a3859443c042..7e33d3f2e889b 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -411,24 +411,18 @@ int tick_cpu_dying(unsigned int dying_cpu)
- }
- 
- /*
-- * Shutdown an event device on a given cpu:
-+ * Shutdown an event device on the outgoing CPU:
-  *
-- * This is called on a life CPU, when a CPU is dead. So we cannot
-- * access the hardware device itself.
-- * We just set the mode and remove it from the lists.
-+ * Called by the dying CPU during teardown, with clockevents_lock held
-+ * and interrupts disabled.
-  */
--void tick_shutdown(unsigned int cpu)
-+void tick_shutdown(void)
- {
--	struct tick_device *td = &per_cpu(tick_cpu_device, cpu);
-+	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
- 	struct clock_event_device *dev = td->evtdev;
- 
- 	td->mode = TICKDEV_MODE_PERIODIC;
- 	if (dev) {
--		/*
--		 * Prevent that the clock events layer tries to call
--		 * the set mode function!
--		 */
--		clockevent_set_state(dev, CLOCK_EVT_STATE_DETACHED);
- 		clockevents_exchange_device(dev, NULL);
- 		dev->event_handler = clockevents_handle_noop;
- 		td->evtdev = NULL;
-diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
-index faac36de35b9e..4e4f7bbe2a64b 100644
---- a/kernel/time/tick-internal.h
-+++ b/kernel/time/tick-internal.h
-@@ -26,7 +26,7 @@ extern void tick_setup_periodic(struct clock_event_device *dev, int broadcast);
- extern void tick_handle_periodic(struct clock_event_device *dev);
- extern void tick_check_new_device(struct clock_event_device *dev);
- extern void tick_offline_cpu(unsigned int cpu);
--extern void tick_shutdown(unsigned int cpu);
-+extern void tick_shutdown(void);
- extern void tick_suspend(void);
- extern void tick_resume(void);
- extern bool tick_check_replacement(struct clock_event_device *curdev,
+diff --git a/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi
+index cb9ea3ca6ee0f..71b2b3b547f7c 100644
+--- a/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi
++++ b/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi
+@@ -792,7 +792,7 @@ spicc1: spi@52000 {
+ 			pwm_mn: pwm@54000 {
+ 				compatible = "amlogic,c3-pwm",
+ 					     "amlogic,meson-s4-pwm";
+-				reg = <0x0 54000 0x0 0x24>;
++				reg = <0x0 0x54000 0x0 0x24>;
+ 				clocks = <&clkc_periphs CLKID_PWM_M>,
+ 					 <&clkc_periphs CLKID_PWM_N>;
+ 				#pwm-cells = <3>;
 -- 
 2.51.0
 
