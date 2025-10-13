@@ -1,50 +1,59 @@
-Return-Path: <stable+bounces-185482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299E5BD5798
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 19:25:08 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7DD9BD4DB8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 884BE18A490F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9EC16509106
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7DA2D46C8;
-	Mon, 13 Oct 2025 17:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC5A30C34C;
+	Mon, 13 Oct 2025 15:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFDVuVl7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m81193.netease.com (mail-m81193.netease.com [47.88.81.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF9729A322;
-	Mon, 13 Oct 2025 17:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.88.81.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895AC30BF7A;
+	Mon, 13 Oct 2025 15:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760376304; cv=none; b=nQqqpLM6vt5H3JRgTUITXXV9c6idBI8L5NUIGL86XRNtWMTduOkAbQMhPGGlbbCYUhuVviyr9JiwKhxxmQ62os5OOJ1J+0WzseZYEE8gcbEzG70issWNJ+l0li4Q5qpJ3OSN/xVmgvRMfWBVQtFscfk598O6KKFr/msS+Ewlz/s=
+	t=1760368776; cv=none; b=JlzHBiKMhEuGTZifXP7/YOlNZF7I9KC3IxwIOKS8jeibsSUjv3nFwacboX+URBJRRQpIy6M3GI2R/X6Ek+Rq7WaNVVTc2Wj4ZwsotFH3duSZy6G7TSO7AEkJj9MV4Nqap5i3oGyuIA8koVdIcTiW0UZf57eR5QUajYUWAPR+eK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760376304; c=relaxed/simple;
-	bh=gtbS0FKSa1Grv/vNh0H5O9ORgDt9oo1tUzC8KeQiMNU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I4WZnus9HKVqOmCR/RSfo61hRjUjmhHZzbaW3j1PqKz9nTPiAfkFVF6UBExgxmaNwfr5uU3RqvWjsKSQWO0HBNEYB9L7BExScWlmjVOtdklvsiqM9+F3Cy7z1n68wu5XeIfPk5O43uC7oPTe+2iB/svuN4J1kJOPVEcd1P5aQSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=47.88.81.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 11768a2a8;
-	Mon, 13 Oct 2025 19:42:00 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz
-Cc: linux-fsdevel@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fs: Fix uninitialized 'offp' in statmount_string()
-Date: Mon, 13 Oct 2025 19:41:51 +0800
-Message-Id: <20251013114151.664341-1-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20251011091353.353898-1-zhen.ni@easystack.cn>
-References: <20251011091353.353898-1-zhen.ni@easystack.cn>
+	s=arc-20240116; t=1760368776; c=relaxed/simple;
+	bh=wuS2QM4fmYhe1GgCMB/vPqu+8KISjuB7oP+yhKkY4Ug=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F0m1+HHgpkvFQCu3fdTZojj8mvqam1JhSdCIBPmlyWEE5Sri0ggWI+4m0YhWXUPtToLWPCr7XilLXfgiZv32stlJlYu5J5Dq+yrHQV6IKknDn8X/TukNvwnU3UEkIohDzB/T+wIHHGhIAr2/U2HpWsxuH+rPEBMMVgSBsDBbDqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFDVuVl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA38C4CEE7;
+	Mon, 13 Oct 2025 15:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760368776;
+	bh=wuS2QM4fmYhe1GgCMB/vPqu+8KISjuB7oP+yhKkY4Ug=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=zFDVuVl7PMeiuzQhpTTkVvA/sF487gRb1zC2owSvCHCESwXQJQU7PkQElsyOC7XbZ
+	 qu0C3BGZOxcvFU7/PXyxs4CMYu4G2QzeeADP8reLj6DqUcMvv3jJUOvCe7/2yonpJY
+	 ac75G+aWA7bEqiyzidvSgngU+rASLnM2GLZbivfA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 002/563] filelock: add FL_RECLAIM to show_fl_flags() macro
+Date: Mon, 13 Oct 2025 16:37:43 +0200
+Message-ID: <20251013144411.374294839@linuxfoundation.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,53 +61,43 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a99dd609cca0229kunmc18ee22b2d2b5d
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkZGEwaVk0dH0wYQkIfTx9MTVYVFAkWGhdVGRETFh
-	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
-	VKQktLWQY+
 
-In statmount_string(), most flags assign an output offset pointer (offp)
-which is later updated with the string offset. However, the
-STATMOUNT_MNT_UIDMAP and STATMOUNT_MNT_GIDMAP cases directly set the
-struct fields instead of using offp. This leaves offp uninitialized,
-leading to a possible uninitialized dereference when *offp is updated.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
-Fix it by assigning offp for UIDMAP and GIDMAP as well, keeping the code
-path consistent.
+------------------
 
-Fixes: 37c4a9590e1e ("statmount: allow to retrieve idmappings")
-Fixes: e52e97f09fb6 ("statmount: let unset strings be empty")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Reviewed-by: Jan Kara <jack@suse.cz>
+From: Jeff Layton <jlayton@kernel.org>
+
+[ Upstream commit c593b9d6c446510684da400833f9d632651942f0 ]
+
+Show the FL_RECLAIM flag symbolically in tracepoints.
+
+Fixes: bb0a55bb7148 ("nfs: don't allow reexport reclaims")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/20250903-filelock-v1-1-f2926902962d@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changes in v2:
-- Add Fixes: e52e97f09fb6 ("statmount: let unset strings be empty")
----
- fs/namespace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/trace/events/filelock.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index d82910f33dc4..5b5ab2ae238b 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5454,11 +5454,11 @@ static int statmount_string(struct kstatmount *s, u64 flag)
- 		ret = statmount_sb_source(s, seq);
- 		break;
- 	case STATMOUNT_MNT_UIDMAP:
--		sm->mnt_uidmap = start;
-+		offp = &sm->mnt_uidmap;
- 		ret = statmount_mnt_uidmap(s, seq);
- 		break;
- 	case STATMOUNT_MNT_GIDMAP:
--		sm->mnt_gidmap = start;
-+		offp = &sm->mnt_gidmap;
- 		ret = statmount_mnt_gidmap(s, seq);
- 		break;
- 	default:
+diff --git a/include/trace/events/filelock.h b/include/trace/events/filelock.h
+index b8d1e00a7982c..2dfeb158e848a 100644
+--- a/include/trace/events/filelock.h
++++ b/include/trace/events/filelock.h
+@@ -27,7 +27,8 @@
+ 		{ FL_SLEEP,		"FL_SLEEP" },			\
+ 		{ FL_DOWNGRADE_PENDING,	"FL_DOWNGRADE_PENDING" },	\
+ 		{ FL_UNLOCK_PENDING,	"FL_UNLOCK_PENDING" },		\
+-		{ FL_OFDLCK,		"FL_OFDLCK" })
++		{ FL_OFDLCK,		"FL_OFDLCK" },			\
++		{ FL_RECLAIM,		"FL_RECLAIM"})
+ 
+ #define show_fl_type(val)				\
+ 	__print_symbolic(val,				\
 -- 
-2.20.1
+2.51.0
+
+
 
 
