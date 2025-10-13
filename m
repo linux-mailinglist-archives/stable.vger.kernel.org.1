@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-184792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB3CBD431C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:09 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52779BD4B37
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EA6D18A4092
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:26:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EA3303430F9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365A93081CD;
-	Mon, 13 Oct 2025 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466113126C5;
+	Mon, 13 Oct 2025 15:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Da8IdU1J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+jxHgOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EA6307AF6;
-	Mon, 13 Oct 2025 15:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A9B30DEC7;
+	Mon, 13 Oct 2025 15:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368446; cv=none; b=cT8Fc/nIE3xmr6o7+q7uCB6NtnzunlT+Ng2RDyQH/DiJE3SD1QnCuwU6HjMN/jgouWVjny4ZxysTlZJKinwKKKQNH1FMFAh+hDZWxPUPbAEtZ71hQMoNst3ddmbMrfy9vwsGzNBNsJsb9w50YOcEV0GFUQh1x0hDBrsYjee4VFM=
+	t=1760370013; cv=none; b=mzeYjtW56mWRdrPAp0hFZKbro7QJNrmgWQy8+plpOI6fWO8SuyXHQLiUkmc/SMxbO52fxTLFAN8/94q2bnuIKonoXRLrN0tG68VX+I0jO8h3Qn20tgEUuKYDAjiRH9jfUYX8FUichDRMWkvFFP0M2ukJlvkfP63q9p5Q+mTpZuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368446; c=relaxed/simple;
-	bh=pggi2wGubKR+iHMkCTnofBszBFtTA+68/+TjKuVXvgE=;
+	s=arc-20240116; t=1760370013; c=relaxed/simple;
+	bh=MywPTQUOK2raOz2JHKM89J9o7nCDJ5UyICc1Tb3N2nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AdZE8Rno58XIu/Fz3TiVonT9dPyBEjZ+vqlW7axK96O1aYnfXckc8t3GCkGd/JO+9PpvGqLWhsUwArA5wrcaQ8CuKN891srEU6+nOnz80Jg/F3RVEDpnUBlMxRkfKjYYygbjhJ78k2seUTq0o8lmdiPAjg4lJbTOzsXikCcHyI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Da8IdU1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8F8C4CEE7;
-	Mon, 13 Oct 2025 15:14:05 +0000 (UTC)
+	 MIME-Version; b=mN8Lv6NIuWPDzU2cMfRsq1KegWaTLdKGgXzH03yIWAdz+d0bMELzrLm5DpfxDt6Q8IBCf5K6gqlmgq7Zt/baUrEEty2xle5UmZHKQLrEF8RoNP6ePVs/RZpYvWeKU3NOGUPvE9Lk3GiHqLo54YefVKcM8wa37u/DVXaLlYVgAtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+jxHgOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8267CC4CEE7;
+	Mon, 13 Oct 2025 15:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368445;
-	bh=pggi2wGubKR+iHMkCTnofBszBFtTA+68/+TjKuVXvgE=;
+	s=korg; t=1760370012;
+	bh=MywPTQUOK2raOz2JHKM89J9o7nCDJ5UyICc1Tb3N2nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Da8IdU1J4ZyRypeYNPDPOllKr+X+k7faxVpxPsrf6nhqRa1ANY0LzGMfSjQlBX4df
-	 kMx1KqjxBH5mxBYLKKGpClrElQryOyjr3N85HUhPdoSS0m0qsggN5midebvwx01DHZ
-	 Zaj6JPrWKyoWm+kQAHUk5YeraHAY7UCS4s2YL3IY=
+	b=E+jxHgOFkG/jXgjao4zDUJyz/+CV4sVhayxZy2I41r1fv5yEOgMAuOWC6/XUPeBNG
+	 i8nfJL6hzr0at6NDjhclah4Wl0fVPR25kX2sOX1W66JUE7tD3Wor3GcWa8gSwbClqI
+	 qLe6klgHuswMUJJYE/bBimiFaHKuFLzaFJxRndao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <zanussi@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Jonathan Corbet <corbet@lwn.net>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 164/262] Documentation: trace: historgram-design: Separate sched_waking histogram section heading and the following diagram
-Date: Mon, 13 Oct 2025 16:45:06 +0200
-Message-ID: <20251013144332.030374626@linuxfoundation.org>
+Subject: [PATCH 6.17 446/563] iommu/vt-d: Disallow dirty tracking if incoherent page walk
+Date: Mon, 13 Oct 2025 16:45:07 +0200
+Message-ID: <20251013144427.439082061@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bagas Sanjaya <bagasdotme@gmail.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 8c716e87ea33519920811338100d6d8a7fb32456 ]
+[ Upstream commit 57f55048e564dedd8a4546d018e29d6bbfff0a7e ]
 
-Section heading for sched_waking histogram is shown as normal paragraph
-instead due to codeblock marker for the following diagram being in the
-same line as the section underline. Separate them.
+Dirty page tracking relies on the IOMMU atomically updating the dirty bit
+in the paging-structure entry. For this operation to succeed, the paging-
+structure memory must be coherent between the IOMMU and the CPU. In
+another word, if the iommu page walk is incoherent, dirty page tracking
+doesn't work.
 
-Fixes: daceabf1b494 ("tracing/doc: Fix ascii-art in histogram-design.rst")
-Reviewed-by: Tom Zanussi <zanussi@kernel.org>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Message-ID: <20250916054202.582074-5-bagasdotme@gmail.com>
+The Intel VT-d specification, Section 3.10 "Snoop Behavior" states:
+
+"Remapping hardware encountering the need to atomically update A/EA/D bits
+ in a paging-structure entry that is not snooped will result in a non-
+ recoverable fault."
+
+To prevent an IOMMU from being incorrectly configured for dirty page
+tracking when it is operating in an incoherent mode, mark SSADS as
+supported only when both ecap_slads and ecap_smpwc are supported.
+
+Fixes: f35f22cc760e ("iommu/vt-d: Access/Dirty bit support for SS domains")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250924083447.123224-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/trace/histogram-design.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iommu/intel/iommu.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/trace/histogram-design.rst b/Documentation/trace/histogram-design.rst
-index 5765eb3e9efa7..a30f4bed11b4e 100644
---- a/Documentation/trace/histogram-design.rst
-+++ b/Documentation/trace/histogram-design.rst
-@@ -380,7 +380,9 @@ entry, ts0, corresponding to the ts0 variable in the sched_waking
- trigger above.
+diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+index d09b928716592..2c261c069001c 100644
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -541,7 +541,8 @@ enum {
+ #define pasid_supported(iommu)	(sm_supported(iommu) &&			\
+ 				 ecap_pasid((iommu)->ecap))
+ #define ssads_supported(iommu) (sm_supported(iommu) &&                 \
+-				ecap_slads((iommu)->ecap))
++				ecap_slads((iommu)->ecap) &&           \
++				ecap_smpwc(iommu->ecap))
+ #define nested_supported(iommu)	(sm_supported(iommu) &&			\
+ 				 ecap_nest((iommu)->ecap))
  
- sched_waking histogram
------------------------::
-+----------------------
-+
-+.. code-block::
- 
-   +------------------+
-   | hist_data        |<-------------------------------------------------------+
 -- 
 2.51.0
 
