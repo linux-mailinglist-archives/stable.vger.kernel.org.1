@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-185045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B52BD4ED6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:20:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70EA0BD4D6D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 66209545EB3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:38:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F8F9540FBD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC7E3064B7;
-	Mon, 13 Oct 2025 15:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B75B3126BC;
+	Mon, 13 Oct 2025 15:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyKUw0t+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcTxdh9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAE63081AE;
-	Mon, 13 Oct 2025 15:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB51B3126C5;
+	Mon, 13 Oct 2025 15:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369176; cv=none; b=oXGfm12/ra+voSb/H6U1qSnqiqm8+jthHnxEOJC4PRlCEcmApzCfAZe1YZW4FjhgJ/fPwYj+0iBgQyS0a/Waq+oKUFnT5fQWE+A5C16BJ7t97BMC85E5QMxT4IYnigTDcUrF5OLrrpayawqvCjnAG1PPcJVA+45/C9f7StoOhGc=
+	t=1760369198; cv=none; b=I69/1MFN+43jy+x+H0zmOCjLgJOtu2xn7NEdGQEakkS2TmMPziHA+qWX3TK5GBTvwQwdG3HnquhlVqsjX3yS5EU/am/CMtdTvqtLvv4rO5YgHolIgX+z5Q94Dwcy6y1wgRHnNU//lqA4FbV1Fg4FYLkz4CGedxPz9FFIdZiG2HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369176; c=relaxed/simple;
-	bh=QNGBqiiBpBF48jgpmpOSvGS17AlNE+B5S9PYX4JxRho=;
+	s=arc-20240116; t=1760369198; c=relaxed/simple;
+	bh=8ayDkpx1GsifngGwHK+jFZAyLaoEuIC8OresiwSKnLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYCmzsj5mP1uuX8DRtETQThqGEu60Y7dogKSrftrM4Fm4ofY5UNaqvojSa1UAoOtDimnrDQc5OFVVjNI2df/b0NAXIEEGjzf6GFZ9ahLxo/MnhIDW/41FPybSsUoyMVOSnMhx8dYLXUS0zksJSz3rHIBSZLFH2VytvkbFtgByVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyKUw0t+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9469AC4CEE7;
-	Mon, 13 Oct 2025 15:26:15 +0000 (UTC)
+	 MIME-Version; b=Xm8bpxO1qZloGxB4d6lHHX5FzuoSHOWVANS0d5RUggTEnP4G87lmyX6S0OpGKDMsu/YEMGUpfecgsYUDvrhttnHJCOT5/LqoQl3bEV84ELQRwRBVy4mtae/E2DLlx1HFPAQl815+tjB1YknDnJ67ywlxmg4mcWPe0xBzzP4sSDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcTxdh9U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D1EC16AAE;
+	Mon, 13 Oct 2025 15:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369176;
-	bh=QNGBqiiBpBF48jgpmpOSvGS17AlNE+B5S9PYX4JxRho=;
+	s=korg; t=1760369198;
+	bh=8ayDkpx1GsifngGwHK+jFZAyLaoEuIC8OresiwSKnLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZyKUw0t+8UM9U00y6awoANBefer0a7tiDrQm5H2Qc/7A4uBm2U8gBg0/XuKtv7sBt
-	 KdMHk241WaFN8VeIIiPvvJROEnhTVAOa6Gi3+srWvpzGTLyp9sVL6C/7Ri5mtTCk8d
-	 V0+JXYVJITQwZ8rFie7y9RLvKN/T2CuvkwsSXCY8=
+	b=TcTxdh9U9EaXnRYGCOcUPUUr1M1yWXmJMRHAmhBXYhdqXnLOgyjkJgGSJMHpffCkM
+	 GyR0gBHd92OxzhUcboRbJxt+yeP0MKpTeeblIdpYeq8VrB5B+pGMPL7Xqd5xOtZHbq
+	 Ep81cQ2sJ/N2fhVdgBMY//27lbpeX3LqIp7qV6tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nilay Shroff <nilay@linux.ibm.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 127/563] blk-mq: convert to serialize updating nr_requests with update_nr_hwq_lock
-Date: Mon, 13 Oct 2025 16:39:48 +0200
-Message-ID: <20251013144415.895473568@linuxfoundation.org>
+Subject: [PATCH 6.17 129/563] blk-mq: split bitmap grow and resize case in blk_mq_update_nr_requests()
+Date: Mon, 13 Oct 2025 16:39:50 +0200
+Message-ID: <20251013144415.967685628@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -69,28 +69,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 626ff4f8ebcb7207f01e7810acb85812ccf06bd8 ]
+[ Upstream commit e63200404477456ec60c62dd8b3b1092aba2e211 ]
 
-request_queue->nr_requests can be changed by:
-
-a) switch elevator by updating nr_hw_queues
-b) switch elevator by elevator sysfs attribute
-c) configue queue sysfs attribute nr_requests
-
-Current lock order is:
-
-1) update_nr_hwq_lock, case a,b
-2) freeze_queue
-3) elevator_lock, case a,b,c
-
-And update nr_requests is seriablized by elevator_lock() already,
-however, in the case c, we'll have to allocate new sched_tags if
-nr_requests grow, and do this with elevator_lock held and queue
-freezed has the risk of deadlock.
-
-Hence use update_nr_hwq_lock instead, make it possible to allocate
-memory if tags grow, meanwhile also prevent nr_requests to be changed
-concurrently.
+No functional changes are intended, make code cleaner and prepare to fix
+the grow case in following patches.
 
 Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
@@ -98,70 +80,66 @@ Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Stable-dep-of: b86433721f46 ("blk-mq: fix potential deadlock while nr_requests grown")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-sysfs.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ block/blk-mq.c | 39 +++++++++++++++++++++++++++------------
+ 1 file changed, 27 insertions(+), 12 deletions(-)
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index b61e956a868e7..163264e4ec629 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -68,6 +68,7 @@ queue_requests_store(struct gendisk *disk, const char *page, size_t count)
- 	int ret, err;
- 	unsigned int memflags;
- 	struct request_queue *q = disk->queue;
-+	struct blk_mq_tag_set *set = q->tag_set;
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index bcb7495893a09..1bafbdced7bd5 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -4935,25 +4935,40 @@ int blk_mq_update_nr_requests(struct request_queue *q, unsigned int nr)
+ 	blk_mq_quiesce_queue(q);
  
- 	if (!queue_is_mq(q))
- 		return -EINVAL;
-@@ -76,8 +77,11 @@ queue_requests_store(struct gendisk *disk, const char *page, size_t count)
- 	if (ret < 0)
- 		return ret;
- 
--	memflags = blk_mq_freeze_queue(q);
--	mutex_lock(&q->elevator_lock);
-+	/*
-+	 * Serialize updating nr_requests with concurrent queue_requests_store()
-+	 * and switching elevator.
-+	 */
-+	down_write(&set->update_nr_hwq_lock);
- 
- 	if (nr == q->nr_requests)
- 		goto unlock;
-@@ -85,20 +89,31 @@ queue_requests_store(struct gendisk *disk, const char *page, size_t count)
- 	if (nr < BLKDEV_MIN_RQ)
- 		nr = BLKDEV_MIN_RQ;
- 
--	if (nr <= q->tag_set->reserved_tags ||
-+	/*
-+	 * Switching elevator is protected by update_nr_hwq_lock:
-+	 *  - read lock is held from elevator sysfs attribute;
-+	 *  - write lock is held from updating nr_hw_queues;
-+	 * Hence it's safe to access q->elevator here with write lock held.
-+	 */
-+	if (nr <= set->reserved_tags ||
- 	    (q->elevator && nr > MAX_SCHED_RQ) ||
--	    (!q->elevator && nr > q->tag_set->queue_depth)) {
-+	    (!q->elevator && nr > set->queue_depth)) {
- 		ret = -EINVAL;
- 		goto unlock;
- 	}
- 
-+	memflags = blk_mq_freeze_queue(q);
-+	mutex_lock(&q->elevator_lock);
-+
- 	err = blk_mq_update_nr_requests(disk->queue, nr);
- 	if (err)
- 		ret = err;
- 
--unlock:
- 	mutex_unlock(&q->elevator_lock);
- 	blk_mq_unfreeze_queue(q, memflags);
-+
-+unlock:
-+	up_write(&set->update_nr_hwq_lock);
- 	return ret;
- }
- 
+ 	if (blk_mq_is_shared_tags(set->flags)) {
++		/*
++		 * Shared tags, for sched tags, we allocate max initially hence
++		 * tags can't grow, see blk_mq_alloc_sched_tags().
++		 */
+ 		if (q->elevator)
+ 			blk_mq_tag_update_sched_shared_tags(q);
+ 		else
+ 			blk_mq_tag_resize_shared_tags(set, nr);
+-	} else {
++	} else if (!q->elevator) {
++		/*
++		 * Non-shared hardware tags, nr is already checked from
++		 * queue_requests_store() and tags can't grow.
++		 */
+ 		queue_for_each_hw_ctx(q, hctx, i) {
+ 			if (!hctx->tags)
+ 				continue;
+-			/*
+-			 * If we're using an MQ scheduler, just update the
+-			 * scheduler queue depth. This is similar to what the
+-			 * old code would do.
+-			 */
+-			if (hctx->sched_tags)
+-				ret = blk_mq_tag_update_depth(hctx,
+-							&hctx->sched_tags, nr);
+-			else
+-				ret = blk_mq_tag_update_depth(hctx,
+-							&hctx->tags, nr);
++			sbitmap_queue_resize(&hctx->tags->bitmap_tags,
++				nr - hctx->tags->nr_reserved_tags);
++		}
++	} else if (nr <= q->elevator->et->nr_requests) {
++		/* Non-shared sched tags, and tags don't grow. */
++		queue_for_each_hw_ctx(q, hctx, i) {
++			if (!hctx->sched_tags)
++				continue;
++			sbitmap_queue_resize(&hctx->sched_tags->bitmap_tags,
++				nr - hctx->sched_tags->nr_reserved_tags);
++		}
++	} else {
++		/* Non-shared sched tags, and tags grow */
++		queue_for_each_hw_ctx(q, hctx, i) {
++			if (!hctx->sched_tags)
++				continue;
++			ret = blk_mq_tag_update_depth(hctx, &hctx->sched_tags,
++						      nr);
+ 			if (ret)
+ 				goto out;
+ 		}
 -- 
 2.51.0
 
