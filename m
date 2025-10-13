@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-184489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D473BD406C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1860BD44EF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73C62188CC3C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4778540920
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125B1309DBD;
-	Mon, 13 Oct 2025 14:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B473081B2;
+	Mon, 13 Oct 2025 15:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhuITACd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhOxTI39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50412DA75A;
-	Mon, 13 Oct 2025 14:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F195307AE6;
+	Mon, 13 Oct 2025 15:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367583; cv=none; b=ktZWtrFcsuHYA2ZK6FdS0kxaGfOgPenGg/fI4CBn6OwZGq4wx8k+66tzeMG+r+SuG71sXo1jGEnF7/+T3k4ajP80furMlSDKcIOHVYBBpvWFgojYCAmiRSZjmbrKZ/4nK+qStnNC7H95OmJHQcYIfcTKgNhHzR0UIXat4I5o5+4=
+	t=1760368389; cv=none; b=aC9kwBNdlb3AjY7LRLRovKOtxKvw7evRca0VF/NgNZcGQaqDzPnWWh+YvEj6cKQxtcUX3TGn/1goelNOSd6x6Vr9YK75kpGF8AvL7rXm7JG1mm5sPWCPRSC1XS9Y4fAqjtKmmXQlDtcaw1oA5R/g9By9PIXD9jhlpev0HfgxMbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367583; c=relaxed/simple;
-	bh=5HpMWz7xs6aN+DD5juA/0lSVV/KSUiG27EkoSWwJD80=;
+	s=arc-20240116; t=1760368389; c=relaxed/simple;
+	bh=6m19/FwVIxPZjvLBgF4fE+k7+cIGB1xtO171JAWoV90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iyr9VlsGM9eQ9asM47yu+3lirirrF2MSI19jzknXfvJrXOq3UBoIC+GVOagn20r2vrLwAvydbEGciBFqPA+qVSLvxIqI1N3vP7z4F6FZ68mn1sMPR3jNNJfWm9++KKp7+rCj2qIn3CBGFmJn9yTPqcvT6yEqQ/hmNl7dJEv9f+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhuITACd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DEEC4CEFE;
-	Mon, 13 Oct 2025 14:59:42 +0000 (UTC)
+	 MIME-Version; b=t08fERrkCTYo0NKqXSXYaImjOQYivM0eqKGjHenlM4Zl6v1j+DQM/HLAE4XZWWRWwezJER9cF0O7e+CTawtJHupQljx3cR1jFBZOQ1d5tfFjBqB0dditX7VtXjaV6W1zx7ZnZMKxPYBREGP/i2vlguZoR15M7wsSsbPHUJsIiI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhOxTI39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC536C4CEE7;
+	Mon, 13 Oct 2025 15:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367583;
-	bh=5HpMWz7xs6aN+DD5juA/0lSVV/KSUiG27EkoSWwJD80=;
+	s=korg; t=1760368389;
+	bh=6m19/FwVIxPZjvLBgF4fE+k7+cIGB1xtO171JAWoV90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhuITACdud+n9PiC8Jt0IeGquDBX3+km73Tqzjf/Cj1tWsYsFIX1M3zxXdbQuhwWU
-	 HNMQLcDRaxM2hws6GPNqNlSZm76t8gECO1HvHqa1t/FbIhDfCPm09YCgObk83QuMDF
-	 oUSqTrBSTS4p+s2KSCIkKiofjW4lMUNIyX+Ka6G0=
+	b=IhOxTI39DrcCX8VUaDapN9buMx3NQMaAP9Wf2fnnIh6j22qw2JABdvXESehn73SZw
+	 zydGkAtEfbBvdG4G2/0x1h6Is8Ochxw6NXmqWxpnAMuIEdzNjIGwwLPcD+7quky0j0
+	 LpKHoQKriqpqhEeqGWj0agXC854NcKB8WZxcUg2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/196] bpf: Enforce expected_attach_type for tailcall compatibility
+Subject: [PATCH 6.12 110/262] media: st-delta: avoid excessive stack usage
 Date: Mon, 13 Oct 2025 16:44:12 +0200
-Message-ID: <20251013144317.403860146@linuxfoundation.org>
+Message-ID: <20251013144330.087555755@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4540aed51b12bc13364149bf95f6ecef013197c0 ]
+[ Upstream commit 5954ad7d1af92cb6244c5f31216e43af55febbb7 ]
 
-Yinhao et al. recently reported:
+Building with a reduced stack warning limit shows that delta_mjpeg_decode()
+copies a giant structure to the stack each time but only uses three of
+its members:
 
-  Our fuzzer tool discovered an uninitialized pointer issue in the
-  bpf_prog_test_run_xdp() function within the Linux kernel's BPF subsystem.
-  This leads to a NULL pointer dereference when a BPF program attempts to
-  deference the txq member of struct xdp_buff object.
+drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c: In function 'delta_mjpeg_decode':
+drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c:427:1: error: the frame size of 1296 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
 
-The test initializes two programs of BPF_PROG_TYPE_XDP: progA acts as the
-entry point for bpf_prog_test_run_xdp() and its expected_attach_type can
-neither be of be BPF_XDP_DEVMAP nor BPF_XDP_CPUMAP. progA calls into a slot
-of a tailcall map it owns. progB's expected_attach_type must be BPF_XDP_DEVMAP
-to pass xdp_is_valid_access() validation. The program returns struct xdp_md's
-egress_ifindex, and the latter is only allowed to be accessed under mentioned
-expected_attach_type. progB is then inserted into the tailcall which progA
-calls.
+Open-code the passing of the structure members that are actually used here.
 
-The underlying issue goes beyond XDP though. Another example are programs
-of type BPF_PROG_TYPE_CGROUP_SOCK_ADDR. sock_addr_is_valid_access() as well
-as sock_addr_func_proto() have different logic depending on the programs'
-expected_attach_type. Similarly, a program attached to BPF_CGROUP_INET4_GETPEERNAME
-should not be allowed doing a tailcall into a program which calls bpf_bind()
-out of BPF which is only enabled for BPF_CGROUP_INET4_CONNECT.
-
-In short, specifying expected_attach_type allows to open up additional
-functionality or restrictions beyond what the basic bpf_prog_type enables.
-The use of tailcalls must not violate these constraints. Fix it by enforcing
-expected_attach_type in __bpf_prog_map_compatible().
-
-Note that we only enforce this for tailcall maps, but not for BPF devmaps or
-cpumaps: There, the programs are invoked through dev_map_bpf_prog_run*() and
-cpu_map_bpf_prog_run*() which set up a new environment / context and therefore
-these situations are not prone to this issue.
-
-Fixes: 5e43f899b03a ("bpf: Check attach type at prog load time")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250926171201.188490-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 433ff5b4a29b ("[media] st-delta: add mjpeg support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h | 1 +
- kernel/bpf/core.c   | 5 +++++
- 2 files changed, 6 insertions(+)
+ .../platform/st/sti/delta/delta-mjpeg-dec.c   | 20 ++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 83da9c81fa86a..0af6b2a5273ad 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -269,6 +269,7 @@ struct bpf_map_owner {
- 	bool xdp_has_frags;
- 	u64 storage_cookie[MAX_BPF_CGROUP_STORAGE_TYPE];
- 	const struct btf_type *attach_func_proto;
-+	enum bpf_attach_type expected_attach_type;
- };
+diff --git a/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c b/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
+index 0533d4a083d24..a078f1107300e 100644
+--- a/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
++++ b/drivers/media/platform/st/sti/delta/delta-mjpeg-dec.c
+@@ -239,7 +239,7 @@ static int delta_mjpeg_ipc_open(struct delta_ctx *pctx)
+ 	return 0;
+ }
  
- struct bpf_map {
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 3618be05fc352..a343248c35ded 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2279,6 +2279,7 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
- 		map->owner->type  = prog_type;
- 		map->owner->jited = fp->jited;
- 		map->owner->xdp_has_frags = aux->xdp_has_frags;
-+		map->owner->expected_attach_type = fp->expected_attach_type;
- 		map->owner->attach_func_proto = aux->attach_func_proto;
- 		for_each_cgroup_storage_type(i) {
- 			map->owner->storage_cookie[i] =
-@@ -2290,6 +2291,10 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
- 		ret = map->owner->type  == prog_type &&
- 		      map->owner->jited == fp->jited &&
- 		      map->owner->xdp_has_frags == aux->xdp_has_frags;
-+		if (ret &&
-+		    map->map_type == BPF_MAP_TYPE_PROG_ARRAY &&
-+		    map->owner->expected_attach_type != fp->expected_attach_type)
-+			ret = false;
- 		for_each_cgroup_storage_type(i) {
- 			if (!ret)
- 				break;
+-static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, struct delta_au *au)
++static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, dma_addr_t pstart, dma_addr_t pend)
+ {
+ 	struct delta_dev *delta = pctx->dev;
+ 	struct delta_mjpeg_ctx *ctx = to_ctx(pctx);
+@@ -256,8 +256,8 @@ static int delta_mjpeg_ipc_decode(struct delta_ctx *pctx, struct delta_au *au)
+ 
+ 	memset(params, 0, sizeof(*params));
+ 
+-	params->picture_start_addr_p = (u32)(au->paddr);
+-	params->picture_end_addr_p = (u32)(au->paddr + au->size - 1);
++	params->picture_start_addr_p = pstart;
++	params->picture_end_addr_p = pend;
+ 
+ 	/*
+ 	 * !WARNING!
+@@ -374,12 +374,14 @@ static int delta_mjpeg_decode(struct delta_ctx *pctx, struct delta_au *pau)
+ 	struct delta_dev *delta = pctx->dev;
+ 	struct delta_mjpeg_ctx *ctx = to_ctx(pctx);
+ 	int ret;
+-	struct delta_au au = *pau;
++	void *au_vaddr = pau->vaddr;
++	dma_addr_t au_dma = pau->paddr;
++	size_t au_size = pau->size;
+ 	unsigned int data_offset = 0;
+ 	struct mjpeg_header *header = &ctx->header_struct;
+ 
+ 	if (!ctx->header) {
+-		ret = delta_mjpeg_read_header(pctx, au.vaddr, au.size,
++		ret = delta_mjpeg_read_header(pctx, au_vaddr, au_size,
+ 					      header, &data_offset);
+ 		if (ret) {
+ 			pctx->stream_errors++;
+@@ -405,17 +407,17 @@ static int delta_mjpeg_decode(struct delta_ctx *pctx, struct delta_au *pau)
+ 			goto err;
+ 	}
+ 
+-	ret = delta_mjpeg_read_header(pctx, au.vaddr, au.size,
++	ret = delta_mjpeg_read_header(pctx, au_vaddr, au_size,
+ 				      ctx->header, &data_offset);
+ 	if (ret) {
+ 		pctx->stream_errors++;
+ 		goto err;
+ 	}
+ 
+-	au.paddr += data_offset;
+-	au.vaddr += data_offset;
++	au_dma += data_offset;
++	au_vaddr += data_offset;
+ 
+-	ret = delta_mjpeg_ipc_decode(pctx, &au);
++	ret = delta_mjpeg_ipc_decode(pctx, au_dma, au_dma + au_size - 1);
+ 	if (ret)
+ 		goto err;
+ 
 -- 
 2.51.0
 
