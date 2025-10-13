@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-185250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB97ABD50B9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B215DBD4C30
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F48481F02
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC1642244F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4033C30F927;
-	Mon, 13 Oct 2025 15:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6538E31B83B;
+	Mon, 13 Oct 2025 15:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="km+yHZZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/7zOTVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15E92F998D;
-	Mon, 13 Oct 2025 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2235131078B;
+	Mon, 13 Oct 2025 15:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369763; cv=none; b=N8LzWgU4EGLaqg2uAcrAIwY5y7PPYprnhQ3FSRLF2e8ee9r07qst1lisFy8M3X//rEnxkijQRq5YtVBarD0TuHletnDEBH1xfr3hJPlQ3nSpqq46MP2fTW5QxvcJMi+je4SE0dzFSFP77xbsghWKHy/1ptjW1yjI+zyxArvG+hs=
+	t=1760369794; cv=none; b=a81O4j7ZSEPxUkcRGZhlxogZNzeJjLvRDhJSXe3jiqqKKpurtIjQIFMk/C1zBYiufLy6EjDcmZ9F59HIQudUokU28MTA4JYRW4uJWFhhwh174u07k4R3pzjU3N03U4yaQfNTIMHjDSe95C+6DWONnQxX0NZfOt5meOmJ5BH0GpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369763; c=relaxed/simple;
-	bh=1R1Hr6lVUkX3pWbNqdkzlVO2zLXCfsVs2c6tW9GTAUk=;
+	s=arc-20240116; t=1760369794; c=relaxed/simple;
+	bh=SiPmHXOQQDYAHH+ggc0b7UbTXO7WqpfBBsJ4EcG4Knw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bq2Gm71u3ZMhgHJQJFdBHbvVglGlpT6QN3w6JPYDKQZseDqd9S8VQ1YWABlP1UlVr00qqyyMQjGfJzruROUlJNRfzCjrKrrrAY8u6+1wB02zzZ1dOwc2onfqZq1rd/p+9r5wOtLRZO2+Ohzej269SROXh0vb/PTeSJh2he8Q65c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=km+yHZZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F05C19425;
-	Mon, 13 Oct 2025 15:36:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rhBjd42OascVA7hbuHJVE255CBjYcsgEWLI7RDUg7LTmYZiNsXsOd39TvoOSf4DJLzAmGUZ6bXBCLVPCGU+9WBTL0Jv6le+bt2nInnoB7wVQTnRN0K0+4EWERsu/eJ/WTQkddGcn6G+zTiHYkHEn1kBT5SWGKu0Ey3u2maneBkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/7zOTVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B67C4CEFE;
+	Mon, 13 Oct 2025 15:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369762;
-	bh=1R1Hr6lVUkX3pWbNqdkzlVO2zLXCfsVs2c6tW9GTAUk=;
+	s=korg; t=1760369793;
+	bh=SiPmHXOQQDYAHH+ggc0b7UbTXO7WqpfBBsJ4EcG4Knw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=km+yHZZEmyDxF2v8Q8GkqeufLy73GyBy1cLfmz4LWqf+aMWHAUjiMnOuDC7EX0drZ
-	 3fTIdSp0lOQmBGSeo1daNSO1bNKbWXR7bjA5UT+KJ/y4Vu7NwqFrSDFTG0+PtpB265
-	 kUqYfbLJ2Wxu/B16mHU6/qlXhzddCFm2DwxJHjIE=
+	b=l/7zOTVG+bhfcdTzbHMwkQDBH4E//T4my62IdhTNJKLJVs8UL4LLb+iTGljt3QgIU
+	 A+hS34F+tbfDVbetVRSYdzyIlczHRWD15pFQ74DJHMvB5evXCPA3bTHb4QohzWYEgm
+	 IJoRcq+Do9pKTda89hqbaOqfw/Xwudu9lN7An6yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 342/563] mm/slub: Fix cmp_loc_by_count() to return 0 when counts are equal
-Date: Mon, 13 Oct 2025 16:43:23 +0200
-Message-ID: <20251013144423.658214774@linuxfoundation.org>
+Subject: [PATCH 6.17 343/563] tools: ynl: fix undefined variable name
+Date: Mon, 13 Oct 2025 16:43:24 +0200
+Message-ID: <20251013144423.696535399@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -62,53 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit e1c4350327b39c9cad27b6c5779b3754384f26c8 ]
+[ Upstream commit 7a3aaaa9fce710938c3557e5708ba5b00dd38226 ]
 
-The comparison function cmp_loc_by_count() used for sorting stack trace
-locations in debugfs currently returns -1 if a->count > b->count and 1
-otherwise. This breaks the antisymmetry property required by sort(),
-because when two counts are equal, both cmp(a, b) and cmp(b, a) return
-1.
+This variable used in the error path was not defined according to Ruff.
+msg_format.attr_set is used instead, presumably the one that was
+supposed to be used originally.
 
-This can lead to undefined or incorrect ordering results. Fix it by
-updating the comparison logic to explicitly handle the case when counts
-are equal, and use cmp_int() to ensure the comparison function adheres
-to the required mathematical properties of antisymmetry.
+This is linked to Ruff error F821 [1]:
 
-Fixes: 553c0369b3e1 ("mm/slub: sort debugfs output by frequency of stack traces")
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+  An undefined name is likely to raise NameError at runtime.
+
+Fixes: 1769e2be4baa ("tools/net/ynl: Add 'sub-message' attribute decoding to ynl")
+Link: https://docs.astral.sh/ruff/rules/undefined-name/ [1]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Link: https://patch.msgid.link/20250909-net-next-ynl-ruff-v1-1-238c2bccdd99@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slub.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ tools/net/ynl/pyynl/lib/ynl.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index d257141896c95..264fc76455d73 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -7731,10 +7731,7 @@ static int cmp_loc_by_count(const void *a, const void *b, const void *data)
- 	struct location *loc1 = (struct location *)a;
- 	struct location *loc2 = (struct location *)b;
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index 8244a5f440b2b..15ddb0b1adb63 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -746,7 +746,7 @@ class YnlFamily(SpecFamily):
+                 subdict = self._decode(NlAttrs(attr.raw, offset), msg_format.attr_set)
+                 decoded.update(subdict)
+             else:
+-                raise Exception(f"Unknown attribute-set '{attr_space}' when decoding '{attr_spec.name}'")
++                raise Exception(f"Unknown attribute-set '{msg_format.attr_set}' when decoding '{attr_spec.name}'")
+         return decoded
  
--	if (loc1->count > loc2->count)
--		return -1;
--	else
--		return 1;
-+	return cmp_int(loc2->count, loc1->count);
- }
- 
- static void *slab_debugfs_start(struct seq_file *seq, loff_t *ppos)
+     def _decode(self, attrs, space, outer_attrs = None):
 -- 
 2.51.0
 
