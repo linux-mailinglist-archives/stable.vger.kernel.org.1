@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E8ABD3C81
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4824DBD4748
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F279918A0650
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94EAF502299
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160B12153E7;
-	Mon, 13 Oct 2025 14:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CDA31282A;
+	Mon, 13 Oct 2025 15:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3clDanA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4ARp/Ye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AD02741DF;
-	Mon, 13 Oct 2025 14:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CBC30C628;
+	Mon, 13 Oct 2025 15:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367046; cv=none; b=LjD8B/f/YoWbcYfoBtdyZTO1j+hmWR5ettlZQx51c6tFGzzPumVAIZcSWj6+oYFawOpeCmLLf3JsYQ/pkuvgHx6alErOutRdFA2KFHtQgwMmxFbQBFXJjt8mAaRyliviCcBfLnxNiU9AxOVaztNAi3neU2u23EILVjk5hxTNoHg=
+	t=1760368294; cv=none; b=TlyezGJjQXcPHhe7KsNY0q52jtD4UhdOWRc1CZqKLFRoMiFmDqTR+EaDg10Zrwnbe1wo9m7nGZ3oQUggYD2GwJlUbvGUWzq/9e33Uzpz3bu4gUSnkmCILpEDK1DBhHZUaLr23Mi3Q4/DVSsgSfMDH/uYSiW4gaAbTawgaMaFwYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367046; c=relaxed/simple;
-	bh=Nx01DCgUKZCK4JIuudxbrRHQotOegdsllWKtX3xHTgg=;
+	s=arc-20240116; t=1760368294; c=relaxed/simple;
+	bh=KELxqXfJY8BSCv7XCetA6CQGdZXkJf67Zb7Kz3ZDMoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pbf7LbdjLt45u8Bk4jY45iGfHTAFvVC4NI+qoLGIr5JXW1sx53jbZFXBqx70fpnEYv2oHetbMNlAj6bqq2sw5TYSmapB2IU9rAgi3KXVKO2ooywG7k7WjBm7Hwpi25j4VZ1IcC899A9CiyeYedVQGutLnwjZhYQJBZDOoX/pVVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3clDanA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E61C4CEE7;
-	Mon, 13 Oct 2025 14:50:46 +0000 (UTC)
+	 MIME-Version; b=Lcn+ZgwapUnV1I4sVo2JKpumLLmWprlxqc+uNZpP87HYCzshMbtocmQuxa0locSp2A3ZOb5LmoqwAIrOsZ1pSONGNn+TXNIzNh6Q0zHZz29rxO9561j02XEoxXrjcW7jYBnoVpOBsC7Fo2eGlqY57QTfwofdVIiJbVdf/gMdgbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4ARp/Ye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227AAC4CEE7;
+	Mon, 13 Oct 2025 15:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367046;
-	bh=Nx01DCgUKZCK4JIuudxbrRHQotOegdsllWKtX3xHTgg=;
+	s=korg; t=1760368294;
+	bh=KELxqXfJY8BSCv7XCetA6CQGdZXkJf67Zb7Kz3ZDMoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3clDanA3nNPGcG9DDCQ8nZbpsta6J1v7JA+zdhOF2r2A9JRJN4SAVwTKwrxUAux+
-	 5HBENkYEil89PiKjJ6jFAOtS7y7WZvu0e2uYpertYp2zmVGR20lKG8MZ2gnD6UGKfG
-	 USmVGpN1KEWwrQYuRr/3mAq9+5sYt6XV12yWF3/k=
+	b=S4ARp/YeDY/XM7xynL458bOckfgnDVQpkzL/eJ5EFrow69lnkX1XTAY3GlSlbCvzQ
+	 DtLFWD59KVfoe/dDlYA+WI5sgvM5rdAy77ALe2DBXWy0AKMMev63spCEMY8P3tZRJj
+	 +QT2TFlF32l7+oN813YQeLABvGdjWGsua7w6uYmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/196] firmware: firmware: meson-sm: fix compile-test default
+Subject: [PATCH 6.12 104/262] crypto: octeontx2 - Call strscpy() with correct size argument
 Date: Mon, 13 Oct 2025 16:44:06 +0200
-Message-ID: <20251013144317.218042137@linuxfoundation.org>
+Message-ID: <20251013144329.873810361@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 0454346d1c5f7fccb3ef6e3103985de8ab3469f3 ]
+[ Upstream commit 361fa7f813e7056cecdb24f3582ab0ad4a088e4e ]
 
-Enabling compile testing should not enable every individual driver (we
-have "allyesconfig" for that).
+In otx2_cpt_dl_custom_egrp_create(), strscpy() is called with the length
+of the source string rather than the size of the destination buffer.
 
-Fixes: 4a434abc40d2 ("firmware: meson-sm: enable build as module")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250725075429.10056-1-johan@kernel.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+This is fine as long as the destination buffer is larger than the source
+string, but we should still use the destination buffer size instead to
+call strscpy() as intended. And since 'tmp_buf' is a fixed-size buffer,
+we can safely omit the size argument and let strscpy() infer it using
+sizeof().
+
+Fixes: d9d7749773e8 ("crypto: octeontx2 - add apis for custom engine groups")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/meson/Kconfig | 2 +-
+ drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/meson/Kconfig b/drivers/firmware/meson/Kconfig
-index f2fdd37566482..179f5d46d8ddf 100644
---- a/drivers/firmware/meson/Kconfig
-+++ b/drivers/firmware/meson/Kconfig
-@@ -5,7 +5,7 @@
- config MESON_SM
- 	tristate "Amlogic Secure Monitor driver"
- 	depends on ARCH_MESON || COMPILE_TEST
--	default y
-+	default ARCH_MESON
- 	depends on ARM64_4K_PAGES
- 	help
- 	  Say y here to enable the Amlogic secure monitor driver
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+index 1493a373baf71..cf68b213c3e62 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+@@ -1614,7 +1614,7 @@ int otx2_cpt_dl_custom_egrp_create(struct otx2_cptpf_dev *cptpf,
+ 		return -EINVAL;
+ 	}
+ 	err_msg = "Invalid engine group format";
+-	strscpy(tmp_buf, ctx->val.vstr, strlen(ctx->val.vstr) + 1);
++	strscpy(tmp_buf, ctx->val.vstr);
+ 	start = tmp_buf;
+ 
+ 	has_se = has_ie = has_ae = false;
 -- 
 2.51.0
 
