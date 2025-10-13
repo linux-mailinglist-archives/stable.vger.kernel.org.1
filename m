@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C595BD4495
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:12 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2ECDBD3C72
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D0257501E52
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DB21734DE1A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A334D312810;
-	Mon, 13 Oct 2025 15:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD37D237A4F;
+	Mon, 13 Oct 2025 14:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+UZVupF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlTS3O5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6038531280A;
-	Mon, 13 Oct 2025 15:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866D226E6F2;
+	Mon, 13 Oct 2025 14:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368263; cv=none; b=k+CsdOL3AhRZjMBOfbMXXcmRgkGhqFXJwaxSC3hUxgJos9zgpcX2nwUhSf05y3lh2O55VHg7YiQr5I7j2yL5zp9TPqedhnrEFFJkWbNU4g9k1IM7zwZ3NHo/6p306bGVdafVPGxkB2z9GzS/eqm0bHWFz087IP4njjMhRlruy9Q=
+	t=1760367029; cv=none; b=jU3eQlsKaVmeUHS/IUWbgjkC9ra37Jt9VjN6qVftq8MSVQpiOzpZf/ns+57FM2CSQInWlFthL2kk5aOcZhNy0iEInhja+Z84tLQMvmd4+oR2oxWAQtyMfUX5DHtuaP+sOfNc4PyfA0WCrdouu+mjR9mgAz2rp4UgBidqhaU36gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368263; c=relaxed/simple;
-	bh=sCKT9uHxbbqYTVPZr2on4IgKwapgcfQhn003v96NR4Y=;
+	s=arc-20240116; t=1760367029; c=relaxed/simple;
+	bh=FrTsbUrrIVFZhFHgtecaqD+gRxlmKYLpXPdoMLkoWvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTbRHZM8MQoP4vZISpAlLgarLy9fs7ovwLZvVNNiS88xKO3UMcnQns78GJILywxh9YDAUqimNQ+oi+15EBQhHRG0+t4uMFfgbQML4txkzXfDudRVSHapFm6hK7jrdMEZZIE8dEg8rTNXJ2C10paXA8cnbsWzO8qA/VuuSvuo+2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+UZVupF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56AEC4CEE7;
-	Mon, 13 Oct 2025 15:11:02 +0000 (UTC)
+	 MIME-Version; b=dBXtEp9M453sRoBGda3eDhp43bKAY6V4rNnpmd74RFjs2WICkwfQsfSR2lnTtV9UZA+BjOCl1gGfZwPMkFo9hKX5+CthxyQCZHKpNMvCiXSVRrZa2LkvFyXzRF8vbDGhuZ8A2Ka2Gya6K+XpgC6O/c1FKg5ZO6flG7YStHufk7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlTS3O5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B90DC4CEE7;
+	Mon, 13 Oct 2025 14:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368263;
-	bh=sCKT9uHxbbqYTVPZr2on4IgKwapgcfQhn003v96NR4Y=;
+	s=korg; t=1760367029;
+	bh=FrTsbUrrIVFZhFHgtecaqD+gRxlmKYLpXPdoMLkoWvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+UZVupFAucCq+rl8pcfwFhtmCVht3OX4rIxeCkIrpQyQ/La3GjuB5An/lW3JmKTv
-	 JhO7UuiGarZg2wibJcI++qt0cSxXC0hoxF2PLgkZxK2rIxDQUvt90ogWOvpcJzj5vX
-	 DQO90D4mh0LguuGUY/6jVK1taPrsGlHP1L1qZwbw=
+	b=JlTS3O5u5jtQnnMrAPC08q+vLceD66nmuwT5GVSJ7+/8R2yqkFgauS5socHiceF1e
+	 AQxdloOp97eeWoBSXBlukdRpTpaOBC9S3A5QAZ0iZTpAT4MPKeu4JRjTDgAacvdasW
+	 bjeNmRyq3nQCJd4zDcz2MPFt6a6vmvOcFcH7oRe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Yuanhong <liaoyuanhong@vivo.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/262] drm/amd/display: Remove redundant semicolons
+Subject: [PATCH 6.1 068/196] PM / devfreq: mtk-cci: Fix potential error pointer dereference in probe()
 Date: Mon, 13 Oct 2025 16:44:01 +0200
-Message-ID: <20251013144329.696350017@linuxfoundation.org>
+Message-ID: <20251013144317.039353152@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Yuanhong <liaoyuanhong@vivo.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 90b810dd859c0df9db2290da1ac5842e5f031267 ]
+[ Upstream commit fc33bf0e097c6834646b98a7b3da0ae5b617f0f9 ]
 
-Remove unnecessary semicolons.
+The drv->sram_reg pointer could be set to ERR_PTR(-EPROBE_DEFER) which
+would lead to a error pointer dereference.  Use IS_ERR_OR_NULL() to check
+that the pointer is valid.
 
-Fixes: dda4fb85e433 ("drm/amd/display: DML changes for DCN32/321")
-Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: e09bd5757b52 ("PM / devfreq: mtk-cci: Handle sram regulator probe deferral")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Link: https://patchwork.kernel.org/project/linux-pm/patch/aJTNHz8kk8s6Q2os@stanley.mountain/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c    | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/devfreq/mtk-cci-devfreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
-index 9ba6cb67655f4..6c75aa82327ac 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
-@@ -139,7 +139,6 @@ void dml32_rq_dlg_get_rq_reg(display_rq_regs_st *rq_regs,
- 	if (dual_plane) {
- 		unsigned int p1_pte_row_height_linear = get_dpte_row_height_linear_c(mode_lib, e2e_pipe_param,
- 				num_pipes, pipe_idx);
--		;
- 		if (src->sw_mode == dm_sw_linear)
- 			ASSERT(p1_pte_row_height_linear >= 8);
+diff --git a/drivers/devfreq/mtk-cci-devfreq.c b/drivers/devfreq/mtk-cci-devfreq.c
+index e5458ada5197a..a68f51cc5ef96 100644
+--- a/drivers/devfreq/mtk-cci-devfreq.c
++++ b/drivers/devfreq/mtk-cci-devfreq.c
+@@ -385,7 +385,8 @@ static int mtk_ccifreq_probe(struct platform_device *pdev)
+ out_free_resources:
+ 	if (regulator_is_enabled(drv->proc_reg))
+ 		regulator_disable(drv->proc_reg);
+-	if (drv->sram_reg && regulator_is_enabled(drv->sram_reg))
++	if (!IS_ERR_OR_NULL(drv->sram_reg) &&
++	    regulator_is_enabled(drv->sram_reg))
+ 		regulator_disable(drv->sram_reg);
  
+ 	return ret;
 -- 
 2.51.0
 
