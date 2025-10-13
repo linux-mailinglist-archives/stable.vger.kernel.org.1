@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-185331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9648BD4D03
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:11:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEF4BD5401
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:53:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 22FD25464D7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:59:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 40AF44FAC44
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6B1311954;
-	Mon, 13 Oct 2025 15:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9837B31D39F;
+	Mon, 13 Oct 2025 15:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQf+aDwy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIycA63s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED01311951;
-	Mon, 13 Oct 2025 15:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3D831D396;
+	Mon, 13 Oct 2025 15:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369990; cv=none; b=JetRy9H/vDZ9VeLJ9vDOwcdLw8KzzQlQA1GOZlfa7srkgcHGC6RZq0j4HV6lP5K9YU0JUu96xIWHPqDxYkHjiDfBmvKPudQohevM4z6R8EWZjMlwVFgEsSQ3EY+ebuXFQENpjc8bxQkBJqx51uuV70vuDw7LpyHmh452nBSVN9k=
+	t=1760369999; cv=none; b=Q9sRvaGYIipZ5CqOMqUk9EmZPKGX307NICj3CbxJzwKR8en1cRI7xPT57SLLg+dxOhoD2gUYDyDya1PXp/VC6f89ZA0iqHCJbRPBjq3y9ETeE1Sbhy2krXWnXL+oOm7GWnnw6Q5LDmZkFGuk96e1gK6YjRneJyHQsy9IR84I+AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369990; c=relaxed/simple;
-	bh=0kbaOwL79aMNzqjYFh/yup4COaOIITV/tHJfJQF+BNo=;
+	s=arc-20240116; t=1760369999; c=relaxed/simple;
+	bh=nBGIPg6XXIg+h6Puclgghb5PsAXYZVk7XqXDGwHqnSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZGM//tZWGznAowv1dj43VLTQVtgh7Dht+I1wEfYpCi//0xo4Pvz9MVQjFL1lbgjKM0RCd2XCdQz3E8jrKeEmAOcI9wv+3dzLYIa1pf7YtUChgrYLyTwHMM4nIsA97pORZVkMNWJekyq2ZHnjVRm+K5nTetI/JLcy/fmFkJowlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQf+aDwy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8F1C4CEFE;
-	Mon, 13 Oct 2025 15:39:49 +0000 (UTC)
+	 MIME-Version; b=PbtCCkDdvzQQE1q6Ik6ep2GIbmk2AoDxr9EJ2VklKexpieVRabiE1DNX87gald0cU+5UKNXhki4/tH6tqdXKBoSlY/A/bTHe7DwLIYwUbaOyl546p4xW/B/RJilDJevUHoaukQRsMKuctEXVCpAqCvRKEg2sHej/koLjZrKIhcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIycA63s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F84C116C6;
+	Mon, 13 Oct 2025 15:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369990;
-	bh=0kbaOwL79aMNzqjYFh/yup4COaOIITV/tHJfJQF+BNo=;
+	s=korg; t=1760369998;
+	bh=nBGIPg6XXIg+h6Puclgghb5PsAXYZVk7XqXDGwHqnSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQf+aDwy/GYG3KJ76sblld9HygiIvu8gEWfDcqD7ZEMVvT+W/uo78bX/5C8vimsfY
-	 7sGhu0b7fnmMkYpJ1TONHqTZ8MZmYTkYioLq62ueUijTKdYaopk2euq2gL7SLGtiB7
-	 wZAhJySZpKIKGxarKVWizrVpSdZyJsKT5Cek/lN0=
+	b=YIycA63sEEIHLRWa/Cg/vTvutdfQJBe+s6jGzRSbOyl5blJf5esyPLC7eUEB2gn8z
+	 aPCLyDMpdICcc/pM3j8dqsInFkSqfMWLN1c+zZdZR0y7BrozKKnfd9cAig/LBbEnRq
+	 npvzO2Jm06Tmj3hu7PK9fWA1p/qyLwA3FqCAcmEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Huan Tang <tanghuan@vivo.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 439/563] scsi: ufs: core: Fix data race in CPU latency PM QoS request handling
-Date: Mon, 13 Oct 2025 16:45:00 +0200
-Message-ID: <20251013144427.186716438@linuxfoundation.org>
+Subject: [PATCH 6.17 441/563] usb: vhci-hcd: Prevent suspending virtually attached devices
+Date: Mon, 13 Oct 2025 16:45:02 +0200
+Message-ID: <20251013144427.258123443@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,128 +66,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 79dde5f7dc7c038eec903745dc1550cd4139980e ]
+[ Upstream commit e40b984b6c4ce3f80814f39f86f87b2a48f2e662 ]
 
-The cpu_latency_qos_add/remove/update_request interfaces lack internal
-synchronization by design, requiring the caller to ensure thread safety.
-The current implementation relies on the 'pm_qos_enabled' flag, which is
-insufficient to prevent concurrent access and cannot serve as a proper
-synchronization mechanism. This has led to data races and list
-corruption issues.
+The VHCI platform driver aims to forbid entering system suspend when at
+least one of the virtual USB ports are bound to an active USB/IP
+connection.
 
-A typical race condition call trace is:
+However, in some cases, the detection logic doesn't work reliably, i.e.
+when all devices attached to the virtual root hub have been already
+suspended, leading to a broken suspend state, with unrecoverable resume.
 
-[Thread A]
-ufshcd_pm_qos_exit()
-  --> cpu_latency_qos_remove_request()
-    --> cpu_latency_qos_apply();
-      --> pm_qos_update_target()
-        --> plist_del              <--(1) delete plist node
-    --> memset(req, 0, sizeof(*req));
-  --> hba->pm_qos_enabled = false;
+Ensure the virtually attached devices do not enter suspend by setting
+the syscore PM flag.  Note this is currently limited to the client side
+only, since the server side doesn't implement system suspend prevention.
 
-[Thread B]
-ufshcd_devfreq_target
-  --> ufshcd_devfreq_scale
-    --> ufshcd_scale_clks
-      --> ufshcd_pm_qos_update     <--(2) pm_qos_enabled is true
-        --> cpu_latency_qos_update_request
-          --> pm_qos_update_target
-            --> plist_del          <--(3) plist node use-after-free
-
-Introduces a dedicated mutex to serialize PM QoS operations, preventing
-data races and ensuring safe access to PM QoS resources, including sysfs
-interface reads.
-
-Fixes: 2777e73fc154 ("scsi: ufs: core: Add CPU latency QoS support for UFS driver")
-Signed-off-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Tested-by: Huan Tang <tanghuan@vivo.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 04679b3489e0 ("Staging: USB/IP: add client driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250902-vhci-hcd-suspend-fix-v3-1-864e4e833559@collabora.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-sysfs.c | 2 ++
- drivers/ufs/core/ufshcd.c    | 9 +++++++++
- include/ufs/ufshcd.h         | 3 +++
- 3 files changed, 14 insertions(+)
+ drivers/usb/usbip/vhci_hcd.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/ufs/core/ufs-sysfs.c b/drivers/ufs/core/ufs-sysfs.c
-index 4bd7d491e3c5a..0086816b27cd9 100644
---- a/drivers/ufs/core/ufs-sysfs.c
-+++ b/drivers/ufs/core/ufs-sysfs.c
-@@ -512,6 +512,8 @@ static ssize_t pm_qos_enable_show(struct device *dev,
- {
- 	struct ufs_hba *hba = dev_get_drvdata(dev);
+diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
+index e70fba9f55d6a..0d6c10a8490c0 100644
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -765,6 +765,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ 				 ctrlreq->wValue, vdev->rhport);
  
-+	guard(mutex)(&hba->pm_qos_mutex);
-+
- 	return sysfs_emit(buf, "%d\n", hba->pm_qos_enabled);
- }
+ 			vdev->udev = usb_get_dev(urb->dev);
++			/*
++			 * NOTE: A similar operation has been done via
++			 * USB_REQ_GET_DESCRIPTOR handler below, which is
++			 * supposed to always precede USB_REQ_SET_ADDRESS.
++			 *
++			 * It's not entirely clear if operating on a different
++			 * usb_device instance here is a real possibility,
++			 * otherwise this call and vdev->udev assignment above
++			 * should be dropped.
++			 */
++			dev_pm_syscore_device(&vdev->udev->dev, true);
+ 			usb_put_dev(old);
  
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 9a43102b2b21e..f2b6d1e94f76b 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -1045,6 +1045,7 @@ EXPORT_SYMBOL_GPL(ufshcd_is_hba_active);
-  */
- void ufshcd_pm_qos_init(struct ufs_hba *hba)
- {
-+	guard(mutex)(&hba->pm_qos_mutex);
+ 			spin_lock(&vdev->ud.lock);
+@@ -785,6 +796,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
  
- 	if (hba->pm_qos_enabled)
- 		return;
-@@ -1061,6 +1062,8 @@ void ufshcd_pm_qos_init(struct ufs_hba *hba)
-  */
- void ufshcd_pm_qos_exit(struct ufs_hba *hba)
- {
-+	guard(mutex)(&hba->pm_qos_mutex);
-+
- 	if (!hba->pm_qos_enabled)
- 		return;
+ 			vdev->udev = usb_get_dev(urb->dev);
++			/*
++			 * Set syscore PM flag for the virtually attached
++			 * devices to ensure they will not enter suspend on
++			 * the client side.
++			 *
++			 * Note this doesn't have any impact on the physical
++			 * devices attached to the host system on the server
++			 * side, hence there is no need to undo the operation
++			 * on disconnect.
++			 */
++			dev_pm_syscore_device(&vdev->udev->dev, true);
+ 			usb_put_dev(old);
+ 			goto out;
  
-@@ -1075,6 +1078,8 @@ void ufshcd_pm_qos_exit(struct ufs_hba *hba)
-  */
- static void ufshcd_pm_qos_update(struct ufs_hba *hba, bool on)
- {
-+	guard(mutex)(&hba->pm_qos_mutex);
-+
- 	if (!hba->pm_qos_enabled)
- 		return;
- 
-@@ -10756,6 +10761,10 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- 	mutex_init(&hba->ee_ctrl_mutex);
- 
- 	mutex_init(&hba->wb_mutex);
-+
-+	/* Initialize mutex for PM QoS request synchronization */
-+	mutex_init(&hba->pm_qos_mutex);
-+
- 	init_rwsem(&hba->clk_scaling_lock);
- 
- 	ufshcd_init_clk_gating(hba);
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index 1d39437775842..a3fa98540d184 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -963,6 +963,7 @@ enum ufshcd_mcq_opr {
-  * @ufs_rtc_update_work: A work for UFS RTC periodic update
-  * @pm_qos_req: PM QoS request handle
-  * @pm_qos_enabled: flag to check if pm qos is enabled
-+ * @pm_qos_mutex: synchronizes PM QoS request and status updates
-  * @critical_health_count: count of critical health exceptions
-  * @dev_lvl_exception_count: count of device level exceptions since last reset
-  * @dev_lvl_exception_id: vendor specific information about the
-@@ -1136,6 +1137,8 @@ struct ufs_hba {
- 	struct delayed_work ufs_rtc_update_work;
- 	struct pm_qos_request pm_qos_req;
- 	bool pm_qos_enabled;
-+	/* synchronizes PM QoS request and status updates */
-+	struct mutex pm_qos_mutex;
- 
- 	int critical_health_count;
- 	atomic_t dev_lvl_exception_count;
 -- 
 2.51.0
 
