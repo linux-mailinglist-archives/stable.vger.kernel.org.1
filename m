@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48938BD43E8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:02 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3C6BD4844
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA2B71892051
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4287250045E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58083093C3;
-	Mon, 13 Oct 2025 15:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7083101AB;
+	Mon, 13 Oct 2025 15:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JG3r97A7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l75nrp8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E323090DE;
-	Mon, 13 Oct 2025 15:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E6430FF30;
+	Mon, 13 Oct 2025 15:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368632; cv=none; b=HPQ22lNT8yh/ixpcddBixnW3/M42+RN14TCi4hm6LT2q3lri6zYU1gwJv7TmgIiLrT5H1RM1UDUaNeWbp/SDYO0jpEnDUHh5mWL1FT7hiPNbB8DrgPxRg/QF+EcyqYgXDhCufx6hVy+CFYAgVA7HCfkbJqk0JsNt4htXobLWJxY=
+	t=1760367992; cv=none; b=Z8Y7w+ap1M9JElSpDfIjIyphCol31SZtZHIm6JzywOBMEDSxJQITDwT4DtkO2nGWhRu1Etgr9r5iLpAlY7QjJPrOhXJdUsJq1K1BLtHePrQZjG0qD9CbdqxExXnFN21k/KZqd7e/hzi272taDxfqBYecvv6yhu9ePMZOkfn+AyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368632; c=relaxed/simple;
-	bh=i+fqnV+t/vhL0JjPY2CB1jRLrXGOUkpOq91vqy2/xHI=;
+	s=arc-20240116; t=1760367992; c=relaxed/simple;
+	bh=Q4tKpZwpTphpKn4U5sUfd+SDG6a45WYExkMqEsHrvNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=epLvAnSSoP/koxJLjatYMqCw35MbeGxA3bav35kmzXnVRPQlmQx+32EA/6VOWdDeF5dToYtiTGbLEWioDAxrGl6OLpRLiI2rHBKUAkwO/D27hcjfVMmE1hkAL4eBA14d4Es4aPUbB31SZtrgGASKpUW8L3Avxlz2mOpBXe7ie5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JG3r97A7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A46C4CEE7;
-	Mon, 13 Oct 2025 15:17:11 +0000 (UTC)
+	 MIME-Version; b=pqIViHk76mC9azt9682Y7GLlsLPSzCaBi7F/djKEhpdyXnvaoU/RLfAB36bQB+xdu818wIcSwSa3/gKcdfIdUkn6gd2bKSIk+XYOxipA4LpmmLL9zi6NzhxB/D/27Q1XB4cp3pFS/iYyX3vCo8xH/9lqi3pMWaysk+Z7gNf+8DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l75nrp8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317E4C4CEE7;
+	Mon, 13 Oct 2025 15:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368632;
-	bh=i+fqnV+t/vhL0JjPY2CB1jRLrXGOUkpOq91vqy2/xHI=;
+	s=korg; t=1760367992;
+	bh=Q4tKpZwpTphpKn4U5sUfd+SDG6a45WYExkMqEsHrvNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JG3r97A7KhIWjkUWM92xJkrqeTLictcUQZ+rfguUbRzdzdBqz2LNMxnyM/MqNkvXq
-	 vmNrr7C/TBWItvbYeUeEvloCDvb1J3kDM367u8laDQM11LniZ7fhRGOhjbWzc5t1BM
-	 9G8c9DX4Ckov9t6EvrDVXmjHaMWbM0TjoLhYIUZQ=
+	b=l75nrp8aaUtryGYh6HyCNBYRqRfU4f5jqTHKm8jAytIIs328R3EpMjaqznDx+Krge
+	 C4viU94nmdvKluDg8gRxJSOdt8nFW0D+xnfHhP+RyPED8c7/TIGK+sx5c/hwpmSTRx
+	 LrlJsO0Bz/GBVedLzHvjJzMSwhxxjLksAZQQMZtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 229/262] ASoC: SOF: ipc3-topology: Fix multi-core and static pipelines tear down
-Date: Mon, 13 Oct 2025 16:46:11 +0200
-Message-ID: <20251013144334.489146737@linuxfoundation.org>
+	stable@kernel.org,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 181/196] ext4: fix checks for orphan inodes
+Date: Mon, 13 Oct 2025 16:46:12 +0200
+Message-ID: <20251013144321.855389001@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 59abe7bc7e7c70e9066b3e46874d1b7e6a13de14 upstream.
+commit acf943e9768ec9d9be80982ca0ebc4bfd6b7631e upstream.
 
-In the case of static pipelines, freeing the widgets in the pipelines
-that were not suspended after freeing the scheduler widgets results in
-errors because the secondary cores are powered off when the scheduler
-widgets are freed. Fix this by tearing down the leftover pipelines before
-powering off the secondary cores.
+When orphan file feature is enabled, inode can be tracked as orphan
+either in the standard orphan list or in the orphan file. The first can
+be tested by checking ei->i_orphan list head, the second is recorded by
+EXT4_STATE_ORPHAN_FILE inode state flag. There are several places where
+we want to check whether inode is tracked as orphan and only some of
+them properly check for both possibilities. Luckily the consequences are
+mostly minor, the worst that can happen is that we track an inode as
+orphan although we don't need to and e2fsck then complains (resulting in
+occasional ext4/307 xfstest failures). Fix the problem by introducing a
+helper for checking whether an inode is tracked as orphan and use it in
+appropriate places.
 
-Cc: stable@vger.kernel.org
-Fixes: d7332c4a4f1a ("ASoC: SOF: ipc3-topology: Fix pipeline tear down logic")
-Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20251002073125.32471-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 4a79a98c7b19 ("ext4: Improve scalability of ext4 orphan file handling")
+Cc: stable@kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Message-ID: <20250925123038.20264-2-jack@suse.cz>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/ipc3-topology.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ext4/ext4.h   |   10 ++++++++++
+ fs/ext4/file.c   |    2 +-
+ fs/ext4/inode.c  |    2 +-
+ fs/ext4/orphan.c |    6 +-----
+ fs/ext4/super.c  |    4 ++--
+ 5 files changed, 15 insertions(+), 9 deletions(-)
 
---- a/sound/soc/sof/ipc3-topology.c
-+++ b/sound/soc/sof/ipc3-topology.c
-@@ -2485,11 +2485,6 @@ static int sof_ipc3_tear_down_all_pipeli
- 	if (ret < 0)
- 		return ret;
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1961,6 +1961,16 @@ static inline bool ext4_verity_in_progre
+ #define NEXT_ORPHAN(inode) EXT4_I(inode)->i_dtime
  
--	/* free all the scheduler widgets now */
--	ret = sof_ipc3_free_widgets_in_list(sdev, true, &dyn_widgets, verify);
--	if (ret < 0)
--		return ret;
--
- 	/*
- 	 * Tear down all pipelines associated with PCMs that did not get suspended
- 	 * and unset the prepare flag so that they can be set up again during resume.
-@@ -2505,6 +2500,11 @@ static int sof_ipc3_tear_down_all_pipeli
- 		}
- 	}
- 
-+	/* free all the scheduler widgets now. This will also power down the secondary cores */
-+	ret = sof_ipc3_free_widgets_in_list(sdev, true, &dyn_widgets, verify);
-+	if (ret < 0)
-+		return ret;
+ /*
++ * Check whether the inode is tracked as orphan (either in orphan file or
++ * orphan list).
++ */
++static inline bool ext4_inode_orphan_tracked(struct inode *inode)
++{
++	return ext4_test_inode_state(inode, EXT4_STATE_ORPHAN_FILE) ||
++		!list_empty(&EXT4_I(inode)->i_orphan);
++}
 +
- 	list_for_each_entry(sroute, &sdev->route_list, list)
- 		sroute->setup = false;
++/*
+  * Codes for operating systems
+  */
+ #define EXT4_OS_LINUX		0
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -354,7 +354,7 @@ static void ext4_inode_extension_cleanup
+ 	 * to cleanup the orphan list in ext4_handle_inode_extension(). Do it
+ 	 * now.
+ 	 */
+-	if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
++	if (ext4_inode_orphan_tracked(inode) && inode->i_nlink) {
+ 		handle_t *handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
  
+ 		if (IS_ERR(handle)) {
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4370,7 +4370,7 @@ static int ext4_fill_raw_inode(struct in
+ 		 * old inodes get re-used with the upper 16 bits of the
+ 		 * uid/gid intact.
+ 		 */
+-		if (ei->i_dtime && list_empty(&ei->i_orphan)) {
++		if (ei->i_dtime && !ext4_inode_orphan_tracked(inode)) {
+ 			raw_inode->i_uid_high = 0;
+ 			raw_inode->i_gid_high = 0;
+ 		} else {
+--- a/fs/ext4/orphan.c
++++ b/fs/ext4/orphan.c
+@@ -109,11 +109,7 @@ int ext4_orphan_add(handle_t *handle, st
+ 
+ 	WARN_ON_ONCE(!(inode->i_state & (I_NEW | I_FREEING)) &&
+ 		     !inode_is_locked(inode));
+-	/*
+-	 * Inode orphaned in orphan file or in orphan list?
+-	 */
+-	if (ext4_test_inode_state(inode, EXT4_STATE_ORPHAN_FILE) ||
+-	    !list_empty(&EXT4_I(inode)->i_orphan))
++	if (ext4_inode_orphan_tracked(inode))
+ 		return 0;
+ 
+ 	/*
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1464,9 +1464,9 @@ static void ext4_free_in_core_inode(stru
+ 
+ static void ext4_destroy_inode(struct inode *inode)
+ {
+-	if (!list_empty(&(EXT4_I(inode)->i_orphan))) {
++	if (ext4_inode_orphan_tracked(inode)) {
+ 		ext4_msg(inode->i_sb, KERN_ERR,
+-			 "Inode %lu (%p): orphan list check failed!",
++			 "Inode %lu (%p): inode tracked as orphan!",
+ 			 inode->i_ino, EXT4_I(inode));
+ 		print_hex_dump(KERN_INFO, "", DUMP_PREFIX_ADDRESS, 16, 4,
+ 				EXT4_I(inode), sizeof(struct ext4_inode_info),
 
 
 
