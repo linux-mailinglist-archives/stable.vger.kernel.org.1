@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-184250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE1BBD3AD7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:51:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03280BD451F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 680C934D371
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:51:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5EBC44F9AB3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C3227467D;
-	Mon, 13 Oct 2025 14:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5EB31196D;
+	Mon, 13 Oct 2025 15:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvFiMGKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+fm8zDM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F632701B8;
-	Mon, 13 Oct 2025 14:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910E3311957;
+	Mon, 13 Oct 2025 15:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366893; cv=none; b=aB2OieeZobDbtD1IrlCvx0y0w/p9IkNHcdtOzPsuw/qz/pp54xlN96LI/+76BFmpS0s/dNeRL7+a1aY7FnjuzyHXECO7w4ySG/t1YykEO5V9/z8Nb+iSdAO4z6D4UkpYlxg+a0NmJwC8bOtLnxP3AGMF4WBE29x0b5rk2rqMlOc=
+	t=1760368185; cv=none; b=B0fdI1WkBA32s2wVXAxaOtQzyX+QBRDI/3t4awkavOnB1hktB7kEDcgc7Zq64Llarl9c9Ub9urpTss4hL9ApD5tpEeyREPltwsZ12N6NNsLfEgED0lRoxyotOQjX6iuKqDPpOXmh2Grm9TMJzKziePVsPKbfo0oh7SDhpYJfb5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366893; c=relaxed/simple;
-	bh=g1h7RDKpVsjyi5DiLVamPHph3EbplvhcTjwe6GV/7zo=;
+	s=arc-20240116; t=1760368185; c=relaxed/simple;
+	bh=E6sVjzEyPIlsgel+yw/ZpX95aE9+GntFdeJXt54CQR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=II1cc3zfGKkuo/cedZRPd2HRc8QtQlLg3RqRVU8yOiBL51pNNuhsLXRsM9IjzURDKdpt2oNf3FKRn6jGfgxyi0UjQSLHamXXRbbC/yXzlLW4KMk9AP4BlwBAmdckQ/Ws8EgAfXhERTjlhKT8jqpBq/7gjkCiNMyG6q4uSv+8gVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvFiMGKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B61C4CEFE;
-	Mon, 13 Oct 2025 14:48:12 +0000 (UTC)
+	 MIME-Version; b=DISlxPwjSIWIK5AHSJ9in0zYR+Jl0q3ryQBVCkbp0t+OvOPaS3t0V+ZkjpgGrtttFAAqKMJS9pOBsdmHQNC07f8K2tAp9YVaiazJHr4AWqHaEYV5ZFH+g5ObZvrzfP1206WYPdTl4soC56VYhNj2/RpHNt3ClEWQPw/p/o9mmSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+fm8zDM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12324C4CEFE;
+	Mon, 13 Oct 2025 15:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366893;
-	bh=g1h7RDKpVsjyi5DiLVamPHph3EbplvhcTjwe6GV/7zo=;
+	s=korg; t=1760368185;
+	bh=E6sVjzEyPIlsgel+yw/ZpX95aE9+GntFdeJXt54CQR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvFiMGKzxetEgDngc9DkLg1wmJ8Tm0q8xuWDiu2FJWVL1rZ2DTCPYIJ7Vl818BSW0
-	 wYTasf9KQwrdWCTtZFL1An1p+8pWxzdSki3hhaBOPGsxWYBePGr4b6xXC9G5VVtoaM
-	 I+UOnS87GpK+ewCqsmihGz18O7oIczS2jHoytxa8=
+	b=r+fm8zDMRMsZbr/wLqFE+oi4QtbzDwxi7D6dWdGl7pDXiZ9Z1sbGmZ8CYJhdtlrau
+	 wpn2ZzcJxkVtMCDxHbQKSYb+5AD0eILs2D1k9au0SnZAUSUr2ttp5WC3yRmiP00qmB
+	 4hvjh5ubTobyRtw0Yu0usViIJDXRXyoyCRq0CSbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Fore <csfore@posteo.net>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.1 009/196] gcc-plugins: Remove TODO_verify_il for GCC >= 16
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 040/262] block: use int to store blk_stack_limits() return value
 Date: Mon, 13 Oct 2025 16:43:02 +0200
-Message-ID: <20251013144314.899397365@linuxfoundation.org>
+Message-ID: <20251013144327.574922010@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit a40282dd3c484e6c882e93f4680e0a3ef3814453 upstream.
+[ Upstream commit b0b4518c992eb5f316c6e40ff186cbb7a5009518 ]
 
-GCC now runs TODO_verify_il automatically[1], so it is no longer exposed to
-plugins. Only use the flag on GCC < 16.
+Change the 'ret' variable in blk_stack_limits() from unsigned int to int,
+as it needs to store negative value -1.
 
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=9739ae9384dd7cd3bb1c7683d6b80b7a9116eaf8 [1]
-Suggested-by: Christopher Fore <csfore@posteo.net>
-Link: https://lore.kernel.org/r/20250920234519.work.915-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Storing the negative error codes in unsigned type, or performing equality
+comparisons (e.g., ret == -1), doesn't cause an issue at runtime [1] but
+can be confusing.  Additionally, assigning negative error codes to unsigned
+type may trigger a GCC warning when the -Wsign-conversion flag is enabled.
+
+No effect on runtime.
+
+Link: https://lore.kernel.org/all/x3wogjf6vgpkisdhg3abzrx7v7zktmdnfmqeih5kosszmagqfs@oh3qxrgzkikf/ #1
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Fixes: fe0b393f2c0a ("block: Correct handling of bottom device misaligment")
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250902130930.68317-1-rongqianfeng@vivo.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gcc-plugins/gcc-common.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ block/blk-settings.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -196,10 +196,17 @@ inline bool is_a_helper<const gassign *>
- }
- #endif
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index f24fffdb6c294..d72a283401c3a 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -552,7 +552,8 @@ static unsigned int blk_round_down_sectors(unsigned int sectors, unsigned int lb
+ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 		     sector_t start)
+ {
+-	unsigned int top, bottom, alignment, ret = 0;
++	unsigned int top, bottom, alignment;
++	int ret = 0;
  
-+#if BUILDING_GCC_VERSION < 16000
- #define TODO_verify_ssa TODO_verify_il
- #define TODO_verify_flow TODO_verify_il
- #define TODO_verify_stmts TODO_verify_il
- #define TODO_verify_rtl_sharing TODO_verify_il
-+#else
-+#define TODO_verify_ssa 0
-+#define TODO_verify_flow 0
-+#define TODO_verify_stmts 0
-+#define TODO_verify_rtl_sharing 0
-+#endif
+ 	t->features |= (b->features & BLK_FEAT_INHERIT_MASK);
  
- #define INSN_DELETED_P(insn) (insn)->deleted()
- 
+-- 
+2.51.0
+
 
 
 
