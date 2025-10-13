@@ -1,130 +1,166 @@
-Return-Path: <stable+bounces-184207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3861FBD2927
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 12:28:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0573FBD2D13
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 13:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 957241896769
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:28:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 436353B7DD3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 11:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5715B2FF169;
-	Mon, 13 Oct 2025 10:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF8B25FA10;
+	Mon, 13 Oct 2025 11:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d1W0UT4W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHNQjzVD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB9915E5BB;
-	Mon, 13 Oct 2025 10:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6AD2571B0
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 11:42:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760351286; cv=none; b=GjrO7LlNZgOTziv9Ud9CMOPke2IYHJcacsLrHxt8qRqPX79p7uR0M9EaLtaQQ7C+Uc3UNsxgMUfykMV+6kbN/Znl2nL39jmG59rnv8DAy90FNiDpM+hSK9CSDiD46JWVznUuxkCafHGuGC6mB/uYkktAKYJg8ljDyn4pyTtJUBQ=
+	t=1760355773; cv=none; b=EO1NKbEMXwWE0456fWWwKyMVnpSzzR2LMjwoQgQJWU6TT1+ynDEDKBKNOegS5spbHjJIQN/9v0F3X5Z3Nz1qKtob1FiFaojnNsH5G/49DHVQXBq7+D9+z+anInq1GAHVZxdEnvlbs0RbFTqb7rclc6v5Lm3Mq1YyCZJTUpfyTI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760351286; c=relaxed/simple;
-	bh=s0w3JaZHDtFhUxNRTBxHh5RglvYahX/gtsSUHvYN60s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p9b41J0vbK3AxeJTDPcViOS7AzCg3U1RBGBBOboYxGEKx9hNCIjiCtBXIoVuFA0B7O0W3fCBROXuIY6DENbGy9pkO7ntCSYGBMEfBXyJiQdFK9qd41c9notE96hBTsL2fB6IDBeNQ+gvSxVmXz1EqS/NkqVChpM1hhXNtFNYQr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d1W0UT4W; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760351284; x=1791887284;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=s0w3JaZHDtFhUxNRTBxHh5RglvYahX/gtsSUHvYN60s=;
-  b=d1W0UT4WA/0ESYkO/0NoEwgMGnM1iJ3mzyeePytCH107nR9Ffk5r11aZ
-   39F7PMYpIyKYVcDKE+iidpQYj74SGOVBwxOiQZp/fVOqTYcV4m9xVWKda
-   VfOWgiigeK9HAT9Ugz0a8CugI/8ke24emR9ZUA12aF4wMjPTNS6VbNRvZ
-   FhEGwsUcyJUSTkI4hkAUB0ET527OVL4uh/41OGyrm556ugZCMlfB6kprr
-   cFHdsmCYZRXgG1njDFXsg3oq5/Ih38iVo2VleUC6su1ktED6eDTxpz1EJ
-   vdCS1kbaWbnkC8aNaQUCxe2cbQvzo0LLG/jrpWNJJ9bENbM/7ltYXyTYA
-   A==;
-X-CSE-ConnectionGUID: 03BksFiiS4atwkOhXkv76A==
-X-CSE-MsgGUID: 5RJ/ikreRB2Z2Jrc3hDh1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11580"; a="72744233"
-X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; 
-   d="scan'208";a="72744233"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 03:28:03 -0700
-X-CSE-ConnectionGUID: CPI72lI4SLeQZnyRPzy0YQ==
-X-CSE-MsgGUID: /Zw2L53iSvO4+aRDFz7FQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; 
-   d="scan'208";a="186855631"
-Received: from unknown (HELO [10.238.2.75]) ([10.238.2.75])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 03:28:00 -0700
-Message-ID: <c8c40795-a459-4218-ba78-24f057c53a51@linux.intel.com>
-Date: Mon, 13 Oct 2025 18:27:58 +0800
+	s=arc-20240116; t=1760355773; c=relaxed/simple;
+	bh=QIzE5iUOAaE1mmvD9T8bxE30+y+hHvBLGRWK5LCVKPI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lkJ4qJlVo/MQXtzCM8oX3S4Cq6h8UEBDRQpN9yB5AOrd+JtxV6QrxurvY6q5ivTPYPA/JU7zk1EXp3E8QAGmLaJu4849o9RS3JQkz6AYJcKmJus737CxnrZDyJS1VAWr++XMFy3I0B7pvpGHQloCgvuxn1rPeCu/XMrtNkMzSMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHNQjzVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C326C4CEE7;
+	Mon, 13 Oct 2025 11:42:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760355771;
+	bh=QIzE5iUOAaE1mmvD9T8bxE30+y+hHvBLGRWK5LCVKPI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=NHNQjzVDocTT1U8aOevpFOQfNo20q3CT3Lr+67LteAP5VdzRJRVMLl51j3YxcXCK9
+	 t16yNwm36TItFRwHeaPQtlfiSRUDJE379/+Ov/lsS7OUGiw8u007jKF3jBWUZsTGCf
+	 TI+LFzxU9hIA45yxO0zjb1Pqa8FhOJt+NzRvvDmg=
+Subject: FAILED: patch "[PATCH] KVM: SVM: Skip fastpath emulation on VM-Exit if next RIP" failed to apply to 6.6-stable tree
+To: seanjc@google.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Oct 2025 13:42:48 +0200
+Message-ID: <2025101348-gigahertz-cauterize-0303@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] perf tools: Fix bool return value in gzip_is_compressed()
-To: Namhyung Kim <namhyung@kernel.org>
-Cc: Miaoqian Lin <linmq006@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250828104652.53724-1-linmq006@gmail.com>
- <4ecf3e76-27f8-47fd-a07d-7da2489af55f@linux.intel.com>
- <aOzDh4yhR5F0nMTG@google.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <aOzDh4yhR5F0nMTG@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-On 10/13/2025 5:16 PM, Namhyung Kim wrote:
-> Hello,
->
-> On Sat, Oct 11, 2025 at 11:48:56AM +0800, Mi, Dapeng wrote:
->> On 8/28/2025 6:46 PM, Miaoqian Lin wrote:
->>> gzip_is_compressed() returns -1 on error but is declared as bool.
->>> And -1 gets converted to true, which could be misleading.
->>> Return false instead to match the declared type.
->>>
->>> Fixes: 88c74dc76a30 ("perf tools: Add gzip_is_compressed function")
->>> Cc: <stable@vger.kernel.org>
->>> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
->>> ---
->>>  tools/perf/util/zlib.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
->>> index 78d2297c1b67..1f7c06523059 100644
->>> --- a/tools/perf/util/zlib.c
->>> +++ b/tools/perf/util/zlib.c
->>> @@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
->>>  	ssize_t rc;
->>>  
->>>  	if (fd < 0)
->>> -		return -1;
->>> +		return false;
->>>  
->>>  	rc = read(fd, buf, sizeof(buf));
->>>  	close(fd);
->> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> We have 43fa1141e2c1af79 ("perf util: Fix compression checks returning -1
-> as bool").
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Good to know this has been fixed. Thanks. :)
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0910dd7c9ad45a2605c45fd2bf3d1bcac087687c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101348-gigahertz-cauterize-0303@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
 
 
->
-> Thanks,
-> Namhyung
->
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 0910dd7c9ad45a2605c45fd2bf3d1bcac087687c Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Tue, 5 Aug 2025 12:05:09 -0700
+Subject: [PATCH] KVM: SVM: Skip fastpath emulation on VM-Exit if next RIP
+ isn't valid
+
+Skip the WRMSR and HLT fastpaths in SVM's VM-Exit handler if the next RIP
+isn't valid, e.g. because KVM is running with nrips=false.  SVM must
+decode and emulate to skip the instruction if the CPU doesn't provide the
+next RIP, and getting the instruction bytes to decode requires reading
+guest memory.  Reading guest memory through the emulator can fault, i.e.
+can sleep, which is disallowed since the fastpath handlers run with IRQs
+disabled.
+
+ BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:106
+ in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 32611, name: qemu
+ preempt_count: 1, expected: 0
+ INFO: lockdep is turned off.
+ irq event stamp: 30580
+ hardirqs last  enabled at (30579): [<ffffffffc08b2527>] vcpu_run+0x1787/0x1db0 [kvm]
+ hardirqs last disabled at (30580): [<ffffffffb4f62e32>] __schedule+0x1e2/0xed0
+ softirqs last  enabled at (30570): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+ softirqs last disabled at (30568): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+ CPU: 298 UID: 0 PID: 32611 Comm: qemu Tainted: G     U              6.16.0-smp--e6c618b51cfe-sleep #782 NONE
+ Tainted: [U]=USER
+ Hardware name: Google Astoria-Turin/astoria, BIOS 0.20241223.2-0 01/17/2025
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x7d/0xb0
+  __might_resched+0x271/0x290
+  __might_fault+0x28/0x80
+  kvm_vcpu_read_guest_page+0x8d/0xc0 [kvm]
+  kvm_fetch_guest_virt+0x92/0xc0 [kvm]
+  __do_insn_fetch_bytes+0xf3/0x1e0 [kvm]
+  x86_decode_insn+0xd1/0x1010 [kvm]
+  x86_emulate_instruction+0x105/0x810 [kvm]
+  __svm_skip_emulated_instruction+0xc4/0x140 [kvm_amd]
+  handle_fastpath_invd+0xc4/0x1a0 [kvm]
+  vcpu_run+0x11a1/0x1db0 [kvm]
+  kvm_arch_vcpu_ioctl_run+0x5cc/0x730 [kvm]
+  kvm_vcpu_ioctl+0x578/0x6a0 [kvm]
+  __se_sys_ioctl+0x6d/0xb0
+  do_syscall_64+0x8a/0x2c0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ RIP: 0033:0x7f479d57a94b
+  </TASK>
+
+Note, this is essentially a reapply of commit 5c30e8101e8d ("KVM: SVM:
+Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"), but with
+different justification (KVM now grabs SRCU when skipping the instruction
+for other reasons).
+
+Fixes: b439eb8ab578 ("Revert "KVM: SVM: Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250805190526.1453366-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index d9931c6c4bc6..829d9d46718d 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4181,13 +4181,21 @@ static int svm_vcpu_pre_run(struct kvm_vcpu *vcpu)
+ static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
++	struct vmcb_control_area *control = &svm->vmcb->control;
++
++	/*
++	 * Next RIP must be provided as IRQs are disabled, and accessing guest
++	 * memory to decode the instruction might fault, i.e. might sleep.
++	 */
++	if (!nrips || !control->next_rip)
++		return EXIT_FASTPATH_NONE;
+ 
+ 	if (is_guest_mode(vcpu))
+ 		return EXIT_FASTPATH_NONE;
+ 
+-	switch (svm->vmcb->control.exit_code) {
++	switch (control->exit_code) {
+ 	case SVM_EXIT_MSR:
+-		if (!svm->vmcb->control.exit_info_1)
++		if (!control->exit_info_1)
+ 			break;
+ 		return handle_fastpath_set_msr_irqoff(vcpu);
+ 	case SVM_EXIT_HLT:
+
 
