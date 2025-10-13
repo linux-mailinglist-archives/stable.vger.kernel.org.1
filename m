@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-184464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F56BD4519
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A095CBD476C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13838422A16
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 969C940233A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F107C3090D7;
-	Mon, 13 Oct 2025 14:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5143126B2;
+	Mon, 13 Oct 2025 15:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyUKzTY6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FM7f4VJH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86333090CC;
-	Mon, 13 Oct 2025 14:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EE530C614;
+	Mon, 13 Oct 2025 15:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367511; cv=none; b=D+knd1w5Bb7Pd/KHAZmUW/Yuab25rgxG9PyPj7kvsNAhUUai2NIqpxAM6cZqTP+xec3gVeefKRYo7c7yg/UdbEAQ/O243X/Casn1Pxjdo8idTdyBhGSoCMt6tb11InksQti1I9O9zUTQVntE2Ewr6ppQloJabUzwYzV4Y/Nyc/U=
+	t=1760368225; cv=none; b=mZhECHwMdqXRxmgRRBsmMyP1cXWRJI+vcVsc/HgDIYHj6TIXAK3N4oeTEwLcKM5k5hJa+vReClHNBzjFA4GebqGP3zpMPz572VGe8DMMFoEqDafItG25jyaH/87g98AI/T+3TD/MbLhUDCM/HbxkeVc5IAK0A8P+mq/8PVGaxSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367511; c=relaxed/simple;
-	bh=VC4cNFj/BvMiMQy3lxUh4kQnN5K9KB0Tq7Ag584OQ1I=;
+	s=arc-20240116; t=1760368225; c=relaxed/simple;
+	bh=YXIjgWMRI0e3d0Vg1xuISR2AbXTdb5vYWpwDB8ftbW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aquzSFt2Zaa3HkEO4pYPNze7QCwENCGJ2tgzp1vpanHkq8zfrpnuv5jzc3tfx0HxqPheG2yN4q7N0VPXQkIBUx/y2FSPLTCPooTapNYcKo3yQfrxpcw++O8g94l8BVVSmMhhB2Li+e+440mbfLoigo4dGB4nugABC41fB4V6ehI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyUKzTY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3299CC4CEFE;
-	Mon, 13 Oct 2025 14:58:31 +0000 (UTC)
+	 MIME-Version; b=JZeXERWvDiawmAMdVN6PEtMGxVBCP48+sU1MggM8jiJXj0qWveCok+RhRfysmfimHurf1aKM8bClYZdJ6BPQZ8Gsfj44cEwIMUrqI96UCa2jpkE2Nor9qQnK+A92ylV091zK2oRbxLMhpHmSTGTbC23gTngLKFadpfbjTjD++QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FM7f4VJH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215E6C4CEE7;
+	Mon, 13 Oct 2025 15:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367511;
-	bh=VC4cNFj/BvMiMQy3lxUh4kQnN5K9KB0Tq7Ag584OQ1I=;
+	s=korg; t=1760368225;
+	bh=YXIjgWMRI0e3d0Vg1xuISR2AbXTdb5vYWpwDB8ftbW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CyUKzTY6jxcJq3uYisKCxDEphPvDfwCytOrgKL38BwFfbgGvrcnLKMCD+nTKa/jBT
-	 nBObl1W9M3Nokj6HdtKwdhK62VjdeRMiHPhYdFLZCV4y0NEnYBge9vw1TlzoK+7Tky
-	 cWX1quO0O1SBn2Xmx3ApJYEmj6VifAllUrH8bt/Q=
+	b=FM7f4VJHmqReGn8B68TwfpMHZmYVwHWOvKu7DzQMw5yqVeLOmTTnjILhpwq1Xvn5/
+	 Yg/23i4+HQCEvnCEHPqNelhKJTGJhvNvti6knW7YUJD+Q4COujJT3m8SXPZcXvAWFO
+	 X1m8KbNPgWf5Vw5g10xYENux0fUOAhKZfJjP/zoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoqing Jiang <guoqing.jiang@canonical.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Macpaul Lin <macpaul.lin@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Kohei Ito <ito.kohei@socionext.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/196] arm64: dts: mediatek: mt8195: Remove suspend-breaking reset from pcie0
+Subject: [PATCH 6.12 087/262] i2c: designware: Add disabling clocks when probe fails
 Date: Mon, 13 Oct 2025 16:43:49 +0200
-Message-ID: <20251013144316.580391438@linuxfoundation.org>
+Message-ID: <20251013144329.263948534@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@canonical.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit 3374b5fb26b300809ecd6aed9f414987dd17c313 ]
+[ Upstream commit c149841b069ccc6e480b00e11f35a57b5d88c7bb ]
 
-When test suspend resume with 6.8 based kernel, system can't resume
-and I got below error which can be also reproduced with 6.16 rc6+
-kernel.
+After an error occurs during probing state, dw_i2c_plat_pm_cleanup() is
+called. However, this function doesn't disable clocks and the clock-enable
+count keeps increasing. Should disable these clocks explicitly.
 
-mtk-pcie-gen3 112f0000.pcie: PCIe link down, current LTSSM state: detect.quiet (0x0)
-mtk-pcie-gen3 112f0000.pcie: PM: dpm_run_callback(): genpd_resume_noirq returns -110
-mtk-pcie-gen3 112f0000.pcie: PM: failed to resume noirq: error -110
-
-After investigation, looks pcie0 has the same problem as pcie1 as
-decribed in commit 3d7fdd8e38aa ("arm64: dts: mediatek: mt8195:
-Remove suspend-breaking reset from pcie1").
-
-Fixes: ecc0af6a3fe6 ("arm64: dts: mt8195: Add pcie and pcie phy nodes")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@canonical.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Link: https://lore.kernel.org/r/20250721095959.57703-1-guoqing.jiang@canonical.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Fixes: 7272194ed391f ("i2c-designware: add minimal support for runtime PM")
+Co-developed-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/i2c/busses/i2c-designware-platdrv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 22604d3abde3b..4b701afe995e2 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -1524,9 +1524,6 @@ pcie0: pcie@112f0000 {
+diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
+index 1615facff29c6..24c0ada72f6a5 100644
+--- a/drivers/i2c/busses/i2c-designware-platdrv.c
++++ b/drivers/i2c/busses/i2c-designware-platdrv.c
+@@ -311,6 +311,7 @@ static int dw_i2c_plat_probe(struct platform_device *pdev)
  
- 			power-domains = <&spm MT8195_POWER_DOMAIN_PCIE_MAC_P0>;
- 
--			resets = <&infracfg_ao MT8195_INFRA_RST2_PCIE_P0_SWRST>;
--			reset-names = "mac";
--
- 			#interrupt-cells = <1>;
- 			interrupt-map-mask = <0 0 0 7>;
- 			interrupt-map = <0 0 0 1 &pcie_intc0 0>,
+ exit_probe:
+ 	dw_i2c_plat_pm_cleanup(dev);
++	i2c_dw_prepare_clk(dev, false);
+ exit_reset:
+ 	reset_control_assert(dev->rst);
+ 	return ret;
 -- 
 2.51.0
 
