@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-185439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74B8BD53D4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBEEBD54F1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EC46E581EDA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88075581F3C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBE0316181;
-	Mon, 13 Oct 2025 15:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45204309DAF;
+	Mon, 13 Oct 2025 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGaZ2eJq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBbaoTQl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771AC315D5C;
-	Mon, 13 Oct 2025 15:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DFF315D5C;
+	Mon, 13 Oct 2025 15:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370297; cv=none; b=UjIj2V7ChxFlkrtxexRUbWlppnT1eDav73QnORCyxnVqtDKM3Z9yP+RFlbIadPGhmmskTtllJUA/e5VMRuuMC2eRWeTmZjUG9ETHAzUfyit9tSVJhRwp8BwDiyiWQyPfyhTLsAW8j469UqIi9nSnW5y9VEnTUdLbfuEb0UfB3lw=
+	t=1760370304; cv=none; b=opnOWnJ1uk2cVe2TcO2eesCN1cg3GE7LYWuyptgCKDJ0DE6fd+tGIYa3PjX53np4VWQukbsrxSigY/4Eo4lRhYF6wGbznqloNT6zoa6QUDTxkPj2vEuMEOe3eAHTY1awHP8c2JkLqY4M7lbmgMUfT9XAFbrhatX+34sRBaH8sLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370297; c=relaxed/simple;
-	bh=JSZCIXXtwxHsEdR7Tp9DbRRAi+OsOBH6Dexrq/qRtVU=;
+	s=arc-20240116; t=1760370304; c=relaxed/simple;
+	bh=F+TwbUBPoRfJ2z8LJAxoGVqWQinc8RkptiQJbAXzBDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nP8fmEjkpuuBQRuhhsGryEzQDqXFk8W6r7lExHuHh32KriiczSAv50Ux4MXTnhNrszY6dtbJVCd6ejgCkze1Xh+8aGAQ48c2UgLlZt16SietQceYVZNTR4LJHWzGOdZjGtQ5nFGXbeJ8qgW6ky1Hxx+ZGQSSG69iOHeY0DwrNeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGaZ2eJq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02747C4CEE7;
-	Mon, 13 Oct 2025 15:44:56 +0000 (UTC)
+	 MIME-Version; b=qN44K0AxvtY9o2yFYniFvjFYc3/uI11pFkVT3UNSostsLBDQX9wph2MuLEgIUEfcVfJifuC2G5ZelXyT1Vlj/2Mc0bVlTIfqFQwvVZeOql4qzmQC9MVxwDqQdIVW/5iVFlUIK5QQmIgk9xCWQuqJOLfmuNgqXYZIzDie3la530k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBbaoTQl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26850C4CEE7;
+	Mon, 13 Oct 2025 15:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370297;
-	bh=JSZCIXXtwxHsEdR7Tp9DbRRAi+OsOBH6Dexrq/qRtVU=;
+	s=korg; t=1760370303;
+	bh=F+TwbUBPoRfJ2z8LJAxoGVqWQinc8RkptiQJbAXzBDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yGaZ2eJq6NBkSl2u2oELy6l0K/h9xSJXUBD3MzvLygo3ubgn/jDaQ0V24vHh9lJZj
-	 BUuLjV/Y1Hy3YOiPSpwU2/FcPhTBALEjnALP2pM+B3GeJW8c7lZv0ZqG4j0VU7+Zqy
-	 Fgk94VO77US52rF7WT0wWh1CRe1bXdNBX/xrp75M=
+	b=mBbaoTQlaBIdIM+Vff97OsyJdR5aeT0HPXNRnOHbbzNqK6Z15Kjyzj2fh9cnWTKOs
+	 B00440Fp739DlD+FJMlO+qi9Cvq4sh8NdyKf2rHBsDQax4jOCWt8sMyaUBe0Q9Olp9
+	 6m6fuso9qwBwfNZRTB56Xfa9GzweTmvzBLBZKlpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
+	Zhen Ni <zhen.ni@easystack.cn>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.17 547/563] Input: atmel_mxt_ts - allow reset GPIO to sleep
-Date: Mon, 13 Oct 2025 16:46:48 +0200
-Message-ID: <20251013144431.122778282@linuxfoundation.org>
+Subject: [PATCH 6.17 548/563] Input: uinput - zero-initialize uinput_ff_upload_compat to avoid info leak
+Date: Mon, 13 Oct 2025 16:46:49 +0200
+Message-ID: <20251013144431.158033467@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -65,34 +65,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Vasut <marek.vasut@mailbox.org>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-commit c7866ee0a9ddd9789faadf58cdac6abd7aabf045 upstream.
+commit d3366a04770eea807f2826cbdb96934dd8c9bf79 upstream.
 
-The reset GPIO is not toggled in any critical section where it couldn't
-sleep, allow the reset GPIO to sleep. This allows the driver to operate
-reset GPIOs connected to I2C GPIO expanders.
+Struct ff_effect_compat is embedded twice inside
+uinput_ff_upload_compat, contains internal padding. In particular, there
+is a hole after struct ff_replay to satisfy alignment requirements for
+the following union member. Without clearing the structure,
+copy_to_user() may leak stack data to userspace.
 
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-Link: https://lore.kernel.org/r/20251005023335.166483-1-marek.vasut@mailbox.org
+Initialize ff_up_compat to zero before filling valid fields.
+
+Fixes: 2d56f3a32c0e ("Input: refactor evdev 32bit compat to be shareable with uinput")
 Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Link: https://lore.kernel.org/r/20250928063737.74590-1-zhen.ni@easystack.cn
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/atmel_mxt_ts.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/misc/uinput.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/touchscreen/atmel_mxt_ts.c
-+++ b/drivers/input/touchscreen/atmel_mxt_ts.c
-@@ -3317,7 +3317,7 @@ static int mxt_probe(struct i2c_client *
- 	if (data->reset_gpio) {
- 		/* Wait a while and then de-assert the RESET GPIO line */
- 		msleep(MXT_RESET_GPIO_TIME);
--		gpiod_set_value(data->reset_gpio, 0);
-+		gpiod_set_value_cansleep(data->reset_gpio, 0);
- 		msleep(MXT_RESET_INVALID_CHG);
- 	}
+--- a/drivers/input/misc/uinput.c
++++ b/drivers/input/misc/uinput.c
+@@ -775,6 +775,7 @@ static int uinput_ff_upload_to_user(char
+ 	if (in_compat_syscall()) {
+ 		struct uinput_ff_upload_compat ff_up_compat;
  
++		memset(&ff_up_compat, 0, sizeof(ff_up_compat));
+ 		ff_up_compat.request_id = ff_up->request_id;
+ 		ff_up_compat.retval = ff_up->retval;
+ 		/*
 
 
 
