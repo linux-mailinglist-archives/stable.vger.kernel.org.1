@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-184532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22BFBD4597
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBC0BD46BB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4456500302
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 310C94FEBE6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E180330AD0E;
-	Mon, 13 Oct 2025 15:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81AE31282F;
+	Mon, 13 Oct 2025 15:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaw6k8Lq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6yiUldn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993C830ACEB;
-	Mon, 13 Oct 2025 15:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834C030CD80;
+	Mon, 13 Oct 2025 15:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367704; cv=none; b=oGCwBbRI+ORbB6fEcddAmck82O3wutHH54AtR+wBfPw3T4O5m8KGgA8rm6xK7XVTJm9QvWTwWB1mNSyBHoe/VjEiHkLjW0pmo2XudyTAqmMVvKbePB4sMptwFoFHtbuX7KWIGAmoKFPPClPVPoTxQxsPKCL8ZNXheWJ7BaNRHTI=
+	t=1760368315; cv=none; b=Xb2M39t5LKVMKiTqZJDFOl8zaZBkozB+upQ83kJTpLITY+anhjoGNXMbmGALOCxQO0ig9CbkO/9LXI7/pnRMmcH0hKf7i/DckWQ2ArGRTldQMZrCLhp+4g01KJjqT9wgOsHcxp6bKlODn7FK/vunVWjeKTGGGRzAyPUynHPtvxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367704; c=relaxed/simple;
-	bh=b1DmzkKcyY/hDRIUqkz+PP/5bjNpCZ1oN/7cB0VuSvo=;
+	s=arc-20240116; t=1760368315; c=relaxed/simple;
+	bh=UCm4saks1B3I7gt0SDBtZVYv2GpICc24XbkXddXzdDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/yhq4s+p3XZCwKRLgk6pXwvF+riLyCfm0ugWlwX2ekUbw3+BMMeY8Mf3jW4xtRt1GH9hGF00+83Kp6MfZ69aIrWRrs1XKcdZ+brDPq1J5ZWjOChN0ekFxu0nL1wyc6xHgIdRTFkZM9CC3UfJRsoBFGfjgvt2T2DyrB2p8S4jp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaw6k8Lq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24579C4CEE7;
-	Mon, 13 Oct 2025 15:01:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pOUzE9fDwNbpGv/HTfOCOXz8Cub2remnm1+Lf0PiXSm1LrDF+jCMWJukV7QZhGv/gZ3HlmG0v8bhCLDCLSJS/7PAivlWX966uDNmSLJ938OndCpa3HZGW79JM/+iNJJBdG8Eq7P6sUU7N9s6mMNgyO9+dRU+DU35cRT2JY9xY3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6yiUldn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA233C4CEE7;
+	Mon, 13 Oct 2025 15:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367704;
-	bh=b1DmzkKcyY/hDRIUqkz+PP/5bjNpCZ1oN/7cB0VuSvo=;
+	s=korg; t=1760368315;
+	bh=UCm4saks1B3I7gt0SDBtZVYv2GpICc24XbkXddXzdDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oaw6k8Lqsgx4fAbiz6QFYlqNaNf8rlFpjtfYkF6TPsTvKYJNouXBpvuaIHUeqsTOt
-	 tangQAxYsAux2k8ERYih8/LK9jeCzWm2sNyAncXGbxt/G+OGtYXf46TZUYIltdcTGp
-	 r2vdS7c3CqW489oUXbytiHd2wNKRcJpMRczeI378=
+	b=e6yiUldn2fy6h5/FcAgBxo4Sekt/53pz5pw/HZF60wYo/0E/6r+Dk4B4E/CY2K1pL
+	 UpWifZU1AEd+nUtnQzKXIv2ittfG2f0qZyBfM8taZm4uPTFIG16siepIBjUw9Hh/2h
+	 m1G418J0/Pe+n2Y1Bk6/w8TFIYA95Y2CPPHt8wxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/196] serial: max310x: Add error checking in probe()
+Subject: [PATCH 6.12 119/262] drm/amd/pm: Adjust si_upload_smc_data register programming (v3)
 Date: Mon, 13 Oct 2025 16:44:21 +0200
-Message-ID: <20251013144317.725498396@linuxfoundation.org>
+Message-ID: <20251013144330.411709731@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 672a37ba8af1f2ebcedeb94aea2cdd047f805f30 ]
+[ Upstream commit ce025130127437dc884c84c254170e27b2ce9309 ]
 
-Check if devm_i2c_new_dummy_device() fails.
+Based on some comments in dm_pp_display_configuration
+above the crtc_index and line_time fields, these values
+are programmed to the SMC to work around an SMC hang
+when it switches MCLK.
 
-Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aJTMPZiKqeXSE-KM@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+According to Alex, the Windows driver programs them to:
+mclk_change_block_cp_min = 200 / line_time
+mclk_change_block_cp_max = 100 / line_time
+Let's use the same for the sake of consistency.
+
+Previously we used the watermark values, but it seemed buggy
+as the code was mixing up low/high and A/B watermarks, and
+was not saving a low watermark value on DCE 6, so
+mclk_change_block_cp_max would be always zero previously.
+
+Split this change off from the previous si_upload_smc_data
+to make it easier to bisect, in case it causes any issues.
+
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max310x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index e339abff926d3..e10dcdeeda2d3 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -1659,6 +1659,8 @@ static int max310x_i2c_probe(struct i2c_client *client)
- 		port_client = devm_i2c_new_dummy_device(&client->dev,
- 							client->adapter,
- 							port_addr);
-+		if (IS_ERR(port_client))
-+			return PTR_ERR(port_client);
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 341f2d796aeeb..a8fe6aa6845eb 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -5809,8 +5809,8 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
+ 		crtc_index = amdgpu_crtc->crtc_id;
  
- 		regmaps[i] = devm_regmap_init_i2c(port_client, &regcfg_i2c);
+ 		if (amdgpu_crtc->line_time) {
+-			mclk_change_block_cp_min = amdgpu_crtc->wm_high / amdgpu_crtc->line_time;
+-			mclk_change_block_cp_max = amdgpu_crtc->wm_low / amdgpu_crtc->line_time;
++			mclk_change_block_cp_min = 200 / amdgpu_crtc->line_time;
++			mclk_change_block_cp_max = 100 / amdgpu_crtc->line_time;
+ 		}
  	}
+ 
 -- 
 2.51.0
 
