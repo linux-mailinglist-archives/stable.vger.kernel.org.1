@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB72BD4441
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F5EBD4ADD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB0DB402508
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 498A3500DAF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93DA30B515;
-	Mon, 13 Oct 2025 15:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC40201113;
+	Mon, 13 Oct 2025 15:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5iUlgAM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1A152ncK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9084730F92A;
-	Mon, 13 Oct 2025 15:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C110A1F1313;
+	Mon, 13 Oct 2025 15:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367861; cv=none; b=dWXzL2CY/aCAmp+uCho4b0yvALaFpgaivxhn5Trrc8HG7NSQCX7n193CoJhkwymvw2vN2TzJ1pWkt6RTPdxVxllSrljw48YNaGK9xCffQA/KVD7LLOxXwylgRAIHaPIJR9mCJdB+WKiH9LGMPqblmPhaH1vlQciD0L5evNyna3Y=
+	t=1760368575; cv=none; b=dGdl3SLyItPTpNOlqXzyjvS4ftHC2D1AP7IJmQj7aactVQRC3TDUALh0BtfyF06eoKSvwIWCnELNUdljMdl1cjvd3RCq0k9kuIRLpm9TtIRuWRHAcz6noVigPdEr7XWVzWQMdqs6nnxMWkjz51EuDICuInDk4Rvo6/344Onwjuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367861; c=relaxed/simple;
-	bh=3K+6Ftsy9gtO08X+WV0RUQuDi0hIRlVGUls9SVgexno=;
+	s=arc-20240116; t=1760368575; c=relaxed/simple;
+	bh=K7qkCE45sdGFY6EpjoLksXgWxksJD8Pde0ITqXW5itg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P24IGsmRD1W5r08jfKjn4mA9zjOp+bC/4NaTzlhwfsQ+JgtFUwpvMm+I9uEyn0ZLfEZs5ODp8zM0SFGlRfS1ICKruT/KcC2bM7pK+RKBHJbEG5KjYmvbC2ZgU2QYtfHnuJ0lSexc0ojkiNAh41T1FM/lNKClGdE4XUzAdqjOQ5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5iUlgAM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C93C4CEE7;
-	Mon, 13 Oct 2025 15:04:20 +0000 (UTC)
+	 MIME-Version; b=fXcc1SfIfXd5C/7uIPLHdsEZqgABxjtrJzT+h7B/niOJ7pAA1XX6mO9ciN0kFvQ9mm9kny9ET7L7XemkFXfGPKYIeUroeR5oklq4+poWPL+a+EcY0TVafnqanhOxO4b0SBI/wAi43guN28I7vQnSMOeTTfmUEHYuBV4eD+/3HRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1A152ncK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6F7C4CEE7;
+	Mon, 13 Oct 2025 15:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367861;
-	bh=3K+6Ftsy9gtO08X+WV0RUQuDi0hIRlVGUls9SVgexno=;
+	s=korg; t=1760368575;
+	bh=K7qkCE45sdGFY6EpjoLksXgWxksJD8Pde0ITqXW5itg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5iUlgAM6zKvCRYxoP/1VlR5oBbPZ2nZQbNe8G0NFhFRRPtx6j3WsyXAFYJAp2q86
-	 b7S4xgloqlIOvi2NLq2PxqJHr187U9LJmOWbTzXtVQN3XB0n3J5LEA+0mw4sn9xQ54
-	 1utO5q4zmYwoNZF6N13KSLLmjCQ7fAesz1FrTuBo=
+	b=1A152ncKYpppznBe724cMputPCx1q6YCoseBvYe9Htv/43P6ZBNvy8I+7DujQu0DE
+	 B4+ioGfEINheADnadQ+apqBx4OOrfIejWYCEk2jkoNiU2xFw1s5ev9ePOhqitDgGtX
+	 pOJdRxLDXroKItvZHlHyImTB8F9M/u3jHmgRmLjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Karanja <karanja99erick@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Fan Wu <wufan@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/196] mtd: rawnand: atmel: Fix error handling path in atmel_nand_controller_add_nands
+Subject: [PATCH 6.12 207/262] KEYS: X.509: Fix Basic Constraints CA flag parsing
 Date: Mon, 13 Oct 2025 16:45:49 +0200
-Message-ID: <20251013144321.027632941@linuxfoundation.org>
+Message-ID: <20251013144333.699039240@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Karanja <karanja99erick@gmail.com>
+From: Fan Wu <wufan@kernel.org>
 
-[ Upstream commit 8ed4728eb9f10b57c3eb02e0f6933a89ffcb8a91 ]
+[ Upstream commit 5851afffe2ab323a53e184ba5a35fddf268f096b ]
 
-In case of a jump to the  err label due to atmel_nand_create() or
-atmel_nand_controller_add_nand() failure, the reference to nand_np
-need to be released
+Fix the X.509 Basic Constraints CA flag parsing to correctly handle
+the ASN.1 DER encoded structure. The parser was incorrectly treating
+the length field as the boolean value.
 
-Use for_each_child_of_node_scoped() to fix the issue.
+Per RFC 5280 section 4.1, X.509 certificates must use ASN.1 DER encoding.
+According to ITU-T X.690, a DER-encoded BOOLEAN is represented as:
 
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
+Tag (0x01), Length (0x01), Value (0x00 for FALSE, 0xFF for TRUE)
 
-Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+The basicConstraints extension with CA:TRUE is encoded as:
+
+  SEQUENCE (0x30) | Length | BOOLEAN (0x01) | Length (0x01) | Value (0xFF)
+                             ^-- v[2]         ^-- v[3]        ^-- v[4]
+
+The parser was checking v[3] (the length field, always 0x01) instead
+of v[4] (the actual boolean value, 0xFF for TRUE in DER encoding).
+
+Also handle the case where the extension is an empty SEQUENCE (30 00),
+which is valid for CA:FALSE when the default value is omitted as
+required by DER encoding rules (X.690 section 11.5).
+
+Per ITU-T X.690-0207:
+- Section 11.5: Default values must be omitted in DER
+- Section 11.1: DER requires TRUE to be encoded as 0xFF
+
+Link: https://datatracker.ietf.org/doc/html/rfc5280
+Link: https://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf
+Fixes: 30eae2b037af ("KEYS: X.509: Parse Basic Constraints for CA")
+Signed-off-by: Fan Wu <wufan@kernel.org>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ crypto/asymmetric_keys/x509_cert_parser.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index c5aff27ec4a89..14a09285f1551 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1858,7 +1858,7 @@ atmel_nand_controller_legacy_add_nands(struct atmel_nand_controller *nc)
+diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+index ee2fdab42334f..7e0ce7bf68c99 100644
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -611,11 +611,14 @@ int x509_process_extension(void *context, size_t hdrlen,
+ 		/*
+ 		 * Get hold of the basicConstraints
+ 		 * v[1] is the encoding size
+-		 *	(Expect 0x2 or greater, making it 1 or more bytes)
++		 *	(Expect 0x00 for empty SEQUENCE with CA:FALSE, or
++		 *	0x03 or greater for non-empty SEQUENCE)
+ 		 * v[2] is the encoding type
+ 		 *	(Expect an ASN1_BOOL for the CA)
+-		 * v[3] is the contents of the ASN1_BOOL
+-		 *      (Expect 1 if the CA is TRUE)
++		 * v[3] is the length of the ASN1_BOOL
++		 *	(Expect 1 for a single byte boolean)
++		 * v[4] is the contents of the ASN1_BOOL
++		 *	(Expect 0xFF if the CA is TRUE)
+ 		 * vlen should match the entire extension size
+ 		 */
+ 		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
+@@ -624,8 +627,13 @@ int x509_process_extension(void *context, size_t hdrlen,
+ 			return -EBADMSG;
+ 		if (v[1] != vlen - 2)
+ 			return -EBADMSG;
+-		if (vlen >= 4 && v[1] != 0 && v[2] == ASN1_BOOL && v[3] == 1)
++		/* Empty SEQUENCE means CA:FALSE (default value omitted per DER) */
++		if (v[1] == 0)
++			return 0;
++		if (vlen >= 5 && v[2] == ASN1_BOOL && v[3] == 1 && v[4] == 0xFF)
+ 			ctx->cert->pub->key_eflags |= 1 << KEY_EFLAG_CA;
++		else
++			return -EBADMSG;
+ 		return 0;
+ 	}
  
- static int atmel_nand_controller_add_nands(struct atmel_nand_controller *nc)
- {
--	struct device_node *np, *nand_np;
-+	struct device_node *np;
- 	struct device *dev = nc->dev;
- 	int ret, reg_cells;
- 	u32 val;
-@@ -1885,7 +1885,7 @@ static int atmel_nand_controller_add_nands(struct atmel_nand_controller *nc)
- 
- 	reg_cells += val;
- 
--	for_each_child_of_node(np, nand_np) {
-+	for_each_child_of_node_scoped(np, nand_np) {
- 		struct atmel_nand *nand;
- 
- 		nand = atmel_nand_create(nc, nand_np, reg_cells);
 -- 
 2.51.0
 
