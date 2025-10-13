@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E2EBD4D80
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:14:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252DDBD534D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5CF0566BFD
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A758488559
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DD3306497;
-	Mon, 13 Oct 2025 15:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E083081AD;
+	Mon, 13 Oct 2025 15:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMyEQsex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RI4pWy/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B77309EE9;
-	Mon, 13 Oct 2025 15:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F71E9B0D;
+	Mon, 13 Oct 2025 15:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369830; cv=none; b=JXcKRSLoEDi1tDqlAKF+uk00AKRZ2/xhnv+isirwO0F0nN904du8ZJi1y7jPSZTCCIVz/BHdHmm+1pIgxYhVgAD0FsemL27puuXPx3WkmvjDdGdEGQFp+1Ok+mOZrVWIAHK156F8ciMcfZbOrsG8M7JM/04u/bvT5gElP1ONHyI=
+	t=1760369862; cv=none; b=hH7+vlPCcYO2ceBjT7nfmXdSZ5AaUIZc3N3zOePrBgdPRAD65aJVQsYng7Ia21sLtg1UvhvnDN8TJhrXb0nJTloPrYKCu0Z8VaNjuXAmnC9hhA+eL2vViaFxyrya0h04Hed8eV4+BqauC49o1zyH1tvvl/gqeKguHHju6bJMnYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369830; c=relaxed/simple;
-	bh=ilOetQwMP1bXYYzmHAn1C8HcALL9pJE1yWGePkFuj4w=;
+	s=arc-20240116; t=1760369862; c=relaxed/simple;
+	bh=J0ni+ePdhT6jvaXC0DAXL5xGGjvQdp5LZ2ru2m3EH/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pu03pvqAGD7MMxJTKA3jrFFfgMJ60WGnuoTjGp9X6zg7XdJKtmnMRobHpOivaCz26Nn+zv8gT1a+KO5hgMwLLtE5V9HsBXGWpLa3LI17IMOVKatQVo4qnhhFyJVsK5oPqPFoVJA6X22Phzdkb8MkszZ4npLytH8KkzwtbQlyCTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMyEQsex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07664C4CEE7;
-	Mon, 13 Oct 2025 15:37:09 +0000 (UTC)
+	 MIME-Version; b=lyQiyBP5D8dXNrc1VHnNEzs7/9RhS1PeqyqRV2GZ6oybHHpj46L7Ib9MZdRRwRdZB6D7DqXoDw3/nGMx75XWAnJsGEDpwiiNNvsIySXO5XlDSltDrZsmjhuyMM4LAMzvBUXJ9QNevaCaZTPEQOwivmnYB2Nfq3J90BQ+iuj44sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RI4pWy/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789B8C4CEE7;
+	Mon, 13 Oct 2025 15:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369830;
-	bh=ilOetQwMP1bXYYzmHAn1C8HcALL9pJE1yWGePkFuj4w=;
+	s=korg; t=1760369861;
+	bh=J0ni+ePdhT6jvaXC0DAXL5xGGjvQdp5LZ2ru2m3EH/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMyEQsexLmg+TsjZPn//dqnseuLgyK2GkMR2+WkdxPrzV9xoKo/DAY3br4nnR5OXr
-	 qr3JHBBrS37/iyg/9VdPgJlFv4XYKm18Bip8vXkajDsUZSks8UkbmWlk3w25efreL2
-	 6/HBH0lRj44s1tI0xNjxp9rVF4QORiZS9Nc08L9s=
+	b=RI4pWy/UevrKI6AeLZwmdsWfue+fkNZ02vkHzzTqSYYLze488hlUsyCR6emI+41tm
+	 TyDPVgh/n9M62xjlhenPsH+IaNh3iK/6s84A7qSAdeWeuKYTk5LZ0YBjLU13XvqZIo
+	 fIZy0iNQbOhk49qzsQpejKigIUdqfjSfWpdZ9XWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	wangzijie <wangzijie1@honor.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 376/563] HID: hidraw: tighten ioctl command parsing
-Date: Mon, 13 Oct 2025 16:43:57 +0200
-Message-ID: <20251013144424.897853136@linuxfoundation.org>
+Subject: [PATCH 6.17 377/563] f2fs: fix zero-sized extent for precache extents
+Date: Mon, 13 Oct 2025 16:43:58 +0200
+Message-ID: <20251013144424.933567439@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,308 +67,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: wangzijie <wangzijie1@honor.com>
 
-[ Upstream commit 75d5546f60b36900051d75ee623fceccbeb6750c ]
+[ Upstream commit 8175c864391753b210f3dcfae1aeed686a226ebb ]
 
-The handling for variable-length ioctl commands in hidraw_ioctl() is
-rather complex and the check for the data direction is incomplete.
+Script to reproduce:
+f2fs_io write 1 0 1881 rand dsync testfile
+f2fs_io fallocate 0 7708672 4096 testfile
+f2fs_io write 1 1881 1 rand buffered testfile
+fsync testfile
+umount
+mount
+f2fs_io precache_extents testfile
 
-Simplify this code by factoring out the various ioctls grouped by dir
-and size, and using a switch() statement with the size masked out, to
-ensure the rest of the command is correctly matched.
+When the data layout is something like this:
+dnode1:                     dnode2:
+[0]      A                  [0]    NEW_ADDR
+[1]      A+1                [1]    0x0
+...
+[1016]   A+1016
+[1017]   B (B!=A+1017)      [1017] 0x0
 
-Fixes: 9188e79ec3fd ("HID: add phys and name ioctls to hidraw")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+During precache_extents, we map the last block(valid blkaddr) in dnode1:
+map->m_flags |= F2FS_MAP_MAPPED;
+map->m_pblk = blkaddr(valid blkaddr);
+map->m_len = 1;
+then we goto next_dnode, meet the first block in dnode2(hole), goto sync_out:
+map->m_flags & F2FS_MAP_MAPPED == true, and we make zero-sized extent:
+
+map->m_len = 1
+ofs = start_pgofs - map->m_lblk = 1882 - 1881 = 1
+ei.fofs = start_pgofs = 1882
+ei.len = map->m_len - ofs = 1 - 1 = 0
+
+Rebased on patch[1], this patch can cover these cases to avoid zero-sized extent:
+A,B,C is valid blkaddr
+case1:
+dnode1:                     dnode2:
+[0]      A                  [0]    NEW_ADDR
+[1]      A+1                [1]    0x0
+...                         ....
+[1016]   A+1016
+[1017]   B (B!=A+1017)      [1017] 0x0
+
+case2:
+dnode1:                     dnode2:
+[0]      A                  [0]    C (C!=B+1)
+[1]      A+1                [1]    C+1
+...                         ....
+[1016]   A+1016
+[1017]   B (B!=A+1017)      [1017] 0x0
+
+case3:
+dnode1:                     dnode2:
+[0]      A                  [0]    C (C!=B+2)
+[1]      A+1                [1]    C+1
+...                         ....
+[1015]   A+1015
+[1016]   B (B!=A+1016)
+[1017]   B+1                [1017] 0x0
+
+[1] https://lore.kernel.org/linux-f2fs-devel/20250912081250.44383-1-chao@kernel.org/
+
+Fixes: c4020b2da4c9 ("f2fs: support F2FS_IOC_PRECACHE_EXTENTS")
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hidraw.c        | 224 ++++++++++++++++++++----------------
- include/uapi/linux/hidraw.h |   2 +
- 2 files changed, 124 insertions(+), 102 deletions(-)
+ fs/f2fs/data.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hidraw.c b/drivers/hid/hidraw.c
-index c887f48756f4b..bbd6f23bce789 100644
---- a/drivers/hid/hidraw.c
-+++ b/drivers/hid/hidraw.c
-@@ -394,27 +394,15 @@ static int hidraw_revoke(struct hidraw_list *list)
- 	return 0;
- }
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 838eae39d3b19..6e39a15a942a9 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1778,9 +1778,10 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
+ 		if (map->m_flags & F2FS_MAP_MAPPED) {
+ 			unsigned int ofs = start_pgofs - map->m_lblk;
  
--static long hidraw_ioctl(struct file *file, unsigned int cmd,
--							unsigned long arg)
-+static long hidraw_fixed_size_ioctl(struct file *file, struct hidraw *dev, unsigned int cmd,
-+				    void __user *arg)
- {
--	struct inode *inode = file_inode(file);
--	unsigned int minor = iminor(inode);
--	long ret = 0;
--	struct hidraw *dev;
--	struct hidraw_list *list = file->private_data;
--	void __user *user_arg = (void __user*) arg;
--
--	down_read(&minors_rwsem);
--	dev = hidraw_table[minor];
--	if (!dev || !dev->exist || hidraw_is_revoked(list)) {
--		ret = -ENODEV;
--		goto out;
--	}
-+	struct hid_device *hid = dev->hid;
- 
- 	switch (cmd) {
- 		case HIDIOCGRDESCSIZE:
--			if (put_user(dev->hid->rsize, (int __user *)arg))
--				ret = -EFAULT;
-+			if (put_user(hid->rsize, (int __user *)arg))
-+				return -EFAULT;
- 			break;
- 
- 		case HIDIOCGRDESC:
-@@ -422,113 +410,145 @@ static long hidraw_ioctl(struct file *file, unsigned int cmd,
- 				__u32 len;
- 
- 				if (get_user(len, (int __user *)arg))
--					ret = -EFAULT;
--				else if (len > HID_MAX_DESCRIPTOR_SIZE - 1)
--					ret = -EINVAL;
--				else if (copy_to_user(user_arg + offsetof(
--					struct hidraw_report_descriptor,
--					value[0]),
--					dev->hid->rdesc,
--					min(dev->hid->rsize, len)))
--					ret = -EFAULT;
-+					return -EFAULT;
-+
-+				if (len > HID_MAX_DESCRIPTOR_SIZE - 1)
-+					return -EINVAL;
-+
-+				if (copy_to_user(arg + offsetof(
-+				    struct hidraw_report_descriptor,
-+				    value[0]),
-+				    hid->rdesc,
-+				    min(hid->rsize, len)))
-+					return -EFAULT;
-+
- 				break;
- 			}
- 		case HIDIOCGRAWINFO:
- 			{
- 				struct hidraw_devinfo dinfo;
- 
--				dinfo.bustype = dev->hid->bus;
--				dinfo.vendor = dev->hid->vendor;
--				dinfo.product = dev->hid->product;
--				if (copy_to_user(user_arg, &dinfo, sizeof(dinfo)))
--					ret = -EFAULT;
-+				dinfo.bustype = hid->bus;
-+				dinfo.vendor = hid->vendor;
-+				dinfo.product = hid->product;
-+				if (copy_to_user(arg, &dinfo, sizeof(dinfo)))
-+					return -EFAULT;
- 				break;
- 			}
- 		case HIDIOCREVOKE:
- 			{
--				if (user_arg)
--					ret = -EINVAL;
--				else
--					ret = hidraw_revoke(list);
--				break;
-+				struct hidraw_list *list = file->private_data;
-+
-+				if (arg)
-+					return -EINVAL;
-+
-+				return hidraw_revoke(list);
- 			}
- 		default:
--			{
--				struct hid_device *hid = dev->hid;
--				if (_IOC_TYPE(cmd) != 'H') {
--					ret = -EINVAL;
--					break;
--				}
-+			/*
-+			 * None of the above ioctls can return -EAGAIN, so
-+			 * use it as a marker that we need to check variable
-+			 * length ioctls.
-+			 */
-+			return -EAGAIN;
-+	}
- 
--				if (_IOC_NR(cmd) == _IOC_NR(HIDIOCSFEATURE(0))) {
--					int len = _IOC_SIZE(cmd);
--					ret = hidraw_send_report(file, user_arg, len, HID_FEATURE_REPORT);
--					break;
--				}
--				if (_IOC_NR(cmd) == _IOC_NR(HIDIOCGFEATURE(0))) {
--					int len = _IOC_SIZE(cmd);
--					ret = hidraw_get_report(file, user_arg, len, HID_FEATURE_REPORT);
--					break;
--				}
-+	return 0;
-+}
- 
--				if (_IOC_NR(cmd) == _IOC_NR(HIDIOCSINPUT(0))) {
--					int len = _IOC_SIZE(cmd);
--					ret = hidraw_send_report(file, user_arg, len, HID_INPUT_REPORT);
--					break;
--				}
--				if (_IOC_NR(cmd) == _IOC_NR(HIDIOCGINPUT(0))) {
--					int len = _IOC_SIZE(cmd);
--					ret = hidraw_get_report(file, user_arg, len, HID_INPUT_REPORT);
--					break;
--				}
-+static long hidraw_rw_variable_size_ioctl(struct file *file, struct hidraw *dev, unsigned int cmd,
-+					  void __user *user_arg)
-+{
-+	int len = _IOC_SIZE(cmd);
-+
-+	switch (cmd & ~IOCSIZE_MASK) {
-+	case HIDIOCSFEATURE(0):
-+		return hidraw_send_report(file, user_arg, len, HID_FEATURE_REPORT);
-+	case HIDIOCGFEATURE(0):
-+		return hidraw_get_report(file, user_arg, len, HID_FEATURE_REPORT);
-+	case HIDIOCSINPUT(0):
-+		return hidraw_send_report(file, user_arg, len, HID_INPUT_REPORT);
-+	case HIDIOCGINPUT(0):
-+		return hidraw_get_report(file, user_arg, len, HID_INPUT_REPORT);
-+	case HIDIOCSOUTPUT(0):
-+		return hidraw_send_report(file, user_arg, len, HID_OUTPUT_REPORT);
-+	case HIDIOCGOUTPUT(0):
-+		return hidraw_get_report(file, user_arg, len, HID_OUTPUT_REPORT);
-+	}
- 
--				if (_IOC_NR(cmd) == _IOC_NR(HIDIOCSOUTPUT(0))) {
--					int len = _IOC_SIZE(cmd);
--					ret = hidraw_send_report(file, user_arg, len, HID_OUTPUT_REPORT);
--					break;
--				}
--				if (_IOC_NR(cmd) == _IOC_NR(HIDIOCGOUTPUT(0))) {
--					int len = _IOC_SIZE(cmd);
--					ret = hidraw_get_report(file, user_arg, len, HID_OUTPUT_REPORT);
--					break;
--				}
-+	return -EINVAL;
-+}
- 
--				/* Begin Read-only ioctls. */
--				if (_IOC_DIR(cmd) != _IOC_READ) {
--					ret = -EINVAL;
--					break;
--				}
-+static long hidraw_ro_variable_size_ioctl(struct file *file, struct hidraw *dev, unsigned int cmd,
-+					  void __user *user_arg)
-+{
-+	struct hid_device *hid = dev->hid;
-+	int len = _IOC_SIZE(cmd);
-+	int field_len;
-+
-+	switch (cmd & ~IOCSIZE_MASK) {
-+	case HIDIOCGRAWNAME(0):
-+		field_len = strlen(hid->name) + 1;
-+		if (len > field_len)
-+			len = field_len;
-+		return copy_to_user(user_arg, hid->name, len) ?  -EFAULT : len;
-+	case HIDIOCGRAWPHYS(0):
-+		field_len = strlen(hid->phys) + 1;
-+		if (len > field_len)
-+			len = field_len;
-+		return copy_to_user(user_arg, hid->phys, len) ?  -EFAULT : len;
-+	case HIDIOCGRAWUNIQ(0):
-+		field_len = strlen(hid->uniq) + 1;
-+		if (len > field_len)
-+			len = field_len;
-+		return copy_to_user(user_arg, hid->uniq, len) ?  -EFAULT : len;
-+	}
- 
--				if (_IOC_NR(cmd) == _IOC_NR(HIDIOCGRAWNAME(0))) {
--					int len = strlen(hid->name) + 1;
--					if (len > _IOC_SIZE(cmd))
--						len = _IOC_SIZE(cmd);
--					ret = copy_to_user(user_arg, hid->name, len) ?
--						-EFAULT : len;
--					break;
--				}
-+	return -EINVAL;
-+}
- 
--				if (_IOC_NR(cmd) == _IOC_NR(HIDIOCGRAWPHYS(0))) {
--					int len = strlen(hid->phys) + 1;
--					if (len > _IOC_SIZE(cmd))
--						len = _IOC_SIZE(cmd);
--					ret = copy_to_user(user_arg, hid->phys, len) ?
--						-EFAULT : len;
--					break;
--				}
-+static long hidraw_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-+{
-+	struct inode *inode = file_inode(file);
-+	unsigned int minor = iminor(inode);
-+	struct hidraw *dev;
-+	struct hidraw_list *list = file->private_data;
-+	void __user *user_arg = (void __user *)arg;
-+	int ret;
- 
--				if (_IOC_NR(cmd) == _IOC_NR(HIDIOCGRAWUNIQ(0))) {
--					int len = strlen(hid->uniq) + 1;
--					if (len > _IOC_SIZE(cmd))
--						len = _IOC_SIZE(cmd);
--					ret = copy_to_user(user_arg, hid->uniq, len) ?
--						-EFAULT : len;
--					break;
--				}
--			}
-+	down_read(&minors_rwsem);
-+	dev = hidraw_table[minor];
-+	if (!dev || !dev->exist || hidraw_is_revoked(list)) {
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+
-+	if (_IOC_TYPE(cmd) != 'H') {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 
-+	if (_IOC_NR(cmd) > HIDIOCTL_LAST || _IOC_NR(cmd) == 0) {
- 		ret = -ENOTTY;
-+		goto out;
- 	}
-+
-+	ret = hidraw_fixed_size_ioctl(file, dev, cmd, user_arg);
-+	if (ret != -EAGAIN)
-+		goto out;
-+
-+	switch (_IOC_DIR(cmd)) {
-+	case (_IOC_READ | _IOC_WRITE):
-+		ret = hidraw_rw_variable_size_ioctl(file, dev, cmd, user_arg);
-+		break;
-+	case _IOC_READ:
-+		ret = hidraw_ro_variable_size_ioctl(file, dev, cmd, user_arg);
-+		break;
-+	default:
-+		/* Any other IOC_DIR is wrong */
-+		ret = -EINVAL;
-+	}
-+
- out:
- 	up_read(&minors_rwsem);
- 	return ret;
-diff --git a/include/uapi/linux/hidraw.h b/include/uapi/linux/hidraw.h
-index d5ee269864e07..ebd701b3c18d9 100644
---- a/include/uapi/linux/hidraw.h
-+++ b/include/uapi/linux/hidraw.h
-@@ -48,6 +48,8 @@ struct hidraw_devinfo {
- #define HIDIOCGOUTPUT(len)    _IOC(_IOC_WRITE|_IOC_READ, 'H', 0x0C, len)
- #define HIDIOCREVOKE	      _IOW('H', 0x0D, int) /* Revoke device access */
- 
-+#define HIDIOCTL_LAST		_IOC_NR(HIDIOCREVOKE)
-+
- #define HIDRAW_FIRST_MINOR 0
- #define HIDRAW_MAX_DEVICES 64
- /* number of reports to buffer */
+-			f2fs_update_read_extent_cache_range(&dn,
+-				start_pgofs, map->m_pblk + ofs,
+-				map->m_len - ofs);
++			if (map->m_len > ofs)
++				f2fs_update_read_extent_cache_range(&dn,
++					start_pgofs, map->m_pblk + ofs,
++					map->m_len - ofs);
+ 		}
+ 		if (map->m_next_extent)
+ 			*map->m_next_extent = is_hole ? pgofs + 1 : pgofs;
 -- 
 2.51.0
 
