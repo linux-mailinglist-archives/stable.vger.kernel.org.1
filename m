@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-185346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AE9BD543A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64014BD53C3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A7C8F4F8746
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 45B465673C6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEBB311C2A;
-	Mon, 13 Oct 2025 15:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D66830CDA3;
+	Mon, 13 Oct 2025 15:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcpfjfLV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEKlxHVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2C830DEC5;
-	Mon, 13 Oct 2025 15:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4858230CDA8;
+	Mon, 13 Oct 2025 15:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370032; cv=none; b=pfmahc8asFusn/UAhUgqezC8q4v/dCi2FgHYqSXtbwTGGb0Q6ZBnVjVvJL53UomLLbhGrglxVWkclNc6nIItkf86RMDUpTPo1HyJlYDXOa/vBn0aJd06M07JSyIFZh22uanU1IfF0j6kpQkBUqTpBDVngLV7VLfs9jg7B2q0WyI=
+	t=1760369933; cv=none; b=WmpGtXkTa43t35znSWtsQ8nVzde7fhtvYGQZf4pQ/hfxBZtRT+657KYqDXc9pnEFh68qAHH2Mkur1CfN5ffx4P+dno2bFqihpRsARCcR7s0rEu2m8e4ONknXL5LSRtosQ4NcQAno/3dFQPKgxkV9RGQqSxntAL3Wqg6DsK5yOKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370032; c=relaxed/simple;
-	bh=ZCzNjKdk246XFXR74q/V0z1wOiosCz2ZizO6aJU/P+k=;
+	s=arc-20240116; t=1760369933; c=relaxed/simple;
+	bh=0nnRk5M36By0Dytj9lnD0AVq2IJ0saHCfLSWigftsuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wfi731duXs5H4UW//s9btRmpJ9wpthWSX2rj2cJBf8mRCzSn0wPNOxn/psvO6i4izdS6KKIrjkpJclu7I9R3PfO1y+4ACdxnV/+dlJVJQM6qmy/A5sLHsOpPp5Sj2msXLTy/iA8vZAdGAE5M+Z5FKhegNQiLbbh5TCUS6ANvKYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcpfjfLV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274E4C4CEE7;
-	Mon, 13 Oct 2025 15:40:31 +0000 (UTC)
+	 MIME-Version; b=Dh/MKvSA7z81Iu39R7JZ9V9aHMEtOyWHz4N1IVDrBxrcXjSmxyKO4VwqgjLA9S8oMeC7Q5/3RIK7Hqi33+yFcqreGAjzteYvUeeL8udAYtfaYX8TY4ufpII+/2hjrOxhoIUiqk+YYt6eWDV4UdM4qT4pnOWaRYv0PeE8xd7D9fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEKlxHVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE71BC4CEFE;
+	Mon, 13 Oct 2025 15:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370032;
-	bh=ZCzNjKdk246XFXR74q/V0z1wOiosCz2ZizO6aJU/P+k=;
+	s=korg; t=1760369933;
+	bh=0nnRk5M36By0Dytj9lnD0AVq2IJ0saHCfLSWigftsuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GcpfjfLV1fKZwCT+4G93ce1wOwlFXV8IlIzqMqgHloF4aXGXJJlgJC4n9aMpcMXVA
-	 /kdhsN4FTjjL/yEjyRDklpy3Yoxafpc3yRdiIBy51hNDrFNVqft8pV46y3vxLX3IB0
-	 TJ9slCdJfFykT19stkFrlJX+cMxCVMFTbQAKu374=
+	b=yEKlxHVJFWVoUezAmAzZpKXW3eeydtr8mIj0UHD0Ble0X6GkudcTzHimYDPFDv8GY
+	 oATzK+AuHQ0ic4OhB/xy1DOmRcA2lt9SKilXrFlHDWKcW1jCIOlWYuzPcQyBDstTr/
+	 KkllB0OZScCVHj6KNN9ratzMCZe5bjg3+LBFleNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Luca Weiss <luca@lucaweiss.eu>
-Subject: [PATCH 6.17 411/563] remoteproc: qcom_q6v5_mss: support loading MBN file on msm8974
-Date: Mon, 13 Oct 2025 16:44:32 +0200
-Message-ID: <20251013144426.176514850@linuxfoundation.org>
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 412/563] RDMA/rxe: Fix race in do_task() when draining
+Date: Mon, 13 Oct 2025 16:44:33 +0200
+Message-ID: <20251013144426.214514317@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,54 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 581e3dea0ece4b59cf714c9dfe195a178d3ae13b ]
+[ Upstream commit 8ca7eada62fcfabf6ec1dc7468941e791c1d8729 ]
 
-On MSM8974 / APQ8074, MSM8226 and MSM8926 the MSS requires loading raw
-MBA image instead of the ELF file. Skip the ELF headers if mba.mbn was
-specified as the firmware image.
+When do_task() exhausts its iteration budget (!ret), it sets the state
+to TASK_STATE_IDLE to reschedule, without a secondary check on the
+current task->state. This can overwrite the TASK_STATE_DRAINING state
+set by a concurrent call to rxe_cleanup_task() or rxe_disable_task().
 
-Fixes: a5a4e02d083d ("remoteproc: qcom: Add support for parsing fw dt bindings")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Tested-by: Luca Weiss <luca@lucaweiss.eu> # msm8974pro-fairphone-fp2
-Link: https://lore.kernel.org/r/20250706-msm8974-fix-mss-v4-1-630907dbd898@oss.qualcomm.com
-[bjorn: Unwrapped the long memcpy line, to taste]
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+While state changes are protected by a spinlock, both rxe_cleanup_task()
+and rxe_disable_task() release the lock while waiting for the task to
+finish draining in the while(!is_done(task)) loop. The race occurs if
+do_task() hits its iteration limit and acquires the lock in this window.
+The cleanup logic may then proceed while the task incorrectly
+reschedules itself, leading to a potential use-after-free.
+
+This bug was introduced during the migration from tasklets to workqueues,
+where the special handling for the draining case was lost.
+
+Fix this by restoring the original pre-migration behavior. If the state is
+TASK_STATE_DRAINING when iterations are exhausted, set cont to 1 to
+force a new loop iteration. This allows the task to finish its work, so
+that a subsequent iteration can reach the switch statement and correctly
+transition the state to TASK_STATE_DRAINED, stopping the task as intended.
+
+Fixes: 9b4b7c1f9f54 ("RDMA/rxe: Add workqueue support for rxe tasks")
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20250919025212.1682087-1-hanguidong02@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_mss.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe_task.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-index 0c0199fb0e68d..3087d895b87f4 100644
---- a/drivers/remoteproc/qcom_q6v5_mss.c
-+++ b/drivers/remoteproc/qcom_q6v5_mss.c
-@@ -498,6 +498,8 @@ static void q6v5_debug_policy_load(struct q6v5 *qproc, void *mba_region)
- 	release_firmware(dp_fw);
- }
- 
-+#define MSM8974_B00_OFFSET 0x1000
-+
- static int q6v5_load(struct rproc *rproc, const struct firmware *fw)
- {
- 	struct q6v5 *qproc = rproc->priv;
-@@ -516,7 +518,14 @@ static int q6v5_load(struct rproc *rproc, const struct firmware *fw)
- 		return -EBUSY;
- 	}
- 
--	memcpy(mba_region, fw->data, fw->size);
-+	if ((qproc->version == MSS_MSM8974 ||
-+	     qproc->version == MSS_MSM8226 ||
-+	     qproc->version == MSS_MSM8926) &&
-+	    fw->size > MSM8974_B00_OFFSET &&
-+	    !memcmp(fw->data, ELFMAG, SELFMAG))
-+		memcpy(mba_region, fw->data + MSM8974_B00_OFFSET, fw->size - MSM8974_B00_OFFSET);
-+	else
-+		memcpy(mba_region, fw->data, fw->size);
- 	q6v5_debug_policy_load(qproc, mba_region);
- 	memunmap(mba_region);
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
+index 6f8f353e95838..f522820b950c7 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.c
++++ b/drivers/infiniband/sw/rxe/rxe_task.c
+@@ -132,8 +132,12 @@ static void do_task(struct rxe_task *task)
+ 		 * yield the cpu and reschedule the task
+ 		 */
+ 		if (!ret) {
+-			task->state = TASK_STATE_IDLE;
+-			resched = 1;
++			if (task->state != TASK_STATE_DRAINING) {
++				task->state = TASK_STATE_IDLE;
++				resched = 1;
++			} else {
++				cont = 1;
++			}
+ 			goto exit;
+ 		}
  
 -- 
 2.51.0
