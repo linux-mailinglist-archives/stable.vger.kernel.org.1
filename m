@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-184735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8353FBD4A0A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA43BD3C33
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E489508FA6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAEED18876C8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F06312822;
-	Mon, 13 Oct 2025 15:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C046B3081D4;
+	Mon, 13 Oct 2025 14:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHJ/Nf4K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5UY/N1b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BC630C628;
-	Mon, 13 Oct 2025 15:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D625BA34;
+	Mon, 13 Oct 2025 14:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368286; cv=none; b=lxKmu8kkCpF3Bm8R/TPFtg7q6bm8jrn0FRm4q4ZxOW7vq9XMC9yPyEjYkEvfaTiOSMqGFhH3fO8ZjN0ilkzZQTHuZ7FER6ljPB+xDKFQookHqdmifgu0+TKebGwVEUawNxAlPdKiCDnnD3MPTHQ9F5ts4CdmBVfXnhO1Qa+iZts=
+	t=1760366966; cv=none; b=N0Biuxnrm2B/PPf8/xfvnfd6FXnzvkIYJCWYAZBJkyp74HXp20QzzdvqPzmUOxnQYuyqbJBDiuSrGKYap1gi3JwarNVjlJEJYkd8C1nzM211EtmqCGXwTE369h1MnKLtSEzW3qRRxok3sSfOxZwcnN5PDa4qRsx/UTgSMgWGJS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368286; c=relaxed/simple;
-	bh=E1FOUgV0zOlv/LiiaT3B0XVBIbVL/2DTrzs+D1xZ4vQ=;
+	s=arc-20240116; t=1760366966; c=relaxed/simple;
+	bh=9MP2UFQDCXthLq61ZVuyFXuFPspEypPPm8Z0SciwPpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AjnTb2qBouYu/kBQZ4gZ4rrLkwYfFeqL1bXPM/mtb1SaV3o7VFtPsw4CwRfC9SrihdMLCHsY+jigC6dVsAUxQu/uh3PQZs48OvV6TAq7yFQgK/p3UObvo0FH0TqcFaC7a2wSjJCqVrg0YfbibN7UYkohTYCxkMVGpP+Gl4MUYuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHJ/Nf4K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D47C4CEE7;
-	Mon, 13 Oct 2025 15:11:25 +0000 (UTC)
+	 MIME-Version; b=hV90k0k8wpAlv7tH6Z5cxGot3otALrwuzwLPYkIJErgnXF1jBfiyCcQ4q9Oy38biKtSPwMdo5FC0mUC8tshkWRH+yIdGlhV3+cputuiGAuoucqYyAEgsHcDxj1NQGJ/aX6axHKwDVCnhONoG954PB1bJ/nWTf5x13rtE0nu1/rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5UY/N1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AEAC4CEE7;
+	Mon, 13 Oct 2025 14:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368285;
-	bh=E1FOUgV0zOlv/LiiaT3B0XVBIbVL/2DTrzs+D1xZ4vQ=;
+	s=korg; t=1760366966;
+	bh=9MP2UFQDCXthLq61ZVuyFXuFPspEypPPm8Z0SciwPpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHJ/Nf4KHVF+/pQqd8EC4nVTBGHHDBGdo+n+NjaNvwDxCvSZ731zjRh5fwHP2sacw
-	 jNo/pNac2yNM518ZegtVFeuoc9NehSCRXG/ZWOH0uzSpMZa4jN/oNyZ7uowyiGPsEj
-	 U3hw1Be5V49ofJPyEcmweM16skfA8GjoeEU0S0PQ=
+	b=Y5UY/N1b7KphVlZCwqHD/nsS28oy5EfsCJoXqbBrQ5Du0KO/nC+1aqGCK15b6/a9W
+	 nxw7OdSZ3CLDyCvRdsFUXfsCiBqTtRT/7kZCdkvVQiIgG7y6DEiCAUOnrEAA6OspIi
+	 pXZ4PrND8fukBt8yk4zjWOAnI7t1pgmmq7Hlab7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/262] bpf: Explicitly check accesses to bpf_sock_addr
+	Yiqi Sun <sunyiqixm@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 044/196] crypto: rng - Ensure set_ent is always present
 Date: Mon, 13 Oct 2025 16:43:37 +0200
-Message-ID: <20251013144328.826677533@linuxfoundation.org>
+Message-ID: <20251013144316.179539539@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 6fabca2fc94d33cdf7ec102058983b086293395f ]
+commit c0d36727bf39bb16ef0a67ed608e279535ebf0da upstream.
 
-Syzkaller found a kernel warning on the following sock_addr program:
+Ensure that set_ent is always set since only drbg provides it.
 
-    0: r0 = 0
-    1: r2 = *(u32 *)(r1 +60)
-    2: exit
-
-which triggers:
-
-    verifier bug: error during ctx access conversion (0)
-
-This is happening because offset 60 in bpf_sock_addr corresponds to an
-implicit padding of 4 bytes, right after msg_src_ip4. Access to this
-padding isn't rejected in sock_addr_is_valid_access and it thus later
-fails to convert the access.
-
-This patch fixes it by explicitly checking the various fields of
-bpf_sock_addr in sock_addr_is_valid_access.
-
-I checked the other ctx structures and is_valid_access functions and
-didn't find any other similar cases. Other cases of (properly handled)
-padding are covered in new tests in a subsequent patch.
-
-Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
-Reported-by: syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://syzkaller.appspot.com/bug?extid=136ca59d411f92e821b7
-Link: https://lore.kernel.org/bpf/b58609d9490649e76e584b0361da0abd3c2c1779.1758094761.git.paul.chaignon@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 77ebdabe8de7 ("crypto: af_alg - add extra parameters for DRBG interface")
+Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ crypto/rng.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 02fedc404d7f7..c850e5d6cbd87 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -9233,13 +9233,17 @@ static bool sock_addr_is_valid_access(int off, int size,
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
- 		break;
--	default:
--		if (type == BPF_READ) {
--			if (size != size_default)
--				return false;
--		} else {
-+	case bpf_ctx_range(struct bpf_sock_addr, user_family):
-+	case bpf_ctx_range(struct bpf_sock_addr, family):
-+	case bpf_ctx_range(struct bpf_sock_addr, type):
-+	case bpf_ctx_range(struct bpf_sock_addr, protocol):
-+		if (type != BPF_READ)
- 			return false;
--		}
-+		if (size != size_default)
-+			return false;
-+		break;
-+	default:
-+		return false;
- 	}
+--- a/crypto/rng.c
++++ b/crypto/rng.c
+@@ -174,6 +174,11 @@ out:
+ EXPORT_SYMBOL_GPL(crypto_del_default_rng);
+ #endif
  
- 	return true;
--- 
-2.51.0
-
++static void rng_default_set_ent(struct crypto_rng *tfm, const u8 *data,
++				unsigned int len)
++{
++}
++
+ int crypto_register_rng(struct rng_alg *alg)
+ {
+ 	struct crypto_alg *base = &alg->base;
+@@ -185,6 +190,9 @@ int crypto_register_rng(struct rng_alg *
+ 	base->cra_flags &= ~CRYPTO_ALG_TYPE_MASK;
+ 	base->cra_flags |= CRYPTO_ALG_TYPE_RNG;
+ 
++	if (!alg->set_ent)
++		alg->set_ent = rng_default_set_ent;
++
+ 	return crypto_register_alg(base);
+ }
+ EXPORT_SYMBOL_GPL(crypto_register_rng);
 
 
 
