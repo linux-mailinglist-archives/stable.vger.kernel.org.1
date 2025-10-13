@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E40BD3C30
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:57:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38BCBD4591
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47708188C9C6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D992150418C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8E930F7E2;
-	Mon, 13 Oct 2025 14:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0E730E0E6;
+	Mon, 13 Oct 2025 14:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+LitHN6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4dAetI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE7A30F55D;
-	Mon, 13 Oct 2025 14:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248533081CE;
+	Mon, 13 Oct 2025 14:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366943; cv=none; b=PMw6A6hDL0wzDw1kCPQ0DVjH6ABd3xMFmhi7CBqpXFPG38kGOJvredurxEDVgPhL7Ea97cdvQaxxNaIQ58Zb6q4wX8XDzysilctuYhObnDzgx0axA2Wd2r48rtDv0m+EngawBbW7X4XDUhnzm+J7xr4WN40lllR2iRfxpxVxagg=
+	t=1760367457; cv=none; b=BZ6QYnvV3r44oenZsNSHNKdEda2krNff+FAD+KFzsYpIeSh2U8r7b80PopaAwkJNbjV/6GsLnRRUhf8Doswphsz19XzqL/LdTI7y4NVQjL2IRV8Ep7eqiuYjnhQZPs4QWnVWNxaJCkK3Dh2mqlbpl4+CYwHugow+B8Yfwq/S1NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366943; c=relaxed/simple;
-	bh=ZPXH9nQInaUlLDUrnJ94HGlDZXWZ0vEjQD3m/BmlLA4=;
+	s=arc-20240116; t=1760367457; c=relaxed/simple;
+	bh=ARqsYD1o3WrFji041nkJIdJoEtdUmMjE7miSnROBb+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsYtDMmk3CH7xkoUN8hGS3Nb/B505BJREGVisw+jHI0UB8yvv1AX/x2Ggb7BHMEEE4DnJ+7YaULLo+TYlcRqYdK/yQDHFKAn2Lq96bRiiLGH05AOwDHPwL9dCqZlmeQ401Al9s4tqAPqJTXxfx4jMu+Jc7uQfjUwXDjGdlXI42Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+LitHN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9702EC4CEE7;
-	Mon, 13 Oct 2025 14:49:02 +0000 (UTC)
+	 MIME-Version; b=DxUgN74KnJ8IYVTp8tI1PLF1dm6LRtXLWDEiYBjA7tawup6Yosxy9PcRzDmBmzEx6zxNZOup8lewsEozWWqsmqC/+UVXBrjeyAmnHUs45lTTFpBleJJCCjEEcmExwlaDK/0aP6p5bkeeSs0QH4//yazXUiMou1BYdh4rq52TAYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4dAetI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF46C4CEE7;
+	Mon, 13 Oct 2025 14:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366943;
-	bh=ZPXH9nQInaUlLDUrnJ94HGlDZXWZ0vEjQD3m/BmlLA4=;
+	s=korg; t=1760367457;
+	bh=ARqsYD1o3WrFji041nkJIdJoEtdUmMjE7miSnROBb+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+LitHN6R+gEHWn1URJZnBcP5W2Eb9yiwzRzWPtXFfqyBDBwP7+iips46ZlEpQ5Kx
-	 C4yrYzu2pLCSazUQG7I+BSTDUVJvJFIRFZinWq+Uwnjygwp1mIj9h6mnkK73+iPXzD
-	 VCgIQWgdXHZ76jOIIOS29TFtf72/dWY0o34gnSYU=
+	b=R4dAetI9F3DDPnhGMYBtspp93WVOAhBbzbAqjzDGEvxTalz84ys/g7icnUpHp0ibP
+	 rtVT6TmMCHl2z5GB4zQDhCnBudHTknRgmwFdPIE2y5NjprEb9HhzgG8G6Tt4JjuC7R
+	 aSOveyGHc1cbH/oNhMBKs1mJ1Bd5q640C5Wipb2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duy Nguyen <duy.nguyen.rh@renesas.com>,
-	Tranh Ha <tranh.ha.xb@renesas.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/196] can: rcar_canfd: Fix controller mode setting
+Subject: [PATCH 6.6 019/196] s390/bpf: Write back tail call counter for BPF_TRAMP_F_CALL_ORIG
 Date: Mon, 13 Oct 2025 16:43:30 +0200
-Message-ID: <20251013144315.929277331@linuxfoundation.org>
+Message-ID: <20251013144315.891872462@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duy Nguyen <duy.nguyen.rh@renesas.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit 5cff263606a10102a0ea19ff579eaa18fd5577ad ]
+[ Upstream commit bc3905a71f02511607d3ccf732360580209cac4c ]
 
-Driver configures register to choose controller mode before
-setting all channels to reset mode leading to failure.
-The patch corrects operation of mode setting.
+The tailcall_bpf2bpf_hierarchy_fentry test hangs on s390. Its call
+graph is as follows:
 
-Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
-Signed-off-by: Tranh Ha <tranh.ha.xb@renesas.com>
-Link: https://patch.msgid.link/TYWPR01MB87434739F83E27EDCD23DF44B416A@TYWPR01MB8743.jpnprd01.prod.outlook.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+  entry()
+    subprog_tail()
+      trampoline()
+        fentry()
+        the rest of subprog_tail()  # via BPF_TRAMP_F_CALL_ORIG
+        return to entry()
+
+The problem is that the rest of subprog_tail() increments the tail call
+counter, but the trampoline discards the incremented value. This
+results in an astronomically large number of tail calls.
+
+Fix by making the trampoline write the incremented tail call counter
+back.
+
+Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20250813121016.163375-4-iii@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/rcar/rcar_canfd.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/s390/net/bpf_jit_comp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index a1f68b74229e6..3d6daeea83553 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -717,9 +717,6 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- 	/* Reset Global error flags */
- 	rcar_canfd_write(gpriv->base, RCANFD_GERFL, 0x0);
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index 31a4bbd2e7dc4..fe0354ad3bb96 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -2442,6 +2442,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
+ 		/* stg %r2,retval_off(%r15) */
+ 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
+ 			      tjit->retval_off);
++		/* mvc tccnt_off(%r15),tail_call_cnt(4,%r15) */
++		_EMIT6(0xd203f000 | tjit->tccnt_off,
++		       0xf000 | offsetof(struct prog_frame, tail_call_cnt));
  
--	/* Set the controller into appropriate mode */
--	rcar_canfd_set_mode(gpriv);
--
- 	/* Transition all Channels to reset mode */
- 	for_each_set_bit(ch, &gpriv->channels_mask, gpriv->max_channels) {
- 		rcar_canfd_clear_bit(gpriv->base,
-@@ -739,6 +736,10 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- 			return err;
- 		}
- 	}
-+
-+	/* Set the controller into appropriate mode */
-+	rcar_canfd_set_mode(gpriv);
-+
- 	return 0;
- }
+ 		im->ip_after_call = jit->prg_buf + jit->prg;
  
 -- 
 2.51.0
