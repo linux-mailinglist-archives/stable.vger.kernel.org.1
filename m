@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-185247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4347BD49C1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:56:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2768CBD4892
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E39731882FB9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A8465509021
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887DA31B13F;
-	Mon, 13 Oct 2025 15:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D1730C62B;
+	Mon, 13 Oct 2025 15:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lxwuReT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydjcLvcd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4428B3101B9;
-	Mon, 13 Oct 2025 15:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F8D30C627;
+	Mon, 13 Oct 2025 15:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369753; cv=none; b=in54qveYe83+gE8bLyvtlxpZvaipidtnY3e8c6lEU/YbMEh4K5ekrWZ10SndBU9Hc2jykcIkbX1dIulekqSInuKTly76dObj4NQeez/eq6W9BeHqO9gcPy+FY8d/N+hFGQFSzh+4ShfdHhOBGMe4D3GdIFWWyMikt/P65sGkA5M=
+	t=1760368289; cv=none; b=psFgD4LTIihQHZznO1JivOA68C4TQ6fBpZ7I30ez1LDT6+BcS3rIVplHPYINIGwj/8q3YnFqbOuc8wNNkZ0OYhNqQxqAu9ZNHVQHcpEvNP9uNCfWQb3RYlDdZ9QRNF35FLZKS75voDWzelOIxSMMR0/SHMdzztyfdZ6oBTHSGrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369753; c=relaxed/simple;
-	bh=OK2xlydCewkHyPZRm7yRz7EMnYU4hWxAM91BbxhSvY4=;
+	s=arc-20240116; t=1760368289; c=relaxed/simple;
+	bh=K/RZHVwOdx8RRXqxpOV9wxPo3e5mNGLQlrZk78j2fJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzT9DveFEMND3GY72WexhXVgb5r+VVPvsFdO0w/nu2OJaxb3eFUHkN9o3/IGLyOGk37A9MsVm5D++n7DuOFahc3haAoeTpkwhM2nAI1UtfiJBcm4JlbNqtrdHi9FSiJXonL+yoYZbLLy70QlVTb7w3Jx5DHGmaPg4LbPe04X3Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lxwuReT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C15C116C6;
-	Mon, 13 Oct 2025 15:35:52 +0000 (UTC)
+	 MIME-Version; b=Z6b6qWloROIMyHSBFXz0EfB5fCp/h0NZsf5pszn/a26Ulk0F09cK8MfxFQLTrsWu9zUn2nDbVNNM15ti4Tt8yhaRXvEMmvsanggIYtt08CmzbuZCc5Rr9ttqQ8Nq4RPtRizOU4NfSKht3BuxtzrB2p55YsyGvhUxT7HuXz/jA1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydjcLvcd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FBFC4CEE7;
+	Mon, 13 Oct 2025 15:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369752;
-	bh=OK2xlydCewkHyPZRm7yRz7EMnYU4hWxAM91BbxhSvY4=;
+	s=korg; t=1760368288;
+	bh=K/RZHVwOdx8RRXqxpOV9wxPo3e5mNGLQlrZk78j2fJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lxwuReT4YHSE7QtQKdCZZu7iuphBG1t+XvutYmoY4+H5B22No1+Zf0ycpHRnmPyo
-	 ulC1guG9dsAcYRQtQGFC1o/64luITcRc0+YgC2l1sqYXJHAz6UgwClW0HvKfIe13e6
-	 B+7Mbvrc5XS88RUnuorQmonHTR5Wz3FTw6ffwsAg=
+	b=ydjcLvcdkVZRJMCTaw10psx6RyXwn9v/MN2j9NyC0x0avhOyeMmUd30iC16h2XPBt
+	 FcrtWNGVjn3WhTPeX37tWPLxEUSC13dpMGic5PuMWMSiA9Yif+iUNlNLmIxkCcDndO
+	 U/aKPo4zCp3pI6WERtF0IbVzDGsd5I7JDJKvsN14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 357/563] wifi: mt76: mt7996: Check phy before init msta_link in mt7996_mac_sta_add_links()
+Subject: [PATCH 6.12 076/262] bpf, arm64: Call bpf_jit_binary_pack_finalize() in bpf_jit_free()
 Date: Mon, 13 Oct 2025 16:43:38 +0200
-Message-ID: <20251013144424.201522123@linuxfoundation.org>
+Message-ID: <20251013144328.862298845@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit fe5fffadc6c77c56f122cf1042dc830f59e904bf ]
+[ Upstream commit 6ff4a0fa3e1b2b9756254b477fb2f0fbe04ff378 ]
 
-In order to avoid a possible NULL pointer dereference in
-mt7996_mac_sta_init_link routine, move the phy pointer check before
-running mt7996_mac_sta_init_link() in mt7996_mac_sta_add_links routine.
+The current implementation seems incorrect and does NOT match the
+comment above, use bpf_jit_binary_pack_finalize() instead.
 
-Fixes: dd82a9e02c054 ("wifi: mt76: mt7996: Rely on mt7996_sta_link in sta_add/sta_remove callbacks")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250830-mt7996_mac_sta_add_links-fix-v1-1-4219fb8755ee@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 1dad391daef1 ("bpf, arm64: use bpf_prog_pack for memory management")
+Acked-by: Puranjay Mohan <puranjay@kernel.org>
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Acked-by: Song Liu <song@kernel.org>
+Acked-by: Puranjay Mohan <puranjay@kernel.org>
+Link: https://lore.kernel.org/r/20250916232653.101004-1-hengqi.chen@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 81391db535866..d01b5778da20e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1080,16 +1080,17 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 			goto error_unlink;
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 5553508c36440..ca6d002a6f137 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -2754,8 +2754,7 @@ void bpf_jit_free(struct bpf_prog *prog)
+ 		 * before freeing it.
+ 		 */
+ 		if (jit_data) {
+-			bpf_arch_text_copy(&jit_data->ro_header->size, &jit_data->header->size,
+-					   sizeof(jit_data->header->size));
++			bpf_jit_binary_pack_finalize(jit_data->ro_header, jit_data->header);
+ 			kfree(jit_data);
  		}
- 
--		err = mt7996_mac_sta_init_link(dev, link_conf, link_sta, link,
--					       link_id);
--		if (err)
--			goto error_unlink;
--
- 		mphy = mt76_vif_link_phy(&link->mt76);
- 		if (!mphy) {
- 			err = -EINVAL;
- 			goto error_unlink;
- 		}
-+
-+		err = mt7996_mac_sta_init_link(dev, link_conf, link_sta, link,
-+					       link_id);
-+		if (err)
-+			goto error_unlink;
-+
- 		mphy->num_sta++;
- 	}
- 
+ 		hdr = bpf_jit_binary_pack_hdr(prog);
 -- 
 2.51.0
 
