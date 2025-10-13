@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-184831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C6FBD488F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:40 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E9FBD3EE8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CBF0A50166D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3ED7A34E19C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20B0299A8A;
-	Mon, 13 Oct 2025 15:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32930307AF3;
+	Mon, 13 Oct 2025 14:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4KSkbMj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2HCyXxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBA025D546;
-	Mon, 13 Oct 2025 15:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD021307AE6;
+	Mon, 13 Oct 2025 14:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368561; cv=none; b=o8yelVzBYrOlUArFaqBGqDChtrYpHM9BEmeOn+RcTobHVdSP4j+w3KaY0CLdd8b9NFnpB7wDDi9sjLHDO/MjOuIwFgUdziQKCFmUXfnJHLIa4VtVnMnl62Dh5KznYUdvx6UEtnzGU9wTLPtge21EWdeWQwPS5vB23UYoZJPODZA=
+	t=1760367333; cv=none; b=ZZFSauhwUZLbyGFaz1EQ8HUN/PU7Z05WaNBxWlqCqzSPuzNn+oR5lEys20HALgVzg79sXCeV4HYRo6kH4ThNYoOR3lT77a7ACTzGwsw+IEsmJ51IKfaw1ajDG+JUqCoyHoNkIOhajAxlPsCCxRpC9c7tj8tyPQIeLEcnDQep+j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368561; c=relaxed/simple;
-	bh=o6VVlnhp9tykTFQOo0STWI1Ujmk7A9/7TCPF/R2pILU=;
+	s=arc-20240116; t=1760367333; c=relaxed/simple;
+	bh=XcyyiI+61EJHadHh/nCXelaj1RbYIO6gL3nYRddTpdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6nAolgpg82hbN0X5Hihbuf7f2IPUuk29nQmiRLeD4G2DKd0QYMqvG4vWzsZJGdc7fB7x3c0is9Z1HIpN3N22Cgp3u7WPrVQx5ELtcX5g985hMJ0FujOTxqyL7aIDwIplPkYQ0ZQTsioq46DcDTF9UbVJdzsWKxUVL7r1LJ150A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4KSkbMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B774C4CEE7;
-	Mon, 13 Oct 2025 15:16:00 +0000 (UTC)
+	 MIME-Version; b=Fp7oF1o6yY/9bEQaL+5FPZJl2pL0pYKbcgmM2AbqtBmnig7alP94MI24Xc3w3nhs6p1DzY3gymNkSgeAPt2JDaYFga4/A2PdL5cI5R9dE2GkWblXFyJ4QyO/EYz8KOA6eZDwQzJC9qB/PnHCY7sAX2/nng4h6UZ0yESbXnHX+GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2HCyXxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F287C113D0;
+	Mon, 13 Oct 2025 14:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368561;
-	bh=o6VVlnhp9tykTFQOo0STWI1Ujmk7A9/7TCPF/R2pILU=;
+	s=korg; t=1760367332;
+	bh=XcyyiI+61EJHadHh/nCXelaj1RbYIO6gL3nYRddTpdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4KSkbMj4WAvNkrs21bhhn3/hJuMym8kbxDrm+dOrOOG2nPeZTCEkjva1UAlN6kym
-	 f7oZDSDDzaMSjtE7/c9+OZCuJMFYqubKlG+X4V6oPIZMMG4X7BQeiUgJ6URDelQmZz
-	 FFS/1M/eArboUftCAwTHgrzQUM8uGOFHWRLfcXDI=
+	b=d2HCyXxglGqaWrrHvY5/VtIEMkhJ82a65lw9M2F8pgiu6aJhGV3eeZPhNbr9VGTaF
+	 IeqAdMXPKLnpTz6crHcLZzcQu/gELikNH2GR2TCsJSc47iYed6IwogrooBgQMXWmcf
+	 CaCkamhx3nv93PPoP0YbFxF9ZxfSzF4TWmWgShVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 203/262] Bluetooth: ISO: Fix possible UAF on iso_conn_free
-Date: Mon, 13 Oct 2025 16:45:45 +0200
-Message-ID: <20251013144333.555843116@linuxfoundation.org>
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	syzbot+157bdef5cf596ad0da2c@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 173/196] Squashfs: fix uninit-value in squashfs_get_parent
+Date: Mon, 13 Oct 2025 16:45:46 +0200
+Message-ID: <20251013144320.954269870@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit 9950f095d6c875dbe0c9ebfcf972ec88fdf26fc8 ]
+commit 74058c0a9fc8b2b4d5f4a0ef7ee2cfa66a9e49cf upstream.
 
-This attempt to fix similar issue to sco_conn_free where if the
-conn->sk is not set to NULL may lead to UAF on iso_conn_free.
+Syzkaller reports a "KMSAN: uninit-value in squashfs_get_parent" bug.
 
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is caused by open_by_handle_at() being called with a file handle
+containing an invalid parent inode number.  In particular the inode number
+is that of a symbolic link, rather than a directory.
+
+Squashfs_get_parent() gets called with that symbolic link inode, and
+accesses the parent member field.
+
+	unsigned int parent_ino = squashfs_i(inode)->parent;
+
+Because non-directory inodes in Squashfs do not have a parent value, this
+is uninitialised, and this causes an uninitialised value access.
+
+The fix is to initialise parent with the invalid inode 0, which will cause
+an EINVAL error to be returned.
+
+Regular inodes used to share the parent field with the block_list_start
+field.  This is removed in this commit to enable the parent field to
+contain the invalid inode number 0.
+
+Link: https://lkml.kernel.org/r/20250918233308.293861-1-phillip@squashfs.org.uk
+Fixes: 122601408d20 ("Squashfs: export operations")
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: syzbot+157bdef5cf596ad0da2c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68cc2431.050a0220.139b6.0001.GAE@google.com/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/iso.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/squashfs/inode.c         |    7 +++++++
+ fs/squashfs/squashfs_fs_i.h |    2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index a08a0f3d5003c..df21c79800fb6 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -743,6 +743,13 @@ static void iso_sock_kill(struct sock *sk)
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -165,6 +165,7 @@ int squashfs_read_inode(struct inode *in
+ 		squashfs_i(inode)->start = le32_to_cpu(sqsh_ino->start_block);
+ 		squashfs_i(inode)->block_list_start = block;
+ 		squashfs_i(inode)->offset = offset;
++		squashfs_i(inode)->parent = 0;
+ 		inode->i_data.a_ops = &squashfs_aops;
  
- 	BT_DBG("sk %p state %d", sk, sk->sk_state);
+ 		TRACE("File inode %x:%x, start_block %llx, block_list_start "
+@@ -212,6 +213,7 @@ int squashfs_read_inode(struct inode *in
+ 		squashfs_i(inode)->start = le64_to_cpu(sqsh_ino->start_block);
+ 		squashfs_i(inode)->block_list_start = block;
+ 		squashfs_i(inode)->offset = offset;
++		squashfs_i(inode)->parent = 0;
+ 		inode->i_data.a_ops = &squashfs_aops;
  
-+	/* Sock is dead, so set conn->sk to NULL to avoid possible UAF */
-+	if (iso_pi(sk)->conn) {
-+		iso_conn_lock(iso_pi(sk)->conn);
-+		iso_pi(sk)->conn->sk = NULL;
-+		iso_conn_unlock(iso_pi(sk)->conn);
-+	}
-+
- 	/* Kill poor orphan */
- 	bt_sock_unlink(&iso_sk_list, sk);
- 	sock_set_flag(sk, SOCK_DEAD);
--- 
-2.51.0
-
+ 		TRACE("File inode %x:%x, start_block %llx, block_list_start "
+@@ -292,6 +294,7 @@ int squashfs_read_inode(struct inode *in
+ 		inode->i_mode |= S_IFLNK;
+ 		squashfs_i(inode)->start = block;
+ 		squashfs_i(inode)->offset = offset;
++		squashfs_i(inode)->parent = 0;
+ 
+ 		if (type == SQUASHFS_LSYMLINK_TYPE) {
+ 			__le32 xattr;
+@@ -329,6 +332,7 @@ int squashfs_read_inode(struct inode *in
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		rdev = le32_to_cpu(sqsh_ino->rdev);
+ 		init_special_inode(inode, inode->i_mode, new_decode_dev(rdev));
++		squashfs_i(inode)->parent = 0;
+ 
+ 		TRACE("Device inode %x:%x, rdev %x\n",
+ 				SQUASHFS_INODE_BLK(ino), offset, rdev);
+@@ -353,6 +357,7 @@ int squashfs_read_inode(struct inode *in
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		rdev = le32_to_cpu(sqsh_ino->rdev);
+ 		init_special_inode(inode, inode->i_mode, new_decode_dev(rdev));
++		squashfs_i(inode)->parent = 0;
+ 
+ 		TRACE("Device inode %x:%x, rdev %x\n",
+ 				SQUASHFS_INODE_BLK(ino), offset, rdev);
+@@ -373,6 +378,7 @@ int squashfs_read_inode(struct inode *in
+ 			inode->i_mode |= S_IFSOCK;
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		init_special_inode(inode, inode->i_mode, 0);
++		squashfs_i(inode)->parent = 0;
+ 		break;
+ 	}
+ 	case SQUASHFS_LFIFO_TYPE:
+@@ -392,6 +398,7 @@ int squashfs_read_inode(struct inode *in
+ 		inode->i_op = &squashfs_inode_ops;
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		init_special_inode(inode, inode->i_mode, 0);
++		squashfs_i(inode)->parent = 0;
+ 		break;
+ 	}
+ 	default:
+--- a/fs/squashfs/squashfs_fs_i.h
++++ b/fs/squashfs/squashfs_fs_i.h
+@@ -16,6 +16,7 @@ struct squashfs_inode_info {
+ 	u64		xattr;
+ 	unsigned int	xattr_size;
+ 	int		xattr_count;
++	int		parent;
+ 	union {
+ 		struct {
+ 			u64		fragment_block;
+@@ -27,7 +28,6 @@ struct squashfs_inode_info {
+ 			u64		dir_idx_start;
+ 			int		dir_idx_offset;
+ 			int		dir_idx_cnt;
+-			int		parent;
+ 		};
+ 	};
+ 	struct inode	vfs_inode;
 
 
 
