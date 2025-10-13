@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F40FBD4513
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC1FBD3EEB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 136E1407E5C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BAFD405239
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1916F3081D4;
-	Mon, 13 Oct 2025 15:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA8630ACEC;
+	Mon, 13 Oct 2025 14:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PraTtu5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="he9hUClE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9E025784F;
-	Mon, 13 Oct 2025 15:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F84279DCE;
+	Mon, 13 Oct 2025 14:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368496; cv=none; b=eLyEhjf1n9OmIpVW6WrFafpx81fPUF25zOHpOtRxdBeM3jyHG07fe2FNupSOWH511Dm0O2+TV20RRdRFLfDnQuwtsSs2R9XdBxQJ/9XOreO1A0gHx+VXUfV2vJ+8SLwbcxmJugDswfEWyiIfrVCOy8i+R0ZaG/5+stVccuyRGRY=
+	t=1760367179; cv=none; b=IypZudgUwyaN6oVIc+cYud2sqiFiBlLIn4ogd8gnXiXEehnccgbZ17YlqU12tqnq4/O1ZbtNxkf96L30HIhP2UYrdoGdbq0oRgZlBdmMm0MZHoGVzm6MuJdPupQn1zO2B1hzHmHFDijkM8uUIpjU0YDA1Gq7kxMX1VC83xPPK98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368496; c=relaxed/simple;
-	bh=sZUCb8oTRc87XteldyDzXsITG3PmFNcp04t4xV6IGU4=;
+	s=arc-20240116; t=1760367179; c=relaxed/simple;
+	bh=XVIz9GMYxC545Q3XAjPkClLHIBhBDMmSRXL6+JhbQAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QR7e3L7iFoVbe8sDNVUsqudxEVzbR/g82wRF+v/W6TMXnXgypMcqS1pWWwCaLdiv1rb0k+kD/1u66KUFQwymwab/qgYA5rHVxtnISouHm0AyeIer8q0jEO5NCm4zza6pGmTCH7jBuK9HJY1Q+9XHgxPqeiN7ea3/YsURUSE106g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PraTtu5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2336AC4CEE7;
-	Mon, 13 Oct 2025 15:14:55 +0000 (UTC)
+	 MIME-Version; b=kE4bi3TxTWejqkkguzfFKS1r8Dl/4cggIvEfAVrIlrkc4lNDOgpYB5jM+6HHUlN99SA29e8zSn8JqoD5RA+03qAAjCADKJZL5SINtF1rgWu6wMNJrBeqYf6VBm3tCGR+V4e3qCkqRADj1vm1WxIiu+lhhs3F6yXHq3ZOiJIQNLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=he9hUClE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1ADEC4CEE7;
+	Mon, 13 Oct 2025 14:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368496;
-	bh=sZUCb8oTRc87XteldyDzXsITG3PmFNcp04t4xV6IGU4=;
+	s=korg; t=1760367178;
+	bh=XVIz9GMYxC545Q3XAjPkClLHIBhBDMmSRXL6+JhbQAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PraTtu5a+AWTjM7ZvfaLwdkJEOPheeUY5EUeq2jLEx29Fl25UrGrOJ9a0mZPwuxZR
-	 frBzF7z1Ra+NO1etGXe+vScR8Cxp7QmTaZdeBmud1eR2vyZA0J4iYeMqBimTeBdrGb
-	 xeOvNkUl9lrysQxbP5qMUIyl45wwYE49XmaoYkzA=
+	b=he9hUClEHIgh9X7SpO6n4NLiOMO0sfTITVw9TGkyY6csRb/qUdz4Sku0XAiwD9R33
+	 evNtQwYBs4ZqI7Bsckv5UnXCJLf+OqiMXvY8Ud6XL8vHns5TWtbHqoWsypAkaeX0hS
+	 WFyy4YvSklkKwwrE+HyVK4qQ3nOXuogXUglo8Z78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 149/262] wifi: mt76: mt7996: Convert mt7996_wed_rro_addr to LE
+Subject: [PATCH 6.1 118/196] ASoC: Intel: bytcht_es8316: Fix invalid quirk input mapping
 Date: Mon, 13 Oct 2025 16:44:51 +0200
-Message-ID: <20251013144331.487511731@linuxfoundation.org>
+Message-ID: <20251013144318.966245704@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 809054a60d613ccca6e7f243bc68966b58044163 ]
+[ Upstream commit b20eb0e8de383116f1e1470d74da2a3c83c4e345 ]
 
-Do not use bitmask in mt7996_wed_rro_addr DMA descriptor in order to not
-break endianness
+When an invalid value is passed via quirk option, currently
+bytcht_es8316 driver just ignores and leaves as is, which may lead to
+unepxected results like OOB access.
 
-Fixes: 950d0abb5cd94 ("wifi: mt76: mt7996: add wed rx support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250909-mt7996-rro-rework-v5-11-7d66f6eb7795@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+This patch adds the sanity check and corrects the input mapping to the
+certain default value if an invalid value is passed.
+
+Fixes: 249d2fc9e55c ("ASoC: Intel: bytcht_es8316: Set card long_name based on quirks")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Message-ID: <20250902171826.27329-2-tiwai@suse.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c   |  8 +++++---
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 11 +++++------
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ sound/soc/intel/boards/bytcht_es8316.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index c550385541143..91b7d35bdb431 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -679,6 +679,7 @@ void mt7996_wfsys_reset(struct mt7996_dev *dev)
- static int mt7996_wed_rro_init(struct mt7996_dev *dev)
- {
- #ifdef CONFIG_NET_MEDIATEK_SOC_WED
-+	u32 val = FIELD_PREP(WED_RRO_ADDR_SIGNATURE_MASK, 0xff);
- 	struct mtk_wed_device *wed = &dev->mt76.mmio.wed;
- 	u32 reg = MT_RRO_ADDR_ELEM_SEG_ADDR0;
- 	struct mt7996_wed_rro_addr *addr;
-@@ -718,7 +719,7 @@ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
- 
- 		addr = dev->wed_rro.addr_elem[i].ptr;
- 		for (j = 0; j < MT7996_RRO_WINDOW_MAX_SIZE; j++) {
--			addr->signature = 0xff;
-+			addr->data = cpu_to_le32(val);
- 			addr++;
- 		}
- 
-@@ -736,7 +737,7 @@ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
- 	dev->wed_rro.session.ptr = ptr;
- 	addr = dev->wed_rro.session.ptr;
- 	for (i = 0; i < MT7996_RRO_WINDOW_MAX_LEN; i++) {
--		addr->signature = 0xff;
-+		addr->data = cpu_to_le32(val);
- 		addr++;
- 	}
- 
-@@ -836,6 +837,7 @@ static void mt7996_wed_rro_free(struct mt7996_dev *dev)
- static void mt7996_wed_rro_work(struct work_struct *work)
- {
- #ifdef CONFIG_NET_MEDIATEK_SOC_WED
-+	u32 val = FIELD_PREP(WED_RRO_ADDR_SIGNATURE_MASK, 0xff);
- 	struct mt7996_dev *dev;
- 	LIST_HEAD(list);
- 
-@@ -872,7 +874,7 @@ static void mt7996_wed_rro_work(struct work_struct *work)
- 				MT7996_RRO_WINDOW_MAX_LEN;
- reset:
- 			elem = ptr + elem_id * sizeof(*elem);
--			elem->signature = 0xff;
-+			elem->data |= cpu_to_le32(val);
- 		}
- 		mt7996_mcu_wed_rro_reset_sessions(dev, e->id);
- out:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 425fd030bee00..29e7289c3a169 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -194,13 +194,12 @@ struct mt7996_hif {
- 	int irq;
+diff --git a/sound/soc/intel/boards/bytcht_es8316.c b/sound/soc/intel/boards/bytcht_es8316.c
+index 4dd37848b30e3..fa2c3981dacac 100644
+--- a/sound/soc/intel/boards/bytcht_es8316.c
++++ b/sound/soc/intel/boards/bytcht_es8316.c
+@@ -46,7 +46,8 @@ enum {
+ 	BYT_CHT_ES8316_INTMIC_IN2_MAP,
  };
  
-+#define WED_RRO_ADDR_SIGNATURE_MASK	GENMASK(31, 24)
-+#define WED_RRO_ADDR_COUNT_MASK		GENMASK(14, 4)
-+#define WED_RRO_ADDR_HEAD_HIGH_MASK	GENMASK(3, 0)
- struct mt7996_wed_rro_addr {
--	u32 head_low;
--	u32 head_high : 4;
--	u32 count: 11;
--	u32 oor: 1;
--	u32 rsv : 8;
--	u32 signature : 8;
-+	__le32 head_low;
-+	__le32 data;
- };
+-#define BYT_CHT_ES8316_MAP(quirk)		((quirk) & GENMASK(3, 0))
++#define BYT_CHT_ES8316_MAP_MASK			GENMASK(3, 0)
++#define BYT_CHT_ES8316_MAP(quirk)		((quirk) & BYT_CHT_ES8316_MAP_MASK)
+ #define BYT_CHT_ES8316_SSP0			BIT(16)
+ #define BYT_CHT_ES8316_MONO_SPEAKER		BIT(17)
+ #define BYT_CHT_ES8316_JD_INVERTED		BIT(18)
+@@ -59,10 +60,23 @@ MODULE_PARM_DESC(quirk, "Board-specific quirk override");
  
- struct mt7996_wed_rro_session_id {
+ static void log_quirks(struct device *dev)
+ {
+-	if (BYT_CHT_ES8316_MAP(quirk) == BYT_CHT_ES8316_INTMIC_IN1_MAP)
++	int map;
++
++	map = BYT_CHT_ES8316_MAP(quirk);
++	switch (map) {
++	case BYT_CHT_ES8316_INTMIC_IN1_MAP:
+ 		dev_info(dev, "quirk IN1_MAP enabled");
+-	if (BYT_CHT_ES8316_MAP(quirk) == BYT_CHT_ES8316_INTMIC_IN2_MAP)
++		break;
++	case BYT_CHT_ES8316_INTMIC_IN2_MAP:
+ 		dev_info(dev, "quirk IN2_MAP enabled");
++		break;
++	default:
++		dev_warn_once(dev, "quirk sets invalid input map: 0x%x, default to INTMIC_IN1_MAP\n", map);
++		quirk &= ~BYT_CHT_ES8316_MAP_MASK;
++		quirk |= BYT_CHT_ES8316_INTMIC_IN1_MAP;
++		break;
++	}
++
+ 	if (quirk & BYT_CHT_ES8316_SSP0)
+ 		dev_info(dev, "quirk SSP0 enabled");
+ 	if (quirk & BYT_CHT_ES8316_MONO_SPEAKER)
 -- 
 2.51.0
 
