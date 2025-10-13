@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-184887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99FFBD4781
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC40BD47C6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83BD5504CC0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E189501825
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C33C30BBAC;
-	Mon, 13 Oct 2025 15:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C7730BBA0;
+	Mon, 13 Oct 2025 15:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4P6vRna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVaxGejz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF2130AADB;
-	Mon, 13 Oct 2025 15:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC231A9B46;
+	Mon, 13 Oct 2025 15:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368720; cv=none; b=AO45PXpWVxINQgb/CdHrieYC536BSIpTRxZOMEiErM6kpxlRBF1XXrl7gWlPc+6Kgq5ofGNADlc6WAFXrZvaYHkpTc12zi/RZvmY3JRvZApFtNbHG2Gb7w6CbSn5mPxgS4gSDDwxB6N5Dw45F7oIp9RKGpPVIAaNKPBVdq/DBM8=
+	t=1760368726; cv=none; b=ZqA9UqtNHtUJV+OYWHqDPIP96lBhOx0JZA4RydAZyA0Goi5gDHkp9W5E2dt8pi2bADBaOyBs0fR63OEHIRiUk7FgSt0bzg21u1kEhRfpphQYKV26387eyi6iPJQ6JjkZMfghmteh9U12LFR4onOZqwNo//Qvnr0RC5hmg0o7aoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368720; c=relaxed/simple;
-	bh=e59bFg5lHnkPwUNFShaolQMTTB3Hg2zi0gsPrLpa9k8=;
+	s=arc-20240116; t=1760368726; c=relaxed/simple;
+	bh=9+48S6rTdat7QWbgRZHQ5U9WKwtaCHVlr9cXSk26b30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtRXpbjm9gyJAtLRySbFiLrFlj1+s0RZy4T0vCabOL2OCGLdx0KARcEWhnnvlO07UxBUffgB0ywJy6AK8sfketab8WbRFREMF9WfJ/2UTD7xkU9uGXZMQpeSgO+iOg8rLnAyZ1OQ861+Zu+K3CPW4c/OSrRZUFuxifYKxI3NKg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4P6vRna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349ADC4CEE7;
-	Mon, 13 Oct 2025 15:18:40 +0000 (UTC)
+	 MIME-Version; b=rlnpZwsB/IahoLXj9sBxyJFkAQaVEN6DJIlr13YiFMcCCCcc27tc20oRFm03bFtoNgll4dgNqfGlk/AnzV1Tn7sdvSQx+i+ioEECRaD4X4V3jlJKmhICX3RSYWq7tITmIIl4K1Me95TiMvXCdNJUYCRdA8unGVHXjmeCCt9mxZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVaxGejz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0267DC4CEE7;
+	Mon, 13 Oct 2025 15:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368720;
-	bh=e59bFg5lHnkPwUNFShaolQMTTB3Hg2zi0gsPrLpa9k8=;
+	s=korg; t=1760368726;
+	bh=9+48S6rTdat7QWbgRZHQ5U9WKwtaCHVlr9cXSk26b30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I4P6vRnas9qfuH6CbL/eOdq0Auvebni/pyUFdVGrHxCjva61r20VFSW6sBRTHS8xM
-	 A+scUHFENyE/eyqccLQLtTL2KGFjrmBx1D7h0SjActqDqmxAIOXAppds/QGP4G9L1t
-	 6M7VgqA/YgP0ZMBi5awbD/e5/JBTEg2sERRgEoG0=
+	b=DVaxGejzcFM9GPahpP+AmollIzuaLE7Fb6AJrMTCYNqGK7d5t+1jlt+U1sCFirESk
+	 KuY4mU7DUbT+qDKmC1ZCsfqjIonVaejBVrpJ+im1n9xEE4czC9Kab94H7w3dG/Ge+7
+	 HSs81SI8BQCqhHet9ce3xkrF6qjyVcFplqRoya+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neal Gompa <neal@gompa.dev>,
-	Sven Peter <sven@kernel.org>
-Subject: [PATCH 6.12 260/262] usb: typec: tipd: Clear interrupts first
-Date: Mon, 13 Oct 2025 16:46:42 +0200
-Message-ID: <20251013144335.596308539@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>
+Subject: [PATCH 6.12 262/262] usb: cdns3: cdnsp-pci: remove redundant pci_disable_device() call
+Date: Mon, 13 Oct 2025 16:46:44 +0200
+Message-ID: <20251013144335.668164670@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
 References: <20251013144326.116493600@linuxfoundation.org>
@@ -67,104 +64,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sven Peter <sven@kernel.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit be5ae730ffa6fd774a00a4705c1e11e078b08ca1 upstream.
+commit e9c206324eeb213957a567a9d066bdeb355c7491 upstream.
 
-Right now the interrupt handler first reads all updated status registers
-and only then clears the interrupts. It's possible that a duplicate
-interrupt for a changed register or plug state comes in after the
-interrupts have been processed but before they have been cleared:
+The cdnsp-pci driver uses pcim_enable_device() to enable a PCI device,
+which means the device will be automatically disabled on driver detach
+through the managed device framework. The manual pci_disable_device()
+call in the error path is therefore redundant.
 
-* plug is inserted, TPS_REG_INT_PLUG_EVENT is set
-* TPS_REG_INT_EVENT1 is read
-* tps6598x_handle_plug_event() has run and registered the plug
-* plug is removed again, TPS_REG_INT_PLUG_EVENT is set (again)
-* TPS_REG_INT_CLEAR1 is written, TPS_REG_INT_PLUG_EVENT is cleared
+Found via static anlaysis and this is similar to commit 99ca0b57e49f
+("thermal: intel: int340x: processor: Fix warning during module unload").
 
-We then have no plug connected and no pending interrupt but the tipd
-core still thinks there is a plug. It's possible to trigger this with
-e.g. a slightly broken Type-C to USB A converter.
-
-Fix this by first clearing the interrupts and only then reading the
-updated registers.
-
-Fixes: 45188f27b3d0 ("usb: typec: tipd: Add support for Apple CD321X")
-Fixes: 0a4c005bd171 ("usb: typec: driver for TI TPS6598x USB Power Delivery controllers")
-Cc: stable@kernel.org
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Sven Peter <sven@kernel.org>
-Link: https://lore.kernel.org/r/20250914-apple-usb3-tipd-v1-1-4e99c8649024@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250903141613.2535472-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tipd/core.c |   24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ drivers/usb/cdns3/cdnsp-pci.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -545,24 +545,23 @@ static irqreturn_t cd321x_interrupt(int
- 	if (!event)
- 		goto err_unlock;
+--- a/drivers/usb/cdns3/cdnsp-pci.c
++++ b/drivers/usb/cdns3/cdnsp-pci.c
+@@ -91,7 +91,7 @@ static int cdnsp_pci_probe(struct pci_de
+ 		cdnsp = kzalloc(sizeof(*cdnsp), GFP_KERNEL);
+ 		if (!cdnsp) {
+ 			ret = -ENOMEM;
+-			goto disable_pci;
++			goto put_pci;
+ 		}
+ 	}
  
-+	tps6598x_write64(tps, TPS_REG_INT_CLEAR1, event);
-+
- 	if (!tps6598x_read_status(tps, &status))
--		goto err_clear_ints;
-+		goto err_unlock;
+@@ -174,9 +174,6 @@ free_cdnsp:
+ 	if (!pci_is_enabled(func))
+ 		kfree(cdnsp);
  
- 	if (event & APPLE_CD_REG_INT_POWER_STATUS_UPDATE)
- 		if (!tps6598x_read_power_status(tps))
--			goto err_clear_ints;
-+			goto err_unlock;
- 
- 	if (event & APPLE_CD_REG_INT_DATA_STATUS_UPDATE)
- 		if (!tps6598x_read_data_status(tps))
--			goto err_clear_ints;
-+			goto err_unlock;
- 
- 	/* Handle plug insert or removal */
- 	if (event & APPLE_CD_REG_INT_PLUG_EVENT)
- 		tps6598x_handle_plug_event(tps, status);
- 
--err_clear_ints:
--	tps6598x_write64(tps, TPS_REG_INT_CLEAR1, event);
+-disable_pci:
+-	pci_disable_device(pdev);
 -
- err_unlock:
- 	mutex_unlock(&tps->lock);
- 
-@@ -668,25 +667,24 @@ static irqreturn_t tps6598x_interrupt(in
- 	if (!(event1[0] | event1[1] | event2[0] | event2[1]))
- 		goto err_unlock;
- 
-+	tps6598x_block_write(tps, TPS_REG_INT_CLEAR1, event1, intev_len);
-+	tps6598x_block_write(tps, TPS_REG_INT_CLEAR2, event2, intev_len);
-+
- 	if (!tps6598x_read_status(tps, &status))
--		goto err_clear_ints;
-+		goto err_unlock;
- 
- 	if ((event1[0] | event2[0]) & TPS_REG_INT_POWER_STATUS_UPDATE)
- 		if (!tps6598x_read_power_status(tps))
--			goto err_clear_ints;
-+			goto err_unlock;
- 
- 	if ((event1[0] | event2[0]) & TPS_REG_INT_DATA_STATUS_UPDATE)
- 		if (!tps6598x_read_data_status(tps))
--			goto err_clear_ints;
-+			goto err_unlock;
- 
- 	/* Handle plug insert or removal */
- 	if ((event1[0] | event2[0]) & TPS_REG_INT_PLUG_EVENT)
- 		tps6598x_handle_plug_event(tps, status);
- 
--err_clear_ints:
--	tps6598x_block_write(tps, TPS_REG_INT_CLEAR1, event1, intev_len);
--	tps6598x_block_write(tps, TPS_REG_INT_CLEAR2, event2, intev_len);
--
- err_unlock:
- 	mutex_unlock(&tps->lock);
+ put_pci:
+ 	pci_dev_put(func);
  
 
 
