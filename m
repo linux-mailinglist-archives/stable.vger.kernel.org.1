@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F5BBD4382
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:19 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B125FBD4090
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9DFF18859F1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2FA2734E619
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D9A3093D7;
-	Mon, 13 Oct 2025 15:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670DF30FC01;
+	Mon, 13 Oct 2025 15:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZvPvGUZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8F4yoaF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CAF25B663;
-	Mon, 13 Oct 2025 15:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2131230F95A;
+	Mon, 13 Oct 2025 15:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368508; cv=none; b=JZ+Xw7gejq/48t/cbrQc1AgmsVNx7YJfz3wdVnOnmONbcSv+Sn45rtK9PNcb5CLgQ7zTLxNWAeQgsAevuSqvtAG/MS0s7ljo46MOk/BKnZsg/rUD4GyzmP4A97LBLdJ7Nc4chkAyeOmtT7jOn/SmXk82Hy0y1BDQCy6JVmLcmr0=
+	t=1760367922; cv=none; b=dGO8V1lo9J2FNzHI/ijRW7f92yd6uMbx4sSGsPPjYiwiL9xr964bb3YCUMcwog8REaAlxpHAp9A9/ozA7/DX9daWks3jH3Fo9cSom/dKH2n8o9HqE1+kgw4G6u/cDblM7qNwrpcop5K4puk6B5qAv861bFpttr/90wcCT/Yy6fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368508; c=relaxed/simple;
-	bh=bc/Z/3k3T9XvLIWZ+yN1sb5EEe/G7NvEdLNjJH7CMXo=;
+	s=arc-20240116; t=1760367922; c=relaxed/simple;
+	bh=n2vrkOXKcAgiwp2ueTSr/ZVTKjcmQYJwhooL7dKKQ+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mycj7ktF18rr0o6Tk3CkBwvGaCItRcB41FkXXtCcHEwqBl70TDxBHYAs6T6ZCoGjNfCVv9aWqDPHzkv+OcKRcskFLJzi+V6LhAsfm8b3jbxfCQRNMXooAnVHrYK25brQ09Tx1SObzb2MQHndghfYjcSFmtEvJl7eOW/DZ+xxhvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZvPvGUZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36ACC4CEE7;
-	Mon, 13 Oct 2025 15:15:07 +0000 (UTC)
+	 MIME-Version; b=IPlajI06+vEw+F+o/bWww1m2YmpOBU6PJIr1KwGitkSqXhQajgu6zoy9OmQMgyLzYp1DIuy+XeCVAcnXpbrAdvMMdHyY7tHz7OVG7vZHYyUQQZQz/+UuhXKlbREngDq6VKxBfw366uVhBmScRQrvVD4ctxv7u043B5MG00z9Bx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8F4yoaF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994FAC4CEE7;
+	Mon, 13 Oct 2025 15:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368508;
-	bh=bc/Z/3k3T9XvLIWZ+yN1sb5EEe/G7NvEdLNjJH7CMXo=;
+	s=korg; t=1760367922;
+	bh=n2vrkOXKcAgiwp2ueTSr/ZVTKjcmQYJwhooL7dKKQ+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZvPvGUZaCw9PY4Tbgnm8K4sRiDI2fnvJL/nYmMbHTQIjDhCZsSWUwI1mE/lw4gZF
-	 Ka6u+QA+iBCsZPKpTxGDe2WPMQeTymISRsrOq4V0oCOlwpcRrprxl7D2ayhintXOPv
-	 r1d4LblFY+nTUu31e/zsvbOMS4uT1LfU1oWHzNFI=
+	b=T8F4yoaF/TdUAM6oVuQGlnMxQvlnGV76jPIPkuUqLgC6ky8wsxvkLq7rqhTw9KacT
+	 jjxvO2GOC3IB2WWKq+8FiLkgWtUJn8raFc9IAynH8tE8/dojnT9wa4kUfZlbPUsFWZ
+	 zQHPLRa7pZdX1MpreJeua3DeP6pi0kD48r/aQiNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamas Zsoldos <tamas.zsoldos@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 186/262] coresight: trbe: Return NULL pointer for allocation failures
+Subject: [PATCH 6.6 137/196] wifi: rtw89: avoid circular locking dependency in ser_state_run()
 Date: Mon, 13 Oct 2025 16:45:28 +0200
-Message-ID: <20251013144332.827108499@linuxfoundation.org>
+Message-ID: <20251013144320.270707559@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 8a55c161f7f9c1aa1c70611b39830d51c83ef36d ]
+[ Upstream commit 570f94511766f9236d3462dfb8a3c719c2b54c23 ]
 
-When the TRBE driver fails to allocate a buffer, it currently returns
-the error code "-ENOMEM". However, the caller etm_setup_aux() only
-checks for a NULL pointer, so it misses the error. As a result, the
-driver continues and eventually causes a kernel panic.
+Lockdep gives a splat [1] when ser_hdl_work item is executed.  It is
+scheduled at mac80211 workqueue via ieee80211_queue_work() and takes a
+wiphy lock inside.  However, this workqueue can be flushed when e.g.
+closing the interface and wiphy lock is already taken in that case.
 
-Fix this by returning a NULL pointer from arm_trbe_alloc_buffer() on
-allocation failures. This allows that the callers can properly handle
-the failure.
+Choosing wiphy_work_queue() for SER is likely not suitable.  Back on to
+the global workqueue.
 
-Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
-Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250904-cs_etm_auxsetup_fix_error_handling-v2-1-a502d0bafb95@arm.com
+[1]:
+
+ WARNING: possible circular locking dependency detected
+ 6.17.0-rc2 #17 Not tainted
+ ------------------------------------------------------
+ kworker/u32:1/61 is trying to acquire lock:
+ ffff88811bc00768 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: ser_state_run+0x5e/0x180 [rtw89_core]
+
+ but task is already holding lock:
+ ffffc9000048fd30 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}, at: process_one_work+0x7b5/0x1450
+
+ which lock already depends on the new lock.
+
+ the existing dependency chain (in reverse order) is:
+
+ -> #2 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}:
+        process_one_work+0x7c6/0x1450
+        worker_thread+0x49e/0xd00
+        kthread+0x313/0x640
+        ret_from_fork+0x221/0x300
+        ret_from_fork_asm+0x1a/0x30
+
+ -> #1 ((wq_completion)phy0){+.+.}-{0:0}:
+        touch_wq_lockdep_map+0x8e/0x180
+        __flush_workqueue+0x129/0x10d0
+        ieee80211_stop_device+0xa8/0x110
+        ieee80211_do_stop+0x14ce/0x2880
+        ieee80211_stop+0x13a/0x2c0
+        __dev_close_many+0x18f/0x510
+        __dev_change_flags+0x25f/0x670
+        netif_change_flags+0x7b/0x160
+        do_setlink.isra.0+0x1640/0x35d0
+        rtnl_newlink+0xd8c/0x1d30
+        rtnetlink_rcv_msg+0x700/0xb80
+        netlink_rcv_skb+0x11d/0x350
+        netlink_unicast+0x49a/0x7a0
+        netlink_sendmsg+0x759/0xc20
+        ____sys_sendmsg+0x812/0xa00
+        ___sys_sendmsg+0xf7/0x180
+        __sys_sendmsg+0x11f/0x1b0
+        do_syscall_64+0xbb/0x360
+        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+ -> #0 (&rdev->wiphy.mtx){+.+.}-{4:4}:
+        __lock_acquire+0x124c/0x1d20
+        lock_acquire+0x154/0x2e0
+        __mutex_lock+0x17b/0x12f0
+        ser_state_run+0x5e/0x180 [rtw89_core]
+        rtw89_ser_hdl_work+0x119/0x220 [rtw89_core]
+        process_one_work+0x82d/0x1450
+        worker_thread+0x49e/0xd00
+        kthread+0x313/0x640
+        ret_from_fork+0x221/0x300
+        ret_from_fork_asm+0x1a/0x30
+
+ other info that might help us debug this:
+
+ Chain exists of:
+   &rdev->wiphy.mtx --> (wq_completion)phy0 --> (work_completion)(&ser->ser_hdl_work)
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock((work_completion)(&ser->ser_hdl_work));
+                                lock((wq_completion)phy0);
+                                lock((work_completion)(&ser->ser_hdl_work));
+   lock(&rdev->wiphy.mtx);
+
+  *** DEADLOCK ***
+
+ 2 locks held by kworker/u32:1/61:
+  #0: ffff888103835148 ((wq_completion)phy0){+.+.}-{0:0}, at: process_one_work+0xefa/0x1450
+  #1: ffffc9000048fd30 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}, at: process_one_work+0x7b5/0x1450
+
+ stack backtrace:
+ CPU: 0 UID: 0 PID: 61 Comm: kworker/u32:1 Not tainted 6.17.0-rc2 #17 PREEMPT(voluntary)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-20250523-14.fc42 05/23/2025
+ Workqueue: phy0 rtw89_ser_hdl_work [rtw89_core]
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x5d/0x80
+  print_circular_bug.cold+0x178/0x1be
+  check_noncircular+0x14c/0x170
+  __lock_acquire+0x124c/0x1d20
+  lock_acquire+0x154/0x2e0
+  __mutex_lock+0x17b/0x12f0
+  ser_state_run+0x5e/0x180 [rtw89_core]
+  rtw89_ser_hdl_work+0x119/0x220 [rtw89_core]
+  process_one_work+0x82d/0x1450
+  worker_thread+0x49e/0xd00
+  kthread+0x313/0x640
+  ret_from_fork+0x221/0x300
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: ebfc9199df05 ("wifi: rtw89: add wiphy_lock() to work that isn't held wiphy_lock() yet")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250919210852.823912-5-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-trbe.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/ser.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
-index 492b2612f64e0..5755674913723 100644
---- a/drivers/hwtracing/coresight/coresight-trbe.c
-+++ b/drivers/hwtracing/coresight/coresight-trbe.c
-@@ -745,12 +745,12 @@ static void *arm_trbe_alloc_buffer(struct coresight_device *csdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 45165cf3e824e..ae3e02efcc5d7 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -207,7 +207,6 @@ static void rtw89_ser_hdl_work(struct work_struct *work)
  
- 	buf = kzalloc_node(sizeof(*buf), GFP_KERNEL, trbe_alloc_node(event));
- 	if (!buf)
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
+ static int ser_send_msg(struct rtw89_ser *ser, u8 event)
+ {
+-	struct rtw89_dev *rtwdev = container_of(ser, struct rtw89_dev, ser);
+ 	struct ser_msg *msg = NULL;
  
- 	pglist = kcalloc(nr_pages, sizeof(*pglist), GFP_KERNEL);
- 	if (!pglist) {
- 		kfree(buf);
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 	}
+ 	if (test_bit(RTW89_SER_DRV_STOP_RUN, ser->flags))
+@@ -223,7 +222,7 @@ static int ser_send_msg(struct rtw89_ser *ser, u8 event)
+ 	list_add(&msg->list, &ser->msg_q);
+ 	spin_unlock_irq(&ser->msg_q_lock);
  
- 	for (i = 0; i < nr_pages; i++)
-@@ -760,7 +760,7 @@ static void *arm_trbe_alloc_buffer(struct coresight_device *csdev,
- 	if (!buf->trbe_base) {
- 		kfree(pglist);
- 		kfree(buf);
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 	}
- 	buf->trbe_limit = buf->trbe_base + nr_pages * PAGE_SIZE;
- 	buf->trbe_write = buf->trbe_base;
+-	ieee80211_queue_work(rtwdev->hw, &ser->ser_hdl_work);
++	schedule_work(&ser->ser_hdl_work);
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
