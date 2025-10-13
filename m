@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-184397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74978BD44C5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E777DBD4740
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99ABC503653
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FEE4420A38
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B039B30CDB7;
-	Mon, 13 Oct 2025 14:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E95331283D;
+	Mon, 13 Oct 2025 15:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SK1vrtnj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNWJT3DQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C29230CDB3;
-	Mon, 13 Oct 2025 14:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB95271459;
+	Mon, 13 Oct 2025 15:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367318; cv=none; b=EvImCfswtWEt1v2hHRx4us4UeIGCiD6CBkjt4pH91Ga2CZ2G7uqAM3U6kxPt5RTkFzcFY1GMTZsWNeQaT8L+FsuQNSb/Fmr1hhnI5yMpzZ9F4QT81slhPExbzOZkHxYNrXjD5dVOSx33Ec6I/SMrOS/hmEV/8owU89PZCW8dicM=
+	t=1760368550; cv=none; b=i/UF5LJPlvo8dmea+OqlBfKGHAGqXM0VuXPv4+cDMJa1+vPkZLcjJD1NMZV94AdSmg7MDx0i2flLD+a0o61fW5ISw5ZF6At0f1ZEWGzCj9lSiB6mfo4b8YOjxlIEXnNmchXkb4r+nup6auacRAonjYqUYREVkuR5gObseRuNRjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367318; c=relaxed/simple;
-	bh=GnKU+ZNBmaVfBRgnNAo+l6EXM4mR8k5kwUHLEcwZvhg=;
+	s=arc-20240116; t=1760368550; c=relaxed/simple;
+	bh=2ciQsK59mO7tKJqWx7NEV3dkadT2FeL3fUt3tiPkGR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHAQZ37QHaH3O15AyKxe7ArvZzMz6Z76QiiX46cgSqdjS4mxn8aHnA+tJ/EYDXgR6hbX8Gr8kxARm4LYHma4AZ8ONdH4mJNL2GVhZ8jOWKRFwGMcpj/bti6Ettu9whzFokKStIILoJxA4kJVAkxc1VuWhVvP4gFAJNiPjYTjBMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SK1vrtnj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4EFC4CEE7;
-	Mon, 13 Oct 2025 14:55:17 +0000 (UTC)
+	 MIME-Version; b=FLphi2a6lVa9ubypcLKE8AT2M6YB6+IBP97pkhdb2rXe2jbxdhzN71lvaFS/+MU0cWG8TXNhmsDvY/HlHcRzNEp9LQtgU9nSW1TbfHUFWCY35OxJWBMP2efDOZCqUTR4Gv2VbNpuFNv/CqQozpptadLZv4CFn9OGhFXom/ta62g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNWJT3DQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46324C4CEE7;
+	Mon, 13 Oct 2025 15:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367318;
-	bh=GnKU+ZNBmaVfBRgnNAo+l6EXM4mR8k5kwUHLEcwZvhg=;
+	s=korg; t=1760368549;
+	bh=2ciQsK59mO7tKJqWx7NEV3dkadT2FeL3fUt3tiPkGR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SK1vrtnjz6z8rCwH1mRfh3ZhCF1iyLKrrxxcBKTJIxACgVlFjdcAEOx4ppMcW8cWK
-	 fzhJo1nLnbxLg8B7cApUbRTIAuF+MiYzyaVtH4EQdnfBhEF6LyBLrowpSZSOzyK6j9
-	 f8lOmMrehoYcyQehRwp+L7lqK+MtEqClelN/YNxA=
+	b=QNWJT3DQdch061J5PDFyQIhOVCQpLmBej2iywX3vNXOG8mupq1pBacjdvA5BoR50O
+	 m2lEeHgLzvkOELKZGva8yUpJF6bpjsNk66HefRYR2jMD9DcdyiztQBe8NXJ+D7Tu4u
+	 xdm77r1SQr4nfKp2pGKc2v3DU1/d06WOwbva2g6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Shay Drori <shayd@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	I Viswanath <viswanathiyyappan@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 168/196] net/mlx5: Stop polling for command response if interface goes down
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Subject: [PATCH 6.12 199/262] net: usb: Remove disruptive netif_wake_queue in rtl8150_set_multicast
 Date: Mon, 13 Oct 2025 16:45:41 +0200
-Message-ID: <20251013144320.774631931@linuxfoundation.org>
+Message-ID: <20251013144333.413266667@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit b1f0349bd6d320c382df2e7f6fc2ac95c85f2b18 ]
+[ Upstream commit 958baf5eaee394e5fd976979b0791a875f14a179 ]
 
-Stop polling on firmware response to command in polling mode if the
-command interface got down. This situation can occur, for example, if a
-firmware fatal error is detected during polling.
+syzbot reported WARNING in rtl8150_start_xmit/usb_submit_urb.
+This is the sequence of events that leads to the warning:
 
-This change halts the polling process when the command interface goes
-down, preventing unnecessary waits.
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);
+}
 
-Fixes: b898ce7bccf1 ("net/mlx5: cmdif, Avoid skipping reclaim pages if FW is not accessible")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+rtl8150_set_multicast() {
+	netif_stop_queue();
+	netif_wake_queue();		<-- wakes up TX queue before URB is done
+}
+
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);	<-- double submission
+}
+
+rtl8150_set_multicast being the ndo_set_rx_mode callback should not be
+calling netif_stop_queue and notif_start_queue as these handle
+TX queue synchronization.
+
+The net core function dev_set_rx_mode handles the synchronization
+for rtl8150_set_multicast making it safe to remove these locks.
+
+Reported-and-tested-by: syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=78cae3f37c62ad092caa
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Link: https://patch.msgid.link/20250924134350.264597-1-viswanathiyyappan@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/usb/rtl8150.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index c83523395d5ee..4c614a256ee05 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -289,6 +289,10 @@ static void poll_timeout(struct mlx5_cmd_work_ent *ent)
- 			return;
- 		}
- 		cond_resched();
-+		if (mlx5_cmd_is_down(dev)) {
-+			ent->ret = -ENXIO;
-+			return;
-+		}
- 	} while (time_before(jiffies, poll_end));
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index ddff6f19ff98e..92add3daadbb1 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -664,7 +664,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	u16 rx_creg = 0x9e;
  
- 	ent->ret = -ETIMEDOUT;
-@@ -1056,7 +1060,7 @@ static void cmd_work_handler(struct work_struct *work)
- 		poll_timeout(ent);
- 		/* make sure we read the descriptor after ownership is SW */
- 		rmb();
--		mlx5_cmd_comp_handler(dev, 1ULL << ent->idx, (ent->ret == -ETIMEDOUT));
-+		mlx5_cmd_comp_handler(dev, 1ULL << ent->idx, !!ent->ret);
+-	netif_stop_queue(netdev);
+ 	if (netdev->flags & IFF_PROMISC) {
+ 		rx_creg |= 0x0001;
+ 		dev_info(&netdev->dev, "%s: promiscuous mode\n", netdev->name);
+@@ -678,7 +677,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 		rx_creg &= 0x00fc;
  	}
+ 	async_set_registers(dev, RCR, sizeof(rx_creg), rx_creg);
+-	netif_wake_queue(netdev);
  }
  
+ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
 -- 
 2.51.0
 
