@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-184800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C996BD45AC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:33 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DE6BD3FF1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 574593E78CB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1B73534E163
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E69F30E0D6;
-	Mon, 13 Oct 2025 15:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2ED30BBA6;
+	Mon, 13 Oct 2025 15:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0jSNwEL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ql95rFRd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B31130E0C5;
-	Mon, 13 Oct 2025 15:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF9530BB9E;
+	Mon, 13 Oct 2025 15:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368470; cv=none; b=Pc0D2MTk6khgCp1ZH6dwuSh5AhXn1ss1CltHNjHUlU4gSdEBzrna24eR1u2iEMnR6fBZ9Jo4QjJJzXRrK3FLF5kn0OAdQFDVu6U9lIeP2Wof20gjwjYGcZ9wuX7w9WKDkj50P8Esru1FyGefyBXTZ98FOb3JZbMDgh1mJTguy+A=
+	t=1760367759; cv=none; b=VGWBL3zq0rMsNkoF+aJuKBZxGgUIHtuuJMFgNUoiKLPaW5WKmpvEnznKdguHs5YVUUbaOs7bFsIj49WTu0jBojbESOf/OslUOb37F5tYxmVW5rcaoJH9XNZqqU9sk5okC+qRoTE0vmnqMRf7qEMrLNlifwW38ODBYUhSiDSKYdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368470; c=relaxed/simple;
-	bh=L5LGzjbOosYDEQqtKqy7ti+zvFFq3GQqTDFrNgG8ic4=;
+	s=arc-20240116; t=1760367759; c=relaxed/simple;
+	bh=282EpwjOuz2ApXAkvDt8kCVK3AbDoc4o+nbiinolGys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V+M+7KziM30obFyNWI2iZQsNH026/T1wkbcxtp3Kw5eNRzGFZXb251CKd6gTn3i5ngmPONSCFWzBC0OVxY3m4TwcG2g/cxbFhHxgO4ZWVeXPLYkO6G5OToy3SU9FbMjhvTQT3QyAzDHbiplAR8gpNEFTg4N/ITtzCmjC0AfuouI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0jSNwEL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B000BC4CEE7;
-	Mon, 13 Oct 2025 15:14:29 +0000 (UTC)
+	 MIME-Version; b=MjPBgPaYy4lrwzpBNSi/HgZ01OOA+Dj2aVlHCln3s8V3bIPWJK3HimuMH9SRWNVlbZhvhUMjXrbu7epBOOEg7C0z9nNU3fanvl1DqwPo+SRvE6WiPKadTwjeI4LGHS1XrzSfRZDXEuEnz1CsQ8TQb10/mW6JrVCbd9PIPvlDKns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql95rFRd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11AAC4CEE7;
+	Mon, 13 Oct 2025 15:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368470;
-	bh=L5LGzjbOosYDEQqtKqy7ti+zvFFq3GQqTDFrNgG8ic4=;
+	s=korg; t=1760367759;
+	bh=282EpwjOuz2ApXAkvDt8kCVK3AbDoc4o+nbiinolGys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0jSNwELD5oXUl3rkjuccPavArHGyBhHMEOcWSGWmzwiuHqbDJsUmTEZxmeH1wSTB
-	 YW1VKoUamNPVz4po8pxoA9Ic3BjNKVxGZwrhpYD+bR4ly3ijHp4l2nPlK46gTxe9Ah
-	 IxqT9gKakQzcz7nQD9Qa5exULwqaB6yraa+6nBxA=
+	b=ql95rFRd76UZSHdHu/GrgkhbHqWsWRVNLHJeH8dCpZRalp+F9aOVNmb/iFTRuAAc4
+	 b4ujvGrkBWZ3AjiC3t9jo9gq+bio/1ASWVdCXMLviIFPjo6NauuzcgpHLjzQVgTbHB
+	 P2rar7kxLCLukkc5JC7z8sP6emR1sJ6FdcwkKns0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Yznaga <anthony.yznaga@oracle.com>,
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactcode.com>
-Subject: [PATCH 6.12 171/262] sparc: fix accurate exception reporting in copy_{from_to}_user for UltraSPARC III
-Date: Mon, 13 Oct 2025 16:45:13 +0200
-Message-ID: <20251013144332.282564874@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 123/196] Revert "usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running"
+Date: Mon, 13 Oct 2025 16:45:14 +0200
+Message-ID: <20251013144319.758531580@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 47b49c06eb62504075f0f2e2227aee2e2c2a58b3 ]
+[ Upstream commit 08fa726e66039dfa80226dfa112931f60ad4c898 ]
 
-Anthony Yznaga tracked down that a BUG_ON in ext4 code with large folios
-enabled resulted from copy_from_user() returning impossibly large values
-greater than the size to be copied. This lead to __copy_from_iter()
-returning impossible values instead of the actual number of bytes it was
-able to copy.
+This reverts commit 28a76fcc4c85dd39633fb96edb643c91820133e3.
 
-The BUG_ON has been reported in
-https://lore.kernel.org/r/b14f55642207e63e907965e209f6323a0df6dcee.camel@physik.fu-berlin.de
+No actual HW bugs are known where Endpoint Context shows Running state
+but Stop Endpoint fails repeatedly with Context State Error and leaves
+the endpoint state unchanged. Stop Endpoint retries on Running EPs have
+been performed since early 2021 with no such issues reported so far.
 
-The referenced commit introduced exception handlers on user-space memory
-references in copy_from_user and copy_to_user. These handlers return from
-the respective function and calculate the remaining bytes left to copy
-using the current register contents. The exception handlers expect that
-%o2 has already been masked during the bulk copy loop, but the masking was
-performed after that loop. This will fix the return value of copy_from_user
-and copy_to_user in the faulting case. The behaviour of memcpy stays
-unchanged.
+Trying to handle this hypothetical case brings a more realistic danger:
+if Stop Endpoint fails on an endpoint which hasn't yet started after a
+doorbell ring and enough latency occurs before this completion event is
+handled, the driver may time out and begin removing cancelled TDs from
+a running endpoint, even though one more retry would stop it reliably.
 
-Fixes: ee841d0aff64 ("sparc64: Convert U3copy_{from,to}_user to accurate exception reporting.")
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on Sun Netra 240
-Reviewed-by: Anthony Yznaga <anthony.yznaga@oracle.com>
-Tested-by: René Rebe <rene@exactcode.com> # on UltraSparc III+ and UltraSparc IIIi
-Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-2-1ca72dda195b@mkarcher.dialup.fu-berlin.de
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Such high latency is rare but not impossible, and removing TDs from a
+running endpoint can cause more damage than not giving back a cancelled
+URB (which wasn't happening anyway). So err on the side of caution and
+revert to the old policy of always retrying if the EP appears running.
+
+[Remove stable tag as we are dealing with theoretical cases -Mathias]
+
+Fixes: 28a76fcc4c85d ("usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running")
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250917210726.97100-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/lib/U3memcpy.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/arch/sparc/lib/U3memcpy.S b/arch/sparc/lib/U3memcpy.S
-index 9248d59c734ce..bace3a18f836f 100644
---- a/arch/sparc/lib/U3memcpy.S
-+++ b/arch/sparc/lib/U3memcpy.S
-@@ -267,6 +267,7 @@ FUNC_NAME:	/* %o0=dst, %o1=src, %o2=len */
- 	faligndata	%f10, %f12, %f26
- 	EX_LD_FP(LOAD(ldd, %o1 + 0x040, %f0), U3_retl_o2)
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index a21ac9d80275f..6443e11eaac04 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1224,19 +1224,16 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
+ 			 * Stopped state, but it will soon change to Running.
+ 			 *
+ 			 * Assume this bug on unexpected Stop Endpoint failures.
+-			 * Keep retrying until the EP starts and stops again.
++			 * Keep retrying until the EP starts and stops again, on
++			 * chips where this is known to help. Wait for 100ms.
+ 			 */
++			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
++				break;
+ 			fallthrough;
+ 		case EP_STATE_RUNNING:
+ 			/* Race, HW handled stop ep cmd before ep was running */
+ 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
+ 					GET_EP_CTX_STATE(ep_ctx));
+-			/*
+-			 * Don't retry forever if we guessed wrong or a defective HC never starts
+-			 * the EP or says 'Running' but fails the command. We must give back TDs.
+-			 */
+-			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
+-				break;
  
-+	and		%o2, 0x3f, %o2
- 	subcc		GLOBAL_SPARE, 0x80, GLOBAL_SPARE
- 	add		%o1, 0x40, %o1
- 	bgu,pt		%XCC, 1f
-@@ -336,7 +337,6 @@ FUNC_NAME:	/* %o0=dst, %o1=src, %o2=len */
- 	 * Also notice how this code is careful not to perform a
- 	 * load past the end of the src buffer.
- 	 */
--	and		%o2, 0x3f, %o2
- 	andcc		%o2, 0x38, %g2
- 	be,pn		%XCC, 2f
- 	 subcc		%g2, 0x8, %g2
+ 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 			if (!command) {
 -- 
 2.51.0
 
