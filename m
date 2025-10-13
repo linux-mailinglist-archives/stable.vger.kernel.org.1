@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-184409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600EDBD3F9F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:16:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA69DBD419B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F1E1188F098
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B46AC1894414
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6BB30DD12;
-	Mon, 13 Oct 2025 14:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C5030F928;
+	Mon, 13 Oct 2025 15:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PIYwvng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDCJU8d1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD85630CDB9;
-	Mon, 13 Oct 2025 14:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC63271473;
+	Mon, 13 Oct 2025 15:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367353; cv=none; b=ZCeSYxTtThRdPV4IbcAtt+TRz6CEq/3sWYxUjP19uwAcfY4HuM5xXn1Yb6ZEFEmaO+ZtCJW9sYaSrP6eFQTFU16Y5m1HsbhIKYxJxIWpyy8Mh1tKyxd5XinoipFedAY3STJwaCcPpEG6ZdkrK+p+CfirmCbo8pXJ/pD3AS6yBO0=
+	t=1760367870; cv=none; b=GCzjopc8H3+63Csz+eg5pJBByOIicgHJda2DlhMgXqdAQROqihbs+BhHCC4EV2r51c7X3nKoWSkqasSdypnreuNPMi9e2E8aRjHtW5M3cZ+3G2ph5gpgyCFMU1u2eGbc18OZ6ZAEjNfeO5N9lZTXfJcB/p1gkAQb4LpVaDPn6JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367353; c=relaxed/simple;
-	bh=FdxdZRSRB9ZUFHAKLYaZveNpbkDDaVP90nSzhrlqEpY=;
+	s=arc-20240116; t=1760367870; c=relaxed/simple;
+	bh=cPYkXvX1gquYL+3EqPshm2NsEkr91ormqI4KRjh/UPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DgT0q1JpE+gJLK7TZXE1sRHhaLRRocF6wFHDxSRXBajwWd0l2OLr6w4zHabYKXehQAFod2Y7Dxz8cibhhQ0qpHwnZg0W7IZCVS8HJTigaqHQ10RVpTGfah/v8ROG96SLpWtweU2pVNTH8xlgKF46kzFUjbaIZgVrht7kQTDvvaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PIYwvng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B22FC4CEE7;
-	Mon, 13 Oct 2025 14:55:52 +0000 (UTC)
+	 MIME-Version; b=VjTR4bLSkrpMmu4yUyUM+kf0kLt2BVIrxB+EyxuvsUijf3KOFnI9PQzQ3dS78k4ofAl/3TBlOIq4WSRO9ECH+IxJcQeAzp/Rm3lCaoIBl8n1mrxYSECuaDWPJNFhkjW4O2SiMUTIrkoFmvN9B+kvnu7VPWaOP/tapjDae2u2d6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDCJU8d1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11617C4CEE7;
+	Mon, 13 Oct 2025 15:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367352;
-	bh=FdxdZRSRB9ZUFHAKLYaZveNpbkDDaVP90nSzhrlqEpY=;
+	s=korg; t=1760367870;
+	bh=cPYkXvX1gquYL+3EqPshm2NsEkr91ormqI4KRjh/UPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0PIYwvngRl9HRxvEIg9QKmnWg9Ltp+RQ5+O/yMmg91DKavrCe/ny5ym/E92+MQdvb
-	 J6++pQcH3gKEcftzBZqfLMmrViTGBlSuaNVtpDcRjZ2MQys4fI84vY79ea3kjwP/8E
-	 bBoC8NDbMbTNn6kC+a/W/9NMMKsRmypUj2B+gChc=
+	b=yDCJU8d1oO8crFB/Okcy5D0sGfXeCSK8yHlR7S5wk1IbenVOQZHDRDYBdP0GirriN
+	 zIWTyzfNRb0NsLfFdhb5KIeheNJFwnrtYud3LwuowQ6fYnNPBz38P96ufkKNdVfVhU
+	 /eUqJ3CVQ1LV0CYgsDaw85OndP5EMw8aEVNpeEDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 179/196] dm: fix NULL pointer dereference in __dm_suspend()
+	Jakub Kicinski <kuba@kernel.org>,
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 161/196] net: dlink: handle copy_thresh allocation failure
 Date: Mon, 13 Oct 2025 16:45:52 +0200
-Message-ID: <20251013144321.171125783@linuxfoundation.org>
+Message-ID: <20251013144321.135795668@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-commit 8d33a030c566e1f105cd5bf27f37940b6367f3be upstream.
+[ Upstream commit 8169a6011c5fecc6cb1c3654c541c567d3318de8 ]
 
-There is a race condition between dm device suspend and table load that
-can lead to null pointer dereference. The issue occurs when suspend is
-invoked before table load completes:
+The driver did not handle failure of `netdev_alloc_skb_ip_align()`.
+If the allocation failed, dereferencing `skb->protocol` could lead to
+a NULL pointer dereference.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000054
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
-RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
-Call Trace:
-  <TASK>
-  blk_mq_quiesce_queue+0x2c/0x50
-  dm_stop_queue+0xd/0x20
-  __dm_suspend+0x130/0x330
-  dm_suspend+0x11a/0x180
-  dev_suspend+0x27e/0x560
-  ctl_ioctl+0x4cf/0x850
-  dm_ctl_ioctl+0xd/0x20
-  vfs_ioctl+0x1d/0x50
-  __se_sys_ioctl+0x9b/0xc0
-  __x64_sys_ioctl+0x19/0x30
-  x64_sys_call+0x2c4a/0x4620
-  do_syscall_64+0x9e/0x1b0
+This patch tries to allocate `skb`. If the allocation fails, it falls
+back to the normal path.
 
-The issue can be triggered as below:
-
-T1 						T2
-dm_suspend					table_load
-__dm_suspend					dm_setup_md_queue
-						dm_mq_init_request_queue
-						blk_mq_init_allocated_queue
-						=> q->mq_ops = set->ops; (1)
-dm_stop_queue / dm_wait_for_completion
-=> q->tag_set NULL pointer!	(2)
-						=> q->tag_set = set; (3)
-
-Fix this by checking if a valid table (map) exists before performing
-request-based suspend and waiting for target I/O. When map is NULL,
-skip these table-dependent suspend steps.
-
-Even when map is NULL, no I/O can reach any target because there is
-no table loaded; I/O submitted in this state will fail early in the
-DM layer. Skipping the table-dependent suspend logic in this case
-is safe and avoids NULL pointer dereferences.
-
-Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Tested-on: D-Link DGE-550T Rev-A3
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250928190124.1156-1-yyyynoom@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/dlink/dl2k.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2668,7 +2668,7 @@ static int __dm_suspend(struct mapped_de
- {
- 	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
- 	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
--	int r;
-+	int r = 0;
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index f1208591ed67e..1c3a5cf379cd0 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -954,15 +954,18 @@ receive_packet (struct net_device *dev)
+ 		} else {
+ 			struct sk_buff *skb;
  
- 	lockdep_assert_held(&md->suspend_lock);
- 
-@@ -2720,7 +2720,7 @@ static int __dm_suspend(struct mapped_de
- 	 * Stop md->queue before flushing md->wq in case request-based
- 	 * dm defers requests to md->wq from md->queue.
- 	 */
--	if (dm_request_based(md)) {
-+	if (map && dm_request_based(md)) {
- 		dm_stop_queue(md->queue);
- 		set_bit(DMF_QUEUE_STOPPED, &md->flags);
- 	}
-@@ -2732,7 +2732,8 @@ static int __dm_suspend(struct mapped_de
- 	 * We call dm_wait_for_completion to wait for all existing requests
- 	 * to finish.
- 	 */
--	r = dm_wait_for_completion(md, task_state);
-+	if (map)
-+		r = dm_wait_for_completion(md, task_state);
- 	if (!r)
- 		set_bit(dmf_suspended_flag, &md->flags);
- 
++			skb = NULL;
+ 			/* Small skbuffs for short packets */
+-			if (pkt_len > copy_thresh) {
++			if (pkt_len <= copy_thresh)
++				skb = netdev_alloc_skb_ip_align(dev, pkt_len);
++			if (!skb) {
+ 				dma_unmap_single(&np->pdev->dev,
+ 						 desc_to_dma(desc),
+ 						 np->rx_buf_sz,
+ 						 DMA_FROM_DEVICE);
+ 				skb_put (skb = np->rx_skbuff[entry], pkt_len);
+ 				np->rx_skbuff[entry] = NULL;
+-			} else if ((skb = netdev_alloc_skb_ip_align(dev, pkt_len))) {
++			} else {
+ 				dma_sync_single_for_cpu(&np->pdev->dev,
+ 							desc_to_dma(desc),
+ 							np->rx_buf_sz,
+-- 
+2.51.0
+
 
 
 
