@@ -1,185 +1,105 @@
-Return-Path: <stable+bounces-184695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A61DBD46A5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:42:37 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3AEBD417D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6D0A3E6762
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A11D234ED31
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B799311960;
-	Mon, 13 Oct 2025 15:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8348C3126C4;
+	Mon, 13 Oct 2025 15:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tpQ+rJow"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="htJcGqaF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE86B311953
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 15:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592DC30BF72;
+	Mon, 13 Oct 2025 15:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368174; cv=none; b=ofeDna5btxALdZici3zlcUa4EqsAJ4mH2273tT60I8jXUspuMT/WyXEaGW6KVSTxzGrYtnRNsZhE1D6R1YyaZln/a7fAkXjTAdurCp115zpvUSkJ1fu+LkfZaE8TswqSpZbC05TngktctTxN5thlnioVQyOpg6MtcIFU5+ecFQM=
+	t=1760368241; cv=none; b=VAA6ZPQs/HC4NE2LhnyIPRZKb2I0azeISU3z4F3pmPjdBKrJshMFpKxC5hcMlHtgrGbbW4FscdXMOZjjXlDeLQppaW9Ld+1Ttq94xCDOnmjeSYhfaYrlahMH+OQJKWmay3NtvJs4AY1FapS8VA8Rc7KWhjTWgDtiNcrKYqw9wQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368174; c=relaxed/simple;
-	bh=0XqUWS9mNKQRutbioiUAtTXtx+T1+F/+sYGAHMSWTmE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ewj2JUrtdioowZa1AOnQHpqYazpdO1O6uoye47n4nTdrUOThgvoSuMC1ysSI7ThBkFN7fF1c6ejvXHkB5XYeLTF3MUhQ3BU3Njvfbcr2bXFanaHiMUtYTP1Er7+ecT6FfIVmxyzBAGDBD7feA4c0Y6ggggQZfhfIQnCDC2l372g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tpQ+rJow; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A4CC4CEFE;
-	Mon, 13 Oct 2025 15:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760368174;
-	bh=0XqUWS9mNKQRutbioiUAtTXtx+T1+F/+sYGAHMSWTmE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpQ+rJowHgXEnqpxWVi+WAcINUJcVIPbnQs3noP+6YA2jbrI3TGQ8CCORvb7nOeel
-	 bR4xJCJo7okioGKrZaWcrH07Q1oAp3lwQ5IurGtrvAfH3wDIb4LWH8djHhZ4xiObes
-	 JssCS8SENPK5Nal6Xk62Yl8wr2D7ofATP3x6/RYN1yXKOpJUgtzd7agiRd5HXaZ9f1
-	 Vd0CDU4F2amCjN2I4aF6FMJjU6qA22/5TmAyylkNEFO6fkHIQcaHBltRyu58Zvzy6E
-	 FFxxl4eAgo5oltcJ/8u/ugbhWvn3JHjw5IX88WfsI/52R0PKvX0lL96ky61/7myKhA
-	 FS6Z1KxxKrkjQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] net/9p: fix double req put in p9_fd_cancelled
-Date: Mon, 13 Oct 2025 11:09:32 -0400
-Message-ID: <20251013150932.3383360-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101019-zeppelin-polymer-aadc@gregkh>
-References: <2025101019-zeppelin-polymer-aadc@gregkh>
+	s=arc-20240116; t=1760368241; c=relaxed/simple;
+	bh=T6rkmZPK9y6R+KhcrUPhsT9aMA6EbLewStHqcb00su4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=iCjpJtMrgHPQl7qi6/dRY0uigiLOG8sOX+zcaX78inMw6mdJUNGNP/eY6ybxYVHZl1Lv4x2B0TnpVB+P4zG6LaJnGrC6Ogj/E0isJ/t8AYCcHrioniqFU5l7hdYepF2fnRSYNGhOk85VmFevpArpogf7XYa1com5RSvoCqEKa+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=htJcGqaF; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760368239; x=1791904239;
+  h=from:to:cc:in-reply-to:references:subject:message-id:
+   date:mime-version:content-transfer-encoding;
+  bh=T6rkmZPK9y6R+KhcrUPhsT9aMA6EbLewStHqcb00su4=;
+  b=htJcGqaFMHiVnQ2jZmkoSS6Bf56c3j01bILEJ2ZAvbTOhIxuVJCaxcEA
+   b61TzDuC7HtSxIFsbFvBHeaL+uVCpAEMLlPR/Q98bitoKV/VcddZXwAcU
+   +1HXltSJOdkxqn+fr5y+WuKXuQYOWrhyFV4bhWZ3H3G7j4qinceM2bK+s
+   yygb53j2/UmY5a4+qArtWTSBfw9Mve2a/EZiYwyW/dVrYwM6PArvw/xc2
+   XBKgoWHTb0w4eqKjgStIZOgLQOFETK0K7XYKK7e4M3yyxe2tjLD//sFpS
+   oJxR9RZHPcAKj1m3cHlMVrKXsNK0YtbpFd3zqYiloRYMAdluG2LsTngsP
+   w==;
+X-CSE-ConnectionGUID: 8YOEVFqaRdiFcGXNCO4J8w==
+X-CSE-MsgGUID: MnFvRrpkRDyU/Sz7OKtt3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="62546045"
+X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; 
+   d="scan'208";a="62546045"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 08:10:38 -0700
+X-CSE-ConnectionGUID: KsL7c0fbTSmlIFJzzkaLcQ==
+X-CSE-MsgGUID: ctslHxUvSiOYZyiW2PB8rg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; 
+   d="scan'208";a="186915218"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.77])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 08:10:35 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Hans de Goede <hansg@kernel.org>, Armin Wolf <W_Armin@gmx.de>, 
+ Kurt Borja <kuurtb@gmail.com>
+Cc: platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Gal Hammer <galhammer@gmail.com>
+In-Reply-To: <20251013-sleep-fix-v2-1-1ad8bdb79585@gmail.com>
+References: <20251013-sleep-fix-v2-1-1ad8bdb79585@gmail.com>
+Subject: Re: [PATCH v2] platform/x86: alienware-wmi-wmax: Fix null pointer
+ derefence in sleep handlers
+Message-Id: <176036823039.2473.15648931584117338012.b4-ty@linux.intel.com>
+Date: Mon, 13 Oct 2025 18:10:30 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+On Mon, 13 Oct 2025 00:26:26 -0500, Kurt Borja wrote:
 
-[ Upstream commit 674b56aa57f9379854cb6798c3bbcef7e7b51ab7 ]
+> Initialize `awcc` with empty quirks to avoid a null pointer dereference
+> in sleep handlers for devices without the AWCC interface.
+> 
+> This also allows some code simplification in alienware_wmax_wmi_init().
+> 
+> 
 
-Syzkaller reports a KASAN issue as below:
 
-general protection fault, probably for non-canonical address 0xfbd59c0000000021: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: maybe wild-memory-access in range [0xdead000000000108-0xdead00000000010f]
-CPU: 0 PID: 5083 Comm: syz-executor.2 Not tainted 6.1.134-syzkaller-00037-g855bd1d7d838 #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:__list_del include/linux/list.h:114 [inline]
-RIP: 0010:__list_del_entry include/linux/list.h:137 [inline]
-RIP: 0010:list_del include/linux/list.h:148 [inline]
-RIP: 0010:p9_fd_cancelled+0xe9/0x200 net/9p/trans_fd.c:734
+Thank you for your contribution, it has been applied to my local
+review-ilpo-fixes branch. Note it will show up in the public
+platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
+local branch there, which might take a while.
 
-Call Trace:
- <TASK>
- p9_client_flush+0x351/0x440 net/9p/client.c:614
- p9_client_rpc+0xb6b/0xc70 net/9p/client.c:734
- p9_client_version net/9p/client.c:920 [inline]
- p9_client_create+0xb51/0x1240 net/9p/client.c:1027
- v9fs_session_init+0x1f0/0x18f0 fs/9p/v9fs.c:408
- v9fs_mount+0xba/0xcb0 fs/9p/vfs_super.c:126
- legacy_get_tree+0x108/0x220 fs/fs_context.c:632
- vfs_get_tree+0x8e/0x300 fs/super.c:1573
- do_new_mount fs/namespace.c:3056 [inline]
- path_mount+0x6a6/0x1e90 fs/namespace.c:3386
- do_mount fs/namespace.c:3399 [inline]
- __do_sys_mount fs/namespace.c:3607 [inline]
- __se_sys_mount fs/namespace.c:3584 [inline]
- __x64_sys_mount+0x283/0x300 fs/namespace.c:3584
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+The list of commits applied:
+[1/1] platform/x86: alienware-wmi-wmax: Fix null pointer derefence in sleep handlers
+      commit: 5ae9382ac3c56d044ed065d0ba6d8c42139a8f98
 
-This happens because of a race condition between:
-
-- The 9p client sending an invalid flush request and later cleaning it up;
-- The 9p client in p9_read_work() canceled all pending requests.
-
-      Thread 1                              Thread 2
-    ...
-    p9_client_create()
-    ...
-    p9_fd_create()
-    ...
-    p9_conn_create()
-    ...
-    // start Thread 2
-    INIT_WORK(&m->rq, p9_read_work);
-                                        p9_read_work()
-    ...
-    p9_client_rpc()
-    ...
-                                        ...
-                                        p9_conn_cancel()
-                                        ...
-                                        spin_lock(&m->req_lock);
-    ...
-    p9_fd_cancelled()
-    ...
-                                        ...
-                                        spin_unlock(&m->req_lock);
-                                        // status rewrite
-                                        p9_client_cb(m->client, req, REQ_STATUS_ERROR)
-                                        // first remove
-                                        list_del(&req->req_list);
-                                        ...
-
-    spin_lock(&m->req_lock)
-    ...
-    // second remove
-    list_del(&req->req_list);
-    spin_unlock(&m->req_lock)
-  ...
-
-Commit 74d6a5d56629 ("9p/trans_fd: Fix concurrency del of req_list in
-p9_fd_cancelled/p9_read_work") fixes a concurrency issue in the 9p filesystem
-client where the req_list could be deleted simultaneously by both
-p9_read_work and p9_fd_cancelled functions, but for the case where req->status
-equals REQ_STATUS_RCVD.
-
-Update the check for req->status in p9_fd_cancelled to skip processing not
-just received requests, but anything that is not SENT, as whatever
-changed the state from SENT also removed the request from its list.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: afd8d6541155 ("9P: Add cancelled() to the transport functions.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
-Message-ID: <20250715154815.3501030-1-Sergey.Nalivayko@kaspersky.com>
-[updated the check from status == RECV || status == ERROR to status != SENT]
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-[ replaced m->req_lock with client->lock ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/9p/trans_fd.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 63f4d2067059e..40d458c438df1 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -711,10 +711,10 @@ static int p9_fd_cancelled(struct p9_client *client, struct p9_req_t *req)
- 	p9_debug(P9_DEBUG_TRANS, "client %p req %p\n", client, req);
- 
- 	spin_lock(&client->lock);
--	/* Ignore cancelled request if message has been received
--	 * before lock.
--	 */
--	if (req->status == REQ_STATUS_RCVD) {
-+	/* Ignore cancelled request if status changed since the request was
-+	 * processed in p9_client_flush()
-+	*/
-+	if (req->status != REQ_STATUS_SENT) {
- 		spin_unlock(&client->lock);
- 		return 0;
- 	}
--- 
-2.51.0
+--
+ i.
 
 
