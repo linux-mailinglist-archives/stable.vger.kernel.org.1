@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BE6BD451A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4EEFBD3C35
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A79450359A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C02B01894B95
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F45E311C35;
-	Mon, 13 Oct 2025 15:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702CD308F30;
+	Mon, 13 Oct 2025 14:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKwsWmf5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srkClh/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B81311C32;
-	Mon, 13 Oct 2025 15:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA9C308F01;
+	Mon, 13 Oct 2025 14:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368197; cv=none; b=mUf3sBJW4LRxsIqKC74tTDxlduBg22qSqbt+BN9paKiJUuzwKzfOCa2LTKcjs4Qja9uJc/uayf8ylKqdDcwrx6oqMMvNq3CPWdJS4lIVnfXPj/vhSRxSqhWahpSeOIM/lVrvdrnWmZFeqtAKqVp1cTodVhHUppqDHnNMo+2yMQg=
+	t=1760366975; cv=none; b=tve0CY4vC8ac7SQxmS6OWt7UCp9yTvfNznc7Mq/38EvkpjQ38nr9AJx1slhFtaUA8PUJnUpHmlSz72s4LvKLqI5+SsWflmZCOE3VKx0WzOhq0p8TFCxUOj5gQr3Kf/3TeuvTo90fQm2rwltvOp9vsHVtInEGxusxjAfaJlRgUOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368197; c=relaxed/simple;
-	bh=jmdu65ogfbm+B9CALmrkG+NQBARvKatvba8Ieft/Y6U=;
+	s=arc-20240116; t=1760366975; c=relaxed/simple;
+	bh=LTINxT0qULXGB909hgq00VgsRihINk2ylhBK6DMwChA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DAp+APwxx0blTMP3p4HYfz827BzDL7Vx3DY7g7molVFb5eRBnVdD+8EbWG61YxObgKnI9STTtKgQIjDhUNcqVi5yHAnT8GE3/2I9zGEEtb3XxCbGIW2L6HOiqJgkrSEUkl/q4rdiGv3DWnHo5yrrZOI5WYrc0N2j7gCCJvYs5wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKwsWmf5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BECC4CEE7;
-	Mon, 13 Oct 2025 15:09:56 +0000 (UTC)
+	 MIME-Version; b=DfssAXxlPR1U+w5a9Nf4fhi9/3eJwxDHOQIFIo1R/0O1W3hmW187u4GmlFvJXT0j0x85vZMERklULDsMGMkKjiLaQYrDggkjdtpGP1G0ZFdG039lNahlebtbZPoGwB+IWUbBvNLKZRp9qWGZfJ4aRZNLVlBRBDGZ4m58C2eHLcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srkClh/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B0DC4CEE7;
+	Mon, 13 Oct 2025 14:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368197;
-	bh=jmdu65ogfbm+B9CALmrkG+NQBARvKatvba8Ieft/Y6U=;
+	s=korg; t=1760366975;
+	bh=LTINxT0qULXGB909hgq00VgsRihINk2ylhBK6DMwChA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKwsWmf5HzuM2oEluT5X7feB0d+Yb4g7/E8PJrGWjhmAys7JxYf0PnUt5PpwPA1F7
-	 f9rs2+DZs4uojzzvk78R/7Ci1YljV+LHi/O5oUGuIov/5a8H4mqUOFQM02HPoKonpU
-	 ZuU0cGBB1CkcK8k/tJ3ZfKYTHvNAINEUin0xJZnk=
+	b=srkClh/e+w61yck85YbjbY0QcuANS1tP3kYSCctvJAoh/1ZmDjetzUJ1vAJ89/HQW
+	 m1v+s7bQlkJpC0i91KRHojd++FMoz99V7nkiAjcelSJsB3Hfk2699qzaLcTE7Oz/j/
+	 uY0givN90jBTBUF//xL0gsQeCWcJk4xxrKutdf4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhouyi Zhou <zhouzhouyi@gmail.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Martin Wilck <mwilck@suse.com>,
+	David Disseldorp <ddiss@suse.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/262] tools/nolibc: make time_t robust if __kernel_old_time_t is missing in host headers
+Subject: [PATCH 6.1 047/196] init: INITRAMFS_PRESERVE_MTIME should depend on BLK_DEV_INITRD
 Date: Mon, 13 Oct 2025 16:43:40 +0200
-Message-ID: <20251013144328.936514300@linuxfoundation.org>
+Message-ID: <20251013144316.287214879@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 0ff52df6b32a6b04a7c9dfe3d7a387aff215b482 ]
+[ Upstream commit 74792608606a525a0e0df7e8d48acd8000561389 ]
 
-Commit d5094bcb5bfd ("tools/nolibc: define time_t in terms of
-__kernel_old_time_t") made nolibc use the kernel's time type so that
-`time_t` matches `timespec::tv_sec` on all ABIs (notably x32).
+INITRAMFS_PRESERVE_MTIME is only used in init/initramfs.c and
+init/initramfs_test.c.  Hence add a dependency on BLK_DEV_INITRD, to
+prevent asking the user about this feature when configuring a kernel
+without initramfs support.
 
-But since __kernel_old_time_t is fairly new, notably from 2020 in commit
-94c467ddb273 ("y2038: add __kernel_old_timespec and __kernel_old_time_t"),
-nolibc builds that rely on host headers may fail.
-
-Switch to __kernel_time_t, which is the same as __kernel_old_time_t and
-has existed for longer.
-
-Tested in PPC VM of Open Source Lab of Oregon State University
-(./tools/testing/selftests/rcutorture/bin/mkinitrd.sh)
-
-Fixes: d5094bcb5bfd ("tools/nolibc: define time_t in terms of __kernel_old_time_t")
-Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
-[Thomas: Reformat commit and its message a bit]
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Fixes: 1274aea127b2e8c9 ("initramfs: add INITRAMFS_PRESERVE_MTIME Kconfig option")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin Wilck <mwilck@suse.com>
+Reviewed-by: David Disseldorp <ddiss@suse.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/std.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ init/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
-index a9d8b5b51f37f..f24953f8b949c 100644
---- a/tools/include/nolibc/std.h
-+++ b/tools/include/nolibc/std.h
-@@ -33,6 +33,6 @@ typedef unsigned long       nlink_t;
- typedef   signed long         off_t;
- typedef   signed long     blksize_t;
- typedef   signed long      blkcnt_t;
--typedef __kernel_old_time_t  time_t;
-+typedef __kernel_time_t      time_t;
+diff --git a/init/Kconfig b/init/Kconfig
+index 8b6a2848da4a5..b70e0e05a1856 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1405,6 +1405,7 @@ config BOOT_CONFIG_EMBED_FILE
  
- #endif /* _NOLIBC_STD_H */
+ config INITRAMFS_PRESERVE_MTIME
+ 	bool "Preserve cpio archive mtimes in initramfs"
++	depends on BLK_DEV_INITRD
+ 	default y
+ 	help
+ 	  Each entry in an initramfs cpio archive carries an mtime value. When
 -- 
 2.51.0
 
