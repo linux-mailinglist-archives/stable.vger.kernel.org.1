@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-184902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D17BBD49EB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B10BD44D7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B2413E5273
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09FE1188476A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1852B30BF7F;
-	Mon, 13 Oct 2025 15:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBAB30BF7B;
+	Mon, 13 Oct 2025 15:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNJccMHo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdtJh8vN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C705D2A1BA;
-	Mon, 13 Oct 2025 15:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D0F2A1BA;
+	Mon, 13 Oct 2025 15:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368764; cv=none; b=WfBJWUaJ06ZD2HWrvuL3Uaihv/plIAh2UpOldpQ0JRShXZ0MYxbsBpXzkew/cGHN9eR8j/6a3a3sn15+cY59OBGPiljaBkXk6ZcjfO5/Z/h5I78ERAZ8KngTEFuJoi3vJlBH7gZjP0Jj/hTLxNlmO7DdIZ96C4EGsqu7CmE1eGM=
+	t=1760368768; cv=none; b=Qt+uFPwZ2nCB42Fs7VE6WCw7a7seg2jfuSQowoSWu//gp83zHIwX2RopH7T5q78Dro+8+T27yhRAQVtZL7mIcb/guuiaOgVqthCgmDM8YFB58G3wiRcSYSAN3Y6muRBcoG1h1uGhhMlfiaphJj0kzG0aD8xV3pt79YVD646afXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368764; c=relaxed/simple;
-	bh=JZIBN726jPzXlV0o/y3JGxCLEWpE3ZojN0gnu/+Oyqc=;
+	s=arc-20240116; t=1760368768; c=relaxed/simple;
+	bh=GmaWP9eZHmsu1as+u2ulSIRMIQFEqWXfYqrDvvpMYR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLMb8DZ+axfvlJK830k0RhHLn8ws4bwFQiNlW8SyV0SY09cjdZADtPkTLFJLg9paNkR4ln4W+qMR78fXsm4Gk1KbGt08l6c4P33nS5aysU4LXlWRmhME01wVuZoudh7c+VQx4oQzRXd6qUcnVvkXMba59F7dVNX10ECYWopw3aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNJccMHo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51424C116C6;
-	Mon, 13 Oct 2025 15:19:24 +0000 (UTC)
+	 MIME-Version; b=awvMQWLrVWykCgDvGmMYTA+ExHy897FNi+OuF+Inc42ubA7UzULQ7MegPPdwUMSpcSXSbJ4x/V5PFKaT8bxKZPu73lUvsCpIHUltdq3a/e/Py3P/Crtv9GdGgF5URN4Azi94X7D+TI6EtHUKJAoep9OMj08wzAoF34P95J3eADw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdtJh8vN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471B2C4AF0B;
+	Mon, 13 Oct 2025 15:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368764;
-	bh=JZIBN726jPzXlV0o/y3JGxCLEWpE3ZojN0gnu/+Oyqc=;
+	s=korg; t=1760368767;
+	bh=GmaWP9eZHmsu1as+u2ulSIRMIQFEqWXfYqrDvvpMYR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNJccMHohq3V/Yw2c8hRBLyv1A1dukB+LG83+8wiQlGEj/UJONGwcFUTeVg1OzMqa
-	 AWckP7kj8GgGlYO8pkcTEgfqz2wK7Bajxua6CuOl5hZIBJzFlEVxH7sVtxPAide4c9
-	 b9/afzlOiKX3IVKZYzb8AFouIBULIwiwJ19SimQE=
+	b=gdtJh8vNMCAf3a0/6+MXJjxFv38H9jaqrHyVYX6Hg5wMEBPyPtJtAnsXJMk4EiPSG
+	 74xwyUYA9fBPdnlXv7pD/FEXoT9bSYOoroB5sF+qe3RDVh/r6nI7Op7rvykBduFTUS
+	 w5aUhbNX6zqhADdRb+Ls2xanFtH0A88DBWxhjzu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Colin Ian King <colin.i.king@gmail.com>,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Andrew Price <anprice@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 012/563] gfs2: Fix GLF_INVALIDATE_IN_PROGRESS flag clearing in do_xmote
-Date: Mon, 13 Oct 2025 16:37:53 +0200
-Message-ID: <20251013144411.736821487@linuxfoundation.org>
+Subject: [PATCH 6.17 013/563] gfs2: Remove space before newline
+Date: Mon, 13 Oct 2025 16:37:54 +0200
+Message-ID: <20251013144411.772390340@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,35 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 061df28b82af6b22fb5fa529a8f2ef00474ee004 ]
+[ Upstream commit aa94ad9ab230d08741e6630a20fd1296b52c1009 ]
 
-Commit 865cc3e9cc0b ("gfs2: fix a deadlock on withdraw-during-mount")
-added a statement to do_xmote() to clear the GLF_INVALIDATE_IN_PROGRESS
-flag a second time after it has already been cleared.  Fix that.
+There is an extraneous space before a newline in a fs_err message.
+Remove it
 
-Fixes: 865cc3e9cc0b ("gfs2: fix a deadlock on withdraw-during-mount")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Reviewed-by: Andrew Price <anprice@redhat.com>
+Stable-dep-of: bddb53b776fb ("gfs2: Get rid of GLF_INVALIDATE_IN_PROGRESS")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/gfs2/glock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index b6fd1cb17de7b..edb105f9da059 100644
+index edb105f9da059..3d5cf9c24d78b 100644
 --- a/fs/gfs2/glock.c
 +++ b/fs/gfs2/glock.c
-@@ -805,8 +805,6 @@ __acquires(&gl->gl_lockref.lock)
- 			clear_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
- 			gfs2_glock_queue_work(gl, GL_GLOCK_DFT_HOLD);
- 			return;
--		} else {
--			clear_bit(GLF_INVALIDATE_IN_PROGRESS, &gl->gl_flags);
- 		}
- 	}
- 
+@@ -733,7 +733,7 @@ __acquires(&gl->gl_lockref.lock)
+ 		 */
+ 		if (ret) {
+ 			if (cmpxchg(&sdp->sd_log_error, 0, ret)) {
+-				fs_err(sdp, "Error %d syncing glock \n", ret);
++				fs_err(sdp, "Error %d syncing glock\n", ret);
+ 				gfs2_dump_glock(NULL, gl, true);
+ 			}
+ 			spin_lock(&gl->gl_lockref.lock);
 -- 
 2.51.0
 
