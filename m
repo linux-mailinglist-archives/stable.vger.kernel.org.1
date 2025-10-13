@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BEE6BD411A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D92BD4318
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4EDD188ED92
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98D3F1882E4C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49E230B509;
-	Mon, 13 Oct 2025 15:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B5230CDBF;
+	Mon, 13 Oct 2025 15:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lc0FZdrD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4/MlRrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9218730AD1D;
-	Mon, 13 Oct 2025 15:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C833064B7;
+	Mon, 13 Oct 2025 15:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367727; cv=none; b=Db2IBuYL7wWaDTg1qO26dcApWrLoQPwsktSWbEV3tLgGDgeh3P4HXTSnW6MVUqOU8SjWOInJ8pygSA/9xzYL8WDOahIaCGw6NQni3ACTUxE5SxAaQTHX8fgeff7rotabAcdn51S/aYQVj8ZbPClE1MZY7Q1DZ/QToEZMgnNrmtA=
+	t=1760368440; cv=none; b=aXROD8lzlkJZDCr+UUYTPQ6IzLW3jfVtCp+PcT8lzFdLHy9nQXXGPmxjm8zlPPDwA7tviOIs4Cm4dECkRqTwqTSkgPxQlR5Hu11B3CTnwyidpt7T1uN3O6b86miHiLuxsyO88ZnFT02c8D3P57WrApm3GJqsTzx4sc7ZjKaRJVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367727; c=relaxed/simple;
-	bh=oEgTJ+7a4zALLhMjv3ND4fgYr/6DNy/k1Vr5+QnKxRE=;
+	s=arc-20240116; t=1760368440; c=relaxed/simple;
+	bh=LXRMzzuMkA4HwMK5h32oFYseboCnxYDVMUIHSble2oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qxOs15vTIBbGLatT13cS5IhRoMSFRhaE7ty+FktI9QTTKkKkrUSvxIdny1W21bqhMIV8OSrGYv6nDbrFHjoOtA5GVM7kLRHekWbE9X6pKzOuO+YAGovu4xzwUZsPcfm76Woijg2MKqVn+/NZwT2IcGCTpRaCNl3I936W3wmBHPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lc0FZdrD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A85C4CEE7;
-	Mon, 13 Oct 2025 15:02:06 +0000 (UTC)
+	 MIME-Version; b=te4iy4w6nRosNoaYbfgMdHQaspdw4LaShgu1j5sNFUhe738LwtqPdeYngefBJQg2W3uMrx+WwLqUyaLRcGvftt5AnVvukDfG7FjvgM1zbwEVXNfHdq6gV4uRe8fOLcQ8BO8fTopsNaQ3nqkGGinUAv8wLnDh1pJRZJY4uPJMA2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4/MlRrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD31C4CEE7;
+	Mon, 13 Oct 2025 15:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367727;
-	bh=oEgTJ+7a4zALLhMjv3ND4fgYr/6DNy/k1Vr5+QnKxRE=;
+	s=korg; t=1760368440;
+	bh=LXRMzzuMkA4HwMK5h32oFYseboCnxYDVMUIHSble2oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lc0FZdrDfvnZPDte1EFrqa1X4pDwI5PCWLNpSyxSl6IX8V5gOUQFDtKLQHyrQeBEM
-	 iehzBh6bRgfhJ9QICHW/NJQme4s3JZv0rhIBi83m/84D/TrdigCmCMTCI5G9UCuas8
-	 q9O+IDta1+whjNuJYE9IGNSyuVvaoby2/xBpUdME=
+	b=k4/MlRrNjgVO/leOol9dJNWxYpEQ3AK8CNWkn8y1nmXsJkfgCAzbmOXOak8UvK726
+	 CDs4z6pT7rUmV4rf9397zLG79XtnfUmd8h/zZed8U1ZyrzwxVw2BglwNZNuwqsHPIi
+	 2R7/znviDCloGnjKpz9GrK9mhlUQueTxGmSiHIRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Parav Pandit <parav@nvidia.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/196] RDMA/cm: Rate limit destroy CM ID timeout error message
+Subject: [PATCH 6.12 162/262] RDMA/core: Resolve MAC of next-hop device without ARP support
 Date: Mon, 13 Oct 2025 16:45:04 +0200
-Message-ID: <20251013144319.399515349@linuxfoundation.org>
+Message-ID: <20251013144331.957272194@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Håkon Bugge <haakon.bugge@oracle.com>
+From: Parav Pandit <parav@nvidia.com>
 
-[ Upstream commit 2bbe1255fcf19c5eb300efb6cb5ad98d66fdae2e ]
+[ Upstream commit 200651b9b8aadfbbec852f0e5d042d9abe75e2ab ]
 
-When the destroy CM ID timeout kicks in, you typically get a storm of
-them which creates a log flooding. Hence, change pr_err() to
-pr_err_ratelimited() in cm_destroy_id_wait_timeout().
+Currently, if the next-hop netdevice does not support ARP resolution,
+the destination MAC address is silently set to zero without reporting
+an error. This leads to incorrect behavior and may result in packet
+transmission failures.
 
-Fixes: 96d9cbe2f2ff ("RDMA/cm: add timeout to cm_destroy_id wait")
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Link: https://patch.msgid.link/20250912100525.531102-1-haakon.bugge@oracle.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Fix this by deferring MAC resolution to the IP stack via neighbour
+lookup, allowing proper resolution or error reporting as appropriate.
+
+Fixes: 7025fcd36bd6 ("IB: address translation to map IP toIB addresses (GIDs)")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20250916111103.84069-3-edwards@nvidia.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/core/addr.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
-index d45e3909dafe1..50bb3c43f40bf 100644
---- a/drivers/infiniband/core/cm.c
-+++ b/drivers/infiniband/core/cm.c
-@@ -1032,8 +1032,8 @@ static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id,
- 	struct cm_id_private *cm_id_priv;
+diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
+index be0743dac3fff..929e89841c12a 100644
+--- a/drivers/infiniband/core/addr.c
++++ b/drivers/infiniband/core/addr.c
+@@ -454,14 +454,10 @@ static int addr_resolve_neigh(const struct dst_entry *dst,
+ {
+ 	int ret = 0;
  
- 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
--	pr_err("%s: cm_id=%p timed out. state %d -> %d, refcnt=%d\n", __func__,
--	       cm_id, old_state, cm_id->state, refcount_read(&cm_id_priv->refcount));
-+	pr_err_ratelimited("%s: cm_id=%p timed out. state %d -> %d, refcnt=%d\n", __func__,
-+			   cm_id, old_state, cm_id->state, refcount_read(&cm_id_priv->refcount));
+-	if (ndev_flags & IFF_LOOPBACK) {
++	if (ndev_flags & IFF_LOOPBACK)
+ 		memcpy(addr->dst_dev_addr, addr->src_dev_addr, MAX_ADDR_LEN);
+-	} else {
+-		if (!(ndev_flags & IFF_NOARP)) {
+-			/* If the device doesn't do ARP internally */
+-			ret = fetch_ha(dst, addr, dst_in, seq);
+-		}
+-	}
++	else
++		ret = fetch_ha(dst, addr, dst_in, seq);
+ 	return ret;
  }
  
- static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
 -- 
 2.51.0
 
