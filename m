@@ -1,183 +1,130 @@
-Return-Path: <stable+bounces-184206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A22BD289A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 12:21:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3861FBD2927
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 12:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30A718858D5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 957241896769
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB602FF149;
-	Mon, 13 Oct 2025 10:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5715B2FF169;
+	Mon, 13 Oct 2025 10:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="bHlTjkWj";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Pk3ERnEk";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="bHlTjkWj";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Pk3ERnEk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d1W0UT4W"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E05D1946AA
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 10:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB9915E5BB;
+	Mon, 13 Oct 2025 10:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760350910; cv=none; b=TyWriMPYUGkz6VP88ixwlhcsadJKSLG9xIei+/seg8f9ncN4x2QEx8u188vMhE+Ak5xwRGU4XEcgKP76uJht+LQey3hnF744iJQpDBdiWGeBWMerN+Yieq4I2RQpxzsY5npg8QpoQ7F7vxa2IaB5uIDcoaPhg9X/0/MP0mDUEM4=
+	t=1760351286; cv=none; b=GjrO7LlNZgOTziv9Ud9CMOPke2IYHJcacsLrHxt8qRqPX79p7uR0M9EaLtaQQ7C+Uc3UNsxgMUfykMV+6kbN/Znl2nL39jmG59rnv8DAy90FNiDpM+hSK9CSDiD46JWVznUuxkCafHGuGC6mB/uYkktAKYJg8ljDyn4pyTtJUBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760350910; c=relaxed/simple;
-	bh=htq2wfiGSRS4u2OB3vWqPswGjCN55ciNdnlPCO2JWQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dwRH/40sp8imDHaBZY8ZIR+kNGf735HK/1AdYMVh0MdweaYgHPvjOFsbTWD4MkTcnR4gqrhw3vVzTxFAPhVPKuNLcUCwBWh+Ua7dnW32lVKjjLeqNZhSTrDTAp4MHAKvH2ttt/1jPCJlWfxQ7z92xBF2mySuFptzcoD3tdIzTyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=bHlTjkWj; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Pk3ERnEk; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=bHlTjkWj; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Pk3ERnEk; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 547D421A19;
-	Mon, 13 Oct 2025 10:21:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760350907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K7Xnat0LWYhhpDlz4Hf2R0blFTg02jqogiUtgcvqClA=;
-	b=bHlTjkWjyVt7G3Myd6gcZvMO7frqoBEyIDdEXJhypW8aCclydlzTQashmHvmCR1jlMzVDo
-	rzHZdoS9AUhKmBXXV7oCDffayZ9eO3rBUCCfXbM1+kYFc5n7Pxmc8BPwNLf5BaQc23mGQA
-	jPoVTrNX8ap9V7eeTNyiU01Ea0rz/QU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760350907;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K7Xnat0LWYhhpDlz4Hf2R0blFTg02jqogiUtgcvqClA=;
-	b=Pk3ERnEkhM35Roy3IMomoB6DbCRuMdAcKX/sxmvLwBD4bh2VJpfi7DE6Kf6+K0zGHnLgDC
-	Qr3zN15U593xUVCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760350907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K7Xnat0LWYhhpDlz4Hf2R0blFTg02jqogiUtgcvqClA=;
-	b=bHlTjkWjyVt7G3Myd6gcZvMO7frqoBEyIDdEXJhypW8aCclydlzTQashmHvmCR1jlMzVDo
-	rzHZdoS9AUhKmBXXV7oCDffayZ9eO3rBUCCfXbM1+kYFc5n7Pxmc8BPwNLf5BaQc23mGQA
-	jPoVTrNX8ap9V7eeTNyiU01Ea0rz/QU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760350907;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K7Xnat0LWYhhpDlz4Hf2R0blFTg02jqogiUtgcvqClA=;
-	b=Pk3ERnEkhM35Roy3IMomoB6DbCRuMdAcKX/sxmvLwBD4bh2VJpfi7DE6Kf6+K0zGHnLgDC
-	Qr3zN15U593xUVCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3C97613874;
-	Mon, 13 Oct 2025 10:21:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xbZPDrvS7GiYIQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 13 Oct 2025 10:21:47 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id AD48EA0A58; Mon, 13 Oct 2025 12:21:42 +0200 (CEST)
-Date: Mon, 13 Oct 2025 12:21:42 +0200
-From: Jan Kara <jack@suse.cz>
-To: Zhen Ni <zhen.ni@easystack.cn>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] fs: Fix uninitialized 'offp' in statmount_string()
-Message-ID: <m7ifqu2trqoqxwkili6tr2v27x524kbtme3ysmfisx4uxtd455@jimiqiuku6wq>
-References: <20251011091353.353898-1-zhen.ni@easystack.cn>
+	s=arc-20240116; t=1760351286; c=relaxed/simple;
+	bh=s0w3JaZHDtFhUxNRTBxHh5RglvYahX/gtsSUHvYN60s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p9b41J0vbK3AxeJTDPcViOS7AzCg3U1RBGBBOboYxGEKx9hNCIjiCtBXIoVuFA0B7O0W3fCBROXuIY6DENbGy9pkO7ntCSYGBMEfBXyJiQdFK9qd41c9notE96hBTsL2fB6IDBeNQ+gvSxVmXz1EqS/NkqVChpM1hhXNtFNYQr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d1W0UT4W; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760351284; x=1791887284;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=s0w3JaZHDtFhUxNRTBxHh5RglvYahX/gtsSUHvYN60s=;
+  b=d1W0UT4WA/0ESYkO/0NoEwgMGnM1iJ3mzyeePytCH107nR9Ffk5r11aZ
+   39F7PMYpIyKYVcDKE+iidpQYj74SGOVBwxOiQZp/fVOqTYcV4m9xVWKda
+   VfOWgiigeK9HAT9Ugz0a8CugI/8ke24emR9ZUA12aF4wMjPTNS6VbNRvZ
+   FhEGwsUcyJUSTkI4hkAUB0ET527OVL4uh/41OGyrm556ugZCMlfB6kprr
+   cFHdsmCYZRXgG1njDFXsg3oq5/Ih38iVo2VleUC6su1ktED6eDTxpz1EJ
+   vdCS1kbaWbnkC8aNaQUCxe2cbQvzo0LLG/jrpWNJJ9bENbM/7ltYXyTYA
+   A==;
+X-CSE-ConnectionGUID: 03BksFiiS4atwkOhXkv76A==
+X-CSE-MsgGUID: 5RJ/ikreRB2Z2Jrc3hDh1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11580"; a="72744233"
+X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; 
+   d="scan'208";a="72744233"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 03:28:03 -0700
+X-CSE-ConnectionGUID: CPI72lI4SLeQZnyRPzy0YQ==
+X-CSE-MsgGUID: /Zw2L53iSvO4+aRDFz7FQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; 
+   d="scan'208";a="186855631"
+Received: from unknown (HELO [10.238.2.75]) ([10.238.2.75])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 03:28:00 -0700
+Message-ID: <c8c40795-a459-4218-ba78-24f057c53a51@linux.intel.com>
+Date: Mon, 13 Oct 2025 18:27:58 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251011091353.353898-1-zhen.ni@easystack.cn>
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,suse.cz:email]
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf tools: Fix bool return value in gzip_is_compressed()
+To: Namhyung Kim <namhyung@kernel.org>
+Cc: Miaoqian Lin <linmq006@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ "Liang, Kan" <kan.liang@linux.intel.com>, linux-perf-users@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250828104652.53724-1-linmq006@gmail.com>
+ <4ecf3e76-27f8-47fd-a07d-7da2489af55f@linux.intel.com>
+ <aOzDh4yhR5F0nMTG@google.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <aOzDh4yhR5F0nMTG@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat 11-10-25 17:13:53, Zhen Ni wrote:
-> In statmount_string(), most flags assign an output offset pointer (offp)
-> which is later updated with the string offset. However, the
-> STATMOUNT_MNT_UIDMAP and STATMOUNT_MNT_GIDMAP cases directly set the
-> struct fields instead of using offp. This leaves offp uninitialized,
-> leading to a possible uninitialized dereference when *offp is updated.
-> 
-> Fix it by assigning offp for UIDMAP and GIDMAP as well, keeping the code
-> path consistent.
-> 
-> Fixes: 37c4a9590e1e ("statmount: allow to retrieve idmappings")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 
-The bug happened because of mismerge between commits 37c4a9590e1e and
-e52e97f09fb6 so I think we should also add:
+On 10/13/2025 5:16 PM, Namhyung Kim wrote:
+> Hello,
+>
+> On Sat, Oct 11, 2025 at 11:48:56AM +0800, Mi, Dapeng wrote:
+>> On 8/28/2025 6:46 PM, Miaoqian Lin wrote:
+>>> gzip_is_compressed() returns -1 on error but is declared as bool.
+>>> And -1 gets converted to true, which could be misleading.
+>>> Return false instead to match the declared type.
+>>>
+>>> Fixes: 88c74dc76a30 ("perf tools: Add gzip_is_compressed function")
+>>> Cc: <stable@vger.kernel.org>
+>>> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+>>> ---
+>>>  tools/perf/util/zlib.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
+>>> index 78d2297c1b67..1f7c06523059 100644
+>>> --- a/tools/perf/util/zlib.c
+>>> +++ b/tools/perf/util/zlib.c
+>>> @@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
+>>>  	ssize_t rc;
+>>>  
+>>>  	if (fd < 0)
+>>> -		return -1;
+>>> +		return false;
+>>>  
+>>>  	rc = read(fd, buf, sizeof(buf));
+>>>  	close(fd);
+>> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> We have 43fa1141e2c1af79 ("perf util: Fix compression checks returning -1
+> as bool").
 
-Fixes: e52e97f09fb6 ("statmount: let unset strings be empty")
+Good to know this has been fixed. Thanks. :)
 
-Otherwise the patch looks good. Feel free to add:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/namespace.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/namespace.c b/fs/namespace.c
-> index d82910f33dc4..5b5ab2ae238b 100644
-> --- a/fs/namespace.c
-> +++ b/fs/namespace.c
-> @@ -5454,11 +5454,11 @@ static int statmount_string(struct kstatmount *s, u64 flag)
->  		ret = statmount_sb_source(s, seq);
->  		break;
->  	case STATMOUNT_MNT_UIDMAP:
-> -		sm->mnt_uidmap = start;
-> +		offp = &sm->mnt_uidmap;
->  		ret = statmount_mnt_uidmap(s, seq);
->  		break;
->  	case STATMOUNT_MNT_GIDMAP:
-> -		sm->mnt_gidmap = start;
-> +		offp = &sm->mnt_gidmap;
->  		ret = statmount_mnt_gidmap(s, seq);
->  		break;
->  	default:
-> -- 
-> 2.20.1
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>
+> Thanks,
+> Namhyung
+>
 
