@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-185368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5125BD4D2D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:12:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87680BD521B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4BEE580F57
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A808E4F8E1E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DDF313E39;
-	Mon, 13 Oct 2025 15:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75FF3148A1;
+	Mon, 13 Oct 2025 15:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jO+OgMVv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb8ZM66d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BBB313E34;
-	Mon, 13 Oct 2025 15:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C91313E34;
+	Mon, 13 Oct 2025 15:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370095; cv=none; b=ZP4dSKAikh9Dbg7TsNcDhsPfLfKa6h1qHstI29XnLOeW56aymFoFM+s/hFEEk6Ctt1AN3qvZtnkZsfMYk3JFjiQrZLhhvt7SQ9LAh/dR0X79TcZizBKjJfzvnZR+c5ZZ9gZGb1LFfopNyiWsLw/itixrb0K3HbM/rg7nqSbqtZg=
+	t=1760370103; cv=none; b=OxjCdhYfoN7zzn+79gJO+nR3+w9jN8o78uMHLKOjJchW9j9Q2kXEnNreo6k5Bkdt/rCyQH45ayZ+Er0XgI+ZwdlKf59JZR/Cjjd7FeubLT32VGefnH5KCAusACkLfi6OT+deIwXi/iLJoQDaL1OgCnW3weZJlOYd3kfSdCWxT6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370095; c=relaxed/simple;
-	bh=azd4Er6J6cb9E1xFVWtcsws5MiAUmKqFVGZjNboSAA0=;
+	s=arc-20240116; t=1760370103; c=relaxed/simple;
+	bh=Bn3JmSn08uMSmgA8jcQOSBNX8RY2BQBmMUtRRTL7wLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2jlBeQmgly4UMVPa74HgrRi3S1jTPaFZk1iLmB2PFf9LT+4z11NRfsIkYBdgRxSXIwV36+wdXpunxFmDiwHe6cAkQcqdGQ0eHa5KRQZdCKG1MQDAfx471YCmYMU27KruKpbPnBzD0mXslxqkGLvMFvBtZTbGXMz884UGzk4xDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jO+OgMVv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE51C4CEE7;
-	Mon, 13 Oct 2025 15:41:34 +0000 (UTC)
+	 MIME-Version; b=YIK9THZ6cCgRqx/EUsayutIo0aAU1XxRg/JUoc/7PtJ+41s1Xjk7AULajF9YW10rgjG/1cvsf3cXk+PZiSBR/0HpA4KM+EWGOGuPtsKzJSpudQiY9KGQlUb/xcq673ryUZPw62WL2IRIkvQZntd4ursknNjCwC42KpxP5ICwivk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb8ZM66d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB6CC116B1;
+	Mon, 13 Oct 2025 15:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370095;
-	bh=azd4Er6J6cb9E1xFVWtcsws5MiAUmKqFVGZjNboSAA0=;
+	s=korg; t=1760370103;
+	bh=Bn3JmSn08uMSmgA8jcQOSBNX8RY2BQBmMUtRRTL7wLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jO+OgMVvWCPGFDzmykOxv1PckwDYmGZQFfxMu5ybuud6ZdPP6pdCdPdaE4Xyeh8+k
-	 +HxrGGikdMNZsij0eibgnxhjup04jFPOE4dOnJLfKEChsVbLAECbfA5PK7XYgCne1O
-	 OcKwtAvNEbj9NrQ8oj7mRe6IFoLh2YEinHoG1ikI=
+	b=Cb8ZM66dydt7BjtavbW/ZPFb7oWkSVWvPzthkeiZYjiBGeaYcMypA3N1OY2OpfwB/
+	 dJXOobySf+YbWQPX4QKR9/fq1QtHSMjsAf6DlSqnO/vyd2WF784m7kCFyEoFMcOpv3
+	 yZ8rg1otEXiIO50g+mdFzkph5l5SI/HDVyDyql2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 476/563] net/mlx5: pagealloc: Fix reclaim race during command interface teardown
-Date: Mon, 13 Oct 2025 16:45:37 +0200
-Message-ID: <20251013144428.531796802@linuxfoundation.org>
+Subject: [PATCH 6.17 478/563] smb: client: fix crypto buffers in non-linear memory
+Date: Mon, 13 Oct 2025 16:45:39 +0200
+Message-ID: <20251013144428.603649955@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,54 +66,167 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-[ Upstream commit 79a0e32b32ac4e4f9e4bb22be97f371c8c116c88 ]
+[ Upstream commit 998a67b954680f26f3734040aeeed08642d49721 ]
 
-The reclaim_pages_cmd() function sends a command to the firmware to
-reclaim pages if the command interface is active.
+The crypto API, through the scatterlist API, expects input buffers to be
+in linear memory.  We handle this with the cifs_sg_set_buf() helper
+that converts vmalloc'd memory to their corresponding pages.
 
-A race condition can occur if the command interface goes down (e.g., due
-to a PCI error) while the mlx5_cmd_do() call is in flight. In this
-case, mlx5_cmd_do() will return an error. The original code would
-propagate this error immediately, bypassing the software-based page
-reclamation logic that is supposed to run when the command interface is
-down.
+However, when we allocate our aead_request buffer (@creq in
+smb2ops.c::crypt_message()), we do so with kvzalloc(), which possibly
+puts aead_request->__ctx in vmalloc area.
 
-Fix this by checking whether mlx5_cmd_do() returns -ENXIO, which mark
-that command interface is down. If this is the case, fall through to
-the software reclamation path. If the command failed for any another
-reason, or finished successfully, return as before.
+AEAD algorithm then uses ->__ctx for its private/internal data and
+operations, and uses sg_set_buf() for such data on a few places.
 
-Fixes: b898ce7bccf1 ("net/mlx5: cmdif, Avoid skipping reclaim pages if FW is not accessible")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This works fine as long as @creq falls into kmalloc zone (small
+requests) or vmalloc'd memory is still within linear range.
+
+Tasks' stacks are vmalloc'd by default (CONFIG_VMAP_STACK=y), so too
+many tasks will increment the base stacks' addresses to a point where
+virt_addr_valid(buf) will fail (BUG() in sg_set_buf()) when that
+happens.
+
+In practice: too many parallel reads and writes on an encrypted mount
+will trigger this bug.
+
+To fix this, always alloc @creq with kmalloc() instead.
+Also drop the @sensitive_size variable/arguments since
+kfree_sensitive() doesn't need it.
+
+Backtrace:
+
+[  945.272081] ------------[ cut here ]------------
+[  945.272774] kernel BUG at include/linux/scatterlist.h:209!
+[  945.273520] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC NOPTI
+[  945.274412] CPU: 7 UID: 0 PID: 56 Comm: kworker/u33:0 Kdump: loaded Not tainted 6.15.0-lku-11779-g8e9d6efccdd7-dirty #1 PREEMPT(voluntary)
+[  945.275736] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-2-gc13ff2cd-prebuilt.qemu.org 04/01/2014
+[  945.276877] Workqueue: writeback wb_workfn (flush-cifs-2)
+[  945.277457] RIP: 0010:crypto_gcm_init_common+0x1f9/0x220
+[  945.278018] Code: b0 00 00 00 48 83 c4 08 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 48 c7 c0 00 00 00 80 48 2b 05 5c 58 e5 00 e9 58 ff ff ff <0f> 0b 0f 0b 0f 0b 0f 0b 0f 0b 0f 0b 48 c7 04 24 01 00 00 00 48 8b
+[  945.279992] RSP: 0018:ffffc90000a27360 EFLAGS: 00010246
+[  945.280578] RAX: 0000000000000000 RBX: ffffc90001d85060 RCX: 0000000000000030
+[  945.281376] RDX: 0000000000080000 RSI: 0000000000000000 RDI: ffffc90081d85070
+[  945.282145] RBP: ffffc90001d85010 R08: ffffc90001d85000 R09: 0000000000000000
+[  945.282898] R10: ffffc90001d85090 R11: 0000000000001000 R12: ffffc90001d85070
+[  945.283656] R13: ffff888113522948 R14: ffffc90001d85060 R15: ffffc90001d85010
+[  945.284407] FS:  0000000000000000(0000) GS:ffff8882e66cf000(0000) knlGS:0000000000000000
+[  945.285262] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  945.285884] CR2: 00007fa7ffdd31f4 CR3: 000000010540d000 CR4: 0000000000350ef0
+[  945.286683] Call Trace:
+[  945.286952]  <TASK>
+[  945.287184]  ? crypt_message+0x33f/0xad0 [cifs]
+[  945.287719]  crypto_gcm_encrypt+0x36/0xe0
+[  945.288152]  crypt_message+0x54a/0xad0 [cifs]
+[  945.288724]  smb3_init_transform_rq+0x277/0x300 [cifs]
+[  945.289300]  smb_send_rqst+0xa3/0x160 [cifs]
+[  945.289944]  cifs_call_async+0x178/0x340 [cifs]
+[  945.290514]  ? __pfx_smb2_writev_callback+0x10/0x10 [cifs]
+[  945.291177]  smb2_async_writev+0x3e3/0x670 [cifs]
+[  945.291759]  ? find_held_lock+0x32/0x90
+[  945.292212]  ? netfs_advance_write+0xf2/0x310
+[  945.292723]  netfs_advance_write+0xf2/0x310
+[  945.293210]  netfs_write_folio+0x346/0xcc0
+[  945.293689]  ? __pfx__raw_spin_unlock_irq+0x10/0x10
+[  945.294250]  netfs_writepages+0x117/0x460
+[  945.294724]  do_writepages+0xbe/0x170
+[  945.295152]  ? find_held_lock+0x32/0x90
+[  945.295600]  ? kvm_sched_clock_read+0x11/0x20
+[  945.296103]  __writeback_single_inode+0x56/0x4b0
+[  945.296643]  writeback_sb_inodes+0x229/0x550
+[  945.297140]  __writeback_inodes_wb+0x4c/0xe0
+[  945.297642]  wb_writeback+0x2f1/0x3f0
+[  945.298069]  wb_workfn+0x300/0x490
+[  945.298472]  process_one_work+0x1fe/0x590
+[  945.298949]  worker_thread+0x1ce/0x3c0
+[  945.299397]  ? __pfx_worker_thread+0x10/0x10
+[  945.299900]  kthread+0x119/0x210
+[  945.300285]  ? __pfx_kthread+0x10/0x10
+[  945.300729]  ret_from_fork+0x119/0x1b0
+[  945.301163]  ? __pfx_kthread+0x10/0x10
+[  945.301601]  ret_from_fork_asm+0x1a/0x30
+[  945.302055]  </TASK>
+
+Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/smb/client/smb2ops.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-index 9bc9bd83c2324..cd68c4b2c0bf9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-@@ -489,9 +489,12 @@ static int reclaim_pages_cmd(struct mlx5_core_dev *dev,
- 	u32 func_id;
- 	u32 npages;
- 	u32 i = 0;
-+	int err;
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index e586f3f4b5c93..68286673afc99 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -4219,7 +4219,7 @@ fill_transform_hdr(struct smb2_transform_hdr *tr_hdr, unsigned int orig_len,
+ static void *smb2_aead_req_alloc(struct crypto_aead *tfm, const struct smb_rqst *rqst,
+ 				 int num_rqst, const u8 *sig, u8 **iv,
+ 				 struct aead_request **req, struct sg_table *sgt,
+-				 unsigned int *num_sgs, size_t *sensitive_size)
++				 unsigned int *num_sgs)
+ {
+ 	unsigned int req_size = sizeof(**req) + crypto_aead_reqsize(tfm);
+ 	unsigned int iv_size = crypto_aead_ivsize(tfm);
+@@ -4236,9 +4236,8 @@ static void *smb2_aead_req_alloc(struct crypto_aead *tfm, const struct smb_rqst
+ 	len += req_size;
+ 	len = ALIGN(len, __alignof__(struct scatterlist));
+ 	len += array_size(*num_sgs, sizeof(struct scatterlist));
+-	*sensitive_size = len;
  
--	if (!mlx5_cmd_is_down(dev))
--		return mlx5_cmd_do(dev, in, in_size, out, out_size);
-+	err = mlx5_cmd_do(dev, in, in_size, out, out_size);
-+	/* If FW is gone (-ENXIO), proceed to forceful reclaim */
-+	if (err != -ENXIO)
-+		return err;
+-	p = kvzalloc(len, GFP_NOFS);
++	p = kzalloc(len, GFP_NOFS);
+ 	if (!p)
+ 		return ERR_PTR(-ENOMEM);
  
- 	/* No hard feelings, we want our pages back! */
- 	npages = MLX5_GET(manage_pages_in, in, input_num_entries);
+@@ -4252,16 +4251,14 @@ static void *smb2_aead_req_alloc(struct crypto_aead *tfm, const struct smb_rqst
+ 
+ static void *smb2_get_aead_req(struct crypto_aead *tfm, struct smb_rqst *rqst,
+ 			       int num_rqst, const u8 *sig, u8 **iv,
+-			       struct aead_request **req, struct scatterlist **sgl,
+-			       size_t *sensitive_size)
++			       struct aead_request **req, struct scatterlist **sgl)
+ {
+ 	struct sg_table sgtable = {};
+ 	unsigned int skip, num_sgs, i, j;
+ 	ssize_t rc;
+ 	void *p;
+ 
+-	p = smb2_aead_req_alloc(tfm, rqst, num_rqst, sig, iv, req, &sgtable,
+-				&num_sgs, sensitive_size);
++	p = smb2_aead_req_alloc(tfm, rqst, num_rqst, sig, iv, req, &sgtable, &num_sgs);
+ 	if (IS_ERR(p))
+ 		return ERR_CAST(p);
+ 
+@@ -4350,7 +4347,6 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
+ 	DECLARE_CRYPTO_WAIT(wait);
+ 	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
+ 	void *creq;
+-	size_t sensitive_size;
+ 
+ 	rc = smb2_get_enc_key(server, le64_to_cpu(tr_hdr->SessionId), enc, key);
+ 	if (rc) {
+@@ -4376,8 +4372,7 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
+ 		return rc;
+ 	}
+ 
+-	creq = smb2_get_aead_req(tfm, rqst, num_rqst, sign, &iv, &req, &sg,
+-				 &sensitive_size);
++	creq = smb2_get_aead_req(tfm, rqst, num_rqst, sign, &iv, &req, &sg);
+ 	if (IS_ERR(creq))
+ 		return PTR_ERR(creq);
+ 
+@@ -4407,7 +4402,7 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
+ 	if (!rc && enc)
+ 		memcpy(&tr_hdr->Signature, sign, SMB2_SIGNATURE_SIZE);
+ 
+-	kvfree_sensitive(creq, sensitive_size);
++	kfree_sensitive(creq);
+ 	return rc;
+ }
+ 
 -- 
 2.51.0
 
