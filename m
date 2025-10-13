@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-184644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F34BD475A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:32 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12189BD40E9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E098402ABE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:53 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AA07B34E999
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5783101DE;
-	Mon, 13 Oct 2025 15:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F506310654;
+	Mon, 13 Oct 2025 15:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfWEjm4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHPDyQaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4243930C37C;
-	Mon, 13 Oct 2025 15:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C04630C36B;
+	Mon, 13 Oct 2025 15:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368030; cv=none; b=a4jTHz6eRez617P684asq/dvPauSm0EWqCwnr8IsCe916eylwHEW/ktOP1qPudZhbbsqGE7DOZarEbw+j8I7tR9AAGPFLDHoKisYQKR0GKDmT4WBam8mFe5GG8sQt61JSih5q/fhvHW2ZWX5STpTA6UdYsyf6snPihdqCLDIDio=
+	t=1760368062; cv=none; b=GzqXNPYGVZlF7P7PuDkL/9pHO0GdXBrroKzUGSnY/nlIBI0O90rbArs9h4wjAVqGkjJTOm1s5Zn3LT5SyyeshAUGWqPSpPnE4Yg+XTRuPDKJYmeLfaIQlV3S4DSKb3ph8k66pZG9RGquwcA4E5KyesyYxa3MWSlwqIkmZ9KlZto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368030; c=relaxed/simple;
-	bh=N/5BPihtvYNt2xoIYNvQ/k1uW41pannJLsELDzTDOg4=;
+	s=arc-20240116; t=1760368062; c=relaxed/simple;
+	bh=c5svn4YyWAUmodHEit3PjNSRCewbdWFyL7Ydx0r7zQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHB54O+AlU//GAZukt65lQrIJry5H6YWKpgWI/dO5iHuw7AEi+2cqbfWKrwB9KTGOLo7y63A8DgwcbBi3xpDKi41kNdw1cGN+QoSyGNopnDRQt1yFkUU+6Y9/RN7j52NJAbluSpjJqlLONoOx27StbjmYlnxSeMjtEmCTapNy/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfWEjm4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED63C4CEE7;
-	Mon, 13 Oct 2025 15:07:09 +0000 (UTC)
+	 MIME-Version; b=VY3/kRqXmow0wSVub7Wz2DrGjEqpSpPJzEJfvLZvcueVqHWlImvReb9GzlfFIZ45DP/EBmDDUYLHqi0ozbAl80fAl7pdpL8GHrQkC3EvDQSzDuq6NRwwXeGsesU0thpgl3dOK4VxnU/qG+15pLNNRoMWl6bA9cK2Ll7m0anuA30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHPDyQaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82459C4CEE7;
+	Mon, 13 Oct 2025 15:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368029;
-	bh=N/5BPihtvYNt2xoIYNvQ/k1uW41pannJLsELDzTDOg4=;
+	s=korg; t=1760368061;
+	bh=c5svn4YyWAUmodHEit3PjNSRCewbdWFyL7Ydx0r7zQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfWEjm4/U4lZ2pQknJA19khgAh55BfLrBDyDso5G2rrCfs9U5NcW8fFw2sgnDSfe8
-	 sViwyl8Z5/o/IdoRKA9l7mfXuigWHthHmC4RU/BYD2bNLfbDmcw16z2qODMyPHiEof
-	 /F2CQivlTNskKh75EEzvla1SsXTy0mtC3Oq74CGg=
+	b=OHPDyQaT4kE5AkScAmIWETke1wpU373zO8PYbw1+yZ1GZeLybhipDiMTEyIEwftRD
+	 eVm1PVWNtn5pG1HpNBm1Y9biaxFQnvLyPDZ9a21WbUQDhZuHO+fJup1EUYbsyyuTay
+	 oFZ5qtQbKJlixK9K2QzASuh8ZmbW9l2nKNZBue3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Martin Wilck <mwilck@suse.com>,
-	David Disseldorp <ddiss@suse.de>,
-	Christian Brauner <brauner@kernel.org>,
+	Ali Polatel <alip@chesswob.org>,
+	Johannes Nixdorf <johannes@nixdorf.dev>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/262] init: INITRAMFS_PRESERVE_MTIME should depend on BLK_DEV_INITRD
-Date: Mon, 13 Oct 2025 16:42:24 +0200
-Message-ID: <20251013144326.210839070@linuxfoundation.org>
+Subject: [PATCH 6.12 003/262] seccomp: Fix a race with WAIT_KILLABLE_RECV if the tracer replies too fast
+Date: Mon, 13 Oct 2025 16:42:25 +0200
+Message-ID: <20251013144326.246452572@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
 References: <20251013144326.116493600@linuxfoundation.org>
@@ -68,37 +67,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Johannes Nixdorf <johannes@nixdorf.dev>
 
-[ Upstream commit 74792608606a525a0e0df7e8d48acd8000561389 ]
+[ Upstream commit cce436aafc2abad691fdd37de63ec8a4490b42ce ]
 
-INITRAMFS_PRESERVE_MTIME is only used in init/initramfs.c and
-init/initramfs_test.c.  Hence add a dependency on BLK_DEV_INITRD, to
-prevent asking the user about this feature when configuring a kernel
-without initramfs support.
+Normally the tracee starts in SECCOMP_NOTIFY_INIT, sends an
+event to the tracer, and starts to wait interruptibly. With
+SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV, if the tracer receives the
+message (SECCOMP_NOTIFY_SENT is reached) while the tracee was waiting
+and is subsequently interrupted, the tracee begins to wait again
+uninterruptibly (but killable).
 
-Fixes: 1274aea127b2e8c9 ("initramfs: add INITRAMFS_PRESERVE_MTIME Kconfig option")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin Wilck <mwilck@suse.com>
-Reviewed-by: David Disseldorp <ddiss@suse.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This fails if SECCOMP_NOTIFY_REPLIED is reached before the tracee
+is interrupted, as the check only considered SECCOMP_NOTIFY_SENT as a
+condition to begin waiting again. In this case the tracee is interrupted
+even though the tracer already acted on its behalf. This breaks the
+assumption SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV wanted to ensure,
+namely that the tracer can be sure the syscall is not interrupted or
+restarted on the tracee after it is received on the tracer. Fix this
+by also considering SECCOMP_NOTIFY_REPLIED when evaluating whether to
+switch to uninterruptible waiting.
+
+With the condition changed the loop in seccomp_do_user_notification()
+would exit immediately after deciding that noninterruptible waiting
+is required if the operation already reached SECCOMP_NOTIFY_REPLIED,
+skipping the code that processes pending addfd commands first. Prevent
+this by executing the remaining loop body one last time in this case.
+
+Fixes: c2aa2dfef243 ("seccomp: Add wait_killable semantic to seccomp user notifier")
+Reported-by: Ali Polatel <alip@chesswob.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220291
+Signed-off-by: Johannes Nixdorf <johannes@nixdorf.dev>
+Link: https://lore.kernel.org/r/20250725-seccomp-races-v2-1-cf8b9d139596@nixdorf.dev
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/seccomp.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 45990792cb4a6..219ccdb0af732 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1440,6 +1440,7 @@ config BOOT_CONFIG_EMBED_FILE
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 0cd1f8b5a102e..267b00005eaf2 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -1124,7 +1124,7 @@ static void seccomp_handle_addfd(struct seccomp_kaddfd *addfd, struct seccomp_kn
+ static bool should_sleep_killable(struct seccomp_filter *match,
+ 				  struct seccomp_knotif *n)
+ {
+-	return match->wait_killable_recv && n->state == SECCOMP_NOTIFY_SENT;
++	return match->wait_killable_recv && n->state >= SECCOMP_NOTIFY_SENT;
+ }
  
- config INITRAMFS_PRESERVE_MTIME
- 	bool "Preserve cpio archive mtimes in initramfs"
-+	depends on BLK_DEV_INITRD
- 	default y
- 	help
- 	  Each entry in an initramfs cpio archive carries an mtime value. When
+ static int seccomp_do_user_notification(int this_syscall,
+@@ -1171,13 +1171,11 @@ static int seccomp_do_user_notification(int this_syscall,
+ 
+ 		if (err != 0) {
+ 			/*
+-			 * Check to see if the notifcation got picked up and
+-			 * whether we should switch to wait killable.
++			 * Check to see whether we should switch to wait
++			 * killable. Only return the interrupted error if not.
+ 			 */
+-			if (!wait_killable && should_sleep_killable(match, &n))
+-				continue;
+-
+-			goto interrupted;
++			if (!(!wait_killable && should_sleep_killable(match, &n)))
++				goto interrupted;
+ 		}
+ 
+ 		addfd = list_first_entry_or_null(&n.addfd,
 -- 
 2.51.0
 
