@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-185100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838A1BD4B94
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9E9BD4850
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CE03542534
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F00F188322E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1AE31A81F;
-	Mon, 13 Oct 2025 15:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B5D263F4E;
+	Mon, 13 Oct 2025 15:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WO8fPBBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wC6zWBvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBF727464F;
-	Mon, 13 Oct 2025 15:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2D52798F0;
+	Mon, 13 Oct 2025 15:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369333; cv=none; b=gxNLnErVe15Xc2iKTTPqyJuTxjxKi4U/lfp8zE4arzajV5WQvjc4K3J+7Hc0wT0bqhisfyNCCbFmQNUBKKiBn9GsKGDo4kFTfZ1MBcNvB8/ZSt39XQ2jnkavn9q8hHMD2F/emm9xw/hRcuHgt8vTFVv1kWANBiIaVvggzrBw0c0=
+	t=1760369339; cv=none; b=SX204HI1t5V7/DjoEOgZuBG8300qUsIk5TGidD9peC0ww1/wPi/1Fs+ClxOSr0++SMQpJO4bvOw5j+oyKwmBoc0Mlr79oYJOM8e4jJG1FZA3FIyF0PnkD3QOJFZZaFK2/QJPvykhIu66sm4jsdnzWXApe8LqxSbmOV46MuK0YPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369333; c=relaxed/simple;
-	bh=7C52uuAFIXtoyyPj4P4T9Wh3n5YZTnVYHqU6HMylkrE=;
+	s=arc-20240116; t=1760369339; c=relaxed/simple;
+	bh=WuNwjdbIBfpidWElLktmJqDpP80PZe2qfr6xNkQz5dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9ECTOLD4mGyEGuDMyFJjgij/4XnZmaYJzejw9jgxYGyOVXl7uuCMJrsI1xmvxWA21DUfMgah08yiL8gSXbUq+gXJ2QOgX6pLU1KwEIWevuQj9OZ2/lO7aslnBlOUE7kFxzzbfN+jgnbGQZoti/wgFd7p7gfYDTvPBoOUEkeKoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WO8fPBBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6D9C4CEE7;
-	Mon, 13 Oct 2025 15:28:52 +0000 (UTC)
+	 MIME-Version; b=UGUOP4yshjmlJcxFRgDQnNQr5hu28SqFVLzFoNNzXuV0aRKtN+U+ceu7fI8bb9q8LjDqxWHE6drYLa8fexr6tt2GE6CR2LALmM9S96KUhzkdcwmn5opNNGgVxlp7rrzZ8ujj0VpGXF899zqtTksEO7Jq7naNt3qg8n4WL7vSmaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wC6zWBvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B62C116B1;
+	Mon, 13 Oct 2025 15:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369333;
-	bh=7C52uuAFIXtoyyPj4P4T9Wh3n5YZTnVYHqU6HMylkrE=;
+	s=korg; t=1760369339;
+	bh=WuNwjdbIBfpidWElLktmJqDpP80PZe2qfr6xNkQz5dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WO8fPBBFWvDRNiegC+Ttpy1H2pzYcfKhnXx1zJOls4TUCRq1kutnyjjDIIy1wOV8D
-	 xMvcyx0SjYdTo94G13S8F/lV7AkK4gDU8w7V4c1wkQ8fGhFgobfRbkBcg/k3g7Z/Fe
-	 yYKN+g297ckNBoAavdLlEa4YZ+es7ymCutzxJ5Lc=
+	b=wC6zWBvqfHkPGwL9lJHbsoIWI1cV34EYj5Q2RWQyZ02JcwbYYbBgzPHFzCA3Hs/XT
+	 dw5QxdnM4gmmlylnSDT1yUVvAFMEq7zrPCoyuugMTh7B3k3waXcB8sQQh0s7Y3ml+6
+	 p8Qp8LjW21E24PFx96Bac6+cEYDhE+U0rltz6AAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dzmitry Sankouski <dsankouski@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Langyan Ye <yelangyan@huaqin.corp-partner.google.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 210/563] mfd: max77705: Setup the core driver as an interrupt controller
-Date: Mon, 13 Oct 2025 16:41:11 +0200
-Message-ID: <20251013144418.892662080@linuxfoundation.org>
+Subject: [PATCH 6.17 212/563] drm/panel-edp: Add disable to 100ms for MNB601LS1-4
+Date: Mon, 13 Oct 2025 16:41:13 +0200
+Message-ID: <20251013144418.965070478@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,91 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dzmitry Sankouski <dsankouski@gmail.com>
+From: Langyan Ye <yelangyan@huaqin.corp-partner.google.com>
 
-[ Upstream commit 605c9820e44de2da7d67acf66484136561da63a2 ]
+[ Upstream commit 9b3700b15cb581d748c3d46e7eb30ffced1642e8 ]
 
-Current implementation describes only MFD's own topsys interrupts.
-However, max77705 has a register which indicates interrupt source, i.e.
-it acts as an interrupt controller. There's 4 interrupt sources in
-max77705: topsys, charger, fuelgauge, usb type-c manager.
+For the MNB601LS1-4 panel, the T9+T10 timing does not meet the
+requirements of the specification, so disable is set to 100ms.
 
-Setup max77705 MFD parent as an interrupt controller. Delete topsys
-interrupts because currently unused.
-
-Remove shared interrupt flag, because we're are an interrupt controller
-now, and subdevices should request interrupts from us.
-
-Fixes: c8d50f029748 ("mfd: Add new driver for MAX77705 PMIC")
-
-Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-Link: https://lore.kernel.org/r/20250909-max77705-fix_interrupt_handling-v3-1-233c5a1a20b5@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 9d8e91439fc3 ("drm/panel-edp: Add CSW MNB601LS1-4")
+Signed-off-by: Langyan Ye <yelangyan@huaqin.corp-partner.google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250721061627.3816612-1-yelangyan@huaqin.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/max77705.c | 35 ++++++++++++++---------------------
- 1 file changed, 14 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/panel/panel-edp.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/max77705.c b/drivers/mfd/max77705.c
-index ff07d0e0d5f8e..e1a9bfd658560 100644
---- a/drivers/mfd/max77705.c
-+++ b/drivers/mfd/max77705.c
-@@ -61,21 +61,21 @@ static const struct regmap_config max77705_regmap_config = {
- 	.max_register = MAX77705_PMIC_REG_USBC_RESET,
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index 9a56e208cbddb..09170470b3ef1 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1828,6 +1828,13 @@ static const struct panel_delay delay_50_500_e200_d200_po2e335 = {
+ 	.powered_on_to_enable = 335,
  };
  
--static const struct regmap_irq max77705_topsys_irqs[] = {
--	{ .mask = MAX77705_SYSTEM_IRQ_BSTEN_INT, },
--	{ .mask = MAX77705_SYSTEM_IRQ_SYSUVLO_INT, },
--	{ .mask = MAX77705_SYSTEM_IRQ_SYSOVLO_INT, },
--	{ .mask = MAX77705_SYSTEM_IRQ_TSHDN_INT, },
--	{ .mask = MAX77705_SYSTEM_IRQ_TM_INT, },
-+static const struct regmap_irq max77705_irqs[] = {
-+	{ .mask = MAX77705_SRC_IRQ_CHG, },
-+	{ .mask = MAX77705_SRC_IRQ_TOP, },
-+	{ .mask = MAX77705_SRC_IRQ_FG, },
-+	{ .mask = MAX77705_SRC_IRQ_USBC, },
- };
++static const struct panel_delay delay_200_500_e50_d100 = {
++	.hpd_absent = 200,
++	.unprepare = 500,
++	.enable = 50,
++	.disable = 100,
++};
++
+ #define EDP_PANEL_ENTRY(vend_chr_0, vend_chr_1, vend_chr_2, product_id, _delay, _name) \
+ { \
+ 	.ident = { \
+@@ -1984,7 +1991,7 @@ static const struct edp_panel_entry edp_panels[] = {
  
--static const struct regmap_irq_chip max77705_topsys_irq_chip = {
--	.name		= "max77705-topsys",
--	.status_base	= MAX77705_PMIC_REG_SYSTEM_INT,
--	.mask_base	= MAX77705_PMIC_REG_SYSTEM_INT_MASK,
-+static const struct regmap_irq_chip max77705_irq_chip = {
-+	.name		= "max77705",
-+	.status_base	= MAX77705_PMIC_REG_INTSRC,
-+	.ack_base	= MAX77705_PMIC_REG_INTSRC,
-+	.mask_base	= MAX77705_PMIC_REG_INTSRC_MASK,
- 	.num_regs	= 1,
--	.irqs		= max77705_topsys_irqs,
--	.num_irqs	= ARRAY_SIZE(max77705_topsys_irqs),
-+	.irqs		= max77705_irqs,
-+	.num_irqs	= ARRAY_SIZE(max77705_irqs),
- };
+ 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1100, &delay_200_500_e80_d50, "MNB601LS1-1"),
+ 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1103, &delay_200_500_e80_d50, "MNB601LS1-3"),
+-	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1104, &delay_200_500_e50, "MNB601LS1-4"),
++	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1104, &delay_200_500_e50_d100, "MNB601LS1-4"),
+ 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1448, &delay_200_500_e50, "MNE007QS3-7"),
+ 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1457, &delay_80_500_e80_p2e200, "MNE007QS3-8"),
  
- static int max77705_i2c_probe(struct i2c_client *i2c)
-@@ -113,19 +113,12 @@ static int max77705_i2c_probe(struct i2c_client *i2c)
- 
- 	ret = devm_regmap_add_irq_chip(dev, max77705->regmap,
- 					i2c->irq,
--					IRQF_ONESHOT | IRQF_SHARED, 0,
--					&max77705_topsys_irq_chip,
-+					IRQF_ONESHOT, 0,
-+					&max77705_irq_chip,
- 					&irq_data);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add IRQ chip\n");
- 
--	/* Unmask interrupts from all blocks in interrupt source register */
--	ret = regmap_update_bits(max77705->regmap,
--				 MAX77705_PMIC_REG_INTSRC_MASK,
--				 MAX77705_SRC_IRQ_ALL, (unsigned int)~MAX77705_SRC_IRQ_ALL);
--	if (ret < 0)
--		return dev_err_probe(dev, ret, "Could not unmask interrupts in INTSRC\n");
--
- 	domain = regmap_irq_get_domain(irq_data);
- 
- 	ret = devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE,
 -- 
 2.51.0
 
