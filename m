@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-184269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8211EBD3C31
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BE2BD3FDF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 71B04349F6B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:57:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FA8E18A3E8D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535D33081A3;
-	Mon, 13 Oct 2025 14:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D890A30E0EA;
+	Mon, 13 Oct 2025 14:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVbIr2N+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvhDS/ua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F89A3081DE;
-	Mon, 13 Oct 2025 14:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F179277C8D;
+	Mon, 13 Oct 2025 14:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366950; cv=none; b=SZbgRDSgC7miq4cUgk2wotIxzq7uDi2PCaaA+Mz+poSHwd1uUpGlzlI+lBZKi7OcLCjBNvJgL0ubejkE7FJrwXjBqF6A7KHU45jtDMIg5J11LhkjYjI6HRq0bk1LtpEw6As8hOsafLOH7p/XQ/zwWma1bs/oc0VR/57jLJ5UBjA=
+	t=1760367465; cv=none; b=Tp3DY1d4rHSEGS+PJ66C+x4AlD3niwyFqVW0Na2MYMuLOQmlpTKAN2z8oV2Y0AyGYB1vfFPvrydVRoky6s+FVfg2Ucn+ZtNKOxLjCjzVZWik5z0e7uJdRIO4G6U23L1HWCK7EPc7uqf7nLbjc5Bp3iZxDDpQMpCUr6lZUaYKlmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366950; c=relaxed/simple;
-	bh=HO/PkBfnVrkA3t+1ZDXiUMcgnCHovUGkFRXjrjeJas8=;
+	s=arc-20240116; t=1760367465; c=relaxed/simple;
+	bh=6pWfojyJ4sEtvlcsIgvtsb+is1+0WZTt+kkB0Dqoa/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLxwRl1he2j6EVs7sA0z7qIdwb/Hk5B73WwU4B0Xho+lcvy1DonMEcJBlmqKVcvygwMZh804XMGGxGY0gT11mhsifc/jEyxx+iY9RVMuz9Jzd2l8x6E29WSAE4CLpSqtuV9ps0mEzmsFnkdFttKO/EEop+8DkkQJ+i4Q9w1+pXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVbIr2N+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B94C4CEFE;
-	Mon, 13 Oct 2025 14:49:09 +0000 (UTC)
+	 MIME-Version; b=kJphxe/CoK2sH1FAxaPXlQI/7oytT5LWFSvh25yG0OLJZRRIDy7HVXquZj/W9UmvK42ngfMuPi4r9DKNj9rzdYXDz6EcEXb7TaCTcSMwh0mPv0tY8uffrnVJfgGcumAcaRz4YanBSZNMjbMibFHnH7ZTAG7wIxuH8kzqSdAbnjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvhDS/ua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A824C113D0;
+	Mon, 13 Oct 2025 14:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366949;
-	bh=HO/PkBfnVrkA3t+1ZDXiUMcgnCHovUGkFRXjrjeJas8=;
+	s=korg; t=1760367465;
+	bh=6pWfojyJ4sEtvlcsIgvtsb+is1+0WZTt+kkB0Dqoa/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVbIr2N+aE4txFzueLgc+CfIcUk3nQY2WU9xqHBLNWn34e9FkJk7m1hOp+1R5FMN0
-	 iKdhzxOYPwJjHPv4kiCWczetHYbRwBVAIv9Ls6TAscejrn0+MGn+8PPOMphjz/i0GV
-	 dv8ZV5lPD4gYEfpkdoGO8J1iNhLUbn5KUzNs+YEQ=
+	b=dvhDS/uaqyRt6LN+4yFutut2JYnvWAoCJ5mMpRB3h5nemseWRdd8sMKcY9o7jgHup
+	 Zxk8pbPeS8UmE1Np4vCWE3gGUkVOTJwVDk4gnaOKNFFS8KiFbqzGJCnm4wgf2PouKC
+	 a6pykgBB8A9jSXM8dc8F/3FyIQ3w9lcKOcrLwhiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 6.1 039/196] serial: stm32: allow selecting console when the driver is module
+	Huisong Li <lihuisong@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 021/196] ACPI: processor: idle: Fix memory leak when register cpuidle device failed
 Date: Mon, 13 Oct 2025 16:43:32 +0200
-Message-ID: <20251013144316.000521225@linuxfoundation.org>
+Message-ID: <20251013144315.963864670@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+From: Huisong Li <lihuisong@huawei.com>
 
-commit cc4d900d0d6d8dd5c41832a93ff3cfa629a78f9a upstream.
+[ Upstream commit 11b3de1c03fa9f3b5d17e6d48050bc98b3704420 ]
 
-Console can be enabled on the UART compile as module.
-Change dependency to allow console mode when the driver is built as module.
+The cpuidle device's memory is leaked when cpuidle device registration
+fails in acpi_processor_power_init().  Free it as appropriate.
 
-Fixes: 48a6092fb41fa ("serial: stm32-usart: Add STM32 USART Driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Link: https://lore.kernel.org/r/20250822141923.61133-1-raphael.gallais-pou@foss.st.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3d339dcbb56d ("cpuidle / ACPI : move cpuidle_device field out of the acpi_processor_power structure")
+Signed-off-by: Huisong Li <lihuisong@huawei.com>
+Link: https://patch.msgid.link/20250728070612.1260859-2-lihuisong@huawei.com
+[ rjw: Changed the order of the new statements, added empty line after if () ]
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/processor_idle.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -1410,7 +1410,7 @@ config SERIAL_STM32
- 
- config SERIAL_STM32_CONSOLE
- 	bool "Support for console on STM32"
--	depends on SERIAL_STM32=y
-+	depends on SERIAL_STM32
- 	select SERIAL_CORE_CONSOLE
- 	select SERIAL_EARLYCON
- 
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 0888e4d618d53..b524cf27213d4 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1410,6 +1410,9 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+ 		if (retval) {
+ 			if (acpi_processor_registered == 0)
+ 				cpuidle_unregister_driver(&acpi_idle_driver);
++
++			per_cpu(acpi_cpuidle_device, pr->id) = NULL;
++			kfree(dev);
+ 			return retval;
+ 		}
+ 		acpi_processor_registered++;
+-- 
+2.51.0
+
 
 
 
