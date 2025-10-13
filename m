@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 274E7BD40CC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:21:38 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B151BD48A4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C77F034E855
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 17CDE34EBFC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF45330BF7D;
-	Mon, 13 Oct 2025 15:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E51E27979A;
+	Mon, 13 Oct 2025 15:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfXCWB5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYvqrrla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB0030FF30;
-	Mon, 13 Oct 2025 15:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00E526F2B6;
+	Mon, 13 Oct 2025 15:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367998; cv=none; b=akauGAUUmBUlcjX7NIqXtc5PeMOjHMazdvbEC81NDBusk1Ah1+cyq0/tNeWcuFDJFBvj17HlxzbzuWVkCxVwTkbvOGL0Onqdn4lbxxYwdq369kqgeScntqXIEoYH+LN5+p+WWNotnnuHCpcXMjBn08wZbDT/B6N6kfXWvAhkcv4=
+	t=1760369541; cv=none; b=uSNZ8SCuklQKqES7/VTrIQDmU88yaC4GD6QxcdovWU2FiAVsY70KOHBxqbc5gN/SmFxQwOXUJi3LKx/56hwLCmhRNal+wYR9CYQQlf1mU2bawoBzVAAUNkG93j6XUreH6McKtoWNm1WWV06FE3NUmghB+2GfGOYeDPPkkxBj4QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367998; c=relaxed/simple;
-	bh=HXMzytvILtbJWDkfmBPcC5ppuj+VZ0xUWZHgQjse+FA=;
+	s=arc-20240116; t=1760369541; c=relaxed/simple;
+	bh=jzXuiocfFCcgtsKrddEckm6DYEqPHlmi15s7gwLQDiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PAf0sD3Job+gME2XsgLDxE5T01Bz4GDO8491a0yeeOVmtseaQ+V1H0nkKLF0x+n5aYM/T1sI0FX9gTq5s5dsxY34Jp6Uy7LmoIre5lV3RMHWtlPm7so10+sxxNAWBUT3WpblE+zbNEOH+I5oIkEuWJlLmZFQmRPCh7K3nDrzchc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfXCWB5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270C1C4CEE7;
-	Mon, 13 Oct 2025 15:06:37 +0000 (UTC)
+	 MIME-Version; b=XBzqVtCEqHQBQUfpnzeJlatBR0xfSx1LLhxn4mi5v6tSKR1AScSpgKoJoM6x9o0NmXhfbMa8pWpwDrVzzJa9YRyZ4udPZSeSyy8uplLLP5RdpPMbHrvpVYCMpgCe1uftMePmS16clp+WTVzMthaWqGDPsAFyxEJ158nrZwHR0sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYvqrrla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469B9C4CEE7;
+	Mon, 13 Oct 2025 15:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367998;
-	bh=HXMzytvILtbJWDkfmBPcC5ppuj+VZ0xUWZHgQjse+FA=;
+	s=korg; t=1760369540;
+	bh=jzXuiocfFCcgtsKrddEckm6DYEqPHlmi15s7gwLQDiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QfXCWB5q46VTIK6FkDlHLGwoPqt/Eec0wdjX0y0G1+L9/bd3pa573RtxRMcSJGTV9
-	 OTSVFs/kgl1kUBIwuMvXnQqMPN5ocTliJ40GdXRz+FpIOPkcJL1y2P17FkkMTytYEl
-	 UshZvEGfWlS8a+d4JVe8sbecHP2xWLOGKEjT5LVA=
+	b=pYvqrrlacdFlNCxUBL1ZHkfpbtZHEOu8VLbty7Vg5d6zuf9ySCh463nDt98o9rsw0
+	 jqMZBKBS+Qwf0EjVfuHUm6dgB76FvmhvczMlHEOWgAOy537HNmbBRChk3/Qo7+z42n
+	 4IP0oJwQpMF+YsXU4MTOdRsG0wSvwtY5Cbmiky7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Richard Lyu <richard.lyu@suse.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/262] filelock: add FL_RECLAIM to show_fl_flags() macro
-Date: Mon, 13 Oct 2025 16:42:23 +0200
-Message-ID: <20251013144326.175103458@linuxfoundation.org>
+Subject: [PATCH 6.17 283/563] efi: Explain OVMF acronym in OVMF_DEBUG_LOG help text
+Date: Mon, 13 Oct 2025 16:42:24 +0200
+Message-ID: <20251013144421.523205724@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit c593b9d6c446510684da400833f9d632651942f0 ]
+[ Upstream commit 05e75ac35ee9e38f96bbfebf1830ec2cace2e7f8 ]
 
-Show the FL_RECLAIM flag symbolically in tracepoints.
+People not very intimate with EFI may not know the meaning of the OVMF
+acronym.  Write it in full, to help users with making good decisions
+when configuring their kernels.
 
-Fixes: bb0a55bb7148 ("nfs: don't allow reexport reclaims")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/20250903-filelock-v1-1-f2926902962d@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: f393a761763c5427 ("efi: add ovmf debug log driver")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Richard Lyu <richard.lyu@suse.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/filelock.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/Kconfig | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/trace/events/filelock.h b/include/trace/events/filelock.h
-index b8d1e00a7982c..2dfeb158e848a 100644
---- a/include/trace/events/filelock.h
-+++ b/include/trace/events/filelock.h
-@@ -27,7 +27,8 @@
- 		{ FL_SLEEP,		"FL_SLEEP" },			\
- 		{ FL_DOWNGRADE_PENDING,	"FL_DOWNGRADE_PENDING" },	\
- 		{ FL_UNLOCK_PENDING,	"FL_UNLOCK_PENDING" },		\
--		{ FL_OFDLCK,		"FL_OFDLCK" })
-+		{ FL_OFDLCK,		"FL_OFDLCK" },			\
-+		{ FL_RECLAIM,		"FL_RECLAIM"})
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index d528c94c5859b..29e0729299f5b 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -267,9 +267,10 @@ config OVMF_DEBUG_LOG
+ 	bool "Expose OVMF firmware debug log via sysfs"
+ 	depends on EFI
+ 	help
+-	  Recent OVMF versions (edk2-stable202508 + newer) can write
+-	  their debug log to a memory buffer.  This driver exposes the
+-	  log content via sysfs (/sys/firmware/efi/ovmf_debug_log).
++	  Recent versions of the Open Virtual Machine Firmware
++	  (edk2-stable202508 + newer) can write their debug log to a memory
++	  buffer.  This driver exposes the log content via sysfs
++	  (/sys/firmware/efi/ovmf_debug_log).
  
- #define show_fl_type(val)				\
- 	__print_symbolic(val,				\
+ config UNACCEPTED_MEMORY
+ 	bool
 -- 
 2.51.0
 
