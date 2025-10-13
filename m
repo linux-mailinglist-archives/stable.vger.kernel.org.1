@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-184838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC9FBD468A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 600EDBD3F9F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A016740524C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F1E1188F098
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF4B2D1F7E;
-	Mon, 13 Oct 2025 15:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6BB30DD12;
+	Mon, 13 Oct 2025 14:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehy0FRMr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PIYwvng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C90C145B3F;
-	Mon, 13 Oct 2025 15:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD85630CDB9;
+	Mon, 13 Oct 2025 14:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368581; cv=none; b=uT8peIFYSa/t+Ljwn/XgqW7R5YhxKUf+cYpNf8bcf0v2BzQxy7P64bFdmVz4QqEfOm+jiG3cdlS2Znpi7gMOpEDswePKgCTQ9fDshJsnUhkDrQ2HQA8xZP1FjGGt7hnH4ur6M/QH+rJVLSky92f6veWAT99JmER6//g6oCz1nQ8=
+	t=1760367353; cv=none; b=ZCeSYxTtThRdPV4IbcAtt+TRz6CEq/3sWYxUjP19uwAcfY4HuM5xXn1Yb6ZEFEmaO+ZtCJW9sYaSrP6eFQTFU16Y5m1HsbhIKYxJxIWpyy8Mh1tKyxd5XinoipFedAY3STJwaCcPpEG6ZdkrK+p+CfirmCbo8pXJ/pD3AS6yBO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368581; c=relaxed/simple;
-	bh=5mIzBpzqu3ZmtHBvvRG5yynm1078mL4kNLqpfiiCLyI=;
+	s=arc-20240116; t=1760367353; c=relaxed/simple;
+	bh=FdxdZRSRB9ZUFHAKLYaZveNpbkDDaVP90nSzhrlqEpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0KwIy7qkH6aitlDhqSY7ePjLg4VJWOZdA081ZU8nYe5/juexNvTlLikcSiGWBFRUOdFVbRJ2Jlp8Fl+nDPBVpWtZRNpNRCwxyi77IBsY365dQ7WU2AfegiJtZ9SlY9swfNbbBNzk+XjtlXHUzJM/08lees1AAbD6FDTbHJJwJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehy0FRMr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E69C4CEE7;
-	Mon, 13 Oct 2025 15:16:20 +0000 (UTC)
+	 MIME-Version; b=DgT0q1JpE+gJLK7TZXE1sRHhaLRRocF6wFHDxSRXBajwWd0l2OLr6w4zHabYKXehQAFod2Y7Dxz8cibhhQ0qpHwnZg0W7IZCVS8HJTigaqHQ10RVpTGfah/v8ROG96SLpWtweU2pVNTH8xlgKF46kzFUjbaIZgVrht7kQTDvvaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PIYwvng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B22FC4CEE7;
+	Mon, 13 Oct 2025 14:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368581;
-	bh=5mIzBpzqu3ZmtHBvvRG5yynm1078mL4kNLqpfiiCLyI=;
+	s=korg; t=1760367352;
+	bh=FdxdZRSRB9ZUFHAKLYaZveNpbkDDaVP90nSzhrlqEpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehy0FRMrfoCXQD2YSSHniIRTC636x1zoWeVzMRIjd+BMylVsHtYL02PG5neat9NrS
-	 9szMrzQQa+XBD3WpLKlCjKUPFuucPvVKK3k7L0qfxnO639pmKKEFE2HrYa8FS9cKRL
-	 1a6ub1TxFvUocMMvrA2a1RsZhjLWWfTFoJFOdbYg=
+	b=0PIYwvngRl9HRxvEIg9QKmnWg9Ltp+RQ5+O/yMmg91DKavrCe/ny5ym/E92+MQdvb
+	 J6++pQcH3gKEcftzBZqfLMmrViTGBlSuaNVtpDcRjZ2MQys4fI84vY79ea3kjwP/8E
+	 bBoC8NDbMbTNn6kC+a/W/9NMMKsRmypUj2B+gChc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Goldwyn Rodrigues <rgoldwyn@suse.de>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/262] ocfs2: fix double free in user_cluster_connect()
-Date: Mon, 13 Oct 2025 16:45:51 +0200
-Message-ID: <20251013144333.770581622@linuxfoundation.org>
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 179/196] dm: fix NULL pointer dereference in __dm_suspend()
+Date: Mon, 13 Oct 2025 16:45:52 +0200
+Message-ID: <20251013144321.171125783@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,49 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit 8f45f089337d924db24397f55697cda0e6960516 ]
+commit 8d33a030c566e1f105cd5bf27f37940b6367f3be upstream.
 
-user_cluster_disconnect() frees "conn->cc_private" which is "lc" but then
-the error handling frees "lc" a second time.  Set "lc" to NULL on this
-path to avoid a double free.
+There is a race condition between dm device suspend and table load that
+can lead to null pointer dereference. The issue occurs when suspend is
+invoked before table load completes:
 
-Link: https://lkml.kernel.org/r/aNKDz_7JF7aycZ0k@stanley.mountain
-Fixes: c994c2ebdbbc ("ocfs2: use the new DLM operation callbacks while requesting new lockspace")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Goldwyn Rodrigues <rgoldwyn@suse.de>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: kernel NULL pointer dereference, address: 0000000000000054
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
+RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
+Call Trace:
+  <TASK>
+  blk_mq_quiesce_queue+0x2c/0x50
+  dm_stop_queue+0xd/0x20
+  __dm_suspend+0x130/0x330
+  dm_suspend+0x11a/0x180
+  dev_suspend+0x27e/0x560
+  ctl_ioctl+0x4cf/0x850
+  dm_ctl_ioctl+0xd/0x20
+  vfs_ioctl+0x1d/0x50
+  __se_sys_ioctl+0x9b/0xc0
+  __x64_sys_ioctl+0x19/0x30
+  x64_sys_call+0x2c4a/0x4620
+  do_syscall_64+0x9e/0x1b0
+
+The issue can be triggered as below:
+
+T1 						T2
+dm_suspend					table_load
+__dm_suspend					dm_setup_md_queue
+						dm_mq_init_request_queue
+						blk_mq_init_allocated_queue
+						=> q->mq_ops = set->ops; (1)
+dm_stop_queue / dm_wait_for_completion
+=> q->tag_set NULL pointer!	(2)
+						=> q->tag_set = set; (3)
+
+Fix this by checking if a valid table (map) exists before performing
+request-based suspend and waiting for target I/O. When map is NULL,
+skip these table-dependent suspend steps.
+
+Even when map is NULL, no I/O can reach any target because there is
+no table loaded; I/O submitted in this state will fail early in the
+DM layer. Skipping the table-dependent suspend logic in this case
+is safe and avoids NULL pointer dereferences.
+
+Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/stack_user.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/dm.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ocfs2/stack_user.c b/fs/ocfs2/stack_user.c
-index 77edcd70f72c2..c5236b3ed168f 100644
---- a/fs/ocfs2/stack_user.c
-+++ b/fs/ocfs2/stack_user.c
-@@ -1018,6 +1018,7 @@ static int user_cluster_connect(struct ocfs2_cluster_connection *conn)
- 			printk(KERN_ERR "ocfs2: Could not determine"
- 					" locking version\n");
- 			user_cluster_disconnect(conn);
-+			lc = NULL;
- 			goto out;
- 		}
- 		wait_event(lc->oc_wait, (atomic_read(&lc->oc_this_node) > 0));
--- 
-2.51.0
-
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2668,7 +2668,7 @@ static int __dm_suspend(struct mapped_de
+ {
+ 	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
+ 	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
+-	int r;
++	int r = 0;
+ 
+ 	lockdep_assert_held(&md->suspend_lock);
+ 
+@@ -2720,7 +2720,7 @@ static int __dm_suspend(struct mapped_de
+ 	 * Stop md->queue before flushing md->wq in case request-based
+ 	 * dm defers requests to md->wq from md->queue.
+ 	 */
+-	if (dm_request_based(md)) {
++	if (map && dm_request_based(md)) {
+ 		dm_stop_queue(md->queue);
+ 		set_bit(DMF_QUEUE_STOPPED, &md->flags);
+ 	}
+@@ -2732,7 +2732,8 @@ static int __dm_suspend(struct mapped_de
+ 	 * We call dm_wait_for_completion to wait for all existing requests
+ 	 * to finish.
+ 	 */
+-	r = dm_wait_for_completion(md, task_state);
++	if (map)
++		r = dm_wait_for_completion(md, task_state);
+ 	if (!r)
+ 		set_bit(dmf_suspended_flag, &md->flags);
+ 
 
 
 
