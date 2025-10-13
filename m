@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0025ABD44BC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3620FBD3C8A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A76D03E432D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D94318A0A08
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D9127979A;
-	Mon, 13 Oct 2025 14:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859E726FD8E;
+	Mon, 13 Oct 2025 14:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxPPz8Vm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smt2+nEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266F72248A5;
-	Mon, 13 Oct 2025 14:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F235211491;
+	Mon, 13 Oct 2025 14:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367578; cv=none; b=JtyKjR8wLRLJbw4By/tz7X1HOdnMvM0MFQTILn0jnyl8YBO90q5s3SG4gBmA7wM4RsZr5XEosfThpyTv72fWi6KpJNazBRTpU97O87WV9eU2lFhyN/Iys/vg4qvHJk1K5HJgmzEzkf0i3ICSks7DBaku9Gaj3TbPaC3W095Ivek=
+	t=1760367058; cv=none; b=Exq+1dLl4wS/RuzYSLzaIO0m4M3c9B+TfmPyx8cBVdAlxJ3s5tEc40Tvfbay0BKWTbhjmM6EG7ZLth2f5pG9k6FsKTaX3omJ5fGaOLefmiXLSsaPEU066LQDUn9dExRLSd56VUV1cTE54iNJ6HVCNXBf9TLbPfInMRmAkkbCXic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367578; c=relaxed/simple;
-	bh=XnuOr/RmAVBt5WijjpKFXlDIGoFNH89zU85Qo13jdRk=;
+	s=arc-20240116; t=1760367058; c=relaxed/simple;
+	bh=5gvbxu/1lxm6QIjVzTDrimqvCEkLuc6mJT6IRPCWfKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O23hJUKRBn1JIkd7jw7i1U6Xo7zm7vu3I2P2G0wsMVSKQ/MLROBDWvBsJgw++D5Bl5rIG7fIw9XZ7M59snCcouVqJNEfr3ZLi1Xnk0U6hJdFwTnnaQ5xe+RAFMDl1DsRfKRGj/JEIsXJZDCteCDiIZAZbP6J6SCKW7zcU9kJ7gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxPPz8Vm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D82EC4CEFE;
-	Mon, 13 Oct 2025 14:59:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r0ZlSLszR4t3tGVaJZSp+8k00UwgcKibjb4DnZbABA9HxI5F2p0ccsgtA6rePy3THrzu8kzvf9S2WgmY7QeqGHS4kcWq0mBw9yF77nxSxVQn4SyNNhgZpubyi6p2vpo3fF7s8DlqVvsIelAd0+7ZX9CpCEdO1FusADoNFrZxbUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smt2+nEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E46C4CEE7;
+	Mon, 13 Oct 2025 14:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367578;
-	bh=XnuOr/RmAVBt5WijjpKFXlDIGoFNH89zU85Qo13jdRk=;
+	s=korg; t=1760367058;
+	bh=5gvbxu/1lxm6QIjVzTDrimqvCEkLuc6mJT6IRPCWfKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxPPz8Vm6UDPhCtTB1UTooHBQX2YwkGgX+P3njzTT3w0+YjG4HQEfrVYAUYh5+nJ7
-	 1rsTjfGqKiyUujhmTaDIzWRg+zTfwSIdFVKr2JmVyJclzQaoafhrlSNpBWL7KY+fkv
-	 lvCHYz6ObkyasXjUIFM6zvU1VsBIpTUg0hy7a0rI=
+	b=smt2+nEIsczbydEgNJNjjKaRajSqxAhsYoNVmAFRxD92EyGbeHfnquoo6KdEi1dVg
+	 Asm4QR0KYiRRHR2ey7Kx1aHCSt0gbFZcODzHdurEXESdyR8XyLg8MN1PL61Mfb4yv4
+	 gLVdeNDi65VLDBYEi79eaYMVwb35q7GONQDAJDc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Ito <ito.kohei@socionext.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/196] i2c: designware: Fix clock issue when PM is disabled
+Subject: [PATCH 6.1 077/196] nvmet-fc: move lsop put work to nvmet_fc_ls_req_op
 Date: Mon, 13 Oct 2025 16:44:10 +0200
-Message-ID: <20251013144317.331323260@linuxfoundation.org>
+Message-ID: <20251013144317.362161834@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 70e633bedeeb4a7290d3b1dd9d49cc2bae25a46f ]
+[ Upstream commit db5a5406fb7e5337a074385c7a3e53c77f2c1bd3 ]
 
-When the driver is removed, the clocks are first enabled by
-calling pm_runtime_get_sync(), and then disabled with
-pm_runtime_put_sync().
+It’s possible for more than one async command to be in flight from
+__nvmet_fc_send_ls_req. For each command, a tgtport reference is taken.
 
-If CONFIG_PM=y, clocks for this controller are disabled when it's in
-the idle state. So the clocks are properly disabled when the driver
-exits.
+In the current code, only one put work item is queued at a time, which
+results in a leaked reference.
 
-Othewise, the clocks are always enabled and the PM functions have
-no effect. Therefore, the driver exits without disabling the clocks.
+To fix this, move the work item to the nvmet_fc_ls_req_op struct, which
+already tracks all resources related to the command.
 
-    # cat /sys/kernel/debug/clk/clk-pclk/clk_enable_count
-    18
-    # echo 1214a000.i2c > /sys/bus/platform/drivers/i2c_designware/bind
-    # cat /sys/kernel/debug/clk/clk-pclk/clk_enable_count
-    20
-    # echo 1214a000.i2c > /sys/bus/platform/drivers/i2c_designware/unbind
-    # cat /sys/kernel/debug/clk/clk-pclk/clk_enable_count
-    20
-
-To ensure that the clocks can be disabled correctly even without
-CONFIG_PM=y, should add the following fixes:
-
-- Replace with pm_runtime_put_noidle(), which only decrements the runtime
-  PM usage count.
-- Call i2c_dw_prepare_clk(false) to explicitly disable the clocks.
-
-Fixes: 7272194ed391f ("i2c-designware: add minimal support for runtime PM")
-Co-developed-by: Kohei Ito <ito.kohei@socionext.com>
-Signed-off-by: Kohei Ito <ito.kohei@socionext.com>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: 710c69dbaccd ("nvmet-fc: avoid deadlock on delete association path")
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-platdrv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvme/target/fc.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index 1ebcf5673a06b..ca6e1991ad13f 100644
---- a/drivers/i2c/busses/i2c-designware-platdrv.c
-+++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -411,9 +411,11 @@ static void dw_i2c_plat_remove(struct platform_device *pdev)
- 	i2c_dw_disable(dev);
- 
- 	pm_runtime_dont_use_autosuspend(device);
--	pm_runtime_put_sync(device);
-+	pm_runtime_put_noidle(device);
- 	dw_i2c_plat_pm_cleanup(dev);
- 
-+	i2c_dw_prepare_clk(dev, false);
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 570c58d2b5a58..a15e764bae35b 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -54,6 +54,8 @@ struct nvmet_fc_ls_req_op {		/* for an LS RQST XMT */
+ 	int				ls_error;
+ 	struct list_head		lsreq_list; /* tgtport->ls_req_list */
+ 	bool				req_queued;
 +
- 	i2c_dw_remove_lock_support(dev);
++	struct work_struct		put_work;
+ };
  
- 	reset_control_assert(dev->rst);
+ 
+@@ -111,8 +113,6 @@ struct nvmet_fc_tgtport {
+ 	struct nvmet_fc_port_entry	*pe;
+ 	struct kref			ref;
+ 	u32				max_sg_cnt;
+-
+-	struct work_struct		put_work;
+ };
+ 
+ struct nvmet_fc_port_entry {
+@@ -236,12 +236,13 @@ static int nvmet_fc_tgt_a_get(struct nvmet_fc_tgt_assoc *assoc);
+ static void nvmet_fc_tgt_q_put(struct nvmet_fc_tgt_queue *queue);
+ static int nvmet_fc_tgt_q_get(struct nvmet_fc_tgt_queue *queue);
+ static void nvmet_fc_tgtport_put(struct nvmet_fc_tgtport *tgtport);
+-static void nvmet_fc_put_tgtport_work(struct work_struct *work)
++static void nvmet_fc_put_lsop_work(struct work_struct *work)
+ {
+-	struct nvmet_fc_tgtport *tgtport =
+-		container_of(work, struct nvmet_fc_tgtport, put_work);
++	struct nvmet_fc_ls_req_op *lsop =
++		container_of(work, struct nvmet_fc_ls_req_op, put_work);
+ 
+-	nvmet_fc_tgtport_put(tgtport);
++	nvmet_fc_tgtport_put(lsop->tgtport);
++	kfree(lsop);
+ }
+ static int nvmet_fc_tgtport_get(struct nvmet_fc_tgtport *tgtport);
+ static void nvmet_fc_handle_fcp_rqst(struct nvmet_fc_tgtport *tgtport,
+@@ -368,7 +369,7 @@ __nvmet_fc_finish_ls_req(struct nvmet_fc_ls_req_op *lsop)
+ 				  DMA_BIDIRECTIONAL);
+ 
+ out_putwork:
+-	queue_work(nvmet_wq, &tgtport->put_work);
++	queue_work(nvmet_wq, &lsop->put_work);
+ }
+ 
+ static int
+@@ -389,6 +390,7 @@ __nvmet_fc_send_ls_req(struct nvmet_fc_tgtport *tgtport,
+ 	lsreq->done = done;
+ 	lsop->req_queued = false;
+ 	INIT_LIST_HEAD(&lsop->lsreq_list);
++	INIT_WORK(&lsop->put_work, nvmet_fc_put_lsop_work);
+ 
+ 	lsreq->rqstdma = fc_dma_map_single(tgtport->dev, lsreq->rqstaddr,
+ 				  lsreq->rqstlen + lsreq->rsplen,
+@@ -448,8 +450,6 @@ nvmet_fc_disconnect_assoc_done(struct nvmefc_ls_req *lsreq, int status)
+ 	__nvmet_fc_finish_ls_req(lsop);
+ 
+ 	/* fc-nvme target doesn't care about success or failure of cmd */
+-
+-	kfree(lsop);
+ }
+ 
+ /*
+@@ -1407,7 +1407,6 @@ nvmet_fc_register_targetport(struct nvmet_fc_port_info *pinfo,
+ 	kref_init(&newrec->ref);
+ 	ida_init(&newrec->assoc_cnt);
+ 	newrec->max_sg_cnt = template->max_sgl_segments;
+-	INIT_WORK(&newrec->put_work, nvmet_fc_put_tgtport_work);
+ 
+ 	ret = nvmet_fc_alloc_ls_iodlist(newrec);
+ 	if (ret) {
 -- 
 2.51.0
 
