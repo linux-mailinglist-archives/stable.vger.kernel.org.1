@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32675BD49FD
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE939BD4B82
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB748546D69
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8B759562520
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B66D2D1F40;
-	Mon, 13 Oct 2025 15:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FD32566;
+	Mon, 13 Oct 2025 15:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grxEKqmf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6lhhqKt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D53280018;
-	Mon, 13 Oct 2025 15:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6230B1F1313;
+	Mon, 13 Oct 2025 15:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369368; cv=none; b=hwUdN57/PsQYLBYu+nhNliuDbshoYDETBDDrtsYhx5ye1VFv0ucqaFPTmJVcJKUc6pkC7i4XUCZXQhZKnfBoYfqCUbxKlaNVhxzTAZoIjKpRZJVpbSwznvT4J+g3XEtCk5uqf9DBxjr0BBWLUrEdb9JYb9E14thmcB9vWt7oNQ4=
+	t=1760369379; cv=none; b=ZxEjdaUDOVnzQ8lrgFoQaArzoOXG5s2PAVaiN10s9JF4RdDTV80BPjEINzXgWPflvoxjNrUoJm8Z2jq3CVuqqdxsZRIviQrWwWtyaLWZpJm/vgswMoG6i3vRIokyED33Qnd17TvrXrrnCj9tWxLYTuf8kBn41KFoQ0Y8jOhZW50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369368; c=relaxed/simple;
-	bh=qC6lm2IVaGZzbW+ZH2c5gmNVuur+4Zl8vbeeziyhBMc=;
+	s=arc-20240116; t=1760369379; c=relaxed/simple;
+	bh=trki4HoO2/2grsRiEiyigVekJTmhCsVP22jms6ynXJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kCqWYVIvLVetMmm6K5Dm9ppL3B+KlpTjXiEx4+zVaCJIGALvOrmx+ZW19y7z73yk+udvkQQJUgV3DmD9EglSOLpuGNCbymRTetKTQeoP627p6wbh9KhSNIN1fHPZ55XyTEv+QMsaXdG2Hqq2ClbGyJRnxex0Bv/7XkpcXmoTX9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grxEKqmf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C65C4CEE7;
-	Mon, 13 Oct 2025 15:29:27 +0000 (UTC)
+	 MIME-Version; b=Y01RjfLwm6DdAiCUEGgcRolgbRQ7dH3k26Vp9xqs/PbopQZ1+boCCAUn1FLup75623UL9y/e+jVB/AvlamD+poI2mGDErenu0wBVdkw1e+jNpiQmrtqhtf5W6AQYvIiM6pGXAHzk+BAsoJ/hTrQ36B8DUyuJefqClEy+P6JLJ9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6lhhqKt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E112CC4CEE7;
+	Mon, 13 Oct 2025 15:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369368;
-	bh=qC6lm2IVaGZzbW+ZH2c5gmNVuur+4Zl8vbeeziyhBMc=;
+	s=korg; t=1760369379;
+	bh=trki4HoO2/2grsRiEiyigVekJTmhCsVP22jms6ynXJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=grxEKqmfK3wEbIkwRiQK0rwkkL5Gpe2JSfzuBXvUW5HDd1+3748v8clMFG/Gp10vM
-	 y25vb3H8e1w7MKIsng5oHNCYnItWq1DSkdINXapTstR/SdcUMjlFwHdC62t4mu/IcI
-	 QC6nz4xkwcALQ11bSVKZj15qt8HpNlrm9xpWbqj0=
+	b=a6lhhqKt6KextZwBGCz284BtRvaixPhb+V+T1du0iHSFVDYic6awX7PK6w2b/u+Io
+	 klfolk8d0sLEfau0Pl1eEurXRMb6Pnrlc7pVK/JdTKS6K4ZrfZJnukg1CPVkz/nyOV
+	 U1uoo9MONgyIsZGLtFxGkEIZmjPWvTsvfYvUWWAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 221/563] PCI: endpoint: pci-ep-msi: Fix NULL vs IS_ERR() check in pci_epf_write_msi_msg()
-Date: Mon, 13 Oct 2025 16:41:22 +0200
-Message-ID: <20251013144419.288759907@linuxfoundation.org>
+Subject: [PATCH 6.17 225/563] f2fs: fix to avoid overflow while left shift operation
+Date: Mon, 13 Oct 2025 16:41:26 +0200
+Message-ID: <20251013144419.432543031@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,36 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 57a75fa9d56e310e883e4377205690e88c05781b ]
+[ Upstream commit 0fe1c6bec54ea68ed8c987b3890f2296364e77bb ]
 
-The pci_epc_get() function returns error pointers. It never returns NULL.
-Update the check to match.
+Should cast type of folio->index from pgoff_t to loff_t to avoid overflow
+while left shift operation.
 
-Fixes: 1c3b002c6bf6 ("PCI: endpoint: Add RC-to-EP doorbell support using platform MSI controller")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/aIzCdV8jyBeql-Oa@stanley.mountain
+Fixes: 3265d3db1f16 ("f2fs: support partial truncation on compressed inode")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-ep-msi.c | 2 +-
+ fs/f2fs/compress.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/endpoint/pci-ep-msi.c b/drivers/pci/endpoint/pci-ep-msi.c
-index 9ca89cbfec15d..1b58357b905fa 100644
---- a/drivers/pci/endpoint/pci-ep-msi.c
-+++ b/drivers/pci/endpoint/pci-ep-msi.c
-@@ -24,7 +24,7 @@ static void pci_epf_write_msi_msg(struct msi_desc *desc, struct msi_msg *msg)
- 	struct pci_epf *epf;
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 5c1f47e45dab4..6cd8902849cf6 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1245,7 +1245,7 @@ int f2fs_truncate_partial_cluster(struct inode *inode, u64 from, bool lock)
  
- 	epc = pci_epc_get(dev_name(msi_desc_to_dev(desc)));
--	if (!epc)
-+	if (IS_ERR(epc))
- 		return;
+ 		for (i = cluster_size - 1; i >= 0; i--) {
+ 			struct folio *folio = page_folio(rpages[i]);
+-			loff_t start = folio->index << PAGE_SHIFT;
++			loff_t start = (loff_t)folio->index << PAGE_SHIFT;
  
- 	epf = list_first_entry_or_null(&epc->pci_epf, struct pci_epf, list);
+ 			if (from <= start) {
+ 				folio_zero_segment(folio, 0, folio_size(folio));
 -- 
 2.51.0
 
