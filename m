@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-185144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA25BD4B41
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:03:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D3FBD4AF8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90444859E9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74517485A68
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9206E30AAB4;
-	Mon, 13 Oct 2025 15:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C785530AACC;
+	Mon, 13 Oct 2025 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiqk6dSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuQq3M14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D76130AAA6;
-	Mon, 13 Oct 2025 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85165241695;
+	Mon, 13 Oct 2025 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369459; cv=none; b=E85FE6W4Nz1tewcVHjjuioFHq5ZJH9Z53w31jyzn/vTz7YFcXuTQRVXjVCp14pgwmWs81dRvNcO77tpQqwGVtcVR99STXz6fj/mbwhI/jOX+RFkrT2nqir8acl5TH5uUmxsqXZKHmdsPwYBDCuIqNYkxHU5YEi93gZamCupX3K0=
+	t=1760369467; cv=none; b=C8YRgJ98rtyz9FMLy0J125u3qnoI516LZxlgKLskaNJ3eWwoZS/dcGJ3a6zR6JY6QaRgJ6KX6mpM2eVQemjWd/pazXHQxWvxBejtUoey+M21D3Sijfs7oX+JxFoEMdSPPWHfucQdBuNyYJuM9PsDSS3+Ay6XuK4UA+k4cvcYww4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369459; c=relaxed/simple;
-	bh=Klsk9RR4RElSc+q+qiP/+JRZIKjgVLYZNUNTpY3RsUk=;
+	s=arc-20240116; t=1760369467; c=relaxed/simple;
+	bh=v2rPmvazy4ahexvevhR0nbSW5muok1L1B/whVBFjFyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkJBtwsO1O/3cFnAi6Hu074VVr6BNxesyVTkl/Y5yPFfOaf0RG0VXutjPBJVC3dgK7cTCdWRPWvFEuYwRT24h8lOuH5HrvqtEu3pbZnqdp2qmPwW6DxcJt6Z5qH4M8xryqGVAuV1k6l5T/MJ8yk6FHEudz9cWU5Yv/3ITK65QEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiqk6dSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B32C4CEE7;
-	Mon, 13 Oct 2025 15:30:58 +0000 (UTC)
+	 MIME-Version; b=H87uzniP3I++4KDILpvc63HiPE5YVC38bU7tKCz4LlJNqurylfDRYSItkf4Ignz/NpvGfObP1OfrsggQ/a048smbwzvLR2VmgB4LFA/mZj6LPikqNQMew4YjpaWlLaGMewsjOGYEgQu7eQERP0b9UZVF6ltArlFcCrvUWQmsB/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuQq3M14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93ECC4CEE7;
+	Mon, 13 Oct 2025 15:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369458;
-	bh=Klsk9RR4RElSc+q+qiP/+JRZIKjgVLYZNUNTpY3RsUk=;
+	s=korg; t=1760369467;
+	bh=v2rPmvazy4ahexvevhR0nbSW5muok1L1B/whVBFjFyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xiqk6dSw8Onj/p/D6Jn4+1qGQvOV50wMPhn+8SHD7KGOpDoA9/g28xepBGYVXxgnH
-	 f1egYAVI+KvkPEPA7Dzz1Bx4RqHt/eXqoqX5TDwSpng1n8WaRShMwmd/yfgbchlLVI
-	 dZjTa7Ty4wMTJmt3z0d2BL5dVe0sexe4d2iHIpZU=
+	b=IuQq3M14aNrq4o6cC4hTUVkfxz20jKwNq9uxbKH2c3SpZoC2toiM5XgbMZapIItRl
+	 oSswrNJlYIMF++fbpYYEjz1bIUjKXMt+Af1upIpSeFMx/maita4eDLtplgG5NIy9O7
+	 U/BL0YEKoknZQvkBFfv+Po2/6216sxSFd0rXqzCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Val Packett <val@packett.cool>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 253/563] f2fs: fix to clear unusable_cap for checkpoint=enable
-Date: Mon, 13 Oct 2025 16:41:54 +0200
-Message-ID: <20251013144420.446577500@linuxfoundation.org>
+Subject: [PATCH 6.17 256/563] drm/dp: drm_edp_backlight_set_level: do not always send 3-byte commands
+Date: Mon, 13 Oct 2025 16:41:57 +0200
+Message-ID: <20251013144420.554210605@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,43 +68,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 2e8f4c2b2bb12fc3d40762f1bb778e95c6ddbc93 ]
+[ Upstream commit 4aa8961b1b9c7498550b41168a91cf1558133dd3 ]
 
-mount -t f2fs -o checkpoint=disable:10% /dev/vdb /mnt/f2fs/
-mount -t f2fs -o remount,checkpoint=enable /dev/vdb /mnt/f2fs/
+At least some panels using the LSB register are not happy with the
+unconditional increase of the command buffer to 3 bytes.
 
-kernel log:
-F2FS-fs (vdb): Adjust unusable cap for checkpoint=disable = 204440 / 10%
+With the BOE NE14QDM in my Dell Latitude 7455, the recent patches for
+luminance based brightness have introduced a regression: the brightness
+range stopped being contiguous and became nonsensical (it probably was
+interpreting the last 2 bytes of the buffer and not the first 2).
 
-If we has assigned checkpoint=enable mount option, unusable_cap{,_perc}
-parameters of checkpoint=disable should be reset, then calculation and
-log print could be avoid in adjust_unusable_cap_perc().
+Change from using a fixed sizeof() to a length variable that's only
+set to 3 when luminance is used. Let's leave the default as 2 even for
+the single-byte version, since that's how it worked before.
 
-Fixes: 1ae18f71cb52 ("f2fs: fix checkpoint=disable:%u%%")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: f2db78e37fe7 ("drm/dp: Modify drm_edp_backlight_set_level")
+Signed-off-by: Val Packett <val@packett.cool>
+Tested-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://lore.kernel.org/r/20250706204446.8918-1-val@packett.cool
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/display/drm_dp_helper.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index e16c4e2830c29..9f2ae3ac6078e 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -988,6 +988,10 @@ static int f2fs_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 			ctx_set_opt(ctx, F2FS_MOUNT_DISABLE_CHECKPOINT);
- 			break;
- 		case Opt_checkpoint_enable:
-+			F2FS_CTX_INFO(ctx).unusable_cap_perc = 0;
-+			ctx->spec_mask |= F2FS_SPEC_checkpoint_disable_cap_perc;
-+			F2FS_CTX_INFO(ctx).unusable_cap = 0;
-+			ctx->spec_mask |= F2FS_SPEC_checkpoint_disable_cap;
- 			ctx_clear_opt(ctx, F2FS_MOUNT_DISABLE_CHECKPOINT);
- 			break;
- 		default:
+diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
+index 1ecc3df7e3167..4aaeae4fa03c3 100644
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -3962,6 +3962,7 @@ int drm_edp_backlight_set_level(struct drm_dp_aux *aux, const struct drm_edp_bac
+ 	int ret;
+ 	unsigned int offset = DP_EDP_BACKLIGHT_BRIGHTNESS_MSB;
+ 	u8 buf[3] = { 0 };
++	size_t len = 2;
+ 
+ 	/* The panel uses the PWM for controlling brightness levels */
+ 	if (!(bl->aux_set || bl->luminance_set))
+@@ -3974,6 +3975,7 @@ int drm_edp_backlight_set_level(struct drm_dp_aux *aux, const struct drm_edp_bac
+ 		buf[1] = (level & 0x00ff00) >> 8;
+ 		buf[2] = (level & 0xff0000) >> 16;
+ 		offset = DP_EDP_PANEL_TARGET_LUMINANCE_VALUE;
++		len = 3;
+ 	} else if (bl->lsb_reg_used) {
+ 		buf[0] = (level & 0xff00) >> 8;
+ 		buf[1] = (level & 0x00ff);
+@@ -3981,7 +3983,7 @@ int drm_edp_backlight_set_level(struct drm_dp_aux *aux, const struct drm_edp_bac
+ 		buf[0] = level;
+ 	}
+ 
+-	ret = drm_dp_dpcd_write_data(aux, offset, buf, sizeof(buf));
++	ret = drm_dp_dpcd_write_data(aux, offset, buf, len);
+ 	if (ret < 0) {
+ 		drm_err(aux->drm_dev,
+ 			"%s: Failed to write aux backlight level: %d\n",
 -- 
 2.51.0
 
