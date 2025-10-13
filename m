@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-185155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDD5BD4A5B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4696BD4AD7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 121E7485CF8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E75F9485E10
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2525130ACED;
-	Mon, 13 Oct 2025 15:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAC230ACEC;
+	Mon, 13 Oct 2025 15:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9338D24"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUCy861t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19CD30ACE9;
-	Mon, 13 Oct 2025 15:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BDC30AABF;
+	Mon, 13 Oct 2025 15:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369489; cv=none; b=acxMidlvhQTn4e/IdKVJf9WpJG6e5NlesaiHz/QaamhF++pjJNeoy347KRHLwokjBYDKJLl7onWdK8p2oXPcpulA2fo1hjXCdp3eFnKrMQeuLOKIFTGIkmdo/iuU9osgI54WSkgCaKf1c5QLGR9XojH/gCAg9NOBkm6Saej/Dhw=
+	t=1760369498; cv=none; b=AK/UBELBUVb8L3+By7SpW0qkKDx7YQ6EhQf7Z+CnQkmuDECqwAjrvspGM/7PshEKevrWMok89PlLZXIlKQzkL1/HY9mSaK3K4jOoZnmWVfeqMYKySBZkQaQus5S3sZ/Ln1UraXoCUZ05cp8P8mZiM7tmkMSb5ziULciRbMq8BUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369489; c=relaxed/simple;
-	bh=aEfyGl9vQVVaooeqxyD5GvUymJvVKJdHeyxqWGcLeno=;
+	s=arc-20240116; t=1760369498; c=relaxed/simple;
+	bh=EmFZ/92I3Aq+mbRPCor1nnQOsFeNN9ktQwzmUd1/OmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YytTPoISXpKIcGveFt8NQqiOepBJqHA6QtlBrJoiK8ZmWeoW3q3hkugiV0/OpH+FzS49ghmykJ1jux/Fp43pwNeZkECyo1ALbs7jxv5DPkWrjYTf7RIaCzmzPy2wdTi/27S3acLZkWwTphRbYPNPw6iyM2qNFW3tq7JvwSsJ/Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9338D24; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05836C4CEE7;
-	Mon, 13 Oct 2025 15:31:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EuIY0fqIs8SgZ8DI+IzbETfjUiVcttZPFPw4kU2XufLJM0S8YlAZQpgs0ZXGWF6hZg/aiwbVWzOv15ZQ4VlMHqtBcGOI/NszFn//DsV3vJCzKXkjfoAQTww+Pf5Q2K3geyED0LggJNPAhK7YL//xAonbq5eRpbVTzIrCRooSr8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUCy861t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E2DC4CEE7;
+	Mon, 13 Oct 2025 15:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369489;
-	bh=aEfyGl9vQVVaooeqxyD5GvUymJvVKJdHeyxqWGcLeno=;
+	s=korg; t=1760369497;
+	bh=EmFZ/92I3Aq+mbRPCor1nnQOsFeNN9ktQwzmUd1/OmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9338D24Qo95w5FLGVj2s0g0oDfFSYam315MXtWVXTDppeZL4JxX35sdzqDr+0Bew
-	 GmHqYp0JSSgV4UcYzj6wuLTVRA8pnbosGO5lhBykien52vRUiGjL8IAUC+CKWZlJvL
-	 bO0A8tKJIP00UPFe1/e/nKDs7CR5R7y8DenCoWRE=
+	b=VUCy861tuMwL8JqFwhNToMQukVH7aCu/uitvcdvbySn9OPa+79gyLS7xv55Zeytp+
+	 1mfcfMHTpjwheh44AVPENWCmuWkhNUU5La722VZ40rHuPbNtW8gvrkNxbQRwCWtjCZ
+	 ZwsN/4FHiUzjnULf17M+w1NFr9zcLe1iho6CvFxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Chuck Lever <cel@kernel.org>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 263/563] media: i2c: vd55g1: Fix duster register address
-Date: Mon, 13 Oct 2025 16:42:04 +0200
-Message-ID: <20251013144420.805835512@linuxfoundation.org>
+Subject: [PATCH 6.17 266/563] RDMA/mlx5: Better estimate max_qp_wr to reflect WQE count
+Date: Mon, 13 Oct 2025 16:42:07 +0200
+Message-ID: <20251013144420.913574096@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -61,43 +62,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit ba4b8886c22a3e8c3f41c6dd373b177d7d41bcf8 ]
+[ Upstream commit 1a7c18c485bf17ef408d5ebb7f83e1f8ef329585 ]
 
-The duster register needs to be disabled on test patterns. While the
-code is correctly doing so, the register address contained a typo, thus
-not disabling the duster correctly. Fix the typo.
+The mlx5 driver currently derives max_qp_wr directly from the
+log_max_qp_sz HCA capability:
 
-Fixes: e56616d7b23c ("media: i2c: Add driver for ST VD55G1 camera sensor")
+    props->max_qp_wr = 1 << MLX5_CAP_GEN(mdev, log_max_qp_sz);
 
-Signed-off-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+However, this value represents the number of WQEs in units of Basic
+Blocks (see MLX5_SEND_WQE_BB), not actual number of WQEs.  Since the size
+of a WQE can vary depending on transport type and features (e.g., atomic
+operations, UMR, LSO), the actual number of WQEs can be significantly
+smaller than the WQEBB count suggests.
+
+This patch introduces a conservative estimation of the worst-case WQE size
+— considering largest segments possible with 1 SGE and no inline data or
+special features. It uses this to derive a more accurate max_qp_wr value.
+
+Fixes: 938fe83c8dcb ("net/mlx5_core: New device capabilities handling")
+Link: https://patch.msgid.link/r/7d992c9831c997ed5c33d30973406dc2dcaf5e89.1755088725.git.leon@kernel.org
+Reported-by: Chuck Lever <cel@kernel.org>
+Closes: https://lore.kernel.org/all/20250506142202.GJ2260621@ziepe.ca/
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/vd55g1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/main.c | 48 ++++++++++++++++++++++++++++++-
+ 1 file changed, 47 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/vd55g1.c b/drivers/media/i2c/vd55g1.c
-index 7c39183dd44bf..4a62d35006829 100644
---- a/drivers/media/i2c/vd55g1.c
-+++ b/drivers/media/i2c/vd55g1.c
-@@ -66,7 +66,7 @@
- #define VD55G1_REG_READOUT_CTRL				CCI_REG8(0x052e)
- #define VD55G1_READOUT_CTRL_BIN_MODE_NORMAL		0
- #define VD55G1_READOUT_CTRL_BIN_MODE_DIGITAL_X2		1
--#define VD55G1_REG_DUSTER_CTRL				CCI_REG8(0x03ea)
-+#define VD55G1_REG_DUSTER_CTRL				CCI_REG8(0x03ae)
- #define VD55G1_DUSTER_ENABLE				BIT(0)
- #define VD55G1_DUSTER_DISABLE				0
- #define VD55G1_DUSTER_DYN_ENABLE			BIT(1)
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index d456e4fde3e1f..20d15207a5f1f 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -13,6 +13,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/slab.h>
+ #include <linux/bitmap.h>
++#include <linux/log2.h>
+ #include <linux/sched.h>
+ #include <linux/sched/mm.h>
+ #include <linux/sched/task.h>
+@@ -883,6 +884,51 @@ static void fill_esw_mgr_reg_c0(struct mlx5_core_dev *mdev,
+ 	resp->reg_c0.mask = mlx5_eswitch_get_vport_metadata_mask();
+ }
+ 
++/*
++ * Calculate maximum SQ overhead across all QP types.
++ * Other QP types (REG_UMR, UC, RC, UD/SMI/GSI, XRC_TGT)
++ * have smaller overhead than the types calculated below,
++ * so they are implicitly included.
++ */
++static u32 mlx5_ib_calc_max_sq_overhead(void)
++{
++	u32 max_overhead_xrc, overhead_ud_lso, a, b;
++
++	/* XRC_INI */
++	max_overhead_xrc = sizeof(struct mlx5_wqe_xrc_seg);
++	max_overhead_xrc += sizeof(struct mlx5_wqe_ctrl_seg);
++	a = sizeof(struct mlx5_wqe_atomic_seg) +
++	    sizeof(struct mlx5_wqe_raddr_seg);
++	b = sizeof(struct mlx5_wqe_umr_ctrl_seg) +
++	    sizeof(struct mlx5_mkey_seg) +
++	    MLX5_IB_SQ_UMR_INLINE_THRESHOLD / MLX5_IB_UMR_OCTOWORD;
++	max_overhead_xrc += max(a, b);
++
++	/* UD with LSO */
++	overhead_ud_lso = sizeof(struct mlx5_wqe_ctrl_seg);
++	overhead_ud_lso += sizeof(struct mlx5_wqe_eth_pad);
++	overhead_ud_lso += sizeof(struct mlx5_wqe_eth_seg);
++	overhead_ud_lso += sizeof(struct mlx5_wqe_datagram_seg);
++
++	return max(max_overhead_xrc, overhead_ud_lso);
++}
++
++static u32 mlx5_ib_calc_max_qp_wr(struct mlx5_ib_dev *dev)
++{
++	struct mlx5_core_dev *mdev = dev->mdev;
++	u32 max_wqe_bb_units = 1 << MLX5_CAP_GEN(mdev, log_max_qp_sz);
++	u32 max_wqe_size;
++	/* max QP overhead + 1 SGE, no inline, no special features */
++	max_wqe_size = mlx5_ib_calc_max_sq_overhead() +
++		       sizeof(struct mlx5_wqe_data_seg);
++
++	max_wqe_size = roundup_pow_of_two(max_wqe_size);
++
++	max_wqe_size = ALIGN(max_wqe_size, MLX5_SEND_WQE_BB);
++
++	return (max_wqe_bb_units * MLX5_SEND_WQE_BB) / max_wqe_size;
++}
++
+ static int mlx5_ib_query_device(struct ib_device *ibdev,
+ 				struct ib_device_attr *props,
+ 				struct ib_udata *uhw)
+@@ -1041,7 +1087,7 @@ static int mlx5_ib_query_device(struct ib_device *ibdev,
+ 	props->max_mr_size	   = ~0ull;
+ 	props->page_size_cap	   = ~(min_page_size - 1);
+ 	props->max_qp		   = 1 << MLX5_CAP_GEN(mdev, log_max_qp);
+-	props->max_qp_wr	   = 1 << MLX5_CAP_GEN(mdev, log_max_qp_sz);
++	props->max_qp_wr = mlx5_ib_calc_max_qp_wr(dev);
+ 	max_rq_sg =  MLX5_CAP_GEN(mdev, max_wqe_sz_rq) /
+ 		     sizeof(struct mlx5_wqe_data_seg);
+ 	max_sq_desc = min_t(int, MLX5_CAP_GEN(mdev, max_wqe_sz_sq), 512);
 -- 
 2.51.0
 
