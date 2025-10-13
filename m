@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-185172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4211EBD4D58
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:13:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A828BD503B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7E174861B2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89C3754780D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE2030B50E;
-	Mon, 13 Oct 2025 15:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E208230B50A;
+	Mon, 13 Oct 2025 15:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUeC5ZYW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqUeefee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6EA30B505;
-	Mon, 13 Oct 2025 15:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F06530B50F;
+	Mon, 13 Oct 2025 15:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369538; cv=none; b=ua93/9pflTGdt2YaC+yeyj03y6ME/mk7vvIZ7nIgCkctIXCOhi12kk4QbeER9MsEDyqtFyMNuwbYqK2ZSSHQB+9hTvIMjUU8ydTtHandwO79tgXeFQI5T+NXR8ZBB5CTPa9TO7mzz9xXrDEhZyDPiQ3KOZ90uAcJ0W0vx4S5Gdo=
+	t=1760369543; cv=none; b=u7SHJud3Q5r8IoOTtY1YT/ZSygtYSVUvnblNEE0AmXKZylhbcoPzWgbNQ+WWPE+vp33ki3b82XBzFJpDbFl8Uq9VvCs04Tsb28D0RUUKRcaU0DCCDdkxZAU7msevveR283plJcuD6bExfApAavg8j8121ylMY6S506uwLYZFmYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369538; c=relaxed/simple;
-	bh=Q9r0+TZHDDO+8A8uPBZTmXQaZ8vckD2qRxJH2FzCpHo=;
+	s=arc-20240116; t=1760369543; c=relaxed/simple;
+	bh=LS7Sv0eWZDH+bUW56JhJaPYUv5PeU1gtn/8g7v64Yh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntvTC5vtpRRCYL7t6OqWh0QAOIFd2Y7TNEKqcH2RzdLAsFY9IhFSlCUMlDNYLWIzlMILuN1EY9brTgGEAjUILnbAKc5jgvvp3j2QZem5wRVS8/ccXHGjCoi1kKk5KYvXNYu0HewU8bInBAGdRpv97saj5BK3gx44L4KmfuZ/alM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUeC5ZYW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF20C4CEE7;
-	Mon, 13 Oct 2025 15:32:17 +0000 (UTC)
+	 MIME-Version; b=R+0cnxYhUKbJcNLfr/ptsRxftqWjqr+N0RKMorD7kgKEXvlfu0YTDuExrK1A4VMo5+57d4kMLtJrqzc0ox4Q86F2wm/Ca9wvYeVPEllT/+qgjJuyUurxaoVvuJRq0VF5WSou7oxjdCOR/EPyVMtwM0efhfviz9KqVUfc3YVV2is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqUeefee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B385C116B1;
+	Mon, 13 Oct 2025 15:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369537;
-	bh=Q9r0+TZHDDO+8A8uPBZTmXQaZ8vckD2qRxJH2FzCpHo=;
+	s=korg; t=1760369543;
+	bh=LS7Sv0eWZDH+bUW56JhJaPYUv5PeU1gtn/8g7v64Yh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUeC5ZYW7F6lKp3Gqc4i1HZXI0gOB+x8vH92OBY0oo/wWJ5kAuLP9EhZR0JN6cZIE
-	 MbpkmWq0xyTIO1h/6EzTHGioQDvCVV2sPZiqO++zE6sHtZbkyC9z0HiQsmA2ma+hqy
-	 5wGLHkFAi62CKpHdvOIEQ281LC7DMIIHVR7os9Tw=
+	b=cqUeefeeCU+cuyJkfv1jkrbL6Jrdh8b1vzNE6fyqEOLixYYm1lkvcWQJudL1h9PAS
+	 Sm55ViffflQ9Fm86LNFauu2HV6zTWdYIgMclAI82l9/PatUhG2AjgZl2LugJM1ehJs
+	 32qTbOQv5NRg5o0XjEQhYdI+Mm9EkDTliZapwisU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 282/563] accel/amdxdna: Use int instead of u32 to store error codes
-Date: Mon, 13 Oct 2025 16:42:23 +0200
-Message-ID: <20251013144421.487305982@linuxfoundation.org>
+Subject: [PATCH 6.17 284/563] net: dst: introduce dst->dev_rcu
+Date: Mon, 13 Oct 2025 16:42:25 +0200
+Message-ID: <20251013144421.558676618@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,58 +67,108 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 24de3daf6179bce3710527b8292d7ee6f1b56393 ]
+[ Upstream commit caedcc5b6df1b2e2b5f39079e3369c1d4d5c5f50 ]
 
-Change the 'ret' variable from u32 to int to store -EINVAL.  Storing the
-negative error codes in unsigned type, doesn't cause an issue at runtime
-but it's ugly as pants.
+Followup of commit 88fe14253e18 ("net: dst: add four helpers
+to annotate data-races around dst->dev").
 
-Additionally, assigning -EINVAL to u32 ret (i.e., u32 ret = -EINVAL) may
-trigger a GCC warning when the -Wsign-conversion flag is enabled.
+We want to gradually add explicit RCU protection to dst->dev,
+including lockdep support.
 
-Fixes: aac243092b70 ("accel/amdxdna: Add command execution")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://lore.kernel.org/r/20250828033917.113364-1-rongqianfeng@vivo.com
+Add an union to alias dst->dev_rcu and dst->dev.
+
+Add dst_dev_net_rcu() helper.
+
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_ctx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/dst.h | 16 +++++++++++-----
+ net/core/dst.c    |  2 +-
+ net/ipv4/route.c  |  4 ++--
+ 3 files changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
-index 2cff5419bd2fa..cda964ba33cd7 100644
---- a/drivers/accel/amdxdna/aie2_ctx.c
-+++ b/drivers/accel/amdxdna/aie2_ctx.c
-@@ -192,7 +192,7 @@ aie2_sched_resp_handler(void *handle, void __iomem *data, size_t size)
+diff --git a/include/net/dst.h b/include/net/dst.h
+index bab01363bb975..f8aa1239b4db6 100644
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -24,7 +24,10 @@
+ struct sk_buff;
+ 
+ struct dst_entry {
+-	struct net_device       *dev;
++	union {
++		struct net_device       *dev;
++		struct net_device __rcu *dev_rcu;
++	};
+ 	struct  dst_ops	        *ops;
+ 	unsigned long		_metrics;
+ 	unsigned long           expires;
+@@ -570,9 +573,12 @@ static inline struct net_device *dst_dev(const struct dst_entry *dst)
+ 
+ static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
  {
- 	struct amdxdna_sched_job *job = handle;
- 	struct amdxdna_gem_obj *cmd_abo;
--	u32 ret = 0;
-+	int ret = 0;
- 	u32 status;
+-	/* In the future, use rcu_dereference(dst->dev) */
+-	WARN_ON_ONCE(!rcu_read_lock_held());
+-	return READ_ONCE(dst->dev);
++	return rcu_dereference(dst->dev_rcu);
++}
++
++static inline struct net *dst_dev_net_rcu(const struct dst_entry *dst)
++{
++	return dev_net_rcu(dst_dev_rcu(dst));
+ }
  
- 	cmd_abo = job->cmd_bo;
-@@ -222,7 +222,7 @@ static int
- aie2_sched_nocmd_resp_handler(void *handle, void __iomem *data, size_t size)
+ static inline struct net_device *skb_dst_dev(const struct sk_buff *skb)
+@@ -592,7 +598,7 @@ static inline struct net *skb_dst_dev_net(const struct sk_buff *skb)
+ 
+ static inline struct net *skb_dst_dev_net_rcu(const struct sk_buff *skb)
  {
- 	struct amdxdna_sched_job *job = handle;
--	u32 ret = 0;
-+	int ret = 0;
- 	u32 status;
+-	return dev_net_rcu(skb_dst_dev(skb));
++	return dev_net_rcu(skb_dst_dev_rcu(skb));
+ }
  
- 	if (unlikely(!data))
-@@ -250,7 +250,7 @@ aie2_sched_cmdlist_resp_handler(void *handle, void __iomem *data, size_t size)
- 	u32 fail_cmd_status;
- 	u32 fail_cmd_idx;
- 	u32 cmd_status;
--	u32 ret = 0;
-+	int ret = 0;
+ struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
+diff --git a/net/core/dst.c b/net/core/dst.c
+index e2de8b68c41d3..e9d35f49c9e78 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -150,7 +150,7 @@ void dst_dev_put(struct dst_entry *dst)
+ 		dst->ops->ifdown(dst, dev);
+ 	WRITE_ONCE(dst->input, dst_discard);
+ 	WRITE_ONCE(dst->output, dst_discard_out);
+-	WRITE_ONCE(dst->dev, blackhole_netdev);
++	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
+ 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
+ 			   GFP_ATOMIC);
+ }
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index baa43e5966b19..97b96275a775d 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1026,7 +1026,7 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 		return;
  
- 	cmd_abo = job->cmd_bo;
- 	if (unlikely(!data) || unlikely(size != sizeof(u32) * 3)) {
+ 	rcu_read_lock();
+-	net = dev_net_rcu(dst_dev(dst));
++	net = dst_dev_net_rcu(dst);
+ 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
+ 		lock = true;
+ 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
+@@ -1326,7 +1326,7 @@ static unsigned int ipv4_default_advmss(const struct dst_entry *dst)
+ 	struct net *net;
+ 
+ 	rcu_read_lock();
+-	net = dev_net_rcu(dst_dev(dst));
++	net = dst_dev_net_rcu(dst);
+ 	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
+ 				   net->ipv4.ip_rt_min_advmss);
+ 	rcu_read_unlock();
 -- 
 2.51.0
 
