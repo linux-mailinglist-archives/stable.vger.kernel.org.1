@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-184733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB2BBD4507
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B557BD3DAD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B3FF7508F59
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7E2944F66E0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E611312823;
-	Mon, 13 Oct 2025 15:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DB5308F09;
+	Mon, 13 Oct 2025 14:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jcoj/x8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCOyy9jO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283BF30C627;
-	Mon, 13 Oct 2025 15:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EE23081DE;
+	Mon, 13 Oct 2025 14:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368280; cv=none; b=bt+wCNsolqhWJiVwK1tyLCG5e3D+3BpVeLAjDqu2gLimYitgIKatZhN837jbLVcXfBv935N2Ylab17tTzt42Tr8AobDt50PzSVewUzknXkwo5X3Asu+ktqC2/RbbhHxC70q5V9pEpZkVWOh0Gq5l/IaD+8ndlJXua1jbPcY9oFE=
+	t=1760366958; cv=none; b=Jhkfv3csJFojdclwQ93c4wBsXzU/RFYM3ep7fVUX2U4oFetZbPaE93aA5NYMBjJStFHWluNBHBh2T0fcS60OF5G+OS+7rCTfzLnDJvrWvjxR7alPW/NH/H7mxJ0WDUCQw/IDkW4i0et18JNwQ0kQuQRArFt06vXlpBaLNd8ozxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368280; c=relaxed/simple;
-	bh=CJhwsUWph+1ziWMQqu8oLdgciVEWwiEmOrNHnmI++VI=;
+	s=arc-20240116; t=1760366958; c=relaxed/simple;
+	bh=NiCz/rd604dIwOfXRSUQbVooTd/Ni7IIFHdl6XWrY0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVhvJ7XV6NleNr1gwIRvNvt2J7FETVPliBvVzo4TEXcHkdhBCOfSempVo9wa2DURBKLJ8GU5/p6ikoKI85PORRoMlsLKP4c1iU343me+uNKFYJBSTAjLL6sUJojk8glEbTxMHXHPsk5sfe/kNZiOOGCE9IteTEM8hORUWhKwBvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jcoj/x8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A856DC4CEE7;
-	Mon, 13 Oct 2025 15:11:19 +0000 (UTC)
+	 MIME-Version; b=fZDpexFzN+SVjbvdPCB2Y7+c88RuWMk6Elkqp60nc3sKx3zfCzqQs8UvF6JFMIgvo3XSP1TDLO2EF+QbWV6hA/NFxqlge6nIbhinqQX4g8osNoi+oiKaY8Z+cXv5ceyAij3p575fxbIebiZ+cLRM0z/msh4NgtykAw25YLvdCQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCOyy9jO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D9CC4CEE7;
+	Mon, 13 Oct 2025 14:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368280;
-	bh=CJhwsUWph+1ziWMQqu8oLdgciVEWwiEmOrNHnmI++VI=;
+	s=korg; t=1760366957;
+	bh=NiCz/rd604dIwOfXRSUQbVooTd/Ni7IIFHdl6XWrY0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jcoj/x8YEFsJ0xYti5UuacL15JPYqtleb0I8VZC/77uxlBm8PuHz0OQEcrJmQL7Jx
-	 flQaPB6bSvNYA8eiRP6kc+dqA0tUWp0rMZ0LZVvAaHlbhQaNIsTBVth/eQh+8U0Jg6
-	 DXkppRODIjkkWAlmB4APVxxZ85tJ9tM6Z59HByqY=
+	b=OCOyy9jOZtYbRfYy7vQRC7XWUhg1vd+kNG+ayNZx6OYlH9Ve1R7rih7DYvhJBkHxi
+	 tza2D8kKWRkGinG06lF5IfXU1bZfex7zbOIkyIMlTAkbH64L7Qa5SPju/pkxjYBBPF
+	 NqONq/3MXpPdujXnjCcOWOmtWATHRHhotrrYBtOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/262] i3c: master: svc: Recycle unused IBI slot
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 6.1 042/196] staging: axis-fifo: flush RX FIFO on read errors
 Date: Mon, 13 Oct 2025 16:43:35 +0200
-Message-ID: <20251013144328.755366769@linuxfoundation.org>
+Message-ID: <20251013144316.107835087@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <stanley.chuys@gmail.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 3448a934ba6f803911ac084d05a2ffce507ea6c6 ]
+commit 82a051e2553b9e297cba82a975d9c538b882c79e upstream.
 
-In svc_i3c_master_handle_ibi(), an IBI slot is fetched from the pool
-to store the IBI payload. However, when an error condition is encountered,
-the function returns without recycling the IBI slot, resulting in an IBI
-slot leak.
+Flush stale data from the RX FIFO in case of errors, to avoid reading
+old data when new packets arrive.
 
-Fixes: c85e209b799f ("i3c: master: svc: fix ibi may not return mandatory data byte")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250829012309.3562585-3-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for
+user errors") removed full FIFO resets from the read error paths, which
+fixed potential TX data losses, but introduced this RX issue.
+
+Fixes: c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for user errors")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250912101322.1282507-2-ovidiu.panait.oss@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/staging/axis-fifo/axis-fifo.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 7d8e1540f02ae..a1945bf9ef19e 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -377,6 +377,7 @@ static int svc_i3c_master_handle_ibi(struct svc_i3c_master *master,
- 						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
- 	if (ret) {
- 		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
-+		i3c_generic_ibi_recycle_slot(data->ibi_pool, slot);
- 		return ret;
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -398,6 +398,7 @@ static ssize_t axis_fifo_read(struct fil
  	}
  
--- 
-2.51.0
-
+ 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
++	words_available = bytes_available / sizeof(u32);
+ 	if (!bytes_available) {
+ 		dev_err(fifo->dt_device, "received a packet of length 0\n");
+ 		ret = -EIO;
+@@ -408,7 +409,7 @@ static ssize_t axis_fifo_read(struct fil
+ 		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
+ 			bytes_available, len);
+ 		ret = -EINVAL;
+-		goto end_unlock;
++		goto err_flush_rx;
+ 	}
+ 
+ 	if (bytes_available % sizeof(u32)) {
+@@ -417,11 +418,9 @@ static ssize_t axis_fifo_read(struct fil
+ 		 */
+ 		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
+ 		ret = -EIO;
+-		goto end_unlock;
++		goto err_flush_rx;
+ 	}
+ 
+-	words_available = bytes_available / sizeof(u32);
+-
+ 	/* read data into an intermediate buffer, copying the contents
+ 	 * to userspace when the buffer is full
+ 	 */
+@@ -433,18 +432,23 @@ static ssize_t axis_fifo_read(struct fil
+ 			tmp_buf[i] = ioread32(fifo->base_addr +
+ 					      XLLF_RDFD_OFFSET);
+ 		}
++		words_available -= copy;
+ 
+ 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
+ 				 copy * sizeof(u32))) {
+ 			ret = -EFAULT;
+-			goto end_unlock;
++			goto err_flush_rx;
+ 		}
+ 
+ 		copied += copy;
+-		words_available -= copy;
+ 	}
++	mutex_unlock(&fifo->read_lock);
++
++	return bytes_available;
+ 
+-	ret = bytes_available;
++err_flush_rx:
++	while (words_available--)
++		ioread32(fifo->base_addr + XLLF_RDFD_OFFSET);
+ 
+ end_unlock:
+ 	mutex_unlock(&fifo->read_lock);
 
 
 
