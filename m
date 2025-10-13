@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-184539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4A1BD470B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F43BD3ED3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:12:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D7B444F8203
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1992A3E5ABC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FCC30B504;
-	Mon, 13 Oct 2025 15:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E3230BBAC;
+	Mon, 13 Oct 2025 14:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHOrYGWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEuJv0Nj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97840299948;
-	Mon, 13 Oct 2025 15:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F415A30BB9F;
+	Mon, 13 Oct 2025 14:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367724; cv=none; b=R/3JZ3q/JtuTdln/MLdMM+LsogCsClBcnXiU2al1y445ASeuve3Amogq0Clttafu1DK3hpnmd+BIr/hBzWjwY4z2D5bHunI5M+GEnbi+1a4gS9t7HQGVogBalaK7+vTfMMtWBNuSl2/Dpk5ckV6lFUC800lx827ldd5fEiu+8BI=
+	t=1760367210; cv=none; b=DldV6eOLgz0aOc7P0qKN46zXJzApPhgr5SxQEKof8bOFaj8Eh3vco/i8c42TBB+IY6go3bpLiUUceRwxsl9xgq7oUMXLYqmEhjHTtTDxoGHUMVNe21FQbmwQoAihsL05Ywmp9uRaT2m74fAdb3B7+5+ct9shsoDXuWi3ckwPdh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367724; c=relaxed/simple;
-	bh=H5J9bhqqAU+Dwo1n6yR4HQ88M1fxrMh0e66JLl86QfU=;
+	s=arc-20240116; t=1760367210; c=relaxed/simple;
+	bh=g2QRpZj1BD3FaylkdL+TFSigx9cbhCtsnXDR5aBOHIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwB8AVSfsIY8eejZi2/p8XWuRnLP2BitUs069380m567rZTQXglBdRrrPKbjYinbBGRDOlP9O/yb4JMQemhQ6zBzmeeqdyn7BllEmnKzP5zM47ZstnNqqbxIUdG6ycneb5LnGTDCiwMe34p895NwOofUEBG9nsCLNDCJdpNheFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHOrYGWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF31BC4CEE7;
-	Mon, 13 Oct 2025 15:02:03 +0000 (UTC)
+	 MIME-Version; b=tin1R4tOxCbwVw4UG4VbMCveBwr63DU2994YTfqAsZwnbdwepc3aaLiX+EAaIG9AiNiF5qAkhm5rk3ep7nmWdA3j9i+BXhf/iHKToQ2NYfPGoIaK/h5NdhTb28+ASDpvxhXh2OykWGPJbBdYRRpdsZ7oogtC7gIj8oUlZf6464U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEuJv0Nj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5CCC16AAE;
+	Mon, 13 Oct 2025 14:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367724;
-	bh=H5J9bhqqAU+Dwo1n6yR4HQ88M1fxrMh0e66JLl86QfU=;
+	s=korg; t=1760367209;
+	bh=g2QRpZj1BD3FaylkdL+TFSigx9cbhCtsnXDR5aBOHIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHOrYGWjGntPYGQGHV2ToBXbxKeE9tol/yjizTfYYAWmiomG+S+ITn6EVGwmxw8lk
-	 1yNVzEfRugpRqW/6xkZ2BYrBnstBfFVM/GNKBPV9QF4zekXsa0avBWpuFuaaxxGMFr
-	 JngqqJcivx2OVu/qYTAPq7YwUoIDcKdJl3At4hw8=
+	b=tEuJv0NjKx7HSTKP/+UJnr7Aiac2MNbLm78DKCqWCCp7G0ZfGMIoB/1wJTtMUdzul
+	 jFLo6rJJC200sS7GYGli/OTdneCmb0JWv5nVZ8+LRlGdZ9+W2/U7TkHudp3jARno9Q
+	 PeIQHZwnc/ky/9jSz6V+msQlZ+cQp3mulYcwi+c0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/196] drivers/base/node: handle error properly in register_one_node()
-Date: Mon, 13 Oct 2025 16:45:03 +0200
-Message-ID: <20251013144319.363492889@linuxfoundation.org>
+Subject: [PATCH 6.1 131/196] scsi: qla2xxx: Fix incorrect sign of error code in START_SP_W_RETRIES()
+Date: Mon, 13 Oct 2025 16:45:04 +0200
+Message-ID: <20251013144319.433547492@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,58 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 786eb990cfb78aab94eb74fb32a030e14723a620 ]
+[ Upstream commit 1f037e3acda79639a78f096355f2c308a3d45492 ]
 
-If register_node() returns an error, it is not handled correctly.
-The function will proceed further and try to register CPUs under the
-node, which is not correct.
+Change the error code EAGAIN to -EAGAIN in START_SP_W_RETRIES() to align
+with qla2x00_start_sp() returning negative error codes or QLA_SUCCESS,
+preventing logical errors.  Additionally, the '_rval' variable should
+store negative error codes to conform to Linux kernel error code
+conventions.
 
-So, in this patch, if register_node() returns an error, we return
-immediately from the function.
-
-Link: https://lkml.kernel.org/r/20250822084845.19219-1-donettom@linux.ibm.com
-Fixes: 76b67ed9dce6 ("[PATCH] node hotplug: register cpu: remove node struct")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
-Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Message-ID: <20250905075446.381139-3-rongqianfeng@vivo.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/qla2xxx/qla_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 4d588f4658c85..7b2ff66c119ae 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -878,6 +878,11 @@ int __register_one_node(int nid)
- 	node_devices[nid] = node;
- 
- 	error = register_node(node_devices[nid], nid);
-+	if (error) {
-+		node_devices[nid] = NULL;
-+		kfree(node);
-+		return error;
-+	}
- 
- 	/* link cpu under this node */
- 	for_each_present_cpu(cpu) {
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 682e74196f4b0..d2243f809616d 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2060,11 +2060,11 @@ static void qla_marker_sp_done(srb_t *sp, int res)
+ 	int cnt = 5; \
+ 	do { \
+ 		if (_chip_gen != sp->vha->hw->chip_reset || _login_gen != sp->fcport->login_gen) {\
+-			_rval = EINVAL; \
++			_rval = -EINVAL; \
+ 			break; \
+ 		} \
+ 		_rval = qla2x00_start_sp(_sp); \
+-		if (_rval == EAGAIN) \
++		if (_rval == -EAGAIN) \
+ 			msleep(1); \
+ 		else \
+ 			break; \
 -- 
 2.51.0
 
