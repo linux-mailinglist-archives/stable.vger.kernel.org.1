@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-185309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F6EBD4A37
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CBEBD41B6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9312B34FEFA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15AC8422AAC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0A530CDA5;
-	Mon, 13 Oct 2025 15:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325E02561A2;
+	Mon, 13 Oct 2025 14:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2T/V9hKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8Fz9aud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888C126F2B3;
-	Mon, 13 Oct 2025 15:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40EB2248A5;
+	Mon, 13 Oct 2025 14:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369927; cv=none; b=cMBYam/AY0YsqJ5k4UGDJt+Qyk1qAs8ZzYV+1kJixchLXaIQMKrf+eQVxSIScwocFS8nsooQOxLEmGXiGylKIWsT8l49FmpKs4Q9OsJb9b4i/CIznMctowLSvQOrfcyoBuJ9fGoXmhQH2ZL2xJ07Cx6gxxLMWC6DmDssa+pWMO0=
+	t=1760367561; cv=none; b=TlGeVgTTMBWm63lvY02wcJpZ/td4vXVAMwrOfIFmubMzOVYfEKZHyHe/r0vPLn2PyNlyJs6Ed4SP9OxxIwcmzsxjsjsBOo1yw+Wu9Xuwmm1ZZF35O09mOP3wRngzNmib6IHm89drus1qwGIPMLZnKSMiXDRT0oYDaj3R+AHwX/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369927; c=relaxed/simple;
-	bh=vcBpJlOuhr0FaaQ4q4te8oBoZ72+r2mtmYAwyJzByrk=;
+	s=arc-20240116; t=1760367561; c=relaxed/simple;
+	bh=n3SyVGj4VRI4m/jvFuSfXFIvL6F11XQ4rRWj6YFbbSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BIkPOTsC1p+4YTvn15sAokYRKETtOiiye/Z0v35BV8BIK1SZTePQtXve2sPQ9H0xRyTEppXG15HpV0sJ0RW9xZvbmb81r7zoR2h8lVWdTw1he38TP1+WClU1IePakPI/X4AadQOV4mfbArrx4xnBuWZfpn14ZLdl1bf0hciE09A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2T/V9hKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1362CC4CEE7;
-	Mon, 13 Oct 2025 15:38:46 +0000 (UTC)
+	 MIME-Version; b=PwcCG9KeLNIB7tBiRziKyTAhrXsMSzV+1lBYnt+SbNhgERWiuAE4BygDqdHbgbpzXWRBptQewgE3YOdC4BJJK9d0QA1aSIZTly7PpDo8VXUQz5Ss6UXP5wAgC4d3qeBEpFn1RE2AlXhRxoSaFr78wlmv4hp4PA0A0CzqjUx0Re8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8Fz9aud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705F1C4CEE7;
+	Mon, 13 Oct 2025 14:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369927;
-	bh=vcBpJlOuhr0FaaQ4q4te8oBoZ72+r2mtmYAwyJzByrk=;
+	s=korg; t=1760367560;
+	bh=n3SyVGj4VRI4m/jvFuSfXFIvL6F11XQ4rRWj6YFbbSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2T/V9hKSmdc7Z5qQcBa42AP5YQNK100KSk3Q/3LRD2aAsZDtua5KdRal+B6olV/Jo
-	 TuxkBIsVFly8ZipqSZIaMk+OE0/BSsq5MCxZwgViEJGCDTZ64X1z4XP2mV6e5Gd3aY
-	 Vn3JT7QNlK0j0YcYCVoDL6jbPSwza7KlvSPRFqw4=
+	b=Z8Fz9audiT9tS23Sxfbhsqs0TSv0pOl/fd1eVVppA4ActJC/+7oN9+F+XA+pYPVDw
+	 Lko+yZkvjo1aRs2FYTFQsUW0cEB/rDs5ilqgBC49GeZRAmGfWM32sKdDX1a4hHQyUP
+	 FJW3sSRr3vrJafNo3omJwz7997Svf3+tpFeJx0YQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hulk Robot <hulkci@huawei.com>,
+	Qi Xi <xiqi2@huawei.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 384/563] mptcp: Use __sk_dst_get() and dst_dev_rcu() in mptcp_active_enable().
+Subject: [PATCH 6.6 054/196] once: fix race by moving DO_ONCE to separate section
 Date: Mon, 13 Oct 2025 16:44:05 +0200
-Message-ID: <20251013144425.185476525@linuxfoundation.org>
+Message-ID: <20251013144317.153162921@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Qi Xi <xiqi2@huawei.com>
 
-[ Upstream commit 893c49a78d9f85e4b8081b908fb7c407d018106a ]
+[ Upstream commit edcc8a38b5ac1a3dbd05e113a38a25b937ebefe5 ]
 
-mptcp_active_enable() is called from subflow_finish_connect(),
-which is icsk->icsk_af_ops->sk_rx_dst_set() and it's not always
-under RCU.
+The commit c2c60ea37e5b ("once: use __section(".data.once")") moved
+DO_ONCE's ___done variable to .data.once section, which conflicts with
+DO_ONCE_LITE() that also uses the same section.
 
-Using sk_dst_get(sk)->dev could trigger UAF.
+This creates a race condition when clear_warn_once is used:
 
-Let's use __sk_dst_get() and dst_dev_rcu().
+Thread 1 (DO_ONCE)             Thread 2 (DO_ONCE)
+__do_once_start
+    read ___done (false)
+    acquire once_lock
+execute func
+__do_once_done
+    write ___done (true)      __do_once_start
+    release once_lock             // Thread 3 clear_warn_once reset ___done
+                                  read ___done (false)
+                                  acquire once_lock
+                              execute func
+schedule once_work            __do_once_done
+once_deferred: OK             write ___done (true)
+static_branch_disable         release once_lock
+                              schedule once_work
+                              once_deferred:
+                                  BUG_ON(!static_key_enabled)
 
-Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250916214758.650211-8-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+DO_ONCE_LITE() in once_lite.h is used by WARN_ON_ONCE() and other warning
+macros. Keep its ___done flag in the .data..once section and allow resetting
+by clear_warn_once, as originally intended.
+
+In contrast, DO_ONCE() is used for functions like get_random_once() and
+relies on its ___done flag for internal synchronization. We should not reset
+DO_ONCE() by clear_warn_once.
+
+Fix it by isolating DO_ONCE's ___done into a separate .data..do_once section,
+shielding it from clear_warn_once.
+
+Fixes: c2c60ea37e5b ("once: use __section(".data.once")")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/ctrl.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ include/asm-generic/vmlinux.lds.h | 1 +
+ include/linux/once.h              | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
-index c0e516872b4b5..e8ffa62ec183f 100644
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -501,12 +501,15 @@ void mptcp_active_enable(struct sock *sk)
- 	struct mptcp_pernet *pernet = mptcp_get_pernet(sock_net(sk));
- 
- 	if (atomic_read(&pernet->active_disable_times)) {
--		struct dst_entry *dst = sk_dst_get(sk);
-+		struct net_device *dev;
-+		struct dst_entry *dst;
- 
--		if (dst && dst->dev && (dst->dev->flags & IFF_LOOPBACK))
-+		rcu_read_lock();
-+		dst = __sk_dst_get(sk);
-+		dev = dst ? dst_dev_rcu(dst) : NULL;
-+		if (dev && (dev->flags & IFF_LOOPBACK))
- 			atomic_set(&pernet->active_disable_times, 0);
--
--		dst_release(dst);
-+		rcu_read_unlock();
- 	}
- }
- 
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index cf3f8b9bf43f0..010ac18c05916 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -351,6 +351,7 @@
+ 	__start_once = .;						\
+ 	*(.data..once)							\
+ 	__end_once = .;							\
++	*(.data..do_once)						\
+ 	STRUCT_ALIGN();							\
+ 	*(__tracepoints)						\
+ 	/* implement dynamic printk debug */				\
+diff --git a/include/linux/once.h b/include/linux/once.h
+index 30346fcdc7995..449a0e34ad5ad 100644
+--- a/include/linux/once.h
++++ b/include/linux/once.h
+@@ -46,7 +46,7 @@ void __do_once_sleepable_done(bool *done, struct static_key_true *once_key,
+ #define DO_ONCE(func, ...)						     \
+ 	({								     \
+ 		bool ___ret = false;					     \
+-		static bool __section(".data..once") ___done = false;	     \
++		static bool __section(".data..do_once") ___done = false;     \
+ 		static DEFINE_STATIC_KEY_TRUE(___once_key);		     \
+ 		if (static_branch_unlikely(&___once_key)) {		     \
+ 			unsigned long ___flags;				     \
+@@ -64,7 +64,7 @@ void __do_once_sleepable_done(bool *done, struct static_key_true *once_key,
+ #define DO_ONCE_SLEEPABLE(func, ...)						\
+ 	({									\
+ 		bool ___ret = false;						\
+-		static bool __section(".data..once") ___done = false;		\
++		static bool __section(".data..do_once") ___done = false;	\
+ 		static DEFINE_STATIC_KEY_TRUE(___once_key);			\
+ 		if (static_branch_unlikely(&___once_key)) {			\
+ 			___ret = __do_once_sleepable_start(&___done);		\
 -- 
 2.51.0
 
