@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-184601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADF0BD43AB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69FC0BD4859
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34830420811
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E1BA4FB88A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3649030F94C;
-	Mon, 13 Oct 2025 15:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D818F2F3C31;
+	Mon, 13 Oct 2025 15:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBmkQ8Pa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fh8LvIFW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8211271473;
-	Mon, 13 Oct 2025 15:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAC6211290;
+	Mon, 13 Oct 2025 15:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367905; cv=none; b=AOkfTMLGYypq59EO5WdR6tU9oZT/pk51sUgHOr1mNAkdcYUFjPRNvCyeHnSjQFtkjm9YBUThLAC+yMxdJaWA32vYGhrEAgpiUaGM+ojTrTFHwTr61Ax9LW6aR3sSgn0SIuTs2fUJp8o+vyPEf/QITZq42IOCTUTGt+g3kTyO3SM=
+	t=1760368520; cv=none; b=rAD+JC24nGsNQ/wqXez/tOiOmNhRQ/6ub8coYwiireemsCm28kIRK+LTl1xaUEnb0FXqFaL0MyQlJ8Rv7Rk2Ccmv1aIcBGoTTwiGzB7HncqUWZzItsToxKPTsi/xuOwE+GYWJyOLVamW1pB7ivOL7ZNA7aKxg+AFoAYQSRlTQu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367905; c=relaxed/simple;
-	bh=CjFclI1C//unICXY0eAyPGsV5MLMZjbLu/l+Nxm0sUA=;
+	s=arc-20240116; t=1760368520; c=relaxed/simple;
+	bh=kB8fT27hhVutbP38QLuZ1xzt7wl8S0vMcY4Kmp7SFPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btLibPaT9qZC0pXb71SFxebZmsJ4GK9s7Z1PYWZlkv5LtcUt3A6OwFJxTWVxfEi0aDPlB2nrb8fSsQk3XNvTTYLAh8E11j/k56m3bUqEwy7gIqDVhfN+dwVKl/OwAIyb07iEP/S9SnuHOh7gni7D7n0O3khq58ae2YYvk99a/K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBmkQ8Pa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E975C4CEE7;
-	Mon, 13 Oct 2025 15:05:04 +0000 (UTC)
+	 MIME-Version; b=VMbKWIY2kpC0yxWQjTbJ0y3ATbBR1qMsPovUc74dumsA4ZlWcBxAejTU64bb2AkCU4Sy/a41f0aB3AKRwiccGwAbEsPNl8JJH1oxCx41r4hevGVLcHYFYyZ8ZmT2I2nyeQyoXsCk4whv1JBwQ07OyAWCxVNA6dYjpNZY9LQfZ90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fh8LvIFW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8729C4CEE7;
+	Mon, 13 Oct 2025 15:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367904;
-	bh=CjFclI1C//unICXY0eAyPGsV5MLMZjbLu/l+Nxm0sUA=;
+	s=korg; t=1760368520;
+	bh=kB8fT27hhVutbP38QLuZ1xzt7wl8S0vMcY4Kmp7SFPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBmkQ8PaJ/6NC8o1kFNaslVZEYo0LDZdxfLKMC8NYUzzpANZnKAT79MSERp8PLhLD
-	 F2CbsXdjPTYBJv8C1p3Kx/w1iQqPytwMuvi3u5FOGxIPiWl159OH8Ja4uCGH+BSqox
-	 O70AdXgZhiMoNxytad2meAFL2Oe/5gl0pCSYdJkE=
+	b=fh8LvIFWXjZr6OoN+R217kGtdjgn8D8QROxY0v57s8ew5iKrOecCbyvrWN89Ns5X1
+	 XQdrvT95Nshzx9GLdy+yNYHTF2JfZZg6YQZzFqS0eb5IySRwRFLJ01nAJDH18E0fdC
+	 aDlAuHlowu2xxq1WoxA+KXpX4lcnDXOJnDarIlLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Slavin Liu <slavin452@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/196] coresight: etm4x: Support atclk
+Subject: [PATCH 6.12 190/262] ipvs: Defer ip_vs_ftp unregister during netns cleanup
 Date: Mon, 13 Oct 2025 16:45:32 +0200
-Message-ID: <20251013144320.414849364@linuxfoundation.org>
+Message-ID: <20251013144333.091799602@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Slavin Liu <slavin452@gmail.com>
 
-[ Upstream commit 40c0cdc9cbbebae9f43bef1cab9ce152318d0cce ]
+[ Upstream commit 134121bfd99a06d44ef5ba15a9beb075297c0821 ]
 
-The atclk is an optional clock for the CoreSight ETMv4, but the driver
-misses to initialize it.
+On the netns cleanup path, __ip_vs_ftp_exit() may unregister ip_vs_ftp
+before connections with valid cp->app pointers are flushed, leading to a
+use-after-free.
 
-This change enables atclk in probe of the ETMv4 driver, and dynamically
-control the clock during suspend and resume.
+Fix this by introducing a global `exiting_module` flag, set to true in
+ip_vs_ftp_exit() before unregistering the pernet subsystem. In
+__ip_vs_ftp_exit(), skip ip_vs_ftp unregister if called during netns
+cleanup (when exiting_module is false) and defer it to
+__ip_vs_cleanup_batch(), which unregisters all apps after all connections
+are flushed. If called during module exit, unregister ip_vs_ftp
+immediately.
 
-No need to check the driver data and clock pointer in the runtime
-suspend and resume, so remove checks.  And add error handling in the
-resume function.
-
-Add a minor fix to the comment format when adding the atclk field.
-
-Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250731-arm_cs_fix_clock_v4-v6-3-1dfe10bb3f6f@arm.com
+Fixes: 61b1ab4583e2 ("IPVS: netns, add basic init per netns.")
+Suggested-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Slavin Liu <slavin452@gmail.com>
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm4x-core.c          | 20 ++++++++++++++-----
- drivers/hwtracing/coresight/coresight-etm4x.h |  4 +++-
- 2 files changed, 18 insertions(+), 6 deletions(-)
+ net/netfilter/ipvs/ip_vs_ftp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 625582f7dc34c..e4d8d446ea4d3 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -2118,6 +2118,10 @@ static int etm4_probe(struct device *dev)
- 	if (WARN_ON(!drvdata))
- 		return -ENOMEM;
+diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
+index d8a284999544b..206c6700e2006 100644
+--- a/net/netfilter/ipvs/ip_vs_ftp.c
++++ b/net/netfilter/ipvs/ip_vs_ftp.c
+@@ -53,6 +53,7 @@ enum {
+ 	IP_VS_FTP_EPSV,
+ };
  
-+	drvdata->atclk = devm_clk_get_optional_enabled(dev, "atclk");
-+	if (IS_ERR(drvdata->atclk))
-+		return PTR_ERR(drvdata->atclk);
-+
- 	if (pm_save_enable == PARAM_PM_SAVE_FIRMWARE)
- 		pm_save_enable = coresight_loses_context_with_cpu(dev) ?
- 			       PARAM_PM_SAVE_SELF_HOSTED : PARAM_PM_SAVE_NEVER;
-@@ -2369,8 +2373,8 @@ static int etm4_runtime_suspend(struct device *dev)
++static bool exiting_module;
+ /*
+  * List of ports (up to IP_VS_APP_MAX_PORTS) to be handled by helper
+  * First port is set to the default port.
+@@ -605,7 +606,7 @@ static void __ip_vs_ftp_exit(struct net *net)
  {
- 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
+ 	struct netns_ipvs *ipvs = net_ipvs(net);
  
--	if (drvdata->pclk && !IS_ERR(drvdata->pclk))
--		clk_disable_unprepare(drvdata->pclk);
-+	clk_disable_unprepare(drvdata->atclk);
-+	clk_disable_unprepare(drvdata->pclk);
+-	if (!ipvs)
++	if (!ipvs || !exiting_module)
+ 		return;
  
- 	return 0;
- }
-@@ -2378,11 +2382,17 @@ static int etm4_runtime_suspend(struct device *dev)
- static int etm4_runtime_resume(struct device *dev)
- {
- 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = clk_prepare_enable(drvdata->pclk);
-+	if (ret)
-+		return ret;
- 
--	if (drvdata->pclk && !IS_ERR(drvdata->pclk))
--		clk_prepare_enable(drvdata->pclk);
-+	ret = clk_prepare_enable(drvdata->atclk);
-+	if (ret)
-+		clk_disable_unprepare(drvdata->pclk);
- 
--	return 0;
-+	return ret;
- }
- #endif
- 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
-index d72f742b41054..d8b8102d790cc 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -920,7 +920,8 @@ struct etmv4_save_state {
- 
- /**
-  * struct etm4_drvdata - specifics associated to an ETM component
-- * @pclk        APB clock if present, otherwise NULL
-+ * @pclk:       APB clock if present, otherwise NULL
-+ * @atclk:      Optional clock for the core parts of the ETMv4.
-  * @base:       Memory mapped base address for this component.
-  * @csdev:      Component vitals needed by the framework.
-  * @spinlock:   Only one at a time pls.
-@@ -988,6 +989,7 @@ struct etmv4_save_state {
+ 	unregister_ip_vs_app(ipvs, &ip_vs_ftp);
+@@ -627,6 +628,7 @@ static int __init ip_vs_ftp_init(void)
   */
- struct etmv4_drvdata {
- 	struct clk			*pclk;
-+	struct clk			*atclk;
- 	void __iomem			*base;
- 	struct coresight_device		*csdev;
- 	spinlock_t			spinlock;
+ static void __exit ip_vs_ftp_exit(void)
+ {
++	exiting_module = true;
+ 	unregister_pernet_subsys(&ip_vs_ftp_ops);
+ 	/* rcu_barrier() is called by netns */
+ }
 -- 
 2.51.0
 
