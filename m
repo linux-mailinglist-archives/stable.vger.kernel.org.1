@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-185239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C026FBD4BFD
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:06:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB97ABD50B9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19CEF564895
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:54:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F48481F02
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C95E30FC1C;
-	Mon, 13 Oct 2025 15:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4033C30F927;
+	Mon, 13 Oct 2025 15:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpLMhAVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="km+yHZZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB4830BBB8;
-	Mon, 13 Oct 2025 15:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15E92F998D;
+	Mon, 13 Oct 2025 15:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369728; cv=none; b=j9rp9XRdv0L494k/8MCcqQ4L8FS4addJ58kFqV0zB6PTONorBjec0xpAHyVHjhmkaBxxtytVqK2coCqW4/48ab+R7xqaOAdCRJFMxKJ35N3Xh9CBC1xvdZkIxPdh7Uc9s8/gqhFf625KelpiqG8WYJRJqU7N0m5jQ6W2LD0VhNA=
+	t=1760369763; cv=none; b=N8LzWgU4EGLaqg2uAcrAIwY5y7PPYprnhQ3FSRLF2e8ee9r07qst1lisFy8M3X//rEnxkijQRq5YtVBarD0TuHletnDEBH1xfr3hJPlQ3nSpqq46MP2fTW5QxvcJMi+je4SE0dzFSFP77xbsghWKHy/1ptjW1yjI+zyxArvG+hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369728; c=relaxed/simple;
-	bh=Gpx+inrrEAfbOS782MauGVd07NsCHSuArX2AQrBgaTc=;
+	s=arc-20240116; t=1760369763; c=relaxed/simple;
+	bh=1R1Hr6lVUkX3pWbNqdkzlVO2zLXCfsVs2c6tW9GTAUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdCmFr1wgimCndy2dtkT1SzZudzT0jACfoOO5R/PEFhr6i96tOoga6XCmnkkKK6dr6Q5zzbxEyowkNtjI/cZkFU/Tx4bJ0PYdrErUCdXBr1BiOG6ONh2yon9d3kArKBrQa6zIY4t4NAmxKJmJqJbYs9dxCEzd3R5eC3XcWe2tq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpLMhAVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599DCC4CEE7;
-	Mon, 13 Oct 2025 15:35:28 +0000 (UTC)
+	 MIME-Version; b=Bq2Gm71u3ZMhgHJQJFdBHbvVglGlpT6QN3w6JPYDKQZseDqd9S8VQ1YWABlP1UlVr00qqyyMQjGfJzruROUlJNRfzCjrKrrrAY8u6+1wB02zzZ1dOwc2onfqZq1rd/p+9r5wOtLRZO2+Ohzej269SROXh0vb/PTeSJh2he8Q65c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=km+yHZZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F05C19425;
+	Mon, 13 Oct 2025 15:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369728;
-	bh=Gpx+inrrEAfbOS782MauGVd07NsCHSuArX2AQrBgaTc=;
+	s=korg; t=1760369762;
+	bh=1R1Hr6lVUkX3pWbNqdkzlVO2zLXCfsVs2c6tW9GTAUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpLMhAVnIHL9Jbk/x+WV4JAtHlN35TVAk1t9vNGXyjLdue5B2CG4+0/sptLd35Iiw
-	 YxSMlxykX+4AZWv61SgBci8Araux2FtVZHzC0c9FUk2Bxvp/0pHwkdrUELfZxwWMXl
-	 SOHGv4Cj19EfV+L78PATmyl4YFPn+FEbGdChhI9g=
+	b=km+yHZZEmyDxF2v8Q8GkqeufLy73GyBy1cLfmz4LWqf+aMWHAUjiMnOuDC7EX0drZ
+	 3fTIdSp0lOQmBGSeo1daNSO1bNKbWXR7bjA5UT+KJ/y4Vu7NwqFrSDFTG0+PtpB265
+	 kUqYfbLJ2Wxu/B16mHU6/qlXhzddCFm2DwxJHjIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Beguin <liambeguin@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 341/563] iio: consumers: Fix offset handling in iio_convert_raw_to_processed()
-Date: Mon, 13 Oct 2025 16:43:22 +0200
-Message-ID: <20251013144423.622567381@linuxfoundation.org>
+Subject: [PATCH 6.17 342/563] mm/slub: Fix cmp_loc_by_count() to return 0 when counts are equal
+Date: Mon, 13 Oct 2025 16:43:23 +0200
+Message-ID: <20251013144423.658214774@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,40 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 33f5c69c4daff39c010b3ea6da8ebab285f4277b ]
+[ Upstream commit e1c4350327b39c9cad27b6c5779b3754384f26c8 ]
 
-Fix iio_convert_raw_to_processed() offset handling for channels without
-a scale attribute.
+The comparison function cmp_loc_by_count() used for sorting stack trace
+locations in debugfs currently returns -1 if a->count > b->count and 1
+otherwise. This breaks the antisymmetry property required by sort(),
+because when two counts are equal, both cmp(a, b) and cmp(b, a) return
+1.
 
-The offset has been applied to the raw64 value not to the original raw
-value. Use the raw64 value so that the offset is taken into account.
+This can lead to undefined or incorrect ordering results. Fix it by
+updating the comparison logic to explicitly handle the case when counts
+are equal, and use cmp_int() to ensure the comparison function adheres
+to the required mathematical properties of antisymmetry.
 
-Fixes: 14b457fdde38 ("iio: inkern: apply consumer scale when no channel scale is available")
-Cc: Liam Beguin <liambeguin@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20250831104825.15097-3-hansg@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 553c0369b3e1 ("mm/slub: sort debugfs output by frequency of stack traces")
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/inkern.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/slub.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index d36a80a7b8a93..642beb4b3360d 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -640,7 +640,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
- 		 * If no channel scaling is available apply consumer scale to
- 		 * raw value and return.
- 		 */
--		*processed = raw * scale;
-+		*processed = raw64 * scale;
- 		return 0;
- 	}
+diff --git a/mm/slub.c b/mm/slub.c
+index d257141896c95..264fc76455d73 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -7731,10 +7731,7 @@ static int cmp_loc_by_count(const void *a, const void *b, const void *data)
+ 	struct location *loc1 = (struct location *)a;
+ 	struct location *loc2 = (struct location *)b;
  
+-	if (loc1->count > loc2->count)
+-		return -1;
+-	else
+-		return 1;
++	return cmp_int(loc2->count, loc1->count);
+ }
+ 
+ static void *slab_debugfs_start(struct seq_file *seq, loff_t *ppos)
 -- 
 2.51.0
 
