@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-184170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6280BD20CE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:27:03 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026FEBD20D0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 416904EE41A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 08:26:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 373B64EB336
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 08:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3642F5337;
-	Mon, 13 Oct 2025 08:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6C62EACF7;
+	Mon, 13 Oct 2025 08:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XM3Xw5NI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dl2EyWb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EC92F4A19
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 08:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B11C246778
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 08:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760343997; cv=none; b=kaxTLf6a31TGvpG/BUFHR5eYW8aRIYHm+CEpF11aA6VVHcPb61E+tm0BPD98ktAxEvvRBXpVOOPiRRvyjjOSQNkjunDmNk4wU1OD8gJN8Xyazu5NOkS0vo/wwwDFKaNEtAxZt9ldyYGMNSxClimW6BoA3hEOZNG83Y3TVAXvs2I=
+	t=1760344018; cv=none; b=tBFKkxqcTMx51m09G7zk6vF20Z48WKB4h0bsxTk4dbSw9x0/Tvq2z6tJSVXH3sg2OMyMcVxD0XEEweN5V2IvKubDvF4Ktr0zr45PmROhOE/ltRHxMCngBwssPSfGaiImL5mJaenVxKk90W4GaTRYq6RRqdoJ7td3CujNy5paXiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760343997; c=relaxed/simple;
-	bh=U+NGPbW9QT4UfbuRiC5a1b4TyheBPlHmqPCzEu8ERG0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ckYUWcKT+nCnYRX1Frr7k0UYWsUOb+XyUGkl/JVSClqEeAa6LuFonM63EGMAAsvg+Q2Nijb19BX994suwyvae0uqFKKOgcFY3GnrVBTnVdxHhmO7eUD7p2faOI6UqD4Tcax2x/HvxzIf1RtjrBes/5yJkGPPW8zPLIIKNvkfRck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XM3Xw5NI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CF9C4CEFE;
-	Mon, 13 Oct 2025 08:26:36 +0000 (UTC)
+	s=arc-20240116; t=1760344018; c=relaxed/simple;
+	bh=pKGpneZLuaq5MWVMn2+ZS+e5QSbyJ0uTcEBSM6XqPkE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bUprzJtseXzxsQg5nV2h5bovXQZw60ivUGDA5cmuJY/v1MqHLFwa+CqM6SfG09Xfz7dF1Q3NyNQhfUtgeYHEvMNpsgZaUj8v5+mZHWIjaCqeunFAbSMx7Ut2tYky/p8rpapHSURO8npYsTJMS6epkWFO8ZrUeZigMBBcNViAwso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dl2EyWb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42942C4CEE7;
+	Mon, 13 Oct 2025 08:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760343997;
-	bh=U+NGPbW9QT4UfbuRiC5a1b4TyheBPlHmqPCzEu8ERG0=;
+	s=korg; t=1760344017;
+	bh=pKGpneZLuaq5MWVMn2+ZS+e5QSbyJ0uTcEBSM6XqPkE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=XM3Xw5NIY2wX1LiZN36RZayXSDStA+6el2pJtp0FWaHWkgfHVaGAnw3fGO6SQkW/F
-	 I7GkhD50lRfxChun04EVrxkI0w3dAO9jq5GhgspvxRz7jRmU9r69P2aPM8buVSQ0fa
-	 w+vt5kx74JZDL7cmkuAJOTJ4ZAOtp0R1a9Y3ZDxI=
-Subject: FAILED: patch "[PATCH] tracing: Fix race condition in kprobe initialization causing" failed to apply to 5.4-stable tree
-To: chenyuan@kylinos.cn,mhiramat@kernel.org
+	b=Dl2EyWb1oelHhA/N3hvC9Vs4b0FpehODWGoCZmR2GNx+D76rfleI/S/TvEMmBK/I7
+	 fAq/c7mkCv/rwpN4ce3BfvXcHCw7kJ0EMmP1GDb6GYD6JSE7Ul6XS79jAXjgNErufK
+	 C1F0TNnRvIDAcoXi6tI7MN1s5Mnqj/e3YLkhm4+k=
+Subject: FAILED: patch "[PATCH] tracing: Have trace_marker use per-cpu data to read user" failed to apply to 6.12-stable tree
+To: rostedt@goodmis.org,luogengkun@huaweicloud.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,runpinglai@google.com,torvalds@linux-foundation.org,wattson-external@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Oct 2025 10:26:31 +0200
-Message-ID: <2025101331-mulled-pueblo-7ac2@gregkh>
+Date: Mon, 13 Oct 2025 10:26:54 +0200
+Message-ID: <2025101354-eject-groove-319c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9cf9aa7b0acfde7545c1a1d912576e9bab28dc6f
+git cherry-pick -x 64cf7d058a005c5c31eb8a0b741f35dc12915d18
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101331-mulled-pueblo-7ac2@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101354-eject-groove-319c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,275 +77,480 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9cf9aa7b0acfde7545c1a1d912576e9bab28dc6f Mon Sep 17 00:00:00 2001
-From: Yuan Chen <chenyuan@kylinos.cn>
-Date: Wed, 1 Oct 2025 03:20:25 +0100
-Subject: [PATCH] tracing: Fix race condition in kprobe initialization causing
- NULL pointer dereference
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 64cf7d058a005c5c31eb8a0b741f35dc12915d18 Mon Sep 17 00:00:00 2001
+From: Steven Rostedt <rostedt@goodmis.org>
+Date: Wed, 8 Oct 2025 12:45:10 -0400
+Subject: [PATCH] tracing: Have trace_marker use per-cpu data to read user
+ space
 
-There is a critical race condition in kprobe initialization that can lead to
-NULL pointer dereference and kernel crash.
+It was reported that using __copy_from_user_inatomic() can actually
+schedule. Which is bad when preemption is disabled. Even though there's
+logic to check in_atomic() is set, but this is a nop when the kernel is
+configured with PREEMPT_NONE. This is due to page faulting and the code
+could schedule with preemption disabled.
 
-[1135630.084782] Unable to handle kernel paging request at virtual address 0000710a04630000
-...
-[1135630.260314] pstate: 404003c9 (nZcv DAIF +PAN -UAO)
-[1135630.269239] pc : kprobe_perf_func+0x30/0x260
-[1135630.277643] lr : kprobe_dispatcher+0x44/0x60
-[1135630.286041] sp : ffffaeff4977fa40
-[1135630.293441] x29: ffffaeff4977fa40 x28: ffffaf015340e400
-[1135630.302837] x27: 0000000000000000 x26: 0000000000000000
-[1135630.312257] x25: ffffaf029ed108a8 x24: ffffaf015340e528
-[1135630.321705] x23: ffffaeff4977fc50 x22: ffffaeff4977fc50
-[1135630.331154] x21: 0000000000000000 x20: ffffaeff4977fc50
-[1135630.340586] x19: ffffaf015340e400 x18: 0000000000000000
-[1135630.349985] x17: 0000000000000000 x16: 0000000000000000
-[1135630.359285] x15: 0000000000000000 x14: 0000000000000000
-[1135630.368445] x13: 0000000000000000 x12: 0000000000000000
-[1135630.377473] x11: 0000000000000000 x10: 0000000000000000
-[1135630.386411] x9 : 0000000000000000 x8 : 0000000000000000
-[1135630.395252] x7 : 0000000000000000 x6 : 0000000000000000
-[1135630.403963] x5 : 0000000000000000 x4 : 0000000000000000
-[1135630.412545] x3 : 0000710a04630000 x2 : 0000000000000006
-[1135630.421021] x1 : ffffaeff4977fc50 x0 : 0000710a04630000
-[1135630.429410] Call trace:
-[1135630.434828]  kprobe_perf_func+0x30/0x260
-[1135630.441661]  kprobe_dispatcher+0x44/0x60
-[1135630.448396]  aggr_pre_handler+0x70/0xc8
-[1135630.454959]  kprobe_breakpoint_handler+0x140/0x1e0
-[1135630.462435]  brk_handler+0xbc/0xd8
-[1135630.468437]  do_debug_exception+0x84/0x138
-[1135630.475074]  el1_dbg+0x18/0x8c
-[1135630.480582]  security_file_permission+0x0/0xd0
-[1135630.487426]  vfs_write+0x70/0x1c0
-[1135630.493059]  ksys_write+0x5c/0xc8
-[1135630.498638]  __arm64_sys_write+0x24/0x30
-[1135630.504821]  el0_svc_common+0x78/0x130
-[1135630.510838]  el0_svc_handler+0x38/0x78
-[1135630.516834]  el0_svc+0x8/0x1b0
+Link: https://lore.kernel.org/all/20250819105152.2766363-1-luogengkun@huaweicloud.com/
 
-kernel/trace/trace_kprobe.c: 1308
-0xffff3df8995039ec <kprobe_perf_func+0x2c>:     ldr     x21, [x24,#120]
-include/linux/compiler.h: 294
-0xffff3df8995039f0 <kprobe_perf_func+0x30>:     ldr     x1, [x21,x0]
+The solution was to change the __copy_from_user_inatomic() to
+copy_from_user_nofault(). But then it was reported that this caused a
+regression in Android. There's several applications writing into
+trace_marker() in Android, but now instead of showing the expected data,
+it is showing:
 
-kernel/trace/trace_kprobe.c
-1308: head = this_cpu_ptr(call->perf_events);
-1309: if (hlist_empty(head))
-1310: 	return 0;
+  tracing_mark_write: <faulted>
 
-crash> struct trace_event_call -o
-struct trace_event_call {
-  ...
-  [120] struct hlist_head *perf_events;  //(call->perf_event)
-  ...
-}
+After reverting the conversion to copy_from_user_nofault(), Android was
+able to get the data again.
 
-crash> struct trace_event_call ffffaf015340e528
-struct trace_event_call {
-  ...
-  perf_events = 0xffff0ad5fa89f088, //this value is correct, but x21 = 0
-  ...
-}
+Writes to the trace_marker is a way to efficiently and quickly enter data
+into the Linux tracing buffer. It takes no locks and was designed to be as
+non-intrusive as possible. This means it cannot allocate memory, and must
+use pre-allocated data.
 
-Race Condition Analysis:
+A method that is actively being worked on to have faultable system call
+tracepoints read user space data is to allocate per CPU buffers, and use
+them in the callback. The method uses a technique similar to seqcount.
+That is something like this:
 
-The race occurs between kprobe activation and perf_events initialization:
+	preempt_disable();
+	cpu = smp_processor_id();
+	buffer = this_cpu_ptr(&pre_allocated_cpu_buffers, cpu);
+	do {
+		cnt = nr_context_switches_cpu(cpu);
+		migrate_disable();
+		preempt_enable();
+		ret = copy_from_user(buffer, ptr, size);
+		preempt_disable();
+		migrate_enable();
+	} while (!ret && cnt != nr_context_switches_cpu(cpu));
 
-  CPU0                                    CPU1
-  ====                                    ====
-  perf_kprobe_init
-    perf_trace_event_init
-      tp_event->perf_events = list;(1)
-      tp_event->class->reg (2)← KPROBE ACTIVE
-                                          Debug exception triggers
-                                          ...
-                                          kprobe_dispatcher
-                                            kprobe_perf_func (tk->tp.flags & TP_FLAG_PROFILE)
-                                              head = this_cpu_ptr(call->perf_events)(3)
-                                              (perf_events is still NULL)
+	if (!ret)
+		ring_buffer_write(buffer);
+	preempt_enable();
 
-Problem:
-1. CPU0 executes (1) assigning tp_event->perf_events = list
-2. CPU0 executes (2) enabling kprobe functionality via class->reg()
-3. CPU1 triggers and reaches kprobe_dispatcher
-4. CPU1 checks TP_FLAG_PROFILE - condition passes (step 2 completed)
-5. CPU1 calls kprobe_perf_func() and crashes at (3) because
-   call->perf_events is still NULL
+It's a little more involved than that, but the above is the basic logic.
+The idea is to acquire the current CPU buffer, disable migration, and then
+enable preemption. At this moment, it can safely use copy_from_user().
+After reading the data from user space, it disables preemption again. It
+then checks to see if there was any new scheduling on this CPU. If there
+was, it must assume that the buffer was corrupted by another task. If
+there wasn't, then the buffer is still valid as only tasks in preemptable
+context can write to this buffer and only those that are running on the
+CPU.
 
-CPU1 sees that kprobe functionality is enabled but does not see that
-perf_events has been assigned.
+By using this method, where trace_marker open allocates the per CPU
+buffers, trace_marker writes can access user space and even fault it in,
+without having to allocate or take any locks of its own.
 
-Add pairing read and write memory barriers to guarantee that if CPU1
-sees that kprobe functionality is enabled, it must also see that
-perf_events has been assigned.
-
-Link: https://lore.kernel.org/all/20251001022025.44626-1-chenyuan_fl@163.com/
-
-Fixes: 50d780560785 ("tracing/kprobes: Add probe handler dispatcher to support perf and ftrace concurrent use")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Luo Gengkun <luogengkun@huaweicloud.com>
+Cc: Wattson CI <wattson-external@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20251008124510.6dba541a@gandalf.local.home
+Fixes: 3d62ab32df065 ("tracing: Fix tracing_marker may trigger page fault during preempt_disable")
+Reported-by: Runping Lai <runpinglai@google.com>
+Tested-by: Runping Lai <runpinglai@google.com>
+Closes: https://lore.kernel.org/linux-trace-kernel/20251007003417.3470979-2-runpinglai@google.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
-index b36ade43d4b3..ad9d6347b5fa 100644
---- a/kernel/trace/trace_fprobe.c
-+++ b/kernel/trace/trace_fprobe.c
-@@ -522,13 +522,14 @@ static int fentry_dispatcher(struct fprobe *fp, unsigned long entry_ip,
- 			     void *entry_data)
- {
- 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
-+	unsigned int flags = trace_probe_load_flag(&tf->tp);
- 	int ret = 0;
- 
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		fentry_trace_func(tf, entry_ip, fregs);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret = fentry_perf_func(tf, entry_ip, fregs);
- #endif
- 	return ret;
-@@ -540,11 +541,12 @@ static void fexit_dispatcher(struct fprobe *fp, unsigned long entry_ip,
- 			     void *entry_data)
- {
- 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
-+	unsigned int flags = trace_probe_load_flag(&tf->tp);
- 
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		fexit_trace_func(tf, entry_ip, ret_ip, fregs, entry_data);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		fexit_perf_func(tf, entry_ip, ret_ip, fregs, entry_data);
- #endif
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index b3c94fbaf002..0fd582651293 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4791,12 +4791,6 @@ int tracing_single_release_file_tr(struct inode *inode, struct file *filp)
+ 	return single_release(inode, filp);
  }
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index fa60362a3f31..ee8171b19bee 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1815,14 +1815,15 @@ static int kprobe_register(struct trace_event_call *event,
- static int kprobe_dispatcher(struct kprobe *kp, struct pt_regs *regs)
+ 
+-static int tracing_mark_open(struct inode *inode, struct file *filp)
+-{
+-	stream_open(inode, filp);
+-	return tracing_open_generic_tr(inode, filp);
+-}
+-
+ static int tracing_release(struct inode *inode, struct file *file)
  {
- 	struct trace_kprobe *tk = container_of(kp, struct trace_kprobe, rp.kp);
-+	unsigned int flags = trace_probe_load_flag(&tk->tp);
- 	int ret = 0;
+ 	struct trace_array *tr = inode->i_private;
+@@ -7163,7 +7157,7 @@ tracing_free_buffer_release(struct inode *inode, struct file *filp)
  
- 	raw_cpu_inc(*tk->nhit);
+ #define TRACE_MARKER_MAX_SIZE		4096
  
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		kprobe_trace_func(tk, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret = kprobe_perf_func(tk, regs);
- #endif
- 	return ret;
-@@ -1834,6 +1835,7 @@ kretprobe_dispatcher(struct kretprobe_instance *ri, struct pt_regs *regs)
+-static ssize_t write_marker_to_buffer(struct trace_array *tr, const char __user *ubuf,
++static ssize_t write_marker_to_buffer(struct trace_array *tr, const char *buf,
+ 				      size_t cnt, unsigned long ip)
  {
- 	struct kretprobe *rp = get_kretprobe(ri);
- 	struct trace_kprobe *tk;
-+	unsigned int flags;
+ 	struct ring_buffer_event *event;
+@@ -7173,20 +7167,11 @@ static ssize_t write_marker_to_buffer(struct trace_array *tr, const char __user
+ 	int meta_size;
+ 	ssize_t written;
+ 	size_t size;
+-	int len;
+-
+-/* Used in tracing_mark_raw_write() as well */
+-#define FAULTED_STR "<faulted>"
+-#define FAULTED_SIZE (sizeof(FAULTED_STR) - 1) /* '\0' is already accounted for */
  
- 	/*
- 	 * There is a small chance that get_kretprobe(ri) returns NULL when
-@@ -1846,10 +1848,11 @@ kretprobe_dispatcher(struct kretprobe_instance *ri, struct pt_regs *regs)
- 	tk = container_of(rp, struct trace_kprobe, rp);
- 	raw_cpu_inc(*tk->nhit);
+ 	meta_size = sizeof(*entry) + 2;  /* add '\0' and possible '\n' */
+  again:
+ 	size = cnt + meta_size;
  
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tk->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		kretprobe_trace_func(tk, ri, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		kretprobe_perf_func(tk, ri, regs);
- #endif
- 	return 0;	/* We don't tweak kernel, so just return 0 */
-diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index 842383fbc03b..08b5bda24da2 100644
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -271,16 +271,21 @@ struct event_file_link {
- 	struct list_head		list;
- };
+-	/* If less than "<faulted>", then make sure we can still add that */
+-	if (cnt < FAULTED_SIZE)
+-		size += FAULTED_SIZE - cnt;
+-
+ 	buffer = tr->array_buffer.buffer;
+ 	event = __trace_buffer_lock_reserve(buffer, TRACE_PRINT, size,
+ 					    tracing_gen_ctx());
+@@ -7196,9 +7181,6 @@ static ssize_t write_marker_to_buffer(struct trace_array *tr, const char __user
+ 		 * make it smaller and try again.
+ 		 */
+ 		if (size > ring_buffer_max_event_size(buffer)) {
+-			/* cnt < FAULTED size should never be bigger than max */
+-			if (WARN_ON_ONCE(cnt < FAULTED_SIZE))
+-				return -EBADF;
+ 			cnt = ring_buffer_max_event_size(buffer) - meta_size;
+ 			/* The above should only happen once */
+ 			if (WARN_ON_ONCE(cnt + meta_size == size))
+@@ -7212,14 +7194,8 @@ static ssize_t write_marker_to_buffer(struct trace_array *tr, const char __user
  
-+static inline unsigned int trace_probe_load_flag(struct trace_probe *tp)
+ 	entry = ring_buffer_event_data(event);
+ 	entry->ip = ip;
+-
+-	len = copy_from_user_nofault(&entry->buf, ubuf, cnt);
+-	if (len) {
+-		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
+-		cnt = FAULTED_SIZE;
+-		written = -EFAULT;
+-	} else
+-		written = cnt;
++	memcpy(&entry->buf, buf, cnt);
++	written = cnt;
+ 
+ 	if (tr->trace_marker_file && !list_empty(&tr->trace_marker_file->triggers)) {
+ 		/* do not add \n before testing triggers, but add \0 */
+@@ -7243,6 +7219,169 @@ static ssize_t write_marker_to_buffer(struct trace_array *tr, const char __user
+ 	return written;
+ }
+ 
++struct trace_user_buf {
++	char		*buf;
++};
++
++struct trace_user_buf_info {
++	struct trace_user_buf __percpu	*tbuf;
++	int				ref;
++};
++
++
++static DEFINE_MUTEX(trace_user_buffer_mutex);
++static struct trace_user_buf_info *trace_user_buffer;
++
++static void trace_user_fault_buffer_free(struct trace_user_buf_info *tinfo)
 +{
-+	return smp_load_acquire(&tp->event->flags);
++	char *buf;
++	int cpu;
++
++	for_each_possible_cpu(cpu) {
++		buf = per_cpu_ptr(tinfo->tbuf, cpu)->buf;
++		kfree(buf);
++	}
++	free_percpu(tinfo->tbuf);
++	kfree(tinfo);
 +}
 +
- static inline bool trace_probe_test_flag(struct trace_probe *tp,
- 					 unsigned int flag)
- {
--	return !!(tp->event->flags & flag);
-+	return !!(trace_probe_load_flag(tp) & flag);
++static int trace_user_fault_buffer_enable(void)
++{
++	struct trace_user_buf_info *tinfo;
++	char *buf;
++	int cpu;
++
++	guard(mutex)(&trace_user_buffer_mutex);
++
++	if (trace_user_buffer) {
++		trace_user_buffer->ref++;
++		return 0;
++	}
++
++	tinfo = kmalloc(sizeof(*tinfo), GFP_KERNEL);
++	if (!tinfo)
++		return -ENOMEM;
++
++	tinfo->tbuf = alloc_percpu(struct trace_user_buf);
++	if (!tinfo->tbuf) {
++		kfree(tinfo);
++		return -ENOMEM;
++	}
++
++	tinfo->ref = 1;
++
++	/* Clear each buffer in case of error */
++	for_each_possible_cpu(cpu) {
++		per_cpu_ptr(tinfo->tbuf, cpu)->buf = NULL;
++	}
++
++	for_each_possible_cpu(cpu) {
++		buf = kmalloc_node(TRACE_MARKER_MAX_SIZE, GFP_KERNEL,
++				   cpu_to_node(cpu));
++		if (!buf) {
++			trace_user_fault_buffer_free(tinfo);
++			return -ENOMEM;
++		}
++		per_cpu_ptr(tinfo->tbuf, cpu)->buf = buf;
++	}
++
++	trace_user_buffer = tinfo;
++
++	return 0;
++}
++
++static void trace_user_fault_buffer_disable(void)
++{
++	struct trace_user_buf_info *tinfo;
++
++	guard(mutex)(&trace_user_buffer_mutex);
++
++	tinfo = trace_user_buffer;
++
++	if (WARN_ON_ONCE(!tinfo))
++		return;
++
++	if (--tinfo->ref)
++		return;
++
++	trace_user_fault_buffer_free(tinfo);
++	trace_user_buffer = NULL;
++}
++
++/* Must be called with preemption disabled */
++static char *trace_user_fault_read(struct trace_user_buf_info *tinfo,
++				   const char __user *ptr, size_t size,
++				   size_t *read_size)
++{
++	int cpu = smp_processor_id();
++	char *buffer = per_cpu_ptr(tinfo->tbuf, cpu)->buf;
++	unsigned int cnt;
++	int trys = 0;
++	int ret;
++
++	if (size > TRACE_MARKER_MAX_SIZE)
++		size = TRACE_MARKER_MAX_SIZE;
++	*read_size = 0;
++
++	/*
++	 * This acts similar to a seqcount. The per CPU context switches are
++	 * recorded, migration is disabled and preemption is enabled. The
++	 * read of the user space memory is copied into the per CPU buffer.
++	 * Preemption is disabled again, and if the per CPU context switches count
++	 * is still the same, it means the buffer has not been corrupted.
++	 * If the count is different, it is assumed the buffer is corrupted
++	 * and reading must be tried again.
++	 */
++
++	do {
++		/*
++		 * If for some reason, copy_from_user() always causes a context
++		 * switch, this would then cause an infinite loop.
++		 * If this task is preempted by another user space task, it
++		 * will cause this task to try again. But just in case something
++		 * changes where the copying from user space causes another task
++		 * to run, prevent this from going into an infinite loop.
++		 * 100 tries should be plenty.
++		 */
++		if (WARN_ONCE(trys++ > 100, "Error: Too many tries to read user space"))
++			return NULL;
++
++		/* Read the current CPU context switch counter */
++		cnt = nr_context_switches_cpu(cpu);
++
++		/*
++		 * Preemption is going to be enabled, but this task must
++		 * remain on this CPU.
++		 */
++		migrate_disable();
++
++		/*
++		 * Now preemption is being enabed and another task can come in
++		 * and use the same buffer and corrupt our data.
++		 */
++		preempt_enable_notrace();
++
++		ret = __copy_from_user(buffer, ptr, size);
++
++		preempt_disable_notrace();
++		migrate_enable();
++
++		/* if it faulted, no need to test if the buffer was corrupted */
++		if (ret)
++			return NULL;
++
++		/*
++		 * Preemption is disabled again, now check the per CPU context
++		 * switch counter. If it doesn't match, then another user space
++		 * process may have schedule in and corrupted our buffer. In that
++		 * case the copying must be retried.
++		 */
++	} while (nr_context_switches_cpu(cpu) != cnt);
++
++	*read_size = size;
++	return buffer;
++}
++
+ static ssize_t
+ tracing_mark_write(struct file *filp, const char __user *ubuf,
+ 					size_t cnt, loff_t *fpos)
+@@ -7250,6 +7389,8 @@ tracing_mark_write(struct file *filp, const char __user *ubuf,
+ 	struct trace_array *tr = filp->private_data;
+ 	ssize_t written = -ENODEV;
+ 	unsigned long ip;
++	size_t size;
++	char *buf;
+ 
+ 	if (tracing_disabled)
+ 		return -EINVAL;
+@@ -7263,6 +7404,16 @@ tracing_mark_write(struct file *filp, const char __user *ubuf,
+ 	if (cnt > TRACE_MARKER_MAX_SIZE)
+ 		cnt = TRACE_MARKER_MAX_SIZE;
+ 
++	/* Must have preemption disabled while having access to the buffer */
++	guard(preempt_notrace)();
++
++	buf = trace_user_fault_read(trace_user_buffer, ubuf, cnt, &size);
++	if (!buf)
++		return -EFAULT;
++
++	if (cnt > size)
++		cnt = size;
++
+ 	/* The selftests expect this function to be the IP address */
+ 	ip = _THIS_IP_;
+ 
+@@ -7270,32 +7421,27 @@ tracing_mark_write(struct file *filp, const char __user *ubuf,
+ 	if (tr == &global_trace) {
+ 		guard(rcu)();
+ 		list_for_each_entry_rcu(tr, &marker_copies, marker_list) {
+-			written = write_marker_to_buffer(tr, ubuf, cnt, ip);
++			written = write_marker_to_buffer(tr, buf, cnt, ip);
+ 			if (written < 0)
+ 				break;
+ 		}
+ 	} else {
+-		written = write_marker_to_buffer(tr, ubuf, cnt, ip);
++		written = write_marker_to_buffer(tr, buf, cnt, ip);
+ 	}
+ 
+ 	return written;
  }
  
- static inline void trace_probe_set_flag(struct trace_probe *tp,
- 					unsigned int flag)
+ static ssize_t write_raw_marker_to_buffer(struct trace_array *tr,
+-					  const char __user *ubuf, size_t cnt)
++					  const char *buf, size_t cnt)
  {
--	tp->event->flags |= flag;
-+	smp_store_release(&tp->event->flags, tp->event->flags | flag);
+ 	struct ring_buffer_event *event;
+ 	struct trace_buffer *buffer;
+ 	struct raw_data_entry *entry;
+ 	ssize_t written;
+-	int size;
+-	int len;
+-
+-#define FAULT_SIZE_ID (FAULTED_SIZE + sizeof(int))
++	size_t size;
+ 
+ 	size = sizeof(*entry) + cnt;
+-	if (cnt < FAULT_SIZE_ID)
+-		size += FAULT_SIZE_ID - cnt;
+ 
+ 	buffer = tr->array_buffer.buffer;
+ 
+@@ -7309,14 +7455,8 @@ static ssize_t write_raw_marker_to_buffer(struct trace_array *tr,
+ 		return -EBADF;
+ 
+ 	entry = ring_buffer_event_data(event);
+-
+-	len = copy_from_user_nofault(&entry->id, ubuf, cnt);
+-	if (len) {
+-		entry->id = -1;
+-		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
+-		written = -EFAULT;
+-	} else
+-		written = cnt;
++	memcpy(&entry->id, buf, cnt);
++	written = cnt;
+ 
+ 	__buffer_unlock_commit(buffer, event);
+ 
+@@ -7329,8 +7469,8 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
+ {
+ 	struct trace_array *tr = filp->private_data;
+ 	ssize_t written = -ENODEV;
+-
+-#define FAULT_SIZE_ID (FAULTED_SIZE + sizeof(int))
++	size_t size;
++	char *buf;
+ 
+ 	if (tracing_disabled)
+ 		return -EINVAL;
+@@ -7342,6 +7482,17 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
+ 	if (cnt < sizeof(unsigned int))
+ 		return -EINVAL;
+ 
++	/* Must have preemption disabled while having access to the buffer */
++	guard(preempt_notrace)();
++
++	buf = trace_user_fault_read(trace_user_buffer, ubuf, cnt, &size);
++	if (!buf)
++		return -EFAULT;
++
++	/* raw write is all or nothing */
++	if (cnt > size)
++		return -EINVAL;
++
+ 	/* The global trace_marker_raw can go to multiple instances */
+ 	if (tr == &global_trace) {
+ 		guard(rcu)();
+@@ -7357,6 +7508,27 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
+ 	return written;
  }
  
- static inline void trace_probe_clear_flag(struct trace_probe *tp,
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 8b0bcc0d8f41..430d09c49462 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1547,6 +1547,7 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs,
- 	struct trace_uprobe *tu;
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb = NULL;
-+	unsigned int flags;
- 	int ret = 0;
++static int tracing_mark_open(struct inode *inode, struct file *filp)
++{
++	int ret;
++
++	ret = trace_user_fault_buffer_enable();
++	if (ret < 0)
++		return ret;
++
++	stream_open(inode, filp);
++	ret = tracing_open_generic_tr(inode, filp);
++	if (ret < 0)
++		trace_user_fault_buffer_disable();
++	return ret;
++}
++
++static int tracing_mark_release(struct inode *inode, struct file *file)
++{
++	trace_user_fault_buffer_disable();
++	return tracing_release_generic_tr(inode, file);
++}
++
+ static int tracing_clock_show(struct seq_file *m, void *v)
+ {
+ 	struct trace_array *tr = m->private;
+@@ -7764,13 +7936,13 @@ static const struct file_operations tracing_free_buffer_fops = {
+ static const struct file_operations tracing_mark_fops = {
+ 	.open		= tracing_mark_open,
+ 	.write		= tracing_mark_write,
+-	.release	= tracing_release_generic_tr,
++	.release	= tracing_mark_release,
+ };
  
- 	tu = container_of(con, struct trace_uprobe, consumer);
-@@ -1561,11 +1562,12 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs,
- 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
- 		return 0;
+ static const struct file_operations tracing_mark_raw_fops = {
+ 	.open		= tracing_mark_open,
+ 	.write		= tracing_mark_raw_write,
+-	.release	= tracing_release_generic_tr,
++	.release	= tracing_mark_release,
+ };
  
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		ret |= uprobe_trace_func(tu, regs, &ucb);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret |= uprobe_perf_func(tu, regs, &ucb);
- #endif
- 	uprobe_buffer_put(ucb);
-@@ -1579,6 +1581,7 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
- 	struct trace_uprobe *tu;
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb = NULL;
-+	unsigned int flags;
- 
- 	tu = container_of(con, struct trace_uprobe, consumer);
- 
-@@ -1590,11 +1593,12 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
- 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
- 		return 0;
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		uretprobe_trace_func(tu, func, regs, &ucb);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		uretprobe_perf_func(tu, func, regs, &ucb);
- #endif
- 	uprobe_buffer_put(ucb);
+ static const struct file_operations trace_clock_fops = {
 
 
