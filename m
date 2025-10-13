@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 176FFBD4480
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:33:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09094BD4378
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8FA68502D96
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E98994037C1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D373257828;
-	Mon, 13 Oct 2025 15:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC9730BB84;
+	Mon, 13 Oct 2025 15:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaAuGSJ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqwxWIPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C11130CDB4;
-	Mon, 13 Oct 2025 15:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47F230B53A;
+	Mon, 13 Oct 2025 15:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368409; cv=none; b=qOzlh9VMIo5OVENVK8bdZ+qEmm8exu/4UfYWRmg+V7AbFSjr3NcYq00GGKu+INOwivu3A9b166nulyC5Mwr1lXuzJ0ZBbsMluYiNU7AUaan1D/6eVXwa4hEOxHZifF9QborT25a7e3qTNiNW9ZiXfZk+REcpelVnqK+CC9vr91c=
+	t=1760367751; cv=none; b=kLzkli05MmFqg/8ZtJB0SkMATB+VZpcvsBSyFso1czV65mKRgwJn6RqA0hvaaf9sMt8fJua4O9mwzd6td15ae9FlOzOa83lrOpzpZCHaao55jIbYXe+VpB3RP9W6uRRnwKaz7PKzdiuC85lO6i20fBLAlhvvmKywkkDJ+xnCSpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368409; c=relaxed/simple;
-	bh=tz2l/Nz+5iCG4A2lNcJWezQ2BNNIfTJ3k83c/X8XT4k=;
+	s=arc-20240116; t=1760367751; c=relaxed/simple;
+	bh=++ROtoxPusOHugSu8dnM5Yh7akBDj6qD6wlmSHWJoWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Thj1CywLKlXYSdBl4R4gyT6XmzUSn84W4N/RkKwUCZpMLlGqc50MLUXOhR8juxVSwwuP7+JSermCb2Mnrc9tOKUaiBvsLSPCNIrro0TtBR8PLYo9E3+TBrv8IHIGSqc+FwKu50V3ASVPpjiHFjZxTm4sHCJ6toVZjQitPt4X+2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaAuGSJ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8398AC4CEE7;
-	Mon, 13 Oct 2025 15:13:28 +0000 (UTC)
+	 MIME-Version; b=Xn6k73HtiFGRW9UfMNrrqp0myp1BqRu7w6l5KqwBQ9ly9kISpboRB3a+cFsvgT7ElAdkxYX748/LwFc05vXrAu9h8LVKLYeE1r2VrAhe5F8jpodPamMYNDzHrrNMDgd+A935jPozZftIjU5vPgKqO4lcfWkxOdNDWoe5IgGu3AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqwxWIPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21324C4CEE7;
+	Mon, 13 Oct 2025 15:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368408;
-	bh=tz2l/Nz+5iCG4A2lNcJWezQ2BNNIfTJ3k83c/X8XT4k=;
+	s=korg; t=1760367750;
+	bh=++ROtoxPusOHugSu8dnM5Yh7akBDj6qD6wlmSHWJoWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jaAuGSJ//fNQPpPLS50B8xsZ7nWzp8M66zlDptHyXOZwVM/8KAnaUZC07qaPeZfU/
-	 H2vPMa5iF0aHBJLQbUwxdA7ojaoIEz7hUwwj98dUfNYGUsRvhq4QHT7nf33S5xFils
-	 EMOeyXnBv3lGPiYuGpy6uEPNcbUkYhLiKvKxHor0=
+	b=QqwxWIPj36GiylY2wLQuS7OKM8dkXMWiyd/EJ7tvCA+0QJziB2gI3GSreedtmrZ6y
+	 nnXQBuDpvQPVJnSCYwLmozjQ1/HA2m81ZCCoeBAQaZJTQTt/qxKg9pFpVPKsUmCTm8
+	 6O32rx20WGuDYpgAk3xdY2jSkl27hR6T5WE6ol7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+90266696fe5daacebd35@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 152/262] f2fs: fix to truncate first page in error path of f2fs_truncate()
+Subject: [PATCH 6.6 103/196] ASoC: Intel: bytcr_rt5651: Fix invalid quirk input mapping
 Date: Mon, 13 Oct 2025 16:44:54 +0200
-Message-ID: <20251013144331.594831134@linuxfoundation.org>
+Message-ID: <20251013144319.041226883@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9251a9e6e871cb03c4714a18efa8f5d4a8818450 ]
+[ Upstream commit 4336efb59ef364e691ef829a73d9dbd4d5ed7c7b ]
 
-syzbot reports a bug as below:
+When an invalid value is passed via quirk option, currently
+bytcr_rt5640 driver just ignores and leaves as is, which may lead to
+unepxected results like OOB access.
 
-loop0: detected capacity change from 0 to 40427
-F2FS-fs (loop0): Wrong SSA boundary, start(3584) end(4096) blocks(3072)
-F2FS-fs (loop0): Can't find valid F2FS filesystem in 1th superblock
-F2FS-fs (loop0): invalid crc value
-F2FS-fs (loop0): f2fs_convert_inline_folio: corrupted inline inode ino=3, i_addr[0]:0x1601, run fsck to fix.
-------------[ cut here ]------------
-kernel BUG at fs/inode.c:753!
-RIP: 0010:clear_inode+0x169/0x190 fs/inode.c:753
-Call Trace:
- <TASK>
- evict+0x504/0x9c0 fs/inode.c:810
- f2fs_fill_super+0x5612/0x6fa0 fs/f2fs/super.c:5047
- get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1692
- vfs_get_tree+0x8f/0x2b0 fs/super.c:1815
- do_new_mount+0x2a2/0x9e0 fs/namespace.c:3808
- do_mount fs/namespace.c:4136 [inline]
- __do_sys_mount fs/namespace.c:4347 [inline]
- __se_sys_mount+0x317/0x410 fs/namespace.c:4324
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This patch adds the sanity check and corrects the input mapping to the
+certain default value if an invalid value is passed.
 
-During f2fs_evict_inode(), clear_inode() detects that we missed to truncate
-all page cache before destorying inode, that is because in below path, we
-will create page #0 in cache, but missed to drop it in error path, let's fix
-it.
-
-- evict
- - f2fs_evict_inode
-  - f2fs_truncate
-   - f2fs_convert_inline_inode
-    - f2fs_grab_cache_folio
-    : create page #0 in cache
-    - f2fs_convert_inline_folio
-    : sanity check failed, return -EFSCORRUPTED
-  - clear_inode detects that inode->i_data.nrpages is not zero
-
-Fixes: 92dffd01790a ("f2fs: convert inline_data when i_size becomes large")
-Reported-by: syzbot+90266696fe5daacebd35@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/68c09802.050a0220.3c6139.000e.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 64484ccee7af ("ASoC: Intel: bytcr_rt5651: Set card long_name based on quirks")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Message-ID: <20250902171826.27329-4-tiwai@suse.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ sound/soc/intel/boards/bytcr_rt5651.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index fa77841f3e2cc..eb58d05284173 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -856,8 +856,16 @@ int f2fs_truncate(struct inode *inode)
- 	/* we should check inline_data size */
- 	if (!f2fs_may_inline_data(inode)) {
- 		err = f2fs_convert_inline_inode(inode);
--		if (err)
-+		if (err) {
-+			/*
-+			 * Always truncate page #0 to avoid page cache
-+			 * leak in evict() path.
-+			 */
-+			truncate_inode_pages_range(inode->i_mapping,
-+					F2FS_BLK_TO_BYTES(0),
-+					F2FS_BLK_END_BYTES(0));
- 			return err;
-+		}
- 	}
+diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
+index 805afaf47b290..2abe47303ecdb 100644
+--- a/sound/soc/intel/boards/bytcr_rt5651.c
++++ b/sound/soc/intel/boards/bytcr_rt5651.c
+@@ -58,7 +58,8 @@ enum {
+ 	BYT_RT5651_OVCD_SF_1P5	= (RT5651_OVCD_SF_1P5 << 13),
+ };
  
- 	err = f2fs_truncate_blocks(inode, i_size_read(inode), true);
+-#define BYT_RT5651_MAP(quirk)		((quirk) & GENMASK(3, 0))
++#define BYT_RT5651_MAP_MASK		GENMASK(3, 0)
++#define BYT_RT5651_MAP(quirk)		((quirk) & BYT_RT5651_MAP_MASK)
+ #define BYT_RT5651_JDSRC(quirk)		(((quirk) & GENMASK(7, 4)) >> 4)
+ #define BYT_RT5651_OVCD_TH(quirk)	(((quirk) & GENMASK(12, 8)) >> 8)
+ #define BYT_RT5651_OVCD_SF(quirk)	(((quirk) & GENMASK(14, 13)) >> 13)
+@@ -100,14 +101,29 @@ MODULE_PARM_DESC(quirk, "Board-specific quirk override");
+ 
+ static void log_quirks(struct device *dev)
+ {
+-	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_DMIC_MAP)
++	int map;
++
++	map = BYT_RT5651_MAP(byt_rt5651_quirk);
++	switch (map) {
++	case BYT_RT5651_DMIC_MAP:
+ 		dev_info(dev, "quirk DMIC_MAP enabled");
+-	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_MAP)
++		break;
++	case BYT_RT5651_IN1_MAP:
+ 		dev_info(dev, "quirk IN1_MAP enabled");
+-	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN2_MAP)
++		break;
++	case BYT_RT5651_IN2_MAP:
+ 		dev_info(dev, "quirk IN2_MAP enabled");
+-	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_IN2_MAP)
++		break;
++	case BYT_RT5651_IN1_IN2_MAP:
+ 		dev_info(dev, "quirk IN1_IN2_MAP enabled");
++		break;
++	default:
++		dev_warn_once(dev, "quirk sets invalid input map: 0x%x, default to DMIC_MAP\n", map);
++		byt_rt5651_quirk &= ~BYT_RT5651_MAP_MASK;
++		byt_rt5651_quirk |= BYT_RT5651_DMIC_MAP;
++		break;
++	}
++
+ 	if (BYT_RT5651_JDSRC(byt_rt5651_quirk)) {
+ 		dev_info(dev, "quirk realtek,jack-detect-source %ld\n",
+ 			 BYT_RT5651_JDSRC(byt_rt5651_quirk));
 -- 
 2.51.0
 
