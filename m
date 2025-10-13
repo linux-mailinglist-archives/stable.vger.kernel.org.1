@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB16BD429A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A9CBD4093
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DFF1188BF71
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 594061883CD0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BED311C33;
-	Mon, 13 Oct 2025 15:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC54309DCD;
+	Mon, 13 Oct 2025 15:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDiHGlc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTElc4RL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513AE30C61C;
-	Mon, 13 Oct 2025 15:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E94423B616;
+	Mon, 13 Oct 2025 15:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368194; cv=none; b=ZrrQDw6aIQSrzgLcQRHoL+RZa/FqyNpB5gcvafw0w3szS0z/UPWHxMFzsW6Px8NUQsmg9oc4TNR0DHqcG0hJCph16zk0DwjMazOi/p1Nw+IWvK0X6e/HFoQXnAAiIr5pFUKQMNfooFTHhxPtgHnk63QIrfl9npU9T6Y5K1R62pk=
+	t=1760367610; cv=none; b=FtebP/8qoIcclf+a4dfpTPZPoTeuMEeN2sj37z8zw7r7NhqdBzu3ZyA3BhF5DCd5zIXNYYiSEkb1baWbIBjK4FOzMZj7BoR/NvyZhu/r/Rp+bRROkob8vB/lgcKNHzkEr9DFuTiK5QsrJAMKkJCspQa205e6wojNrBO5mPs3ySs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368194; c=relaxed/simple;
-	bh=3U8/CXw9z4gNo82gXYBUiQAnevdp5vlc0ZC4U1SJCXg=;
+	s=arc-20240116; t=1760367610; c=relaxed/simple;
+	bh=tALJ+MzZHsZL8Uf274h6k3gjlRiY+MCDcc5UAwqpezM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bl7gOdXnBJWA7fx9C09W7C/a8DZ4YunVXejnf2VVKXf4dkb9u8FIcQpSL6IJtLqxZCOVZbuDObLTX1hxd2uySUMu5YC1S+gHcr6yIKNAtJ/hLiEh/grz2pz+z3L49ngWL6nhYiyelVZX3CEONraSlBsuTtdEyoGj0S1A5hBbb8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDiHGlc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9EFBC4CEFE;
-	Mon, 13 Oct 2025 15:09:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KjDVWsMeNeAVkdO/hKbm8oCepzuMfxAeq2suTsCRtdPdQiOU4bgwlY7YOtltxarF9WIvLxmbVT3kF58v/jtDlvGqlFWb6vEjaoJBCAEoQOxWSEXhF2Yx5EOZVi1D9L9wSvGvW5ZI/LEXs/fwv7LR2L4n2BidgSurzQ+LGDbNqac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTElc4RL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFF5C4CEE7;
+	Mon, 13 Oct 2025 15:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368194;
-	bh=3U8/CXw9z4gNo82gXYBUiQAnevdp5vlc0ZC4U1SJCXg=;
+	s=korg; t=1760367610;
+	bh=tALJ+MzZHsZL8Uf274h6k3gjlRiY+MCDcc5UAwqpezM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bDiHGlc9+V80I09GkMhSlk6B9HXJ7JarF61UWHK4rdGGeJPwYrbjH4S79Jg6X4fR9
-	 W3juuyiIgyiwhojsetHj7dfP3hqqE8BC1PZZg5XJcxUHaZ01C47wksjPh0aJ5y6OLj
-	 +6ca2ITkBsR2EB+8M6R5CYfto4KV/LwCidgdbqus=
+	b=xTElc4RL0diefP2x/QkERGMADqsRuGKhCW+wI7ma45CSpaTg6jutIQ9jfx3QnzJcw
+	 XHmGviDA1sqj8BiEIC9rXWth/f91mVWyIJqZ+3tpkp3SOfEKD7gMIkUrrGbjCn7ByP
+	 YwHnMagPO3O05Dapbc9nYzWR2Ze9f45KCib0yMjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/262] smp: Fix up and expand the smp_call_function_many() kerneldoc
+Subject: [PATCH 6.6 028/196] selftests/nolibc: fix EXPECT_NZ macro
 Date: Mon, 13 Oct 2025 16:43:39 +0200
-Message-ID: <20251013144328.900469901@linuxfoundation.org>
+Message-ID: <20251013144316.214083578@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit ccf09357ffef2ab472369ab9cdf470c9bc9b821a ]
+[ Upstream commit 6d33ce3634f99e0c6c9ce9fc111261f2c411cb48 ]
 
-The smp_call_function_many() kerneldoc comment got out of sync with the
-function definition (bool parameter "wait" is incorrectly described as a
-bitmask in it), so fix it up by copying the "wait" description from the
-smp_call_function() kerneldoc and add information regarding the handling
-of the local CPU to it.
+The expect non-zero macro was incorrect and never used. Fix its
+definition.
 
-Fixes: 49b3bd213a9f ("smp: Fix all kernel-doc warnings")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 362aecb2d8cfa ("selftests/nolibc: add basic infrastructure to ease creation of nolibc tests")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Link: https://lore.kernel.org/r/20250731201225.323254-2-benjamin@sipsolutions.net
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/smp.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ tools/testing/selftests/nolibc/nolibc-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index f25e20617b7eb..fa6faf50fb43b 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -891,16 +891,15 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
-  * @mask: The set of cpus to run on (only runs on online subset).
-  * @func: The function to run. This must be fast and non-blocking.
-  * @info: An arbitrary pointer to pass to the function.
-- * @wait: Bitmask that controls the operation. If %SCF_WAIT is set, wait
-- *        (atomically) until function has completed on other CPUs. If
-- *        %SCF_RUN_LOCAL is set, the function will also be run locally
-- *        if the local CPU is set in the @cpumask.
-- *
-- * If @wait is true, then returns once @func has returned.
-+ * @wait: If true, wait (atomically) until function has completed
-+ *        on other CPUs.
-  *
-  * You must not call this function with disabled interrupts or from a
-  * hardware interrupt handler or from a bottom half handler. Preemption
-  * must be disabled when calling this function.
-+ *
-+ * @func is not called on the local CPU even if @mask contains it.  Consider
-+ * using on_each_cpu_cond_mask() instead if this is not desirable.
-  */
- void smp_call_function_many(const struct cpumask *mask,
- 			    smp_call_func_t func, void *info, bool wait)
+diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
+index 4aaafbfc2f973..a019de995e5df 100644
+--- a/tools/testing/selftests/nolibc/nolibc-test.c
++++ b/tools/testing/selftests/nolibc/nolibc-test.c
+@@ -176,8 +176,8 @@ int expect_zr(int expr, int llen)
+ }
+ 
+ 
+-#define EXPECT_NZ(cond, expr, val)			\
+-	do { if (!(cond)) result(llen, SKIPPED); else ret += expect_nz(expr, llen; } while (0)
++#define EXPECT_NZ(cond, expr)				\
++	do { if (!(cond)) result(llen, SKIPPED); else ret += expect_nz(expr, llen); } while (0)
+ 
+ static __attribute__((unused))
+ int expect_nz(int expr, int llen)
 -- 
 2.51.0
 
