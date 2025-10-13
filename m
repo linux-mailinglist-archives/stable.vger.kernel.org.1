@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51552BD4381
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C15BD47E4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 95424503DAE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A3F0E541E84
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3721330DEC4;
-	Mon, 13 Oct 2025 14:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E3530E826;
+	Mon, 13 Oct 2025 15:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ME6OnKQA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRn2W9nB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86AF30ACF6;
-	Mon, 13 Oct 2025 14:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E8630E0DD;
+	Mon, 13 Oct 2025 15:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367409; cv=none; b=XRz5cD+5Y6Nzyo3KIUjXZUrQreZ2AwtxFMYCgxDCq02OTUPK22ro96+YkiFhOF3WvO6oREFspRUAqq5WDEiXtJJTvIeczxKk5U4aMtd6VDMyZudPof5vd3jzcaV8QggmJyE4ZbdHys5SH8g5By5uNCB97plggwVYQFjocz3FG80=
+	t=1760368543; cv=none; b=mIo/giTFtbk+/AnV+S+tI3OR1hH5eXulMI5pDWovECVDrrxcbJFukulgCxxOXKFbURom3Mnaqp/N4NUc7NjQ89KKaokclosQuzCJ5BSubjnADPnO3KdNv+TGXHMbpXEmAVin56HUoe/cV4P6cHARdGpKqsBx26lJ+ppwDEez6TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367409; c=relaxed/simple;
-	bh=ynQfTQpppMfOdjERChb5buOrcBF+KI6y5Gu7lNKjVFw=;
+	s=arc-20240116; t=1760368543; c=relaxed/simple;
+	bh=gf8GYvBS6J11Y+5ePzigVfCF1QTnLRzipV1J3Ed1Aig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G3PdT92xOwFRJMo3j3HwQbFuBqC/dlM7/60yonnBe3MGaAZ1SLnS+wKn4y7/O8K4jW2NS5n5pm5Y6gAYMQRuYOZwCmZYOkokpU9pttY5ca5njG31O1MrUDUsIlPTIJeAxYWErUrTs9kMfjGXpb4xYFo8VdljJd8F9rKbSLATIl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ME6OnKQA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76ECFC4CEE7;
-	Mon, 13 Oct 2025 14:56:48 +0000 (UTC)
+	 MIME-Version; b=qBWrAEKYbJ5RX775vu+Ta+rumZizW7NzWOTcyOLBDfQq+2uau8MqAahaZMzz9wzDdMyGbhtWRx2Y77bGyfdivePhMNUkqZrsZZ2w4UPGjUHrAxZJeBkOOi/RCinL0GQUAn0VoweIm5MXbQOnnXUOcF/nS44io2ZU2KdOpcrVQgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRn2W9nB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F59AC4CEE7;
+	Mon, 13 Oct 2025 15:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367408;
-	bh=ynQfTQpppMfOdjERChb5buOrcBF+KI6y5Gu7lNKjVFw=;
+	s=korg; t=1760368543;
+	bh=gf8GYvBS6J11Y+5ePzigVfCF1QTnLRzipV1J3Ed1Aig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ME6OnKQABQImct3QoFuX3Yur/ov/qPvrdd03RgasNaaawBeIV66rcncDkk2w8OI6V
-	 1QYn1Cp8P2fLRMXChvWvfHdzy2NNtyMMjzygJYzBYrmylKaTqNKEa4fhGh/J4bW7Gj
-	 Dp/a932i5hDCnjfmnGnGKepObbHG2BTEvaZNGWjc=
+	b=cRn2W9nBZhxY0Z1IEzZ2VVuGZfPhYmFjUMASJCBZSZaXRuYCz0R0x2x/hC6tuz6Hd
+	 YW8FQfBYLi0uUNR44aBmc3j+ohrfeEGfnzuUA8R82KKD7Rykrk3cHWfkzEKYDA3Gxl
+	 mHkBwGyclk5BP9S95Il5AlWcdNJRGR/dsskGgipk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 165/196] nfp: fix RSS hash key size when RSS is not supported
-Date: Mon, 13 Oct 2025 16:45:38 +0200
-Message-ID: <20251013144320.667963234@linuxfoundation.org>
+Subject: [PATCH 6.12 197/262] iommu/vt-d: Disallow dirty tracking if incoherent page walk
+Date: Mon, 13 Oct 2025 16:45:39 +0200
+Message-ID: <20251013144333.342210122@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 8425161ac1204d2185e0a10f5ae652bae75d2451 ]
+[ Upstream commit 57f55048e564dedd8a4546d018e29d6bbfff0a7e ]
 
-The nfp_net_get_rxfh_key_size() function returns -EOPNOTSUPP when
-devices don't support RSS, and callers treat the negative value as a
-large positive value since the return type is u32.
+Dirty page tracking relies on the IOMMU atomically updating the dirty bit
+in the paging-structure entry. For this operation to succeed, the paging-
+structure memory must be coherent between the IOMMU and the CPU. In
+another word, if the iommu page walk is incoherent, dirty page tracking
+doesn't work.
 
-Return 0 when devices don't support RSS, aligning with the ethtool
-interface .get_rxfh_key_size() that requires returning 0 in such cases.
+The Intel VT-d specification, Section 3.10 "Snoop Behavior" states:
 
-Fixes: 9ff304bfaf58 ("nfp: add support for reporting CRC32 hash function")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Link: https://patch.msgid.link/20250929054230.68120-1-enjuk@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+"Remapping hardware encountering the need to atomically update A/EA/D bits
+ in a paging-structure entry that is not snooped will result in a non-
+ recoverable fault."
+
+To prevent an IOMMU from being incorrectly configured for dirty page
+tracking when it is operating in an incoherent mode, mark SSADS as
+supported only when both ecap_slads and ecap_smpwc are supported.
+
+Fixes: f35f22cc760e ("iommu/vt-d: Access/Dirty bit support for SS domains")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250924083447.123224-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/intel/iommu.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-index af376b9000677..7ee919201985f 100644
---- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-@@ -1409,7 +1409,7 @@ static u32 nfp_net_get_rxfh_key_size(struct net_device *netdev)
- 	struct nfp_net *nn = netdev_priv(netdev);
+diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+index f521155fb793b..df24a62e8ca40 100644
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -541,7 +541,8 @@ enum {
+ #define pasid_supported(iommu)	(sm_supported(iommu) &&			\
+ 				 ecap_pasid((iommu)->ecap))
+ #define ssads_supported(iommu) (sm_supported(iommu) &&                 \
+-				ecap_slads((iommu)->ecap))
++				ecap_slads((iommu)->ecap) &&           \
++				ecap_smpwc(iommu->ecap))
+ #define nested_supported(iommu)	(sm_supported(iommu) &&			\
+ 				 ecap_nest((iommu)->ecap))
  
- 	if (!(nn->cap & NFP_NET_CFG_CTRL_RSS_ANY))
--		return -EOPNOTSUPP;
-+		return 0;
- 
- 	return nfp_net_rss_key_sz(nn);
- }
 -- 
 2.51.0
 
