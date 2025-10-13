@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE58DBD4687
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC93EBD4940
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1974D507643
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B04D18A5AD8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E3F310624;
-	Mon, 13 Oct 2025 15:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E4930FC12;
+	Mon, 13 Oct 2025 15:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plhCMr3X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLkAZ6m5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7139310620;
-	Mon, 13 Oct 2025 15:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0634E30FC09;
+	Mon, 13 Oct 2025 15:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368035; cv=none; b=FncQwXuGYxBgydwCONRIg9Cco1J1xECYaky4QYVK392VtwDbiaF0+vJ8E8hoEl9i258Cqy9CUWYZnY69t4ui8sLAxBw6zcug84llajY4Cf8bj77HjV+TerNBCYw1BPrQiS700HSqQ6rRSIb9MgC43NhsMgo8UbwB0p8LfJWocJ4=
+	t=1760369726; cv=none; b=sp6IMiL0V7kotahMmjHphwVxpfx4qu/B8+YEz4D+p/iyEpdMMTw71iO8JVwLZue8XHngvspNfHd9hH+h/5dkgm2QfM7AzlSJeJJyXY0/i/4Hb06BsaMxYc5lL5lfoU6Ic+56WgokyETpef/yN6eTWYu5MOQNvXk9fEaDbKt1f0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368035; c=relaxed/simple;
-	bh=vbS7YjwnQ9a0rxE93ZvY5cNfOUDOHVH0VYN47uaxREY=;
+	s=arc-20240116; t=1760369726; c=relaxed/simple;
+	bh=hUJPqrhWB3M2DTSNvEs+gyAstiGyzTxSie2GeUzqEds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5DInfqWEmTB0dZw9U9pQTua+gQAWC4Qo0F23/fykXw0UxZAD5cv1ZyCE8GAC/nRYuiefiM/XLde14yqsmFmv8wDRrMqsvaf8pClKtzD1qpqtiQQ/8NIIobWnnBa7/Ut9UOSx5HqYwm0tgeAozCltYMlITZwZdZiQP83BU/IAVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plhCMr3X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF34C4CEE7;
-	Mon, 13 Oct 2025 15:07:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KEAjPM1899b7Oab7TnhK2YLHqiXg2gWAHGtfNUm5TRkDU9EGimWAOJUAJpCk2b5qZe14TYvE1+20GbNcwKiNWwhpDuW/3Uokr8xNLvAoj0UWE8gKCgO52Zy1MpSzE4Y02N7jlxVelPZP0eA2jvdH63toQ8vGXaypErcQX7sRv/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLkAZ6m5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3B8C4CEFE;
+	Mon, 13 Oct 2025 15:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368035;
-	bh=vbS7YjwnQ9a0rxE93ZvY5cNfOUDOHVH0VYN47uaxREY=;
+	s=korg; t=1760369725;
+	bh=hUJPqrhWB3M2DTSNvEs+gyAstiGyzTxSie2GeUzqEds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=plhCMr3XZl5RoGwdBVYAEwuPgUR6OFLt4St1+e3tRFvB+EY+3pRCP86QJ998MKGq9
-	 5f30oNRRQ6NjLPgOqPwJESSY4k5sidYymDVIKUqYBf5KbQcfKx4INi/QKF6C1rVO1C
-	 szasPxtxQiZqmp13G9vCG+EctklYld6w4IKvswXs=
+	b=JLkAZ6m5mVcStZ90R40u60ovIEdVpEjwu6Cu5F4SN1UFwYebjBGsv3XYVAj/Vash0
+	 qbTDvdC8/FgW6fRtqw9vuQmAzvO9CMhY5TulPKa0xzWreVXpW83ctnmCBhJ4Luf2Un
+	 VSdZUkhIfW+H5DEm3LIptGuAYLirRnc9Rf9JL0zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yureka Lilian <yuka@yuka.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/262] libbpf: Fix reuse of DEVMAP
-Date: Mon, 13 Oct 2025 16:42:43 +0200
-Message-ID: <20251013144326.894348605@linuxfoundation.org>
+Subject: [PATCH 6.17 303/563] drm/amd/pm: Disable ULV even if unsupported (v3)
+Date: Mon, 13 Oct 2025 16:42:44 +0200
+Message-ID: <20251013144422.243809265@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yureka Lilian <yuka@yuka.dev>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 6c6b4146deb12d20f42490d5013f2043df942161 ]
+[ Upstream commit 3a0c3a4035f995e1f993dfaf4d63dc19e9b4bc1c ]
 
-Previously, re-using pinned DEVMAP maps would always fail, because
-get_map_info on a DEVMAP always returns flags with BPF_F_RDONLY_PROG set,
-but BPF_F_RDONLY_PROG being set on a map during creation is invalid.
+Always send PPSMC_MSG_DisableULV to the SMC, even if ULV mode
+is unsupported, to make sure it is properly turned off.
 
-Thus, ignore the BPF_F_RDONLY_PROG flag in the flags returned from
-get_map_info when checking for compatibility with an existing DEVMAP.
+v3:
+Simplify si_disable_ulv further.
+Always check the return value of amdgpu_si_send_msg_to_smc.
 
-The same problem is handled in a third-party ebpf library:
-- https://github.com/cilium/ebpf/issues/925
-- https://github.com/cilium/ebpf/pull/930
-
-Fixes: 0cdbb4b09a06 ("devmap: Allow map lookups from eBPF")
-Signed-off-by: Yureka Lilian <yuka@yuka.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250814180113.1245565-3-yuka@yuka.dev
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index e33cf3caf8b64..ac5ad30266a5e 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -5056,6 +5056,16 @@ static bool map_is_reuse_compat(const struct bpf_map *map, int map_fd)
- 		return false;
- 	}
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 52e732be59e36..e71070a23b915 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -5637,14 +5637,10 @@ static int si_populate_smc_t(struct amdgpu_device *adev,
  
-+	/*
-+	 * bpf_get_map_info_by_fd() for DEVMAP will always return flags with
-+	 * BPF_F_RDONLY_PROG set, but it generally is not set at map creation time.
-+	 * Thus, ignore the BPF_F_RDONLY_PROG flag in the flags returned from
-+	 * bpf_get_map_info_by_fd() when checking for compatibility with an
-+	 * existing DEVMAP.
-+	 */
-+	if (map->def.type == BPF_MAP_TYPE_DEVMAP || map->def.type == BPF_MAP_TYPE_DEVMAP_HASH)
-+		map_info.map_flags &= ~BPF_F_RDONLY_PROG;
-+
- 	return (map_info.type == map->def.type &&
- 		map_info.key_size == map->def.key_size &&
- 		map_info.value_size == map->def.value_size &&
+ static int si_disable_ulv(struct amdgpu_device *adev)
+ {
+-	struct si_power_info *si_pi = si_get_pi(adev);
+-	struct si_ulv_param *ulv = &si_pi->ulv;
++	PPSMC_Result r;
+ 
+-	if (ulv->supported)
+-		return (amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV) == PPSMC_Result_OK) ?
+-			0 : -EINVAL;
+-
+-	return 0;
++	r = amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV);
++	return (r == PPSMC_Result_OK) ? 0 : -EINVAL;
+ }
+ 
+ static bool si_is_state_ulv_compatible(struct amdgpu_device *adev,
 -- 
 2.51.0
 
