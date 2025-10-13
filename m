@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69DEBD4081
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98216BD4856
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B91F0500F11
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:07:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46B335416EB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539AE3128C3;
-	Mon, 13 Oct 2025 14:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7990A3081A3;
+	Mon, 13 Oct 2025 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnQkVw1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoJFvm2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4AD3128AA;
-	Mon, 13 Oct 2025 14:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CAC308F0E;
+	Mon, 13 Oct 2025 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367234; cv=none; b=WkX31bOWsZVCjVPfArg8nt91N/la+FbKiuRaRmGTxlP+vEUf4H1JcRL1i0dfC7R8NAopfB0l57TiYU8Eb0VgWuE99EG90rswUq2v0PMlxosKdvh0j7kNkzQAyP5ZCSNdODE0mqboPiHfnX3Pnbu1lcLYeAcTnRoc7kWY6JmBqPI=
+	t=1760368467; cv=none; b=h2P3iPtpnTC9mU9T9sShvaZa7R12WwJOsJsUXt2+/YSdalJuEYFrqZTyISqkqjtmh9kv0Ah/uUhOW/rymjgkjTIBkZQ9KZ1ESVqpqzze+6v2viDN9XlZvmeGJ/Lv0uSmKyyB2wgsJR1oHbeYcLNLzL/U1lWLOHJfOM2799kKpVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367234; c=relaxed/simple;
-	bh=nwkov1einR6KCzuS54eq1MF9YZTlSfmQoywfyfJ+mFM=;
+	s=arc-20240116; t=1760368467; c=relaxed/simple;
+	bh=TdTOz7DX9lT0Napo3RHQ1fqJ3dyDeSofuh6up4dNjkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iF5SRuKk2F2fdSECcdhFkPL+WqGpGnoW/oSPsoXldAtcp3ZgdGHm4V2Gc5kCzil7mRvecmX0AmxQPcQ16zuhtAnCawoOEQAijnoiKXHwWjW9+fk0ZR60jJ1iboE8dcDINWHt7TxskZpIxYyfsOo1+KUQWOGjCXwSZIwt6gTf3bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnQkVw1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB8CC4CEE7;
-	Mon, 13 Oct 2025 14:53:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=leCQgzclreDcqdP8FUjSSjeu2E2cDGJozp4wIxoNLWN3guMrbZ1NSgFsGyxwqK8XEQnx7qZxttZoqqVe13E1hpSsq8HV4kMXWTjkfooA63T4DmVskLlHXFT+8eTTHL7mJStu33+4i0j/RyW3728I4Fw3FJPYuyHPstFSrMAlp9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoJFvm2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B44C4CEE7;
+	Mon, 13 Oct 2025 15:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367233;
-	bh=nwkov1einR6KCzuS54eq1MF9YZTlSfmQoywfyfJ+mFM=;
+	s=korg; t=1760368467;
+	bh=TdTOz7DX9lT0Napo3RHQ1fqJ3dyDeSofuh6up4dNjkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XnQkVw1Cy4BCxGhfd0ueuCduY0oSCZYDO+c5/lYdoW17EkXzFyzaLNyJFl3ParItU
-	 p9fNuktsSliEf18wvgnA/E1NISU8//SGiPNRXO6XEFhNjQC5uFB8D4QdswXLol9EAn
-	 wmg3wjka03CxysxU2Mo/YDSL68hna3B+1oiG1WYQ=
+	b=MoJFvm2+GEhIPyGXrjsCHQZcTGoi+Yc6Lbh3TlAOxQnWTm7ZCcHXJ7/SMGyssI0QP
+	 elTywn8Wd/BVldoqR2TCGM7bnLR8hODH+/b5KMfIM/6apMRoYf5XTDraetRaqOHtft
+	 SLwsZqquLyzmEjKT3JeW9ZerXJgSbYuIzmYk8IVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactcode.com>,
 	Jonathan 'theJPster' Pallant <kernel@thejpster.org.uk>
-Subject: [PATCH 6.1 139/196] sparc: fix accurate exception reporting in copy_{from_to}_user for UltraSPARC
+Subject: [PATCH 6.12 170/262] sparc: fix accurate exception reporting in copy_{from_to}_user for UltraSPARC
 Date: Mon, 13 Oct 2025 16:45:12 +0200
-Message-ID: <20251013144319.721169050@linuxfoundation.org>
+Message-ID: <20251013144332.245676170@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -95,7 +95,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/arch/sparc/lib/U1memcpy.S b/arch/sparc/lib/U1memcpy.S
-index a6f4ee3918977..021b94a383d13 100644
+index 635398ec7540e..154fbd35400ca 100644
 --- a/arch/sparc/lib/U1memcpy.S
 +++ b/arch/sparc/lib/U1memcpy.S
 @@ -164,17 +164,18 @@ ENTRY(U1_gs_40_fp)
