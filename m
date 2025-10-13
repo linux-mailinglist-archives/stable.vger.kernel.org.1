@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CA5BD3ED6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:12:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD84BD4573
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:37:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B13A64FD619
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:02:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3705E407CB0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F4530C34C;
-	Mon, 13 Oct 2025 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B34730DD03;
+	Mon, 13 Oct 2025 15:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7W7LZGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfxNgQVr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A9630BF52;
-	Mon, 13 Oct 2025 14:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463572FF641;
+	Mon, 13 Oct 2025 15:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367213; cv=none; b=mh5GYpBTwMHw1BwtcvxzZUO9CZGqExAfnZzNsvgob8z3R/TcafbKDdyzM4bgjwDnM8+eVlZGNCT7P3APIACvunK8v2DrHTE7pGSeODyHowDcKwVO0/YSfDrvsQjCc8ZpxjwKCWD6eG9pDdZsyh0dRK1tVApVOKE3zdVN8+ZOTtU=
+	t=1760368443; cv=none; b=eJjA87dkiKG9BzMdr7UcnflnpgLYKAGJ7twQUxWnGyPlYkwCRBHRcK4idYI/glBzyNdk73DiZ2rGSyJbE02mH0ocCXGdeAVO5e36kgQ8mbWxV99f2wY3DcAAlVeZiBXbXNNu5miYF/M2YHSMPLBozF0AmpP4QT8OztUeTjDl8Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367213; c=relaxed/simple;
-	bh=7J9J9dBX2yNbqGWNjRBDSrmsiRFoS23rWaLhBINHu7M=;
+	s=arc-20240116; t=1760368443; c=relaxed/simple;
+	bh=Jf1BS8nHnjoo5U+q15tNDlW7uFXJ7ZDf/lzRQrTg/QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ynq2dFPqebvqUTZ4lDqvtEE/WagDqqJRIa01laTTxPa4qxI2NCNetAPHvzrl4Y4o7Ze6BAA+wlhKNPci7b3MtFOcIvDo4ZJslHWTL0gJvM9IKpgPhkruwxjoa46X/ReSBZ2qZNahILitB9/vUPY/MrzId89Md9GCFk9re6OIqRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7W7LZGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2CFC19422;
-	Mon, 13 Oct 2025 14:53:31 +0000 (UTC)
+	 MIME-Version; b=lJNmSp2DQTzL6iN3cbV45DekU9a20fbmFy/6BuTccQ1KH9Ieezne9owYlQnSopLKou3Aoq+2YJH9DepOAW3Lsy7JVtRbU0OPSg3EfaUJxB8bTil+Z2Zst+VdGLRXzF94HWSBSfKpI8f5BGxFcC9hgs8gQF71GazsVqAsaaKVVqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfxNgQVr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8949EC4CEE7;
+	Mon, 13 Oct 2025 15:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367212;
-	bh=7J9J9dBX2yNbqGWNjRBDSrmsiRFoS23rWaLhBINHu7M=;
+	s=korg; t=1760368442;
+	bh=Jf1BS8nHnjoo5U+q15tNDlW7uFXJ7ZDf/lzRQrTg/QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7W7LZGhy+Sjc2KObQKnEPYshom6BFEspngDMC2NtjTe4ZyJTH85R9/Fmnf3uJIf0
-	 +qlzILYNdLcUSiiI9nB2EJIU4HqtCQp5za7VB96NDyyO5a9/HP33pvODwPToVwBewc
-	 7idbNQPb2gk5H1gSjP6bj5/ip8aKeHN2YuCaK5u8=
+	b=pfxNgQVr6vjiqD4/LgPMFzFtOkR0Bks//IZ1VA+oLAi+UP0JkrTyFcxRmLARAnWgP
+	 mbuGpnX8SO+7YX53mQwXz73yn/cY9KMmmxsHXtbWalRekitJwe12jpK9Him/h4n6vV
+	 nYW8p8jmraIGYGqu4bim+Vu4mhYQv0odm8AGHjYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/196] f2fs: fix zero-sized extent for precache extents
+Subject: [PATCH 6.12 163/262] IB/sa: Fix sa_local_svc_timeout_ms read race
 Date: Mon, 13 Oct 2025 16:45:05 +0200
-Message-ID: <20251013144319.469916859@linuxfoundation.org>
+Message-ID: <20251013144331.993680012@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Vlad Dumitrescu <vdumitrescu@nvidia.com>
 
-[ Upstream commit 8175c864391753b210f3dcfae1aeed686a226ebb ]
+[ Upstream commit 1428cd764cd708d53a072a2f208d87014bfe05bc ]
 
-Script to reproduce:
-f2fs_io write 1 0 1881 rand dsync testfile
-f2fs_io fallocate 0 7708672 4096 testfile
-f2fs_io write 1 1881 1 rand buffered testfile
-fsync testfile
-umount
-mount
-f2fs_io precache_extents testfile
+When computing the delta, the sa_local_svc_timeout_ms is read without
+ib_nl_request_lock held. Though unlikely in practice, this can cause
+a race condition if multiple local service threads are managing the
+timeout.
 
-When the data layout is something like this:
-dnode1:                     dnode2:
-[0]      A                  [0]    NEW_ADDR
-[1]      A+1                [1]    0x0
-...
-[1016]   A+1016
-[1017]   B (B!=A+1017)      [1017] 0x0
-
-During precache_extents, we map the last block(valid blkaddr) in dnode1:
-map->m_flags |= F2FS_MAP_MAPPED;
-map->m_pblk = blkaddr(valid blkaddr);
-map->m_len = 1;
-then we goto next_dnode, meet the first block in dnode2(hole), goto sync_out:
-map->m_flags & F2FS_MAP_MAPPED == true, and we make zero-sized extent:
-
-map->m_len = 1
-ofs = start_pgofs - map->m_lblk = 1882 - 1881 = 1
-ei.fofs = start_pgofs = 1882
-ei.len = map->m_len - ofs = 1 - 1 = 0
-
-Rebased on patch[1], this patch can cover these cases to avoid zero-sized extent:
-A,B,C is valid blkaddr
-case1:
-dnode1:                     dnode2:
-[0]      A                  [0]    NEW_ADDR
-[1]      A+1                [1]    0x0
-...                         ....
-[1016]   A+1016
-[1017]   B (B!=A+1017)      [1017] 0x0
-
-case2:
-dnode1:                     dnode2:
-[0]      A                  [0]    C (C!=B+1)
-[1]      A+1                [1]    C+1
-...                         ....
-[1016]   A+1016
-[1017]   B (B!=A+1017)      [1017] 0x0
-
-case3:
-dnode1:                     dnode2:
-[0]      A                  [0]    C (C!=B+2)
-[1]      A+1                [1]    C+1
-...                         ....
-[1015]   A+1015
-[1016]   B (B!=A+1016)
-[1017]   B+1                [1017] 0x0
-
-[1] https://lore.kernel.org/linux-f2fs-devel/20250912081250.44383-1-chao@kernel.org/
-
-Fixes: c4020b2da4c9 ("f2fs: support F2FS_IOC_PRECACHE_EXTENTS")
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 2ca546b92a02 ("IB/sa: Route SA pathrecord query through netlink")
+Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Reviewed-by: Mark Zhang <markzhang@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20250916163112.98414-1-edwards@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/infiniband/core/sa_query.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 2b018d365b914..ac7d0ed3fb894 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1737,9 +1737,10 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map,
- 		if (map->m_flags & F2FS_MAP_MAPPED) {
- 			unsigned int ofs = start_pgofs - map->m_lblk;
+diff --git a/drivers/infiniband/core/sa_query.c b/drivers/infiniband/core/sa_query.c
+index 53571e6b3162c..66df5bed6a562 100644
+--- a/drivers/infiniband/core/sa_query.c
++++ b/drivers/infiniband/core/sa_query.c
+@@ -1013,6 +1013,8 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
+ 	if (timeout > IB_SA_LOCAL_SVC_TIMEOUT_MAX)
+ 		timeout = IB_SA_LOCAL_SVC_TIMEOUT_MAX;
  
--			f2fs_update_read_extent_cache_range(&dn,
--				start_pgofs, map->m_pblk + ofs,
--				map->m_len - ofs);
-+			if (map->m_len > ofs)
-+				f2fs_update_read_extent_cache_range(&dn,
-+					start_pgofs, map->m_pblk + ofs,
-+					map->m_len - ofs);
- 		}
- 		if (map->m_next_extent)
- 			*map->m_next_extent = pgofs + 1;
++	spin_lock_irqsave(&ib_nl_request_lock, flags);
++
+ 	delta = timeout - sa_local_svc_timeout_ms;
+ 	if (delta < 0)
+ 		abs_delta = -delta;
+@@ -1020,7 +1022,6 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
+ 		abs_delta = delta;
+ 
+ 	if (delta != 0) {
+-		spin_lock_irqsave(&ib_nl_request_lock, flags);
+ 		sa_local_svc_timeout_ms = timeout;
+ 		list_for_each_entry(query, &ib_nl_request_list, list) {
+ 			if (delta < 0 && abs_delta > query->timeout)
+@@ -1038,9 +1039,10 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
+ 		if (delay)
+ 			mod_delayed_work(ib_nl_wq, &ib_nl_timed_work,
+ 					 (unsigned long)delay);
+-		spin_unlock_irqrestore(&ib_nl_request_lock, flags);
+ 	}
+ 
++	spin_unlock_irqrestore(&ib_nl_request_lock, flags);
++
+ settimeout_out:
+ 	return 0;
+ }
 -- 
 2.51.0
 
