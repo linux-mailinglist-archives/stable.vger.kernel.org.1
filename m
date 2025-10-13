@@ -1,95 +1,87 @@
-Return-Path: <stable+bounces-184232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52744BD3378
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:33:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D679BD3384
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F212634392D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 13:33:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F23EB3BE647
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 13:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E536307AE8;
-	Mon, 13 Oct 2025 13:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DF9307AEE;
+	Mon, 13 Oct 2025 13:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOlefu5k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vh+huvgH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80251547D2;
-	Mon, 13 Oct 2025 13:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E014307AE9;
+	Mon, 13 Oct 2025 13:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760362383; cv=none; b=Ya97ZdG343RaGo4vvvC/xLkEobUpKIj7SShaPHpWyW1Bfnt4OOGldhlZTiatjhWjKGCMG52fGVfDWYynRJoL8kgJp6gKYn7nEC8dqjqs9xXruUT8B4rHlaBZrOw5dZXeJ+B0S3/SIeNETtJXDXyOoiYzumAxFNWnd/YwEeFeDxs=
+	t=1760362448; cv=none; b=FtuKcLr4tOdZ+akLs1DuLV34bnJRhsBKHWhohygNYvwrWD46y59a6cN0h3e8T+zIB1mef5RCINYUzOtfqHJLg5l5Z3FFlWU43q+1pi/yfluRZwS92ZKnZqRn430cyD9lSzDuyuSRYsXccw8xoreBX9lm5VLMUQY2PpZ9cwRjXpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760362383; c=relaxed/simple;
-	bh=DatnOKqJ2fnUJmlSe5SILMkuuoHPEqRsg4UupK82IlE=;
+	s=arc-20240116; t=1760362448; c=relaxed/simple;
+	bh=Y8LIaOsMMpz7Kq4NcZEvijRqPYNIaZDlbNbbex5bj8Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d6IzKaZAIJMz9QMZZnOBS/JDzn/O4DVyRE3FhNsw8QwMb0c5hQfJSwXqOgBhmb93IgI0FmsH57C/fiMcp7yOnznlepvZEsHgH5nYjwRRCFzW7LwIQuleILUnLP1AIS3xS1YsZlslig8lY903FfQF9QxvBHSRpig32VhCp4z4eNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOlefu5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C119C4CEE7;
-	Mon, 13 Oct 2025 13:33:02 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=nXT2chagQ3mlziYeFJE47kWF1xl1coktMlF+zT7LgKzFzB+OBR6N3OjBSZkIF7UfWckXWq0GILBC44riRJhNGaBhvz3HFkY1kJX3MN5fi31e9zIdsb754YIRTYkhC76tLBdWqYLHqrcDAyPkcIX3UpqglL9IWwKehUuyY+Mz5ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vh+huvgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2078CC4CEE7;
+	Mon, 13 Oct 2025 13:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760362383;
-	bh=DatnOKqJ2fnUJmlSe5SILMkuuoHPEqRsg4UupK82IlE=;
+	s=korg; t=1760362444;
+	bh=Y8LIaOsMMpz7Kq4NcZEvijRqPYNIaZDlbNbbex5bj8Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KOlefu5kmZHavDQselQYXEIXk6mTvxWRjX/B/sLANfveTxO8iTvlmXPm9NLbaxhRA
-	 UWNyDklYd3G+AgO+V3ziaE/vZW3LHt4h6cTNgeS/6OR1jqNZxwL1JEIiwXFJOKclXr
-	 WKkS5+TSc+RTf8kxFHtVJ7F1OFi3V8F0kRnc0VB8=
-Date: Mon, 13 Oct 2025 15:33:00 +0200
+	b=vh+huvgHGCJjnFxCNtMSXdY3sCP/DvKy3RQQ3RgNYuOqu0w0xaqgRrgeMdxQd2oFd
+	 tPQ8guVlyNYgW2a/cK7OsptUJZwWrdwgvyoGZpUDGYJUn15jaJv1H79u2iIpewOPmp
+	 jXb8jRjm1r+BoucO9LC1ZWmSdXovWUmam+fYfacw=
+Date: Mon, 13 Oct 2025 15:34:01 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: Patch "PCI: Preserve bridge window resource type flags" has been
- added to the 6.17-stable tree
-Message-ID: <2025101348-conjuror-drapery-9fc1@gregkh>
-References: <20251012141317.2894025-1-sashal@kernel.org>
- <78ea57b6-5bc8-b357-c37c-bd327785e825@linux.intel.com>
+	geert+renesas@glider.be, Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: Patch "gpio: TODO: remove the task for converting to the new
+ line setters" has been added to the 6.17-stable tree
+Message-ID: <2025101353-charred-squishier-6f0e@gregkh>
+References: <20251012135727.2876348-1-sashal@kernel.org>
+ <CAMRc=MeD1FgCxEwSUgOJythtKU2R=6OZ0vJg0_rjhdJOneW+5w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <78ea57b6-5bc8-b357-c37c-bd327785e825@linux.intel.com>
+In-Reply-To: <CAMRc=MeD1FgCxEwSUgOJythtKU2R=6OZ0vJg0_rjhdJOneW+5w@mail.gmail.com>
 
-On Mon, Oct 13, 2025 at 12:11:01PM +0300, Ilpo Järvinen wrote:
-> On Sun, 12 Oct 2025, Sasha Levin wrote:
-> 
+On Mon, Oct 13, 2025 at 09:38:37AM +0200, Bartosz Golaszewski wrote:
+> On Sun, Oct 12, 2025 at 3:57â€¯PM Sasha Levin <sashal@kernel.org> wrote:
+> >
 > > This is a note to let you know that I've just added the patch titled
-> > 
-> >     PCI: Preserve bridge window resource type flags
-> > 
+> >
+> >     gpio: TODO: remove the task for converting to the new line setters
+> >
 > > to the 6.17-stable tree which can be found at:
 > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > 
+> >
 > > The filename of the patch is:
-> >      pci-preserve-bridge-window-resource-type-flags.patch
+> >      gpio-todo-remove-the-task-for-converting-to-the-new-.patch
 > > and it can be found in the queue-6.17 subdirectory.
-> > 
+> >
 > > If you, or anyone else, feels it should not be added to the stable tree,
 > > please let <stable@vger.kernel.org> know about it.
+> >
 > 
-> Hi Sasha and other stable maintainers,
-> 
-> While I agree the assessment that this is stable material, could we 
-> postpone queueing to stable a bit more? This change has relatively high 
-> regression potential and high impact for individual system that regresses, 
-> and is complicated change no matter what already given the diffstat alone.
-> 
-> So try e.g. after 6.18 is released would seem more prudent for me as it 
-> would give more time to iron out problems in the rc-phase before any 
-> stable sees this change.
+> As per commit message: this is neither a fix nor even a new feature,
+> this is just a change in the TODO file. Please drop it, this has no
+> place in stable branches.
 
-Ok, now dropped.
-
-thanks,
+Now dropped, thanks for the review.
 
 greg k-h
 
