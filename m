@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-184193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A0EBD237B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 11:12:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F05D4BD2393
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 11:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8FE284E9A7A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 09:12:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 330D51899C7B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 09:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E092FB978;
-	Mon, 13 Oct 2025 09:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E852F9D98;
+	Mon, 13 Oct 2025 09:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUminlK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JferCWR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232D22FBDE8
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 09:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE59D2FBDE8
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 09:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760346750; cv=none; b=ADlLqMwWTEFmio+JBZm9efAPm6XugAu8tyORPG8ZdEMYak6GRh1aIM4MSqrYutnatNN5SW4uhxzq9FagVU5IXf2Aq9nl+5Mp2CJf0KuQtsnysKIoa+8/H//wiMch28SNvzlQ4LB6c1R8ZFcaK2moHvY0/QkBH2rqLOhaD2Pb1Xg=
+	t=1760346903; cv=none; b=ajuWSKWMRpNpJjRZMNHVSxnu5AjAVHBkGHUA91hcNGcGXB/Oh73rJOMEiAvKVS6C3ROIkdqt0QvL9eYCYQzJa2qfPCOXj6REAVafSth/7x70fAwO1VOcwRibT3RzyJEQpXEd8NiIkCC7JI7PFKGyMMa1AAaE8UR3k07+ECZJKpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760346750; c=relaxed/simple;
-	bh=WyEr3Ad4V5WDw5hB56aBuNTfKHuy16eGkrBgNZUpBE4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h4wq4b5mLPpKGGYaqch85y3jSvd89mjJ1AwEW9mS0CKhboP5S8r+qw/kY32b5ETvJJBA/IQvAyLQXhW7FAOtWYxErmFW9ViApbTzAHGAzaIT3VQr0aYnnW3YndB+SmrKg88J86B2TT/jrvVb/ptgSo/U5dSMlNhB3DRk3ivB3k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUminlK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352EDC4CEE7;
-	Mon, 13 Oct 2025 09:12:29 +0000 (UTC)
+	s=arc-20240116; t=1760346903; c=relaxed/simple;
+	bh=xbd9VRvUBv8H4+9LvaCM8QOZsBDpBArv7uAviMAvx7g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lec1ojDm/7j+bX9V1Db67QByEiGz/aYAwucpg6p6le31u9qYwGlf9Ps/bTbVBj0G3uewtgUrxzLnQu+OPCQKiyBVpQQVdAdBLed0utswMuR9DiYM93SGupPzjgk0H+1IK23Z22DySLn+E6LRtT2rf0h4cf+9Obt9L4iYg2n7SvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JferCWR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2D1C4CEE7;
+	Mon, 13 Oct 2025 09:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760346749;
-	bh=WyEr3Ad4V5WDw5hB56aBuNTfKHuy16eGkrBgNZUpBE4=;
+	s=korg; t=1760346900;
+	bh=xbd9VRvUBv8H4+9LvaCM8QOZsBDpBArv7uAviMAvx7g=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EUminlK90OarBHTOVCNXNTLXVG3Tw1bXH3wD6H+q0NFMxz1MqAHm2aMsbfbHGCh1P
-	 hzulvBCcRy40jUjptOSfMa4fO1t8htpR8Kc7QzWr+f2HwZhJeZPPrpcCDqhL5pO7g+
-	 qAChCeSXsJlgdb0U97ZIvB03EL375suV2QTbBFcw=
-Subject: FAILED: patch "[PATCH] dm: fix NULL pointer dereference in __dm_suspend()" failed to apply to 5.4-stable tree
-To: zhengqixing@huawei.com,mpatocka@redhat.com
+	b=JferCWR6hAbRL8deymFLx5rgnnFiVnGiMl/pep/IUari7yd/9R4YHZkgt/hDhlTGW
+	 9rvnQawVPmYx0yJDTYQygmVGG2dLzaRHYHoclulyDF1OKP0LqyQxcunxig4ruH6jvX
+	 U5LQht5My/Oxddvc9M3DPcsr/Vanb55n3gi1gK2Q=
+Subject: FAILED: patch "[PATCH] mm/ksm: fix incorrect KSM counter handling in mm_struct" failed to apply to 6.17-stable tree
+To: donettom@linux.ibm.com,aboorvad@linux.ibm.com,akpm@linux-foundation.org,chengming.zhou@linux.dev,david@redhat.com,richard.weiyang@gmail.com,ritesh.list@gmail.com,stable@vger.kernel.org,xu.xin16@zte.com.cn
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Oct 2025 11:12:17 +0200
-Message-ID: <2025101316-handmade-imaginary-edf0@gregkh>
+Date: Mon, 13 Oct 2025 11:14:57 +0200
+Message-ID: <2025101357-monorail-juror-352b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8d33a030c566e1f105cd5bf27f37940b6367f3be
+git cherry-pick -x 4d6fc29f36341d7795db1d1819b4c15fe9be7b23
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101316-handmade-imaginary-edf0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101357-monorail-juror-352b@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,92 +77,100 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8d33a030c566e1f105cd5bf27f37940b6367f3be Mon Sep 17 00:00:00 2001
-From: Zheng Qixing <zhengqixing@huawei.com>
-Date: Tue, 26 Aug 2025 15:42:04 +0800
-Subject: [PATCH] dm: fix NULL pointer dereference in __dm_suspend()
+From 4d6fc29f36341d7795db1d1819b4c15fe9be7b23 Mon Sep 17 00:00:00 2001
+From: Donet Tom <donettom@linux.ibm.com>
+Date: Wed, 24 Sep 2025 00:16:59 +0530
+Subject: [PATCH] mm/ksm: fix incorrect KSM counter handling in mm_struct
+ during fork
 
-There is a race condition between dm device suspend and table load that
-can lead to null pointer dereference. The issue occurs when suspend is
-invoked before table load completes:
+Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
+fork", v3.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000054
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
-RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
-Call Trace:
-  <TASK>
-  blk_mq_quiesce_queue+0x2c/0x50
-  dm_stop_queue+0xd/0x20
-  __dm_suspend+0x130/0x330
-  dm_suspend+0x11a/0x180
-  dev_suspend+0x27e/0x560
-  ctl_ioctl+0x4cf/0x850
-  dm_ctl_ioctl+0xd/0x20
-  vfs_ioctl+0x1d/0x50
-  __se_sys_ioctl+0x9b/0xc0
-  __x64_sys_ioctl+0x19/0x30
-  x64_sys_call+0x2c4a/0x4620
-  do_syscall_64+0x9e/0x1b0
+The first patch in this series fixes the incorrect accounting of KSM
+counters such as ksm_merging_pages, ksm_rmap_items, and the global
+ksm_zero_pages during fork.
 
-The issue can be triggered as below:
+The following patch add a selftest to verify the ksm_merging_pages counter
+was updated correctly during fork.
 
-T1 						T2
-dm_suspend					table_load
-__dm_suspend					dm_setup_md_queue
-						dm_mq_init_request_queue
-						blk_mq_init_allocated_queue
-						=> q->mq_ops = set->ops; (1)
-dm_stop_queue / dm_wait_for_completion
-=> q->tag_set NULL pointer!	(2)
-						=> q->tag_set = set; (3)
+Test Results
+============
+Without the first patch
+-----------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ not ok 10 ksm_merging_page in child: 32
 
-Fix this by checking if a valid table (map) exists before performing
-request-based suspend and waiting for target I/O. When map is NULL,
-skip these table-dependent suspend steps.
+With the first patch
+--------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ ok 10 ksm_merging_pages is not inherited after fork
 
-Even when map is NULL, no I/O can reach any target because there is
-no table loaded; I/O submitted in this state will fail early in the
-DM layer. Skipping the table-dependent suspend logic in this case
-is safe and avoids NULL pointer dereferences.
 
-Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+This patch (of 2):
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index 7222f20c1a83..66dd5f6ce778 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2908,7 +2908,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
+Currently, the KSM-related counters in `mm_struct`, such as
+`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
+by the child process during fork.  This results in inconsistent
+accounting.
+
+When a process uses KSM, identical pages are merged and an rmap item is
+created for each merged page.  The `ksm_merging_pages` and
+`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
+these counters are copied to the child while the corresponding rmap items
+are not.  As a result, when the child later triggers an unmerge, there are
+no rmap items present in the child, so the counters remain stale, leading
+to incorrect accounting.
+
+A similar issue exists with `ksm_zero_pages`, which maintains both a
+global counter and a per-process counter.  During fork, the per-process
+counter is inherited by the child, but the global counter is not
+incremented.  Since the child also references zero pages, the global
+counter should be updated as well.  Otherwise, during zero-page unmerge,
+both the global and per-process counters are decremented, causing the
+global counter to become inconsistent.
+
+To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
+fork, and the global ksm_zero_pages counter is updated with the
+per-process ksm_zero_pages value inherited by the child.  This ensures
+that KSM statistics remain accurate and reflect the activity of each
+process correctly.
+
+Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
+Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
+Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
+Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index 22e67ca7cba3..067538fc4d58 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -56,8 +56,14 @@ static inline long mm_ksm_zero_pages(struct mm_struct *mm)
+ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
  {
- 	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
- 	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
--	int r;
-+	int r = 0;
+ 	/* Adding mm to ksm is best effort on fork. */
+-	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm))
++	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm)) {
++		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
++
++		mm->ksm_merging_pages = 0;
++		mm->ksm_rmap_items = 0;
++		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
+ 		__ksm_enter(mm);
++	}
+ }
  
- 	lockdep_assert_held(&md->suspend_lock);
- 
-@@ -2960,7 +2960,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
- 	 * Stop md->queue before flushing md->wq in case request-based
- 	 * dm defers requests to md->wq from md->queue.
- 	 */
--	if (dm_request_based(md)) {
-+	if (map && dm_request_based(md)) {
- 		dm_stop_queue(md->queue);
- 		set_bit(DMF_QUEUE_STOPPED, &md->flags);
- 	}
-@@ -2972,7 +2972,8 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
- 	 * We call dm_wait_for_completion to wait for all existing requests
- 	 * to finish.
- 	 */
--	r = dm_wait_for_completion(md, task_state);
-+	if (map)
-+		r = dm_wait_for_completion(md, task_state);
- 	if (!r)
- 		set_bit(dmf_suspended_flag, &md->flags);
- 
+ static inline int ksm_execve(struct mm_struct *mm)
 
 
