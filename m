@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4989BD4600
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A02BD422E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 39350508C17
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 51DA4504A53
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BAE3126D6;
-	Mon, 13 Oct 2025 15:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A3920125F;
+	Mon, 13 Oct 2025 14:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mp/Otj68"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLm0oHa5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464863126D8;
-	Mon, 13 Oct 2025 15:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92612261B9C;
+	Mon, 13 Oct 2025 14:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368243; cv=none; b=ate4R04N77JgHgd7KMwkJ4mbZ8LVwG+fqjeDzEZ60TextdlSNmoAmVzw7giy6dsBpFKKlXhfiDlUY2zXrgQRfBaT5FE3Uoko6KjDNJvDpA9VdtSWTuVlu9u3ZNC3yybdLbkti+RVueSrc9m9ZirlbGpZhH3u2fuRAgpKdZIkPw4=
+	t=1760367529; cv=none; b=nAiva22Qpyh88ckTuAhNe1QQBNxzhQdzsJ8ja/mordZI79Zze3QYbflju8ZagQeIez5XUVWEdOo2FriDhvqThhg7Mrl/YWUgZEI08+x6yoWrh61yKS69vYaO0ewySDgTewhveI4TNEOehCeiKM4uGCzB2VKb0ISn+lfzia3N2C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368243; c=relaxed/simple;
-	bh=X0Fh2sh9svPZIHXq1Pwc66uiF7XOBKajSg39d7xLA2Q=;
+	s=arc-20240116; t=1760367529; c=relaxed/simple;
+	bh=N0LrqlGhzPDpeiXeI9bRGdbCurTdZBDre7oOcNhuwcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSnZSyzchApt7qwTe1sceKcH/bODf3cP2mb+h1KuQ6ISmrqh2Ype4Hr3srH9k1gu1gtxoV8STRtpoKBsefHh3AI/VT+PJU4yxlz6xiQ17BjSlHDGlAil6NBT35vvYP857iuJx619ExxB2IA9Yzs3TEM+Yoqdg8sIbWgVXTOsUUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mp/Otj68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3521C4CEFE;
-	Mon, 13 Oct 2025 15:10:42 +0000 (UTC)
+	 MIME-Version; b=fk2aCtP/X9dqG6Xmb5toRC3EvEorgmuK9oS2LDF5WVtBzw0Zu8TATmD2H6NfYgpEj6qCZU85b546c+J5ohSpWBuauSQD2GOQowJHqNAvyKuUCpr5mNm0czObFyrKnLDN1UbgK74hZUlcglDmXWGEHtL4xnh1de4xAnxva280dpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLm0oHa5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17717C4CEFE;
+	Mon, 13 Oct 2025 14:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368243;
-	bh=X0Fh2sh9svPZIHXq1Pwc66uiF7XOBKajSg39d7xLA2Q=;
+	s=korg; t=1760367529;
+	bh=N0LrqlGhzPDpeiXeI9bRGdbCurTdZBDre7oOcNhuwcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mp/Otj68XEyUiDfaKmkRVohUerYCPsM2FgG9yLbudiYfz2RgkKeiu3EHkuvZPs6OB
-	 iio9Jm0VFMWduUYkvqlWhEdmBJ+58IG7c/AMPOVtMLj601QFmEQBqLQUp0d4RBlGdO
-	 7m8YbNkcp0lJUR3cB5dVw4uNp3JmRDsLOWzrQe8M=
+	b=nLm0oHa5zkThIvIjX4yNJkQCcAGydkLAyrNTpWI2GJAxLy0FYhjnJEISJKe7BXmUF
+	 53IRqQ+STxEr2xsrbGXDbEUq40w1ZABaw6C29zvpDbtJ9qr/lRH76a7jQpPwPXM7+5
+	 hIHnegSqqKm/uFDMpKCJqnHf55UDvG97EGWxfdYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Fei Shao <fshao@chromium.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/262] drm/bridge: it6505: select REGMAP_I2C
+Subject: [PATCH 6.6 044/196] arm64: dts: mediatek: mt8516-pumpkin: Fix machine compatible
 Date: Mon, 13 Oct 2025 16:43:55 +0200
-Message-ID: <20251013144329.478028725@linuxfoundation.org>
+Message-ID: <20251013144316.797177180@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 21b137f651cf9d981e22d2c60a2a8105f50a6361 ]
+[ Upstream commit ffe6a5d1dd4d4d8af0779526cf4e40522647b25f ]
 
-Fix
+This devicetree contained only the SoC compatible but lacked the
+machine specific one: add a "mediatek,mt8516-pumpkin" compatible
+to the list to fix dtbs_check warnings.
 
-  aarch64-linux-gnu-ld: drivers/gpu/drm/bridge/ite-it6505.o: in function `it6505_i2c_probe':
-  ite-it6505.c:(.text+0x754): undefined reference to `__devm_regmap_init_i2c'
-
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://patch.msgid.link/20250610235825.3113075-1-olvaffe@gmail.com
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Fixes: 9983822c8cf9 ("arm64: dts: mediatek: add pumpkin board dts")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20250724083914.61351-39-angelogioacchino.delregno@collabora.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
-index 3eb955333c809..66369b6a023f0 100644
---- a/drivers/gpu/drm/bridge/Kconfig
-+++ b/drivers/gpu/drm/bridge/Kconfig
-@@ -101,6 +101,7 @@ config DRM_ITE_IT6505
- 	select EXTCON
- 	select CRYPTO
- 	select CRYPTO_HASH
-+	select REGMAP_I2C
- 	help
- 	  ITE IT6505 DisplayPort bridge chip driver.
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
+index cce642c538128..3d3db33a64dc6 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
+@@ -11,7 +11,7 @@
  
+ / {
+ 	model = "Pumpkin MT8516";
+-	compatible = "mediatek,mt8516";
++	compatible = "mediatek,mt8516-pumpkin", "mediatek,mt8516";
+ 
+ 	memory@40000000 {
+ 		device_type = "memory";
 -- 
 2.51.0
 
