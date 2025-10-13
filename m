@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-184412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3725ABD40C0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:21:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC7BBD48C2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2E594FFB46
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C55D5059F4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CE930DD19;
-	Mon, 13 Oct 2025 14:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593FF30AAD3;
+	Mon, 13 Oct 2025 15:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsaPyBez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu38Ai9j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D1530DD13;
-	Mon, 13 Oct 2025 14:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B3D30AAC5;
+	Mon, 13 Oct 2025 15:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367361; cv=none; b=efrOqZtD5zpDhYknKx07ihk8p8+G6VXi3IB9B/RCZkAV2yZ27yiGN/Ebc5HgMVJUuvxZan1udSLdwy/J+Yq3HUlLn+J8pnDqGUbrxIYqMn4HwqP3n3csqFggRYYmNOhRSqFZWDxB2vOxK7SKYhKfOADXekqrvChi/eLHQEjHMA8=
+	t=1760368667; cv=none; b=gASPkJuz5MWIitQR6Nr+QLeXzWCqpF5bt410qd30hIucihU9vdZ5dOmJO4u5jFk6pTsD2A7Ce0LIjvc/NHqXYcQKhoKuD33tBCSpuFXMCy9LGIkCgIJG7YPScmH4cOebRW4OMNShQyGjOWGBTUR+eUME9y4Zlhdj79NLGiH7Mw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367361; c=relaxed/simple;
-	bh=xxW+ByaBBlox/3sVZlvKIaY7jHZkO4G9/jETwXPSZCM=;
+	s=arc-20240116; t=1760368667; c=relaxed/simple;
+	bh=ADvhm+VkO019plS7ru1m4pHLxOxECyX/NZld75surPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cKxeBSejw1aR0miXew0X+N07IgzaHFq9cdaQRo70uaeGcN1V5jYeAvO4P+fqN3Uqtjyz2850Ea9J+Qz1d5Bu/tLqY5BCXAbJR9Npiuuhl6A2J0EuRha6JDwAa0WjLCEGfigHijcPwSGuOSghngO7tnI6GQwYxaDCvlWXSDPiQ2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsaPyBez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD70BC4CEE7;
-	Mon, 13 Oct 2025 14:56:00 +0000 (UTC)
+	 MIME-Version; b=p6T6KGDZsE+C4Vrevl8ooRW6YPDGVviF3oW2P1vQuO36ihSxpX9p1w8v+JkG9KwvVcBbhXUaD/WuDIuV7gx4gvy99WncDelf84hxLcTirSD1Yfd9kvH//6xkfIoSoFr6z7F7Zza/xG5ZldxZO0+poDxlUdW5U4eYPrVIVLNKdwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu38Ai9j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F71BC4CEE7;
+	Mon, 13 Oct 2025 15:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367361;
-	bh=xxW+ByaBBlox/3sVZlvKIaY7jHZkO4G9/jETwXPSZCM=;
+	s=korg; t=1760368666;
+	bh=ADvhm+VkO019plS7ru1m4pHLxOxECyX/NZld75surPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsaPyBezbFk4GW01Fq+KPRTuFX8B0z4ZYOQpQ+uIH94FX/o7x9PFQYinXEQ66dsX2
-	 4MiNJMZe4PAs1b1m/dVVnVT1DJ/jYwmxYgV39FzA4fqklPK2aRM67bz42tbEd096Xw
-	 m1lRX+EGIA8qpVra2PLEXluShg2pUE8Le8g74kj4=
+	b=Tu38Ai9jDtt/KaOue5vw/RFFVCKzgm0xf/5IZI4XG3yd3CVxk0Oqhb7zc5kRuxyGT
+	 nT2UPjl1WIFjeEkGq7AZI1f8ulQJJtvWJQeceCCgXffHje33z+hy7seUoW+Yc+v22l
+	 vfTBq58DwQYdp7A/qYjokVkhQ6UK90usfkOFTVcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Carl Worth <carl@os.amperecomputing.com>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 182/196] mm: hugetlb: avoid soft lockup when mprotect to large memory area
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 213/262] idpf: fix mismatched free function for dma_alloc_coherent
 Date: Mon, 13 Oct 2025 16:45:55 +0200
-Message-ID: <20251013144321.277957388@linuxfoundation.org>
+Message-ID: <20251013144333.916024732@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,93 +64,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit f52ce0ea90c83a28904c7cc203a70e6434adfecb upstream.
+[ Upstream commit b9bd25f47eb79c9eb275e3d9ac3983dc88577dd4 ]
 
-When calling mprotect() to a large hugetlb memory area in our customer's
-workload (~300GB hugetlb memory), soft lockup was observed:
+The mailbox receive path allocates coherent DMA memory with
+dma_alloc_coherent(), but frees it with dmam_free_coherent().
+This is incorrect since dmam_free_coherent() is only valid for
+buffers allocated with dmam_alloc_coherent().
 
-watchdog: BUG: soft lockup - CPU#98 stuck for 23s! [t2_new_sysv:126916]
+Fix the mismatch by using dma_free_coherent() instead of
+dmam_free_coherent
 
-CPU: 98 PID: 126916 Comm: t2_new_sysv Kdump: loaded Not tainted 6.17-rc7
-Hardware name: GIGACOMPUTING R2A3-T40-AAV1/Jefferson CIO, BIOS 5.4.4.1 07/15/2025
-pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : mte_clear_page_tags+0x14/0x24
-lr : mte_sync_tags+0x1c0/0x240
-sp : ffff80003150bb80
-x29: ffff80003150bb80 x28: ffff00739e9705a8 x27: 0000ffd2d6a00000
-x26: 0000ff8e4bc00000 x25: 00e80046cde00f45 x24: 0000000000022458
-x23: 0000000000000000 x22: 0000000000000004 x21: 000000011b380000
-x20: ffff000000000000 x19: 000000011b379f40 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc875e0aa5e2c
-x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-x5 : fffffc01ce7a5c00 x4 : 00000000046cde00 x3 : fffffc0000000000
-x2 : 0000000000000004 x1 : 0000000000000040 x0 : ffff0046cde7c000
-
-Call trace:
-  mte_clear_page_tags+0x14/0x24
-  set_huge_pte_at+0x25c/0x280
-  hugetlb_change_protection+0x220/0x430
-  change_protection+0x5c/0x8c
-  mprotect_fixup+0x10c/0x294
-  do_mprotect_pkey.constprop.0+0x2e0/0x3d4
-  __arm64_sys_mprotect+0x24/0x44
-  invoke_syscall+0x50/0x160
-  el0_svc_common+0x48/0x144
-  do_el0_svc+0x30/0xe0
-  el0_svc+0x30/0xf0
-  el0t_64_sync_handler+0xc4/0x148
-  el0t_64_sync+0x1a4/0x1a8
-
-Soft lockup is not triggered with THP or base page because there is
-cond_resched() called for each PMD size.
-
-Although the soft lockup was triggered by MTE, it should be not MTE
-specific.  The other processing which takes long time in the loop may
-trigger soft lockup too.
-
-So add cond_resched() for hugetlb to avoid soft lockup.
-
-Link: https://lkml.kernel.org/r/20250929202402.1663290-1-yang@os.amperecomputing.com
-Fixes: 8f860591ffb2 ("[PATCH] Enable mprotect on huge pages")
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Tested-by: Carl Worth <carl@os.amperecomputing.com>
-Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e54232da1238 ("idpf: refactor idpf_recv_mb_msg")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Link: https://patch.msgid.link/20250925180212.415093-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6779,6 +6779,8 @@ unsigned long hugetlb_change_protection(
- 						make_pte_marker(PTE_MARKER_UFFD_WP));
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index f27a8cf3816db..d1f374da00981 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -727,9 +727,9 @@ int idpf_recv_mb_msg(struct idpf_adapter *adapter)
+ 		/* If post failed clear the only buffer we supplied */
+ 		if (post_err) {
+ 			if (dma_mem)
+-				dmam_free_coherent(&adapter->pdev->dev,
+-						   dma_mem->size, dma_mem->va,
+-						   dma_mem->pa);
++				dma_free_coherent(&adapter->pdev->dev,
++						  dma_mem->size, dma_mem->va,
++						  dma_mem->pa);
+ 			break;
  		}
- 		spin_unlock(ptl);
-+
-+		cond_resched();
- 	}
- 	/*
- 	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
+ 
+-- 
+2.51.0
+
 
 
 
