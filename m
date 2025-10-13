@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-184936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BBDFBD4534
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93899BD4543
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8513218850EC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89F751882CB7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D3C30F7E4;
-	Mon, 13 Oct 2025 15:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DB230F811;
+	Mon, 13 Oct 2025 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/GJTWLo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DluiS9hB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0452C30C36E;
-	Mon, 13 Oct 2025 15:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D29D30F80D;
+	Mon, 13 Oct 2025 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368864; cv=none; b=G61LrzTo16RsjMHFQHIyjwLdpvWZ0GUzjXs3AUhV9qxYB4A2fJAKEdKbywcfvu/MNI7/skYp/XjypF00MQAP1mA9iuKWb88/0bEHNqw+qTSFqbfbNBsYL9gtlRoM50btY6j2U4oe2YYJv/sqIqgtaJG32R1gNYUMXQsMB7BXLX0=
+	t=1760368870; cv=none; b=IWFl/WAKYULpyT2Qph5aO8FifFzFWNyKeyRnkwwUTdlWal6e1THzQ63GHLc3mlYLdbx/ynLfd5dJd/1wCnTqS7eLHzAzRB82X9gF195ppGFoah9OU+/+oUFbV7At7HxAZ+sIb97F6FYoSgBQ5jeTU4ehpOoaMVDZ7m1dfZQelFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368864; c=relaxed/simple;
-	bh=6CKmgAoG5Gno3El2rMEmzJBkvQmrpXjewvjXEeITqeY=;
+	s=arc-20240116; t=1760368870; c=relaxed/simple;
+	bh=DXVM05JLiVKYbbYlirY4cXwYnLuZ4KMIY4BxD6nlNNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eyuLtgKOVXY17uY1gBwsRlxnaiHTtHZmf/53slXwELEPYTXpBOHz5mDkUA/fQoE0zyjNrWkwkW77EciZIzEDYtajpYw5XrhQTrwsPKm9zGtGV5JoteC3EZxieu9WCQfjxSwtdii6pDaQdBYRNULrPT7HHbnYBW7C1MzwG7EQzes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/GJTWLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E68C4CEE7;
-	Mon, 13 Oct 2025 15:21:03 +0000 (UTC)
+	 MIME-Version; b=gndPFX0ljHfDmPVEpn0w1ZmKoaPOmBJcHfjuEK/lNTnzeUhzYySx601kVxf3004UxHjpOZsZT39aCjk2g8z2jLdSsy4NehpCmQubux7qEwqCamGt8eOWav09WtaUXMewnJv3HhK29NfSDAkFf4xc8U7ZdBjTz8TZsVDt2o+vJeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DluiS9hB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8785C4CEE7;
+	Mon, 13 Oct 2025 15:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368863;
-	bh=6CKmgAoG5Gno3El2rMEmzJBkvQmrpXjewvjXEeITqeY=;
+	s=korg; t=1760368870;
+	bh=DXVM05JLiVKYbbYlirY4cXwYnLuZ4KMIY4BxD6nlNNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/GJTWLoEgge9d3UExELLENe1aCuB5bcvQljKHhwP5fGf9Ka5FigWZ+YU6thCeEw8
-	 5kMfjuu43CYkzVmMI+ciD65twcQ5tZD2a0R52WrjtyPDoZh83e9C36tjKPll9Po3F/
-	 jR+PmUeX3IbGXGEMflBInhVO4vPSbKmSU7rwk4Rs=
+	b=DluiS9hB4PAscg8xSxQjaGUM1P9nGzqnYyOySJhDuveLtQM00WtKVmiNl09ZceYiX
+	 3e6DI02erxa4ZzXzXNpXykxvP3ev4wmztkhnvHO7vE4CEscqSKJHXEr0fqSf4av4js
+	 YlvC6n5qS5aJ//apqwhQHo/HK64gJtp1zDfFOos4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amery Hung <ameryhung@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Baptiste Lepers <baptiste.lepers@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 045/563] selftests/bpf: Copy test_kmods when installing selftest
-Date: Mon, 13 Oct 2025 16:38:26 +0200
-Message-ID: <20251013144412.925780209@linuxfoundation.org>
+Subject: [PATCH 6.17 046/563] rust: cpumask: Mark CpumaskVar as transparent
+Date: Mon, 13 Oct 2025 16:38:27 +0200
+Message-ID: <20251013144412.962211397@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,38 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amery Hung <ameryhung@gmail.com>
+From: Baptiste Lepers <baptiste.lepers@gmail.com>
 
-[ Upstream commit 07866544e410e4c895a729971e4164861b41fad5 ]
+[ Upstream commit 23fca458f6ab18927e50c2134fb7b60297f18b4e ]
 
-Commit d6212d82bf26 ("selftests/bpf: Consolidate kernel modules into
-common directory") consolidated the Makefile of test_kmods. However,
-since it removed test_kmods from TEST_GEN_PROGS_EXTENDED, the kernel
-modules required by bpf selftests are now missing from kselftest_install
-when "make install". Fix it by adding test_kmod to TEST_GEN_FILES.
+Unsafe code in CpumaskVar's methods assumes that the type has the same
+layout as `bindings::cpumask_var_t`. This is not guaranteed by
+the default struct representation in Rust, but requires specifying the
+`transparent` representation.
 
-Fixes: d6212d82bf26 ("selftests/bpf: Consolidate kernel modules into common directory")
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250812175039.2323570-1-ameryhung@gmail.com
+Fixes: 8961b8cb3099a ("rust: cpumask: Add initial abstractions")
+Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/cpumask.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index 4863106034dfb..77794efc020ea 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -137,7 +137,7 @@ TEST_GEN_PROGS_EXTENDED = \
- 	xdping \
- 	xskxceiver
- 
--TEST_GEN_FILES += liburandom_read.so urandom_read sign-file uprobe_multi
-+TEST_GEN_FILES += $(TEST_KMODS) liburandom_read.so urandom_read sign-file uprobe_multi
- 
- ifneq ($(V),1)
- submake_extras := feature_display=0
+diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+index 3fcbff4386705..05e1c882404e4 100644
+--- a/rust/kernel/cpumask.rs
++++ b/rust/kernel/cpumask.rs
+@@ -212,6 +212,7 @@ impl Cpumask {
+ /// }
+ /// assert_eq!(mask2.weight(), count);
+ /// ```
++#[repr(transparent)]
+ pub struct CpumaskVar {
+     #[cfg(CONFIG_CPUMASK_OFFSTACK)]
+     ptr: NonNull<Cpumask>,
 -- 
 2.51.0
 
