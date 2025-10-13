@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90322BD4ACE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F4BBD45E8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 917054FBBAA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B8E450273C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C3E25A63D;
-	Mon, 13 Oct 2025 15:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672EB30F54A;
+	Mon, 13 Oct 2025 15:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwF9X7CX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/cFbk7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A0A3090EF;
-	Mon, 13 Oct 2025 15:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114C730F548;
+	Mon, 13 Oct 2025 15:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368511; cv=none; b=iKmowMvMFRRp+xkscDsxF+JbAnFCjjtXQ9JPks5X0Ne+aXEEsWD/Io/4rMkGwbSxSKbkhNGnUfhuKAIGf16qdvKYGyl1ef7nYePUtql5WPN7OURh15zc8GN8Lb658OWxdjCog8ptD+rawh4WFeE6S87gD+cZJFP01jYXtzdoyws=
+	t=1760367821; cv=none; b=dL1bZ5hJ06nEREkE0QwKRCdbAoH9TjZITpqMuHSCVgzQmtoXdSotLIxAwC+sgtkulS4GeC87LUwAbziMqjQKQTkIxgmA5FNhXz0GJAaGPGsfD1Apm32f1dNbL5FJWGLRN3anPrPBOaU1dWZd31kc/JcLHaINICOWGb4m5Kv/Ljk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368511; c=relaxed/simple;
-	bh=ylYUE6hbgWfPyM6KXgsX7N6iPeDQe/ZHEjA8i3I9rrw=;
+	s=arc-20240116; t=1760367821; c=relaxed/simple;
+	bh=i9Jv2tX0Tk7YIpNhy04V1M4rtJX10is/8tpXmZ4Qa8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+ub9MBwhmQE7gGzeUJKEw9zzjjCdd4VPv9bJP0O6BAVr2Fmc/xBvJ/4PfbJad6B+etIjK64MZjEAc5ybQWbnVYCIfxl+mmFDP1k223G70R4cheBT8uXng3mgaLPvUSOhot0sZuf8pKSJbuColWkzYx4QufHjErF5n60pz3RIC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwF9X7CX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8B0C4CEE7;
-	Mon, 13 Oct 2025 15:15:10 +0000 (UTC)
+	 MIME-Version; b=oIxPaR8nzxatYIFdDgtJTXmQGHQ2LR1RnEBZtqhHIaqvCuUEU+ZddE2kkvIWiJ7rAlt6gVQ0XwEA0nWhmw103Lasn+c8DWdk9B6aU5xX5TxOzogt5iviZMMgMnwWe2lRhEwUrIUNn1MPsjSXQapzFk/shTfHky3owUGgR/8SLAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/cFbk7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7148CC4CEE7;
+	Mon, 13 Oct 2025 15:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368511;
-	bh=ylYUE6hbgWfPyM6KXgsX7N6iPeDQe/ZHEjA8i3I9rrw=;
+	s=korg; t=1760367820;
+	bh=i9Jv2tX0Tk7YIpNhy04V1M4rtJX10is/8tpXmZ4Qa8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwF9X7CX/eKLrHdeQgE2YTXg0StCm8e6ZzUYnptXJqyHBzQsHuthq1mmO7rznN1Fg
-	 bh5zetTlWK6rjtLFjaQ6CGgajVPRdeCwj+J3e5nlgV9ADRtLeAttyHQKSHPuK4tmCi
-	 a8pSHz5KE+wo2qyYq1PE6lA6x6cM/rKNtN14ZTxc=
+	b=p/cFbk7t/IZKw5VOE1chmNhEcdZrVipqh7OTnHRrtGpjnoFp6y0P/Jx3MDjNpN7Dw
+	 esnEXyHbVkP/nptzsDu7kO1owcH+3+HgibnoEGGKuDqX9kGC7P3sPB/K4T1YvlvYX4
+	 bxpHVkfzOjJRWB2nz7maGfb/YnwRNbkXIjgf1zjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Jie Gan <jie.gan@oss.qualcomm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Nagarjuna Kristam <nkristam@nvidia.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/262] coresight: tpda: fix the logic to setup the element size
+Subject: [PATCH 6.6 138/196] PCI: tegra194: Fix duplicate PLL disable in pex_ep_event_pex_rst_assert()
 Date: Mon, 13 Oct 2025 16:45:29 +0200
-Message-ID: <20251013144332.862804991@linuxfoundation.org>
+Message-ID: <20251013144320.307139675@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Gan <jie.gan@oss.qualcomm.com>
+From: Nagarjuna Kristam <nkristam@nvidia.com>
 
-[ Upstream commit 43e0a92c04de7c822f6104abc73caa4a857b4a02 ]
+[ Upstream commit 4f152338e384a3a47dd61909e1457539fa93f5a4 ]
 
-Some TPDM devices support both CMB and DSB datasets, requiring
-the system to enable the port with both corresponding element sizes.
+During PERST# assertion tegra_pcie_bpmp_set_pll_state() is currently
+called twice.
 
-Currently, the logic treats tpdm_read_element_size as successful if
-the CMB element size is retrieved correctly, regardless of whether
-the DSB element size is obtained. This behavior causes issues
-when parsing data from TPDM devices that depend on both element sizes.
+pex_ep_event_pex_rst_assert() should do the opposite of
+pex_ep_event_pex_rst_deassert(), so it is obvious that the duplicate
+tegra_pcie_bpmp_set_pll_state() is a mistake, and that the duplicate
+tegra_pcie_bpmp_set_pll_state() call should instead be a call to
+tegra_pcie_bpmp_set_ctrl_state().
 
-To address this, the function should explicitly fail if the DSB
-element size cannot be read correctly.
+With this, the uninitialization sequence also matches that of
+tegra_pcie_unconfig_controller().
 
-Fixes: e6d7f5252f73 ("coresight-tpda: Add support to configure CMB element")
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Jie Gan <jie.gan@oss.qualcomm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250906-fix_element_size_issue-v2-1-dbb0ac2541a9@oss.qualcomm.com
+Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
+Signed-off-by: Nagarjuna Kristam <nkristam@nvidia.com>
+[cassel: improve commit log]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20250911093021.1454385-2-cassel@kernel.org
+[mani: added Fixes tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-tpda.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-tpda.c b/drivers/hwtracing/coresight/coresight-tpda.c
-index bfca103f9f847..865fd6273e5e4 100644
---- a/drivers/hwtracing/coresight/coresight-tpda.c
-+++ b/drivers/hwtracing/coresight/coresight-tpda.c
-@@ -71,12 +71,15 @@ static int tpdm_read_element_size(struct tpda_drvdata *drvdata,
- 	if (tpdm_has_dsb_dataset(tpdm_data)) {
- 		rc = fwnode_property_read_u32(dev_fwnode(csdev->dev.parent),
- 				"qcom,dsb-element-bits", &drvdata->dsb_esize);
-+		if (rc)
-+			goto out;
- 	}
- 	if (tpdm_has_cmb_dataset(tpdm_data)) {
- 		rc = fwnode_property_read_u32(dev_fwnode(csdev->dev.parent),
- 				"qcom,cmb-element-bits", &drvdata->cmb_esize);
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 416d6b45d1fe8..115a21cf869ae 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1734,9 +1734,9 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+ 				ret);
  	}
  
-+out:
- 	if (rc)
- 		dev_warn_once(&csdev->dev,
- 			"Failed to read TPDM Element size: %d\n", rc);
+-	ret = tegra_pcie_bpmp_set_pll_state(pcie, false);
++	ret = tegra_pcie_bpmp_set_ctrl_state(pcie, false);
+ 	if (ret)
+-		dev_err(pcie->dev, "Failed to turn off UPHY: %d\n", ret);
++		dev_err(pcie->dev, "Failed to disable controller: %d\n", ret);
+ 
+ 	pcie->ep_state = EP_STATE_DISABLED;
+ 	dev_dbg(pcie->dev, "Uninitialization of endpoint is completed\n");
 -- 
 2.51.0
 
