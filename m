@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-185069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3435BD4BEE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:06:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A455BD4EA9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF258540407
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:43:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5483E7FA5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6335F308F32;
-	Mon, 13 Oct 2025 15:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5019C3164AB;
+	Mon, 13 Oct 2025 15:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmXJZpf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TPmFVz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D0525A63D;
-	Mon, 13 Oct 2025 15:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9D23161BF;
+	Mon, 13 Oct 2025 15:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369244; cv=none; b=E3mgHYwjjwZ4QJJdxeRe8Q8K1IJBxu2FB1pi9nAnkdw+SgdsFoKNbZJehFY0dVHRtghQIcJYvatSJW8WjSKz7BnWP9CBC/z4U2DT5c8BrErfKdIkNr/Sb8/PA3L3uKHKTJMfg7jtuKkgPqh1Y32H+uvzIhrCcw836F0Ns6k9Klk=
+	t=1760369264; cv=none; b=cg+nsn6+I86jaOfeX4d0OUONKFCGtQSsfF0XyQNxg5XJVyu+eDgvYhE/6xCMDGKDyhlsISM671kmT85vb+ElZXRFAAAXfcXqLqOjxUKbmeM+f0ivdH3hNQEqF+3wHtz4iPQ7EnfCzQj39dfRDNshQdd5G0KY5DFWA4qXk2PpfQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369244; c=relaxed/simple;
-	bh=+dJCV8iVw2OjB5eSavHUJN2gPvcxE0tNZ4qPeixJs1g=;
+	s=arc-20240116; t=1760369264; c=relaxed/simple;
+	bh=GzIrFzEhUvZhTY+bAeXBqvbsbtEN6pyPkW6nKukX5IE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMahFsvgXP6AC+tRfkKjrbVSMfJgzQF7i5dpg+jTSo2AGluw+XC1fQ2czjVnsv+VoqytfpJLYXZ8ZxYdblzEVlsflcWKhCJXuumLFUrEcP0eoeyx/EutU01fJ7U6sYNDUhltQ6FBBdu1fDHh4/Shk1czI3QJt8V3M4EwSVYG6zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmXJZpf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A066FC4CEE7;
-	Mon, 13 Oct 2025 15:27:23 +0000 (UTC)
+	 MIME-Version; b=fTRmOzqMkjw4DpaNc9WbXtYfJLzHfGjcBRqa8VTGqaJJiBRd9FxohybK5PohmZA0L5ZxnrCXcWq+wKm19t3boGwY4iL582loz7yD3/gX6nuhdbMWw5oRzibN56GvDutoGlRRpD/uAdZc8Os2lySN+s6iq3JNTGcQxRHhSdiPR+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TPmFVz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8498BC116B1;
+	Mon, 13 Oct 2025 15:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369244;
-	bh=+dJCV8iVw2OjB5eSavHUJN2gPvcxE0tNZ4qPeixJs1g=;
+	s=korg; t=1760369263;
+	bh=GzIrFzEhUvZhTY+bAeXBqvbsbtEN6pyPkW6nKukX5IE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmXJZpf8oDQpArYfpK5SAaWqifEJKcLxG3wgdIO+E58kLEKroNH52YrYBhsddJh2i
-	 f06QYDuLvNHuDuRN35ZFJNIL2MxqIYaf8MELU1+rK3olIy0wUAeEW41r0kJnoBjCGI
-	 amySqzh8SuZCklWfCIXpaMCIWO1TeAvnjtoAV6e4=
+	b=2TPmFVz2AQKorsyvi6pMyug4m/UAsoXAvOGo8RaaA+E678CqBBT/wHK2YM3629Oe1
+	 Ix9EDzd/XRTCyOiaroUDjb5vbTYlHYxOV7pCWUkMXBhnmSE9MjoFdHv3kuS1elfkQr
+	 z68wpM8/7UUM9M/9jO8S81+cmoNHeYr8fgCcKm5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 179/563] bpf, arm64: Call bpf_jit_binary_pack_finalize() in bpf_jit_free()
-Date: Mon, 13 Oct 2025 16:40:40 +0200
-Message-ID: <20251013144417.770080324@linuxfoundation.org>
+Subject: [PATCH 6.17 185/563] mfd: max77705: max77705_charger: move active discharge setting to mfd parent
+Date: Mon, 13 Oct 2025 16:40:46 +0200
+Message-ID: <20251013144417.984222869@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,39 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Dzmitry Sankouski <dsankouski@gmail.com>
 
-[ Upstream commit 6ff4a0fa3e1b2b9756254b477fb2f0fbe04ff378 ]
+[ Upstream commit c24928ac69be2390cdf456d126b464af079c57ef ]
 
-The current implementation seems incorrect and does NOT match the
-comment above, use bpf_jit_binary_pack_finalize() instead.
+Active discharge setting is a part of MFD top level i2c device, hence
+cannot be controlled by charger. Writing to MAX77705_PMIC_REG_MAINCTRL1
+register from charger driver is a mistake.
 
-Fixes: 1dad391daef1 ("bpf, arm64: use bpf_prog_pack for memory management")
-Acked-by: Puranjay Mohan <puranjay@kernel.org>
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Acked-by: Song Liu <song@kernel.org>
-Acked-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20250916232653.101004-1-hengqi.chen@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Move active discharge setting to MFD parent driver.
+
+Fixes: a6a494c8e3ce ("power: supply: max77705: Add charger driver for Maxim 77705")
+Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+Acked-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mfd/max77705.c                  | 3 +++
+ drivers/power/supply/max77705_charger.c | 3 ---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 52ffe115a8c47..4ef9b7b8fb404 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -3064,8 +3064,7 @@ void bpf_jit_free(struct bpf_prog *prog)
- 		 * before freeing it.
- 		 */
- 		if (jit_data) {
--			bpf_arch_text_copy(&jit_data->ro_header->size, &jit_data->header->size,
--					   sizeof(jit_data->header->size));
-+			bpf_jit_binary_pack_finalize(jit_data->ro_header, jit_data->header);
- 			kfree(jit_data);
- 		}
- 		prog->bpf_func -= cfi_get_offset();
+diff --git a/drivers/mfd/max77705.c b/drivers/mfd/max77705.c
+index 6b263bacb8c28..ff07d0e0d5f8e 100644
+--- a/drivers/mfd/max77705.c
++++ b/drivers/mfd/max77705.c
+@@ -108,6 +108,9 @@ static int max77705_i2c_probe(struct i2c_client *i2c)
+ 	if (pmic_rev != MAX77705_PASS3)
+ 		return dev_err_probe(dev, -ENODEV, "Rev.0x%x is not tested\n", pmic_rev);
+ 
++	/* Active Discharge Enable */
++	regmap_update_bits(max77705->regmap, MAX77705_PMIC_REG_MAINCTRL1, 1, 1);
++
+ 	ret = devm_regmap_add_irq_chip(dev, max77705->regmap,
+ 					i2c->irq,
+ 					IRQF_ONESHOT | IRQF_SHARED, 0,
+diff --git a/drivers/power/supply/max77705_charger.c b/drivers/power/supply/max77705_charger.c
+index 329b430d0e506..3b75c82b9b9ea 100644
+--- a/drivers/power/supply/max77705_charger.c
++++ b/drivers/power/supply/max77705_charger.c
+@@ -487,9 +487,6 @@ static void max77705_charger_initialize(struct max77705_charger_data *chg)
+ 	regmap_update_bits(regmap, MAX77705_CHG_REG_CNFG_00,
+ 				MAX77705_WDTEN_MASK, 0);
+ 
+-	/* Active Discharge Enable */
+-	regmap_update_bits(regmap, MAX77705_PMIC_REG_MAINCTRL1, 1, 1);
+-
+ 	/* VBYPSET=5.0V */
+ 	regmap_update_bits(regmap, MAX77705_CHG_REG_CNFG_11, MAX77705_VBYPSET_MASK, 0);
+ 
 -- 
 2.51.0
 
