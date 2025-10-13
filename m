@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BDFBD3C63
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:39 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4989BD4600
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4C88234DDC1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 39350508C17
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EF23090F5;
-	Mon, 13 Oct 2025 14:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BAE3126D6;
+	Mon, 13 Oct 2025 15:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ngjbr1W6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mp/Otj68"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E95826B742;
-	Mon, 13 Oct 2025 14:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464863126D8;
+	Mon, 13 Oct 2025 15:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367012; cv=none; b=R8WZuI6Ltuet/3tOaVaPQ8d7EOn3iyV5nBTpw4JcC494W8mq+yYNGxWb9zUbSb/7gZ8mmgbn7FfJkmA2D4wkuH+DuwS7W+3rPh3l8go8C3A+CMRjrmwu5SxU1y2jxmxUeiUNblu57pP3CtF0KHUz9+Jm1Tcas2Mt3pfGcovpXNQ=
+	t=1760368243; cv=none; b=ate4R04N77JgHgd7KMwkJ4mbZ8LVwG+fqjeDzEZ60TextdlSNmoAmVzw7giy6dsBpFKKlXhfiDlUY2zXrgQRfBaT5FE3Uoko6KjDNJvDpA9VdtSWTuVlu9u3ZNC3yybdLbkti+RVueSrc9m9ZirlbGpZhH3u2fuRAgpKdZIkPw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367012; c=relaxed/simple;
-	bh=zzIu59kSMjBqH5sOL4eqg1iSnIRIOK5MC0bNXdIji+g=;
+	s=arc-20240116; t=1760368243; c=relaxed/simple;
+	bh=X0Fh2sh9svPZIHXq1Pwc66uiF7XOBKajSg39d7xLA2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPgYfHic0FmOpvtzn1/jO3qIHU0VXa++jorfTa8r7wXmYq+0lroBeSfkJAKxdtx6RZq4T0/j1GPxomIoQRIodGiqTvbodOMCkXcBs8KQ/j6Nr+STEA3eRvd2FO+13IxD4+OJNlx7xSsg7NBEJNOM9fT5HecjEf9T9QVxlIs0LtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ngjbr1W6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B215EC4CEFE;
-	Mon, 13 Oct 2025 14:50:11 +0000 (UTC)
+	 MIME-Version; b=fSnZSyzchApt7qwTe1sceKcH/bODf3cP2mb+h1KuQ6ISmrqh2Ype4Hr3srH9k1gu1gtxoV8STRtpoKBsefHh3AI/VT+PJU4yxlz6xiQ17BjSlHDGlAil6NBT35vvYP857iuJx619ExxB2IA9Yzs3TEM+Yoqdg8sIbWgVXTOsUUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mp/Otj68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3521C4CEFE;
+	Mon, 13 Oct 2025 15:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367012;
-	bh=zzIu59kSMjBqH5sOL4eqg1iSnIRIOK5MC0bNXdIji+g=;
+	s=korg; t=1760368243;
+	bh=X0Fh2sh9svPZIHXq1Pwc66uiF7XOBKajSg39d7xLA2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ngjbr1W6zMvNOcnMwudbgBhaK/B0YSSc+nlONn2L+drNaw1GIR7CW1TEPx4OWHu6Z
-	 inXsJK2k+r1ZKRb7j9BTdHWbaN5RJONqt6tnlBnHrkE3eY2w7dG01mRDDMFsxDPq0D
-	 thUJwMiiAgayShHRL51KzrNVQYz1/JG527DsUF2U=
+	b=mp/Otj68XEyUiDfaKmkRVohUerYCPsM2FgG9yLbudiYfz2RgkKeiu3EHkuvZPs6OB
+	 iio9Jm0VFMWduUYkvqlWhEdmBJ+58IG7c/AMPOVtMLj601QFmEQBqLQUp0d4RBlGdO
+	 7m8YbNkcp0lJUR3cB5dVw4uNp3JmRDsLOWzrQe8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Da Xue <da@libre.computer>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/196] pinctrl: meson-gxl: add missing i2c_d pinmux
+Subject: [PATCH 6.12 093/262] drm/bridge: it6505: select REGMAP_I2C
 Date: Mon, 13 Oct 2025 16:43:55 +0200
-Message-ID: <20251013144316.824618617@linuxfoundation.org>
+Message-ID: <20251013144329.478028725@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Da Xue <da@libre.computer>
+From: Chia-I Wu <olvaffe@gmail.com>
 
-[ Upstream commit d8c2a9edd181f0cc4a66eec954b3d8f6a1d954a7 ]
+[ Upstream commit 21b137f651cf9d981e22d2c60a2a8105f50a6361 ]
 
-Amlogic GXL has 4 I2C attached to gpio-periphs. I2C_D is on GPIOX_10/11.
+Fix
 
-Add the relevant func 3 pinmux per the datasheet for S805X/S905X/S905D.
+  aarch64-linux-gnu-ld: drivers/gpu/drm/bridge/ite-it6505.o: in function `it6505_i2c_probe':
+  ite-it6505.c:(.text+0x754): undefined reference to `__devm_regmap_init_i2c'
 
-Fixes: 0f15f500ff2c ("pinctrl: meson: Add GXL pinctrl definitions")
-Signed-off-by: Da Xue <da@libre.computer>
-Link: https://lore.kernel.org/20250821233335.1707559-1-da@libre.computer
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20250610235825.3113075-1-olvaffe@gmail.com
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson-gxl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/bridge/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-meson-gxl.c b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-index 51408996255bd..e2601e45935e6 100644
---- a/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-@@ -187,6 +187,9 @@ static const unsigned int i2c_sda_c_pins[]	= { GPIODV_28 };
- static const unsigned int i2c_sck_c_dv19_pins[] = { GPIODV_19 };
- static const unsigned int i2c_sda_c_dv18_pins[] = { GPIODV_18 };
+diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
+index 3eb955333c809..66369b6a023f0 100644
+--- a/drivers/gpu/drm/bridge/Kconfig
++++ b/drivers/gpu/drm/bridge/Kconfig
+@@ -101,6 +101,7 @@ config DRM_ITE_IT6505
+ 	select EXTCON
+ 	select CRYPTO
+ 	select CRYPTO_HASH
++	select REGMAP_I2C
+ 	help
+ 	  ITE IT6505 DisplayPort bridge chip driver.
  
-+static const unsigned int i2c_sck_d_pins[]	= { GPIOX_11 };
-+static const unsigned int i2c_sda_d_pins[]	= { GPIOX_10 };
-+
- static const unsigned int eth_mdio_pins[]	= { GPIOZ_0 };
- static const unsigned int eth_mdc_pins[]	= { GPIOZ_1 };
- static const unsigned int eth_clk_rx_clk_pins[] = { GPIOZ_2 };
-@@ -411,6 +414,8 @@ static struct meson_pmx_group meson_gxl_periphs_groups[] = {
- 	GPIO_GROUP(GPIO_TEST_N),
- 
- 	/* Bank X */
-+	GROUP(i2c_sda_d,	5,	5),
-+	GROUP(i2c_sck_d,	5,	4),
- 	GROUP(sdio_d0,		5,	31),
- 	GROUP(sdio_d1,		5,	30),
- 	GROUP(sdio_d2,		5,	29),
-@@ -651,6 +656,10 @@ static const char * const i2c_c_groups[] = {
- 	"i2c_sck_c", "i2c_sda_c", "i2c_sda_c_dv18", "i2c_sck_c_dv19",
- };
- 
-+static const char * const i2c_d_groups[] = {
-+	"i2c_sck_d", "i2c_sda_d",
-+};
-+
- static const char * const eth_groups[] = {
- 	"eth_mdio", "eth_mdc", "eth_clk_rx_clk", "eth_rx_dv",
- 	"eth_rxd0", "eth_rxd1", "eth_rxd2", "eth_rxd3",
-@@ -777,6 +786,7 @@ static struct meson_pmx_func meson_gxl_periphs_functions[] = {
- 	FUNCTION(i2c_a),
- 	FUNCTION(i2c_b),
- 	FUNCTION(i2c_c),
-+	FUNCTION(i2c_d),
- 	FUNCTION(eth),
- 	FUNCTION(pwm_a),
- 	FUNCTION(pwm_b),
 -- 
 2.51.0
 
