@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-185429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9328DBD524E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:41:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8286EBD4E22
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6AEFB505551
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:06:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D1C814F2BB2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CA8315764;
-	Mon, 13 Oct 2025 15:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F3030AAD0;
+	Mon, 13 Oct 2025 15:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7274F5B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKjT4ntW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B863090E8;
-	Mon, 13 Oct 2025 15:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02053309EFB;
+	Mon, 13 Oct 2025 15:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370269; cv=none; b=k6KFNQ7Trh+GWT24tuNpiseR9D62XuXUK4Kc2fTnYFPZBYbHGfXcSpdjQSOuw+LdBX/IrtGsEMxBzRXNtiKHygVb8D97adbN2MpHEYYDbB+uy9ipjESg+OhfIJWzB7XC028N/+DBtN1/cUREueZ/xGROEyx7Vk3ziS0UEgvOWDI=
+	t=1760368670; cv=none; b=ht3xwxEfhySIPTyU0gj/lcTYWoGf/JCZ6AT3sLFBIKq9JrnBLfRr9wPELNefMdE1SJw+9gJ6Iv5rTFeVN5QCcdZq/slpKs2+G164M0P8f187fQ3wlCkYTb0IooRLY6/AoHhaH144SClTPte5AuJbk1WQbWD3zF65rCDULl1ct1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370269; c=relaxed/simple;
-	bh=dyLH3N/hkpDZdSHJ7+/Tz39X/8zfjOdINAyD1hP3P8A=;
+	s=arc-20240116; t=1760368670; c=relaxed/simple;
+	bh=xLi/MnsewopkYbgdb04AaLD89EieCnHYB2xrjY3w8Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HK6X63FYluo2mVqMd2cIkLs+11T6vu95XoKaRgYiIFA++e65Y2fBVNB8HvT+kDP4W3obvsT3lFj04TbIeSa0IWeMLR+EIQ4Ew4vTzrpt3DrmLhhfbo472yz/GtaOshwzfTQpiSUKct6AUPZhxWCcN6yJoVNmzqQ9HfhmdsfkwFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7274F5B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80310C116C6;
-	Mon, 13 Oct 2025 15:44:28 +0000 (UTC)
+	 MIME-Version; b=S4DoM5BMOvJjwHfhst8fUEYPFra0IY6OH+CKYt1Jn2NsB6qszFTvQpqDqst2YlPoytdSMEUn51QVY0wUTJIA+/YxzghKaLCFkqU0vcZ/pjG6pr5nHGMa/0UiR/lGN4aq7pMSJPBjO0oaAwtiUf7qmohegVi1j/HwqYuYZUxV2e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKjT4ntW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22633C4CEE7;
+	Mon, 13 Oct 2025 15:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370268;
-	bh=dyLH3N/hkpDZdSHJ7+/Tz39X/8zfjOdINAyD1hP3P8A=;
+	s=korg; t=1760368669;
+	bh=xLi/MnsewopkYbgdb04AaLD89EieCnHYB2xrjY3w8Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7274F5Bwp5hQ2AyQXYJDq45m/ZmKqzTD4Ykep7EsHpGBDOtaUF1huFjMSR216jX4
-	 L+a6EtIVK6hJU2j9YjrbRITzaK9ILyEs+P5gird0Yrt3vWpTBbcHh9g86ZVkBEXnHa
-	 FCzZ1W+maDvg30NjaCi8VLbUkmuKOvCSq1e3UouM=
+	b=HKjT4ntWAUeHRbc8koYYD8tViy+0Hl6mYGpKoJ4LtHiNaozYTowiCCVNn5KpTHlK9
+	 Z4qB4KTQxEskGIWFdEEWtY0ueh5MrfsmiCrkyQi5k+FYApVtGsKxcrw9ag6d/QijPc
+	 D9DYBmS/Aa/maO8smaKRGEjOk/QgeOx0hneW+ZVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.17 520/563] dm: fix NULL pointer dereference in __dm_suspend()
-Date: Mon, 13 Oct 2025 16:46:21 +0200
-Message-ID: <20251013144430.150955267@linuxfoundation.org>
+	Matvey Kovalev <matvey.kovalev@ispras.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 240/262] ksmbd: fix error code overwriting in smb2_get_info_filesystem()
+Date: Mon, 13 Oct 2025 16:46:22 +0200
+Message-ID: <20251013144334.881693368@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Matvey Kovalev <matvey.kovalev@ispras.ru>
 
-commit 8d33a030c566e1f105cd5bf27f37940b6367f3be upstream.
+commit 88daf2f448aad05a2e6df738d66fe8b0cf85cee0 upstream.
 
-There is a race condition between dm device suspend and table load that
-can lead to null pointer dereference. The issue occurs when suspend is
-invoked before table load completes:
+If client doesn't negotiate with SMB3.1.1 POSIX Extensions,
+then proper error code won't be returned due to overwriting.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000054
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
-RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
-Call Trace:
-  <TASK>
-  blk_mq_quiesce_queue+0x2c/0x50
-  dm_stop_queue+0xd/0x20
-  __dm_suspend+0x130/0x330
-  dm_suspend+0x11a/0x180
-  dev_suspend+0x27e/0x560
-  ctl_ioctl+0x4cf/0x850
-  dm_ctl_ioctl+0xd/0x20
-  vfs_ioctl+0x1d/0x50
-  __se_sys_ioctl+0x9b/0xc0
-  __x64_sys_ioctl+0x19/0x30
-  x64_sys_call+0x2c4a/0x4620
-  do_syscall_64+0x9e/0x1b0
+Return error immediately.
 
-The issue can be triggered as below:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-T1 						T2
-dm_suspend					table_load
-__dm_suspend					dm_setup_md_queue
-						dm_mq_init_request_queue
-						blk_mq_init_allocated_queue
-						=> q->mq_ops = set->ops; (1)
-dm_stop_queue / dm_wait_for_completion
-=> q->tag_set NULL pointer!	(2)
-						=> q->tag_set = set; (3)
-
-Fix this by checking if a valid table (map) exists before performing
-request-based suspend and waiting for target I/O. When map is NULL,
-skip these table-dependent suspend steps.
-
-Even when map is NULL, no I/O can reach any target because there is
-no table loaded; I/O submitted in this state will fail early in the
-DM layer. Skipping the table-dependent suspend logic in this case
-is safe and avoids NULL pointer dereferences.
-
-Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
+Fixes: e2f34481b24db ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Matvey Kovalev <matvey.kovalev@ispras.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/smb/server/smb2pdu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2908,7 +2908,7 @@ static int __dm_suspend(struct mapped_de
- {
- 	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
- 	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
--	int r;
-+	int r = 0;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5600,7 +5600,8 @@ static int smb2_get_info_filesystem(stru
  
- 	lockdep_assert_held(&md->suspend_lock);
- 
-@@ -2960,7 +2960,7 @@ static int __dm_suspend(struct mapped_de
- 	 * Stop md->queue before flushing md->wq in case request-based
- 	 * dm defers requests to md->wq from md->queue.
- 	 */
--	if (dm_request_based(md)) {
-+	if (map && dm_request_based(md)) {
- 		dm_stop_queue(md->queue);
- 		set_bit(DMF_QUEUE_STOPPED, &md->flags);
- 	}
-@@ -2972,7 +2972,8 @@ static int __dm_suspend(struct mapped_de
- 	 * We call dm_wait_for_completion to wait for all existing requests
- 	 * to finish.
- 	 */
--	r = dm_wait_for_completion(md, task_state);
-+	if (map)
-+		r = dm_wait_for_completion(md, task_state);
- 	if (!r)
- 		set_bit(dmf_suspended_flag, &md->flags);
- 
+ 		if (!work->tcon->posix_extensions) {
+ 			pr_err("client doesn't negotiate with SMB3.1.1 POSIX Extensions\n");
+-			rc = -EOPNOTSUPP;
++			path_put(&path);
++			return -EOPNOTSUPP;
+ 		} else {
+ 			info = (struct filesystem_posix_info *)(rsp->Buffer);
+ 			info->OptimalTransferSize = cpu_to_le32(stfs.f_bsize);
 
 
 
