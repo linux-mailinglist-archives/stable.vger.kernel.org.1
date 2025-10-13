@@ -1,227 +1,123 @@
-Return-Path: <stable+bounces-184237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF5DBD3BE2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:56:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40770BD45A9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A4F8403E63
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:48:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B264E1884352
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D19126FA70;
-	Mon, 13 Oct 2025 14:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E84A31076C;
+	Mon, 13 Oct 2025 15:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="SrRq5RWk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noM0Y3rx"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB16E22A4D5
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 14:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB1630C60C;
+	Mon, 13 Oct 2025 15:23:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366375; cv=none; b=hbRbuLqm4r8KSgA6hFR0Qt/5/svv4bctBTfQ8TliFEPTYYjkTH9Z0NWjEHnzu5AEmOVQRqpLigESGblTuRYwM7pmIqYg8WbcHA0JM2SSiYf/EbZUqxp5pdLo1DDb2LrLZdll4I586NsuyQqwC1xiReN3VrbaLiEUk4ujmHSZaQo=
+	t=1760369030; cv=none; b=RwVYtNXjIhO1/sG7chzFhY6FWIFIULRomeN5Sbi5Vy+V20cUDPiS6maSdr3hAjZzxbc599vZr0HWOwezNrp4NqCDEgtykkDKrL5oWl+/WeEYDDLTlZ/zR3kH4U23WCZZPQ1Is9NnA/k5Xs0HCZgCixM0hiDerJw4MrGDNEzqd2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366375; c=relaxed/simple;
-	bh=zeFDGLCA+TZtniD9v/vACQyM7ZcLBp8owxX3yibDynI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gNlj9zZgQn8r72nQ2wmFtNpucPSjwYUsTZUIG4EIeCsrH8BshGzhfNGYr2tUU5/Nf7xy5hJNBpykwxI5ZLC9ejc/0Ks9H63I6/JeSMDLiybjo3rP7Laj9U0tOVYQKH5TKn4QhaoMlDdYRH/Mi8w2PAGm9ssO5oseXRF8U4ZHvUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=SrRq5RWk; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4clg3N6kP1z9scN;
-	Mon, 13 Oct 2025 16:39:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760366369; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eldRaBaRMDIvKL2RJMD+DdStCyCpgUpA7qlTkovrzrU=;
-	b=SrRq5RWkoPFxAu7/iK9pmSSeoNyCXi/5A95tviX96W8R8CbbatUnrvBU9mn9ZDQoCwVTYt
-	2wgNZZEjq+0rxsqKxDufcrsXTerXQpipRARwMnX5KPQ9NQFLNOUmQWwH814U1Pe+gNOBMl
-	zPTU6goB54s7CvGvwrlhmqZRJwkiwTJjtxsYyX57tRyjELrrbiRyx/5NSkqrYDtqOZm7kG
-	ExxyUjV6HSBRDXvhWLh3uH1lBNVVClyavmokRUWotfAG8oZwpBRAH/a6pjlH+E8cxSqBso
-	l75yl/i6bJwNPb78nmJWY/53iatb2f6WdBwwBY/ZxMIzJDnsId1Zepwvrzanzg==
-Message-ID: <6c150c95531b3d401b1dceec8d328a6d77b6849d.camel@mailbox.org>
-Subject: Re: [PATCH] drm/sched: Fix potential double free in
- drm_sched_job_add_resv_dependencies
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
-	dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Dan Carpenter <dan.carpenter@linaro.org>, 
- Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Rob Clark
- <robdclark@chromium.org>, Daniel Vetter <daniel.vetter@ffwll.ch>, Matthew
- Brost <matthew.brost@intel.com>, Danilo Krummrich <dakr@kernel.org>,
- Philipp Stanner <phasta@kernel.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <ckoenig.leichtzumerken@gmail.com>, stable@vger.kernel.org
+	s=arc-20240116; t=1760369030; c=relaxed/simple;
+	bh=wcLSd64RRhJJ5e9w1P0pUIkaO2B2v64Ri+DLTfZlDcA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dqgBWE/cMXCmUL6IJv9KGwX0rB3Kovx6Lsz4cOkIZ3Zzfa+SFu4xla4Dj4P/zkr4bc+7mGR3mVKU5PEXidC9/qewBufDmM2doAxf05XM9EUJvJZ28TdtU48i6HvfrOLezZEAWNG4hzXHtKNiN0JTjzlWVNY+57GH+3375moq1HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noM0Y3rx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C114C4CEE7;
+	Mon, 13 Oct 2025 15:23:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760369029;
+	bh=wcLSd64RRhJJ5e9w1P0pUIkaO2B2v64Ri+DLTfZlDcA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=noM0Y3rxKmnuWfTvqGc460RV4H+saTw8VqTLlE6MgmOWnwsYsHbCE2KqXk5daYpeU
+	 dypJNQgFXXH+i9cCDDIqz6ncWC4RPPuHom9D2T99HTRg/AiPEHv+xKXoM7tGQKtc7Z
+	 E2UtTuUtQCq+DHv0D+enAE2SeJKr+PKR0uuRliug=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Genjian Zhang <zhanggenjian@kylinos.cn>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 104/563] null_blk: Fix the description of the cache_size module argument
 Date: Mon, 13 Oct 2025 16:39:25 +0200
-In-Reply-To: <20251003092642.37065-1-tvrtko.ursulin@igalia.com>
-References: <20251003092642.37065-1-tvrtko.ursulin@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <20251013144415.062693026@linuxfoundation.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: s3dqqfprn6hrz5mawo3fttu4w4e4qai8
-X-MBO-RS-ID: 02b3f6a68c7015c7758
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2025-10-03 at 10:26 +0100, Tvrtko Ursulin wrote:
-> Drm_sched_job_add_dependency() consumes the fence reference both on
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
-s/D/d
+------------------
 
-> success and failure, so in the latter case the dma_fence_put() on the
-> error path (xarray failed to expand) is a double free.
->=20
-> Interestingly this bug appears to have been present ever since
-> ebd5f74255b9 ("drm/sched: Add dependency tracking"), since the code back
-> then looked like this:
->=20
-> drm_sched_job_add_implicit_dependencies():
-> ...
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < fence_count; i++) =
-{
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 ret =3D drm_sched_job_add_dependency(job, fences[i]);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 if (ret)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (; i < fence_count; i++)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 dma_fence_put(fences[i]);
->=20
-> Which means for the failing 'i' the dma_fence_put was already a double
-> free. Possibly there were no users at that time, or the test cases were
-> insufficient to hit it.
->=20
-> The bug was then only noticed and fixed after
-> 9c2ba265352a ("drm/scheduler: use new iterator in drm_sched_job_add_impli=
-cit_dependencies v2")
-> landed, with its fixup of
-> 4eaf02d6076c ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies=
-").
->=20
-> At that point it was a slightly different flavour of a double free, which
-> 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies=
- harder")
-> noticed and attempted to fix.
->=20
-> But it only moved the double free from happening inside the
-> drm_sched_job_add_dependency(), when releasing the reference not yet
-> obtained, to the caller, when releasing the reference already released by
-> the former in the failure case.
+From: Genjian Zhang <zhanggenjian@kylinos.cn>
 
-That's certainly interesting, but is there a specific reason why you
-include all of that?
+[ Upstream commit 7942b226e6b84df13b46b76c01d3b6e07a1b349e ]
 
-The code is as is, and AFAICS it's just a bug stemming from original
-bugs present and then refactorings happening.
+When executing modinfo null_blk, there is an error in the description
+of module parameter mbps, and the output information of cache_size is
+incomplete.The output of modinfo before and after applying this patch
+is as follows:
 
-I would at least remove the old 'implicit_dependencies' function from
-the commit message. It's just confusing and makes one look for that in
-the current code or patch.
+Before:
+[...]
+parm:           cache_size:ulong
+[...]
+parm:           mbps:Cache size in MiB for memory-backed device.
+		Default: 0 (none) (uint)
+[...]
 
->=20
-> As such it is not easy to identify the right target for the fixes tag so
-> lets keep it simple and just continue the chain.
->=20
-> We also drop the misleading comment about additional reference, since it
-> is not additional but the only one from the point of view of dependency
-> tracking.
+After:
+[...]
+parm:           cache_size:Cache size in MiB for memory-backed device.
+		Default: 0 (none) (ulong)
+[...]
+parm:           mbps:Limit maximum bandwidth (in MiB/s).
+		Default: 0 (no limit) (uint)
+[...]
+
+Fixes: 058efe000b31 ("null_blk: add module parameters for 4 options")
+Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/block/null_blk/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 91642c9a3b293..f982027e8c858 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -223,7 +223,7 @@ MODULE_PARM_DESC(discard, "Support discard operations (requires memory-backed nu
+ 
+ static unsigned long g_cache_size;
+ module_param_named(cache_size, g_cache_size, ulong, 0444);
+-MODULE_PARM_DESC(mbps, "Cache size in MiB for memory-backed device. Default: 0 (none)");
++MODULE_PARM_DESC(cache_size, "Cache size in MiB for memory-backed device. Default: 0 (none)");
+ 
+ static bool g_fua = true;
+ module_param_named(fua, g_fua, bool, 0444);
+-- 
+2.51.0
 
 
-IMO that comment is nonsense. It's useless, too, because I can *see*
-that a reference is being taken there, but not *why*.
-
-Argh, these comments. See also my commit 72ebc18b34993
-
-
-Anyways. Removing it is fine, but adding a better comment is better.
-See below.
-
->=20
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Fixes: 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_depen=
-dencies harder")
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-
-Is there an error report that could be included here with a Closes:
-tag?
-
-> Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
-> Cc: Rob Clark <robdclark@chromium.org>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Philipp Stanner <phasta@kernel.org>
-> Cc: "Christian K=C3=B6nig" <ckoenig.leichtzumerken@gmail.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.16+
-> ---
-> =C2=A0drivers/gpu/drm/scheduler/sched_main.c | 14 +++++---------
-> =C2=A01 file changed, 5 insertions(+), 9 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/sch=
-eduler/sched_main.c
-> index 46119aacb809..aff34240f230 100644
-> --- a/drivers/gpu/drm/scheduler/sched_main.c
-> +++ b/drivers/gpu/drm/scheduler/sched_main.c
-> @@ -960,20 +960,16 @@ int drm_sched_job_add_resv_dependencies(struct drm_=
-sched_job *job,
-> =C2=A0{
-> =C2=A0	struct dma_resv_iter cursor;
-> =C2=A0	struct dma_fence *fence;
-> -	int ret;
-> +	int ret =3D 0;
-> =C2=A0
-> =C2=A0	dma_resv_assert_held(resv);
-> =C2=A0
-> =C2=A0	dma_resv_for_each_fence(&cursor, resv, usage, fence) {
-> -		/* Make sure to grab an additional ref on the added fence */
-> -		dma_fence_get(fence);
-> -		ret =3D drm_sched_job_add_dependency(job, fence);
-> -		if (ret) {
-> -			dma_fence_put(fence);
-> -			return ret;
-> -		}
-> +		ret =3D drm_sched_job_add_dependency(job, dma_fence_get(fence));
-
-You still take a reference as before, but there is no comment anymore.
-Can you add one explaining why a new reference is taken here?
-
-I guess it will be something like "This needs a new reference for the
-job", since you cannot rely on the one from resv.
-
-> +		if (ret)
-> +			break;
-> =C2=A0	}
-> -	return 0;
-> +	return ret;
-
-
-That's an unnecessarily enlargement of the git diff because of style,
-isn't it? Better keep the diff minimal here for git blame.
-
-
-P.
-
-
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL(drm_sched_job_add_resv_dependencies);
-> =C2=A0
 
 
