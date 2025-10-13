@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C158BD480B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:57 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB9DBD4B58
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E50643E05A3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:26:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E9A6B3430B0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE57030DED4;
-	Mon, 13 Oct 2025 15:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9276631281D;
+	Mon, 13 Oct 2025 15:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0q6jeB0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bR4tqbcW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795DF3081D3;
-	Mon, 13 Oct 2025 15:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D12231280A;
+	Mon, 13 Oct 2025 15:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368458; cv=none; b=uMM2S7D3V9uCg5m5FVj3PEVr+E+7GYZZO9oSD1nmkiIocQGccNEvrF+tqXnq/DaLpVxDq2AwEE9Nntm3EVmIfbU1p1Z46oBIRVuCCzCjCO0toRULpA5HUN24gp/oYo84jzM3+RxgXAiWsV1ZpZCZZMn3LPdXZb4uPbEgj/EDpVI=
+	t=1760370066; cv=none; b=eOEs/w+NUh/0dlsGjSIcGr71ap2yx28QhO6Z/j9VQWth/PpVUQvs0ebqqrdu7+GkO9LgG24YqL0fswkTtRj7kPkn0LsT1iOrJLCrfD+/1VWDGfq971FLBtw9uBxWwIOweq6PZQPGN41u/h5rgoubvkLwYlaYbrDpf7Rn0iFMwPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368458; c=relaxed/simple;
-	bh=UkiiO1vBNBT2ZNxLvaM92dJ7k7Ikcfs7xnGuPbrj+HI=;
+	s=arc-20240116; t=1760370066; c=relaxed/simple;
+	bh=tBFkt1HUD2JOW4E/1DypKGDi5DcxKxqF9CBOgQ0qBzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r91gwD1NAsSVKezjUZ8gGuF/AzPI10MpWqt3pPI2O704UPgIx4ogwMOV/ApahNxH0U/v6gjEdm26iubVfRxxZvKRiwXCEQWdG/WRry4BoiptAtJwN3dMWg4BC0pEvW9AXor1GDAYFBlNkklf+1evpNiCp3ZEUMq4WZS4yiF3tlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0q6jeB0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D47C4CEE7;
-	Mon, 13 Oct 2025 15:14:17 +0000 (UTC)
+	 MIME-Version; b=VmPbw8LytraHppk9V83UrBq0lcW44+pLJdyjpLD5MsrXoUHpNHojrmPeHkol8c7x8CKLMx+V6cGCGtOgzNBNAHH8iifB1Lbp6mu/XzRiRb12z8xJDFRhLZc5twE053LtJ7zuISQnAbDNnKGIaM0vWej6mEHfqh0AnKi1HGVbgko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bR4tqbcW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7E9C4CEE7;
+	Mon, 13 Oct 2025 15:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368458;
-	bh=UkiiO1vBNBT2ZNxLvaM92dJ7k7Ikcfs7xnGuPbrj+HI=;
+	s=korg; t=1760370066;
+	bh=tBFkt1HUD2JOW4E/1DypKGDi5DcxKxqF9CBOgQ0qBzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0q6jeB0KM63Txv5bj+O+Yje/DhtIHKsQy7SmHTpk/POBC0A2mpwChpth8LJO5QDul
-	 JRdvPgl0NoqtdIsBIezIw/WMo2FYVtjQuHmn8gUAiBCEkkKDxcTPDG/6E3B3+czBho
-	 LxpdeJnXh89aHxKxajmREvLZo90UsVvEopYZ9Mg0=
+	b=bR4tqbcW5JRt6Q8CYHlnJmFmF2J1iFjzdhpceMnKvj0LnWz1vB1dJQi2T5qfPYboA
+	 6j4dMWt5hovCedyaPwG+aXMU/NyDmr/KgTRDYWxxSM9qXaeY2CwJU86abFlr7FNi4o
+	 1KNHHddf5zbqxjV21YD4FP4MXp3siiU9XbxcsvKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 168/262] wifi: mac80211: fix Rx packet handling when pubsta information is not available
+Subject: [PATCH 6.17 449/563] net: enetc: Fix probing error message typo for the ENETCv4 PF driver
 Date: Mon, 13 Oct 2025 16:45:10 +0200
-Message-ID: <20251013144332.174950932@linuxfoundation.org>
+Message-ID: <20251013144427.546898645@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
 
-[ Upstream commit 32d340ae675800672e1219444a17940a8efe5cca ]
+[ Upstream commit c35cf24a69b00b7f54f2f19838f2b82d54480b0f ]
 
-In ieee80211_rx_handle_packet(), if the caller does not provide pubsta
-information, an attempt is made to find the station using the address 2
-(source address) field in the header. Since pubsta is missing, link
-information such as link_valid and link_id is also unavailable. Now if such
-a situation comes, and if a matching ML station entry is found based on
-the source address, currently the packet is dropped due to missing link ID
-in the status field which is not correct.
+Blamed commit wrongly indicates VF error in case of PF probing error.
 
-Hence, to fix this issue, if link_valid is not set and the station is an
-ML station, make an attempt to find a link station entry using the source
-address. If a valid link station is found, derive the link ID and proceed
-with packet processing. Otherwise, drop the packet as per the existing
-flow.
-
-Fixes: ea9d807b5642 ("wifi: mac80211: add link information in ieee80211_rx_status")
-Suggested-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250917-fix_data_packet_rx_with_mlo_and_no_pubsta-v1-1-8cf971a958ac@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
+Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250924082755.1984798-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc4_pf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 8c0d91dfd7e2b..538c6eea645f2 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -5280,12 +5280,20 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 			}
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+index b3dc1afeefd1d..a5c1f1cef3b0c 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+@@ -1030,7 +1030,7 @@ static int enetc4_pf_probe(struct pci_dev *pdev,
+ 	err = enetc_get_driver_data(si);
+ 	if (err)
+ 		return dev_err_probe(dev, err,
+-				     "Could not get VF driver data\n");
++				     "Could not get PF driver data\n");
  
- 			rx.sdata = prev_sta->sdata;
-+			if (!status->link_valid && prev_sta->sta.mlo) {
-+				struct link_sta_info *link_sta;
-+
-+				link_sta = link_sta_info_get_bss(rx.sdata,
-+								 hdr->addr2);
-+				if (!link_sta)
-+					continue;
-+
-+				link_id = link_sta->link_id;
-+			}
-+
- 			if (!ieee80211_rx_data_set_sta(&rx, prev_sta, link_id))
- 				goto out;
- 
--			if (!status->link_valid && prev_sta->sta.mlo)
--				continue;
--
- 			ieee80211_prepare_and_rx_handle(&rx, skb, false);
- 
- 			prev_sta = sta;
-@@ -5293,10 +5301,18 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 
- 		if (prev_sta) {
- 			rx.sdata = prev_sta->sdata;
--			if (!ieee80211_rx_data_set_sta(&rx, prev_sta, link_id))
--				goto out;
-+			if (!status->link_valid && prev_sta->sta.mlo) {
-+				struct link_sta_info *link_sta;
-+
-+				link_sta = link_sta_info_get_bss(rx.sdata,
-+								 hdr->addr2);
-+				if (!link_sta)
-+					goto out;
- 
--			if (!status->link_valid && prev_sta->sta.mlo)
-+				link_id = link_sta->link_id;
-+			}
-+
-+			if (!ieee80211_rx_data_set_sta(&rx, prev_sta, link_id))
- 				goto out;
- 
- 			if (ieee80211_prepare_and_rx_handle(&rx, skb, true))
+ 	err = enetc4_pf_struct_init(si);
+ 	if (err)
 -- 
 2.51.0
 
