@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-184550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51130BD424C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C996BD45AC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45065420CE2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 574593E78CB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF1730BB9A;
-	Mon, 13 Oct 2025 15:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E69F30E0D6;
+	Mon, 13 Oct 2025 15:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS9kWZfN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0jSNwEL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5C230BB96;
-	Mon, 13 Oct 2025 15:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B31130E0C5;
+	Mon, 13 Oct 2025 15:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367756; cv=none; b=pZE9HLhEYzNyX3AE01vrnLIZF6IwD4h8fxCGy7W8uEk+u0UGj7Ix0YC/QkPvLXV27vnDOapjXeHO2PBCSHzE50YwfoX1kMn4y8nneUa5imFMrHht5wP0ZATc5dI586hU6aq4yJFouz4plAEn6W1hySCu2PNSZVBluh4ThlXeju4=
+	t=1760368470; cv=none; b=Pc0D2MTk6khgCp1ZH6dwuSh5AhXn1ss1CltHNjHUlU4gSdEBzrna24eR1u2iEMnR6fBZ9Jo4QjJJzXRrK3FLF5kn0OAdQFDVu6U9lIeP2Wof20gjwjYGcZ9wuX7w9WKDkj50P8Esru1FyGefyBXTZ98FOb3JZbMDgh1mJTguy+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367756; c=relaxed/simple;
-	bh=T/F15lxdCsJTtEbTcUe3OrU9kQhV3wrBuFRjlKHnDH0=;
+	s=arc-20240116; t=1760368470; c=relaxed/simple;
+	bh=L5LGzjbOosYDEQqtKqy7ti+zvFFq3GQqTDFrNgG8ic4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8yI0ALuihv4y2H36LaKnV1mTgs4qLwSdsMIX2Xazow87MzrCj0C7NIqhIOvwlLA80WJsvfykJ9UVLBPZChdwXPSSw2/Z/IldkzfuVkXA3tI2ZQZ6kqcpHVZoeaZcDbxpaeCs7sJuQKHSIv2eBM2psJCc2d3MqJv/x1NLsFWN0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS9kWZfN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCAA0C4CEFE;
-	Mon, 13 Oct 2025 15:02:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V+M+7KziM30obFyNWI2iZQsNH026/T1wkbcxtp3Kw5eNRzGFZXb251CKd6gTn3i5ngmPONSCFWzBC0OVxY3m4TwcG2g/cxbFhHxgO4ZWVeXPLYkO6G5OToy3SU9FbMjhvTQT3QyAzDHbiplAR8gpNEFTg4N/ITtzCmjC0AfuouI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0jSNwEL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B000BC4CEE7;
+	Mon, 13 Oct 2025 15:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367756;
-	bh=T/F15lxdCsJTtEbTcUe3OrU9kQhV3wrBuFRjlKHnDH0=;
+	s=korg; t=1760368470;
+	bh=L5LGzjbOosYDEQqtKqy7ti+zvFFq3GQqTDFrNgG8ic4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HS9kWZfNpyf+flhF93sRGVWHm/281ZUQZmFsO4oD5YVGV1fE9BU9QmYT3Zie4//KV
-	 dsBs5u6hGR3sZmThnQG3+AobSnNsmgpWp8quYAwXtLy16TDdcOICPta6B8oogUf4rj
-	 786KNwFOXUxOqzygRlJykoyZpTJ+XxigensStKMU=
+	b=Z0jSNwELD5oXUl3rkjuccPavArHGyBhHMEOcWSGWmzwiuHqbDJsUmTEZxmeH1wSTB
+	 YW1VKoUamNPVz4po8pxoA9Ic3BjNKVxGZwrhpYD+bR4ly3ijHp4l2nPlK46gTxe9Ah
+	 IxqT9gKakQzcz7nQD9Qa5exULwqaB6yraa+6nBxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/196] f2fs: fix zero-sized extent for precache extents
+	Anthony Yznaga <anthony.yznaga@oracle.com>,
+	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Sasha Levin <sashal@kernel.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactcode.com>
+Subject: [PATCH 6.12 171/262] sparc: fix accurate exception reporting in copy_{from_to}_user for UltraSPARC III
 Date: Mon, 13 Oct 2025 16:45:13 +0200
-Message-ID: <20251013144319.722477791@linuxfoundation.org>
+Message-ID: <20251013144332.282564874@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +63,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
 
-[ Upstream commit 8175c864391753b210f3dcfae1aeed686a226ebb ]
+[ Upstream commit 47b49c06eb62504075f0f2e2227aee2e2c2a58b3 ]
 
-Script to reproduce:
-f2fs_io write 1 0 1881 rand dsync testfile
-f2fs_io fallocate 0 7708672 4096 testfile
-f2fs_io write 1 1881 1 rand buffered testfile
-fsync testfile
-umount
-mount
-f2fs_io precache_extents testfile
+Anthony Yznaga tracked down that a BUG_ON in ext4 code with large folios
+enabled resulted from copy_from_user() returning impossibly large values
+greater than the size to be copied. This lead to __copy_from_iter()
+returning impossible values instead of the actual number of bytes it was
+able to copy.
 
-When the data layout is something like this:
-dnode1:                     dnode2:
-[0]      A                  [0]    NEW_ADDR
-[1]      A+1                [1]    0x0
-...
-[1016]   A+1016
-[1017]   B (B!=A+1017)      [1017] 0x0
+The BUG_ON has been reported in
+https://lore.kernel.org/r/b14f55642207e63e907965e209f6323a0df6dcee.camel@physik.fu-berlin.de
 
-During precache_extents, we map the last block(valid blkaddr) in dnode1:
-map->m_flags |= F2FS_MAP_MAPPED;
-map->m_pblk = blkaddr(valid blkaddr);
-map->m_len = 1;
-then we goto next_dnode, meet the first block in dnode2(hole), goto sync_out:
-map->m_flags & F2FS_MAP_MAPPED == true, and we make zero-sized extent:
+The referenced commit introduced exception handlers on user-space memory
+references in copy_from_user and copy_to_user. These handlers return from
+the respective function and calculate the remaining bytes left to copy
+using the current register contents. The exception handlers expect that
+%o2 has already been masked during the bulk copy loop, but the masking was
+performed after that loop. This will fix the return value of copy_from_user
+and copy_to_user in the faulting case. The behaviour of memcpy stays
+unchanged.
 
-map->m_len = 1
-ofs = start_pgofs - map->m_lblk = 1882 - 1881 = 1
-ei.fofs = start_pgofs = 1882
-ei.len = map->m_len - ofs = 1 - 1 = 0
-
-Rebased on patch[1], this patch can cover these cases to avoid zero-sized extent:
-A,B,C is valid blkaddr
-case1:
-dnode1:                     dnode2:
-[0]      A                  [0]    NEW_ADDR
-[1]      A+1                [1]    0x0
-...                         ....
-[1016]   A+1016
-[1017]   B (B!=A+1017)      [1017] 0x0
-
-case2:
-dnode1:                     dnode2:
-[0]      A                  [0]    C (C!=B+1)
-[1]      A+1                [1]    C+1
-...                         ....
-[1016]   A+1016
-[1017]   B (B!=A+1017)      [1017] 0x0
-
-case3:
-dnode1:                     dnode2:
-[0]      A                  [0]    C (C!=B+2)
-[1]      A+1                [1]    C+1
-...                         ....
-[1015]   A+1015
-[1016]   B (B!=A+1016)
-[1017]   B+1                [1017] 0x0
-
-[1] https://lore.kernel.org/linux-f2fs-devel/20250912081250.44383-1-chao@kernel.org/
-
-Fixes: c4020b2da4c9 ("f2fs: support F2FS_IOC_PRECACHE_EXTENTS")
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: ee841d0aff64 ("sparc64: Convert U3copy_{from,to}_user to accurate exception reporting.")
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on Sun Netra 240
+Reviewed-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+Tested-by: René Rebe <rene@exactcode.com> # on UltraSparc III+ and UltraSparc IIIi
+Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-2-1ca72dda195b@mkarcher.dialup.fu-berlin.de
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/sparc/lib/U3memcpy.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 0e119218ebf74..fe23ebfc88ea1 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1751,9 +1751,10 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
- 		if (map->m_flags & F2FS_MAP_MAPPED) {
- 			unsigned int ofs = start_pgofs - map->m_lblk;
+diff --git a/arch/sparc/lib/U3memcpy.S b/arch/sparc/lib/U3memcpy.S
+index 9248d59c734ce..bace3a18f836f 100644
+--- a/arch/sparc/lib/U3memcpy.S
++++ b/arch/sparc/lib/U3memcpy.S
+@@ -267,6 +267,7 @@ FUNC_NAME:	/* %o0=dst, %o1=src, %o2=len */
+ 	faligndata	%f10, %f12, %f26
+ 	EX_LD_FP(LOAD(ldd, %o1 + 0x040, %f0), U3_retl_o2)
  
--			f2fs_update_read_extent_cache_range(&dn,
--				start_pgofs, map->m_pblk + ofs,
--				map->m_len - ofs);
-+			if (map->m_len > ofs)
-+				f2fs_update_read_extent_cache_range(&dn,
-+					start_pgofs, map->m_pblk + ofs,
-+					map->m_len - ofs);
- 		}
- 		if (map->m_next_extent)
- 			*map->m_next_extent = is_hole ? pgofs + 1 : pgofs;
++	and		%o2, 0x3f, %o2
+ 	subcc		GLOBAL_SPARE, 0x80, GLOBAL_SPARE
+ 	add		%o1, 0x40, %o1
+ 	bgu,pt		%XCC, 1f
+@@ -336,7 +337,6 @@ FUNC_NAME:	/* %o0=dst, %o1=src, %o2=len */
+ 	 * Also notice how this code is careful not to perform a
+ 	 * load past the end of the src buffer.
+ 	 */
+-	and		%o2, 0x3f, %o2
+ 	andcc		%o2, 0x38, %g2
+ 	be,pn		%XCC, 2f
+ 	 subcc		%g2, 0x8, %g2
 -- 
 2.51.0
 
