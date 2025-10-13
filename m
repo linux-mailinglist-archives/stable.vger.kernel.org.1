@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9013FBD4156
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:27 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFA7BD4294
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5A418927DD
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 604E7503435
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8367330E849;
-	Mon, 13 Oct 2025 15:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2988A3064A5;
+	Mon, 13 Oct 2025 14:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVMqW6mG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lna6d695"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC9830BF6E;
-	Mon, 13 Oct 2025 15:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D3130CD9A;
+	Mon, 13 Oct 2025 14:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367798; cv=none; b=jB8DSZjTYDZCnuWl9K63q/1tSQSVf0p/GQN/yQLH6s5doLebl/W5tFx1RjJFcOC4etw7TdYr5eZEEIzkJvSqUUVORMZEC2+OBbWoF9OI8WWbRr94Cx8EAHecssA6ryFgi+7E/nYZSPA5c4hju4sNo2HDiVoa3xLL8py+ji9bk0I=
+	t=1760367283; cv=none; b=J9lU3aMrsxxwTZjlgCmU0PcmYOMVZdf5GoO/tzGItgKz/EbxlBRleIrjBAUQZbhm2SGfCn6t4irOkbpjnbgx88M/CALhIcMQ6ac8g924cZvoDzw1AahdUQRALdG+GUyC2QKI2cP3nqLYZXQKr8dd1QKbHpgusXFhom5a+PHXNhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367798; c=relaxed/simple;
-	bh=Yxd2ZkHNEwMnqr10GPZba+AWEYyRZyruOeIedl1m1KI=;
+	s=arc-20240116; t=1760367283; c=relaxed/simple;
+	bh=965D2CY6vzZiESy5vz+SDcAsXhkkz1rvEFXPYDGZeAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQipVrxRff2TB/nakX/xTgiAI783OZqF1dY+Nl6Bc8QI/2ufW/JdJ0CvNpMfcAFcexpYi6rCt9K28DzzTPhSJV4tVAVt/tYhy2pqD7HtyUAtKgdlFe4AWIqg6dLlx2oqfZjozZTB7NGrqJpz1/hDRDiKEuSUN5Y7uRIoCsmPyzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVMqW6mG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA605C4CEE7;
-	Mon, 13 Oct 2025 15:03:17 +0000 (UTC)
+	 MIME-Version; b=UqHS0xFF+1XCyIM10kHy51Y4ZehbjopNNT9lP+oQpTZYdEm97Yp/JBqpvfbffXiNjqVad+VNGUphqfy0cRb4BAr3YXG40u5opR19egfiKZujYP1u5VJNXyaI0u9YWSyAIGUfqD1Ycw4rr8vfeDT9dprGkDgT/Pm7hnz5dIxt4R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lna6d695; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D32DC4CEE7;
+	Mon, 13 Oct 2025 14:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367798;
-	bh=Yxd2ZkHNEwMnqr10GPZba+AWEYyRZyruOeIedl1m1KI=;
+	s=korg; t=1760367283;
+	bh=965D2CY6vzZiESy5vz+SDcAsXhkkz1rvEFXPYDGZeAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVMqW6mGl6K+Guccj5N3DJEPk8lzaJeIjgIBlU/8QemVueT+EHtPFNgoba9FRxsYP
-	 CX+cKweHJOPt6cyDUbSIUg7aUEe5xEIfNxTOq+2YRkGQs7+nzHqXRdRPAVNb5idC1G
-	 I+a9z1b3RoDeANlYUmfNJk4K7cTGg9sXNTpG8hXM=
+	b=Lna6d695OFLS/qEodXCN9bISRCM0p8Uh1rV8kduVfyMrsVto07alZxHkOy0D2dNNQ
+	 nni26n6B0U9T6NHDFigu55bfA53MfNRTskSV6FhlhK7oQUz7RcY934lsNLoqhW+gaT
+	 PHYizUPEsgOmge1dl9/yKGYudQIDiAggptouIwAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Bernard Metzler <bernard.metzler@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/196] RDMA/rxe: Fix race in do_task() when draining
+Subject: [PATCH 6.1 154/196] RDMA/siw: Always report immediate post SQ errors
 Date: Mon, 13 Oct 2025 16:45:27 +0200
-Message-ID: <20251013144320.234588369@linuxfoundation.org>
+Message-ID: <20251013144320.270446600@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Bernard Metzler <bernard.metzler@linux.dev>
 
-[ Upstream commit 8ca7eada62fcfabf6ec1dc7468941e791c1d8729 ]
+[ Upstream commit fdd0fe94d68649322e391c5c27dd9f436b4e955e ]
 
-When do_task() exhausts its iteration budget (!ret), it sets the state
-to TASK_STATE_IDLE to reschedule, without a secondary check on the
-current task->state. This can overwrite the TASK_STATE_DRAINING state
-set by a concurrent call to rxe_cleanup_task() or rxe_disable_task().
+In siw_post_send(), any immediate error encountered during processing of
+the work request list must be reported to the caller, even if previous
+work requests in that list were just accepted and added to the send queue.
 
-While state changes are protected by a spinlock, both rxe_cleanup_task()
-and rxe_disable_task() release the lock while waiting for the task to
-finish draining in the while(!is_done(task)) loop. The race occurs if
-do_task() hits its iteration limit and acquires the lock in this window.
-The cleanup logic may then proceed while the task incorrectly
-reschedules itself, leading to a potential use-after-free.
+Not reporting those errors confuses the caller, which would wait
+indefinitely for the failing and potentially subsequently aborted work
+requests completion.
 
-This bug was introduced during the migration from tasklets to workqueues,
-where the special handling for the draining case was lost.
+This fixes a case where immediate errors were overwritten by subsequent
+code in siw_post_send().
 
-Fix this by restoring the original pre-migration behavior. If the state is
-TASK_STATE_DRAINING when iterations are exhausted, set cont to 1 to
-force a new loop iteration. This allows the task to finish its work, so
-that a subsequent iteration can reach the switch statement and correctly
-transition the state to TASK_STATE_DRAINED, stopping the task as intended.
-
-Fixes: 9b4b7c1f9f54 ("RDMA/rxe: Add workqueue support for rxe tasks")
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://patch.msgid.link/20250919025212.1682087-1-hanguidong02@gmail.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
+Link: https://patch.msgid.link/r/20250923144536.103825-1-bernard.metzler@linux.dev
+Suggested-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Bernard Metzler <bernard.metzler@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_task.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/siw/siw_verbs.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
-index 80332638d9e3a..be6cd8ce4d97e 100644
---- a/drivers/infiniband/sw/rxe/rxe_task.c
-+++ b/drivers/infiniband/sw/rxe/rxe_task.c
-@@ -132,8 +132,12 @@ static void do_task(struct rxe_task *task)
- 		 * yield the cpu and reschedule the task
- 		 */
- 		if (!ret) {
--			task->state = TASK_STATE_IDLE;
--			resched = 1;
-+			if (task->state != TASK_STATE_DRAINING) {
-+				task->state = TASK_STATE_IDLE;
-+				resched = 1;
-+			} else {
-+				cont = 1;
-+			}
- 			goto exit;
- 		}
+diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
+index 193f7d58d3845..dce86f5aee1f7 100644
+--- a/drivers/infiniband/sw/siw/siw_verbs.c
++++ b/drivers/infiniband/sw/siw/siw_verbs.c
+@@ -761,7 +761,7 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
+ 	struct siw_wqe *wqe = tx_wqe(qp);
  
+ 	unsigned long flags;
+-	int rv = 0;
++	int rv = 0, imm_err = 0;
+ 
+ 	if (wr && !rdma_is_kernel_res(&qp->base_qp.res)) {
+ 		siw_dbg_qp(qp, "wr must be empty for user mapped sq\n");
+@@ -947,9 +947,17 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
+ 	 * Send directly if SQ processing is not in progress.
+ 	 * Eventual immediate errors (rv < 0) do not affect the involved
+ 	 * RI resources (Verbs, 8.3.1) and thus do not prevent from SQ
+-	 * processing, if new work is already pending. But rv must be passed
+-	 * to caller.
++	 * processing, if new work is already pending. But rv and pointer
++	 * to failed work request must be passed to caller.
+ 	 */
++	if (unlikely(rv < 0)) {
++		/*
++		 * Immediate error
++		 */
++		siw_dbg_qp(qp, "Immediate error %d\n", rv);
++		imm_err = rv;
++		*bad_wr = wr;
++	}
+ 	if (wqe->wr_status != SIW_WR_IDLE) {
+ 		spin_unlock_irqrestore(&qp->sq_lock, flags);
+ 		goto skip_direct_sending;
+@@ -974,15 +982,10 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
+ 
+ 	up_read(&qp->state_lock);
+ 
+-	if (rv >= 0)
+-		return 0;
+-	/*
+-	 * Immediate error
+-	 */
+-	siw_dbg_qp(qp, "error %d\n", rv);
++	if (unlikely(imm_err))
++		return imm_err;
+ 
+-	*bad_wr = wr;
+-	return rv;
++	return (rv >= 0) ? 0 : rv;
+ }
+ 
+ /*
 -- 
 2.51.0
 
