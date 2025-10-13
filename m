@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-184356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08647BD3F84
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82576BD44D4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6052E404696
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02547403560
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929F130ACFB;
-	Mon, 13 Oct 2025 14:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D102430AAB7;
+	Mon, 13 Oct 2025 15:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSyjpcrL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KY7Hngrq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4183026E702;
-	Mon, 13 Oct 2025 14:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885A7309F16;
+	Mon, 13 Oct 2025 15:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367198; cv=none; b=eF25IIZIpsSiS+WbvsqG2anTs2/vdqUf7ixXQ/nHkb+BiWuS6XzyffbHgmvrYxugglT+dSo/P6tBw7gm7zB6/IFX5dnYcrpcX78TSsAUxne/XwbJWrnbLDTaWozqSYCOrvSg0qzXOssYdXKK3jVEC+fFMfY0Yu7miJE9aLIuVt0=
+	t=1760367621; cv=none; b=IcY+3B2KQ/uhq4DQW4OwS9Ug+t7bBZ0y8YcxBMr/BAYcBmtCyr4x0/xcxBc025Zt8IuWwCExC0APK9u1eYmM8xD6boa4CYsxoK94fQ5shntonwKz1+ILw1YqW9ahkJfk/simEnN0PvAaFgXRq752m1eOkXmFD7R2NY4McR++aEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367198; c=relaxed/simple;
-	bh=+PAqnhX5QkMOknBv+wno2n6Pyg4g4VE8p73B5D6jcso=;
+	s=arc-20240116; t=1760367621; c=relaxed/simple;
+	bh=Nc3dihz2l11mbgzYejMt/pqNs0eriT11R45iZrHRk7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JmOwcuM6fNccaHq+nrqi3bBgKIaQF4s82Ghp4tqCspAXzk2NnScldv4TRpl2CHadU4vGYh3rPot5/ia8i81SVL54z5h8qu0n6zgyGlDdau4YaiLLi3vqFznXqAGQSXbHwEqk+LUhTn9xWb5WfhvCz9OUP/PbxxtxIbPZ7LQRO70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSyjpcrL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CEFC4CEE7;
-	Mon, 13 Oct 2025 14:53:17 +0000 (UTC)
+	 MIME-Version; b=VaX/GSaQTJ+j7ONk/8I2MXBJWZEfkkR/NKe4uP/QoPs6LGGUjaYYPSKsTU7ND+ULoYSnTrv0VUKROk9rHkdAw2LeSDvvxZ+/zUiYMO5B5NdbiuBgMJlao3KqyhZSRH5/0SErgmJ6DhO7gGq8C3Fe8tLEf3776eBjqhbeqK2oILg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KY7Hngrq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1222CC4CEE7;
+	Mon, 13 Oct 2025 15:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367198;
-	bh=+PAqnhX5QkMOknBv+wno2n6Pyg4g4VE8p73B5D6jcso=;
+	s=korg; t=1760367621;
+	bh=Nc3dihz2l11mbgzYejMt/pqNs0eriT11R45iZrHRk7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSyjpcrLnWgD56JZHJNCO25TyCTkX6h+sBzmwQ32oS3jkop96ujyA2aySvhzyXuQf
-	 6X4j3FT3fuW8jHCDpVCR7xN8aVRwhZ0DOpPajs9e6w1xCx+95ZxZnUPAHFnPZjctJO
-	 CIp+aGEauOEIRfZBBZ1kPjhoACnuxUCQ+1n6XyR4=
+	b=KY7HngrqAqk8FjX8Gs+nYH19ijYGLg9F6Pnza8hCJHkYlOID+FXtOgbMYQVwTo87l
+	 V2jnvgROjxSUHRgxXKUFNUxVgnDLbvK/bBxuWP6I/VPaWJHkfH3AIjFwB+eFJJzbzu
+	 dt8HEq0359KijfcoqDGoeEcfFcSGNCTNMs5+EcOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Zhang Shurong <zhang_shurong@foxmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/196] serial: max310x: Add error checking in probe()
-Date: Mon, 13 Oct 2025 16:44:26 +0200
-Message-ID: <20251013144318.065591143@linuxfoundation.org>
+Subject: [PATCH 6.6 076/196] media: rj54n1cb0c: Fix memleak in rj54n1_probe()
+Date: Mon, 13 Oct 2025 16:44:27 +0200
+Message-ID: <20251013144318.067269961@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 672a37ba8af1f2ebcedeb94aea2cdd047f805f30 ]
+[ Upstream commit fda55673ecdabf25f5ecc61b5ab17239257ac252 ]
 
-Check if devm_i2c_new_dummy_device() fails.
+rj54n1_probe() won't clean all the allocated resources in fail
+path, which may causes the memleaks. Add v4l2_ctrl_handler_free() to
+prevent memleak.
 
-Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aJTMPZiKqeXSE-KM@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f187352dcd45 ("media: i2c: Copy rj54n1cb0c soc_camera sensor driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max310x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/i2c/rj54n1cb0c.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index 4eb8d372f619f..44b78e979cdc4 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -1656,6 +1656,8 @@ static int max310x_i2c_probe(struct i2c_client *client)
- 		port_client = devm_i2c_new_dummy_device(&client->dev,
- 							client->adapter,
- 							port_addr);
-+		if (IS_ERR(port_client))
-+			return PTR_ERR(port_client);
+diff --git a/drivers/media/i2c/rj54n1cb0c.c b/drivers/media/i2c/rj54n1cb0c.c
+index b430046f9e2a9..09293e90025d5 100644
+--- a/drivers/media/i2c/rj54n1cb0c.c
++++ b/drivers/media/i2c/rj54n1cb0c.c
+@@ -1331,10 +1331,13 @@ static int rj54n1_probe(struct i2c_client *client)
+ 			V4L2_CID_GAIN, 0, 127, 1, 66);
+ 	v4l2_ctrl_new_std(&rj54n1->hdl, &rj54n1_ctrl_ops,
+ 			V4L2_CID_AUTO_WHITE_BALANCE, 0, 1, 1, 1);
+-	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
+-	if (rj54n1->hdl.error)
+-		return rj54n1->hdl.error;
  
- 		regmaps[i] = devm_regmap_init_i2c(port_client, &regcfg_i2c);
- 	}
++	if (rj54n1->hdl.error) {
++		ret = rj54n1->hdl.error;
++		goto err_free_ctrl;
++	}
++
++	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
+ 	rj54n1->clk_div		= clk_div;
+ 	rj54n1->rect.left	= RJ54N1_COLUMN_SKIP;
+ 	rj54n1->rect.top	= RJ54N1_ROW_SKIP;
 -- 
 2.51.0
 
