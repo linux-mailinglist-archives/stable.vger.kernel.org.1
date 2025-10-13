@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-184991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD770BD4E4C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:18:23 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 690D7BD4CCC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE3E242727F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D81DD503777
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE284310782;
-	Mon, 13 Oct 2025 15:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7131D30C61C;
+	Mon, 13 Oct 2025 15:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSvtIsSb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcRMAYVC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6906E30F95C;
-	Mon, 13 Oct 2025 15:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D15517F4F6;
+	Mon, 13 Oct 2025 15:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369021; cv=none; b=jKxN6OpKuJifpGpaFK7QTKfJk66d/OiAkI9Aa03dADzdptsE9kZBNnZsLfQBN9Jp3rcvExlckA4cL62bwU/YfLmXOsXABMG3qd6SDIDiAUCA20nEdptycCq+TdtufVTtoW1+2aRefilB/ZlbIo2bx8H3gZS/xZP4rRjw/M8bm/Q=
+	t=1760369036; cv=none; b=faTGgqa/1xfEf36HxOTXChanMOdALUmF8pDBnagrSfiAw0/i8/DmB3sOHYfq0Ph/1gNSuq/Y16vd5Ocs/KHNOxLANqO1E31nTpRTZTqycbTbq8IaIN8DD8E56gtEWqqsMqXLX5fhJGaWSp+XWEMdgBxqXsmTmloBHqZGIppUUC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369021; c=relaxed/simple;
-	bh=mKzWcum/Xhls3J3kszV2//wlW9ZuTlkDZbHO3a4MeTg=;
+	s=arc-20240116; t=1760369036; c=relaxed/simple;
+	bh=DOJ8qt2Y+YJ9ityRo8iluviqW1OKx7FgQiMbvt+PPXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1f6uAEJhvLUMFRSgqR2d14GzwaysbP8VjQ6OU6OUmGpPkGTLCD8Qz+THoef+zQITbVBNI+ZDhVKL8Kq9IkYbyK5xL94slgypyUEh4xDDtGLrvQTZCP0bWb5YWrYi2SSfahRmqIqERD30tMMhanqZwgWQCvOCN0yvbt8sVCLtPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSvtIsSb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E543CC4CEFE;
-	Mon, 13 Oct 2025 15:23:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kmNNa4RMLZrN6ac/kkCXftm19kXi2PmEenjRSx+viSJAJD47DqqFAsts5STcTKBYnv+M4KjvkFxdQVhvk1s14OJiv1pLRzUFUkGqdnl9KfaX8bmd5H9LF+G1wJCmDCcI1uAENdK+NRSYK2bYtL4DZL51yOkFBPgKBGUkDkJAQvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcRMAYVC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C4EC4CEE7;
+	Mon, 13 Oct 2025 15:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369021;
-	bh=mKzWcum/Xhls3J3kszV2//wlW9ZuTlkDZbHO3a4MeTg=;
+	s=korg; t=1760369035;
+	bh=DOJ8qt2Y+YJ9ityRo8iluviqW1OKx7FgQiMbvt+PPXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSvtIsSb/N4S2qxh9W2NiHJM9B4LpseH0nJznB+iuafK/Kr+iZ4hhT2wnElKwc1F7
-	 r6fW9wfX9CZOGVaQoA5mY7ItSBmaFash07STg2GWePlHBwGHrYA9y6f6AbIXjy7UPf
-	 67iOjVtL0uLQbtQJfRNrHFnVwTb8rjEJBU5xB8J8=
+	b=qcRMAYVCopuWd+EOsgNm9K9D8zBnvGiQPaawQ5z8EXdrvf2NN+AsC7PQwocFInf7L
+	 m3JYsqkkANl913BYI2A699+JMj2nkrhM4B3WSgDp6YLWdNRrmRs5GZYcgQk3xa/7vm
+	 wJgflskQHNH471h7hEyego3DjsM4HH9RrbrAmR1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugene Shalygin <eugene.shalygin@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	kernel test robot <lkp@intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 101/563] hwmon: (asus-ec-sensors) Narrow lock for X870E-CREATOR WIFI
-Date: Mon, 13 Oct 2025 16:39:22 +0200
-Message-ID: <20251013144414.953273494@linuxfoundation.org>
+Subject: [PATCH 6.17 106/563] selftests: vDSO: Fix -Wunitialized in powerpc VDSO_CALL() wrapper
+Date: Mon, 13 Oct 2025 16:39:27 +0200
+Message-ID: <20251013144415.134205741@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -60,41 +62,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Shalygin <eugene.shalygin@gmail.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 3aa72cf03924d04c8d20f8b319df8f73550dd26c ]
+[ Upstream commit 9f15e0f9ef514b8e1a80707931f6d07362e8ebc4 ]
 
-Use mutex from the SIO device rather than the global lock.
+The _rval register variable is meant to be an output operand of the asm
+statement but is instead used as input operand.
+clang 20.1 notices this and triggers -Wuninitialized warnings:
 
-Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
+tools/testing/selftests/timers/auxclock.c:154:10: error: variable '_rval' is uninitialized when used here [-Werror,-Wuninitialized]
+  154 |                 return VDSO_CALL(self->vdso_clock_gettime64, 2, clockid, ts);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tools/testing/selftests/timers/../vDSO/vdso_call.h:59:10: note: expanded from macro 'VDSO_CALL'
+   59 |                 : "r" (_rval)                                           \
+      |                        ^~~~~
+tools/testing/selftests/timers/auxclock.c:154:10: note: variable '_rval' is declared here
+tools/testing/selftests/timers/../vDSO/vdso_call.h:47:2: note: expanded from macro 'VDSO_CALL'
+   47 |         register long _rval asm ("r3");                                 \
+      |         ^
 
-Fixes: 3e538b52157b ("hwmon: (asus-ec-sensors) add ProArt X870E-CREATOR WIFI")
-Link: https://lore.kernel.org/r/20250805203157.18446-1-eugene.shalygin@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+It seems the list of input and output operands have been switched around.
+However as the argument registers are not always initialized they can not
+be marked as pure inputs as that would trigger -Wuninitialized warnings.
+Adding _rval as another input and output operand does also not work as it
+would collide with the existing _r3 variable.
+
+Instead reuse _r3 for both the argument and the return value.
+
+Fixes: 6eda706a535c ("selftests: vDSO: fix the way vDSO functions are called for powerpc")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/all/20250812-vdso-tests-fixes-v2-1-90f499dd35f8@linutronix.de
+Closes: https://lore.kernel.org/oe-kbuild-all/202506180223.BOOk5jDK-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/asus-ec-sensors.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/vDSO/vdso_call.h | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
-index 4ac554731e98a..f43efb80aabf3 100644
---- a/drivers/hwmon/asus-ec-sensors.c
-+++ b/drivers/hwmon/asus-ec-sensors.c
-@@ -396,7 +396,7 @@ static const struct ec_board_info board_info_pro_art_x870E_creator_wifi = {
- 	.sensors = SENSOR_TEMP_CPU | SENSOR_TEMP_CPU_PACKAGE |
- 		SENSOR_TEMP_MB | SENSOR_TEMP_VRM |
- 		SENSOR_TEMP_T_SENSOR | SENSOR_FAN_CPU_OPT,
--	.mutex_path = ACPI_GLOBAL_LOCK_PSEUDO_PATH,
-+	.mutex_path = ASUS_HW_ACCESS_MUTEX_SB_PCI0_SBRG_SIO1_MUT0,
- 	.family = family_amd_800_series,
- };
+diff --git a/tools/testing/selftests/vDSO/vdso_call.h b/tools/testing/selftests/vDSO/vdso_call.h
+index bb237d771051b..e7205584cbdca 100644
+--- a/tools/testing/selftests/vDSO/vdso_call.h
++++ b/tools/testing/selftests/vDSO/vdso_call.h
+@@ -44,7 +44,6 @@
+ 	register long _r6 asm ("r6");					\
+ 	register long _r7 asm ("r7");					\
+ 	register long _r8 asm ("r8");					\
+-	register long _rval asm ("r3");					\
+ 									\
+ 	LOADARGS_##nr(fn, args);					\
+ 									\
+@@ -54,13 +53,13 @@
+ 		"	bns+	1f\n"					\
+ 		"	neg	3, 3\n"					\
+ 		"1:"							\
+-		: "+r" (_r0), "=r" (_r3), "+r" (_r4), "+r" (_r5),	\
++		: "+r" (_r0), "+r" (_r3), "+r" (_r4), "+r" (_r5),	\
+ 		  "+r" (_r6), "+r" (_r7), "+r" (_r8)			\
+-		: "r" (_rval)						\
++		:							\
+ 		: "r9", "r10", "r11", "r12", "cr0", "cr1", "cr5",	\
+ 		  "cr6", "cr7", "xer", "lr", "ctr", "memory"		\
+ 	);								\
+-	_rval;								\
++	_r3;								\
+ })
  
+ #else
 -- 
 2.51.0
 
