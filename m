@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-185304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85577BD4A31
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A878CBD404B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01D818A6251
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:59:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8620E188991C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B483330CD8F;
-	Mon, 13 Oct 2025 15:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0630027AC54;
+	Mon, 13 Oct 2025 14:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xU9kITHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1CGzyFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2973081CE;
-	Mon, 13 Oct 2025 15:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8CC2580F2;
+	Mon, 13 Oct 2025 14:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369913; cv=none; b=cHULL/WpfoZp7ILejZ4hZ8d2cMNUjNNJi9DGiJfBqljIy9/Y+q01sP1mKO7hLuT8Xq/naYVF4zoVWfXRb4pGbuA0zUzto6h47e+rD3h5G0DAcaGTjODtFmqKTbR2HraNUBogc4vhzbrxZKeSB2ch6P+SZTvjrPC/lVaV3PqyFkc=
+	t=1760367546; cv=none; b=hdLPYxbgyoWNXLcxqYNQF9ki5rbHlFknYg3c/NbjsODIp140OXkrCrbmLfkGEoVbT8WlP4hOhAd7GWkcPYU5u+X9q0EzmiV8AuRz63a+0ZSkulqVvv1d4Kk/P0Rk5HLpDM68mh6f+f+k/yjrGQZb7ONelhVVZjzvurcK0fet49I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369913; c=relaxed/simple;
-	bh=cROpzp+rqjYGiheV5i/of9GKcusL2UBoX1SxXZlxUT8=;
+	s=arc-20240116; t=1760367546; c=relaxed/simple;
+	bh=Ycis8vmIwAzRvUPrJlfRIt6VjBJBwPS7+JBdlUzMr4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1txTpV3yZ3ElNZazbDZQnDnygldmEPl4DdYQcuIaa+MbmSBeO86yiu0tVI/iLoBmOSC+jyTMxXuU9HDIK1yAvZgBd5u5yipHwpTVcbF19VtpsbZH7NHmu/au1swieD2EeN1Cn5eJrHCDAkepgaoU6CIVidv8RSE7MhdCKOTK8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xU9kITHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7C3C4CEE7;
-	Mon, 13 Oct 2025 15:38:32 +0000 (UTC)
+	 MIME-Version; b=P07S+ZoeV9tIeb+cgo/IktrJS71y4QtTdvejXf5kB1Y3WwEBxQZRZOQBCCU9OjNpslUcnIy3a4qjdjN1AfLyWktnrJ/2k8mTOPnTDM/P2nWCxIx0fx31b5KSeJ2Uby7lMkcSmZgxaitLYU+5DWST73xpA6FeQhRKVgUMmBzd5Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1CGzyFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAF1C4CEE7;
+	Mon, 13 Oct 2025 14:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369913;
-	bh=cROpzp+rqjYGiheV5i/of9GKcusL2UBoX1SxXZlxUT8=;
+	s=korg; t=1760367546;
+	bh=Ycis8vmIwAzRvUPrJlfRIt6VjBJBwPS7+JBdlUzMr4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xU9kITHp/hEsodslIePbnWd4eK1VRhQ4yPbtjndERsRwK55NeoExgsLVEISHk6BcW
-	 vsAenb6yUMrC+1zioDLswztg4pJXCa28lF7O/yC6nrQa9kfZpJEB6lAkAkwlH32f99
-	 vAYqxlB1E6Im6/hQEfNnH1MLgpTUjLyfLxYdgAbE=
+	b=r1CGzyFZMhQBVFvEQSZgDWJRuftrwVEdCf1g/vS5M1nJ1k2nFClrLSFppdmQRiEG+
+	 c7QBolb3VyUSPZL1XHZv2EmvdJXcxFlaVOETf0HXXIjXl22LEvocsj8Px7ZH3srV6p
+	 l1o4s3XX2Pt9SyN5OEzLN+4vWxEHxJvwzvZF7LA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 379/563] smc: Use __sk_dst_get() and dst_dev_rcu() in in smc_clc_prfx_set().
+Subject: [PATCH 6.6 049/196] i3c: master: svc: Recycle unused IBI slot
 Date: Mon, 13 Oct 2025 16:44:00 +0200
-Message-ID: <20251013144425.004525357@linuxfoundation.org>
+Message-ID: <20251013144316.975178701@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Stanley Chu <stanley.chuys@gmail.com>
 
-[ Upstream commit 935d783e5de9b64587f3adb25641dd8385e64ddb ]
+[ Upstream commit 3448a934ba6f803911ac084d05a2ffce507ea6c6 ]
 
-smc_clc_prfx_set() is called during connect() and not under RCU
-nor RTNL.
+In svc_i3c_master_handle_ibi(), an IBI slot is fetched from the pool
+to store the IBI payload. However, when an error condition is encountered,
+the function returns without recycling the IBI slot, resulting in an IBI
+slot leak.
 
-Using sk_dst_get(sk)->dev could trigger UAF.
-
-Let's use __sk_dst_get() and dev_dst_rcu() under rcu_read_lock()
-after kernel_getsockname().
-
-Note that the returned value of smc_clc_prfx_set() is not used
-in the caller.
-
-While at it, we change the 1st arg of smc_clc_prfx_set[46]_rcu()
-not to touch dst there.
-
-Fixes: a046d57da19f ("smc: CLC handshake (incl. preparation steps)")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250916214758.650211-3-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c85e209b799f ("i3c: master: svc: fix ibi may not return mandatory data byte")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250829012309.3562585-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c | 41 ++++++++++++++++++++++-------------------
- 1 file changed, 22 insertions(+), 19 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 08be56dfb3f24..976b2102bdfcd 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -509,10 +509,10 @@ static bool smc_clc_msg_hdr_valid(struct smc_clc_msg_hdr *clcm, bool check_trl)
- }
- 
- /* find ipv4 addr on device and get the prefix len, fill CLC proposal msg */
--static int smc_clc_prfx_set4_rcu(struct dst_entry *dst, __be32 ipv4,
-+static int smc_clc_prfx_set4_rcu(struct net_device *dev, __be32 ipv4,
- 				 struct smc_clc_msg_proposal_prefix *prop)
- {
--	struct in_device *in_dev = __in_dev_get_rcu(dst->dev);
-+	struct in_device *in_dev = __in_dev_get_rcu(dev);
- 	const struct in_ifaddr *ifa;
- 
- 	if (!in_dev)
-@@ -530,12 +530,12 @@ static int smc_clc_prfx_set4_rcu(struct dst_entry *dst, __be32 ipv4,
- }
- 
- /* fill CLC proposal msg with ipv6 prefixes from device */
--static int smc_clc_prfx_set6_rcu(struct dst_entry *dst,
-+static int smc_clc_prfx_set6_rcu(struct net_device *dev,
- 				 struct smc_clc_msg_proposal_prefix *prop,
- 				 struct smc_clc_ipv6_prefix *ipv6_prfx)
- {
- #if IS_ENABLED(CONFIG_IPV6)
--	struct inet6_dev *in6_dev = __in6_dev_get(dst->dev);
-+	struct inet6_dev *in6_dev = __in6_dev_get(dev);
- 	struct inet6_ifaddr *ifa;
- 	int cnt = 0;
- 
-@@ -564,41 +564,44 @@ static int smc_clc_prfx_set(struct socket *clcsock,
- 			    struct smc_clc_msg_proposal_prefix *prop,
- 			    struct smc_clc_ipv6_prefix *ipv6_prfx)
- {
--	struct dst_entry *dst = sk_dst_get(clcsock->sk);
- 	struct sockaddr_storage addrs;
- 	struct sockaddr_in6 *addr6;
- 	struct sockaddr_in *addr;
-+	struct net_device *dev;
-+	struct dst_entry *dst;
- 	int rc = -ENOENT;
- 
--	if (!dst) {
--		rc = -ENOTCONN;
--		goto out;
--	}
--	if (!dst->dev) {
--		rc = -ENODEV;
--		goto out_rel;
--	}
- 	/* get address to which the internal TCP socket is bound */
- 	if (kernel_getsockname(clcsock, (struct sockaddr *)&addrs) < 0)
--		goto out_rel;
-+		goto out;
-+
- 	/* analyze IP specific data of net_device belonging to TCP socket */
- 	addr6 = (struct sockaddr_in6 *)&addrs;
-+
- 	rcu_read_lock();
-+
-+	dst = __sk_dst_get(clcsock->sk);
-+	dev = dst ? dst_dev_rcu(dst) : NULL;
-+	if (!dev) {
-+		rc = -ENODEV;
-+		goto out_unlock;
-+	}
-+
- 	if (addrs.ss_family == PF_INET) {
- 		/* IPv4 */
- 		addr = (struct sockaddr_in *)&addrs;
--		rc = smc_clc_prfx_set4_rcu(dst, addr->sin_addr.s_addr, prop);
-+		rc = smc_clc_prfx_set4_rcu(dev, addr->sin_addr.s_addr, prop);
- 	} else if (ipv6_addr_v4mapped(&addr6->sin6_addr)) {
- 		/* mapped IPv4 address - peer is IPv4 only */
--		rc = smc_clc_prfx_set4_rcu(dst, addr6->sin6_addr.s6_addr32[3],
-+		rc = smc_clc_prfx_set4_rcu(dev, addr6->sin6_addr.s6_addr32[3],
- 					   prop);
- 	} else {
- 		/* IPv6 */
--		rc = smc_clc_prfx_set6_rcu(dst, prop, ipv6_prfx);
-+		rc = smc_clc_prfx_set6_rcu(dev, prop, ipv6_prfx);
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 1cfc8f480d15c..277884b5e1ca4 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -369,6 +369,7 @@ static int svc_i3c_master_handle_ibi(struct svc_i3c_master *master,
+ 						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
+ 	if (ret) {
+ 		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
++		i3c_generic_ibi_recycle_slot(data->ibi_pool, slot);
+ 		return ret;
  	}
-+
-+out_unlock:
- 	rcu_read_unlock();
--out_rel:
--	dst_release(dst);
- out:
- 	return rc;
- }
+ 
 -- 
 2.51.0
 
