@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8E5BD52CF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:46:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC642BD4D30
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C6BE3A345D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9B42E56090C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36AF27AC21;
-	Mon, 13 Oct 2025 15:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59AF30C365;
+	Mon, 13 Oct 2025 15:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyYgnslP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvN5UmE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA6130BBB0;
-	Mon, 13 Oct 2025 15:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5761430BF7F;
+	Mon, 13 Oct 2025 15:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369594; cv=none; b=X2BVUO1BJFecFg9/D+V0TAimIjs9v1E3a9xRBqLBKsPIzkPMLeuNvQIQ5y963ht99hqoY79c6RjGt36TWIRt4EFZf0E/U4bmgzyVdTagNKFpQnbQLBbazoFkzUMPN72MDFXlNo7k1GrkafMJfog0mC1TiYmUwW+Cgque3HowjuM=
+	t=1760369654; cv=none; b=PDcPKVUsorlerbdRvbJR3T+6rKCgQadG9hwVkgqBqBuZu0E18w9pDcxZAFwDEFBAAwt5udWb9ft/Lpi6oDbSO2Xbf7N2mEkboIZox0ur2RojaEcfPbob/B3qTWn3elljr09vz7m86VCaDfpNk6IfQgtFTT9mD1LzkA7kMSC1u5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369594; c=relaxed/simple;
-	bh=07+xVmOzu5QDDog69xuJ9tZwBAdJY5m0QZ1vBTzL3Uo=;
+	s=arc-20240116; t=1760369654; c=relaxed/simple;
+	bh=iNXS4o4IkYNWC1VzeGoac9tVj1laaa198UomfsXv6lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sH3FdVJ1L9K7aRkEZ0HBNm150HijkENfgGgaQe0x1Jp9cXVge20O9bgdHB6xXqyVkLhSt5Iox6/WaU2zdd3J7j4LnwjDOabKN4pkcmbf0WVQoW81KGs31MM8+xLbYpmHZYXBD8pqeoV/cpda5FR9TyA+125IpJ7nDU8I7PT/z4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyYgnslP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A012C4CEE7;
-	Mon, 13 Oct 2025 15:33:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dRL6Y5s/dvapDN0pSfu4oY8dvoJ6rUeeXmEEU6SbIPHPnxxxQlO8IdVJPDwMCxLqvCx5qKwNJMKY49ew+A+fyMVHhIgrloO4Zr714mChCat5Edsl2kF6sNgqnfUi0COY2fBF/vUF2Pus0mKroQGdCJwgTDzhjRUWO4UQ4gg9QkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvN5UmE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B9AC4CEE7;
+	Mon, 13 Oct 2025 15:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369594;
-	bh=07+xVmOzu5QDDog69xuJ9tZwBAdJY5m0QZ1vBTzL3Uo=;
+	s=korg; t=1760369654;
+	bh=iNXS4o4IkYNWC1VzeGoac9tVj1laaa198UomfsXv6lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qyYgnslPmkAhGk2tc6GyYpvQ1vpaONDWYMoX7Tv6aJ5szjdlVfPoSZXOwJB4cUu5G
-	 0OXtRjTMLepm9uFccPZ13TOfpbSZFcHNeXh6Iqans0fqkEDQAV+bGgBfqFxhdQHspj
-	 HtaqnyIRZlTUNwznzme+wY719hyairceRhyCj/dk=
+	b=nvN5UmE2t/Cuog0a5xWemTeDEVge4qreHq5/N5wJ96AX2pfful+3CHCSsgeLY3e35
+	 0F64GZJBfwmdYSlhmOh/ocQhxwci5SNRF8SWzrTQzq2rpYO3yuu9xIi8UW9WHxmIK4
+	 bRgX2zH0eNbqYCrLyNc+1jWcqHKfUwPhQM4zSnfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 300/563] coresight: Fix missing include for FIELD_GET
-Date: Mon, 13 Oct 2025 16:42:41 +0200
-Message-ID: <20251013144422.136348609@linuxfoundation.org>
+Subject: [PATCH 6.17 305/563] drm/amd/pm: Adjust si_upload_smc_data register programming (v3)
+Date: Mon, 13 Oct 2025 16:42:46 +0200
+Message-ID: <20251013144422.315006281@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -61,80 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 08d24e076d0fb9f90522ef69bf6cdae06e0919de ]
+[ Upstream commit ce025130127437dc884c84c254170e27b2ce9309 ]
 
-Include the header for FIELD_GET which is only sometimes transitively
-included on some configs and kernel releases.
+Based on some comments in dm_pp_display_configuration
+above the crtc_index and line_time fields, these values
+are programmed to the SMC to work around an SMC hang
+when it switches MCLK.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lists.linaro.org/archives/list/lkft-triage@lists.linaro.org/thread/6GKMK52PPRJVEYMEUHJP6BXF4CJAXOFL/
-Fixes: a4e65842e114 ("coresight: Only check bottom two claim bits")
-Signed-off-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250707-james-coresight-bitfield-include-v1-1-aa0f4220ecfd@linaro.org
+According to Alex, the Windows driver programs them to:
+mclk_change_block_cp_min = 200 / line_time
+mclk_change_block_cp_max = 100 / line_time
+Let's use the same for the sake of consistency.
+
+Previously we used the watermark values, but it seemed buggy
+as the code was mixing up low/high and A/B watermarks, and
+was not saving a low watermark value on DCE 6, so
+mclk_change_block_cp_max would be always zero previously.
+
+Split this change off from the previous si_upload_smc_data
+to make it easier to bisect, in case it causes any issues.
+
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-core.c        | 1 +
- drivers/hwtracing/coresight/coresight-etm4x-core.c  | 1 +
- drivers/hwtracing/coresight/coresight-etm4x-sysfs.c | 1 +
- drivers/hwtracing/coresight/ultrasoc-smb.h          | 1 +
- 4 files changed, 4 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
-index fa758cc218275..c2db94f2ab237 100644
---- a/drivers/hwtracing/coresight/coresight-core.c
-+++ b/drivers/hwtracing/coresight/coresight-core.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2012, The Linux Foundation. All rights reserved.
-  */
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 6736c592dfdc6..fb008c5980d67 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -5833,8 +5833,8 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
+ 		crtc_index = amdgpu_crtc->crtc_id;
  
-+#include <linux/bitfield.h>
- #include <linux/build_bug.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 42e5d37403add..cbea200489c8f 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -4,6 +4,7 @@
-  */
- 
- #include <linux/acpi.h>
-+#include <linux/bitfield.h>
- #include <linux/bitops.h>
- #include <linux/kernel.h>
- #include <linux/kvm_host.h>
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-sysfs.c b/drivers/hwtracing/coresight/coresight-etm4x-sysfs.c
-index ab251865b893d..e9eeea6240d55 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-sysfs.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-sysfs.c
-@@ -4,6 +4,7 @@
-  * Author: Mathieu Poirier <mathieu.poirier@linaro.org>
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/coresight.h>
- #include <linux/pid_namespace.h>
- #include <linux/pm_runtime.h>
-diff --git a/drivers/hwtracing/coresight/ultrasoc-smb.h b/drivers/hwtracing/coresight/ultrasoc-smb.h
-index c4c111275627b..323f0ccb6878c 100644
---- a/drivers/hwtracing/coresight/ultrasoc-smb.h
-+++ b/drivers/hwtracing/coresight/ultrasoc-smb.h
-@@ -7,6 +7,7 @@
- #ifndef _ULTRASOC_SMB_H
- #define _ULTRASOC_SMB_H
- 
-+#include <linux/bitfield.h>
- #include <linux/miscdevice.h>
- #include <linux/spinlock.h>
+ 		if (amdgpu_crtc->line_time) {
+-			mclk_change_block_cp_min = amdgpu_crtc->wm_high / amdgpu_crtc->line_time;
+-			mclk_change_block_cp_max = amdgpu_crtc->wm_low / amdgpu_crtc->line_time;
++			mclk_change_block_cp_min = 200 / amdgpu_crtc->line_time;
++			mclk_change_block_cp_max = 100 / amdgpu_crtc->line_time;
+ 		}
+ 	}
  
 -- 
 2.51.0
