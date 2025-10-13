@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3620FBD3C8A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B01FBD4841
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D94318A0A08
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 275DE501D8D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859E726FD8E;
-	Mon, 13 Oct 2025 14:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57B78F54;
+	Mon, 13 Oct 2025 15:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smt2+nEI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tk4a36u9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F235211491;
-	Mon, 13 Oct 2025 14:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816A13064B7;
+	Mon, 13 Oct 2025 15:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367058; cv=none; b=Exq+1dLl4wS/RuzYSLzaIO0m4M3c9B+TfmPyx8cBVdAlxJ3s5tEc40Tvfbay0BKWTbhjmM6EG7ZLth2f5pG9k6FsKTaX3omJ5fGaOLefmiXLSsaPEU066LQDUn9dExRLSd56VUV1cTE54iNJ6HVCNXBf9TLbPfInMRmAkkbCXic=
+	t=1760368383; cv=none; b=Nzl+K/A/UUoPSl2augM/u9kG0duQwm1dfnADiod3YeSkr5PQn4RV0zwuGnJJyxG6+QscCW81x7j1WzpcSA1YUaa6P4zwb7U2xO3tzCWmVuYiRYvWQwOkCrZJVP9UZXvnb8pPwg/w5NIoH07iBW9J9JW3bBNmYlZA+eti7T4L5do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367058; c=relaxed/simple;
-	bh=5gvbxu/1lxm6QIjVzTDrimqvCEkLuc6mJT6IRPCWfKw=;
+	s=arc-20240116; t=1760368383; c=relaxed/simple;
+	bh=a2MpA/MNafW3j1LBqrd0ygkoBHZ/L1qjMiBU30B/jFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r0ZlSLszR4t3tGVaJZSp+8k00UwgcKibjb4DnZbABA9HxI5F2p0ccsgtA6rePy3THrzu8kzvf9S2WgmY7QeqGHS4kcWq0mBw9yF77nxSxVQn4SyNNhgZpubyi6p2vpo3fF7s8DlqVvsIelAd0+7ZX9CpCEdO1FusADoNFrZxbUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smt2+nEI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E46C4CEE7;
-	Mon, 13 Oct 2025 14:50:57 +0000 (UTC)
+	 MIME-Version; b=CENlQqnF6Xmfz/3lr7Buqh7yGj+M9qwdM/EWTqmQvHgO1i4UvAkABX17UfjOdx2vO8wHla4UihIZyBOW2gcS0CTqKRNVe0s+t0GGtifgeOr38KYzExe8Q4eujZIS6hjlkZY4sIBlC19qQsbNQ4WkBop9BqYpgizaUcxf++f/qvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tk4a36u9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8EDC4CEFE;
+	Mon, 13 Oct 2025 15:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367058;
-	bh=5gvbxu/1lxm6QIjVzTDrimqvCEkLuc6mJT6IRPCWfKw=;
+	s=korg; t=1760368383;
+	bh=a2MpA/MNafW3j1LBqrd0ygkoBHZ/L1qjMiBU30B/jFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smt2+nEIsczbydEgNJNjjKaRajSqxAhsYoNVmAFRxD92EyGbeHfnquoo6KdEi1dVg
-	 Asm4QR0KYiRRHR2ey7Kx1aHCSt0gbFZcODzHdurEXESdyR8XyLg8MN1PL61Mfb4yv4
-	 gLVdeNDi65VLDBYEi79eaYMVwb35q7GONQDAJDc8=
+	b=tk4a36u9Wpq4+LSryIefrVLbFzPuNWJ45WyESzQih0TZ9fucAkrtGQwBczAMZlAHQ
+	 3obQxn62VhPONj3YjqxBX9yNRA7YHER57rEcpM1IJR0/ZrM/cxkmSnoDDjNnzLvYd7
+	 gA6fZsQ3MDCgL8v6a2pFDfpc3HYJdD1LnPIFoVGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+	Nirmoy Das <nirmoyd@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/196] nvmet-fc: move lsop put work to nvmet_fc_ls_req_op
+Subject: [PATCH 6.12 108/262] PCI/ACPI: Fix pci_acpi_preserve_config() memory leak
 Date: Mon, 13 Oct 2025 16:44:10 +0200
-Message-ID: <20251013144317.362161834@linuxfoundation.org>
+Message-ID: <20251013144330.017141996@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Nirmoy Das <nirmoyd@nvidia.com>
 
-[ Upstream commit db5a5406fb7e5337a074385c7a3e53c77f2c1bd3 ]
+[ Upstream commit fac679df7580979174c90303f004b09cdc6f086f ]
 
-It’s possible for more than one async command to be in flight from
-__nvmet_fc_send_ls_req. For each command, a tgtport reference is taken.
+pci_acpi_preserve_config() leaks memory by returning early without freeing
+the ACPI object on success. Fix that by always freeing the obj, which is
+not needed by the caller.
 
-In the current code, only one put work item is queued at a time, which
-results in a leaked reference.
-
-To fix this, move the work item to the nvmet_fc_ls_req_op struct, which
-already tracks all resources related to the command.
-
-Fixes: 710c69dbaccd ("nvmet-fc: avoid deadlock on delete association path")
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 9d7d5db8e78e ("PCI: Move PRESERVE_BOOT_CONFIG _DSM evaluation to pci_register_host_bridge()")
+Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20250825214642.142135-1-nirmoyd@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fc.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/pci/pci-acpi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index 570c58d2b5a58..a15e764bae35b 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -54,6 +54,8 @@ struct nvmet_fc_ls_req_op {		/* for an LS RQST XMT */
- 	int				ls_error;
- 	struct list_head		lsreq_list; /* tgtport->ls_req_list */
- 	bool				req_queued;
-+
-+	struct work_struct		put_work;
- };
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index 99c58ee09fbb0..0cd8a75e22580 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -122,6 +122,8 @@ phys_addr_t acpi_pci_root_get_mcfg_addr(acpi_handle handle)
  
- 
-@@ -111,8 +113,6 @@ struct nvmet_fc_tgtport {
- 	struct nvmet_fc_port_entry	*pe;
- 	struct kref			ref;
- 	u32				max_sg_cnt;
--
--	struct work_struct		put_work;
- };
- 
- struct nvmet_fc_port_entry {
-@@ -236,12 +236,13 @@ static int nvmet_fc_tgt_a_get(struct nvmet_fc_tgt_assoc *assoc);
- static void nvmet_fc_tgt_q_put(struct nvmet_fc_tgt_queue *queue);
- static int nvmet_fc_tgt_q_get(struct nvmet_fc_tgt_queue *queue);
- static void nvmet_fc_tgtport_put(struct nvmet_fc_tgtport *tgtport);
--static void nvmet_fc_put_tgtport_work(struct work_struct *work)
-+static void nvmet_fc_put_lsop_work(struct work_struct *work)
+ bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
  {
--	struct nvmet_fc_tgtport *tgtport =
--		container_of(work, struct nvmet_fc_tgtport, put_work);
-+	struct nvmet_fc_ls_req_op *lsop =
-+		container_of(work, struct nvmet_fc_ls_req_op, put_work);
++	bool ret = false;
++
+ 	if (ACPI_HANDLE(&host_bridge->dev)) {
+ 		union acpi_object *obj;
  
--	nvmet_fc_tgtport_put(tgtport);
-+	nvmet_fc_tgtport_put(lsop->tgtport);
-+	kfree(lsop);
- }
- static int nvmet_fc_tgtport_get(struct nvmet_fc_tgtport *tgtport);
- static void nvmet_fc_handle_fcp_rqst(struct nvmet_fc_tgtport *tgtport,
-@@ -368,7 +369,7 @@ __nvmet_fc_finish_ls_req(struct nvmet_fc_ls_req_op *lsop)
- 				  DMA_BIDIRECTIONAL);
+@@ -135,11 +137,11 @@ bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
+ 					      1, DSM_PCI_PRESERVE_BOOT_CONFIG,
+ 					      NULL, ACPI_TYPE_INTEGER);
+ 		if (obj && obj->integer.value == 0)
+-			return true;
++			ret = true;
+ 		ACPI_FREE(obj);
+ 	}
  
- out_putwork:
--	queue_work(nvmet_wq, &tgtport->put_work);
-+	queue_work(nvmet_wq, &lsop->put_work);
- }
- 
- static int
-@@ -389,6 +390,7 @@ __nvmet_fc_send_ls_req(struct nvmet_fc_tgtport *tgtport,
- 	lsreq->done = done;
- 	lsop->req_queued = false;
- 	INIT_LIST_HEAD(&lsop->lsreq_list);
-+	INIT_WORK(&lsop->put_work, nvmet_fc_put_lsop_work);
- 
- 	lsreq->rqstdma = fc_dma_map_single(tgtport->dev, lsreq->rqstaddr,
- 				  lsreq->rqstlen + lsreq->rsplen,
-@@ -448,8 +450,6 @@ nvmet_fc_disconnect_assoc_done(struct nvmefc_ls_req *lsreq, int status)
- 	__nvmet_fc_finish_ls_req(lsop);
- 
- 	/* fc-nvme target doesn't care about success or failure of cmd */
--
--	kfree(lsop);
+-	return false;
++	return ret;
  }
  
- /*
-@@ -1407,7 +1407,6 @@ nvmet_fc_register_targetport(struct nvmet_fc_port_info *pinfo,
- 	kref_init(&newrec->ref);
- 	ida_init(&newrec->assoc_cnt);
- 	newrec->max_sg_cnt = template->max_sgl_segments;
--	INIT_WORK(&newrec->put_work, nvmet_fc_put_tgtport_work);
- 
- 	ret = nvmet_fc_alloc_ls_iodlist(newrec);
- 	if (ret) {
+ /* _HPX PCI Setting Record (Type 0); same as _HPP */
 -- 
 2.51.0
 
