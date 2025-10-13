@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C36BD3DF5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:06:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573E3BD4207
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D76BB4F550C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1D5AA504C3E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD34309EE9;
-	Mon, 13 Oct 2025 14:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17E52737E3;
+	Mon, 13 Oct 2025 14:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmq8WkOn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJT5B1BN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E30145B3F;
-	Mon, 13 Oct 2025 14:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6B72248A5;
+	Mon, 13 Oct 2025 14:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367049; cv=none; b=LkEtFSZTNB+Fize6lrl7qcFvGWIs3Cs+hAEtn++fbGQHj5Je7suarjBWJsccOn4xTN44XnbVXdxLPPaTUNxR1kkEOFvzSsZ8x9JixCKBAxNGmzmKNJRo+FUw5+vIkqUKtHTcd8SksZ4IG0GhVf4Y9170UJz35UrOT3vDnX3iFaw=
+	t=1760367566; cv=none; b=cWbmip9tcUPgiCZ43sfmYvfXJ61QAqZ6BLTEjhg3VKwiavX2lP96cHdxq3s1xqQ/YDloaSb5iyP6bjWt3HcYtCqgTFGROEXkPH8VgYVldA76RVWR2wi0DuuPfBhG/5VIKyQkgBrwVGWYCTD7jREwtuWkHBJTGZiCTcZpLDDDIFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367049; c=relaxed/simple;
-	bh=+6nqStFnkz8mtUPOFH01cCwBf6dP9ibXUVn7ITpfbLg=;
+	s=arc-20240116; t=1760367566; c=relaxed/simple;
+	bh=1UTQFgpw2MrrYKzUHdIZid8TNIAQZIhakzYqtn53Wvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XraSMfg/bJ84KxpaTXu04lRlUoZaOBrp85440BBzN68QFLgwQ5ak/pHJnJGhVHvaqvvB5U6d9GdsiBF8hvSaBkxzAXMAOd/UQX40gNnsD4LNiOtQILDbKa+3QTOhbHnnmgC+kpINXVbNeWr8YZssuypx0+CMwb7y5nCeY6wneuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmq8WkOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B57C4AF09;
-	Mon, 13 Oct 2025 14:50:48 +0000 (UTC)
+	 MIME-Version; b=GFRq/uqjjT6Z8JhoBPCRYgOpyt4cw8WSGezj9TV1Fsv7i6Qb5YZjxIwZqYz44OBw1luI2PXBg/GNBpNhIAz5CMJ5XIgyoFjOxAiwKGLOQC3u/4JQiBtkMZDyKCiOssltojXVJMAHYxkX3NIPVN2eQpHfNsKdpruh4XbqHdvuzK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJT5B1BN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED107C4CEFE;
+	Mon, 13 Oct 2025 14:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367049;
-	bh=+6nqStFnkz8mtUPOFH01cCwBf6dP9ibXUVn7ITpfbLg=;
+	s=korg; t=1760367566;
+	bh=1UTQFgpw2MrrYKzUHdIZid8TNIAQZIhakzYqtn53Wvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmq8WkOnBCwEH3JF/YJPrHGVGWQvwXV7m79Xs6F3v8X3Z7ziAdH51pQaF+A23XLY/
-	 REUvgdluAdoi5qjEmO6qguYbwwkwfMIo+k9EYK1VSFcyfrSpz1JbztJaoHIdU+uwlU
-	 7Rljy63q76LgAFg9tBHrF8Xi/MvbobNFZx57GuSg=
+	b=kJT5B1BNbTfeLZR7uMgA+3DClR1fjtPE9F3gUHUUjmofQAk8iwZXFsec2D+s/GWE5
+	 4XmUhYJxRJbYb/3pEAUCew5Pt40C4oMQ3N7cPb0PxTzKjm/oRoGLPIYpkhvPRqNgKW
+	 PCtdFJQcoQtX+N2KXluykaOw6Yq2Fv+T3uR/H3Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/196] cpuidle: qcom-spm: fix device and OF node leaks at probe
+Subject: [PATCH 6.6 056/196] thermal/drivers/qcom: Make LMH select QCOM_SCM
 Date: Mon, 13 Oct 2025 16:44:07 +0200
-Message-ID: <20251013144317.254052757@linuxfoundation.org>
+Message-ID: <20251013144317.225078801@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit cdc06f912670c8c199d5fa9e78b64b7ed8e871d0 ]
+[ Upstream commit 57eda47bd14b0c2876f2db42e757c57b7a671965 ]
 
-Make sure to drop the reference to the saw device taken by
-of_find_device_by_node() after retrieving its driver data during
-probe().
+The QCOM_SCM symbol is not user-visible, so it makes little sense to
+depend on it. Make LMH driver select QCOM_SCM as all other drivers do
+and, as the dependecy is now correctly handled, enable || COMPILE_TEST
+in order to include the driver into broader set of build tests.
 
-Also drop the reference to the CPU node sooner to avoid leaking it in
-case there is no saw node or device.
-
-Fixes: 60f3692b5f0b ("cpuidle: qcom_spm: Detach state machine from main SPM handling")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 9e5a4fb84230 ("thermal/drivers/qcom/lmh: make QCOM_LMH depends on QCOM_SCM")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20250728-lmh-scm-v2-1-33bc58388ca5@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle-qcom-spm.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/thermal/qcom/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
-index beedf22cbe78b..716474a793817 100644
---- a/drivers/cpuidle/cpuidle-qcom-spm.c
-+++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-@@ -97,20 +97,23 @@ static int spm_cpuidle_register(struct device *cpuidle_dev, int cpu)
- 		return -ENODEV;
+diff --git a/drivers/thermal/qcom/Kconfig b/drivers/thermal/qcom/Kconfig
+index 2c7f3f9a26ebb..a6bb01082ec69 100644
+--- a/drivers/thermal/qcom/Kconfig
++++ b/drivers/thermal/qcom/Kconfig
+@@ -34,7 +34,8 @@ config QCOM_SPMI_TEMP_ALARM
  
- 	saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
-+	of_node_put(cpu_node);
- 	if (!saw_node)
- 		return -ENODEV;
- 
- 	pdev = of_find_device_by_node(saw_node);
- 	of_node_put(saw_node);
--	of_node_put(cpu_node);
- 	if (!pdev)
- 		return -ENODEV;
- 
- 	data = devm_kzalloc(cpuidle_dev, sizeof(*data), GFP_KERNEL);
--	if (!data)
-+	if (!data) {
-+		put_device(&pdev->dev);
- 		return -ENOMEM;
-+	}
- 
- 	data->spm = dev_get_drvdata(&pdev->dev);
-+	put_device(&pdev->dev);
- 	if (!data->spm)
- 		return -EINVAL;
- 
+ config QCOM_LMH
+ 	tristate "Qualcomm Limits Management Hardware"
+-	depends on ARCH_QCOM && QCOM_SCM
++	depends on ARCH_QCOM || COMPILE_TEST
++	select QCOM_SCM
+ 	help
+ 	  This enables initialization of Qualcomm limits management
+ 	  hardware(LMh). LMh allows for hardware-enforced mitigation for cpus based on
 -- 
 2.51.0
 
