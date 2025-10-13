@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967EDBD42A1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA036BD4567
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E30E3406C48
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C5EE402350
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAF430F957;
-	Mon, 13 Oct 2025 15:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F0F30DEBE;
+	Mon, 13 Oct 2025 14:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1i+KaqaS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eg2ioAzd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254B330C36A;
-	Mon, 13 Oct 2025 15:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE4930DEB2;
+	Mon, 13 Oct 2025 14:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367919; cv=none; b=IFbzZTWvuoowkgCDOsGz1GjokEh5zYTNPI0O2K6YLungaxOsZjaiK3wdwmy5WyPCVxviaSh6PGJjsq+Qcf9FCnLx/+xjJGfDqoHtFuT7jF5N90lbm+F/2z1bTlEc7eS/HZc1YJeUb+E6yQfMvr8EfKbdVkeGlwbaYu2rsEgcpLo=
+	t=1760367406; cv=none; b=k7D1bEp9VQAb8MGXOYcqifnrsgm2WhPTVgUXfFi2wDjzhMsxgHRbV2qMZeSVuiQ1584FHYp6BXYUWtVxVJs9N+oh1b1Hd9id0dpMq2EG/LMAzV3GIqRPZytPTFmr3ud4M1AzpNVgY9h7fv6AbxfyeqbZsMUmJt0rgqfYY6U7cDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367919; c=relaxed/simple;
-	bh=QXX6gnmouB7ge5PrXPu2VOhpdq8R1AewafLw6xi1P1A=;
+	s=arc-20240116; t=1760367406; c=relaxed/simple;
+	bh=TYEVtNvxvBjWeZhJ7lAIclThH8shAw50q8ZAW1WXN6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jy4dz43RNTFS77FoQFKRco0/UKpyz96IVG7qeUi6yecG4GwvyKJ4GW0dUo3CFpWWqR1JGrgA5dboKKUxt1pnkl+lRtwioT+/77l8NUQQyqPekVfP8DoiWE5ua7xU2GWMzzWNmQNwzlyiQb6b8sKf16xC05QfA6DxwxFxGhuwmGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1i+KaqaS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A513FC4CEE7;
-	Mon, 13 Oct 2025 15:05:18 +0000 (UTC)
+	 MIME-Version; b=l2aauP9scuGf0lDpmB0XYVF18vNkufjl5qIjQnURGEV53+kFiqjwpBK07tN+sJVxz7uiwBDy8h+a8rNaoP+A/HsKIrkFpgL7DsQMG0WBJepRC10XvU8RavSCePk7PM1YgJhUSCFHhXeoUBXSwAr4GyTfaMg7hkPyWHx1IlMtI+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eg2ioAzd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7BEC4CEE7;
+	Mon, 13 Oct 2025 14:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367919;
-	bh=QXX6gnmouB7ge5PrXPu2VOhpdq8R1AewafLw6xi1P1A=;
+	s=korg; t=1760367406;
+	bh=TYEVtNvxvBjWeZhJ7lAIclThH8shAw50q8ZAW1WXN6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1i+KaqaS5+FAq9mZm1S/Bq40//KAd0kkqDHuxYHaAwOeggNPgfgFGpqOttSbz+V2d
-	 bd4ZmxTWAmq2IEBrNIRcyRmdeCHNXDfCUSpPmU2gDeohyQJe0RAOACOvupg/3FAaw2
-	 mw9E78byIPC0A6gaW7OBALq5UjaIViNCjxDa9QdU=
+	b=Eg2ioAzdIZL7Shu5nzgZ1qis11OtxMDQc7fi85N7wtjvfGMQyBmjU+e7MCPANMpeO
+	 /K68NpIUkVdGm5y/HKB0C/6ieiwuelGr265cB43vE4MWQ9TOKGyIFtEU+DkFqAmCwV
+	 gKMYM58+CyMSnJT6i7FqUZ8Bhkc8S1ormzUCr66g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Erick Karanja <karanja99erick@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/196] usb: vhci-hcd: Prevent suspending virtually attached devices
+Subject: [PATCH 6.1 164/196] mtd: rawnand: atmel: Fix error handling path in atmel_nand_controller_add_nands
 Date: Mon, 13 Oct 2025 16:45:37 +0200
-Message-ID: <20251013144320.593347202@linuxfoundation.org>
+Message-ID: <20251013144320.631835756@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Erick Karanja <karanja99erick@gmail.com>
 
-[ Upstream commit e40b984b6c4ce3f80814f39f86f87b2a48f2e662 ]
+[ Upstream commit 8ed4728eb9f10b57c3eb02e0f6933a89ffcb8a91 ]
 
-The VHCI platform driver aims to forbid entering system suspend when at
-least one of the virtual USB ports are bound to an active USB/IP
-connection.
+In case of a jump to the  err label due to atmel_nand_create() or
+atmel_nand_controller_add_nand() failure, the reference to nand_np
+need to be released
 
-However, in some cases, the detection logic doesn't work reliably, i.e.
-when all devices attached to the virtual root hub have been already
-suspended, leading to a broken suspend state, with unrecoverable resume.
+Use for_each_child_of_node_scoped() to fix the issue.
 
-Ensure the virtually attached devices do not enter suspend by setting
-the syscore PM flag.  Note this is currently limited to the client side
-only, since the server side doesn't implement system suspend prevention.
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
 
-Fixes: 04679b3489e0 ("Staging: USB/IP: add client driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250902-vhci-hcd-suspend-fix-v3-1-864e4e833559@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/usbip/vhci_hcd.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/mtd/nand/raw/atmel/nand-controller.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
-index 14a5f55f24fc8..b22e0881bfaf3 100644
---- a/drivers/usb/usbip/vhci_hcd.c
-+++ b/drivers/usb/usbip/vhci_hcd.c
-@@ -764,6 +764,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
- 				 ctrlreq->wValue, vdev->rhport);
+diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
+index 78f317ac04afa..56fd897721ad5 100644
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1859,7 +1859,7 @@ atmel_nand_controller_legacy_add_nands(struct atmel_nand_controller *nc)
  
- 			vdev->udev = usb_get_dev(urb->dev);
-+			/*
-+			 * NOTE: A similar operation has been done via
-+			 * USB_REQ_GET_DESCRIPTOR handler below, which is
-+			 * supposed to always precede USB_REQ_SET_ADDRESS.
-+			 *
-+			 * It's not entirely clear if operating on a different
-+			 * usb_device instance here is a real possibility,
-+			 * otherwise this call and vdev->udev assignment above
-+			 * should be dropped.
-+			 */
-+			dev_pm_syscore_device(&vdev->udev->dev, true);
- 			usb_put_dev(old);
+ static int atmel_nand_controller_add_nands(struct atmel_nand_controller *nc)
+ {
+-	struct device_node *np, *nand_np;
++	struct device_node *np;
+ 	struct device *dev = nc->dev;
+ 	int ret, reg_cells;
+ 	u32 val;
+@@ -1886,7 +1886,7 @@ static int atmel_nand_controller_add_nands(struct atmel_nand_controller *nc)
  
- 			spin_lock(&vdev->ud.lock);
-@@ -784,6 +795,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
- 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+ 	reg_cells += val;
  
- 			vdev->udev = usb_get_dev(urb->dev);
-+			/*
-+			 * Set syscore PM flag for the virtually attached
-+			 * devices to ensure they will not enter suspend on
-+			 * the client side.
-+			 *
-+			 * Note this doesn't have any impact on the physical
-+			 * devices attached to the host system on the server
-+			 * side, hence there is no need to undo the operation
-+			 * on disconnect.
-+			 */
-+			dev_pm_syscore_device(&vdev->udev->dev, true);
- 			usb_put_dev(old);
- 			goto out;
+-	for_each_child_of_node(np, nand_np) {
++	for_each_child_of_node_scoped(np, nand_np) {
+ 		struct atmel_nand *nand;
  
+ 		nand = atmel_nand_create(nc, nand_np, reg_cells);
 -- 
 2.51.0
 
