@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7725EBD47ED
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15715BD467B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 43FA150886E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 771E45050FC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E793126A7;
-	Mon, 13 Oct 2025 15:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E109E3093BC;
+	Mon, 13 Oct 2025 15:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kv47ijl/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oejfimkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5E622257E;
-	Mon, 13 Oct 2025 15:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E932309DDC;
+	Mon, 13 Oct 2025 15:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368220; cv=none; b=ZVqLHbvuM2sJupZ/DrixbhG/BLytqQ4eV5Lc/N8grmbDlsxropVgAmYXUKTGXZcjKJz06dIgkNi4lPO1+d4/MZDji3E/LESs5055gO6ZMOtPN0uFwA6Csc0wjM4EudCsHZHtXjE1FKj4VdR59xV6ZZM/uBFByPHsQOMrKtIcUL0=
+	t=1760367607; cv=none; b=TnT//EyHTWLDU+lNkdmb6L22+5GWpsjGMeFb89jx8dSofVx24Q0ApiY1fEcd09Dx50XXDp8+CRJoyMtT0yPxE1C4+BJrkulKyPlO7R2f2w7OtSlpHuG9Utgjw+OrzSCHkA+tJZwSD/Jan38GBVrULsgAi8VcOD2ktv/SGUrXwnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368220; c=relaxed/simple;
-	bh=HVO6rMWpcIK0Ba7CCUG6171n1bLaz3SGThzxY+gmNMA=;
+	s=arc-20240116; t=1760367607; c=relaxed/simple;
+	bh=9vId8C9aEKj2AOh+ArfyskMtFtFvvcPZo1HJMFptqqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyiV5aWz+7e7g/GAIQ85O0MX3PXSr9uhQeS5e5i0hdupuMpGctTjlJCU07MdTlVB/0ElGbJaemQTCjWYJ1Z8YZz82DxncFiInf6EVJyw8EQjPw0ocLi0PInGzRDhGONym90keyHWQhO+dUm13W7vUsFK1j2XQgzlIesFNmJOX54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kv47ijl/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7699DC4CEE7;
-	Mon, 13 Oct 2025 15:10:19 +0000 (UTC)
+	 MIME-Version; b=VgKTWFfPSZGT2SPLuxaTCL9uVehHZbYSWRusElVvWcjsbYL5FROqmDhBbxAwJft/pLPIVAd8Zoogo9jQ+YtRpK13uhS+DUfKjV3mhLdFeIc+8M/ZN7HJqXk0R0b09pXAa9dLVrta9YjzF4nyfc6sSiLInARC5l4fLBbeOwmphr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oejfimkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD26C4CEE7;
+	Mon, 13 Oct 2025 15:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368219;
-	bh=HVO6rMWpcIK0Ba7CCUG6171n1bLaz3SGThzxY+gmNMA=;
+	s=korg; t=1760367607;
+	bh=9vId8C9aEKj2AOh+ArfyskMtFtFvvcPZo1HJMFptqqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kv47ijl/Evu54qmfuzsLhqJYcYrSOME5ZUICRCLbP9HdIaZczDP+mUN/ieHpU6wWg
-	 1pDO7rsZTCH/ke682YZUnit7tkwvVe7wtd74wL92pWt2uAGmTLCFhAO91Q5xqBzGDd
-	 59DHySaTQVf2vMo2fcdrT4bS6wi8IJyaY9adymGc=
+	b=oejfimkXhmwIkB+jPb9D3qxQN0SmZascqMGsdBqLgog+dvq5cPdocn53M/1IWBoMy
+	 egzaqIpZAEHON4ve8LzvTBNqA3NMVQ/ny167YdJsqDsXAsuPHqbaFbCjLu2rX7ofR7
+	 dbq1iXZNV/QnvpBeQS9sxUEskDTj5YZsP0eNu/9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Ito <ito.kohei@socionext.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Genjian Zhang <zhanggenjian@kylinos.cn>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/262] i2c: designware: Fix clock issue when PM is disabled
+Subject: [PATCH 6.6 037/196] null_blk: Fix the description of the cache_size module argument
 Date: Mon, 13 Oct 2025 16:43:48 +0200
-Message-ID: <20251013144329.227146220@linuxfoundation.org>
+Message-ID: <20251013144316.544250010@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Genjian Zhang <zhanggenjian@kylinos.cn>
 
-[ Upstream commit 70e633bedeeb4a7290d3b1dd9d49cc2bae25a46f ]
+[ Upstream commit 7942b226e6b84df13b46b76c01d3b6e07a1b349e ]
 
-When the driver is removed, the clocks are first enabled by
-calling pm_runtime_get_sync(), and then disabled with
-pm_runtime_put_sync().
+When executing modinfo null_blk, there is an error in the description
+of module parameter mbps, and the output information of cache_size is
+incomplete.The output of modinfo before and after applying this patch
+is as follows:
 
-If CONFIG_PM=y, clocks for this controller are disabled when it's in
-the idle state. So the clocks are properly disabled when the driver
-exits.
+Before:
+[...]
+parm:           cache_size:ulong
+[...]
+parm:           mbps:Cache size in MiB for memory-backed device.
+		Default: 0 (none) (uint)
+[...]
 
-Othewise, the clocks are always enabled and the PM functions have
-no effect. Therefore, the driver exits without disabling the clocks.
+After:
+[...]
+parm:           cache_size:Cache size in MiB for memory-backed device.
+		Default: 0 (none) (ulong)
+[...]
+parm:           mbps:Limit maximum bandwidth (in MiB/s).
+		Default: 0 (no limit) (uint)
+[...]
 
-    # cat /sys/kernel/debug/clk/clk-pclk/clk_enable_count
-    18
-    # echo 1214a000.i2c > /sys/bus/platform/drivers/i2c_designware/bind
-    # cat /sys/kernel/debug/clk/clk-pclk/clk_enable_count
-    20
-    # echo 1214a000.i2c > /sys/bus/platform/drivers/i2c_designware/unbind
-    # cat /sys/kernel/debug/clk/clk-pclk/clk_enable_count
-    20
-
-To ensure that the clocks can be disabled correctly even without
-CONFIG_PM=y, should add the following fixes:
-
-- Replace with pm_runtime_put_noidle(), which only decrements the runtime
-  PM usage count.
-- Call i2c_dw_prepare_clk(false) to explicitly disable the clocks.
-
-Fixes: 7272194ed391f ("i2c-designware: add minimal support for runtime PM")
-Co-developed-by: Kohei Ito <ito.kohei@socionext.com>
-Signed-off-by: Kohei Ito <ito.kohei@socionext.com>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: 058efe000b31 ("null_blk: add module parameters for 4 options")
+Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-platdrv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/block/null_blk/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index ef9bed2f2dccb..1615facff29c6 100644
---- a/drivers/i2c/busses/i2c-designware-platdrv.c
-+++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -328,9 +328,11 @@ static void dw_i2c_plat_remove(struct platform_device *pdev)
- 	i2c_dw_disable(dev);
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 97ed3bd9707f4..2dd254c720f5f 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -211,7 +211,7 @@ MODULE_PARM_DESC(discard, "Support discard operations (requires memory-backed nu
  
- 	pm_runtime_dont_use_autosuspend(device);
--	pm_runtime_put_sync(device);
-+	pm_runtime_put_noidle(device);
- 	dw_i2c_plat_pm_cleanup(dev);
+ static unsigned long g_cache_size;
+ module_param_named(cache_size, g_cache_size, ulong, 0444);
+-MODULE_PARM_DESC(mbps, "Cache size in MiB for memory-backed device. Default: 0 (none)");
++MODULE_PARM_DESC(cache_size, "Cache size in MiB for memory-backed device. Default: 0 (none)");
  
-+	i2c_dw_prepare_clk(dev, false);
-+
- 	i2c_dw_remove_lock_support(dev);
- 
- 	reset_control_assert(dev->rst);
+ static unsigned int g_mbps;
+ module_param_named(mbps, g_mbps, uint, 0444);
 -- 
 2.51.0
 
