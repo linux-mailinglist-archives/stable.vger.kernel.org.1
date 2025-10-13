@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-184628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA87BD485C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D95BD3FC4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:17:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5B5F85072D5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D66418A2F6F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DC23101A2;
-	Mon, 13 Oct 2025 15:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C84A30E0C7;
+	Mon, 13 Oct 2025 14:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7keJjuP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znNiN5Lw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2509930FF30;
-	Mon, 13 Oct 2025 15:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA25D30E0C2;
+	Mon, 13 Oct 2025 14:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367984; cv=none; b=GMDt8TnLcd9ra8E8MXz+d4ne9tfVi5NM7iDNZ1xm2K+L9YNf+0NxSAtfpG9Vx4u9cTTUx2B50Y9ZUvFERVUW8nCbO3pnpQ5tZZ/dj3HVDriIII2ohdr6QPwtD/yibbgoF2l6zQDOHXjHnMZqmHOdfnoAeFuAW60BhnbnhhjHjzc=
+	t=1760367423; cv=none; b=KH12S+gRl1zhBMqMFv6VU16gs//NDo1DtExoeTuZyalr3RzjWMmTIquoR+M7ss5pIHxpUPpaowgktJjdmzWxfWMnIZL1PFtkafKxe4MSLUxLUVGTUp6Jg6CRftPyNzemwRITERIJ5WjD15cQnod3c9Zw9xNhqgkStcLlviOi4OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367984; c=relaxed/simple;
-	bh=pWOsfcWoSbqH0xUXdZtA5u9LR0QjGTcp1Tjsq0TzBoo=;
+	s=arc-20240116; t=1760367423; c=relaxed/simple;
+	bh=WsncMvwM61F8z+h+RP2U9gO9Q76IhEwlBLqvsBYGFpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjHUWTsBq18C4anFdRnT78sgY2963nh107IZo2Ck4IfKwESlc0oKLC6sZ+VAWzQPy3UZS35lXwCjsaRl0Kp+gt+voT18CLAmokW8910o8DzdALNuBOaWM+vBXuO1hCt1onse+LqSOhOMBVXttrnVuyPKYlnFF7H9oVG2NpksPL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7keJjuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDDEC4CEFE;
-	Mon, 13 Oct 2025 15:06:23 +0000 (UTC)
+	 MIME-Version; b=DRoCW7I+f3xoxupocAKjteZVDsHplBndkL2Gf7T2Vfpdrv3wh/OzZSvvbNQhNPM/WlEX6wkt0dnFe+v/a1bpc8lS3GybFuEvVH8jbC+yTlRW2dCULA0+WprSBLskHdy8iLftX5os4Da1nE7DMfXdNv9t2ihUu3krPUMvrmuLWtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znNiN5Lw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A8AC4CEE7;
+	Mon, 13 Oct 2025 14:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367984;
-	bh=pWOsfcWoSbqH0xUXdZtA5u9LR0QjGTcp1Tjsq0TzBoo=;
+	s=korg; t=1760367422;
+	bh=WsncMvwM61F8z+h+RP2U9gO9Q76IhEwlBLqvsBYGFpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7keJjuPUsamNrZ7oSf6qFnfpa5jTNYRaY9i37ZogE82/AImY2In0zZjIjRxhejOt
-	 rW5e8ivdo+9MfyDZ+zvR6RAzr3WjJyhE0DxLhiUoqowCsjDMTHE1/2H9OEOCoEJ12M
-	 xirOfM1SoNKBDpUINXg7+fm6IOx72QShqj5vb/8s=
+	b=znNiN5LwmFwQQdfckN3jYexcFn+98SU855rwThj3z1ba4eIwcFA3t5T4XfezbMcZS
+	 K+solpY+OpzM6mUFJC0IAOSlyeq2XxbzXTv2flPoTCnb1oeC4thpUTlEjBBFY7afqT
+	 Ws4ER3U0IJsuaJ/Jv3zUyZUOyGtxL6+DTgKeOVXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.6 178/196] dm: fix NULL pointer dereference in __dm_suspend()
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.1 196/196] drivers: base: cacheinfo: Update cpu_map_populated during CPU Hotplug
 Date: Mon, 13 Oct 2025 16:46:09 +0200
-Message-ID: <20251013144321.748490995@linuxfoundation.org>
+Message-ID: <20251013144321.780632270@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-commit 8d33a030c566e1f105cd5bf27f37940b6367f3be upstream.
+commit c26fabe73330d983c7ce822c6b6ec0879b4da61f upstream.
 
-There is a race condition between dm device suspend and table load that
-can lead to null pointer dereference. The issue occurs when suspend is
-invoked before table load completes:
+Until commit 5c2712387d48 ("cacheinfo: Fix LLC is not exported through
+sysfs"), cacheinfo called populate_cache_leaves() for CPU coming online
+which let the arch specific functions handle (at least on x86)
+populating the shared_cpu_map. However, with the changes in the
+aforementioned commit, populate_cache_leaves() is not called when a CPU
+comes online as a result of hotplug since last_level_cache_is_valid()
+returns true as the cacheinfo data is not discarded. The CPU coming
+online is not present in shared_cpu_map, however, it will not be added
+since the cpu_cacheinfo->cpu_map_populated flag is set (it is set in
+populate_cache_leaves() when cacheinfo is first populated for x86)
 
-BUG: kernel NULL pointer dereference, address: 0000000000000054
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
-RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
-Call Trace:
-  <TASK>
-  blk_mq_quiesce_queue+0x2c/0x50
-  dm_stop_queue+0xd/0x20
-  __dm_suspend+0x130/0x330
-  dm_suspend+0x11a/0x180
-  dev_suspend+0x27e/0x560
-  ctl_ioctl+0x4cf/0x850
-  dm_ctl_ioctl+0xd/0x20
-  vfs_ioctl+0x1d/0x50
-  __se_sys_ioctl+0x9b/0xc0
-  __x64_sys_ioctl+0x19/0x30
-  x64_sys_call+0x2c4a/0x4620
-  do_syscall_64+0x9e/0x1b0
+This can lead to inconsistencies in the shared_cpu_map when an offlined
+CPU comes online again. Example below depicts the inconsistency in the
+shared_cpu_list in cacheinfo when CPU8 is offlined and onlined again on
+a 3rd Generation EPYC processor:
 
-The issue can be triggered as below:
+  # for i in /sys/devices/system/cpu/cpu8/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
+    /sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list: 8-15,136-143
 
-T1 						T2
-dm_suspend					table_load
-__dm_suspend					dm_setup_md_queue
-						dm_mq_init_request_queue
-						blk_mq_init_allocated_queue
-						=> q->mq_ops = set->ops; (1)
-dm_stop_queue / dm_wait_for_completion
-=> q->tag_set NULL pointer!	(2)
-						=> q->tag_set = set; (3)
+  # echo 0 > /sys/devices/system/cpu/cpu8/online
+  # echo 1 > /sys/devices/system/cpu/cpu8/online
 
-Fix this by checking if a valid table (map) exists before performing
-request-based suspend and waiting for target I/O. When map is NULL,
-skip these table-dependent suspend steps.
+  # for i in /sys/devices/system/cpu/cpu8/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
+    /sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list: 8
+    /sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list: 8
+    /sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list: 8
+    /sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list: 8
 
-Even when map is NULL, no I/O can reach any target because there is
-no table loaded; I/O submitted in this state will fail early in the
-DM layer. Skipping the table-dependent suspend logic in this case
-is safe and avoids NULL pointer dereferences.
+  # cat /sys/devices/system/cpu/cpu136/cache/index0/shared_cpu_list
+    136
 
-Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+  # cat /sys/devices/system/cpu/cpu136/cache/index3/shared_cpu_list
+    9-15,136-143
+
+Clear the flag when the CPU is removed from shared_cpu_map when
+cache_shared_cpu_map_remove() is called during CPU hotplug. This will
+allow cache_shared_cpu_map_setup() to add the CPU coming back online in
+the shared_cpu_map. Set the flag again when the shared_cpu_map is setup.
+Following are results of performing the same test as described above with
+the changes:
+
+  # for i in /sys/devices/system/cpu/cpu8/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
+    /sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list: 8-15,136-143
+
+  # echo 0 > /sys/devices/system/cpu/cpu8/online
+  # echo 1 > /sys/devices/system/cpu/cpu8/online
+
+  # for i in /sys/devices/system/cpu/cpu8/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
+    /sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list: 8-15,136-143
+
+  # cat /sys/devices/system/cpu/cpu136/cache/index0/shared_cpu_list
+    8,136
+
+  # cat /sys/devices/system/cpu/cpu136/cache/index3/shared_cpu_list
+    8-15,136-143
+
+Fixes: 5c2712387d48 ("cacheinfo: Fix LLC is not exported through sysfs")
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20230508084115.1157-3-kprateek.nayak@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/base/cacheinfo.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2688,7 +2688,7 @@ static int __dm_suspend(struct mapped_de
- {
- 	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
- 	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
--	int r;
-+	int r = 0;
- 
- 	lockdep_assert_held(&md->suspend_lock);
- 
-@@ -2740,7 +2740,7 @@ static int __dm_suspend(struct mapped_de
- 	 * Stop md->queue before flushing md->wq in case request-based
- 	 * dm defers requests to md->wq from md->queue.
- 	 */
--	if (dm_request_based(md)) {
-+	if (map && dm_request_based(md)) {
- 		dm_stop_queue(md->queue);
- 		set_bit(DMF_QUEUE_STOPPED, &md->flags);
+--- a/drivers/base/cacheinfo.c
++++ b/drivers/base/cacheinfo.c
+@@ -365,11 +365,14 @@ static int cache_shared_cpu_map_setup(un
+ 			coherency_max_size = this_leaf->coherency_line_size;
  	}
-@@ -2752,7 +2752,8 @@ static int __dm_suspend(struct mapped_de
- 	 * We call dm_wait_for_completion to wait for all existing requests
- 	 * to finish.
- 	 */
--	r = dm_wait_for_completion(md, task_state);
-+	if (map)
-+		r = dm_wait_for_completion(md, task_state);
- 	if (!r)
- 		set_bit(dmf_suspended_flag, &md->flags);
  
++	/* shared_cpu_map is now populated for the cpu */
++	this_cpu_ci->cpu_map_populated = true;
+ 	return 0;
+ }
+ 
+ static void cache_shared_cpu_map_remove(unsigned int cpu)
+ {
++	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+ 	struct cacheinfo *this_leaf, *sib_leaf;
+ 	unsigned int sibling, index, sib_index;
+ 
+@@ -404,6 +407,9 @@ static void cache_shared_cpu_map_remove(
+ 		if (of_have_populated_dt())
+ 			of_node_put(this_leaf->fw_token);
+ 	}
++
++	/* cpu is no longer populated in the shared map */
++	this_cpu_ci->cpu_map_populated = false;
+ }
+ 
+ static void free_cache_attributes(unsigned int cpu)
 
 
 
