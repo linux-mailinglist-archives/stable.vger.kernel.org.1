@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-185222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022A5BD4F96
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:24:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C431ABD53DA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B466487E76
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:53:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 84390542F84
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAB530F80E;
-	Mon, 13 Oct 2025 15:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E6330F93F;
+	Mon, 13 Oct 2025 15:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXTQVxeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjWPosi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB6230F92A;
-	Mon, 13 Oct 2025 15:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD8C30C373;
+	Mon, 13 Oct 2025 15:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369680; cv=none; b=GYQ48QddjkGA1LvbC5orMXTSRU8RtHUrC0QpbrTEcK0jjWiayfA6+P+6IJwek32XTiGpK+eRNIrxvhupNu1JvtdCPktjddivFIFhrcQ3vno+vImaMp7ICJq+NeYkqoj9GDLlwMELtDMfXJ6xRt0LCuQr9lMwRL40wlUY1K1lCpo=
+	t=1760369691; cv=none; b=sCXQ8gRBj9VHFKnwh+ylDlJcyJhlD+TgUc9v548BVboCRmohGn1A6vADO4+TKUTG/INpIwx5YAUgv3b1+z8JmHXhDtM63yJo5PbjgMLpGFvgBIExNi6UdSo/bqFobWT+E6bdTeUguLu/tZUu6hgKM33Uq94//V+ZBA3V0KvQTtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369680; c=relaxed/simple;
-	bh=uDJqEjK5q7EGq0guwt36E67b05ByvMFB/aw68dfdlgQ=;
+	s=arc-20240116; t=1760369691; c=relaxed/simple;
+	bh=NZ/SIcTzbJcXiZj7RztLIH6wsQEFR2euZywUdk+cgdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsqYr1lGDjr4jraixgeqNU98XZLSH7CmsC5384jFxmB9OApgtOIBA61QqA0FePwQa5hmYHeCK2pOTiN4uA4BbblU0Uf8mMdv4xW/C4qCV5OsUegmYF7MV54Hs58lI/BzoDAZ9geogZP2A5Ayma+CUuQGB0SBot8dlzURUWrbTc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXTQVxeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC98C4CEE7;
-	Mon, 13 Oct 2025 15:34:39 +0000 (UTC)
+	 MIME-Version; b=adTFoM13wJ02/3HUtdT9Xo2WLhCS+D6APLcqqKmmF3BXXFBG/WDFpNu7odUtg+z1CS8o5E3/ggh8Gzdwrx06/8fTM1lCEZRn4lHHRvmJK5Cw0LyrEtdMyJNKJkC9qBuLkhR9MhTmmE2F7dUvIRPs6SeoSAgQMWTGEUW5WASyKvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjWPosi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441E3C4CEE7;
+	Mon, 13 Oct 2025 15:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369680;
-	bh=uDJqEjK5q7EGq0guwt36E67b05ByvMFB/aw68dfdlgQ=;
+	s=korg; t=1760369691;
+	bh=NZ/SIcTzbJcXiZj7RztLIH6wsQEFR2euZywUdk+cgdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXTQVxeBsjqff6T9OmEeUt741jMVe+p8wDcVYFE2rfOC+64wrq+fEfeOYiMQOZam+
-	 W/Pw77Yt0DW4hI0NoAbiG2zEFkyoaQdx4kK4Fh2O7B7HzfEzBlAcovZnxzYpPPBGU2
-	 FGsLeNUh95Gi1wS1qDnZjcGVs3/m24lTrSgkzsnY=
+	b=qjWPosi+lsfqYQo1F0mEJY8hFEd362tZFv/iEhOqISZR6vtryb1ZX2Br58XSj/pYM
+	 MZIS8cOyClEDBVXp6tDARTAA6LmzrOaKgQ54NcRQakR2vA8v8Xsj8bKnAGI2AnkfRn
+	 JwIdZLHcyYalIhHCPdOIvP6QvmOBTwvzTmTNsjX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Abhishek Rawal <rawal.abhishek92@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 331/563] ASoC: Intel: bytcr_rt5640: Fix invalid quirk input mapping
-Date: Mon, 13 Oct 2025 16:43:12 +0200
-Message-ID: <20251013144423.253534693@linuxfoundation.org>
+Subject: [PATCH 6.17 334/563] ipv6: snmp: do not track per idev ICMP6_MIB_RATELIMITHOST
+Date: Mon, 13 Oct 2025 16:43:15 +0200
+Message-ID: <20251013144423.362088992@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,51 +68,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit fba404e4b4af4f4f747bb0e41e9fff7d03c7bcc0 ]
+[ Upstream commit 2fab94bcf313480336b0a41eb45a24ffd5087490 ]
 
-When an invalid value is passed via quirk option, currently
-bytcr_rt5640 driver only shows an error message but leaves as is.
-This may lead to unepxected results like OOB access.
+Blamed commit added a critical false sharing on a single
+atomic_long_t under DOS, like receiving UDP packets
+to closed ports.
 
-This patch corrects the input mapping to the certain default value if
-an invalid value is passed.
+Per netns ICMP6_MIB_RATELIMITHOST tracking uses per-cpu
+storage and is enough, we do not need per-device and slow tracking.
 
-Fixes: 063422ca2a9d ("ASoC: Intel: bytcr_rt5640: Set card long_name based on quirks")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Message-ID: <20250902171826.27329-3-tiwai@suse.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d0941130c9351 ("icmp: Add counters for rate limits")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Cc: Abhishek Rawal <rawal.abhishek92@gmail.com>
+Link: https://patch.msgid.link/20250905165813.1470708-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/ipv6/icmp.c | 3 +--
+ net/ipv6/proc.c | 6 +++++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 0f3b8f44e7011..bc846558480e4 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -68,7 +68,8 @@ enum {
- 	BYT_RT5640_OVCD_SF_1P5		= (RT5640_OVCD_SF_1P5 << 13),
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 95cdd4cacb004..56c974cf75d15 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -230,8 +230,7 @@ static bool icmpv6_xrlim_allow(struct sock *sk, u8 type,
+ 	}
+ 	rcu_read_unlock();
+ 	if (!res)
+-		__ICMP6_INC_STATS(net, ip6_dst_idev(dst),
+-				  ICMP6_MIB_RATELIMITHOST);
++		__ICMP6_INC_STATS(net, NULL, ICMP6_MIB_RATELIMITHOST);
+ 	else
+ 		icmp_global_consume(net);
+ 	dst_release(dst);
+diff --git a/net/ipv6/proc.c b/net/ipv6/proc.c
+index 1a20d088bb13c..eb268b0700258 100644
+--- a/net/ipv6/proc.c
++++ b/net/ipv6/proc.c
+@@ -94,6 +94,7 @@ static const struct snmp_mib snmp6_icmp6_list[] = {
+ 	SNMP_MIB_ITEM("Icmp6OutMsgs", ICMP6_MIB_OUTMSGS),
+ 	SNMP_MIB_ITEM("Icmp6OutErrors", ICMP6_MIB_OUTERRORS),
+ 	SNMP_MIB_ITEM("Icmp6InCsumErrors", ICMP6_MIB_CSUMERRORS),
++/* ICMP6_MIB_RATELIMITHOST needs to be last, see snmp6_dev_seq_show(). */
+ 	SNMP_MIB_ITEM("Icmp6OutRateLimitHost", ICMP6_MIB_RATELIMITHOST),
  };
  
--#define BYT_RT5640_MAP(quirk)		((quirk) &  GENMASK(3, 0))
-+#define BYT_RT5640_MAP_MASK		GENMASK(3, 0)
-+#define BYT_RT5640_MAP(quirk)		((quirk) & BYT_RT5640_MAP_MASK)
- #define BYT_RT5640_JDSRC(quirk)		(((quirk) & GENMASK(7, 4)) >> 4)
- #define BYT_RT5640_OVCD_TH(quirk)	(((quirk) & GENMASK(12, 8)) >> 8)
- #define BYT_RT5640_OVCD_SF(quirk)	(((quirk) & GENMASK(14, 13)) >> 13)
-@@ -140,7 +141,9 @@ static void log_quirks(struct device *dev)
- 		dev_info(dev, "quirk NO_INTERNAL_MIC_MAP enabled\n");
- 		break;
- 	default:
--		dev_err(dev, "quirk map 0x%x is not supported, microphone input will not work\n", map);
-+		dev_warn_once(dev, "quirk sets invalid input map: 0x%x, default to DMIC1_MAP\n", map);
-+		byt_rt5640_quirk &= ~BYT_RT5640_MAP_MASK;
-+		byt_rt5640_quirk |= BYT_RT5640_DMIC1_MAP;
- 		break;
- 	}
- 	if (byt_rt5640_quirk & BYT_RT5640_HSMIC2_ON_IN1)
+@@ -242,8 +243,11 @@ static int snmp6_dev_seq_show(struct seq_file *seq, void *v)
+ 			      snmp6_ipstats_list,
+ 			      ARRAY_SIZE(snmp6_ipstats_list),
+ 			      offsetof(struct ipstats_mib, syncp));
++
++	/* Per idev icmp stats do not have ICMP6_MIB_RATELIMITHOST */
+ 	snmp6_seq_show_item(seq, NULL, idev->stats.icmpv6dev->mibs,
+-			    snmp6_icmp6_list, ARRAY_SIZE(snmp6_icmp6_list));
++			    snmp6_icmp6_list, ARRAY_SIZE(snmp6_icmp6_list) - 1);
++
+ 	snmp6_seq_show_icmpv6msg(seq, idev->stats.icmpv6msgdev->mibs);
+ 	return 0;
+ }
 -- 
 2.51.0
 
