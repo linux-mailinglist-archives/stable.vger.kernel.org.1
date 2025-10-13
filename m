@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-184560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B0DBD4147
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D28FBD42F1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E56061891E8F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E79E8421EDD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0C030BF67;
-	Mon, 13 Oct 2025 15:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBA9315777;
+	Mon, 13 Oct 2025 14:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHh+ejD5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRyIlZSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4EF279DCE;
-	Mon, 13 Oct 2025 15:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7013031576C;
+	Mon, 13 Oct 2025 14:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367784; cv=none; b=UBM8RBh5IT0UDBgtPL7ZPldCSHZM/SkjOaB8UB2Hpv5KBZuxpD049IIMiIyekbpODOmI/V8IxgFxnl7FyWCb2p1NChcd/wACR+loroseT5hO9D5kZ3rduT9jrRHold0kkoX6yUHlhyreTaYZHyxbD2XrhXQr92FCXSGJ56yxwo4=
+	t=1760367266; cv=none; b=CfVvynNmhiupMPVlj6SXe/SnLkk0M+OTaGQJnLwdeI5/Jib4MfceoioupgL6t+Wvu3Uqxr5RfMpGm9GOQxKpAhm+dLruouQyJFtys1LzPbgUs3f5c3D0UP/wQ+W15LPSXzMByRXqu1V37ZBbCPsXS6CnoAdPVTVCYkL7prIy4+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367784; c=relaxed/simple;
-	bh=pssk8PUv7M174dySH7s7UrCiFXZktX+We9OcAPfIrnM=;
+	s=arc-20240116; t=1760367266; c=relaxed/simple;
+	bh=wz+rbvpanliI/udJNjTaftv1SgWFr1V94rpUHtL5aNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4nIkZ9PdFprlOUzdDtrQK7g2MGHU6wNm4CkKp+dLXNK3JxgZKlORZBVR2AwdxnRpdiIozU+KxLlzEigj0ubUtsgYdKRG7ZA+CpHHtdkhmDYGPERqPnyhAYSwmbp/jIgewdbToUieeCfY/jrfmUyfFhimhz52cArqDi/aXmCyTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHh+ejD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D4EC4CEE7;
-	Mon, 13 Oct 2025 15:03:03 +0000 (UTC)
+	 MIME-Version; b=lwDGFCb9gZ2Q+hG5nD3bXN2MUcvek/LxC8J3VkElbys0k4LGPza/5UTj1IfY6AK/uhu0vtAie52ZFbEeok1g7Mr5or11IKSFW4KVBXz8Lof9EUpycKEfOsNbM3hxfSfrBXXJc3aNGH4g1PkLeZmEigIohWcZ/TqCFrE/ym7tAH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRyIlZSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA4EC4CEFE;
+	Mon, 13 Oct 2025 14:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367784;
-	bh=pssk8PUv7M174dySH7s7UrCiFXZktX+We9OcAPfIrnM=;
+	s=korg; t=1760367266;
+	bh=wz+rbvpanliI/udJNjTaftv1SgWFr1V94rpUHtL5aNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHh+ejD58teILshyu5UDsWAYLR8WBBOIgLEcJJgUKpq3N6ejqC0DAaba7l0yOHueH
-	 nWGGlcV0uTRHARWmM6p01Ew60oIkS3DpjvwJhfrf84ddkp0aj52wSnSMrGCyeOii34
-	 JsNQp8inZAZ3E2RtJfmhez+5kov2wr2UuxwpGXZo=
+	b=IRyIlZSLAhy7QdOgIg9XU5auOIiayfbALFABq6hjnLntS3ftSxl47L7lORjsWuyc2
+	 fhkzOrjuBsIlQPSeMTrgAR+33XZc82GRwctuX+g+O2UZAcUA0NsJOmGH7gA3XuvUae
+	 6IBP6B78RjQdhPMEZ2WlMR1DJF8wIWibCeydMlwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Ethan Hawke <ehawk@ember.systems>,
-	Ken Link <iissmart@numberzero.org>
-Subject: [PATCH 6.6 131/196] sparc: fix accurate exception reporting in copy_{from_to}_user for Niagara
+	Tamas Zsoldos <tamas.zsoldos@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 149/196] coresight: trbe: Return NULL pointer for allocation failures
 Date: Mon, 13 Oct 2025 16:45:22 +0200
-Message-ID: <20251013144320.050656048@linuxfoundation.org>
+Message-ID: <20251013144320.087578951@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 0b67c8fc10b13a9090340c5f8a37d308f4e1571c ]
+[ Upstream commit 8a55c161f7f9c1aa1c70611b39830d51c83ef36d ]
 
-The referenced commit introduced exception handlers on user-space memory
-references in copy_from_user and copy_to_user. These handlers return from
-the respective function and calculate the remaining bytes left to copy
-using the current register contents. This commit fixes a couple of bad
-calculations and a broken epilogue in the exception handlers. This will
-prevent crashes and ensure correct return values of copy_from_user and
-copy_to_user in the faulting case. The behaviour of memcpy stays unchanged.
+When the TRBE driver fails to allocate a buffer, it currently returns
+the error code "-ENOMEM". However, the caller etm_setup_aux() only
+checks for a NULL pointer, so it misses the error. As a result, the
+driver continues and eventually causes a kernel panic.
 
-Fixes: 7ae3aaf53f16 ("sparc64: Convert NGcopy_{from,to}_user to accurate exception reporting.")
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on SPARC T4 with modified kernel to use Niagara 1 code
-Tested-by: Magnus Lindholm <linmag7@gmail.com> # on Sun Fire T2000
-Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Tested-by: Ethan Hawke <ehawk@ember.systems> # on Sun Fire T2000
-Tested-by: Ken Link <iissmart@numberzero.org> # on Sun Fire T1000
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-3-1ca72dda195b@mkarcher.dialup.fu-berlin.de
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Fix this by returning a NULL pointer from arm_trbe_alloc_buffer() on
+allocation failures. This allows that the callers can properly handle
+the failure.
+
+Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
+Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250904-cs_etm_auxsetup_fix_error_handling-v2-1-a502d0bafb95@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/lib/NGmemcpy.S | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ drivers/hwtracing/coresight/coresight-trbe.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/sparc/lib/NGmemcpy.S b/arch/sparc/lib/NGmemcpy.S
-index ee51c12306894..bbd3ea0a64822 100644
---- a/arch/sparc/lib/NGmemcpy.S
-+++ b/arch/sparc/lib/NGmemcpy.S
-@@ -79,8 +79,8 @@
- #ifndef EX_RETVAL
- #define EX_RETVAL(x)	x
- __restore_asi:
--	ret
- 	wr	%g0, ASI_AIUS, %asi
-+	ret
- 	 restore
- ENTRY(NG_ret_i2_plus_i4_plus_1)
- 	ba,pt	%xcc, __restore_asi
-@@ -125,15 +125,16 @@ ENTRY(NG_ret_i2_plus_g1_minus_56)
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, %g1, %i0
- ENDPROC(NG_ret_i2_plus_g1_minus_56)
--ENTRY(NG_ret_i2_plus_i4)
-+ENTRY(NG_ret_i2_plus_i4_plus_16)
-+        add     %i4, 16, %i4
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, %i4, %i0
--ENDPROC(NG_ret_i2_plus_i4)
--ENTRY(NG_ret_i2_plus_i4_minus_8)
--	sub	%i4, 8, %i4
-+ENDPROC(NG_ret_i2_plus_i4_plus_16)
-+ENTRY(NG_ret_i2_plus_i4_plus_8)
-+	add	%i4, 8, %i4
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, %i4, %i0
--ENDPROC(NG_ret_i2_plus_i4_minus_8)
-+ENDPROC(NG_ret_i2_plus_i4_plus_8)
- ENTRY(NG_ret_i2_plus_8)
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, 8, %i0
-@@ -160,6 +161,12 @@ ENTRY(NG_ret_i2_and_7_plus_i4)
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, %i4, %i0
- ENDPROC(NG_ret_i2_and_7_plus_i4)
-+ENTRY(NG_ret_i2_and_7_plus_i4_plus_8)
-+	and	%i2, 7, %i2
-+	add	%i4, 8, %i4
-+	ba,pt	%xcc, __restore_asi
-+	 add	%i2, %i4, %i0
-+ENDPROC(NG_ret_i2_and_7_plus_i4)
- #endif
+diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
+index bc6e247443e80..a584e5e83fb57 100644
+--- a/drivers/hwtracing/coresight/coresight-trbe.c
++++ b/drivers/hwtracing/coresight/coresight-trbe.c
+@@ -743,12 +743,12 @@ static void *arm_trbe_alloc_buffer(struct coresight_device *csdev,
  
- 	.align		64
-@@ -405,13 +412,13 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
- 	andn		%i2, 0xf, %i4
- 	and		%i2, 0xf, %i2
- 1:	subcc		%i4, 0x10, %i4
--	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4)
-+	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4_plus_16)
- 	add		%i1, 0x08, %i1
--	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4)
-+	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4_plus_16)
- 	sub		%i1, 0x08, %i1
--	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4)
-+	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4_plus_16)
- 	add		%i1, 0x8, %i1
--	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_minus_8)
-+	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_plus_8)
- 	bgu,pt		%XCC, 1b
- 	 add		%i1, 0x8, %i1
- 73:	andcc		%i2, 0x8, %g0
-@@ -468,7 +475,7 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
- 	subcc		%i4, 0x8, %i4
- 	srlx		%g3, %i3, %i5
- 	or		%i5, %g2, %i5
--	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4)
-+	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4_plus_8)
- 	add		%o0, 0x8, %o0
- 	bgu,pt		%icc, 1b
- 	 sllx		%g3, %g1, %g2
+ 	buf = kzalloc_node(sizeof(*buf), GFP_KERNEL, trbe_alloc_node(event));
+ 	if (!buf)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 
+ 	pglist = kcalloc(nr_pages, sizeof(*pglist), GFP_KERNEL);
+ 	if (!pglist) {
+ 		kfree(buf);
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 	}
+ 
+ 	for (i = 0; i < nr_pages; i++)
+@@ -758,7 +758,7 @@ static void *arm_trbe_alloc_buffer(struct coresight_device *csdev,
+ 	if (!buf->trbe_base) {
+ 		kfree(pglist);
+ 		kfree(buf);
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 	}
+ 	buf->trbe_limit = buf->trbe_base + nr_pages * PAGE_SIZE;
+ 	buf->trbe_write = buf->trbe_base;
 -- 
 2.51.0
 
