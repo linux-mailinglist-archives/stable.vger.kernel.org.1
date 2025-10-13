@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-185321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBBBABD52C0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:45:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E2BDBD4DBE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:15:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 375575675A8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:59:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AEE1656760F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB5330DD11;
-	Mon, 13 Oct 2025 15:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0117330DD1D;
+	Mon, 13 Oct 2025 15:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHO0DBu+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rC6B5rZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7AF3081B9;
-	Mon, 13 Oct 2025 15:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27A630DD1E;
+	Mon, 13 Oct 2025 15:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369961; cv=none; b=YQTg6igx4XEZSXyeTQJgZW815gDdycDcpw+dKI/09nPUWu3NlY5YUwyXBunBIf0CTldC8xaV06RM+VqGXa5PFcF/DDhIjtkJW3jtGL/W+q+OFaMeq19bFxFKIXdnmmDz9/I70CxRApJNW9ruciskuqggihxXWOiF94mWn8Ldh6c=
+	t=1760369967; cv=none; b=uNODEXW5w43rwrvOY8blS8hdHZ+B4WCdGWw7HLo6Lklu7+rmMNdP74PTKLg3VfEVoHKvRlsOzUY32lX9Vf9RPbbD4ReKtX52vDkoto3oePhXIFPleg7cGk2gesYOV589XsN2A3dKjiGBZGKDFYtSmxsO2CGIRgv2Uw+gHr5upUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369961; c=relaxed/simple;
-	bh=ilJBLF0UGSEg9duB76BA+gBBWdFMD92IKWkr/wg47Uk=;
+	s=arc-20240116; t=1760369967; c=relaxed/simple;
+	bh=4X7OlA04FHKQvjSo7TX8RniNKBq8VO/MmJ25jJnmIQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FD87cVH2YHZ/c287cKbt4Qh55/PLK3Nr/p2t6HyVGjgxSmN0QR97YGVvLjHK6+tBatUTv4aOU7kRDsD9XExNzZVMnJc9u+4NHO+cY5P/3KD12/qCPbBsd/RCEw1RXAuVgsKKA6apHwRMIQmET4If0tNNtNSoX0niB5y8gNW0UW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHO0DBu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44510C4CEE7;
-	Mon, 13 Oct 2025 15:39:21 +0000 (UTC)
+	 MIME-Version; b=j+Pn3Q3xFRme4WhXwDMN4zuhb0RJOZ13cRa10J6gRKX8fReTLBpEb/kWK8QlF1xh0YW0JVHHA2Ch6X6lw5vcNEXFDoaCT3CWSURz5RuJ0Zmfmx+wfvZGFVdnk+WAxzg8fczU/l7PXIG2JmyYC2AfqmWW+b2DO6sW5U6PObro75s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rC6B5rZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34558C4CEE7;
+	Mon, 13 Oct 2025 15:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369961;
-	bh=ilJBLF0UGSEg9duB76BA+gBBWdFMD92IKWkr/wg47Uk=;
+	s=korg; t=1760369967;
+	bh=4X7OlA04FHKQvjSo7TX8RniNKBq8VO/MmJ25jJnmIQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHO0DBu+fdyRi/2ccruoPCSBuxHoP+D3z0OZ9kcqNGB//XYa7CqRq84Dds278HoEZ
-	 v7/++tFvaKauJJCSA19Qy3sywlnY3UVrxpKgKpf0FA8XyrtX54JhCPq98Nb4DLxOKk
-	 sBC0KsAUJFxE4aNTlUbd8XcoL91cjJ7pZPCB+q+Y=
+	b=0rC6B5rZchAkQrdPNxFlamwtFZZ9GEagGZs7SzX1MX2yzlcntAsfSio8QF+WjqfxR
+	 jS/s8OhEP3tdbvjF5tPOELwgFH8p0+Q6Tq7p+8S3E/X3b21QtcIF4XMhEXNcA5RClq
+	 GxbP+lzTF4bNKSwDh3THhmLaAK+pNdFKzPJ1yq2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
+	Tamas Zsoldos <tamas.zsoldos@arm.com>,
 	Leo Yan <leo.yan@arm.com>,
+	James Clark <james.clark@linaro.org>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 430/563] coresight: Avoid enable programming clock duplicately
-Date: Mon, 13 Oct 2025 16:44:51 +0200
-Message-ID: <20251013144426.863731643@linuxfoundation.org>
+Subject: [PATCH 6.17 431/563] coresight: trbe: Return NULL pointer for allocation failures
+Date: Mon, 13 Oct 2025 16:44:52 +0200
+Message-ID: <20251013144426.899310438@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -71,61 +70,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit d091c6312561821f216ced63a7ad17c946b6d335 ]
+[ Upstream commit 8a55c161f7f9c1aa1c70611b39830d51c83ef36d ]
 
-The programming clock is enabled by AMBA bus driver before a dynamic
-probe. As a result, a CoreSight driver may redundantly enable the same
-clock.
+When the TRBE driver fails to allocate a buffer, it currently returns
+the error code "-ENOMEM". However, the caller etm_setup_aux() only
+checks for a NULL pointer, so it misses the error. As a result, the
+driver continues and eventually causes a kernel panic.
 
-To avoid this, add a check for device type and skip enabling the
-programming clock for AMBA devices. The returned NULL pointer will be
-tolerated by the drivers.
+Fix this by returning a NULL pointer from arm_trbe_alloc_buffer() on
+allocation failures. This allows that the callers can properly handle
+the failure.
 
-Fixes: 73d779a03a76 ("coresight: etm4x: Change etm4_platform_driver driver for MMIO devices")
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
+Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
+Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
 Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250731-arm_cs_fix_clock_v4-v6-6-1dfe10bb3f6f@arm.com
+Link: https://lore.kernel.org/r/20250904-cs_etm_auxsetup_fix_error_handling-v2-1-a502d0bafb95@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/coresight.h | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/hwtracing/coresight/coresight-trbe.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/coresight.h b/include/linux/coresight.h
-index 1e652e1578419..bb49080ec8f96 100644
---- a/include/linux/coresight.h
-+++ b/include/linux/coresight.h
-@@ -481,20 +481,23 @@ static inline bool is_coresight_device(void __iomem *base)
-  * Returns:
-  *
-  * clk   - Clock is found and enabled
-- * NULL  - Clock is controlled by firmware (ACPI device only)
-+ * NULL  - Clock is controlled by firmware (ACPI device only) or when managed
-+ *	   by the AMBA bus driver instead
-  * ERROR - Clock is found but failed to enable
-  */
- static inline struct clk *coresight_get_enable_apb_pclk(struct device *dev)
- {
--	struct clk *pclk;
-+	struct clk *pclk = NULL;
+diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
+index f78c9b9dc0087..3dd2e1b4809dc 100644
+--- a/drivers/hwtracing/coresight/coresight-trbe.c
++++ b/drivers/hwtracing/coresight/coresight-trbe.c
+@@ -749,12 +749,12 @@ static void *arm_trbe_alloc_buffer(struct coresight_device *csdev,
  
- 	/* Firmware controls clocks for an ACPI device. */
- 	if (has_acpi_companion(dev))
- 		return NULL;
+ 	buf = kzalloc_node(sizeof(*buf), GFP_KERNEL, trbe_alloc_node(event));
+ 	if (!buf)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
  
--	pclk = devm_clk_get_optional_enabled(dev, "apb_pclk");
--	if (!pclk)
--		pclk = devm_clk_get_optional_enabled(dev, "apb");
-+	if (!dev_is_amba(dev)) {
-+		pclk = devm_clk_get_optional_enabled(dev, "apb_pclk");
-+		if (!pclk)
-+			pclk = devm_clk_get_optional_enabled(dev, "apb");
-+	}
+ 	pglist = kcalloc(nr_pages, sizeof(*pglist), GFP_KERNEL);
+ 	if (!pglist) {
+ 		kfree(buf);
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 	}
  
- 	return pclk;
- }
+ 	for (i = 0; i < nr_pages; i++)
+@@ -764,7 +764,7 @@ static void *arm_trbe_alloc_buffer(struct coresight_device *csdev,
+ 	if (!buf->trbe_base) {
+ 		kfree(pglist);
+ 		kfree(buf);
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 	}
+ 	buf->trbe_limit = buf->trbe_base + nr_pages * PAGE_SIZE;
+ 	buf->trbe_write = buf->trbe_base;
 -- 
 2.51.0
 
