@@ -1,136 +1,227 @@
-Return-Path: <stable+bounces-184993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E408CBD4A7C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF5DBD3BE2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D43995454A8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A4F8403E63
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6887131076A;
-	Mon, 13 Oct 2025 15:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D19126FA70;
+	Mon, 13 Oct 2025 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaYwu5Od"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="SrRq5RWk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245C631076C;
-	Mon, 13 Oct 2025 15:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB16E22A4D5
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 14:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369027; cv=none; b=Dcq79EMGHcMYawNgA8mshFRSiIkdoqV+g2EECy8YQlagdmi/r0PfEA5WYPApuuWYY8QjUnsPFwRbq28OwxtIayO+d5OdKNUqfjp6nplBM73UqDs7PH5ooVORMFLh2hHNRjSYn6sBxHeGSuuEK+6Tvj7khXauNKP6wAOGLJ4hq7Q=
+	t=1760366375; cv=none; b=hbRbuLqm4r8KSgA6hFR0Qt/5/svv4bctBTfQ8TliFEPTYYjkTH9Z0NWjEHnzu5AEmOVQRqpLigESGblTuRYwM7pmIqYg8WbcHA0JM2SSiYf/EbZUqxp5pdLo1DDb2LrLZdll4I586NsuyQqwC1xiReN3VrbaLiEUk4ujmHSZaQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369027; c=relaxed/simple;
-	bh=bKpdGkHDNMJ4nU6Q0ctE8ZEPrDRdXHFDU94xXQsDWQs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkUqmOJw7sRKovJt3YZbVRU5dx3fX+sHLhR7367r/a7gS6W65r9ijgqEL9dYYrQ/e59pvL11KnUazrZ58oYFYD26a/dNagetxR619vIRVWG96yd/gMv8A/C5SAssKS1C0g3/pv3kbDisvrvm41iZuQ53R2yYYrP4cW4dUK9cQso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaYwu5Od; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9458EC4CEE7;
-	Mon, 13 Oct 2025 15:23:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369027;
-	bh=bKpdGkHDNMJ4nU6Q0ctE8ZEPrDRdXHFDU94xXQsDWQs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XaYwu5Oduzek/MdlFDw4nG3GS3Rnr3IIk+A3HXPjZZfLhfu++qbnEKq7xgVabSd62
-	 5NMAJefrReEwV4f7bk1P9JCK22MQIFbC0aDm3lsknx5+1VqNx4XyxvIqv0V3MK9+df
-	 TMXFF1M+PhxkTun13AYclNRtrHZCJVbaU2xHNxuQ=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Yulin Lu <luyulin@eswincomputing.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 103/563] pinctrl: eswin: Fix regulator error check and Kconfig dependency
-Date: Mon, 13 Oct 2025 16:39:24 +0200
-Message-ID: <20251013144415.026900314@linuxfoundation.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1760366375; c=relaxed/simple;
+	bh=zeFDGLCA+TZtniD9v/vACQyM7ZcLBp8owxX3yibDynI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gNlj9zZgQn8r72nQ2wmFtNpucPSjwYUsTZUIG4EIeCsrH8BshGzhfNGYr2tUU5/Nf7xy5hJNBpykwxI5ZLC9ejc/0Ks9H63I6/JeSMDLiybjo3rP7Laj9U0tOVYQKH5TKn4QhaoMlDdYRH/Mi8w2PAGm9ssO5oseXRF8U4ZHvUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=SrRq5RWk; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4clg3N6kP1z9scN;
+	Mon, 13 Oct 2025 16:39:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1760366369; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eldRaBaRMDIvKL2RJMD+DdStCyCpgUpA7qlTkovrzrU=;
+	b=SrRq5RWkoPFxAu7/iK9pmSSeoNyCXi/5A95tviX96W8R8CbbatUnrvBU9mn9ZDQoCwVTYt
+	2wgNZZEjq+0rxsqKxDufcrsXTerXQpipRARwMnX5KPQ9NQFLNOUmQWwH814U1Pe+gNOBMl
+	zPTU6goB54s7CvGvwrlhmqZRJwkiwTJjtxsYyX57tRyjELrrbiRyx/5NSkqrYDtqOZm7kG
+	ExxyUjV6HSBRDXvhWLh3uH1lBNVVClyavmokRUWotfAG8oZwpBRAH/a6pjlH+E8cxSqBso
+	l75yl/i6bJwNPb78nmJWY/53iatb2f6WdBwwBY/ZxMIzJDnsId1Zepwvrzanzg==
+Message-ID: <6c150c95531b3d401b1dceec8d328a6d77b6849d.camel@mailbox.org>
+Subject: Re: [PATCH] drm/sched: Fix potential double free in
+ drm_sched_job_add_resv_dependencies
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
+	dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, Dan Carpenter <dan.carpenter@linaro.org>, 
+ Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Rob Clark
+ <robdclark@chromium.org>, Daniel Vetter <daniel.vetter@ffwll.ch>, Matthew
+ Brost <matthew.brost@intel.com>, Danilo Krummrich <dakr@kernel.org>,
+ Philipp Stanner <phasta@kernel.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
+ <ckoenig.leichtzumerken@gmail.com>, stable@vger.kernel.org
+Date: Mon, 13 Oct 2025 16:39:25 +0200
+In-Reply-To: <20251003092642.37065-1-tvrtko.ursulin@igalia.com>
+References: <20251003092642.37065-1-tvrtko.ursulin@igalia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: s3dqqfprn6hrz5mawo3fttu4w4e4qai8
+X-MBO-RS-ID: 02b3f6a68c7015c7758
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+On Fri, 2025-10-03 at 10:26 +0100, Tvrtko Ursulin wrote:
+> Drm_sched_job_add_dependency() consumes the fence reference both on
 
-------------------
+s/D/d
 
-From: Yulin Lu <luyulin@eswincomputing.com>
+> success and failure, so in the latter case the dma_fence_put() on the
+> error path (xarray failed to expand) is a double free.
+>=20
+> Interestingly this bug appears to have been present ever since
+> ebd5f74255b9 ("drm/sched: Add dependency tracking"), since the code back
+> then looked like this:
+>=20
+> drm_sched_job_add_implicit_dependencies():
+> ...
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < fence_count; i++) =
+{
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 ret =3D drm_sched_job_add_dependency(job, fences[i]);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 if (ret)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (; i < fence_count; i++)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 dma_fence_put(fences[i]);
+>=20
+> Which means for the failing 'i' the dma_fence_put was already a double
+> free. Possibly there were no users at that time, or the test cases were
+> insufficient to hit it.
+>=20
+> The bug was then only noticed and fixed after
+> 9c2ba265352a ("drm/scheduler: use new iterator in drm_sched_job_add_impli=
+cit_dependencies v2")
+> landed, with its fixup of
+> 4eaf02d6076c ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies=
+").
+>=20
+> At that point it was a slightly different flavour of a double free, which
+> 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies=
+ harder")
+> noticed and attempted to fix.
+>=20
+> But it only moved the double free from happening inside the
+> drm_sched_job_add_dependency(), when releasing the reference not yet
+> obtained, to the caller, when releasing the reference already released by
+> the former in the failure case.
 
-[ Upstream commit a6a2f50ab1721343ee2d5d2be888709aa886e3aa ]
+That's certainly interesting, but is there a specific reason why you
+include all of that?
 
-Smatch reported the following warning in eic7700_pinctrl_probe():
+The code is as is, and AFAICS it's just a bug stemming from original
+bugs present and then refactorings happening.
 
-  drivers/pinctrl/pinctrl-eic7700.c:638 eic7700_pinctrl_probe()
-  warn: passing zero to 'PTR_ERR'
+I would at least remove the old 'implicit_dependencies' function from
+the commit message. It's just confusing and makes one look for that in
+the current code or patch.
 
-The root cause is that devm_regulator_get() may return NULL when
-CONFIG_REGULATOR is disabled. In such case, IS_ERR_OR_NULL() triggers
-PTR_ERR(NULL) which evaluates to 0, leading to passing a success code
-as an error.
-
-However, this driver cannot work without a regulator. To fix this:
-
- - Change the check from IS_ERR_OR_NULL() to IS_ERR()
- - Update Kconfig to explicitly select REGULATOR and
-   REGULATOR_FIXED_VOLTAGE, ensuring that the regulator framework is
-   always available.
-
-This resolves the Smatch warning and enforces the correct dependency.
-
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: 5b797bcc00ef ("pinctrl: eswin: Add EIC7700 pinctrl driver")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-gpio/aKRGiZ-fai0bv0tG@stanley.mountain/
-Signed-off-by: Yulin Lu <luyulin@eswincomputing.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/pinctrl/Kconfig           | 2 ++
- drivers/pinctrl/pinctrl-eic7700.c | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index be1ca8e85754b..0402626c4b98b 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -211,6 +211,8 @@ config PINCTRL_EIC7700
- 	depends on ARCH_ESWIN || COMPILE_TEST
- 	select PINMUX
- 	select GENERIC_PINCONF
-+	select REGULATOR
-+	select REGULATOR_FIXED_VOLTAGE
- 	help
- 	  This driver support for the pin controller in ESWIN's EIC7700 SoC,
- 	  which supports pin multiplexing, pin configuration,and rgmii voltage
-diff --git a/drivers/pinctrl/pinctrl-eic7700.c b/drivers/pinctrl/pinctrl-eic7700.c
-index 4874b55323439..ffcd0ec5c2dc6 100644
---- a/drivers/pinctrl/pinctrl-eic7700.c
-+++ b/drivers/pinctrl/pinctrl-eic7700.c
-@@ -634,7 +634,7 @@ static int eic7700_pinctrl_probe(struct platform_device *pdev)
- 		return PTR_ERR(pc->base);
- 
- 	regulator = devm_regulator_get(dev, "vrgmii");
--	if (IS_ERR_OR_NULL(regulator)) {
-+	if (IS_ERR(regulator)) {
- 		return dev_err_probe(dev, PTR_ERR(regulator),
- 					 "failed to get vrgmii regulator\n");
- 	}
--- 
-2.51.0
+>=20
+> As such it is not easy to identify the right target for the fixes tag so
+> lets keep it simple and just continue the chain.
+>=20
+> We also drop the misleading comment about additional reference, since it
+> is not additional but the only one from the point of view of dependency
+> tracking.
 
 
+IMO that comment is nonsense. It's useless, too, because I can *see*
+that a reference is being taken there, but not *why*.
+
+Argh, these comments. See also my commit 72ebc18b34993
+
+
+Anyways. Removing it is fine, but adding a better comment is better.
+See below.
+
+>=20
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Fixes: 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_depen=
+dencies harder")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+
+Is there an error report that could be included here with a Closes:
+tag?
+
+> Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
+> Cc: Rob Clark <robdclark@chromium.org>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: Philipp Stanner <phasta@kernel.org>
+> Cc: "Christian K=C3=B6nig" <ckoenig.leichtzumerken@gmail.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.16+
+> ---
+> =C2=A0drivers/gpu/drm/scheduler/sched_main.c | 14 +++++---------
+> =C2=A01 file changed, 5 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/sch=
+eduler/sched_main.c
+> index 46119aacb809..aff34240f230 100644
+> --- a/drivers/gpu/drm/scheduler/sched_main.c
+> +++ b/drivers/gpu/drm/scheduler/sched_main.c
+> @@ -960,20 +960,16 @@ int drm_sched_job_add_resv_dependencies(struct drm_=
+sched_job *job,
+> =C2=A0{
+> =C2=A0	struct dma_resv_iter cursor;
+> =C2=A0	struct dma_fence *fence;
+> -	int ret;
+> +	int ret =3D 0;
+> =C2=A0
+> =C2=A0	dma_resv_assert_held(resv);
+> =C2=A0
+> =C2=A0	dma_resv_for_each_fence(&cursor, resv, usage, fence) {
+> -		/* Make sure to grab an additional ref on the added fence */
+> -		dma_fence_get(fence);
+> -		ret =3D drm_sched_job_add_dependency(job, fence);
+> -		if (ret) {
+> -			dma_fence_put(fence);
+> -			return ret;
+> -		}
+> +		ret =3D drm_sched_job_add_dependency(job, dma_fence_get(fence));
+
+You still take a reference as before, but there is no comment anymore.
+Can you add one explaining why a new reference is taken here?
+
+I guess it will be something like "This needs a new reference for the
+job", since you cannot rely on the one from resv.
+
+> +		if (ret)
+> +			break;
+> =C2=A0	}
+> -	return 0;
+> +	return ret;
+
+
+That's an unnecessarily enlargement of the git diff because of style,
+isn't it? Better keep the diff minimal here for git blame.
+
+
+P.
+
+
+> =C2=A0}
+> =C2=A0EXPORT_SYMBOL(drm_sched_job_add_resv_dependencies);
+> =C2=A0
 
 
