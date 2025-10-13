@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-184812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70939BD437E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D10BD3F72
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52F9C1888614
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E87E188B425
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DDD308F23;
-	Mon, 13 Oct 2025 15:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C52B30CDA9;
+	Mon, 13 Oct 2025 14:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbWeYJZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMcohmsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAFF3090DC;
-	Mon, 13 Oct 2025 15:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AB730CDA0;
+	Mon, 13 Oct 2025 14:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368505; cv=none; b=QLu+ozb/DQn5Y1l9W9Ttz+W9lnkU/s9C/Po44QYlD+vlpbi41JbAWzt+D3aro7hfgBh06MPz6j2EGUTkQ6QroyY/JPTEaOlMr3e9XThiHPuTLKOVpGy8B8mbUh+bnO85jITkp6vxJ2RQx4evJsDuX8i1qVMQX3S+4yWo418nQAk=
+	t=1760367286; cv=none; b=fwgnRJnwBAc9WVzlKQu9hhdPokmc94KTuuScjPgToYXCcKJNCk9Z537t0uui0/I8aCCV3rTy8LVDJH/8g/uyXr9zC1OLQzSNkXeyo8xzvXkFe+IvHGt0+F2jxJxFsf2Tg++/AUlQ6bWUJCmtADg4tO+mcL4ckzuwibusCOJ2Zio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368505; c=relaxed/simple;
-	bh=u84p/Wp8PcVxbqa2052II7GG5IN6JTT79FHPc1l2Smw=;
+	s=arc-20240116; t=1760367286; c=relaxed/simple;
+	bh=DQHbmzGSmzTeZDfqRlihEFNYsd8p5Ou7imqRaMcjIgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYM6ug6PtX4IbX97Dy2znrko+uy2T83IVmw/xp3reGDdQWB+AvMyJnNpBKE18rMyA563QfJAVxgzQ0AvDMOALDhrCd07vDTiB2s3iwnyHMLPUgDkluhAcAT1pCnzOeuRzq/fw6pr5WyUoNy4I89ekDk3gYJ43uxIHqiqTDbxG/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbWeYJZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A3DC4CEE7;
-	Mon, 13 Oct 2025 15:15:04 +0000 (UTC)
+	 MIME-Version; b=bkaFQtqe/NHn34XGb9bQEU3eRXayzwK2gCKEmFgR0C4s9b6974tOu1RkrderIPWJl7gvYmSo6U+IA7Mbtf26ob2W/ka3FmM45sJQDPyEStSm3zQskjLvWrtfjxl2BFtFAT/JQr+cu8ccaP9eccvupF2Kogbocm2gEwboCFpeqmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMcohmsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550D7C4CEE7;
+	Mon, 13 Oct 2025 14:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368505;
-	bh=u84p/Wp8PcVxbqa2052II7GG5IN6JTT79FHPc1l2Smw=;
+	s=korg; t=1760367286;
+	bh=DQHbmzGSmzTeZDfqRlihEFNYsd8p5Ou7imqRaMcjIgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbWeYJZTiJhY2wTVs7F/iYTlo6FdytEk2KW+UXgCKQRC++1pVqB9CAgmIsScTMsI+
-	 lMk2Ob9ReIJ9gzBoIEiKLKiLSFdFVLwZ1698hueA6rPGx8KVQ5by1pP5nqj8diAJ41
-	 lx+O/wVKgo626LzvsTMmljbEIo8JVW5wpol/Gr2Q=
+	b=zMcohmsH9pfuBGrPVysz8c0K0VTWsR9YhXY4HTU8KGOZ17BrRblAhUFvFJc0+KBur
+	 YtPiQt7WvsqaJm9DepcguLszEepV8MDnQHMFRAKUhkDhMdA46vuG/3MpzKNEShZ0dd
+	 X5TOrTMzh0SFvTcf8wXJcBS6XCTL1u9aboPlFmIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 185/262] coresight: etm4x: Support atclk
-Date: Mon, 13 Oct 2025 16:45:27 +0200
-Message-ID: <20251013144332.790191475@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	I Viswanath <viswanathiyyappan@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 155/196] net: usb: Remove disruptive netif_wake_queue in rtl8150_set_multicast
+Date: Mon, 13 Oct 2025 16:45:28 +0200
+Message-ID: <20251013144320.306786587@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit 40c0cdc9cbbebae9f43bef1cab9ce152318d0cce ]
+[ Upstream commit 958baf5eaee394e5fd976979b0791a875f14a179 ]
 
-The atclk is an optional clock for the CoreSight ETMv4, but the driver
-misses to initialize it.
+syzbot reported WARNING in rtl8150_start_xmit/usb_submit_urb.
+This is the sequence of events that leads to the warning:
 
-This change enables atclk in probe of the ETMv4 driver, and dynamically
-control the clock during suspend and resume.
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);
+}
 
-No need to check the driver data and clock pointer in the runtime
-suspend and resume, so remove checks.  And add error handling in the
-resume function.
+rtl8150_set_multicast() {
+	netif_stop_queue();
+	netif_wake_queue();		<-- wakes up TX queue before URB is done
+}
 
-Add a minor fix to the comment format when adding the atclk field.
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);	<-- double submission
+}
 
-Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250731-arm_cs_fix_clock_v4-v6-3-1dfe10bb3f6f@arm.com
+rtl8150_set_multicast being the ndo_set_rx_mode callback should not be
+calling netif_stop_queue and notif_start_queue as these handle
+TX queue synchronization.
+
+The net core function dev_set_rx_mode handles the synchronization
+for rtl8150_set_multicast making it safe to remove these locks.
+
+Reported-and-tested-by: syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=78cae3f37c62ad092caa
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Link: https://patch.msgid.link/20250924134350.264597-1-viswanathiyyappan@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm4x-core.c          | 20 ++++++++++++++-----
- drivers/hwtracing/coresight/coresight-etm4x.h |  4 +++-
- 2 files changed, 18 insertions(+), 6 deletions(-)
+ drivers/net/usb/rtl8150.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index cdfd35e03c1dc..7b9eaeb115d21 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -2157,6 +2157,10 @@ static int etm4_probe(struct device *dev)
- 	if (WARN_ON(!drvdata))
- 		return -ENOMEM;
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index ddff6f19ff98e..92add3daadbb1 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -664,7 +664,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	u16 rx_creg = 0x9e;
  
-+	drvdata->atclk = devm_clk_get_optional_enabled(dev, "atclk");
-+	if (IS_ERR(drvdata->atclk))
-+		return PTR_ERR(drvdata->atclk);
-+
- 	if (pm_save_enable == PARAM_PM_SAVE_FIRMWARE)
- 		pm_save_enable = coresight_loses_context_with_cpu(dev) ?
- 			       PARAM_PM_SAVE_SELF_HOSTED : PARAM_PM_SAVE_NEVER;
-@@ -2405,8 +2409,8 @@ static int etm4_runtime_suspend(struct device *dev)
- {
- 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
- 
--	if (drvdata->pclk && !IS_ERR(drvdata->pclk))
--		clk_disable_unprepare(drvdata->pclk);
-+	clk_disable_unprepare(drvdata->atclk);
-+	clk_disable_unprepare(drvdata->pclk);
- 
- 	return 0;
+-	netif_stop_queue(netdev);
+ 	if (netdev->flags & IFF_PROMISC) {
+ 		rx_creg |= 0x0001;
+ 		dev_info(&netdev->dev, "%s: promiscuous mode\n", netdev->name);
+@@ -678,7 +677,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 		rx_creg &= 0x00fc;
+ 	}
+ 	async_set_registers(dev, RCR, sizeof(rx_creg), rx_creg);
+-	netif_wake_queue(netdev);
  }
-@@ -2414,11 +2418,17 @@ static int etm4_runtime_suspend(struct device *dev)
- static int etm4_runtime_resume(struct device *dev)
- {
- 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = clk_prepare_enable(drvdata->pclk);
-+	if (ret)
-+		return ret;
  
--	if (drvdata->pclk && !IS_ERR(drvdata->pclk))
--		clk_prepare_enable(drvdata->pclk);
-+	ret = clk_prepare_enable(drvdata->atclk);
-+	if (ret)
-+		clk_disable_unprepare(drvdata->pclk);
- 
--	return 0;
-+	return ret;
- }
- #endif
- 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
-index 899790c8777a9..3683966bd0603 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -920,7 +920,8 @@ struct etmv4_save_state {
- 
- /**
-  * struct etm4_drvdata - specifics associated to an ETM component
-- * @pclk        APB clock if present, otherwise NULL
-+ * @pclk:       APB clock if present, otherwise NULL
-+ * @atclk:      Optional clock for the core parts of the ETMv4.
-  * @base:       Memory mapped base address for this component.
-  * @csdev:      Component vitals needed by the framework.
-  * @spinlock:   Only one at a time pls.
-@@ -988,6 +989,7 @@ struct etmv4_save_state {
-  */
- struct etmv4_drvdata {
- 	struct clk			*pclk;
-+	struct clk			*atclk;
- 	void __iomem			*base;
- 	struct coresight_device		*csdev;
- 	spinlock_t			spinlock;
+ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
 -- 
 2.51.0
 
