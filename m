@@ -1,200 +1,110 @@
-Return-Path: <stable+bounces-184200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D4BBD23AE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 11:15:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 481FFBD23B5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 11:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 30D104E9197
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 09:15:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6B763A2E2B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 09:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56E32EC543;
-	Mon, 13 Oct 2025 09:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7D12F9DBF;
+	Mon, 13 Oct 2025 09:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0axo1Wr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHkZf7Dq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A637822D9EB
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 09:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C772C18A;
+	Mon, 13 Oct 2025 09:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760346950; cv=none; b=tWbG2eOS5Hnybye478aQtz6XXq7x/pyXRejhs4Q2iKsqz/r2R8ru5Aly34NKw48+YN5tt6QPNRXd2AEywJM6oX0rvgUcs+Vx+qi1yigFLv29qGEk37Y2TWYlBGNDbxLsZp8tb1DSu94nQRXjau+rg2mZJhk3PaacMyaPXeaI8SE=
+	t=1760347022; cv=none; b=CnSdfeRsDnzHDEaB1eNYnpxdOBmcU1srchAsJnVcZPr7a8CP9sw/6lYSarMsPkBFEefbxAsJIbTTtZFR/BLKwxlTV65IL9jefX4IJsIJojCCmKP7v9BO/TxF4hD8KX3/00NekyWQekSRNp9beBikQttJdimVy/9bfG4X4XiVMIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760346950; c=relaxed/simple;
-	bh=voDmWcgZDRZhDl+ZbOaqv0UBsIoL96bXecLsPEjfA0E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TvSxVFHNw0Gvm1FXzt49uqbyoF7NwCO454jHS1K+71riLeI3oBFKhZpbc2WbbvnjaprY+fG+/vibkc9WAMNjDV8OmpWPLH+SIA9GDn93zrK3V8VoyvYkdwDeeuJZP4GWMrC7bw/rVzSs1ZbfQeqzonlfq9Sgaassts/xrTKVpBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0axo1Wr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAC7C4CEE7;
-	Mon, 13 Oct 2025 09:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760346950;
-	bh=voDmWcgZDRZhDl+ZbOaqv0UBsIoL96bXecLsPEjfA0E=;
-	h=Subject:To:Cc:From:Date:From;
-	b=r0axo1Wr4ffIObaHY/ninjTkPs3axLsoZRhUOzxlvdgBwh4m/4Or5JkTmbGz2v0cC
-	 Kc7tY0ZjKApsuqZjOUdPL8abRzFiNusWWmCpfGTCd3L5E6JDqU6+BmklEM+9FJnhVN
-	 Be6WjraPX51Iax+s/FremsrMOo/kQ5fQQixNaMjA=
-Subject: FAILED: patch "[PATCH] ksmbd: add max ip connections parameter" failed to apply to 6.1-stable tree
-To: linkinjeon@kernel.org,stfrench@microsoft.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Oct 2025 11:15:39 +0200
-Message-ID: <2025101339-chunk-hassle-3d8e@gregkh>
+	s=arc-20240116; t=1760347022; c=relaxed/simple;
+	bh=/auT3UgIwSi0ev3BBmyrAvTGEjKox8DEHohP+Ue7Ahc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c1mXzPYaFU/e2Z9GHdow3D0fjcGK4QBjEknY6Y9WIdjureiYGGGsyO/IDKQO7Bx5p37HZqHr7myik8mg396QHOqyWMkMmj3kPNenMlq216tl6Bv5Aqlqmm+RC+TUk20fm/AaOdo0N+b8m2KlHyh4lBbkgkvMCQtdmE/MUq1nt8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHkZf7Dq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC04C4CEE7;
+	Mon, 13 Oct 2025 09:16:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760347021;
+	bh=/auT3UgIwSi0ev3BBmyrAvTGEjKox8DEHohP+Ue7Ahc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UHkZf7DqqY0Y9WedIGvcr6spAb5M3fmj+83HQzre/CIe4aCD9af9E3/siVKO2faGU
+	 aHh4VkU8kY/xLzDLYDC4m6hCqypdMD9aBSObX6Tm1Ojd3FW4xTPvDOJ6Ay32VFhbLQ
+	 xD0vSbpZRoFbF34rPRGuUZPEB1gWW1qkFG/W/UAgILhmJKAVYx+Q1tqFMBZup5ZZR6
+	 XKYn2s7nOzL+j/RrPTQqVwj1uIjinfmeJGQpPTIKZK5xy8usHUSjvs1rFzABEGoZhO
+	 xdMasDGO4KKf7dMBJSKSPTTfOtivl3k+8dPGDkoB1Y3nZ82P2ZUj5yzbEiFsGz3Ze4
+	 Ost8ClewWTbVQ==
+Date: Mon, 13 Oct 2025 18:16:55 +0900
+From: Namhyung Kim <namhyung@kernel.org>
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Liang, Kan" <kan.liang@linux.intel.com>,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] perf tools: Fix bool return value in gzip_is_compressed()
+Message-ID: <aOzDh4yhR5F0nMTG@google.com>
+References: <20250828104652.53724-1-linmq006@gmail.com>
+ <4ecf3e76-27f8-47fd-a07d-7da2489af55f@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4ecf3e76-27f8-47fd-a07d-7da2489af55f@linux.intel.com>
 
+Hello,
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Sat, Oct 11, 2025 at 11:48:56AM +0800, Mi, Dapeng wrote:
+> 
+> On 8/28/2025 6:46 PM, Miaoqian Lin wrote:
+> > gzip_is_compressed() returns -1 on error but is declared as bool.
+> > And -1 gets converted to true, which could be misleading.
+> > Return false instead to match the declared type.
+> >
+> > Fixes: 88c74dc76a30 ("perf tools: Add gzip_is_compressed function")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> > ---
+> >  tools/perf/util/zlib.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
+> > index 78d2297c1b67..1f7c06523059 100644
+> > --- a/tools/perf/util/zlib.c
+> > +++ b/tools/perf/util/zlib.c
+> > @@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
+> >  	ssize_t rc;
+> >  
+> >  	if (fd < 0)
+> > -		return -1;
+> > +		return false;
+> >  
+> >  	rc = read(fd, buf, sizeof(buf));
+> >  	close(fd);
+> 
+> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-To reproduce the conflict and resubmit, you may use the following commands:
+We have 43fa1141e2c1af79 ("perf util: Fix compression checks returning -1
+as bool").
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x d8b6dc9256762293048bf122fc11c4e612d0ef5d
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101339-chunk-hassle-3d8e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From d8b6dc9256762293048bf122fc11c4e612d0ef5d Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 1 Oct 2025 09:25:35 +0900
-Subject: [PATCH] ksmbd: add max ip connections parameter
-
-This parameter set the maximum number of connections per ip address.
-The default is 8.
-
-Cc: stable@vger.kernel.org
-Fixes: c0d41112f1a5 ("ksmbd: extend the connection limiting mechanism to support IPv6")
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/server/ksmbd_netlink.h b/fs/smb/server/ksmbd_netlink.h
-index 3f07a612c05b..8ccd57fd904b 100644
---- a/fs/smb/server/ksmbd_netlink.h
-+++ b/fs/smb/server/ksmbd_netlink.h
-@@ -112,10 +112,11 @@ struct ksmbd_startup_request {
- 	__u32	smbd_max_io_size;	/* smbd read write size */
- 	__u32	max_connections;	/* Number of maximum simultaneous connections */
- 	__s8	bind_interfaces_only;
--	__s8	reserved[503];		/* Reserved room */
-+	__u32	max_ip_connections;	/* Number of maximum connection per ip address */
-+	__s8	reserved[499];		/* Reserved room */
- 	__u32	ifc_list_sz;		/* interfaces list size */
- 	__s8	____payload[];
--};
-+} __packed;
- 
- #define KSMBD_STARTUP_CONFIG_INTERFACES(s)	((s)->____payload)
- 
-diff --git a/fs/smb/server/server.h b/fs/smb/server/server.h
-index 995555febe7d..b8a7317be86b 100644
---- a/fs/smb/server/server.h
-+++ b/fs/smb/server/server.h
-@@ -43,6 +43,7 @@ struct ksmbd_server_config {
- 	unsigned int		auth_mechs;
- 	unsigned int		max_connections;
- 	unsigned int		max_inflight_req;
-+	unsigned int		max_ip_connections;
- 
- 	char			*conf[SERVER_CONF_WORK_GROUP + 1];
- 	struct task_struct	*dh_task;
-diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
-index 2a3e2b0ce557..2aa1b29bea08 100644
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -335,6 +335,9 @@ static int ipc_server_config_on_startup(struct ksmbd_startup_request *req)
- 	if (req->max_connections)
- 		server_conf.max_connections = req->max_connections;
- 
-+	if (req->max_ip_connections)
-+		server_conf.max_ip_connections = req->max_ip_connections;
-+
- 	ret = ksmbd_set_netbios_name(req->netbios_name);
- 	ret |= ksmbd_set_server_string(req->server_string);
- 	ret |= ksmbd_set_work_group(req->work_group);
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 7440a2fd1126..e9ecb43db9d9 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -225,6 +225,7 @@ static int ksmbd_kthread_fn(void *p)
- 	struct interface *iface = (struct interface *)p;
- 	struct ksmbd_conn *conn;
- 	int ret;
-+	unsigned int max_ip_conns;
- 
- 	while (!kthread_should_stop()) {
- 		mutex_lock(&iface->sock_release_lock);
-@@ -242,34 +243,38 @@ static int ksmbd_kthread_fn(void *p)
- 			continue;
- 		}
- 
-+		if (!server_conf.max_ip_connections)
-+			goto skip_max_ip_conns_limit;
-+
- 		/*
- 		 * Limits repeated connections from clients with the same IP.
- 		 */
-+		max_ip_conns = 0;
- 		down_read(&conn_list_lock);
--		list_for_each_entry(conn, &conn_list, conns_list)
-+		list_for_each_entry(conn, &conn_list, conns_list) {
- #if IS_ENABLED(CONFIG_IPV6)
- 			if (client_sk->sk->sk_family == AF_INET6) {
- 				if (memcmp(&client_sk->sk->sk_v6_daddr,
--					   &conn->inet6_addr, 16) == 0) {
--					ret = -EAGAIN;
--					break;
--				}
-+					   &conn->inet6_addr, 16) == 0)
-+					max_ip_conns++;
- 			} else if (inet_sk(client_sk->sk)->inet_daddr ==
--				 conn->inet_addr) {
--				ret = -EAGAIN;
--				break;
--			}
-+				 conn->inet_addr)
-+				max_ip_conns++;
- #else
- 			if (inet_sk(client_sk->sk)->inet_daddr ==
--			    conn->inet_addr) {
-+			    conn->inet_addr)
-+				max_ip_conns++;
-+#endif
-+			if (server_conf.max_ip_connections <= max_ip_conns) {
- 				ret = -EAGAIN;
- 				break;
- 			}
--#endif
-+		}
- 		up_read(&conn_list_lock);
- 		if (ret == -EAGAIN)
- 			continue;
- 
-+skip_max_ip_conns_limit:
- 		if (server_conf.max_connections &&
- 		    atomic_inc_return(&active_num_conn) >= server_conf.max_connections) {
- 			pr_info_ratelimited("Limit the maximum number of connections(%u)\n",
+Thanks,
+Namhyung
 
 
