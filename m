@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-184726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA8EBD42CC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:07 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8A5BD3C6F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C42188CDED
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:53 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8ACCB34DE19
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DD331280E;
-	Mon, 13 Oct 2025 15:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D160826E143;
+	Mon, 13 Oct 2025 14:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wmd44jqi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nH2/ud0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7FA31280A;
-	Mon, 13 Oct 2025 15:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7812153E7;
+	Mon, 13 Oct 2025 14:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368260; cv=none; b=ekr+lqJnFGPzdBXI6BPXV30/eIgNgsf/E8DgSKLpTuiynnq52rtupkc6REPkzYhMcB5l0Lz0cZkvnuVcpQuEBeS1tPVjUWdtC+lUcpM2+RmdaHAAU3YvpoPD/EUbGD3lXS+k+JJVzzKOSTYgyp9tcnoblINkikvZ0RkE+Xta8nM=
+	t=1760367026; cv=none; b=WLx/e1ZE7PxBbxNO89L6tT0YLxFQjOG/feRsI4JZAG0c7y101J4jlfZv9zh07ZoS1OIZP0pEzCTtt+KKAUIzO0wWmNaPPtnit5hTARuZGCckYHKpTbVO4VoNLQN5qZ1tOMG0cxclJ9hKFTDIkw5TwwejfX19vaJX3sKPQeGDHWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368260; c=relaxed/simple;
-	bh=ojwbqnOxXX7T/kqGh1o0+iRLjfumX5kZmM5e3C07a28=;
+	s=arc-20240116; t=1760367026; c=relaxed/simple;
+	bh=6kFZF70AEsHVo84sRcnRM2GgJCFujPa+qLkTZ39Shyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0AwOX+5XyNveDCYrvmZUW7q9KXsnP8XBpYdAjMZgS3PQKjYTIpB9+SytILCnDMgU0iK1kmbNSrDNRvPyr4KUvgkPp0kNDZ9tuTComMZLkhy3t0/xnfERmU94RTe8yuTcA3Lh5koYqZyZHxpsH2NuBNPM+D+wKLxKEMnWUTMXxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wmd44jqi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BCFC4CEE7;
-	Mon, 13 Oct 2025 15:10:59 +0000 (UTC)
+	 MIME-Version; b=toXx1VRlpAb63wW0CrbP4ZDn/Sh82LO0x37llcmZtLUM5voJc/tzex/JVgly4Yh2Ky3QmJddcPfMKgDz6C08jAJxOU6OeY2ivw5eL7DpGJHwQ/AY0VQM+taldgPRP06LOrZTOft1VjhF+t75pt3aGpdPNhYREgzRcPKMPySKMD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nH2/ud0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D653C4CEE7;
+	Mon, 13 Oct 2025 14:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368260;
-	bh=ojwbqnOxXX7T/kqGh1o0+iRLjfumX5kZmM5e3C07a28=;
+	s=korg; t=1760367026;
+	bh=6kFZF70AEsHVo84sRcnRM2GgJCFujPa+qLkTZ39Shyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wmd44jqiSp2JG48MeKBI2uBoPZEo4Y35Ke3uTklBuNxIJhSAX9/iLQZuw+0G0M5uL
-	 tIMuhAv9nKFmfqL41bAvM4HVhxAawrTg6ZFUKcsDHtLhwYaLd1bOXRoUfZlsWCA5HC
-	 /hz46D813EOyyR6LplwI0v9DYHwU4U7pWkqN4BUM=
+	b=nH2/ud0HbYn/wjSe+/r+heyckNmfrPWcSIWRYXM9GFYggDpVNRXEu8vJOGSEYD9Km
+	 58+Ph36nlv1GJ6Xag3jFMvwcC5h9zuydl16z5k7DSD/WvZCERR2lyGNT3ehgvLSK58
+	 8H/a6RsLQ3nTDvZNxh8YrITJzZxdhh7dhzBaDn0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/262] serial: max310x: Add error checking in probe()
+Subject: [PATCH 6.1 067/196] PM: sleep: core: Clear power.must_resume in noirq suspend error path
 Date: Mon, 13 Oct 2025 16:44:00 +0200
-Message-ID: <20251013144329.657732354@linuxfoundation.org>
+Message-ID: <20251013144317.003754270@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 672a37ba8af1f2ebcedeb94aea2cdd047f805f30 ]
+[ Upstream commit be82483d1b60baf6747884bd74cb7de484deaf76 ]
 
-Check if devm_i2c_new_dummy_device() fails.
+If system suspend is aborted in the "noirq" phase (for instance, due to
+an error returned by one of the device callbacks), power.is_noirq_suspended
+will not be set for some devices and device_resume_noirq() will return
+early for them.  Consequently, noirq resume callbacks will not run for
+them at all because the noirq suspend callbacks have not run for them
+yet.
 
-Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aJTMPZiKqeXSE-KM@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If any of them has power.must_resume set and late suspend has been
+skipped for it (due to power.smart_suspend), early resume should be
+skipped for it either, or its state may become inconsistent (for
+instance, if the early resume assumes that it will always follow
+noirq resume).
+
+Make that happen by clearing power.must_resume in device_resume_noirq()
+for devices with power.is_noirq_suspended clear that have been left in
+suspend by device_suspend_late(), which will subsequently cause
+device_resume_early() to leave the device in suspend and avoid
+changing its state.
+
+Fixes: 0d4b54c6fee8 ("PM / core: Add LEAVE_SUSPENDED driver flag")
+Link: https://lore.kernel.org/linux-pm/5d692b81-6f58-4e86-9cb0-ede69a09d799@rowland.harvard.edu/
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/3381776.aeNJFYEL58@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max310x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/base/power/main.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index 35369a2f77b29..2f8e3ea4fe128 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -1641,6 +1641,8 @@ static int max310x_i2c_probe(struct i2c_client *client)
- 		port_client = devm_i2c_new_dummy_device(&client->dev,
- 							client->adapter,
- 							port_addr);
-+		if (IS_ERR(port_client))
-+			return PTR_ERR(port_client);
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index baa31194cf20d..ef5157fc8dcc5 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -600,8 +600,20 @@ static void __device_resume_noirq(struct device *dev, pm_message_t state, bool a
+ 	if (dev->power.syscore || dev->power.direct_complete)
+ 		goto Out;
  
- 		regcfg_i2c.name = max310x_regmap_name(i);
- 		regmaps[i] = devm_regmap_init_i2c(port_client, &regcfg_i2c);
+-	if (!dev->power.is_noirq_suspended)
++	if (!dev->power.is_noirq_suspended) {
++		/*
++		 * This means that system suspend has been aborted in the noirq
++		 * phase before invoking the noirq suspend callback for the
++		 * device, so if device_suspend_late() has left it in suspend,
++		 * device_resume_early() should leave it in suspend either in
++		 * case the early resume of it depends on the noirq resume that
++		 * has not run.
++		 */
++		if (dev_pm_skip_suspend(dev))
++			dev->power.must_resume = false;
++
+ 		goto Out;
++	}
+ 
+ 	if (!dpm_wait_for_superior(dev, async))
+ 		goto Out;
 -- 
 2.51.0
 
