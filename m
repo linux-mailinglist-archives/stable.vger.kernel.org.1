@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969DDBD4CFF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:11:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B52BD4ED6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F1BD3E74B2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 66209545EB3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9425C302142;
-	Mon, 13 Oct 2025 15:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC7E3064B7;
+	Mon, 13 Oct 2025 15:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGnhXjiq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyKUw0t+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423E8253954;
-	Mon, 13 Oct 2025 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAE63081AE;
+	Mon, 13 Oct 2025 15:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369079; cv=none; b=MX66E7X+CN7eejNOsqDV4lfIHlp3yngd74kYnDxtUNg6fEAWP77FphXZFij5uuFCLFlkP6Oplg1JQraAUg9fRps9tscTykdG4FfbKbbvc/xcR0FRwXXLkrtV8rwdK7ma0Re8u51xtYu+OR80zrOcM+y0Bg+8GEMR2rzVOOOYH24=
+	t=1760369176; cv=none; b=oXGfm12/ra+voSb/H6U1qSnqiqm8+jthHnxEOJC4PRlCEcmApzCfAZe1YZW4FjhgJ/fPwYj+0iBgQyS0a/Waq+oKUFnT5fQWE+A5C16BJ7t97BMC85E5QMxT4IYnigTDcUrF5OLrrpayawqvCjnAG1PPcJVA+45/C9f7StoOhGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369079; c=relaxed/simple;
-	bh=DgQ3gQs6A5H98fNMZuAp+RHwRYanxc662AdB84EottA=;
+	s=arc-20240116; t=1760369176; c=relaxed/simple;
+	bh=QNGBqiiBpBF48jgpmpOSvGS17AlNE+B5S9PYX4JxRho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrDf1Q7aLKRDb2aWGUz1hHjI4yH2drNvrWpEZ1J5F3ghNWIKG7d9iIYUlmmVp97wzJppHbHvXQ6yO7QuYjJBebBdT25AvG/NiRiJ/b122Xk1RpGx5PtxBCTceptNKbnk75YVCyYpgGPK1bok1RngVfr3gQrWUswOiiXMB3HB+O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGnhXjiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E9BC4CEE7;
-	Mon, 13 Oct 2025 15:24:38 +0000 (UTC)
+	 MIME-Version; b=uYCmzsj5mP1uuX8DRtETQThqGEu60Y7dogKSrftrM4Fm4ofY5UNaqvojSa1UAoOtDimnrDQc5OFVVjNI2df/b0NAXIEEGjzf6GFZ9ahLxo/MnhIDW/41FPybSsUoyMVOSnMhx8dYLXUS0zksJSz3rHIBSZLFH2VytvkbFtgByVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyKUw0t+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9469AC4CEE7;
+	Mon, 13 Oct 2025 15:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369078;
-	bh=DgQ3gQs6A5H98fNMZuAp+RHwRYanxc662AdB84EottA=;
+	s=korg; t=1760369176;
+	bh=QNGBqiiBpBF48jgpmpOSvGS17AlNE+B5S9PYX4JxRho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGnhXjiqlVmHkWmPirosdp0Sg182/DXhAiXlBoC/utr9H0QmXa4uG41DkbvWgZkGv
-	 7KnYZ1JCutDv2HvOh/kr3+kexa26VF+1NH0ajDG29g1hHxE+XsbPvpqqxI4U1p7YNu
-	 JJCghYTvJ2osVYsK08spaX/hnPOTKgTK71eRCeBI=
+	b=ZyKUw0t+8UM9U00y6awoANBefer0a7tiDrQm5H2Qc/7A4uBm2U8gBg0/XuKtv7sBt
+	 KdMHk241WaFN8VeIIiPvvJROEnhTVAOa6Gi3+srWvpzGTLyp9sVL6C/7Ri5mtTCk8d
+	 V0+JXYVJITQwZ8rFie7y9RLvKN/T2CuvkwsSXCY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 119/563] cpuidle: qcom-spm: fix device and OF node leaks at probe
-Date: Mon, 13 Oct 2025 16:39:40 +0200
-Message-ID: <20251013144415.605349718@linuxfoundation.org>
+Subject: [PATCH 6.17 127/563] blk-mq: convert to serialize updating nr_requests with update_nr_hwq_lock
+Date: Mon, 13 Oct 2025 16:39:48 +0200
+Message-ID: <20251013144415.895473568@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,55 +67,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit cdc06f912670c8c199d5fa9e78b64b7ed8e871d0 ]
+[ Upstream commit 626ff4f8ebcb7207f01e7810acb85812ccf06bd8 ]
 
-Make sure to drop the reference to the saw device taken by
-of_find_device_by_node() after retrieving its driver data during
-probe().
+request_queue->nr_requests can be changed by:
 
-Also drop the reference to the CPU node sooner to avoid leaking it in
-case there is no saw node or device.
+a) switch elevator by updating nr_hw_queues
+b) switch elevator by elevator sysfs attribute
+c) configue queue sysfs attribute nr_requests
 
-Fixes: 60f3692b5f0b ("cpuidle: qcom_spm: Detach state machine from main SPM handling")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Current lock order is:
+
+1) update_nr_hwq_lock, case a,b
+2) freeze_queue
+3) elevator_lock, case a,b,c
+
+And update nr_requests is seriablized by elevator_lock() already,
+however, in the case c, we'll have to allocate new sched_tags if
+nr_requests grow, and do this with elevator_lock held and queue
+freezed has the risk of deadlock.
+
+Hence use update_nr_hwq_lock instead, make it possible to allocate
+memory if tags grow, meanwhile also prevent nr_requests to be changed
+concurrently.
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: b86433721f46 ("blk-mq: fix potential deadlock while nr_requests grown")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle-qcom-spm.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ block/blk-sysfs.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
-index 5f386761b1562..f60a4cf536423 100644
---- a/drivers/cpuidle/cpuidle-qcom-spm.c
-+++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-@@ -96,20 +96,23 @@ static int spm_cpuidle_register(struct device *cpuidle_dev, int cpu)
- 		return -ENODEV;
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index b61e956a868e7..163264e4ec629 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -68,6 +68,7 @@ queue_requests_store(struct gendisk *disk, const char *page, size_t count)
+ 	int ret, err;
+ 	unsigned int memflags;
+ 	struct request_queue *q = disk->queue;
++	struct blk_mq_tag_set *set = q->tag_set;
  
- 	saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
-+	of_node_put(cpu_node);
- 	if (!saw_node)
- 		return -ENODEV;
- 
- 	pdev = of_find_device_by_node(saw_node);
- 	of_node_put(saw_node);
--	of_node_put(cpu_node);
- 	if (!pdev)
- 		return -ENODEV;
- 
- 	data = devm_kzalloc(cpuidle_dev, sizeof(*data), GFP_KERNEL);
--	if (!data)
-+	if (!data) {
-+		put_device(&pdev->dev);
- 		return -ENOMEM;
-+	}
- 
- 	data->spm = dev_get_drvdata(&pdev->dev);
-+	put_device(&pdev->dev);
- 	if (!data->spm)
+ 	if (!queue_is_mq(q))
  		return -EINVAL;
+@@ -76,8 +77,11 @@ queue_requests_store(struct gendisk *disk, const char *page, size_t count)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	memflags = blk_mq_freeze_queue(q);
+-	mutex_lock(&q->elevator_lock);
++	/*
++	 * Serialize updating nr_requests with concurrent queue_requests_store()
++	 * and switching elevator.
++	 */
++	down_write(&set->update_nr_hwq_lock);
+ 
+ 	if (nr == q->nr_requests)
+ 		goto unlock;
+@@ -85,20 +89,31 @@ queue_requests_store(struct gendisk *disk, const char *page, size_t count)
+ 	if (nr < BLKDEV_MIN_RQ)
+ 		nr = BLKDEV_MIN_RQ;
+ 
+-	if (nr <= q->tag_set->reserved_tags ||
++	/*
++	 * Switching elevator is protected by update_nr_hwq_lock:
++	 *  - read lock is held from elevator sysfs attribute;
++	 *  - write lock is held from updating nr_hw_queues;
++	 * Hence it's safe to access q->elevator here with write lock held.
++	 */
++	if (nr <= set->reserved_tags ||
+ 	    (q->elevator && nr > MAX_SCHED_RQ) ||
+-	    (!q->elevator && nr > q->tag_set->queue_depth)) {
++	    (!q->elevator && nr > set->queue_depth)) {
+ 		ret = -EINVAL;
+ 		goto unlock;
+ 	}
+ 
++	memflags = blk_mq_freeze_queue(q);
++	mutex_lock(&q->elevator_lock);
++
+ 	err = blk_mq_update_nr_requests(disk->queue, nr);
+ 	if (err)
+ 		ret = err;
+ 
+-unlock:
+ 	mutex_unlock(&q->elevator_lock);
+ 	blk_mq_unfreeze_queue(q, memflags);
++
++unlock:
++	up_write(&set->update_nr_hwq_lock);
+ 	return ret;
+ }
  
 -- 
 2.51.0
