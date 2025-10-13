@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-185234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F18BD50E0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 172DBBD51F4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EAF1540135
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:53:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19905422AD5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997A130FC02;
-	Mon, 13 Oct 2025 15:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128E030BF79;
+	Mon, 13 Oct 2025 15:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHd4Umk/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8sR165L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564343093CE;
-	Mon, 13 Oct 2025 15:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C330E30BF74;
+	Mon, 13 Oct 2025 15:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369714; cv=none; b=TvZ4r3H/mJtel1La0nC2bTtza1r9aXscJbv8Fz2cEWMth0IXJdFAI5tCRz2qM3ZkWssLxIt+0TIoyXsiNVewV968evnK2H4JjVdswi0PXohq7rM6pRCtFKnOXjN2olJk2pjbTDp55WJmEL6tUl2nwhPAPL8Rg6/bodqEfqBk/co=
+	t=1760369625; cv=none; b=i0qBYar88RPAlVFaeS//OtX3/b76mHNjRnhXo6JaixkqXpfddQrzPctMS8Wik99eR1v4w0H48MrXk86nmlFzWbxguTbkVT443CGnZtGYGJJUYxAOtXSSTQhP8e8k1WqU6PMEM6CweuP1QUA6J7CBVP443uyJM/bunBl8Q/mBXkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369714; c=relaxed/simple;
-	bh=gFO1nVF3OPkAVhWf0dHEhrK23Zh2H3H7QDqbpl0nMl8=;
+	s=arc-20240116; t=1760369625; c=relaxed/simple;
+	bh=VsEuiinA+v6qvF68NvSyB63p1l0h4ZRfAi3a9Q1Hog8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Up5fxobR2SjTCb8VS3M5SAfL9iGU4TSBplKTHc/6+OGf6BPy2+SDOnWh4VooO8oSUoQPumQpM8pvqe4steeponLHe9RPTb4K0Oo8sZA3zgDtFtFLU2BqOV6tV1dJR6hassba3ky5f95spz7vbTcFWXED4FItRzbq1c+qDu3/vnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHd4Umk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6299C4CEE7;
-	Mon, 13 Oct 2025 15:35:13 +0000 (UTC)
+	 MIME-Version; b=kOmadXReL5mMC+ZE5TIf6u4LbpAOpFXaBIiY62tmoldXUZn2xQmBQE4M5LGGaudWCCqlO0M7GiVC/eU4Y/4pt4589Av751iIUwYsOvmdKGLwUEA2LgKMeIkFAFUYdpx0MXKKa3qRZYxeg6WF9v++zIVNtF1Q9kEx1OzuvoK84Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8sR165L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A72C4CEE7;
+	Mon, 13 Oct 2025 15:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369714;
-	bh=gFO1nVF3OPkAVhWf0dHEhrK23Zh2H3H7QDqbpl0nMl8=;
+	s=korg; t=1760369625;
+	bh=VsEuiinA+v6qvF68NvSyB63p1l0h4ZRfAi3a9Q1Hog8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHd4Umk/QEpo7P12VomRSJHTUO4y6AGBxyJw6IjTy4Y1lM156rvIOFUbpLslSm6UH
-	 0HRUtzkhnn+sy2tuPP4PjNvtR/KCig4F5T2WP13HRsCc9wcFsb5GkDs+7aqLpVUYMM
-	 pl+7iMwkocBptB81L5j7Ry/dRfrxqvWjbrce2Jjc=
+	b=W8sR165LVMeUCW0pNjDkowcHvplWXKswH5yy2e/ADkuaHt8PgWLPjBz8+eIMugfGo
+	 QcdDZPd6T+QvbhnaF+ZmMQI327XoNaaK7+pXmXVNqPksAvR84CvLA5+nhpZtRKVN2P
+	 J7BqxPCH/NiISmIrx+XFuRPyI8Veaz61rMuE7S2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 309/563] wifi: mac80211: Make CONNECTION_MONITOR optional for MLO sta
-Date: Mon, 13 Oct 2025 16:42:50 +0200
-Message-ID: <20251013144422.458561237@linuxfoundation.org>
+Subject: [PATCH 6.17 313/563] PCI: tegra: Fix devm_kcalloc() argument order for port->phys allocation
+Date: Mon, 13 Oct 2025 16:42:54 +0200
+Message-ID: <20251013144422.603515763@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,37 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit ac36daa83650c26fd55dee1a6ee5144769239911 ]
+[ Upstream commit e1a8805e5d263453ad76a4f50ab3b1c18ea07560 ]
 
-Since commit '1bc892d76a6f ("wifi: mac80211: extend connection
-monitoring for MLO")' mac80211 supports connection monitor for MLO
-client interfaces. Remove the CONNECTION_MONITOR requirement in
-ieee80211_register_hw routine.
+Fix incorrect argument order in devm_kcalloc() when allocating port->phys.
+The original call used sizeof(phy) as the number of elements and
+port->lanes as the element size, which is reversed.  While this happens to
+produce the correct total allocation size with current pointer size and
+lane counts, the argument order is wrong.
 
-Fixes: 1bc892d76a6f ("wifi: mac80211: extend connection monitoring for MLO")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250826-remove-conn-mon-check-ieee80211_register_hw-v2-1-5a1e2f038245@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 6fe7c187e026 ("PCI: tegra: Support per-lane PHYs")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+[mani: added Fixes tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20250819150436.3105973-1-alok.a.tiwari@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/main.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/pci/controller/pci-tegra.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 3ae6104e5cb20..78f862f79aa82 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1164,9 +1164,6 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 		if (WARN_ON(!ieee80211_hw_check(hw, MFP_CAPABLE)))
- 			return -EINVAL;
+diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
+index 467ddc701adce..bb88767a37979 100644
+--- a/drivers/pci/controller/pci-tegra.c
++++ b/drivers/pci/controller/pci-tegra.c
+@@ -1344,7 +1344,7 @@ static int tegra_pcie_port_get_phys(struct tegra_pcie_port *port)
+ 	unsigned int i;
+ 	int err;
  
--		if (WARN_ON(!ieee80211_hw_check(hw, CONNECTION_MONITOR)))
--			return -EINVAL;
--
- 		if (WARN_ON(ieee80211_hw_check(hw, NEED_DTIM_BEFORE_ASSOC)))
- 			return -EINVAL;
+-	port->phys = devm_kcalloc(dev, sizeof(phy), port->lanes, GFP_KERNEL);
++	port->phys = devm_kcalloc(dev, port->lanes, sizeof(phy), GFP_KERNEL);
+ 	if (!port->phys)
+ 		return -ENOMEM;
  
 -- 
 2.51.0
