@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-184948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7F1BD4D52
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AEBDBD4E2B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E95154FE191
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8EA90504BCF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD2730F935;
-	Mon, 13 Oct 2025 15:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFAA30EF7B;
+	Mon, 13 Oct 2025 15:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQg47f9+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSOtl9cs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8414B30C374;
-	Mon, 13 Oct 2025 15:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C9A30EF6C;
+	Mon, 13 Oct 2025 15:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368899; cv=none; b=Z3YooTzgiZCHtUsB2w3G4uCBLUMY4oKn/CB5+EfJod/5KFzQq1KAwdO8OlUaPuyhV8arPbYngKboQoSSOX0R39yJ6QiQ5tsjQRfd3M8N2iuKimPW3rpSUcsxwB0kNgCRV2aBrj2wOpI21A3dDbdEogMZNL/TW9Y0rIZCu+xVRg0=
+	t=1760368814; cv=none; b=AL6E9A16urHxMuacGiVW7vHlWtkTdfbvf6kdKn1oevPsABqmPGfh+zkgqlXgTl9X8VQOs1/D0qUc2iciojyBHiE2KIrH8cPD6YvR57iAa3l2naEqAPm3zT+RUlrrtEFvJu82Qe/7ycsXHsd6cF5dbs4gbRV4MvBd39bvI56xzQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368899; c=relaxed/simple;
-	bh=3bYHLU8C1gpEPad03qhnazQBUm+qpWTwtiajahEPB10=;
+	s=arc-20240116; t=1760368814; c=relaxed/simple;
+	bh=1vrKaH44AweLcBL+9pBJtfcnS9Da5XIaJJpsMFwt0j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s496fXmHrnL6MtQxl+ALOlwApC8NBHI0KwAzwqR4o83ioJOHxrn/UrCKGqIwAXOczkLwXPK5OxNCmasr0EiIF1yVKjcJuu5JHoHat/dHjA39WzvccAzvDkXvXHeL8KI9H8lFZXRSyEPwILMr7RqkDIekpa0UXxGP1m+s5cGRLas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQg47f9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B5DC4CEFE;
-	Mon, 13 Oct 2025 15:21:38 +0000 (UTC)
+	 MIME-Version; b=rfUuzhMJtrmp7Nyr+wm5cTHTjUx39Hvp3uEwojjra3PpWEVRdi5ydIynMMv8RUYI7ffjiMQDsJoCCB3E2CR1DZ6L6Je/coJMDVQd49hh7ViZaSja2n5pJ744gn/SOV+8F9KAq7aRQbX3Lpth0cxqJc9i2GGLZcMYvZ3AW3T05lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSOtl9cs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EDBC4CEFE;
+	Mon, 13 Oct 2025 15:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368899;
-	bh=3bYHLU8C1gpEPad03qhnazQBUm+qpWTwtiajahEPB10=;
+	s=korg; t=1760368814;
+	bh=1vrKaH44AweLcBL+9pBJtfcnS9Da5XIaJJpsMFwt0j8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQg47f9+69DkE4Mct+3s9nERRbO/bWBPNwyT9IzNh5nNGb0NDpUKi/cTCBcnD/QNn
-	 vxjxsEYgZsJAZFPH4ah7xa4J1LgfMIxRuv3VYiNkWyyNQHag7ND0sEPORE/P6v8HIp
-	 /SDoEHiGEHJbpAQrpEAhH9V9YhVVfTCe0WI4izms=
+	b=zSOtl9csinpwQQlkkZuLhU8HwgLnXMQcbSrXPrdQHJtWuA5KvNIusukFtIDN6pAxX
+	 hZ4OQEcICBwDfAHWZwDRh6sOzdryzTsKx6fOx2T7eg/rtDKbDm4Ozr/bAmto6jJDmm
+	 QJveyniplU6qYsazdyf6neKhlomfvlMVNjkC7+LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	linux-rdma@vger.kernel.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 024/563] uprobes: uprobe_warn should use passed task
-Date: Mon, 13 Oct 2025 16:38:05 +0200
-Message-ID: <20251013144412.164353943@linuxfoundation.org>
+Subject: [PATCH 6.17 029/563] smb: client: fix sending the iwrap custom IRD/ORD negotiation messages
+Date: Mon, 13 Oct 2025 16:38:10 +0200
+Message-ID: <20251013144412.344512676@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -69,38 +73,225 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jeremy Linton <jeremy.linton@arm.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit ba1afc94deb849eab843a372b969444581add2c9 ]
+[ Upstream commit ef71f1e046489c77a2f7d012edc762fba0a7aadc ]
 
-uprobe_warn() is passed a task structure, yet its using current. For
-the most part this shouldn't matter, but since a task structure is
-provided, lets use it.
+Do a real negotiation and check the servers initiator_depth and
+responder_resources.
 
-Fixes: 248d3a7b2f10 ("uprobes: Change uprobe_copy_process() to dup return_instances")
-Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
+This should use big endian in order to be useful.
+I have captures of windows clients showing this.
+
+The fact that we used little endian up to now
+means that we sent very large numbers and the
+negotiation with the server truncated them to the
+server limits.
+
+Note the reason why this uses u8 for
+initiator_depth and responder_resources is
+that the rdma layer also uses it.
+
+The inconsitency regarding the initiator_depth
+and responder_resources values being reversed
+for iwarp devices in RDMA_CM_EVENT_ESTABLISHED
+should also be fixed later, but for now we should
+fix it.
+
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: linux-rdma@vger.kernel.org
+Fixes: c7398583340a ("CIFS: SMBD: Implement RDMA memory registration")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/smbdirect.c | 110 ++++++++++++++++++++++++++++++++++----
+ fs/smb/client/smbdirect.h |   4 +-
+ 2 files changed, 103 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 7ca1940607bd8..4b97d16f731c1 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -121,7 +121,7 @@ struct xol_area {
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index e0fce5033004c..6480945c24592 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -179,6 +179,8 @@ static int smbd_conn_upcall(
+ 	struct smbd_connection *info = id->context;
+ 	struct smbdirect_socket *sc = &info->socket;
+ 	const char *event_name = rdma_event_msg(event->event);
++	u8 peer_initiator_depth;
++	u8 peer_responder_resources;
  
- static void uprobe_warn(struct task_struct *t, const char *msg)
- {
--	pr_warn("uprobe: %s:%d failed to %s\n", current->comm, current->pid, msg);
-+	pr_warn("uprobe: %s:%d failed to %s\n", t->comm, t->pid, msg);
- }
+ 	log_rdma_event(INFO, "event=%s status=%d\n",
+ 		event_name, event->status);
+@@ -204,6 +206,85 @@ static int smbd_conn_upcall(
  
- /*
+ 	case RDMA_CM_EVENT_ESTABLISHED:
+ 		log_rdma_event(INFO, "connected event=%s\n", event_name);
++
++		/*
++		 * Here we work around an inconsistency between
++		 * iWarp and other devices (at least rxe and irdma using RoCEv2)
++		 */
++		if (rdma_protocol_iwarp(id->device, id->port_num)) {
++			/*
++			 * iWarp devices report the peer's values
++			 * with the perspective of the peer here.
++			 * Tested with siw and irdma (in iwarp mode)
++			 * We need to change to our perspective here,
++			 * so we need to switch the values.
++			 */
++			peer_initiator_depth = event->param.conn.responder_resources;
++			peer_responder_resources = event->param.conn.initiator_depth;
++		} else {
++			/*
++			 * Non iWarp devices report the peer's values
++			 * already changed to our perspective here.
++			 * Tested with rxe and irdma (in roce mode).
++			 */
++			peer_initiator_depth = event->param.conn.initiator_depth;
++			peer_responder_resources = event->param.conn.responder_resources;
++		}
++		if (rdma_protocol_iwarp(id->device, id->port_num) &&
++		    event->param.conn.private_data_len == 8) {
++			/*
++			 * Legacy clients with only iWarp MPA v1 support
++			 * need a private blob in order to negotiate
++			 * the IRD/ORD values.
++			 */
++			const __be32 *ird_ord_hdr = event->param.conn.private_data;
++			u32 ird32 = be32_to_cpu(ird_ord_hdr[0]);
++			u32 ord32 = be32_to_cpu(ird_ord_hdr[1]);
++
++			/*
++			 * cifs.ko sends the legacy IRD/ORD negotiation
++			 * event if iWarp MPA v2 was used.
++			 *
++			 * Here we check that the values match and only
++			 * mark the client as legacy if they don't match.
++			 */
++			if ((u32)event->param.conn.initiator_depth != ird32 ||
++			    (u32)event->param.conn.responder_resources != ord32) {
++				/*
++				 * There are broken clients (old cifs.ko)
++				 * using little endian and also
++				 * struct rdma_conn_param only uses u8
++				 * for initiator_depth and responder_resources,
++				 * so we truncate the value to U8_MAX.
++				 *
++				 * smb_direct_accept_client() will then
++				 * do the real negotiation in order to
++				 * select the minimum between client and
++				 * server.
++				 */
++				ird32 = min_t(u32, ird32, U8_MAX);
++				ord32 = min_t(u32, ord32, U8_MAX);
++
++				info->legacy_iwarp = true;
++				peer_initiator_depth = (u8)ird32;
++				peer_responder_resources = (u8)ord32;
++			}
++		}
++
++		/*
++		 * negotiate the value by using the minimum
++		 * between client and server if the client provided
++		 * non 0 values.
++		 */
++		if (peer_initiator_depth != 0)
++			info->initiator_depth =
++					min_t(u8, info->initiator_depth,
++					      peer_initiator_depth);
++		if (peer_responder_resources != 0)
++			info->responder_resources =
++					min_t(u8, info->responder_resources,
++					      peer_responder_resources);
++
+ 		sc->status = SMBDIRECT_SOCKET_CONNECTED;
+ 		wake_up_interruptible(&info->status_wait);
+ 		break;
+@@ -1551,7 +1632,7 @@ static struct smbd_connection *_smbd_get_connection(
+ 	struct ib_qp_init_attr qp_attr;
+ 	struct sockaddr_in *addr_in = (struct sockaddr_in *) dstaddr;
+ 	struct ib_port_immutable port_immutable;
+-	u32 ird_ord_hdr[2];
++	__be32 ird_ord_hdr[2];
+ 
+ 	info = kzalloc(sizeof(struct smbd_connection), GFP_KERNEL);
+ 	if (!info)
+@@ -1559,6 +1640,9 @@ static struct smbd_connection *_smbd_get_connection(
+ 	sc = &info->socket;
+ 	sp = &sc->parameters;
+ 
++	info->initiator_depth = 1;
++	info->responder_resources = SMBD_CM_RESPONDER_RESOURCES;
++
+ 	sc->status = SMBDIRECT_SOCKET_CONNECTING;
+ 	rc = smbd_ia_open(info, dstaddr, port);
+ 	if (rc) {
+@@ -1639,22 +1723,22 @@ static struct smbd_connection *_smbd_get_connection(
+ 	}
+ 	sc->ib.qp = sc->rdma.cm_id->qp;
+ 
+-	memset(&conn_param, 0, sizeof(conn_param));
+-	conn_param.initiator_depth = 0;
+-
+-	conn_param.responder_resources =
+-		min(sc->ib.dev->attrs.max_qp_rd_atom,
+-		    SMBD_CM_RESPONDER_RESOURCES);
+-	info->responder_resources = conn_param.responder_resources;
++	info->responder_resources =
++		min_t(u8, info->responder_resources,
++		      sc->ib.dev->attrs.max_qp_rd_atom);
+ 	log_rdma_mr(INFO, "responder_resources=%d\n",
+ 		info->responder_resources);
+ 
++	memset(&conn_param, 0, sizeof(conn_param));
++	conn_param.initiator_depth = info->initiator_depth;
++	conn_param.responder_resources = info->responder_resources;
++
+ 	/* Need to send IRD/ORD in private data for iWARP */
+ 	sc->ib.dev->ops.get_port_immutable(
+ 		sc->ib.dev, sc->rdma.cm_id->port_num, &port_immutable);
+ 	if (port_immutable.core_cap_flags & RDMA_CORE_PORT_IWARP) {
+-		ird_ord_hdr[0] = info->responder_resources;
+-		ird_ord_hdr[1] = 1;
++		ird_ord_hdr[0] = cpu_to_be32(conn_param.responder_resources);
++		ird_ord_hdr[1] = cpu_to_be32(conn_param.initiator_depth);
+ 		conn_param.private_data = ird_ord_hdr;
+ 		conn_param.private_data_len = sizeof(ird_ord_hdr);
+ 	} else {
+@@ -2121,6 +2205,12 @@ static int allocate_mr_list(struct smbd_connection *info)
+ 	atomic_set(&info->mr_used_count, 0);
+ 	init_waitqueue_head(&info->wait_for_mr_cleanup);
+ 	INIT_WORK(&info->mr_recovery_work, smbd_mr_recovery_work);
++
++	if (info->responder_resources == 0) {
++		log_rdma_mr(ERR, "responder_resources negotiated as 0\n");
++		return -EINVAL;
++	}
++
+ 	/* Allocate more MRs (2x) than hardware responder_resources */
+ 	for (i = 0; i < info->responder_resources * 2; i++) {
+ 		smbdirect_mr = kzalloc(sizeof(*smbdirect_mr), GFP_KERNEL);
+diff --git a/fs/smb/client/smbdirect.h b/fs/smb/client/smbdirect.h
+index e45aa9ddd71da..4ca9b2b2c57f9 100644
+--- a/fs/smb/client/smbdirect.h
++++ b/fs/smb/client/smbdirect.h
+@@ -67,7 +67,9 @@ struct smbd_connection {
+ 
+ 	/* Memory registrations */
+ 	/* Maximum number of RDMA read/write outstanding on this connection */
+-	int responder_resources;
++	bool legacy_iwarp;
++	u8 initiator_depth;
++	u8 responder_resources;
+ 	/* Maximum number of pages in a single RDMA write/read on this connection */
+ 	int max_frmr_depth;
+ 	/*
 -- 
 2.51.0
 
