@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-184881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE58BD4411
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D94BD419E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9A33A34F85F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E961188C46C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6D730BB94;
-	Mon, 13 Oct 2025 15:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC3230F939;
+	Mon, 13 Oct 2025 15:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRn2cjxI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmsgXA+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE078279DC9;
-	Mon, 13 Oct 2025 15:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5721430F936;
+	Mon, 13 Oct 2025 15:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368703; cv=none; b=ZE9fGrUqzx08Dyib8dKP8FF3qOAAasPNb953O2QokKuPEBBzHfgfQnaKccly3Forjkak4rPnYSIq93GvoYDDxbe6KXP8j5TMrdjdp0OKD7wq4UBetKhmkMKp1b9to1W58RGggTgQulbbT9JXMqyf5nZvpcuxMgbAtBN5XbAJTMo=
+	t=1760367873; cv=none; b=G+6odtms5MGnFhSgv66LY9cZJCbZ/Bk4nqD+30xHQtCw6FcnYuxbBcAa2BP20obut+fA4CqOMcipXpv5faeX+jB9RznTurh7t3ouhsnnVdAobDyPIeBruahYtNa5QAlRFdZiTwPkzqp/TaARn8OCDG8KEVGG3uFJhw+tNfl5Ia0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368703; c=relaxed/simple;
-	bh=YpGXcaS8FzxPHNKTysxUDRMWoueuD8432H8tatgQlMU=;
+	s=arc-20240116; t=1760367873; c=relaxed/simple;
+	bh=Vy3I7362oG7gB6rH9H7Zwjgz1tvlGxTWXgJHw7YOGG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2zwYxh2XjlJL2OY7ln0QSAZb7AzJwz5vtnbTX3D3Gs6HXpCwMfwmhr+Qbb+EJ6w3bsW68Wyw0lddE9QxQqwqtb0w/HU/SpNstBS759zgra5lNnVwwKIIglBrjKCFqByaVSshQ+UbzC0aCO9ceekVa2M8i9Lsy6g+KNm1+guh5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRn2cjxI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3258CC4CEE7;
-	Mon, 13 Oct 2025 15:18:23 +0000 (UTC)
+	 MIME-Version; b=c3HQLV9G+R6lhlN5S3OY0aLICE54+XmaxoPk9EYV2x5/6c7DnvhStspHj7ihbQruaBJQz7U2cfE4IJOCdpGTmHoyGXLfyEIC2Lox/N1B0r9sPHwzKCOcpWjM5f/8Hdp0RIt40wdnsA+Es8Pfv2Cgc9CoFROz2qW2Y/mKrAdVBSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmsgXA+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4C2C4CEE7;
+	Mon, 13 Oct 2025 15:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368703;
-	bh=YpGXcaS8FzxPHNKTysxUDRMWoueuD8432H8tatgQlMU=;
+	s=korg; t=1760367873;
+	bh=Vy3I7362oG7gB6rH9H7Zwjgz1tvlGxTWXgJHw7YOGG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRn2cjxIsogRQytbYQ7w4YgpFqx2I+APPoBB5JjjBwZAHCbRpr1LFjQZ8ovzw31pD
-	 4L288I50b22kYCSpMSYOBqwbEBuJS66MB/pZ84GVYPgotaAyig25WJ2enUS7Ux3qZB
-	 1fZqLHojySXEvmPh3LbLE77JXuIrXD7K6Hb8BqMk=
+	b=xmsgXA+ocSKnYyobWNnOaWjBN35/1T4FOVEpxk0xjUPbfYZPdF42M0qkABs6i6Kx7
+	 QLsN61D3zqLx0l8qCIqxdGa9PL6+DTVwrJzjjAzLhlYL4j2O4BJvc6Zt9Y4rd5Dxm3
+	 EfGbBVVObVprWln8mZZx62Q3HaqCCNPnQ4ry43RU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Chris Mason <clm@meta.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Shay Drori <shayd@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 210/262] drivers/base/node: fix double free in register_one_node()
-Date: Mon, 13 Oct 2025 16:45:52 +0200
-Message-ID: <20251013144333.806344904@linuxfoundation.org>
+Subject: [PATCH 6.6 162/196] net/mlx5: Stop polling for command response if interface goes down
+Date: Mon, 13 Oct 2025 16:45:53 +0200
+Message-ID: <20251013144321.171850738@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,57 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 0efdedfa537eb534c251a5b4794caaf72cc55869 ]
+[ Upstream commit b1f0349bd6d320c382df2e7f6fc2ac95c85f2b18 ]
 
-When device_register() fails in register_node(), it calls
-put_device(&node->dev).  This triggers node_device_release(), which calls
-kfree(to_node(dev)), thereby freeing the entire node structure.
+Stop polling on firmware response to command in polling mode if the
+command interface got down. This situation can occur, for example, if a
+firmware fatal error is detected during polling.
 
-As a result, when register_node() returns an error, the node memory has
-already been freed.  Calling kfree(node) again in register_one_node()
-leads to a double free.
+This change halts the polling process when the command interface goes
+down, preventing unnecessary waits.
 
-This patch removes the redundant kfree(node) from register_one_node() to
-prevent the double free.
-
-Link: https://lkml.kernel.org/r/20250918054144.58980-1-donettom@linux.ibm.com
-Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Chris Mason <clm@meta.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
-Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b898ce7bccf1 ("net/mlx5: cmdif, Avoid skipping reclaim pages if FW is not accessible")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 6f09aa8e32237..deccfe68214ec 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -881,7 +881,6 @@ int __register_one_node(int nid)
- 	error = register_node(node_devices[nid], nid);
- 	if (error) {
- 		node_devices[nid] = NULL;
--		kfree(node);
- 		return error;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 5a2126679415c..336e0a54b3dc2 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -289,6 +289,10 @@ static void poll_timeout(struct mlx5_cmd_work_ent *ent)
+ 			return;
+ 		}
+ 		cond_resched();
++		if (mlx5_cmd_is_down(dev)) {
++			ent->ret = -ENXIO;
++			return;
++		}
+ 	} while (time_before(jiffies, poll_end));
+ 
+ 	ent->ret = -ETIMEDOUT;
+@@ -1059,7 +1063,7 @@ static void cmd_work_handler(struct work_struct *work)
+ 		poll_timeout(ent);
+ 		/* make sure we read the descriptor after ownership is SW */
+ 		rmb();
+-		mlx5_cmd_comp_handler(dev, 1ULL << ent->idx, (ent->ret == -ETIMEDOUT));
++		mlx5_cmd_comp_handler(dev, 1ULL << ent->idx, !!ent->ret);
  	}
+ }
  
 -- 
 2.51.0
