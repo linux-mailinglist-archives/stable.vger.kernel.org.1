@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED7CBD47C0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:46:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 422A9BD48EB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:52:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0D003E574B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AED2A188C103
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72E23112DE;
-	Mon, 13 Oct 2025 15:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B7230C364;
+	Mon, 13 Oct 2025 15:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOHhzqbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDaOqylr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50733112D6;
-	Mon, 13 Oct 2025 15:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247C530BF7F;
+	Mon, 13 Oct 2025 15:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368096; cv=none; b=CLWC2b1cTbZrXI7civ1OuWDv7RqV0vsDZBAmVHtlkiiBv+w7jpb0YafRer0kNL2mVmAT3EXHxUt6/Uwd9kMY3DVlziDxlO7az6MPN9JVrSUt0EyqK9pFEKcK5tOPy+a8PaBUG/+JDZxTlPOmAKJsDvkThzkBBK/cIqx8xN/p8Ho=
+	t=1760369660; cv=none; b=s9pgHaHdJBYS+bws0NXcG+cHoB7GlCWLxB137ostQc9tL9tK+IbkQE1e2FbJKnK7zymh/g2eXfbVqcRIO1kHB7ZRo2btLjgRnb2BzrOtja/KOD5mrjGfRdIKGv06vf2pok1NIjdAHIDp3N+HdUfGc03vx1bFfpAdVlOu6SGDTp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368096; c=relaxed/simple;
-	bh=RM+j3yzKG6tvvMNK/eLU3F5RXuFkjNlKlpi78kMhRtI=;
+	s=arc-20240116; t=1760369660; c=relaxed/simple;
+	bh=+yAzpC/XcYeT8EbdhF2o5ieUwwfKmk4B7GvcHPuTqmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUg/phRf/ZKT27IBagP7AUA63lm4opUH0xsLY2GincAesRtzZ6lxNWy+lCrC6N+34G4PkNEPZkT8UMfwZZdkzeoqGDXXfiipg5lVzpbT+sVEvEQbCUwbCuhghOkqfaMR5xdps1b/1163kSaI/gCS7SUift+phLdE6RnXnoY9bWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOHhzqbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF46C4CEE7;
-	Mon, 13 Oct 2025 15:08:15 +0000 (UTC)
+	 MIME-Version; b=e9I0U5ZaUe5Wnmsja6pD0EcIS0ONgwvdmb2gcAforJJeyAXq6EqLPul8je+3pJAT/gzv+4ZhM1mLz7cuXJ9ggDX4cddd+W8K+JFwWAsnxwr+e3xreoXW292j/XVzlEk9dVvohvGSJCyuRxCI1DW4u6eb8KocpIMNjEx7mCA5gdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDaOqylr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11C9C4CEE7;
+	Mon, 13 Oct 2025 15:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368096;
-	bh=RM+j3yzKG6tvvMNK/eLU3F5RXuFkjNlKlpi78kMhRtI=;
+	s=korg; t=1760369660;
+	bh=+yAzpC/XcYeT8EbdhF2o5ieUwwfKmk4B7GvcHPuTqmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QOHhzqbnkL8C9p6vgK4wfSsJdbGBF7syQkCB6uLtPBootbKciWHxvTWlRVeHKnJBX
-	 oV00iw0mg4QRkFGcUMjFsrpHZPxoG+/M6F+VFvu8f04cXIWFsXnVRGDudS4tp9XurN
-	 iLKjXxW5A7pGEvf+05P1h6HwXvA4hCTy7+/IB5Xw=
+	b=fDaOqylrfZ4/kQr49erdVmz23P+m8P+nl3aJ5VSD5GDdVIayDBcZO92xsNJsNwH6y
+	 IWQHgZT24/Y1mJ58nuploLL7mvZZzTKN3xYIdlu5JBRPPTMSfXkaiDvBekGoQz+Tmj
+	 VZLWN9GT4rwS3C5/BPIo3WgHyX2DwpbSKhyZmwV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Connor Abbott <cwabbott0@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/262] ARM: dts: ti: omap: am335x-baltos: Fix ti,en-ck32k-xtal property in DTS to use correct boolean syntax
+Subject: [PATCH 6.17 324/563] drm/msm: Fix obj leak in VM_BIND error path
 Date: Mon, 13 Oct 2025 16:43:05 +0200
-Message-ID: <20251013144327.682464142@linuxfoundation.org>
+Message-ID: <20251013144423.000618144@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 9658a92fad1889ff92fa4bd668cd61052687245a ]
+[ Upstream commit 278f8904434aa96055e793936b5977c010549e28 ]
 
-The ti,en-ck32k-xtal property, defined as a boolean in the Device Tree
-schema, was incorrectly assigned a value (<1>) in the DTS file, causing
-a validation error: "size (4) error for type flag". The driver uses
-of_property_read_bool(), expecting a boolean. Remove the value to fix
-the dtbs_check error.
+If we fail a handle-lookup part way thru, we need to drop the already
+obtained obj references.
 
-Fixes: 262178b6b8e5 ("ARM: dts: split am335x-baltos-ir5221 into dts and dtsi files")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Link: https://lore.kernel.org/all/20250822222530.113520-1-jihed.chaibi.dev@gmail.com/
-Link: https://lore.kernel.org/r/20250822222530.113520-1-jihed.chaibi.dev@gmail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Fixes: 2e6a8a1fe2b2 ("drm/msm: Add VM_BIND ioctl")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Tested-by: Connor Abbott <cwabbott0@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/669784/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/msm_gem_vma.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
-index a4beb718559c4..9ee9e7a1343c4 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
-@@ -270,7 +270,7 @@ &tps {
- 	vcc7-supply = <&vbat>;
- 	vccio-supply = <&vbat>;
+diff --git a/drivers/gpu/drm/msm/msm_gem_vma.c b/drivers/gpu/drm/msm/msm_gem_vma.c
+index 00d0f3b7ba327..209154be5efcc 100644
+--- a/drivers/gpu/drm/msm/msm_gem_vma.c
++++ b/drivers/gpu/drm/msm/msm_gem_vma.c
+@@ -1023,6 +1023,7 @@ vm_bind_job_lookup_ops(struct msm_vm_bind_job *job, struct drm_msm_vm_bind *args
+ 	struct drm_device *dev = job->vm->drm;
+ 	int ret = 0;
+ 	int cnt = 0;
++	int i = -1;
  
--	ti,en-ck32k-xtal = <1>;
-+	ti,en-ck32k-xtal;
+ 	if (args->nr_ops == 1) {
+ 		/* Single op case, the op is inlined: */
+@@ -1056,11 +1057,12 @@ vm_bind_job_lookup_ops(struct msm_vm_bind_job *job, struct drm_msm_vm_bind *args
  
- 	regulators {
- 		vrtc_reg: regulator@0 {
+ 	spin_lock(&file->table_lock);
+ 
+-	for (unsigned i = 0; i < args->nr_ops; i++) {
++	for (i = 0; i < args->nr_ops; i++) {
++		struct msm_vm_bind_op *op = &job->ops[i];
+ 		struct drm_gem_object *obj;
+ 
+-		if (!job->ops[i].handle) {
+-			job->ops[i].obj = NULL;
++		if (!op->handle) {
++			op->obj = NULL;
+ 			continue;
+ 		}
+ 
+@@ -1068,15 +1070,15 @@ vm_bind_job_lookup_ops(struct msm_vm_bind_job *job, struct drm_msm_vm_bind *args
+ 		 * normally use drm_gem_object_lookup(), but for bulk lookup
+ 		 * all under single table_lock just hit object_idr directly:
+ 		 */
+-		obj = idr_find(&file->object_idr, job->ops[i].handle);
++		obj = idr_find(&file->object_idr, op->handle);
+ 		if (!obj) {
+-			ret = UERR(EINVAL, dev, "invalid handle %u at index %u\n", job->ops[i].handle, i);
++			ret = UERR(EINVAL, dev, "invalid handle %u at index %u\n", op->handle, i);
+ 			goto out_unlock;
+ 		}
+ 
+ 		drm_gem_object_get(obj);
+ 
+-		job->ops[i].obj = obj;
++		op->obj = obj;
+ 		cnt++;
+ 	}
+ 
+@@ -1085,6 +1087,17 @@ vm_bind_job_lookup_ops(struct msm_vm_bind_job *job, struct drm_msm_vm_bind *args
+ out_unlock:
+ 	spin_unlock(&file->table_lock);
+ 
++	if (ret) {
++		for (; i >= 0; i--) {
++			struct msm_vm_bind_op *op = &job->ops[i];
++
++			if (!op->obj)
++				continue;
++
++			drm_gem_object_put(op->obj);
++			op->obj = NULL;
++		}
++	}
+ out:
+ 	return ret;
+ }
 -- 
 2.51.0
 
