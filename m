@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC463BD42B8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9364BD418C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAB41888FE9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6261A40187D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1704C3126AB;
-	Mon, 13 Oct 2025 15:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1976830E0EE;
+	Mon, 13 Oct 2025 14:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfX/VJJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKSq89h0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C855922257E;
-	Mon, 13 Oct 2025 15:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95B83081BE;
+	Mon, 13 Oct 2025 14:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368222; cv=none; b=E7zCu42eJqjLyg1E4uaYepm1MZ+UycUR2AR9XXymbylMoqC2awhqwWfJwArlYK+j0HNPb2Y715Eo+Wn9k37ds58rFDOVftann392FLegrh1yB1ZUSmvv6Mxg9vPBqJxUwVB8EUv1xUjLd6ZvBc2v9oFB9vsjjbL53Yp6zz7J05U=
+	t=1760367462; cv=none; b=fpBkwN2D7MMb3ZELNzv/PahVY8f5jSoVt2zTgBEHbTuSiaNgtwdWyg8vejzd9o4GrLGQyjWHlH2Sirdu6GV/zcZQpGYk/tVyXwvCJQnOMtHEfB/lHCl8u5UexpTq/LKUKjGOPRC4HT0lWEP2vMoZqD5Bv1WANhAiN9a8xWTF2s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368222; c=relaxed/simple;
-	bh=BKtDRRAmM4y8nbjtwbyi3qYS5X7iQk93+Oc+zyZ2CgA=;
+	s=arc-20240116; t=1760367462; c=relaxed/simple;
+	bh=lrpGl4umK9orrdoWIPi0fyp56X/j1/HLAZiR7XIzYCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WA3VUiGxpL1EiCthq1c9TzsvK8FLK12lnGgIRsh81xyTqhs6SkXOdfgDAmTRlJKBgSGPhpt7VEl/saGtoFneNYciqmEikd9VyyCbtVh/lcRJ6O6iKy6kS1vlsgd1FP2qWrIzYJeCMyxWAn6ahcEoyyc07GJxYVi7kC8kJXqypRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfX/VJJd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F4EC4CEE7;
-	Mon, 13 Oct 2025 15:10:22 +0000 (UTC)
+	 MIME-Version; b=ZlmdRaKdRUwRD7M/a9L3A86S6fnqMjngQ6ekmBO1KQZ+jrQwb7D83R3jD1925+9whxlahLbx6wZWbJK8/op71SJuOvwoF6DdCnsCTbln0gJeip9ffzZY2mvIX+XN/YYL8AIC3Xno9Kzgz3i/u8c2GVrqJbah0XM755qpdWwXaC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKSq89h0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56878C4CEE7;
+	Mon, 13 Oct 2025 14:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368222;
-	bh=BKtDRRAmM4y8nbjtwbyi3qYS5X7iQk93+Oc+zyZ2CgA=;
+	s=korg; t=1760367462;
+	bh=lrpGl4umK9orrdoWIPi0fyp56X/j1/HLAZiR7XIzYCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfX/VJJdePk85lWzA84eaOeXySV4k8yD48IhAL84DQ1QoGLrtukbLXB6t9RFTyJ2U
-	 Ww7S4Uxkx1ZEl62pWBGlZhI565wO5ydITbWTzxkDYDL24kdGywSCB2SS5rNiIMf+g1
-	 UK08O97Nx+KyMZYNwL8A/wNjPoivOfR0sr1Dy2ag=
+	b=JKSq89h0QucMDSuLZ1XdKLpq+hp8pDoJjBX/aWOSChf7tKu6WHupikWXe2sG4Afn7
+	 5wJ1r/QfkhCIq+k23Qvb5XMGOYPIPEv/bXjyBrWfEZqiI1fQIvWfWJPEFkMY6W7Bcs
+	 8JG+FtUpDAi1TmV0lNmnb/hJ02+pthmO8q4TyhA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/262] ACPICA: Fix largest possible resource descriptor index
+Subject: [PATCH 6.6 020/196] cpufreq: scmi: Account for malformed DT in scmi_dev_used_by_cpus()
 Date: Mon, 13 Oct 2025 16:43:31 +0200
-Message-ID: <20251013144328.613169138@linuxfoundation.org>
+Message-ID: <20251013144315.927859851@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 8ca944fea4d6d9019e01f2d6f6e766f315a9d73f ]
+[ Upstream commit cd5d4621ba846dad9b2e6b0c2d1518d083fcfa13 ]
 
-ACPI_RESOURCE_NAME_LARGE_MAX should be equal to the last actually
-used resource descriptor index (ACPI_RESOURCE_NAME_CLOCK_INPUT).
+Broadcom STB platforms were early adopters (2017) of the SCMI framework and as
+a result, not all deployed systems have a Device Tree entry where SCMI
+protocol 0x13 (PERFORMANCE) is declared as a clock provider, nor are the
+CPU Device Tree node(s) referencing protocol 0x13 as their clock
+provider. This was clarified in commit e11c480b6df1 ("dt-bindings:
+firmware: arm,scmi: Extend bindings for protocol@13") in 2023.
 
-Otherwise 'resource_index' in 'acpi_ut_validate_resource()' may be
-clamped incorrectly and resulting value may issue an out-of-bounds
-access for 'acpi_gbl_resource_types' array. Compile tested only.
+For those platforms, we allow the checks done by scmi_dev_used_by_cpus()
+to continue, and in the event of not having done an early return, we key
+off the documented compatible string and give them a pass to continue to
+use scmi-cpufreq.
 
-Fixes: 520d4a0ee5b6 ("ACPICA: add support for ClockInput resource (v6.5)")
-Link: https://github.com/acpica/acpica/commit/cf00116c
-Link: https://marc.info/?l=linux-acpi&m=175449676131260&w=2
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 6c9bb8692272 ("cpufreq: scmi: Skip SCMI devices that aren't used by the CPUs")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/aclocal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/scmi-cpufreq.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
-index 6f4fe47c955bd..35460c2072a4a 100644
---- a/drivers/acpi/acpica/aclocal.h
-+++ b/drivers/acpi/acpica/aclocal.h
-@@ -1141,7 +1141,7 @@ struct acpi_port_info {
- #define ACPI_RESOURCE_NAME_PIN_GROUP_FUNCTION   0x91
- #define ACPI_RESOURCE_NAME_PIN_GROUP_CONFIG     0x92
- #define ACPI_RESOURCE_NAME_CLOCK_INPUT          0x93
--#define ACPI_RESOURCE_NAME_LARGE_MAX            0x94
-+#define ACPI_RESOURCE_NAME_LARGE_MAX            0x93
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 6ff77003a96ea..68325ebd56fe3 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -15,6 +15,7 @@
+ #include <linux/energy_model.h>
+ #include <linux/export.h>
+ #include <linux/module.h>
++#include <linux/of.h>
+ #include <linux/pm_opp.h>
+ #include <linux/slab.h>
+ #include <linux/scmi_protocol.h>
+@@ -330,6 +331,15 @@ static bool scmi_dev_used_by_cpus(struct device *scmi_dev)
+ 			return true;
+ 	}
  
- /*****************************************************************************
-  *
++	/*
++	 * Older Broadcom STB chips had a "clocks" property for CPU node(s)
++	 * that did not match the SCMI performance protocol node, if we got
++	 * there, it means we had such an older Device Tree, therefore return
++	 * true to preserve backwards compatibility.
++	 */
++	if (of_machine_is_compatible("brcm,brcmstb"))
++		return true;
++
+ 	return false;
+ }
+ 
 -- 
 2.51.0
 
