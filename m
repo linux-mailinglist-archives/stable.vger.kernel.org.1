@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A040BD4360
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772DABD46FC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F6D23AE544
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3AD8F508098
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFC230E0D3;
-	Mon, 13 Oct 2025 14:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA2531194C;
+	Mon, 13 Oct 2025 15:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVfGVr8R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aURPHdti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE4630DED1;
-	Mon, 13 Oct 2025 14:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98902311945;
+	Mon, 13 Oct 2025 15:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367440; cv=none; b=HJZEzunAvhxGBHyF9pldJN/HCE8XiMUqOLuCV4HmzKnEJW/zqz38sdg5AHxjX+/lQcEuz+vB47gz1CAMrN+h0dAclfW8DtHQI7odBkZwNgF0cwiYVj5cOxNN7V1pPp4mpxh9kgqXH+VLxbgs1nmROO9doYqYvMTtrR19NjjsS0w=
+	t=1760368156; cv=none; b=QZq7zXh7Y4N0dgtoO9V93zh6xZ2XW99lWsgbzs488G/lTP8h0cAxZKj4QiZL7YFs/QAQ9GALOCXwrQe80stV3wcp+yuvtzcZodu5GeQBD/wszSWmyMGRp4V8SP3bsAGrQDphtcErcBMHXSyeb8jIG3L4u5GZyz39qMW3yuXpAps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367440; c=relaxed/simple;
-	bh=e7Zvv5H+Tal65UrapKCLCh2eySHRsnTuSPkGbQDA5cY=;
+	s=arc-20240116; t=1760368156; c=relaxed/simple;
+	bh=smb+RFPi/FeScm3PVew3d/HLSUxLkE/lEJ1PyfnakK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBt5X5/iGdSIPGiB8Bu8sEwwnVuRtKAWmSnQf7j3J/5HS9NVceC9T4jXLJ3llOViNfvKw6ILYRqIGtbjB6l0u6x1OJXGjjsafzD5z0csFs5DfxZHqXPfXMLmYtfUHmY/kRbUYqvcKUJ/RZauySfdhJnSYe1ARxWhpgSqZdNbSNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVfGVr8R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F0FC4CEE7;
-	Mon, 13 Oct 2025 14:57:19 +0000 (UTC)
+	 MIME-Version; b=YcDkXblZED9pW5MWglMtuHw15KpF/G48gBIKN+F9tSMlF1BbN/BiB9Nba8LPZTeldYhqiuOIEZ1uD0RGwm2CA8fT1tT61kS1X2EihO5dmY7kYQlZzYlDXUQ0iaseYQFyXZa0fystzjzW9KyuBfqcPU9rXYQ526taLNVEVPmBU94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aURPHdti; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC45C4CEE7;
+	Mon, 13 Oct 2025 15:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367439;
-	bh=e7Zvv5H+Tal65UrapKCLCh2eySHRsnTuSPkGbQDA5cY=;
+	s=korg; t=1760368156;
+	bh=smb+RFPi/FeScm3PVew3d/HLSUxLkE/lEJ1PyfnakK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XVfGVr8RIHKArovK9akUADtpjeUic5Pqz+GVKuiC18ZweG05q8O7hVRNgCxIZy8DW
-	 o/b0TORIfv5GwhxurXJBVYj+aB7vz3Ax8yqxx+dl9UQ3ybdBDF2B0cDISrwOWqA89L
-	 tR5JhDILrSoxwf66mlNB7JISvUhbY/8FryUH4euM=
+	b=aURPHdtio2vQskIKxL4viH+Z5a2LygXwcJ7Jc04eCjngShUUhFyGKwuJBW8RN7Nno
+	 uBM/IqGA0P25myQXpOhjkRYpkZkhf4H/HdpsRToULM69OH0Po5bAhdzsuz0Grrpj3f
+	 DJLwdPsdLnvpkjQmH/UArYusDKIEeP399YEOZreo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/196] bpf/selftests: Fix test_tcpnotify_user
+Subject: [PATCH 6.12 062/262] arm64: dts: mediatek: mt6795-xperia-m5: Fix mmc0 latch-ck value
 Date: Mon, 13 Oct 2025 16:43:24 +0200
-Message-ID: <20251013144315.676927378@linuxfoundation.org>
+Message-ID: <20251013144328.361568268@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit c80d79720647ed77ebc0198abd5a0807efdaff0b ]
+[ Upstream commit 236681fb64102f25ed11df55999e6985c1bc2f7d ]
 
-Based on a bisect, it appears that commit 7ee988770326 ("timers:
-Implement the hierarchical pull model") has somehow inadvertently
-broken BPF selftest test_tcpnotify_user. The error that is being
-generated by this test is as follows:
+Change the latch-ck value from 0x14 to 4: as only bits [0-3] are
+actually used, the final value that gets written to the register
+field for DAT_LATCH_CK_SEL is just 0x4.
 
-	FAILED: Wrong stats Expected 10 calls, got 8
+This also fixes dtbs_check warnings.
 
-It looks like the change allows timer functions to be run on CPUs
-different from the one they are armed on. The test had pinned itself
-to CPU 0, and in the past the retransmit attempts also occurred on CPU
-0. The test had set the max_entries attribute for
-BPF_MAP_TYPE_PERF_EVENT_ARRAY to 2 and was calling
-bpf_perf_event_output() with BPF_F_CURRENT_CPU, so the entry was
-likely to be in range. With the change to allow timers to run on other
-CPUs, the current CPU tasked with performing the retransmit might be
-bumped and in turn fall out of range, as the event will be filtered
-out via __bpf_perf_event_output() using:
-
-    if (unlikely(index >= array->map.max_entries))
-            return -E2BIG;
-
-A possible change would be to explicitly set the max_entries attribute
-for perf_event_map in test_tcpnotify_kern.c to a value that's at least
-as large as the number of CPUs. As it turns out however, if the field
-is left unset, then the libbpf will determine the number of CPUs available
-on the underlying system and update the max_entries attribute accordingly
-in map_set_def_max_entries().
-
-A further problem with the test is that it has a thread that continues
-running up until the program exits. The main thread cleans up some
-LIBBPF data structures, while the other thread continues to use them,
-which inevitably will trigger a SIGSEGV. This can be dealt with by
-telling the thread to run for as long as necessary and doing a
-pthread_join on it before exiting the program.
-
-Finally, I don't think binding the process to CPU 0 is meaningful for
-this test any more, so get rid of that.
-
-Fixes: 435f90a338ae ("selftests/bpf: add a test case for sock_ops perf-event notification")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/aJ8kHhwgATmA3rLf@google.com
+Fixes: 5a65dcccf483 ("arm64: dts: mediatek: mt6795-xperia-m5: Add eMMC, MicroSD slot, SDIO")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250724083914.61351-21-angelogioacchino.delregno@collabora.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/progs/test_tcpnotify_kern.c |  1 -
- .../selftests/bpf/test_tcpnotify_user.c       | 20 +++++++++----------
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
-index 540181c115a85..ef00d38b0a8d2 100644
---- a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
-+++ b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
-@@ -23,7 +23,6 @@ struct {
+diff --git a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
+index 91de920c22457..03cc48321a3f4 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
++++ b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
+@@ -212,7 +212,7 @@ proximity@48 {
  
- struct {
- 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
--	__uint(max_entries, 2);
- 	__type(key, int);
- 	__type(value, __u32);
- } perf_event_map SEC(".maps");
-diff --git a/tools/testing/selftests/bpf/test_tcpnotify_user.c b/tools/testing/selftests/bpf/test_tcpnotify_user.c
-index 595194453ff8f..35b4893ccdf8a 100644
---- a/tools/testing/selftests/bpf/test_tcpnotify_user.c
-+++ b/tools/testing/selftests/bpf/test_tcpnotify_user.c
-@@ -15,20 +15,18 @@
- #include <bpf/libbpf.h>
- #include <sys/ioctl.h>
- #include <linux/rtnetlink.h>
--#include <signal.h>
- #include <linux/perf_event.h>
--#include <linux/err.h>
- 
--#include "bpf_util.h"
- #include "cgroup_helpers.h"
- 
- #include "test_tcpnotify.h"
--#include "trace_helpers.h"
- #include "testing_helpers.h"
- 
- #define SOCKET_BUFFER_SIZE (getpagesize() < 8192L ? getpagesize() : 8192L)
- 
- pthread_t tid;
-+static bool exit_thread;
-+
- int rx_callbacks;
- 
- static void dummyfn(void *ctx, int cpu, void *data, __u32 size)
-@@ -45,7 +43,7 @@ void tcp_notifier_poller(struct perf_buffer *pb)
- {
- 	int err;
- 
--	while (1) {
-+	while (!exit_thread) {
- 		err = perf_buffer__poll(pb, 100);
- 		if (err < 0 && err != -EINTR) {
- 			printf("failed perf_buffer__poll: %d\n", err);
-@@ -78,15 +76,10 @@ int main(int argc, char **argv)
- 	int error = EXIT_FAILURE;
- 	struct bpf_object *obj;
- 	char test_script[80];
--	cpu_set_t cpuset;
- 	__u32 key = 0;
- 
- 	libbpf_set_strict_mode(LIBBPF_STRICT_ALL);
- 
--	CPU_ZERO(&cpuset);
--	CPU_SET(0, &cpuset);
--	pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
--
- 	cg_fd = cgroup_setup_and_join(cg_path);
- 	if (cg_fd < 0)
- 		goto err;
-@@ -151,6 +144,13 @@ int main(int argc, char **argv)
- 
- 	sleep(10);
- 
-+	exit_thread = true;
-+	int ret = pthread_join(tid, NULL);
-+	if (ret) {
-+		printf("FAILED: pthread_join\n");
-+		goto err;
-+	}
-+
- 	if (verify_result(&g)) {
- 		printf("FAILED: Wrong stats Expected %d calls, got %d\n",
- 			g.ncalls, rx_callbacks);
+ &mmc0 {
+ 	/* eMMC controller */
+-	mediatek,latch-ck = <0x14>; /* hs400 */
++	mediatek,latch-ck = <4>; /* hs400 */
+ 	mediatek,hs200-cmd-int-delay = <1>;
+ 	mediatek,hs400-cmd-int-delay = <1>;
+ 	mediatek,hs400-ds-dly3 = <0x1a>;
 -- 
 2.51.0
 
