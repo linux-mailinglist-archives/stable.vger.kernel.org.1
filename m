@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-184508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6E7BD4496
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5DCBD470E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 204C440573C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 098075405C7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A73B309F00;
-	Mon, 13 Oct 2025 15:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B262430CD98;
+	Mon, 13 Oct 2025 15:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NToomgBB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chu7VPT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0735C27A477;
-	Mon, 13 Oct 2025 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B34305E31;
+	Mon, 13 Oct 2025 15:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367636; cv=none; b=dK81++/Oji8Pdwf2W1/8iU1iImLUTTlX7X2+PQ+sSwLAcnGrIzNadFeYGJXSN/uypefIm0Ml9R0HDf+A9OGhmcFy/OVHSR5xEZuimzvIacekQJL3e03/fWO0RdPVUMRviErOPwI6AWC1T/vRu7LNgdplPd5xLs7m8DGK65FYyTs=
+	t=1760368349; cv=none; b=SEjXPDTkNXWbb6yxdMWP9rV6fm6xhqhLQ0nuK81+oOPhOKRt8aiWZw3W88uu8nZhNMSTUpeqO/ODwYisl2stbxFHeVeOeMtioxzYBmdZpA8p4Oa8zHJAJAgUH+KjbVMgzmsKil3fQ4Rpwoe2yxqNdZM/HnmCCVI6y1mytJ57eQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367636; c=relaxed/simple;
-	bh=we3SVKs0k+edK3JWQ4+4fknKuiZNleTxoALk8wQXEfw=;
+	s=arc-20240116; t=1760368349; c=relaxed/simple;
+	bh=O9dtS4VSKv1YTzAfN69wFSMtEMhXTEwL463BBtujc0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHj+IMWTlFJU0uCaGN10HBtQ95ZJJnbNCSeybFGepGGZGQAlECGTTm4+oBNDQKdXSv9MiCSg7KO4YT8iHGlYA73MDtcYdZs+K4vpV6aXXDzua5AEEChbVzVuMKFEp/lh34gvwaCAA2zhxsp80BuK6Mvhr6tXLJMVbZf6S+QjYcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NToomgBB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32776C4CEE7;
-	Mon, 13 Oct 2025 15:00:35 +0000 (UTC)
+	 MIME-Version; b=F4ozotrL+jHUNBVPoxJDm9Anj1FYzq5pYZdyOeRvL88WC6itbJ29vh6tvG9up1iSyqtm6HrynnPGMqfZYcbOIwc2ZLVmJ+gtvpGfblPTFptrPwfIK9ZqKoH4n2NjFy/XrqzLSrVfIdvx/HbhYvOw0TE5jk681iLntEnEdNGo5iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chu7VPT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE21C19424;
+	Mon, 13 Oct 2025 15:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367635;
-	bh=we3SVKs0k+edK3JWQ4+4fknKuiZNleTxoALk8wQXEfw=;
+	s=korg; t=1760368349;
+	bh=O9dtS4VSKv1YTzAfN69wFSMtEMhXTEwL463BBtujc0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NToomgBB7ck6PNvK9hRstdClmUCVz71GoV7SVtYz70jd3Wh8LCQDRkpjWBKdlPT4G
-	 xRRbUivnjPkXYs0vPoHDZSDxv6eHFHC3Yq9l7G+P7WqphSPZMUN4NIRyWZhWHy1ZFx
-	 RH7OGQb2KHWgK/SlVru/J+yqgcNBWEPdF9kM+dGM=
+	b=chu7VPT/xMZ3Yix0y1+WQqwl4X3QWE171zDtWzHEV8ak8QA22c6uF7XyVhwF21DdB
+	 zjceRnCIRDX5/VuHvB9dLwmUhy/0NsEkQR41OQ1e/nI09zzdsdVe8V6JtsYjkIapcB
+	 9lMkvOMc+NvQdHJynn2K72iBw2PFVFd+f/UG8MSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Colin Ian King <colin.i.king@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/196] crypto: hisilicon - re-enable address prefetch after device resuming
+Subject: [PATCH 6.12 130/262] misc: genwqe: Fix incorrect cmd field being reported in error
 Date: Mon, 13 Oct 2025 16:44:32 +0200
-Message-ID: <20251013144318.246134297@linuxfoundation.org>
+Message-ID: <20251013144330.806198708@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,202 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 0dcd21443d9308ed88909d35aa0490c3fc680a47 ]
+[ Upstream commit 6b26053819dccc664120e07c56f107fb6f72f3fa ]
 
-When the device resumes from a suspended state, it will revert to its
-initial state and requires re-enabling. Currently, the address prefetch
-function is not re-enabled after device resuming. Move the address prefetch
-enable to the initialization process. In this way, the address prefetch
-can be enabled when the device resumes by calling the initialization
-process.
+There is a dev_err message that is reporting the value of
+cmd->asiv_length when it should be reporting cmd->asv_length
+instead. Fix this.
 
-Fixes: 607c191b371d ("crypto: hisilicon - support runtime PM for accelerator device")
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: eaf4722d4645 ("GenWQE Character device and DDCB queue")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Link: https://lore.kernel.org/r/20250902113712.2624743-1-colin.i.king@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/hpre/hpre_main.c |  3 +-
- drivers/crypto/hisilicon/qm.c             |  3 -
- drivers/crypto/hisilicon/sec2/sec_main.c  | 80 +++++++++++------------
- drivers/crypto/hisilicon/zip/zip_main.c   |  5 +-
- 4 files changed, 43 insertions(+), 48 deletions(-)
+ drivers/misc/genwqe/card_ddcb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/hisilicon/hpre/hpre_main.c b/drivers/crypto/hisilicon/hpre/hpre_main.c
-index 762a2a54ca821..e3d113334d4e4 100644
---- a/drivers/crypto/hisilicon/hpre/hpre_main.c
-+++ b/drivers/crypto/hisilicon/hpre/hpre_main.c
-@@ -689,6 +689,7 @@ static int hpre_set_user_domain_and_cache(struct hisi_qm *qm)
- 
- 	/* Config data buffer pasid needed by Kunpeng 920 */
- 	hpre_config_pasid(qm);
-+	hpre_open_sva_prefetch(qm);
- 
- 	hpre_enable_clock_gate(qm);
- 
-@@ -1366,8 +1367,6 @@ static int hpre_pf_probe_init(struct hpre *hpre)
- 	if (ret)
- 		return ret;
- 
--	hpre_open_sva_prefetch(qm);
--
- 	hisi_qm_dev_err_init(qm);
- 	ret = hpre_show_last_regs_init(qm);
- 	if (ret)
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index 7921409791fb0..183885619eb8b 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -4363,9 +4363,6 @@ static void qm_restart_prepare(struct hisi_qm *qm)
- {
- 	u32 value;
- 
--	if (qm->err_ini->open_sva_prefetch)
--		qm->err_ini->open_sva_prefetch(qm);
--
- 	if (qm->ver >= QM_HW_V3)
- 		return;
- 
-diff --git a/drivers/crypto/hisilicon/sec2/sec_main.c b/drivers/crypto/hisilicon/sec2/sec_main.c
-index 6aaaaf784ddc0..064fbc8db16fc 100644
---- a/drivers/crypto/hisilicon/sec2/sec_main.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_main.c
-@@ -436,6 +436,45 @@ static void sec_set_endian(struct hisi_qm *qm)
- 	writel_relaxed(reg, qm->io_base + SEC_CONTROL_REG);
- }
- 
-+static void sec_close_sva_prefetch(struct hisi_qm *qm)
-+{
-+	u32 val;
-+	int ret;
-+
-+	if (!test_bit(QM_SUPPORT_SVA_PREFETCH, &qm->caps))
-+		return;
-+
-+	val = readl_relaxed(qm->io_base + SEC_PREFETCH_CFG);
-+	val |= SEC_PREFETCH_DISABLE;
-+	writel(val, qm->io_base + SEC_PREFETCH_CFG);
-+
-+	ret = readl_relaxed_poll_timeout(qm->io_base + SEC_SVA_TRANS,
-+					 val, !(val & SEC_SVA_DISABLE_READY),
-+					 SEC_DELAY_10_US, SEC_POLL_TIMEOUT_US);
-+	if (ret)
-+		pci_err(qm->pdev, "failed to close sva prefetch\n");
-+}
-+
-+static void sec_open_sva_prefetch(struct hisi_qm *qm)
-+{
-+	u32 val;
-+	int ret;
-+
-+	if (!test_bit(QM_SUPPORT_SVA_PREFETCH, &qm->caps))
-+		return;
-+
-+	/* Enable prefetch */
-+	val = readl_relaxed(qm->io_base + SEC_PREFETCH_CFG);
-+	val &= SEC_PREFETCH_ENABLE;
-+	writel(val, qm->io_base + SEC_PREFETCH_CFG);
-+
-+	ret = readl_relaxed_poll_timeout(qm->io_base + SEC_PREFETCH_CFG,
-+					 val, !(val & SEC_PREFETCH_DISABLE),
-+					 SEC_DELAY_10_US, SEC_POLL_TIMEOUT_US);
-+	if (ret)
-+		pci_err(qm->pdev, "failed to open sva prefetch\n");
-+}
-+
- static void sec_engine_sva_config(struct hisi_qm *qm)
- {
- 	u32 reg;
-@@ -469,45 +508,7 @@ static void sec_engine_sva_config(struct hisi_qm *qm)
- 		writel_relaxed(reg, qm->io_base +
- 				SEC_INTERFACE_USER_CTRL1_REG);
+diff --git a/drivers/misc/genwqe/card_ddcb.c b/drivers/misc/genwqe/card_ddcb.c
+index 500b1feaf1f6f..fd7d5cd50d396 100644
+--- a/drivers/misc/genwqe/card_ddcb.c
++++ b/drivers/misc/genwqe/card_ddcb.c
+@@ -923,7 +923,7 @@ int __genwqe_execute_raw_ddcb(struct genwqe_dev *cd,
  	}
--}
--
--static void sec_open_sva_prefetch(struct hisi_qm *qm)
--{
--	u32 val;
--	int ret;
--
--	if (!test_bit(QM_SUPPORT_SVA_PREFETCH, &qm->caps))
--		return;
--
--	/* Enable prefetch */
--	val = readl_relaxed(qm->io_base + SEC_PREFETCH_CFG);
--	val &= SEC_PREFETCH_ENABLE;
--	writel(val, qm->io_base + SEC_PREFETCH_CFG);
--
--	ret = readl_relaxed_poll_timeout(qm->io_base + SEC_PREFETCH_CFG,
--					 val, !(val & SEC_PREFETCH_DISABLE),
--					 SEC_DELAY_10_US, SEC_POLL_TIMEOUT_US);
--	if (ret)
--		pci_err(qm->pdev, "failed to open sva prefetch\n");
--}
--
--static void sec_close_sva_prefetch(struct hisi_qm *qm)
--{
--	u32 val;
--	int ret;
--
--	if (!test_bit(QM_SUPPORT_SVA_PREFETCH, &qm->caps))
--		return;
--
--	val = readl_relaxed(qm->io_base + SEC_PREFETCH_CFG);
--	val |= SEC_PREFETCH_DISABLE;
--	writel(val, qm->io_base + SEC_PREFETCH_CFG);
--
--	ret = readl_relaxed_poll_timeout(qm->io_base + SEC_SVA_TRANS,
--					 val, !(val & SEC_SVA_DISABLE_READY),
--					 SEC_DELAY_10_US, SEC_POLL_TIMEOUT_US);
--	if (ret)
--		pci_err(qm->pdev, "failed to close sva prefetch\n");
-+	sec_open_sva_prefetch(qm);
- }
- 
- static void sec_enable_clock_gate(struct hisi_qm *qm)
-@@ -1090,7 +1091,6 @@ static int sec_pf_probe_init(struct sec_dev *sec)
- 	if (ret)
- 		return ret;
- 
--	sec_open_sva_prefetch(qm);
- 	hisi_qm_dev_err_init(qm);
- 	sec_debug_regs_clear(qm);
- 	ret = sec_show_last_regs_init(qm);
-diff --git a/drivers/crypto/hisilicon/zip/zip_main.c b/drivers/crypto/hisilicon/zip/zip_main.c
-index 6e419c5165cb4..b70aa6032874e 100644
---- a/drivers/crypto/hisilicon/zip/zip_main.c
-+++ b/drivers/crypto/hisilicon/zip/zip_main.c
-@@ -577,6 +577,7 @@ static int hisi_zip_set_user_domain_and_cache(struct hisi_qm *qm)
- 		writel(AXUSER_BASE, base + HZIP_DATA_WUSER_32_63);
- 		writel(AXUSER_BASE, base + HZIP_SGL_RUSER_32_63);
+ 	if (cmd->asv_length > DDCB_ASV_LENGTH) {
+ 		dev_err(&pci_dev->dev, "[%s] err: wrong asv_length of %d\n",
+-			__func__, cmd->asiv_length);
++			__func__, cmd->asv_length);
+ 		return -EINVAL;
  	}
-+	hisi_zip_open_sva_prefetch(qm);
- 
- 	/* let's open all compression/decompression cores */
- 	dcomp_bm = qm->cap_tables.dev_cap_table[ZIP_DECOMP_ENABLE_BITMAP_IDX].cap_val;
-@@ -588,6 +589,7 @@ static int hisi_zip_set_user_domain_and_cache(struct hisi_qm *qm)
- 	       CQC_CACHE_WB_ENABLE | FIELD_PREP(SQC_CACHE_WB_THRD, 1) |
- 	       FIELD_PREP(CQC_CACHE_WB_THRD, 1), base + QM_CACHE_CTL);
- 
-+	hisi_zip_set_high_perf(qm);
- 	hisi_zip_enable_clock_gate(qm);
- 
- 	return 0;
-@@ -1172,9 +1174,6 @@ static int hisi_zip_pf_probe_init(struct hisi_zip *hisi_zip)
- 	if (ret)
- 		return ret;
- 
--	hisi_zip_set_high_perf(qm);
--
--	hisi_zip_open_sva_prefetch(qm);
- 	hisi_qm_dev_err_init(qm);
- 	hisi_zip_debug_regs_clear(qm);
- 
+ 	rc = __genwqe_enqueue_ddcb(cd, req, f_flags);
 -- 
 2.51.0
 
