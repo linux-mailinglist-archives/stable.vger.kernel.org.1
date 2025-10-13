@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-184865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07E4BD484D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94EC0BD41B9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A1B25064D0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FFF318850CE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7232B30AABF;
-	Mon, 13 Oct 2025 15:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C2630FC1C;
+	Mon, 13 Oct 2025 15:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U14p3vPq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0EQFhRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D43730AAB4;
-	Mon, 13 Oct 2025 15:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD1F30FC10;
+	Mon, 13 Oct 2025 15:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368658; cv=none; b=a9CZslxysO9SxbZ7ofE5a0r0w5CeHFYFa5vsMhltu7QWOnBY2k2NvuEp0ywBpl2wxvfJt00Q8HyMpiBlMSUybKjFXzitKM02Ylz1eHFK2IaxHN9bT+y14sXouLgH8CP5samlneRIUoKfyFP8LCY8YHfMfk9o3zIXM+fHhpNtqzk=
+	t=1760367944; cv=none; b=q01+5N5ZuZKjPJzSoMzEdCaVX9MO4sLmZUW5GTO7dsXxYWjUniZettazYEHd+RVGCByp0xBkuiYjT3PSHNL3o7bnWbwZZwDhcet6qVz+H6GnSmznvRmnesjBqpzUpkiXff1yACL3p9xnR4furxGIUVPvTScqH5Km9hDNWnMBXxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368658; c=relaxed/simple;
-	bh=0MdTiZ/rJ6QN1hS1u1TI7ZaoJ0t/E6PpsWPlWnu5hEg=;
+	s=arc-20240116; t=1760367944; c=relaxed/simple;
+	bh=v2UOH0b8afPAFa9/Q+1i7ytvCXaqR/xEtWV0yPqpbOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooaTYEn2QZxN4N95u3Sl6C3DPVSlRPOrc5hPLeOPsOLmdmv9yOgWnURxU9DzNO/ALUQZRnejt3IvQigX3Lh/RQh9RczF2TIqkUusBixYWRSyMYw69+npCbfjvlmTMbIvFEgo8wIEZAwWaUrlob6eZ6qcLzkea6PLPWrkFksauLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U14p3vPq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B44C113D0;
-	Mon, 13 Oct 2025 15:17:37 +0000 (UTC)
+	 MIME-Version; b=YYQv+wGNTtDc1rxxNDVCDw6E4NqQZQAkftXsKjD+Nx5YEyWTrFHXzEc7zEyg4rWICfz+d7B4Ka35wwDyKHqNQF6D6uHv46lfys4+OBDBda81LwYijmTzHdV6D7HK4xRq7ga6jAcRbh3ziPAkeyE5EBXMAbtIMQQzXld9eYFIhmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0EQFhRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1B2C4CEE7;
+	Mon, 13 Oct 2025 15:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368657;
-	bh=0MdTiZ/rJ6QN1hS1u1TI7ZaoJ0t/E6PpsWPlWnu5hEg=;
+	s=korg; t=1760367944;
+	bh=v2UOH0b8afPAFa9/Q+1i7ytvCXaqR/xEtWV0yPqpbOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U14p3vPq/ycNRAwri5ek4oYR/W8RvOdD8jaSDf1VwFuSXteY+3Ju2Zn8Z9pdqsPAu
-	 1KMczksv5amTblhnEmVatIuVkRseWS5weaLE6Kt8A/ofNsxsjjkQkBWYinUwgHMMAu
-	 ydiJNpgSYY5l9y+TTUwRR6mviShRYD5wB8nWhZ9E=
+	b=K0EQFhRJpB6MhR0l9iQqCNaHR6AfWIwjYSdnTI0yJ/fBEm3q+xdsZwyLPGaFhSqco
+	 IJOtHSt3roBJga9NNMwUWgdznC+1MYv5gD+wJAIekwEtooH89wq1VD4YbdhQPqeZ2Z
+	 goZwIGsIPoYwW6Jt1czmLpYwmKoPQEoqk6iAEGn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.12 237/262] dm: fix NULL pointer dereference in __dm_suspend()
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 188/196] Input: uinput - zero-initialize uinput_ff_upload_compat to avoid info leak
 Date: Mon, 13 Oct 2025 16:46:19 +0200
-Message-ID: <20251013144334.775032269@linuxfoundation.org>
+Message-ID: <20251013144322.108029263@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-commit 8d33a030c566e1f105cd5bf27f37940b6367f3be upstream.
+commit d3366a04770eea807f2826cbdb96934dd8c9bf79 upstream.
 
-There is a race condition between dm device suspend and table load that
-can lead to null pointer dereference. The issue occurs when suspend is
-invoked before table load completes:
+Struct ff_effect_compat is embedded twice inside
+uinput_ff_upload_compat, contains internal padding. In particular, there
+is a hole after struct ff_replay to satisfy alignment requirements for
+the following union member. Without clearing the structure,
+copy_to_user() may leak stack data to userspace.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000054
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
-RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
-Call Trace:
-  <TASK>
-  blk_mq_quiesce_queue+0x2c/0x50
-  dm_stop_queue+0xd/0x20
-  __dm_suspend+0x130/0x330
-  dm_suspend+0x11a/0x180
-  dev_suspend+0x27e/0x560
-  ctl_ioctl+0x4cf/0x850
-  dm_ctl_ioctl+0xd/0x20
-  vfs_ioctl+0x1d/0x50
-  __se_sys_ioctl+0x9b/0xc0
-  __x64_sys_ioctl+0x19/0x30
-  x64_sys_call+0x2c4a/0x4620
-  do_syscall_64+0x9e/0x1b0
+Initialize ff_up_compat to zero before filling valid fields.
 
-The issue can be triggered as below:
-
-T1 						T2
-dm_suspend					table_load
-__dm_suspend					dm_setup_md_queue
-						dm_mq_init_request_queue
-						blk_mq_init_allocated_queue
-						=> q->mq_ops = set->ops; (1)
-dm_stop_queue / dm_wait_for_completion
-=> q->tag_set NULL pointer!	(2)
-						=> q->tag_set = set; (3)
-
-Fix this by checking if a valid table (map) exists before performing
-request-based suspend and waiting for target I/O. When map is NULL,
-skip these table-dependent suspend steps.
-
-Even when map is NULL, no I/O can reach any target because there is
-no table loaded; I/O submitted in this state will fail early in the
-DM layer. Skipping the table-dependent suspend logic in this case
-is safe and avoids NULL pointer dereferences.
-
-Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
+Fixes: 2d56f3a32c0e ("Input: refactor evdev 32bit compat to be shareable with uinput")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Link: https://lore.kernel.org/r/20250928063737.74590-1-zhen.ni@easystack.cn
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/input/misc/uinput.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2918,7 +2918,7 @@ static int __dm_suspend(struct mapped_de
- {
- 	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
- 	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
--	int r;
-+	int r = 0;
+--- a/drivers/input/misc/uinput.c
++++ b/drivers/input/misc/uinput.c
+@@ -775,6 +775,7 @@ static int uinput_ff_upload_to_user(char
+ 	if (in_compat_syscall()) {
+ 		struct uinput_ff_upload_compat ff_up_compat;
  
- 	lockdep_assert_held(&md->suspend_lock);
- 
-@@ -2970,7 +2970,7 @@ static int __dm_suspend(struct mapped_de
- 	 * Stop md->queue before flushing md->wq in case request-based
- 	 * dm defers requests to md->wq from md->queue.
- 	 */
--	if (dm_request_based(md)) {
-+	if (map && dm_request_based(md)) {
- 		dm_stop_queue(md->queue);
- 		set_bit(DMF_QUEUE_STOPPED, &md->flags);
- 	}
-@@ -2982,7 +2982,8 @@ static int __dm_suspend(struct mapped_de
- 	 * We call dm_wait_for_completion to wait for all existing requests
- 	 * to finish.
- 	 */
--	r = dm_wait_for_completion(md, task_state);
-+	if (map)
-+		r = dm_wait_for_completion(md, task_state);
- 	if (!r)
- 		set_bit(dmf_suspended_flag, &md->flags);
- 
++		memset(&ff_up_compat, 0, sizeof(ff_up_compat));
+ 		ff_up_compat.request_id = ff_up->request_id;
+ 		ff_up_compat.retval = ff_up->retval;
+ 		/*
 
 
 
