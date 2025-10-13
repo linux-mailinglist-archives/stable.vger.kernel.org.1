@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-184597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7958FBD43E5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE8EBD4952
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0F7B1506A1C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC9AE424D1C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E973730F949;
-	Mon, 13 Oct 2025 15:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C476730BB8F;
+	Mon, 13 Oct 2025 15:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW4Ej4IJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8ZKHu1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F6530C35E;
-	Mon, 13 Oct 2025 15:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AF7279DC9;
+	Mon, 13 Oct 2025 15:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367893; cv=none; b=ere3waa6cjHtB6ccoKVCFP7JpRtAhhzn6CsZdj28JDzIK5t1W1cF0vU2X+Tj3jSExSqRBgo+oQk1Wf2Kxjjoc+HvE6hCPMyUHIJMjIGOlxt6agwqQb+aFuRvdiv09pF+y4LBSIpf8gR16qDh2TsExQq5nrg5WaNY9MpZBpqdK+A=
+	t=1760368695; cv=none; b=m1ACV6FuO19MDMIi0ei+KOcoIDUaQ4Y6Ziao/An8Zg+xbLdEBTHVrjk8+ht3srau/J7OyNy1W4QOT3nZ/C94iAysCXFY6lJHWyVxpFiD19Li5r/8jGbDCS4GDmNaFR/6shSvZ0nl6GD0+zmitR7PW4Vg0qV9nTLGDLxc/WnBthU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367893; c=relaxed/simple;
-	bh=g5WA7B0uezhDbC3rYoOn7VUZCO25W1g9MD6xBjfi7cE=;
+	s=arc-20240116; t=1760368695; c=relaxed/simple;
+	bh=6iRYb/3vZcn7SQMp2BHBaQNkdlFw9RUXd6SOojfQXXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vpnhui+BVJlIfm7gLxizLLAFuOXu/k5bZgKkUv6w7UrNtANiYF5XasZwc/OcTKMoTAaTGQVODdLHsYpwg/Bxzo8klnDaQ9b4NnJCcEhhyNTHgmG4hrt8rnwvI4omjGPGBXsWAYi09Atl397/rmY14Y6tfzPJIcZgUGozBK71CdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW4Ej4IJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2756CC4CEE7;
-	Mon, 13 Oct 2025 15:04:52 +0000 (UTC)
+	 MIME-Version; b=qtt+K4egmahu1i6LhAouYhFXkRXXAeteUL0Ot4bX+iMeZsLN18Zs8f1h6YyXYcfnGKBHQWj4LovyTRNh5VRou2Ks4NDiCT6XNP5JJDVMQocMEUx1nV2y1WYuO9QCNqpzxzocec8AkJGfO5w4PUDwu9s0fAdj+Yq+dE+n4eNM1Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8ZKHu1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09475C4CEE7;
+	Mon, 13 Oct 2025 15:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367893;
-	bh=g5WA7B0uezhDbC3rYoOn7VUZCO25W1g9MD6xBjfi7cE=;
+	s=korg; t=1760368695;
+	bh=6iRYb/3vZcn7SQMp2BHBaQNkdlFw9RUXd6SOojfQXXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WW4Ej4IJ/I1ZJZVPM0Yq0DnrGO0WmauwSjCsUauYYU8/gKAK4Ynw+pWsucPsbFwy3
-	 vf0N6194JulJm5SpEphLNuxek33lLZnL+fRz7UkeIs51d4O+EKswCbshY2gFBcD2hm
-	 NhtTsAESL3ia5fP9s3Q1gAR9u9LAs49a5dc8cSTs=
+	b=X8ZKHu1QYMA/JNniVHfG2H3S7vVBe/tb2JjOGJ6m7yTwR6rxRecbR06vDVuC1VWj3
+	 9YvxOyfqU23J3156gawyBILGzKxm+OMDAQnduvce6gj0BBIu0a/fs/L+ZLw5jOSN2S
+	 7a8ApZfioOobuRAuyy0J3IaJ7P6gM+AhZlwnxg9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Yuan <shenghaoyuan0928@163.com>,
-	Tianci Cao <ziye@zju.edu.cn>,
-	Yazhou Tang <tangyazhou518@outlook.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Shay Drori <shayd@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/196] bpf: Reject negative offsets for ALU ops
+Subject: [PATCH 6.12 217/262] net/mlx5: Stop polling for command response if interface goes down
 Date: Mon, 13 Oct 2025 16:45:59 +0200
-Message-ID: <20251013144321.388130472@linuxfoundation.org>
+Message-ID: <20251013144334.059375025@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazhou Tang <tangyazhou518@outlook.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 55c0ced59fe17dee34e9dfd5f7be63cbab207758 ]
+[ Upstream commit b1f0349bd6d320c382df2e7f6fc2ac95c85f2b18 ]
 
-When verifying BPF programs, the check_alu_op() function validates
-instructions with ALU operations. The 'offset' field in these
-instructions is a signed 16-bit integer.
+Stop polling on firmware response to command in polling mode if the
+command interface got down. This situation can occur, for example, if a
+firmware fatal error is detected during polling.
 
-The existing check 'insn->off > 1' was intended to ensure the offset is
-either 0, or 1 for BPF_MOD/BPF_DIV. However, because 'insn->off' is
-signed, this check incorrectly accepts all negative values (e.g., -1).
+This change halts the polling process when the command interface goes
+down, preventing unnecessary waits.
 
-This commit tightens the validation by changing the condition to
-'(insn->off != 0 && insn->off != 1)'. This ensures that any value
-other than the explicitly permitted 0 and 1 is rejected, hardening the
-verifier against malformed BPF programs.
-
-Co-developed-by: Shenghao Yuan <shenghaoyuan0928@163.com>
-Signed-off-by: Shenghao Yuan <shenghaoyuan0928@163.com>
-Co-developed-by: Tianci Cao <ziye@zju.edu.cn>
-Signed-off-by: Tianci Cao <ziye@zju.edu.cn>
-Signed-off-by: Yazhou Tang <tangyazhou518@outlook.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Fixes: ec0e2da95f72 ("bpf: Support new signed div/mod instructions.")
-Link: https://lore.kernel.org/r/tencent_70D024BAE70A0A309A4781694C7B764B0608@qq.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: b898ce7bccf1 ("net/mlx5: cmdif, Avoid skipping reclaim pages if FW is not accessible")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index a6f825b7fbe6c..5e644b1b12aaa 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -13727,7 +13727,7 @@ static int check_alu_op(struct bpf_verifier_env *env, struct bpf_insn *insn)
- 	} else {	/* all other ALU ops: and, sub, xor, add, ... */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 5bb4940da59d4..b51c006277598 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -289,6 +289,10 @@ static void poll_timeout(struct mlx5_cmd_work_ent *ent)
+ 			return;
+ 		}
+ 		cond_resched();
++		if (mlx5_cmd_is_down(dev)) {
++			ent->ret = -ENXIO;
++			return;
++		}
+ 	} while (time_before(jiffies, poll_end));
  
- 		if (BPF_SRC(insn->code) == BPF_X) {
--			if (insn->imm != 0 || insn->off > 1 ||
-+			if (insn->imm != 0 || (insn->off != 0 && insn->off != 1) ||
- 			    (insn->off == 1 && opcode != BPF_MOD && opcode != BPF_DIV)) {
- 				verbose(env, "BPF_ALU uses reserved fields\n");
- 				return -EINVAL;
-@@ -13737,7 +13737,7 @@ static int check_alu_op(struct bpf_verifier_env *env, struct bpf_insn *insn)
- 			if (err)
- 				return err;
- 		} else {
--			if (insn->src_reg != BPF_REG_0 || insn->off > 1 ||
-+			if (insn->src_reg != BPF_REG_0 || (insn->off != 0 && insn->off != 1) ||
- 			    (insn->off == 1 && opcode != BPF_MOD && opcode != BPF_DIV)) {
- 				verbose(env, "BPF_ALU uses reserved fields\n");
- 				return -EINVAL;
+ 	ent->ret = -ETIMEDOUT;
+@@ -1066,7 +1070,7 @@ static void cmd_work_handler(struct work_struct *work)
+ 		poll_timeout(ent);
+ 		/* make sure we read the descriptor after ownership is SW */
+ 		rmb();
+-		mlx5_cmd_comp_handler(dev, 1ULL << ent->idx, (ent->ret == -ETIMEDOUT));
++		mlx5_cmd_comp_handler(dev, 1ULL << ent->idx, !!ent->ret);
+ 	}
+ }
+ 
 -- 
 2.51.0
 
