@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-185080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A933EBD4922
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F54EBD47D8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 567D8500569
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:45:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FD901883E17
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4BE316912;
-	Mon, 13 Oct 2025 15:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB1A31812E;
+	Mon, 13 Oct 2025 15:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vwywniv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfAu8JDN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F8D31691A;
-	Mon, 13 Oct 2025 15:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B2431770F;
+	Mon, 13 Oct 2025 15:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369276; cv=none; b=L18NwV2fjiITrIn93Y/Sj7JTr8jJQD4WmrHWycwZigTWkrGtrUpsIofAG3bbxVWSsqpzkOvs5107f8RbzKd4/3mhryH/ruo0M3pW0ld6mW4eFbpPySK0FQLGcivPr8YEB8iiEiSSoX+wczLY4DZKqeXNYFWpkeut+GxawceO0rs=
+	t=1760369285; cv=none; b=N47Do5pm4UC9OKwNOGVl4CCHgpwZCdAQNjk3VplJwqGu7gP+AoqfPGV6ioLy9e4RXZdy+LvwlSvkFMdK9LUvslLLGQvZ14A6+DiUvY+Z+fy7RtGC6DhspIMOdBVYE3MSbuosZ4dnLeg+3pAFf/EvF1ZWLlZxhaL4o5HQ9GJzzcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369276; c=relaxed/simple;
-	bh=6dkao3N9iNXm/80wYU5+BFWIwNJR6ZO9Rznp/+rkt9w=;
+	s=arc-20240116; t=1760369285; c=relaxed/simple;
+	bh=kMp4yrTvnw+1egMgjaCd5VAdxQrbb03cJMj2EQ4uDpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qe97J+25KFsR4B9/mibVT4oTsft6bftv5xCs2WarvfdKOrqOSdd/mXQiLIpFWAlRbDHOHgHHJ5/biFgJYogxIPIdNwmVHT/ak3kk4cX8USGKRuNs1dMsbdNuxY5yHi1AV+MsTXU0kaOG/J3DgOYEqhRSndW+Nr4dcKwk3waidXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vwywniv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5B7C4AF09;
-	Mon, 13 Oct 2025 15:27:55 +0000 (UTC)
+	 MIME-Version; b=loNU2xPxuiKtCH79BaX1Et3OPifLHyLoKsegOfpBNhQf+OHgrUzTu1fpDvILayyIam+hKAq5q1Ep8juWv4/vKAHGk9XoYQivqrJjcIcwkpI69q1Nmf7y4SsHu9C1fVUGPRE9dxPGD3Ty02XwChgpHprmeZupgV33B1B+AyH9+nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfAu8JDN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2A5C116B1;
+	Mon, 13 Oct 2025 15:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369275;
-	bh=6dkao3N9iNXm/80wYU5+BFWIwNJR6ZO9Rznp/+rkt9w=;
+	s=korg; t=1760369284;
+	bh=kMp4yrTvnw+1egMgjaCd5VAdxQrbb03cJMj2EQ4uDpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vwywniv/snCOFeVaYVzbz44UwNCm3L2jPA5Dz6241cxlAyRT+KCZuqztg+v/PXPyb
-	 5yskbzHCiwvo7lh6Y4+gbPkG7kWm1k4JIUwu3Qe83MsQl4gmNZO1TPCBYdrpkkWgSQ
-	 VqweUPyIxL57ykAOqAR9rr5wmUOBLdrtAq/5O2CQ=
+	b=DfAu8JDNz3nxxYTc2GEeiIbP/uQ6Ucl8zfKnpy9wo7rLT0AcbpJU4lZ8xk+iJynLM
+	 LpJ3iIdgi5xEWCjREZ5eSYIciBWAlTf72vs/s4ROXvXybsNE62paTDUKSnVQCIqjZo
+	 o0UtlHgvXKJSNF9a/WYa+fiPmth4IRVCxHoV8kb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhouyi Zhou <zhouzhouyi@gmail.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Pohsun Su <pohsuns@nvidia.com>,
+	Robert Lin <robelin@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 189/563] tools/nolibc: make time_t robust if __kernel_old_time_t is missing in host headers
-Date: Mon, 13 Oct 2025 16:40:50 +0200
-Message-ID: <20251013144418.130172240@linuxfoundation.org>
+Subject: [PATCH 6.17 191/563] clocksource/drivers/timer-tegra186: Avoid 64-bit divide operation
+Date: Mon, 13 Oct 2025 16:40:52 +0200
+Message-ID: <20251013144418.202575208@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -60,52 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 0ff52df6b32a6b04a7c9dfe3d7a387aff215b482 ]
+[ Upstream commit 916aa36042db8ee230543ffe0d192f900e8b8c9f ]
 
-Commit d5094bcb5bfd ("tools/nolibc: define time_t in terms of
-__kernel_old_time_t") made nolibc use the kernel's time type so that
-`time_t` matches `timespec::tv_sec` on all ABIs (notably x32).
+Building the driver on xtensa fails with
 
-But since __kernel_old_time_t is fairly new, notably from 2020 in commit
-94c467ddb273 ("y2038: add __kernel_old_timespec and __kernel_old_time_t"),
-nolibc builds that rely on host headers may fail.
+tensa-linux-ld: drivers/clocksource/timer-tegra186.o:
+	in function `tegra186_timer_remove':
+timer-tegra186.c:(.text+0x350):
+	undefined reference to `__udivdi3'
 
-Switch to __kernel_time_t, which is the same as __kernel_old_time_t and
-has existed for longer.
+Avoid the problem by rearranging the offending code to avoid the 64-bit
+divide operation.
 
-Tested in PPC VM of Open Source Lab of Oregon State University
-(./tools/testing/selftests/rcutorture/bin/mkinitrd.sh)
-
-Fixes: d5094bcb5bfd ("tools/nolibc: define time_t in terms of __kernel_old_time_t")
-Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
-[Thomas: Reformat commit and its message a bit]
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Fixes: 28c842c8b0f5 ("clocksource/drivers/timer-tegra186: Add WDIOC_GETTIMELEFT support")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Cc: Pohsun Su <pohsuns@nvidia.com>
+Cc: Robert Lin <robelin@nvidia.com>
+Link: https://lore.kernel.org/r/20250614175556.922159-1-linux@roeck-us.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/std.h | 2 +-
+ drivers/clocksource/timer-tegra186.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
-index ba950f0e73384..2c1ad23b9b5c1 100644
---- a/tools/include/nolibc/std.h
-+++ b/tools/include/nolibc/std.h
-@@ -29,6 +29,6 @@ typedef unsigned long       nlink_t;
- typedef   signed long         off_t;
- typedef   signed long     blksize_t;
- typedef   signed long      blkcnt_t;
--typedef __kernel_old_time_t  time_t;
-+typedef __kernel_time_t      time_t;
+diff --git a/drivers/clocksource/timer-tegra186.c b/drivers/clocksource/timer-tegra186.c
+index e5394f98a02e6..7b506de654386 100644
+--- a/drivers/clocksource/timer-tegra186.c
++++ b/drivers/clocksource/timer-tegra186.c
+@@ -267,7 +267,7 @@ static unsigned int tegra186_wdt_get_timeleft(struct watchdog_device *wdd)
+ 	 * counter value to the time of the counter expirations that
+ 	 * remain.
+ 	 */
+-	timeleft += (((u64)wdt->base.timeout * USEC_PER_SEC) / 5) * (4 - expiration);
++	timeleft += ((u64)wdt->base.timeout * (USEC_PER_SEC / 5)) * (4 - expiration);
  
- #endif /* _NOLIBC_STD_H */
+ 	/*
+ 	 * Convert the current counter value to seconds,
 -- 
 2.51.0
 
