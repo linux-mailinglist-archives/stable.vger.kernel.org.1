@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-184879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF68BD46F1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BC1BD3FB2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DADC401E9E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08F3318915EF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1682630BB91;
-	Mon, 13 Oct 2025 15:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B20B30DEA4;
+	Mon, 13 Oct 2025 14:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ql4IITw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZbzm4Ha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C704A30B52A;
-	Mon, 13 Oct 2025 15:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5153230DD29;
+	Mon, 13 Oct 2025 14:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368698; cv=none; b=EXJ5UKSVqGclLZeXmUG79clirB6bGAI726kVFsOnVyVN/4ouGjOUO5kN5MXlZUFnBA+FYzRqnvwavoeEwhQPCpbMrov+e854ZGrS9hYb1c6IiNjbAZmVwWPsQyXnR5vWjfkHT2CGXTW5rsiIcqAndttKXJgzZ1wKHMSeBVIdjRQ=
+	t=1760367380; cv=none; b=Gc6dPROK0sAimxN1kU3FdK8Cw5w7rOkhT52LqtgYekK7kyWpW1gJB1AnWzBWTGGjsubRAe9Vwi2aFLi2SwFmMPZZ20JJsbcZXiv2atKonse2farswOB6un41hlKgnVLqiluT2rgmlQKqFKzn2aO3Xon+Q2UquqsZXZqfKdojM4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368698; c=relaxed/simple;
-	bh=D4HfO59nSRc2DDqFPC+cg07zikyuy+PfV3V7qpwa2VA=;
+	s=arc-20240116; t=1760367380; c=relaxed/simple;
+	bh=BRF2YHbp493wZiUm9YBlo2WGrd9qDyWaAVCnnHN2Oi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIPwel0SZRCjvL96OBT6DgnoOJsn378QOQGbJcY3fGVij23PNVUTXw8XZNlzClFukGwiR0D1sfWVHaVN0/xGhNsB7oLDcR3J+Fr5nRQLTducMTEi6Yml/sDaLNaJyPYJ7srBigc2bwd56vT/vsochEDaiipQmhV1ujr7RhP8nYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ql4IITw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD39EC4CEE7;
-	Mon, 13 Oct 2025 15:18:17 +0000 (UTC)
+	 MIME-Version; b=ootOImWmVQmpmot5qx7fa8L0FpcNF5Bd2+eDUEk7fgDPJ1gnc0AZDE8LumWmE3IwSZbbLeCwNs6mEopli4mGyq4dcMwZAZEVKfcSXU9nMBx7aDrvJSThac9koO+7Z0VKkrXN3FCe44dUlFax39s+MZ/mmL2BRhySv9XtWF3RUIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZbzm4Ha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F3CC19421;
+	Mon, 13 Oct 2025 14:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368698;
-	bh=D4HfO59nSRc2DDqFPC+cg07zikyuy+PfV3V7qpwa2VA=;
+	s=korg; t=1760367380;
+	bh=BRF2YHbp493wZiUm9YBlo2WGrd9qDyWaAVCnnHN2Oi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ql4IITwTBb5qxF68Ks+aFTQHCGnhXlmLV/mXNhytuMLhR5g52arx3dhHMBq0cLep
-	 83Pn5xI2SMyc/O8DfIOi1pvQp6v216DQ5BYVIdKRAu6d/iCzsdlSnC/JVkqraF9ZqY
-	 1qugejtfiFdByVDdwu58YiGb8S1sWAk0weB7WV4Y=
+	b=MZbzm4Har45tQaePjeGKpQVnYbWaUunqXdUAveFxdA8dJP9L2jQvODhXZD17bzWHm
+	 YE5H8PP1oDJCxkvAsegG7v1qD1nBoPfkZ5HO499IQI1zd2qJHBDwtNbW9+ZK/lIq2y
+	 9hkH8HhnrgITqxcny39ChkZKiwsJo0XbXm7pcWy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 218/262] net/mlx5: pagealloc: Fix reclaim race during command interface teardown
+	Marek Vasut <marek.vasut@mailbox.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 187/196] Input: atmel_mxt_ts - allow reset GPIO to sleep
 Date: Mon, 13 Oct 2025 16:46:00 +0200
-Message-ID: <20251013144334.094964468@linuxfoundation.org>
+Message-ID: <20251013144321.457071392@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Marek Vasut <marek.vasut@mailbox.org>
 
-[ Upstream commit 79a0e32b32ac4e4f9e4bb22be97f371c8c116c88 ]
+commit c7866ee0a9ddd9789faadf58cdac6abd7aabf045 upstream.
 
-The reclaim_pages_cmd() function sends a command to the firmware to
-reclaim pages if the command interface is active.
+The reset GPIO is not toggled in any critical section where it couldn't
+sleep, allow the reset GPIO to sleep. This allows the driver to operate
+reset GPIOs connected to I2C GPIO expanders.
 
-A race condition can occur if the command interface goes down (e.g., due
-to a PCI error) while the mlx5_cmd_do() call is in flight. In this
-case, mlx5_cmd_do() will return an error. The original code would
-propagate this error immediately, bypassing the software-based page
-reclamation logic that is supposed to run when the command interface is
-down.
-
-Fix this by checking whether mlx5_cmd_do() returns -ENXIO, which mark
-that command interface is down. If this is the case, fall through to
-the software reclamation path. If the command failed for any another
-reason, or finished successfully, return as before.
-
-Fixes: b898ce7bccf1 ("net/mlx5: cmdif, Avoid skipping reclaim pages if FW is not accessible")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+Link: https://lore.kernel.org/r/20251005023335.166483-1-marek.vasut@mailbox.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/input/touchscreen/atmel_mxt_ts.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-index 9bc9bd83c2324..cd68c4b2c0bf9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-@@ -489,9 +489,12 @@ static int reclaim_pages_cmd(struct mlx5_core_dev *dev,
- 	u32 func_id;
- 	u32 npages;
- 	u32 i = 0;
-+	int err;
+--- a/drivers/input/touchscreen/atmel_mxt_ts.c
++++ b/drivers/input/touchscreen/atmel_mxt_ts.c
+@@ -3239,7 +3239,7 @@ static int mxt_probe(struct i2c_client *
+ 	if (data->reset_gpio) {
+ 		/* Wait a while and then de-assert the RESET GPIO line */
+ 		msleep(MXT_RESET_GPIO_TIME);
+-		gpiod_set_value(data->reset_gpio, 0);
++		gpiod_set_value_cansleep(data->reset_gpio, 0);
+ 		msleep(MXT_RESET_INVALID_CHG);
+ 	}
  
--	if (!mlx5_cmd_is_down(dev))
--		return mlx5_cmd_do(dev, in, in_size, out, out_size);
-+	err = mlx5_cmd_do(dev, in, in_size, out, out_size);
-+	/* If FW is gone (-ENXIO), proceed to forceful reclaim */
-+	if (err != -ENXIO)
-+		return err;
- 
- 	/* No hard feelings, we want our pages back! */
- 	npages = MLX5_GET(manage_pages_in, in, input_num_entries);
--- 
-2.51.0
-
 
 
 
