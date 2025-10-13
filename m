@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBCBBD3E52
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:08:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BEABD49E2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A8B174FE48D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55D8C1882FB9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C69F278165;
-	Mon, 13 Oct 2025 14:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C57B31B82E;
+	Mon, 13 Oct 2025 15:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVl/rR1w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eO5Z8Xvt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E972A221F20;
-	Mon, 13 Oct 2025 14:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB69A31076D;
+	Mon, 13 Oct 2025 15:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367096; cv=none; b=awq70MTsJJ5/GFCo1oIWZEU1m16OgJPAckruWaSeqLGC8/2Xul4AslJlPvS3yWnDCPMyfgkQKQ7mSyS1tFMgcEqkQFHtt10BLalqmpB/vdUfLCw6B2oEwX6SxDhwrykXg9+Z4hFqAeqnC8mvSNtJOtBLr9wPSYgUcNlSUz3RnaM=
+	t=1760369791; cv=none; b=CVRdWREEi8HPHWZbiDlSPo1+7GUgp2IK+AXSt9V4U23NQPr2XLfAJ/jwOQw7JF+DcMWOSn6a7Mc+0gs99ZBKzEAIYIZCkiip6JJpJxifHs+82hLoHddDWWO9rhUUmTIWxzA8vCENM23D3JVZ4orpWGAa6kfib7Ul5kfIsO5RPkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367096; c=relaxed/simple;
-	bh=1Wam95m/XtbYPq1mhpZzXjcgw0UyZj9CZEfnY2AjPZM=;
+	s=arc-20240116; t=1760369791; c=relaxed/simple;
+	bh=Q6+zzaO4fb24ZVnxNVoEoT/66SknsRw+xAP/uFBixTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bw5cf286FJzt5n0kLo+8Oka1sBNs9f72bhLiXc3XzW31y1eI17onBAnoOcmNpWQ+u2QqzerleYtjNJ6mgUqt1wmG42wwbY0w42tkTZoNV/zrKOgOEcDNT4PywdgA7IcEKtwIMVZJAbhqrnrLX2VNCQrUAXRnAbtOMaToJ9CWCsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVl/rR1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6DEC4CEE7;
-	Mon, 13 Oct 2025 14:51:34 +0000 (UTC)
+	 MIME-Version; b=dTUCJmdxJEKBiB3Km5tfMOhdtm2xlPUTNUNhHTFqLLLCpW7KWeNWvk5u6eGmWAqfzeXoq6+yBo9RHuY5qe6mvo/bMwvMtCbGv72R09eq5Mc8NK6qCYC3UqFXXAU49NYTAV80QswZbQyNhKoSHbzo9uzofb4hudHB8bnBqOrsohQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eO5Z8Xvt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F036C4CEE7;
+	Mon, 13 Oct 2025 15:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367095;
-	bh=1Wam95m/XtbYPq1mhpZzXjcgw0UyZj9CZEfnY2AjPZM=;
+	s=korg; t=1760369790;
+	bh=Q6+zzaO4fb24ZVnxNVoEoT/66SknsRw+xAP/uFBixTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EVl/rR1wg8dAavqkCJyqdOQE9ju/U7Hrj3iNeurfY5cnQ9d19VfPAL6X9NwT64tbQ
-	 2x7+rWgAqHDm0gLYTxwzAKjhSOiLXB0ReEC7rfrhmEH9h4MFooCAVC2d0/edx12EcT
-	 QDMOIbTdxni2AsN6CBeRbkzmsJySVOp3G2NhONo4=
+	b=eO5Z8XvtkKWK91UedVMfC1pERgwZEwRbV3xJtbCCgZ5W33B4Jh+EjP9QgnC41eWqy
+	 hdPZmRtlw+SKZInew42w3xn5Hn+roQwZmMtpDNOp0kXhaO9n+mRsT/ylLE5JE8cC6M
+	 MPEuZUwv46v2lqlBg2XHlJlLwG0yAeRHPhoDVC34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Chen <chen.dylane@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/196] bpf: Remove migrate_disable in kprobe_multi_link_prog_run
+Subject: [PATCH 6.17 369/563] f2fs: fix to mitigate overhead of f2fs_zero_post_eof_page()
 Date: Mon, 13 Oct 2025 16:43:50 +0200
-Message-ID: <20251013144316.646626696@linuxfoundation.org>
+Message-ID: <20251013144424.645034706@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@linux.dev>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit abdaf49be5424db74e19d167c10d7dad79a0efc2 ]
+[ Upstream commit c2f7c32b254006ad48f8e4efb2e7e7bf71739f17 ]
 
-Graph tracer framework ensures we won't migrate, kprobe_multi_link_prog_run
-called all the way from graph tracer, which disables preemption in
-function_graph_enter_regs, as Jiri and Yonghong suggested, there is no
-need to use migrate_disable. As a result, some overhead may will be reduced.
-And add cant_sleep check for __this_cpu_inc_return.
+f2fs_zero_post_eof_page() may cuase more overhead due to invalidate_lock
+and page lookup, change as below to mitigate its overhead:
+- check new_size before grabbing invalidate_lock
+- lookup and invalidate pages only in range of [old_size, new_size]
 
-Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250814121430.2347454-1-chen.dylane@linux.dev
+Fixes: ba8dac350faf ("f2fs: fix to zero post-eof page")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 39 +++++++++++++++++++--------------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 243122ca56793..e6fde598f7629 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2636,18 +2636,23 @@ kprobe_multi_link_prog_run(struct bpf_kprobe_multi_link *link,
- 	struct bpf_run_ctx *old_run_ctx;
- 	int err;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 1aae4361d0a89..ffa045b39c01d 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -35,15 +35,23 @@
+ #include <trace/events/f2fs.h>
+ #include <uapi/linux/f2fs.h>
  
-+	/*
-+	 * graph tracer framework ensures we won't migrate, so there is no need
-+	 * to use migrate_disable for bpf_prog_run again. The check here just for
-+	 * __this_cpu_inc_return.
-+	 */
-+	cant_sleep();
+-static void f2fs_zero_post_eof_page(struct inode *inode, loff_t new_size)
++static void f2fs_zero_post_eof_page(struct inode *inode,
++					loff_t new_size, bool lock)
+ {
+ 	loff_t old_size = i_size_read(inode);
+ 
+ 	if (old_size >= new_size)
+ 		return;
+ 
++	if (mapping_empty(inode->i_mapping))
++		return;
 +
- 	if (unlikely(__this_cpu_inc_return(bpf_prog_active) != 1)) {
- 		err = 0;
- 		goto out;
- 	}
++	if (lock)
++		filemap_invalidate_lock(inode->i_mapping);
+ 	/* zero or drop pages only in range of [old_size, new_size] */
+-	truncate_pagecache(inode, old_size);
++	truncate_inode_pages_range(inode->i_mapping, old_size, new_size);
++	if (lock)
++		filemap_invalidate_unlock(inode->i_mapping);
+ }
  
--	migrate_disable();
- 	rcu_read_lock();
- 	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
- 	err = bpf_prog_run(link->link.prog, regs);
- 	bpf_reset_run_ctx(old_run_ctx);
- 	rcu_read_unlock();
--	migrate_enable();
+ static vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf)
+@@ -114,9 +122,7 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
  
-  out:
- 	__this_cpu_dec(bpf_prog_active);
+ 	f2fs_bug_on(sbi, f2fs_has_inline_data(inode));
+ 
+-	filemap_invalidate_lock(inode->i_mapping);
+-	f2fs_zero_post_eof_page(inode, (folio->index + 1) << PAGE_SHIFT);
+-	filemap_invalidate_unlock(inode->i_mapping);
++	f2fs_zero_post_eof_page(inode, (folio->index + 1) << PAGE_SHIFT, true);
+ 
+ 	file_update_time(vmf->vma->vm_file);
+ 	filemap_invalidate_lock_shared(inode->i_mapping);
+@@ -1149,7 +1155,7 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 		filemap_invalidate_lock(inode->i_mapping);
+ 
+ 		if (attr->ia_size > old_size)
+-			f2fs_zero_post_eof_page(inode, attr->ia_size);
++			f2fs_zero_post_eof_page(inode, attr->ia_size, false);
+ 		truncate_setsize(inode, attr->ia_size);
+ 
+ 		if (attr->ia_size <= old_size)
+@@ -1268,9 +1274,7 @@ static int f2fs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ 	if (ret)
+ 		return ret;
+ 
+-	filemap_invalidate_lock(inode->i_mapping);
+-	f2fs_zero_post_eof_page(inode, offset + len);
+-	filemap_invalidate_unlock(inode->i_mapping);
++	f2fs_zero_post_eof_page(inode, offset + len, true);
+ 
+ 	pg_start = ((unsigned long long) offset) >> PAGE_SHIFT;
+ 	pg_end = ((unsigned long long) offset + len) >> PAGE_SHIFT;
+@@ -1555,7 +1559,7 @@ static int f2fs_do_collapse(struct inode *inode, loff_t offset, loff_t len)
+ 	f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 
+-	f2fs_zero_post_eof_page(inode, offset + len);
++	f2fs_zero_post_eof_page(inode, offset + len, false);
+ 
+ 	f2fs_lock_op(sbi);
+ 	f2fs_drop_extent_tree(inode);
+@@ -1678,9 +1682,7 @@ static int f2fs_zero_range(struct inode *inode, loff_t offset, loff_t len,
+ 	if (ret)
+ 		return ret;
+ 
+-	filemap_invalidate_lock(mapping);
+-	f2fs_zero_post_eof_page(inode, offset + len);
+-	filemap_invalidate_unlock(mapping);
++	f2fs_zero_post_eof_page(inode, offset + len, true);
+ 
+ 	pg_start = ((unsigned long long) offset) >> PAGE_SHIFT;
+ 	pg_end = ((unsigned long long) offset + len) >> PAGE_SHIFT;
+@@ -1814,7 +1816,7 @@ static int f2fs_insert_range(struct inode *inode, loff_t offset, loff_t len)
+ 	f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
+ 	filemap_invalidate_lock(mapping);
+ 
+-	f2fs_zero_post_eof_page(inode, offset + len);
++	f2fs_zero_post_eof_page(inode, offset + len, false);
+ 	truncate_pagecache(inode, offset);
+ 
+ 	while (!ret && idx > pg_start) {
+@@ -1872,9 +1874,7 @@ static int f2fs_expand_inode_data(struct inode *inode, loff_t offset,
+ 	if (err)
+ 		return err;
+ 
+-	filemap_invalidate_lock(inode->i_mapping);
+-	f2fs_zero_post_eof_page(inode, offset + len);
+-	filemap_invalidate_unlock(inode->i_mapping);
++	f2fs_zero_post_eof_page(inode, offset + len, true);
+ 
+ 	f2fs_balance_fs(sbi, true);
+ 
+@@ -4922,9 +4922,8 @@ static ssize_t f2fs_write_checks(struct kiocb *iocb, struct iov_iter *from)
+ 	if (err)
+ 		return err;
+ 
+-	filemap_invalidate_lock(inode->i_mapping);
+-	f2fs_zero_post_eof_page(inode, iocb->ki_pos + iov_iter_count(from));
+-	filemap_invalidate_unlock(inode->i_mapping);
++	f2fs_zero_post_eof_page(inode,
++		iocb->ki_pos + iov_iter_count(from), true);
+ 	return count;
+ }
+ 
 -- 
 2.51.0
 
