@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-185164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DC9BD4895
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF88BD4878
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CE4B188B21E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F17F18988D9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C4930ACFC;
-	Mon, 13 Oct 2025 15:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9DC309F0E;
+	Mon, 13 Oct 2025 15:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IztZCLgL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ya5yLks/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A77D30AABF;
-	Mon, 13 Oct 2025 15:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0EA3090C7;
+	Mon, 13 Oct 2025 15:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369515; cv=none; b=SM5LieCOmTnvQuIRTP1s7MNajjruaUvi4opsuN0B+YppfqX+sVOuqIassBs5o6XN9sJPvDypPl9AZ/sVh81N66QfxXvfVfX9YUYskC+CXyAWqE6Wf9NS0auN19v9beuVceJVtleE3jODjjYbo6SamRXP/em1+yKy+7fb15qQesw=
+	t=1760369439; cv=none; b=cm6wC1W07OBJnMDKYZRTs+72iW0CyooglFLAXqRlVrPfJFrmu97ucrTG4a2GjBDzWb8MGySK3dk+zL8bscJM3Fbyaeh0Ou9pQYovGnHoSrFnU5ExvQSn/n+aREALBTjaEY6KkEfO9zLoJEaORCuMvdiCFa2rc7FRdrFQZKF2ZdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369515; c=relaxed/simple;
-	bh=24IvCLT9gB4r3TlAvUo6rhILSoUoxD8xpTjHyIkeECM=;
+	s=arc-20240116; t=1760369439; c=relaxed/simple;
+	bh=b+mFJqJlfo/QlNOF5C8JIrv9FWvtrUDEgjdDpB20heY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EyaD4Q7/l/cK6C0tO0NA6/ZyBQtW63lrmWa9SUKjgNC/gMJvHajSI/GfDIQ88E57MWPT490/EVOSXFCMO299mYsNLaZOMzkbCEk4x8993bjjkZB80FtaCIeyLfj7FS6ezGQ3yep8PHMZe21/FNdUPhM6p0Q7nnWtBe5Ddf4z9PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IztZCLgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA52BC4CEE7;
-	Mon, 13 Oct 2025 15:31:54 +0000 (UTC)
+	 MIME-Version; b=lnf8ehlhDsuwQEQ45MJEZkSOE92yKWanqeqOVVg5jFF/s5pAyt8Bg5lwBNxQyQiOAlvgdkVDGQ1ggFSMa0TJbPMhs8hbMVw/IBqqJgLotLvLjgG3xtld6kCq7tBBoyvIdR7QmVUZKUs5uW2OPlsdWDHIM54yVXiyYQ50pmlanU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ya5yLks/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BABFC4CEE7;
+	Mon, 13 Oct 2025 15:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369515;
-	bh=24IvCLT9gB4r3TlAvUo6rhILSoUoxD8xpTjHyIkeECM=;
+	s=korg; t=1760369438;
+	bh=b+mFJqJlfo/QlNOF5C8JIrv9FWvtrUDEgjdDpB20heY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IztZCLgLnGeF9z/xN4MXZuCzDcARH2QwkBC/VFuSi2D0qKBEyeteH0jQPKlkc8Smd
-	 +PZniC8AjTdXA+jR+k45lGy0hAqkY1fhEVJKeZl0Ua2F90rzA2+/vjOdE86y85YVLT
-	 rJ9D4sU6gx5rjwMux6Z91Vzl2VDjejPjmuulExdM=
+	b=Ya5yLks/Fm/5EvcBy9W9OSoXw++cFHQEHg04RavL4lEsKuPd3urJddqAJElEQIg/8
+	 +O1TLGwJ8WqZO41lPsXld/qP3zGWUgJFKtFDK7z/AXa+fdxoJ82c98elMg7q5fk0/a
+	 FV21oaz2FmqsFu+ip7SgA7S+zz56dH0SPNVaCKo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Jason Yan <yanaijie@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 241/563] crypto: keembay - Add missing check after sg_nents_for_len()
-Date: Mon, 13 Oct 2025 16:41:42 +0200
-Message-ID: <20251013144420.016246341@linuxfoundation.org>
+Subject: [PATCH 6.17 247/563] scsi: libsas: Add dev_parent_is_expander() helper
+Date: Mon, 13 Oct 2025 16:41:48 +0200
+Message-ID: <20251013144420.231919306@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,43 +69,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 4e53be21dd0315c00eaf40cc8f8c0facd4d9a6b2 ]
+[ Upstream commit e5eb72c92eb724aa14c50c7d92d1a576dd50d7e6 ]
 
-sg_nents_for_len() returns an int which is negative in case of error.
+Many libsas drivers check if the parent of the device is an expander.
+Create a helper that the libsas drivers will use in follow up commits.
 
-Fixes: 472b04444cd3 ("crypto: keembay - Add Keem Bay OCS HCU driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Suggested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Link: https://lore.kernel.org/r/20250814173215.1765055-15-cassel@kernel.org
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: ad70c6bc776b ("scsi: pm80xx: Fix pm8001_abort_task() for chip_8006 when using an expander")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/libsas/sas_expander.c | 5 +----
+ include/scsi/libsas.h              | 8 ++++++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-index 8f9e21ced0fe1..48281d8822603 100644
---- a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-+++ b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-@@ -232,7 +232,7 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
- 	struct device *dev = rctx->hcu_dev->dev;
- 	unsigned int remainder = 0;
- 	unsigned int total;
--	size_t nents;
-+	int nents;
- 	size_t count;
- 	int rc;
+diff --git a/drivers/scsi/libsas/sas_expander.c b/drivers/scsi/libsas/sas_expander.c
+index 869b5d4db44cb..d953225f6cc24 100644
+--- a/drivers/scsi/libsas/sas_expander.c
++++ b/drivers/scsi/libsas/sas_expander.c
+@@ -1313,10 +1313,7 @@ static int sas_check_parent_topology(struct domain_device *child)
  	int i;
-@@ -253,6 +253,9 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
- 	/* Determine the number of scatter gather list entries to process. */
- 	nents = sg_nents_for_len(req->src, rctx->sg_data_total - remainder);
+ 	int res = 0;
  
-+	if (nents < 0)
-+		return nents;
+-	if (!child->parent)
+-		return 0;
+-
+-	if (!dev_is_expander(child->parent->dev_type))
++	if (!dev_parent_is_expander(child))
+ 		return 0;
+ 
+ 	parent_ex = &child->parent->ex_dev;
+diff --git a/include/scsi/libsas.h b/include/scsi/libsas.h
+index ba460b6c0374d..8d38565e99fa1 100644
+--- a/include/scsi/libsas.h
++++ b/include/scsi/libsas.h
+@@ -203,6 +203,14 @@ static inline bool dev_is_expander(enum sas_device_type type)
+ 	       type == SAS_FANOUT_EXPANDER_DEVICE;
+ }
+ 
++static inline bool dev_parent_is_expander(struct domain_device *dev)
++{
++	if (!dev->parent)
++		return false;
 +
- 	/* If there are entries to process, map them. */
- 	if (nents) {
- 		rctx->sg_dma_nents = dma_map_sg(dev, req->src, nents,
++	return dev_is_expander(dev->parent->dev_type);
++}
++
+ static inline void INIT_SAS_WORK(struct sas_work *sw, void (*fn)(struct work_struct *))
+ {
+ 	INIT_WORK(&sw->work, fn);
 -- 
 2.51.0
 
