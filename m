@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC28DBD46AE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:02 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3CEBD3E67
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A05EB4006F4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17A2C4FE3E4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A1631282D;
-	Mon, 13 Oct 2025 15:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991AB26E6FE;
+	Mon, 13 Oct 2025 14:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRHdfyUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neVVc+3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D997530C639;
-	Mon, 13 Oct 2025 15:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550B62566;
+	Mon, 13 Oct 2025 14:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368303; cv=none; b=sbpWYyETocVGvGea22zY9R1Z19Tkvyg7ngtFecIXIe9dUa9reT3seUUtgszXukmiRgNgBiAHxL0ZWTVaV4C9f3KfgBuQd3vt+7TdSYNr2yRq4jEHNo5S8IDun4IqTChwz69qWKVfYD+MLHVizjkqMKpCVzHNk8j8rOsGX6Xhun4=
+	t=1760367081; cv=none; b=lhpAV5GSHB9RaWoTYUVYGsrQ+1eFTRQbFQtbuv6ER0m4LAy3qXc07dOqXAlzYk7iiIfmTOU0F6o/c0oDweCGC1oOouQGHLI36bfXPNwj7vM4pB18L8HAAMKt/O+pj0HosqN0AXafRwUiqVoFiwbo4OKN0tAr7Bt3eB5guw7ZKP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368303; c=relaxed/simple;
-	bh=iCOAajrBgIwcJ0oEzyPXZQhOSuEU5xrzYGy65zbJY1w=;
+	s=arc-20240116; t=1760367081; c=relaxed/simple;
+	bh=swWyDsjhJCqMvy3PocIDn63eM93QhmSzbOeg/aol4Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVJ51S2wzujw+lvxK127GWWM+yMzMOHMoptWrUhAGmLpBOdO9+zOs+1/slJFIHbpWGWMW5KfeZ4d4XRRM83qrErPLJqxHjsPK+sg1rhuSkIKhJJE1g4JlgbcQl38inhi++qoT9P4foJs2Ie7IVaSBdV4TOlpZncKMNr08lDoEis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRHdfyUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046CAC4CEE7;
-	Mon, 13 Oct 2025 15:11:42 +0000 (UTC)
+	 MIME-Version; b=lU03cd0eX2ZpUN0KLsU1TO8pcHQYfzb3ymjrAI3cfKTcwXsvPe+kl8v8mfl/Ma4FnADrWztJFlXAaiPQ9jDEZFlHlHbpA4QVv8eRSh3NFTNnROCwz6UhXgOsP2eSwalRz90SjYMi1eeOgFik6hUMq0ckWzMiw0J6ZFOYhLbqVYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neVVc+3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D767FC4CEE7;
+	Mon, 13 Oct 2025 14:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368303;
-	bh=iCOAajrBgIwcJ0oEzyPXZQhOSuEU5xrzYGy65zbJY1w=;
+	s=korg; t=1760367081;
+	bh=swWyDsjhJCqMvy3PocIDn63eM93QhmSzbOeg/aol4Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRHdfyUt0TQ9jv6TubCOcpl00Jz50VIPBeA8MWAQXxsgT2MoNnseYdsbq3mEN0uEm
-	 po4Yb7uiUGluwutFUAMvS8BIFjdn52TCMVxW+sE/w7hBm9S8otxuTd9A9WEaxKT2UJ
-	 M7phniVlmWpWATIKhpjgkcSYq7TuzoDQXp3ZrpHA=
+	b=neVVc+3g0aRGREyGodRv5snJsSfn29S2Qd3h5sBHvwaebsSDOPsbcsbEYbee77mxC
+	 PA3uWbTEgqCIzkMDkvFAqSwnaWt22ayxEUvCD0by43JvIb0y8b8MdMCPeVPcsh/gb0
+	 rGeBsnDWISQSHkVmnXmEQAcNq3FA/MLMyV+E+7Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanfang Zhang <quic_yuanfang@quicinc.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/262] coresight: Only register perf symlink for sinks with alloc_buffer
+Subject: [PATCH 6.1 084/196] hwmon: (mlxreg-fan) Separate methods of fan setting coming from different subsystems
 Date: Mon, 13 Oct 2025 16:44:17 +0200
-Message-ID: <20251013144330.267443604@linuxfoundation.org>
+Message-ID: <20251013144317.612486661@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanfang Zhang <quic_yuanfang@quicinc.com>
+From: Vadim Pasternak <vadimp@nvidia.com>
 
-[ Upstream commit 12d9a9dd9d8a4f1968073e7f34515896d1e22b78 ]
+[ Upstream commit c02e4644f8ac9c501077ef5ac53ae7fc51472d49 ]
 
-Ensure that etm_perf_add_symlink_sink() is only called for devices
-that implement the alloc_buffer operation. This prevents invalid
-symlink creation for dummy sinks that do not implement alloc_buffer.
+Distinct between fan speed setting request coming for hwmon and
+thermal subsystems.
 
-Without this check, perf may attempt to use a dummy sink that lacks
-alloc_buffer operationsu to initialise perf's ring buffer, leading
-to runtime failures.
+There are fields 'last_hwmon_state' and 'last_thermal_state' in the
+structure 'mlxreg_fan_pwm', which respectively store the cooling state
+set by the 'hwmon' and 'thermal' subsystem.
+The purpose is to make arbitration of fan speed setting. For example, if
+fan speed required to be not lower than some limit, such setting is to
+be performed through 'hwmon' subsystem, thus 'thermal' subsystem will
+not set fan below this limit.
 
-Fixes: 9d3ba0b6c0569 ("Coresight: Add coresight dummy driver")
-Signed-off-by: Yuanfang Zhang <quic_yuanfang@quicinc.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250630-etm_perf_sink-v1-1-e4a7211f9ad7@quicinc.com
+Currently, the 'last_thermal_state' is also be updated by 'hwmon' causing
+cooling state to never be set to a lower value.
+
+Eliminate update of 'last_thermal_state', when request is coming from
+'hwmon' subsystem.
+
+Fixes: da74944d3a46 ("hwmon: (mlxreg-fan) Use pwm attribute for setting fan speed low limit")
+Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20250113084859.27064-2-vadimp@nvidia.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/hwmon/mlxreg-fan.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
-index b7941d8abbfe7..f20d4cab8f1df 100644
---- a/drivers/hwtracing/coresight/coresight-core.c
-+++ b/drivers/hwtracing/coresight/coresight-core.c
-@@ -1200,8 +1200,9 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
- 		goto out_unlock;
- 	}
+diff --git a/drivers/hwmon/mlxreg-fan.c b/drivers/hwmon/mlxreg-fan.c
+index 7514d57661048..fbb18bd3f09b9 100644
+--- a/drivers/hwmon/mlxreg-fan.c
++++ b/drivers/hwmon/mlxreg-fan.c
+@@ -113,8 +113,8 @@ struct mlxreg_fan {
+ 	int divider;
+ };
  
--	if (csdev->type == CORESIGHT_DEV_TYPE_SINK ||
--	    csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) {
-+	if ((csdev->type == CORESIGHT_DEV_TYPE_SINK ||
-+	     csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) &&
-+	    sink_ops(csdev)->alloc_buffer) {
- 		ret = etm_perf_add_symlink_sink(csdev);
+-static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
+-				    unsigned long state);
++static int _mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
++				     unsigned long state, bool thermal);
  
- 		if (ret) {
+ static int
+ mlxreg_fan_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
+@@ -224,8 +224,9 @@ mlxreg_fan_write(struct device *dev, enum hwmon_sensor_types type, u32 attr,
+ 				 * last thermal state.
+ 				 */
+ 				if (pwm->last_hwmon_state >= pwm->last_thermal_state)
+-					return mlxreg_fan_set_cur_state(pwm->cdev,
+-									pwm->last_hwmon_state);
++					return _mlxreg_fan_set_cur_state(pwm->cdev,
++									 pwm->last_hwmon_state,
++									 false);
+ 				return 0;
+ 			}
+ 			return regmap_write(fan->regmap, pwm->reg, val);
+@@ -347,9 +348,8 @@ static int mlxreg_fan_get_cur_state(struct thermal_cooling_device *cdev,
+ 	return 0;
+ }
+ 
+-static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
+-				    unsigned long state)
+-
++static int _mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
++				     unsigned long state, bool thermal)
+ {
+ 	struct mlxreg_fan_pwm *pwm = cdev->devdata;
+ 	struct mlxreg_fan *fan = pwm->fan;
+@@ -359,7 +359,8 @@ static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
+ 		return -EINVAL;
+ 
+ 	/* Save thermal state. */
+-	pwm->last_thermal_state = state;
++	if (thermal)
++		pwm->last_thermal_state = state;
+ 
+ 	state = max_t(unsigned long, state, pwm->last_hwmon_state);
+ 	err = regmap_write(fan->regmap, pwm->reg,
+@@ -371,6 +372,13 @@ static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
+ 	return 0;
+ }
+ 
++static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
++				    unsigned long state)
++
++{
++	return _mlxreg_fan_set_cur_state(cdev, state, true);
++}
++
+ static const struct thermal_cooling_device_ops mlxreg_fan_cooling_ops = {
+ 	.get_max_state	= mlxreg_fan_get_max_state,
+ 	.get_cur_state	= mlxreg_fan_get_cur_state,
 -- 
 2.51.0
 
