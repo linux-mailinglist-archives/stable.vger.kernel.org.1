@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-184465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4755BD4030
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCC3BD4BA3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABBD11887DB9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 21E2F508917
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF91130E825;
-	Mon, 13 Oct 2025 14:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33FE3126B0;
+	Mon, 13 Oct 2025 15:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZ4nm5x4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QrNDkbPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F8C3093AD;
-	Mon, 13 Oct 2025 14:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F1422257E;
+	Mon, 13 Oct 2025 15:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367514; cv=none; b=kv7NDtL0zHNUxl68mpln3uq/2qsbw82R8V0Jly2w39QY0KcjXneglGcz234X2DpCvaIXgT8Xkcy1a06rm55boqeclxFN7pNeyaU5uRejWSGvijdAopghgRkFIHoct1YcVvkz92JCv2zGyuzwk1UunO2fqSjDXhz/zG4oiOIkNNQ=
+	t=1760368228; cv=none; b=geaLMO3XJi4meSRQ8Daq4GQJ7hh6Fguo3eqDBeMDnOCzzA+BiPVdwUZViFOTxAVdctEqW/ACJhi5x2FjONxRn2onjmWcknIav37CmWegFCC9s+ZynhlR/QaKjWwlY/vYKvIMwqxBtrg/4Q1R9LCVMCOkmo0vcbKfuQ1bIZY7aAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367514; c=relaxed/simple;
-	bh=7/6GbFERhTH+yGL94A/7UvmXfOTUjwQfbxkmJgUrViQ=;
+	s=arc-20240116; t=1760368228; c=relaxed/simple;
+	bh=Z0Wlgi+2bBCnHIdcDjGDJITmLxC6M3EzO0Z6HHhKGmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bW0W7hjmKle0HaaXFaW+jCj2VhmImsPPyTbZBbDN2MQIFTp5zU2KMW3ly+sP26NE8wD7H4sQAp4SEXtkuaLprgfQTDvc5ua6ZHpYxc2BOVrnIXzF2//AXSBiRNtjSiUgTmyKv6TNkPJy0as/183Gh2n8cEvbzZ1b+XQePaF6nsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZ4nm5x4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9DAC4CEFE;
-	Mon, 13 Oct 2025 14:58:33 +0000 (UTC)
+	 MIME-Version; b=uZ43W+x40tQkB4wbBHKL3rtOl7k5iXI9U+e+DVoiNnszIARO6mg+Sp7VDHFXGVzAn8CPS/KBLdP/KzJlcxW3XOxobycE1vfZd+FlcjirefO5c7oihP7Qna4VsLPG+Qzq9OEXWs+kj2XtOOT96Q9Ba31IcxEsqYa8JjGAbY75hZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QrNDkbPL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BA6C4CEE7;
+	Mon, 13 Oct 2025 15:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367514;
-	bh=7/6GbFERhTH+yGL94A/7UvmXfOTUjwQfbxkmJgUrViQ=;
+	s=korg; t=1760368228;
+	bh=Z0Wlgi+2bBCnHIdcDjGDJITmLxC6M3EzO0Z6HHhKGmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZ4nm5x4pm1SdHQSaVeOYkHkZk95hECpneUjdxzE4SM9QYSz6KTMzfxTEJ7PmsJUG
-	 689Np+nQhgPvY9U94sJMaUSbMVmfXDLyJjtSOr1w7Oqvn/n0zL3XTXytUmLM/qXVeC
-	 lyVtlo7Wv2M6aqG9UZscoxfdvgVPTZ8JX31B+O+I=
+	b=QrNDkbPLXbqXu3Pt+dyD2DCx3zrHeGs+/3otrW+qtoFdaf7ptQZ7+JJ2RobxuR3VZ
+	 wirkSIwj4i/t7/WZMvFoOlDsepcouB86sKohCW66jbGdQR5RBcB+PxhzJN86+geadz
+	 qcE4CGdawz9EQPuuTtTW0+ycB0w+2DkDJYwFxjCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Mike Christie <mchristi@redhat.com>,
-	"Richard W.M. Jones" <rjones@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Yu Kuai <yukuai1@huaweicloud.com>,
-	linux-block@vger.kernel.org,
-	nbd@other.debian.org,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/196] nbd: restrict sockets to TCP and UDP
+Subject: [PATCH 6.12 088/262] libbpf: Fix error when st-prefix_ops and ops from differ btf
 Date: Mon, 13 Oct 2025 16:43:50 +0200
-Message-ID: <20251013144316.615991401@linuxfoundation.org>
+Message-ID: <20251013144329.299637325@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,56 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: D. Wythe <alibuda@linux.alibaba.com>
 
-[ Upstream commit 9f7c02e031570e8291a63162c6c046dc15ff85b0 ]
+[ Upstream commit 0cc114dc358cf8da2ca23a366e761e89a46ca277 ]
 
-Recently, syzbot started to abuse NBD with all kinds of sockets.
+When a module registers a struct_ops, the struct_ops type and its
+corresponding map_value type ("bpf_struct_ops_") may reside in different
+btf objects, here are four possible case:
 
-Commit cf1b2326b734 ("nbd: verify socket is supported during setup")
-made sure the socket supported a shutdown() method.
++--------+---------------+-------------+---------------------------------+
+|        |bpf_struct_ops_| xxx_ops     |                                 |
++--------+---------------+-------------+---------------------------------+
+| case 0 | btf_vmlinux   | btf_vmlinux | be used and reg only in vmlinux |
++--------+---------------+-------------+---------------------------------+
+| case 1 | btf_vmlinux   | mod_btf     | INVALID                         |
++--------+---------------+-------------+---------------------------------+
+| case 2 | mod_btf       | btf_vmlinux | reg in mod but be used both in  |
+|        |               |             | vmlinux and mod.                |
++--------+---------------+-------------+---------------------------------+
+| case 3 | mod_btf       | mod_btf     | be used and reg only in mod     |
++--------+---------------+-------------+---------------------------------+
 
-Explicitely accept TCP and UNIX stream sockets.
+Currently we figure out the mod_btf by searching with the struct_ops type,
+which makes it impossible to figure out the mod_btf when the struct_ops
+type is in btf_vmlinux while it's corresponding map_value type is in
+mod_btf (case 2).
 
-Fixes: cf1b2326b734 ("nbd: verify socket is supported during setup")
-Reported-by: syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/CANn89iJ+76eE3A_8S_zTpSyW5hvPRn6V57458hCZGY5hbH_bFA@mail.gmail.com/T/#m081036e8747cd7e2626c1da5d78c8b9d1e55b154
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mike Christie <mchristi@redhat.com>
-Cc: Richard W.M. Jones <rjones@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Yu Kuai <yukuai1@huaweicloud.com>
-Cc: linux-block@vger.kernel.org
-Cc: nbd@other.debian.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The fix is to use the corresponding map_value type ("bpf_struct_ops_")
+as the lookup anchor instead of the struct_ops type to figure out the
+`btf` and `mod_btf` via find_ksym_btf_id(), and then we can locate
+the kern_type_id via btf__find_by_name_kind() with the `btf` we just
+obtained from find_ksym_btf_id().
+
+With this change the lookup obtains the correct btf and mod_btf for case 2,
+preserves correct behavior for other valid cases, and still fails as
+expected for the invalid scenario (case 1).
+
+Fixes: 590a00888250 ("bpf: libbpf: Add STRUCT_OPS support")
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/bpf/20250926071751.108293-1-alibuda@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/lib/bpf/libbpf.c | 36 +++++++++++++++++-------------------
+ 1 file changed, 17 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 3742ddf46c55a..27a05b1521f69 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -1128,6 +1128,14 @@ static struct socket *nbd_get_socket(struct nbd_device *nbd, unsigned long fd,
- 	if (!sock)
- 		return NULL;
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index ac5ad30266a5e..060aecf60b76b 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -990,35 +990,33 @@ find_struct_ops_kern_types(struct bpf_object *obj, const char *tname_raw,
+ 	const struct btf_member *kern_data_member;
+ 	struct btf *btf = NULL;
+ 	__s32 kern_vtype_id, kern_type_id;
+-	char tname[256];
++	char tname[192], stname[256];
+ 	__u32 i;
  
-+	if (!sk_is_tcp(sock->sk) &&
-+	    !sk_is_stream_unix(sock->sk)) {
-+		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: should be TCP or UNIX.\n");
-+		*err = -EINVAL;
-+		sockfd_put(sock);
-+		return NULL;
+ 	snprintf(tname, sizeof(tname), "%.*s",
+ 		 (int)bpf_core_essential_name_len(tname_raw), tname_raw);
+ 
+-	kern_type_id = find_ksym_btf_id(obj, tname, BTF_KIND_STRUCT,
+-					&btf, mod_btf);
+-	if (kern_type_id < 0) {
+-		pr_warn("struct_ops init_kern: struct %s is not found in kernel BTF\n",
+-			tname);
+-		return kern_type_id;
+-	}
+-	kern_type = btf__type_by_id(btf, kern_type_id);
++	snprintf(stname, sizeof(stname), "%s%s", STRUCT_OPS_VALUE_PREFIX, tname);
+ 
+-	/* Find the corresponding "map_value" type that will be used
+-	 * in map_update(BPF_MAP_TYPE_STRUCT_OPS).  For example,
+-	 * find "struct bpf_struct_ops_tcp_congestion_ops" from the
+-	 * btf_vmlinux.
++	/* Look for the corresponding "map_value" type that will be used
++	 * in map_update(BPF_MAP_TYPE_STRUCT_OPS) first, figure out the btf
++	 * and the mod_btf.
++	 * For example, find "struct bpf_struct_ops_tcp_congestion_ops".
+ 	 */
+-	kern_vtype_id = find_btf_by_prefix_kind(btf, STRUCT_OPS_VALUE_PREFIX,
+-						tname, BTF_KIND_STRUCT);
++	kern_vtype_id = find_ksym_btf_id(obj, stname, BTF_KIND_STRUCT, &btf, mod_btf);
+ 	if (kern_vtype_id < 0) {
+-		pr_warn("struct_ops init_kern: struct %s%s is not found in kernel BTF\n",
+-			STRUCT_OPS_VALUE_PREFIX, tname);
++		pr_warn("struct_ops init_kern: struct %s is not found in kernel BTF\n", stname);
+ 		return kern_vtype_id;
+ 	}
+ 	kern_vtype = btf__type_by_id(btf, kern_vtype_id);
+ 
++	kern_type_id = btf__find_by_name_kind(btf, tname, BTF_KIND_STRUCT);
++	if (kern_type_id < 0) {
++		pr_warn("struct_ops init_kern: struct %s is not found in kernel BTF\n", tname);
++		return kern_type_id;
 +	}
++	kern_type = btf__type_by_id(btf, kern_type_id);
 +
- 	if (sock->ops->shutdown == sock_no_shutdown) {
- 		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: shutdown callout must be supported.\n");
- 		*err = -EINVAL;
+ 	/* Find "struct tcp_congestion_ops" from
+ 	 * struct bpf_struct_ops_tcp_congestion_ops {
+ 	 *	[ ... ]
+@@ -1031,8 +1029,8 @@ find_struct_ops_kern_types(struct bpf_object *obj, const char *tname_raw,
+ 			break;
+ 	}
+ 	if (i == btf_vlen(kern_vtype)) {
+-		pr_warn("struct_ops init_kern: struct %s data is not found in struct %s%s\n",
+-			tname, STRUCT_OPS_VALUE_PREFIX, tname);
++		pr_warn("struct_ops init_kern: struct %s data is not found in struct %s\n",
++			tname, stname);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.51.0
 
