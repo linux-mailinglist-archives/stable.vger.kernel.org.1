@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-185017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C18BD4C9F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:09:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A73EEBD4EEB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7991C427B08
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 81508503A6F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED17306497;
-	Mon, 13 Oct 2025 15:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8689B30CD88;
+	Mon, 13 Oct 2025 15:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAPYZuy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xas9Gnz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC1630C619;
-	Mon, 13 Oct 2025 15:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A1630CD82;
+	Mon, 13 Oct 2025 15:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369095; cv=none; b=THfqVvPq63X82dPLxoBvZ9nmRU+Fsa7PPD5zPwpV7ihPeH+3LW5U1c2hwFw4yfVoUxb5GN/XqhK8K2VS86xOYUi0yA6U6RuH4zIt/1U1O+p666oUmhXUTKgV/07TQSOGPWXMBnEtmn8UNxWdNjMwjkkoPqYA4w+0N/N2aAYnOTk=
+	t=1760369101; cv=none; b=h1O+fdANQB5J+QhQk8p17N6mRIMFQlEgPiOSc0vMHEvYVSHe3xC5eK5M6SBys328fly7vpG0v082fN0OpQiUWZkN7CG8YF+lOmI6xKdsJWgL7RSx1RtzCNr7a64xorbLae3mARMyQ217XeaMCCRWd0fhWaFq0IU+SooFOcOUj4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369095; c=relaxed/simple;
-	bh=oQNdw+GNas9qvlqup/FP01HN8hc3dArs18erXJru2rI=;
+	s=arc-20240116; t=1760369101; c=relaxed/simple;
+	bh=hemfGLBTH6BcQVQI5v8hVZ05hye5a8wfJBxhtA1SMhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVhn37yBNIFwYmtD+YlrsTdlU45u6lPEVzYAjQi/imaQEbSTfeiUAeXZ5/e9mtNfOOin4u5WJLGB1qXawaxdhPTYDkUMxX0d6Unv1N3GxfMjC7HVxcR+ogKZ0Dy+oU/UzGn/DwfAdjI76lurfFPa3Gm+THltnm8n/RH4j7PgnSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAPYZuy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC37EC4CEE7;
-	Mon, 13 Oct 2025 15:24:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KK8h8puEFfUlim672vMHYOyH0s+IO1kzj5+gI4gmwyf9+VV2K2WUDGwWngyZ1qwOt5qDwr5NpJPRaAhvK0CGtfutwK2M6AiPkTZK3SCxyskzEqIIC8crMUkAx+Y/dmFFTISwoT+EPnDp7YRPE2jkkuR3ggOU/8W0DgQx53Pk1Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xas9Gnz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF73FC4CEE7;
+	Mon, 13 Oct 2025 15:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369095;
-	bh=oQNdw+GNas9qvlqup/FP01HN8hc3dArs18erXJru2rI=;
+	s=korg; t=1760369101;
+	bh=hemfGLBTH6BcQVQI5v8hVZ05hye5a8wfJBxhtA1SMhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAPYZuy+RP6H99g5oZbAtAM0rzBpXNuqR0gxbY/CuLWho06YxVMa2KCnus8N8JFBI
-	 q0sB+2970j0fSV+bwrChxL83o7xWQbEa6w4rUA2GsiJYcDUski5+94pyG+MFRFeKEV
-	 Ct505VXrh5dPxWBmFwmV/MpgRitOF6DlSZDOJ25A=
+	b=xas9Gnz2hUvke6eWh+zgptoI9geRMOtY/D6yDjG7H4iD2Fn0f4yIyKfxslR37bd4D
+	 UeKbgr5C25TK+7+cWLPellCd4HqwLjtooEYHmVKeQhyC3Cg3KgURlQ0zF00tWazdFp
+	 w6tgtwLSLzQIIjvd78hCAwcfQ7zMonloi4B+NW5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 093/563] PM: sleep: core: Clear power.must_resume in noirq suspend error path
-Date: Mon, 13 Oct 2025 16:39:14 +0200
-Message-ID: <20251013144414.666262563@linuxfoundation.org>
+Subject: [PATCH 6.17 095/563] vdso: Add struct __kernel_old_timeval forward declaration to gettime.h
+Date: Mon, 13 Oct 2025 16:39:16 +0200
+Message-ID: <20251013144414.737176071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -60,71 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit be82483d1b60baf6747884bd74cb7de484deaf76 ]
+[ Upstream commit 437054b1bbe11be87ab0a522b8ccbae3f785c642 ]
 
-If system suspend is aborted in the "noirq" phase (for instance, due to
-an error returned by one of the device callbacks), power.is_noirq_suspended
-will not be set for some devices and device_resume_noirq() will return
-early for them.  Consequently, noirq resume callbacks will not run for
-them at all because the noirq suspend callbacks have not run for them
-yet.
+The prototype of __vdso_gettimeofday() uses this struct.  However
+gettime.h's own includes do not provide a definition for it.
 
-If any of them has power.must_resume set and late suspend has been
-skipped for it (due to power.smart_suspend), early resume should be
-skipped for it either, or its state may become inconsistent (for
-instance, if the early resume assumes that it will always follow
-noirq resume).
+Add a forward declaration, similar to other used structs.
 
-Make that happen by clearing power.must_resume in device_resume_noirq()
-for devices with power.is_noirq_suspended clear that have been left in
-suspend by device_suspend_late(), which will subsequently cause
-device_resume_early() to leave the device in suspend and avoid
-changing its state.
-
-Fixes: 0d4b54c6fee8 ("PM / core: Add LEAVE_SUSPENDED driver flag")
-Link: https://lore.kernel.org/linux-pm/5d692b81-6f58-4e86-9cb0-ede69a09d799@rowland.harvard.edu/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/3381776.aeNJFYEL58@rafael.j.wysocki
+Fixes: 42874e4eb35b ("arch: vdso: consolidate gettime prototypes")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250815-vdso-sparc64-generic-2-v2-1-b5ff80672347@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ include/vdso/gettime.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 2ea6e05e6ec90..c883b01ffbddc 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -724,8 +724,20 @@ static void device_resume_noirq(struct device *dev, pm_message_t state, bool asy
- 	if (dev->power.syscore || dev->power.direct_complete)
- 		goto Out;
+diff --git a/include/vdso/gettime.h b/include/vdso/gettime.h
+index c50d152e7b3e0..9ac161866653a 100644
+--- a/include/vdso/gettime.h
++++ b/include/vdso/gettime.h
+@@ -5,6 +5,7 @@
+ #include <linux/types.h>
  
--	if (!dev->power.is_noirq_suspended)
-+	if (!dev->power.is_noirq_suspended) {
-+		/*
-+		 * This means that system suspend has been aborted in the noirq
-+		 * phase before invoking the noirq suspend callback for the
-+		 * device, so if device_suspend_late() has left it in suspend,
-+		 * device_resume_early() should leave it in suspend either in
-+		 * case the early resume of it depends on the noirq resume that
-+		 * has not run.
-+		 */
-+		if (dev_pm_skip_suspend(dev))
-+			dev->power.must_resume = false;
-+
- 		goto Out;
-+	}
+ struct __kernel_timespec;
++struct __kernel_old_timeval;
+ struct timezone;
  
- 	if (!dpm_wait_for_superior(dev, async))
- 		goto Out;
+ #if !defined(CONFIG_64BIT) || defined(BUILD_VDSO32_64)
 -- 
 2.51.0
 
