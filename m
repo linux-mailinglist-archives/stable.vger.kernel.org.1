@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF8EBD4576
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:37:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E87BD46D2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 273543E794D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 48AB64F71E8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECBE30B526;
-	Mon, 13 Oct 2025 15:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D0130BB8B;
+	Mon, 13 Oct 2025 15:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAdoSKf6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFfoUTlD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF5D30B51F;
-	Mon, 13 Oct 2025 15:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9485C30B51A;
+	Mon, 13 Oct 2025 15:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367748; cv=none; b=ix62mTF419fz1KpQIRk+ReAEs/4eUk2e1fjUMohI0wMcU75hDp74PGQ+yecqYR3Pdkp+7grSmy3zauhQ6vUH5U2kYM042TucrQX2MtwUbnzvcf+OWJGOKgoylKSA9LJLS0oMgnbUAG8VvWXq2Ea9B7VuQl1IPp6Chw5NaxIhLkM=
+	t=1760367753; cv=none; b=XpZOTA9qxjP1NMNRIgzfRasKmTRlY3+/cvF8tHyhMllZe0jZcRg90sEXFZA6XmpCAfv+/KUukU9ojG1hvfXJvh+LeAHmOLzJDzPcVG0irvxJo3pzDIUL0/DjpEM0e5UY6eE4M6LqCoMMl950LekeYcGlz0EISWpwoWj3IjvquBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367748; c=relaxed/simple;
-	bh=GFxvUIq4zSXJIHgnJEh1fU6qz2MLI5UgK00NtgZnZB4=;
+	s=arc-20240116; t=1760367753; c=relaxed/simple;
+	bh=9uPVAuZWL4VMzJ35uUNTiSSuQED25LeY2C9HoQGJQhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nJ/kp+mRxX5QAsbHozffyha7F9D5J4eWUyrY+5VPZSnpbx5tIPnQR36i4OIu/3EaaUphTHffj6UL/lZ9NjSe1CHcCtTS9nt49dFy8m6HP3AXYPpwwSdshbujG3ABsiLZd1OUzzQ4ahvjQhkxNwBfMJ6CEgve8hENQzJCkiabklw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAdoSKf6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F937C4CEE7;
-	Mon, 13 Oct 2025 15:02:27 +0000 (UTC)
+	 MIME-Version; b=N+rWcJfRHnJsjwcbhGWKqDNImMXTjOqwCdjDf39ZPuIXpcCMTiAMLNUsk8BsUxL7zjfYs4uhMTpu/SjOphia47rrjjlusezSm8yWPbAG73rMt1FXCqZ1ELPRGbzHOhvyZw0cN40qGnGjm3xHwo3y8g9u8Lio6HSRTd+luEoyY5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFfoUTlD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198CAC4CEFE;
+	Mon, 13 Oct 2025 15:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367747;
-	bh=GFxvUIq4zSXJIHgnJEh1fU6qz2MLI5UgK00NtgZnZB4=;
+	s=korg; t=1760367753;
+	bh=9uPVAuZWL4VMzJ35uUNTiSSuQED25LeY2C9HoQGJQhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAdoSKf6auLZQeBcDmI9MKkz/1Pz+q5Ps32TXeSuTXTWQf+h88WL0TepPp0tfUtqP
-	 ie+oDjUCngWhiyLV3pTZLh/ZM6SJeI2SU7fbQIGyzdd/XaEiKv/UvCCFpxlYmLBxrV
-	 nnnBnpH8/es/I2n5VE1Tu8o0j9rHoqwLanFX/0dU=
+	b=EFfoUTlD+E3H6KtCxBQ+yH7S9+Y/AhCkqgHvQ3sNxGKnc/ggkA3DLI7reYMZnp05P
+	 aPJLOqYqSc6Qzt/A7OZnBhZGsxF1Mnxl7AeipLUYIaN0TmF9MogzIG/LM3d2kjwoio
+	 +v1yk8Vl/qgdklg9N+xrS5wt+IAKsN1IXnd2HRDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Qianfeng Rong <rongqianfeng@vivo.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/196] scsi: qla2xxx: Fix incorrect sign of error code in START_SP_W_RETRIES()
-Date: Mon, 13 Oct 2025 16:45:11 +0200
-Message-ID: <20251013144319.650504212@linuxfoundation.org>
+Subject: [PATCH 6.6 121/196] scsi: qla2xxx: Fix incorrect sign of error code in qla_nvme_xmt_ls_rsp()
+Date: Mon, 13 Oct 2025 16:45:12 +0200
+Message-ID: <20251013144319.686563241@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
 References: <20251013144315.184275491@linuxfoundation.org>
@@ -68,41 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 1f037e3acda79639a78f096355f2c308a3d45492 ]
+[ Upstream commit 9877c004e9f4d10e7786ac80a50321705d76e036 ]
 
-Change the error code EAGAIN to -EAGAIN in START_SP_W_RETRIES() to align
-with qla2x00_start_sp() returning negative error codes or QLA_SUCCESS,
-preventing logical errors.  Additionally, the '_rval' variable should
-store negative error codes to conform to Linux kernel error code
-conventions.
+Change the error code EAGAIN to -EAGAIN in qla_nvme_xmt_ls_rsp() to
+align with qla2x00_start_sp() returning negative error codes or
+QLA_SUCCESS, preventing logical errors.
 
-Fixes: 9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
+Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
 Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Message-ID: <20250905075446.381139-3-rongqianfeng@vivo.com>
+Message-ID: <20250905075446.381139-4-rongqianfeng@vivo.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_nvme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index 5fa2727c1bea7..e881d704b45d1 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -2059,11 +2059,11 @@ static void qla_marker_sp_done(srb_t *sp, int res)
- 	int cnt = 5; \
- 	do { \
- 		if (_chip_gen != sp->vha->hw->chip_reset || _login_gen != sp->fcport->login_gen) {\
--			_rval = EINVAL; \
-+			_rval = -EINVAL; \
- 			break; \
- 		} \
- 		_rval = qla2x00_start_sp(_sp); \
--		if (_rval == EAGAIN) \
-+		if (_rval == -EAGAIN) \
- 			msleep(1); \
- 		else \
- 			break; \
+diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
+index 8f4cc136a9c9c..080670cb2aa51 100644
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -420,7 +420,7 @@ static int qla_nvme_xmt_ls_rsp(struct nvme_fc_local_port *lport,
+ 	switch (rval) {
+ 	case QLA_SUCCESS:
+ 		break;
+-	case EAGAIN:
++	case -EAGAIN:
+ 		msleep(PURLS_MSLEEP_INTERVAL);
+ 		cnt++;
+ 		if (cnt < PURLS_RETRY_COUNT)
 -- 
 2.51.0
 
