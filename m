@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157DFBD3C1B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:57:29 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A73C0BD3F24
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E00D51890E77
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:57:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5326334E0DC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511F830F530;
-	Mon, 13 Oct 2025 14:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E29030E0E2;
+	Mon, 13 Oct 2025 14:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUlRE0ME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ashYBfat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9A230E835;
-	Mon, 13 Oct 2025 14:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4A33081CA;
+	Mon, 13 Oct 2025 14:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366940; cv=none; b=PBR1hD9Hntvr854HwFQopyFCGfgC39A/z7Rw6JhQEt8LfvjjocW3expcdfM1OG9xFWcMk1ppe6zVz7sEM5EXfeYQc02CCGhN2mS/E0I1De0DrLcbFY2l5ROuapf9eIMDo2X3V4VrvY6XIJVZ+9M1BHL2EYFUo+o7oJCQoXLxVew=
+	t=1760367454; cv=none; b=g3xcWr84g2VabbjpHzAofCSPW7OGgQLy/6ExShoSh41Pc97VMfxMcMDAjIU/f4URSVBlRYwsWMSmEejimeNaqBHYp8c4+FQ+PodO46pjlW+HtjuIpinUtDQjxe7YMIqLhfXQsFyYeMflVwVc6vefWzFLO7MxbYZQqmJz+Lxy9CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366940; c=relaxed/simple;
-	bh=YFJwdQjmhANHXliMvKOrjX00lVPUHJcFBkFm+0O8c74=;
+	s=arc-20240116; t=1760367454; c=relaxed/simple;
+	bh=o6YJmH/S3MqOzaATzJyzJGJFEYtjrHSzPhdqFVdl/WU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkzxMRkUmfZnp+rxUgk2widwbbC4JqURBZvHvWWjvSt+tcDV2yHUb7qLYEBhcFUgwQJn7E+WDsvup8txM3X1K+aU/DDo3afFm+hrxYx98MVOwvbbBcNcXrfoQWQDAnWPB8jbpavx8wDTB9vYFuy/5jn8ZV8pGX1svhtEDQqc2Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUlRE0ME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FA1C4CEE7;
-	Mon, 13 Oct 2025 14:48:59 +0000 (UTC)
+	 MIME-Version; b=d4tbndzKnM7/UWj2A9N95bShziGNRqNfvF6BO+zlF/0UyQu7OlNoRyBleJ39H36goeboRG8+9doUoaCb8zrvvTfCnLOYyJgX5HwBpx5W5Ju7L5BWhRFlOAvYSy2NMlmBjRlmqXOcgt/TmTPoXoyE0t74C8mBOGPFJMTs4vMUJF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ashYBfat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB38EC4CEE7;
+	Mon, 13 Oct 2025 14:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366939;
-	bh=YFJwdQjmhANHXliMvKOrjX00lVPUHJcFBkFm+0O8c74=;
+	s=korg; t=1760367454;
+	bh=o6YJmH/S3MqOzaATzJyzJGJFEYtjrHSzPhdqFVdl/WU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUlRE0MEpmSMqZDrGy8bKShcdYW+PP7DC4teqkjab354dtAzwcDbmtj8g2drYg3pk
-	 +MKuYY5XYEAaOPggXeE9PFMbYfo569mVPhBOzJ7g9goUHZIK+iwOcBGZpZketj9XrZ
-	 Mu+nKeVSpwIb9+Xp85U1BMY3sPSiUbYF/HOaUEl8=
+	b=ashYBfat2WYcsR7BDg4aFdtH3SeA88KB0YAVs0bQgrjy2Ur3iQGrmBzbl8KSSJ8Vd
+	 3WgRmmU1GY8Wu/7T986Ufj+yc9lEzOlkpCFx1atjqU9bOQchHeARaujNJR7jLJzw0i
+	 9cqr2x5S5vdPuKwRUudQ17JzyISsFaDG05Cf9KDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/196] can: hi311x: fix null pointer dereference when resuming from sleep before interface was enabled
+Subject: [PATCH 6.6 018/196] s390/bpf: Write back tail call counter for BPF_PSEUDO_CALL
 Date: Mon, 13 Oct 2025 16:43:29 +0200
-Message-ID: <20251013144315.894145166@linuxfoundation.org>
+Message-ID: <20251013144315.855528374@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,124 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit 6b696808472197b77b888f50bc789a3bae077743 ]
+[ Upstream commit c861a6b147137d10b5ff88a2c492ba376cd1b8b0 ]
 
-This issue is similar to the vulnerability in the `mcp251x` driver,
-which was fixed in commit 03c427147b2d ("can: mcp251x: fix resume from
-sleep before interface was brought up").
+The tailcall_bpf2bpf_hierarchy_1 test hangs on s390. Its call graph is
+as follows:
 
-In the `hi311x` driver, when the device resumes from sleep, the driver
-schedules `priv->restart_work`. However, if the network interface was
-not previously enabled, the `priv->wq` (workqueue) is not allocated and
-initialized, leading to a null pointer dereference.
+  entry()
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
 
-To fix this, we move the allocation and initialization of the workqueue
-from the `hi3110_open` function to the `hi3110_can_probe` function.
-This ensures that the workqueue is properly initialized before it is
-used during device resume. And added logic to destroy the workqueue
-in the error handling paths of `hi3110_can_probe` and in the
-`hi3110_can_remove` function to prevent resource leaks.
+entry() copies its tail call counter to the subprog_tail()'s frame,
+which then increments it. However, the incremented result is discarded,
+leading to an astronomically large number of tail calls.
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://patch.msgid.link/20250911150820.250-1-chenyufeng@iie.ac.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fix by writing the incremented counter back to the entry()'s frame.
+
+Fixes: dd691e847d28 ("s390/bpf: Implement bpf_jit_supports_subprog_tailcalls()")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20250813121016.163375-3-iii@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/hi311x.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ arch/s390/net/bpf_jit_comp.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index 57ea7dfe8a596..1acd4fc7adc8b 100644
---- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -545,8 +545,6 @@ static int hi3110_stop(struct net_device *net)
- 
- 	priv->force_quit = 1;
- 	free_irq(spi->irq, priv);
--	destroy_workqueue(priv->wq);
--	priv->wq = NULL;
- 
- 	mutex_lock(&priv->hi3110_lock);
- 
-@@ -771,34 +769,23 @@ static int hi3110_open(struct net_device *net)
- 		goto out_close;
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index 2d8facfd4e425..31a4bbd2e7dc4 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -1425,13 +1425,6 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 		jit->seen |= SEEN_FUNC;
+ 		/*
+ 		 * Copy the tail call counter to where the callee expects it.
+-		 *
+-		 * Note 1: The callee can increment the tail call counter, but
+-		 * we do not load it back, since the x86 JIT does not do this
+-		 * either.
+-		 *
+-		 * Note 2: We assume that the verifier does not let us call the
+-		 * main program, which clears the tail call counter on entry.
+ 		 */
+ 		/* mvc STK_OFF_TCCNT(4,%r15),N(%r15) */
+ 		_EMIT6(0xd203f000 | STK_OFF_TCCNT,
+@@ -1457,6 +1450,22 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 		call_r1(jit);
+ 		/* lgr %b0,%r2: load return value into %b0 */
+ 		EMIT4(0xb9040000, BPF_REG_0, REG_2);
++
++		/*
++		 * Copy the potentially updated tail call counter back.
++		 */
++
++		if (insn->src_reg == BPF_PSEUDO_CALL)
++			/*
++			 * mvc frame_off+tail_call_cnt(%r15),
++			 *     tail_call_cnt(4,%r15)
++			 */
++			_EMIT6(0xd203f000 | (jit->frame_off +
++					     offsetof(struct prog_frame,
++						      tail_call_cnt)),
++			       0xf000 | offsetof(struct prog_frame,
++						 tail_call_cnt));
++
+ 		break;
  	}
- 
--	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
--				   0);
--	if (!priv->wq) {
--		ret = -ENOMEM;
--		goto out_free_irq;
--	}
--	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
--	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
--
- 	ret = hi3110_hw_reset(spi);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	ret = hi3110_setup(net);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	ret = hi3110_set_normal_mode(spi);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	netif_wake_queue(net);
- 	mutex_unlock(&priv->hi3110_lock);
- 
- 	return 0;
- 
-- out_free_wq:
--	destroy_workqueue(priv->wq);
-  out_free_irq:
- 	free_irq(spi->irq, priv);
- 	hi3110_hw_sleep(spi);
-@@ -915,6 +902,15 @@ static int hi3110_can_probe(struct spi_device *spi)
- 	if (ret)
- 		goto out_clk;
- 
-+	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
-+				   0);
-+	if (!priv->wq) {
-+		ret = -ENOMEM;
-+		goto out_clk;
-+	}
-+	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
-+	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
-+
- 	priv->spi = spi;
- 	mutex_init(&priv->hi3110_lock);
- 
-@@ -950,6 +946,8 @@ static int hi3110_can_probe(struct spi_device *spi)
- 	return 0;
- 
-  error_probe:
-+	destroy_workqueue(priv->wq);
-+	priv->wq = NULL;
- 	hi3110_power_enable(priv->power, 0);
- 
-  out_clk:
-@@ -970,6 +968,9 @@ static void hi3110_can_remove(struct spi_device *spi)
- 
- 	hi3110_power_enable(priv->power, 0);
- 
-+	destroy_workqueue(priv->wq);
-+	priv->wq = NULL;
-+
- 	clk_disable_unprepare(priv->clk);
- 
- 	free_candev(net);
+ 	case BPF_JMP | BPF_TAIL_CALL: {
 -- 
 2.51.0
 
