@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-184961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B28BD4877
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:10 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF0CBD44E0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E39A95448B1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 68A1234FA7A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05C730F956;
-	Mon, 13 Oct 2025 15:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0769B30F959;
+	Mon, 13 Oct 2025 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEMbuZwg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7CYmWR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6738E2FB978;
-	Mon, 13 Oct 2025 15:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90D730BB99;
+	Mon, 13 Oct 2025 15:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368936; cv=none; b=SxBs1FlokS78rL+ohiroFjjXO60vlFnigkDeLbfLDlDqXCgYJveCwRtdkiEaS6AmgpBqx+mZyUqXPHRppw3ZTy4MKx72rFPgy66/nMivmlbKTOhFazn8ncvoqZWe8MCTX5LnduxmnTZOoDIxTIMYzegoyU31cF9XVxan90KlXKo=
+	t=1760368941; cv=none; b=Vwx71RAEoC8hphPEVBHDlhIS4+Vm7Qvc/gxyyGtououbMABXADZBkxpuKbZOQ6BH+2vMsfNUi9Gc7sgfUoCaYampeWs+64+n9l+poNHslFYJWD2bJtW8VYuTbUH6K62BkLoTTKvjKFDg5ix1aSFcJREyz3ZzcjYhgcXZYR1BrxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368936; c=relaxed/simple;
-	bh=lSo3+/Tl4u93n7hhFsdozMZfk6fFTE/wb9eUxZUC4cY=;
+	s=arc-20240116; t=1760368941; c=relaxed/simple;
+	bh=9uevbsVNZ76wjDms8QhqtojU3hbRInaB1AOYbG35RrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5MBYYLuJJWQzV4m/rwYNADwtvlf6DqEFRiTlGQ+JHEwbR3ZXP8IqE8FeqiQ57dxKALXqUJ5GbyxWBq4OEGe6AlP2AcEs7BcV0tmXqCs/siifHLJVWQwDLu8WkKkGEADvdQ21TchBgy/ZlWCd5Yr+VT8GpltRaeKGdcTJSNuXQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEMbuZwg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DFEC116B1;
-	Mon, 13 Oct 2025 15:22:15 +0000 (UTC)
+	 MIME-Version; b=UbJbBg+1q12Bpo8OD8iPZFyvYrr82aECGluK8iaHeUGCJm9jlDY/f/3Q8PGkgaimX658R6mleOlb0uuDbrh1GRMCVW6AsfqT4SwvcXDSfvEcUSwvSRc+vX/jnytKniLUl7eTjrSJdgdMa63ib8FYdHHLr95rygXEMGpyaViBCHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7CYmWR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4030DC116B1;
+	Mon, 13 Oct 2025 15:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368935;
-	bh=lSo3+/Tl4u93n7hhFsdozMZfk6fFTE/wb9eUxZUC4cY=;
+	s=korg; t=1760368941;
+	bh=9uevbsVNZ76wjDms8QhqtojU3hbRInaB1AOYbG35RrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zEMbuZwggB97Y1nEEuBrfH5Qii58F0gZrtzYSL+AdiMdXmFTxfM08wKzGuT9dvkVM
-	 zDuLlD4aEDA4R78ru2moVqbS0dF+AeGvZcZ7LUne2MjrfTQaOTiqgu4l7h4R5ZwKOq
-	 1FXMpprmBxQ+veWMXCe8KO2n/Ssb6wV38U3iyuDM=
+	b=N7CYmWR/LTC/pKEh4PFpuZWwwLNcvSBxcHMCya26J6h/ityLAobN9WSeSeViFh5sv
+	 f0WAnZ5EAzqjV4RWqIpFoslSll7INbN86VanvvLQEUpL88BsS6BTZzVrpZLORqJpuC
+	 vM95ORNZm/IqeT+MB5LWMcHi8DC2F89RBEOecOA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Da Xue <da@libre.computer>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 071/563] soc: qcom: rpmh-rsc: Unconditionally clear _TRIGGER bit for TCS
-Date: Mon, 13 Oct 2025 16:38:52 +0200
-Message-ID: <20251013144413.864602044@linuxfoundation.org>
+Subject: [PATCH 6.17 072/563] pinctrl: meson-gxl: add missing i2c_d pinmux
+Date: Mon, 13 Oct 2025 16:38:53 +0200
+Message-ID: <20251013144413.900963042@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,48 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+From: Da Xue <da@libre.computer>
 
-[ Upstream commit f87412d18edb5b8393eb8cb1c2d4a54f90185a21 ]
+[ Upstream commit d8c2a9edd181f0cc4a66eec954b3d8f6a1d954a7 ]
 
-Unconditionally clear the TCS_AMC_MODE_TRIGGER bit when a
-transaction completes. Previously this bit was only cleared when
-a wake TCS was borrowed as an AMC TCS but not for dedicated
-AMC TCS. Leaving this bit set for AMC TCS and entering deeper low
-power modes can generate a false completion IRQ.
+Amlogic GXL has 4 I2C attached to gpio-periphs. I2C_D is on GPIOX_10/11.
 
-Prevent this scenario by always clearing the TCS_AMC_MODE_TRIGGER
-bit upon receiving a completion IRQ.
+Add the relevant func 3 pinmux per the datasheet for S805X/S905X/S905D.
 
-Fixes: 15b3bf61b8d4 ("soc: qcom: rpmh-rsc: Clear active mode configuration for wake TCS")
-Signed-off-by: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250825-rpmh_rsc_change-v1-1-138202c31bf6@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 0f15f500ff2c ("pinctrl: meson: Add GXL pinctrl definitions")
+Signed-off-by: Da Xue <da@libre.computer>
+Link: https://lore.kernel.org/20250821233335.1707559-1-da@libre.computer
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/rpmh-rsc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/pinctrl/meson/pinctrl-meson-gxl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
-index fdab2b1067dbb..c6f7d5c9c493d 100644
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -453,13 +453,10 @@ static irqreturn_t tcs_tx_done(int irq, void *p)
+diff --git a/drivers/pinctrl/meson/pinctrl-meson-gxl.c b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
+index 9171de657f978..a75762e4d2641 100644
+--- a/drivers/pinctrl/meson/pinctrl-meson-gxl.c
++++ b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
+@@ -187,6 +187,9 @@ static const unsigned int i2c_sda_c_pins[]	= { GPIODV_28 };
+ static const unsigned int i2c_sck_c_dv19_pins[] = { GPIODV_19 };
+ static const unsigned int i2c_sda_c_dv18_pins[] = { GPIODV_18 };
  
- 		trace_rpmh_tx_done(drv, i, req);
++static const unsigned int i2c_sck_d_pins[]	= { GPIOX_11 };
++static const unsigned int i2c_sda_d_pins[]	= { GPIOX_10 };
++
+ static const unsigned int eth_mdio_pins[]	= { GPIOZ_0 };
+ static const unsigned int eth_mdc_pins[]	= { GPIOZ_1 };
+ static const unsigned int eth_clk_rx_clk_pins[] = { GPIOZ_2 };
+@@ -411,6 +414,8 @@ static const struct meson_pmx_group meson_gxl_periphs_groups[] = {
+ 	GPIO_GROUP(GPIO_TEST_N),
  
--		/*
--		 * If wake tcs was re-purposed for sending active
--		 * votes, clear AMC trigger & enable modes and
-+		/* Clear AMC trigger & enable modes and
- 		 * disable interrupt for this TCS
- 		 */
--		if (!drv->tcs[ACTIVE_TCS].num_tcs)
--			__tcs_set_trigger(drv, i, false);
-+		__tcs_set_trigger(drv, i, false);
- skip:
- 		/* Reclaim the TCS */
- 		write_tcs_reg(drv, drv->regs[RSC_DRV_CMD_ENABLE], i, 0);
+ 	/* Bank X */
++	GROUP(i2c_sda_d,	5,	5),
++	GROUP(i2c_sck_d,	5,	4),
+ 	GROUP(sdio_d0,		5,	31),
+ 	GROUP(sdio_d1,		5,	30),
+ 	GROUP(sdio_d2,		5,	29),
+@@ -651,6 +656,10 @@ static const char * const i2c_c_groups[] = {
+ 	"i2c_sck_c", "i2c_sda_c", "i2c_sda_c_dv18", "i2c_sck_c_dv19",
+ };
+ 
++static const char * const i2c_d_groups[] = {
++	"i2c_sck_d", "i2c_sda_d",
++};
++
+ static const char * const eth_groups[] = {
+ 	"eth_mdio", "eth_mdc", "eth_clk_rx_clk", "eth_rx_dv",
+ 	"eth_rxd0", "eth_rxd1", "eth_rxd2", "eth_rxd3",
+@@ -777,6 +786,7 @@ static const struct meson_pmx_func meson_gxl_periphs_functions[] = {
+ 	FUNCTION(i2c_a),
+ 	FUNCTION(i2c_b),
+ 	FUNCTION(i2c_c),
++	FUNCTION(i2c_d),
+ 	FUNCTION(eth),
+ 	FUNCTION(pwm_a),
+ 	FUNCTION(pwm_b),
 -- 
 2.51.0
 
