@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-185087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0BABD4B22
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:02:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA30BBD4B0D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 48A7250886E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:47:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 32CAD562752
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83C230E82C;
-	Mon, 13 Oct 2025 15:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFFD3093BC;
+	Mon, 13 Oct 2025 15:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nhcx2ZlN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c70r3fL/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D23830E82A;
-	Mon, 13 Oct 2025 15:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5CF17A2EC;
+	Mon, 13 Oct 2025 15:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369296; cv=none; b=q8Trzn+L2SssXvp/sGtwLS3j99pmbxgE1NLkl9VKWbVBN0z78hgNLM13LGTGLv8ov/WDweUfESrQlxehe3z6lg2NW41mhzqEMzVEwYU8QG9q3biw7mJ6sPbwNty5iESLXoYXVSeoYScFFGitTAhWGofTP7hgH1bZird04Eu4XBE=
+	t=1760369419; cv=none; b=T9G9/219yUikACCG1y7NXh+BaqJLRIXYS7Oo3eHKhjxdrSchDimGcbHIIR7d3BPCedxxyUb7+i1Tv9eqOdehi+tqoNPSvsSmQBHbpuG5CgC+thYf4QiOj+cqDkoBE1WZb3jO1qeGc8hKD09Pf9iSySKqnXeOGc+HgdfKcc7hGsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369296; c=relaxed/simple;
-	bh=sheLHEuDuu4EdynuqsF/SKg5fFFqVIPC6zyCJjE39cE=;
+	s=arc-20240116; t=1760369419; c=relaxed/simple;
+	bh=Kg5M21oNZxnu2rV3Xpio2/Xtg2xv/38Qr5PoDCMFsUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqPECoGz/twUAk8XUcHd286ySCjKQVj3N3d+BHnVj719MNIi8c1okRhkHpJVRDPkWvBaT8ONRqmjnq41YX/sR8jxZFzDGsmnSr62+teNdsMlb52z5ac9WrL0lnLrg/KYQu9M/+MsgrX5/y49smVKjsd6KnRcvCpwUQxWnE0eDxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nhcx2ZlN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DF4C4CEFE;
-	Mon, 13 Oct 2025 15:28:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Gfg9Iu4iDlOX18uxZDlfQ5r62Z0I/mJRbecKeQIN8isTGPXYzB4lKJmsJ3dtGkcsNKCZEWmXWmLfuLJQA2Y1+KU8ihPqaQVFR/0W7eYFMg7dXQq+KIX/FX+e1JFktLrnha6OhjgoBE9xuEmOB4qqRVT7UNQdjGPantwFrJ2g3K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c70r3fL/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6222C2BCB6;
+	Mon, 13 Oct 2025 15:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369295;
-	bh=sheLHEuDuu4EdynuqsF/SKg5fFFqVIPC6zyCJjE39cE=;
+	s=korg; t=1760369419;
+	bh=Kg5M21oNZxnu2rV3Xpio2/Xtg2xv/38Qr5PoDCMFsUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nhcx2ZlNvPJRc50SrKqXQUiWMpgxSpRVzqYreDR8bdObDuSsrxY0fx+fyUexQufTV
-	 LIgOZqZIwbyx5sVYniTY3aXRZbcY9Qpq092ngtcgZP+1dve6ZnTRIsNHrG15BPbWDq
-	 mO0gO04Obnf/K0A85xwh1jfjEMNocy3NmCE5szXE=
+	b=c70r3fL/CjTuetOX0rmuxosXgQehWUFlSEEhBscbtS2J+yXdFBP0/7Oga9a1ahFIK
+	 /QW4j4XcL7c+ljn/GVLOf/QaYtX48P4P2pAguBoMsQyFpegxfZ3DwReBIZrdFgiiel
+	 +H1OMdo52f/juIpJoTYeAv4Wd+h4A6dhE8eSs5gY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 195/563] hwmon: (mlxreg-fan) Separate methods of fan setting coming from different subsystems
-Date: Mon, 13 Oct 2025 16:40:56 +0200
-Message-ID: <20251013144418.346825189@linuxfoundation.org>
+Subject: [PATCH 6.17 196/563] tools/nolibc: add stdbool.h to nolibc includes
+Date: Mon, 13 Oct 2025 16:40:57 +0200
+Message-ID: <20251013144418.383414566@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -60,105 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: André Almeida <andrealmeid@igalia.com>
 
-[ Upstream commit c02e4644f8ac9c501077ef5ac53ae7fc51472d49 ]
+[ Upstream commit 2d965c1ae4135ed6f505661458f6dabd39488dac ]
 
-Distinct between fan speed setting request coming for hwmon and
-thermal subsystems.
+Otherwise tests compiled with only "-include nolibc.h" will fail with
+"error: unknown type name 'bool'", even though a stdbool.h is available
+from nolibc.
 
-There are fields 'last_hwmon_state' and 'last_thermal_state' in the
-structure 'mlxreg_fan_pwm', which respectively store the cooling state
-set by the 'hwmon' and 'thermal' subsystem.
-The purpose is to make arbitration of fan speed setting. For example, if
-fan speed required to be not lower than some limit, such setting is to
-be performed through 'hwmon' subsystem, thus 'thermal' subsystem will
-not set fan below this limit.
-
-Currently, the 'last_thermal_state' is also be updated by 'hwmon' causing
-cooling state to never be set to a lower value.
-
-Eliminate update of 'last_thermal_state', when request is coming from
-'hwmon' subsystem.
-
-Fixes: da74944d3a46 ("hwmon: (mlxreg-fan) Use pwm attribute for setting fan speed low limit")
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/20250113084859.27064-2-vadimp@nvidia.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: ae1f550efc11 ("tools/nolibc: add stdbool.h header")
+Fixes: f2662ec26b26 ("selftests: kselftest: Create ksft_print_dbg_msg()")
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/lkml/833f5ae5-190e-47ec-9ad9-127ad166c80c@sirena.org.uk/
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+[Thomas: add Fixes tags and massage commit message a bit]
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/mlxreg-fan.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ tools/include/nolibc/nolibc.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/mlxreg-fan.c b/drivers/hwmon/mlxreg-fan.c
-index c25a54d5b39ad..0ba9195c9d713 100644
---- a/drivers/hwmon/mlxreg-fan.c
-+++ b/drivers/hwmon/mlxreg-fan.c
-@@ -113,8 +113,8 @@ struct mlxreg_fan {
- 	int divider;
- };
- 
--static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
--				    unsigned long state);
-+static int _mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
-+				     unsigned long state, bool thermal);
- 
- static int
- mlxreg_fan_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
-@@ -224,8 +224,9 @@ mlxreg_fan_write(struct device *dev, enum hwmon_sensor_types type, u32 attr,
- 				 * last thermal state.
- 				 */
- 				if (pwm->last_hwmon_state >= pwm->last_thermal_state)
--					return mlxreg_fan_set_cur_state(pwm->cdev,
--									pwm->last_hwmon_state);
-+					return _mlxreg_fan_set_cur_state(pwm->cdev,
-+									 pwm->last_hwmon_state,
-+									 false);
- 				return 0;
- 			}
- 			return regmap_write(fan->regmap, pwm->reg, val);
-@@ -357,9 +358,8 @@ static int mlxreg_fan_get_cur_state(struct thermal_cooling_device *cdev,
- 	return 0;
- }
- 
--static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
--				    unsigned long state)
--
-+static int _mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
-+				     unsigned long state, bool thermal)
- {
- 	struct mlxreg_fan_pwm *pwm = cdev->devdata;
- 	struct mlxreg_fan *fan = pwm->fan;
-@@ -369,7 +369,8 @@ static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
- 		return -EINVAL;
- 
- 	/* Save thermal state. */
--	pwm->last_thermal_state = state;
-+	if (thermal)
-+		pwm->last_thermal_state = state;
- 
- 	state = max_t(unsigned long, state, pwm->last_hwmon_state);
- 	err = regmap_write(fan->regmap, pwm->reg,
-@@ -381,6 +382,13 @@ static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
- 	return 0;
- }
- 
-+static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
-+				    unsigned long state)
-+
-+{
-+	return _mlxreg_fan_set_cur_state(cdev, state, true);
-+}
-+
- static const struct thermal_cooling_device_ops mlxreg_fan_cooling_ops = {
- 	.get_max_state	= mlxreg_fan_get_max_state,
- 	.get_cur_state	= mlxreg_fan_get_cur_state,
+diff --git a/tools/include/nolibc/nolibc.h b/tools/include/nolibc/nolibc.h
+index c199ade200c24..d2f5aa085f8e3 100644
+--- a/tools/include/nolibc/nolibc.h
++++ b/tools/include/nolibc/nolibc.h
+@@ -116,6 +116,7 @@
+ #include "sched.h"
+ #include "signal.h"
+ #include "unistd.h"
++#include "stdbool.h"
+ #include "stdio.h"
+ #include "stdlib.h"
+ #include "string.h"
 -- 
 2.51.0
 
