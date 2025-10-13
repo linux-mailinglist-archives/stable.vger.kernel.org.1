@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-185363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6F4BD4FDC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:25:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7764BD5194
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BF5A580E15
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBCBD5461CF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47609313E2F;
-	Mon, 13 Oct 2025 15:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B33313E2C;
+	Mon, 13 Oct 2025 15:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K13GsDn9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jns2wpXz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF87313E2B;
-	Mon, 13 Oct 2025 15:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9B3309DB1;
+	Mon, 13 Oct 2025 15:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370081; cv=none; b=GK96K45MmaLKAV6VGYevDRzx31w9DdCnQ/1tXJC8Yit7YTKFZSO/mKg42dkAcGxoy5/RKjJgQMAxiRo23tA747EtcfNqmeafyqdlYbojhydEjheJaL1fPieu9co/8mpa2BoNMmSpyEas1LLq+YYVkh/430VG7eJZtDN5iMi/3dw=
+	t=1760370086; cv=none; b=l3Icg1KErG8/KC/p7nMxgojteemktWomkMq/Oq37f65Mlr2MvKp+wIHuYEsiqQpfAE4BWeXY73XDJYCN32j7b1CUXwkdmj2UW+VqtLi0Wq8E+j0CJnXdrgv+imokNmwltGi7ihpE2ERcT0Y+RdM5yrjT0XK40rvovu5gJGQU8x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370081; c=relaxed/simple;
-	bh=600ZitHVKHCo/qG23AEsO2s/8/Qf3q8DBYtlftq1pus=;
+	s=arc-20240116; t=1760370086; c=relaxed/simple;
+	bh=WQYaVtt0/+r1XyWZkPrH65wpxfnvR+s448e/FYLeywY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqRd4r899udTubcb5yc7CxWj62KLESIwu2S08L0fpmhexvWKqdq14/Zg6rdxVhjY+zZZTG8lrIthic4SR9CYiR1La6fdICLe1dMoI1GMQig4SZ5Q1l41fuWxe66DVAdKQh9r2KqC+IARUAvAJrnttmMWrI8x/PkmSbXzRwex0Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K13GsDn9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705F9C4CEE7;
-	Mon, 13 Oct 2025 15:41:20 +0000 (UTC)
+	 MIME-Version; b=VCL0uJrhIG+f2z5x/CAgD/w0naJSG2ALPtH/Y7Hi4e5iMUIKgV/RJD1novHdXT+hr6iziqHve9EqC55r/f941eoly22SRAsoeM1/XxhpNk+h/5UnLYLIZ03nPrlmx7auTv4xD36EVGEbd6ORlrP+bF3awmt5jTfiWgbFL6KyesM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jns2wpXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8ADC4CEE7;
+	Mon, 13 Oct 2025 15:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370080;
-	bh=600ZitHVKHCo/qG23AEsO2s/8/Qf3q8DBYtlftq1pus=;
+	s=korg; t=1760370086;
+	bh=WQYaVtt0/+r1XyWZkPrH65wpxfnvR+s448e/FYLeywY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K13GsDn9vcoSe9fkuj3uXvApV+/pJZyOHSSVW5eLsoVNUVBmZj85hOD8ZOGfVpkeD
-	 ue8bBSRNOs9lVFdq8SRWGbdo3eUbEhfMlH94wy2uiNfIdWcAde8AUmZNYWdp0vyZFp
-	 tS4HqZoW1TWqaqGU2hj+nsKPLnGzDTLxfyRqGHi8=
+	b=Jns2wpXzx5e6ormdWa99kprvkhEyjvAvk16HzdNYykZ91L4te9ctf/qVTTEGe8NEj
+	 Wxk8cDPmyOd/YC2mri2yWBPhW0QwaWIe/VOaJRWVLQxG+xUsR3SnBwXc+Mldp9Z0S+
+	 ntmu/ne+SDyBJVGO1hO7kSi2f9+m6Gg+bbM7grrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	Kohei Enju <enjuk@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 471/563] tcp: use skb->len instead of skb->truesize in tcp_can_ingest()
-Date: Mon, 13 Oct 2025 16:45:32 +0200
-Message-ID: <20251013144428.352054506@linuxfoundation.org>
+Subject: [PATCH 6.17 473/563] net: ena: return 0 in ena_get_rxfh_key_size() when RSS hash key is not configurable
+Date: Mon, 13 Oct 2025 16:45:34 +0200
+Message-ID: <20251013144428.425263150@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,71 +66,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit f017c1f768b670bced4464476655b27dfb937e67 ]
+[ Upstream commit f017156aea60db8720e47591ed1e041993381ad2 ]
 
-Some applications are stuck to the 20th century and still use
-small SO_RCVBUF values.
+In EC2 instances where the RSS hash key is not configurable, ethtool
+shows bogus RSS hash key since ena_get_rxfh_key_size() unconditionally
+returns ENA_HASH_KEY_SIZE.
 
-After the blamed commit, we can drop packets especially
-when using LRO/hw-gro enabled NIC and small MSS (1500) values.
+Commit 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not
+supported") added proper handling for devices that don't support RSS
+hash key configuration, but ena_get_rxfh_key_size() has been unchanged.
 
-LRO/hw-gro NIC pack multiple segments into pages, allowing
-tp->scaling_ratio to be set to a high value.
+When the RSS hash key is not configurable, return 0 instead of
+ENA_HASH_KEY_SIZE to clarify getting the value is not supported.
 
-Whenever the receive queue gets full, we can receive a small packet
-filling RWIN, but with a high skb->truesize, because most NIC use 4K page
-plus sk_buff metadata even when receiving less than 1500 bytes of payload.
+Tested on m5 instance families.
 
-Even if we refine how tp->scaling_ratio is estimated,
-we could have an issue at the start of the flow, because
-the first round of packets (IW10) will be sent based on
-the initial tp->scaling_ratio (1/2)
+Without patch:
+ # ethtool -x ens5 | grep -A 1 "RSS hash key"
+ RSS hash key:
+ 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
 
-Relax tcp_can_ingest() to use skb->len instead of skb->truesize,
-allowing the peer to use final RWIN, assuming a 'perfect'
-scaling_ratio of 1.
+With patch:
+ # ethtool -x ens5 | grep -A 1 "RSS hash key"
+ RSS hash key:
+ Operation not supported
 
-Fixes: 1d2fbaad7cd8 ("tcp: stronger sk_rcvbuf checks")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250927092827.2707901-1-edumazet@google.com
+Fixes: 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not supported")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Link: https://patch.msgid.link/20250929050247.51680-1-enjuk@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/amazon/ena/ena_ethtool.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 71b76e98371a6..64f93668a8452 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4890,12 +4890,23 @@ static int tcp_prune_queue(struct sock *sk, const struct sk_buff *in_skb);
+diff --git a/drivers/net/ethernet/amazon/ena/ena_ethtool.c b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
+index a81d3a7a3bb9a..fe3479b84a1f3 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_ethtool.c
++++ b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
+@@ -865,7 +865,10 @@ static u32 ena_get_rxfh_indir_size(struct net_device *netdev)
  
- /* Check if this incoming skb can be added to socket receive queues
-  * while satisfying sk->sk_rcvbuf limit.
-+ *
-+ * In theory we should use skb->truesize, but this can cause problems
-+ * when applications use too small SO_RCVBUF values.
-+ * When LRO / hw gro is used, the socket might have a high tp->scaling_ratio,
-+ * allowing RWIN to be close to available space.
-+ * Whenever the receive queue gets full, we can receive a small packet
-+ * filling RWIN, but with a high skb->truesize, because most NIC use 4K page
-+ * plus sk_buff metadata even when receiving less than 1500 bytes of payload.
-+ *
-+ * Note that we use skb->len to decide to accept or drop this packet,
-+ * but sk->sk_rmem_alloc is the sum of all skb->truesize.
-  */
- static bool tcp_can_ingest(const struct sock *sk, const struct sk_buff *skb)
+ static u32 ena_get_rxfh_key_size(struct net_device *netdev)
  {
--	unsigned int new_mem = atomic_read(&sk->sk_rmem_alloc) + skb->truesize;
-+	unsigned int rmem = atomic_read(&sk->sk_rmem_alloc);
- 
--	return new_mem <= sk->sk_rcvbuf;
-+	return rmem + skb->len <= sk->sk_rcvbuf;
+-	return ENA_HASH_KEY_SIZE;
++	struct ena_adapter *adapter = netdev_priv(netdev);
++	struct ena_rss *rss = &adapter->ena_dev->rss;
++
++	return rss->hash_key ? ENA_HASH_KEY_SIZE : 0;
  }
  
- static int tcp_try_rmem_schedule(struct sock *sk, const struct sk_buff *skb,
+ static int ena_indirection_table_set(struct ena_adapter *adapter,
 -- 
 2.51.0
 
