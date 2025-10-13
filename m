@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-185347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00A6BD4B3E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:03:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C158BD480B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D2B1F3493FF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E50643E05A3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3978530DEC5;
-	Mon, 13 Oct 2025 15:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE57030DED4;
+	Mon, 13 Oct 2025 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO+VTX19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0q6jeB0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10E13126D6;
-	Mon, 13 Oct 2025 15:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795DF3081D3;
+	Mon, 13 Oct 2025 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370036; cv=none; b=g/sFLmqiSf0QzRWwf0k05OitBtEd/WDq1KX16am2TIiUW3qGhAtgWaHz8zwyAHo9pRMoLw8OV9B6EmiqPZrER/pWxXgNNgT3Oi0D/NvyBPLQ/iBMDOPte5QuYbYDCBpW8PyCK8CKioTMoX4kyA/lJjq6W2W9nVvemY5EMoYBoNk=
+	t=1760368458; cv=none; b=uMM2S7D3V9uCg5m5FVj3PEVr+E+7GYZZO9oSD1nmkiIocQGccNEvrF+tqXnq/DaLpVxDq2AwEE9Nntm3EVmIfbU1p1Z46oBIRVuCCzCjCO0toRULpA5HUN24gp/oYo84jzM3+RxgXAiWsV1ZpZCZZMn3LPdXZb4uPbEgj/EDpVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370036; c=relaxed/simple;
-	bh=0DieFhYgMyKItRBqncuKw3PYaHXveKwm3Ix9t0Q7m90=;
+	s=arc-20240116; t=1760368458; c=relaxed/simple;
+	bh=UkiiO1vBNBT2ZNxLvaM92dJ7k7Ikcfs7xnGuPbrj+HI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JALsWVaDYPYhut/jpCAb7DUKAbM+yE+p1Uf7bz1JNdO12ymcq++0PGl92GTaOMZhLS9kpprE34MqcobHAtO42F3heW62oV9JvUPbSOPZx4nDs3775+PoVdzDqkNizXTd2aJfuwrvtM3ob/xkytxCqYTzEqE6sD3lqZSNyn0WpTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO+VTX19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F30C4CEE7;
-	Mon, 13 Oct 2025 15:40:34 +0000 (UTC)
+	 MIME-Version; b=r91gwD1NAsSVKezjUZ8gGuF/AzPI10MpWqt3pPI2O704UPgIx4ogwMOV/ApahNxH0U/v6gjEdm26iubVfRxxZvKRiwXCEQWdG/WRry4BoiptAtJwN3dMWg4BC0pEvW9AXor1GDAYFBlNkklf+1evpNiCp3ZEUMq4WZS4yiF3tlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0q6jeB0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D47C4CEE7;
+	Mon, 13 Oct 2025 15:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370035;
-	bh=0DieFhYgMyKItRBqncuKw3PYaHXveKwm3Ix9t0Q7m90=;
+	s=korg; t=1760368458;
+	bh=UkiiO1vBNBT2ZNxLvaM92dJ7k7Ikcfs7xnGuPbrj+HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qO+VTX19cCfOcFehxMIJSg490b3NIbPqnCagf7ywEwEKULguJLU66qzcIM/8DbNU2
-	 hkCWk/eWwPOAkdgNSdKMUntf3tFfZVILPAJn2ixEAd+6Wx+/0TiyzLfGsqznWP6rGe
-	 IZb9F6lb8r43jdIIwKG9ASmr0ZnMgQOXbHXCYsmg=
+	b=0q6jeB0KM63Txv5bj+O+Yje/DhtIHKsQy7SmHTpk/POBC0A2mpwChpth8LJO5QDul
+	 JRdvPgl0NoqtdIsBIezIw/WMo2FYVtjQuHmn8gUAiBCEkkKDxcTPDG/6E3B3+czBho
+	 LxpdeJnXh89aHxKxajmREvLZo90UsVvEopYZ9Mg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	Bernard Metzler <bernard.metzler@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 448/563] RDMA/siw: Always report immediate post SQ errors
-Date: Mon, 13 Oct 2025 16:45:09 +0200
-Message-ID: <20251013144427.511111342@linuxfoundation.org>
+Subject: [PATCH 6.12 168/262] wifi: mac80211: fix Rx packet handling when pubsta information is not available
+Date: Mon, 13 Oct 2025 16:45:10 +0200
+Message-ID: <20251013144332.174950932@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Metzler <bernard.metzler@linux.dev>
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
 
-[ Upstream commit fdd0fe94d68649322e391c5c27dd9f436b4e955e ]
+[ Upstream commit 32d340ae675800672e1219444a17940a8efe5cca ]
 
-In siw_post_send(), any immediate error encountered during processing of
-the work request list must be reported to the caller, even if previous
-work requests in that list were just accepted and added to the send queue.
+In ieee80211_rx_handle_packet(), if the caller does not provide pubsta
+information, an attempt is made to find the station using the address 2
+(source address) field in the header. Since pubsta is missing, link
+information such as link_valid and link_id is also unavailable. Now if such
+a situation comes, and if a matching ML station entry is found based on
+the source address, currently the packet is dropped due to missing link ID
+in the status field which is not correct.
 
-Not reporting those errors confuses the caller, which would wait
-indefinitely for the failing and potentially subsequently aborted work
-requests completion.
+Hence, to fix this issue, if link_valid is not set and the station is an
+ML station, make an attempt to find a link station entry using the source
+address. If a valid link station is found, derive the link ID and proceed
+with packet processing. Otherwise, drop the packet as per the existing
+flow.
 
-This fixes a case where immediate errors were overwritten by subsequent
-code in siw_post_send().
-
-Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
-Link: https://patch.msgid.link/r/20250923144536.103825-1-bernard.metzler@linux.dev
-Suggested-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Bernard Metzler <bernard.metzler@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: ea9d807b5642 ("wifi: mac80211: add link information in ieee80211_rx_status")
+Suggested-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250917-fix_data_packet_rx_with_mlo_and_no_pubsta-v1-1-8cf971a958ac@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_verbs.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ net/mac80211/rx.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
-index 35c3bde0d00af..efa2f097b5828 100644
---- a/drivers/infiniband/sw/siw/siw_verbs.c
-+++ b/drivers/infiniband/sw/siw/siw_verbs.c
-@@ -769,7 +769,7 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	struct siw_wqe *wqe = tx_wqe(qp);
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 8c0d91dfd7e2b..538c6eea645f2 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -5280,12 +5280,20 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+ 			}
  
- 	unsigned long flags;
--	int rv = 0;
-+	int rv = 0, imm_err = 0;
+ 			rx.sdata = prev_sta->sdata;
++			if (!status->link_valid && prev_sta->sta.mlo) {
++				struct link_sta_info *link_sta;
++
++				link_sta = link_sta_info_get_bss(rx.sdata,
++								 hdr->addr2);
++				if (!link_sta)
++					continue;
++
++				link_id = link_sta->link_id;
++			}
++
+ 			if (!ieee80211_rx_data_set_sta(&rx, prev_sta, link_id))
+ 				goto out;
  
- 	if (wr && !rdma_is_kernel_res(&qp->base_qp.res)) {
- 		siw_dbg_qp(qp, "wr must be empty for user mapped sq\n");
-@@ -955,9 +955,17 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	 * Send directly if SQ processing is not in progress.
- 	 * Eventual immediate errors (rv < 0) do not affect the involved
- 	 * RI resources (Verbs, 8.3.1) and thus do not prevent from SQ
--	 * processing, if new work is already pending. But rv must be passed
--	 * to caller.
-+	 * processing, if new work is already pending. But rv and pointer
-+	 * to failed work request must be passed to caller.
- 	 */
-+	if (unlikely(rv < 0)) {
-+		/*
-+		 * Immediate error
-+		 */
-+		siw_dbg_qp(qp, "Immediate error %d\n", rv);
-+		imm_err = rv;
-+		*bad_wr = wr;
-+	}
- 	if (wqe->wr_status != SIW_WR_IDLE) {
- 		spin_unlock_irqrestore(&qp->sq_lock, flags);
- 		goto skip_direct_sending;
-@@ -982,15 +990,10 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
+-			if (!status->link_valid && prev_sta->sta.mlo)
+-				continue;
+-
+ 			ieee80211_prepare_and_rx_handle(&rx, skb, false);
  
- 	up_read(&qp->state_lock);
+ 			prev_sta = sta;
+@@ -5293,10 +5301,18 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
  
--	if (rv >= 0)
--		return 0;
--	/*
--	 * Immediate error
--	 */
--	siw_dbg_qp(qp, "error %d\n", rv);
-+	if (unlikely(imm_err))
-+		return imm_err;
+ 		if (prev_sta) {
+ 			rx.sdata = prev_sta->sdata;
+-			if (!ieee80211_rx_data_set_sta(&rx, prev_sta, link_id))
+-				goto out;
++			if (!status->link_valid && prev_sta->sta.mlo) {
++				struct link_sta_info *link_sta;
++
++				link_sta = link_sta_info_get_bss(rx.sdata,
++								 hdr->addr2);
++				if (!link_sta)
++					goto out;
  
--	*bad_wr = wr;
--	return rv;
-+	return (rv >= 0) ? 0 : rv;
- }
+-			if (!status->link_valid && prev_sta->sta.mlo)
++				link_id = link_sta->link_id;
++			}
++
++			if (!ieee80211_rx_data_set_sta(&rx, prev_sta, link_id))
+ 				goto out;
  
- /*
+ 			if (ieee80211_prepare_and_rx_handle(&rx, skb, true))
 -- 
 2.51.0
 
