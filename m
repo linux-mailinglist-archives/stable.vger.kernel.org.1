@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5221BD42FA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5372CBD3CC6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:00:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A70B1890902
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADC6C18A0B03
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584B230C63E;
-	Mon, 13 Oct 2025 15:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18271309DDD;
+	Mon, 13 Oct 2025 14:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUJrNGFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4HJ8FVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14885307AD6;
-	Mon, 13 Oct 2025 15:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CBA309EFD;
+	Mon, 13 Oct 2025 14:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368367; cv=none; b=bHqDXpVBq/k8SjIUtxGgurSNXN25XIzNT+es8/Iq1HqNfv2mGQUcn59b/r3H2sp4bgVpk/9NCKREumZkPbZANyyAOjj8fMb+x77sGc43XZaqfy3cAaMSllcyxm5xFWeiKF0HxTHdoDDSOV9ELXvkXlbLHZNMdWjYXTSkwm/EiO8=
+	t=1760367132; cv=none; b=VgB+tdEn2xidW7cNOBg3HfvLXmouf5Ywp95zPJ/2345bs9wFbgBLkNOkbzeya17QDb/BKsWrDff86mgfg0qtHCGqj/wPCICGuY8YELRWRLVHKM9JVfIpyk2fIXMWAZomNPnzGORNyBgyWZxDJJs26OPVweFmaqdkL+L/JHa6zok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368367; c=relaxed/simple;
-	bh=ukiSuYPl8EocKfPRyM4339Os2NlnEEfpDfHK9Upd2YA=;
+	s=arc-20240116; t=1760367132; c=relaxed/simple;
+	bh=St/Yhxoed6tWbvA7pYyhplY8UwdgC4l+A4Esh2d4yFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4OWo+rfOpixb3B2jLpPa8P+CzFxCLw45mU6OjWz630hiLROkEhiWKEJFuvF9bKPMbPzJUapwXml6NYKJgpmWKGhadGcWYvjE34bSp1fibitA3QGMUTdgl3pQc4SAW6gcQZamJ+bS1gWBM2MFH1Tkk41ryXTRSw1dlycSafU+Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUJrNGFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4982FC4CEE7;
-	Mon, 13 Oct 2025 15:12:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Kb01sYBUaOva5d09t8RzpX6GdBrJ5zmC6P0NPuhNlioAxvk1PkmLCECST0gaiaY+xcNGXCvAUJwwnkLDwB/l95hdyNcYinf35v1nru3D45CaB3Wao6yRfigzHwYp8sR7TsfqOJINyZjq3ZAS1mwOgG5Xjo6nv62X5OfLAHGr8jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4HJ8FVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08614C4CEE7;
+	Mon, 13 Oct 2025 14:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368366;
-	bh=ukiSuYPl8EocKfPRyM4339Os2NlnEEfpDfHK9Upd2YA=;
+	s=korg; t=1760367132;
+	bh=St/Yhxoed6tWbvA7pYyhplY8UwdgC4l+A4Esh2d4yFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUJrNGFmSZfCfHJMPtYWAYtOGWiYXzqb1RA2gbZjnFx9k7ou9aj4CJpQezcalVFrZ
-	 bsOyA4gb539p3+F4ZgFB8Z/Ru2iuDL9Lkj0x3aSxqOkIfJMso2eq9i+UwiDC/myqHi
-	 9VrusfNDApYblhYCMXbyFBv+75y+94JhLfU6qI04=
+	b=f4HJ8FVFtxgE4IvxU16iZyFsAZCRMjHXBYvZvawFQV6PpmWwQhSFMJ8nAkocwZ7iP
+	 33DEnBBBdNeGAFfMQNxqT3JuShvkWx+IFW16X2oUV62/qoMhg5ulH59Z584aFxCi06
+	 9dlNdjQ6XjYOvRHeBarqhXgrUpJYKIzMWRHEERXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/262] ASoC: Intel: bytcr_rt5640: Fix invalid quirk input mapping
+Subject: [PATCH 6.1 104/196] drm/amd/pm: Disable ULV even if unsupported (v3)
 Date: Mon, 13 Oct 2025 16:44:37 +0200
-Message-ID: <20251013144330.985781579@linuxfoundation.org>
+Message-ID: <20251013144318.462279522@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit fba404e4b4af4f4f747bb0e41e9fff7d03c7bcc0 ]
+[ Upstream commit 3a0c3a4035f995e1f993dfaf4d63dc19e9b4bc1c ]
 
-When an invalid value is passed via quirk option, currently
-bytcr_rt5640 driver only shows an error message but leaves as is.
-This may lead to unepxected results like OOB access.
+Always send PPSMC_MSG_DisableULV to the SMC, even if ULV mode
+is unsupported, to make sure it is properly turned off.
 
-This patch corrects the input mapping to the certain default value if
-an invalid value is passed.
+v3:
+Simplify si_disable_ulv further.
+Always check the return value of amdgpu_si_send_msg_to_smc.
 
-Fixes: 063422ca2a9d ("ASoC: Intel: bytcr_rt5640: Set card long_name based on quirks")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Message-ID: <20250902171826.27329-3-tiwai@suse.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index b6434b4731261..d6991864c5a49 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -68,7 +68,8 @@ enum {
- 	BYT_RT5640_OVCD_SF_1P5		= (RT5640_OVCD_SF_1P5 << 13),
- };
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 52e4397d4a2a9..c17d567cf8bc5 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -5617,14 +5617,10 @@ static int si_populate_smc_t(struct amdgpu_device *adev,
  
--#define BYT_RT5640_MAP(quirk)		((quirk) &  GENMASK(3, 0))
-+#define BYT_RT5640_MAP_MASK		GENMASK(3, 0)
-+#define BYT_RT5640_MAP(quirk)		((quirk) & BYT_RT5640_MAP_MASK)
- #define BYT_RT5640_JDSRC(quirk)		(((quirk) & GENMASK(7, 4)) >> 4)
- #define BYT_RT5640_OVCD_TH(quirk)	(((quirk) & GENMASK(12, 8)) >> 8)
- #define BYT_RT5640_OVCD_SF(quirk)	(((quirk) & GENMASK(14, 13)) >> 13)
-@@ -140,7 +141,9 @@ static void log_quirks(struct device *dev)
- 		dev_info(dev, "quirk NO_INTERNAL_MIC_MAP enabled\n");
- 		break;
- 	default:
--		dev_err(dev, "quirk map 0x%x is not supported, microphone input will not work\n", map);
-+		dev_warn_once(dev, "quirk sets invalid input map: 0x%x, default to DMIC1_MAP\n", map);
-+		byt_rt5640_quirk &= ~BYT_RT5640_MAP_MASK;
-+		byt_rt5640_quirk |= BYT_RT5640_DMIC1_MAP;
- 		break;
- 	}
- 	if (byt_rt5640_quirk & BYT_RT5640_HSMIC2_ON_IN1)
+ static int si_disable_ulv(struct amdgpu_device *adev)
+ {
+-	struct si_power_info *si_pi = si_get_pi(adev);
+-	struct si_ulv_param *ulv = &si_pi->ulv;
++	PPSMC_Result r;
+ 
+-	if (ulv->supported)
+-		return (amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV) == PPSMC_Result_OK) ?
+-			0 : -EINVAL;
+-
+-	return 0;
++	r = amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV);
++	return (r == PPSMC_Result_OK) ? 0 : -EINVAL;
+ }
+ 
+ static bool si_is_state_ulv_compatible(struct amdgpu_device *adev,
 -- 
 2.51.0
 
