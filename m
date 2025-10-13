@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-185063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FA0BD4D3F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:13:02 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3435BD4BEE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FC12402A24
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:43:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF258540407
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55606314D03;
-	Mon, 13 Oct 2025 15:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6335F308F32;
+	Mon, 13 Oct 2025 15:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9T3vNxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmXJZpf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A1A314D20;
-	Mon, 13 Oct 2025 15:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D0525A63D;
+	Mon, 13 Oct 2025 15:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369227; cv=none; b=qzaqgySyQPTBHoVDIWLmPNvaGRew0FFDYyA7KeOkR2PGXhmOV3AuFtsY+ZIgQL+1mROjBm1TFBi1Jw+txghUSqHVWCfJ432IxnMl6SPIsCqS/Bfm5PMJrRwEO+Zo2LWJn3SBRXi/J1MukeuPedfNiizthlREboHIWXtCg32kDto=
+	t=1760369244; cv=none; b=E3mgHYwjjwZ4QJJdxeRe8Q8K1IJBxu2FB1pi9nAnkdw+SgdsFoKNbZJehFY0dVHRtghQIcJYvatSJW8WjSKz7BnWP9CBC/z4U2DT5c8BrErfKdIkNr/Sb8/PA3L3uKHKTJMfg7jtuKkgPqh1Y32H+uvzIhrCcw836F0Ns6k9Klk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369227; c=relaxed/simple;
-	bh=qvdueRbxmSGqEostwvlfKwPWcSLDDNHYy5Yq5eYPKjs=;
+	s=arc-20240116; t=1760369244; c=relaxed/simple;
+	bh=+dJCV8iVw2OjB5eSavHUJN2gPvcxE0tNZ4qPeixJs1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5Rnsuxr8293Bh9xLzQrshYbfTvIYqcJ7zkg/yPmg2rnxRhmBLMzJbLXEwRQhnDUnUMqDqRKwj0lPwxc4JK7M9SJ4Ta3Un9E3j2FhStMhdgNn8MXaPlk0nCQFy+IZh60rTRPeHwUM/dt1RCY9TtGejfqmVaOQdqY2tyq1oGMkS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9T3vNxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91174C4CEFE;
-	Mon, 13 Oct 2025 15:27:06 +0000 (UTC)
+	 MIME-Version; b=pMahFsvgXP6AC+tRfkKjrbVSMfJgzQF7i5dpg+jTSo2AGluw+XC1fQ2czjVnsv+VoqytfpJLYXZ8ZxYdblzEVlsflcWKhCJXuumLFUrEcP0eoeyx/EutU01fJ7U6sYNDUhltQ6FBBdu1fDHh4/Shk1czI3QJt8V3M4EwSVYG6zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmXJZpf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A066FC4CEE7;
+	Mon, 13 Oct 2025 15:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369226;
-	bh=qvdueRbxmSGqEostwvlfKwPWcSLDDNHYy5Yq5eYPKjs=;
+	s=korg; t=1760369244;
+	bh=+dJCV8iVw2OjB5eSavHUJN2gPvcxE0tNZ4qPeixJs1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9T3vNxmjJGcbtTzCn0jt/IsAubJl/umhTZgoO75GF2NtUQOoscuPnPuHOddZEDJ5
-	 t8o5FFVUR2UN7wqyPpvXrQ6CSNOD/r/VzKzi6Xg8IZNlDYS4/3ha6GNG4Tm27gKRVQ
-	 FhKYRYPADq9jQ38TdfBDKnVWx1KGmm+hZ+w7uJY8=
+	b=RmXJZpf8oDQpArYfpK5SAaWqifEJKcLxG3wgdIO+E58kLEKroNH52YrYBhsddJh2i
+	 f06QYDuLvNHuDuRN35ZFJNIL2MxqIYaf8MELU1+rK3olIy0wUAeEW41r0kJnoBjCGI
+	 amySqzh8SuZCklWfCIXpaMCIWO1TeAvnjtoAV6e4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 173/563] bpf: Explicitly check accesses to bpf_sock_addr
-Date: Mon, 13 Oct 2025 16:40:34 +0200
-Message-ID: <20251013144417.554576797@linuxfoundation.org>
+Subject: [PATCH 6.17 179/563] bpf, arm64: Call bpf_jit_binary_pack_finalize() in bpf_jit_free()
+Date: Mon, 13 Oct 2025 16:40:40 +0200
+Message-ID: <20251013144417.770080324@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,73 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit 6fabca2fc94d33cdf7ec102058983b086293395f ]
+[ Upstream commit 6ff4a0fa3e1b2b9756254b477fb2f0fbe04ff378 ]
 
-Syzkaller found a kernel warning on the following sock_addr program:
+The current implementation seems incorrect and does NOT match the
+comment above, use bpf_jit_binary_pack_finalize() instead.
 
-    0: r0 = 0
-    1: r2 = *(u32 *)(r1 +60)
-    2: exit
-
-which triggers:
-
-    verifier bug: error during ctx access conversion (0)
-
-This is happening because offset 60 in bpf_sock_addr corresponds to an
-implicit padding of 4 bytes, right after msg_src_ip4. Access to this
-padding isn't rejected in sock_addr_is_valid_access and it thus later
-fails to convert the access.
-
-This patch fixes it by explicitly checking the various fields of
-bpf_sock_addr in sock_addr_is_valid_access.
-
-I checked the other ctx structures and is_valid_access functions and
-didn't find any other similar cases. Other cases of (properly handled)
-padding are covered in new tests in a subsequent patch.
-
-Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
-Reported-by: syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://syzkaller.appspot.com/bug?extid=136ca59d411f92e821b7
-Link: https://lore.kernel.org/bpf/b58609d9490649e76e584b0361da0abd3c2c1779.1758094761.git.paul.chaignon@gmail.com
+Fixes: 1dad391daef1 ("bpf, arm64: use bpf_prog_pack for memory management")
+Acked-by: Puranjay Mohan <puranjay@kernel.org>
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Acked-by: Song Liu <song@kernel.org>
+Acked-by: Puranjay Mohan <puranjay@kernel.org>
+Link: https://lore.kernel.org/r/20250916232653.101004-1-hengqi.chen@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index da391e2b0788d..2d326d35c3871 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -9284,13 +9284,17 @@ static bool sock_addr_is_valid_access(int off, int size,
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
- 		break;
--	default:
--		if (type == BPF_READ) {
--			if (size != size_default)
--				return false;
--		} else {
-+	case bpf_ctx_range(struct bpf_sock_addr, user_family):
-+	case bpf_ctx_range(struct bpf_sock_addr, family):
-+	case bpf_ctx_range(struct bpf_sock_addr, type):
-+	case bpf_ctx_range(struct bpf_sock_addr, protocol):
-+		if (type != BPF_READ)
- 			return false;
--		}
-+		if (size != size_default)
-+			return false;
-+		break;
-+	default:
-+		return false;
- 	}
- 
- 	return true;
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 52ffe115a8c47..4ef9b7b8fb404 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -3064,8 +3064,7 @@ void bpf_jit_free(struct bpf_prog *prog)
+ 		 * before freeing it.
+ 		 */
+ 		if (jit_data) {
+-			bpf_arch_text_copy(&jit_data->ro_header->size, &jit_data->header->size,
+-					   sizeof(jit_data->header->size));
++			bpf_jit_binary_pack_finalize(jit_data->ro_header, jit_data->header);
+ 			kfree(jit_data);
+ 		}
+ 		prog->bpf_func -= cfi_get_offset();
 -- 
 2.51.0
 
