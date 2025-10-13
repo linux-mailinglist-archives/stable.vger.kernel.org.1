@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-184257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD281BD3D29
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:02:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9005BD458E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D93083E184B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:53:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 116A3507FB9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A17130C370;
-	Mon, 13 Oct 2025 14:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE75130FF30;
+	Mon, 13 Oct 2025 15:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWAebUN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+DuOLGv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA0330C35A;
-	Mon, 13 Oct 2025 14:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6413093C9;
+	Mon, 13 Oct 2025 15:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366913; cv=none; b=ggcR9TNCrRWE6TSgqcqiK6zvZZSCbqCp60zN7q8QZdIN1RErP0xiNmjKqdhWXv8a+bGKNyiTdX/9kdfcAgGH2tqYQLgu9y67Csgf6MM3U6Hb2mpT9hyHPpiYz+X2zcoRIyvPBt5U1t5nNuBFrGHZc3ftqsL6H3RaytQnGvHu6Hw=
+	t=1760368144; cv=none; b=qMBn7G+qjryKejhgR2QE/rDbwPzF0FuPZ0/MtPuSlCD7c3JeIa0uesz7MFqrZ7KJflcqolPSG/1Z/5ZpevvdAWJhPsxW2d8gwY2D8CxB0o7xaxPSFSJzDwa7UEQ5F2tf7OdzHPIHav+CCyaEFysjDEZGzZb8kr9Pm5wBbDgd5P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366913; c=relaxed/simple;
-	bh=2ajv5uDi4T/CdGqopq9IEpEde4tNHU3F4aaj/Lr2x88=;
+	s=arc-20240116; t=1760368144; c=relaxed/simple;
+	bh=GIJ3Y/Jr/C7Jh1+dwbxIbgLg9M0rEiIXqfkOOrFeJ/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxUAJAlsoWwdHI7PuKfzvq6HOtFeuJmX3kBu9QH8wjYmpmDiLcZf8h7fceSS42vf8JduOGOehagWWOiqmZTqWuwCTQwwHUwh9YOhtrMWm75mqG9a6dXPGXAH7hpvjedz8BqUdDr8uZeO/n9LHCJ+z3nYo0XYnaNpPTxdUfPDD6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWAebUN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CF3C4CEFE;
-	Mon, 13 Oct 2025 14:48:33 +0000 (UTC)
+	 MIME-Version; b=abjer6FIm2qM94zBDGG/eA/rhuZqXW6xyexzsUW1chRjdXmxUkoAv78/dYtQcNnRS0OW4ZpMlghjFJ7OB9cGh/41gtUrIt36la63pqsRXdlSpgDQasCqnXAVpOFiuM3Ym1H2S7cz3gEDsHkGlUW2J69+zkEX8KSoXEmgdhFGbAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+DuOLGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F08BC4CEE7;
+	Mon, 13 Oct 2025 15:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366913;
-	bh=2ajv5uDi4T/CdGqopq9IEpEde4tNHU3F4aaj/Lr2x88=;
+	s=korg; t=1760368144;
+	bh=GIJ3Y/Jr/C7Jh1+dwbxIbgLg9M0rEiIXqfkOOrFeJ/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWAebUN/vKFkYxCbRaJ2XZivRDa7vaDAj3V6F9wiqdIZmNCJyi0o4PQea9R7MHrx7
-	 Mghr0buz8l/HYwXPcEoUHMVHd4eZDSVPJlBi+Pr/lgL4kIZt0Rt+1kDXvJPTaOJB5s
-	 deywnHc+0DiSQMw51nDPH17U6Fa9NtHG1o7v4pnM=
+	b=N+DuOLGvlRLus//ukfJ+k64BDPSwf53Ge6XR8sPD4/0t6T8VVf8cbDI2BlbFEPJmD
+	 KXR0Pyx8NguwTnBxbIvMA7eSfgGmiI4PsFjaK467DccPurDP9Kqpcs6hcYJDQ43YTA
+	 2NoXAlnnDmkMuH4IdfVzz77p2+2fIiR5KUH3ID8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arnd Bergmann <arnd@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.1 028/196] minmax.h: simplify the variants of clamp()
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 059/262] arm64: dts: mediatek: mt8186-tentacruel: Fix touchscreen model
 Date: Mon, 13 Oct 2025 16:43:21 +0200
-Message-ID: <20251013144315.605246337@linuxfoundation.org>
+Message-ID: <20251013144328.255030889@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,99 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 495bba17cdf95e9703af1b8ef773c55ef0dfe703 ]
+[ Upstream commit 0370911565869384f19b35ea9e71ee7a57b48a33 ]
 
-Always pass a 'type' through to __clamp_once(), pass '__auto_type' from
-clamp() itself.
+The touchscreen controller used with the original Krabby design is the
+Elan eKTH6918, which is in the same family as eKTH6915, but supporting
+a larger screen size with more sense lines.
 
-The expansion of __types_ok3() is reasonable so it isn't worth the added
-complexity of avoiding it when a fixed type is used for all three values.
+OTOH, the touchscreen controller that actually shipped on the Tentacruel
+devices is the Elan eKTH6A12NAY. A compatible string was added for it
+specifically because it has different power sequencing timings.
 
-Link: https://lkml.kernel.org/r/8f69f4deac014f558bab186444bac2e8@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix up the touchscreen nodes for both these. This also includes adding
+a previously missing reset line. Also add "no-reset-on-power-off" since
+the power is always on, and putting it in reset would consume more
+power.
+
+Fixes: 8855d01fb81f ("arm64: dts: mediatek: Add MT8186 Krabby platform based Tentacruel / Tentacool")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20250812090135.3310374-1-wenst@chromium.org
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi   | 8 ++++----
+ .../dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts  | 4 ++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -183,29 +183,29 @@
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi b/arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi
+index 7c971198fa956..72a2a2bff0a93 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola-krabby.dtsi
+@@ -71,14 +71,14 @@ &i2c1 {
+ 	i2c-scl-internal-delay-ns = <10000>;
  
--#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
--	__auto_type uval = (val);						\
--	__auto_type ulo = (lo);							\
--	__auto_type uhi = (hi);							\
-+#define __clamp_once(type, val, lo, hi, uval, ulo, uhi) ({			\
-+	type uval = (val);							\
-+	type ulo = (lo);							\
-+	type uhi = (hi);							\
- 	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
- 	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
- 		"clamp("#val", "#lo", "#hi") signedness error");		\
- 	__clamp(uval, ulo, uhi); })
+ 	touchscreen: touchscreen@10 {
+-		compatible = "hid-over-i2c";
++		compatible = "elan,ekth6915";
+ 		reg = <0x10>;
+ 		interrupts-extended = <&pio 12 IRQ_TYPE_LEVEL_LOW>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&touchscreen_pins>;
+-		post-power-on-delay-ms = <10>;
+-		hid-descr-addr = <0x0001>;
+-		vdd-supply = <&pp3300_s3>;
++		reset-gpios = <&pio 60 GPIO_ACTIVE_LOW>;
++		vcc33-supply = <&pp3300_s3>;
++		no-reset-on-power-off;
+ 	};
+ };
  
--#define __careful_clamp(val, lo, hi) \
--	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-+#define __careful_clamp(type, val, lo, hi) \
-+	__clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
- 
- /**
-- * clamp - return a value clamped to a given range with strict typechecking
-+ * clamp - return a value clamped to a given range with typechecking
-  * @val: current value
-  * @lo: lowest allowable value
-  * @hi: highest allowable value
-  *
-- * This macro does strict typechecking of @lo/@hi to make sure they are of the
-- * same type as @val.  See the unnecessary pointer comparisons.
-+ * This macro checks @val/@lo/@hi to make sure they have compatible
-+ * signedness.
-  */
--#define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
-+#define clamp(val, lo, hi) __careful_clamp(__auto_type, val, lo, hi)
- 
- /**
-  * clamp_t - return a value clamped to a given range using a given type
-@@ -217,7 +217,7 @@
-  * This macro does no typechecking and uses temporary variables of type
-  * @type to make all the comparisons.
-  */
--#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
-+#define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
- 
- /**
-  * clamp_val - return a value clamped to a given range using val's type
-@@ -230,7 +230,7 @@
-  * type and @lo and @hi are literals that will otherwise be assigned a signed
-  * integer type.
-  */
--#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
-+#define clamp_val(val, lo, hi) __careful_clamp(typeof(val), val, lo, hi)
- 
- /*
-  * Do not check the array parameter using __must_be_array().
+diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts b/arch/arm64/boot/dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts
+index 26d3451a5e47c..24d9ede63eaa2 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola-tentacruel-sku262144.dts
+@@ -42,3 +42,7 @@ MATRIX_KEY(0x00, 0x04, KEY_VOLUMEUP)
+ 		CROS_STD_MAIN_KEYMAP
+ 	>;
+ };
++
++&touchscreen {
++	compatible = "elan,ekth6a12nay";
++};
+-- 
+2.51.0
+
 
 
 
