@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-185231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1251BD5230
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C026FBD4BFD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 01527540118
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:53:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19CEF564895
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3760B30F95F;
-	Mon, 13 Oct 2025 15:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C95E30FC1C;
+	Mon, 13 Oct 2025 15:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAQ3N298"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpLMhAVn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A7730F955;
-	Mon, 13 Oct 2025 15:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB4830BBB8;
+	Mon, 13 Oct 2025 15:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369706; cv=none; b=XKYU7iJHiJas/7hzEAdZOnHNpfT++kgx2tWSwnCOMZdwk38vNs8o9sC905+HzhpJON1P+v2Cw3fjqYT66URX10THXlnooe1vSQ0/696LE6YuKrAzeD9Zw8F+hu45UUp/ckUrP6Ii0tXURI0B5tLGFu/jqOJnJ6ZQ5XFzHexhHz0=
+	t=1760369728; cv=none; b=j9rp9XRdv0L494k/8MCcqQ4L8FS4addJ58kFqV0zB6PTONorBjec0xpAHyVHjhmkaBxxtytVqK2coCqW4/48ab+R7xqaOAdCRJFMxKJ35N3Xh9CBC1xvdZkIxPdh7Uc9s8/gqhFf625KelpiqG8WYJRJqU7N0m5jQ6W2LD0VhNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369706; c=relaxed/simple;
-	bh=W64ANFtBWKmqauUBwHeU/5/T8M6A9VDIl76xHBvRpDs=;
+	s=arc-20240116; t=1760369728; c=relaxed/simple;
+	bh=Gpx+inrrEAfbOS782MauGVd07NsCHSuArX2AQrBgaTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLTQgU7f45jNq/yB6yXtaLRyNfo3Ce8u0FVjBG3PLEzKyVfLM96F/hJjkUEE8yXu1k+VjLlwrBmDKkTSFEp2TYQBvipaf3O5RUTQRorBZJw2cKKrbTKFinevgw2OolTCaisxgnPYumERWB8Rq3oarw17B3WSO8RrnZiNdO5Z0PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAQ3N298; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66396C4CEE7;
-	Mon, 13 Oct 2025 15:35:05 +0000 (UTC)
+	 MIME-Version; b=BdCmFr1wgimCndy2dtkT1SzZudzT0jACfoOO5R/PEFhr6i96tOoga6XCmnkkKK6dr6Q5zzbxEyowkNtjI/cZkFU/Tx4bJ0PYdrErUCdXBr1BiOG6ONh2yon9d3kArKBrQa6zIY4t4NAmxKJmJqJbYs9dxCEzd3R5eC3XcWe2tq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpLMhAVn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599DCC4CEE7;
+	Mon, 13 Oct 2025 15:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369705;
-	bh=W64ANFtBWKmqauUBwHeU/5/T8M6A9VDIl76xHBvRpDs=;
+	s=korg; t=1760369728;
+	bh=Gpx+inrrEAfbOS782MauGVd07NsCHSuArX2AQrBgaTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAQ3N298UmNlcS9aRi4gqoYJmMBJpMPo4+fpuHjlEmYM9E/7VwkQrq6gRhy04cP/3
-	 BQOknwssC9wKK9WREofeGKsaDUbKJaS2x6g1hBA2nAXSzCQOVBYmqiUeR5s2cIPdtB
-	 6wkcSDFZgWZO7H2ZsxfESe2WrwZ3ydoA9mKj2T3I=
+	b=VpLMhAVnIHL9Jbk/x+WV4JAtHlN35TVAk1t9vNGXyjLdue5B2CG4+0/sptLd35Iiw
+	 YxSMlxykX+4AZWv61SgBci8Araux2FtVZHzC0c9FUk2Bxvp/0pHwkdrUELfZxwWMXl
+	 SOHGv4Cj19EfV+L78PATmyl4YFPn+FEbGdChhI9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b0373017f711c06ada64@syzkaller.appspotmail.com,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Liam Beguin <liambeguin@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 339/563] fs/ntfs3: reject index allocation if $BITMAP is empty but blocks exist
-Date: Mon, 13 Oct 2025 16:43:20 +0200
-Message-ID: <20251013144423.550705949@linuxfoundation.org>
+Subject: [PATCH 6.17 341/563] iio: consumers: Fix offset handling in iio_convert_raw_to_processed()
+Date: Mon, 13 Oct 2025 16:43:22 +0200
+Message-ID: <20251013144423.622567381@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,53 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 0dc7117da8f92dd5fe077d712a756eccbe377d40 ]
+[ Upstream commit 33f5c69c4daff39c010b3ea6da8ebab285f4277b ]
 
-Index allocation requires at least one bit in the $BITMAP attribute to
-track usage of index entries. If the bitmap is empty while index blocks
-are already present, this reflects on-disk corruption.
+Fix iio_convert_raw_to_processed() offset handling for channels without
+a scale attribute.
 
-syzbot triggered this condition using a malformed NTFS image. During a
-rename() operation involving a long filename (which spans multiple
-index entries), the empty bitmap allowed the name to be added without
-valid tracking. Subsequent deletion of the original entry failed with
--ENOENT, due to unexpected index state.
+The offset has been applied to the raw64 value not to the original raw
+value. Use the raw64 value so that the offset is taken into account.
 
-Reject such cases by verifying that the bitmap is not empty when index
-blocks exist.
-
-Reported-by: syzbot+b0373017f711c06ada64@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b0373017f711c06ada64
-Fixes: d99208b91933 ("fs/ntfs3: cancle set bad inode after removing name fails")
-Tested-by: syzbot+b0373017f711c06ada64@syzkaller.appspotmail.com
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 14b457fdde38 ("iio: inkern: apply consumer scale when no channel scale is available")
+Cc: Liam Beguin <liambeguin@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20250831104825.15097-3-hansg@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/index.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/iio/inkern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 1bf2a6593dec6..6d1bf890929d9 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -1508,6 +1508,16 @@ static int indx_add_allocate(struct ntfs_index *indx, struct ntfs_inode *ni,
- 			bmp_size = bmp_size_v = le32_to_cpu(bmp->res.data_size);
- 		}
- 
-+		/*
-+		 * Index blocks exist, but $BITMAP has zero valid bits.
-+		 * This implies an on-disk corruption and must be rejected.
-+		 */
-+		if (in->name == I30_NAME &&
-+		    unlikely(bmp_size_v == 0 && indx->alloc_run.count)) {
-+			err = -EINVAL;
-+			goto out1;
-+		}
-+
- 		bit = bmp_size << 3;
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index d36a80a7b8a93..642beb4b3360d 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -640,7 +640,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ 		 * If no channel scaling is available apply consumer scale to
+ 		 * raw value and return.
+ 		 */
+-		*processed = raw * scale;
++		*processed = raw64 * scale;
+ 		return 0;
  	}
  
 -- 
