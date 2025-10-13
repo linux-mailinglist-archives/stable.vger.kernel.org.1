@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-184211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C2ABD2D20
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 13:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A28D6BD2D52
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 13:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D42134585B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 11:43:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 26B1834B104
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 11:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A30625FA10;
-	Mon, 13 Oct 2025 11:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E661B19E81F;
+	Mon, 13 Oct 2025 11:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDkwnkDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVOPvzU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E248014A8B
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 11:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26BE19ABDE
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 11:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760355829; cv=none; b=AMowUJck5xEfgblptq1Qwkk08XpI/3T0AUnKjY+LgdBOcN+79U6tQgUvCaLn8+WfFdvZzgbU+yzHgxyEEeFSb+C1TP9tL4aNRZ7OyM1lWH61mSNwRhaz1E+gOxQEJnRh3I5JkjYYFE+zQXWWAb/RzrjUcf4wHMy0m9d/CyyH0zw=
+	t=1760355940; cv=none; b=B5cVabZxXZpKtCH/FtNt5i0J8Hbj5vuSu6c1y3Zuitne21L0nBSWK7Gh5hJd1OePujGMeDfu+XaOGM3KT3rYrOxmWWbz+esEnjXxCv9pVtyBJZqMQd/nEcQtqCSK1AOOJ0eDHJwENwYhyYDpybcjOjRdw5Vnm+aKC9KiSzYnIgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760355829; c=relaxed/simple;
-	bh=4RJwrqztKs46Q40ucJo0C29fflsoncz7vv3Gb4wdMUQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EThh/icONrzi4OaNYkj8pr9tbhxzvJw5aLqZmL9mq0UNar8Fu4Yd2b51lBtTZdOH23xIMyX5351WDyTtebg3KgG0jm6B8PnBalrtHsmNRU0DLyJ3Ze+OuizJCvowxKCJe1t5v/Oc13wyfN1GZh72nksVh0oEeBPttWP4Z93eIXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDkwnkDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D642C4CEE7;
-	Mon, 13 Oct 2025 11:43:47 +0000 (UTC)
+	s=arc-20240116; t=1760355940; c=relaxed/simple;
+	bh=OeT5ulEf5CMX8g1jpl/fVKsA99ZvZkxo8c5pPWtZfzg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ARqEqIPfK7akIi0is1i3Wna+q6n9bIpUqdixL2VF2HabHKWZ+VHjcimEWEB6uR/lzTdZ8RkGlUiHuNsdpZw1pGSTKCkMjAle7NLXSUvMbKNY47qxEY1ci67mldoPuPmz8lLfzSM6KfhNa14sugvy6ReggJ/z83F3vG2wH5OeVpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVOPvzU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1A9C4CEE7;
+	Mon, 13 Oct 2025 11:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760355828;
-	bh=4RJwrqztKs46Q40ucJo0C29fflsoncz7vv3Gb4wdMUQ=;
+	s=korg; t=1760355940;
+	bh=OeT5ulEf5CMX8g1jpl/fVKsA99ZvZkxo8c5pPWtZfzg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=eDkwnkDw4TLHRZ1haq9ImyHGRDwa4L4x7765UG5JNwSlsQc3UH1LMejNsw1shZwOo
-	 oMkjYMnyThGVSx5rFfXesKhxSy5Vvka/S8klBZ0ObYAJqix5OSn+my4fAKjwD7upgh
-	 mO9os6D74unCjQozLNnMwLVjn+2jmgG0gsP0KK7o=
-Subject: FAILED: patch "[PATCH] selftests/mm: skip soft-dirty tests when" failed to apply to 6.1-stable tree
-To: lance.yang@linux.dev,akpm@linux-foundation.org,david@redhat.com,krisman@collabora.com,lorenzo.stoakes@oracle.com,shuah@kernel.org,stable@vger.kernel.org
+	b=IVOPvzU/66QsOBSRyeYPgs1h+nyJhHxQQw4mqUI9k2dfZSODDx7OlPaNQjIvD8x4T
+	 xgstE8d236yx2hF9Mjc5lhJqr/uNjnQn2BhycqecyIyKuwVtK97hZSgYzDHpHW0BRj
+	 LM72xqPRG36HmCFy4FHSPurACYd2QAxZDDKpMYMs=
+Subject: FAILED: patch "[PATCH] misc: fastrpc: Save actual DMA size in fastrpc_map structure" failed to apply to 6.1-stable tree
+To: quic_lxu5@quicinc.com,dmitry.baryshkov@linaro.org,dmitry.baryshkov@oss.qualcomm.com,ekansh.gupta@oss.qualcomm.com,gregkh@linuxfoundation.org,srini@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Oct 2025 13:43:30 +0200
-Message-ID: <2025101330-hemstitch-crimson-1681@gregkh>
+Date: Mon, 13 Oct 2025 13:45:29 +0200
+Message-ID: <2025101329-apple-bullfight-c1f9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0389c305ef56cbadca4cbef44affc0ec3213ed30
+git cherry-pick -x 8b5b456222fd604079b5cf2af1f25ad690f54a25
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101330-hemstitch-crimson-1681@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101329-apple-bullfight-c1f9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,131 +77,111 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0389c305ef56cbadca4cbef44affc0ec3213ed30 Mon Sep 17 00:00:00 2001
-From: Lance Yang <lance.yang@linux.dev>
-Date: Wed, 17 Sep 2025 21:31:37 +0800
-Subject: [PATCH] selftests/mm: skip soft-dirty tests when
- CONFIG_MEM_SOFT_DIRTY is disabled
+From 8b5b456222fd604079b5cf2af1f25ad690f54a25 Mon Sep 17 00:00:00 2001
+From: Ling Xu <quic_lxu5@quicinc.com>
+Date: Fri, 12 Sep 2025 14:12:33 +0100
+Subject: [PATCH] misc: fastrpc: Save actual DMA size in fastrpc_map structure
 
-The madv_populate and soft-dirty kselftests currently fail on systems
-where CONFIG_MEM_SOFT_DIRTY is disabled.
+For user passed fd buffer, map is created using DMA calls. The
+map related information is stored in fastrpc_map structure. The
+actual DMA size is not stored in the structure. Store the actual
+size of buffer and check it against the user passed size.
 
-Introduce a new helper softdirty_supported() into vm_util.c/h to ensure
-tests are properly skipped when the feature is not enabled.
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
+Cc: stable@kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250912131236.303102-2-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Link: https://lkml.kernel.org/r/20250917133137.62802-1-lance.yang@linux.dev
-Fixes: 9f3265db6ae8 ("selftests: vm: add test for Soft-Dirty PTE bit")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Gabriel Krisman Bertazi <krisman@collabora.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
-index b6fabd5c27ed..d8d11bc67ddc 100644
---- a/tools/testing/selftests/mm/madv_populate.c
-+++ b/tools/testing/selftests/mm/madv_populate.c
-@@ -264,23 +264,6 @@ static void test_softdirty(void)
- 	munmap(addr, SIZE);
- }
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index 53e88a1bc430..52571916acd4 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -323,11 +323,11 @@ static void fastrpc_free_map(struct kref *ref)
  
--static int system_has_softdirty(void)
--{
--	/*
--	 * There is no way to check if the kernel supports soft-dirty, other
--	 * than by writing to a page and seeing if the bit was set. But the
--	 * tests are intended to check that the bit gets set when it should, so
--	 * doing that check would turn a potentially legitimate fail into a
--	 * skip. Fortunately, we know for sure that arm64 does not support
--	 * soft-dirty. So for now, let's just use the arch as a corse guide.
--	 */
--#if defined(__aarch64__)
--	return 0;
--#else
--	return 1;
--#endif
--}
--
- int main(int argc, char **argv)
- {
- 	int nr_tests = 16;
-@@ -288,7 +271,7 @@ int main(int argc, char **argv)
+ 			perm.vmid = QCOM_SCM_VMID_HLOS;
+ 			perm.perm = QCOM_SCM_PERM_RWX;
+-			err = qcom_scm_assign_mem(map->phys, map->size,
++			err = qcom_scm_assign_mem(map->phys, map->len,
+ 				&src_perms, &perm, 1);
+ 			if (err) {
+ 				dev_err(map->fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d\n",
+-						map->phys, map->size, err);
++						map->phys, map->len, err);
+ 				return;
+ 			}
+ 		}
+@@ -758,7 +758,8 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
+ 	struct fastrpc_session_ctx *sess = fl->sctx;
+ 	struct fastrpc_map *map = NULL;
+ 	struct sg_table *table;
+-	int err = 0;
++	struct scatterlist *sgl = NULL;
++	int err = 0, sgl_index = 0;
  
- 	pagesize = getpagesize();
+ 	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
+ 		return 0;
+@@ -798,7 +799,15 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
+ 		map->phys = sg_dma_address(map->table->sgl);
+ 		map->phys += ((u64)fl->sctx->sid << 32);
+ 	}
+-	map->size = len;
++	for_each_sg(map->table->sgl, sgl, map->table->nents,
++		sgl_index)
++		map->size += sg_dma_len(sgl);
++	if (len > map->size) {
++		dev_dbg(sess->dev, "Bad size passed len 0x%llx map size 0x%llx\n",
++				len, map->size);
++		err = -EINVAL;
++		goto map_err;
++	}
+ 	map->va = sg_virt(map->table->sgl);
+ 	map->len = len;
  
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		nr_tests += 5;
+@@ -815,10 +824,10 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
+ 		dst_perms[1].vmid = fl->cctx->vmperms[0].vmid;
+ 		dst_perms[1].perm = QCOM_SCM_PERM_RWX;
+ 		map->attr = attr;
+-		err = qcom_scm_assign_mem(map->phys, (u64)map->size, &src_perms, dst_perms, 2);
++		err = qcom_scm_assign_mem(map->phys, (u64)map->len, &src_perms, dst_perms, 2);
+ 		if (err) {
+ 			dev_err(sess->dev, "Failed to assign memory with phys 0x%llx size 0x%llx err %d\n",
+-					map->phys, map->size, err);
++					map->phys, map->len, err);
+ 			goto map_err;
+ 		}
+ 	}
+@@ -2046,7 +2055,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
+ 	args[0].length = sizeof(req_msg);
  
- 	ksft_print_header();
-@@ -300,7 +283,7 @@ int main(int argc, char **argv)
- 	test_holes();
- 	test_populate_read();
- 	test_populate_write();
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		test_softdirty();
+ 	pages.addr = map->phys;
+-	pages.size = map->size;
++	pages.size = map->len;
  
- 	err = ksft_get_fail_cnt();
-diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-index 8a3f2b4b2186..4ee4db3750c1 100644
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -200,8 +200,11 @@ int main(int argc, char **argv)
- 	int pagesize;
+ 	args[1].ptr = (u64) (uintptr_t) &pages;
+ 	args[1].length = sizeof(pages);
+@@ -2061,7 +2070,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
+ 	err = fastrpc_internal_invoke(fl, true, FASTRPC_INIT_HANDLE, sc, &args[0]);
+ 	if (err) {
+ 		dev_err(dev, "mem mmap error, fd %d, vaddr %llx, size %lld\n",
+-			req.fd, req.vaddrin, map->size);
++			req.fd, req.vaddrin, map->len);
+ 		goto err_invoke;
+ 	}
  
- 	ksft_print_header();
--	ksft_set_plan(15);
- 
-+	if (!softdirty_supported())
-+		ksft_exit_skip("soft-dirty is not support\n");
-+
-+	ksft_set_plan(15);
- 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
- 	if (pagemap_fd < 0)
- 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 56e9bd541edd..e33cda301dad 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -449,6 +449,23 @@ bool check_vmflag_pfnmap(void *addr)
- 	return check_vmflag(addr, "pf");
- }
- 
-+bool softdirty_supported(void)
-+{
-+	char *addr;
-+	bool supported = false;
-+	const size_t pagesize = getpagesize();
-+
-+	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
-+	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (!addr)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	supported = check_vmflag(addr, "sd");
-+	munmap(addr, pagesize);
-+	return supported;
-+}
-+
- /*
-  * Open an fd at /proc/$pid/maps and configure procmap_out ready for
-  * PROCMAP_QUERY query. Returns 0 on success, or an error code otherwise.
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 07c4acfd84b6..26c30fdc0241 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -104,6 +104,7 @@ bool find_vma_procmap(struct procmap_fd *procmap, void *address);
- int close_procmap(struct procmap_fd *procmap);
- int write_sysfs(const char *file_path, unsigned long val);
- int read_sysfs(const char *file_path, unsigned long *val);
-+bool softdirty_supported(void);
- 
- static inline int open_self_procmap(struct procmap_fd *procmap_out)
- {
+@@ -2074,7 +2083,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
+ 	if (copy_to_user((void __user *)argp, &req, sizeof(req))) {
+ 		/* unmap the memory and release the buffer */
+ 		req_unmap.vaddr = (uintptr_t) rsp_msg.vaddr;
+-		req_unmap.length = map->size;
++		req_unmap.length = map->len;
+ 		fastrpc_req_mem_unmap_impl(fl, &req_unmap);
+ 		return -EFAULT;
+ 	}
 
 
