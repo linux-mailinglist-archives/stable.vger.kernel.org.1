@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DA4BD472F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052DFBD3E79
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3083B4FE5D7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 78D134F9C69
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B462430C632;
-	Mon, 13 Oct 2025 15:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0673926E702;
+	Mon, 13 Oct 2025 14:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bv0EQThv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ue2q/D6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729152FF642;
-	Mon, 13 Oct 2025 15:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB33309F11;
+	Mon, 13 Oct 2025 14:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368306; cv=none; b=C6MDUbNmMxQbva76eld9THm2vxo5f019jtg0xYEnKO/xQkkCtsZH/9S8YuZU9GK1pv1rZKm3lru1K87SSi8pyC/t3Ja1Xg62XhAcMR3r0nabkDoI41crFmUVX0SV0Ln0oF3QiJ4ESxl3OfD3b3GnS7Rtbl+zvUmleuklWs1qREY=
+	t=1760367204; cv=none; b=uoDEAqEWe1zfGwVhErPhssAUvopTuFAzRcJ/zAQ41n6FAJQyOI5q29wmQjG1vtefHWiSfL3ukdpezhMitQFCn4tBb7XhKcmGws7RObwpqKb3LzuOvW5+HBkIlLcfYUc6tRzvvjhxLLTzM5nL4e6oLqj77piz74BbgLRezeuX/uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368306; c=relaxed/simple;
-	bh=kxbvuVfZszMH1IfaEHlUQjPE9RWtfJ8aMwAVvKrlNOM=;
+	s=arc-20240116; t=1760367204; c=relaxed/simple;
+	bh=W0m+i6pSw2T0ainefqZPPnopvJl5x14l0zLgY5wwrQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u1dJvqdRcRACdgE6ZM1xLDTew1z8xpvWBGP1lq87YpNl6vl/T2XaTO+6dZx1c0XgMW3Har3kb6eJOW3hY5Grb1Q4H9ZTK6MiZP6gt//LXcQOHX5vdv+knuMFNYRbo94mJwVcXvE4gZ4NfMnzNzHlJpCnaATOEkfSjUG5FHZWNYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bv0EQThv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C841EC4CEFE;
-	Mon, 13 Oct 2025 15:11:45 +0000 (UTC)
+	 MIME-Version; b=PRyaUL6MM3G8qz9mfRqI8mVbTzVAd/U5DQp8mIuvh8waUhB4sdZHUVK0+qWihhBKDOWJ3lHySS2aHg4DrKdnozMJf/26oVkNxvoQyRIe2h8zUQRnxhY9szHjcirTXDg5ffDEiIpIxufWmrMnjSYPtPjoL2hyatzrErhedkDZQTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ue2q/D6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8096AC4CEFE;
+	Mon, 13 Oct 2025 14:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368306;
-	bh=kxbvuVfZszMH1IfaEHlUQjPE9RWtfJ8aMwAVvKrlNOM=;
+	s=korg; t=1760367203;
+	bh=W0m+i6pSw2T0ainefqZPPnopvJl5x14l0zLgY5wwrQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bv0EQThvhUSNt3IdcGHl8Sm3gVT9ekdLKFF6QNkHR2NKSliyah2O71omsQ19tbFq0
-	 b05Qg8zvj9yE97X3/fZ04YYtBcZIs3GXjXjkdT2QQJ/OoWiujB+sjgx1oCOCFQQH3m
-	 4O6ls/d6CkPAozCl94hzbxex3RlmnFDE6gul+5Sg=
+	b=ue2q/D6Ft/FhmaADa6hoR38d93h+Ws/Kw8jHQubXz/IHbwoN32zaqb6hAFzfumnTJ
+	 vXvxixRfYCuGf8YUMpJxCpRJ8fN2XXT7uZgPj1RfcEkHoyuMEnyYdZ/LbTxtWFZZec
+	 sq4z8G80rs8Ch29IBSuyAzN3zZyaLnXZD9H0ntpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 116/262] drm/amdgpu: Power up UVD 3 for FW validation (v2)
+Subject: [PATCH 6.1 085/196] thermal/drivers/qcom: Make LMH select QCOM_SCM
 Date: Mon, 13 Oct 2025 16:44:18 +0200
-Message-ID: <20251013144330.303061266@linuxfoundation.org>
+Message-ID: <20251013144317.648472120@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit c661219cd7be75bb5599b525f16a455a058eb516 ]
+[ Upstream commit 57eda47bd14b0c2876f2db42e757c57b7a671965 ]
 
-Unlike later versions, UVD 3 has firmware validation.
-For this to work, the UVD should be powered up correctly.
+The QCOM_SCM symbol is not user-visible, so it makes little sense to
+depend on it. Make LMH driver select QCOM_SCM as all other drivers do
+and, as the dependecy is now correctly handled, enable || COMPILE_TEST
+in order to include the driver into broader set of build tests.
 
-When DPM is enabled and the display clock is off,
-the SMU may choose a power state which doesn't power
-the UVD, which can result in failure to initialize UVD.
-
-v2:
-Add code comments to explain about the UVD power state
-and how UVD clock is turned on/off.
-
-Fixes: b38f3e80ecec ("drm amdgpu: SI UVD v3_1 (v2)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 9e5a4fb84230 ("thermal/drivers/qcom/lmh: make QCOM_LMH depends on QCOM_SCM")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20250728-lmh-scm-v2-1-33bc58388ca5@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c | 29 +++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ drivers/thermal/qcom/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-index 805d6662c88b6..21376d98ee498 100644
---- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-@@ -623,7 +623,22 @@ static void uvd_v3_1_enable_mgcg(struct amdgpu_device *adev,
-  *
-  * @handle: handle used to pass amdgpu_device pointer
-  *
-- * Initialize the hardware, boot up the VCPU and do some testing
-+ * Initialize the hardware, boot up the VCPU and do some testing.
-+ *
-+ * On SI, the UVD is meant to be used in a specific power state,
-+ * or alternatively the driver can manually enable its clock.
-+ * In amdgpu we use the dedicated UVD power state when DPM is enabled.
-+ * Calling amdgpu_dpm_enable_uvd makes DPM select the UVD power state
-+ * for the SMU and afterwards enables the UVD clock.
-+ * This is automatically done by amdgpu_uvd_ring_begin_use when work
-+ * is submitted to the UVD ring. Here, we have to call it manually
-+ * in order to power up UVD before firmware validation.
-+ *
-+ * Note that we must not disable the UVD clock here, as that would
-+ * cause the ring test to fail. However, UVD is powered off
-+ * automatically after the ring test: amdgpu_uvd_ring_end_use calls
-+ * the UVD idle work handler which will disable the UVD clock when
-+ * all fences are signalled.
-  */
- static int uvd_v3_1_hw_init(void *handle)
- {
-@@ -633,6 +648,15 @@ static int uvd_v3_1_hw_init(void *handle)
- 	int r;
+diff --git a/drivers/thermal/qcom/Kconfig b/drivers/thermal/qcom/Kconfig
+index 2c7f3f9a26ebb..a6bb01082ec69 100644
+--- a/drivers/thermal/qcom/Kconfig
++++ b/drivers/thermal/qcom/Kconfig
+@@ -34,7 +34,8 @@ config QCOM_SPMI_TEMP_ALARM
  
- 	uvd_v3_1_mc_resume(adev);
-+	uvd_v3_1_enable_mgcg(adev, true);
-+
-+	/* Make sure UVD is powered during FW validation.
-+	 * It's going to be automatically powered off after the ring test.
-+	 */
-+	if (adev->pm.dpm_enabled)
-+		amdgpu_dpm_enable_uvd(adev, true);
-+	else
-+		amdgpu_asic_set_uvd_clocks(adev, 53300, 40000);
- 
- 	r = uvd_v3_1_fw_validate(adev);
- 	if (r) {
-@@ -640,9 +664,6 @@ static int uvd_v3_1_hw_init(void *handle)
- 		return r;
- 	}
- 
--	uvd_v3_1_enable_mgcg(adev, true);
--	amdgpu_asic_set_uvd_clocks(adev, 53300, 40000);
--
- 	uvd_v3_1_start(adev);
- 
- 	r = amdgpu_ring_test_helper(ring);
+ config QCOM_LMH
+ 	tristate "Qualcomm Limits Management Hardware"
+-	depends on ARCH_QCOM && QCOM_SCM
++	depends on ARCH_QCOM || COMPILE_TEST
++	select QCOM_SCM
+ 	help
+ 	  This enables initialization of Qualcomm limits management
+ 	  hardware(LMh). LMh allows for hardware-enforced mitigation for cpus based on
 -- 
 2.51.0
 
