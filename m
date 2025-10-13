@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45061BD4DC4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:15:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A968BD54A3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 44AAF5424A0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 70D9E5807F3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFC32E1EE0;
-	Mon, 13 Oct 2025 15:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E92D31280C;
+	Mon, 13 Oct 2025 15:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ix1dUIpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moGhovak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C866145B3F;
-	Mon, 13 Oct 2025 15:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAF6309DB1;
+	Mon, 13 Oct 2025 15:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368584; cv=none; b=frIeQuKByUbvKxkct/+IXtfwv+cnJYTqqGNoZ2oGB60Bg53lXKMihtI17YvZDGyrz/S21rSzyAoTffRAhzsNBWg9GsSyQpjkxyIaet8eTjmyXIRawwPwTy5bcWun+03XUZFhX0L+lecW8L4znZdGBO3itC+deSOlqp0p982Uek0=
+	t=1760370055; cv=none; b=aPeFJSzkdLCDLrBmGrmif3NyjDWeM/gHcTNvsjFQTC+j60qyiMSBMSJoB5YCgxsaSs3wCXugsBw26tU6L+d6Y4O65JKMBXj/g61GOtVQPAGegScI4o9oVL4uepA4lR3gFTn/s0+CS2wQ0SOFHpOX1U/K1x6IZxj611UJNC/Kti4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368584; c=relaxed/simple;
-	bh=7fm/AAKGnJdB7BvC1CqwHlD7Z370fd0INzwxJa7Fpe4=;
+	s=arc-20240116; t=1760370055; c=relaxed/simple;
+	bh=zPYV66mS7tlXCF7pzFMhB6IL8MR5DHrwhtND5FWHOvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SkH+Mbyj1JbLSzLOGhH5mVMn1uJ/UPhtGwMjPmoD/EgXUuZdv21Bkev+NRDVE5GrdC+VCx30pTubQmltbvTloqvsh9c6OLNbyAlE00zMBPCf8cmOr9WmQJtadzcNIWHSsLreZuERDLWGtnWGICj3ty73xUr++wabYUjZxPikycs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ix1dUIpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADF4C4CEE7;
-	Mon, 13 Oct 2025 15:16:23 +0000 (UTC)
+	 MIME-Version; b=prd8vAaaOrFygZEFrgbN45X1gFkqYi7xPf7QoJXedvCA+BrUsiE36RVSg4klRCnuiAYjebW6m8d9wimhqM7q+yVDXIpwY3utl9LbjHr0X/s8R1hmb1KCr6TZZWmGUXc6RolvsuNosJqadfMDAg+lqv8m3SOqyF7KIfDdwXqLkT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moGhovak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A532C4CEE7;
+	Mon, 13 Oct 2025 15:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368584;
-	bh=7fm/AAKGnJdB7BvC1CqwHlD7Z370fd0INzwxJa7Fpe4=;
+	s=korg; t=1760370055;
+	bh=zPYV66mS7tlXCF7pzFMhB6IL8MR5DHrwhtND5FWHOvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ix1dUIpxks/C/FjsX80tnKMtvrT3o0w9hE7rCKNTmGl4hMHGizzjBmrT3sMym5i9l
-	 XEcJ4bOdQqnOtehWhnmg9KtE9i/9styJwAcciUi7dvaJM3qbOdpBNCqncrAdpKnkNu
-	 5as5hBMHB0ItB53x8WDf1WQ6LuaJG9rBF4n9stzA=
+	b=moGhovakGqLWMOXaGGzm1Out98oNY+8heFmKkzWc1RDyijfVcZJeYxX7K7fV3rUQ/
+	 6vP9PaN+B5NwQF+VGTxbTj2C7Q1jFnKe8szDgBUeck3ekHQmzxnXZDSGdTXt2YgqO5
+	 aG+XbUDgH7nEwxctJjke2TzE6sN5J9kNFPo3ekGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nagarjuna Kristam <nkristam@nvidia.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 179/262] PCI: tegra194: Fix duplicate PLL disable in pex_ep_event_pex_rst_assert()
-Date: Mon, 13 Oct 2025 16:45:21 +0200
-Message-ID: <20251013144332.575249580@linuxfoundation.org>
+Subject: [PATCH 6.17 463/563] hwrng: ks-sa - fix division by zero in ks_sa_rng_init
+Date: Mon, 13 Oct 2025 16:45:24 +0200
+Message-ID: <20251013144428.056692839@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nagarjuna Kristam <nkristam@nvidia.com>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit 4f152338e384a3a47dd61909e1457539fa93f5a4 ]
+[ Upstream commit 612b1dfeb414dfa780a6316014ceddf9a74ff5c0 ]
 
-During PERST# assertion tegra_pcie_bpmp_set_pll_state() is currently
-called twice.
+Fix division by zero in ks_sa_rng_init caused by missing clock
+pointer initialization. The clk_get_rate() call is performed on
+an uninitialized clk pointer, resulting in division by zero when
+calculating delay values.
 
-pex_ep_event_pex_rst_assert() should do the opposite of
-pex_ep_event_pex_rst_deassert(), so it is obvious that the duplicate
-tegra_pcie_bpmp_set_pll_state() is a mistake, and that the duplicate
-tegra_pcie_bpmp_set_pll_state() call should instead be a call to
-tegra_pcie_bpmp_set_ctrl_state().
+Add clock initialization code before using the clock.
 
-With this, the uninitialization sequence also matches that of
-tegra_pcie_unconfig_controller().
+Fixes: 6d01d8511dce ("hwrng: ks-sa - Add minimum sleep time before ready-polling")
+Signed-off-by: Nishanth Menon <nm@ti.com>
 
-Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
-Signed-off-by: Nagarjuna Kristam <nkristam@nvidia.com>
-[cassel: improve commit log]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Link: https://patch.msgid.link/20250911093021.1454385-2-cassel@kernel.org
-[mani: added Fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+ drivers/char/hw_random/ks-sa-rng.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/hw_random/ks-sa-rng.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index ced3b7e7bdade..815599ef72db8 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1721,9 +1721,9 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
- 				ret);
- 	}
+diff --git a/drivers/char/hw_random/ks-sa-rng.c b/drivers/char/hw_random/ks-sa-rng.c
+index d8fd8a3544828..9e408144a10c1 100644
+--- a/drivers/char/hw_random/ks-sa-rng.c
++++ b/drivers/char/hw_random/ks-sa-rng.c
+@@ -231,6 +231,10 @@ static int ks_sa_rng_probe(struct platform_device *pdev)
+ 	if (IS_ERR(ks_sa_rng->regmap_cfg))
+ 		return dev_err_probe(dev, -EINVAL, "syscon_node_to_regmap failed\n");
  
--	ret = tegra_pcie_bpmp_set_pll_state(pcie, false);
-+	ret = tegra_pcie_bpmp_set_ctrl_state(pcie, false);
- 	if (ret)
--		dev_err(pcie->dev, "Failed to turn off UPHY: %d\n", ret);
-+		dev_err(pcie->dev, "Failed to disable controller: %d\n", ret);
- 
- 	pcie->ep_state = EP_STATE_DISABLED;
- 	dev_dbg(pcie->dev, "Uninitialization of endpoint is completed\n");
++	ks_sa_rng->clk = devm_clk_get_enabled(dev, NULL);
++	if (IS_ERR(ks_sa_rng->clk))
++		return dev_err_probe(dev, PTR_ERR(ks_sa_rng->clk), "Failed to get clock\n");
++
+ 	pm_runtime_enable(dev);
+ 	ret = pm_runtime_resume_and_get(dev);
+ 	if (ret < 0) {
 -- 
 2.51.0
 
