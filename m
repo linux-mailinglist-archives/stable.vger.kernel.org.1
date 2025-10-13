@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-184938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93899BD4543
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:36:18 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F04BD44AD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89F751882CB7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 20D2A34F9EA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DB230F811;
-	Mon, 13 Oct 2025 15:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFC02797AE;
+	Mon, 13 Oct 2025 15:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DluiS9hB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vU0EiU3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D29D30F80D;
-	Mon, 13 Oct 2025 15:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC15E30F921;
+	Mon, 13 Oct 2025 15:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368870; cv=none; b=IWFl/WAKYULpyT2Qph5aO8FifFzFWNyKeyRnkwwUTdlWal6e1THzQ63GHLc3mlYLdbx/ynLfd5dJd/1wCnTqS7eLHzAzRB82X9gF195ppGFoah9OU+/+oUFbV7At7HxAZ+sIb97F6FYoSgBQ5jeTU4ehpOoaMVDZ7m1dfZQelFQ=
+	t=1760368884; cv=none; b=e6J95nSeqLm7wxQTcnAnReb3fPGDosguLzavnOlqZ4q2qaJ+K9Qg3hOgDqoLS1HVvAICswx6BUnSvawhEzckkA1H4sysAua+QgCN0E3iylOW1HZijCZ4ABtC9Huh3esFfNK+eVkFMw/DmoSyS23WI1vvTAQaokrZJmbUdyfCNQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368870; c=relaxed/simple;
-	bh=DXVM05JLiVKYbbYlirY4cXwYnLuZ4KMIY4BxD6nlNNU=;
+	s=arc-20240116; t=1760368884; c=relaxed/simple;
+	bh=S4oqsQrLNpzi0BKw1vDQLiTmN0aJotZ+QAOPRtH7V98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gndPFX0ljHfDmPVEpn0w1ZmKoaPOmBJcHfjuEK/lNTnzeUhzYySx601kVxf3004UxHjpOZsZT39aCjk2g8z2jLdSsy4NehpCmQubux7qEwqCamGt8eOWav09WtaUXMewnJv3HhK29NfSDAkFf4xc8U7ZdBjTz8TZsVDt2o+vJeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DluiS9hB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8785C4CEE7;
-	Mon, 13 Oct 2025 15:21:09 +0000 (UTC)
+	 MIME-Version; b=oRyrM9LCgdT7fmfDfe0puK7dPwKQxUC5sMORzcT7GDgkSHhw8E+yzFHQ7fdVc0ALQouQbPxcJbCRgT6tKNbdPXQrpOOyp4ORMu+grcc0JIX4/aKIPpooJMwU6oR7ixteWau8nCMRErPeH33IBDU7kqR7zBIr9TpNTNv9xor6vPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vU0EiU3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECEEC4CEE7;
+	Mon, 13 Oct 2025 15:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368870;
-	bh=DXVM05JLiVKYbbYlirY4cXwYnLuZ4KMIY4BxD6nlNNU=;
+	s=korg; t=1760368884;
+	bh=S4oqsQrLNpzi0BKw1vDQLiTmN0aJotZ+QAOPRtH7V98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DluiS9hB4PAscg8xSxQjaGUM1P9nGzqnYyOySJhDuveLtQM00WtKVmiNl09ZceYiX
-	 3e6DI02erxa4ZzXzXNpXykxvP3ev4wmztkhnvHO7vE4CEscqSKJHXEr0fqSf4av4js
-	 YlvC6n5qS5aJ//apqwhQHo/HK64gJtp1zDfFOos4=
+	b=vU0EiU3Mtk6oHv1QfSMuGjn4AR/02oWCusqE2ja8cugc0pFNLTPoqPr3mBlaRwkZp
+	 HCCVjDaEqCXD/3MytJEBnSmlHF2vfXq7P92f8uOhbmofUhZF0SLK98amaLqZx+Xt1h
+	 7KmuGATrmmxsSWaZl9oaHVUROpqsNNfE0IebvI/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baptiste Lepers <baptiste.lepers@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 046/563] rust: cpumask: Mark CpumaskVar as transparent
-Date: Mon, 13 Oct 2025 16:38:27 +0200
-Message-ID: <20251013144412.962211397@linuxfoundation.org>
+Subject: [PATCH 6.17 051/563] ARM: dts: renesas: porter: Fix CAN pin group
+Date: Mon, 13 Oct 2025 16:38:32 +0200
+Message-ID: <20251013144413.141711892@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,36 +65,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baptiste Lepers <baptiste.lepers@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 23fca458f6ab18927e50c2134fb7b60297f18b4e ]
+[ Upstream commit 287066b295051729fb08c3cff12ae17c6fe66133 ]
 
-Unsafe code in CpumaskVar's methods assumes that the type has the same
-layout as `bindings::cpumask_var_t`. This is not guaranteed by
-the default struct representation in Rust, but requires specifying the
-`transparent` representation.
+According to the schematics, the CAN transceiver is connected to pins
+GP7_3 and GP7_4, which correspond to CAN0 data group B.
 
-Fixes: 8961b8cb3099a ("rust: cpumask: Add initial abstractions")
-Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 0768fbad7fba1d27 ("ARM: shmobile: porter: add CAN0 DT support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/70ad9bc44d6cea92197c42eedcad6b3d0641d26a.1751032025.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/cpumask.rs | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/renesas/r8a7791-porter.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
-index 3fcbff4386705..05e1c882404e4 100644
---- a/rust/kernel/cpumask.rs
-+++ b/rust/kernel/cpumask.rs
-@@ -212,6 +212,7 @@ impl Cpumask {
- /// }
- /// assert_eq!(mask2.weight(), count);
- /// ```
-+#[repr(transparent)]
- pub struct CpumaskVar {
-     #[cfg(CONFIG_CPUMASK_OFFSTACK)]
-     ptr: NonNull<Cpumask>,
+diff --git a/arch/arm/boot/dts/renesas/r8a7791-porter.dts b/arch/arm/boot/dts/renesas/r8a7791-porter.dts
+index f518eadd8b9cd..81b3c5d74e9b3 100644
+--- a/arch/arm/boot/dts/renesas/r8a7791-porter.dts
++++ b/arch/arm/boot/dts/renesas/r8a7791-porter.dts
+@@ -289,7 +289,7 @@ vin0_pins: vin0 {
+ 	};
+ 
+ 	can0_pins: can0 {
+-		groups = "can0_data";
++		groups = "can0_data_b";
+ 		function = "can0";
+ 	};
+ 
 -- 
 2.51.0
 
