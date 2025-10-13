@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-184789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA1DABD48BC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4A1BD470B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BC9B14FD4F2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D7B444F8203
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45C33081AE;
-	Mon, 13 Oct 2025 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FCC30B504;
+	Mon, 13 Oct 2025 15:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXECS2pj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHOrYGWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B2A3064B7;
-	Mon, 13 Oct 2025 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97840299948;
+	Mon, 13 Oct 2025 15:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368437; cv=none; b=n4sCTE0oW80l2Igv1+MTHlB+u7SkDliH5cWCFgm5PZ6y3tGe1lrIHzsPSe+zspTallzV+pnCmnp2DIXC8Rzahyu1j9L8ASj3dAmDwYMECSd1wAusW9T7TBlSvPI958pWQVuU9zTiUkwuHcAyZLX+eroxa2/GgCBQ0fj/X6OiN2o=
+	t=1760367724; cv=none; b=R/3JZ3q/JtuTdln/MLdMM+LsogCsClBcnXiU2al1y445ASeuve3Amogq0Clttafu1DK3hpnmd+BIr/hBzWjwY4z2D5bHunI5M+GEnbi+1a4gS9t7HQGVogBalaK7+vTfMMtWBNuSl2/Dpk5ckV6lFUC800lx827ldd5fEiu+8BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368437; c=relaxed/simple;
-	bh=JmVtGQIv17bBPIax8MbqrtBGxCQfHvdmNy6jKuyTExI=;
+	s=arc-20240116; t=1760367724; c=relaxed/simple;
+	bh=H5J9bhqqAU+Dwo1n6yR4HQ88M1fxrMh0e66JLl86QfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0Kk998aGp/Ay997ftQYiyDTHm7YfXKOYKG5TbQwSFiJzn37gputTnn7MRFyYeVMMdvhYn3ZvlUHssQ1Es2KMR8OdOr6erfQCK63ISSJwTRv4GIIVufTYNN4+/aysfdXT1L99iMK7XMpU9JNL2xsXnj4zFjjXVcI0+PAXTPqSFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXECS2pj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28F3C4CEE7;
-	Mon, 13 Oct 2025 15:13:56 +0000 (UTC)
+	 MIME-Version; b=jwB8AVSfsIY8eejZi2/p8XWuRnLP2BitUs069380m567rZTQXglBdRrrPKbjYinbBGRDOlP9O/yb4JMQemhQ6zBzmeeqdyn7BllEmnKzP5zM47ZstnNqqbxIUdG6ycneb5LnGTDCiwMe34p895NwOofUEBG9nsCLNDCJdpNheFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHOrYGWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF31BC4CEE7;
+	Mon, 13 Oct 2025 15:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368437;
-	bh=JmVtGQIv17bBPIax8MbqrtBGxCQfHvdmNy6jKuyTExI=;
+	s=korg; t=1760367724;
+	bh=H5J9bhqqAU+Dwo1n6yR4HQ88M1fxrMh0e66JLl86QfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXECS2pjUwvKaXoBw75WvuUEihJnaYOq/QjPpfuxTGTXJ70asuRj4/s8i1Lca+IUM
-	 BorC96gH/QXdXwgVMDWD5aN+nPlQ0dIdO3KZ0v56EHdjUxoWTDCYffAus7ORD7+w7p
-	 8g8JpMjuRvT/WUzJ0Qm/sd3iYmnRcvi2ncfvPa2M=
+	b=FHOrYGWjGntPYGQGHV2ToBXbxKeE9tol/yjizTfYYAWmiomG+S+ITn6EVGwmxw8lk
+	 1yNVzEfRugpRqW/6xkZ2BYrBnstBfFVM/GNKBPV9QF4zekXsa0avBWpuFuaaxxGMFr
+	 JngqqJcivx2OVu/qYTAPq7YwUoIDcKdJl3At4hw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 161/262] Revert "usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running"
+Subject: [PATCH 6.6 112/196] drivers/base/node: handle error properly in register_one_node()
 Date: Mon, 13 Oct 2025 16:45:03 +0200
-Message-ID: <20251013144331.921138896@linuxfoundation.org>
+Message-ID: <20251013144319.363492889@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +72,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit 08fa726e66039dfa80226dfa112931f60ad4c898 ]
+[ Upstream commit 786eb990cfb78aab94eb74fb32a030e14723a620 ]
 
-This reverts commit 28a76fcc4c85dd39633fb96edb643c91820133e3.
+If register_node() returns an error, it is not handled correctly.
+The function will proceed further and try to register CPUs under the
+node, which is not correct.
 
-No actual HW bugs are known where Endpoint Context shows Running state
-but Stop Endpoint fails repeatedly with Context State Error and leaves
-the endpoint state unchanged. Stop Endpoint retries on Running EPs have
-been performed since early 2021 with no such issues reported so far.
+So, in this patch, if register_node() returns an error, we return
+immediately from the function.
 
-Trying to handle this hypothetical case brings a more realistic danger:
-if Stop Endpoint fails on an endpoint which hasn't yet started after a
-doorbell ring and enough latency occurs before this completion event is
-handled, the driver may time out and begin removing cancelled TDs from
-a running endpoint, even though one more retry would stop it reliably.
-
-Such high latency is rare but not impossible, and removing TDs from a
-running endpoint can cause more damage than not giving back a cancelled
-URB (which wasn't happening anyway). So err on the side of caution and
-revert to the old policy of always retrying if the EP appears running.
-
-[Remove stable tag as we are dealing with theoretical cases -Mathias]
-
-Fixes: 28a76fcc4c85d ("usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running")
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250917210726.97100-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20250822084845.19219-1-donettom@linux.ibm.com
+Fixes: 76b67ed9dce6 ("[PATCH] node hotplug: register cpu: remove node struct")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
+Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/base/node.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 1002fa51a25aa..f377725a12128 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1199,19 +1199,16 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 			 * Stopped state, but it will soon change to Running.
- 			 *
- 			 * Assume this bug on unexpected Stop Endpoint failures.
--			 * Keep retrying until the EP starts and stops again.
-+			 * Keep retrying until the EP starts and stops again, on
-+			 * chips where this is known to help. Wait for 100ms.
- 			 */
-+			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
-+				break;
- 			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
- 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
- 					GET_EP_CTX_STATE(ep_ctx));
--			/*
--			 * Don't retry forever if we guessed wrong or a defective HC never starts
--			 * the EP or says 'Running' but fails the command. We must give back TDs.
--			 */
--			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
--				break;
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 4d588f4658c85..7b2ff66c119ae 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -878,6 +878,11 @@ int __register_one_node(int nid)
+ 	node_devices[nid] = node;
  
- 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 			if (!command) {
+ 	error = register_node(node_devices[nid], nid);
++	if (error) {
++		node_devices[nid] = NULL;
++		kfree(node);
++		return error;
++	}
+ 
+ 	/* link cpu under this node */
+ 	for_each_present_cpu(cpu) {
 -- 
 2.51.0
 
