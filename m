@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-184615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EC0BD41B9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB2CBD488C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FFF318850CE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6950040350E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C2630FC1C;
-	Mon, 13 Oct 2025 15:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A7930AACE;
+	Mon, 13 Oct 2025 15:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0EQFhRJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQUVynzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD1F30FC10;
-	Mon, 13 Oct 2025 15:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B03D26F2B6;
+	Mon, 13 Oct 2025 15:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367944; cv=none; b=q01+5N5ZuZKjPJzSoMzEdCaVX9MO4sLmZUW5GTO7dsXxYWjUniZettazYEHd+RVGCByp0xBkuiYjT3PSHNL3o7bnWbwZZwDhcet6qVz+H6GnSmznvRmnesjBqpzUpkiXff1yACL3p9xnR4furxGIUVPvTScqH5Km9hDNWnMBXxw=
+	t=1760368661; cv=none; b=lDHB8fYMecO3jpovdpzQF0im2s8YVKC42R9BQstkjbY/IHaUlWyEW8+C5a4ERg4DGlGrxpHV2vIo8Y53XqVknT5T0nC4oDemaim6C64FuSiWQmPS9MtT+xAUpXM9x4puFvrBPi8+MlVce+IOs9PpQoSbwGQfjzdgrfOC+cJ5SNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367944; c=relaxed/simple;
-	bh=v2UOH0b8afPAFa9/Q+1i7ytvCXaqR/xEtWV0yPqpbOI=;
+	s=arc-20240116; t=1760368661; c=relaxed/simple;
+	bh=0Z8UL2GhDJSI19a3Y1AzZSMsUVmigrZxRxSJB6psBNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YYQv+wGNTtDc1rxxNDVCDw6E4NqQZQAkftXsKjD+Nx5YEyWTrFHXzEc7zEyg4rWICfz+d7B4Ka35wwDyKHqNQF6D6uHv46lfys4+OBDBda81LwYijmTzHdV6D7HK4xRq7ga6jAcRbh3ziPAkeyE5EBXMAbtIMQQzXld9eYFIhmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0EQFhRJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1B2C4CEE7;
-	Mon, 13 Oct 2025 15:05:43 +0000 (UTC)
+	 MIME-Version; b=Tit7RBbgsbeMjMtEpIVLmirUowMlTIvEXaEToIKu6xZJr6Bdq3Md9QQhm9lD3U2qK9IpNyMmu07c9xI4nTbxoPQFLyAUCzfANwOMYzj86EL/aS/XxrlGB6nPeA37SD+Vra2ONxV3NfRrp8aai3+IOPEddLgobqO6dyfVMiRmG+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQUVynzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920D3C4CEFE;
+	Mon, 13 Oct 2025 15:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367944;
-	bh=v2UOH0b8afPAFa9/Q+1i7ytvCXaqR/xEtWV0yPqpbOI=;
+	s=korg; t=1760368661;
+	bh=0Z8UL2GhDJSI19a3Y1AzZSMsUVmigrZxRxSJB6psBNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0EQFhRJpB6MhR0l9iQqCNaHR6AfWIwjYSdnTI0yJ/fBEm3q+xdsZwyLPGaFhSqco
-	 IJOtHSt3roBJga9NNMwUWgdznC+1MYv5gD+wJAIekwEtooH89wq1VD4YbdhQPqeZ2Z
-	 goZwIGsIPoYwW6Jt1czmLpYwmKoPQEoqk6iAEGn4=
+	b=uQUVynzFUVVHQkWuqECrPyABXSmhk+ABFSSR9YR9upCAHjoGoRQjkAx8SjZgL9zpg
+	 /iq90jVqwdriBbE2p1T3EdWgyWd5ZcVfWaxUFOPEtfcbBK+f5C1GMLyDThxt0rKeqg
+	 KgTnkCdxkekbhs96NqsvIwSoiug32m1Il+W2MlZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 188/196] Input: uinput - zero-initialize uinput_ff_upload_compat to avoid info leak
-Date: Mon, 13 Oct 2025 16:46:19 +0200
-Message-ID: <20251013144322.108029263@linuxfoundation.org>
+	Youling Tang <tangyouling@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 238/262] LoongArch: Automatically disable kaslr if boot from kexec_file
+Date: Mon, 13 Oct 2025 16:46:20 +0200
+Message-ID: <20251013144334.811147918@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Youling Tang <tangyouling@kylinos.cn>
 
-commit d3366a04770eea807f2826cbdb96934dd8c9bf79 upstream.
+commit c8168b4faf1d62cbb320a3e518ad31cdd567cb05 upstream.
 
-Struct ff_effect_compat is embedded twice inside
-uinput_ff_upload_compat, contains internal padding. In particular, there
-is a hole after struct ff_replay to satisfy alignment requirements for
-the following union member. Without clearing the structure,
-copy_to_user() may leak stack data to userspace.
+Automatically disable kaslr when the kernel loads from kexec_file.
 
-Initialize ff_up_compat to zero before filling valid fields.
+kexec_file loads the secondary kernel image to a non-linked address,
+inherently providing KASLR-like randomization.
 
-Fixes: 2d56f3a32c0e ("Input: refactor evdev 32bit compat to be shareable with uinput")
+However, on LoongArch where System RAM may be non-contiguous, enabling
+KASLR for the second kernel may relocate it to an invalid memory region
+and cause a boot failure. Thus, we disable KASLR when "kexec_file" is
+detected in the command line.
+
+To ensure compatibility with older kernels loaded via kexec_file, this
+patch should be backported to stable branches.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Link: https://lore.kernel.org/r/20250928063737.74590-1-zhen.ni@easystack.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Youling Tang <tangyouling@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/uinput.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/kernel/relocate.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/input/misc/uinput.c
-+++ b/drivers/input/misc/uinput.c
-@@ -775,6 +775,7 @@ static int uinput_ff_upload_to_user(char
- 	if (in_compat_syscall()) {
- 		struct uinput_ff_upload_compat ff_up_compat;
+--- a/arch/loongarch/kernel/relocate.c
++++ b/arch/loongarch/kernel/relocate.c
+@@ -166,6 +166,10 @@ static inline __init bool kaslr_disabled
+ 		return true;
+ #endif
  
-+		memset(&ff_up_compat, 0, sizeof(ff_up_compat));
- 		ff_up_compat.request_id = ff_up->request_id;
- 		ff_up_compat.retval = ff_up->retval;
- 		/*
++	str = strstr(boot_command_line, "kexec_file");
++	if (str == boot_command_line || (str > boot_command_line && *(str - 1) == ' '))
++		return true;
++
+ 	return false;
+ }
+ 
 
 
 
