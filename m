@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15715BD467B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFACDBD3E31
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 771E45050FC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B6AC4F57F2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E109E3093BC;
-	Mon, 13 Oct 2025 15:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA30277CB0;
+	Mon, 13 Oct 2025 14:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oejfimkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQdOo8Yn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E932309DDC;
-	Mon, 13 Oct 2025 15:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAFB221F20;
+	Mon, 13 Oct 2025 14:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367607; cv=none; b=TnT//EyHTWLDU+lNkdmb6L22+5GWpsjGMeFb89jx8dSofVx24Q0ApiY1fEcd09Dx50XXDp8+CRJoyMtT0yPxE1C4+BJrkulKyPlO7R2f2w7OtSlpHuG9Utgjw+OrzSCHkA+tJZwSD/Jan38GBVrULsgAi8VcOD2ktv/SGUrXwnY=
+	t=1760367092; cv=none; b=la80Lngvh+BAZd/gDW7wsgaiU7NxcruYSbjJxk4/EgLmP1o6ezAwxYaVt8P1D98J83Eed+Z+vLFl7NYjrYmKZBle3jEsrEqtqIQF8KNAU5nDhdZfZ+FC3ejbzDiwug9iQ7bxOhu8yq0iMchgsWoJTNi0jjjtbdjW2/jcLwFu+pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367607; c=relaxed/simple;
-	bh=9vId8C9aEKj2AOh+ArfyskMtFtFvvcPZo1HJMFptqqw=;
+	s=arc-20240116; t=1760367092; c=relaxed/simple;
+	bh=yyGVQFbPyqgF939vUDqu+kJTknj8zD6zab8Gz5WMezU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VgKTWFfPSZGT2SPLuxaTCL9uVehHZbYSWRusElVvWcjsbYL5FROqmDhBbxAwJft/pLPIVAd8Zoogo9jQ+YtRpK13uhS+DUfKjV3mhLdFeIc+8M/ZN7HJqXk0R0b09pXAa9dLVrta9YjzF4nyfc6sSiLInARC5l4fLBbeOwmphr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oejfimkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD26C4CEE7;
-	Mon, 13 Oct 2025 15:00:06 +0000 (UTC)
+	 MIME-Version; b=OgH96iLxZEM0Ekdr8oJL+aclJn5eAtVELa0ekr+3WtQVTNy4ThdsPt04fGe7Ue0R9yfqtp5PmkE2oC+gkDqAfvidpWObqrvLUPaYRsLO1fmM9/PAwT408Hfr1q4gQ+p4zv2hNTcoclWDPEA6E2M0JrUk9J1DmCPzVr8uS3iyUrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQdOo8Yn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CC7C4CEE7;
+	Mon, 13 Oct 2025 14:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367607;
-	bh=9vId8C9aEKj2AOh+ArfyskMtFtFvvcPZo1HJMFptqqw=;
+	s=korg; t=1760367092;
+	bh=yyGVQFbPyqgF939vUDqu+kJTknj8zD6zab8Gz5WMezU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oejfimkXhmwIkB+jPb9D3qxQN0SmZascqMGsdBqLgog+dvq5cPdocn53M/1IWBoMy
-	 egzaqIpZAEHON4ve8LzvTBNqA3NMVQ/ny167YdJsqDsXAsuPHqbaFbCjLu2rX7ofR7
-	 dbq1iXZNV/QnvpBeQS9sxUEskDTj5YZsP0eNu/9A=
+	b=rQdOo8YnJDQUKNKiYXKgMT64zC2DX/YFo+fuIr9S4mLWpBZkGVdrx0IP/nMJPB/NO
+	 rCO/xcb0Nogk+prsavRZ/ywxztIPgG/UGmX1YbOXOL1ZonjpQl11iQtEVzs0gGNPKy
+	 VujEfE83mCkxe72SmecHFCQts0cROY7PXXmzJnb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Genjian Zhang <zhanggenjian@kylinos.cn>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/196] null_blk: Fix the description of the cache_size module argument
-Date: Mon, 13 Oct 2025 16:43:48 +0200
-Message-ID: <20251013144316.544250010@linuxfoundation.org>
+Subject: [PATCH 6.1 056/196] bpf/selftests: Fix test_tcpnotify_user
+Date: Mon, 13 Oct 2025 16:43:49 +0200
+Message-ID: <20251013144316.610065700@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Genjian Zhang <zhanggenjian@kylinos.cn>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit 7942b226e6b84df13b46b76c01d3b6e07a1b349e ]
+[ Upstream commit c80d79720647ed77ebc0198abd5a0807efdaff0b ]
 
-When executing modinfo null_blk, there is an error in the description
-of module parameter mbps, and the output information of cache_size is
-incomplete.The output of modinfo before and after applying this patch
-is as follows:
+Based on a bisect, it appears that commit 7ee988770326 ("timers:
+Implement the hierarchical pull model") has somehow inadvertently
+broken BPF selftest test_tcpnotify_user. The error that is being
+generated by this test is as follows:
 
-Before:
-[...]
-parm:           cache_size:ulong
-[...]
-parm:           mbps:Cache size in MiB for memory-backed device.
-		Default: 0 (none) (uint)
-[...]
+	FAILED: Wrong stats Expected 10 calls, got 8
 
-After:
-[...]
-parm:           cache_size:Cache size in MiB for memory-backed device.
-		Default: 0 (none) (ulong)
-[...]
-parm:           mbps:Limit maximum bandwidth (in MiB/s).
-		Default: 0 (no limit) (uint)
-[...]
+It looks like the change allows timer functions to be run on CPUs
+different from the one they are armed on. The test had pinned itself
+to CPU 0, and in the past the retransmit attempts also occurred on CPU
+0. The test had set the max_entries attribute for
+BPF_MAP_TYPE_PERF_EVENT_ARRAY to 2 and was calling
+bpf_perf_event_output() with BPF_F_CURRENT_CPU, so the entry was
+likely to be in range. With the change to allow timers to run on other
+CPUs, the current CPU tasked with performing the retransmit might be
+bumped and in turn fall out of range, as the event will be filtered
+out via __bpf_perf_event_output() using:
 
-Fixes: 058efe000b31 ("null_blk: add module parameters for 4 options")
-Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+    if (unlikely(index >= array->map.max_entries))
+            return -E2BIG;
+
+A possible change would be to explicitly set the max_entries attribute
+for perf_event_map in test_tcpnotify_kern.c to a value that's at least
+as large as the number of CPUs. As it turns out however, if the field
+is left unset, then the libbpf will determine the number of CPUs available
+on the underlying system and update the max_entries attribute accordingly
+in map_set_def_max_entries().
+
+A further problem with the test is that it has a thread that continues
+running up until the program exits. The main thread cleans up some
+LIBBPF data structures, while the other thread continues to use them,
+which inevitably will trigger a SIGSEGV. This can be dealt with by
+telling the thread to run for as long as necessary and doing a
+pthread_join on it before exiting the program.
+
+Finally, I don't think binding the process to CPU 0 is meaningful for
+this test any more, so get rid of that.
+
+Fixes: 435f90a338ae ("selftests/bpf: add a test case for sock_ops perf-event notification")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/aJ8kHhwgATmA3rLf@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/bpf/progs/test_tcpnotify_kern.c |  1 -
+ .../selftests/bpf/test_tcpnotify_user.c       | 20 +++++++++----------
+ 2 files changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 97ed3bd9707f4..2dd254c720f5f 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -211,7 +211,7 @@ MODULE_PARM_DESC(discard, "Support discard operations (requires memory-backed nu
+diff --git a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
+index 540181c115a85..ef00d38b0a8d2 100644
+--- a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
++++ b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
+@@ -23,7 +23,6 @@ struct {
  
- static unsigned long g_cache_size;
- module_param_named(cache_size, g_cache_size, ulong, 0444);
--MODULE_PARM_DESC(mbps, "Cache size in MiB for memory-backed device. Default: 0 (none)");
-+MODULE_PARM_DESC(cache_size, "Cache size in MiB for memory-backed device. Default: 0 (none)");
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+-	__uint(max_entries, 2);
+ 	__type(key, int);
+ 	__type(value, __u32);
+ } perf_event_map SEC(".maps");
+diff --git a/tools/testing/selftests/bpf/test_tcpnotify_user.c b/tools/testing/selftests/bpf/test_tcpnotify_user.c
+index 595194453ff8f..35b4893ccdf8a 100644
+--- a/tools/testing/selftests/bpf/test_tcpnotify_user.c
++++ b/tools/testing/selftests/bpf/test_tcpnotify_user.c
+@@ -15,20 +15,18 @@
+ #include <bpf/libbpf.h>
+ #include <sys/ioctl.h>
+ #include <linux/rtnetlink.h>
+-#include <signal.h>
+ #include <linux/perf_event.h>
+-#include <linux/err.h>
  
- static unsigned int g_mbps;
- module_param_named(mbps, g_mbps, uint, 0444);
+-#include "bpf_util.h"
+ #include "cgroup_helpers.h"
+ 
+ #include "test_tcpnotify.h"
+-#include "trace_helpers.h"
+ #include "testing_helpers.h"
+ 
+ #define SOCKET_BUFFER_SIZE (getpagesize() < 8192L ? getpagesize() : 8192L)
+ 
+ pthread_t tid;
++static bool exit_thread;
++
+ int rx_callbacks;
+ 
+ static void dummyfn(void *ctx, int cpu, void *data, __u32 size)
+@@ -45,7 +43,7 @@ void tcp_notifier_poller(struct perf_buffer *pb)
+ {
+ 	int err;
+ 
+-	while (1) {
++	while (!exit_thread) {
+ 		err = perf_buffer__poll(pb, 100);
+ 		if (err < 0 && err != -EINTR) {
+ 			printf("failed perf_buffer__poll: %d\n", err);
+@@ -78,15 +76,10 @@ int main(int argc, char **argv)
+ 	int error = EXIT_FAILURE;
+ 	struct bpf_object *obj;
+ 	char test_script[80];
+-	cpu_set_t cpuset;
+ 	__u32 key = 0;
+ 
+ 	libbpf_set_strict_mode(LIBBPF_STRICT_ALL);
+ 
+-	CPU_ZERO(&cpuset);
+-	CPU_SET(0, &cpuset);
+-	pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
+-
+ 	cg_fd = cgroup_setup_and_join(cg_path);
+ 	if (cg_fd < 0)
+ 		goto err;
+@@ -151,6 +144,13 @@ int main(int argc, char **argv)
+ 
+ 	sleep(10);
+ 
++	exit_thread = true;
++	int ret = pthread_join(tid, NULL);
++	if (ret) {
++		printf("FAILED: pthread_join\n");
++		goto err;
++	}
++
+ 	if (verify_result(&g)) {
+ 		printf("FAILED: Wrong stats Expected %d calls, got %d\n",
+ 			g.ncalls, rx_callbacks);
 -- 
 2.51.0
 
