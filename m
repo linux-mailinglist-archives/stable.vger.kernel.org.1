@@ -1,130 +1,174 @@
-Return-Path: <stable+bounces-184126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71857BD15A6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 06:06:09 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35DA8BD16E6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 07:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A467B189635B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 04:06:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0075F4E70D7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 05:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470B727F747;
-	Mon, 13 Oct 2025 04:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B5827A93C;
+	Mon, 13 Oct 2025 05:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QShxkHjO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E8LqQfUF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4511922DD;
-	Mon, 13 Oct 2025 04:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBBB19D07E
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 05:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760328361; cv=none; b=gbF6SdNJVmoSwV1/JwYC4xmIul6C/wdrFxGUbokORYrop+QajjW52C2tEMkHjDYsgl7TRVtsknJ3fq6YN7haTWATotTkuD2OtsPjkEzLdhzEzzk3xXbLJS9Z/fJOzXU2ebZR9H2oPa4T+F0pLLyXc/norvT2e6AhxXF85HOvpI0=
+	t=1760332888; cv=none; b=cgP/XlMTggASkSpkOR2NRO8xCSgCYWsaHMDAkt6NE4FNuUZc3/S6gfpT9cBV5dH65IJ9rVA6BgQbLOrjeefxtatBSWyzCpVyMPzSU0xezOiP0S1DyYh1PdEe5idB9CuFtQDuIJz8cOQvbIAvtLsERkM8jLgtQNclKNaLbM/5kxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760328361; c=relaxed/simple;
-	bh=bTK7Ww1dIReGXn7ATZoqAlPsyx0s/+tSQejlTQbKeBI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IaxGgx+cMkwSlMtOARIwHSsagFsE4/USpsHOLlBE2UTNWiI8HPIJ2D/7Tve92ZpPUPSaoAC2VdGQcRJkwJ4ghegmZObvzPFwmYvuf/rbJfhE2QcCTtEoWsOxE8C+KeK9sTrdrXQ3Ft4Esmf5xml+vWqK5Wi09xgHZVRETXJa08g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QShxkHjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F25C4CEE7;
-	Mon, 13 Oct 2025 04:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760328359;
-	bh=bTK7Ww1dIReGXn7ATZoqAlPsyx0s/+tSQejlTQbKeBI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QShxkHjOUSIK3tXDhBMZfAfPFpHj2xlyMVjOMoSJnnw5YI9IgZeEvOqkJHLBqmiSl
-	 kavLCD+wBnOc0r9/ZT+MMWqygGE+DHE4h35eIjIZU8HLe0QgGIDpwK8+xSXfCZre39
-	 rvgKfJ0ke+L/YMkpWHqcOeAgd0g/AMisLp43Y29E9vvcoPNQlOzsMOIubaRjGiw6NL
-	 Va5LQHm1imRqSGIeIwDJIbT6ytOjTRN+sU6qIXLY16aI1sgUriadxEDCY6L+ls5X68
-	 vP16Mv5HR1ns6Zr85FCImM2cwdfv7kT7VzToFUlFqiBkXLq6tw9w5zUvFon3A6ja6W
-	 sFrqReC5PuvgA==
-Message-ID: <3dfeb2be-d7e7-4351-8464-c06084b0054a@kernel.org>
-Date: Mon, 13 Oct 2025 06:05:52 +0200
+	s=arc-20240116; t=1760332888; c=relaxed/simple;
+	bh=qzVo+7LyZQ7Np+BQqMfvtJ7MzKbh4xb4FvvO+YQ7vDU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EXm63LdFKD0pLXO4HNXzrJwbtr43j0xIdDJ/Nana5wYvrrA7jVcezMrIkXiBF1wxHMIw4B2qSyqh9TMfbJloHVJZK3NLU/7+cbplJWHcZYnIKi9t7FdyZ2Y2/PBjxCEomEuq/yk5Tq58W0PoO8sxy0lf7Di3P4WXxc+6TqnwXnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E8LqQfUF; arc=none smtp.client-ip=209.85.222.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-8e352f6c277so801130241.2
+        for <stable@vger.kernel.org>; Sun, 12 Oct 2025 22:21:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760332886; x=1760937686; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6gnW+HWmI+v0/T60f2xe+jmnQz86oor0v10hn5S+LMM=;
+        b=E8LqQfUFxh80SsgJBGbgb+CUDrnPeV6Udaaehy9OOHKBHKzHDG4tTMydEQky9d1EA6
+         JyA8SAl1gvQDYEbUzo/2m3Yat8aCwrrZJrWFMz0qLTusZmNhl20Cb+0uhFgFS6FRoNa6
+         V7F5rpu23S8EXsFdUftixCaSNT9P/XMrk0TomCeLchSxOjOiWv9NzOZC/Tslgdiu47S/
+         dqe+1D7cwQ1BLKfkeKDgAQpaoMm3YQBI/p1U73BQAfK6jErlVfNnAY4EK2VQjozWBAyt
+         hi4aUBB1LZAKOE9ORHRIzApgs3zwSak6vg2HmXeDKl2RqX/hdYBJj82ip6qvMyARefT4
+         FXxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760332886; x=1760937686;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6gnW+HWmI+v0/T60f2xe+jmnQz86oor0v10hn5S+LMM=;
+        b=gMD5gb+9IOUL6wh5L0kukSbzgTQLD7pNYg265uGuqpu6i1lXuX/wFqxRuFgbsUP4bS
+         qihhYEeim9JcZqwzDjTVd74TT2nS11VD8rqDe1pQqd0kCr0s8DL9KzTku595v9PYB8ac
+         vq4RVG3FkrE4m+CgPo1PEEvb7rPESRDVEdo5UzC08A38mB6UB8NGnpNSlWtLP1THKy33
+         dG0FPhSWwlTRODtoj4wlQdllErWLZ++pgf2KLL4sUTOFUbfIW2U/HhaHvr7Fua6I8H1U
+         9gj7Pqnh72tpqCNL3rf1FXOcgjURs8n4fVsDKo+/LoCf2AqSZ58cdWn6qmdJ/jZsDkdl
+         chpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkJAhE4uz3VpXjSFqHrydUX4AX0kTiUW8+fV5wbHG7pEjmNWznoTGX2Iu+SmbsyNybDQyzbjY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNcXqAdYSflEbCYiU9U5gtr1VodaI+fXOowu6uILrU8wlLr0Is
+	AQ3HlL4+aeKE/nHE5LRfOxWjWVOYsAkJqXfCNHz4hXhWWrH77FuQ+Nav
+X-Gm-Gg: ASbGncvyDrpcDygjbeka1IvKyj9MhDt7bCnJomd8GYWrdhzJxZp6lT2YtHC5EiyzCeD
+	Hv3y4RTiqNfduWedGyCJsaL6a0QGrFaRy+ktquLrRtcfMGMVF+DvPQgCbEBzwbuQm6maOCtRM3P
+	tqj7tOjLXiEqoPeRm4TTgAdBI12SM7zNt4Db6q1NTFM85vzAA5Yq43bziQs1+SMzMNxFvVgWxl+
+	SzU5gMQ3p78Y9QUjA99hPNp2vW09WbV6BudqeDrENgBYmmiXRouInSzNfUNdVRrNXpoJ2llMlSn
+	JcjoqPRdiBBI1ZUxHGNMeFKUO5ADsoattxRBXJQwwydJUZ6PLgM/YUdVArovRLFxLjPqYAXaAYV
+	zJayMBFdmDPqSQt8TiMfO5lnzV1fPfzYu43O2i5cPbbvOTkKEILK6lg==
+X-Google-Smtp-Source: AGHT+IHWD/iz+M+SeJnAP21+zFM+eC3cketpbCHgFzv1UE8edmmlHFuRnvCAk/L0+ktqCi3aPzvlqg==
+X-Received: by 2002:a05:6122:3707:b0:554:b927:dd96 with SMTP id 71dfb90a1353d-554b927deb3mr6755179e0c.0.1760332886190;
+        Sun, 12 Oct 2025 22:21:26 -0700 (PDT)
+Received: from [192.168.100.70] ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-554d80aab53sm2825311e0c.15.2025.10.12.22.21.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Oct 2025 22:21:25 -0700 (PDT)
+From: Kurt Borja <kuurtb@gmail.com>
+Date: Mon, 13 Oct 2025 00:21:05 -0500
+Subject: [PATCH] platform/x86: alienware-wmi-wmax: Fix null pointer
+ derefence in sleep handlers
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] dt-bindings: usb: qcom,snps-dwc3: Fix bindings for
- X1E80100
-To: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Wesley Cheng <wesley.cheng@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251013035920.806485-1-krishna.kurapati@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251013035920.806485-1-krishna.kurapati@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20251013-sleep-fix-v1-1-92bc11b6ecae@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAECM7GgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA0Mj3eKc1NQC3bTMCl3TFANTS7OUFEujRGMloPqColSgMNis6NjaWgC
+ ORK2YWwAAAA==
+X-Change-ID: 20251012-sleep-fix-5d0596dd92a3
+To: Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Armin Wolf <W_Armin@gmx.de>
+Cc: platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Gal Hammer <galhammer@gmail.com>, Kurt Borja <kuurtb@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2093; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=qzVo+7LyZQ7Np+BQqMfvtJ7MzKbh4xb4FvvO+YQ7vDU=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDBlvejwKjTTettctczxw8djBnpWvBPK+bq+ZEbIthiGv5
+ /lUdinTjlIWBjEuBlkxRZb2hEXfHkXlvfU7EHofZg4rE8gQBi5OAZjIVhOG/+43hXapdP97eCqq
+ SnDi8/iQ3ad/+/nGTnLP7j3M91jNXY7hn9r+yVkfp88+9EOzpm6WpavzhnsfYs+GXZHacVv6055
+ dFvwA
+X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
+ fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
-On 13/10/2025 05:59, Krishna Kurapati wrote:
-> Add the missing multiport controller binding to target list.
-> 
-> Fix minItems for interrupt-names to avoid the following error on High
-> Speed controller:
-> 
-> usb@a200000: interrupt-names: ['dwc_usb3', 'pwr_event', 'dp_hs_phy_irq', 'dm_hs_phy_irq'] is too short
-> 
-> Fixes: 6e762f7b8edc ("dt-bindings: usb: Introduce qcom,snps-dwc3")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-> ---
+Initialize `awcc` with empty quirks to avoid a null pointer dereference
+in sleep handlers for devices without the AWCC interface.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This also allows some code simplification in alienware_wmax_wmi_init().
 
-Best regards,
-Krzysztof
+Cc: stable@vger.kernel.org
+Reported-by: Gal Hammer <galhammer@gmail.com>
+Tested-by: Gal Hammer <galhammer@gmail.com>
+Fixes: 07ac275981b1 ("platform/x86: alienware-wmi-wmax: Add support for manual fan control")
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+ drivers/platform/x86/dell/alienware-wmi-wmax.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/platform/x86/dell/alienware-wmi-wmax.c b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+index 31f9643a6a3b5c2eb74b089dc071964bd6df8b43..2c4b71b03c264edaffcb0341bbd9e6acefced8b8 100644
+--- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
++++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+@@ -393,7 +393,7 @@ static const enum platform_profile_option awcc_mode_to_platform_profile[AWCC_PRO
+ 	[AWCC_PROFILE_LEGACY_PERFORMANCE]		= PLATFORM_PROFILE_PERFORMANCE,
+ };
+ 
+-static struct awcc_quirks *awcc;
++static struct awcc_quirks *awcc = &empty_quirks;
+ 
+ /*
+  *	The HDMI mux sysfs node indicates the status of the HDMI input mux.
+@@ -1680,26 +1680,16 @@ int __init alienware_wmax_wmi_init(void)
+ 	if (id)
+ 		awcc = id->driver_data;
+ 
+-	if (force_hwmon) {
+-		if (!awcc)
+-			awcc = &empty_quirks;
+-
++	if (force_hwmon)
+ 		awcc->hwmon = true;
+-	}
+-
+-	if (force_platform_profile) {
+-		if (!awcc)
+-			awcc = &empty_quirks;
+ 
++	if (force_platform_profile)
+ 		awcc->pprof = true;
+-	}
+ 
+-	if (force_gmode) {
+-		if (awcc)
+-			awcc->gmode = true;
+-		else
+-			pr_warn("force_gmode requires platform profile support\n");
+-	}
++	if (force_gmode && awcc->pprof)
++		awcc->gmode = true;
++	else
++		pr_warn("force_gmode requires platform profile support\n");
+ 
+ 	return wmi_driver_register(&alienware_wmax_wmi_driver);
+ }
+
+---
+base-commit: 3ed17349f18774c24505b0c21dfbd3cc4f126518
+change-id: 20251012-sleep-fix-5d0596dd92a3
+-- 
+ ~ Kurt
+
 
