@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2EBCBD3CD5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:00:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE944BD445C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8174218A0DCD
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5CEF05407FF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660B93090DE;
-	Mon, 13 Oct 2025 14:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD2A30CD9F;
+	Mon, 13 Oct 2025 15:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKCwRSQr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6XNGnY4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084AF309F12;
-	Mon, 13 Oct 2025 14:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0817C257828;
+	Mon, 13 Oct 2025 15:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367147; cv=none; b=pE8DFpD0gbu5w1FHj3TSa6w+FmQDJuux5H7+SrXczvJ9uKf65o7Kc2seUMT95u6KCVlXq6l+cP1jqRM+ij3l1F369aIB6aV95SveA+vAxybhNT8Htsq/WNsceedldtUZJvh6ioWuvFT7NAhKcaROFHRDhx3wOf1d09uclvReVqs=
+	t=1760368378; cv=none; b=fwkJPd/QFgOpGWnpcpXhuapqGOZHt8Ioi+evVhqbV5YmGOo+FCkBIf617evem987sYgot89IbmmbLnDU9yJdM4Xp3q5SUOCjm1rt+jlYHNXCoNzcPAgqKK88cNAtmSPhtlX86hiz0Fn4TVMvDu8ZTZXjQUWrTW4cxrIk3+B1EXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367147; c=relaxed/simple;
-	bh=LPJpApwL/Apm6K0cyXnM0wPBOZ8I0BYJsdWRO4ioUek=;
+	s=arc-20240116; t=1760368378; c=relaxed/simple;
+	bh=Ovji5IJAi9hxWyONm8VcjrhyWsaaFKkKr1jtSCtWCD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JeLJvAgO/R+Ggl4Z/6i1wGrClcN0VX8dLsWrGwzjVMZmROZ4aQN0PnuRPm+xe8znQ1I3FzU35riJkgmktFsBkolFfcZ22Yd5dcRhC7TzYPHi24i7QxxE+IcVltb84mjHJW7MABX5A7jpq9zO/GUxencPrL4d1ePxqNeszOont8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKCwRSQr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802F2C4CEE7;
-	Mon, 13 Oct 2025 14:52:26 +0000 (UTC)
+	 MIME-Version; b=KbiIOBWr9saQrsVAVjDRWXcT3POv+yTquQHJ5rGxGxCPCoKGjlwMn2DJpPwVobL3jSzilaIppz0cd7BjXUm7GVqmth6nwYUdYYUtXVnim3pERsJ/9ULzB2T6rgZuPDYvXAJ66oO1vRLpchAyXSFjAp+mJQd4Q+XvUWpJ8wkln4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6XNGnY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1B0C4CEE7;
+	Mon, 13 Oct 2025 15:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367146;
-	bh=LPJpApwL/Apm6K0cyXnM0wPBOZ8I0BYJsdWRO4ioUek=;
+	s=korg; t=1760368377;
+	bh=Ovji5IJAi9hxWyONm8VcjrhyWsaaFKkKr1jtSCtWCD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VKCwRSQrPIpYPeT5pgiX/XjSqfnkZTmsnetx4SRpTJ+4HKgA4uWB8S+UdI3aWg4qA
-	 BoQdERIhNSchepWqsCf1+l5ECVS/ogJEERAk2G75aAWYT6euorouPZf8uLrH0r5tvV
-	 VWgzcGHWP++DVvzB1h1KK/MAgCZVqeKXv9b3tqa4=
+	b=T6XNGnY4MBIiMbntNtI0oOs+Q4L0FxSqRZisS3CRMgcFS5/XqheBqErEAq5i2U3Sw
+	 ZInWOd1OLY7DEwP6GMrn1CKKselWII5pTuX75UZbvUEF+cV0+4VBrBnKQIclpYrJim
+	 oltD0Qcj1bCg5NSwSTxHruGc233sCtqpIXTMPv0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	syzbot+b0373017f711c06ada64@syzkaller.appspotmail.com,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/196] drm/amd/pm: Disable MCLK switching with non-DC at 120 Hz+ (v2)
+Subject: [PATCH 6.12 139/262] fs/ntfs3: reject index allocation if $BITMAP is empty but blocks exist
 Date: Mon, 13 Oct 2025 16:44:41 +0200
-Message-ID: <20251013144318.606218521@linuxfoundation.org>
+Message-ID: <20251013144331.129410960@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit ed3803533c7bf7df88bc3fc9f70bd317e1228ea8 ]
+[ Upstream commit 0dc7117da8f92dd5fe077d712a756eccbe377d40 ]
 
-According to pp_pm_compute_clocks the non-DC display code
-has "issues with mclk switching with refresh rates over 120 hz".
-The workaround is to disable MCLK switching in this case.
+Index allocation requires at least one bit in the $BITMAP attribute to
+track usage of index entries. If the bitmap is empty while index blocks
+are already present, this reflects on-disk corruption.
 
-Do the same for legacy DPM.
+syzbot triggered this condition using a malformed NTFS image. During a
+rename() operation involving a long filename (which spans multiple
+index entries), the empty bitmap allowed the name to be added without
+valid tracking. Subsequent deletion of the original entry failed with
+-ENOENT, due to unexpected index state.
 
-Fixes: 6ddbd37f1074 ("drm/amd/pm: optimize the amdgpu_pm_compute_clocks() implementations")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reject such cases by verifying that the bitmap is not empty when index
+blocks exist.
+
+Reported-by: syzbot+b0373017f711c06ada64@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b0373017f711c06ada64
+Fixes: d99208b91933 ("fs/ntfs3: cancle set bad inode after removing name fails")
+Tested-by: syzbot+b0373017f711c06ada64@syzkaller.appspotmail.com
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ntfs3/index.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-index 42efe838fa85c..2d2d2d5e67634 100644
---- a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-@@ -66,6 +66,13 @@ u32 amdgpu_dpm_get_vblank_time(struct amdgpu_device *adev)
- 					(amdgpu_crtc->v_border * 2));
- 
- 				vblank_time_us = vblank_in_pixels * 1000 / amdgpu_crtc->hw_mode.clock;
-+
-+				/* we have issues with mclk switching with
-+				 * refresh rates over 120 hz on the non-DC code.
-+				 */
-+				if (drm_mode_vrefresh(&amdgpu_crtc->hw_mode) > 120)
-+					vblank_time_us = 0;
-+
- 				break;
- 			}
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 1bf2a6593dec6..6d1bf890929d9 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1508,6 +1508,16 @@ static int indx_add_allocate(struct ntfs_index *indx, struct ntfs_inode *ni,
+ 			bmp_size = bmp_size_v = le32_to_cpu(bmp->res.data_size);
  		}
+ 
++		/*
++		 * Index blocks exist, but $BITMAP has zero valid bits.
++		 * This implies an on-disk corruption and must be rejected.
++		 */
++		if (in->name == I30_NAME &&
++		    unlikely(bmp_size_v == 0 && indx->alloc_run.count)) {
++			err = -EINVAL;
++			goto out1;
++		}
++
+ 		bit = bmp_size << 3;
+ 	}
+ 
 -- 
 2.51.0
 
