@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DEC5BD49D3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:56:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A631BD3AE0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:51:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 802E04F4FF5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38063189FCBB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F5B31194D;
-	Mon, 13 Oct 2025 15:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3BE2727E7;
+	Mon, 13 Oct 2025 14:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7ZlWCr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yP2lYGpj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2732FE564;
-	Mon, 13 Oct 2025 15:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B002248A5;
+	Mon, 13 Oct 2025 14:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368171; cv=none; b=qVr5f7Mcq+tkcqywROpVT/GwinCXUyzF34Jl3uxN84qeMJbJejMkPkv+9tacjzVBas8sc5i/BTtplDJ40aXY2Lwpqzq+fhTZ49LWG9rc7cveIa/MhOfQSHEHJwt6GsR+BQK4hn/fMEIIcfbTq8d2nPLvndfi/eS6gZIswrwF+VE=
+	t=1760366882; cv=none; b=j4LRl7L/ncFvc7N7uthTtKg2E4+aYJCw3rVBYT5/LQUzkiKh4PyS2ngrQeFlCvfFdKBFLiJ12QjgnG9zpEgNL9QYBtmECyKwFwFnJ48kQVw4kQKGqMu7wDbUBzt3yevkaqLozn3BjIaloisgMlQaRzULL+PXdW+f/FfgHkid08E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368171; c=relaxed/simple;
-	bh=kFsh0v7+q5yIQ+MKCUVGt/aWmJctvj5YazU91yaTzYQ=;
+	s=arc-20240116; t=1760366882; c=relaxed/simple;
+	bh=+Ajfpe6KLtdO+Sk0ycGZX3Fp41+iPghzmLy/5fv34Ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZJM3IXHrttSrD4194yTbd3E4fWac9bRkP0r/eeJJjb85x5joIbm1FZ8goskGiomKL6TzjY5m0ZIoro7YPvDe2MxAtOc8KvB9hyasPfmr6RwLsvJKLmNZGJpzf9q0s+uv/WkcEpcVDuVpTFSTHBfAs8vSrhlHPXZXTQ6eUjLVGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7ZlWCr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80ECEC4CEE7;
-	Mon, 13 Oct 2025 15:09:30 +0000 (UTC)
+	 MIME-Version; b=p9/xSxiW3Qo2tnM6y9Pb/Nbg8UDiNE2clSJOR08CgxS6Aqx+8sevGMRzKgm6cYukWT7uBNh8pFSYMdXTC0BgJQC3IFh8SfTH9exlLwBSvu7oRoZm+JAQqTti7XglLC0ilMq0uJVEJ2j+fbPW21eGGeiLwU/YH/Fcva3ITuiOECk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yP2lYGpj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA8DC4CEE7;
+	Mon, 13 Oct 2025 14:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368170;
-	bh=kFsh0v7+q5yIQ+MKCUVGt/aWmJctvj5YazU91yaTzYQ=;
+	s=korg; t=1760366882;
+	bh=+Ajfpe6KLtdO+Sk0ycGZX3Fp41+iPghzmLy/5fv34Ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7ZlWCr3db2SGsSKO1QHNdhvzZfPj0BsycgEWoIEJpvFSyo/NNnQ2O3dtjKFcdZS1
-	 rRK7uJ5RT2cJ68WOQarcCKiVOs355f8lieuW2W0KDRILOVSq9rjKhDYQMoXWhEb7qD
-	 gEme535PUNXwNR01eTIComb/RsclrGWxSbHC5EIg=
+	b=yP2lYGpjBO01wIBWL2dHYWpHul2AVWbsEGfDUsQJv3GyJH+UgfaXuYrceQ6wtgTNu
+	 7kxWoaicKoj1Fx2XA4oSFh6mLHR/Kw5X5dZD7zNuy/O/oxF6tOYydg+MIpi9lFDKkw
+	 U136+ZFvPrEWfRhK2ncK1Fkk2pXbsf6H43baumGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/262] ARM: at91: pm: fix MCKx restore routine
-Date: Mon, 13 Oct 2025 16:42:57 +0200
-Message-ID: <20251013144327.396572571@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Pierre Gondois <pierre.gondois@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Wen Yang <wen.yang@linux.dev>
+Subject: [PATCH 6.1 005/196] cacheinfo: Check cache-unified property to count cache leaves
+Date: Mon, 13 Oct 2025 16:42:58 +0200
+Message-ID: <20251013144314.754511334@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: Pierre Gondois <pierre.gondois@arm.com>
 
-[ Upstream commit 296302d3d81360e09fa956e9be9edc8223b69a12 ]
+commit de0df442ee49cb1f6ee58f3fec5dcb5e5eb70aab upstream.
 
-The at91_mckx_ps_restore() assembly function is responsible for setting
-back MCKx system bus clocks after exiting low power modes.
+The DeviceTree Specification v0.3 specifies that the cache node
+'[d-|i-|]cache-size' property is required. The 'cache-unified'
+property is specifies whether the cache level is separate
+or unified.
 
-Fix a typo and use tmp3 variable instead of tmp2 to correctly set MCKx
-to previously saved state.
-Tmp2 was used without the needed changes in CSS and DIV. Moreover the
-required bit 7, telling that MCR register's content is to be changed
-(CMD/write), was not set.
+If the cache-size property is missing, no cache leaves is accounted.
+This can lead to a 'BUG: KASAN: slab-out-of-bounds' [1] bug.
 
-Fix function comment to match tmp variables actually used.
+Check 'cache-unified' property and always account for at least
+one cache leaf when parsing the device tree.
 
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Fixes: 28eb1d40fe57 ("ARM: at91: pm: add support for MCK1..4 save/restore for ulp modes")
-Link: https://lore.kernel.org/r/20250827145427.46819-3-nicolas.ferre@microchip.com
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-[claudiu.beznea: s/sate/state in commit description]
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://lore.kernel.org/all/0f19cb3f-d6cf-4032-66d2-dedc9d09a0e3@linaro.org/
+
+Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230104183033.755668-4-pierre.gondois@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Wen Yang <wen.yang@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-at91/pm_suspend.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/cacheinfo.c |   37 ++++++++++++++++++++++++++-----------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/mach-at91/pm_suspend.S b/arch/arm/mach-at91/pm_suspend.S
-index e5869cca5e791..94dece1839af3 100644
---- a/arch/arm/mach-at91/pm_suspend.S
-+++ b/arch/arm/mach-at91/pm_suspend.S
-@@ -872,7 +872,7 @@ e_done:
- /**
-  * at91_mckx_ps_restore: restore MCK1..4 settings
-  *
-- * Side effects: overwrites tmp1, tmp2
-+ * Side effects: overwrites tmp1, tmp2 and tmp3
-  */
- .macro at91_mckx_ps_restore
- #ifdef CONFIG_SOC_SAMA7
-@@ -916,7 +916,7 @@ r_ps:
- 	bic	tmp3, tmp3, #AT91_PMC_MCR_V2_ID_MSK
- 	orr	tmp3, tmp3, tmp1
- 	orr	tmp3, tmp3, #AT91_PMC_MCR_V2_CMD
--	str	tmp2, [pmc, #AT91_PMC_MCR_V2]
-+	str	tmp3, [pmc, #AT91_PMC_MCR_V2]
+--- a/drivers/base/cacheinfo.c
++++ b/drivers/base/cacheinfo.c
+@@ -224,12 +224,9 @@ static int cache_setup_of_node(unsigned
+ 	return 0;
+ }
  
- 	wait_mckrdy tmp1
+-int init_of_cache_level(unsigned int cpu)
++static int of_count_cache_leaves(struct device_node *np)
+ {
+-	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+-	struct device_node *np = of_cpu_device_node_get(cpu);
+-	struct device_node *prev = NULL;
+-	unsigned int levels = 0, leaves = 0, level;
++	unsigned int leaves = 0;
  
--- 
-2.51.0
-
+ 	if (of_property_read_bool(np, "cache-size"))
+ 		++leaves;
+@@ -237,6 +234,28 @@ int init_of_cache_level(unsigned int cpu
+ 		++leaves;
+ 	if (of_property_read_bool(np, "d-cache-size"))
+ 		++leaves;
++
++	if (!leaves) {
++		/* The '[i-|d-|]cache-size' property is required, but
++		 * if absent, fallback on the 'cache-unified' property.
++		 */
++		if (of_property_read_bool(np, "cache-unified"))
++			return 1;
++		else
++			return 2;
++	}
++
++	return leaves;
++}
++
++int init_of_cache_level(unsigned int cpu)
++{
++	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
++	struct device_node *np = of_cpu_device_node_get(cpu);
++	struct device_node *prev = NULL;
++	unsigned int levels = 0, leaves, level;
++
++	leaves = of_count_cache_leaves(np);
+ 	if (leaves > 0)
+ 		levels = 1;
+ 
+@@ -250,12 +269,8 @@ int init_of_cache_level(unsigned int cpu
+ 			goto err_out;
+ 		if (level <= levels)
+ 			goto err_out;
+-		if (of_property_read_bool(np, "cache-size"))
+-			++leaves;
+-		if (of_property_read_bool(np, "i-cache-size"))
+-			++leaves;
+-		if (of_property_read_bool(np, "d-cache-size"))
+-			++leaves;
++
++		leaves += of_count_cache_leaves(np);
+ 		levels = level;
+ 	}
+ 
 
 
 
