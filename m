@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-185165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D74BD4898
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BCDBD4886
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A646F18A0721
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE92189F98B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375B330AD10;
-	Mon, 13 Oct 2025 15:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B3730ACE1;
+	Mon, 13 Oct 2025 15:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUXuA4xG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgWzkE0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E638030AD0A;
-	Mon, 13 Oct 2025 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA8630AAC6;
+	Mon, 13 Oct 2025 15:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369518; cv=none; b=nrTjHyDKQQPPDrlgs4Mt4KISfJm98SRG5YbNYoHMNO3VtaYz48HHXFN+nzci9pCGJT6ffo4BRk7Q5KtB0ihrGI1+DbEmRNltses1HRgxehQe1sBq+CO2Y33eI208sN3fmeVcG8pJvqxsVBKCQlMd2lVoTmTVYxqfjuJzGvmHiRo=
+	t=1760369484; cv=none; b=ZIuhoZK7NmHgXRS+blNtnLPmIfN7WAyh5NoiO2KgiYZtZiZ0Y+sCniE4zubOZqxsKVM2efwrMgOt4nO30BlfPmzOfxNjUlXmjq4QNkc1vTVydllY3kP3vi2aUbv98xf3CAeR7ips/NJhRpQBF1lxB5D+4Zd+MYGGvj/mhN+OWFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369518; c=relaxed/simple;
-	bh=VduOUgxLjaM6q7ftryzAQd6bgOfO8ETAEhTZO3KKBFQ=;
+	s=arc-20240116; t=1760369484; c=relaxed/simple;
+	bh=GbH3mVp/4memmhYPzMuTQvfvv5FO4tXG3hAoDquFcyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o1bxHttvSxm05vZ9Jvqx5q4KJ7I0RGQgesAyku/npIZTi0rteUnUHofaIrKJzeQyRpJkqBb+dqEBpGYHbb2vg+vXvn/4o7j+1b4GlsgqtUR3wuYzLv1k5GdllJbn38ev0ko+0IBETOuUZTycG3R0Tbwtl/3V15DuR6XkW01q96o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUXuA4xG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E85C4CEE7;
-	Mon, 13 Oct 2025 15:31:57 +0000 (UTC)
+	 MIME-Version; b=SCJSdhtmk2LbKX+kTJ1F7zVRp8BN11lhE+rvYcR+W+Ar3EV4zFPvpGkOBz3BecJhhgaGU0wLRtt0QsvEAIzHGPeupoTJPk1rXl70vPp2UVujWXtKKuwidfz8D1e8OZ77UHwPIwAN6UOPwe+1YS4RX0WiLa6l1cCkWikiRsgkM7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgWzkE0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A860C4CEE7;
+	Mon, 13 Oct 2025 15:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369517;
-	bh=VduOUgxLjaM6q7ftryzAQd6bgOfO8ETAEhTZO3KKBFQ=;
+	s=korg; t=1760369483;
+	bh=GbH3mVp/4memmhYPzMuTQvfvv5FO4tXG3hAoDquFcyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUXuA4xGWsweh925hzchbKrwSKk5D3vRprGsD2zY/gYd1RJPR2Nqby4Wd+mgOEwDP
-	 g7/4y30pLciX7jg/Bf6/XZlgqkYyS0HZqSF5qhp0DXICwKXVSOAgLKUiCeRgatkc3g
-	 o4UHfJypL9SAQzvBaRCMSec2vpNJHVQZIg40XgVw=
+	b=VgWzkE0MiNig/4uz+EYbFaxeK1mMiC+pwi1nRFtaYw2WFORBFSdOWWaSmjVpZLRRk
+	 HYNUeQ6yWnp4ZzipLysNBEiBxpG5DL8knSFUtt9I/NSIq91sPcPdLVsBKcmOLhH160
+	 XWU3rnIwchh4YqOeaH1N7gJNbAFuMZKNQND6C+os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Vinod Koul <vkoul@kernel.org>,
+	Melody Olvera <quic_molvera@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Souradeep Chowdhury <quic_schowdhu@quicinc.com>,
+	Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 232/563] phy: rockchip: naneng-combphy: Enable U3 OTG port for RK3568
-Date: Mon, 13 Oct 2025 16:41:33 +0200
-Message-ID: <20251013144419.684986683@linuxfoundation.org>
+Subject: [PATCH 6.17 235/563] usb: misc: qcom_eud: Access EUD_MODE_MANAGER2 through secure calls
+Date: Mon, 13 Oct 2025 16:41:36 +0200
+Message-ID: <20251013144419.794001118@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,67 +69,141 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Komal Bajaj <komal.bajaj@oss.qualcomm.com>
 
-[ Upstream commit 7bb14b61b7d03db770b7e8871493f5b9b2be2b79 ]
+[ Upstream commit c0485e864a2eaa1d5a84c71e573dd236d0e885ae ]
 
-The boot firmware may disable the U3 port early during boot and leave it
-up to the controller or PHY driver to re-enable U3 when needed.
+EUD_MODE_MANAGER2 register is mapped to a memory region that is marked
+as read-only for operating system running at EL1, enforcing access
+restrictions that prohibit direct memory-mapped writes via writel().
 
-The Rockchip USBDP PHY driver currently does this for RK3576 and RK3588,
-something the Rockchip Naneng Combo PHY driver never does for RK3568.
-This may result in USB 3.0 ports being limited to only using USB 2.0 or
-in special cases not working at all on RK3568.
+Attempts to write to this region from HLOS can result in silent failures
+or memory access violations, particularly when toggling EUD (Embedded
+USB Debugger) state. To ensure secure register access, modify the driver
+to use qcom_scm_io_writel(), which routes the write operation to Qualcomm
+Secure Channel Monitor (SCM). SCM has the necessary permissions to access
+protected memory regions, enabling reliable control over EUD state.
 
-Write to PIPE_GRF USB3OTGx_CON1 reg to ensure the U3 port is enabled
-when a PHY with PHY_TYPE_USB3 mode is used.
+SC7280, the only user of EUD is also affected, indicating that this could
+never have worked on a properly fused device.
 
-Fixes: 7160820d742a ("phy: rockchip: add naneng combo phy for RK3568")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20250723072324.2246498-1-jonas@kwiboo.se
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 9a1bf58ccd44 ("usb: misc: eud: Add driver support for Embedded USB Debugger(EUD)")
+Signed-off-by: Melody Olvera <quic_molvera@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
+Signed-off-by: Komal Bajaj <komal.bajaj@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250731-eud_mode_manager_secure_access-v8-1-4a5dcbb79f41@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-naneng-combphy.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/usb/misc/Kconfig    |  1 +
+ drivers/usb/misc/qcom_eud.c | 33 ++++++++++++++++++++++++---------
+ 2 files changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-index ce91fb1d51671..17c6310f4b54b 100644
---- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-@@ -137,6 +137,8 @@ struct rockchip_combphy_grfcfg {
- 	struct combphy_reg pipe_xpcs_phy_ready;
- 	struct combphy_reg pipe_pcie1l0_sel;
- 	struct combphy_reg pipe_pcie1l1_sel;
-+	struct combphy_reg u3otg0_port_en;
-+	struct combphy_reg u3otg1_port_en;
- };
+diff --git a/drivers/usb/misc/Kconfig b/drivers/usb/misc/Kconfig
+index 6497c4e81e951..9bf8fc6247bac 100644
+--- a/drivers/usb/misc/Kconfig
++++ b/drivers/usb/misc/Kconfig
+@@ -147,6 +147,7 @@ config USB_APPLEDISPLAY
+ config USB_QCOM_EUD
+ 	tristate "QCOM Embedded USB Debugger(EUD) Driver"
+ 	depends on ARCH_QCOM || COMPILE_TEST
++	select QCOM_SCM
+ 	select USB_ROLE_SWITCH
+ 	help
+ 	  This module enables support for Qualcomm Technologies, Inc.
+diff --git a/drivers/usb/misc/qcom_eud.c b/drivers/usb/misc/qcom_eud.c
+index 83079c414b4f2..05c8bdc943a88 100644
+--- a/drivers/usb/misc/qcom_eud.c
++++ b/drivers/usb/misc/qcom_eud.c
+@@ -15,6 +15,7 @@
+ #include <linux/slab.h>
+ #include <linux/sysfs.h>
+ #include <linux/usb/role.h>
++#include <linux/firmware/qcom/qcom_scm.h>
  
- struct rockchip_combphy_cfg {
-@@ -594,6 +596,14 @@ static int rk3568_combphy_cfg(struct rockchip_combphy_priv *priv)
- 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_txcomp_sel, false);
- 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_txelec_sel, false);
- 		rockchip_combphy_param_write(priv->phy_grf, &cfg->usb_mode_set, true);
-+		switch (priv->id) {
-+		case 0:
-+			rockchip_combphy_param_write(priv->pipe_grf, &cfg->u3otg0_port_en, true);
-+			break;
-+		case 1:
-+			rockchip_combphy_param_write(priv->pipe_grf, &cfg->u3otg1_port_en, true);
-+			break;
-+		}
- 		break;
+ #define EUD_REG_INT1_EN_MASK	0x0024
+ #define EUD_REG_INT_STATUS_1	0x0044
+@@ -34,7 +35,7 @@ struct eud_chip {
+ 	struct device			*dev;
+ 	struct usb_role_switch		*role_sw;
+ 	void __iomem			*base;
+-	void __iomem			*mode_mgr;
++	phys_addr_t			mode_mgr;
+ 	unsigned int			int_status;
+ 	int				irq;
+ 	bool				enabled;
+@@ -43,18 +44,29 @@ struct eud_chip {
  
- 	case PHY_TYPE_SATA:
-@@ -737,6 +747,8 @@ static const struct rockchip_combphy_grfcfg rk3568_combphy_grfcfgs = {
- 	/* pipe-grf */
- 	.pipe_con0_for_sata	= { 0x0000, 15, 0, 0x00, 0x2220 },
- 	.pipe_xpcs_phy_ready	= { 0x0040, 2, 2, 0x00, 0x01 },
-+	.u3otg0_port_en		= { 0x0104, 15, 0, 0x0181, 0x1100 },
-+	.u3otg1_port_en		= { 0x0144, 15, 0, 0x0181, 0x1100 },
- };
+ static int enable_eud(struct eud_chip *priv)
+ {
++	int ret;
++
++	ret = qcom_scm_io_writel(priv->mode_mgr + EUD_REG_EUD_EN2, 1);
++	if (ret)
++		return ret;
++
+ 	writel(EUD_ENABLE, priv->base + EUD_REG_CSR_EUD_EN);
+ 	writel(EUD_INT_VBUS | EUD_INT_SAFE_MODE,
+ 			priv->base + EUD_REG_INT1_EN_MASK);
+-	writel(1, priv->mode_mgr + EUD_REG_EUD_EN2);
  
- static const struct rockchip_combphy_cfg rk3568_combphy_cfgs = {
+ 	return usb_role_switch_set_role(priv->role_sw, USB_ROLE_DEVICE);
+ }
+ 
+-static void disable_eud(struct eud_chip *priv)
++static int disable_eud(struct eud_chip *priv)
+ {
++	int ret;
++
++	ret = qcom_scm_io_writel(priv->mode_mgr + EUD_REG_EUD_EN2, 0);
++	if (ret)
++		return ret;
++
+ 	writel(0, priv->base + EUD_REG_CSR_EUD_EN);
+-	writel(0, priv->mode_mgr + EUD_REG_EUD_EN2);
++	return 0;
+ }
+ 
+ static ssize_t enable_show(struct device *dev,
+@@ -82,11 +94,12 @@ static ssize_t enable_store(struct device *dev,
+ 			chip->enabled = enable;
+ 		else
+ 			disable_eud(chip);
++
+ 	} else {
+-		disable_eud(chip);
++		ret = disable_eud(chip);
+ 	}
+ 
+-	return count;
++	return ret < 0 ? ret : count;
+ }
+ 
+ static DEVICE_ATTR_RW(enable);
+@@ -178,6 +191,7 @@ static void eud_role_switch_release(void *data)
+ static int eud_probe(struct platform_device *pdev)
+ {
+ 	struct eud_chip *chip;
++	struct resource *res;
+ 	int ret;
+ 
+ 	chip = devm_kzalloc(&pdev->dev, sizeof(*chip), GFP_KERNEL);
+@@ -200,9 +214,10 @@ static int eud_probe(struct platform_device *pdev)
+ 	if (IS_ERR(chip->base))
+ 		return PTR_ERR(chip->base);
+ 
+-	chip->mode_mgr = devm_platform_ioremap_resource(pdev, 1);
+-	if (IS_ERR(chip->mode_mgr))
+-		return PTR_ERR(chip->mode_mgr);
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	if (!res)
++		return -ENODEV;
++	chip->mode_mgr = res->start;
+ 
+ 	chip->irq = platform_get_irq(pdev, 0);
+ 	if (chip->irq < 0)
 -- 
 2.51.0
 
