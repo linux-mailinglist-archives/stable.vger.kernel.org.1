@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8A5BD3C6F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C595BD4495
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8ACCB34DE19
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D0257501E52
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D160826E143;
-	Mon, 13 Oct 2025 14:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A334D312810;
+	Mon, 13 Oct 2025 15:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nH2/ud0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+UZVupF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7812153E7;
-	Mon, 13 Oct 2025 14:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6038531280A;
+	Mon, 13 Oct 2025 15:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367026; cv=none; b=WLx/e1ZE7PxBbxNO89L6tT0YLxFQjOG/feRsI4JZAG0c7y101J4jlfZv9zh07ZoS1OIZP0pEzCTtt+KKAUIzO0wWmNaPPtnit5hTARuZGCckYHKpTbVO4VoNLQN5qZ1tOMG0cxclJ9hKFTDIkw5TwwejfX19vaJX3sKPQeGDHWw=
+	t=1760368263; cv=none; b=k+CsdOL3AhRZjMBOfbMXXcmRgkGhqFXJwaxSC3hUxgJos9zgpcX2nwUhSf05y3lh2O55VHg7YiQr5I7j2yL5zp9TPqedhnrEFFJkWbNU4g9k1IM7zwZ3NHo/6p306bGVdafVPGxkB2z9GzS/eqm0bHWFz087IP4njjMhRlruy9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367026; c=relaxed/simple;
-	bh=6kFZF70AEsHVo84sRcnRM2GgJCFujPa+qLkTZ39Shyc=;
+	s=arc-20240116; t=1760368263; c=relaxed/simple;
+	bh=sCKT9uHxbbqYTVPZr2on4IgKwapgcfQhn003v96NR4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toXx1VRlpAb63wW0CrbP4ZDn/Sh82LO0x37llcmZtLUM5voJc/tzex/JVgly4Yh2Ky3QmJddcPfMKgDz6C08jAJxOU6OeY2ivw5eL7DpGJHwQ/AY0VQM+taldgPRP06LOrZTOft1VjhF+t75pt3aGpdPNhYREgzRcPKMPySKMD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nH2/ud0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D653C4CEE7;
-	Mon, 13 Oct 2025 14:50:25 +0000 (UTC)
+	 MIME-Version; b=RTbRHZM8MQoP4vZISpAlLgarLy9fs7ovwLZvVNNiS88xKO3UMcnQns78GJILywxh9YDAUqimNQ+oi+15EBQhHRG0+t4uMFfgbQML4txkzXfDudRVSHapFm6hK7jrdMEZZIE8dEg8rTNXJ2C10paXA8cnbsWzO8qA/VuuSvuo+2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+UZVupF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56AEC4CEE7;
+	Mon, 13 Oct 2025 15:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367026;
-	bh=6kFZF70AEsHVo84sRcnRM2GgJCFujPa+qLkTZ39Shyc=;
+	s=korg; t=1760368263;
+	bh=sCKT9uHxbbqYTVPZr2on4IgKwapgcfQhn003v96NR4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nH2/ud0HbYn/wjSe+/r+heyckNmfrPWcSIWRYXM9GFYggDpVNRXEu8vJOGSEYD9Km
-	 58+Ph36nlv1GJ6Xag3jFMvwcC5h9zuydl16z5k7DSD/WvZCERR2lyGNT3ehgvLSK58
-	 8H/a6RsLQ3nTDvZNxh8YrITJzZxdhh7dhzBaDn0k=
+	b=v+UZVupFAucCq+rl8pcfwFhtmCVht3OX4rIxeCkIrpQyQ/La3GjuB5An/lW3JmKTv
+	 JhO7UuiGarZg2wibJcI++qt0cSxXC0hoxF2PLgkZxK2rIxDQUvt90ogWOvpcJzj5vX
+	 DQO90D4mh0LguuGUY/6jVK1taPrsGlHP1L1qZwbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Liao Yuanhong <liaoyuanhong@vivo.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/196] PM: sleep: core: Clear power.must_resume in noirq suspend error path
-Date: Mon, 13 Oct 2025 16:44:00 +0200
-Message-ID: <20251013144317.003754270@linuxfoundation.org>
+Subject: [PATCH 6.12 099/262] drm/amd/display: Remove redundant semicolons
+Date: Mon, 13 Oct 2025 16:44:01 +0200
+Message-ID: <20251013144329.696350017@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Liao Yuanhong <liaoyuanhong@vivo.com>
 
-[ Upstream commit be82483d1b60baf6747884bd74cb7de484deaf76 ]
+[ Upstream commit 90b810dd859c0df9db2290da1ac5842e5f031267 ]
 
-If system suspend is aborted in the "noirq" phase (for instance, due to
-an error returned by one of the device callbacks), power.is_noirq_suspended
-will not be set for some devices and device_resume_noirq() will return
-early for them.  Consequently, noirq resume callbacks will not run for
-them at all because the noirq suspend callbacks have not run for them
-yet.
+Remove unnecessary semicolons.
 
-If any of them has power.must_resume set and late suspend has been
-skipped for it (due to power.smart_suspend), early resume should be
-skipped for it either, or its state may become inconsistent (for
-instance, if the early resume assumes that it will always follow
-noirq resume).
-
-Make that happen by clearing power.must_resume in device_resume_noirq()
-for devices with power.is_noirq_suspended clear that have been left in
-suspend by device_suspend_late(), which will subsequently cause
-device_resume_early() to leave the device in suspend and avoid
-changing its state.
-
-Fixes: 0d4b54c6fee8 ("PM / core: Add LEAVE_SUSPENDED driver flag")
-Link: https://lore.kernel.org/linux-pm/5d692b81-6f58-4e86-9cb0-ede69a09d799@rowland.harvard.edu/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/3381776.aeNJFYEL58@rafael.j.wysocki
+Fixes: dda4fb85e433 ("drm/amd/display: DML changes for DCN32/321")
+Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c    | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index baa31194cf20d..ef5157fc8dcc5 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -600,8 +600,20 @@ static void __device_resume_noirq(struct device *dev, pm_message_t state, bool a
- 	if (dev->power.syscore || dev->power.direct_complete)
- 		goto Out;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
+index 9ba6cb67655f4..6c75aa82327ac 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
+@@ -139,7 +139,6 @@ void dml32_rq_dlg_get_rq_reg(display_rq_regs_st *rq_regs,
+ 	if (dual_plane) {
+ 		unsigned int p1_pte_row_height_linear = get_dpte_row_height_linear_c(mode_lib, e2e_pipe_param,
+ 				num_pipes, pipe_idx);
+-		;
+ 		if (src->sw_mode == dm_sw_linear)
+ 			ASSERT(p1_pte_row_height_linear >= 8);
  
--	if (!dev->power.is_noirq_suspended)
-+	if (!dev->power.is_noirq_suspended) {
-+		/*
-+		 * This means that system suspend has been aborted in the noirq
-+		 * phase before invoking the noirq suspend callback for the
-+		 * device, so if device_suspend_late() has left it in suspend,
-+		 * device_resume_early() should leave it in suspend either in
-+		 * case the early resume of it depends on the noirq resume that
-+		 * has not run.
-+		 */
-+		if (dev_pm_skip_suspend(dev))
-+			dev->power.must_resume = false;
-+
- 		goto Out;
-+	}
- 
- 	if (!dpm_wait_for_superior(dev, async))
- 		goto Out;
 -- 
 2.51.0
 
