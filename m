@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-185232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AEABD4931
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BD2BD4321
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1B5B18A5534
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:54:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92054507729
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0611630F95B;
-	Mon, 13 Oct 2025 15:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C950310640;
+	Mon, 13 Oct 2025 15:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4ATA7Rd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lQJP+iy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86EF30C357;
-	Mon, 13 Oct 2025 15:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491E231062C;
+	Mon, 13 Oct 2025 15:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369708; cv=none; b=Jszsb3q1T6+LAZmvz+yu3SIk5dtP9NL5vilQ13hJBJs1RAc2B2/cRFvVlzp7Pja6OmJ9FaZfxl56LPiXSdmyWwyHBj/KeM7lBHds7OFL8yG5pkpVAGTGeJvrBpdzffLTqL3hSlZ8zulg6dNSzbYPDWX47TaTbBPPODEroXT7Z/U=
+	t=1760368050; cv=none; b=JdcgBsbYJr27DDA8MNgPIjPYntsdYbatfBL0A9VzFu6+rs7j1t9KpkbTFlpIMo+OiySrVf4TqKdi+1yS1dQjAnAN1IxrIR24XRLj9HN2qI3wGTSe6D+BY0Am8bEcz+Jeu1Y3EPa6D2AQ8SSUHT+zEsANtmIdRuuh33QshELkZGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369708; c=relaxed/simple;
-	bh=uAuSLoMFaEgTntYgbbpR1rTOtk2rXqI/Tfe0vGkankI=;
+	s=arc-20240116; t=1760368050; c=relaxed/simple;
+	bh=oZINTMPe1DQ37R6RcPs2Q2tPTFBhJyIAUtQ3TjML0LU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iwdqzOhFrXXNCOJsrP/Ll+EbeaaZ9Q0jrem9sYFqjTirdmSnPFCqe+srAEgo6lzKHdB/fp9thW5qa1DOqvyb+jklI1rwJ/SzKbwaubqu45fVoZS5cetiwMK/lVhTRj0bd3isAbqlL1xX43BHjsljRqp5qh/9z3LNBqZMHqNmduI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4ATA7Rd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9CFC4CEE7;
-	Mon, 13 Oct 2025 15:35:08 +0000 (UTC)
+	 MIME-Version; b=KOw9jf4ICi0mXELkkgvLjMg8l6zRisL0XHiMoP1WCOVxvutCfQqoIV2rG+EKzWduDcR2g6a8x5UdSe+jODr4S6BYVatPg7yFZDNymwu/2HKvdzhYJNU6AX3CaSwunWoCkjevlOD+1EmaeZ7zp3dhkt5mk03v7qIgcY+K3wL6enI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lQJP+iy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D77C4CEE7;
+	Mon, 13 Oct 2025 15:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369708;
-	bh=uAuSLoMFaEgTntYgbbpR1rTOtk2rXqI/Tfe0vGkankI=;
+	s=korg; t=1760368050;
+	bh=oZINTMPe1DQ37R6RcPs2Q2tPTFBhJyIAUtQ3TjML0LU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k4ATA7Rd2cupxWqFgJo4eD6Iu38F4WQDYatmmiWXrpabT6z2A9cA3D3xRFZ3HyKq8
-	 IPenndH/yqqDC7y+aM7/ldIunueQBQGn+wvEZ6yldpxoD4bCLvdq+VRRlhBzsegCkW
-	 mzu2sn6xrqi7v+f0/xwoOkQwVEjoKeqSyYuUtRKY=
+	b=0lQJP+iy3jGRl3OdzZGyKYeeUC6+3sLHnrnTWu0S3PJEHf2lmcmPaxnDAOYM3Mhu0
+	 n/KFbtSNQgqnAWR4fzdV/R0ve1sR/tMYnZhAJ5QHi+cKBAliCj4gPzFhUK9tPe0Eu7
+	 IL39XntdmxWaD+iaHBQRZK0aaEYB70sc3H80ZqMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 307/563] drm/amd/pm: Disable MCLK switching with non-DC at 120 Hz+ (v2)
+Subject: [PATCH 6.12 026/262] cpufreq: scmi: Account for malformed DT in scmi_dev_used_by_cpus()
 Date: Mon, 13 Oct 2025 16:42:48 +0200
-Message-ID: <20251013144422.385736781@linuxfoundation.org>
+Message-ID: <20251013144327.074163795@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit ed3803533c7bf7df88bc3fc9f70bd317e1228ea8 ]
+[ Upstream commit cd5d4621ba846dad9b2e6b0c2d1518d083fcfa13 ]
 
-According to pp_pm_compute_clocks the non-DC display code
-has "issues with mclk switching with refresh rates over 120 hz".
-The workaround is to disable MCLK switching in this case.
+Broadcom STB platforms were early adopters (2017) of the SCMI framework and as
+a result, not all deployed systems have a Device Tree entry where SCMI
+protocol 0x13 (PERFORMANCE) is declared as a clock provider, nor are the
+CPU Device Tree node(s) referencing protocol 0x13 as their clock
+provider. This was clarified in commit e11c480b6df1 ("dt-bindings:
+firmware: arm,scmi: Extend bindings for protocol@13") in 2023.
 
-Do the same for legacy DPM.
+For those platforms, we allow the checks done by scmi_dev_used_by_cpus()
+to continue, and in the event of not having done an early return, we key
+off the documented compatible string and give them a pass to continue to
+use scmi-cpufreq.
 
-Fixes: 6ddbd37f1074 ("drm/amd/pm: optimize the amdgpu_pm_compute_clocks() implementations")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 6c9bb8692272 ("cpufreq: scmi: Skip SCMI devices that aren't used by the CPUs")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/cpufreq/scmi-cpufreq.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-index 42efe838fa85c..2d2d2d5e67634 100644
---- a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-@@ -66,6 +66,13 @@ u32 amdgpu_dpm_get_vblank_time(struct amdgpu_device *adev)
- 					(amdgpu_crtc->v_border * 2));
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index beb660ca240cc..a2ec1addafc93 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -15,6 +15,7 @@
+ #include <linux/energy_model.h>
+ #include <linux/export.h>
+ #include <linux/module.h>
++#include <linux/of.h>
+ #include <linux/pm_opp.h>
+ #include <linux/slab.h>
+ #include <linux/scmi_protocol.h>
+@@ -398,6 +399,15 @@ static bool scmi_dev_used_by_cpus(struct device *scmi_dev)
+ 			return true;
+ 	}
  
- 				vblank_time_us = vblank_in_pixels * 1000 / amdgpu_crtc->hw_mode.clock;
++	/*
++	 * Older Broadcom STB chips had a "clocks" property for CPU node(s)
++	 * that did not match the SCMI performance protocol node, if we got
++	 * there, it means we had such an older Device Tree, therefore return
++	 * true to preserve backwards compatibility.
++	 */
++	if (of_machine_is_compatible("brcm,brcmstb"))
++		return true;
 +
-+				/* we have issues with mclk switching with
-+				 * refresh rates over 120 hz on the non-DC code.
-+				 */
-+				if (drm_mode_vrefresh(&amdgpu_crtc->hw_mode) > 120)
-+					vblank_time_us = 0;
-+
- 				break;
- 			}
- 		}
+ 	return false;
+ }
+ 
 -- 
 2.51.0
 
