@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-184260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680C4BD3CED
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:01:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4DEBD4273
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 728A84F79E2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:54:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C2D2188BA05
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D6430DD00;
-	Mon, 13 Oct 2025 14:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB943311946;
+	Mon, 13 Oct 2025 15:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7eUMHCI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEMZ/pZf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BDA30CDAF;
-	Mon, 13 Oct 2025 14:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845B73093C9;
+	Mon, 13 Oct 2025 15:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366922; cv=none; b=pSHkSVLPm0+sapM0QOVN8Xxg+H6L8WbWaLdBmYdu77BvGp7XFoL50cAE7AfOQZK1R3+P9qTKbqvUyayhhXvXLATrW0VDmMVCL1xLhXA87I+OvVFBZEYMNUR0icaa/Dmq6MG0vEXkMlbKL3AewLF9KsyW5uGsp3NroU+BDHf+YVo=
+	t=1760368159; cv=none; b=pMjj29Hpc9T7j8yp4JoBB7rA+7l/9nol5ZWqfMAVrS/rnJyfIlWk2DrMMkYsqweDXW+VBPPCPSZJQWUJjMqdN5/0I4vi9Hkho3GqUFpEfaDJqvxg0WC8Vrjq8R2XdR/zppRdVVuHqh67wsghYZuHjWoDHpkIv8z9mgRHcxxWwjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366922; c=relaxed/simple;
-	bh=rzHvq2YPDfR4OftOqn97AAdPXkbXf0wHd7k41brn4H8=;
+	s=arc-20240116; t=1760368159; c=relaxed/simple;
+	bh=UnqK5brO30YKIhwtYxoijZ3VRb0bGciiMHlnXBV1oyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eflvSBwm+4Hz0PBxQDGpZnVMAjwCXUtyBm4QZzNV1in6o1ZMewXCKtvv9BIbeEn6ap+Q7JIh7qoU3DnihF2ydpvoypw9qtXmmhU2tHaE7FEpwxodlB1ERxp0rW1ri1hJrPcmEJf1f2QYWflfx/juqASCxrnm6I9F/1z0u2tXYxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7eUMHCI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90399C116D0;
-	Mon, 13 Oct 2025 14:48:41 +0000 (UTC)
+	 MIME-Version; b=bMHOmvWm4uV1QzUKR9NKVY1UiMuPNGs9DKKxjacb8B1PXK085U8VH/4LTjixMnAtG2visRBBTRhUVwXLPliLkR8mxMKkzPymE5MTLC3jR+e4aPnkQVfwQtW2kZh81oTj4EWAO+4Jmpr2OxeV39UNmyMPDh+on+4taCwmWGUSWds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEMZ/pZf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE97BC4CEE7;
+	Mon, 13 Oct 2025 15:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366921;
-	bh=rzHvq2YPDfR4OftOqn97AAdPXkbXf0wHd7k41brn4H8=;
+	s=korg; t=1760368159;
+	bh=UnqK5brO30YKIhwtYxoijZ3VRb0bGciiMHlnXBV1oyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7eUMHCIU/FJhMHogSGGiHXnLQuUIWNar2qPVvcaVboQ2mKXQ116hB2NTgOWEGgxb
-	 8b2p6AnWLuA2YVlj3INDme3jPOJvHWjJR8WwHLIhtpZA+PtxtFfLLBdt5PjOZN8XnH
-	 boL+39hLtp/V119FHftmCrWQj3MCpcJb6FrGjGhA=
+	b=NEMZ/pZf0xfIn/qh/p5fvihz5FMMteNTkD4dZo9T3CcIYtDNZOrtOluq8+9Kg4Ohi
+	 bw9ZH4Yigf1wfaNHNfMTS9FRgjJMyWM/atFLu0GuJPfn3h96OtAJXNV2yfVy8stfb0
+	 CzMzMQimXb67NXzbCTyUB1bvxGyev8KynZEYI6bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.1 031/196] wifi: rtlwifi: rtl8192cu: Dont claim USB ID 07b8:8188
-Date: Mon, 13 Oct 2025 16:43:24 +0200
-Message-ID: <20251013144315.715698188@linuxfoundation.org>
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Fei Shao <fshao@chromium.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 063/262] arm64: dts: mediatek: mt8395-kontron-i1200: Fix MT6360 regulator nodes
+Date: Mon, 13 Oct 2025 16:43:25 +0200
+Message-ID: <20251013144328.398116954@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit e798f2ac6040f46a04795d7de977341fa9aeabae upstream.
+[ Upstream commit 09a1e9c973973aff26e66a5673c19442d91b9e3d ]
 
-This ID appears to be RTL8188SU, not RTL8188CU. This is the wrong driver
-for RTL8188SU. The r8712u driver from staging used to handle this ID.
+All of the MT6360 regulator nodes were wrong and would not probe
+because the regulator names are supposed to be lower case, but
+they are upper case in this devicetree.
 
-Closes: https://lore.kernel.org/linux-wireless/ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de/
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/2e5e2348-bdb3-44b2-92b2-0231dbf464b0@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Change all nodes to be lower case to get working regulators.
+
+Fixes: 94aaf79a6af5 ("arm64: dts: mediatek: add Kontron 3.5"-SBC-i1200")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20250724083914.61351-38-angelogioacchino.delregno@collabora.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c |    1 -
- 1 file changed, 1 deletion(-)
+ .../mediatek/mt8395-kontron-3-5-sbc-i1200.dts    | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-@@ -296,7 +296,6 @@ static const struct usb_device_id rtl819
- 	{RTL_USB_DEVICE(0x050d, 0x1102, rtl92cu_hal_cfg)}, /*Belkin - Edimax*/
- 	{RTL_USB_DEVICE(0x050d, 0x11f2, rtl92cu_hal_cfg)}, /*Belkin - ISY*/
- 	{RTL_USB_DEVICE(0x06f8, 0xe033, rtl92cu_hal_cfg)}, /*Hercules - Edimax*/
--	{RTL_USB_DEVICE(0x07b8, 0x8188, rtl92cu_hal_cfg)}, /*Abocom - Abocom*/
- 	{RTL_USB_DEVICE(0x07b8, 0x8189, rtl92cu_hal_cfg)}, /*Funai - Abocom*/
- 	{RTL_USB_DEVICE(0x0846, 0x9041, rtl92cu_hal_cfg)}, /*NetGear WNA1000M*/
- 	{RTL_USB_DEVICE(0x0846, 0x9043, rtl92cu_hal_cfg)}, /*NG WNA1000Mv2*/
+diff --git a/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts b/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts
+index e2e75b8ff9188..9ab4fee769e40 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts
+@@ -351,7 +351,7 @@ regulator {
+ 			LDO_VIN2-supply = <&vsys>;
+ 			LDO_VIN3-supply = <&vsys>;
+ 
+-			mt6360_buck1: BUCK1 {
++			mt6360_buck1: buck1 {
+ 				regulator-name = "emi_vdd2";
+ 				regulator-min-microvolt = <600000>;
+ 				regulator-max-microvolt = <1800000>;
+@@ -361,7 +361,7 @@ MT6360_OPMODE_LP
+ 				regulator-always-on;
+ 			};
+ 
+-			mt6360_buck2: BUCK2 {
++			mt6360_buck2: buck2 {
+ 				regulator-name = "emi_vddq";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1300000>;
+@@ -371,7 +371,7 @@ MT6360_OPMODE_LP
+ 				regulator-always-on;
+ 			};
+ 
+-			mt6360_ldo1: LDO1 {
++			mt6360_ldo1: ldo1 {
+ 				regulator-name = "mt6360_ldo1"; /* Test point */
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <3600000>;
+@@ -379,7 +379,7 @@ mt6360_ldo1: LDO1 {
+ 							   MT6360_OPMODE_LP>;
+ 			};
+ 
+-			mt6360_ldo2: LDO2 {
++			mt6360_ldo2: ldo2 {
+ 				regulator-name = "panel1_p1v8";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+@@ -387,7 +387,7 @@ mt6360_ldo2: LDO2 {
+ 							   MT6360_OPMODE_LP>;
+ 			};
+ 
+-			mt6360_ldo3: LDO3 {
++			mt6360_ldo3: ldo3 {
+ 				regulator-name = "vmc_pmu";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -395,7 +395,7 @@ mt6360_ldo3: LDO3 {
+ 							   MT6360_OPMODE_LP>;
+ 			};
+ 
+-			mt6360_ldo5: LDO5 {
++			mt6360_ldo5: ldo5 {
+ 				regulator-name = "vmch_pmu";
+ 				regulator-min-microvolt = <3300000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -403,7 +403,7 @@ mt6360_ldo5: LDO5 {
+ 							   MT6360_OPMODE_LP>;
+ 			};
+ 
+-			mt6360_ldo6: LDO6 {
++			mt6360_ldo6: ldo6 {
+ 				regulator-name = "mt6360_ldo6"; /* Test point */
+ 				regulator-min-microvolt = <500000>;
+ 				regulator-max-microvolt = <2100000>;
+@@ -411,7 +411,7 @@ mt6360_ldo6: LDO6 {
+ 							   MT6360_OPMODE_LP>;
+ 			};
+ 
+-			mt6360_ldo7: LDO7 {
++			mt6360_ldo7: ldo7 {
+ 				regulator-name = "emi_vmddr_en";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+-- 
+2.51.0
+
 
 
 
