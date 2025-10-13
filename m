@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255E9BD4D4A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:13:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 969DDBD4CFF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:11:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7B9DC54568E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F1BD3E74B2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109AC299A9E;
-	Mon, 13 Oct 2025 15:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9425C302142;
+	Mon, 13 Oct 2025 15:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ECQ20P9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGnhXjiq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C256230C36B;
-	Mon, 13 Oct 2025 15:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423E8253954;
+	Mon, 13 Oct 2025 15:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369067; cv=none; b=J9GkGxGy3PROEYqfUYoprUxNN6Gf2Ftspcm/pkM2lb1wKNreWXeUq12Vc0OBgV1qIBHS0tvXAglxrsPQzccW/znGJ/NyW+mncuZz6qSn/H9AtsXYvOhHfisJ+heKUkrZHmGo//nzulg4r+mItCE1BXy66N09It981X7C+f70HO8=
+	t=1760369079; cv=none; b=MX66E7X+CN7eejNOsqDV4lfIHlp3yngd74kYnDxtUNg6fEAWP77FphXZFij5uuFCLFlkP6Oplg1JQraAUg9fRps9tscTykdG4FfbKbbvc/xcR0FRwXXLkrtV8rwdK7ma0Re8u51xtYu+OR80zrOcM+y0Bg+8GEMR2rzVOOOYH24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369067; c=relaxed/simple;
-	bh=UhWpqT2i2nclpC5jaF8eYBDEWOcS1HgoQQDLWF/3Hyo=;
+	s=arc-20240116; t=1760369079; c=relaxed/simple;
+	bh=DgQ3gQs6A5H98fNMZuAp+RHwRYanxc662AdB84EottA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aj0kSz1w6PiDlc5osRys+0w+RUAo8aJy4iwErUzVqVhragI0JO2EJw76tRMvs/KKZVafuQR5WWRidh/fmS8GnYjCZ9bCc30XiELON11YfdQuRSyJXONBytxQlVOYqRGlY7VqKFNtk2yxes//TEvjNf1dSb/8ZD5eTfddmaj4yfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ECQ20P9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42C6C4CEE7;
-	Mon, 13 Oct 2025 15:24:26 +0000 (UTC)
+	 MIME-Version; b=CrDf1Q7aLKRDb2aWGUz1hHjI4yH2drNvrWpEZ1J5F3ghNWIKG7d9iIYUlmmVp97wzJppHbHvXQ6yO7QuYjJBebBdT25AvG/NiRiJ/b122Xk1RpGx5PtxBCTceptNKbnk75YVCyYpgGPK1bok1RngVfr3gQrWUswOiiXMB3HB+O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGnhXjiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E9BC4CEE7;
+	Mon, 13 Oct 2025 15:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369067;
-	bh=UhWpqT2i2nclpC5jaF8eYBDEWOcS1HgoQQDLWF/3Hyo=;
+	s=korg; t=1760369078;
+	bh=DgQ3gQs6A5H98fNMZuAp+RHwRYanxc662AdB84EottA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ECQ20P9F7b0R3E9qcedZVFHfD3orTlvPwdZ7sxt4Z5YZE1wCeQ8iVv3L2VrbISz6
-	 2IltQ7zKutlOXwwqP/Cmhtr+maD7HH6x0A4g2lVC+5vaJtYEVg0ht+v7M+H2dOEjhF
-	 8w2vHFD09Uo13iwlas5uFJpgNWKZ5pj6KOzJPmcw=
+	b=fGnhXjiqlVmHkWmPirosdp0Sg182/DXhAiXlBoC/utr9H0QmXa4uG41DkbvWgZkGv
+	 7KnYZ1JCutDv2HvOh/kr3+kexa26VF+1NH0ajDG29g1hHxE+XsbPvpqqxI4U1p7YNu
+	 JJCghYTvJ2osVYsK08spaX/hnPOTKgTK71eRCeBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 116/563] dts: arm: amlogic: fix pwm node for c3
-Date: Mon, 13 Oct 2025 16:39:37 +0200
-Message-ID: <20251013144415.497378635@linuxfoundation.org>
+Subject: [PATCH 6.17 119/563] cpuidle: qcom-spm: fix device and OF node leaks at probe
+Date: Mon, 13 Oct 2025 16:39:40 +0200
+Message-ID: <20251013144415.605349718@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,35 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit f8c9fabf2f3d87773613734a8479d0ef9b662b11 ]
+[ Upstream commit cdc06f912670c8c199d5fa9e78b64b7ed8e871d0 ]
 
-Fix reg address for c3 pwm node.
+Make sure to drop the reference to the saw device taken by
+of_find_device_by_node() after retrieving its driver data during
+probe().
 
-Fixes: be90cd4bd422 ("arm64: dts: amlogic: Add Amlogic C3 PWM")
-Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250717-fix-pwm-node-v2-1-7365ac7d5320@amlogic.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Also drop the reference to the CPU node sooner to avoid leaking it in
+case there is no saw node or device.
+
+Fixes: 60f3692b5f0b ("cpuidle: qcom_spm: Detach state machine from main SPM handling")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpuidle/cpuidle-qcom-spm.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi
-index cb9ea3ca6ee0f..71b2b3b547f7c 100644
---- a/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/amlogic-c3.dtsi
-@@ -792,7 +792,7 @@ spicc1: spi@52000 {
- 			pwm_mn: pwm@54000 {
- 				compatible = "amlogic,c3-pwm",
- 					     "amlogic,meson-s4-pwm";
--				reg = <0x0 54000 0x0 0x24>;
-+				reg = <0x0 0x54000 0x0 0x24>;
- 				clocks = <&clkc_periphs CLKID_PWM_M>,
- 					 <&clkc_periphs CLKID_PWM_N>;
- 				#pwm-cells = <3>;
+diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
+index 5f386761b1562..f60a4cf536423 100644
+--- a/drivers/cpuidle/cpuidle-qcom-spm.c
++++ b/drivers/cpuidle/cpuidle-qcom-spm.c
+@@ -96,20 +96,23 @@ static int spm_cpuidle_register(struct device *cpuidle_dev, int cpu)
+ 		return -ENODEV;
+ 
+ 	saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
++	of_node_put(cpu_node);
+ 	if (!saw_node)
+ 		return -ENODEV;
+ 
+ 	pdev = of_find_device_by_node(saw_node);
+ 	of_node_put(saw_node);
+-	of_node_put(cpu_node);
+ 	if (!pdev)
+ 		return -ENODEV;
+ 
+ 	data = devm_kzalloc(cpuidle_dev, sizeof(*data), GFP_KERNEL);
+-	if (!data)
++	if (!data) {
++		put_device(&pdev->dev);
+ 		return -ENOMEM;
++	}
+ 
+ 	data->spm = dev_get_drvdata(&pdev->dev);
++	put_device(&pdev->dev);
+ 	if (!data->spm)
+ 		return -EINVAL;
+ 
 -- 
 2.51.0
 
