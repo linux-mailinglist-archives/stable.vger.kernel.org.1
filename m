@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48CDBD4B8E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:27 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2755BD408D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 96357541AC4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 46E8434E69C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133B726E6F2;
-	Mon, 13 Oct 2025 15:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D853730F95C;
+	Mon, 13 Oct 2025 15:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWWrwoAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUXsGKnQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44AD20125F;
-	Mon, 13 Oct 2025 15:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADEF30F959;
+	Mon, 13 Oct 2025 15:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368528; cv=none; b=AFSasGQAKZ2iyjP0vgvRy88isdk8on4n9r5JB0HsMhyzYH7/FAxCqG2i98IQOOftQENn8TNRo114uN9RGq7FCceO+lGqKF4Qiw84jAH27t9KvAzFW/4p19C1UmcGv0utWqEoIN/qlxIE29QdpvwhnbHNJQhLfsoyP8wQ8HfETfA=
+	t=1760367913; cv=none; b=O6fy07dMMXgEKo+hucEs6A+SIrUOn/5/TCZAOD3O7yDZaQt/nJuGYuoI38bcJHAaCxT/+Y97/ceZFjAFXTFCMh3Bp7q5ifIduANPviJZBYjgyEXh0E2NzKBmew53IgzOEcfKxbxSr3Gomu+D1VWKINP2jaauP8XM1QGloJsCdcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368528; c=relaxed/simple;
-	bh=wAN4dR44f05Ty1Ubmnuw2fuAlCttf8VxI7t8lWnrF6c=;
+	s=arc-20240116; t=1760367913; c=relaxed/simple;
+	bh=OBujfkYY1eQsdYiXdoecNreX1LkFbphMyiZ1hAzor4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Exff43NOW7NUGJVf288MSbT5i7EorapGkFnforiW+S2aM+RauL1qLNKFG9+FuOVQW/PEsq8+F7JfzCG1gmzORvjFsa+6zhKt3RGGIWFNlzEKjSnj1mqhQk2g+1YcQ9IcHgeU9aASZeIJDM16oTApprnoIXjaHsv7bewQ/cz5nk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWWrwoAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53157C4CEE7;
-	Mon, 13 Oct 2025 15:15:28 +0000 (UTC)
+	 MIME-Version; b=KYWP93rbXixG6YKjZ25RB9kOwd7nNxxSa2cWDho6Wq8oq/UaegctMOGYVGxRXxEHPUj6+1BOVPPkidMOAOqPgePaZ8FDYkD6Jo0Mcxk/WhjqegRky8rm8ji2ub3NBdxvnJ+RxLkruNlzuoQN2vxv7JxofKCpek44yoCLrC9LTaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUXsGKnQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143D5C4CEE7;
+	Mon, 13 Oct 2025 15:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368528;
-	bh=wAN4dR44f05Ty1Ubmnuw2fuAlCttf8VxI7t8lWnrF6c=;
+	s=korg; t=1760367913;
+	bh=OBujfkYY1eQsdYiXdoecNreX1LkFbphMyiZ1hAzor4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWWrwoAa3xC84OOeyaXmNMpL8gGOSxJc6pxTDjxaAVnzQDiHmufigbeFK0Nwo2CY8
-	 molbPQ4BFtwarG5cKWvbV7sg1h3gIrGU9cF+KQwJ76Hzq/Rp6VQA1B4V9KtAI87dKB
-	 uKFFtvb4i5QkN/W/Ki0R+plOhnd3Fvviot0VBAe4=
+	b=hUXsGKnQeikDP9u85iuf2PDNlw0W3cnW/+8BTvgIQLeI+sk95C24GMphj2tQGQJDt
+	 Dd8fhS7UTgrzX61WN13ALOPK1IjNNPWwqxfw17Io8oR9UAUs7GHuGJGqUjMjLZUtuA
+	 iyrM8cJey5SUpbhF4XJy4XwYohguTivZdk5cgytk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Julian Anastasov <ja@ssi.bg>,
+	Slavin Liu <slavin452@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 193/262] usb: vhci-hcd: Prevent suspending virtually attached devices
+Subject: [PATCH 6.6 144/196] ipvs: Defer ip_vs_ftp unregister during netns cleanup
 Date: Mon, 13 Oct 2025 16:45:35 +0200
-Message-ID: <20251013144333.199359674@linuxfoundation.org>
+Message-ID: <20251013144320.521355924@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Slavin Liu <slavin452@gmail.com>
 
-[ Upstream commit e40b984b6c4ce3f80814f39f86f87b2a48f2e662 ]
+[ Upstream commit 134121bfd99a06d44ef5ba15a9beb075297c0821 ]
 
-The VHCI platform driver aims to forbid entering system suspend when at
-least one of the virtual USB ports are bound to an active USB/IP
-connection.
+On the netns cleanup path, __ip_vs_ftp_exit() may unregister ip_vs_ftp
+before connections with valid cp->app pointers are flushed, leading to a
+use-after-free.
 
-However, in some cases, the detection logic doesn't work reliably, i.e.
-when all devices attached to the virtual root hub have been already
-suspended, leading to a broken suspend state, with unrecoverable resume.
+Fix this by introducing a global `exiting_module` flag, set to true in
+ip_vs_ftp_exit() before unregistering the pernet subsystem. In
+__ip_vs_ftp_exit(), skip ip_vs_ftp unregister if called during netns
+cleanup (when exiting_module is false) and defer it to
+__ip_vs_cleanup_batch(), which unregisters all apps after all connections
+are flushed. If called during module exit, unregister ip_vs_ftp
+immediately.
 
-Ensure the virtually attached devices do not enter suspend by setting
-the syscore PM flag.  Note this is currently limited to the client side
-only, since the server side doesn't implement system suspend prevention.
-
-Fixes: 04679b3489e0 ("Staging: USB/IP: add client driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250902-vhci-hcd-suspend-fix-v3-1-864e4e833559@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 61b1ab4583e2 ("IPVS: netns, add basic init per netns.")
+Suggested-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Slavin Liu <slavin452@gmail.com>
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/usbip/vhci_hcd.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ net/netfilter/ipvs/ip_vs_ftp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
-index 8dac1edc74d4e..a793e30d46b78 100644
---- a/drivers/usb/usbip/vhci_hcd.c
-+++ b/drivers/usb/usbip/vhci_hcd.c
-@@ -764,6 +764,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
- 				 ctrlreq->wValue, vdev->rhport);
+diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
+index ef1f45e43b630..61d3797fb7995 100644
+--- a/net/netfilter/ipvs/ip_vs_ftp.c
++++ b/net/netfilter/ipvs/ip_vs_ftp.c
+@@ -53,6 +53,7 @@ enum {
+ 	IP_VS_FTP_EPSV,
+ };
  
- 			vdev->udev = usb_get_dev(urb->dev);
-+			/*
-+			 * NOTE: A similar operation has been done via
-+			 * USB_REQ_GET_DESCRIPTOR handler below, which is
-+			 * supposed to always precede USB_REQ_SET_ADDRESS.
-+			 *
-+			 * It's not entirely clear if operating on a different
-+			 * usb_device instance here is a real possibility,
-+			 * otherwise this call and vdev->udev assignment above
-+			 * should be dropped.
-+			 */
-+			dev_pm_syscore_device(&vdev->udev->dev, true);
- 			usb_put_dev(old);
++static bool exiting_module;
+ /*
+  * List of ports (up to IP_VS_APP_MAX_PORTS) to be handled by helper
+  * First port is set to the default port.
+@@ -605,7 +606,7 @@ static void __ip_vs_ftp_exit(struct net *net)
+ {
+ 	struct netns_ipvs *ipvs = net_ipvs(net);
  
- 			spin_lock(&vdev->ud.lock);
-@@ -784,6 +795,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
- 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+-	if (!ipvs)
++	if (!ipvs || !exiting_module)
+ 		return;
  
- 			vdev->udev = usb_get_dev(urb->dev);
-+			/*
-+			 * Set syscore PM flag for the virtually attached
-+			 * devices to ensure they will not enter suspend on
-+			 * the client side.
-+			 *
-+			 * Note this doesn't have any impact on the physical
-+			 * devices attached to the host system on the server
-+			 * side, hence there is no need to undo the operation
-+			 * on disconnect.
-+			 */
-+			dev_pm_syscore_device(&vdev->udev->dev, true);
- 			usb_put_dev(old);
- 			goto out;
- 
+ 	unregister_ip_vs_app(ipvs, &ip_vs_ftp);
+@@ -627,6 +628,7 @@ static int __init ip_vs_ftp_init(void)
+  */
+ static void __exit ip_vs_ftp_exit(void)
+ {
++	exiting_module = true;
+ 	unregister_pernet_subsys(&ip_vs_ftp_ops);
+ 	/* rcu_barrier() is called by netns */
+ }
 -- 
 2.51.0
 
