@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-185131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F59BD52A5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:45:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E26BD4DB5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:15:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 577AB547471
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C1DF404BE5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C30E309DCD;
-	Mon, 13 Oct 2025 15:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F25309F1C;
+	Mon, 13 Oct 2025 15:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5CsVdhu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7t1RexA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD9A17A2EC;
-	Mon, 13 Oct 2025 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E263093C8;
+	Mon, 13 Oct 2025 15:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369422; cv=none; b=t7XeZW5H9+V968JLK7e4EPTqsA8+ajR3SF0QuyX+Eq2RvZKG+iufL+U1vN7Pgi9X/FXLUFsKLqSe1mqMBA6FS5lIwGISQCMWiXoFN3f8W2estktuNtXdS8SQy3ZdZxaL1ItSp8idAQPO2N8YJoJdKYB68CtjWsuqQsWR6lAyvvk=
+	t=1760369453; cv=none; b=Me55yshNygGFTVwrx5mnxH6bz+1CEPft9XqZKaVOL5z6bXbrDrir85aE6M1/IhGcdAz+EwD0n+50lUMF229fXcKYMLZneOwwD3kKRmxBYyeU4XgWlTt2yt9GZy/7ejg5+9JINHBbOuN2s4jUhNsDCmI93UjHDTB+cNWgIH6lxtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369422; c=relaxed/simple;
-	bh=t9HuVU1QIqGWlyNzrWCGlK3ZKS2uf3bRkQS/L5H0BaM=;
+	s=arc-20240116; t=1760369453; c=relaxed/simple;
+	bh=ZIRgA0vE3jIAOaufaMj9EFkHta1SZyVJ1FpFhhqZw5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3fn8edSUKG5fpzFOBY7J+bJ8n266uQXIkMx9pdHRvq+vbVaiYE0O4wmICD7c++xsuroocXJIXs7BlCGsf6bDV9cMnufnYfQEnEYtIGqjxcpO7HQFHpiWoNc+6rGFRGFneUrFJF7QTSxfV62kgQHqqhFZFLXRXatTzFT9t0IJfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5CsVdhu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74300C4CEE7;
-	Mon, 13 Oct 2025 15:30:21 +0000 (UTC)
+	 MIME-Version; b=mv6wnAXbVX+p0x1suH7hh/KoIKnaNPkL2L24S9AY6PO4acBxsW/CBCexbfTaxJwMQVLkgzKJc8oDV/RL9WyoBetjLXWqCUFyYex9mBsw52OgHULNcveQ5wBFLja2tS3v00zn1T79SxasDB/WvP/EVLiNVxhUv25oppZrJPQW8qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7t1RexA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A122C4CEE7;
+	Mon, 13 Oct 2025 15:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369421;
-	bh=t9HuVU1QIqGWlyNzrWCGlK3ZKS2uf3bRkQS/L5H0BaM=;
+	s=korg; t=1760369452;
+	bh=ZIRgA0vE3jIAOaufaMj9EFkHta1SZyVJ1FpFhhqZw5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5CsVdhuRmmnmI1tEWcoBsgEuICEm5OSR7OO9OtAZsL30Kyvk49dFKKFeQOEM0X9M
-	 GwK5ZJpZFQv4O4Itk33F5+/5AIvbiswJ48Br4AzaYvZNHKhTXkVEXimApDHIOKUHgp
-	 pGIsdSdwsW+8M1isVXCskzAOPMfob53hCRVs/AOI=
+	b=d7t1RexAr+pWooYK8r8sSasTfrNToxsBWSX5ACVZ12MpH/+dEon+leVY4USsCa0mR
+	 wudoSnzdfWss+qtSVmjd2PBAmXoyRDwZ7XoS7Wgh2/GgV0OJidhvOpfCoSVo/SpEl7
+	 X/QbgXkf4yzMewlLQ2BqtnYKgMwcHioVZVBxiT4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 233/563] drm/bridge: cdns-dsi: Fix the _atomic_check()
-Date: Mon, 13 Oct 2025 16:41:34 +0200
-Message-ID: <20251013144419.720989474@linuxfoundation.org>
+Subject: [PATCH 6.17 234/563] usb: host: max3421-hcd: Fix error pointer dereference in probe cleanup
+Date: Mon, 13 Oct 2025 16:41:35 +0200
+Message-ID: <20251013144419.757116283@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,46 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 04864af849d9ae0dd020798f5b3632d9cf26fa03 ]
+[ Upstream commit 186e8f2bdba551f3ae23396caccd452d985c23e3 ]
 
-Use the "adjusted_mode" for the dsi configuration check, as that is the
-more appropriate display_mode for validation, and later bridge enable.
+The kthread_run() function returns error pointers so the
+max3421_hcd->spi_thread pointer can be either error pointers or NULL.
+Check for both before dereferencing it.
 
-Also, fix the mode_valid_check parameter from false to true, as the dsi
-configuration check is taking place during the check-phase, and the
-crtc_* mode values are not expected to be populated yet.
-
-Fixes: a53d987756ea ("drm/bridge: cdns-dsi: Move DSI mode check to _atomic_check()")
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-1-e61cc06074c2@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: 05dfa5c9bc37 ("usb: host: max3421-hcd: fix "spi_rd8" uses dynamic stack allocation warning")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJTMVAPtRe5H6jug@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/max3421-hcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-index a57ca8c3bdaea..695b6246b280f 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -997,10 +997,10 @@ static int cdns_dsi_bridge_atomic_check(struct drm_bridge *bridge,
- 	struct cdns_dsi_input *input = bridge_to_cdns_dsi_input(bridge);
- 	struct cdns_dsi *dsi = input_to_dsi(input);
- 	struct cdns_dsi_bridge_state *dsi_state = to_cdns_dsi_bridge_state(bridge_state);
--	const struct drm_display_mode *mode = &crtc_state->mode;
-+	const struct drm_display_mode *adjusted_mode = &crtc_state->adjusted_mode;
- 	struct cdns_dsi_cfg *dsi_cfg = &dsi_state->dsi_cfg;
- 
--	return cdns_dsi_check_conf(dsi, mode, dsi_cfg, false);
-+	return cdns_dsi_check_conf(dsi, adjusted_mode, dsi_cfg, true);
- }
- 
- static struct drm_bridge_state *
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index dcf31a592f5d1..4b5f03f683f77 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1916,7 +1916,7 @@ max3421_probe(struct spi_device *spi)
+ 	if (hcd) {
+ 		kfree(max3421_hcd->tx);
+ 		kfree(max3421_hcd->rx);
+-		if (max3421_hcd->spi_thread)
++		if (!IS_ERR_OR_NULL(max3421_hcd->spi_thread))
+ 			kthread_stop(max3421_hcd->spi_thread);
+ 		usb_put_hcd(hcd);
+ 	}
 -- 
 2.51.0
 
