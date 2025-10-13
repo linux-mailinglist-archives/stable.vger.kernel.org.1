@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F99BD4390
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:23 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814F4BD43A5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3D41E34F701
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:30:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5EFB506EF8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11B930AD0E;
-	Mon, 13 Oct 2025 15:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F027F30FC24;
+	Mon, 13 Oct 2025 15:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfEnn1Z6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NTYuhBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB5330AD06;
-	Mon, 13 Oct 2025 15:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8BF30C36D;
+	Mon, 13 Oct 2025 15:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368675; cv=none; b=dywgekSFgSUehjJJsk2gdbOm9nQT6dnbiepN9bwsvkXQO8H1nGTbRow+aowWgS/NxqjlSW68Kgpo80vxpzM2MrVSq9H1VVrHsVBHTnpzjSpjDPMXCftr/3JT9wR/YtR8TWze4UHLec8CMb3DeiumgehWxp0+OsibY3KD8oVaLTU=
+	t=1760367963; cv=none; b=cGhC//fAifxMjJqAWHMf3f89qI3SERwJnh36f2jqZZsoo2v97oKlMMp/5jLujGTHeolmhCoYgVJs8CbnkS8SHs8b6k+KzBO7TcogzOsVOLA0V79/SxJLAuQLzjSiKoRjexcCrmEwOvokt/El3lq1zZhpC/3MtenqYu0qdMnX1Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368675; c=relaxed/simple;
-	bh=70CN2zRpWN3c0RxvflXcjVfZLBcR0buAC15C7gTSJqo=;
+	s=arc-20240116; t=1760367963; c=relaxed/simple;
+	bh=C1mdMzvcXmfSV1i9OYR7bgg1fCRyJb8dTR8tPXTTU34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvM6B5rSy4j6PGIWVuBCh6OPrkXYGkuYiFEsx7lKH0QNNgLC2ZDWsWg/q+BsHzROx+bMicOYkV1TnDwDSXRuNQjh+aP1q3mZ/8nFgbipn7wbtWR+PwVuUJIYYk3v16EsKH6lvdow8o0oQwHUVKoQUKbESvktKpdcFpty1DfWR3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfEnn1Z6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB530C4CEE7;
-	Mon, 13 Oct 2025 15:17:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uhS5dlgZbvvx9MCqOSIrBfJyIxw5d1Jl+LQzdqmVMPAIKz2KkXzDSAk2nDoPsAPFHzj50q91Zs9wGfX014vAE4/k9IQSeMpRuJjIc9LyCWNleEYNveO8zsazN/b/dEHN35Z0jJlRC58mZA5rXBFjYf+iLzeYy+lON3L8OCq9glM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NTYuhBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B726C4CEE7;
+	Mon, 13 Oct 2025 15:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368675;
-	bh=70CN2zRpWN3c0RxvflXcjVfZLBcR0buAC15C7gTSJqo=;
+	s=korg; t=1760367963;
+	bh=C1mdMzvcXmfSV1i9OYR7bgg1fCRyJb8dTR8tPXTTU34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfEnn1Z6DJRO+c+ppMRQEqT6EyIAhINk66KqaKrnlXqL5d3lnVOY5R6Zr8q8lD2+c
-	 1RywGFQbMnlB2xtvyCqzRWciUhK6BhN2yP+oG7muV80FTRmln1YI+dWgfNHSVUfQc7
-	 3d0VZtfoeeve10N5FfHveNwLGLLhxakM6smbEoeE=
+	b=2NTYuhBiFtDLJq1cX3lck+H2k50+r3PZPmjP+yj9DfHroAxKKfcSVCoD/4/o2YThW
+	 P02mftYJirGo9Ku05RLl1CYNcQkXpTA/IU6jvHp0h/T1RtwiHqCKcHvVqtHKbQIzOm
+	 rzb2ypEY0dN4WzXQMBFIG4ZdDjAcY+gtbbiyvEVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 242/262] ext4: fix checks for orphan inodes
+	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 193/196] net: usb: asix: hold PM usage ref to avoid PM/MDIO + RTNL deadlock
 Date: Mon, 13 Oct 2025 16:46:24 +0200
-Message-ID: <20251013144334.953291810@linuxfoundation.org>
+Message-ID: <20251013144322.286630799@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +61,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit acf943e9768ec9d9be80982ca0ebc4bfd6b7631e upstream.
+commit 3d3c4cd5c62f24bb3cb4511b7a95df707635e00a upstream.
 
-When orphan file feature is enabled, inode can be tracked as orphan
-either in the standard orphan list or in the orphan file. The first can
-be tested by checking ei->i_orphan list head, the second is recorded by
-EXT4_STATE_ORPHAN_FILE inode state flag. There are several places where
-we want to check whether inode is tracked as orphan and only some of
-them properly check for both possibilities. Luckily the consequences are
-mostly minor, the worst that can happen is that we track an inode as
-orphan although we don't need to and e2fsck then complains (resulting in
-occasional ext4/307 xfstest failures). Fix the problem by introducing a
-helper for checking whether an inode is tracked as orphan and use it in
-appropriate places.
+Prevent USB runtime PM (autosuspend) for AX88772* in bind.
 
-Fixes: 4a79a98c7b19 ("ext4: Improve scalability of ext4 orphan file handling")
-Cc: stable@kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Message-ID: <20250925123038.20264-2-jack@suse.cz>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+usbnet enables runtime PM (autosuspend) by default, so disabling it via
+the usb_driver flag is ineffective. On AX88772B, autosuspend shows no
+measurable power saving with current driver (no link partner, admin
+up/down). The ~0.453 W -> ~0.248 W drop on v6.1 comes from phylib powering
+the PHY off on admin-down, not from USB autosuspend.
+
+The real hazard is that with runtime PM enabled, ndo_open() (under RTNL)
+may synchronously trigger autoresume (usb_autopm_get_interface()) into
+asix_resume() while the USB PM lock is held. Resume paths then invoke
+phylink/phylib and MDIO, which also expect RTNL, leading to possible
+deadlocks or PM lock vs MDIO wake issues.
+
+To avoid this, keep the device runtime-PM active by taking a usage
+reference in ax88772_bind() and dropping it in unbind(). A non-zero PM
+usage count blocks runtime suspend regardless of userspace policy
+(.../power/control - pm_runtime_allow/forbid), making this approach
+robust against sysfs overrides.
+
+Holding a runtime-PM usage ref does not affect system-wide suspend;
+system sleep/resume callbacks continue to run as before.
+
+Fixes: 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC")
+Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Closes: https://lore.kernel.org/all/DCGHG5UJT9G3.2K1GHFZ3H87T0@gmail.com
+Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20251005081203.3067982-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h   |   10 ++++++++++
- fs/ext4/file.c   |    2 +-
- fs/ext4/inode.c  |    2 +-
- fs/ext4/orphan.c |    6 +-----
- fs/ext4/super.c  |    4 ++--
- 5 files changed, 15 insertions(+), 9 deletions(-)
+ drivers/net/usb/asix_devices.c |   29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1970,6 +1970,16 @@ static inline bool ext4_verity_in_progre
- #define NEXT_ORPHAN(inode) EXT4_I(inode)->i_dtime
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -625,6 +625,21 @@ static void ax88772_suspend(struct usbne
+ 		   asix_read_medium_status(dev, 1));
+ }
  
- /*
-+ * Check whether the inode is tracked as orphan (either in orphan file or
-+ * orphan list).
++/* Notes on PM callbacks and locking context:
++ *
++ * - asix_suspend()/asix_resume() are invoked for both runtime PM and
++ *   system-wide suspend/resume. For struct usb_driver the ->resume()
++ *   callback does not receive pm_message_t, so the resume type cannot
++ *   be distinguished here.
++ *
++ * - The MAC driver must hold RTNL when calling phylink interfaces such as
++ *   phylink_suspend()/resume(). Those calls will also perform MDIO I/O.
++ *
++ * - Taking RTNL and doing MDIO from a runtime-PM resume callback (while
++ *   the USB PM lock is held) is fragile. Since autosuspend brings no
++ *   measurable power saving here, we block it by holding a PM usage
++ *   reference in ax88772_bind().
 + */
-+static inline bool ext4_inode_orphan_tracked(struct inode *inode)
-+{
-+	return ext4_test_inode_state(inode, EXT4_STATE_ORPHAN_FILE) ||
-+		!list_empty(&EXT4_I(inode)->i_orphan);
-+}
-+
-+/*
-  * Codes for operating systems
-  */
- #define EXT4_OS_LINUX		0
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -354,7 +354,7 @@ static void ext4_inode_extension_cleanup
- 	 * to cleanup the orphan list in ext4_handle_inode_extension(). Do it
- 	 * now.
- 	 */
--	if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
-+	if (ext4_inode_orphan_tracked(inode) && inode->i_nlink) {
- 		handle_t *handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
- 
- 		if (IS_ERR(handle)) {
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4330,7 +4330,7 @@ static int ext4_fill_raw_inode(struct in
- 		 * old inodes get re-used with the upper 16 bits of the
- 		 * uid/gid intact.
- 		 */
--		if (ei->i_dtime && list_empty(&ei->i_orphan)) {
-+		if (ei->i_dtime && !ext4_inode_orphan_tracked(inode)) {
- 			raw_inode->i_uid_high = 0;
- 			raw_inode->i_gid_high = 0;
- 		} else {
---- a/fs/ext4/orphan.c
-+++ b/fs/ext4/orphan.c
-@@ -109,11 +109,7 @@ int ext4_orphan_add(handle_t *handle, st
- 
- 	WARN_ON_ONCE(!(inode->i_state & (I_NEW | I_FREEING)) &&
- 		     !inode_is_locked(inode));
--	/*
--	 * Inode orphaned in orphan file or in orphan list?
--	 */
--	if (ext4_test_inode_state(inode, EXT4_STATE_ORPHAN_FILE) ||
--	    !list_empty(&EXT4_I(inode)->i_orphan))
-+	if (ext4_inode_orphan_tracked(inode))
- 		return 0;
- 
- 	/*
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1461,9 +1461,9 @@ static void ext4_free_in_core_inode(stru
- 
- static void ext4_destroy_inode(struct inode *inode)
+ static int asix_suspend(struct usb_interface *intf, pm_message_t message)
  {
--	if (!list_empty(&(EXT4_I(inode)->i_orphan))) {
-+	if (ext4_inode_orphan_tracked(inode)) {
- 		ext4_msg(inode->i_sb, KERN_ERR,
--			 "Inode %lu (%p): orphan list check failed!",
-+			 "Inode %lu (%p): inode tracked as orphan!",
- 			 inode->i_ino, EXT4_I(inode));
- 		print_hex_dump(KERN_INFO, "", DUMP_PREFIX_ADDRESS, 16, 4,
- 				EXT4_I(inode), sizeof(struct ext4_inode_info),
+ 	struct usbnet *dev = usb_get_intfdata(intf);
+@@ -919,6 +934,13 @@ static int ax88772_bind(struct usbnet *d
+ 	if (ret)
+ 		goto initphy_err;
+ 
++	/* Keep this interface runtime-PM active by taking a usage ref.
++	 * Prevents runtime suspend while bound and avoids resume paths
++	 * that could deadlock (autoresume under RTNL while USB PM lock
++	 * is held, phylink/MDIO wants RTNL).
++	 */
++	pm_runtime_get_noresume(&intf->dev);
++
+ 	return 0;
+ 
+ initphy_err:
+@@ -948,6 +970,8 @@ static void ax88772_unbind(struct usbnet
+ 	phylink_destroy(priv->phylink);
+ 	ax88772_mdio_unregister(priv);
+ 	asix_rx_fixup_common_free(dev->driver_priv);
++	/* Drop the PM usage ref taken in bind() */
++	pm_runtime_put(&intf->dev);
+ }
+ 
+ static void ax88178_unbind(struct usbnet *dev, struct usb_interface *intf)
+@@ -1600,6 +1624,11 @@ static struct usb_driver asix_driver = {
+ 	.resume =	asix_resume,
+ 	.reset_resume =	asix_resume,
+ 	.disconnect =	usbnet_disconnect,
++	/* usbnet enables autosuspend by default (supports_autosuspend=1).
++	 * We keep runtime-PM active for AX88772* by taking a PM usage
++	 * reference in ax88772_bind() (pm_runtime_get_noresume()) and
++	 * dropping it in unbind(), which effectively blocks autosuspend.
++	 */
+ 	.supports_autosuspend = 1,
+ 	.disable_hub_initiated_lpm = 1,
+ };
 
 
 
