@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3352BD481D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4023DBD4AAD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4DA244F9CFF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E08F8541867
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8EB3101D8;
-	Mon, 13 Oct 2025 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71C630BBBA;
+	Mon, 13 Oct 2025 15:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGBNBsIQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUZ6aSCn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB3830C37A;
-	Mon, 13 Oct 2025 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288530BBAE;
+	Mon, 13 Oct 2025 15:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368027; cv=none; b=Y8tbKgfoyIstN86ION2OSabgsgoznJLdWh+Sww44hkIBe7XNKUYVPmFdSZh1x8+fTGUr40NZ3aVlNtrnQS/lnBBbm4ZJzwnhwwhv/FBX5aDt1HtDLw8mLUJV7QWMpRMBK5W0zPqhknZrXVQ28cwgDu8KDV8KN3xvSJLe1UdXarI=
+	t=1760369597; cv=none; b=qlKtdBrLzwo2l8je4pVNH85GgI/RgV7b7aP9YHIME7Xp4J/XkUeW1sW0v04r1bFry7zM5OKR+XeV4rXK9ozVKGfKVdbcx2LuIUOOGTdX30uhewSC24xtLu1OI5ACGPdtH2CuVhBmGIU5eDYY7vX9hJy/EJpT+yTmq07y5EZJhY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368027; c=relaxed/simple;
-	bh=SfmAHpgFDKGqJk7eeubCvdBc5b7Z58NqA14PB4VZIZc=;
+	s=arc-20240116; t=1760369597; c=relaxed/simple;
+	bh=vmwHNiNZT+vfR7uxm+6EsPLVHBvfQmGu2IhcxYR6DpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/UFsX/8/x90UXObQV+4uz7qJqzgK8FqRYQLTwrxsHhFQ6a/NwK3LZtz+YBdxrIJmuG53PLXmBniYjMEBK8PvVDJ6ekSG/OFmjNejbPLH8pObAMBYTBqydW2gUiTXJU6jiI/w/bR+q0NCTHJn+NIJduBMAxR4QCwDm0OY7dmLWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGBNBsIQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBB5C4CEE7;
-	Mon, 13 Oct 2025 15:07:06 +0000 (UTC)
+	 MIME-Version; b=Zv4MVU2b1s2Rt1j1J5QhjPSDXkqgdG0xM/r1K56TU5jHSf5sUsFqdqiOk2VvZc7pCVokPPHP0uVfhqp2VpLSvn1RyO0Wx5fUTQedytzM27+tMaT6PTTmV7WfPON1jBUOTOQydzrgI2W+H4ineb+lg2dOKszxm9R2pphuRzjdLbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUZ6aSCn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3770C4CEE7;
+	Mon, 13 Oct 2025 15:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368027;
-	bh=SfmAHpgFDKGqJk7eeubCvdBc5b7Z58NqA14PB4VZIZc=;
+	s=korg; t=1760369597;
+	bh=vmwHNiNZT+vfR7uxm+6EsPLVHBvfQmGu2IhcxYR6DpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGBNBsIQ5zor3yI1m51+Mv/W0Dn+tDe1m17eIHlhQglm6nEKuWqGsaBlyLvhsGdHf
-	 jQ7pD7K+VQ0UDGdKVRqKUj2oWuCeLiGLuPTw7NR/mYoqpzpbG9ShM+C+d4QZdXN8Uq
-	 aRX97l1lYI0r4NOQzENwLy+aEJVyWqaDAw9/i6vQ=
+	b=AUZ6aSCnNKoU9FdYv/gIQ3fo8apBFmnRfop5LGp/n21mZenZvAPBk3ScbxbbPzzDL
+	 iS/NQI2j06gUnTJt9rFDBJNqeq0WLs8jUlgRW2pzjjVMmsyIV9nktEw0ixBBUXhJmN
+	 iE04Wk7cWSgLPZOUOwdozb75VkBbDBeaJqlRZhKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Yuanfang Zhang <quic_yuanfang@quicinc.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/262] bpf/selftests: Fix test_tcpnotify_user
-Date: Mon, 13 Oct 2025 16:42:41 +0200
-Message-ID: <20251013144326.822626084@linuxfoundation.org>
+Subject: [PATCH 6.17 301/563] coresight: Only register perf symlink for sinks with alloc_buffer
+Date: Mon, 13 Oct 2025 16:42:42 +0200
+Message-ID: <20251013144422.172318119@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Yuanfang Zhang <quic_yuanfang@quicinc.com>
 
-[ Upstream commit c80d79720647ed77ebc0198abd5a0807efdaff0b ]
+[ Upstream commit 12d9a9dd9d8a4f1968073e7f34515896d1e22b78 ]
 
-Based on a bisect, it appears that commit 7ee988770326 ("timers:
-Implement the hierarchical pull model") has somehow inadvertently
-broken BPF selftest test_tcpnotify_user. The error that is being
-generated by this test is as follows:
+Ensure that etm_perf_add_symlink_sink() is only called for devices
+that implement the alloc_buffer operation. This prevents invalid
+symlink creation for dummy sinks that do not implement alloc_buffer.
 
-	FAILED: Wrong stats Expected 10 calls, got 8
+Without this check, perf may attempt to use a dummy sink that lacks
+alloc_buffer operationsu to initialise perf's ring buffer, leading
+to runtime failures.
 
-It looks like the change allows timer functions to be run on CPUs
-different from the one they are armed on. The test had pinned itself
-to CPU 0, and in the past the retransmit attempts also occurred on CPU
-0. The test had set the max_entries attribute for
-BPF_MAP_TYPE_PERF_EVENT_ARRAY to 2 and was calling
-bpf_perf_event_output() with BPF_F_CURRENT_CPU, so the entry was
-likely to be in range. With the change to allow timers to run on other
-CPUs, the current CPU tasked with performing the retransmit might be
-bumped and in turn fall out of range, as the event will be filtered
-out via __bpf_perf_event_output() using:
-
-    if (unlikely(index >= array->map.max_entries))
-            return -E2BIG;
-
-A possible change would be to explicitly set the max_entries attribute
-for perf_event_map in test_tcpnotify_kern.c to a value that's at least
-as large as the number of CPUs. As it turns out however, if the field
-is left unset, then the libbpf will determine the number of CPUs available
-on the underlying system and update the max_entries attribute accordingly
-in map_set_def_max_entries().
-
-A further problem with the test is that it has a thread that continues
-running up until the program exits. The main thread cleans up some
-LIBBPF data structures, while the other thread continues to use them,
-which inevitably will trigger a SIGSEGV. This can be dealt with by
-telling the thread to run for as long as necessary and doing a
-pthread_join on it before exiting the program.
-
-Finally, I don't think binding the process to CPU 0 is meaningful for
-this test any more, so get rid of that.
-
-Fixes: 435f90a338ae ("selftests/bpf: add a test case for sock_ops perf-event notification")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/aJ8kHhwgATmA3rLf@google.com
+Fixes: 9d3ba0b6c0569 ("Coresight: Add coresight dummy driver")
+Signed-off-by: Yuanfang Zhang <quic_yuanfang@quicinc.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250630-etm_perf_sink-v1-1-e4a7211f9ad7@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/progs/test_tcpnotify_kern.c |  1 -
- .../selftests/bpf/test_tcpnotify_user.c       | 20 +++++++++----------
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ drivers/hwtracing/coresight/coresight-core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
-index 540181c115a85..ef00d38b0a8d2 100644
---- a/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
-+++ b/tools/testing/selftests/bpf/progs/test_tcpnotify_kern.c
-@@ -23,7 +23,6 @@ struct {
+diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
+index c2db94f2ab237..1accd7cbd54bf 100644
+--- a/drivers/hwtracing/coresight/coresight-core.c
++++ b/drivers/hwtracing/coresight/coresight-core.c
+@@ -1375,8 +1375,9 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
+ 		goto out_unlock;
+ 	}
  
- struct {
- 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
--	__uint(max_entries, 2);
- 	__type(key, int);
- 	__type(value, __u32);
- } perf_event_map SEC(".maps");
-diff --git a/tools/testing/selftests/bpf/test_tcpnotify_user.c b/tools/testing/selftests/bpf/test_tcpnotify_user.c
-index 595194453ff8f..35b4893ccdf8a 100644
---- a/tools/testing/selftests/bpf/test_tcpnotify_user.c
-+++ b/tools/testing/selftests/bpf/test_tcpnotify_user.c
-@@ -15,20 +15,18 @@
- #include <bpf/libbpf.h>
- #include <sys/ioctl.h>
- #include <linux/rtnetlink.h>
--#include <signal.h>
- #include <linux/perf_event.h>
--#include <linux/err.h>
+-	if (csdev->type == CORESIGHT_DEV_TYPE_SINK ||
+-	    csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) {
++	if ((csdev->type == CORESIGHT_DEV_TYPE_SINK ||
++	     csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) &&
++	    sink_ops(csdev)->alloc_buffer) {
+ 		ret = etm_perf_add_symlink_sink(csdev);
  
--#include "bpf_util.h"
- #include "cgroup_helpers.h"
- 
- #include "test_tcpnotify.h"
--#include "trace_helpers.h"
- #include "testing_helpers.h"
- 
- #define SOCKET_BUFFER_SIZE (getpagesize() < 8192L ? getpagesize() : 8192L)
- 
- pthread_t tid;
-+static bool exit_thread;
-+
- int rx_callbacks;
- 
- static void dummyfn(void *ctx, int cpu, void *data, __u32 size)
-@@ -45,7 +43,7 @@ void tcp_notifier_poller(struct perf_buffer *pb)
- {
- 	int err;
- 
--	while (1) {
-+	while (!exit_thread) {
- 		err = perf_buffer__poll(pb, 100);
- 		if (err < 0 && err != -EINTR) {
- 			printf("failed perf_buffer__poll: %d\n", err);
-@@ -78,15 +76,10 @@ int main(int argc, char **argv)
- 	int error = EXIT_FAILURE;
- 	struct bpf_object *obj;
- 	char test_script[80];
--	cpu_set_t cpuset;
- 	__u32 key = 0;
- 
- 	libbpf_set_strict_mode(LIBBPF_STRICT_ALL);
- 
--	CPU_ZERO(&cpuset);
--	CPU_SET(0, &cpuset);
--	pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
--
- 	cg_fd = cgroup_setup_and_join(cg_path);
- 	if (cg_fd < 0)
- 		goto err;
-@@ -151,6 +144,13 @@ int main(int argc, char **argv)
- 
- 	sleep(10);
- 
-+	exit_thread = true;
-+	int ret = pthread_join(tid, NULL);
-+	if (ret) {
-+		printf("FAILED: pthread_join\n");
-+		goto err;
-+	}
-+
- 	if (verify_result(&g)) {
- 		printf("FAILED: Wrong stats Expected %d calls, got %d\n",
- 			g.ncalls, rx_callbacks);
+ 		if (ret) {
 -- 
 2.51.0
 
