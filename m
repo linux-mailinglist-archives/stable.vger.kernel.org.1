@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-184998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612B3BD49C4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:56:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FA7BD45DF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 268454273E0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F1818861DB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA1B30C60C;
-	Mon, 13 Oct 2025 15:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C843112D1;
+	Mon, 13 Oct 2025 15:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFxRmqee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACX75b44"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BB117F4F6;
-	Mon, 13 Oct 2025 15:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E80B30C621;
+	Mon, 13 Oct 2025 15:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369041; cv=none; b=qLxF6XY57sPYfDlW5NUQILy5z7VJrSQX/O9hJB92DiOf7yWlIPU6r5Vqg1ugpJ5CqvteSPI1NdP1vFdbguusIVqgLhgkMzgUL62QZELWYAWs/yNfTiv6oD2ufHt5kzzmMXU5xOJ/HSx6kRO8T+rbtAtUT0WChmWxcOwh5NT1Zvo=
+	t=1760369073; cv=none; b=fKVqppCvoFiJWVs2Hnnw9yP95GXPGkySRkEWXHW44W9cjyLOTkDbC3SIEY5m9oWk3bQPtlG7tVj01WD45HliRvI+LpzPZP4yEglVeRT9XvwoFCqcJXe9xMJ82LDdVgSZZjHprzBcZCjJAS2SEeSYU5tASR3IAeogHZXVKEURJa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369041; c=relaxed/simple;
-	bh=3AiykI2SAQfdfvnhNx/9KUeRlZAmK/dmnkcnAinrZ4k=;
+	s=arc-20240116; t=1760369073; c=relaxed/simple;
+	bh=7FvIlWRDZF3mY2F6ht8cvKl9Wrm7m3/a+9d++9YilrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OoB0AubnsK7ATFqbO7LpxdWmQJzJfpFt5b3HyxB3kt/UFNJD4MxYuCQY8qHcSMRc+tvEe/enBJ6tLrXZu+jtXL7C1q+NNWIASeE5tB32GhTn4u2Mqg7UoEg2pdH5ShHaDrYvEBZdF+Vd5fPlCoh0qR9GR2jwHpOsyV1/2y2vq/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFxRmqee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A8DC4CEE7;
-	Mon, 13 Oct 2025 15:24:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ENhJUVdWZ4XsdroeIeLtP4G+oGztVzIoHENcHqj/6WoLHMhxhAbtq8vIxrTqaqsEdn4h4mKe9eAFQRdfl6HNceVzOnBHnbL4n7z3TJ08U15+TyXyiyMjgpHMiKuJ2XeoxFfGU3CJ1dFJFHi0xOcdqrgLpTF+i2J9Ogg+8VjsnGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACX75b44; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB37C4CEE7;
+	Mon, 13 Oct 2025 15:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369041;
-	bh=3AiykI2SAQfdfvnhNx/9KUeRlZAmK/dmnkcnAinrZ4k=;
+	s=korg; t=1760369073;
+	bh=7FvIlWRDZF3mY2F6ht8cvKl9Wrm7m3/a+9d++9YilrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFxRmqee96oulU0fop1WJ/D0I5J0tpBbspzid5uZDsw7Aiel0yYohDwQeBSJY1w0i
-	 V5Ct3RHpoqlURxW4KwbBgh+nwCMinRw56SEvUw1CpmT+RKkLAjvBGfGN5XcEpnvMt3
-	 A7LgfArgAsf8PekogCZp2QfKj4BHQwlFK43hVCZI=
+	b=ACX75b44G8wa54F2u3bhKAQoa/1yUPQTEOgCJITmLnq3ZOD2MM1Uz91TCWp9afZAH
+	 fLrNt9V0CYjU+afJfmrofd//tL/VjRmtBWxGAA7AXvl0kmO9BDEBqB53M3t5V5tuL7
+	 9iu8YGUyh1zG5GeZS/e2iIkVFhd6jG0PW5SAt83Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Brian Norris <briannorris@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	David Gow <davidgow@google.com>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 090/563] genirq/test: Ensure CPU 1 is online for hotplug test
-Date: Mon, 13 Oct 2025 16:39:11 +0200
-Message-ID: <20251013144414.558646608@linuxfoundation.org>
+Subject: [PATCH 6.17 091/563] selftests/bpf: Fix count write in testapp_xdp_metadata_copy()
+Date: Mon, 13 Oct 2025 16:39:12 +0200
+Message-ID: <20251013144414.594362901@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -62,55 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Norris <briannorris@chromium.org>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit 8ad25ebfa70e86860559b306bbc923c7db4fcac6 ]
+[ Upstream commit c9110e6f7237f4a314e2b87b75a8a158b9877a7b ]
 
-It's possible to run these tests on platforms that think they have a
-hotpluggable CPU1, but for whatever reason, CPU1 is not online and can't be
-brought online:
+Commit 4b302092553c ("selftests/xsk: Add tail adjustment tests and support
+check") added a new global to xsk_xdp_progs.c, but left out the access in
+the testapp_xdp_metadata_copy() function. Since bpf_map_update_elem() will
+write to the whole bss section, it gets truncated. Fix by writing to
+skel_rx->bss->count directly.
 
-    # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:210
-    Expected remove_cpu(1) == 0, but
-        remove_cpu(1) == 1 (0x1)
-CPU1: failed to boot: -38
-    # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:214
-    Expected add_cpu(1) == 0, but
-        add_cpu(1) == -38 (0xffffffffffffffda)
-
-Check that CPU1 is actually online before trying to run the test.
-
-Fixes: 66067c3c8a1e ("genirq: Add kunit tests for depth counts")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: David Gow <davidgow@google.com>
-Link: https://lore.kernel.org/all/20250822190140.2154646-7-briannorris@chromium.org
+Fixes: 4b302092553c ("selftests/xsk: Add tail adjustment tests and support check")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250829-selftests-bpf-xsk_regression_fix-v1-1-5f5acdb9fe6b@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/irq_test.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/bpf/xskxceiver.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/kernel/irq/irq_test.c b/kernel/irq/irq_test.c
-index 37568ec714b51..f71f46fdcfd5e 100644
---- a/kernel/irq/irq_test.c
-+++ b/kernel/irq/irq_test.c
-@@ -178,6 +178,8 @@ static void irq_cpuhotplug_test(struct kunit *test)
- 		kunit_skip(test, "requires more than 1 CPU for CPU hotplug");
- 	if (!cpu_is_hotpluggable(1))
- 		kunit_skip(test, "CPU 1 must be hotpluggable");
-+	if (!cpu_online(1))
-+		kunit_skip(test, "CPU 1 must be online");
+diff --git a/tools/testing/selftests/bpf/xskxceiver.c b/tools/testing/selftests/bpf/xskxceiver.c
+index a29de0713f19f..352adc8df2d1c 100644
+--- a/tools/testing/selftests/bpf/xskxceiver.c
++++ b/tools/testing/selftests/bpf/xskxceiver.c
+@@ -2276,25 +2276,13 @@ static int testapp_xdp_metadata_copy(struct test_spec *test)
+ {
+ 	struct xsk_xdp_progs *skel_rx = test->ifobj_rx->xdp_progs;
+ 	struct xsk_xdp_progs *skel_tx = test->ifobj_tx->xdp_progs;
+-	struct bpf_map *data_map;
+-	int count = 0;
+-	int key = 0;
  
- 	cpumask_copy(&affinity.mask, cpumask_of(1));
+ 	test_spec_set_xdp_prog(test, skel_rx->progs.xsk_xdp_populate_metadata,
+ 			       skel_tx->progs.xsk_xdp_populate_metadata,
+ 			       skel_rx->maps.xsk, skel_tx->maps.xsk);
+ 	test->ifobj_rx->use_metadata = true;
  
+-	data_map = bpf_object__find_map_by_name(skel_rx->obj, "xsk_xdp_.bss");
+-	if (!data_map || !bpf_map__is_internal(data_map)) {
+-		ksft_print_msg("Error: could not find bss section of XDP program\n");
+-		return TEST_FAILURE;
+-	}
+-
+-	if (bpf_map_update_elem(bpf_map__fd(data_map), &key, &count, BPF_ANY)) {
+-		ksft_print_msg("Error: could not update count element\n");
+-		return TEST_FAILURE;
+-	}
++	skel_rx->bss->count = 0;
+ 
+ 	return testapp_validate_traffic(test);
+ }
 -- 
 2.51.0
 
