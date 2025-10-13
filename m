@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06147BD3C48
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42AEBBD3FF7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E886F18A03D7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13C518A42A9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D91308F3C;
-	Mon, 13 Oct 2025 14:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113F22367B5;
+	Mon, 13 Oct 2025 14:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdgGGAxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB6vjrJH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8611627A123;
-	Mon, 13 Oct 2025 14:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F3A308F03;
+	Mon, 13 Oct 2025 14:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366986; cv=none; b=A1jDY6MqutGa/sFzKLnKNV0qT6tLa6hhQBB46z2pklOQXkizcJb6nLIjrUVWwi56hVnRKRRZA5Z8XBKAgSfdBcWp68rQJUASrFnV0WojHcWIkrlwGDWSZsg+xbnBij+VzgeFYDse5PX2m8kQQ1In3KMOxwLMTIeJafcYwGHOYHY=
+	t=1760367485; cv=none; b=T89oHbn+0JDgXk1sOqbwVknTkHm6dXnHueCRWzqVlkV3AXDvyubeU+J9gN4+A1lWOqxC4YEe57IL0b1Y0pqjWv1xMWunVZDQhGbSvNzOM/7YtDQ7BjbLI5JH8a6ZvhMb29IC153uNNjaWq2J+ZJKAr3JwLTNOE+m0OWXvRYYeZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366986; c=relaxed/simple;
-	bh=2iCHZjyQMksv4SEBOnjYGoJitGMaABQQOOslrizSg9g=;
+	s=arc-20240116; t=1760367485; c=relaxed/simple;
+	bh=vos9G9lutMyPuszJ1TMwvI9B+z819HFXlN6v62VJ5GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwmGUNKre8TTIaT9pC87HmpunB0X3RtHLB9/4W8U0wcDgNhU9FX0jizCJ+c/nFSH6/GCLvOEPWVBGGXpQrqSJp3Dv/NGSSdLCZACNEeV04xKVyq0xeeywwyNwSJcbFdXaO6RJMIduzLEEducid15GrPT9Spy0rPL4JatzRZJcJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdgGGAxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEE5C4CEE7;
-	Mon, 13 Oct 2025 14:49:45 +0000 (UTC)
+	 MIME-Version; b=tnD2VibttVyWUa5rQBRM/NR3U4uTv+YtuZw5CqvIfFx3mGeHXpoH0izLv+PRAzUXYLVuVAflIw+N76KB7feewFcnfPL/SNMJFzRTMABBGuckvStW0+wAUVLBlhD+wvCjzWNtB0J5pbn4xqKTuBGq7iY+EsLP2FxWUxfhu3qNTTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB6vjrJH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 474ACC4CEE7;
+	Mon, 13 Oct 2025 14:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366986;
-	bh=2iCHZjyQMksv4SEBOnjYGoJitGMaABQQOOslrizSg9g=;
+	s=korg; t=1760367485;
+	bh=vos9G9lutMyPuszJ1TMwvI9B+z819HFXlN6v62VJ5GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HdgGGAxKQLAxhsuU+R+MU9BEy1U/p03zC0yl6Jrg/sKm6gjvtIuywbM4Ob7pdtuwd
-	 SpSU20nn+RszF/6gOILRlFDCtjAiDEHKIAZ0p7WaPpfBufVvKGAjScLmJxB2EsWKId
-	 tf3wvvRVHJWYE1fGIV1BTbUnqr8RjJuB02XNd8ME=
+	b=JB6vjrJHlBo0K0l9Acnvu4RqLen/zpMhLmhDeN5XtCIFpLND6Q06O89huEOukILoK
+	 l25GXh1LGlzz+fka24OUvj2SW7+Bn4dYhY0f4SQnnAJCOc0ixzgynSYZkORbn78rwX
+	 4fkNbA9bq44/c+B+UVNEZYmF+xpIkhluS1aIbXYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <David.Laight@aculab.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.1 020/196] minmax: simplify min()/max()/clamp() implementation
-Date: Mon, 13 Oct 2025 16:43:13 +0200
-Message-ID: <20251013144315.302495211@linuxfoundation.org>
+	Ali Polatel <alip@chesswob.org>,
+	Johannes Nixdorf <johannes@nixdorf.dev>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 003/196] seccomp: Fix a race with WAIT_KILLABLE_RECV if the tracer replies too fast
+Date: Mon, 13 Oct 2025 16:43:14 +0200
+Message-ID: <20251013144315.312537114@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Johannes Nixdorf <johannes@nixdorf.dev>
 
-[ Upstream commit dc1c8034e31b14a2e5e212104ec508aec44ce1b9 ]
+[ Upstream commit cce436aafc2abad691fdd37de63ec8a4490b42ce ]
 
-Now that we no longer have any C constant expression contexts (ie array
-size declarations or static initializers) that use min() or max(), we
-can simpify the implementation by not having to worry about the result
-staying as a C constant expression.
+Normally the tracee starts in SECCOMP_NOTIFY_INIT, sends an
+event to the tracer, and starts to wait interruptibly. With
+SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV, if the tracer receives the
+message (SECCOMP_NOTIFY_SENT is reached) while the tracee was waiting
+and is subsequently interrupted, the tracee begins to wait again
+uninterruptibly (but killable).
 
-So now we can unconditionally just use temporary variables of the right
-type, and get rid of the excessive expansion that used to come from the
-use of
+This fails if SECCOMP_NOTIFY_REPLIED is reached before the tracee
+is interrupted, as the check only considered SECCOMP_NOTIFY_SENT as a
+condition to begin waiting again. In this case the tracee is interrupted
+even though the tracer already acted on its behalf. This breaks the
+assumption SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV wanted to ensure,
+namely that the tracer can be sure the syscall is not interrupted or
+restarted on the tracee after it is received on the tracer. Fix this
+by also considering SECCOMP_NOTIFY_REPLIED when evaluating whether to
+switch to uninterruptible waiting.
 
-   __builtin_choose_expr(__is_constexpr(...), ..
+With the condition changed the loop in seccomp_do_user_notification()
+would exit immediately after deciding that noninterruptible waiting
+is required if the operation already reached SECCOMP_NOTIFY_REPLIED,
+skipping the code that processes pending addfd commands first. Prevent
+this by executing the remaining loop body one last time in this case.
 
-to pick the specialized code for constant expressions.
-
-Another expansion simplification is to pass the temporary variables (in
-addition to the original expression) to our __types_ok() macro.  That
-may superficially look like it complicates the macro, but when we only
-want the type of the expression, expanding the temporary variable names
-is much simpler and smaller than expanding the potentially complicated
-original expression.
-
-As a result, on my machine, doing a
-
-  $ time make drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.i
-
-goes from
-
-	real	0m16.621s
-	user	0m15.360s
-	sys	0m1.221s
-
-to
-
-	real	0m2.532s
-	user	0m2.091s
-	sys	0m0.452s
-
-because the token expansion goes down dramatically.
-
-In particular, the longest line expansion (which was line 71 of that
-'ia_css_ynr.host.c' file) shrinks from 23,338kB (yes, 23MB for one
-single line) to "just" 1,444kB (now "only" 1.4MB).
-
-And yes, that line is still the line from hell, because it's doing
-multiple levels of "min()/max()" expansion thanks to some of them being
-hidden inside the uDIGIT_FITTING() macro.
-
-Lorenzo has a nice cleanup patch that makes that driver use inline
-functions instead of macros for sDIGIT_FITTING() and uDIGIT_FITTING(),
-which will fix that line once and for all, but the 16-fold reduction in
-this case does show why we need to simplify these helpers.
-
-Cc: David Laight <David.Laight@aculab.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c2aa2dfef243 ("seccomp: Add wait_killable semantic to seccomp user notifier")
+Reported-by: Ali Polatel <alip@chesswob.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220291
+Signed-off-by: Johannes Nixdorf <johannes@nixdorf.dev>
+Link: https://lore.kernel.org/r/20250725-seccomp-races-v2-1-cf8b9d139596@nixdorf.dev
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   43 ++++++++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
+ kernel/seccomp.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -35,10 +35,10 @@
- #define __is_noneg_int(x)	\
- 	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 255999ba9190a..1d26a0e978f26 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -1099,7 +1099,7 @@ static void seccomp_handle_addfd(struct seccomp_kaddfd *addfd, struct seccomp_kn
+ static bool should_sleep_killable(struct seccomp_filter *match,
+ 				  struct seccomp_knotif *n)
+ {
+-	return match->wait_killable_recv && n->state == SECCOMP_NOTIFY_SENT;
++	return match->wait_killable_recv && n->state >= SECCOMP_NOTIFY_SENT;
+ }
  
--#define __types_ok(x, y) 					\
--	(__is_signed(x) == __is_signed(y) ||			\
--		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
--		__is_noneg_int(x) || __is_noneg_int(y))
-+#define __types_ok(x, y, ux, uy) 				\
-+	(__is_signed(ux) == __is_signed(uy) ||			\
-+	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
-+	 __is_noneg_int(x) || __is_noneg_int(y))
+ static int seccomp_do_user_notification(int this_syscall,
+@@ -1146,13 +1146,11 @@ static int seccomp_do_user_notification(int this_syscall,
  
- #define __cmp_op_min <
- #define __cmp_op_max >
-@@ -51,34 +51,31 @@
- #define __cmp_once(op, type, x, y) \
- 	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
- 
--#define __careful_cmp_once(op, x, y) ({			\
--	static_assert(__types_ok(x, y),			\
-+#define __careful_cmp_once(op, x, y, ux, uy) ({		\
-+	__auto_type ux = (x); __auto_type uy = (y);	\
-+	static_assert(__types_ok(x, y, ux, uy),		\
- 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
--	__cmp_once(op, __auto_type, x, y); })
-+	__cmp(op, ux, uy); })
- 
--#define __careful_cmp(op, x, y)					\
--	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
--		__cmp(op, x, y), __careful_cmp_once(op, x, y))
-+#define __careful_cmp(op, x, y) \
-+	__careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
- 
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
- 
--#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
--	typeof(val) unique_val = (val);						\
--	typeof(lo) unique_lo = (lo);						\
--	typeof(hi) unique_hi = (hi);						\
-+#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
-+	__auto_type uval = (val);						\
-+	__auto_type ulo = (lo);							\
-+	__auto_type uhi = (hi);							\
- 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
- 			(lo) <= (hi), true),					\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
--	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
--	__clamp(unique_val, unique_lo, unique_hi); })
+ 		if (err != 0) {
+ 			/*
+-			 * Check to see if the notifcation got picked up and
+-			 * whether we should switch to wait killable.
++			 * Check to see whether we should switch to wait
++			 * killable. Only return the interrupted error if not.
+ 			 */
+-			if (!wait_killable && should_sleep_killable(match, &n))
+-				continue;
 -
--#define __careful_clamp(val, lo, hi) ({					\
--	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
--		__clamp(val, lo, hi),					\
--		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
--			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
-+	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
-+	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
-+	__clamp(uval, ulo, uhi); })
-+
-+#define __careful_clamp(val, lo, hi) \
-+	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+-			goto interrupted;
++			if (!(!wait_killable && should_sleep_killable(match, &n)))
++				goto interrupted;
+ 		}
  
- /**
-  * min - return minimum of two values of the same or compatible types
+ 		addfd = list_first_entry_or_null(&n.addfd,
+-- 
+2.51.0
+
 
 
 
