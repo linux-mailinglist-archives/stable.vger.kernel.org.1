@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3798BD3EB8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:11:27 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582CFBD4A9B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:00:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64196402512
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E939C503FEC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5479B3090CC;
-	Mon, 13 Oct 2025 14:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5409730EF7C;
+	Mon, 13 Oct 2025 15:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xX6brBNa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTYENZns"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F01D3090C9;
-	Mon, 13 Oct 2025 14:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1154C30EF76;
+	Mon, 13 Oct 2025 15:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366998; cv=none; b=m4c9lzqP9tWw7vHVkO7F3nCU4fNCX7Sem/goow4d6cZBHQELBQtHsHKVUYNpRMv+OwYVklw94sxf6F8Ftz0QHVSmedRfKGcG4ZlempsvzYJcufMJxZsG4Q7DGefzag3v41K+81ycDwAdNCPGiaj/ZZ4ucluOW6wWjlDCt/Z4kHA=
+	t=1760369666; cv=none; b=jif1FtXWVGJUK4mReV6vBUI62K3cGtFLDQZ14UROF0uy5XLfHKOyu/2K7TWMsblQLee9M3s3F/5pKkqePeAzxmhSMuscPgjll9z4eBhft8MO63GmdIBLre2eykbEzKgFNx/3oiBgZZG1acWkpMJu8kIVAd4h4FUiqJB+jZ86ml0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366998; c=relaxed/simple;
-	bh=+KQUGPDgpYt7MH4t3EpA/cqsnB0plJdYJGoHdQAS3hc=;
+	s=arc-20240116; t=1760369666; c=relaxed/simple;
+	bh=J1xrWt4ycXF/iUAjSHDYYNAJiYlmP6b3IjqRNQ5dNVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfHnqNPbUdsM6y/7jFjCCNQFM+AmMLBsGyZZnH0JyDipVNhh9O25zVV++tpIw+qa8M3Tr/nVGd7mxj2OFF4puH/2TRJwsN6MvVAERdLzUaT0OuLdm6lvOB8UanlAhVqWZulFP68ePFAcMATbqzOON0mJt9Ht1IgsS1aOH9dst9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xX6brBNa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86084C4CEE7;
-	Mon, 13 Oct 2025 14:49:57 +0000 (UTC)
+	 MIME-Version; b=jy/0nqSNy8GIkksTNgBnSKB3Sixfyq3v17ZLBEE4KuelOERtReAkbTW+d+EARjesZWqi6bRDRp7jUVv3nUONYkhLQMBB89rqQMfqoLzJwFAMjnuVSdP3ScfZL+azHGCL3guQXVypBkKjy4Fz94ckA2k6JhLRW7DxOOPjUWetdP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTYENZns; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC25C4CEE7;
+	Mon, 13 Oct 2025 15:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366997;
-	bh=+KQUGPDgpYt7MH4t3EpA/cqsnB0plJdYJGoHdQAS3hc=;
+	s=korg; t=1760369665;
+	bh=J1xrWt4ycXF/iUAjSHDYYNAJiYlmP6b3IjqRNQ5dNVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xX6brBNaxeEPVFs/FkuQH0qi/SgXxEw4ArWLYGdrKgMYGVrJk5mqIbc3ve76SEwAE
-	 HcevDtj39ArgQlsZgTk0l95BTIb94NNHt83uT2Opi1tflDVaRct/pP+GEizJaxFCFZ
-	 i8qFs156D3joR5li4clBihgmJvqKax1Gd5VjcnGE=
+	b=FTYENZns5PcthXP7wxd9tHLFPMuxewAGx3NVNrEYTNPU9EPjCPsSMIx8TryqF0LBJ
+	 c3Ap9WUuagGSjQP4LcbPhV9zeN07s2o+oxi9HW7bGGHGtsMMM75qRd95oqFc8aPdak
+	 SiOIJg363qFptRU6EAQ7wJsBwcZ/caPUuR/rfdkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 014/196] ASoC: qcom: audioreach: fix potential null pointer dereference
+	Liao Yuanhong <liaoyuanhong@vivo.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 326/563] wifi: iwlwifi: Remove redundant header files
 Date: Mon, 13 Oct 2025 16:43:07 +0200
-Message-ID: <20251013144315.080615514@linuxfoundation.org>
+Message-ID: <20251013144423.072160879@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Liao Yuanhong <liaoyuanhong@vivo.com>
 
-commit 8318e04ab2526b155773313b66a1542476ce1106 upstream.
+[ Upstream commit b4b34ba66443696cc5f3e95493f9d7597259b728 ]
 
-It is possible that the topology parsing function
-audioreach_widget_load_module_common() could return NULL or an error
-pointer. Add missing NULL check so that we do not dereference it.
+The header file "fw/img.h" is already included on line 9. Remove the
+redundant include.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Stable@vger.kernel.org
-Fixes: 36ad9bf1d93d ("ASoC: qdsp6: audioreach: add topology support")
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250825101247.152619-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2594e4d9e1a2d ("wifi: iwlwifi: prepare for reading SAR tables from UEFI")
+Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
+Link: https://patch.msgid.link/20250819121201.608770-2-liaoyuanhong@vivo.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/topology.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/regulatory.h | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/topology.c
-+++ b/sound/soc/qcom/qdsp6/topology.c
-@@ -504,8 +504,8 @@ static int audioreach_widget_load_module
- 		return PTR_ERR(cont);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+index a07c512b6ed43..735482e7adf56 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+@@ -12,7 +12,6 @@
+ #include "fw/api/phy.h"
+ #include "fw/api/config.h"
+ #include "fw/api/nvm-reg.h"
+-#include "fw/img.h"
+ #include "iwl-trans.h"
  
- 	mod = audioreach_parse_common_tokens(apm, cont, &tplg_w->priv, w);
--	if (IS_ERR(mod))
--		return PTR_ERR(mod);
-+	if (IS_ERR_OR_NULL(mod))
-+		return mod ? PTR_ERR(mod) : -ENODEV;
- 
- 	dobj = &w->dobj;
- 	dobj->private = mod;
+ #define BIOS_SAR_MAX_PROFILE_NUM	4
+-- 
+2.51.0
+
 
 
 
