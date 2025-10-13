@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-185332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77847BD4A95
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:00:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E75BD478D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D67E518A64EB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:00:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 93D7C5025E8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31B2311C37;
-	Mon, 13 Oct 2025 15:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CC130B501;
+	Mon, 13 Oct 2025 15:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxOlPGjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUy2VWUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2C5311C1B;
-	Mon, 13 Oct 2025 15:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D614530AD1D;
+	Mon, 13 Oct 2025 15:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369993; cv=none; b=F8ANZ67WBhoDqJaDWg0ocw9PVTDB8oCUrtFBOmW0GLgu+FRtNi9QErNMeTByzPv0spZwjrR8ewXeJgK/aAlMAhOTEfGLjE9ORG+3G9baPG2HFqo3qAzzIjsGFKpXoL3hAipkww01NCIxPL3KwiAcPRMGix0GJRr2uqBEGUAcexQ=
+	t=1760367721; cv=none; b=tm23JwmK9roTuNrjG4rlr6ABI++eC2e4vpzRn8Hg9yVC9+JX7MSn8pdflLG5A4GAegnUOyEw/l5q76V3/Ly/9sPqI40EMHkBdjO19p/4BRFAZsjj/RmEcsziSc4oI2kJ88Jf82iD/s4j3mzREqPCzE6exntOpXJQFQxt8tH3qVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369993; c=relaxed/simple;
-	bh=VrvGTt6T39BOu/esA1I2NPOCicHF76qPDQTk5S6sMdw=;
+	s=arc-20240116; t=1760367721; c=relaxed/simple;
+	bh=t3lMl97MuATCtwsIqCID3VG24Gp2X9G67JsQBL9LGs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7mvOOPajmj27RQ91vjNsTgLV0xtyRbpFTpdJp5liCfxgvY4FLSrMpYKGiacsO/8zqof6kJm9M3b2Cvw3Iepbgudkrb5a3tCdxgSFjna5zOR8EOl/n/CiwWBA8YGRTRQ/EI9qTomOC02+uzfm3oAQaJqg3WxQdYsTkZGdumJOHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxOlPGjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713F5C4CEFE;
-	Mon, 13 Oct 2025 15:39:52 +0000 (UTC)
+	 MIME-Version; b=g41tEkBUHYWRp4Lo1J+vVmInCvdH0C3ao6sT9ksRUizQb4g7Yo7xmlW8N1nEIMSnx6lpZUZvGieP5L57RWeyTzmIygRkpa0w20Mc/RAKiFBLOWASrL6qnNVSh/Mm/mDvSOQB8QwnMpwlgaMdyeaiuVL90k32UrShg9NcCjOcSO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUy2VWUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631E9C4CEE7;
+	Mon, 13 Oct 2025 15:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369992;
-	bh=VrvGTt6T39BOu/esA1I2NPOCicHF76qPDQTk5S6sMdw=;
+	s=korg; t=1760367721;
+	bh=t3lMl97MuATCtwsIqCID3VG24Gp2X9G67JsQBL9LGs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gxOlPGjQlnlNFXPl9yTXaG2O5rttiuX4Xmu6rqj482RC5qckCojk8gbOkv4K47MYN
-	 XsQsxnqbvDAWlFNFd+Nf8t+5k8kVId7WFqG61Iby7oH9w9I7lcoBvbXf/llmif8O6R
-	 GcQ476hBCwzJiVA5jv3uEXplHEUsT1X/b6qYS1VM=
+	b=yUy2VWUeAykSHcyxDCJivWFE4b4f1ZgltgomXj1gt43tr/+IsoL4PULCa68kFwMMt
+	 NvUP9t8FkiEnoP5FbOaVkrZJEhqgQw9F56vHoHzGh6tW88rCpyF04l2I8KMbl6XE9M
+	 GGXGnyr0ReikUgqCnq38BlnqMQvy9tLginPJIZas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 440/563] scsi: mpt3sas: Fix crash in transport port remove by using ioc_info()
-Date: Mon, 13 Oct 2025 16:45:01 +0200
-Message-ID: <20251013144427.222650699@linuxfoundation.org>
+Subject: [PATCH 6.6 111/196] watchdog: mpc8xxx_wdt: Reload the watchdog timer when enabling the watchdog
+Date: Mon, 13 Oct 2025 16:45:02 +0200
+Message-ID: <20251013144319.327597389@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 1703fe4f8ae50d1fb6449854e1fcaed1053e3a14 ]
+[ Upstream commit 7dfd80f70ef00d871df5af7c391133f7ba61ad9b ]
 
-During mpt3sas_transport_port_remove(), messages were logged with
-dev_printk() against &mpt3sas_port->port->dev. At this point the SAS
-transport device may already be partially unregistered or freed, leading
-to a crash when accessing its struct device.
+When the watchdog gets enabled with this driver, it leaves enough time
+for the core watchdog subsystem to start pinging it. But when the
+watchdog is already started by hardware or by the boot loader, little
+time remains before it fires and it happens that the core watchdog
+subsystem doesn't have time to start pinging it.
 
-Using ioc_info(), which logs via the PCI device (ioc->pdev->dev),
-guaranteed to remain valid until driver removal.
+Until commit 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker
+function") pinging was managed by the driver itself and the watchdog
+was immediately pinged by setting the timer expiry to 0.
 
-[83428.295776] Oops: general protection fault, probably for non-canonical address 0x6f702f323a33312d: 0000 [#1] SMP NOPTI
-[83428.295785] CPU: 145 UID: 0 PID: 113296 Comm: rmmod Kdump: loaded Tainted: G           OE       6.16.0-rc1+ #1 PREEMPT(voluntary)
-[83428.295792] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-[83428.295795] Hardware name: Dell Inc. Precision 7875 Tower/, BIOS 89.1.67 02/23/2024
-[83428.295799] RIP: 0010:__dev_printk+0x1f/0x70
-[83428.295805] Code: 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 49 89 d1 48 85 f6 74 52 4c 8b 46 50 4d 85 c0 74 1f 48 8b 46 68 48 85 c0 74 22 <48> 8b 08 0f b6 7f 01 48 c7 c2 db e8 42 ad 83 ef 30 e9 7b f8 ff ff
-[83428.295813] RSP: 0018:ff85aeafc3137bb0 EFLAGS: 00010206
-[83428.295817] RAX: 6f702f323a33312d RBX: ff4290ee81292860 RCX: 5000cca25103be32
-[83428.295820] RDX: ff85aeafc3137bb8 RSI: ff4290eeb1966c00 RDI: ffffffffc1560845
-[83428.295823] RBP: ff85aeafc3137c18 R08: 74726f702f303a33 R09: ff85aeafc3137bb8
-[83428.295826] R10: ff85aeafc3137b18 R11: ff4290f5bd60fe68 R12: ff4290ee81290000
-[83428.295830] R13: ff4290ee6e345de0 R14: ff4290ee81290000 R15: ff4290ee6e345e30
-[83428.295833] FS:  00007fd9472a6740(0000) GS:ff4290f5ce96b000(0000) knlGS:0000000000000000
-[83428.295837] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[83428.295840] CR2: 00007f242b4db238 CR3: 00000002372b8006 CR4: 0000000000771ef0
-[83428.295844] PKRU: 55555554
-[83428.295846] Call Trace:
-[83428.295848]  <TASK>
-[83428.295850]  _dev_printk+0x5c/0x80
-[83428.295857]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.295863]  mpt3sas_transport_port_remove+0x1c7/0x420 [mpt3sas]
-[83428.295882]  _scsih_remove_device+0x21b/0x280 [mpt3sas]
-[83428.295894]  ? _scsih_expander_node_remove+0x108/0x140 [mpt3sas]
-[83428.295906]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.295910]  mpt3sas_device_remove_by_sas_address.part.0+0x8f/0x110 [mpt3sas]
-[83428.295921]  _scsih_expander_node_remove+0x129/0x140 [mpt3sas]
-[83428.295933]  _scsih_expander_node_remove+0x6a/0x140 [mpt3sas]
-[83428.295944]  scsih_remove+0x3f0/0x4a0 [mpt3sas]
-[83428.295957]  pci_device_remove+0x3b/0xb0
-[83428.295962]  device_release_driver_internal+0x193/0x200
-[83428.295968]  driver_detach+0x44/0x90
-[83428.295971]  bus_remove_driver+0x69/0xf0
-[83428.295975]  pci_unregister_driver+0x2a/0xb0
-[83428.295979]  _mpt3sas_exit+0x1f/0x300 [mpt3sas]
-[83428.295991]  __do_sys_delete_module.constprop.0+0x174/0x310
-[83428.295997]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.296000]  ? __x64_sys_getdents64+0x9a/0x110
-[83428.296005]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.296009]  ? syscall_trace_enter+0xf6/0x1b0
-[83428.296014]  do_syscall_64+0x7b/0x2c0
-[83428.296019]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.296023]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+So restore similar behaviour by pinging it when enabling it so that
+if it was already enabled the watchdog timer counter is reloaded.
 
-Fixes: f92363d12359 ("[SCSI] mpt3sas: add new driver supporting 12GB SAS")
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker function")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_transport.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/watchdog/mpc8xxx_wdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_transport.c b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-index dc74ebc6405ac..66fd301f03b0d 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_transport.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-@@ -987,11 +987,9 @@ mpt3sas_transport_port_remove(struct MPT3SAS_ADAPTER *ioc, u64 sas_address,
- 	list_for_each_entry_safe(mpt3sas_phy, next_phy,
- 	    &mpt3sas_port->phy_list, port_siblings) {
- 		if ((ioc->logging_level & MPT_DEBUG_TRANSPORT))
--			dev_printk(KERN_INFO, &mpt3sas_port->port->dev,
--			    "remove: sas_addr(0x%016llx), phy(%d)\n",
--			    (unsigned long long)
--			    mpt3sas_port->remote_identify.sas_address,
--			    mpt3sas_phy->phy_id);
-+			ioc_info(ioc, "remove: sas_addr(0x%016llx), phy(%d)\n",
-+				(unsigned long long) mpt3sas_port->remote_identify.sas_address,
-+					mpt3sas_phy->phy_id);
- 		mpt3sas_phy->phy_belongs_to_port = 0;
- 		if (!ioc->remove_host)
- 			sas_port_delete_phy(mpt3sas_port->port,
+diff --git a/drivers/watchdog/mpc8xxx_wdt.c b/drivers/watchdog/mpc8xxx_wdt.c
+index 867f9f3113797..a4b497ecfa205 100644
+--- a/drivers/watchdog/mpc8xxx_wdt.c
++++ b/drivers/watchdog/mpc8xxx_wdt.c
+@@ -100,6 +100,8 @@ static int mpc8xxx_wdt_start(struct watchdog_device *w)
+ 	ddata->swtc = tmp >> 16;
+ 	set_bit(WDOG_HW_RUNNING, &ddata->wdd.status);
+ 
++	mpc8xxx_wdt_keepalive(ddata);
++
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
