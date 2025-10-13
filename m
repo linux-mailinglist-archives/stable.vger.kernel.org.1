@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-184880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A54BD43F9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D052EBD407B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7497834F88C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7CEFE34E634
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EA530BB8B;
-	Mon, 13 Oct 2025 15:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8284030F7E7;
+	Mon, 13 Oct 2025 15:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKUeIjQc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiUybSRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1555D30B51F;
-	Mon, 13 Oct 2025 15:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0EF271473;
+	Mon, 13 Oct 2025 15:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368701; cv=none; b=SuYHIoVmzxIfCUYfcTFlCcr9ohq2fQz8Otb4Qcm58K+Pxz23uGyxu3WK9tbwjLelQ2hsQwvIAnygvBv0wX/gwUESGNW4TiIyA+HYPTKAmLWtIQjnKvw910UOnJL7oeaj65CdNhwCDTnQ5EgZsifm8lsnbKZk0DbdCjJVxOtaP88=
+	t=1760367899; cv=none; b=Rk3zKpVvS9CNEYF5p8zSmMul4Y7W6Es2cMkBLmlYFYjJ0mL6AiebCtRUS5K/VQPp+jzW2/AH0Q9+uVlrqMVVbt3PW0WPeuoJFNE+Egg3ZraNGMchqYXvLR/n+vK+neFPLF2nEGPc/p5CwlVE7XS1AFZVS1mxQF9JVCPiF9vAY74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368701; c=relaxed/simple;
-	bh=pjOtFuSUMXyDrtRKCrHTiC1vLCYVPOacUCMMkfGE+hE=;
+	s=arc-20240116; t=1760367899; c=relaxed/simple;
+	bh=d+zKkI9W57DB3Q5cmhki6kkebouUMP4b28DQCs3ylqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHoYT7UanNePvYbEy3hclVpe02lwwrrfXw+ijU6rhv2PT4PpeBC0o51DkcpzsYHVgF+HI34RaRLc0xrB0UER4mJU1sxjSfTRhJ5B0k2nORrkqAVQ2gI3MS2gTYjayXoCQuqTFLDrwgh/H72NhU3cXNeawKGvyvrduMJXOMv4Jak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKUeIjQc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940D9C4CEE7;
-	Mon, 13 Oct 2025 15:18:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YbQdtxNQRioMCy2SJ7otX8xQxpsQ+0tZ+VWfdIz0F4eO6l3zG90Q/OXczdpWjHf2jznGJBlPIXDsNYOgUsoq0+K6oEbMcnD8E7HqKmHhboWdTnB4OJ+A5n5IsedODZUdMrtFUstH4qtUtZ/lPBdauF1b+lb34TH9hwIcDjSbvM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiUybSRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB09C4CEE7;
+	Mon, 13 Oct 2025 15:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368701;
-	bh=pjOtFuSUMXyDrtRKCrHTiC1vLCYVPOacUCMMkfGE+hE=;
+	s=korg; t=1760367899;
+	bh=d+zKkI9W57DB3Q5cmhki6kkebouUMP4b28DQCs3ylqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKUeIjQcIf8+6IHo9CbRqbdBmxLj/PhmlXa5YlLIhOm9cRc33IMwBxifr4DWLp8o5
-	 xVsbt8Fk8tPHl/TjmhzD3cV6ARF+8C5wpDiRpBddw0YbnDZARIFtLNhShf2+O3ygk6
-	 wTTSGytliLe47/hzaBjLF4DmJ+EOXuExHeSF6XkE=
+	b=yiUybSROGzR3i18Mm75PqhVDGtuc/CFBAkYqEO9jF8JH1x/OctXboSNZX0epMHMvs
+	 r/a4u0yd3w+ZGOucoqnN0ep+9YuTFkDeDP2JyW4+tKSMaV3C4CX9uLoNIJf03C3s+q
+	 r0ZnZjPktRV+k2iJstVZxQMXeFzAYTfudL/tO/q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Shay Drori <shayd@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 219/262] net/mlx5: fw reset, add reset timeout work
+	John Starks <jostarks@microsoft.com>,
+	Naman Jain <namjain@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>,
+	Tianyu Lan <tiala@microsoft.com>
+Subject: [PATCH 6.6 170/196] uio_hv_generic: Let userspace take care of interrupt mask
 Date: Mon, 13 Oct 2025 16:46:01 +0200
-Message-ID: <20251013144334.130841728@linuxfoundation.org>
+Message-ID: <20251013144321.459164637@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-[ Upstream commit 5cfbe7ebfa42fd3c517a701dab5bd73524da9088 ]
+commit b15b7d2a1b09ef5428a8db260251897405a19496 upstream.
 
-Add sync reset timeout to stop poll_sync_reset in case there was no
-reset done or abort event within timeout. Otherwise poll sync reset will
-just continue and in case of fw fatal error no health reporting will be
-done.
+Remove the logic to set interrupt mask by default in uio_hv_generic
+driver as the interrupt mask value is supposed to be controlled
+completely by the user space. If the mask bit gets changed
+by the driver, concurrently with user mode operating on the ring,
+the mask bit may be set when it is supposed to be clear, and the
+user-mode driver will miss an interrupt which will cause a hang.
 
-Fixes: 38b9f903f22b ("net/mlx5: Handle sync reset request event")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For eg- when the driver sets inbound ring buffer interrupt mask to 1,
+the host does not interrupt the guest on the UIO VMBus channel.
+However, setting the mask does not prevent the host from putting a
+message in the inbound ring buffer. So let’s assume that happens,
+the host puts a message into the ring buffer but does not interrupt.
+
+Subsequently, the user space code in the guest sets the inbound ring
+buffer interrupt mask to 0, saying “Hey, I’m ready for interrupts”.
+User space code then calls pread() to wait for an interrupt.
+Then one of two things happens:
+
+* The host never sends another message. So the pread() waits forever.
+* The host does send another message. But because there’s already a
+  message in the ring buffer, it doesn’t generate an interrupt.
+  This is the correct behavior, because the host should only send an
+  interrupt when the inbound ring buffer transitions from empty to
+  not-empty. Adding an additional message to a ring buffer that is not
+  empty is not supposed to generate an interrupt on the guest.
+  Since the guest is waiting in pread() and not removing messages from
+  the ring buffer, the pread() waits forever.
+
+This could be easily reproduced in hv_fcopy_uio_daemon if we delay
+setting interrupt mask to 0.
+
+Similarly if hv_uio_channel_cb() sets the interrupt_mask to 1,
+there’s a race condition. Once user space empties the inbound ring
+buffer, but before user space sets interrupt_mask to 0, the host could
+put another message in the ring buffer but it wouldn’t interrupt.
+Then the next pread() would hang.
+
+Fix these by removing all instances where interrupt_mask is changed,
+while keeping the one in set_event() unchanged to enable userspace
+control the interrupt mask by writing 0/1 to /dev/uioX.
+
+Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
+Suggested-by: John Starks <jostarks@microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Reviewed-by: Tianyu Lan <tiala@microsoft.com>
+Tested-by: Tianyu Lan <tiala@microsoft.com>
+Link: https://lore.kernel.org/r/20250828044200.492030-1-namjain@linux.microsoft.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/mellanox/mlx5/core/fw_reset.c    | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/uio/uio_hv_generic.c |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-index 516df7f1997eb..35d2fe08c0fb5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-@@ -27,6 +27,7 @@ struct mlx5_fw_reset {
- 	struct work_struct reset_reload_work;
- 	struct work_struct reset_now_work;
- 	struct work_struct reset_abort_work;
-+	struct delayed_work reset_timeout_work;
- 	unsigned long reset_flags;
- 	u8 reset_method;
- 	struct timer_list timer;
-@@ -258,6 +259,8 @@ static int mlx5_sync_reset_clear_reset_requested(struct mlx5_core_dev *dev, bool
- 		return -EALREADY;
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -96,7 +96,6 @@ static void hv_uio_channel_cb(void *cont
+ 	struct hv_device *hv_dev = chan->device_obj;
+ 	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
+ 
+-	chan->inbound.ring_buffer->interrupt_mask = 1;
+ 	virt_mb();
+ 
+ 	uio_event_notify(&pdata->info);
+@@ -173,8 +172,6 @@ hv_uio_new_channel(struct vmbus_channel
+ 		return;
  	}
  
-+	if (current_work() != &fw_reset->reset_timeout_work.work)
-+		cancel_delayed_work(&fw_reset->reset_timeout_work);
- 	mlx5_stop_sync_reset_poll(dev);
- 	if (poll_health)
- 		mlx5_start_health_poll(dev);
-@@ -328,6 +331,11 @@ static int mlx5_sync_reset_set_reset_requested(struct mlx5_core_dev *dev)
- 	}
- 	mlx5_stop_health_poll(dev, true);
- 	mlx5_start_sync_reset_poll(dev);
-+
-+	if (!test_bit(MLX5_FW_RESET_FLAGS_DROP_NEW_REQUESTS,
-+		      &fw_reset->reset_flags))
-+		schedule_delayed_work(&fw_reset->reset_timeout_work,
-+			msecs_to_jiffies(mlx5_tout_ms(dev, PCI_SYNC_UPDATE)));
- 	return 0;
- }
+-	/* Disable interrupts on sub channel */
+-	new_sc->inbound.ring_buffer->interrupt_mask = 1;
+ 	set_channel_read_mode(new_sc, HV_CALL_ISR);
  
-@@ -728,6 +736,19 @@ static void mlx5_sync_reset_events_handle(struct mlx5_fw_reset *fw_reset, struct
- 	}
- }
+ 	ret = sysfs_create_bin_file(&new_sc->kobj, &ring_buffer_bin_attr);
+@@ -218,9 +215,7 @@ hv_uio_open(struct uio_info *info, struc
  
-+static void mlx5_sync_reset_timeout_work(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = container_of(work, struct delayed_work,
-+						  work);
-+	struct mlx5_fw_reset *fw_reset =
-+		container_of(dwork, struct mlx5_fw_reset, reset_timeout_work);
-+	struct mlx5_core_dev *dev = fw_reset->dev;
-+
-+	if (mlx5_sync_reset_clear_reset_requested(dev, true))
-+		return;
-+	mlx5_core_warn(dev, "PCI Sync FW Update Reset Timeout.\n");
-+}
-+
- static int fw_reset_event_notifier(struct notifier_block *nb, unsigned long action, void *data)
- {
- 	struct mlx5_fw_reset *fw_reset = mlx5_nb_cof(nb, struct mlx5_fw_reset, nb);
-@@ -811,6 +832,7 @@ void mlx5_drain_fw_reset(struct mlx5_core_dev *dev)
- 	cancel_work_sync(&fw_reset->reset_reload_work);
- 	cancel_work_sync(&fw_reset->reset_now_work);
- 	cancel_work_sync(&fw_reset->reset_abort_work);
-+	cancel_delayed_work(&fw_reset->reset_timeout_work);
- }
+ 	ret = vmbus_connect_ring(dev->channel,
+ 				 hv_uio_channel_cb, dev->channel);
+-	if (ret == 0)
+-		dev->channel->inbound.ring_buffer->interrupt_mask = 1;
+-	else
++	if (ret)
+ 		atomic_dec(&pdata->refcnt);
  
- static const struct devlink_param mlx5_fw_reset_devlink_params[] = {
-@@ -854,6 +876,8 @@ int mlx5_fw_reset_init(struct mlx5_core_dev *dev)
- 	INIT_WORK(&fw_reset->reset_reload_work, mlx5_sync_reset_reload_work);
- 	INIT_WORK(&fw_reset->reset_now_work, mlx5_sync_reset_now_event);
- 	INIT_WORK(&fw_reset->reset_abort_work, mlx5_sync_reset_abort_event);
-+	INIT_DELAYED_WORK(&fw_reset->reset_timeout_work,
-+			  mlx5_sync_reset_timeout_work);
- 
- 	init_completion(&fw_reset->done);
- 	return 0;
--- 
-2.51.0
-
+ 	return ret;
 
 
 
