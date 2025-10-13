@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-184757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134ABBD492B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C8ABD4702
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A03694214EC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A23F74F269E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B230E3064A5;
-	Mon, 13 Oct 2025 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E53309F0A;
+	Mon, 13 Oct 2025 15:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkrIU/1I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLraV/Wd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F887305E31;
-	Mon, 13 Oct 2025 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CBA309F00;
+	Mon, 13 Oct 2025 15:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368346; cv=none; b=KovCCdjuiJeV1x83dcDJqYPcRVB15a6Oj3t3A8LNC7iPNCwy+ZTVt6gcMXN6Fgwm/zEumaEDJyCd9y4k+651mD5dRhIjgtPNJ3M6m/afbJRW7/HYwEIVVykJXFPm9kvxRy8/kSGavpfkpO0K3OwdpBplYQLjSwXA5OZaKNycc/4=
+	t=1760367633; cv=none; b=aZ7rY2/dgb1nGH1Rj73/uCREhvSqhaE9WhEw6hrUbhWaobd82dP+pMhMzqTeCdPuNMPkBiN00vLqUs9Cy5hg8x2aZFGIU7QCO953DRu7/440ypQ+vfVBNf3ZoWW13owf/rYutOpI/b3yvRm5BKwmyJ9kcirJ6u8UA2f+u8rrrNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368346; c=relaxed/simple;
-	bh=kLtunDa2/IC23nuD1jgQZnWoOCywTOu8VFnsDI2DlJ4=;
+	s=arc-20240116; t=1760367633; c=relaxed/simple;
+	bh=QHw4dncETxSk9SU8m2ykMOAuwpcnd7U4iGlTygG61ZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8sbICugbgsSBuBUaYf9jL5dveYJGbBfW+SGbq8wEM/gA1FaWilLboNsKAqQfuk7Fuja6U3cLR7Wz1iW3C3nEApG1swPUbkuzDulFa9WIbKu9ENVFtUcJLOXYb0HsTXOqJwgHU5Q+MGO1i5fV9vTP7QrXKxACGTB2WMiw/GnDuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkrIU/1I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E3EC4CEE7;
-	Mon, 13 Oct 2025 15:12:25 +0000 (UTC)
+	 MIME-Version; b=aOOj7rK/j8o1fiQgMsCi9hIZeX2PKkGeF6DcmrVMGYoC94NmR2s9T7scyFlAWv+2lKD48zmR7OzFqt83wW0uH1saMbG/819sAE3ofiHlklL+ZdtQ/4BFXK32bbeuNFyQpBjXevIXxVnBkdFW/dv/QmmbY5fkpSgb26dAoweJFU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLraV/Wd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA46C4CEFE;
+	Mon, 13 Oct 2025 15:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368346;
-	bh=kLtunDa2/IC23nuD1jgQZnWoOCywTOu8VFnsDI2DlJ4=;
+	s=korg; t=1760367632;
+	bh=QHw4dncETxSk9SU8m2ykMOAuwpcnd7U4iGlTygG61ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WkrIU/1IJ/5udps2NFrPqPjVo5bDHkGeVabtLegXTgnGRIv8Ls7bAdsK9kOIfHilx
-	 a3cKNsO+dICTLH+g0muKoHILlko3sqSj9YCv603vAckBO9IysupBkvQMlbei9XyaIF
-	 H1ATHGiqI4DJSkwIXyydm4IOVcfWUFN7jfovvdKs=
+	b=pLraV/WdfUC+omYQf2+ZgDAklWEClhF76W1dQn0WB8iljwEqjTcH2/Wm7yiQlfDFD
+	 sxUjsB4BnW+6YsprV11yPTvQmpqtgqmyvYFeC6ETZ6Qk9jwbavEaZypPx4CNjhKDxP
+	 Y3kAANXC2ApLh8XpX3bTBg4PQWhOv0wg5qISXesA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seppo Takalo <seppo.takalo@nordicsemi.no>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 129/262] tty: n_gsm: Dont block input queue by waiting MSC
+Subject: [PATCH 6.6 080/196] crypto: hisilicon/zip - remove unnecessary validation for high-performance mode configurations
 Date: Mon, 13 Oct 2025 16:44:31 +0200
-Message-ID: <20251013144330.769692282@linuxfoundation.org>
+Message-ID: <20251013144318.210274886@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seppo Takalo <seppo.takalo@nordicsemi.no>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit 3cf0b3c243e56bc43be560617416c1d9f301f44c ]
+[ Upstream commit d4e081510471e79171c4e0a11f6cb608e49bc082 ]
 
-Currently gsm_queue() processes incoming frames and when opening
-a DLC channel it calls gsm_dlci_open() which calls gsm_modem_update().
-If basic mode is used it calls gsm_modem_upd_via_msc() and it
-cannot block the input queue by waiting the response to come
-into the same input queue.
+When configuring the high-performance mode register, there is no
+need to verify whether the register has been successfully
+enabled, as there is no possibility of a write failure for this
+register.
 
-Instead allow sending Modem Status Command without waiting for remote
-end to respond. Define a new function gsm_modem_send_initial_msc()
-for this purpose. As MSC is only valid for basic encoding, it does
-not do anything for advanced or when convergence layer type 2 is used.
-
-Fixes: 48473802506d ("tty: n_gsm: fix missing update of modem controls after DLCI open")
-Signed-off-by: Seppo Takalo <seppo.takalo@nordicsemi.no>
-Link: https://lore.kernel.org/r/20250827123221.1148666-1-seppo.takalo@nordicsemi.no
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a9864bae1806 ("crypto: hisilicon/zip - add zip comp high perf mode configuration")
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/crypto/hisilicon/zip/zip_main.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
-index 252849910588f..c917fc20b469a 100644
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -461,6 +461,7 @@ static int gsm_send_packet(struct gsm_mux *gsm, struct gsm_msg *msg);
- static struct gsm_dlci *gsm_dlci_alloc(struct gsm_mux *gsm, int addr);
- static void gsmld_write_trigger(struct gsm_mux *gsm);
- static void gsmld_write_task(struct work_struct *work);
-+static int gsm_modem_send_initial_msc(struct gsm_dlci *dlci);
- 
- /**
-  *	gsm_fcs_add	-	update FCS
-@@ -2174,7 +2175,7 @@ static void gsm_dlci_open(struct gsm_dlci *dlci)
- 		pr_debug("DLCI %d goes open.\n", dlci->addr);
- 	/* Send current modem state */
- 	if (dlci->addr) {
--		gsm_modem_update(dlci, 0);
-+		gsm_modem_send_initial_msc(dlci);
- 	} else {
- 		/* Start keep-alive control */
- 		gsm->ka_num = 0;
-@@ -4156,6 +4157,28 @@ static int gsm_modem_upd_via_msc(struct gsm_dlci *dlci, u8 brk)
- 	return gsm_control_wait(dlci->gsm, ctrl);
+diff --git a/drivers/crypto/hisilicon/zip/zip_main.c b/drivers/crypto/hisilicon/zip/zip_main.c
+index 66e553115adfd..6e419c5165cb4 100644
+--- a/drivers/crypto/hisilicon/zip/zip_main.c
++++ b/drivers/crypto/hisilicon/zip/zip_main.c
+@@ -469,10 +469,9 @@ bool hisi_zip_alg_support(struct hisi_qm *qm, u32 alg)
+ 	return false;
  }
  
-+/**
-+ * gsm_modem_send_initial_msc - Send initial modem status message
-+ *
-+ * @dlci channel
-+ *
-+ * Send an initial MSC message after DLCI open to set the initial
-+ * modem status lines. This is only done for basic mode.
-+ * Does not wait for a response as we cannot block the input queue
-+ * processing.
-+ */
-+static int gsm_modem_send_initial_msc(struct gsm_dlci *dlci)
-+{
-+	u8 modembits[2];
-+
-+	if (dlci->adaption != 1 || dlci->gsm->encoding != GSM_BASIC_OPT)
-+		return 0;
-+
-+	modembits[0] = (dlci->addr << 2) | 2 | EA; /* DLCI, Valid, EA */
-+	modembits[1] = (gsm_encode_modem(dlci) << 1) | EA;
-+	return gsm_control_command(dlci->gsm, CMD_MSC, (const u8 *)&modembits, 2);
-+}
-+
- /**
-  *	gsm_modem_update	-	send modem status line state
-  *	@dlci: channel
+-static int hisi_zip_set_high_perf(struct hisi_qm *qm)
++static void hisi_zip_set_high_perf(struct hisi_qm *qm)
+ {
+ 	u32 val;
+-	int ret;
+ 
+ 	val = readl_relaxed(qm->io_base + HZIP_HIGH_PERF_OFFSET);
+ 	if (perf_mode == HZIP_HIGH_COMP_PERF)
+@@ -482,13 +481,6 @@ static int hisi_zip_set_high_perf(struct hisi_qm *qm)
+ 
+ 	/* Set perf mode */
+ 	writel(val, qm->io_base + HZIP_HIGH_PERF_OFFSET);
+-	ret = readl_relaxed_poll_timeout(qm->io_base + HZIP_HIGH_PERF_OFFSET,
+-					 val, val == perf_mode, HZIP_DELAY_1_US,
+-					 HZIP_POLL_TIMEOUT_US);
+-	if (ret)
+-		pci_err(qm->pdev, "failed to set perf mode\n");
+-
+-	return ret;
+ }
+ 
+ static void hisi_zip_open_sva_prefetch(struct hisi_qm *qm)
+@@ -1180,9 +1172,7 @@ static int hisi_zip_pf_probe_init(struct hisi_zip *hisi_zip)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = hisi_zip_set_high_perf(qm);
+-	if (ret)
+-		return ret;
++	hisi_zip_set_high_perf(qm);
+ 
+ 	hisi_zip_open_sva_prefetch(qm);
+ 	hisi_qm_dev_err_init(qm);
 -- 
 2.51.0
 
