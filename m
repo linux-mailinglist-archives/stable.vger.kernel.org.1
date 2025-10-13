@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EFCBD41B3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6108CBD3CF4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B418934EED5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F9AF18A0E6C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C2E3126AF;
-	Mon, 13 Oct 2025 15:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDBC10942;
+	Mon, 13 Oct 2025 14:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0AEsRj1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhQbZKvO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CC32FF642;
-	Mon, 13 Oct 2025 15:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE1C30ACED;
+	Mon, 13 Oct 2025 14:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368320; cv=none; b=JUdejLCiMNdVEiqVJLJFKSL2FoAyoO/Ff19EFGsAcJuglU7FkyAXN9h8BdJewYZ+239n8skdcOnYQ2MX5z1keP7MRP8O1iUJUNTKP5az4DYfBfXS+aeG0DEV36lY6AtwazAJAG8qwM9jF4tndYWC9DrqFjlzHlIDqYUrL2Jwf1k=
+	t=1760367190; cv=none; b=IrFEvl5SofSG2yViMDMk/nOOLeEwC5xKjZ52dyCzf9Nrplt1T8JgAN5ENZWW24LV7H5F+QR/uojl1eGCDOI/2PlLlbAAPWrnWbe7vsKfvR1C4KbLwDkwhvPpeKk/1uFuCjxaA2bhfuXpXqx+xICjouhEOOhlVrOudqMcCfMrYgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368320; c=relaxed/simple;
-	bh=MEoJA228dxQU7hernWcMiEBX/8nIC+n0GQC21M4n6PE=;
+	s=arc-20240116; t=1760367190; c=relaxed/simple;
+	bh=T0YKKcwbdluc1qleqSsIRso61JsupwuAdqdNyP30E+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DyKErdjSOld2uCj+/CWAxvAz9DqRVTP8GgQFUQ+xJjUxkLsacH01ASq/8it6DXFrvhi/gQIoz/FaW2qHBfG2PfwINXwOyLU8iOsU/OoSEggIieD/i+rCEWbaC9PagI+Ns9KvGZ9moDKLAiyrDKe0cxq+huOkvPfbsgBATSX00cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0AEsRj1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49077C4CEFE;
-	Mon, 13 Oct 2025 15:12:00 +0000 (UTC)
+	 MIME-Version; b=DDeY/WDR5mgpbJYwzk3qtsduLiGZTOB65/x5HEvgDC1ThzUKk7tDmMwRza8K+5XpQlq3E7X5ERreQ9mGsNn6aNFdDHrsjZoPfIzz6LmpwHdEcJ1r91ak2SCGVHkBplvmDcp4TRM1v7cuzxuBnYzS3h0u3wZBNrbVfvsAq1Uyo0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhQbZKvO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278C9C4CEE7;
+	Mon, 13 Oct 2025 14:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368320;
-	bh=MEoJA228dxQU7hernWcMiEBX/8nIC+n0GQC21M4n6PE=;
+	s=korg; t=1760367189;
+	bh=T0YKKcwbdluc1qleqSsIRso61JsupwuAdqdNyP30E+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h0AEsRj18HNfr5VaNBzzV2s+Qij4gyLTlBzLmoqI7a3Z9j24DYnUi7VGXTubRO8tE
-	 Q7LA+c8Hgnv8+vGAOQqYKnTlVjHPsiCRu6tXUumxiErkNDd066fSNYyuhdVpcSDqLD
-	 qDR7/b5Gcp3D08txPjOb91+8YwBQfGJdoVU1cbuo=
+	b=uhQbZKvOhFiHX5a18uX2E6t6AH+nf4Hwv3VK070zae+ZI2nJhdDKTN5m3y5n8qeqm
+	 7hTwBSHtN//BXIUs9eCSIi6ar9apqmr2QkzDDIR7+XteumnLKWa6hhMyrhkFh2Lmn9
+	 9+UIy245i+RLvCzgAp/a08gA5uMHNSxoElPN/fLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Brigham Campbell <me@brighamcampbell.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/262] drm/amd/pm: Disable MCLK switching with non-DC at 120 Hz+ (v2)
+Subject: [PATCH 6.1 090/196] drm/panel: novatek-nt35560: Fix invalid return value
 Date: Mon, 13 Oct 2025 16:44:23 +0200
-Message-ID: <20251013144330.483163724@linuxfoundation.org>
+Message-ID: <20251013144317.827205446@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Brigham Campbell <me@brighamcampbell.com>
 
-[ Upstream commit ed3803533c7bf7df88bc3fc9f70bd317e1228ea8 ]
+[ Upstream commit 125459e19ec654924e472f3ff5aeea40358dbebf ]
 
-According to pp_pm_compute_clocks the non-DC display code
-has "issues with mclk switching with refresh rates over 120 hz".
-The workaround is to disable MCLK switching in this case.
+Fix bug in nt35560_set_brightness() which causes the function to
+erroneously report an error. mipi_dsi_dcs_write() returns either a
+negative value when an error occurred or a positive number of bytes
+written when no error occurred. The buggy code reports an error under
+either condition.
 
-Do the same for legacy DPM.
-
-Fixes: 6ddbd37f1074 ("drm/amd/pm: optimize the amdgpu_pm_compute_clocks() implementations")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 8152c2bfd780 ("drm/panel: Add driver for Sony ACX424AKP panel")
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250731032343.1258366-2-me@brighamcampbell.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/panel/panel-novatek-nt35560.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-index 42efe838fa85c..2d2d2d5e67634 100644
---- a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-@@ -66,6 +66,13 @@ u32 amdgpu_dpm_get_vblank_time(struct amdgpu_device *adev)
- 					(amdgpu_crtc->v_border * 2));
- 
- 				vblank_time_us = vblank_in_pixels * 1000 / amdgpu_crtc->hw_mode.clock;
-+
-+				/* we have issues with mclk switching with
-+				 * refresh rates over 120 hz on the non-DC code.
-+				 */
-+				if (drm_mode_vrefresh(&amdgpu_crtc->hw_mode) > 120)
-+					vblank_time_us = 0;
-+
- 				break;
- 			}
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35560.c b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
+index cc7f96d708263..52df7e776fae0 100644
+--- a/drivers/gpu/drm/panel/panel-novatek-nt35560.c
++++ b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
+@@ -162,7 +162,7 @@ static int nt35560_set_brightness(struct backlight_device *bl)
+ 		par = 0x00;
+ 		ret = mipi_dsi_dcs_write(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY,
+ 					 &par, 1);
+-		if (ret) {
++		if (ret < 0) {
+ 			dev_err(nt->dev, "failed to disable display backlight (%d)\n", ret);
+ 			return ret;
  		}
 -- 
 2.51.0
