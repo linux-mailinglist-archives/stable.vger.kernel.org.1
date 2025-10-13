@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2453DBD3F18
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:14:01 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61385BD4B3A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:03:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837AA3E29C7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 41F1334467E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E52F309EF5;
-	Mon, 13 Oct 2025 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEF73126CA;
+	Mon, 13 Oct 2025 15:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHcVNu0X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQU2jtbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3B1309EE2;
-	Mon, 13 Oct 2025 14:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0691430DECA;
+	Mon, 13 Oct 2025 15:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367129; cv=none; b=mPM1FXU7wVhjXRYcte9ZT8rDeBLyQwn3tALlrY299uoM4Rc2cnw/auuZtaV6xc8XSsWdXl/oPQ6u99G8IRpKoUNn4dFK8cUVSUvHVEVlCULmT7ilG9fFD6pHnbk4TOTrs7dP7GuR3VF3/aQKm0KJ9hZhRDdnekmwG9Sl+DtnIk4=
+	t=1760370016; cv=none; b=b5iBn7Rv4A4wGb9uDmMgQv9C3fMSdfDwSYLoqTUneC1tk/ZbIGHULSQC0hHloc9Q+DcomNpcHhIaTyI2VVnEVeroxdu6sje5TGR4qd+PXoH3OI2sch6AxFiwS5GJnmItNlWxvIJFTlVIPh222nGMPfRZFFUyPBx7ZJkz7PgNeWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367129; c=relaxed/simple;
-	bh=bJtb8IsplqWbrQm6luLOz0AI/P75waZOgjtaFpaWLvw=;
+	s=arc-20240116; t=1760370016; c=relaxed/simple;
+	bh=dkG6YDUzQC8DOvSnc/U0FJr7MQ64Wve0SD0E6Zq8S2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=epbX5Uem1cx06lvpA2OHiNgG2xkyjm811qxceHcLEa0KDP+d7voEUKkGvtN7s/Hc2qjtb/7tHwuf3Bs3neiKm8y026lvfezjlj02liea5inSq313hurlTU90WQ/BgzneUUxz/8mPcd7HdFgsR5QeKQYd0x147m4fTPM5s2M47LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHcVNu0X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA90C4CEE7;
-	Mon, 13 Oct 2025 14:52:09 +0000 (UTC)
+	 MIME-Version; b=qudIRZu/oSIzsP3a/721/UrpnxM1SemxO/JuXjrNR/mXV4kpqiO2/SA5NC2IN7UtVIdJ1AVNsOYXa1Y44NevRuFpKdqmzloDUs3zk67CR/wN+DObIXRcxAXkLLde+nDiQEGWibtCCsXClG6x7lcRbYv+3ODuzGyhCZ6yOneRuq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQU2jtbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEC0C4CEE7;
+	Mon, 13 Oct 2025 15:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367129;
-	bh=bJtb8IsplqWbrQm6luLOz0AI/P75waZOgjtaFpaWLvw=;
+	s=korg; t=1760370015;
+	bh=dkG6YDUzQC8DOvSnc/U0FJr7MQ64Wve0SD0E6Zq8S2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uHcVNu0XrAGrK5J0nMot+3RkDuG5nzEeK3kQEBPxWPelHf6/4i8Fuc2DECulmRTZz
-	 LNX2twwckem9JWfcKIh+xmTU2aQWXY+fYAfsLEdWequoi6kJxAoOwwDIeOOyc5Qsql
-	 ePFlHhbvDLXu7jGuPPBv2NDq/yDXOabOS9YqUoLY=
+	b=TQU2jtbpi9MAYgGluijprQxRstwCCPZpOMiOXTERQli0yN0cy3Af/WyPrJsPqRSPW
+	 u0WP7KUT/ORq/TWQuC/vv4haXW+IVvAqcsYBC/FVVYdR48UHqT3HX+dj3vne/wVj1R
+	 KZifhbjTUSQcY5zqcoc/yGCeZISGOvvJM1yB3Fx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/196] drm/amdgpu: Power up UVD 3 for FW validation (v2)
+Subject: [PATCH 6.17 415/563] wifi: rtw89: avoid circular locking dependency in ser_state_run()
 Date: Mon, 13 Oct 2025 16:44:36 +0200
-Message-ID: <20251013144318.425834566@linuxfoundation.org>
+Message-ID: <20251013144426.322434970@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +60,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit c661219cd7be75bb5599b525f16a455a058eb516 ]
+[ Upstream commit 570f94511766f9236d3462dfb8a3c719c2b54c23 ]
 
-Unlike later versions, UVD 3 has firmware validation.
-For this to work, the UVD should be powered up correctly.
+Lockdep gives a splat [1] when ser_hdl_work item is executed.  It is
+scheduled at mac80211 workqueue via ieee80211_queue_work() and takes a
+wiphy lock inside.  However, this workqueue can be flushed when e.g.
+closing the interface and wiphy lock is already taken in that case.
 
-When DPM is enabled and the display clock is off,
-the SMU may choose a power state which doesn't power
-the UVD, which can result in failure to initialize UVD.
+Choosing wiphy_work_queue() for SER is likely not suitable.  Back on to
+the global workqueue.
 
-v2:
-Add code comments to explain about the UVD power state
-and how UVD clock is turned on/off.
+[1]:
 
-Fixes: b38f3e80ecec ("drm amdgpu: SI UVD v3_1 (v2)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+ WARNING: possible circular locking dependency detected
+ 6.17.0-rc2 #17 Not tainted
+ ------------------------------------------------------
+ kworker/u32:1/61 is trying to acquire lock:
+ ffff88811bc00768 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: ser_state_run+0x5e/0x180 [rtw89_core]
+
+ but task is already holding lock:
+ ffffc9000048fd30 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}, at: process_one_work+0x7b5/0x1450
+
+ which lock already depends on the new lock.
+
+ the existing dependency chain (in reverse order) is:
+
+ -> #2 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}:
+        process_one_work+0x7c6/0x1450
+        worker_thread+0x49e/0xd00
+        kthread+0x313/0x640
+        ret_from_fork+0x221/0x300
+        ret_from_fork_asm+0x1a/0x30
+
+ -> #1 ((wq_completion)phy0){+.+.}-{0:0}:
+        touch_wq_lockdep_map+0x8e/0x180
+        __flush_workqueue+0x129/0x10d0
+        ieee80211_stop_device+0xa8/0x110
+        ieee80211_do_stop+0x14ce/0x2880
+        ieee80211_stop+0x13a/0x2c0
+        __dev_close_many+0x18f/0x510
+        __dev_change_flags+0x25f/0x670
+        netif_change_flags+0x7b/0x160
+        do_setlink.isra.0+0x1640/0x35d0
+        rtnl_newlink+0xd8c/0x1d30
+        rtnetlink_rcv_msg+0x700/0xb80
+        netlink_rcv_skb+0x11d/0x350
+        netlink_unicast+0x49a/0x7a0
+        netlink_sendmsg+0x759/0xc20
+        ____sys_sendmsg+0x812/0xa00
+        ___sys_sendmsg+0xf7/0x180
+        __sys_sendmsg+0x11f/0x1b0
+        do_syscall_64+0xbb/0x360
+        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+ -> #0 (&rdev->wiphy.mtx){+.+.}-{4:4}:
+        __lock_acquire+0x124c/0x1d20
+        lock_acquire+0x154/0x2e0
+        __mutex_lock+0x17b/0x12f0
+        ser_state_run+0x5e/0x180 [rtw89_core]
+        rtw89_ser_hdl_work+0x119/0x220 [rtw89_core]
+        process_one_work+0x82d/0x1450
+        worker_thread+0x49e/0xd00
+        kthread+0x313/0x640
+        ret_from_fork+0x221/0x300
+        ret_from_fork_asm+0x1a/0x30
+
+ other info that might help us debug this:
+
+ Chain exists of:
+   &rdev->wiphy.mtx --> (wq_completion)phy0 --> (work_completion)(&ser->ser_hdl_work)
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock((work_completion)(&ser->ser_hdl_work));
+                                lock((wq_completion)phy0);
+                                lock((work_completion)(&ser->ser_hdl_work));
+   lock(&rdev->wiphy.mtx);
+
+  *** DEADLOCK ***
+
+ 2 locks held by kworker/u32:1/61:
+  #0: ffff888103835148 ((wq_completion)phy0){+.+.}-{0:0}, at: process_one_work+0xefa/0x1450
+  #1: ffffc9000048fd30 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}, at: process_one_work+0x7b5/0x1450
+
+ stack backtrace:
+ CPU: 0 UID: 0 PID: 61 Comm: kworker/u32:1 Not tainted 6.17.0-rc2 #17 PREEMPT(voluntary)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-20250523-14.fc42 05/23/2025
+ Workqueue: phy0 rtw89_ser_hdl_work [rtw89_core]
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x5d/0x80
+  print_circular_bug.cold+0x178/0x1be
+  check_noncircular+0x14c/0x170
+  __lock_acquire+0x124c/0x1d20
+  lock_acquire+0x154/0x2e0
+  __mutex_lock+0x17b/0x12f0
+  ser_state_run+0x5e/0x180 [rtw89_core]
+  rtw89_ser_hdl_work+0x119/0x220 [rtw89_core]
+  process_one_work+0x82d/0x1450
+  worker_thread+0x49e/0xd00
+  kthread+0x313/0x640
+  ret_from_fork+0x221/0x300
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: ebfc9199df05 ("wifi: rtw89: add wiphy_lock() to work that isn't held wiphy_lock() yet")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250919210852.823912-5-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c | 29 +++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/ser.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-index 0fef925b66024..e458e0d5801b0 100644
---- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-@@ -625,7 +625,22 @@ static void uvd_v3_1_enable_mgcg(struct amdgpu_device *adev,
-  *
-  * @handle: handle used to pass amdgpu_device pointer
-  *
-- * Initialize the hardware, boot up the VCPU and do some testing
-+ * Initialize the hardware, boot up the VCPU and do some testing.
-+ *
-+ * On SI, the UVD is meant to be used in a specific power state,
-+ * or alternatively the driver can manually enable its clock.
-+ * In amdgpu we use the dedicated UVD power state when DPM is enabled.
-+ * Calling amdgpu_dpm_enable_uvd makes DPM select the UVD power state
-+ * for the SMU and afterwards enables the UVD clock.
-+ * This is automatically done by amdgpu_uvd_ring_begin_use when work
-+ * is submitted to the UVD ring. Here, we have to call it manually
-+ * in order to power up UVD before firmware validation.
-+ *
-+ * Note that we must not disable the UVD clock here, as that would
-+ * cause the ring test to fail. However, UVD is powered off
-+ * automatically after the ring test: amdgpu_uvd_ring_end_use calls
-+ * the UVD idle work handler which will disable the UVD clock when
-+ * all fences are signalled.
-  */
- static int uvd_v3_1_hw_init(void *handle)
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index fe7beff8c4246..f99e179f7ff9f 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -205,7 +205,6 @@ static void rtw89_ser_hdl_work(struct work_struct *work)
+ 
+ static int ser_send_msg(struct rtw89_ser *ser, u8 event)
  {
-@@ -635,6 +650,15 @@ static int uvd_v3_1_hw_init(void *handle)
- 	int r;
+-	struct rtw89_dev *rtwdev = container_of(ser, struct rtw89_dev, ser);
+ 	struct ser_msg *msg = NULL;
  
- 	uvd_v3_1_mc_resume(adev);
-+	uvd_v3_1_enable_mgcg(adev, true);
-+
-+	/* Make sure UVD is powered during FW validation.
-+	 * It's going to be automatically powered off after the ring test.
-+	 */
-+	if (adev->pm.dpm_enabled)
-+		amdgpu_dpm_enable_uvd(adev, true);
-+	else
-+		amdgpu_asic_set_uvd_clocks(adev, 53300, 40000);
+ 	if (test_bit(RTW89_SER_DRV_STOP_RUN, ser->flags))
+@@ -221,7 +220,7 @@ static int ser_send_msg(struct rtw89_ser *ser, u8 event)
+ 	list_add(&msg->list, &ser->msg_q);
+ 	spin_unlock_irq(&ser->msg_q_lock);
  
- 	r = uvd_v3_1_fw_validate(adev);
- 	if (r) {
-@@ -642,9 +666,6 @@ static int uvd_v3_1_hw_init(void *handle)
- 		return r;
- 	}
+-	ieee80211_queue_work(rtwdev->hw, &ser->ser_hdl_work);
++	schedule_work(&ser->ser_hdl_work);
+ 	return 0;
+ }
  
--	uvd_v3_1_enable_mgcg(adev, true);
--	amdgpu_asic_set_uvd_clocks(adev, 53300, 40000);
--
- 	uvd_v3_1_start(adev);
- 
- 	r = amdgpu_ring_test_helper(ring);
 -- 
 2.51.0
 
