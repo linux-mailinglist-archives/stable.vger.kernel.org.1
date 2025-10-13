@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-185446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21B0BD5265
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:42:26 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57E6BD53FB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2F59428482
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F14C35089F7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB45F3093BF;
-	Mon, 13 Oct 2025 15:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED25239562;
+	Mon, 13 Oct 2025 15:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJd5P3nT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yf/NVpze"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779E726B971;
-	Mon, 13 Oct 2025 15:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED1F30E0EF;
+	Mon, 13 Oct 2025 15:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370318; cv=none; b=Q0ZHvU7P3a9c/svei7KxOVq7NNOdwXOFLSN8Yy7sslTNSPonWEgAJUfKs0xceEFVHRXU7o7LaBF10fvYltJo1mFs0Pir9aNz9giwWdbo29jgzCzXIrt3SxuDN9b1pH707B/h5vYtSFeVkYgRdja57eeSJbVHeZJGAXnkJ5wJZS0=
+	t=1760370366; cv=none; b=Af1heSgnf0Cpi6JNsMWebDOG+1LnJaKVa+1aOozvPbhH+GTDOdJwvIkdpCi+4xgLVe9kMIEfIr8LZjiq3Hn7HhcNEx9ZdOVTP55YjftvkelVjLlZcqj4bd5doANI9tSzQQ3kbwt/dRcb0s2PtF4lYUMu5rhSDZQ+zp68GBj8KyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370318; c=relaxed/simple;
-	bh=QRm5qKqlSUKGfpKjTmG5+i7cs9rX7bp/QS+opgcHd7g=;
+	s=arc-20240116; t=1760370366; c=relaxed/simple;
+	bh=ODZYIhcFA86BiEpzbfpQtw8mRSwQ/ZRCImp3AAAjSUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUP5Vn87lNndsgwlvWMtOqHUgAtQq8VSQYhJrQIK1eRbm25CVeToEBFZQVFx7astFm0Qa26IfvTsUASuZEkEOb0q8gUCCbpVM++iTSSpB78tJtyq5VJt2utLwunU+64bxlMpiZT09lUJgS7PUDoXDPIK+xOA+XNpaK82VO6m66w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJd5P3nT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E722C4CEE7;
-	Mon, 13 Oct 2025 15:45:17 +0000 (UTC)
+	 MIME-Version; b=EKFipDa0Zrle/nLbOyUeNTgeq0LBsgl0huGtp+bdA+9F7C2TezfRiMsup6X/YtzeIFKOpPjqKwU9hOjLogPaXJbUMhZBbufUUcAZ2P+DdWGKZMS3q92OP6hs2Hg3SFbJlaqDz5imI2y5tgAfWNv5YsxLsiI6mkCk8DsUinH7u3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yf/NVpze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B11DC4CEE7;
+	Mon, 13 Oct 2025 15:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370317;
-	bh=QRm5qKqlSUKGfpKjTmG5+i7cs9rX7bp/QS+opgcHd7g=;
+	s=korg; t=1760370366;
+	bh=ODZYIhcFA86BiEpzbfpQtw8mRSwQ/ZRCImp3AAAjSUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJd5P3nTKtRV4m3mgl7tDnjH4WUxF5f51jlTij4Xc4+V/xXhMR9YHXdQGb+QFG9E6
-	 VNn/prYIs6PltljGyrA+df2lHOTzxm6eFVwcmUBA9TrhI317bldK9EYuIaRtoSAmXr
-	 9dkjWO+tEG6Je6olfnidOmdXp+ngGTSkGDyPWfX8=
+	b=yf/NVpzeztpWvap04IgiSAKP+QjkEJ63r5axi8Eh/Q77H/2xWd5MNW6N+xf4pYvEq
+	 UXCWODl38y2+RMAENRPHTbcXGcl2faKjN7fuECYfhegK89HN4BnoFCT9rOeuu3G5YX
+	 oMsRfJcYs1FylCjj9LXEVC01veDRW7Szyg/kj63Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.17 553/563] thunderbolt: Fix use-after-free in tb_dp_dprx_work
-Date: Mon, 13 Oct 2025 16:46:54 +0200
-Message-ID: <20251013144431.337028069@linuxfoundation.org>
+	Masami Ichikawa <masami256@gmail.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 6.17 554/563] tee: fix register_shm_helper()
+Date: Mon, 13 Oct 2025 16:46:55 +0200
+Message-ID: <20251013144431.372821921@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -65,76 +65,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Jens Wiklander <jens.wiklander@linaro.org>
 
-commit 67600ccfc4f38ebd331b9332ac94717bfbc87ea7 upstream.
+commit d5cf5b37064b1699d946e8b7ab4ac7d7d101814c upstream.
 
-The original code relies on cancel_delayed_work() in tb_dp_dprx_stop(),
-which does not ensure that the delayed work item tunnel->dprx_work has
-fully completed if it was already running. This leads to use-after-free
-scenarios where tb_tunnel is deallocated by tb_tunnel_put(), while
-tunnel->dprx_work remains active and attempts to dereference tb_tunnel
-in tb_dp_dprx_work().
+In register_shm_helper(), fix incorrect error handling for a call to
+iov_iter_extract_pages(). A case is missing for when
+iov_iter_extract_pages() only got some pages and return a number larger
+than 0, but not the requested amount.
 
-A typical race condition is illustrated below:
+This fixes a possible NULL pointer dereference following a bad input from
+ioctl(TEE_IOC_SHM_REGISTER) where parts of the buffer isn't mapped.
 
-CPU 0                            | CPU 1
-tb_dp_tunnel_active()            |
-  tb_deactivate_and_free_tunnel()| tb_dp_dprx_start()
-    tb_tunnel_deactivate()       |   queue_delayed_work()
-      tb_dp_activate()           |
-        tb_dp_dprx_stop()        | tb_dp_dprx_work() //delayed worker
-          cancel_delayed_work()  |
-    tb_tunnel_put(tunnel);       |
-                                 |   tunnel = container_of(...); //UAF
-                                 |   tunnel-> //UAF
-
-Replacing cancel_delayed_work() with cancel_delayed_work_sync() is
-not feasible as it would introduce a deadlock: both tb_dp_dprx_work()
-and the cleanup path acquire tb->lock, and cancel_delayed_work_sync()
-would wait indefinitely for the work item that cannot proceed.
-
-Instead, implement proper reference counting:
-- If cancel_delayed_work() returns true (work is pending), we release
-  the reference in the stop function.
-- If it returns false (work is executing or already completed), the
-  reference is released in delayed work function itself.
-
-This ensures the tb_tunnel remains valid during work item execution
-while preventing memory leaks.
-
-This bug was found by static analysis.
-
-Fixes: d6d458d42e1e ("thunderbolt: Handle DisplayPort tunnel activation asynchronously")
 Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reported-by: Masami Ichikawa <masami256@gmail.com>
+Closes: https://lore.kernel.org/op-tee/CACOXgS-Bo2W72Nj1_44c7bntyNYOavnTjJAvUbEiQfq=u9W+-g@mail.gmail.com/
+Tested-by: Masami Ichikawa <masami256@gmail.com>
+Fixes: 7bdee4157591 ("tee: Use iov_iter to better support shared buffer registration")
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/tunnel.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/tee/tee_shm.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/thunderbolt/tunnel.c
-+++ b/drivers/thunderbolt/tunnel.c
-@@ -1073,6 +1073,7 @@ static void tb_dp_dprx_work(struct work_
- 
- 	if (tunnel->callback)
- 		tunnel->callback(tunnel, tunnel->callback_data);
-+	tb_tunnel_put(tunnel);
- }
- 
- static int tb_dp_dprx_start(struct tb_tunnel *tunnel)
-@@ -1100,8 +1101,8 @@ static void tb_dp_dprx_stop(struct tb_tu
- 	if (tunnel->dprx_started) {
- 		tunnel->dprx_started = false;
- 		tunnel->dprx_canceled = true;
--		cancel_delayed_work(&tunnel->dprx_work);
--		tb_tunnel_put(tunnel);
-+		if (cancel_delayed_work(&tunnel->dprx_work))
-+			tb_tunnel_put(tunnel);
+--- a/drivers/tee/tee_shm.c
++++ b/drivers/tee/tee_shm.c
+@@ -321,6 +321,14 @@ register_shm_helper(struct tee_context *
+ 	if (unlikely(len <= 0)) {
+ 		ret = len ? ERR_PTR(len) : ERR_PTR(-ENOMEM);
+ 		goto err_free_shm_pages;
++	} else if (DIV_ROUND_UP(len + off, PAGE_SIZE) != num_pages) {
++		/*
++		 * If we only got a few pages, update to release the
++		 * correct amount below.
++		 */
++		shm->num_pages = len / PAGE_SIZE;
++		ret = ERR_PTR(-ENOMEM);
++		goto err_put_shm_pages;
  	}
- }
  
+ 	/*
 
 
 
