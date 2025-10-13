@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CB0BD4A71
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2E9BD3FFE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1457C4F4AFC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BBA1886315
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5D03115B1;
-	Mon, 13 Oct 2025 15:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D182727F8;
+	Mon, 13 Oct 2025 14:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKSKSQGm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hT1BNJkQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378552FE58D;
-	Mon, 13 Oct 2025 15:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08E01CBEAA;
+	Mon, 13 Oct 2025 14:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368136; cv=none; b=M+HWb/zf6v3LZlBuKLZdJsBTSP6djAH11EH8uLPWExnOYHCR8cLJ9S3gWZXnpZFiXpsESyvfPsXRRLogAgE+II56jtTV194lPnTvSlrNP0pkV1LYzPz5rawaf6qTYo3ggeKgeTGfKCEBIhtQ575FWbY2K4tQerKVEOrCx+a4RqI=
+	t=1760367497; cv=none; b=jz1wpWZPsR0qNqexUaN1pmqjywFO24m/2d3yUkvXuU+5bc4JOx/NJWnGuOUDiKwcuylEf+qvbA2qD/pIfpNkwHbGZ6SVY2tINr/cRw5Ib3KQVxrtuW3BVrntu1PrSGShKAioS1S3IDV6txRWeiFzlixZDrspHqMa2Yr6uvwoPqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368136; c=relaxed/simple;
-	bh=EsFeKI4TYwHJ39eL+IVgW4cwCflY4Vu6C3ErGuD6VVE=;
+	s=arc-20240116; t=1760367497; c=relaxed/simple;
+	bh=ulR/uo+jd0OzY+86jgezxg9ShASWWGeRVvPvJcIcVmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1MkQpbSH8tc8gZBGJo0OOlKdkgg6nBfO2ecA2MoQZ9G1OuTBo836hxOfkdKFzD4jYFKSJcdwZyr3OT9Zee2qPObsiZr1dfErVQsx66lwBya3DG17frw73etallGQG1jMq/GZh9RLQCSZdbZeh3UPMDD3BDTlvo6RAUknpx/wJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKSKSQGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17EDC4CEE7;
-	Mon, 13 Oct 2025 15:08:55 +0000 (UTC)
+	 MIME-Version; b=ulvnfuz5bjCpqMxXp9J9xhabOE6Vf9kO0VEQxPJ8ZwgRFP2bxrElB1KjPWYwhwGrSpffTP45WKTKhY3lEkDgbjZg46EvENyfL4L0eJ/IhP6p0f9yjWHu23KZtjYB18GdmEXtxbk5k3K5eR/KJJc7K3E/NKPVh3q87YFaTZBWPeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hT1BNJkQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D615C4CEE7;
+	Mon, 13 Oct 2025 14:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368136;
-	bh=EsFeKI4TYwHJ39eL+IVgW4cwCflY4Vu6C3ErGuD6VVE=;
+	s=korg; t=1760367496;
+	bh=ulR/uo+jd0OzY+86jgezxg9ShASWWGeRVvPvJcIcVmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKSKSQGmCJ+An05ARL4z2Cc5RhHH9n+COU0wrPXMhhTTSdnIJ2xiS57U/LN8Lj57a
-	 0P+9+A1XC007BTCt9jZRYtwxZ38p4CDOM7+bQGgYDEsDcnmdJOfs0YgFDPTN911d61
-	 Q5149drp9XO3O1VldEq5/k55ZUFGyTazho+dN+wQ=
+	b=hT1BNJkQka6uW8FpZiG30qfcdvVn7BXMjE8mDE2o2tI4kv6R/IKco+saA9NqSGTIr
+	 NQjoIN/1T4kVlkPZ1ofxZdxQMN+0OuKk70L3c6lRepNTQULhcU3R37LBHUZ3cs7fu2
+	 yom7C71DpQ/OOe6iNcqwiafFWMzWx451RqhwuVAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Lu <roger.lu@mediatek.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/262] soc: mediatek: mtk-svs: fix device leaks on mt8183 probe failure
+Subject: [PATCH 6.6 007/196] perf: arm_spe: Prevent overflow in PERF_IDX2OFF()
 Date: Mon, 13 Oct 2025 16:43:18 +0200
-Message-ID: <20251013144328.146780012@linuxfoundation.org>
+Message-ID: <20251013144315.460108577@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 6ab4f79ea92324f7f2eb22692054a34bbba7cf35 ]
+[ Upstream commit a29fea30dd93da16652930162b177941abd8c75e ]
 
-Make sure to drop the references taken by of_find_device_by_node() when
-looking up the thermal sensor and opp devices during probe on probe
-failure (e.g. probe deferral) and on driver unbind.
+Cast nr_pages to unsigned long to avoid overflow when handling large
+AUX buffer sizes (>= 2 GiB).
 
-Fixes: 681a02e95000 ("soc: mediatek: SVS: introduce MTK SVS engine")
-Cc: Roger Lu <roger.lu@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250909095651.5530-2-johan@kernel.org
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Fixes: d5d9696b0380 ("drivers/perf: Add support for ARMv8.2 Statistical Profiling Extension")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-svs.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/perf/arm_spe_pmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/mediatek/mtk-svs.c b/drivers/soc/mediatek/mtk-svs.c
-index 9a91298c12539..cf9f5e6af6472 100644
---- a/drivers/soc/mediatek/mtk-svs.c
-+++ b/drivers/soc/mediatek/mtk-svs.c
-@@ -2167,6 +2167,13 @@ static struct device *svs_add_device_link(struct svs_platform *svsp,
- 	return dev;
- }
+diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
+index 2bec2e3af0bd6..affa78376b6a8 100644
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -96,7 +96,8 @@ struct arm_spe_pmu {
+ #define to_spe_pmu(p) (container_of(p, struct arm_spe_pmu, pmu))
  
-+static void svs_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int svs_mt8192_platform_probe(struct svs_platform *svsp)
- {
- 	struct device *dev;
-@@ -2218,11 +2225,13 @@ static int svs_mt8183_platform_probe(struct svs_platform *svsp)
- {
- 	struct device *dev;
- 	u32 idx;
-+	int ret;
+ /* Convert a free-running index from perf into an SPE buffer offset */
+-#define PERF_IDX2OFF(idx, buf)	((idx) % ((buf)->nr_pages << PAGE_SHIFT))
++#define PERF_IDX2OFF(idx, buf) \
++	((idx) % ((unsigned long)(buf)->nr_pages << PAGE_SHIFT))
  
- 	dev = svs_add_device_link(svsp, "thermal-sensor");
- 	if (IS_ERR(dev))
- 		return dev_err_probe(svsp->dev, PTR_ERR(dev),
- 				     "failed to get thermal device\n");
-+	put_device(dev);
- 
- 	for (idx = 0; idx < svsp->bank_max; idx++) {
- 		struct svs_bank *svsb = &svsp->banks[idx];
-@@ -2232,6 +2241,7 @@ static int svs_mt8183_platform_probe(struct svs_platform *svsp)
- 		case SVSB_SWID_CPU_LITTLE:
- 		case SVSB_SWID_CPU_BIG:
- 			svsb->opp_dev = get_cpu_device(bdata->cpu_id);
-+			get_device(svsb->opp_dev);
- 			break;
- 		case SVSB_SWID_CCI:
- 			svsb->opp_dev = svs_add_device_link(svsp, "cci");
-@@ -2248,6 +2258,11 @@ static int svs_mt8183_platform_probe(struct svs_platform *svsp)
- 			return dev_err_probe(svsp->dev, PTR_ERR(svsb->opp_dev),
- 					     "failed to get OPP device for bank %d\n",
- 					     idx);
-+
-+		ret = devm_add_action_or_reset(svsp->dev, svs_put_device,
-+					       svsb->opp_dev);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	return 0;
+ /* Keep track of our dynamic hotplug state */
+ static enum cpuhp_state arm_spe_pmu_online;
 -- 
 2.51.0
 
