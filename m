@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F7DBD43E9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7505ABD3F7B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:15:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C30454FF199
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535193E2935
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEA630CD82;
-	Mon, 13 Oct 2025 15:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA52C309F00;
+	Mon, 13 Oct 2025 14:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MX9WPWOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVkx5Rg7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2482FF642;
-	Mon, 13 Oct 2025 15:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783B624A06A;
+	Mon, 13 Oct 2025 14:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368312; cv=none; b=GIk0P+8LYqlfwIYgeDwXvY7v2X5Cz9Gx/xwJ6gJsKQiL0p/4ZYv86o3nTJNYAHERNTc0dE8scHQ60Rf//yNenagCOTaLjoncIZzYUelKcwtJQbIcyw5DOhIzI06LiiXhzk9sJwtwYdEG4jM5MKCZEJtqj51iItyxcpw3T720oIw=
+	t=1760367135; cv=none; b=IhaHlrqbsU6k8jIbS63AuexHKkpgv9QPfhZcYdW2DRhJMQF3GGSU1TI0LciWAKbnSdD8Q+HF+N7qKGc63GsEXxV61zuvug6C2D33SenzvRIwg12CatoRIKv+M6ftqvkhMJI3G2r8e8dy3a/qMYD/1inQDjANusbVI1KPPtg5WfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368312; c=relaxed/simple;
-	bh=x7IYyjszqtxUwFdD8OtIoTtCgYy4I2IZcNrTeaOWNS4=;
+	s=arc-20240116; t=1760367135; c=relaxed/simple;
+	bh=Mw9eMDO5h2Vp73by5rD1idxLm45V3FlfKqeQhsrk1go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=guMC6suXtlpBPDmJnu/Ai2WsYXJSYvCpSXmHhQXIQzhBnZHy76gdQ49PCuZ3++P/CN8JsSO7VYp3nBJPDmALcA374m1cEcf2Yk1IIu9DrxOJady1fN/iRAArMrDqB2oL/isGHGJ+67HOElDMPD93ezDrlPqGMnMrL3Z0JGWHqr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MX9WPWOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DFBC4CEE7;
-	Mon, 13 Oct 2025 15:11:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EdopEVv5Zz7Al35iOCn1TKM/i5Y7c7tFfpWyJgdY6Hl+v/M30q8cBFpG3IXXE0la1R9FvKL76i3PI6cs77QJD1Pn2XiDVu3nEhhvd6xe80PW+XW47GlNEy1e6pA1K9w1+G+qHk1XWMR5+FnQid265O9rlYnVnTsXgETn5+jYVmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVkx5Rg7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16E7C4CEE7;
+	Mon, 13 Oct 2025 14:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368312;
-	bh=x7IYyjszqtxUwFdD8OtIoTtCgYy4I2IZcNrTeaOWNS4=;
+	s=korg; t=1760367135;
+	bh=Mw9eMDO5h2Vp73by5rD1idxLm45V3FlfKqeQhsrk1go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MX9WPWOtrGk7kZr0W8ivzkxE1GUN7nUJqrK/SViMPJKdbi9PWQnqCs2HVf6JGYfLz
-	 va4swb1twnXR/dSs+Vg5oPvtAqu0HqGwAbD65b89193YJCGOUCwsgOkE3+W0htsTaG
-	 rJ4B01R3IYyl+tGG7DnYzOdNaSs8bLoeul5xzM/Y=
+	b=FVkx5Rg7zaJbnlvaNaYAxFLOAIkX/Nyq+RVVUQy1ebd+RTX+WVR2HsMHKBSo3+U3N
+	 Fsj/Kpgye5udgsJrTbRm+G5bRW+kEPBC7pkMWc6qg74b1/ifs6dkwMo1LblP4OlVLj
+	 owaC4E4tURptrAOm+OjBofSFRhP7Ce/JMHKMKWZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	"Leilk.Liu" <leilk.liu@mediatek.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/262] drm/amd/pm: Fix si_upload_smc_data (v3)
+Subject: [PATCH 6.1 087/196] i2c: mediatek: fix potential incorrect use of I2C_MASTER_WRRD
 Date: Mon, 13 Oct 2025 16:44:20 +0200
-Message-ID: <20251013144330.374603909@linuxfoundation.org>
+Message-ID: <20251013144317.719721984@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +64,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Leilk.Liu <leilk.liu@mediatek.com>
 
-[ Upstream commit a43b2cec04b02743338aa78f837ee0bdf066a6d5 ]
+[ Upstream commit b492183652808e0f389272bf63dc836241b287ff ]
 
-The si_upload_smc_data function uses si_write_smc_soft_register
-to set some register values in the SMC, and expects the result
-to be PPSMC_Result_OK which is 1.
+The old IC does not support the I2C_MASTER_WRRD (write-then-read)
+function, but the current code’s handling of i2c->auto_restart may
+potentially lead to entering the I2C_MASTER_WRRD software flow,
+resulting in unexpected bugs.
 
-The PPSMC_Result_OK / PPSMC_Result_Failed values are used for
-checking the result of a command sent to the SMC.
-However, the si_write_smc_soft_register actually doesn't send
-any commands to the SMC and returns zero on success,
-so this check was incorrect.
+Instead of repurposing the auto_restart flag, add a separate flag
+to signal I2C_MASTER_WRRD operations.
 
-Fix that by not checking the return value, just like other
-calls to si_write_smc_soft_register.
+Also fix handling of msgs. If the operation (i2c->op) is
+I2C_MASTER_WRRD, then the msgs pointer is incremented by 2.
+For all other operations, msgs is simply incremented by 1.
 
-v3:
-Additionally, when no display is plugged in, there is no need
-to restrict MCLK switching, so program the registers to zero.
-
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: b2ed11e224a2 ("I2C: mediatek: Add driver for MediaTek MT8173 I2C controller")
+Signed-off-by: Leilk.Liu <leilk.liu@mediatek.com>
+Suggested-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 43 ++++++++++++----------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+ drivers/i2c/busses/i2c-mt65xx.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 6a97ddcd695b5..341f2d796aeeb 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -5789,9 +5789,9 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
+diff --git a/drivers/i2c/busses/i2c-mt65xx.c b/drivers/i2c/busses/i2c-mt65xx.c
+index fc7bfd98156ba..38d3dff7a2614 100644
+--- a/drivers/i2c/busses/i2c-mt65xx.c
++++ b/drivers/i2c/busses/i2c-mt65xx.c
+@@ -1218,6 +1218,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
  {
- 	struct amdgpu_crtc *amdgpu_crtc = NULL;
- 	int i;
--
--	if (adev->pm.dpm.new_active_crtc_count == 0)
--		return 0;
-+	u32 crtc_index = 0;
-+	u32 mclk_change_block_cp_min = 0;
-+	u32 mclk_change_block_cp_max = 0;
+ 	int ret;
+ 	int left_num = num;
++	bool write_then_read_en = false;
+ 	struct mtk_i2c *i2c = i2c_get_adapdata(adap);
  
- 	for (i = 0; i < adev->mode_info.num_crtc; i++) {
- 		if (adev->pm.dpm.new_active_crtcs & (1 << i)) {
-@@ -5800,26 +5800,31 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
+ 	ret = clk_bulk_enable(I2C_MT65XX_CLK_MAX, i2c->clocks);
+@@ -1231,6 +1232,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		if (!(msgs[0].flags & I2C_M_RD) && (msgs[1].flags & I2C_M_RD) &&
+ 		    msgs[0].addr == msgs[1].addr) {
+ 			i2c->auto_restart = 0;
++			write_then_read_en = true;
  		}
  	}
  
--	if (amdgpu_crtc == NULL)
--		return 0;
-+	/* When a display is plugged in, program these so that the SMC
-+	 * performs MCLK switching when it doesn't cause flickering.
-+	 * When no display is plugged in, there is no need to restrict
-+	 * MCLK switching, so program them to zero.
-+	 */
-+	if (adev->pm.dpm.new_active_crtc_count && amdgpu_crtc) {
-+		crtc_index = amdgpu_crtc->crtc_id;
+@@ -1255,12 +1257,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		else
+ 			i2c->op = I2C_MASTER_WR;
  
--	if (amdgpu_crtc->line_time <= 0)
--		return 0;
-+		if (amdgpu_crtc->line_time) {
-+			mclk_change_block_cp_min = amdgpu_crtc->wm_high / amdgpu_crtc->line_time;
-+			mclk_change_block_cp_max = amdgpu_crtc->wm_low / amdgpu_crtc->line_time;
-+		}
-+	}
+-		if (!i2c->auto_restart) {
+-			if (num > 1) {
+-				/* combined two messages into one transaction */
+-				i2c->op = I2C_MASTER_WRRD;
+-				left_num--;
+-			}
++		if (write_then_read_en) {
++			/* combined two messages into one transaction */
++			i2c->op = I2C_MASTER_WRRD;
++			left_num--;
+ 		}
  
--	if (si_write_smc_soft_register(adev,
--				       SI_SMC_SOFT_REGISTER_crtc_index,
--				       amdgpu_crtc->crtc_id) != PPSMC_Result_OK)
--		return 0;
-+	si_write_smc_soft_register(adev,
-+		SI_SMC_SOFT_REGISTER_crtc_index,
-+		crtc_index);
+ 		/* always use DMA mode. */
+@@ -1268,7 +1268,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		if (ret < 0)
+ 			goto err_exit;
  
--	if (si_write_smc_soft_register(adev,
--				       SI_SMC_SOFT_REGISTER_mclk_change_block_cp_min,
--				       amdgpu_crtc->wm_high / amdgpu_crtc->line_time) != PPSMC_Result_OK)
--		return 0;
-+	si_write_smc_soft_register(adev,
-+		SI_SMC_SOFT_REGISTER_mclk_change_block_cp_min,
-+		mclk_change_block_cp_min);
- 
--	if (si_write_smc_soft_register(adev,
--				       SI_SMC_SOFT_REGISTER_mclk_change_block_cp_max,
--				       amdgpu_crtc->wm_low / amdgpu_crtc->line_time) != PPSMC_Result_OK)
--		return 0;
-+	si_write_smc_soft_register(adev,
-+		SI_SMC_SOFT_REGISTER_mclk_change_block_cp_max,
-+		mclk_change_block_cp_max);
- 
- 	return 0;
- }
+-		msgs++;
++		if (i2c->op == I2C_MASTER_WRRD)
++			msgs += 2;
++		else
++			msgs++;
+ 	}
+ 	/* the return value is number of executed messages */
+ 	ret = num;
 -- 
 2.51.0
 
