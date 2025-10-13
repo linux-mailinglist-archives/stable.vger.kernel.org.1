@@ -1,55 +1,66 @@
-Return-Path: <stable+bounces-184525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85064BD4369
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:00 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C07BD4262
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48D024068DA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E446634F31A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBED30AACD;
-	Mon, 13 Oct 2025 15:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2887826E708;
+	Mon, 13 Oct 2025 15:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9ClVQQt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kPcVxrl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB690309DC5;
-	Mon, 13 Oct 2025 15:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73DA2F5A2C;
+	Mon, 13 Oct 2025 15:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367684; cv=none; b=fZ2Ccy/XQQjf3idzgxjreraCEhBdsxvrKKFBIbjAZzCazZHoLTX/SXoLj6hskdJqaAYNjg4t3I5uBfvFMH2m/mvj9kgFRp6+Co+wIk6a1yNeDXq/Say5Fx7U5lhwRrztoMyxDYGWo8b7A8zklRelkpybY0I7zOrcxwsIyaizewY=
+	t=1760368484; cv=none; b=UCLF1PWmF+N16xRmHDjyqNAP2e/T8jFwrIjuUmkD1RgpJ5aOuu0ooeMQKu9l1SCrgL0O3Q+MFfcHUv6OdtrRNxBdaDQYI02FEMqHIIrhEWHI3/vGUNYl9ih567Ksn0qzLqeCJTEqDwFKzHjtXehYGTqKyjOgRHyPaCPPztjOreE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367684; c=relaxed/simple;
-	bh=PnW2lzPItGkX+LIyMoN327l7nYnnP6gaLDjxpcAh9fs=;
+	s=arc-20240116; t=1760368484; c=relaxed/simple;
+	bh=U2a2WChg4D+bx6HAjKIoyjiJIQdUuTOs3zSMR1lTXcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lf3IG78eiUeAZ5PPVeuq70cZhxwg+7epoLxmbJrfxyTJaT37Vk7zMXSwTa9ubc4Z5DGO29ZypVhlee3BahUCWoLR1puif5PlWh8aDT8yp3lOh/bk9MoIGogbXdgfT1VVAYE7Vh0EIC7NTsv0LRtfI0BNxTZpw6AYcCL9xkD4Ao0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9ClVQQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401B0C4CEE7;
-	Mon, 13 Oct 2025 15:01:24 +0000 (UTC)
+	 MIME-Version; b=U6NwuoJDn4Dw0CRc8M3C6VNHMCGrm0TuGMLWMJS7paJQpFuEqUPFLPyK0Lg0hqFE3CyvfYHwB/xlZRa4iQz5XR1BlqehxxINpjfQZSBxbvnm1dFlrbcNJ3vbbANIIh8I7+NWp7f8I1d5hVzI9OLF8y7yMuRCsRE+YL0+mo/k030=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kPcVxrl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34289C4CEE7;
+	Mon, 13 Oct 2025 15:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367684;
-	bh=PnW2lzPItGkX+LIyMoN327l7nYnnP6gaLDjxpcAh9fs=;
+	s=korg; t=1760368484;
+	bh=U2a2WChg4D+bx6HAjKIoyjiJIQdUuTOs3zSMR1lTXcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9ClVQQtxTjy3bQStInz2NHx+jrRq3quUIaRGxo6rs1O8tmUsmzJvfdGoU8JXmSEq
-	 TbsnlNZHYe9K9YZlusozys+hd0GgkpXzODxghacFyE/G1R6/I8KZb6KeroNmCikqaM
-	 1RvX8tcchVmEeGW7GAWuWnKxGKxDK157FfeRrKuA=
+	b=1kPcVxrlDu+1MDJNB9JqAMwIp8uumtW925SMVAX3dONTdfxwn8KWNMrrCSETuU6A1
+	 vMlw9vfuXMkDsrowJmY7dYEK3Ixk0YLHFSph3gcTKw6z2z1/bL2GrFitK//7otMazu
+	 P5Nct4/JPfdYM7w77B0hF4SaltjMsscoCgC29mFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xichao Zhao <zhao.xichao@vivo.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/196] usb: phy: twl6030: Fix incorrect type for ret
+Subject: [PATCH 6.12 145/262] drivers/base/node: handle error properly in register_one_node()
 Date: Mon, 13 Oct 2025 16:44:47 +0200
-Message-ID: <20251013144318.790357360@linuxfoundation.org>
+Message-ID: <20251013144331.344388775@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +72,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xichao Zhao <zhao.xichao@vivo.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit b570b346ddd727c4b41743a6a2f49e7217c5317f ]
+[ Upstream commit 786eb990cfb78aab94eb74fb32a030e14723a620 ]
 
-In the twl6030_usb_probe(), the variable ret is declared as
-a u32 type. However, since ret may receive -ENODEV when accepting
-the return value of omap_usb2_set_comparator().Therefore, its type
-should be changed to int.
+If register_node() returns an error, it is not handled correctly.
+The function will proceed further and try to register CPUs under the
+node, which is not correct.
 
-Fixes: 0e98de67bacba ("usb: otg: make twl6030_usb as a comparator driver to omap_usb2")
-Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
-Link: https://lore.kernel.org/r/20250822092224.30645-1-zhao.xichao@vivo.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, in this patch, if register_node() returns an error, we return
+immediately from the function.
+
+Link: https://lkml.kernel.org/r/20250822084845.19219-1-donettom@linux.ibm.com
+Fixes: 76b67ed9dce6 ("[PATCH] node hotplug: register cpu: remove node struct")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
+Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-twl6030-usb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/base/node.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/usb/phy/phy-twl6030-usb.c b/drivers/usb/phy/phy-twl6030-usb.c
-index c3ce6b1054f1c..292c32ccae050 100644
---- a/drivers/usb/phy/phy-twl6030-usb.c
-+++ b/drivers/usb/phy/phy-twl6030-usb.c
-@@ -328,9 +328,8 @@ static int twl6030_set_vbus(struct phy_companion *comparator, bool enabled)
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index eb72580288e62..6f09aa8e32237 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -879,6 +879,11 @@ int __register_one_node(int nid)
+ 	node_devices[nid] = node;
  
- static int twl6030_usb_probe(struct platform_device *pdev)
- {
--	u32 ret;
- 	struct twl6030_usb	*twl;
--	int			status, err;
-+	int			status, err, ret;
- 	struct device_node	*np = pdev->dev.of_node;
- 	struct device		*dev = &pdev->dev;
+ 	error = register_node(node_devices[nid], nid);
++	if (error) {
++		node_devices[nid] = NULL;
++		kfree(node);
++		return error;
++	}
  
+ 	/* link cpu under this node */
+ 	for_each_present_cpu(cpu) {
 -- 
 2.51.0
 
