@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-185000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7459FBD47DB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8056ABD45B8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF93D4274DD
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95484188559E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E64B17F4F6;
-	Mon, 13 Oct 2025 15:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF013112C3;
+	Mon, 13 Oct 2025 15:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xE/VfEJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRsb8x/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0723112BF;
-	Mon, 13 Oct 2025 15:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA253112BE;
+	Mon, 13 Oct 2025 15:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369047; cv=none; b=ESZaUi47ZwjkNV8HOboNC26ZqSQAu+pQavdw2rQf/JwvOkljoAmXC+eccFLd7Rq/je3MR6ka2JqoyM5ljRueynIjPkJbB8fIAlcLaESoXgtZJCyidDjXuQnWtObVK4imXx2S4U0kBUtfcwPSW67SAVjEn6iDmr9RqboWiZet3FY=
+	t=1760369053; cv=none; b=TfmeBkm2d3qwwqdBqkT4cmICXoLCw9pP6l7v28a0+99JdcZZ2UHAq9lGYSlxvHI0dzlw8PXhmUGVWf3XGnTUKMM4QlcnLC1DNRx8xjdSLoysaJgvZWFGymlLomUzXZO9rmIj6X8uV7nZhJgh+iZFTBwXGlfNUzfv/VHj762ho8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369047; c=relaxed/simple;
-	bh=hUrk/ZsVHwGAs+V+3IzB4n4QBscUT/eIViNjbpr0mvQ=;
+	s=arc-20240116; t=1760369053; c=relaxed/simple;
+	bh=0CFlXRLs3QNtGhZgCFE67j0CPt4rO72/8MHhT2nCR5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWGKEy4KlMWOGAp+nokHl6QmzR/WNCZFaqq1WG2AJDrNZ+x8wdiGm4pKCzdsUk491QSmxjv+B21kPxy4EXCMkHcay/PrJnFmcZKmcL4rG31AUjjTqYAOEauqvfoMb6FtoU4NBQMthknxzayiJr5GYZx2OxKP0GkkC8BYrHCNCF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xE/VfEJd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBA6C4CEE7;
-	Mon, 13 Oct 2025 15:24:06 +0000 (UTC)
+	 MIME-Version; b=MFePL314strOHRqLPILR9+U+j4cMzQPZXSN0iVyWP9s/BzlIdK62UJF2HPOpUUkXZJ8DIWt9B7NFIxeYEzfUSnLDK3lBE150teoi1tRUvMgqAStTo0QJiPgqqNz2uoSXPtMXReStVw67YgANfY9Rn7U4lDc0TUCkr5O8RvdVbsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRsb8x/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F19C4CEE7;
+	Mon, 13 Oct 2025 15:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369046;
-	bh=hUrk/ZsVHwGAs+V+3IzB4n4QBscUT/eIViNjbpr0mvQ=;
+	s=korg; t=1760369052;
+	bh=0CFlXRLs3QNtGhZgCFE67j0CPt4rO72/8MHhT2nCR5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xE/VfEJdgfVMHoP5i6izxdZZU8X6tZ8mL4bvV03Lb9c2nQ9qPNrs5or/CI3rKcbXH
-	 vCQr4Jh2REK8gub4T23ThgurHhsU/TT3CSEtXpCf6bLGIqkjx8TQoW8jOW+TKoOwAa
-	 /KjPjZUQO487N5hB6c6pr+SBn/pe6EFpNcPPQbUU=
+	b=ZRsb8x/nLz8EX2XUlFw1q+B6CMXEnL1SGq0ZxglzOWTmh2JjDrwClko+O1O1mxfBr
+	 xRkilHyf86MdoJRv4H/xvup5tlLKCXp7E+1FxtQ0BcGKl6L+wRB/3pHAR41li7skpU
+	 D8I5RuiI1DkVZcLf4jUpraJPk3L4eMtQksBq76GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Zenghui Yu <yuzenghui@huawei.com>,
+	Guoqing Jiang <guoqing.jiang@canonical.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Macpaul Lin <macpaul.lin@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 109/563] irqchip/gic-v5: Fix error handling in gicv5_its_irq_domain_alloc()
-Date: Mon, 13 Oct 2025 16:39:30 +0200
-Message-ID: <20251013144415.242804139@linuxfoundation.org>
+Subject: [PATCH 6.17 111/563] arm64: dts: mediatek: mt8195: Remove suspend-breaking reset from pcie0
+Date: Mon, 13 Oct 2025 16:39:32 +0200
+Message-ID: <20251013144415.316350330@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,76 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Guoqing Jiang <guoqing.jiang@canonical.com>
 
-[ Upstream commit a186120c780e21e4cfd186a925e34f718e30de88 ]
+[ Upstream commit 3374b5fb26b300809ecd6aed9f414987dd17c313 ]
 
-Code in gicv5_its_irq_domain_alloc() has two issues:
+When test suspend resume with 6.8 based kernel, system can't resume
+and I got below error which can be also reproduced with 6.16 rc6+
+kernel.
 
- - it checks the wrong return value/variable when calling gicv5_alloc_lpi()
+mtk-pcie-gen3 112f0000.pcie: PCIe link down, current LTSSM state: detect.quiet (0x0)
+mtk-pcie-gen3 112f0000.pcie: PM: dpm_run_callback(): genpd_resume_noirq returns -110
+mtk-pcie-gen3 112f0000.pcie: PM: failed to resume noirq: error -110
 
- - The cleanup code does not take previous loop iterations into account
+After investigation, looks pcie0 has the same problem as pcie1 as
+decribed in commit 3d7fdd8e38aa ("arm64: dts: mediatek: mt8195:
+Remove suspend-breaking reset from pcie1").
 
-Fix both issues at once by adding the right gicv5_alloc_lpi() variable
-check and by reworking the function cleanup code to take into account
-current and previous iterations.
-
-[ lpieralisi: Reworded commit message ]
-
-Fixes: 57d72196dfc8 ("irqchip/gic-v5: Add GICv5 ITS support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/all/20250908082745.113718-4-lpieralisi@kernel.org
+Fixes: ecc0af6a3fe6 ("arm64: dts: mt8195: Add pcie and pcie phy nodes")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@canonical.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Link: https://lore.kernel.org/r/20250721095959.57703-1-guoqing.jiang@canonical.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v5-its.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v5-its.c b/drivers/irqchip/irq-gic-v5-its.c
-index 4701ef62b8b27..2fb58d76f5214 100644
---- a/drivers/irqchip/irq-gic-v5-its.c
-+++ b/drivers/irqchip/irq-gic-v5-its.c
-@@ -949,15 +949,18 @@ static int gicv5_its_irq_domain_alloc(struct irq_domain *domain, unsigned int vi
- 	device_id = its_dev->device_id;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 8877953ce292b..ab0b2f606eb43 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -1588,9 +1588,6 @@ pcie0: pcie@112f0000 {
  
- 	for (i = 0; i < nr_irqs; i++) {
--		lpi = gicv5_alloc_lpi();
-+		ret = gicv5_alloc_lpi();
- 		if (ret < 0) {
- 			pr_debug("Failed to find free LPI!\n");
--			goto out_eventid;
-+			goto out_free_irqs;
- 		}
-+		lpi = ret;
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_PCIE_MAC_P0>;
  
- 		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, &lpi);
--		if (ret)
--			goto out_free_lpi;
-+		if (ret) {
-+			gicv5_free_lpi(lpi);
-+			goto out_free_irqs;
-+		}
- 
- 		/*
- 		 * Store eventid and deviceid into the hwirq for later use.
-@@ -977,8 +980,13 @@ static int gicv5_its_irq_domain_alloc(struct irq_domain *domain, unsigned int vi
- 
- 	return 0;
- 
--out_free_lpi:
--	gicv5_free_lpi(lpi);
-+out_free_irqs:
-+	while (--i >= 0) {
-+		irqd = irq_domain_get_irq_data(domain, virq + i);
-+		gicv5_free_lpi(irqd->parent_data->hwirq);
-+		irq_domain_reset_irq_data(irqd);
-+		irq_domain_free_irqs_parent(domain, virq + i, 1);
-+	}
- out_eventid:
- 	gicv5_its_free_eventid(its_dev, event_id_base, nr_irqs);
- 	return ret;
+-			resets = <&infracfg_ao MT8195_INFRA_RST2_PCIE_P0_SWRST>;
+-			reset-names = "mac";
+-
+ 			#interrupt-cells = <1>;
+ 			interrupt-map-mask = <0 0 0 7>;
+ 			interrupt-map = <0 0 0 1 &pcie_intc0 0>,
 -- 
 2.51.0
 
