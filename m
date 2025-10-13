@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-184584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18EBEBD4192
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E91BD4312
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C14F918824D7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1AB0406246
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5440D30F926;
-	Mon, 13 Oct 2025 15:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C413830DEDC;
+	Mon, 13 Oct 2025 14:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHOs+/Aj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oabWaaj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1109C30F818;
-	Mon, 13 Oct 2025 15:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806FF30DED1;
+	Mon, 13 Oct 2025 14:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367856; cv=none; b=aBC/H4VzLTWXV2M980bpgG0gMXXkk5CHrGKscAV6Cmg8Q8SEU9nmgB5mOwdaU/vQWFRkVWl3gyx8F/K1tGgeRoUMV+v7qdc521i2vL88OdtcgKfiuikoNJEycn48VqyPQXf5aIyaJKoxEfKGropItojyYhNimJH/Vzq7ENdrBNY=
+	t=1760367414; cv=none; b=Wbulk+kULVRjwmGymqNuY6Anskg+ko0APxZzU0cq4FkVV9fInIvNPD3AQSp+7P2Fj4zosYGa8mHy28qA4AE79XXu/ZghhkLZyhjAwfLkKT3ttWXV8i/x7p/lEWyp0IvPCQqOYxlBtkotVOdmqshlqOCg1lk1Kl/D4ks0+GtF2tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367856; c=relaxed/simple;
-	bh=Oe88VzO31f9E4tv1JWJ+V1S64+5tYjQXEcaiPbxzGvU=;
+	s=arc-20240116; t=1760367414; c=relaxed/simple;
+	bh=LPSoChytQXcG257U3t3ySbJ0YppEvpfcMCw+5OCVldA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDVfHIfGpo3nkRyJ3ESshU9DfKAL1lh6IW0q7R/N3V3whSgGqpfCGraMQsTL1tinB8hqYMu7/FmTUzO+y+KmIbNmDzHm5QP7w4BYEtnRt7/gBvBE8KK700VCAOilnvQhDgL0kEN9qbFyT2yzL3Bk8IHc6N8Cjpy6ZhqKw2IqaOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHOs+/Aj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4059AC4CEE7;
-	Mon, 13 Oct 2025 15:04:15 +0000 (UTC)
+	 MIME-Version; b=NYdEEKFLy+MckyX2ibkek63+I8FKJAgMqtwZNSPP/4YeB45tWXthK1BXAxUJitSSYnc4l4Ozm5gHpwh+qRN9+ALgfn6ful96PaAYGQNeAEkyg/2wvMPGX6fV5yZgnO+eqDqw2KcVXQwyqb0LIB4NT21kk0NN53BdkfJ9rVR8UXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oabWaaj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096A9C4CEE7;
+	Mon, 13 Oct 2025 14:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367855;
-	bh=Oe88VzO31f9E4tv1JWJ+V1S64+5tYjQXEcaiPbxzGvU=;
+	s=korg; t=1760367414;
+	bh=LPSoChytQXcG257U3t3ySbJ0YppEvpfcMCw+5OCVldA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHOs+/Aj8WwZIY6MUabr+/irmYm3lThisKgsagpQ98RjcLL1fWVnHhrZ8vzPA2oyX
-	 andk+RP8yl0x9ll7zivx9yUqRwE9c896VKyTafjA5S2vrM/YDOpXuDOx0xLsqLZQV7
-	 zNfPElJdUCoOzAf9tCH6IMMQHlrMimi38llPG/44=
+	b=oabWaaj/GxZON3TMBiqdtxv90ERwW87HGbQQpAjuhpsHVybH1TjQFWnWjhbVotmg2
+	 w53l5c/txA+RVPfSMUq6Ss/0iIt734AyfqevAVHxVvLUFH70n1D10aP2e8M9+IYNJI
+	 f3XpTu54cfoLMFaFZVgsBqaR/l2RDsTLgu30h6Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/196] remoteproc: qcom: q6v5: Avoid disabling handover IRQ twice
+Subject: [PATCH 6.1 157/196] Bluetooth: MGMT: Fix not exposing debug UUID on MGMT_OP_READ_EXP_FEATURES_INFO
 Date: Mon, 13 Oct 2025 16:45:30 +0200
-Message-ID: <20251013144320.342921206@linuxfoundation.org>
+Message-ID: <20251013144320.378844435@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 110be46f5afe27b66caa2d12473a84cd397b1925 ]
+[ Upstream commit 79e562a52adea4afa0601a15964498fae66c823c ]
 
-enable_irq() and disable_irq() are reference counted, so we must make sure
-that each enable_irq() is always paired with a single disable_irq(). If we
-call disable_irq() twice followed by just a single enable_irq(), the IRQ
-will remain disabled forever.
+The debug UUID was only getting set if MGMT_OP_READ_EXP_FEATURES_INFO
+was not called with a specific index which breaks the likes of
+bluetoothd since it only invokes MGMT_OP_READ_EXP_FEATURES_INFO when an
+adapter is plugged, so instead of depending hdev not to be set just
+enable the UUID on any index like it was done with iso_sock_uuid.
 
-For the error handling path in qcom_q6v5_wait_for_start(), disable_irq()
-will end up being called twice, because disable_irq() also happens in
-qcom_q6v5_unprepare() when rolling back the call to qcom_q6v5_prepare().
-
-Fix this by dropping disable_irq() in qcom_q6v5_wait_for_start(). Since
-qcom_q6v5_prepare() is the function that calls enable_irq(), it makes more
-sense to have the rollback handled always by qcom_q6v5_unprepare().
-
-Fixes: 3b415c8fb263 ("remoteproc: q6v5: Extract common resource handling")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-1-910b1a3aff71@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: e625e50ceee1 ("Bluetooth: Introduce debug feature when dynamic debug is disabled")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/bluetooth/mgmt.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
-index 4ee5e67a9f03f..769c6d6d6a731 100644
---- a/drivers/remoteproc/qcom_q6v5.c
-+++ b/drivers/remoteproc/qcom_q6v5.c
-@@ -156,9 +156,6 @@ int qcom_q6v5_wait_for_start(struct qcom_q6v5 *q6v5, int timeout)
- 	int ret;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 27876512c63a4..a11d25c389f8f 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -4483,13 +4483,11 @@ static int read_exp_features_info(struct sock *sk, struct hci_dev *hdev,
+ 		return -ENOMEM;
  
- 	ret = wait_for_completion_timeout(&q6v5->start_done, timeout);
--	if (!ret)
--		disable_irq(q6v5->handover_irq);
--
- 	return !ret ? -ETIMEDOUT : 0;
- }
- EXPORT_SYMBOL_GPL(qcom_q6v5_wait_for_start);
+ #ifdef CONFIG_BT_FEATURE_DEBUG
+-	if (!hdev) {
+-		flags = bt_dbg_get() ? BIT(0) : 0;
++	flags = bt_dbg_get() ? BIT(0) : 0;
+ 
+-		memcpy(rp->features[idx].uuid, debug_uuid, 16);
+-		rp->features[idx].flags = cpu_to_le32(flags);
+-		idx++;
+-	}
++	memcpy(rp->features[idx].uuid, debug_uuid, 16);
++	rp->features[idx].flags = cpu_to_le32(flags);
++	idx++;
+ #endif
+ 
+ 	if (hdev && hci_dev_le_state_simultaneous(hdev)) {
 -- 
 2.51.0
 
