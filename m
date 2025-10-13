@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6A0BD5056
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:27:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5549BD519A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6CDB34F5549
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:59:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F671421702
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA84F30DD1A;
-	Mon, 13 Oct 2025 15:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B203131CA59;
+	Mon, 13 Oct 2025 15:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tApHkwIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iI2UODiA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A580E30DD17;
-	Mon, 13 Oct 2025 15:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38444311940;
+	Mon, 13 Oct 2025 15:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369964; cv=none; b=k2koqKOtoPyJEqKCUAtg1HoJ9XPtMCw08NT/MJsqJ+hVN+0kxgITLgtLr2/E6t82e4OjG/EqSwOgHtqMlVGN+ITGrs6d3t+riZfCgaDrBPfJwvRU0BnHkBGM/tqd13FqMnJnQftcYGkB8NKqA2Ok/0+OI8Wdk4ZDOwfshUk+Oik=
+	t=1760369996; cv=none; b=bM2DIdYsMHNqrIyMjeZ+Vmb5oTKx/iCnwS02rGadxpiB8Y0QR01TviaI2J6+3BbHDj18fHa75eZBcukEcPU4J3okc0HvlOrquR2t5sTlEf03mFN7j9d09svfitt1cWdqr5QdCLz7Gz6NjbCl8BVWTbqOy3PZwWmcZDENyZtg5J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369964; c=relaxed/simple;
-	bh=fkSeF5wDAv+J2M7n3Zy+fa+bntFaETUZcr9ULOElHrE=;
+	s=arc-20240116; t=1760369996; c=relaxed/simple;
+	bh=8ErQAwAjixy4b9XxK2bcxDh/sUQOmy8eRjxQC8XyjAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgxRMJfSpUqcwaa7MJ6Rm/OUGblDej2JA/HAw6tOwAOApvuWwD2QwFBhSsXhPFA5Nd9sgZNFYwFFsqBvi6ewp9vhxnpOcuaRLiwPwnRDYhqr7Nc+tWKvyuhAegbvSmDlhOsqfrx7ggtwF0ZAUFXDMJ+Cb96ELE47vjzSzjC7xgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tApHkwIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10306C4CEE7;
-	Mon, 13 Oct 2025 15:39:23 +0000 (UTC)
+	 MIME-Version; b=pN/UEmdHj1FNv6oH8E0bNsKU38UotUGsrKGmkb5qh/cJ2qWmicy//gabwsuYxlBxejBBJQq1FpDswkxjTfb0tQheahGt+lB171183d9NJ9snQo1aQLxLCzGVWOgJcN8hTKu5EKBT0rQ6qvjnMYqCPB51Y4of8vsKC68sqotbUN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iI2UODiA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D1EC16AAE;
+	Mon, 13 Oct 2025 15:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369964;
-	bh=fkSeF5wDAv+J2M7n3Zy+fa+bntFaETUZcr9ULOElHrE=;
+	s=korg; t=1760369995;
+	bh=8ErQAwAjixy4b9XxK2bcxDh/sUQOmy8eRjxQC8XyjAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tApHkwIYkVuH7q32inNFjsOm9/XOHBySVkxKxYrFePNJ5WmwyQbcxZC5MTIyOqMeY
-	 TUndzXX/D/9j4PKdKACZVUxx/AR1k1HYMnZVq5fJDOrxmq7ur1fqaf+BA5Izdoc7yx
-	 9uEMGI1UHCSSgX/d8zZqhHjpZq6+EbF05V4IgyAM=
+	b=iI2UODiAIalKYwhdATB0p09mttVkDyUZDAj40cIz5yf0U6gTT2uxtGcRsstU+uVtD
+	 Ltk4GCDc2/7dGtcRNHgPQPs/cO+1xuN8O0Fu2kaUFMWmi8V0JSxQsbY7g5yQ+GvnMA
+	 iBgVHrJ4FAZVEIRW2+19fxjz6tvCGNuzRIZfg3BQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunyu Hu <chuhu@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 413/563] selftests/mm: fix va_high_addr_switch.sh failure on x86_64
-Date: Mon, 13 Oct 2025 16:44:34 +0200
-Message-ID: <20251013144426.250577037@linuxfoundation.org>
+Subject: [PATCH 6.17 414/563] wifi: rtw89: fix leak in rtw89_core_send_nullfunc()
+Date: Mon, 13 Oct 2025 16:44:35 +0200
+Message-ID: <20251013144426.286547089@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,99 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chunyu Hu <chuhu@redhat.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit c56325259abc026205c98964616dcc0df5648912 ]
+[ Upstream commit a9f0064f4716b0fd97085015ea1dd398bdfdc946 ]
 
-The test will fail as below on x86_64 with cpu la57 support (will skip if
-no la57 support).  Note, the test requries nr_hugepages to be set first.
+If there is no rtwsta_link found in rtw89_core_send_nullfunc(), allocated
+skb is leaked.  Free it on the error handling path.
 
-  # running bash ./va_high_addr_switch.sh
-  # -------------------------------------
-  # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
-  # mmap(addr_switch_hint - pagesize, (2 * pagesize)): 0x7f55b60f9000 - OK
-  # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
-  # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
-  # mmap(NULL): 0x7f55b60f9000 - OK
-  # mmap(low_addr): 0x40000000 - OK
-  # mmap(high_addr): 0x1000000000000 - OK
-  # mmap(high_addr) again: 0xffff55b6136000 - OK
-  # mmap(high_addr, MAP_FIXED): 0x1000000000000 - OK
-  # mmap(-1): 0xffff55b6134000 - OK
-  # mmap(-1) again: 0xffff55b6132000 - OK
-  # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
-  # mmap(addr_switch_hint - pagesize, 2 * pagesize): 0x7f55b60f9000 - OK
-  # mmap(addr_switch_hint - pagesize/2 , 2 * pagesize): 0x7f55b60f7000 - OK
-  # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
-  # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
-  # mmap(NULL, MAP_HUGETLB): 0x7f55b5c00000 - OK
-  # mmap(low_addr, MAP_HUGETLB): 0x40000000 - OK
-  # mmap(high_addr, MAP_HUGETLB): 0x1000000000000 - OK
-  # mmap(high_addr, MAP_HUGETLB) again: 0xffff55b5e00000 - OK
-  # mmap(high_addr, MAP_FIXED | MAP_HUGETLB): 0x1000000000000 - OK
-  # mmap(-1, MAP_HUGETLB): 0x7f55b5c00000 - OK
-  # mmap(-1, MAP_HUGETLB) again: 0x7f55b5a00000 - OK
-  # mmap(addr_switch_hint - pagesize, 2*hugepagesize, MAP_HUGETLB): 0x800000000000 - FAILED
-  # mmap(addr_switch_hint , 2*hugepagesize, MAP_FIXED | MAP_HUGETLB): 0x800000000000 - OK
-  # [FAIL]
+Found by Linux Verification Center (linuxtesting.org).
 
-addr_switch_hint is defined as DFEFAULT_MAP_WINDOW in the failed test (for
-x86_64, DFEFAULT_MAP_WINDOW is defined as (1UL<<47) - pagesize) in 64 bit.
-
-Before commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
-functions"), for x86_64 hugetlb_get_unmapped_area() is handled in arch
-code arch/x86/mm/hugetlbpage.c and addr is checked with
-map_address_hint_valid() after align with 'addr &= huge_page_mask(h)'
-which is a round down way, and it will fail the check because the addr is
-within the DEFAULT_MAP_WINDOW but (addr + len) is above the
-DFEFAULT_MAP_WINDOW.  So it wil go through the
-hugetlb_get_unmmaped_area_top_down() to find an area within the
-DFEFAULT_MAP_WINDOW.
-
-After commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
-functions").  The addr hint for hugetlb_get_unmmaped_area() will be
-rounded up and aligned to hugepage size with ALIGN() for all arches.  And
-after the align, the addr will be above the default MAP_DEFAULT_WINDOW,
-and the map_addresshint_valid() check will pass because both aligned addr
-(addr0) and (addr + len) are above the DEFAULT_MAP_WINDOW, and the aligned
-hint address (0x800000000000) is returned as an suitable gap is found
-there, in arch_get_unmapped_area_topdown().
-
-To still cover the case that addr is within the DEFAULT_MAP_WINDOW, and
-addr + len is above the DFEFAULT_MAP_WINDOW, change to choose the last
-hugepage aligned address within the DEFAULT_MAP_WINDOW as the hint addr,
-and the addr + len (2 hugepages) will be one hugepage above the
-DEFAULT_MAP_WINDOW.  An aligned address won't be affected by the page
-round up or round down from kernel, so it's determistic.
-
-Link: https://lkml.kernel.org/r/20250912013711.3002969-4-chuhu@redhat.com
-Fixes: cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*} functions")
-Signed-off-by: Chunyu Hu <chuhu@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a8ba4acab7db ("wifi: rtw89: send nullfunc based on the given link")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250919210852.823912-4-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/va_high_addr_switch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
-index 896b3f73fc53b..306eba8251077 100644
---- a/tools/testing/selftests/mm/va_high_addr_switch.c
-+++ b/tools/testing/selftests/mm/va_high_addr_switch.c
-@@ -230,10 +230,10 @@ void testcases_init(void)
- 			.msg = "mmap(-1, MAP_HUGETLB) again",
- 		},
- 		{
--			.addr = (void *)(addr_switch_hint - pagesize),
-+			.addr = (void *)(addr_switch_hint - hugepagesize),
- 			.size = 2 * hugepagesize,
- 			.flags = MAP_HUGETLB | MAP_PRIVATE | MAP_ANONYMOUS,
--			.msg = "mmap(addr_switch_hint - pagesize, 2*hugepagesize, MAP_HUGETLB)",
-+			.msg = "mmap(addr_switch_hint - hugepagesize, 2*hugepagesize, MAP_HUGETLB)",
- 			.low_addr_required = 1,
- 			.keep_mapped = 1,
- 		},
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index b9c2224dde4a3..1837f17239ab6 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3456,6 +3456,7 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
+ 	rtwsta_link = rtwsta->links[rtwvif_link->link_id];
+ 	if (unlikely(!rtwsta_link)) {
+ 		ret = -ENOLINK;
++		dev_kfree_skb_any(skb);
+ 		goto out;
+ 	}
+ 
 -- 
 2.51.0
 
