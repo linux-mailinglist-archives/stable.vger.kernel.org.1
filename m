@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-184389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321E1BD446E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:33:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037CABD4669
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D26E40515C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9A61423015
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AAA43093CB;
-	Mon, 13 Oct 2025 14:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A09730EF75;
+	Mon, 13 Oct 2025 15:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqwkXmjB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dO96JG0l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48334306480;
-	Mon, 13 Oct 2025 14:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A4630EF6D;
+	Mon, 13 Oct 2025 15:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367295; cv=none; b=XwIgJIcXn4jWWk4VP1kPYUIu9DeFEppdaFKBYzRBvgy9T7wnDC/gGMYn4vctLgaqHAInSaelluEetKwOKkJyd6p3QdMTjZb4GzG9dNXcV+N/mZKy6SkLEnVz3indQjETXZfp8TjrRRnxOcI751bgUUqhKnVJMd/PPaj8ZewBanw=
+	t=1760367810; cv=none; b=XQ5nkkBGsOO4ZmcOk21TXh3/pT6/atZR7/A5b2x3XHRjFqKoHEUmRicPONWjwGyKT8AfmuLtF2vzgddt9ifetMXPeKWPU4GBn7rg+TDN5hSxNFjomLwWRvLqJeuqimQdRoGgwHVFlAfgdaG5YLy+GKlzCGaw/a53a1U36nJloQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367295; c=relaxed/simple;
-	bh=VK4Vc4e3MDAfFf1g0dgbgtxauS2FvHFNhEjRINUB+C8=;
+	s=arc-20240116; t=1760367810; c=relaxed/simple;
+	bh=ZUhEa3hiRqvHATtGWxXIfG/Y1oTa+pQZ/MdT0Ju86Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DqzQ9XBoAz/wcg3SVpAWQTKpojQyCBSKPzCuJlaEArTFd028RgIFSQsawF+OW/w56/YLsgVjTsgJ9fRPwWC+MzlPB+7hYzSYUksW8avEaxnY8r5Im5e7JgsRz927fIDQ1vF8cAC27CTV/Q/HbiOT1tGiwYpplTTt42BeJFZNArk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqwkXmjB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC23C4CEE7;
-	Mon, 13 Oct 2025 14:54:54 +0000 (UTC)
+	 MIME-Version; b=d/okyGm27uo30ZOzED72rOVOHU5vVUDFfKkphOTgjtbVVVLOcabZUo4fiFFdde+03vb0XDyQEgwwYCewqxQXkrGXyXUn7iRB1SgkEoVX5+TJ8t+RMvYxTLm+i1lAOeadzuK0l1JKtaj65V/fi0qSjkeKNiwp3OB0QZD135dOcAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dO96JG0l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0706CC4CEE7;
+	Mon, 13 Oct 2025 15:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367295;
-	bh=VK4Vc4e3MDAfFf1g0dgbgtxauS2FvHFNhEjRINUB+C8=;
+	s=korg; t=1760367809;
+	bh=ZUhEa3hiRqvHATtGWxXIfG/Y1oTa+pQZ/MdT0Ju86Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UqwkXmjBponOC1cm9Nf6Kx/HelJTBVwnpzXHwQ7hF9A8P5NCdwSxE9VIcI8jrrZUJ
-	 wfHTvWnPipqhGdOWhvh8UZaXwcko9fuiIKlxtQysr1/DBXx86Q7Ea/tYdKxxWfEc0e
-	 akxQP6V+rrntlILaB8vDcNxFWjKFDMVeDWb0PdcM=
+	b=dO96JG0l/i34zHmh+eGmgaKtAunPtmTjHhrUO+yQDDa1hTTxTJgvX6S71VC1Oxy6L
+	 Z33Rl0iHRLbxMA98fVFMxM5Q+0cSNNKsPXjxKb8oWDyVRWqpD1/D4YNPeOAod9VWOr
+	 tHSV4jQan0r73Cfum/qrm7i3O47SV3hVFRww/2Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Liam Beguin <liambeguin@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/196] drivers/base/node: handle error properly in register_one_node()
+Subject: [PATCH 6.6 108/196] iio: consumers: Fix offset handling in iio_convert_raw_to_processed()
 Date: Mon, 13 Oct 2025 16:44:59 +0200
-Message-ID: <20251013144319.253469825@linuxfoundation.org>
+Message-ID: <20251013144319.220696194@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,58 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 786eb990cfb78aab94eb74fb32a030e14723a620 ]
+[ Upstream commit 33f5c69c4daff39c010b3ea6da8ebab285f4277b ]
 
-If register_node() returns an error, it is not handled correctly.
-The function will proceed further and try to register CPUs under the
-node, which is not correct.
+Fix iio_convert_raw_to_processed() offset handling for channels without
+a scale attribute.
 
-So, in this patch, if register_node() returns an error, we return
-immediately from the function.
+The offset has been applied to the raw64 value not to the original raw
+value. Use the raw64 value so that the offset is taken into account.
 
-Link: https://lkml.kernel.org/r/20250822084845.19219-1-donettom@linux.ibm.com
-Fixes: 76b67ed9dce6 ("[PATCH] node hotplug: register cpu: remove node struct")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
-Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 14b457fdde38 ("iio: inkern: apply consumer scale when no channel scale is available")
+Cc: Liam Beguin <liambeguin@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20250831104825.15097-3-hansg@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iio/inkern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index a4141b57b1478..cbaa4e2eddcef 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -869,6 +869,11 @@ int __register_one_node(int nid)
- 	node_devices[nid] = node;
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index 34abbf46916cc..c7b2ab7870993 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -671,7 +671,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ 		 * If no channel scaling is available apply consumer scale to
+ 		 * raw value and return.
+ 		 */
+-		*processed = raw * scale;
++		*processed = raw64 * scale;
+ 		return 0;
+ 	}
  
- 	error = register_node(node_devices[nid], nid);
-+	if (error) {
-+		node_devices[nid] = NULL;
-+		kfree(node);
-+		return error;
-+	}
- 
- 	/* link cpu under this node */
- 	for_each_present_cpu(cpu) {
 -- 
 2.51.0
 
