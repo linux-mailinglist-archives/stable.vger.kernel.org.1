@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-184997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0396DBD471A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B22BD4793
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB1F842737D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6212B4274A1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375A43112AB;
-	Mon, 13 Oct 2025 15:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1873112B3;
+	Mon, 13 Oct 2025 15:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4NzAXBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3P+jdbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D547E3112A4;
-	Mon, 13 Oct 2025 15:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A57B2E9721;
+	Mon, 13 Oct 2025 15:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369038; cv=none; b=tcOwQ/ybBx1Hk9mhJ6lzeWhRE5YoImCUww9Lrk+B+oDVb0oukFh7WcYeSHk45uhksikvRhsb95FRaUII7U37licAE2x97mlT9Gg2hFK5VV5l9daqha2EvNIwSSj/OlGE2g0w0nbggi89LQ7OAXIJuSnlSBO3sikIwgUwNhc8ZVE=
+	t=1760369044; cv=none; b=bkLL5z0QNtCpF1DjGulmuRaVDyrLD8UzGJXs4a7Qcb2eEAkjdvcRFg7wljDPpYJXI7GC8gPyHNmwvnwLWb+iAzZ8KoxEo7bqYS0f8N5e53S7Ta7qEFTGH6txhrBLp88Wcfbuc/0hmPr79h4lJawiY0olh1/n0n/OepWAIKQc3oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369038; c=relaxed/simple;
-	bh=4jPOj1TvQUMgq0l1u1qmq8c7gl6I0bYfkbGg7dfurCM=;
+	s=arc-20240116; t=1760369044; c=relaxed/simple;
+	bh=Is/iS5LzG0GIizmBLWnmeTWQvnG6jT8sfL7VgOlq97c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=up43x53Moe+yoYRvrTDZAeNBjfBzw3xzdMReefDzOLEWdlsm3BSHk68i7GNFtp7dTFRkwlMmd/R5+VbF/EzTocpYIXnMFUqrVSp95miljrw1U4ETZQgZJZA+A/kz2EHjRLLg/c/JrQRKjMVD8u6LUR+DbUr+L6r/TpwI9FMm/go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4NzAXBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183CDC116B1;
-	Mon, 13 Oct 2025 15:23:57 +0000 (UTC)
+	 MIME-Version; b=fweDLyTqPA3SKjF7zfLiu2L13XJoys5EndLxm09cdUrsF2aQ8PHhSQjgqWus6TxX5vh21tQyFzjgsvLOkPEUJYM09GSz7wx3ltzQxL44FxCaShHz4kEqbTrFcsAo+zNeSD6APTMcVA/Dg7kgqfAUXK/5O4v9GNvD6lbMDsm79TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3P+jdbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C061DC4CEE7;
+	Mon, 13 Oct 2025 15:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369038;
-	bh=4jPOj1TvQUMgq0l1u1qmq8c7gl6I0bYfkbGg7dfurCM=;
+	s=korg; t=1760369044;
+	bh=Is/iS5LzG0GIizmBLWnmeTWQvnG6jT8sfL7VgOlq97c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4NzAXBsH6nSfkhMzKZC4SuxCzF1H0MvU65xW9qPQT7S5pUCoVUWcpLEuQf7xx5wZ
-	 RfwtjzUN2FSqkJvEk2giB74STosMf8bxFLxVZH5AWmVXIR70TyiIfO73c/JaykhbMH
-	 TUK7vTCbCXR2x5NSfjiHZc+EDz+AR5tRcvons8IA=
+	b=K3P+jdbeB7/zqFtNWlsfXbI62w+kZCebPUFuro6bFFzFmY69s3RPDJT020DlzDASp
+	 EI3BuouePF98fOqa7FiZ34Zi6iNhJMnRfSQh4XV7R7EWpKJyjZV1J/vC+3MeUuXsqZ
+	 6aAuXi95Geq3kKNEZ1IIGO0GxscDf+xo6HXs+DEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
+	Zenghui Yu <yuzenghui@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 107/563] selftests: vDSO: vdso_test_abi: Correctly skip whole test with missing vDSO
-Date: Mon, 13 Oct 2025 16:39:28 +0200
-Message-ID: <20251013144415.170783698@linuxfoundation.org>
+Subject: [PATCH 6.17 108/563] irqchip/gic-v5: Fix loop in gicv5_its_create_itt_two_level() cleanup path
+Date: Mon, 13 Oct 2025 16:39:29 +0200
+Message-ID: <20251013144415.206585120@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -60,63 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 4b59a9f7628fd82b24f2148f62cf327a84d26555 ]
+[ Upstream commit bfcd1fdaae92faa8cae880eb4c3aaaa60c54bf0d ]
 
-If AT_SYSINFO_EHDR is missing the whole test needs to be skipped.
-Currently this results in the following output:
+The "i" variable in gicv5_its_create_itt_two_level() needs to be signed
+otherwise it can cause a forever loop in the function's cleanup path.
 
-	TAP version 13
-	1..16
-	# AT_SYSINFO_EHDR is not present!
+[ lpieralisi: Reworded commit message ]
 
-This output is incorrect, as "1..16" still requires the subtest lines to
-be printed, which isn't done however.
-
-Switch to the correct skipping functions, so the output now correctly
-indicates that no subtests are being run:
-
-	TAP version 13
-	1..0 # SKIP AT_SYSINFO_EHDR is not present!
-
-Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Fixes: 57d72196dfc8 ("irqchip/gic-v5: Add GICv5 ITS support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250812-vdso-tests-fixes-v2-2-90f499dd35f8@linutronix.de
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/all/20250908082745.113718-3-lpieralisi@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/vdso_test_abi.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-gic-v5-its.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_test_abi.c b/tools/testing/selftests/vDSO/vdso_test_abi.c
-index a54424e2336f4..67cbfc56e4e1b 100644
---- a/tools/testing/selftests/vDSO/vdso_test_abi.c
-+++ b/tools/testing/selftests/vDSO/vdso_test_abi.c
-@@ -182,12 +182,11 @@ int main(int argc, char **argv)
- 	unsigned long sysinfo_ehdr = getauxval(AT_SYSINFO_EHDR);
+diff --git a/drivers/irqchip/irq-gic-v5-its.c b/drivers/irqchip/irq-gic-v5-its.c
+index 9290ac741949c..4701ef62b8b27 100644
+--- a/drivers/irqchip/irq-gic-v5-its.c
++++ b/drivers/irqchip/irq-gic-v5-its.c
+@@ -191,9 +191,9 @@ static int gicv5_its_create_itt_two_level(struct gicv5_its_chip_data *its,
+ 					  unsigned int num_events)
+ {
+ 	unsigned int l1_bits, l2_bits, span, events_per_l2_table;
+-	unsigned int i, complete_tables, final_span, num_ents;
++	unsigned int complete_tables, final_span, num_ents;
+ 	__le64 *itt_l1, *itt_l2, **l2ptrs;
+-	int ret;
++	int i, ret;
+ 	u64 val;
  
- 	ksft_print_header();
--	ksft_set_plan(VDSO_TEST_PLAN);
- 
--	if (!sysinfo_ehdr) {
--		ksft_print_msg("AT_SYSINFO_EHDR is not present!\n");
--		return KSFT_SKIP;
--	}
-+	if (!sysinfo_ehdr)
-+		ksft_exit_skip("AT_SYSINFO_EHDR is not present!\n");
-+
-+	ksft_set_plan(VDSO_TEST_PLAN);
- 
- 	version = versions[VDSO_VERSION];
- 	name = (const char **)&names[VDSO_NAMES];
+ 	ret = gicv5_its_l2sz_to_l2_bits(itt_l2sz);
 -- 
 2.51.0
 
