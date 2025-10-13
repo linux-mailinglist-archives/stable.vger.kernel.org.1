@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-184347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606C5BD3E83
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 118E4BD44F2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 931713E4028
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 787DD3E3BB3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD8A30ACE7;
-	Mon, 13 Oct 2025 14:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9131C30AACE;
+	Mon, 13 Oct 2025 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDsi8s90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kyp6jtyx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB661279DCE;
-	Mon, 13 Oct 2025 14:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E83130AAC5;
+	Mon, 13 Oct 2025 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367173; cv=none; b=IUm9lSw+EvhXoNPbJqBaZVAAtmV+/hbnzaVOocFnh7p5GHQm9ZGw2ImqcR8EQxbfswIYP0Iqa8uGyQqbcR3QAjUN7jex/DxiyhruDEJPCWEebzj1CWyeGrsYl1gPPRN87RqpNoAiAZO7tfw4B4p+L8ty79WWASm499Mc9XtAE08=
+	t=1760367693; cv=none; b=rnv4NX894nP0C5mryUo+NGuu4lsX+4U+5zr1F77KkJ02+Dg6MYUFVVW9RM24V36KBsO0dqkLlC0rZKSzeBsXlfrwAzwnJ0IimRBXSaqohe60lm8N8j3fgMxI26aloF4Y4r9ZU70PhFi0jDRL+2IokZirFcuZL34VMZeGQMVBbbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367173; c=relaxed/simple;
-	bh=Gkclo86MUq9vVLmCNmFoEnL5nwmSnWzUdagzseO+XWk=;
+	s=arc-20240116; t=1760367693; c=relaxed/simple;
+	bh=3sdLnPEw+a0SKfTZds8OP1OYQ/5xaVAxP6n2GXwYjiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WA2xk5mmXlt5W3QSEyekWeiw1DQDXoX/hw76t5AAVLUP5okJazI7DeJs2XtBByg3mvMykIuzPeMQ7KsWKjMQGn6LJdh0miRYqBjV3sMO/KBDEUI7bapbKNrhKjyKz4e2M8KrieFbh9crlPY2LFUzxomzqe2nmXWERtvWWMzxYWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDsi8s90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCA5C4CEE7;
-	Mon, 13 Oct 2025 14:52:52 +0000 (UTC)
+	 MIME-Version; b=JXxJ1WNqMTVD00CCJTLwRtKdVCIZViLzDmIevNGPyqKAd7HZvCZFWuU+9tdOqOzRNnRp5xQav17vEwNWL5WWb3TjUdfCpvKQAAtJO+b9QW01ZINwnfX0WuCTdVVPVe4YYSZZ//tSS7L8yOgcWdrR9ev+sE+9tZ4anspyL2o6UzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kyp6jtyx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC267C4CEE7;
+	Mon, 13 Oct 2025 15:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367172;
-	bh=Gkclo86MUq9vVLmCNmFoEnL5nwmSnWzUdagzseO+XWk=;
+	s=korg; t=1760367693;
+	bh=3sdLnPEw+a0SKfTZds8OP1OYQ/5xaVAxP6n2GXwYjiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDsi8s90Ght718LRXRb0ZzaokfpEM1OGQ9ppMSAV7tYqe+2XeZo2f75ibJjGZoezI
-	 UdjyukMKLRRfKj3nbtWnwIT+vYSRv1goL1yvcuhSyuKNPu29lZNHIHPIn/bR19W+kg
-	 5KpCwmOjXv9QsGlDSEZ9ytcwIUAOppd9oxYSUl+0=
+	b=Kyp6jtyxd9xiIqV8IeVYQnb64Y10Ip2N17P7mzieWiCrJpQePW8ZFYlNG4OX6Bnr6
+	 d2s+HcdN1QGWNAO7cDDQPOKS3Q8G/+nPfKoG9QZHKvlxeEu3FiklKgah7Ocl/2qbBH
+	 qTH+enDFDsRXqYJAsReLNh0lijwp4ZIhr0qtmb8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Colin Ian King <colin.i.king@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/196] misc: genwqe: Fix incorrect cmd field being reported in error
-Date: Mon, 13 Oct 2025 16:44:49 +0200
-Message-ID: <20251013144318.894172526@linuxfoundation.org>
+Subject: [PATCH 6.6 099/196] misc: genwqe: Fix incorrect cmd field being reported in error
+Date: Mon, 13 Oct 2025 16:44:50 +0200
+Message-ID: <20251013144318.898127639@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
