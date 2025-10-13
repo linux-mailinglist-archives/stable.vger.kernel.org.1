@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-184828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11531BD4751
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 967E8BD4471
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B57394F6D8D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2851407200
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDCF3128AC;
-	Mon, 13 Oct 2025 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFB2307AE1;
+	Mon, 13 Oct 2025 14:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5RmEtg5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPH+V+cV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC663128A6;
-	Mon, 13 Oct 2025 15:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B978277CB8;
+	Mon, 13 Oct 2025 14:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368552; cv=none; b=PU4Seyura4z7Eec5LeEmtsL0x+OCYClrdpzX1nQaYN7SuS0IrC11n3lI/5IvDTTYRIKD1nZR9aZAOG0nRFkFK/GEFdUKTZRX8EsYYtf0AfgtcEzdMYoQWeEn8rklZ8W1p4MmMPg2IicP9itwmLlgjnD7BF7gQeNc0rcgspWDhHY=
+	t=1760367321; cv=none; b=ZC3sOWPpccafgo59xRbk0CGAs87U73BiiwuScLrpIexX56tBR4R9kvgY0PndAuXhZd+jW58wHePVu9dME9temFbNCmDWa4c3ka6Y3CzSMwYxIigyBC+pbqJGFsDryN/lleeFpdMtWK+psA3J/B63Q0JRukJSj+LUNEMUoNt+DmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368552; c=relaxed/simple;
-	bh=K9alUFH6YHvYyacjxI9qQi8N4mG0uvagCmsEhF1jEgU=;
+	s=arc-20240116; t=1760367321; c=relaxed/simple;
+	bh=SsqTnDHw0m4CU3s2fBFpEEHaD3Zq3E+VOjdeE5+rKoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UACUWS2XFxuoSF6QVa09UUqSwDcPZv/2auE4kAN6PgW88nw7/P1K/nAJj/dVkepLQ0qNbvVqTHEyKD+fyjpvN5//B6Yvf4wr29RZqH6RiPwI0f34FsnXkFVZhq6bO02mZdtZjRyQfSQsELMq/meCygr+uJMKfHCfNiOQqoV3hws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5RmEtg5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AEBC116C6;
-	Mon, 13 Oct 2025 15:15:52 +0000 (UTC)
+	 MIME-Version; b=IroIFj3XWsZfkisf1ZgaT/UdynC05NJaNownILfFdc1VEYEteppkVC4yxiQubPT+o4SvIrEHLoOZnN3XTN1hVOugLaMMDMbdb9JLkBP9RnkjnrUkLmwqaU1V2J05r1s7CG/D3z21owOkLYjUd+tjhsBqqGTqvwEEkeT5PmMpgsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPH+V+cV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DB6C4CEE7;
+	Mon, 13 Oct 2025 14:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368552;
-	bh=K9alUFH6YHvYyacjxI9qQi8N4mG0uvagCmsEhF1jEgU=;
+	s=korg; t=1760367321;
+	bh=SsqTnDHw0m4CU3s2fBFpEEHaD3Zq3E+VOjdeE5+rKoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5RmEtg5jdhWrNZXj36E4YOTdZyqxxRAOrnOhaifZEYzA2ruXRO4mmIltLMXklHi0
-	 Obew/aDypjGjs9MqnnnPEiVC84woLAks6ehbJlCFp/xYlt+s7Axu7IcCj4BvCDrq2w
-	 7NS0upL6HrVXRMpqdGeduq1fINyHs6BshCwL8lkQ=
+	b=EPH+V+cVl50Kbww4aw2JeqkVGFs5i+rIirogdIpZ6u64IBxoecqsN56TqazYkK2+1
+	 vz39hXy1ADElECGlMTproHIYRu4Dh7ev+UDo62GvmTmlEBwcmzFNeDOrNcT0gjlW4/
+	 PBJiPrRtqtmrf4HFnhwiDP7MWKL4nGbz5DUQPE8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com,
-	I Viswanath <viswanathiyyappan@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/262] ptp: Add a upper bound on max_vclocks
+Subject: [PATCH 6.1 169/196] net/mlx5: pagealloc: Fix reclaim race during command interface teardown
 Date: Mon, 13 Oct 2025 16:45:42 +0200
-Message-ID: <20251013144333.449619105@linuxfoundation.org>
+Message-ID: <20251013144320.810584900@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Viswanath <viswanathiyyappan@gmail.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit e9f35294e18da82162004a2f35976e7031aaf7f9 ]
+[ Upstream commit 79a0e32b32ac4e4f9e4bb22be97f371c8c116c88 ]
 
-syzbot reported WARNING in max_vclocks_store.
+The reclaim_pages_cmd() function sends a command to the firmware to
+reclaim pages if the command interface is active.
 
-This occurs when the argument max is too large for kcalloc to handle.
+A race condition can occur if the command interface goes down (e.g., due
+to a PCI error) while the mlx5_cmd_do() call is in flight. In this
+case, mlx5_cmd_do() will return an error. The original code would
+propagate this error immediately, bypassing the software-based page
+reclamation logic that is supposed to run when the command interface is
+down.
 
-Extend the guard to guard against values that are too large for
-kcalloc
+Fix this by checking whether mlx5_cmd_do() returns -ENXIO, which mark
+that command interface is down. If this is the case, fall through to
+the software reclamation path. If the command failed for any another
+reason, or finished successfully, return as before.
 
-Reported-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=94d20db923b9f51be0df
-Tested-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
-Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
-Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://patch.msgid.link/20250925155908.5034-1-viswanathiyyappan@gmail.com
+Fixes: b898ce7bccf1 ("net/mlx5: cmdif, Avoid skipping reclaim pages if FW is not accessible")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_private.h | 1 +
- drivers/ptp/ptp_sysfs.c   | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index b352df4cd3f97..f329263f33aa1 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -22,6 +22,7 @@
- #define PTP_MAX_TIMESTAMPS 128
- #define PTP_BUF_TIMESTAMPS 30
- #define PTP_DEFAULT_MAX_VCLOCKS 20
-+#define PTP_MAX_VCLOCKS_LIMIT (KMALLOC_MAX_SIZE/(sizeof(int)))
- #define PTP_MAX_CHANNELS 2048
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+index 99909c74a2144..cab25eb30ca66 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+@@ -483,9 +483,12 @@ static int reclaim_pages_cmd(struct mlx5_core_dev *dev,
+ 	u32 func_id;
+ 	u32 npages;
+ 	u32 i = 0;
++	int err;
  
- enum {
-diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-index 6b1b8f57cd951..200eaf5006968 100644
---- a/drivers/ptp/ptp_sysfs.c
-+++ b/drivers/ptp/ptp_sysfs.c
-@@ -284,7 +284,7 @@ static ssize_t max_vclocks_store(struct device *dev,
- 	size_t size;
- 	u32 max;
+-	if (!mlx5_cmd_is_down(dev))
+-		return mlx5_cmd_do(dev, in, in_size, out, out_size);
++	err = mlx5_cmd_do(dev, in, in_size, out, out_size);
++	/* If FW is gone (-ENXIO), proceed to forceful reclaim */
++	if (err != -ENXIO)
++		return err;
  
--	if (kstrtou32(buf, 0, &max) || max == 0)
-+	if (kstrtou32(buf, 0, &max) || max == 0 || max > PTP_MAX_VCLOCKS_LIMIT)
- 		return -EINVAL;
- 
- 	if (max == ptp->max_vclocks)
+ 	/* No hard feelings, we want our pages back! */
+ 	npages = MLX5_GET(manage_pages_in, in, input_num_entries);
 -- 
 2.51.0
 
