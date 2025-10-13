@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-185223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370DCBD4913
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE38BBD4868
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 825A918A53FA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:53:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A88F507DA6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D9830F933;
-	Mon, 13 Oct 2025 15:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D0731159A;
+	Mon, 13 Oct 2025 15:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/yZItQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDBIEXa9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381DE30F92F;
-	Mon, 13 Oct 2025 15:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2256D30C608;
+	Mon, 13 Oct 2025 15:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369683; cv=none; b=ZXHBEwIih/7gL+7E13kMbgDNZv8Iwll8WjoYexq0XX+AdwAxDNmoSxcUJgWjSG3Eaeowil0uM2RMtbmnDXIL+KdhvsfhJNKnBH4oxow7uFC9na5MGtgGXdclQEUU/L2bGu2LOYhD0a7nVPBCbG5AgrYI/qPjFmyzlCarTS2B7Eo=
+	t=1760368122; cv=none; b=OFkzyqhkU7+zEwtgCa1Hb1YFSCEI3D0chmZD1Gxh6l1yvmFYeclaGdPdQ3BaEcifUVkjcy26D0DdLcNQuXFxJyzJWEDwYCpqxCo5FgWP6F+A6aEllr/enlQkohXo3HbPzigL6zqUrKL6h66frL40Aq5ZOyiUYu0TCdl2Z0PiPI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369683; c=relaxed/simple;
-	bh=TnGqWF56T3NwP1/P5M8O37Hi+CvSUv7uk6KYLkEWiwc=;
+	s=arc-20240116; t=1760368122; c=relaxed/simple;
+	bh=6jZvPQxLp5OKhTphoNXMqvHT6Tj87R0kVPZJlUa7WVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrPKHadXaej6EjIz7EMtB9hHJw7rZvNIhMD534h8dVpGiuQgPf+Cag+pIbZ/GCpHD/ikeKWvyg6ACisMJ1mIzH9LVdKNnp2g0Gb2aGZRSJBRN90zkxaBHl5ESlY8wucXNEqr8Mn6TshDOcRajg/t/btCIaMeDdn9NYEtMLqUHxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/yZItQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2373C4CEE7;
-	Mon, 13 Oct 2025 15:34:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=spctYSIpUs4L9K/yTpjHNlsxq0VyGW5X1pamjySHrLwfCX2qsYbSHfm/m3/hmyUVaj2/P/7HWj4aipRA4FRKQ/k/bbJ/QbnZPS5VlEapx4qCcu7UI8X4/CqmY/TR2t49ZQo0w4EZDL2hOPPlhzXoRI5l0lINzD5Gw6YKG8RP0rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDBIEXa9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFAAC4CEE7;
+	Mon, 13 Oct 2025 15:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369683;
-	bh=TnGqWF56T3NwP1/P5M8O37Hi+CvSUv7uk6KYLkEWiwc=;
+	s=korg; t=1760368121;
+	bh=6jZvPQxLp5OKhTphoNXMqvHT6Tj87R0kVPZJlUa7WVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/yZItQCE6VETqdPkqSaURKIXimR90VF7TgfAL7TwUK2DsLjzyWnjnIsAvK43aV9U
-	 BWZjsbxxARpGErEGNbNm5BhmPXu9VLCNqiZvUzIFMMKy2oQZgoitHXVjqunQVMDPnB
-	 rABSWY+Ct9zIbLuwnEA5YDL18dN2tIWHrHQn6HOI=
+	b=HDBIEXa9O37zLdOqX4P4Yr1y1kF/X/F+BwQ1oF3gr66yoqgZxdgXZyKFmIJWqEd9O
+	 JnnH7/mGqgtX2sFhbiCjHIr7RqgBT/Eqow41InW6bQ+ABmmOUJo0ZGezD0fSWujBwX
+	 YqMGGUM5Lu3LILfrYsNtDvQyDQhn0JM+SQeRcukU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 332/563] ASoC: Intel: bytcr_rt5651: Fix invalid quirk input mapping
+Subject: [PATCH 6.12 051/262] selftests: vDSO: vdso_test_abi: Correctly skip whole test with missing vDSO
 Date: Mon, 13 Oct 2025 16:43:13 +0200
-Message-ID: <20251013144423.290409459@linuxfoundation.org>
+Message-ID: <20251013144327.967008913@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 4336efb59ef364e691ef829a73d9dbd4d5ed7c7b ]
+[ Upstream commit 4b59a9f7628fd82b24f2148f62cf327a84d26555 ]
 
-When an invalid value is passed via quirk option, currently
-bytcr_rt5640 driver just ignores and leaves as is, which may lead to
-unepxected results like OOB access.
+If AT_SYSINFO_EHDR is missing the whole test needs to be skipped.
+Currently this results in the following output:
 
-This patch adds the sanity check and corrects the input mapping to the
-certain default value if an invalid value is passed.
+	TAP version 13
+	1..16
+	# AT_SYSINFO_EHDR is not present!
 
-Fixes: 64484ccee7af ("ASoC: Intel: bytcr_rt5651: Set card long_name based on quirks")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Message-ID: <20250902171826.27329-4-tiwai@suse.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This output is incorrect, as "1..16" still requires the subtest lines to
+be printed, which isn't done however.
+
+Switch to the correct skipping functions, so the output now correctly
+indicates that no subtests are being run:
+
+	TAP version 13
+	1..0 # SKIP AT_SYSINFO_EHDR is not present!
+
+Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250812-vdso-tests-fixes-v2-2-90f499dd35f8@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5651.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ tools/testing/selftests/vDSO/vdso_test_abi.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
-index 67c62844ca2a9..604a35d380e9a 100644
---- a/sound/soc/intel/boards/bytcr_rt5651.c
-+++ b/sound/soc/intel/boards/bytcr_rt5651.c
-@@ -58,7 +58,8 @@ enum {
- 	BYT_RT5651_OVCD_SF_1P5	= (RT5651_OVCD_SF_1P5 << 13),
- };
+diff --git a/tools/testing/selftests/vDSO/vdso_test_abi.c b/tools/testing/selftests/vDSO/vdso_test_abi.c
+index a54424e2336f4..67cbfc56e4e1b 100644
+--- a/tools/testing/selftests/vDSO/vdso_test_abi.c
++++ b/tools/testing/selftests/vDSO/vdso_test_abi.c
+@@ -182,12 +182,11 @@ int main(int argc, char **argv)
+ 	unsigned long sysinfo_ehdr = getauxval(AT_SYSINFO_EHDR);
  
--#define BYT_RT5651_MAP(quirk)		((quirk) & GENMASK(3, 0))
-+#define BYT_RT5651_MAP_MASK		GENMASK(3, 0)
-+#define BYT_RT5651_MAP(quirk)		((quirk) & BYT_RT5651_MAP_MASK)
- #define BYT_RT5651_JDSRC(quirk)		(((quirk) & GENMASK(7, 4)) >> 4)
- #define BYT_RT5651_OVCD_TH(quirk)	(((quirk) & GENMASK(12, 8)) >> 8)
- #define BYT_RT5651_OVCD_SF(quirk)	(((quirk) & GENMASK(14, 13)) >> 13)
-@@ -100,14 +101,29 @@ MODULE_PARM_DESC(quirk, "Board-specific quirk override");
+ 	ksft_print_header();
+-	ksft_set_plan(VDSO_TEST_PLAN);
  
- static void log_quirks(struct device *dev)
- {
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_DMIC_MAP)
-+	int map;
+-	if (!sysinfo_ehdr) {
+-		ksft_print_msg("AT_SYSINFO_EHDR is not present!\n");
+-		return KSFT_SKIP;
+-	}
++	if (!sysinfo_ehdr)
++		ksft_exit_skip("AT_SYSINFO_EHDR is not present!\n");
 +
-+	map = BYT_RT5651_MAP(byt_rt5651_quirk);
-+	switch (map) {
-+	case BYT_RT5651_DMIC_MAP:
- 		dev_info(dev, "quirk DMIC_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_MAP)
-+		break;
-+	case BYT_RT5651_IN1_MAP:
- 		dev_info(dev, "quirk IN1_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN2_MAP)
-+		break;
-+	case BYT_RT5651_IN2_MAP:
- 		dev_info(dev, "quirk IN2_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_IN2_MAP)
-+		break;
-+	case BYT_RT5651_IN1_IN2_MAP:
- 		dev_info(dev, "quirk IN1_IN2_MAP enabled");
-+		break;
-+	default:
-+		dev_warn_once(dev, "quirk sets invalid input map: 0x%x, default to DMIC_MAP\n", map);
-+		byt_rt5651_quirk &= ~BYT_RT5651_MAP_MASK;
-+		byt_rt5651_quirk |= BYT_RT5651_DMIC_MAP;
-+		break;
-+	}
-+
- 	if (BYT_RT5651_JDSRC(byt_rt5651_quirk)) {
- 		dev_info(dev, "quirk realtek,jack-detect-source %ld\n",
- 			 BYT_RT5651_JDSRC(byt_rt5651_quirk));
++	ksft_set_plan(VDSO_TEST_PLAN);
+ 
+ 	version = versions[VDSO_VERSION];
+ 	name = (const char **)&names[VDSO_NAMES];
 -- 
 2.51.0
 
