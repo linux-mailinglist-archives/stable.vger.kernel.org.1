@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FF1BD41AA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5D7BD438D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD29018A3E61
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0FF0188889C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C49A30F947;
-	Mon, 13 Oct 2025 15:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94503090C4;
+	Mon, 13 Oct 2025 15:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFb3SGlN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2EfsL5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE7C30F55D;
-	Mon, 13 Oct 2025 15:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A25223DC1;
+	Mon, 13 Oct 2025 15:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367888; cv=none; b=ddgxatrPDHBhbpnjYaWJdtXxXJjonJvhbAtFdxf3buQDqvVtz4Paqid5xz/IZgwiEO989wieGGdJxdF5XB0iXOycbuTVsOgaaHvFdxC/Wk1X3hQOQsWDkdHyRxYEZpjP4rjpye0IvaGoJsIBZzlHHT2bd3rQJUHKqn500VjB+cc=
+	t=1760368517; cv=none; b=tNu2pLsoA5VM5FZszENYNRMM15zPPOdgPTbk5JwW8aYi42FZw6TF+Ri6JHrFPquP+MZIn6jC2O19d9+GJIEslZ83XblqwaPvitFYve9B75tQQ1ATIAnIarENXGoEQcf+zmLS/m8FpiG91Z4HlsD6Gcfp9y8I6St61KOW6opXzgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367888; c=relaxed/simple;
-	bh=f7CV7VLHhzSXLMWLTpd9BWiYd8KM3veg+hnMglhfPEs=;
+	s=arc-20240116; t=1760368517; c=relaxed/simple;
+	bh=o+z99hE7i8E7NGVRlZNCtv9XxxvAjDW6sT5p0aztYpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGqpmgJ8Xbm2Jgg6pKmbxOXidkPWrj3toTd2FaI7yFMJ9CcSk9QR8LFrtAzwgW9ArFCJzo5UcV1vcYOb1pz76Fwfcyq6lzUiquY1WR7KjGDvp/JaL0Q90Pu8a3dBi6CjzSPZDBOgMx0smtDqfi/ISUg5Eax7X0eUyLr2lr6jsDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFb3SGlN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61034C4CEE7;
-	Mon, 13 Oct 2025 15:04:47 +0000 (UTC)
+	 MIME-Version; b=Ac6BW/tPnpH21XhTT+QvdC3Mr9bVQCf2n4fDxfYsxOoGXU+UsF7Qfd/vYEj0oGMHgELGoJ5x/aaXqssyWmiSkQxGke7pRj2eQYbcCFkm/r2BJHnAByOzRsqyZEpqX1ckcQ4/gFwd+iRmoM/df1t18tQJUHXDpXVGbvvHQ95MoN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2EfsL5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9898C113D0;
+	Mon, 13 Oct 2025 15:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367887;
-	bh=f7CV7VLHhzSXLMWLTpd9BWiYd8KM3veg+hnMglhfPEs=;
+	s=korg; t=1760368517;
+	bh=o+z99hE7i8E7NGVRlZNCtv9XxxvAjDW6sT5p0aztYpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFb3SGlNNd7K/DjVWKpwTvlfh6JBWvewd0DATa6ViCzPfRvMc++issNWL4vBXjk0S
-	 FTbif7Qfl7p35N2+LUhE6zxVYwuUqz7k0JpSYX9HvfKJioohHAD/IFROk8GD+IMnbD
-	 8NLbTMTKGozCL+ViD9czOVxxDkQqaQyh5akymjL0=
+	b=G2EfsL5pE/tX3LzUbzxFXwLNgeaafAezR+1jjYGshMQOcoMjilFhcN3X/EcVo4h9g
+	 eo7q5e4DUfJcl/zVq5Z6S3rYSAWJCx7B8TJtsSKeAXaWWS4ZI5sd8au82OqKiMvkUG
+	 CcVEWPf1Gun+sdpwuoT5Ox3nWLsLDAjxKA94IcGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>,
-	James Clark <james.clark@linaro.org>,
-	Mike Leach <mike.leach@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Anthony Iliopoulos <ailiop@suse.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 140/196] coresight-etm4x: Conditionally access register TRCEXTINSELR
+Subject: [PATCH 6.12 189/262] NFSv4.1: fix backchannel max_resp_sz verification check
 Date: Mon, 13 Oct 2025 16:45:31 +0200
-Message-ID: <20251013144320.379047674@linuxfoundation.org>
+Message-ID: <20251013144333.056302100@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit dcdc42f5dcf9b9197c51246c62966e2d54a033d8 ]
+[ Upstream commit 191512355e520dfc45c8bc3b56d4de59c3ade33e ]
 
-The TRCEXTINSELR is only implemented if TRCIDR5.NUMEXTINSEL > 0.
-To avoid invalid accesses, introduce a check on numextinsel
-(derived from TRCIDR5[11:9]) before reading or writing to this register.
+When the client max_resp_sz is larger than what the server encodes in
+its reply, the nfs4_verify_back_channel_attrs() check fails and this
+causes nfs4_proc_create_session() to fail, in cases where the client
+page size is larger than that of the server and the server does not want
+to negotiate upwards.
 
-Fixes: f5bd523690d2 ("coresight: etm4x: Convert all register accesses")
-Signed-off-by: Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250812-trcextinselr_issue-v2-1-e6eb121dfcf4@oss.qualcomm.com
+While this is not a problem with the linux nfs server that will reflect
+the proposed value in its reply irrespective of the local page size,
+other nfs server implementations may insist on their own max_resp_sz
+value, which could be smaller.
+
+Fix this by accepting smaller max_resp_sz values from the server, as
+this does not violate the protocol. The server is allowed to decrease
+but not increase proposed the size, and as such values smaller than the
+client-proposed ones are valid.
+
+Fixes: 43c2e885be25 ("nfs4: fix channel attribute sanity-checks")
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 11 ++++++++---
- drivers/hwtracing/coresight/coresight-etm4x.h      |  2 ++
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ fs/nfs/nfs4proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 05d9f87e35333..625582f7dc34c 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -481,7 +481,8 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, config->seq_rst, TRCSEQRSTEVR);
- 		etm4x_relaxed_write32(csa, config->seq_state, TRCSEQSTR);
- 	}
--	etm4x_relaxed_write32(csa, config->ext_inp, TRCEXTINSELR);
-+	if (drvdata->numextinsel)
-+		etm4x_relaxed_write32(csa, config->ext_inp, TRCEXTINSELR);
- 	for (i = 0; i < drvdata->nr_cntr; i++) {
- 		etm4x_relaxed_write32(csa, config->cntrldvr[i], TRCCNTRLDVRn(i));
- 		etm4x_relaxed_write32(csa, config->cntr_ctrl[i], TRCCNTCTLRn(i));
-@@ -1323,6 +1324,7 @@ static void etm4_init_arch_data(void *info)
- 	etmidr5 = etm4x_relaxed_read32(csa, TRCIDR5);
- 	/* NUMEXTIN, bits[8:0] number of external inputs implemented */
- 	drvdata->nr_ext_inp = FIELD_GET(TRCIDR5_NUMEXTIN_MASK, etmidr5);
-+	drvdata->numextinsel = FIELD_GET(TRCIDR5_NUMEXTINSEL_MASK, etmidr5);
- 	/* TRACEIDSIZE, bits[21:16] indicates the trace ID width */
- 	drvdata->trcid_size = FIELD_GET(TRCIDR5_TRACEIDSIZE_MASK, etmidr5);
- 	/* ATBTRIG, bit[22] implementation can support ATB triggers? */
-@@ -1750,7 +1752,9 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		state->trcseqrstevr = etm4x_read32(csa, TRCSEQRSTEVR);
- 		state->trcseqstr = etm4x_read32(csa, TRCSEQSTR);
- 	}
--	state->trcextinselr = etm4x_read32(csa, TRCEXTINSELR);
-+
-+	if (drvdata->numextinsel)
-+		state->trcextinselr = etm4x_read32(csa, TRCEXTINSELR);
- 
- 	for (i = 0; i < drvdata->nr_cntr; i++) {
- 		state->trccntrldvr[i] = etm4x_read32(csa, TRCCNTRLDVRn(i));
-@@ -1882,7 +1886,8 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, state->trcseqrstevr, TRCSEQRSTEVR);
- 		etm4x_relaxed_write32(csa, state->trcseqstr, TRCSEQSTR);
- 	}
--	etm4x_relaxed_write32(csa, state->trcextinselr, TRCEXTINSELR);
-+	if (drvdata->numextinsel)
-+		etm4x_relaxed_write32(csa, state->trcextinselr, TRCEXTINSELR);
- 
- 	for (i = 0; i < drvdata->nr_cntr; i++) {
- 		etm4x_relaxed_write32(csa, state->trccntrldvr[i], TRCCNTRLDVRn(i));
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
-index 6b6760e49ed35..d72f742b41054 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -162,6 +162,7 @@
- #define TRCIDR4_NUMVMIDC_MASK			GENMASK(31, 28)
- 
- #define TRCIDR5_NUMEXTIN_MASK			GENMASK(8, 0)
-+#define TRCIDR5_NUMEXTINSEL_MASK               GENMASK(11, 9)
- #define TRCIDR5_TRACEIDSIZE_MASK		GENMASK(21, 16)
- #define TRCIDR5_ATBTRIG				BIT(22)
- #define TRCIDR5_LPOVERRIDE			BIT(23)
-@@ -999,6 +1000,7 @@ struct etmv4_drvdata {
- 	u8				nr_cntr;
- 	u8				nr_ext_inp;
- 	u8				numcidc;
-+	u8				numextinsel;
- 	u8				numvmidc;
- 	u8				nrseqstate;
- 	u8				nr_event;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index ea92483d5e71e..c21e63027fc0e 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -9393,7 +9393,7 @@ static int nfs4_verify_back_channel_attrs(struct nfs41_create_session_args *args
+ 		goto out;
+ 	if (rcvd->max_rqst_sz > sent->max_rqst_sz)
+ 		return -EINVAL;
+-	if (rcvd->max_resp_sz < sent->max_resp_sz)
++	if (rcvd->max_resp_sz > sent->max_resp_sz)
+ 		return -EINVAL;
+ 	if (rcvd->max_resp_sz_cached > sent->max_resp_sz_cached)
+ 		return -EINVAL;
 -- 
 2.51.0
 
