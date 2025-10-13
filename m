@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E004EBD3C32
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:03 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B82BD3F2D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 601B41889ECC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4DCF234E0F9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BAE308F19;
-	Mon, 13 Oct 2025 14:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBBA30E0F7;
+	Mon, 13 Oct 2025 14:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6Q58DXL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/+bOrq1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F423081DE;
-	Mon, 13 Oct 2025 14:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E223081A3;
+	Mon, 13 Oct 2025 14:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366961; cv=none; b=dvfFtHRSnZb/L0r9mfPNToJX15cO43JVD2BEn/kmG6yffbIQZDKvsfHp9uiEf7jL/l4ABvkzunLcPIKZL7GPSHGF9By/dAK4JbeXJ2yOpvXir0dpbY406R86uz3yaEXNuwxPRBb9gQ9WCiM00R0EYjUn+yo68E5ZwQCR2RvlysE=
+	t=1760367477; cv=none; b=Fn0Hv/eIn2JG/pqXHXeQXVwxUrNxCxV9JUVFJH5ZmQEBWoqKFwYxeU3A3P/e+I9tWhvoMHQUkyuuhX+yrn8rYfPi3ohkg8A1pmVOKzPypJnanQH3DncOthvPVn9F65OVjnKzroQJ3R22gBxYDhXX9M0Llrt6XWbIwu/lOWIcyd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366961; c=relaxed/simple;
-	bh=yMsH2Hf6adJLu0wtBWpyRoOSa1zYJ+tGldR6Bl8UXqk=;
+	s=arc-20240116; t=1760367477; c=relaxed/simple;
+	bh=kJT0S2Nz2CBmVdYYMPt9gMw4tbFY1/b4B+CIWuiivwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MIxt7SUsHlhuVEEQKFv+pYRNLYb5syzcmiYYL27Wc9hXZJP9okuRwJXQyCwAuBXfAkhNDtuH+Fzqnvn8dSxOuxeOfwqoRCxer2P0Na+WDlbyULWvmGxZ4GN+FefyCfnDm1h2XxoOnlefP/6ody6zrk23/33alaSMNQJG5Y7GOHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6Q58DXL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4710CC4CEE7;
-	Mon, 13 Oct 2025 14:49:20 +0000 (UTC)
+	 MIME-Version; b=pa235e2YtSuKyWZ427CPbp5AF9+FZkYS1+YRiHUYsUgRJalkz2o+obqP6i2snRHZGOSyMvsRa8tgspfXOTAVjvAV11kK00+vm+QKnl47f6sqt2yqYImO3ITVHJP+YT34DjWB0e2QhmRkkPXtNgKAdtG488aLOC8DCWd7cI/hqFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/+bOrq1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A7BC4CEE7;
+	Mon, 13 Oct 2025 14:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366960;
-	bh=yMsH2Hf6adJLu0wtBWpyRoOSa1zYJ+tGldR6Bl8UXqk=;
+	s=korg; t=1760367476;
+	bh=kJT0S2Nz2CBmVdYYMPt9gMw4tbFY1/b4B+CIWuiivwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V6Q58DXLHiom3MYcAFe5wL8rfZ4bGIzd4BQ7SJqxbwdIFk/vFMAhccqZOadZrW4mh
-	 QbdPeiyUSkfiNoqoLiHMNLlqf8GZ0TBIcJ0uRKyWV2bsXfq8swMjhLckrO2eNdYJp3
-	 JUhk7/GmiNoQKhuIrpgMJf196B4ocuYOYK6uYXp4=
+	b=X/+bOrq1NvTjLJRjG7f0GIUpMbwjEZHfaMTWDEJof/LmjiVTlGiXWkDfyTZt5kfdG
+	 eOJqs3ZpX8dK9/Pa9XAyv7IhbDNqj0+4+dJfCpPHNJvCBgqseRVMyMnftrGEPcAMqH
+	 DXu+ryZTg/e8PY96DCYrXIULIW/vq0DJSV5nlNXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	stable <stable@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.1 043/196] driver core/PM: Set power.no_callbacks along with power.no_pm
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 025/196] ARM: at91: pm: fix MCKx restore routine
 Date: Mon, 13 Oct 2025 16:43:36 +0200
-Message-ID: <20251013144316.143260581@linuxfoundation.org>
+Message-ID: <20251013144316.106038029@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-commit c2ce2453413d429e302659abc5ace634e873f6f5 upstream.
+[ Upstream commit 296302d3d81360e09fa956e9be9edc8223b69a12 ]
 
-Devices with power.no_pm set are not expected to need any power
-management at all, so modify device_set_pm_not_required() to set
-power.no_callbacks for them too in case runtime PM will be enabled
-for any of them (which in principle may be done for convenience if
-such a device participates in a dependency chain).
+The at91_mckx_ps_restore() assembly function is responsible for setting
+back MCKx system bus clocks after exiting low power modes.
 
-Since device_set_pm_not_required() must be called before device_add()
-or it would not have any effect, it can update power.no_callbacks
-without locking, unlike pm_runtime_no_callbacks() that can be called
-after registering the target device.
+Fix a typo and use tmp3 variable instead of tmp2 to correctly set MCKx
+to previously saved state.
+Tmp2 was used without the needed changes in CSS and DIV. Moreover the
+required bit 7, telling that MCR register's content is to be changed
+(CMD/write), was not set.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/1950054.tdWV9SEqCh@rafael.j.wysocki
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix function comment to match tmp variables actually used.
+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Fixes: 28eb1d40fe57 ("ARM: at91: pm: add support for MCK1..4 save/restore for ulp modes")
+Link: https://lore.kernel.org/r/20250827145427.46819-3-nicolas.ferre@microchip.com
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+[claudiu.beznea: s/sate/state in commit description]
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/device.h |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/mach-at91/pm_suspend.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -813,6 +813,9 @@ static inline bool device_pm_not_require
- static inline void device_set_pm_not_required(struct device *dev)
- {
- 	dev->power.no_pm = true;
-+#ifdef CONFIG_PM
-+	dev->power.no_callbacks = true;
-+#endif
- }
+diff --git a/arch/arm/mach-at91/pm_suspend.S b/arch/arm/mach-at91/pm_suspend.S
+index e5869cca5e791..94dece1839af3 100644
+--- a/arch/arm/mach-at91/pm_suspend.S
++++ b/arch/arm/mach-at91/pm_suspend.S
+@@ -872,7 +872,7 @@ e_done:
+ /**
+  * at91_mckx_ps_restore: restore MCK1..4 settings
+  *
+- * Side effects: overwrites tmp1, tmp2
++ * Side effects: overwrites tmp1, tmp2 and tmp3
+  */
+ .macro at91_mckx_ps_restore
+ #ifdef CONFIG_SOC_SAMA7
+@@ -916,7 +916,7 @@ r_ps:
+ 	bic	tmp3, tmp3, #AT91_PMC_MCR_V2_ID_MSK
+ 	orr	tmp3, tmp3, tmp1
+ 	orr	tmp3, tmp3, #AT91_PMC_MCR_V2_CMD
+-	str	tmp2, [pmc, #AT91_PMC_MCR_V2]
++	str	tmp3, [pmc, #AT91_PMC_MCR_V2]
  
- static inline void dev_pm_syscore_device(struct device *dev, bool val)
+ 	wait_mckrdy tmp1
+ 
+-- 
+2.51.0
+
 
 
 
