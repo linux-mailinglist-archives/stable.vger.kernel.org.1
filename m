@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA8BBD497F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:55:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97702BD40B4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 81C0F5020B3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89EBD1887445
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4250723F294;
-	Mon, 13 Oct 2025 15:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F78D271A71;
+	Mon, 13 Oct 2025 15:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNm++VrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="li1bIZCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A61306B3C;
-	Mon, 13 Oct 2025 15:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A64424A063;
+	Mon, 13 Oct 2025 15:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368361; cv=none; b=WAtGw7bGO0eJX+nCCp2yLdBHxx6opu/FG/k1wpfMNf6gW0y2OQrpLKh+NMKZUao0hnlpxFHm6eEHHnYzCwldvBDeQWczGZ8NjtjndozAHD05tiqWB7z6BkSYOUkS9bPEM2RQw83bg6I7FpkoMOdYtM2sFfv6h8GhlqkIKHf3wrM=
+	t=1760367647; cv=none; b=V2rSC4Wmw2lJ9xbfL3NSC6/RTtNr4mylEm9g2w5eLq8FBmNoaotV/20kO+g2dbFaoSc+/5NLh0Ue8yYxvP6d3S2odkV9ZBqO5ykwcFmVVAo1vDGdGyBJOSke8S7Q/kSrkqdu3S6W2iHPbRE9q8Fm6zEmvC7ifG7OOj6Bsrt60ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368361; c=relaxed/simple;
-	bh=VgnHW2zdx6y7ygI8Ugbu0zChJJ60hUpA+9khrlzYy98=;
+	s=arc-20240116; t=1760367647; c=relaxed/simple;
+	bh=Ejs6OJfUJ5Lmv/NgJxD2LZ0IxwJPlY2ZV7weqN1p9qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdLFhSqjyGQAYCZfJAJghOZZteRXvQpz4iAnjGiCmoctZ42EY/pC6oP9pOis27eM5DZWwI0CD1K8blj4GrUtKEAewzIPQAG036RMmUT9ViS4ZYwhC5mV1T7PrBUEfvGrqVIERPzXwTF9uwB15qRWtCiMCsI43+nwFjF2boWKKhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNm++VrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795D7C4CEE7;
-	Mon, 13 Oct 2025 15:12:40 +0000 (UTC)
+	 MIME-Version; b=NYhxT1c9wCrjf018NrB2/KPnQbktF5ZuJIFBKX7uAXIL6gKIW/gvd05yLrpkJN18Qv+FSZgxesXvzBvy+K/o1GiYe8tHh2bBRcm3RkLxIU5EBF48WRBk2nivtGmhOM/U9TBrFTEdBYzC2MoMXjFnPqjvNMxLUZSCteoh35RTXpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=li1bIZCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3612C4CEE7;
+	Mon, 13 Oct 2025 15:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368360;
-	bh=VgnHW2zdx6y7ygI8Ugbu0zChJJ60hUpA+9khrlzYy98=;
+	s=korg; t=1760367647;
+	bh=Ejs6OJfUJ5Lmv/NgJxD2LZ0IxwJPlY2ZV7weqN1p9qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wNm++VrGd0AtDvlvI+M9PMSIecCtssXiyZY3VdtfpV8wafpJmhwBDyiS9G+7Jf3fZ
-	 dIpPs/EP06Xfl3EicWCpm0/S1sZJ4hnoJzYPZJ2Cr4b7+zqIdjoPp2S/rxvBGW8966
-	 21gfWlJRQGynQl6F9yIIDDgtpWHnxaUdNHMQJ5SA=
+	b=li1bIZCee7YCjfD9tSwl/isvWg7XaGYUxPwg7IEe3JAcvHXEuzFHeGjBxDmdN/kXP
+	 PQ82V5zEVIDJWP/44yIbTeMlsq1QUXV/8uGZIPDnMw4uaTNCkT8+Dxx8og02ioGL4D
+	 wkib89GghtC/vB/PwKggu5Oe0opzKi8lRd0VYeM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Ramu R <ramu.r@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Yuanfang Zhang <quic_yuanfang@quicinc.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/262] idpf: fix Rx descriptor ready check barrier in splitq
+Subject: [PATCH 6.6 084/196] coresight: Only register perf symlink for sinks with alloc_buffer
 Date: Mon, 13 Oct 2025 16:44:35 +0200
-Message-ID: <20251013144330.914307516@linuxfoundation.org>
+Message-ID: <20251013144318.357472043@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Yuanfang Zhang <quic_yuanfang@quicinc.com>
 
-[ Upstream commit c20edbacc0295fd36f5f634b3421647ce3e08fd7 ]
+[ Upstream commit 12d9a9dd9d8a4f1968073e7f34515896d1e22b78 ]
 
-No idea what the current barrier position was meant for. At that point,
-nothing is read from the descriptor, only the pointer to the actual one
-is fetched.
-The correct barrier usage here is after the generation check, so that
-only the first qword is read if the descriptor is not yet ready and we
-need to stop polling. Debatable on coherent DMA as the Rx descriptor
-size is <= cacheline size, but anyway, the current barrier position
-only makes the codegen worse.
+Ensure that etm_perf_add_symlink_sink() is only called for devices
+that implement the alloc_buffer operation. This prevents invalid
+symlink creation for dummy sinks that do not implement alloc_buffer.
 
-Fixes: 3a8845af66ed ("idpf: add RX splitq napi poll support")
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Tested-by: Ramu R <ramu.r@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Without this check, perf may attempt to use a dummy sink that lacks
+alloc_buffer operationsu to initialise perf's ring buffer, leading
+to runtime failures.
+
+Fixes: 9d3ba0b6c0569 ("Coresight: Add coresight dummy driver")
+Signed-off-by: Yuanfang Zhang <quic_yuanfang@quicinc.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250630-etm_perf_sink-v1-1-e4a7211f9ad7@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/hwtracing/coresight/coresight-core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 4086a6ef352e5..087a3077d5481 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3216,18 +3216,14 @@ static int idpf_rx_splitq_clean(struct idpf_rx_queue *rxq, int budget)
- 		/* get the Rx desc from Rx queue based on 'next_to_clean' */
- 		rx_desc = &rxq->rx[ntc].flex_adv_nic_3_wb;
+diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
+index 3b57851869eaa..a836952737209 100644
+--- a/drivers/hwtracing/coresight/coresight-core.c
++++ b/drivers/hwtracing/coresight/coresight-core.c
+@@ -1638,8 +1638,9 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
+ 		goto out_unlock;
+ 	}
  
--		/* This memory barrier is needed to keep us from reading
--		 * any other fields out of the rx_desc
--		 */
--		dma_rmb();
--
- 		/* if the descriptor isn't done, no work yet to do */
- 		gen_id = le16_get_bits(rx_desc->pktlen_gen_bufq_id,
- 				       VIRTCHNL2_RX_FLEX_DESC_ADV_GEN_M);
--
- 		if (idpf_queue_has(GEN_CHK, rxq) != gen_id)
- 			break;
+-	if (csdev->type == CORESIGHT_DEV_TYPE_SINK ||
+-	    csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) {
++	if ((csdev->type == CORESIGHT_DEV_TYPE_SINK ||
++	     csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) &&
++	    sink_ops(csdev)->alloc_buffer) {
+ 		ret = etm_perf_add_symlink_sink(csdev);
  
-+		dma_rmb();
-+
- 		rxdid = FIELD_GET(VIRTCHNL2_RX_FLEX_DESC_ADV_RXDID_M,
- 				  rx_desc->rxdid_ucast);
- 		if (rxdid != VIRTCHNL2_RXDID_2_FLEX_SPLITQ) {
+ 		if (ret) {
 -- 
 2.51.0
 
