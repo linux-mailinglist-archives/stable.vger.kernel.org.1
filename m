@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86269BD414E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7B9BD48E6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 30D7A34EB20
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 093F318A43BC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8BA311968;
-	Mon, 13 Oct 2025 15:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C3D30C34C;
+	Mon, 13 Oct 2025 15:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hD9/Fqgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbsAhp3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD6A311957;
-	Mon, 13 Oct 2025 15:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BB430C344;
+	Mon, 13 Oct 2025 15:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368176; cv=none; b=LLtedKjxX50BFzBFbqiW4UuvLbnbg4j9Xq5j6LFMIEt0ExjCeS9Fdd53t6GpA+tEjIMr1YuvB4RpHvmeI1HuKdaPMeYD94z42SY21IQREaoGHYLKtv9ZjUjV/o9LQ6+M6xty0EKdYirLAwSnSoJyTcbWoX9Sc+RtMPNm5tTqlao=
+	t=1760369640; cv=none; b=CAgn3ihjCTIMWPV5iAqIIcHkZQMd+9FfoyQPADzgtidCyZ7b1j+86f36I6liyHzCiYu633munU/qopgo/GhErNPdTFUVcORLSOsnC5NclxfITtcKOXGl4xCzrr4cTjnwN092nwVUinduQi8blD2VfO4i3hz8kI0sVFlx7qCoN5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368176; c=relaxed/simple;
-	bh=AlGXSfXk0hRNlNgMDH7ExD3E/qMqHN1mUAYEDBumZvE=;
+	s=arc-20240116; t=1760369640; c=relaxed/simple;
+	bh=ClPOrrXWkDCds6teY3NsDc9smLg80KnLmOE2ySE9N1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nD4kXinq1pEwdc2C/PTuciGr31+phQ9u3GF0wDHR2rLyImYa/dmCl++iIX8rEEXc/90mQFHgyzrV1VIslrGcORns+K/e9Tb+N/+BBd3STfUvjqjK0JwUIT5da531nO07yyuL8SZoS4TRVe2PGcinqzHm8oi73CjaCF3JJ3HIcqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hD9/Fqgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59003C4CEE7;
-	Mon, 13 Oct 2025 15:09:36 +0000 (UTC)
+	 MIME-Version; b=jiSungqp+8K28SLB9ePYQaK+KP6E6bV5BcovR5yEecYaUQi7r9BJyJ05rPNv0lPWJvpbyRmV1nqOzPttj0p2api1WvaIMB7OPhp/yGKfSk+uYgEV5Rwn/4q68QeBW3psM9gcWZFd7Y6PR/xvrD4IvKthOJhK4iGGzHEL4f2d2C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbsAhp3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77094C4CEE7;
+	Mon, 13 Oct 2025 15:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368176;
-	bh=AlGXSfXk0hRNlNgMDH7ExD3E/qMqHN1mUAYEDBumZvE=;
+	s=korg; t=1760369639;
+	bh=ClPOrrXWkDCds6teY3NsDc9smLg80KnLmOE2ySE9N1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hD9/Fqgb0BUDAwB7pCE995X3Rh61r00787e7H6o6+X3lHYbS620sYBZblOO4uQ03E
-	 xaVU/gHZ1YkS06jTpVDC+NQOh/mAlu9WQE/s3lI1GIGJaSf1nd1R/JWIWv4q9/qZU3
-	 i0eEMN7kOkOVAjv6M4qCU9LZnxdxDP7vjOr/2sNI=
+	b=QbsAhp3d1mfYx9EGhqkmznYui2zqOHdko5ZXGOxLCh52AzRMlyzjq4FcrFBMVaNBI
+	 7m5F8TvoZDu0dOtRNiYyCnjNEk6e9+xcKnKk8X6do50/RhKGlaDd+PrK67NCDmzehr
+	 uj7LawPthZE9rrlCc4XcBQ3/VvvnQBTdM4oADJuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/262] regulator: scmi: Use int type to store negative error codes
+Subject: [PATCH 6.17 318/563] drm/amdkfd: Fix error code sign for EINVAL in svm_ioctl()
 Date: Mon, 13 Oct 2025 16:42:59 +0200
-Message-ID: <20251013144327.468351503@linuxfoundation.org>
+Message-ID: <20251013144422.786537787@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 9d35d068fb138160709e04e3ee97fe29a6f8615b ]
+[ Upstream commit cbda64f3f58027f68211dda8ea94d52d7e493995 ]
 
-Change the 'ret' variable from u32 to int to store negative error codes or
-zero returned by of_property_read_u32().
+Use negative error code -EINVAL instead of positive EINVAL in the default
+case of svm_ioctl() to conform to Linux kernel error code conventions.
 
-Storing the negative error codes in unsigned type, doesn't cause an issue
-at runtime but it's ugly as pants. Additionally, assigning negative error
-codes to unsigned type may trigger a GCC warning when the -Wsign-conversion
-flag is enabled.
-
-No effect on runtime.
-
+Fixes: 42de677f7999 ("drm/amdkfd: register svm range")
 Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Fixes: 0fbeae70ee7c ("regulator: add SCMI driver")
-Link: https://patch.msgid.link/20250829101411.625214-1-rongqianfeng@vivo.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/scmi-regulator.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
-index 9df726f10ad12..6d609c42e4793 100644
---- a/drivers/regulator/scmi-regulator.c
-+++ b/drivers/regulator/scmi-regulator.c
-@@ -257,7 +257,8 @@ static int process_scmi_regulator_of_node(struct scmi_device *sdev,
- 					  struct device_node *np,
- 					  struct scmi_regulator_info *rinfo)
- {
--	u32 dom, ret;
-+	u32 dom;
-+	int ret;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index a0f22ea6d15af..3d8b20828c068 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -4239,7 +4239,7 @@ svm_ioctl(struct kfd_process *p, enum kfd_ioctl_svm_op op, uint64_t start,
+ 		r = svm_range_get_attr(p, mm, start, size, nattrs, attrs);
+ 		break;
+ 	default:
+-		r = EINVAL;
++		r = -EINVAL;
+ 		break;
+ 	}
  
- 	ret = of_property_read_u32(np, "reg", &dom);
- 	if (ret)
 -- 
 2.51.0
 
