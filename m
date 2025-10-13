@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-184963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF0CBD44E0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7DFBD4B64
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 68A1234FA7A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 575FC4263E3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0769B30F959;
-	Mon, 13 Oct 2025 15:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D7A30FC00;
+	Mon, 13 Oct 2025 15:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7CYmWR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hm42WFue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90D730BB99;
-	Mon, 13 Oct 2025 15:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314B52FB978;
+	Mon, 13 Oct 2025 15:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368941; cv=none; b=Vwx71RAEoC8hphPEVBHDlhIS4+Vm7Qvc/gxyyGtououbMABXADZBkxpuKbZOQ6BH+2vMsfNUi9Gc7sgfUoCaYampeWs+64+n9l+poNHslFYJWD2bJtW8VYuTbUH6K62BkLoTTKvjKFDg5ix1aSFcJREyz3ZzcjYhgcXZYR1BrxM=
+	t=1760368956; cv=none; b=FPrsFBnyFLwJz6g2d25L8sZuhIcNkUJD65AtLHKqfiUdQlEOJCyzyAftPTerXnuKTpLG/gNWEZr/QztiFNFllhHM8ybsl018/I4VFMJAuJ/RbDZUp74OxuiHLOwD/3+tggxMFvZJxvgXJvo/GYmiroxQi4bcbo5wkS8K7DGdd0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368941; c=relaxed/simple;
-	bh=9uevbsVNZ76wjDms8QhqtojU3hbRInaB1AOYbG35RrQ=;
+	s=arc-20240116; t=1760368956; c=relaxed/simple;
+	bh=dMs3zjubW0TKTUTbJUsa2otpMvGP79ZJ+1rwlqh/zkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbJbBg+1q12Bpo8OD8iPZFyvYrr82aECGluK8iaHeUGCJm9jlDY/f/3Q8PGkgaimX658R6mleOlb0uuDbrh1GRMCVW6AsfqT4SwvcXDSfvEcUSwvSRc+vX/jnytKniLUl7eTjrSJdgdMa63ib8FYdHHLr95rygXEMGpyaViBCHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7CYmWR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4030DC116B1;
-	Mon, 13 Oct 2025 15:22:21 +0000 (UTC)
+	 MIME-Version; b=S4TztwZWeX8C2dWEbT3vgOyXHEM/ifH4j9YKe/YYFZv7Bps4Bkt4jqjg7esiEmwHRDX98sxCQ/Y2ZC+dnsCvWRv5liqVeVifUbMPsC8VQ/IyiIT5WD88wvm2Ppwf1QKDbi5yQd9wiW/e6UAFmMEDC9dN4kT0pfOoEM/Q3Vw8Zx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hm42WFue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84AAC4CEE7;
+	Mon, 13 Oct 2025 15:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368941;
-	bh=9uevbsVNZ76wjDms8QhqtojU3hbRInaB1AOYbG35RrQ=;
+	s=korg; t=1760368956;
+	bh=dMs3zjubW0TKTUTbJUsa2otpMvGP79ZJ+1rwlqh/zkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7CYmWR/LTC/pKEh4PFpuZWwwLNcvSBxcHMCya26J6h/ityLAobN9WSeSeViFh5sv
-	 f0WAnZ5EAzqjV4RWqIpFoslSll7INbN86VanvvLQEUpL88BsS6BTZzVrpZLORqJpuC
-	 vM95ORNZm/IqeT+MB5LWMcHi8DC2F89RBEOecOA0=
+	b=Hm42WFueVcU7URy9ABPrmtAYUH2KacswB1OSj3bC3WHiQ3exbd8N2KB89nkNYWlM+
+	 vFetITuPW8OJ6cGPoypV1TA00FyKPwmk4aXydeollpwJ1ve4uM7AeZbIayYFXJIzmC
+	 scGeFY91R3nFNhgnUoC75He+bkLajnAiANrJfqnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Da Xue <da@libre.computer>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 072/563] pinctrl: meson-gxl: add missing i2c_d pinmux
-Date: Mon, 13 Oct 2025 16:38:53 +0200
-Message-ID: <20251013144413.900963042@linuxfoundation.org>
+Subject: [PATCH 6.17 077/563] regulator: scmi: Use int type to store negative error codes
+Date: Mon, 13 Oct 2025 16:38:58 +0200
+Message-ID: <20251013144414.081215564@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,65 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Da Xue <da@libre.computer>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit d8c2a9edd181f0cc4a66eec954b3d8f6a1d954a7 ]
+[ Upstream commit 9d35d068fb138160709e04e3ee97fe29a6f8615b ]
 
-Amlogic GXL has 4 I2C attached to gpio-periphs. I2C_D is on GPIOX_10/11.
+Change the 'ret' variable from u32 to int to store negative error codes or
+zero returned by of_property_read_u32().
 
-Add the relevant func 3 pinmux per the datasheet for S805X/S905X/S905D.
+Storing the negative error codes in unsigned type, doesn't cause an issue
+at runtime but it's ugly as pants. Additionally, assigning negative error
+codes to unsigned type may trigger a GCC warning when the -Wsign-conversion
+flag is enabled.
 
-Fixes: 0f15f500ff2c ("pinctrl: meson: Add GXL pinctrl definitions")
-Signed-off-by: Da Xue <da@libre.computer>
-Link: https://lore.kernel.org/20250821233335.1707559-1-da@libre.computer
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+No effect on runtime.
+
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 0fbeae70ee7c ("regulator: add SCMI driver")
+Link: https://patch.msgid.link/20250829101411.625214-1-rongqianfeng@vivo.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson-gxl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/regulator/scmi-regulator.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-meson-gxl.c b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-index 9171de657f978..a75762e4d2641 100644
---- a/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-@@ -187,6 +187,9 @@ static const unsigned int i2c_sda_c_pins[]	= { GPIODV_28 };
- static const unsigned int i2c_sck_c_dv19_pins[] = { GPIODV_19 };
- static const unsigned int i2c_sda_c_dv18_pins[] = { GPIODV_18 };
+diff --git a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
+index 9df726f10ad12..6d609c42e4793 100644
+--- a/drivers/regulator/scmi-regulator.c
++++ b/drivers/regulator/scmi-regulator.c
+@@ -257,7 +257,8 @@ static int process_scmi_regulator_of_node(struct scmi_device *sdev,
+ 					  struct device_node *np,
+ 					  struct scmi_regulator_info *rinfo)
+ {
+-	u32 dom, ret;
++	u32 dom;
++	int ret;
  
-+static const unsigned int i2c_sck_d_pins[]	= { GPIOX_11 };
-+static const unsigned int i2c_sda_d_pins[]	= { GPIOX_10 };
-+
- static const unsigned int eth_mdio_pins[]	= { GPIOZ_0 };
- static const unsigned int eth_mdc_pins[]	= { GPIOZ_1 };
- static const unsigned int eth_clk_rx_clk_pins[] = { GPIOZ_2 };
-@@ -411,6 +414,8 @@ static const struct meson_pmx_group meson_gxl_periphs_groups[] = {
- 	GPIO_GROUP(GPIO_TEST_N),
- 
- 	/* Bank X */
-+	GROUP(i2c_sda_d,	5,	5),
-+	GROUP(i2c_sck_d,	5,	4),
- 	GROUP(sdio_d0,		5,	31),
- 	GROUP(sdio_d1,		5,	30),
- 	GROUP(sdio_d2,		5,	29),
-@@ -651,6 +656,10 @@ static const char * const i2c_c_groups[] = {
- 	"i2c_sck_c", "i2c_sda_c", "i2c_sda_c_dv18", "i2c_sck_c_dv19",
- };
- 
-+static const char * const i2c_d_groups[] = {
-+	"i2c_sck_d", "i2c_sda_d",
-+};
-+
- static const char * const eth_groups[] = {
- 	"eth_mdio", "eth_mdc", "eth_clk_rx_clk", "eth_rx_dv",
- 	"eth_rxd0", "eth_rxd1", "eth_rxd2", "eth_rxd3",
-@@ -777,6 +786,7 @@ static const struct meson_pmx_func meson_gxl_periphs_functions[] = {
- 	FUNCTION(i2c_a),
- 	FUNCTION(i2c_b),
- 	FUNCTION(i2c_c),
-+	FUNCTION(i2c_d),
- 	FUNCTION(eth),
- 	FUNCTION(pwm_a),
- 	FUNCTION(pwm_b),
+ 	ret = of_property_read_u32(np, "reg", &dom);
+ 	if (ret)
 -- 
 2.51.0
 
