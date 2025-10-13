@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-184253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A66BD3CDE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:00:43 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC7ABD4135
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6EE340015D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:52:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8CFF834A57D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4D430B510;
-	Mon, 13 Oct 2025 14:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DFF3115A9;
+	Mon, 13 Oct 2025 15:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oszt/B0t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha8qGzIu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51D92F9985;
-	Mon, 13 Oct 2025 14:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA693093C9;
+	Mon, 13 Oct 2025 15:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366902; cv=none; b=Pn4rqd6dNffEY0LOhSOlXiK2OrXOdZsWfvtPi9TxT7S1hgfGyzB5vNVV3lNC+0Ne4XSYNxsX2PjIYn7yEhta4LCtHzWVe0cZmGuQXNrgvV8Gnjia87BOaOlHI5ADeR2O9/xFvp3sE8S1EA8vhj1jSPACpTBXUlGxupKdf7RB514=
+	t=1760368133; cv=none; b=K4kGwAQp2AVQg+8mCBVq8Y7LDsFDIzDEyQnieykttGP0IpztLJks071Zpadc7O9Dp+XEZMBp7xhJnlt84VbqEiYHT+ilKGZhXJLC3cSwAno6mtSYHixyKzT5TlsUHv8eK+o9BFkTRrYBaym/maLfhT25xuNRbXS79K6d4BqYnzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366902; c=relaxed/simple;
-	bh=hjYyTGD6PqJpq3Iszc6/8VZFagHApJHdtWVoFQuf+uM=;
+	s=arc-20240116; t=1760368133; c=relaxed/simple;
+	bh=XcnLqL92Z40LC1u1L4BPcZS9nc8H4jm3mpm8H3OEOJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck/i108lx3q/qJMoj02goPQKMCf7kK00CKlk58QxcsXEToTH2IgVDHDSSw/oGpXX/neEu7ZWSnAL5XCPQ+UMW+TUd9Zs+YJGVYZnuC+GTg3fT6Ocz9ZwX/ul7NQVGNId6W8womSpeVvWiVZMtcYxRKWZ88C+HVNYzSGjZ7V0Lg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oszt/B0t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A0CC4CEE7;
-	Mon, 13 Oct 2025 14:48:21 +0000 (UTC)
+	 MIME-Version; b=VnD2UWXogsikmFre8P52n2QxdrvCwnJBWJMPQsjRxaB3KZjo8nXckyxdQ9PXkJP1NjzX2UbZgM90bqTmsE6yobtHz2GhLK+QmdyZmzXOJ7Oq98k6gzu5saVOnSgIMQeTx7KW2B6QUwymDH9YDoCT/rQujOrabv+6F8Q5GDLRjww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha8qGzIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50E3C4CEE7;
+	Mon, 13 Oct 2025 15:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366902;
-	bh=hjYyTGD6PqJpq3Iszc6/8VZFagHApJHdtWVoFQuf+uM=;
+	s=korg; t=1760368133;
+	bh=XcnLqL92Z40LC1u1L4BPcZS9nc8H4jm3mpm8H3OEOJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oszt/B0tlkdyyB+N45czRhcirZI6yZVh78LKVwlyHxbYP7gJa9gN+n0+AmzGja+Yd
-	 M7KA31lmXrlA4VUZ+xyBou7Oin7wBQLqUQ1aPyS/PSDXZosDf6/s9eMeyMsfD1NE52
-	 aip2gPdxpu5jQeWPmBNwHjlI/FE9nm5C7Avb8z2w=
+	b=ha8qGzIu4Eu1D8LlZ/tx/OiV/Vfdu227cAzVObljooh6KWi9YEr5Haj16DQ676FqY
+	 D4XskqTOmF+n9g15UqQIBdo5pU3EkOxQVdGbyja6h6ijTV2vxHRuCxJCTFdolPctV/
+	 3ypDvP7nyuqFnQE4uz5WAanh/qp90lBf7B8jx5pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arnd Bergmann <arnd@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.1 024/196] minmax.h: update some comments
+	Johan Hovold <johan@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 055/262] firmware: firmware: meson-sm: fix compile-test default
 Date: Mon, 13 Oct 2025 16:43:17 +0200
-Message-ID: <20251013144315.455476298@linuxfoundation.org>
+Message-ID: <20251013144328.110353116@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,130 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 10666e99204818ef45c702469488353b5bb09ec7 ]
+[ Upstream commit 0454346d1c5f7fccb3ef6e3103985de8ab3469f3 ]
 
-- Change three to several.
-- Remove the comment about retaining constant expressions, no longer true.
-- Realign to nearer 80 columns and break on major punctiation.
-- Add a leading comment to the block before __signed_type() and __is_nonneg()
-  Otherwise the block explaining the cast is a bit 'floating'.
-  Reword the rest of that comment to improve readability.
+Enabling compile testing should not enable every individual driver (we
+have "allyesconfig" for that).
 
-Link: https://lkml.kernel.org/r/85b050c81c1d4076aeb91a6cded45fee@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4a434abc40d2 ("firmware: meson-sm: enable build as module")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250725075429.10056-1-johan@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   61 ++++++++++++++++++++++---------------------------
- 1 file changed, 28 insertions(+), 33 deletions(-)
+ drivers/firmware/meson/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -8,13 +8,10 @@
- #include <linux/types.h>
- 
- /*
-- * min()/max()/clamp() macros must accomplish three things:
-+ * min()/max()/clamp() macros must accomplish several things:
-  *
-  * - Avoid multiple evaluations of the arguments (so side-effects like
-  *   "x++" happen only once) when non-constant.
-- * - Retain result as a constant expressions when called with only
-- *   constant expressions (to avoid tripping VLA warnings in stack
-- *   allocation usage).
-  * - Perform signed v unsigned type-checking (to generate compile
-  *   errors instead of nasty runtime surprises).
-  * - Unsigned char/short are always promoted to signed int and can be
-@@ -31,25 +28,23 @@
-  *   bit #0 set if ok for unsigned comparisons
-  *   bit #1 set if ok for signed comparisons
-  *
-- * In particular, statically non-negative signed integer
-- * expressions are ok for both.
-+ * In particular, statically non-negative signed integer expressions
-+ * are ok for both.
-  *
-- * NOTE! Unsigned types smaller than 'int' are implicitly
-- * converted to 'int' in expressions, and are accepted for
-- * signed conversions for now. This is debatable.
-- *
-- * Note that 'x' is the original expression, and 'ux' is
-- * the unique variable that contains the value.
-- *
-- * We use 'ux' for pure type checking, and 'x' for when
-- * we need to look at the value (but without evaluating
-- * it for side effects! Careful to only ever evaluate it
-- * with sizeof() or __builtin_constant_p() etc).
-- *
-- * Pointers end up being checked by the normal C type
-- * rules at the actual comparison, and these expressions
-- * only need to be careful to not cause warnings for
-- * pointer use.
-+ * NOTE! Unsigned types smaller than 'int' are implicitly converted to 'int'
-+ * in expressions, and are accepted for signed conversions for now.
-+ * This is debatable.
-+ *
-+ * Note that 'x' is the original expression, and 'ux' is the unique variable
-+ * that contains the value.
-+ *
-+ * We use 'ux' for pure type checking, and 'x' for when we need to look at the
-+ * value (but without evaluating it for side effects!
-+ * Careful to only ever evaluate it with sizeof() or __builtin_constant_p() etc).
-+ *
-+ * Pointers end up being checked by the normal C type rules at the actual
-+ * comparison, and these expressions only need to be careful to not cause
-+ * warnings for pointer use.
-  */
- #define __signed_type_use(x, ux) (2 + __is_nonneg(x, ux))
- #define __unsigned_type_use(x, ux) (1 + 2 * (sizeof(ux) < 4))
-@@ -57,19 +52,19 @@
- 	__signed_type_use(x, ux) : __unsigned_type_use(x, ux))
- 
- /*
-- * To avoid warnings about casting pointers to integers
-- * of different sizes, we need that special sign type.
-+ * Check whether a signed value is always non-negative.
-  *
-- * On 64-bit we can just always use 'long', since any
-- * integer or pointer type can just be cast to that.
-+ * A cast is needed to avoid any warnings from values that aren't signed
-+ * integer types (in which case the result doesn't matter).
-  *
-- * This does not work for 128-bit signed integers since
-- * the cast would truncate them, but we do not use s128
-- * types in the kernel (we do use 'u128', but they will
-- * be handled by the !is_signed_type() case).
-- *
-- * NOTE! The cast is there only to avoid any warnings
-- * from when values that aren't signed integer types.
-+ * On 64-bit any integer or pointer type can safely be cast to 'long'.
-+ * But on 32-bit we need to avoid warnings about casting pointers to integers
-+ * of different sizes without truncating 64-bit values so 'long' or 'long long'
-+ * must be used depending on the size of the value.
-+ *
-+ * This does not work for 128-bit signed integers since the cast would truncate
-+ * them, but we do not use s128 types in the kernel (we do use 'u128',
-+ * but they are handled by the !is_signed_type() case).
-  */
- #ifdef CONFIG_64BIT
-   #define __signed_type(ux) long
+diff --git a/drivers/firmware/meson/Kconfig b/drivers/firmware/meson/Kconfig
+index f2fdd37566482..179f5d46d8ddf 100644
+--- a/drivers/firmware/meson/Kconfig
++++ b/drivers/firmware/meson/Kconfig
+@@ -5,7 +5,7 @@
+ config MESON_SM
+ 	tristate "Amlogic Secure Monitor driver"
+ 	depends on ARCH_MESON || COMPILE_TEST
+-	default y
++	default ARCH_MESON
+ 	depends on ARM64_4K_PAGES
+ 	help
+ 	  Say y here to enable the Amlogic secure monitor driver
+-- 
+2.51.0
+
 
 
 
