@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-184816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5D7BD438D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C4BBD3F87
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0FF0188889C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B30C188C81B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94503090C4;
-	Mon, 13 Oct 2025 15:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D16730CDAF;
+	Mon, 13 Oct 2025 14:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2EfsL5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfYRbIEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A25223DC1;
-	Mon, 13 Oct 2025 15:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B40277CB8;
+	Mon, 13 Oct 2025 14:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368517; cv=none; b=tNu2pLsoA5VM5FZszENYNRMM15zPPOdgPTbk5JwW8aYi42FZw6TF+Ri6JHrFPquP+MZIn6jC2O19d9+GJIEslZ83XblqwaPvitFYve9B75tQQ1ATIAnIarENXGoEQcf+zmLS/m8FpiG91Z4HlsD6Gcfp9y8I6St61KOW6opXzgI=
+	t=1760367313; cv=none; b=akvgP09GtVlHxLBgvX2pj4aK6zeX2+a2w7lY06WQtiwIBDbxv4nmP3rRNU3yeGerFNP8T+j+66d2yddNP0cniamiRfSlsjjMtIh7Gv5OUnWowrzjoOrO56TIxCWSePjc9aAiWDrA8zRvtJwdl0IxCsUNnAvZzOAGH3oUh39jR6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368517; c=relaxed/simple;
-	bh=o+z99hE7i8E7NGVRlZNCtv9XxxvAjDW6sT5p0aztYpM=;
+	s=arc-20240116; t=1760367313; c=relaxed/simple;
+	bh=IYPRq0vzMyHLOpZTRAYNEkqnR3Cr7OM9TiEimWDZHC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ac6BW/tPnpH21XhTT+QvdC3Mr9bVQCf2n4fDxfYsxOoGXU+UsF7Qfd/vYEj0oGMHgELGoJ5x/aaXqssyWmiSkQxGke7pRj2eQYbcCFkm/r2BJHnAByOzRsqyZEpqX1ckcQ4/gFwd+iRmoM/df1t18tQJUHXDpXVGbvvHQ95MoN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2EfsL5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9898C113D0;
-	Mon, 13 Oct 2025 15:15:16 +0000 (UTC)
+	 MIME-Version; b=dqqQEmvPZOnvZ1bYgUpmXcCitcmZFGrqp0w+9z4KHM/uOyV5m1KMmo7y+snbcob+YWFzrz3vbmOG30m5Ge1vYPgcu2JXuXoKrxvxLGlZrYEdBr+hser1iNHmCFroy+7VxJt2qAVK3FkhwjWMeAltA8w3jXB7ornv8OUtBmGVBdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfYRbIEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371A6C4CEE7;
+	Mon, 13 Oct 2025 14:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368517;
-	bh=o+z99hE7i8E7NGVRlZNCtv9XxxvAjDW6sT5p0aztYpM=;
+	s=korg; t=1760367312;
+	bh=IYPRq0vzMyHLOpZTRAYNEkqnR3Cr7OM9TiEimWDZHC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2EfsL5pE/tX3LzUbzxFXwLNgeaafAezR+1jjYGshMQOcoMjilFhcN3X/EcVo4h9g
-	 eo7q5e4DUfJcl/zVq5Z6S3rYSAWJCx7B8TJtsSKeAXaWWS4ZI5sd8au82OqKiMvkUG
-	 CcVEWPf1Gun+sdpwuoT5Ox3nWLsLDAjxKA94IcGc=
+	b=YfYRbIEyfLZJ7YHDobG1YkYXsPJ/zu4V2ILt/vPVzxtmsPtZQ7BBBDwG9M6bema/r
+	 2Z0CDGMuiIO5I1KclvSWEcF2He2y/TtqwiFvWdLX7pAZXK4EAIdPuFQ71Vj592rG+I
+	 Jt/BFq8xowbnfnNIPKOHVRE1O5bdStdzbSb1jqA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Iliopoulos <ailiop@suse.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 189/262] NFSv4.1: fix backchannel max_resp_sz verification check
+Subject: [PATCH 6.1 158/196] Bluetooth: ISO: Fix possible UAF on iso_conn_free
 Date: Mon, 13 Oct 2025 16:45:31 +0200
-Message-ID: <20251013144333.056302100@linuxfoundation.org>
+Message-ID: <20251013144320.414963514@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Iliopoulos <ailiop@suse.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 191512355e520dfc45c8bc3b56d4de59c3ade33e ]
+[ Upstream commit 9950f095d6c875dbe0c9ebfcf972ec88fdf26fc8 ]
 
-When the client max_resp_sz is larger than what the server encodes in
-its reply, the nfs4_verify_back_channel_attrs() check fails and this
-causes nfs4_proc_create_session() to fail, in cases where the client
-page size is larger than that of the server and the server does not want
-to negotiate upwards.
+This attempt to fix similar issue to sco_conn_free where if the
+conn->sk is not set to NULL may lead to UAF on iso_conn_free.
 
-While this is not a problem with the linux nfs server that will reflect
-the proposed value in its reply irrespective of the local page size,
-other nfs server implementations may insist on their own max_resp_sz
-value, which could be smaller.
-
-Fix this by accepting smaller max_resp_sz values from the server, as
-this does not violate the protocol. The server is allowed to decrease
-but not increase proposed the size, and as such values smaller than the
-client-proposed ones are valid.
-
-Fixes: 43c2e885be25 ("nfs4: fix channel attribute sanity-checks")
-Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/iso.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index ea92483d5e71e..c21e63027fc0e 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -9393,7 +9393,7 @@ static int nfs4_verify_back_channel_attrs(struct nfs41_create_session_args *args
- 		goto out;
- 	if (rcvd->max_rqst_sz > sent->max_rqst_sz)
- 		return -EINVAL;
--	if (rcvd->max_resp_sz < sent->max_resp_sz)
-+	if (rcvd->max_resp_sz > sent->max_resp_sz)
- 		return -EINVAL;
- 	if (rcvd->max_resp_sz_cached > sent->max_resp_sz_cached)
- 		return -EINVAL;
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 437cbeaa96193..5f6e4c79e190b 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -581,6 +581,13 @@ static void iso_sock_kill(struct sock *sk)
+ 
+ 	BT_DBG("sk %p state %d", sk, sk->sk_state);
+ 
++	/* Sock is dead, so set conn->sk to NULL to avoid possible UAF */
++	if (iso_pi(sk)->conn) {
++		iso_conn_lock(iso_pi(sk)->conn);
++		iso_pi(sk)->conn->sk = NULL;
++		iso_conn_unlock(iso_pi(sk)->conn);
++	}
++
+ 	/* Kill poor orphan */
+ 	bt_sock_unlink(&iso_sk_list, sk);
+ 	sock_set_flag(sk, SOCK_DEAD);
 -- 
 2.51.0
 
