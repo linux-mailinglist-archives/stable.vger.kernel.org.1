@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB3CBD4A7F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:59 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3736EBD49EE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 57267502984
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:48:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA46D5481BD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4383D31A54C;
-	Mon, 13 Oct 2025 15:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E09314B60;
+	Mon, 13 Oct 2025 15:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhVmI0YW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRRJ+4Zf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E1B312819;
-	Mon, 13 Oct 2025 15:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48A930E0C7;
+	Mon, 13 Oct 2025 15:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369313; cv=none; b=F3334OGcMMWOivT+jcNbnf8t1NRDEkp/HlIRrvh349qzr8ReXYLniwn9iOxuKs3mSs67Mf9DKZ154g26BdpMuMumcOYo5bzInA4dJKkOJsK8lru5ndZ+VnthAiiZXqfOECzZG7Trwg8qIBwfDSu++nfVyLQhL/iGMsQ0CBLU/PA=
+	t=1760369218; cv=none; b=WP3YEHWke92I5OTwBYuzAsK+9zpKsoojnLNmOcxfZiIQkesOEJVDzJPWYxggom3NIOMFlfoKi5ZCDElaxuIxshCm4oJGa1nngYFa5Ob7LXf6bDQ/Z/wy+KZUXTcXU41VvfGmKEEa66E3lP6qiZzgLdYMkJI8SP3JfZjK8D4MrH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369313; c=relaxed/simple;
-	bh=ZCgU8y5I1uEFg7r3dLWr5yhA11DGxcZw0i5WpFa7Qx0=;
+	s=arc-20240116; t=1760369218; c=relaxed/simple;
+	bh=ZptFrQa9F44TCl5kpDAgn+KNWNTPw/xnOYy0P7yvscs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjW9vqTkCZr2ur/x0Vto1VaCfGAcpEgxVcE6Bib1pqNMqVbPadUsTuOVv+7eyLQB+/H4d/6PQOWblLhJQ0yGs2vYQU7jTuPnLn0DKZbbzbMpc61PiNt7hZW43ETsLx4QgOaOuBoZ/JHQ9PswehhpFwjADTmBsR1ITbaVyp113Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhVmI0YW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FA0C4CEFE;
-	Mon, 13 Oct 2025 15:28:32 +0000 (UTC)
+	 MIME-Version; b=tuWgTufEaicq5sBg9nx8MHikdR54JCQMp4INkD/ggKQzt2DmziJzzR+PSU6QiaDcfE5ldltZfb3g9225zvE9siafJAjRvrLjXbCPKRmOVC0mmh+b2LOifLEhAeFgM61xRONmaDpzPOd70MPw8k4Be/zml/JmHoKGVTjSAAfTH30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRRJ+4Zf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E279DC4CEE7;
+	Mon, 13 Oct 2025 15:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369312;
-	bh=ZCgU8y5I1uEFg7r3dLWr5yhA11DGxcZw0i5WpFa7Qx0=;
+	s=korg; t=1760369218;
+	bh=ZptFrQa9F44TCl5kpDAgn+KNWNTPw/xnOYy0P7yvscs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhVmI0YWIMC0Jm7f1C9SsQhCRl6bdtnPZ6OEZOdP0CRFuzLhK6wyfvcoMxt3gCmht
-	 DJwvIIMFRz1biuKucTy6nlAO5N3ERyH1WQFgqMYxMtajYj9A5Bfkac6YsxLhCT4IQW
-	 7uTXUoTGZM0TV3tObtLm4TrTKFkg7IbSDAMHrCXE=
+	b=zRRJ+4Zf/0zIJrFoVp+O+5RG8rlvq2TNrv1kDfobqmQFPtoklLXM8byuXyO16a0lj
+	 R0LmjwcZvhHi2I+D3559KsRkV46T/3GQ8viNKMKia7O7VwaEnMxJT3pcFubqyHnKN0
+	 aDUAdDb/VsKjN58UXQyriZSlROja2CDeJgJQrJKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 169/563] block: fix stacking of atomic writes when atomics are not supported
-Date: Mon, 13 Oct 2025 16:40:30 +0200
-Message-ID: <20251013144417.412148404@linuxfoundation.org>
+Subject: [PATCH 6.17 170/563] selftests: watchdog: skip ping loop if WDIOF_KEEPALIVEPING not supported
+Date: Mon, 13 Oct 2025 16:40:31 +0200
+Message-ID: <20251013144417.447755697@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,82 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
 
-[ Upstream commit f2d8c5a2f79c28569edf4948b611052253b5e99a ]
+[ Upstream commit e8cfc524eaf3c0ed88106177edb6961e202e6716 ]
 
-Atomic writes support may not always be possible when stacking devices
-which support atomic writes. Such as case is a different atomic write
-boundary between stacked devices (which is not supported).
+Check if watchdog device supports WDIOF_KEEPALIVEPING option before
+entering keep_alive() ping test loop. Fix watchdog-test silently looping
+if ioctl based ping is not supported by the device. Exit from test in
+such case instead of getting stuck in loop executing failing keep_alive()
 
-In the case that atomic writes cannot supported, the top device queue HW
-limits are set to 0.
+watchdog_info:
+ identity:              m41t93 rtc Watchdog
+ firmware_version:      0
+Support/Status: Set timeout (in seconds)
+Support/Status: Watchdog triggers a management or other external alarm not a reboot
 
-However, in blk_stack_atomic_writes_limits(), we detect that we are
-stacking the first bottom device by checking the top device
-atomic_write_hw_max value == 0. This get confused with the case of atomic
-writes not supported, above.
+Watchdog card disabled.
+Watchdog timeout set to 5 seconds.
+Watchdog ping rate set to 2 seconds.
+Watchdog card enabled.
+WDIOC_KEEPALIVE not supported by this device
 
-Make the distinction between stacking the first bottom device and no
-atomics supported by initializing stacked device atomic_write_hw_max =
-UINT_MAX and checking that for stacking the first bottom device.
+without this change
+Watchdog card disabled.
+Watchdog timeout set to 5 seconds.
+Watchdog ping rate set to 2 seconds.
+Watchdog card enabled.
+Watchdog Ticking Away!
+(Where test stuck here forver silently)
 
-Fixes: d7f36dc446e8 ("block: Support atomic writes limits for stacked devices")
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Updated change log at commit time:
+Shuah Khan <skhan@linuxfoundation.org>
+
+Link: https://lore.kernel.org/r/20250914152840.GA3047348@bhairav-test.ee.iitb.ac.in
+Fixes: d89d08ffd2c5 ("selftests: watchdog: Fix ioctl SET* error paths to take oneshot exit path")
+Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 6760dbf130b24..8fa52914e16b0 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -56,6 +56,7 @@ void blk_set_stacking_limits(struct queue_limits *lim)
- 	lim->max_user_wzeroes_unmap_sectors = UINT_MAX;
- 	lim->max_hw_zone_append_sectors = UINT_MAX;
- 	lim->max_user_discard_sectors = UINT_MAX;
-+	lim->atomic_write_hw_max = UINT_MAX;
- }
- EXPORT_SYMBOL(blk_set_stacking_limits);
+diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
+index a1f506ba55786..4f09c5db0c7f3 100644
+--- a/tools/testing/selftests/watchdog/watchdog-test.c
++++ b/tools/testing/selftests/watchdog/watchdog-test.c
+@@ -332,6 +332,12 @@ int main(int argc, char *argv[])
+ 	if (oneshot)
+ 		goto end;
  
-@@ -232,6 +233,10 @@ static void blk_validate_atomic_write_limits(struct queue_limits *lim)
- 	if (!(lim->features & BLK_FEAT_ATOMIC_WRITES))
- 		goto unsupported;
- 
-+	/* UINT_MAX indicates stacked limits in initial state */
-+	if (lim->atomic_write_hw_max == UINT_MAX)
-+		goto unsupported;
++	/* Check if WDIOF_KEEPALIVEPING is supported */
++	if (!(info.options & WDIOF_KEEPALIVEPING)) {
++		printf("WDIOC_KEEPALIVE not supported by this device\n");
++		goto end;
++	}
 +
- 	if (!lim->atomic_write_hw_max)
- 		goto unsupported;
+ 	printf("Watchdog Ticking Away!\n");
  
-@@ -723,18 +728,14 @@ static void blk_stack_atomic_writes_limits(struct queue_limits *t,
- 	if (!blk_atomic_write_start_sect_aligned(start, b))
- 		goto unsupported;
- 
--	/*
--	 * If atomic_write_hw_max is set, we have already stacked 1x bottom
--	 * device, so check for compliance.
--	 */
--	if (t->atomic_write_hw_max) {
-+	/* UINT_MAX indicates no stacking of bottom devices yet */
-+	if (t->atomic_write_hw_max == UINT_MAX) {
-+		if (!blk_stack_atomic_writes_head(t, b))
-+			goto unsupported;
-+	} else {
- 		if (!blk_stack_atomic_writes_tail(t, b))
- 			goto unsupported;
--		return;
- 	}
--
--	if (!blk_stack_atomic_writes_head(t, b))
--		goto unsupported;
- 	blk_stack_atomic_writes_chunk_sectors(t);
- 	return;
- 
+ 	/*
 -- 
 2.51.0
 
