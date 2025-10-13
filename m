@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA036BD4567
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D60BD482A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C5EE402350
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79CD0406055
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F0F30DEBE;
-	Mon, 13 Oct 2025 14:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2984B30E0D0;
+	Mon, 13 Oct 2025 15:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eg2ioAzd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtMdN3fC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE4930DEB2;
-	Mon, 13 Oct 2025 14:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB452580F2;
+	Mon, 13 Oct 2025 15:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367406; cv=none; b=k7D1bEp9VQAb8MGXOYcqifnrsgm2WhPTVgUXfFi2wDjzhMsxgHRbV2qMZeSVuiQ1584FHYp6BXYUWtVxVJs9N+oh1b1Hd9id0dpMq2EG/LMAzV3GIqRPZytPTFmr3ud4M1AzpNVgY9h7fv6AbxfyeqbZsMUmJt0rgqfYY6U7cDY=
+	t=1760368537; cv=none; b=PiNpgRju+dT0GAMndcOQm4WiK1o4sXXtY4FSoWs4zVyfG/OOjFDjmRO1xlmOxvR303IY7XOL4Z85sJlXhbOXRjV8rZwd6F1sMP5nrGsRwZKZqxrYGmb94eOSTljEUBWOjUXjcClGjzvDxuvzYt48KrW5GLFs/rXhZFA8Ec6XQ9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367406; c=relaxed/simple;
-	bh=TYEVtNvxvBjWeZhJ7lAIclThH8shAw50q8ZAW1WXN6A=;
+	s=arc-20240116; t=1760368537; c=relaxed/simple;
+	bh=QrmdgupOwnAcELOuuXGTiV0vi308PSAkxHGd/pyR15k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2aauP9scuGf0lDpmB0XYVF18vNkufjl5qIjQnURGEV53+kFiqjwpBK07tN+sJVxz7uiwBDy8h+a8rNaoP+A/HsKIrkFpgL7DsQMG0WBJepRC10XvU8RavSCePk7PM1YgJhUSCFHhXeoUBXSwAr4GyTfaMg7hkPyWHx1IlMtI+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eg2ioAzd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7BEC4CEE7;
-	Mon, 13 Oct 2025 14:56:45 +0000 (UTC)
+	 MIME-Version; b=kAfmv+uv35GNE/91o31Ik534bBLkghg3X0mOKJYrSSxLESo7t+R8t5iaouKolmepSaYs9I3R27VP0ub+xOb7fj6M8BhbEi08p84vnmBUhARAzsJY8muM58NttrFUtDWZlh/nr0ebyE080BfE5tpLD7S1AqUajlnqc+aNv++M+RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtMdN3fC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67882C4CEE7;
+	Mon, 13 Oct 2025 15:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367406;
-	bh=TYEVtNvxvBjWeZhJ7lAIclThH8shAw50q8ZAW1WXN6A=;
+	s=korg; t=1760368537;
+	bh=QrmdgupOwnAcELOuuXGTiV0vi308PSAkxHGd/pyR15k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eg2ioAzdIZL7Shu5nzgZ1qis11OtxMDQc7fi85N7wtjvfGMQyBmjU+e7MCPANMpeO
-	 /K68NpIUkVdGm5y/HKB0C/6ieiwuelGr265cB43vE4MWQ9TOKGyIFtEU+DkFqAmCwV
-	 gKMYM58+CyMSnJT6i7FqUZ8Bhkc8S1ormzUCr66g=
+	b=VtMdN3fC0AwkUv9U/QoaCIy4sz25RRbCMFNxgD1yAHILWpwMGyydv8pdUiZjSd3Cd
+	 8mm+GuQXyKLxC+XABzzfXLhnKdVxF0IUKX0sFUFognr6ykmvILdeyV8XMH6Q/GWmxM
+	 Nv0Jg+JvQ7EnYwZK1gLfXZpe2AyWeECJuixByV5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Karanja <karanja99erick@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 164/196] mtd: rawnand: atmel: Fix error handling path in atmel_nand_controller_add_nands
+Subject: [PATCH 6.12 195/262] PCI: rcar-gen4: Assure reset occurs before DBI access
 Date: Mon, 13 Oct 2025 16:45:37 +0200
-Message-ID: <20251013144320.631835756@linuxfoundation.org>
+Message-ID: <20251013144333.270349671@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Karanja <karanja99erick@gmail.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 8ed4728eb9f10b57c3eb02e0f6933a89ffcb8a91 ]
+[ Upstream commit 0056d29f8c1b13d7e60d60cdb159767ac8f6a883 ]
 
-In case of a jump to the  err label due to atmel_nand_create() or
-atmel_nand_controller_add_nand() failure, the reference to nand_np
-need to be released
+Assure the reset is latched and the core is ready for DBI access. On R-Car
+V4H, the PCIe reset is asynchronous and does not take effect immediately,
+but needs a short time to complete. In case DBI access happens in that
+short time, that access generates an SError. Make sure that condition can
+never happen, read back the state of the reset, which should turn the
+asynchronous reset into a synchronous one, and wait a little over 1ms to
+add additional safety margin.
 
-Use for_each_child_of_node_scoped() to fix the issue.
-
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
-
-Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 0d0c551011df ("PCI: rcar-gen4: Add R-Car Gen4 PCIe controller support for host mode")
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250924005610.96484-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index 78f317ac04afa..56fd897721ad5 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1859,7 +1859,7 @@ atmel_nand_controller_legacy_add_nands(struct atmel_nand_controller *nc)
+diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+index 5382008e366ec..30d16f85f6465 100644
+--- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
++++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+@@ -213,6 +213,19 @@ static int rcar_gen4_pcie_common_init(struct rcar_gen4_pcie *rcar)
+ 	if (ret)
+ 		goto err_unprepare;
  
- static int atmel_nand_controller_add_nands(struct atmel_nand_controller *nc)
- {
--	struct device_node *np, *nand_np;
-+	struct device_node *np;
- 	struct device *dev = nc->dev;
- 	int ret, reg_cells;
- 	u32 val;
-@@ -1886,7 +1886,7 @@ static int atmel_nand_controller_add_nands(struct atmel_nand_controller *nc)
++	/*
++	 * Assure the reset is latched and the core is ready for DBI access.
++	 * On R-Car V4H, the PCIe reset is asynchronous and does not take
++	 * effect immediately, but needs a short time to complete. In case
++	 * DBI access happens in that short time, that access generates an
++	 * SError. To make sure that condition can never happen, read back the
++	 * state of the reset, which should turn the asynchronous reset into
++	 * synchronous one, and wait a little over 1ms to add additional
++	 * safety margin.
++	 */
++	reset_control_status(dw->core_rsts[DW_PCIE_PWR_RST].rstc);
++	fsleep(1000);
++
+ 	if (rcar->drvdata->additional_common_init)
+ 		rcar->drvdata->additional_common_init(rcar);
  
- 	reg_cells += val;
- 
--	for_each_child_of_node(np, nand_np) {
-+	for_each_child_of_node_scoped(np, nand_np) {
- 		struct atmel_nand *nand;
- 
- 		nand = atmel_nand_create(nc, nand_np, reg_cells);
 -- 
 2.51.0
 
