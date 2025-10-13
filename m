@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D458BBD4CC9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2AEBD4ED3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC0B6427F47
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35FA5407C1A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B3C30C62C;
-	Mon, 13 Oct 2025 15:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F99307AF4;
+	Mon, 13 Oct 2025 15:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPVqlYZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="107RIkvT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A7E3093DB;
-	Mon, 13 Oct 2025 15:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2FD306480;
+	Mon, 13 Oct 2025 15:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369115; cv=none; b=kSTO2ZccruOc0VXLEmLNlY/kArOF0gHtpY0B0iGf0eoQSS02CFU7Ne+G82pyvkb262642XgL1Rz9NLe5juAlFjwmUD8VcINqGnzauqCH556QDmXxKpFLZysxotQdrY2EJ+uPqDlEXPPUE6AU1Mbu8733LZI9GmUCOicP/hTlU1Y=
+	t=1760369127; cv=none; b=d6aZNnlBPqdVWWPjy08dR4GGFWk/T5NSQw+eO63wT527ED5skWOjlQyfvzAWEFq++ACn8DuYp265kTDxh9QlIm/gN0omnV0T/hEbTzmX4btzR4ddTY9kC6vqXpL2OZpHQUt2E40HdGCtEAK7nwL7pOHIDhD3VWkLNJU6jpU91e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369115; c=relaxed/simple;
-	bh=CMaa7k7W8HsZgUWWohY7SG5YmIwUAsRC2IHZTxpSfWQ=;
+	s=arc-20240116; t=1760369127; c=relaxed/simple;
+	bh=WGqVvdgcFxLHewFSdYhVkQ9JlGQP4ue6Al79wTs54qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hfk2KHNmoKaqdGdpewVTnlM+FQMp7nleSo68wMVUWNeQO0Zt4UbNYiHVax4ljCVQ/RxD7KsscF+R/keToUp1btsLdXSBqJ9BcfF8BbWaX5l9+4PsgUZ6ouS1riisodFL2sZiQBAR6Hy1cOvPr80suIwtwi4dGEFfRKeMJty71So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPVqlYZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27043C4CEE7;
-	Mon, 13 Oct 2025 15:25:14 +0000 (UTC)
+	 MIME-Version; b=o2oviIlblwXfT2Qd5/1nQlrpvLPIu0QjyqWKx8kELAWr8OuTfXNq+FvW+Cm7pYJYv69viec3NbgpUxGj4PusOVjKToixzpX9SScarte0Ouna368CUNaO8bH2FarN/5saelH0DfX5e0aGDROxQqvf7tS8m8jCSSTg1DDVJzae3pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=107RIkvT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB65AC4CEE7;
+	Mon, 13 Oct 2025 15:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369115;
-	bh=CMaa7k7W8HsZgUWWohY7SG5YmIwUAsRC2IHZTxpSfWQ=;
+	s=korg; t=1760369127;
+	bh=WGqVvdgcFxLHewFSdYhVkQ9JlGQP4ue6Al79wTs54qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPVqlYZBZz1q4bPhMWwCQwIxB+AbvFGzm4bzsPsGGLCEqvgsSVIgaA8ArZCdXoQ4r
-	 28TgMzwVQS+QHOmCbvOJ3dZaMZt3AJpGXx4KZxmrn7g3i8gkJ7ogP86mOIvAQomjmm
-	 xefx0dVtjzgbVT/xVVGWTnrE/lQv/+6Ob6W6zyvM=
+	b=107RIkvTnwgSSqUMmrKpJWt2mLmuQ9Dk3lIBPukJ+D8SxiKSampe7HfvOD/KKXXY/
+	 2TM9t/fQeBn3GSSBgMaNzsaLKGJMSNuC0yUZ/xoVc1RvLPkcqgJKrBTiUsCdbFFD0y
+	 +DMUfykFUz15lILC3hkLzm5wo39OfWl/DlglpSos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhovner <pavel@flipperdevices.com>,
-	Alexey Charkov <alchark@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 134/563] arm64: dts: rockchip: Add RTC on rk3576-evb1-v10
-Date: Mon, 13 Oct 2025 16:39:55 +0200
-Message-ID: <20251013144416.146640698@linuxfoundation.org>
+Subject: [PATCH 6.17 138/563] arm64: dts: ti: k3: Rename rproc reserved-mem nodes to memory@addr
+Date: Mon, 13 Oct 2025 16:39:59 +0200
+Message-ID: <20251013144416.291438545@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,65 +67,2227 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Charkov <alchark@gmail.com>
+From: Beleswar Padhi <b-padhi@ti.com>
 
-[ Upstream commit 0adaae77862932a19cc14c086d7fd15ec0ef7703 ]
+[ Upstream commit aee0678597c63e5427e91b2e49a6c5ed4951f277 ]
 
-Add the I2C connected RTC chip to the Rockchip RK3576 EVB1 board.
+Currently, the reserved memory carveouts used by remote processors are
+named like 'rproc-name-<dma>-memory-region@addr'. While it is
+descriptive, the node label already serves that purpose. Rename reserved
+memory nodes to generic 'memory@addr' to align with the device tree
+specifications. This is done for all TI K3 based boards.
 
-Apart from the realtime clock functionality, it also provides a 32 kHz
-clock source for the onboard WiFi chip.
-
-Tested-by: Pavel Zhovner <pavel@flipperdevices.com>
-Signed-off-by: Alexey Charkov <alchark@gmail.com>
-Link: https://lore.kernel.org/r/20250813-evb1-rtcwifibt-v1-1-d13c83422971@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Stable-dep-of: 843367c7ed19 ("arm64: dts: rockchip: Fix network on rk3576 evb1 board")
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://patch.msgid.link/20250908142826.1828676-14-b-padhi@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Stable-dep-of: 79a1778c7819 ("Revert "arm64: dts: ti: k3-j721e-sk: Fix reversed C6x carveout locations"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3576-evb1-v10.dts     | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ .../boot/dts/ti/k3-am62-phycore-som.dtsi      | 10 ++--
+ .../boot/dts/ti/k3-am62-pocketbeagle2.dts     |  6 +--
+ arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi    |  2 +-
+ .../arm64/boot/dts/ti/k3-am625-beagleplay.dts |  2 +-
+ .../boot/dts/ti/k3-am62a-phycore-som.dtsi     | 12 ++---
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts       | 12 ++---
+ arch/arm64/boot/dts/ti/k3-am62d2-evm.dts      | 14 +++---
+ arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi   |  2 +-
+ arch/arm64/boot/dts/ti/k3-am62p5-sk.dts       |  8 ++--
+ .../arm64/boot/dts/ti/k3-am62x-sk-common.dtsi |  8 ++--
+ .../boot/dts/ti/k3-am64-phycore-som.dtsi      | 22 ++++-----
+ arch/arm64/boot/dts/ti/k3-am642-evm.dts       | 22 ++++-----
+ arch/arm64/boot/dts/ti/k3-am642-sk.dts        | 22 ++++-----
+ arch/arm64/boot/dts/ti/k3-am642-sr-som.dtsi   | 16 +++----
+ .../arm64/boot/dts/ti/k3-am642-tqma64xxl.dtsi | 18 +++----
+ .../boot/dts/ti/k3-am65-iot2050-common.dtsi   | 10 ++--
+ .../arm64/boot/dts/ti/k3-am654-base-board.dts | 10 ++--
+ .../arm64/boot/dts/ti/k3-am67a-beagley-ai.dts | 22 ++++-----
+ .../boot/dts/ti/k3-am68-phycore-som.dtsi      | 34 ++++++-------
+ arch/arm64/boot/dts/ti/k3-am68-sk-som.dtsi    | 34 ++++++-------
+ arch/arm64/boot/dts/ti/k3-am69-sk.dts         | 48 +++++++++----------
+ arch/arm64/boot/dts/ti/k3-j7200-som-p0.dtsi   | 18 +++----
+ .../boot/dts/ti/k3-j721e-beagleboneai64.dts   | 38 +++++++--------
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts        | 38 +++++++--------
+ arch/arm64/boot/dts/ti/k3-j721e-som-p0.dtsi   | 38 +++++++--------
+ arch/arm64/boot/dts/ti/k3-j721s2-som-p0.dtsi  | 34 ++++++-------
+ arch/arm64/boot/dts/ti/k3-j722s-evm.dts       | 22 ++++-----
+ arch/arm64/boot/dts/ti/k3-j784s4-evm.dts      |  4 +-
+ .../dts/ti/k3-j784s4-j742s2-evm-common.dtsi   | 44 ++++++++---------
+ 29 files changed, 285 insertions(+), 285 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts
-index 56527c56830e3..bfefd37a1ab8c 100644
---- a/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts
-@@ -680,6 +680,22 @@ regulator-state-mem {
- 	};
- };
+diff --git a/arch/arm64/boot/dts/ti/k3-am62-phycore-som.dtsi b/arch/arm64/boot/dts/ti/k3-am62-phycore-som.dtsi
+index 10e6b5c08619e..737ff54c3cd2f 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-phycore-som.dtsi
+@@ -46,31 +46,31 @@ ramoops@9c700000 {
+ 			pmsg-size = <0x8000>;
+ 		};
  
-+&i2c2 {
-+	status = "okay";
-+
-+	hym8563: rtc@51 {
-+		compatible = "haoyu,hym8563";
-+		reg = <0x51>;
-+		clock-output-names = "hym8563";
-+		interrupt-parent = <&gpio0>;
-+		interrupts = <RK_PA0 IRQ_TYPE_LEVEL_LOW>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&rtc_int>;
-+		wakeup-source;
-+		#clock-cells = <0>;
-+	};
-+};
-+
- &mdio0 {
- 	rgmii_phy0: phy@1 {
- 		compatible = "ethernet-phy-ieee802.3-c22";
-@@ -708,6 +724,12 @@ &pcie1 {
- };
+-		rtos_ipc_memory_region: ipc-memories@9c800000 {
++		rtos_ipc_memory_region: memory@9c800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c800000 0x00 0x00300000>;
+ 			no-map;
+ 		};
  
- &pinctrl {
-+	hym8563 {
-+		rtc_int: rtc-int {
-+			rockchip,pins = <0 RK_PA0 RK_FUNC_GPIO &pcfg_pull_up>;
-+		};
-+	};
-+
- 	usb {
- 		usb_host_pwren: usb-host-pwren {
- 			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
+-		mcu_m4fss_dma_memory_region: m4f-dma-memory@9cb00000 {
++		mcu_m4fss_dma_memory_region: memory@9cb00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9cb00000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_m4fss_memory_region: m4f-memory@9cc00000 {
++		mcu_m4fss_memory_region: memory@9cc00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9cc00000 0x00 0xe00000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9da00000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@9da00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9da00000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-memory@9db00000 {
++		wkup_r5fss0_core0_memory_region: memory@9db00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9db00000 0x00 0xc00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62-pocketbeagle2.dts b/arch/arm64/boot/dts/ti/k3-am62-pocketbeagle2.dts
+index 2e4cf65ee3239..1c95947430d3e 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62-pocketbeagle2.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62-pocketbeagle2.dts
+@@ -54,13 +54,13 @@ linux,cma {
+ 			linux,cma-default;
+ 		};
+ 
+-		mcu_m4fss_dma_memory_region: m4f-dma-memory@9cb00000 {
++		mcu_m4fss_dma_memory_region: memory@9cb00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9cb00000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_m4fss_memory_region: m4f-memory@9cc00000 {
++		mcu_m4fss_memory_region: memory@9cc00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9cc00000 0x00 0xe00000>;
+ 			no-map;
+@@ -78,7 +78,7 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9db00000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@9db00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9db00000 0x00 0xc00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
+index bc2289d747745..2b8b2c76e9946 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
+@@ -206,7 +206,7 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9db00000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@9db00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9db00000 0x00 0xc00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
+index 72b09f9c69d8c..7028d9835c4a8 100644
+--- a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
++++ b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
+@@ -83,7 +83,7 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9db00000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@9db00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9db00000 0x00 0xc00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a-phycore-som.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-phycore-som.dtsi
+index 5dc5d2cb20ccd..175fa5048a0bc 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-phycore-som.dtsi
+@@ -59,37 +59,37 @@ linux,cma {
+ 			linux,cma-default;
+ 		};
+ 
+-		c7x_0_dma_memory_region: c7x-dma-memory@99800000 {
++		c7x_0_dma_memory_region: memory@99800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x99800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_0_memory_region: c7x-memory@99900000 {
++		c7x_0_memory_region: memory@99900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x99900000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@9b800000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@9b800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9b800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-dma-memory@9b900000 {
++		mcu_r5fss0_core0_memory_region: memory@9b900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9b900000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9c800000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@9c800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-dma-memory@9c900000 {
++		wkup_r5fss0_core0_memory_region: memory@9c900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c900000 0x00 0xf00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+index bceead5e288e6..4761c3dc2d8e6 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -53,37 +53,37 @@ linux,cma {
+ 			linux,cma-default;
+ 		};
+ 
+-		c7x_0_dma_memory_region: c7x-dma-memory@99800000 {
++		c7x_0_dma_memory_region: memory@99800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x99800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_0_memory_region: c7x-memory@99900000 {
++		c7x_0_memory_region: memory@99900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x99900000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@9b800000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@9b800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9b800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-dma-memory@9b900000 {
++		mcu_r5fss0_core0_memory_region: memory@9b900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9b900000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9c800000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@9c800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-dma-memory@9c900000 {
++		wkup_r5fss0_core0_memory_region: memory@9c900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c900000 0x00 0xf00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts b/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts
+index daea18b0bc61c..19a7ca7ee173a 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts
+@@ -58,37 +58,37 @@ secure_tfa_ddr: tfa@80000000 {
+ 			no-map;
+ 		};
+ 
+-		c7x_0_dma_memory_region: c7x-dma-memory@99800000 {
++		c7x_0_dma_memory_region: memory@99800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x99800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_0_memory_region: c7x-memory@99900000 {
++		c7x_0_memory_region: memory@99900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x99900000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@9b800000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@9b800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9b800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-dma-memory@9b900000 {
++		mcu_r5fss0_core0_memory_region: memory@9b900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9b900000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9c800000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@9c800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-dma-memory@9c900000 {
++		wkup_r5fss0_core0_memory_region: memory@9c900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c900000 0x00 0xf00000>;
+ 			no-map;
+@@ -100,7 +100,7 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a0000000 {
++		rtos_ipc_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x01000000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
+index a2fdc6741da2c..3963dbc1faeff 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
+@@ -162,7 +162,7 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-dma-memory@9c900000 {
++		wkup_r5fss0_core0_memory_region: memory@9c900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c900000 0x00 0x01e00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts b/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
+index 899da7896563b..2e081c329d6c2 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
+@@ -49,25 +49,25 @@ reserved-memory {
+ 		#size-cells = <2>;
+ 		ranges;
+ 
+-		mcu_r5fss0_core0_dma_memory_region: mcu-r5fss-dma-memory-region@9b800000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@9b800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9b800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: mcu-r5fss-memory-region@9b900000 {
++		mcu_r5fss0_core0_memory_region: memory@9b900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9b900000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9c800000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@9c800000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c800000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-memory@9c900000 {
++		wkup_r5fss0_core0_memory_region: memory@9c900000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9c900000 0x00 0xf00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
+index 13e1d36123d51..8eed8be2e8bad 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
+@@ -58,25 +58,25 @@ linux,cma {
+ 			linux,cma-default;
+ 		};
+ 
+-		mcu_m4fss_dma_memory_region: m4f-dma-memory@9cb00000 {
++		mcu_m4fss_dma_memory_region: memory@9cb00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9cb00000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_m4fss_memory_region: m4f-memory@9cc00000 {
++		mcu_m4fss_memory_region: memory@9cc00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9cc00000 0x00 0xe00000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@9da00000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@9da00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9da00000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-memory@9db00000 {
++		wkup_r5fss0_core0_memory_region: memory@9db00000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0x9db00000 0x00 0xc00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am64-phycore-som.dtsi b/arch/arm64/boot/dts/ti/k3-am64-phycore-som.dtsi
+index d9d491b12c33a..97ad433e49394 100644
+--- a/arch/arm64/boot/dts/ti/k3-am64-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am64-phycore-som.dtsi
+@@ -41,67 +41,67 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		main_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		main_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss1_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss1_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_m4fss_dma_memory_region: m4f-dma-memory@a4000000 {
++		mcu_m4fss_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_m4fss_memory_region: m4f-memory@a4100000 {
++		mcu_m4fss_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a5000000 {
++		rtos_ipc_memory_region: memory@a5000000 {
+ 			reg = <0x00 0xa5000000 0x00 0x00800000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-evm.dts b/arch/arm64/boot/dts/ti/k3-am642-evm.dts
+index e01866372293b..ccb04a3d97c9a 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-am642-evm.dts
+@@ -53,67 +53,67 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		main_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		main_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss1_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss1_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_m4fss_dma_memory_region: m4f-dma-memory@a4000000 {
++		mcu_m4fss_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_m4fss_memory_region: m4f-memory@a4100000 {
++		mcu_m4fss_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a5000000 {
++		rtos_ipc_memory_region: memory@a5000000 {
+ 			reg = <0x00 0xa5000000 0x00 0x00800000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-sk.dts b/arch/arm64/boot/dts/ti/k3-am642-sk.dts
+index 1deaa0be0085c..1982608732ee2 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am642-sk.dts
+@@ -51,67 +51,67 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		main_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		main_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss1_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss1_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_m4fss_dma_memory_region: m4f-dma-memory@a4000000 {
++		mcu_m4fss_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_m4fss_memory_region: m4f-memory@a4100000 {
++		mcu_m4fss_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a5000000 {
++		rtos_ipc_memory_region: memory@a5000000 {
+ 			reg = <0x00 0xa5000000 0x00 0x00800000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-sr-som.dtsi b/arch/arm64/boot/dts/ti/k3-am642-sr-som.dtsi
+index a5cec9a075109..dfe570e0b7071 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-sr-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am642-sr-som.dtsi
+@@ -115,49 +115,49 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		main_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		main_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss1_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss1_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-tqma64xxl.dtsi b/arch/arm64/boot/dts/ti/k3-am642-tqma64xxl.dtsi
+index 828d815d6bdfc..a8d5144ab1b33 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-tqma64xxl.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am642-tqma64xxl.dtsi
+@@ -31,55 +31,55 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		main_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		main_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss1_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss1_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a5000000 {
++		rtos_ipc_memory_region: memory@a5000000 {
+ 			reg = <0x00 0xa5000000 0x00 0x00800000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am65-iot2050-common.dtsi b/arch/arm64/boot/dts/ti/k3-am65-iot2050-common.dtsi
+index e5136ed947651..211eb9d93159d 100644
+--- a/arch/arm64/boot/dts/ti/k3-am65-iot2050-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am65-iot2050-common.dtsi
+@@ -47,31 +47,31 @@ secure_ddr: secure-ddr@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0 0xa0000000 0 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0 0xa0100000 0 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0 0xa1000000 0 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0 0xa1100000 0 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a2000000 {
++		rtos_ipc_memory_region: memory@a2000000 {
+ 			reg = <0x00 0xa2000000 0x00 0x00200000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am654-base-board.dts b/arch/arm64/boot/dts/ti/k3-am654-base-board.dts
+index e589690c7c821..dac36ca77a30e 100644
+--- a/arch/arm64/boot/dts/ti/k3-am654-base-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-am654-base-board.dts
+@@ -50,31 +50,31 @@ secure_ddr: secure-ddr@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0 0xa0000000 0 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0 0xa0100000 0 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0 0xa1000000 0 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0 0xa1100000 0 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a2000000 {
++		rtos_ipc_memory_region: memory@a2000000 {
+ 			reg = <0x00 0xa2000000 0x00 0x00100000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
+index bf9b23df1da2a..859294b9a2f31 100644
+--- a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
+@@ -50,67 +50,67 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		wkup_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: mcu-r5fss-dma-memory-region@a1000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: mcu-r5fss-memory-region@a1100000 {
++		mcu_r5fss0_core0_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: main-r5fss-dma-memory-region@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: main-r5fss-memory-region@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_0_dma_memory_region: c7x-dma-memory@a3000000 {
++		c7x_0_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_0_memory_region: c7x-memory@a3100000 {
++		c7x_0_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_1_dma_memory_region: c7x-dma-memory@a4000000 {
++		c7x_1_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_1_memory_region: c7x-memory@a4100000 {
++		c7x_1_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a5000000 {
++		rtos_ipc_memory_region: memory@a5000000 {
+ 			reg = <0x00 0xa5000000 0x00 0x1c00000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am68-phycore-som.dtsi b/arch/arm64/boot/dts/ti/k3-am68-phycore-som.dtsi
+index fd715fee8170e..71f56f0f5363c 100644
+--- a/arch/arm64/boot/dts/ti/k3-am68-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am68-phycore-som.dtsi
+@@ -49,103 +49,103 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss0_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a4000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a4100000 {
++		main_r5fss1_core0_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a5000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a5000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
++		main_r5fss1_core1_memory_region: memory@a5100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_dma_memory_region: c71-dma-memory@a6000000 {
++		c71_0_dma_memory_region: memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_memory_region: c71-memory@a6100000 {
++		c71_0_memory_region: memory@a6100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_dma_memory_region: c71-dma-memory@a7000000 {
++		c71_1_dma_memory_region: memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_memory_region: c71-memory@a7100000 {
++		c71_1_memory_region: memory@a7100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a8000000 {
++		rtos_ipc_memory_region: memory@a8000000 {
+ 			reg = <0x00 0xa8000000 0x00 0x01c00000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am68-sk-som.dtsi b/arch/arm64/boot/dts/ti/k3-am68-sk-som.dtsi
+index 4ca2d4e2fb9b0..ecc7b3a100d00 100644
+--- a/arch/arm64/boot/dts/ti/k3-am68-sk-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am68-sk-som.dtsi
+@@ -27,103 +27,103 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss0_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a4000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a4100000 {
++		main_r5fss1_core0_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a5000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a5000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
++		main_r5fss1_core1_memory_region: memory@a5100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_dma_memory_region: c71-dma-memory@a6000000 {
++		c71_0_dma_memory_region: memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_memory_region: c71-memory@a6100000 {
++		c71_0_memory_region: memory@a6100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_dma_memory_region: c71-dma-memory@a7000000 {
++		c71_1_dma_memory_region: memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_memory_region: c71-memory@a7100000 {
++		c71_1_memory_region: memory@a7100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a8000000 {
++		rtos_ipc_memory_region: memory@a8000000 {
+ 			reg = <0x00 0xa8000000 0x00 0x01c00000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-am69-sk.dts b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
+index 612ac27643d2c..922866b96e66a 100644
+--- a/arch/arm64/boot/dts/ti/k3-am69-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
+@@ -49,145 +49,145 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss0_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a4000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a4100000 {
++		main_r5fss1_core0_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a5000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a5000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
++		main_r5fss1_core1_memory_region: memory@a5100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss2_core0_dma_memory_region: r5f-dma-memory@a6000000 {
++		main_r5fss2_core0_dma_memory_region: memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss2_core0_memory_region: r5f-memory@a6100000 {
++		main_r5fss2_core0_memory_region: memory@a6100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss2_core1_dma_memory_region: r5f-dma-memory@a7000000 {
++		main_r5fss2_core1_dma_memory_region: memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss2_core1_memory_region: r5f-memory@a7100000 {
++		main_r5fss2_core1_memory_region: memory@a7100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_dma_memory_region: c71-dma-memory@a8000000 {
++		c71_0_dma_memory_region: memory@a8000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_memory_region: c71-memory@a8100000 {
++		c71_0_memory_region: memory@a8100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_dma_memory_region: c71-dma-memory@a9000000 {
++		c71_1_dma_memory_region: memory@a9000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa9000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_memory_region: c71-memory@a9100000 {
++		c71_1_memory_region: memory@a9100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa9100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_2_dma_memory_region: c71-dma-memory@aa000000 {
++		c71_2_dma_memory_region: memory@aa000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xaa000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_2_memory_region: c71-memory@aa100000 {
++		c71_2_memory_region: memory@aa100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xaa100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_3_dma_memory_region: c71-dma-memory@ab000000 {
++		c71_3_dma_memory_region: memory@ab000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xab000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_3_memory_region: c71-memory@ab100000 {
++		c71_3_memory_region: memory@ab100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xab100000 0x00 0xf00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-j7200-som-p0.dtsi b/arch/arm64/boot/dts/ti/k3-j7200-som-p0.dtsi
+index 291ab9bb414d7..e8cec315e381b 100644
+--- a/arch/arm64/boot/dts/ti/k3-j7200-som-p0.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j7200-som-p0.dtsi
+@@ -29,55 +29,55 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss0_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a4000000 {
++		rtos_ipc_memory_region: memory@a4000000 {
+ 			reg = <0x00 0xa4000000 0x00 0x00800000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+index fb899c99753ec..6a1b32169678e 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+@@ -51,115 +51,115 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss0_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a4000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a4100000 {
++		main_r5fss1_core0_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a5000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a5000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
++		main_r5fss1_core1_memory_region: memory@a5100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c66_0_dma_memory_region: c66-dma-memory@a6000000 {
++		c66_0_dma_memory_region: memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c66_0_memory_region: c66-memory@a6100000 {
++		c66_0_memory_region: memory@a6100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c66_1_dma_memory_region: c66-dma-memory@a7000000 {
++		c66_1_dma_memory_region: memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c66_1_memory_region: c66-memory@a7100000 {
++		c66_1_memory_region: memory@a7100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_dma_memory_region: c71-dma-memory@a8000000 {
++		c71_0_dma_memory_region: memory@a8000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_memory_region: c71-memory@a8100000 {
++		c71_0_memory_region: memory@a8100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@aa000000 {
++		rtos_ipc_memory_region: memory@aa000000 {
+ 			reg = <0x00 0xaa000000 0x00 0x01c00000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+index ffef3d1cfd553..d1b0257048de2 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+@@ -48,115 +48,115 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss0_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a4000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a4100000 {
++		main_r5fss1_core0_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a5000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a5000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
++		main_r5fss1_core1_memory_region: memory@a5100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c66_0_dma_memory_region: c66-dma-memory@a6000000 {
++		c66_0_dma_memory_region: memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c66_0_memory_region: c66-memory@a6100000 {
++		c66_0_memory_region: memory@a6100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c66_1_dma_memory_region: c66-dma-memory@a7000000 {
++		c66_1_dma_memory_region: memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c66_1_memory_region: c66-memory@a7100000 {
++		c66_1_memory_region: memory@a7100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_dma_memory_region: c71-dma-memory@a8000000 {
++		c71_0_dma_memory_region: memory@a8000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_memory_region: c71-memory@a8100000 {
++		c71_0_memory_region: memory@a8100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@aa000000 {
++		rtos_ipc_memory_region: memory@aa000000 {
+ 			reg = <0x00 0xaa000000 0x00 0x01c00000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-som-p0.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-som-p0.dtsi
+index 0722f6361cc8b..ef11a5fb6ad56 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-som-p0.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j721e-som-p0.dtsi
+@@ -29,115 +29,115 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss0_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a4000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a4100000 {
++		main_r5fss1_core0_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a5000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a5000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
++		main_r5fss1_core1_memory_region: memory@a5100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c66_1_dma_memory_region: c66-dma-memory@a6000000 {
++		c66_1_dma_memory_region: memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c66_0_memory_region: c66-memory@a6100000 {
++		c66_0_memory_region: memory@a6100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c66_0_dma_memory_region: c66-dma-memory@a7000000 {
++		c66_0_dma_memory_region: memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c66_1_memory_region: c66-memory@a7100000 {
++		c66_1_memory_region: memory@a7100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_dma_memory_region: c71-dma-memory@a8000000 {
++		c71_0_dma_memory_region: memory@a8000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_memory_region: c71-memory@a8100000 {
++		c71_0_memory_region: memory@a8100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@aa000000 {
++		rtos_ipc_memory_region: memory@aa000000 {
+ 			reg = <0x00 0xaa000000 0x00 0x01c00000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-som-p0.dtsi b/arch/arm64/boot/dts/ti/k3-j721s2-som-p0.dtsi
+index 54fc5c4f8c3f5..391e8e3ac2680 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721s2-som-p0.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j721s2-som-p0.dtsi
+@@ -31,103 +31,103 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss0_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a4000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a4100000 {
++		main_r5fss1_core0_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a5000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a5000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
++		main_r5fss1_core1_memory_region: memory@a5100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_dma_memory_region: c71-dma-memory@a6000000 {
++		c71_0_dma_memory_region: memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_memory_region: c71-memory@a6100000 {
++		c71_0_memory_region: memory@a6100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_dma_memory_region: c71-dma-memory@a7000000 {
++		c71_1_dma_memory_region: memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_memory_region: c71-memory@a7100000 {
++		c71_1_memory_region: memory@a7100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a8000000 {
++		rtos_ipc_memory_region: memory@a8000000 {
+ 			reg = <0x00 0xa8000000 0x00 0x01c00000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
+index 9d8abfa9afd27..4cfe5c88e48f5 100644
+--- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
+@@ -52,67 +52,67 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		wkup_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		wkup_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: mcu-r5fss-dma-memory-region@a1000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: mcu-r5fss-memory-region@a1100000 {
++		mcu_r5fss0_core0_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: main-r5fss-dma-memory-region@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: main-r5fss-memory-region@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_0_dma_memory_region: c7x-dma-memory@a3000000 {
++		c7x_0_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_0_memory_region: c7x-memory@a3100000 {
++		c7x_0_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_1_dma_memory_region: c7x-dma-memory@a4000000 {
++		c7x_1_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_1_memory_region: c7x-memory@a4100000 {
++		c7x_1_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a5000000 {
++		rtos_ipc_memory_region: memory@a5000000 {
+ 			reg = <0x00 0xa5000000 0x00 0x1c00000>;
+ 			alignment = <0x1000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
+index a84bde08f85e4..2ed1ec6d53c88 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
+@@ -28,13 +28,13 @@ reserved_memory: reserved-memory {
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
+ 
+-		c71_3_dma_memory_region: c71-dma-memory@ab000000 {
++		c71_3_dma_memory_region: memory@ab000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xab000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_3_memory_region: c71-memory@ab100000 {
++		c71_3_memory_region: memory@ab100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xab100000 0x00 0xf00000>;
+ 			no-map;
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi
+index fa656b7b13a1d..877b50991ee69 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi
+@@ -35,133 +35,133 @@ secure_ddr: optee@9e800000 {
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		mcu_r5fss0_core0_dma_memory_region: memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		mcu_r5fss0_core0_memory_region: memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa0100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_dma_memory_region: r5f-dma-memory@a1000000 {
++		mcu_r5fss0_core1_dma_memory_region: memory@a1000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core1_memory_region: r5f-memory@a1100000 {
++		mcu_r5fss0_core1_memory_region: memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa1100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a2000000 {
++		main_r5fss0_core0_dma_memory_region: memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: r5f-memory@a2100000 {
++		main_r5fss0_core0_memory_region: memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa2100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_dma_memory_region: r5f-dma-memory@a3000000 {
++		main_r5fss0_core1_dma_memory_region: memory@a3000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core1_memory_region: r5f-memory@a3100000 {
++		main_r5fss0_core1_memory_region: memory@a3100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa3100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_dma_memory_region: r5f-dma-memory@a4000000 {
++		main_r5fss1_core0_dma_memory_region: memory@a4000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core0_memory_region: r5f-memory@a4100000 {
++		main_r5fss1_core0_memory_region: memory@a4100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa4100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_dma_memory_region: r5f-dma-memory@a5000000 {
++		main_r5fss1_core1_dma_memory_region: memory@a5000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
++		main_r5fss1_core1_memory_region: memory@a5100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa5100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss2_core0_dma_memory_region: r5f-dma-memory@a6000000 {
++		main_r5fss2_core0_dma_memory_region: memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss2_core0_memory_region: r5f-memory@a6100000 {
++		main_r5fss2_core0_memory_region: memory@a6100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss2_core1_dma_memory_region: r5f-dma-memory@a7000000 {
++		main_r5fss2_core1_dma_memory_region: memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss2_core1_memory_region: r5f-memory@a7100000 {
++		main_r5fss2_core1_memory_region: memory@a7100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_dma_memory_region: c71-dma-memory@a8000000 {
++		c71_0_dma_memory_region: memory@a8000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_0_memory_region: c71-memory@a8100000 {
++		c71_0_memory_region: memory@a8100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa8100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_dma_memory_region: c71-dma-memory@a9000000 {
++		c71_1_dma_memory_region: memory@a9000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa9000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_1_memory_region: c71-memory@a9100000 {
++		c71_1_memory_region: memory@a9100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa9100000 0x00 0xf00000>;
+ 			no-map;
+ 		};
+ 
+-		c71_2_dma_memory_region: c71-dma-memory@aa000000 {
++		c71_2_dma_memory_region: memory@aa000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xaa000000 0x00 0x100000>;
+ 			no-map;
+ 		};
+ 
+-		c71_2_memory_region: c71-memory@aa100000 {
++		c71_2_memory_region: memory@aa100000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xaa100000 0x00 0xf00000>;
+ 			no-map;
 -- 
 2.51.0
 
