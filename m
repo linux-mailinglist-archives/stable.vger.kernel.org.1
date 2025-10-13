@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0CEBD4660
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48377BD42C1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ABE83BE949
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8B4540828D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61CC3090DF;
-	Mon, 13 Oct 2025 15:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCA630BBB6;
+	Mon, 13 Oct 2025 15:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3LHt/pz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thXUlDK1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B903090C7;
-	Mon, 13 Oct 2025 15:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70A030AADB;
+	Mon, 13 Oct 2025 15:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368502; cv=none; b=EPwXzYsY6C8aKv3t6PQNiPuPvAQlVdv+XiMLB8Watv6NDtUUM4poMiMjaj57HhiC/lIV57ask1g2WzImtT+oIeHDsmBdddIVin9LJFkHRIbq0gdGMGKs+Tl7lhmZYU8jqQjQCYO6KlVkh3hhDrRhjTG78l25a4jQEDSx9vkPgFQ=
+	t=1760367770; cv=none; b=NIw1/PBS5GOCiqSLnCyPM6DWBzWzuLcc+9c4OxI6rjXkDRYIjdhM04mhnyDvt5zkT7PzGcLtnG0PFQbIR217OEqiFRF+f9J4RWq8FMHHrAaZKXtCSTKqWsvq2iz1VXUHzelH1Ef9RM5tsiMMSjjKZjN6FfdShJU7DBk8zdnR4lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368502; c=relaxed/simple;
-	bh=fkNjWNc7KuQnSD8BmK71MA3KSfMmz/Jx8meR13Ac9bg=;
+	s=arc-20240116; t=1760367770; c=relaxed/simple;
+	bh=mdN6c3ZmMv/LTZYDY/t2dGLBDaMD7HeOgCcRsoYfCjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aTcDcTjXSp88Kn8qhPNuGMyZw7hCSRO1oDi6RfiHP+v/izXfbcYwhzH7jgUe+X3llNAlv/PFZK8egtuImgapHDoyWbIsmYBaffHdWjdCrzyn2GDvAECL0RcnTimvs6iJYlI4YO6jCx347h5TCi7Qaykkg/1fHBW0jFIzOnclKgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3LHt/pz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAA0C4CEFE;
-	Mon, 13 Oct 2025 15:15:01 +0000 (UTC)
+	 MIME-Version; b=Em5eZ7HS874oRyFH/IvZzrKIRVHwES3kfenvg+wifKKrZ/fD3tWD6w6SLLqQwXynGgGKPPljwFIMFRJr9v/9NtC60+1riNWrLSHBbHvFIqP1/EMqXjCN05EBMVBxS8bbpMG78lOsosLmDSdhfLhKaycTRJU5YirX3q2HV8Ljea8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thXUlDK1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCBFC4CEE7;
+	Mon, 13 Oct 2025 15:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368502;
-	bh=fkNjWNc7KuQnSD8BmK71MA3KSfMmz/Jx8meR13Ac9bg=;
+	s=korg; t=1760367770;
+	bh=mdN6c3ZmMv/LTZYDY/t2dGLBDaMD7HeOgCcRsoYfCjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3LHt/pzNglo4Pd6ULM+gupWlCJJ4Zp2fLZL8rcVxh2Kq6wFz3ul5fFu3OA1wHeE6
-	 XXB/SzsDLH/i1ix2KgpReNrNAEBoSzosu6WBoo7C73zetPfWqYIcSt5QSz4gbBnUW8
-	 HdVVjaa4BHafmNekuRdrb/h5a+354HqrYiBzAeuw=
+	b=thXUlDK1/WkUVf0Zxuvh29+bmPY4LPiNqjXC6XqGrvViaP52Sbf+/VDRRhowknWnz
+	 WXzDFaSyzWxLDpexHz4qWwtekeGRjBr1LfARGTqi9//dcRWPRmDu8EWMVW9CCfIYiI
+	 ZCR7j7l96rbxNdW3+QQX81nKsNyiqZQ8ftnfed3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 176/262] crypto: hisilicon/qm - set NULL to qm->debug.qm_diff_regs
+Subject: [PATCH 6.6 127/196] wifi: ath10k: avoid unnecessary wait for service ready message
 Date: Mon, 13 Oct 2025 16:45:18 +0200
-Message-ID: <20251013144332.467033142@linuxfoundation.org>
+Message-ID: <20251013144319.903867389@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit f0cafb02de883b3b413d34eb079c9680782a9cc1 ]
+[ Upstream commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a ]
 
-When the initialization of qm->debug.acc_diff_reg fails,
-the probe process does not exit. However, after qm->debug.qm_diff_regs is
-freed, it is not set to NULL. This can lead to a double free when the
-remove process attempts to free it again. Therefore, qm->debug.qm_diff_regs
-should be set to NULL after it is freed.
+Commit e57b7d62a1b2 ("wifi: ath10k: poll service ready message before
+failing") works around the failure in waiting for the service ready
+message by active polling. Note the polling is triggered after initial
+wait timeout, which means that the wait-till-timeout can not be avoided
+even the message is ready.
 
-Fixes: 8be091338971 ("crypto: hisilicon/debugfs - Fix debugfs uninit process issue")
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+A possible fix is to do polling once before wait as well, however this
+can not handle the race that the message arrives right after polling.
+So the solution is to do periodic polling until timeout.
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
+
+Fixes: e57b7d62a1b2 ("wifi: ath10k: poll service ready message before failing")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/all/97a15967-5518-4731-a8ff-d43ff7f437b0@molgen.mpg.de
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250811-ath10k-avoid-unnecessary-wait-v1-1-db2deb87c39b@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/debugfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath10k/wmi.c | 39 +++++++++++++--------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/debugfs.c b/drivers/crypto/hisilicon/debugfs.c
-index 45e130b901eb5..17eb236e9ee4d 100644
---- a/drivers/crypto/hisilicon/debugfs.c
-+++ b/drivers/crypto/hisilicon/debugfs.c
-@@ -888,6 +888,7 @@ static int qm_diff_regs_init(struct hisi_qm *qm,
- 		dfx_regs_uninit(qm, qm->debug.qm_diff_regs, ARRAY_SIZE(qm_diff_regs));
- 		ret = PTR_ERR(qm->debug.acc_diff_regs);
- 		qm->debug.acc_diff_regs = NULL;
-+		qm->debug.qm_diff_regs = NULL;
- 		return ret;
- 	}
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 818aea99f85eb..340502c47a10d 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1763,33 +1763,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
  
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+ {
++	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
+ 	unsigned long time_left, i;
+ 
+-	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-						WMI_SERVICE_READY_TIMEOUT_HZ);
+-	if (!time_left) {
+-		/* Sometimes the PCI HIF doesn't receive interrupt
+-		 * for the service ready message even if the buffer
+-		 * was completed. PCIe sniffer shows that it's
+-		 * because the corresponding CE ring doesn't fires
+-		 * it. Workaround here by polling CE rings once.
+-		 */
+-		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
+-
++	/* Sometimes the PCI HIF doesn't receive interrupt
++	 * for the service ready message even if the buffer
++	 * was completed. PCIe sniffer shows that it's
++	 * because the corresponding CE ring doesn't fires
++	 * it. Workaround here by polling CE rings. Since
++	 * the message could arrive at any time, continue
++	 * polling until timeout.
++	 */
++	do {
+ 		for (i = 0; i < CE_COUNT; i++)
+ 			ath10k_hif_send_complete_check(ar, i, 1);
+ 
++		/* The 100 ms granularity is a tradeoff considering scheduler
++		 * overhead and response latency
++		 */
+ 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-							WMI_SERVICE_READY_TIMEOUT_HZ);
+-		if (!time_left) {
+-			ath10k_warn(ar, "polling timed out\n");
+-			return -ETIMEDOUT;
+-		}
+-
+-		ath10k_warn(ar, "service ready completion received, continuing normally\n");
+-	}
++							msecs_to_jiffies(100));
++		if (time_left)
++			return 0;
++	} while (time_before(jiffies, timeout));
+ 
+-	return 0;
++	ath10k_warn(ar, "failed to receive service ready completion\n");
++	return -ETIMEDOUT;
+ }
+ 
+ int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
 -- 
 2.51.0
 
