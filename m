@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-184605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23E8BD4492
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EA1BD4773
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92402405493
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E81424F8BB1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C49130F953;
-	Mon, 13 Oct 2025 15:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47376270576;
+	Mon, 13 Oct 2025 15:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqGNKZA/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r77Mb5Xz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1B630C36A;
-	Mon, 13 Oct 2025 15:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0259620125F;
+	Mon, 13 Oct 2025 15:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367916; cv=none; b=BFKF7dM3mkjM584H24RElBN1OsArdxugH2Y4pwDAEFS1jHA/hYrM9LLnXd+VEpNCxDY1n3sp+RJ8DzWGWKZRciCcU9QV/0ixRAvczTS34DF7A0g7yVeCXwVjt911LDpI8r8tIJAbB/vDys7jNrbXE/HzC/wznYq9FsY+ucFLPEw=
+	t=1760368532; cv=none; b=EtkgD/K6p254KJmgKhmn4jskB1CfJQ/HwW4sBErZVjL/6Xl/W94TuunW6y5JcPswmMOyha8VyW2MMfSzjzL+poKgIyuOQX9mC8X/GZOqXkoJTqgSYP+6Scg3I0CzwfTZNOKK4S+t4RA8SEXuVReEreAhEBcCenBaVIcZ8b8tbSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367916; c=relaxed/simple;
-	bh=CoXwrWSmY5h4JgGzuAXiyfpqPMm2AFW7grZ6p8VjeQM=;
+	s=arc-20240116; t=1760368532; c=relaxed/simple;
+	bh=3+NTBIOuvwdH/mvT3CJ4EzgaLM0SnYvw/bdMmhdqNos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nj2Yt/sw1nzRgYpPbNC3vLru62wckC8T3tewMGh4nRwsBBrVezGqDWqdVGQ92lM0Kp7qSl+KOqMiiX5oA5YMFccMm/CjJjoqJHl/UhEcU3SBXk0uL+hyHHide3mSzdrivaxZmCQXHe8DKaosHTfTwmhNL54xIGBeKayel6ugdaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqGNKZA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AF4C4CEE7;
-	Mon, 13 Oct 2025 15:05:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hH2uW+XkBLROGCMmRgGAtz5BafqB9WWINgEVDOGx0bNrf+z9W7yjzwomOYIJ14cCnIJqx+j32tAinD1id525kINuJzxAmPtIHhzwk6rMjbNxCY/MJFS5JJLjEVYxWHqTAD/cAgr8kjKI65A7hE3g/ei4cz1PY/nBvIzbwrZ1YZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r77Mb5Xz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E733C116D0;
+	Mon, 13 Oct 2025 15:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367916;
-	bh=CoXwrWSmY5h4JgGzuAXiyfpqPMm2AFW7grZ6p8VjeQM=;
+	s=korg; t=1760368531;
+	bh=3+NTBIOuvwdH/mvT3CJ4EzgaLM0SnYvw/bdMmhdqNos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqGNKZA/kqq3D6yuzZD8Qa08JKQNis1SfZvStfQAtXLsTd1jpU2RM7OyKH402kEJF
-	 GWVcdZJ52qImdduyvHe+1aaUzoa7GjuShTvdjDoxaqQafBGcPt7x5wNPYJ98CgwiWk
-	 t0zs4cVACY9mQVgq070827Hhcs/euG2K5u9wDpMw=
+	b=r77Mb5Xzn/Npg2zuilAqPBaHNyHASeJuGvTjVZjGCqkMl7EmsKd4pOcKBDW/Z2zyg
+	 Ep3CHxN0Nsdewhh0Y+TQuX9auunYYtnTGyThDOwe4pnRfiu3eGH8bA2shmQtC2uwh4
+	 lA7IyUG8eQ9KGwOMTS9rPIQbRnXivUwdj55dQrvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/196] scsi: mpt3sas: Fix crash in transport port remove by using ioc_info()
+Subject: [PATCH 6.12 194/262] PCI: rcar-gen4: Add missing 1ms delay after PWR reset assertion
 Date: Mon, 13 Oct 2025 16:45:36 +0200
-Message-ID: <20251013144320.557483992@linuxfoundation.org>
+Message-ID: <20251013144333.235359755@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,94 +64,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 1703fe4f8ae50d1fb6449854e1fcaed1053e3a14 ]
+[ Upstream commit 8795b70581770657cd5ead3c965348f05242580f ]
 
-During mpt3sas_transport_port_remove(), messages were logged with
-dev_printk() against &mpt3sas_port->port->dev. At this point the SAS
-transport device may already be partially unregistered or freed, leading
-to a crash when accessing its struct device.
+R-Car V4H Reference Manual R19UH0186EJ0130 Rev.1.30 Apr. 21, 2025 page 585
+Figure 9.3.2 Software Reset flow (B) indicates that for peripherals in HSC
+domain, after reset has been asserted by writing a matching reset bit into
+register SRCR, it is mandatory to wait 1ms.
 
-Using ioc_info(), which logs via the PCI device (ioc->pdev->dev),
-guaranteed to remain valid until driver removal.
+Because it is the controller driver which can determine whether or not the
+controller is in HSC domain based on its compatible string, add the missing
+delay in the controller driver.
 
-[83428.295776] Oops: general protection fault, probably for non-canonical address 0x6f702f323a33312d: 0000 [#1] SMP NOPTI
-[83428.295785] CPU: 145 UID: 0 PID: 113296 Comm: rmmod Kdump: loaded Tainted: G           OE       6.16.0-rc1+ #1 PREEMPT(voluntary)
-[83428.295792] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-[83428.295795] Hardware name: Dell Inc. Precision 7875 Tower/, BIOS 89.1.67 02/23/2024
-[83428.295799] RIP: 0010:__dev_printk+0x1f/0x70
-[83428.295805] Code: 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 49 89 d1 48 85 f6 74 52 4c 8b 46 50 4d 85 c0 74 1f 48 8b 46 68 48 85 c0 74 22 <48> 8b 08 0f b6 7f 01 48 c7 c2 db e8 42 ad 83 ef 30 e9 7b f8 ff ff
-[83428.295813] RSP: 0018:ff85aeafc3137bb0 EFLAGS: 00010206
-[83428.295817] RAX: 6f702f323a33312d RBX: ff4290ee81292860 RCX: 5000cca25103be32
-[83428.295820] RDX: ff85aeafc3137bb8 RSI: ff4290eeb1966c00 RDI: ffffffffc1560845
-[83428.295823] RBP: ff85aeafc3137c18 R08: 74726f702f303a33 R09: ff85aeafc3137bb8
-[83428.295826] R10: ff85aeafc3137b18 R11: ff4290f5bd60fe68 R12: ff4290ee81290000
-[83428.295830] R13: ff4290ee6e345de0 R14: ff4290ee81290000 R15: ff4290ee6e345e30
-[83428.295833] FS:  00007fd9472a6740(0000) GS:ff4290f5ce96b000(0000) knlGS:0000000000000000
-[83428.295837] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[83428.295840] CR2: 00007f242b4db238 CR3: 00000002372b8006 CR4: 0000000000771ef0
-[83428.295844] PKRU: 55555554
-[83428.295846] Call Trace:
-[83428.295848]  <TASK>
-[83428.295850]  _dev_printk+0x5c/0x80
-[83428.295857]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.295863]  mpt3sas_transport_port_remove+0x1c7/0x420 [mpt3sas]
-[83428.295882]  _scsih_remove_device+0x21b/0x280 [mpt3sas]
-[83428.295894]  ? _scsih_expander_node_remove+0x108/0x140 [mpt3sas]
-[83428.295906]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.295910]  mpt3sas_device_remove_by_sas_address.part.0+0x8f/0x110 [mpt3sas]
-[83428.295921]  _scsih_expander_node_remove+0x129/0x140 [mpt3sas]
-[83428.295933]  _scsih_expander_node_remove+0x6a/0x140 [mpt3sas]
-[83428.295944]  scsih_remove+0x3f0/0x4a0 [mpt3sas]
-[83428.295957]  pci_device_remove+0x3b/0xb0
-[83428.295962]  device_release_driver_internal+0x193/0x200
-[83428.295968]  driver_detach+0x44/0x90
-[83428.295971]  bus_remove_driver+0x69/0xf0
-[83428.295975]  pci_unregister_driver+0x2a/0xb0
-[83428.295979]  _mpt3sas_exit+0x1f/0x300 [mpt3sas]
-[83428.295991]  __do_sys_delete_module.constprop.0+0x174/0x310
-[83428.295997]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.296000]  ? __x64_sys_getdents64+0x9a/0x110
-[83428.296005]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.296009]  ? syscall_trace_enter+0xf6/0x1b0
-[83428.296014]  do_syscall_64+0x7b/0x2c0
-[83428.296019]  ? srso_alias_return_thunk+0x5/0xfbef5
-[83428.296023]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This 1ms delay is documented on R-Car V4H and V4M; it is currently unclear
+whether S4 is affected as well. This patch does apply the extra delay on
+R-Car S4 as well.
 
-Fixes: f92363d12359 ("[SCSI] mpt3sas: add new driver supporting 12GB SAS")
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 0d0c551011df ("PCI: rcar-gen4: Add R-Car Gen4 PCIe controller support for host mode")
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+[mani: added the missing r-b tag from Krzysztof]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Link: https://patch.msgid.link/20250919134644.208098-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_transport.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_transport.c b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-index e8a4750f6ec47..7d6e4fe31ceed 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_transport.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-@@ -991,11 +991,9 @@ mpt3sas_transport_port_remove(struct MPT3SAS_ADAPTER *ioc, u64 sas_address,
- 	list_for_each_entry_safe(mpt3sas_phy, next_phy,
- 	    &mpt3sas_port->phy_list, port_siblings) {
- 		if ((ioc->logging_level & MPT_DEBUG_TRANSPORT))
--			dev_printk(KERN_INFO, &mpt3sas_port->port->dev,
--			    "remove: sas_addr(0x%016llx), phy(%d)\n",
--			    (unsigned long long)
--			    mpt3sas_port->remote_identify.sas_address,
--			    mpt3sas_phy->phy_id);
-+			ioc_info(ioc, "remove: sas_addr(0x%016llx), phy(%d)\n",
-+				(unsigned long long) mpt3sas_port->remote_identify.sas_address,
-+					mpt3sas_phy->phy_id);
- 		mpt3sas_phy->phy_belongs_to_port = 0;
- 		if (!ioc->remove_host)
- 			sas_port_delete_phy(mpt3sas_port->port,
+diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+index 5d77a01648606..5382008e366ec 100644
+--- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
++++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+@@ -182,8 +182,17 @@ static int rcar_gen4_pcie_common_init(struct rcar_gen4_pcie *rcar)
+ 		return ret;
+ 	}
+ 
+-	if (!reset_control_status(dw->core_rsts[DW_PCIE_PWR_RST].rstc))
++	if (!reset_control_status(dw->core_rsts[DW_PCIE_PWR_RST].rstc)) {
+ 		reset_control_assert(dw->core_rsts[DW_PCIE_PWR_RST].rstc);
++		/*
++		 * R-Car V4H Reference Manual R19UH0186EJ0130 Rev.1.30 Apr.
++		 * 21, 2025 page 585 Figure 9.3.2 Software Reset flow (B)
++		 * indicates that for peripherals in HSC domain, after
++		 * reset has been asserted by writing a matching reset bit
++		 * into register SRCR, it is mandatory to wait 1ms.
++		 */
++		fsleep(1000);
++	}
+ 
+ 	val = readl(rcar->base + PCIEMSR0);
+ 	if (rcar->drvdata->mode == DW_PCIE_RC_TYPE) {
 -- 
 2.51.0
 
