@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-184758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5DCBD470E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4981CBD3E7F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 098075405C7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 920B04FE5F6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B262430CD98;
-	Mon, 13 Oct 2025 15:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A119C2F5A2E;
+	Mon, 13 Oct 2025 14:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chu7VPT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvpP/dkY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B34305E31;
-	Mon, 13 Oct 2025 15:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBD324A06A;
+	Mon, 13 Oct 2025 14:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368349; cv=none; b=SEjXPDTkNXWbb6yxdMWP9rV6fm6xhqhLQ0nuK81+oOPhOKRt8aiWZw3W88uu8nZhNMSTUpeqO/ODwYisl2stbxFHeVeOeMtioxzYBmdZpA8p4Oa8zHJAJAgUH+KjbVMgzmsKil3fQ4Rpwoe2yxqNdZM/HnmCCVI6y1mytJ57eQs=
+	t=1760367118; cv=none; b=WZ70mrUrxufU/eySeSXFoBTljiLFWvAbxBXnaEJnyUqKxbdBRNA0+7l4kKZLt+rxeAavLaiV5dE3YAS1GqVg2UhHOY7n0GFKGepkZf4bWIzjuo8NS1xqbWtXqqQHHnnCAETxVkLC6igCHO4tcDRLGH64paQFyIL0zuyVvqJXqCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368349; c=relaxed/simple;
-	bh=O9dtS4VSKv1YTzAfN69wFSMtEMhXTEwL463BBtujc0M=;
+	s=arc-20240116; t=1760367118; c=relaxed/simple;
+	bh=rZRdaDsImWEcHCCdRjtrkhNrTJn+v0ENrySxl8TScmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4ozotrL+jHUNBVPoxJDm9Anj1FYzq5pYZdyOeRvL88WC6itbJ29vh6tvG9up1iSyqtm6HrynnPGMqfZYcbOIwc2ZLVmJ+gtvpGfblPTFptrPwfIK9ZqKoH4n2NjFy/XrqzLSrVfIdvx/HbhYvOw0TE5jk681iLntEnEdNGo5iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chu7VPT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE21C19424;
-	Mon, 13 Oct 2025 15:12:28 +0000 (UTC)
+	 MIME-Version; b=MZlG4DccPHYZ70PHaSf3bGxOedJhwH4rtIulFEI1p7fMEBK7eA+WTLMESFf4bS10S6ti3C8TbFpHG7DomqLUf2KZss15160ZpZ6I+5N7+qe29h87UfuNzhP07iJ1iva/LLDYB3ywfOr0YYCgNrdDuLTLcjs1xzcYFRKnC3kNAZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvpP/dkY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F0FC4CEE7;
+	Mon, 13 Oct 2025 14:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368349;
-	bh=O9dtS4VSKv1YTzAfN69wFSMtEMhXTEwL463BBtujc0M=;
+	s=korg; t=1760367118;
+	bh=rZRdaDsImWEcHCCdRjtrkhNrTJn+v0ENrySxl8TScmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chu7VPT/xMZ3Yix0y1+WQqwl4X3QWE171zDtWzHEV8ak8QA22c6uF7XyVhwF21DdB
-	 zjceRnCIRDX5/VuHvB9dLwmUhy/0NsEkQR41OQ1e/nI09zzdsdVe8V6JtsYjkIapcB
-	 9lMkvOMc+NvQdHJynn2K72iBw2PFVFd+f/UG8MSc=
+	b=QvpP/dkYcUOW3SdkqQXuF2aipY5/NKw0vdrl+fQ2H5vHebOAxUCdLhYgy4c2ycaVd
+	 FPJ04sx3lR5sFjEJZ1oj/GSYq9LnoCSQGem8+zLDE2NPEEk/WXoiLR5GYUru0PQgH6
+	 RrPjWMsBUigPdUrUjlavnZs8dD9UKtIWV6SttK78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 130/262] misc: genwqe: Fix incorrect cmd field being reported in error
+Subject: [PATCH 6.1 099/196] ALSA: lx_core: use int type to store negative error codes
 Date: Mon, 13 Oct 2025 16:44:32 +0200
-Message-ID: <20251013144330.806198708@linuxfoundation.org>
+Message-ID: <20251013144318.281300111@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 6b26053819dccc664120e07c56f107fb6f72f3fa ]
+[ Upstream commit 4ef353d546cda466fc39b7daca558d7bcec21c09 ]
 
-There is a dev_err message that is reporting the value of
-cmd->asiv_length when it should be reporting cmd->asv_length
-instead. Fix this.
+Change the 'ret' variable from u16 to int to store negative error codes or
+zero returned by lx_message_send_atomic().
 
-Fixes: eaf4722d4645 ("GenWQE Character device and DDCB queue")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20250902113712.2624743-1-colin.i.king@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Storing the negative error codes in unsigned type, doesn't cause an issue
+at runtime but it's ugly as pants. Additionally, assigning negative error
+codes to unsigned type may trigger a GCC warning when the -Wsign-conversion
+flag is enabled.
+
+No effect on runtime.
+
+Fixes: 02bec4904508 ("ALSA: lx6464es - driver for the digigram lx6464es interface")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Link: https://patch.msgid.link/20250828081312.393148-1-rongqianfeng@vivo.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/genwqe/card_ddcb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/lx6464es/lx_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/genwqe/card_ddcb.c b/drivers/misc/genwqe/card_ddcb.c
-index 500b1feaf1f6f..fd7d5cd50d396 100644
---- a/drivers/misc/genwqe/card_ddcb.c
-+++ b/drivers/misc/genwqe/card_ddcb.c
-@@ -923,7 +923,7 @@ int __genwqe_execute_raw_ddcb(struct genwqe_dev *cd,
- 	}
- 	if (cmd->asv_length > DDCB_ASV_LENGTH) {
- 		dev_err(&pci_dev->dev, "[%s] err: wrong asv_length of %d\n",
--			__func__, cmd->asiv_length);
-+			__func__, cmd->asv_length);
- 		return -EINVAL;
- 	}
- 	rc = __genwqe_enqueue_ddcb(cd, req, f_flags);
+diff --git a/sound/pci/lx6464es/lx_core.c b/sound/pci/lx6464es/lx_core.c
+index b5b0d43bb8dcd..c3f2717aebf25 100644
+--- a/sound/pci/lx6464es/lx_core.c
++++ b/sound/pci/lx6464es/lx_core.c
+@@ -316,7 +316,7 @@ static int lx_message_send_atomic(struct lx6464es *chip, struct lx_rmh *rmh)
+ /* low-level dsp access */
+ int lx_dsp_get_version(struct lx6464es *chip, u32 *rdsp_version)
+ {
+-	u16 ret;
++	int ret;
+ 
+ 	mutex_lock(&chip->msg_lock);
+ 
+@@ -330,10 +330,10 @@ int lx_dsp_get_version(struct lx6464es *chip, u32 *rdsp_version)
+ 
+ int lx_dsp_get_clock_frequency(struct lx6464es *chip, u32 *rfreq)
+ {
+-	u16 ret = 0;
+ 	u32 freq_raw = 0;
+ 	u32 freq = 0;
+ 	u32 frequency = 0;
++	int ret;
+ 
+ 	mutex_lock(&chip->msg_lock);
+ 
 -- 
 2.51.0
 
