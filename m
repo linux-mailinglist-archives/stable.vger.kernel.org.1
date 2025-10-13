@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-184942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADA2BD4D15
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:12:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E391BD4DC1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 04C874F47E6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:34:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE7973C7007
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB6230F81F;
-	Mon, 13 Oct 2025 15:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B148310655;
+	Mon, 13 Oct 2025 15:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UT5BVjci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmGGnOQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE58330F814;
-	Mon, 13 Oct 2025 15:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48126310650;
+	Mon, 13 Oct 2025 15:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368882; cv=none; b=SeL2v8QCD2thSgojgiww8kySETpZg00pp53/Y8MFSzq/ZzKUo5jG6h3xCra3cQx9VTm5qM4DBlQqnnK5hFxa0vA4Y04KGqJk70kFwgOYvClo4xE5rEOGjqBmkulNmgr0zMiR8qYVDW6q32gUGRsLOXwhAkckJEpyK4iZtkl8sAg=
+	t=1760369007; cv=none; b=MKY8KK8nY08AnzHBUIhhAaOXPppyDBAF46r6vZWlWEumFZWNLa/miuAV6yLTu3w/aN+byoTrvoBxDdGiYYc2VG+L4k4pnpXN+GKZIaiY98BYBHJrxyO+Kb8UW6xqM8pRVQi8CF1tQ0XgZHCon4k3tD+gFSwrmh5sXVanoj+5YAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368882; c=relaxed/simple;
-	bh=hXG8mwkRrGrov6r3A9WFi015nS/1zd6u3nmc8kJ8I8M=;
+	s=arc-20240116; t=1760369007; c=relaxed/simple;
+	bh=9JywpnzZXaa/49m8N1gmf85DylaKj3cAiFpfJa68gcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PZlIFt04E1alIUVGFhp7WFX2tyh3OI+/RHyvYu6Izjbyk0hUniF32C0zBJnWTCsWXipuDneydpFFEOsn6Dklm21IfF3JHkzl673dMdJiqr5wwf7usFguD5BD6yBFUnRzVvrpKsILOWQHeLwLkMBqaOsB+q6XK6rsWzFV5NvJM8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UT5BVjci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636DCC4CEFE;
-	Mon, 13 Oct 2025 15:21:21 +0000 (UTC)
+	 MIME-Version; b=UyneaRZI4tFXaXsErSUM2eRE92WJSWm/wcFIlsXvmu77XPEmtRtWLPu+B7im7/DHpigJzvWwC2TN0psPD3W7RvkiEUt/URzw7x9sOYJL4jOy3UJwo4NCcus7T78soCB3LCZYt66tk3ob/ajCXAXAdzIREl1R6WF4+msy1CXrOdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmGGnOQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDFAC4CEFE;
+	Mon, 13 Oct 2025 15:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368881;
-	bh=hXG8mwkRrGrov6r3A9WFi015nS/1zd6u3nmc8kJ8I8M=;
+	s=korg; t=1760369006;
+	bh=9JywpnzZXaa/49m8N1gmf85DylaKj3cAiFpfJa68gcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UT5BVjcibwiV5vA4rSVLKC4krUzOJ7NkAgmVuoQj/gHHws+kxJ4RY/Bm05akNcnuk
-	 67l9gbmsQQ8yJXMtl0FZHHLdEqa1kzPQVZyY+pfuiFVEK445OFIarxRIv6Fv4tcC22
-	 T8rMBJ/bQPXQfOEzDpti1gZyd/HOP/66gg+vRTbQ=
+	b=RmGGnOQ2Ir3HOT2Gtjof9eae7saidmoGMzBTYnkN9/o7m99Mcxq715cY2aKoY1l3G
+	 095zI6PVo/T9zVc76Pw8oVKcMM/Law8I9W8LYT9/w1PWhY0vhr6g6aXNmC1vebZzjB
+	 +AzWOmQV7ek3XCaY59QKbjYuMPOaGLA67JQF+I7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Willy Tarreau <w@1wt.eu>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Len Bao <len.bao@gmx.us>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 050/563] tools/nolibc: fix error return value of clock_nanosleep()
-Date: Mon, 13 Oct 2025 16:38:31 +0200
-Message-ID: <20251013144413.105660822@linuxfoundation.org>
+Subject: [PATCH 6.17 052/563] leds: max77705: Function return instead of variable assignment
+Date: Mon, 13 Oct 2025 16:38:33 +0200
+Message-ID: <20251013144413.177029267@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -61,68 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Len Bao <len.bao@gmx.us>
 
-[ Upstream commit 1201f6fb5bfdbd10985ac3c8f49ef8f4f88b5c94 ]
+[ Upstream commit 6e3779e3c6f9dcc9267bf98bef70773a0b13dcbb ]
 
-clock_nanosleep() returns a positive error value. Unlike other libc
-functions it *does not* return -1 nor set errno.
+Coverity noticed that assigning value -EINVAL to 'ret' in the if
+statement is useless because 'ret' is overwritten a few lines later.
+However, after inspect the code, this warning reveals that we need to
+return -EINVAL instead of the variable assignment. So, fix it.
 
-Fix the return value and also adapt nanosleep().
-
-Fixes: 7c02bc4088af ("tools/nolibc: add support for clock_nanosleep() and nanosleep()")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Acked-by: Willy Tarreau <w@1wt.eu>
-Link: https://lore.kernel.org/r/20250731-nolibc-clock_nanosleep-ret-v1-1-9e4af7855e61@linutronix.de
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Coverity-id: 1646104
+Fixes: aebb5fc9a0d8 ("leds: max77705: Add LEDs support")
+Signed-off-by: Len Bao <len.bao@gmx.us>
+Link: https://lore.kernel.org/r/20250727075649.34496-1-len.bao@gmx.us
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/time.h                  | 5 +++--
- tools/testing/selftests/nolibc/nolibc-test.c | 1 +
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/leds/leds-max77705.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/include/nolibc/time.h b/tools/include/nolibc/time.h
-index d02bc44d2643a..e9c1b976791a6 100644
---- a/tools/include/nolibc/time.h
-+++ b/tools/include/nolibc/time.h
-@@ -133,7 +133,8 @@ static __attribute__((unused))
- int clock_nanosleep(clockid_t clockid, int flags, const struct timespec *rqtp,
- 		    struct timespec *rmtp)
- {
--	return __sysret(sys_clock_nanosleep(clockid, flags, rqtp, rmtp));
-+	/* Directly return a positive error number */
-+	return -sys_clock_nanosleep(clockid, flags, rqtp, rmtp);
- }
+diff --git a/drivers/leds/leds-max77705.c b/drivers/leds/leds-max77705.c
+index 933cb4f19be9b..b7403b3fcf5e7 100644
+--- a/drivers/leds/leds-max77705.c
++++ b/drivers/leds/leds-max77705.c
+@@ -180,7 +180,7 @@ static int max77705_add_led(struct device *dev, struct regmap *regmap, struct fw
  
- static __inline__
-@@ -145,7 +146,7 @@ double difftime(time_t time1, time_t time2)
- static __inline__
- int nanosleep(const struct timespec *rqtp, struct timespec *rmtp)
- {
--	return clock_nanosleep(CLOCK_REALTIME, 0, rqtp, rmtp);
-+	return __sysret(sys_clock_nanosleep(CLOCK_REALTIME, 0, rqtp, rmtp));
- }
+ 		ret = fwnode_property_read_u32(np, "reg", &reg);
+ 		if (ret || reg >= MAX77705_LED_NUM_LEDS)
+-			ret = -EINVAL;
++			return -EINVAL;
  
- 
-diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-index a297ee0d6d075..cc4d730ac4656 100644
---- a/tools/testing/selftests/nolibc/nolibc-test.c
-+++ b/tools/testing/selftests/nolibc/nolibc-test.c
-@@ -1334,6 +1334,7 @@ int run_syscall(int min, int max)
- 		CASE_TEST(chroot_root);       EXPECT_SYSZR(euid0, chroot("/")); break;
- 		CASE_TEST(chroot_blah);       EXPECT_SYSER(1, chroot("/proc/self/blah"), -1, ENOENT); break;
- 		CASE_TEST(chroot_exe);        EXPECT_SYSER(1, chroot(argv0), -1, ENOTDIR); break;
-+		CASE_TEST(clock_nanosleep);   ts.tv_nsec = -1; EXPECT_EQ(1, EINVAL, clock_nanosleep(CLOCK_REALTIME, 0, &ts, NULL)); break;
- 		CASE_TEST(close_m1);          EXPECT_SYSER(1, close(-1), -1, EBADF); break;
- 		CASE_TEST(close_dup);         EXPECT_SYSZR(1, close(dup(0))); break;
- 		CASE_TEST(dup_0);             tmp = dup(0);  EXPECT_SYSNE(1, tmp, -1); close(tmp); break;
+ 		info = devm_kcalloc(dev, num_channels, sizeof(*info), GFP_KERNEL);
+ 		if (!info)
 -- 
 2.51.0
 
