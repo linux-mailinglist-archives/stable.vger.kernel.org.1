@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-185333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5549BD519A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:36:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0007BD5263
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F671421702
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:00:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93DF8545959
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B203131CA59;
-	Mon, 13 Oct 2025 15:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261DF3126C8;
+	Mon, 13 Oct 2025 15:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iI2UODiA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dE+0Oh1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38444311940;
-	Mon, 13 Oct 2025 15:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6ADF30DD37;
+	Mon, 13 Oct 2025 15:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369996; cv=none; b=bM2DIdYsMHNqrIyMjeZ+Vmb5oTKx/iCnwS02rGadxpiB8Y0QR01TviaI2J6+3BbHDj18fHa75eZBcukEcPU4J3okc0HvlOrquR2t5sTlEf03mFN7j9d09svfitt1cWdqr5QdCLz7Gz6NjbCl8BVWTbqOy3PZwWmcZDENyZtg5J4=
+	t=1760370018; cv=none; b=WgO1j0aBs3Y6dLzjjnwK3y3Y5QZa/K7/07qILWAIsM2MVSSfTO93a80t+E2mzDilc5+SX2N9ukKaUWtjTpKh3fDMP/xzRwhsoj89B+SAHePj70img00BjXobPpSEYER5g414YW8j+O3NiAQ+SIHks86kDnzpwwklw6msJsEJHkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369996; c=relaxed/simple;
-	bh=8ErQAwAjixy4b9XxK2bcxDh/sUQOmy8eRjxQC8XyjAA=;
+	s=arc-20240116; t=1760370018; c=relaxed/simple;
+	bh=k+00cH5KZwXwecU/hZRfHv3n1X/+cUN9t3I/X/ytJ8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pN/UEmdHj1FNv6oH8E0bNsKU38UotUGsrKGmkb5qh/cJ2qWmicy//gabwsuYxlBxejBBJQq1FpDswkxjTfb0tQheahGt+lB171183d9NJ9snQo1aQLxLCzGVWOgJcN8hTKu5EKBT0rQ6qvjnMYqCPB51Y4of8vsKC68sqotbUN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iI2UODiA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D1EC16AAE;
-	Mon, 13 Oct 2025 15:39:55 +0000 (UTC)
+	 MIME-Version; b=rn2vDJN8+8QxWzskB881/Ht/wsghRJRn3589JzsVosIPdeoVhpZs3ZUjNCwbDLub/B/w3TSy5YpvLr+ampVkuD6NP8jCIug7t+erNzUmKdBm2Hdt7voU7AguHuHL+vBcxyDCw48NoqF1wEI0b8iOlVxH1dybHCDyNCTAdogE2I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dE+0Oh1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC4BC4CEFE;
+	Mon, 13 Oct 2025 15:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369995;
-	bh=8ErQAwAjixy4b9XxK2bcxDh/sUQOmy8eRjxQC8XyjAA=;
+	s=korg; t=1760370018;
+	bh=k+00cH5KZwXwecU/hZRfHv3n1X/+cUN9t3I/X/ytJ8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iI2UODiAIalKYwhdATB0p09mttVkDyUZDAj40cIz5yf0U6gTT2uxtGcRsstU+uVtD
-	 Ltk4GCDc2/7dGtcRNHgPQPs/cO+1xuN8O0Fu2kaUFMWmi8V0JSxQsbY7g5yQ+GvnMA
-	 iBgVHrJ4FAZVEIRW2+19fxjz6tvCGNuzRIZfg3BQ=
+	b=dE+0Oh1tE+u820MfbLdMI5aFiys8UvuJPIp+4Q0eoBrh65wXlOS/0LhKm7QsP4sdp
+	 W77nkT8IcgihzQuD0tXkdFy9S+6DfYIAaaxjkAjKV2DAGyUFEnMrze5O5woap3vmYA
+	 ARA3m7eh0DMQ5WRdq4a0czznjXNLPf27Ge9kDjoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Nagarjuna Kristam <nkristam@nvidia.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 414/563] wifi: rtw89: fix leak in rtw89_core_send_nullfunc()
-Date: Mon, 13 Oct 2025 16:44:35 +0200
-Message-ID: <20251013144426.286547089@linuxfoundation.org>
+Subject: [PATCH 6.17 416/563] PCI: tegra194: Fix duplicate PLL disable in pex_ep_event_pex_rst_assert()
+Date: Mon, 13 Oct 2025 16:44:37 +0200
+Message-ID: <20251013144426.358531611@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,37 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Nagarjuna Kristam <nkristam@nvidia.com>
 
-[ Upstream commit a9f0064f4716b0fd97085015ea1dd398bdfdc946 ]
+[ Upstream commit 4f152338e384a3a47dd61909e1457539fa93f5a4 ]
 
-If there is no rtwsta_link found in rtw89_core_send_nullfunc(), allocated
-skb is leaked.  Free it on the error handling path.
+During PERST# assertion tegra_pcie_bpmp_set_pll_state() is currently
+called twice.
 
-Found by Linux Verification Center (linuxtesting.org).
+pex_ep_event_pex_rst_assert() should do the opposite of
+pex_ep_event_pex_rst_deassert(), so it is obvious that the duplicate
+tegra_pcie_bpmp_set_pll_state() is a mistake, and that the duplicate
+tegra_pcie_bpmp_set_pll_state() call should instead be a call to
+tegra_pcie_bpmp_set_ctrl_state().
 
-Fixes: a8ba4acab7db ("wifi: rtw89: send nullfunc based on the given link")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250919210852.823912-4-pchelkin@ispras.ru
+With this, the uninitialization sequence also matches that of
+tegra_pcie_unconfig_controller().
+
+Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
+Signed-off-by: Nagarjuna Kristam <nkristam@nvidia.com>
+[cassel: improve commit log]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20250911093021.1454385-2-cassel@kernel.org
+[mani: added Fixes tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index b9c2224dde4a3..1837f17239ab6 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -3456,6 +3456,7 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
- 	rtwsta_link = rtwsta->links[rtwvif_link->link_id];
- 	if (unlikely(!rtwsta_link)) {
- 		ret = -ENOLINK;
-+		dev_kfree_skb_any(skb);
- 		goto out;
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 4f26086f25daf..0c0734aa14b68 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1722,9 +1722,9 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+ 				ret);
  	}
  
+-	ret = tegra_pcie_bpmp_set_pll_state(pcie, false);
++	ret = tegra_pcie_bpmp_set_ctrl_state(pcie, false);
+ 	if (ret)
+-		dev_err(pcie->dev, "Failed to turn off UPHY: %d\n", ret);
++		dev_err(pcie->dev, "Failed to disable controller: %d\n", ret);
+ 
+ 	pcie->ep_state = EP_STATE_DISABLED;
+ 	dev_dbg(pcie->dev, "Uninitialization of endpoint is completed\n");
 -- 
 2.51.0
 
