@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-185137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF88BD4878
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA25BD4B41
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F17F18988D9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90444859E9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9DC309F0E;
-	Mon, 13 Oct 2025 15:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9206E30AAB4;
+	Mon, 13 Oct 2025 15:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ya5yLks/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiqk6dSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0EA3090C7;
-	Mon, 13 Oct 2025 15:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D76130AAA6;
+	Mon, 13 Oct 2025 15:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369439; cv=none; b=cm6wC1W07OBJnMDKYZRTs+72iW0CyooglFLAXqRlVrPfJFrmu97ucrTG4a2GjBDzWb8MGySK3dk+zL8bscJM3Fbyaeh0Ou9pQYovGnHoSrFnU5ExvQSn/n+aREALBTjaEY6KkEfO9zLoJEaORCuMvdiCFa2rc7FRdrFQZKF2ZdI=
+	t=1760369459; cv=none; b=E85FE6W4Nz1tewcVHjjuioFHq5ZJH9Z53w31jyzn/vTz7YFcXuTQRVXjVCp14pgwmWs81dRvNcO77tpQqwGVtcVR99STXz6fj/mbwhI/jOX+RFkrT2nqir8acl5TH5uUmxsqXZKHmdsPwYBDCuIqNYkxHU5YEi93gZamCupX3K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369439; c=relaxed/simple;
-	bh=b+mFJqJlfo/QlNOF5C8JIrv9FWvtrUDEgjdDpB20heY=;
+	s=arc-20240116; t=1760369459; c=relaxed/simple;
+	bh=Klsk9RR4RElSc+q+qiP/+JRZIKjgVLYZNUNTpY3RsUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lnf8ehlhDsuwQEQ45MJEZkSOE92yKWanqeqOVVg5jFF/s5pAyt8Bg5lwBNxQyQiOAlvgdkVDGQ1ggFSMa0TJbPMhs8hbMVw/IBqqJgLotLvLjgG3xtld6kCq7tBBoyvIdR7QmVUZKUs5uW2OPlsdWDHIM54yVXiyYQ50pmlanU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ya5yLks/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BABFC4CEE7;
-	Mon, 13 Oct 2025 15:30:38 +0000 (UTC)
+	 MIME-Version; b=CkJBtwsO1O/3cFnAi6Hu074VVr6BNxesyVTkl/Y5yPFfOaf0RG0VXutjPBJVC3dgK7cTCdWRPWvFEuYwRT24h8lOuH5HrvqtEu3pbZnqdp2qmPwW6DxcJt6Z5qH4M8xryqGVAuV1k6l5T/MJ8yk6FHEudz9cWU5Yv/3ITK65QEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiqk6dSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B32C4CEE7;
+	Mon, 13 Oct 2025 15:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369438;
-	bh=b+mFJqJlfo/QlNOF5C8JIrv9FWvtrUDEgjdDpB20heY=;
+	s=korg; t=1760369458;
+	bh=Klsk9RR4RElSc+q+qiP/+JRZIKjgVLYZNUNTpY3RsUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ya5yLks/Fm/5EvcBy9W9OSoXw++cFHQEHg04RavL4lEsKuPd3urJddqAJElEQIg/8
-	 +O1TLGwJ8WqZO41lPsXld/qP3zGWUgJFKtFDK7z/AXa+fdxoJ82c98elMg7q5fk0/a
-	 FV21oaz2FmqsFu+ip7SgA7S+zz56dH0SPNVaCKo0=
+	b=xiqk6dSw8Onj/p/D6Jn4+1qGQvOV50wMPhn+8SHD7KGOpDoA9/g28xepBGYVXxgnH
+	 f1egYAVI+KvkPEPA7Dzz1Bx4RqHt/eXqoqX5TDwSpng1n8WaRShMwmd/yfgbchlLVI
+	 dZjTa7Ty4wMTJmt3z0d2BL5dVe0sexe4d2iHIpZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 247/563] scsi: libsas: Add dev_parent_is_expander() helper
-Date: Mon, 13 Oct 2025 16:41:48 +0200
-Message-ID: <20251013144420.231919306@linuxfoundation.org>
+Subject: [PATCH 6.17 253/563] f2fs: fix to clear unusable_cap for checkpoint=enable
+Date: Mon, 13 Oct 2025 16:41:54 +0200
+Message-ID: <20251013144420.446577500@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -69,62 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit e5eb72c92eb724aa14c50c7d92d1a576dd50d7e6 ]
+[ Upstream commit 2e8f4c2b2bb12fc3d40762f1bb778e95c6ddbc93 ]
 
-Many libsas drivers check if the parent of the device is an expander.
-Create a helper that the libsas drivers will use in follow up commits.
+mount -t f2fs -o checkpoint=disable:10% /dev/vdb /mnt/f2fs/
+mount -t f2fs -o remount,checkpoint=enable /dev/vdb /mnt/f2fs/
 
-Suggested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20250814173215.1765055-15-cassel@kernel.org
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: ad70c6bc776b ("scsi: pm80xx: Fix pm8001_abort_task() for chip_8006 when using an expander")
+kernel log:
+F2FS-fs (vdb): Adjust unusable cap for checkpoint=disable = 204440 / 10%
+
+If we has assigned checkpoint=enable mount option, unusable_cap{,_perc}
+parameters of checkpoint=disable should be reset, then calculation and
+log print could be avoid in adjust_unusable_cap_perc().
+
+Fixes: 1ae18f71cb52 ("f2fs: fix checkpoint=disable:%u%%")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libsas/sas_expander.c | 5 +----
- include/scsi/libsas.h              | 8 ++++++++
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ fs/f2fs/super.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/scsi/libsas/sas_expander.c b/drivers/scsi/libsas/sas_expander.c
-index 869b5d4db44cb..d953225f6cc24 100644
---- a/drivers/scsi/libsas/sas_expander.c
-+++ b/drivers/scsi/libsas/sas_expander.c
-@@ -1313,10 +1313,7 @@ static int sas_check_parent_topology(struct domain_device *child)
- 	int i;
- 	int res = 0;
- 
--	if (!child->parent)
--		return 0;
--
--	if (!dev_is_expander(child->parent->dev_type))
-+	if (!dev_parent_is_expander(child))
- 		return 0;
- 
- 	parent_ex = &child->parent->ex_dev;
-diff --git a/include/scsi/libsas.h b/include/scsi/libsas.h
-index ba460b6c0374d..8d38565e99fa1 100644
---- a/include/scsi/libsas.h
-+++ b/include/scsi/libsas.h
-@@ -203,6 +203,14 @@ static inline bool dev_is_expander(enum sas_device_type type)
- 	       type == SAS_FANOUT_EXPANDER_DEVICE;
- }
- 
-+static inline bool dev_parent_is_expander(struct domain_device *dev)
-+{
-+	if (!dev->parent)
-+		return false;
-+
-+	return dev_is_expander(dev->parent->dev_type);
-+}
-+
- static inline void INIT_SAS_WORK(struct sas_work *sw, void (*fn)(struct work_struct *))
- {
- 	INIT_WORK(&sw->work, fn);
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index e16c4e2830c29..9f2ae3ac6078e 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -988,6 +988,10 @@ static int f2fs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 			ctx_set_opt(ctx, F2FS_MOUNT_DISABLE_CHECKPOINT);
+ 			break;
+ 		case Opt_checkpoint_enable:
++			F2FS_CTX_INFO(ctx).unusable_cap_perc = 0;
++			ctx->spec_mask |= F2FS_SPEC_checkpoint_disable_cap_perc;
++			F2FS_CTX_INFO(ctx).unusable_cap = 0;
++			ctx->spec_mask |= F2FS_SPEC_checkpoint_disable_cap;
+ 			ctx_clear_opt(ctx, F2FS_MOUNT_DISABLE_CHECKPOINT);
+ 			break;
+ 		default:
 -- 
 2.51.0
 
