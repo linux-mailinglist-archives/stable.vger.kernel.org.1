@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-185278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60C0BD4A07
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C01C3BD434C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530581891A4B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B96540502C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E06030C630;
-	Mon, 13 Oct 2025 15:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD3126F445;
+	Mon, 13 Oct 2025 14:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0a/3xHFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udgr+1VL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7B9309EE9;
-	Mon, 13 Oct 2025 15:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DB02701B8;
+	Mon, 13 Oct 2025 14:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369839; cv=none; b=C9AJoJwOtM1Ke/r79TyIfGwNB9mncPNUOpEJ2pPyOmD+Xda89/3CYK7NGk0dlsDQGdxzGeZJAvToQtNxRPn6heFp+B4vX78LccHSBUsSii22m7xoaVegs8edxDEuNh5UqV1m/DgfT17+0dHYBopj3nLkinh5PCtqHMnuGJiZBDk=
+	t=1760367569; cv=none; b=P+N+KJTW0abIgYEI9yqpWsZSdF2eauuiRfAJFz/oQZaWw8+zuAfAWrd0umWLeq8fohEEDM7XJWFRpsawyBHlm3jL56HMsUiuWiBxyXkZKHBMHy1EJBziJi30lYCC2AsKl738BssV12lFUO487glzo8z3/cPjt1dwUKGVaIXS9xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369839; c=relaxed/simple;
-	bh=W+HBipdf4dRVgb5q7kLbJzDLx+P5Sxvn0m06XbdAves=;
+	s=arc-20240116; t=1760367569; c=relaxed/simple;
+	bh=T+Y+b0noHjUun1nrwhM7bNXOu88b/NrOK4CBDhMhOVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DFqxC4JjAaAJsSvL64Zox8wAEBlkotGqzS13n5/5RtzMsLQMbOGGeNiNv3enMoTjkdp65JxGJiUeSPNKxHfWLH7U9hQP56UomRkXHsV9mmwvuWix9IWQLBv17bcXtTV/C0azYxPgfOwxxF5tVc7KbVmmjLoabpv/0HBEN/kk+aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0a/3xHFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B448BC4CEFE;
-	Mon, 13 Oct 2025 15:37:18 +0000 (UTC)
+	 MIME-Version; b=IlFD8yR5g2piITEOcupfIFR0bG4NcU8mC9qMP/ZzUHG/GyVuQtrqo43bysJXVg6XpIUUwdQx+SnkNbIcSKsKUxHqqDjuYdApWoqzFbjtDceYQDLsXeTwNqXHaO2xqUQoYnw3nqEiT/sVTLwuWoHZxFYj/w1gQgvygHVG4gIFvZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udgr+1VL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E609DC4CEE7;
+	Mon, 13 Oct 2025 14:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369839;
-	bh=W+HBipdf4dRVgb5q7kLbJzDLx+P5Sxvn0m06XbdAves=;
+	s=korg; t=1760367569;
+	bh=T+Y+b0noHjUun1nrwhM7bNXOu88b/NrOK4CBDhMhOVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0a/3xHFzCWI3Rk9vDRanE4e5z1BqqnRE+q5+NNVXBTQwc9aA/Sw6qTDg4elmq+sYc
-	 h9UHkypDF9cDyGklhEfUh1xrHLBDxAiVFlNBusek1X/Gy/fb6qViCdIsK+jtyjL9uD
-	 HtuCzHJx0CpnyDytfYxNgZ7AIoi/bkqS7Yxd7LOU=
+	b=udgr+1VLlQmwda3rBNOricPsADCcF9DoCM7VYHAB12QKkiEMasOapC9x6r4PVgCwm
+	 coNfEo/CVbaT9R4chJkt3yXbN3wm/dfP5WeYTJS4ckQpbjAoJbFtBNy2sGp4d2ZaqK
+	 aMF/3vQcms//zCi2mjStaVLAEP5tJbkA7+zU3Iv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	Mark Zhang <markzhang@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 387/563] IB/sa: Fix sa_local_svc_timeout_ms read race
+Subject: [PATCH 6.6 057/196] thermal/drivers/qcom/lmh: Add missing IRQ includes
 Date: Mon, 13 Oct 2025 16:44:08 +0200
-Message-ID: <20251013144425.294053333@linuxfoundation.org>
+Message-ID: <20251013144317.260291415@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 1428cd764cd708d53a072a2f208d87014bfe05bc ]
+[ Upstream commit b50b2c53f98fcdb6957e184eb488c16502db9575 ]
 
-When computing the delta, the sa_local_svc_timeout_ms is read without
-ib_nl_request_lock held. Though unlikely in practice, this can cause
-a race condition if multiple local service threads are managing the
-timeout.
+As reported by LKP, the Qualcomm LMH driver needs to include several
+IRQ-related headers, which decrlare necessary IRQ functionality.
+Currently driver builds on ARM64 platforms, where the headers are pulled
+in implicitly by other headers, but fails to build on other platforms.
 
-Fixes: 2ca546b92a02 ("IB/sa: Route SA pathrecord query through netlink")
-Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Reviewed-by: Mark Zhang <markzhang@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/20250916163112.98414-1-edwards@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507270042.KdK0KKht-lkp@intel.com/
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20250728-lmh-scm-v2-2-33bc58388ca5@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/sa_query.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/thermal/qcom/lmh.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/core/sa_query.c b/drivers/infiniband/core/sa_query.c
-index 53571e6b3162c..66df5bed6a562 100644
---- a/drivers/infiniband/core/sa_query.c
-+++ b/drivers/infiniband/core/sa_query.c
-@@ -1013,6 +1013,8 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
- 	if (timeout > IB_SA_LOCAL_SVC_TIMEOUT_MAX)
- 		timeout = IB_SA_LOCAL_SVC_TIMEOUT_MAX;
- 
-+	spin_lock_irqsave(&ib_nl_request_lock, flags);
-+
- 	delta = timeout - sa_local_svc_timeout_ms;
- 	if (delta < 0)
- 		abs_delta = -delta;
-@@ -1020,7 +1022,6 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
- 		abs_delta = delta;
- 
- 	if (delta != 0) {
--		spin_lock_irqsave(&ib_nl_request_lock, flags);
- 		sa_local_svc_timeout_ms = timeout;
- 		list_for_each_entry(query, &ib_nl_request_list, list) {
- 			if (delta < 0 && abs_delta > query->timeout)
-@@ -1038,9 +1039,10 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
- 		if (delay)
- 			mod_delayed_work(ib_nl_wq, &ib_nl_timed_work,
- 					 (unsigned long)delay);
--		spin_unlock_irqrestore(&ib_nl_request_lock, flags);
- 	}
- 
-+	spin_unlock_irqrestore(&ib_nl_request_lock, flags);
-+
- settimeout_out:
- 	return 0;
- }
+diff --git a/drivers/thermal/qcom/lmh.c b/drivers/thermal/qcom/lmh.c
+index d2d49264cf83a..7c299184c59b1 100644
+--- a/drivers/thermal/qcom/lmh.c
++++ b/drivers/thermal/qcom/lmh.c
+@@ -5,6 +5,8 @@
+  */
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/irqdesc.h>
+ #include <linux/irqdomain.h>
+ #include <linux/err.h>
+ #include <linux/platform_device.h>
 -- 
 2.51.0
 
