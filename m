@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-185260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BEABD49E2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:10 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B1DBD49E8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55D8C1882FB9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 81C2834FD9A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C57B31B82E;
-	Mon, 13 Oct 2025 15:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBBC31BC91;
+	Mon, 13 Oct 2025 15:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eO5Z8Xvt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M62RlJWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB69A31076D;
-	Mon, 13 Oct 2025 15:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FA331BC8D;
+	Mon, 13 Oct 2025 15:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369791; cv=none; b=CVRdWREEi8HPHWZbiDlSPo1+7GUgp2IK+AXSt9V4U23NQPr2XLfAJ/jwOQw7JF+DcMWOSn6a7Mc+0gs99ZBKzEAIYIZCkiip6JJpJxifHs+82hLoHddDWWO9rhUUmTIWxzA8vCENM23D3JVZ4orpWGAa6kfib7Ul5kfIsO5RPkk=
+	t=1760369796; cv=none; b=gnPY38VbhfO66nolXLYs/tdcXcUYCB1V/7kpS9v+uqjWl+JxgJ81cEN92GsayArer4tNiDwACLp1cg16qQOeEHkckEp6cZQIWZfp+H0VkYD7Za+7iGPVqXVY+AeVYiUrSdIOp3bvuwyMAXsMbKsa8hV5bczP8RgwDjRyqhUOQMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369791; c=relaxed/simple;
-	bh=Q6+zzaO4fb24ZVnxNVoEoT/66SknsRw+xAP/uFBixTc=;
+	s=arc-20240116; t=1760369796; c=relaxed/simple;
+	bh=b2P+d/MtZVEOq9/biN70kWvKm78d6DIr5NAXW82Gg5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTUCJmdxJEKBiB3Km5tfMOhdtm2xlPUTNUNhHTFqLLLCpW7KWeNWvk5u6eGmWAqfzeXoq6+yBo9RHuY5qe6mvo/bMwvMtCbGv72R09eq5Mc8NK6qCYC3UqFXXAU49NYTAV80QswZbQyNhKoSHbzo9uzofb4hudHB8bnBqOrsohQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eO5Z8Xvt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F036C4CEE7;
-	Mon, 13 Oct 2025 15:36:30 +0000 (UTC)
+	 MIME-Version; b=aIxjXSa3Pg3XvuXYDLyh81pf7oQ00Te3PmqxazsAPyxHQQ3ockf6PPTyZA9dm9Lqvj8jTBglpCN7PoXPQCkPqQY6cLZIHAj9iQpF12MbkoH5bQryNJFFg/krtsH+4Y5BbmLVTNx35Z7IN+u7NqfdpnR9GTZ6KGZXdliRHDv2CL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M62RlJWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7A0C116B1;
+	Mon, 13 Oct 2025 15:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369790;
-	bh=Q6+zzaO4fb24ZVnxNVoEoT/66SknsRw+xAP/uFBixTc=;
+	s=korg; t=1760369796;
+	bh=b2P+d/MtZVEOq9/biN70kWvKm78d6DIr5NAXW82Gg5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eO5Z8XvtkKWK91UedVMfC1pERgwZEwRbV3xJtbCCgZ5W33B4Jh+EjP9QgnC41eWqy
-	 hdPZmRtlw+SKZInew42w3xn5Hn+roQwZmMtpDNOp0kXhaO9n+mRsT/ylLE5JE8cC6M
-	 MPEuZUwv46v2lqlBg2XHlJlLwG0yAeRHPhoDVC34=
+	b=M62RlJWTpHAeiPg9k/Z3tu1MU1uQUfm/HhI5p7zFpzynTGtv66LguRwcm5zIL9yZv
+	 eyoqglmrQ79vHV4oInt9U6luEgIyPvXQfEbjm68he57aEXoOm4eeiEv9Z3kX7tBbtt
+	 VCw2E4FlwIYsw3v66P5JlHCg3hmEgBNJF9vDkpyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Nutty Liu <nutty.liu@hotmail.com>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
+	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 369/563] f2fs: fix to mitigate overhead of f2fs_zero_post_eof_page()
-Date: Mon, 13 Oct 2025 16:43:50 +0200
-Message-ID: <20251013144424.645034706@linuxfoundation.org>
+Subject: [PATCH 6.17 370/563] RISC-V: KVM: Write hgatp register with valid mode bits
+Date: Mon, 13 Oct 2025 16:43:51 +0200
+Message-ID: <20251013144424.680292371@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,136 +69,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-[ Upstream commit c2f7c32b254006ad48f8e4efb2e7e7bf71739f17 ]
+[ Upstream commit 2b351e3d04be9e1533f26c3464f1e44a5beace30 ]
 
-f2fs_zero_post_eof_page() may cuase more overhead due to invalidate_lock
-and page lookup, change as below to mitigate its overhead:
-- check new_size before grabbing invalidate_lock
-- lookup and invalidate pages only in range of [old_size, new_size]
+According to the RISC-V Privileged Architecture Spec, when MODE=Bare
+is selected,software must write zero to the remaining fields of hgatp.
 
-Fixes: ba8dac350faf ("f2fs: fix to zero post-eof page")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+We have detected the valid mode supported by the HW before, So using a
+valid mode to detect how many vmid bits are supported.
+
+Fixes: fd7bb4a251df ("RISC-V: KVM: Implement VMID allocator")
+Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
+Reviewed-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
+Reviewed-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20250821142542.2472079-2-guoren@kernel.org
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ arch/riscv/kvm/vmid.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 1aae4361d0a89..ffa045b39c01d 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -35,15 +35,23 @@
- #include <trace/events/f2fs.h>
- #include <uapi/linux/f2fs.h>
+diff --git a/arch/riscv/kvm/vmid.c b/arch/riscv/kvm/vmid.c
+index 3b426c800480c..5f33625f40706 100644
+--- a/arch/riscv/kvm/vmid.c
++++ b/arch/riscv/kvm/vmid.c
+@@ -14,6 +14,7 @@
+ #include <linux/smp.h>
+ #include <linux/kvm_host.h>
+ #include <asm/csr.h>
++#include <asm/kvm_mmu.h>
+ #include <asm/kvm_tlb.h>
+ #include <asm/kvm_vmid.h>
  
--static void f2fs_zero_post_eof_page(struct inode *inode, loff_t new_size)
-+static void f2fs_zero_post_eof_page(struct inode *inode,
-+					loff_t new_size, bool lock)
- {
- 	loff_t old_size = i_size_read(inode);
+@@ -28,7 +29,7 @@ void __init kvm_riscv_gstage_vmid_detect(void)
  
- 	if (old_size >= new_size)
- 		return;
- 
-+	if (mapping_empty(inode->i_mapping))
-+		return;
-+
-+	if (lock)
-+		filemap_invalidate_lock(inode->i_mapping);
- 	/* zero or drop pages only in range of [old_size, new_size] */
--	truncate_pagecache(inode, old_size);
-+	truncate_inode_pages_range(inode->i_mapping, old_size, new_size);
-+	if (lock)
-+		filemap_invalidate_unlock(inode->i_mapping);
- }
- 
- static vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf)
-@@ -114,9 +122,7 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
- 
- 	f2fs_bug_on(sbi, f2fs_has_inline_data(inode));
- 
--	filemap_invalidate_lock(inode->i_mapping);
--	f2fs_zero_post_eof_page(inode, (folio->index + 1) << PAGE_SHIFT);
--	filemap_invalidate_unlock(inode->i_mapping);
-+	f2fs_zero_post_eof_page(inode, (folio->index + 1) << PAGE_SHIFT, true);
- 
- 	file_update_time(vmf->vma->vm_file);
- 	filemap_invalidate_lock_shared(inode->i_mapping);
-@@ -1149,7 +1155,7 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 		filemap_invalidate_lock(inode->i_mapping);
- 
- 		if (attr->ia_size > old_size)
--			f2fs_zero_post_eof_page(inode, attr->ia_size);
-+			f2fs_zero_post_eof_page(inode, attr->ia_size, false);
- 		truncate_setsize(inode, attr->ia_size);
- 
- 		if (attr->ia_size <= old_size)
-@@ -1268,9 +1274,7 @@ static int f2fs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
- 	if (ret)
- 		return ret;
- 
--	filemap_invalidate_lock(inode->i_mapping);
--	f2fs_zero_post_eof_page(inode, offset + len);
--	filemap_invalidate_unlock(inode->i_mapping);
-+	f2fs_zero_post_eof_page(inode, offset + len, true);
- 
- 	pg_start = ((unsigned long long) offset) >> PAGE_SHIFT;
- 	pg_end = ((unsigned long long) offset + len) >> PAGE_SHIFT;
-@@ -1555,7 +1559,7 @@ static int f2fs_do_collapse(struct inode *inode, loff_t offset, loff_t len)
- 	f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
- 	filemap_invalidate_lock(inode->i_mapping);
- 
--	f2fs_zero_post_eof_page(inode, offset + len);
-+	f2fs_zero_post_eof_page(inode, offset + len, false);
- 
- 	f2fs_lock_op(sbi);
- 	f2fs_drop_extent_tree(inode);
-@@ -1678,9 +1682,7 @@ static int f2fs_zero_range(struct inode *inode, loff_t offset, loff_t len,
- 	if (ret)
- 		return ret;
- 
--	filemap_invalidate_lock(mapping);
--	f2fs_zero_post_eof_page(inode, offset + len);
--	filemap_invalidate_unlock(mapping);
-+	f2fs_zero_post_eof_page(inode, offset + len, true);
- 
- 	pg_start = ((unsigned long long) offset) >> PAGE_SHIFT;
- 	pg_end = ((unsigned long long) offset + len) >> PAGE_SHIFT;
-@@ -1814,7 +1816,7 @@ static int f2fs_insert_range(struct inode *inode, loff_t offset, loff_t len)
- 	f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
- 	filemap_invalidate_lock(mapping);
- 
--	f2fs_zero_post_eof_page(inode, offset + len);
-+	f2fs_zero_post_eof_page(inode, offset + len, false);
- 	truncate_pagecache(inode, offset);
- 
- 	while (!ret && idx > pg_start) {
-@@ -1872,9 +1874,7 @@ static int f2fs_expand_inode_data(struct inode *inode, loff_t offset,
- 	if (err)
- 		return err;
- 
--	filemap_invalidate_lock(inode->i_mapping);
--	f2fs_zero_post_eof_page(inode, offset + len);
--	filemap_invalidate_unlock(inode->i_mapping);
-+	f2fs_zero_post_eof_page(inode, offset + len, true);
- 
- 	f2fs_balance_fs(sbi, true);
- 
-@@ -4922,9 +4922,8 @@ static ssize_t f2fs_write_checks(struct kiocb *iocb, struct iov_iter *from)
- 	if (err)
- 		return err;
- 
--	filemap_invalidate_lock(inode->i_mapping);
--	f2fs_zero_post_eof_page(inode, iocb->ki_pos + iov_iter_count(from));
--	filemap_invalidate_unlock(inode->i_mapping);
-+	f2fs_zero_post_eof_page(inode,
-+		iocb->ki_pos + iov_iter_count(from), true);
- 	return count;
- }
- 
+ 	/* Figure-out number of VMID bits in HW */
+ 	old = csr_read(CSR_HGATP);
+-	csr_write(CSR_HGATP, old | HGATP_VMID);
++	csr_write(CSR_HGATP, (kvm_riscv_gstage_mode << HGATP_MODE_SHIFT) | HGATP_VMID);
+ 	vmid_bits = csr_read(CSR_HGATP);
+ 	vmid_bits = (vmid_bits & HGATP_VMID) >> HGATP_VMID_SHIFT;
+ 	vmid_bits = fls_long(vmid_bits);
 -- 
 2.51.0
 
