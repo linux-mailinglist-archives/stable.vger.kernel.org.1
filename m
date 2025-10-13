@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF269BD41D4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE2FBD470F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB7C218819AE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8132250189E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB96530FF09;
-	Mon, 13 Oct 2025 15:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BB524A06A;
+	Mon, 13 Oct 2025 15:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdaGTIhY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4d6kFUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649B630FF00;
-	Mon, 13 Oct 2025 15:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF951A9B46;
+	Mon, 13 Oct 2025 15:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367975; cv=none; b=shm5FH4y52AvDahZV3af//WdJLxM8NvqUTP9iEVjYAKYb/xMz+pFU0vvN6O7u3dv3Cy1WUO687DmXEBMoqxchAd0RQY8pUp7dPW9IZz+L4WZLOzBi8RrOicrFXUalViZ/RxLRmi+eJ0Z4Uyyij21cf7Rjrbvgg31YWXMzEJWsVM=
+	t=1760368618; cv=none; b=sQEaTsazBN+00yi6KaJ6yrd1soOAwbv6q+yie9Z/qMiCWB/pW1qpbM64s7tweOnEE021gohOPXUlhNqYH5owpCEaSjkndb+96fvEe1LdmZ29RADZSt7k6051wybDrdAR6kdT4o+WLe+4rLNowb/2Q33V9AK8hJe+u/FELKDGxRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367975; c=relaxed/simple;
-	bh=IMBsuHDDo5ZsSKPzUIWX6jU4YEQp7VCs8bqDPZbEN6A=;
+	s=arc-20240116; t=1760368618; c=relaxed/simple;
+	bh=Pi38RafzL2WE6Q5yWJEy4mqxcvbiMXRRTe7UtVsNVrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhmXhpNXp1m0x0pXk22HV0Cl14k7O0+8kKLcTKi8lBDxAPIBHcdIwv8CLa6Pc0gUL4twsZFSAB635gpkFYWXLwT4Q4Dw02bS96eN3VZ8fGHvPGOTz3kkaaOKa/DWUztLa2fUuOZtOsF6uHarLfJAsC9Gv03+/G7bnVS4NPIjzZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdaGTIhY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DF1C4CEFE;
-	Mon, 13 Oct 2025 15:06:14 +0000 (UTC)
+	 MIME-Version; b=d+DCcfk7So5mf6IsVb1xa2Ao4KgiDOzc/AvV7Am60k2QKWsN/jHHlDCD8LLHdlDHRNsuDy1LOjyM1EiI1Dk06k9HbeyGulCB57nKy0sJiEbWaF+5UlfQc5TYwSVlWL+mpufXlJQjJuqUUpHy8doX+/UsCI5xoTtAm/M2TExlAFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4d6kFUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73DDC4CEE7;
+	Mon, 13 Oct 2025 15:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367975;
-	bh=IMBsuHDDo5ZsSKPzUIWX6jU4YEQp7VCs8bqDPZbEN6A=;
+	s=korg; t=1760368618;
+	bh=Pi38RafzL2WE6Q5yWJEy4mqxcvbiMXRRTe7UtVsNVrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdaGTIhYrQn2ZySVcYVMpHf4OsqxsluQTP/X9RsdtE1TxgbYFt80ifEnKrZ5a2O69
-	 s59aj6Ef3Dt7PeQ0N239G/owvEepKRNlbTMjJ2i9cWlNXE76erB6PwM6XYUtoMLMlC
-	 cmzh7+Nh09Rzni2r9c7iCI9r2ejLeuWtAPU8DWYc=
+	b=d4d6kFUG4EN826iLPHmXsgLBQWAHdbVD678xdzVk3hxmA2YJIwgSK2KkGDKJf1sxz
+	 zLiJJaLYbJJVOedxeDWLuQreyxWZSUFld+uGpwqzHKLo9x/IjRTn6+rkdE4na1bfyf
+	 RITN50yrGRI/0P6kKDzZ9tievtd/2Cit/jL8CsgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 175/196] mfd: rz-mtu3: Fix MTU5 NFCR register offset
+	Chris Fenner <cfenn@google.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	stable@vger.kernel.or
+Subject: [PATCH 6.12 224/262] tpm: Disable TPM2_TCG_HMAC by default
 Date: Mon, 13 Oct 2025 16:46:06 +0200
-Message-ID: <20251013144321.640204078@linuxfoundation.org>
+Message-ID: <20251013144334.309607115@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit da32b0e82c523b76265ba1ad25d7ea74f0ece402 upstream.
+commit 4bddf4587c131d7b8ce8952cd32b284dcda0dd1f upstream.
 
-The NFCR register for MTU5 is at 0x1a95 offset according to Datasheet
-Page 725, Table 16.4. The address of all registers is offset by 0x1200,
-making the proper address of MTU5 NFCR register be 0x895.
+After reading all the feedback, right now disabling the TPM2_TCG_HMAC
+is the right call.
 
-Cc: stable@vger.kernel.org
-Fixes: 654c293e1687 ("mfd: Add Renesas RZ/G2L MTU3a core driver")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250910175914.12956-1-cosmin-gabriel.tanislav.xa@renesas.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Other views discussed:
+
+A. Having a kernel command-line parameter or refining the feature
+   otherwise. This goes to the area of improvements.  E.g., one
+   example is my own idea where the null key specific code would be
+   replaced with a persistent handle parameter (which can be
+   *unambigously* defined as part of attestation process when
+   done correctly).
+
+B. Removing the code. I don't buy this because that is same as saying
+   that HMAC encryption cannot work at all (if really nitpicking) in
+   any form. Also I disagree on the view that the feature could not
+   be refined to something more reasoable.
+
+Also, both A and B are worst options in terms of backporting.
+
+Thuss, this is the best possible choice.
+
+Cc: stable@vger.kernel.or # v6.10+
+Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+Suggested-by: Chris Fenner <cfenn@google.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/rz-mtu3.c | 2 +-
+ drivers/char/tpm/Kconfig |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/rz-mtu3.c b/drivers/mfd/rz-mtu3.c
-index f3dac4a29a83..9cdfef610398 100644
---- a/drivers/mfd/rz-mtu3.c
-+++ b/drivers/mfd/rz-mtu3.c
-@@ -32,7 +32,7 @@ static const unsigned long rz_mtu3_8bit_ch_reg_offs[][13] = {
- 	[RZ_MTU3_CHAN_2] = MTU_8BIT_CH_1_2(0x204, 0x092, 0x205, 0x200, 0x20c, 0x201, 0x202),
- 	[RZ_MTU3_CHAN_3] = MTU_8BIT_CH_3_4_6_7(0x008, 0x093, 0x02c, 0x000, 0x04c, 0x002, 0x004, 0x005, 0x038),
- 	[RZ_MTU3_CHAN_4] = MTU_8BIT_CH_3_4_6_7(0x009, 0x094, 0x02d, 0x001, 0x04d, 0x003, 0x006, 0x007, 0x039),
--	[RZ_MTU3_CHAN_5] = MTU_8BIT_CH_5(0xab2, 0x1eb, 0xab4, 0xab6, 0xa84, 0xa85, 0xa86, 0xa94, 0xa95, 0xa96, 0xaa4, 0xaa5, 0xaa6),
-+	[RZ_MTU3_CHAN_5] = MTU_8BIT_CH_5(0xab2, 0x895, 0xab4, 0xab6, 0xa84, 0xa85, 0xa86, 0xa94, 0xa95, 0xa96, 0xaa4, 0xaa5, 0xaa6),
- 	[RZ_MTU3_CHAN_6] = MTU_8BIT_CH_3_4_6_7(0x808, 0x893, 0x82c, 0x800, 0x84c, 0x802, 0x804, 0x805, 0x838),
- 	[RZ_MTU3_CHAN_7] = MTU_8BIT_CH_3_4_6_7(0x809, 0x894, 0x82d, 0x801, 0x84d, 0x803, 0x806, 0x807, 0x839),
- 	[RZ_MTU3_CHAN_8] = MTU_8BIT_CH_8(0x404, 0x098, 0x400, 0x406, 0x401, 0x402, 0x403)
--- 
-2.51.0
-
+--- a/drivers/char/tpm/Kconfig
++++ b/drivers/char/tpm/Kconfig
+@@ -29,7 +29,7 @@ if TCG_TPM
+ 
+ config TCG_TPM2_HMAC
+ 	bool "Use HMAC and encrypted transactions on the TPM bus"
+-	default X86_64
++	default n
+ 	select CRYPTO_ECDH
+ 	select CRYPTO_LIB_AESCFB
+ 	select CRYPTO_LIB_SHA256
 
 
 
