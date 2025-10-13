@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-184530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E5BBD40E3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:21:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C4ABD4459
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB79C18842D6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89A814F53D9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CC230ACE9;
-	Mon, 13 Oct 2025 15:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC2C30C639;
+	Mon, 13 Oct 2025 15:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IN4u0vuT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7MaZ1PJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33A330ACE4;
-	Mon, 13 Oct 2025 15:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBF930C619;
+	Mon, 13 Oct 2025 15:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367698; cv=none; b=avUCPP45LiPkY29MEZRmfkQ8D+QT9abunSEGycU3hxGgInp2tPrf7T8+vAlxmwfaZwCR5CnHQS29YxDCrnkLoz4CVGiL8yuTZvUfUfAsiSWPz1szNM3ix9BIjPbjx1Wt3zm8XYykvpJRGP3WoB6zgqdgbwLN3xoQI6Pr1IntvNk=
+	t=1760368309; cv=none; b=rJokIkqeTb/RDjeXziRYfu7ZgpROLMhoOTPisPEyn63gE3Eels/cJ6u4K34dYQlIxaqLkw6PEpBAnZbUa+pPTf4NWcWTpcbCcrHtAGtNaRwn3UQGFRQe3+6WXT1oYEmeKF+LoJtiJ1AcwP3DX6zDJ5CXh7cA1gQPLFgCFzpJEG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367698; c=relaxed/simple;
-	bh=J8K9gQqmwLjtFRHdyXvigUQq0QmohOozQ/c5GSt8pDo=;
+	s=arc-20240116; t=1760368309; c=relaxed/simple;
+	bh=5sHWTdvPeke7pUB/ZX4qCXhvaERqr3d/Bp4Zdv33Q2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mI5apRLoiodcstq2TLU+dGw92Hye+3+m5u2A5nG9bCq6xKEwzrG1RHYjEHNioKpzbZQgC4oV7BLzlCHmrmAPpeejfrf+F8wWG6yrMIfVMYLNoTfBfePAfafMBl3rcVMl64GnAs+daoUTLcJONrljhr5EWMkiCw76I1NkUAI5+uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IN4u0vuT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C183C116D0;
-	Mon, 13 Oct 2025 15:01:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RyQQ7sWHbwFCxPQDWZNOBKazr+IgBWXxcL9rd882+E3bkp+PFG8a1cUHH2mSRodU2M8eJlE7G7+VFGew+jLNYVUXmotXLx1uWrkZMUZLrShMR23e2tr0hLZFk50F5SYHt8jh/UlBxM3btdT962gQth72DS99fKXuTgTyE2ixq04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7MaZ1PJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0954C4CEE7;
+	Mon, 13 Oct 2025 15:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367698;
-	bh=J8K9gQqmwLjtFRHdyXvigUQq0QmohOozQ/c5GSt8pDo=;
+	s=korg; t=1760368309;
+	bh=5sHWTdvPeke7pUB/ZX4qCXhvaERqr3d/Bp4Zdv33Q2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IN4u0vuT2gvmNMXU+ttWBcuw6JmAFqJzGtIMUNl16bcF6e+iA03sI5JBd/k0uFBNc
-	 qUqxLQW6NR+TOkYNqAVlymPEE6tt7/4tOK3+ZOen5m1icRFdwm4GeK2Q8Ygt79YF2Z
-	 A8vhVgHNJFnh/mn4rLeod8XBlZ9t1iWKiOBerlmo=
+	b=Q7MaZ1PJLu5OsYQo6BSg1xDyBdqZNBw9YISuW3YQrFNpUZKX2mwTbk2h6NcMkTlC3
+	 tYetX1g3ao/XaUcKcE7Q223ipfWT1EZmGO7corEi+tOOUUo1ViEeqp6I8dGY/x01mT
+	 D5NbK+GNROZwMVbhvkkKr/E/M1qFmQeQ2TUiFpQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/196] usb: host: max3421-hcd: Fix error pointer dereference in probe cleanup
+Subject: [PATCH 6.12 117/262] drm/amd/pm: Disable ULV even if unsupported (v3)
 Date: Mon, 13 Oct 2025 16:44:19 +0200
-Message-ID: <20251013144317.653925544@linuxfoundation.org>
+Message-ID: <20251013144330.338717849@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 186e8f2bdba551f3ae23396caccd452d985c23e3 ]
+[ Upstream commit 3a0c3a4035f995e1f993dfaf4d63dc19e9b4bc1c ]
 
-The kthread_run() function returns error pointers so the
-max3421_hcd->spi_thread pointer can be either error pointers or NULL.
-Check for both before dereferencing it.
+Always send PPSMC_MSG_DisableULV to the SMC, even if ULV mode
+is unsupported, to make sure it is properly turned off.
 
-Fixes: 05dfa5c9bc37 ("usb: host: max3421-hcd: fix "spi_rd8" uses dynamic stack allocation warning")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aJTMVAPtRe5H6jug@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v3:
+Simplify si_disable_ulv further.
+Always check the return value of amdgpu_si_send_msg_to_smc.
+
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/max3421-hcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
-index cc1f579f02de1..2d792ab271e2a 100644
---- a/drivers/usb/host/max3421-hcd.c
-+++ b/drivers/usb/host/max3421-hcd.c
-@@ -1916,7 +1916,7 @@ max3421_probe(struct spi_device *spi)
- 	if (hcd) {
- 		kfree(max3421_hcd->tx);
- 		kfree(max3421_hcd->rx);
--		if (max3421_hcd->spi_thread)
-+		if (!IS_ERR_OR_NULL(max3421_hcd->spi_thread))
- 			kthread_stop(max3421_hcd->spi_thread);
- 		usb_put_hcd(hcd);
- 	}
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index a5ad1b60597e6..6a97ddcd695b5 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -5613,14 +5613,10 @@ static int si_populate_smc_t(struct amdgpu_device *adev,
+ 
+ static int si_disable_ulv(struct amdgpu_device *adev)
+ {
+-	struct si_power_info *si_pi = si_get_pi(adev);
+-	struct si_ulv_param *ulv = &si_pi->ulv;
++	PPSMC_Result r;
+ 
+-	if (ulv->supported)
+-		return (amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV) == PPSMC_Result_OK) ?
+-			0 : -EINVAL;
+-
+-	return 0;
++	r = amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV);
++	return (r == PPSMC_Result_OK) ? 0 : -EINVAL;
+ }
+ 
+ static bool si_is_state_ulv_compatible(struct amdgpu_device *adev,
 -- 
 2.51.0
 
