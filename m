@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-185095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7E4BD4A20
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00654BD4865
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12F884281F2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:48:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C3BA188C931
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C5831A7E3;
-	Mon, 13 Oct 2025 15:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86251308F2D;
+	Mon, 13 Oct 2025 15:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHhUimk/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtdHG3Bt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDE230E82B;
-	Mon, 13 Oct 2025 15:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418B9309DA0;
+	Mon, 13 Oct 2025 15:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369319; cv=none; b=G+ymybXJOKOT17kkMgJc+tw0UCznyJLKFK1KUECHdy+rQDczbwRsrOFiI9mTrw/MM7BiM+fpPgnnrIerv/IEom05Aso1Np82Jik9FKa+cSlTRs1p9vIR/DWGQpZnNdWUDgKQicQkkj4N+KSe+mfXwn79nzxt0W2uO9W+Y4MucRM=
+	t=1760369405; cv=none; b=r+iH6MGLI/bvnuGdSgrahq9C2+OONvBQvnYl5RqXLmfbIC91O/t8GkD9dEKr+skFCWodeSDVFMp0YGb+QpDt735QqT3sOlJeAZmGAoaw4lXoIWTPysnisSNmD/viXgqGpJJXBn43NZ2yJSchX5Cqkgw4kw03wq7h9usw62pP1d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369319; c=relaxed/simple;
-	bh=ieopgtLCYEyA71AR1Y28f66Opm60fSqf2LBmqKbaRME=;
+	s=arc-20240116; t=1760369405; c=relaxed/simple;
+	bh=2JCPvpq5MqdDJ6dQlvYDKz+J392iaQjbpr15JaIelTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6I6/+tsS9ynAQ15huZq1pvkUdp6pTUZ1w1pXw7nuhXgHogFO2RS4YpSC41oYyqBBLNySLhap6UWMkW44/LHGxEJ34Bsa9vc+8+lDvLgQRejkJCregQraOcjtJMLaMVR1TnmTsSdFqx4k9x5Wagfr4DvMTfnqJthvCg37P1wKuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHhUimk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DDAC4CEE7;
-	Mon, 13 Oct 2025 15:28:38 +0000 (UTC)
+	 MIME-Version; b=onPT5Pf8hX4m7pHMUhbrDBXt+mMWKe+M1wPthvJCtnYDLvk/D6bJx14ZFE2mDGdrBirnYwI3foAhNHZRzK/ddmiKEucgD1TQ5BnGpSlYk7YJUPqfxWS77W8A82lnT6umEWbuTEeYCP8p/RqZQKXoqCFh6bTxDRgoKUeIaHzdP4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtdHG3Bt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97E0C4CEE7;
+	Mon, 13 Oct 2025 15:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369318;
-	bh=ieopgtLCYEyA71AR1Y28f66Opm60fSqf2LBmqKbaRME=;
+	s=korg; t=1760369405;
+	bh=2JCPvpq5MqdDJ6dQlvYDKz+J392iaQjbpr15JaIelTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHhUimk/M5JrQ4qirWKWyTCv75/PHAGpklC6pmw+iXqhuC7w/BtwJrbK1fwYQ+mrM
-	 D6EURHZly+LJjx4ElxwPL1BNxEp2yNMbW30UXJShrp3Meo17Bjl+C1+XnMjDMXb37P
-	 OajFc8Yo2s2ki8ShjaQkA3nmr1nKANiMrGp5gkR0=
+	b=dtdHG3BtvKVAJajH7S4avsmfrYM4t2Fnvc5YMS9iO7q/E65hGyEPJASJJR/RltPVF
+	 NDMQY9JmN/RKvkGKWu3JC4+Z3jddS5+9YFMG9sByo91uYTx91T2uNdNBmhV0xtv99u
+	 bNOHu0wfbXF9DCcFUUJJa61zCvMyDRdFcduxMSA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Aurelien Jarno <aurelien@aurel32.net>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 197/563] thermal/drivers/qcom: Make LMH select QCOM_SCM
-Date: Mon, 13 Oct 2025 16:40:58 +0200
-Message-ID: <20251013144418.420384290@linuxfoundation.org>
+Subject: [PATCH 6.17 201/563] i2c: spacemit: remove stop function to avoid bus error
+Date: Mon, 13 Oct 2025 16:41:02 +0200
+Message-ID: <20251013144418.568740203@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,38 +67,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Troy Mitchell <troy.mitchell@linux.spacemit.com>
 
-[ Upstream commit 57eda47bd14b0c2876f2db42e757c57b7a671965 ]
+[ Upstream commit 445522fe7aad6131b2747ae8c76f77266054cd84 ]
 
-The QCOM_SCM symbol is not user-visible, so it makes little sense to
-depend on it. Make LMH driver select QCOM_SCM as all other drivers do
-and, as the dependecy is now correctly handled, enable || COMPILE_TEST
-in order to include the driver into broader set of build tests.
+Previously, STOP handling was split into two separate steps:
+  1) clear TB/STOP/START/ACK bits
+  2) issue STOP by calling spacemit_i2c_stop()
 
-Fixes: 9e5a4fb84230 ("thermal/drivers/qcom/lmh: make QCOM_LMH depends on QCOM_SCM")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20250728-lmh-scm-v2-1-33bc58388ca5@oss.qualcomm.com
+This left a small window where the control register was updated
+twice, which can confuse the controller. While this race has not
+been observed with interrupt-driven transfers, it reliably causes
+bus errors in PIO mode.
+
+Inline the STOP sequence into the IRQ handler and ensure that
+control register bits are updated atomically in a single writel().
+
+Fixes: 5ea558473fa31 ("i2c: spacemit: add support for SpacemiT K1 SoC")
+Signed-off-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-k1.c | 26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/thermal/qcom/Kconfig b/drivers/thermal/qcom/Kconfig
-index 2c7f3f9a26ebb..a6bb01082ec69 100644
---- a/drivers/thermal/qcom/Kconfig
-+++ b/drivers/thermal/qcom/Kconfig
-@@ -34,7 +34,8 @@ config QCOM_SPMI_TEMP_ALARM
+diff --git a/drivers/i2c/busses/i2c-k1.c b/drivers/i2c/busses/i2c-k1.c
+index ee08811f4087c..84f132d0504dc 100644
+--- a/drivers/i2c/busses/i2c-k1.c
++++ b/drivers/i2c/busses/i2c-k1.c
+@@ -267,19 +267,6 @@ static void spacemit_i2c_start(struct spacemit_i2c_dev *i2c)
+ 	writel(val, i2c->base + SPACEMIT_ICR);
+ }
  
- config QCOM_LMH
- 	tristate "Qualcomm Limits Management Hardware"
--	depends on ARCH_QCOM && QCOM_SCM
-+	depends on ARCH_QCOM || COMPILE_TEST
-+	select QCOM_SCM
- 	help
- 	  This enables initialization of Qualcomm limits management
- 	  hardware(LMh). LMh allows for hardware-enforced mitigation for cpus based on
+-static void spacemit_i2c_stop(struct spacemit_i2c_dev *i2c)
+-{
+-	u32 val;
+-
+-	val = readl(i2c->base + SPACEMIT_ICR);
+-	val |= SPACEMIT_CR_STOP | SPACEMIT_CR_ALDIE | SPACEMIT_CR_TB;
+-
+-	if (i2c->read)
+-		val |= SPACEMIT_CR_ACKNAK;
+-
+-	writel(val, i2c->base + SPACEMIT_ICR);
+-}
+-
+ static int spacemit_i2c_xfer_msg(struct spacemit_i2c_dev *i2c)
+ {
+ 	unsigned long time_left;
+@@ -412,7 +399,6 @@ static irqreturn_t spacemit_i2c_irq_handler(int irq, void *devid)
+ 
+ 	val = readl(i2c->base + SPACEMIT_ICR);
+ 	val &= ~(SPACEMIT_CR_TB | SPACEMIT_CR_ACKNAK | SPACEMIT_CR_STOP | SPACEMIT_CR_START);
+-	writel(val, i2c->base + SPACEMIT_ICR);
+ 
+ 	switch (i2c->state) {
+ 	case SPACEMIT_STATE_START:
+@@ -429,14 +415,16 @@ static irqreturn_t spacemit_i2c_irq_handler(int irq, void *devid)
+ 	}
+ 
+ 	if (i2c->state != SPACEMIT_STATE_IDLE) {
++		val |= SPACEMIT_CR_TB | SPACEMIT_CR_ALDIE;
++
+ 		if (spacemit_i2c_is_last_msg(i2c)) {
+ 			/* trigger next byte with stop */
+-			spacemit_i2c_stop(i2c);
+-		} else {
+-			/* trigger next byte */
+-			val |= SPACEMIT_CR_ALDIE | SPACEMIT_CR_TB;
+-			writel(val, i2c->base + SPACEMIT_ICR);
++			val |= SPACEMIT_CR_STOP;
++
++			if (i2c->read)
++				val |= SPACEMIT_CR_ACKNAK;
+ 		}
++		writel(val, i2c->base + SPACEMIT_ICR);
+ 	}
+ 
+ err_out:
 -- 
 2.51.0
 
