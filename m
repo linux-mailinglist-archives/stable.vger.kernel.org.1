@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D9EBD5281
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:43:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF03BD5185
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31F93484F79
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 589935622D6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC86E274B55;
-	Mon, 13 Oct 2025 15:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E85A2868AD;
+	Mon, 13 Oct 2025 15:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0J0M+0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGOZnRHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8859E279DAF;
-	Mon, 13 Oct 2025 15:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F6722A4D5;
+	Mon, 13 Oct 2025 15:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369336; cv=none; b=K/xhOnu5b7oBVLzPcWS8sr9YIvgTZO7VldRtRVa0lPvahnWValbrFeuxLNix/7pqNszY1Tg8hSUikRGpfJADnJz0k1EF9RD+oyEtRet5hgqgGerYxD8ghhblHTJwtXP58ihcR1VRD7A+5W0CubdiRRvomKnlrD9xNW25cCXi1iA=
+	t=1760369345; cv=none; b=bng4g85mXMB7AZO0sYS5YtPvpt2Crt3z7Zcu/9JmOqReLD/qdYHNyk9GwysUKLhVbrZuebW6+nu94EXfRtYhXkx90wx39PF4pwS+qhZlXuaX8sWrI2QGxrUZMxZFJtaaaRIOz0MDWxwtv8NUNfij/c9ms/YJTn/k3ptyMnLnHgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369336; c=relaxed/simple;
-	bh=hnI5s/FycRJEGna1oHiE6UAy5iUqypB9gmh2uWV6yek=;
+	s=arc-20240116; t=1760369345; c=relaxed/simple;
+	bh=2LyOO3nrxliLJOd/1iPk87XMQNbumUJY/hmcVTwV0Jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mhgIPDZ9IwqbCF32PvOkxlpP2zqb+7joQ9F0AosB+OMHojQ5bTl1rbhox/DHSxVncuGyA2Wh9AwyT6AemaxdLKZtZwP4C/spkuhaK1IohZu9Srzo3lgF7UeKakycomPJE72kfqXOScXIl0yHGxoKTdfNIwJkhED9g6ybIo/AQtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0J0M+0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061FDC4CEE7;
-	Mon, 13 Oct 2025 15:28:55 +0000 (UTC)
+	 MIME-Version; b=GBTBFYV6kY8RLlKNxOWZNYxOPHl1juiMLjN+YJcdjVRUg4SeAOBbBEwQhLp/Hm7B3hIAWpjR6fZeKtFUYZq6L7Uvca5JChtE1Pcc6s+W4AAV5MGBzzGrn90trFyWK/TYHbVsSHkDaYOJ+sXwvPJyB5yNtdda141934ccKPSiNwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGOZnRHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A50C4CEE7;
+	Mon, 13 Oct 2025 15:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369336;
-	bh=hnI5s/FycRJEGna1oHiE6UAy5iUqypB9gmh2uWV6yek=;
+	s=korg; t=1760369344;
+	bh=2LyOO3nrxliLJOd/1iPk87XMQNbumUJY/hmcVTwV0Jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0J0M+0xTdjMnEssDCyQhQB684KcwMb2a72DzksW8JAlBa5afIJegiM5wT4I2e4rt
-	 u94756W9+iyp/GtCplXSqIArc7TO3XgQ2rMPFJWgImVFchC1NXaL2OwHboRm1BqjLy
-	 hwT/ZTG7oGqhKVRhROLrpxGTgtAU71nUdkBnhEuQ=
+	b=RGOZnRHLbx9v2jw1GEiyhdZPhNR7+jFiE5myUPQR2fwY5A/ofDjBf4d5W5GmpTBhx
+	 IoETKm6p/rPRvuL0KwtTKVzAu8XMATMQlo0mMjLkzYYEPgLL8dz4TyMcxFPBNfaHE2
+	 nNRReYgZiSHnhuz61pZLEaYCLwXQqs/jHeT9XpPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Philipp Stanner <phasta@kernel.org>,
+	Langyan Ye <yelangyan@huaqin.corp-partner.google.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 211/563] drm/sched: Fix a race in DRM_GPU_SCHED_STAT_NO_HANG test
-Date: Mon, 13 Oct 2025 16:41:12 +0200
-Message-ID: <20251013144418.928427152@linuxfoundation.org>
+Subject: [PATCH 6.17 214/563] drm/panel-edp: Add 50ms disable delay for four panels
+Date: Mon, 13 Oct 2025 16:41:15 +0200
+Message-ID: <20251013144419.037309948@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -61,88 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Langyan Ye <yelangyan@huaqin.corp-partner.google.com>
 
-[ Upstream commit 2650bc4007c15e05f995f472b4fc89e793162bc4 ]
+[ Upstream commit 1511d3c4d2bb30f784924a877f3cef518bb73077 ]
 
-The "skip reset" test waits for the timeout handler to run for the
-duration of 2 * MOCK_TIMEOUT, and because the mock scheduler opted to
-remove the "skip reset" flag once it fires, this gives opportunity for the
-timeout handler to run twice. Second time the job will be removed from the
-mock scheduler job list and the drm_mock_sched_advance() call in the test
-will fail.
+Add 50ms disable delay for NV116WHM-N49, NV122WUM-N41, and MNC207QS1-1
+to satisfy T9+T10 timing. Add 50ms disable delay for MNE007JA1-2
+as well, since MNE007JA1-2 copies the timing of MNC207QS1-1.
 
-Fix it by making the "don't reset" flag persist for the lifetime of the
-job and add a new flag to verify that the code path had executed as
-expected.
+Specifically, it should be noted that the MNE007JA1-2 panel was added
+by someone who did not have the panel documentation, so they simply
+copied the timing from the MNC207QS1-1 panel. Adding an extra 50 ms
+of delay should be safe.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: 1472e7549f84 ("drm/sched: Add new test for DRM_GPU_SCHED_STAT_NO_HANG")
-Cc: Maíra Canal <mcanal@igalia.com>
-Cc: Philipp Stanner <phasta@kernel.org>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250716084817.56797-1-tvrtko.ursulin@igalia.com
+Fixes: 0547692ac146 ("drm/panel-edp: Add several generic edp panels")
+Fixes: 50625eab3972 ("drm/edp-panel: Add panel used by T14s Gen6 Snapdragon")
+Signed-off-by: Langyan Ye <yelangyan@huaqin.corp-partner.google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250723072513.2880369-1-yelangyan@huaqin.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/tests/mock_scheduler.c | 2 +-
- drivers/gpu/drm/scheduler/tests/sched_tests.h    | 7 ++++---
- drivers/gpu/drm/scheduler/tests/tests_basic.c    | 4 ++--
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/panel/panel-edp.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/scheduler/tests/mock_scheduler.c b/drivers/gpu/drm/scheduler/tests/mock_scheduler.c
-index 65acffc3fea82..8e9ae7d980eb2 100644
---- a/drivers/gpu/drm/scheduler/tests/mock_scheduler.c
-+++ b/drivers/gpu/drm/scheduler/tests/mock_scheduler.c
-@@ -219,7 +219,7 @@ mock_sched_timedout_job(struct drm_sched_job *sched_job)
- 	unsigned long flags;
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index 09170470b3ef1..d0aa602ecc9de 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1736,10 +1736,11 @@ static const struct panel_delay delay_200_500_e50 = {
+ 	.enable = 50,
+ };
  
- 	if (job->flags & DRM_MOCK_SCHED_JOB_DONT_RESET) {
--		job->flags &= ~DRM_MOCK_SCHED_JOB_DONT_RESET;
-+		job->flags |= DRM_MOCK_SCHED_JOB_RESET_SKIPPED;
- 		return DRM_GPU_SCHED_STAT_NO_HANG;
- 	}
+-static const struct panel_delay delay_200_500_e50_p2e200 = {
++static const struct panel_delay delay_200_500_e50_d50_p2e200 = {
+ 	.hpd_absent = 200,
+ 	.unprepare = 500,
+ 	.enable = 50,
++	.disable = 50,
+ 	.prepare_to_enable = 200,
+ };
  
-diff --git a/drivers/gpu/drm/scheduler/tests/sched_tests.h b/drivers/gpu/drm/scheduler/tests/sched_tests.h
-index 63d4f2ac70749..5b262126b7760 100644
---- a/drivers/gpu/drm/scheduler/tests/sched_tests.h
-+++ b/drivers/gpu/drm/scheduler/tests/sched_tests.h
-@@ -95,9 +95,10 @@ struct drm_mock_sched_job {
+@@ -1941,13 +1942,13 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x09dd, &delay_200_500_e50, "NT116WHM-N21"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0a1b, &delay_200_500_e50, "NV133WUM-N63"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0a36, &delay_200_500_e200, "Unknown"),
+-	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0a3e, &delay_200_500_e80, "NV116WHM-N49"),
++	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0a3e, &delay_200_500_e80_d50, "NV116WHM-N49"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0a5d, &delay_200_500_e50, "NV116WHM-N45"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0ac5, &delay_200_500_e50, "NV116WHM-N4C"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0ae8, &delay_200_500_e50_p2e80, "NV140WUM-N41"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0b09, &delay_200_500_e50_po2e200, "NV140FHM-NZ"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0b1e, &delay_200_500_e80, "NE140QDM-N6A"),
+-	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0b34, &delay_200_500_e80, "NV122WUM-N41"),
++	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0b34, &delay_200_500_e80_d50, "NV122WUM-N41"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0b43, &delay_200_500_e200, "NV140FHM-T09"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0b56, &delay_200_500_e80, "NT140FHM-N47"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0b66, &delay_200_500_e80, "NE140WUM-N6G"),
+@@ -1986,8 +1987,8 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('C', 'M', 'N', 0x14e5, &delay_200_500_e80_d50, "N140HGA-EA1"),
+ 	EDP_PANEL_ENTRY('C', 'M', 'N', 0x162b, &delay_200_500_e80_d50, "N160JCE-ELL"),
  
- 	struct completion	done;
+-	EDP_PANEL_ENTRY('C', 'S', 'O', 0x1200, &delay_200_500_e50_p2e200, "MNC207QS1-1"),
+-	EDP_PANEL_ENTRY('C', 'S', 'O', 0x1413, &delay_200_500_e50_p2e200, "MNE007JA1-2"),
++	EDP_PANEL_ENTRY('C', 'S', 'O', 0x1200, &delay_200_500_e50_d50_p2e200, "MNC207QS1-1"),
++	EDP_PANEL_ENTRY('C', 'S', 'O', 0x1413, &delay_200_500_e50_d50_p2e200, "MNE007JA1-2"),
  
--#define DRM_MOCK_SCHED_JOB_DONE		0x1
--#define DRM_MOCK_SCHED_JOB_TIMEDOUT	0x2
--#define DRM_MOCK_SCHED_JOB_DONT_RESET	0x4
-+#define DRM_MOCK_SCHED_JOB_DONE			0x1
-+#define DRM_MOCK_SCHED_JOB_TIMEDOUT		0x2
-+#define DRM_MOCK_SCHED_JOB_DONT_RESET		0x4
-+#define DRM_MOCK_SCHED_JOB_RESET_SKIPPED	0x8
- 	unsigned long		flags;
- 
- 	struct list_head	link;
-diff --git a/drivers/gpu/drm/scheduler/tests/tests_basic.c b/drivers/gpu/drm/scheduler/tests/tests_basic.c
-index 55eb142bd7c5d..82a41a456b0a8 100644
---- a/drivers/gpu/drm/scheduler/tests/tests_basic.c
-+++ b/drivers/gpu/drm/scheduler/tests/tests_basic.c
-@@ -317,8 +317,8 @@ static void drm_sched_skip_reset(struct kunit *test)
- 	KUNIT_ASSERT_FALSE(test, done);
- 
- 	KUNIT_ASSERT_EQ(test,
--			job->flags & DRM_MOCK_SCHED_JOB_DONT_RESET,
--			0);
-+			job->flags & DRM_MOCK_SCHED_JOB_RESET_SKIPPED,
-+			DRM_MOCK_SCHED_JOB_RESET_SKIPPED);
- 
- 	i = drm_mock_sched_advance(sched, 1);
- 	KUNIT_ASSERT_EQ(test, i, 1);
+ 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1100, &delay_200_500_e80_d50, "MNB601LS1-1"),
+ 	EDP_PANEL_ENTRY('C', 'S', 'W', 0x1103, &delay_200_500_e80_d50, "MNB601LS1-3"),
 -- 
 2.51.0
 
