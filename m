@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3CEBD3E67
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:09:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21334BD40D2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17A2C4FE3E4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6FA18832C2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991AB26E6FE;
-	Mon, 13 Oct 2025 14:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE0630AAB4;
+	Mon, 13 Oct 2025 15:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neVVc+3g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpp9PE82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550B62566;
-	Mon, 13 Oct 2025 14:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C47D309DC5;
+	Mon, 13 Oct 2025 15:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367081; cv=none; b=lhpAV5GSHB9RaWoTYUVYGsrQ+1eFTRQbFQtbuv6ER0m4LAy3qXc07dOqXAlzYk7iiIfmTOU0F6o/c0oDweCGC1oOouQGHLI36bfXPNwj7vM4pB18L8HAAMKt/O+pj0HosqN0AXafRwUiqVoFiwbo4OKN0tAr7Bt3eB5guw7ZKP4=
+	t=1760367676; cv=none; b=cf8Arn7Bm1Yz8kAFZzddc/lpdyN7JqMXeR9PIGyCcjVYNx00NhUJcShR18pQRP+aDzGaMNwWAyPvJqUKz28yPl5/ufmDPelBs1lgsCIIDRi8yqsSQYN6ZQvW9ZgV5UaClfIbe+0hvXE/HZ04XYitkceJF7+GXzQFHwS4blSSM0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367081; c=relaxed/simple;
-	bh=swWyDsjhJCqMvy3PocIDn63eM93QhmSzbOeg/aol4Gc=;
+	s=arc-20240116; t=1760367676; c=relaxed/simple;
+	bh=lWb2FjKa85bTtAukHDdxFZ9DAXe7x5Mbi/YkRi57XEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lU03cd0eX2ZpUN0KLsU1TO8pcHQYfzb3ymjrAI3cfKTcwXsvPe+kl8v8mfl/Ma4FnADrWztJFlXAaiPQ9jDEZFlHlHbpA4QVv8eRSh3NFTNnROCwz6UhXgOsP2eSwalRz90SjYMi1eeOgFik6hUMq0ckWzMiw0J6ZFOYhLbqVYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neVVc+3g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D767FC4CEE7;
-	Mon, 13 Oct 2025 14:51:20 +0000 (UTC)
+	 MIME-Version; b=T7QCswPYbonNcIC/FJ7euaHkAOb4SulyfaHBf+VDdNMVB9XuuvmLuL3+lIiTBUL0jlEZcqBXeaUup+j2xbecN7tItZPNHtryS9ZxMppm/FSZORj07Yy3nuuCz4pG7ydJ/38U9UMajmILb8CSL6okSHSahNz8dCVij9cPCYDpkg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpp9PE82; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3511C4CEE7;
+	Mon, 13 Oct 2025 15:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367081;
-	bh=swWyDsjhJCqMvy3PocIDn63eM93QhmSzbOeg/aol4Gc=;
+	s=korg; t=1760367676;
+	bh=lWb2FjKa85bTtAukHDdxFZ9DAXe7x5Mbi/YkRi57XEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neVVc+3g0aRGREyGodRv5snJsSfn29S2Qd3h5sBHvwaebsSDOPsbcsbEYbee77mxC
-	 PA3uWbTEgqCIzkMDkvFAqSwnaWt22ayxEUvCD0by43JvIb0y8b8MdMCPeVPcsh/gb0
-	 rGeBsnDWISQSHkVmnXmEQAcNq3FA/MLMyV+E+7Go=
+	b=xpp9PE82dTdsgHFaZx1zLyEj+3z0U8jzzYC5ooNLqPuXrY7Wj+kJt7GSYmkSWigCi
+	 Ky57a+f6JKgJcQN+C9Qs+0JIY7i/HdCrBFd3939ApvDhZvh5e/w+FZ4SVlnkuUqiLU
+	 x0XZyc3/ZYOmT5GOz8oBzHrYGQk6DZdwp/8gL4KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/196] hwmon: (mlxreg-fan) Separate methods of fan setting coming from different subsystems
-Date: Mon, 13 Oct 2025 16:44:17 +0200
-Message-ID: <20251013144317.612486661@linuxfoundation.org>
+Subject: [PATCH 6.6 067/196] phy: rockchip: naneng-combphy: Enable U3 OTG port for RK3568
+Date: Mon, 13 Oct 2025 16:44:18 +0200
+Message-ID: <20251013144317.618665430@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit c02e4644f8ac9c501077ef5ac53ae7fc51472d49 ]
+[ Upstream commit 7bb14b61b7d03db770b7e8871493f5b9b2be2b79 ]
 
-Distinct between fan speed setting request coming for hwmon and
-thermal subsystems.
+The boot firmware may disable the U3 port early during boot and leave it
+up to the controller or PHY driver to re-enable U3 when needed.
 
-There are fields 'last_hwmon_state' and 'last_thermal_state' in the
-structure 'mlxreg_fan_pwm', which respectively store the cooling state
-set by the 'hwmon' and 'thermal' subsystem.
-The purpose is to make arbitration of fan speed setting. For example, if
-fan speed required to be not lower than some limit, such setting is to
-be performed through 'hwmon' subsystem, thus 'thermal' subsystem will
-not set fan below this limit.
+The Rockchip USBDP PHY driver currently does this for RK3576 and RK3588,
+something the Rockchip Naneng Combo PHY driver never does for RK3568.
+This may result in USB 3.0 ports being limited to only using USB 2.0 or
+in special cases not working at all on RK3568.
 
-Currently, the 'last_thermal_state' is also be updated by 'hwmon' causing
-cooling state to never be set to a lower value.
+Write to PIPE_GRF USB3OTGx_CON1 reg to ensure the U3 port is enabled
+when a PHY with PHY_TYPE_USB3 mode is used.
 
-Eliminate update of 'last_thermal_state', when request is coming from
-'hwmon' subsystem.
-
-Fixes: da74944d3a46 ("hwmon: (mlxreg-fan) Use pwm attribute for setting fan speed low limit")
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/20250113084859.27064-2-vadimp@nvidia.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 7160820d742a ("phy: rockchip: add naneng combo phy for RK3568")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20250723072324.2246498-1-jonas@kwiboo.se
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/mlxreg-fan.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-naneng-combphy.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/hwmon/mlxreg-fan.c b/drivers/hwmon/mlxreg-fan.c
-index 7514d57661048..fbb18bd3f09b9 100644
---- a/drivers/hwmon/mlxreg-fan.c
-+++ b/drivers/hwmon/mlxreg-fan.c
-@@ -113,8 +113,8 @@ struct mlxreg_fan {
- 	int divider;
+diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+index 2354ce8b21594..9ef496092b7e6 100644
+--- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+@@ -122,6 +122,8 @@ struct rockchip_combphy_grfcfg {
+ 	struct combphy_reg pipe_xpcs_phy_ready;
+ 	struct combphy_reg pipe_pcie1l0_sel;
+ 	struct combphy_reg pipe_pcie1l1_sel;
++	struct combphy_reg u3otg0_port_en;
++	struct combphy_reg u3otg1_port_en;
  };
  
--static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
--				    unsigned long state);
-+static int _mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
-+				     unsigned long state, bool thermal);
+ struct rockchip_combphy_cfg {
+@@ -431,6 +433,14 @@ static int rk3568_combphy_cfg(struct rockchip_combphy_priv *priv)
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_txcomp_sel, false);
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_txelec_sel, false);
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->usb_mode_set, true);
++		switch (priv->id) {
++		case 0:
++			rockchip_combphy_param_write(priv->pipe_grf, &cfg->u3otg0_port_en, true);
++			break;
++		case 1:
++			rockchip_combphy_param_write(priv->pipe_grf, &cfg->u3otg1_port_en, true);
++			break;
++		}
+ 		break;
  
- static int
- mlxreg_fan_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
-@@ -224,8 +224,9 @@ mlxreg_fan_write(struct device *dev, enum hwmon_sensor_types type, u32 attr,
- 				 * last thermal state.
- 				 */
- 				if (pwm->last_hwmon_state >= pwm->last_thermal_state)
--					return mlxreg_fan_set_cur_state(pwm->cdev,
--									pwm->last_hwmon_state);
-+					return _mlxreg_fan_set_cur_state(pwm->cdev,
-+									 pwm->last_hwmon_state,
-+									 false);
- 				return 0;
- 			}
- 			return regmap_write(fan->regmap, pwm->reg, val);
-@@ -347,9 +348,8 @@ static int mlxreg_fan_get_cur_state(struct thermal_cooling_device *cdev,
- 	return 0;
- }
+ 	case PHY_TYPE_SATA:
+@@ -574,6 +584,8 @@ static const struct rockchip_combphy_grfcfg rk3568_combphy_grfcfgs = {
+ 	/* pipe-grf */
+ 	.pipe_con0_for_sata	= { 0x0000, 15, 0, 0x00, 0x2220 },
+ 	.pipe_xpcs_phy_ready	= { 0x0040, 2, 2, 0x00, 0x01 },
++	.u3otg0_port_en		= { 0x0104, 15, 0, 0x0181, 0x1100 },
++	.u3otg1_port_en		= { 0x0144, 15, 0, 0x0181, 0x1100 },
+ };
  
--static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
--				    unsigned long state)
--
-+static int _mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
-+				     unsigned long state, bool thermal)
- {
- 	struct mlxreg_fan_pwm *pwm = cdev->devdata;
- 	struct mlxreg_fan *fan = pwm->fan;
-@@ -359,7 +359,8 @@ static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
- 		return -EINVAL;
- 
- 	/* Save thermal state. */
--	pwm->last_thermal_state = state;
-+	if (thermal)
-+		pwm->last_thermal_state = state;
- 
- 	state = max_t(unsigned long, state, pwm->last_hwmon_state);
- 	err = regmap_write(fan->regmap, pwm->reg,
-@@ -371,6 +372,13 @@ static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
- 	return 0;
- }
- 
-+static int mlxreg_fan_set_cur_state(struct thermal_cooling_device *cdev,
-+				    unsigned long state)
-+
-+{
-+	return _mlxreg_fan_set_cur_state(cdev, state, true);
-+}
-+
- static const struct thermal_cooling_device_ops mlxreg_fan_cooling_ops = {
- 	.get_max_state	= mlxreg_fan_get_max_state,
- 	.get_cur_state	= mlxreg_fan_get_cur_state,
+ static const struct rockchip_combphy_cfg rk3568_combphy_cfgs = {
 -- 
 2.51.0
 
