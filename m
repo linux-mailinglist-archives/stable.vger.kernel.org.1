@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-184527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FEDBD4522
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 606C5BD3E83
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 277875024C8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 931713E4028
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B457E30AAD4;
-	Mon, 13 Oct 2025 15:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD8A30ACE7;
+	Mon, 13 Oct 2025 14:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsU+KBJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDsi8s90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705392D46B3;
-	Mon, 13 Oct 2025 15:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB661279DCE;
+	Mon, 13 Oct 2025 14:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367690; cv=none; b=Arcnqlsmzf3Tc9f1TJntCCVKhsWXn7RWXxktWyT131PPKNCG8A4EQw0jlqDub8JAKvTypSRoc456ZrZxwaDb0Ix4ykiB/EPVkmfU0Sq5Jiik9lhAldDE2Pn0zgAPpG3sQdYINE/mdYI5F9v6pGDJrAts0itepidVk+FRvU73U9o=
+	t=1760367173; cv=none; b=IUm9lSw+EvhXoNPbJqBaZVAAtmV+/hbnzaVOocFnh7p5GHQm9ZGw2ImqcR8EQxbfswIYP0Iqa8uGyQqbcR3QAjUN7jex/DxiyhruDEJPCWEebzj1CWyeGrsYl1gPPRN87RqpNoAiAZO7tfw4B4p+L8ty79WWASm499Mc9XtAE08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367690; c=relaxed/simple;
-	bh=fDLHY/9Jg0MZ//jHvSJVW++HRSO39KMtVCZsNpA3Ozk=;
+	s=arc-20240116; t=1760367173; c=relaxed/simple;
+	bh=Gkclo86MUq9vVLmCNmFoEnL5nwmSnWzUdagzseO+XWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k264teg83v5U3XwUfqcFTjLeMWLq4YUBJ1GpiZlmZXq5FrhCgLes2Bn2kXlBpeBZG64swAxvZuwOkgTbVqqGKzc+MrYIJGmm7SWn6sz53xAIveSOj52XwY+0FpQFqJfQG1AN+I67EYWxUE2ynMibTtxys95gP/AJ8BrNgvW2Qfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsU+KBJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6EBC4CEFE;
-	Mon, 13 Oct 2025 15:01:29 +0000 (UTC)
+	 MIME-Version; b=WA2xk5mmXlt5W3QSEyekWeiw1DQDXoX/hw76t5AAVLUP5okJazI7DeJs2XtBByg3mvMykIuzPeMQ7KsWKjMQGn6LJdh0miRYqBjV3sMO/KBDEUI7bapbKNrhKjyKz4e2M8KrieFbh9crlPY2LFUzxomzqe2nmXWERtvWWMzxYWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDsi8s90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCA5C4CEE7;
+	Mon, 13 Oct 2025 14:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367690;
-	bh=fDLHY/9Jg0MZ//jHvSJVW++HRSO39KMtVCZsNpA3Ozk=;
+	s=korg; t=1760367172;
+	bh=Gkclo86MUq9vVLmCNmFoEnL5nwmSnWzUdagzseO+XWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VsU+KBJMX0Yu//yytB1M95NdxKO7LG7jMW4sdd2sVecUkDI8ydyLEpZeEs+APWVA3
-	 isOv9qgABn6SzO9kd+LKf4JvwTEQM032rWxALpE+17O6lucra2UrOPSZzDlThTIKh7
-	 vKnFg+jtVUJ191I40gXVsc2TJ0mQA7WiKN+5+8Do=
+	b=EDsi8s90Ght718LRXRb0ZzaokfpEM1OGQ9ppMSAV7tYqe+2XeZo2f75ibJjGZoezI
+	 UdjyukMKLRRfKj3nbtWnwIT+vYSRv1goL1yvcuhSyuKNPu29lZNHIHPIn/bR19W+kg
+	 5KpCwmOjXv9QsGlDSEZ9ytcwIUAOppd9oxYSUl+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seppo Takalo <seppo.takalo@nordicsemi.no>,
+	Colin Ian King <colin.i.king@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/196] tty: n_gsm: Dont block input queue by waiting MSC
+Subject: [PATCH 6.1 116/196] misc: genwqe: Fix incorrect cmd field being reported in error
 Date: Mon, 13 Oct 2025 16:44:49 +0200
-Message-ID: <20251013144318.862531197@linuxfoundation.org>
+Message-ID: <20251013144318.894172526@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seppo Takalo <seppo.takalo@nordicsemi.no>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 3cf0b3c243e56bc43be560617416c1d9f301f44c ]
+[ Upstream commit 6b26053819dccc664120e07c56f107fb6f72f3fa ]
 
-Currently gsm_queue() processes incoming frames and when opening
-a DLC channel it calls gsm_dlci_open() which calls gsm_modem_update().
-If basic mode is used it calls gsm_modem_upd_via_msc() and it
-cannot block the input queue by waiting the response to come
-into the same input queue.
+There is a dev_err message that is reporting the value of
+cmd->asiv_length when it should be reporting cmd->asv_length
+instead. Fix this.
 
-Instead allow sending Modem Status Command without waiting for remote
-end to respond. Define a new function gsm_modem_send_initial_msc()
-for this purpose. As MSC is only valid for basic encoding, it does
-not do anything for advanced or when convergence layer type 2 is used.
-
-Fixes: 48473802506d ("tty: n_gsm: fix missing update of modem controls after DLCI open")
-Signed-off-by: Seppo Takalo <seppo.takalo@nordicsemi.no>
-Link: https://lore.kernel.org/r/20250827123221.1148666-1-seppo.takalo@nordicsemi.no
+Fixes: eaf4722d4645 ("GenWQE Character device and DDCB queue")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Link: https://lore.kernel.org/r/20250902113712.2624743-1-colin.i.king@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/misc/genwqe/card_ddcb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
-index 8559ba1361c64..901f5c8311fbf 100644
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -460,6 +460,7 @@ static int gsm_send_packet(struct gsm_mux *gsm, struct gsm_msg *msg);
- static struct gsm_dlci *gsm_dlci_alloc(struct gsm_mux *gsm, int addr);
- static void gsmld_write_trigger(struct gsm_mux *gsm);
- static void gsmld_write_task(struct work_struct *work);
-+static int gsm_modem_send_initial_msc(struct gsm_dlci *dlci);
- 
- /**
-  *	gsm_fcs_add	-	update FCS
-@@ -2173,7 +2174,7 @@ static void gsm_dlci_open(struct gsm_dlci *dlci)
- 		pr_debug("DLCI %d goes open.\n", dlci->addr);
- 	/* Send current modem state */
- 	if (dlci->addr) {
--		gsm_modem_update(dlci, 0);
-+		gsm_modem_send_initial_msc(dlci);
- 	} else {
- 		/* Start keep-alive control */
- 		gsm->ka_num = 0;
-@@ -4156,6 +4157,28 @@ static int gsm_modem_upd_via_msc(struct gsm_dlci *dlci, u8 brk)
- 	return gsm_control_wait(dlci->gsm, ctrl);
- }
- 
-+/**
-+ * gsm_modem_send_initial_msc - Send initial modem status message
-+ *
-+ * @dlci channel
-+ *
-+ * Send an initial MSC message after DLCI open to set the initial
-+ * modem status lines. This is only done for basic mode.
-+ * Does not wait for a response as we cannot block the input queue
-+ * processing.
-+ */
-+static int gsm_modem_send_initial_msc(struct gsm_dlci *dlci)
-+{
-+	u8 modembits[2];
-+
-+	if (dlci->adaption != 1 || dlci->gsm->encoding != GSM_BASIC_OPT)
-+		return 0;
-+
-+	modembits[0] = (dlci->addr << 2) | 2 | EA; /* DLCI, Valid, EA */
-+	modembits[1] = (gsm_encode_modem(dlci) << 1) | EA;
-+	return gsm_control_command(dlci->gsm, CMD_MSC, (const u8 *)&modembits, 2);
-+}
-+
- /**
-  *	gsm_modem_update	-	send modem status line state
-  *	@dlci: channel
+diff --git a/drivers/misc/genwqe/card_ddcb.c b/drivers/misc/genwqe/card_ddcb.c
+index 500b1feaf1f6f..fd7d5cd50d396 100644
+--- a/drivers/misc/genwqe/card_ddcb.c
++++ b/drivers/misc/genwqe/card_ddcb.c
+@@ -923,7 +923,7 @@ int __genwqe_execute_raw_ddcb(struct genwqe_dev *cd,
+ 	}
+ 	if (cmd->asv_length > DDCB_ASV_LENGTH) {
+ 		dev_err(&pci_dev->dev, "[%s] err: wrong asv_length of %d\n",
+-			__func__, cmd->asiv_length);
++			__func__, cmd->asv_length);
+ 		return -EINVAL;
+ 	}
+ 	rc = __genwqe_enqueue_ddcb(cd, req, f_flags);
 -- 
 2.51.0
 
