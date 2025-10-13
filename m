@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E86BD40EC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21029BD48AA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A8BB334E9DE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66B1318A205C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B859C310779;
-	Mon, 13 Oct 2025 15:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03DD30B525;
+	Mon, 13 Oct 2025 15:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6LZ1CUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VsfEbim"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7390231076C;
-	Mon, 13 Oct 2025 15:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6E230B505;
+	Mon, 13 Oct 2025 15:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368073; cv=none; b=nz+r+xdM/aNJ4zE2k2MrKnRWGgKAWMfNvZY0hUuoSySJaeae9eqGL8chtgKJnGwNJaPn1rQzCOhlkfbmemdiCXFL1JmnivYPd/DtPiB9soKGqy3mqn/CkQ81UfKF02PxrUx5H59pcusYgnlUMeNdRkvEYybr1/TbJaLlsXLjfbw=
+	t=1760369557; cv=none; b=aO7FNuVoqOPBdsMGrdohst8Bm/eYDiQ8JUISx+6bWrCGGW42GFvT1yDVJhkYKcZo1nohANZ5v/YT72ZdAcZLjg4xH6YYxaaY8zdRgvRi7dNaVZfBrYbonBKcLFcbfKJDsDRjTpHuymA98JUhkcx8Hd70DuO00EFcvmk8QDxN0Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368073; c=relaxed/simple;
-	bh=amdayZEiAfoRBvyJ4y1CaLuB3fvePKh4+AXIljkGb5g=;
+	s=arc-20240116; t=1760369557; c=relaxed/simple;
+	bh=/l7Fli2oW1wZuYentZU1HRlFULM1utPjkFd/6zZgfjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kuVAhwrrqqnQRcRtAmpuqbIWYceuFFejZjw3PxCwYLlauin5EUQLYcgQ2laOcMHw2PCBrlUYUXmUQ0iGGy/yK77RcBZyZix238skahlZf0KJj+akQ11/aPU6mB6AuwTUcrq6ZRRydx6c1qBblN+hEGbstEBC+b5U6g+eUE87N7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6LZ1CUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01D8C4CEE7;
-	Mon, 13 Oct 2025 15:07:52 +0000 (UTC)
+	 MIME-Version; b=OpATth1YiRQVyfm31b1k7prKpVfIfmDssIuCB4ccwXe1jw/qwHxhzdFo3I6PwRT6j4D9nuBcbF1atqbkHfROQRMRX7b50jjQSp9D+vbipYvfVPriULIS1qa8QcECOscusI6+UgNNRNNMBI17KAqdqLQjBjNo2jaILEb1FdROZG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VsfEbim; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A607C4CEE7;
+	Mon, 13 Oct 2025 15:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368073;
-	bh=amdayZEiAfoRBvyJ4y1CaLuB3fvePKh4+AXIljkGb5g=;
+	s=korg; t=1760369557;
+	bh=/l7Fli2oW1wZuYentZU1HRlFULM1utPjkFd/6zZgfjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6LZ1CUcGx7ElHoagVuzZ1ghYOvhSOVz0PXqJsfB+PjnLf76BBjxRKJS+uDyq2fwp
-	 7v7IPUHbbRwJsASLUCFQzokJocdI1Caeqk7oDy1rN9QARUwwUZdaTDvfKEDjFGV3VO
-	 jr0kE1tBfrpApWZlskeioQH2S+HjinridBBtLQIY=
+	b=1VsfEbimVyzwBvsvkgonOMQfif6e8zOtWfTf+swiKnfGAjrBr9RtUad4HgX/hncA6
+	 KhskMl7HKH/1sIcB94dXaDt/vJpGjceli+S4OnY+TTbJS7B4tZ9VXW8zIqhJhQJQPT
+	 ApktsYju/QCq4qNFNcVKHDuuYc4p7jj4uj8LZiRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/262] powerpc/8xx: Remove left-over instruction and comments in DataStoreTLBMiss handler
-Date: Mon, 13 Oct 2025 16:42:28 +0200
-Message-ID: <20251013144326.354227512@linuxfoundation.org>
+Subject: [PATCH 6.17 288/563] ipv6: use RCU in ip6_output()
+Date: Mon, 13 Oct 2025 16:42:29 +0200
+Message-ID: <20251013144421.702654451@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d9e46de4bf5c5f987075afd5f240bb2a8a5d71ed ]
+[ Upstream commit 11709573cc4e48dc34c80fc7ab9ce5b159e29695 ]
 
-Commit ac9f97ff8b32 ("powerpc/8xx: Inconditionally use task PGDIR in
-DTLB misses") removed the test that needed the valeur in SPRN_EPN but
-failed to remove the read.
+Use RCU in ip6_output() in order to use dst_dev_rcu() to prevent
+possible UAF.
 
-Remove it.
+We can remove rcu_read_lock()/rcu_read_unlock() pairs
+from ip6_finish_output2().
 
-And remove related comments, including the very same comment
-in InstructionTLBMiss that should have been removed by
-commit 33c527522f39 ("powerpc/8xx: Inconditionally use task PGDIR in
-ITLB misses").
-
-Also update the comment about absence of a second level table which
-has been handled implicitely since commit 5ddb75cee5af ("powerpc/8xx:
-remove tests on PGDIR entry validity").
-
-Fixes: ac9f97ff8b32 ("powerpc/8xx: Inconditionally use task PGDIR in DTLB misses")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/5811c8d1d6187f280ad140d6c0ad6010e41eeaeb.1755361995.git.christophe.leroy@csgroup.eu
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/head_8xx.S | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ net/ipv6/ip6_output.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 56c5ebe21b99a..613606400ee99 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -162,7 +162,7 @@ instruction_counter:
-  * For the MPC8xx, this is a software tablewalk to load the instruction
-  * TLB.  The task switch loads the M_TWB register with the pointer to the first
-  * level table.
-- * If we discover there is no second level table (value is zero) or if there
-+ * If there is no second level table (value is zero) or if there
-  * is an invalid pte, we load that into the TLB, which causes another fault
-  * into the TLB Error interrupt where we can handle such problems.
-  * We have to use the MD_xxx registers for the tablewalk because the
-@@ -183,9 +183,6 @@ instruction_counter:
- 	mtspr	SPRN_SPRG_SCRATCH2, r10
- 	mtspr	SPRN_M_TW, r11
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index e234640433d6b..9d64c13bab5ea 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -60,7 +60,7 @@
+ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct dst_entry *dst = skb_dst(skb);
+-	struct net_device *dev = dst_dev(dst);
++	struct net_device *dev = dst_dev_rcu(dst);
+ 	struct inet6_dev *idev = ip6_dst_idev(dst);
+ 	unsigned int hh_len = LL_RESERVED_SPACE(dev);
+ 	const struct in6_addr *daddr, *nexthop;
+@@ -70,15 +70,12 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
  
--	/* If we are faulting a kernel address, we have to use the
--	 * kernel page tables.
--	 */
- 	mfspr	r10, SPRN_SRR0	/* Get effective address of fault */
- 	INVALIDATE_ADJACENT_PAGES_CPU15(r10, r11)
- 	mtspr	SPRN_MD_EPN, r10
-@@ -228,10 +225,6 @@ instruction_counter:
- 	mtspr	SPRN_SPRG_SCRATCH2, r10
- 	mtspr	SPRN_M_TW, r11
+ 	/* Be paranoid, rather than too clever. */
+ 	if (unlikely(hh_len > skb_headroom(skb)) && dev->header_ops) {
+-		/* Make sure idev stays alive */
+-		rcu_read_lock();
++		/* idev stays alive because we hold rcu_read_lock(). */
+ 		skb = skb_expand_head(skb, hh_len);
+ 		if (!skb) {
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
+-			rcu_read_unlock();
+ 			return -ENOMEM;
+ 		}
+-		rcu_read_unlock();
+ 	}
  
--	/* If we are faulting a kernel address, we have to use the
--	 * kernel page tables.
--	 */
--	mfspr	r10, SPRN_MD_EPN
- 	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
- 	lwz	r11, (swapper_pg_dir-PAGE_OFFSET)@l(r10)	/* Get level 1 entry */
+ 	hdr = ipv6_hdr(skb);
+@@ -123,7 +120,6 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 
+ 	IP6_UPD_PO_STATS(net, idev, IPSTATS_MIB_OUT, skb->len);
+ 
+-	rcu_read_lock();
+ 	nexthop = rt6_nexthop(dst_rt6_info(dst), daddr);
+ 	neigh = __ipv6_neigh_lookup_noref(dev, nexthop);
+ 
+@@ -131,7 +127,6 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 		if (unlikely(!neigh))
+ 			neigh = __neigh_create(&nd_tbl, nexthop, dev, false);
+ 		if (IS_ERR(neigh)) {
+-			rcu_read_unlock();
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTNOROUTES);
+ 			kfree_skb_reason(skb, SKB_DROP_REASON_NEIGH_CREATEFAIL);
+ 			return -EINVAL;
+@@ -139,7 +134,6 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 	}
+ 	sock_confirm_neigh(skb, neigh);
+ 	ret = neigh_output(neigh, skb, false);
+-	rcu_read_unlock();
+ 	return ret;
+ }
+ 
+@@ -233,22 +227,29 @@ static int ip6_finish_output(struct net *net, struct sock *sk, struct sk_buff *s
+ int ip6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct dst_entry *dst = skb_dst(skb);
+-	struct net_device *dev = dst_dev(dst), *indev = skb->dev;
+-	struct inet6_dev *idev = ip6_dst_idev(dst);
++	struct net_device *dev, *indev = skb->dev;
++	struct inet6_dev *idev;
++	int ret;
+ 
+ 	skb->protocol = htons(ETH_P_IPV6);
++	rcu_read_lock();
++	dev = dst_dev_rcu(dst);
++	idev = ip6_dst_idev(dst);
+ 	skb->dev = dev;
+ 
+ 	if (unlikely(!idev || READ_ONCE(idev->cnf.disable_ipv6))) {
+ 		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
++		rcu_read_unlock();
+ 		kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED);
+ 		return 0;
+ 	}
+ 
+-	return NF_HOOK_COND(NFPROTO_IPV6, NF_INET_POST_ROUTING,
+-			    net, sk, skb, indev, dev,
+-			    ip6_finish_output,
+-			    !(IP6CB(skb)->flags & IP6SKB_REROUTED));
++	ret = NF_HOOK_COND(NFPROTO_IPV6, NF_INET_POST_ROUTING,
++			   net, sk, skb, indev, dev,
++			   ip6_finish_output,
++			   !(IP6CB(skb)->flags & IP6SKB_REROUTED));
++	rcu_read_unlock();
++	return ret;
+ }
+ EXPORT_SYMBOL(ip6_output);
  
 -- 
 2.51.0
