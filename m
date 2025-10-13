@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-185369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914CBBD5089
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:29:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55350BD50A7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC8B401AB0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6FCBB50553A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625DA313E3D;
-	Mon, 13 Oct 2025 15:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F533148BB;
+	Mon, 13 Oct 2025 15:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EV0dCDJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJcU+WgN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D17130DED7;
-	Mon, 13 Oct 2025 15:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8B63081D3;
+	Mon, 13 Oct 2025 15:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370098; cv=none; b=FkZXFzxl9zmiffKeEPoHXEK/g1Yn0jPeIIyKoefUrVIeT62I5DKu6j96AfpzrS4ojVfx4KeHKFz4qOwaxoLGEhbfyCuCT9XeUB+N8sB5pMJq5F83Gp4V7Co/4QZv1+lWwMMYZpFOSfb1/ZIzs1jqQ6QQV67ebk3L2v+glKLxDbk=
+	t=1760370117; cv=none; b=n4tlE2F3YFYwtNkKc+ArsESmJE365JAyjHFY2GEn05FabFNXx65IpHzMFl86ku3hktmaP0RBHQd0hNVXKZvrUCkRMHfpgq+PV5/d2aCvXOjYvjAi92fC0kbJuYQThyMDdRZ3BPirHj8KkC1fZg+cU/IgX787a7Pvr56dS5C/f+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370098; c=relaxed/simple;
-	bh=pn8RpXkDr2SSYemA3ojWxeYmNaAVSJf7AKKNU07eqno=;
+	s=arc-20240116; t=1760370117; c=relaxed/simple;
+	bh=v6+FHqO8/XpifNAUprtxHFklfqKMPwkxKXzCn0bLs60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9AADgizy1hVDMKbBsixHYy4OLqehanSMsudZn4Dril8VzNoxg5s0uXhdhOB+ESMqPGdsYE/RX2IpsxNVNcTU36k39vp8XmJCOxUVTUWYQUv/4Pf6xDz94MAZCCZolXMPWqOd3brTDuL6bW7xW9yALdMQ+XOCLaikur06LyBwE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EV0dCDJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94433C4CEFE;
-	Mon, 13 Oct 2025 15:41:37 +0000 (UTC)
+	 MIME-Version; b=Sv1BfNzJY0OLm1P/zpnF9jI52sK4vMvrdOvyBhpN3RzlGmXlc3sbOSBtEQwdGkemZaGtvWBS2VUkv/5Vz75/BFD+rGOfISdoRY0jp2b7hJ1YuJhwKwakQsCkr/KWrR201NNvXshpZfOw5q4eip2alzfn1aMKhoo0F53VadQU/Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJcU+WgN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE67FC4CEE7;
+	Mon, 13 Oct 2025 15:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370098;
-	bh=pn8RpXkDr2SSYemA3ojWxeYmNaAVSJf7AKKNU07eqno=;
+	s=korg; t=1760370117;
+	bh=v6+FHqO8/XpifNAUprtxHFklfqKMPwkxKXzCn0bLs60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EV0dCDJwuDwbuv3pGC6k4mopSqlefS51yfrWL2bHoiBecPRwty6mhyuH8ZVWc9Z+W
-	 5Egrb1fyA1iJTF/JYBg4JZtAIYdpawA7bpucOMDM/mojAUEoou6XBkPSr+WIF0GFGT
-	 ETqY/0MkRZEjKIYBBvFo/drI0rmcIsWk9JxpxJV8=
+	b=TJcU+WgNVGFhq3nSpFWxOejV5Pdo7UPf5ON8EX+WYD2V+Kaw8kRtJFk7Q5TCTJKAk
+	 c63bBNfs6RKpE12wCuxEeeL7KKmpWBSnLSC8g/RfMLjGTk8TQZfu1lCAmKqN2Q5Zcp
+	 31Z10XvtOirJkXPCECNK4Zcvjz1ZXKB+z6evZr5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
+	syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com,
 	I Viswanath <viswanathiyyappan@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
-Subject: [PATCH 6.17 450/563] net: usb: Remove disruptive netif_wake_queue in rtl8150_set_multicast
-Date: Mon, 13 Oct 2025 16:45:11 +0200
-Message-ID: <20251013144427.582968536@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 451/563] ptp: Add a upper bound on max_vclocks
+Date: Mon, 13 Oct 2025 16:45:12 +0200
+Message-ID: <20251013144427.619612482@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -70,65 +70,54 @@ Content-Transfer-Encoding: 8bit
 
 From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit 958baf5eaee394e5fd976979b0791a875f14a179 ]
+[ Upstream commit e9f35294e18da82162004a2f35976e7031aaf7f9 ]
 
-syzbot reported WARNING in rtl8150_start_xmit/usb_submit_urb.
-This is the sequence of events that leads to the warning:
+syzbot reported WARNING in max_vclocks_store.
 
-rtl8150_start_xmit() {
-	netif_stop_queue();
-	usb_submit_urb(dev->tx_urb);
-}
+This occurs when the argument max is too large for kcalloc to handle.
 
-rtl8150_set_multicast() {
-	netif_stop_queue();
-	netif_wake_queue();		<-- wakes up TX queue before URB is done
-}
+Extend the guard to guard against values that are too large for
+kcalloc
 
-rtl8150_start_xmit() {
-	netif_stop_queue();
-	usb_submit_urb(dev->tx_urb);	<-- double submission
-}
-
-rtl8150_set_multicast being the ndo_set_rx_mode callback should not be
-calling netif_stop_queue and notif_start_queue as these handle
-TX queue synchronization.
-
-The net core function dev_set_rx_mode handles the synchronization
-for rtl8150_set_multicast making it safe to remove these locks.
-
-Reported-and-tested-by: syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=78cae3f37c62ad092caa
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Reported-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=94d20db923b9f51be0df
+Tested-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
+Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
 Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
-Link: https://patch.msgid.link/20250924134350.264597-1-viswanathiyyappan@gmail.com
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://patch.msgid.link/20250925155908.5034-1-viswanathiyyappan@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/ptp/ptp_private.h | 1 +
+ drivers/ptp/ptp_sysfs.c   | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index ddff6f19ff98e..92add3daadbb1 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -664,7 +664,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
- 	rtl8150_t *dev = netdev_priv(netdev);
- 	u16 rx_creg = 0x9e;
+diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
+index b352df4cd3f97..f329263f33aa1 100644
+--- a/drivers/ptp/ptp_private.h
++++ b/drivers/ptp/ptp_private.h
+@@ -22,6 +22,7 @@
+ #define PTP_MAX_TIMESTAMPS 128
+ #define PTP_BUF_TIMESTAMPS 30
+ #define PTP_DEFAULT_MAX_VCLOCKS 20
++#define PTP_MAX_VCLOCKS_LIMIT (KMALLOC_MAX_SIZE/(sizeof(int)))
+ #define PTP_MAX_CHANNELS 2048
  
--	netif_stop_queue(netdev);
- 	if (netdev->flags & IFF_PROMISC) {
- 		rx_creg |= 0x0001;
- 		dev_info(&netdev->dev, "%s: promiscuous mode\n", netdev->name);
-@@ -678,7 +677,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
- 		rx_creg &= 0x00fc;
- 	}
- 	async_set_registers(dev, RCR, sizeof(rx_creg), rx_creg);
--	netif_wake_queue(netdev);
- }
+ enum {
+diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
+index 6b1b8f57cd951..200eaf5006968 100644
+--- a/drivers/ptp/ptp_sysfs.c
++++ b/drivers/ptp/ptp_sysfs.c
+@@ -284,7 +284,7 @@ static ssize_t max_vclocks_store(struct device *dev,
+ 	size_t size;
+ 	u32 max;
  
- static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+-	if (kstrtou32(buf, 0, &max) || max == 0)
++	if (kstrtou32(buf, 0, &max) || max == 0 || max > PTP_MAX_VCLOCKS_LIMIT)
+ 		return -EINVAL;
+ 
+ 	if (max == ptp->max_vclocks)
 -- 
 2.51.0
 
