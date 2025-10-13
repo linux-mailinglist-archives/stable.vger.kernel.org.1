@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-185377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0364BD4B8B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51130BD424C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3663E18A5D6B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45065420CE2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B0F3148BE;
-	Mon, 13 Oct 2025 15:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF1730BB9A;
+	Mon, 13 Oct 2025 15:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gh6an74O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS9kWZfN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3161F30DEDC;
-	Mon, 13 Oct 2025 15:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5C230BB96;
+	Mon, 13 Oct 2025 15:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370120; cv=none; b=awIuHdTAq0J/y0R1eZJbM1oQ41DrX1YW5Z967NmN/p0edHUg2eiL8DLNEDhqf4gqk+kPtRW7GxXxr4wPR4VoDfP1qRXSp5LYLI2i8Amwv32tcC9c+axHuInqKiL+ila8k3FwZ37wHgivjR7GvO5ngU+SCL8pjhYL6PP8XrTZn9s=
+	t=1760367756; cv=none; b=pZE9HLhEYzNyX3AE01vrnLIZF6IwD4h8fxCGy7W8uEk+u0UGj7Ix0YC/QkPvLXV27vnDOapjXeHO2PBCSHzE50YwfoX1kMn4y8nneUa5imFMrHht5wP0ZATc5dI586hU6aq4yJFouz4plAEn6W1hySCu2PNSZVBluh4ThlXeju4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370120; c=relaxed/simple;
-	bh=62Z4lJznNy/Sy+pbgOYzJhDLuEZ0RwYYRPFekwtEdRY=;
+	s=arc-20240116; t=1760367756; c=relaxed/simple;
+	bh=T/F15lxdCsJTtEbTcUe3OrU9kQhV3wrBuFRjlKHnDH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCcxEm38wxf8aLgrZJNJ9Rfrknhi0TpI+MuX9inZAVi8D/+ILGsg8Jr/y9j4JmzPga/Dn0BC0n84Iy7M0PNvrgAV6Tbbp795XZaA6tkKU5b7p0eFtdAJEwyHs4FNvzi/5adijmpSDP0KN+iB4UaVkLKVNHb3EDFo6KaQ6kr6th0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gh6an74O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C57C4CEE7;
-	Mon, 13 Oct 2025 15:41:59 +0000 (UTC)
+	 MIME-Version; b=E8yI0ALuihv4y2H36LaKnV1mTgs4qLwSdsMIX2Xazow87MzrCj0C7NIqhIOvwlLA80WJsvfykJ9UVLBPZChdwXPSSw2/Z/IldkzfuVkXA3tI2ZQZ6kqcpHVZoeaZcDbxpaeCs7sJuQKHSIv2eBM2psJCc2d3MqJv/x1NLsFWN0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS9kWZfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCAA0C4CEFE;
+	Mon, 13 Oct 2025 15:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370120;
-	bh=62Z4lJznNy/Sy+pbgOYzJhDLuEZ0RwYYRPFekwtEdRY=;
+	s=korg; t=1760367756;
+	bh=T/F15lxdCsJTtEbTcUe3OrU9kQhV3wrBuFRjlKHnDH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gh6an74OKKbOvrx6I0i/hwWjUSFNBbgW5lFzmmHqx/E60UYc30JarmiQU6lm0IU0w
-	 IZ8buE7hkne2QWZ3FicAWpJJZmgfAVIijYWvrkHS8+TDPUGsmMeP2GRb7MQpZ3ctgM
-	 9DAAULMcjXyJtQOiVGzdnz+tltaLSyziwZYwSJ9M=
+	b=HS9kWZfNpyf+flhF93sRGVWHm/281ZUQZmFsO4oD5YVGV1fE9BU9QmYT3Zie4//KV
+	 dsBs5u6hGR3sZmThnQG3+AobSnNsmgpWp8quYAwXtLy16TDdcOICPta6B8oogUf4rj
+	 786KNwFOXUxOqzygRlJykoyZpTJ+XxigensStKMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	wangzijie <wangzijie1@honor.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 452/563] vhost: vringh: Fix copy_to_iter return value check
+Subject: [PATCH 6.6 122/196] f2fs: fix zero-sized extent for precache extents
 Date: Mon, 13 Oct 2025 16:45:13 +0200
-Message-ID: <20251013144427.655674133@linuxfoundation.org>
+Message-ID: <20251013144319.722477791@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: wangzijie <wangzijie1@honor.com>
 
-[ Upstream commit 439263376c2c4e126cac0d07e4987568de4eaba5 ]
+[ Upstream commit 8175c864391753b210f3dcfae1aeed686a226ebb ]
 
-The return value of copy_to_iter can't be negative, check whether the
-copied length is equal to the requested length instead of checking for
-negative values.
+Script to reproduce:
+f2fs_io write 1 0 1881 rand dsync testfile
+f2fs_io fallocate 0 7708672 4096 testfile
+f2fs_io write 1 1881 1 rand buffered testfile
+fsync testfile
+umount
+mount
+f2fs_io precache_extents testfile
 
-Cc: zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Link: https://lore.kernel.org/all/20250910091739.2999-1-zhangjiao2@cmss.chinamobile.com
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 309bba39c945 ("vringh: iterate on iotlb_translate to handle large translations")
-Link: https://patch.msgid.link/cd637504a6e3967954a9e80fc1b75e8c0978087b.1758723310.git.mst@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+When the data layout is something like this:
+dnode1:                     dnode2:
+[0]      A                  [0]    NEW_ADDR
+[1]      A+1                [1]    0x0
+...
+[1016]   A+1016
+[1017]   B (B!=A+1017)      [1017] 0x0
+
+During precache_extents, we map the last block(valid blkaddr) in dnode1:
+map->m_flags |= F2FS_MAP_MAPPED;
+map->m_pblk = blkaddr(valid blkaddr);
+map->m_len = 1;
+then we goto next_dnode, meet the first block in dnode2(hole), goto sync_out:
+map->m_flags & F2FS_MAP_MAPPED == true, and we make zero-sized extent:
+
+map->m_len = 1
+ofs = start_pgofs - map->m_lblk = 1882 - 1881 = 1
+ei.fofs = start_pgofs = 1882
+ei.len = map->m_len - ofs = 1 - 1 = 0
+
+Rebased on patch[1], this patch can cover these cases to avoid zero-sized extent:
+A,B,C is valid blkaddr
+case1:
+dnode1:                     dnode2:
+[0]      A                  [0]    NEW_ADDR
+[1]      A+1                [1]    0x0
+...                         ....
+[1016]   A+1016
+[1017]   B (B!=A+1017)      [1017] 0x0
+
+case2:
+dnode1:                     dnode2:
+[0]      A                  [0]    C (C!=B+1)
+[1]      A+1                [1]    C+1
+...                         ....
+[1016]   A+1016
+[1017]   B (B!=A+1017)      [1017] 0x0
+
+case3:
+dnode1:                     dnode2:
+[0]      A                  [0]    C (C!=B+2)
+[1]      A+1                [1]    C+1
+...                         ....
+[1015]   A+1015
+[1016]   B (B!=A+1016)
+[1017]   B+1                [1017] 0x0
+
+[1] https://lore.kernel.org/linux-f2fs-devel/20250912081250.44383-1-chao@kernel.org/
+
+Fixes: c4020b2da4c9 ("f2fs: support F2FS_IOC_PRECACHE_EXTENTS")
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vringh.c | 7 ++++---
+ fs/f2fs/data.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-index 9f27c3f6091b8..1778eff7ab006 100644
---- a/drivers/vhost/vringh.c
-+++ b/drivers/vhost/vringh.c
-@@ -1161,6 +1161,7 @@ static inline int copy_to_iotlb(const struct vringh *vrh, void *dst,
- 		struct iov_iter iter;
- 		u64 translated;
- 		int ret;
-+		size_t size;
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 0e119218ebf74..fe23ebfc88ea1 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1751,9 +1751,10 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
+ 		if (map->m_flags & F2FS_MAP_MAPPED) {
+ 			unsigned int ofs = start_pgofs - map->m_lblk;
  
- 		ret = iotlb_translate(vrh, (u64)(uintptr_t)dst,
- 				      len - total_translated, &translated,
-@@ -1178,9 +1179,9 @@ static inline int copy_to_iotlb(const struct vringh *vrh, void *dst,
- 				      translated);
+-			f2fs_update_read_extent_cache_range(&dn,
+-				start_pgofs, map->m_pblk + ofs,
+-				map->m_len - ofs);
++			if (map->m_len > ofs)
++				f2fs_update_read_extent_cache_range(&dn,
++					start_pgofs, map->m_pblk + ofs,
++					map->m_len - ofs);
  		}
- 
--		ret = copy_to_iter(src, translated, &iter);
--		if (ret < 0)
--			return ret;
-+		size = copy_to_iter(src, translated, &iter);
-+		if (size != translated)
-+			return -EFAULT;
- 
- 		src += translated;
- 		dst += translated;
+ 		if (map->m_next_extent)
+ 			*map->m_next_extent = is_hole ? pgofs + 1 : pgofs;
 -- 
 2.51.0
 
