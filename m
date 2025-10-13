@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42AEBBD3FF7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4279BD4AE9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13C518A42A9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 820F63E7986
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113F22367B5;
-	Mon, 13 Oct 2025 14:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21035277CB8;
+	Mon, 13 Oct 2025 15:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB6vjrJH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhRVmwa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F3A308F03;
-	Mon, 13 Oct 2025 14:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D396930F930;
+	Mon, 13 Oct 2025 15:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367485; cv=none; b=T89oHbn+0JDgXk1sOqbwVknTkHm6dXnHueCRWzqVlkV3AXDvyubeU+J9gN4+A1lWOqxC4YEe57IL0b1Y0pqjWv1xMWunVZDQhGbSvNzOM/7YtDQ7BjbLI5JH8a6ZvhMb29IC153uNNjaWq2J+ZJKAr3JwLTNOE+m0OWXvRYYeZE=
+	t=1760369688; cv=none; b=DyboqbkkbvUUbVgUqozEqsQdMSm3sMI7J5MBCrhGuTG7GcpE0iEkW6rNltWxXg1HIGqDJCZpKF9EyGwd6UXhyWZTvQ2WyLu1PHl22MfAev5tHmFsH8aZeeyz58Kd7cOuaOzYJKTB6GWiVmpbHA/kv20SKzG8GpQDSUNsfxZyQBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367485; c=relaxed/simple;
-	bh=vos9G9lutMyPuszJ1TMwvI9B+z819HFXlN6v62VJ5GM=;
+	s=arc-20240116; t=1760369688; c=relaxed/simple;
+	bh=ax6nfzvKgPmd4AfAbbxqQQFnfFy+y5McX5e3YB8lrag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnD2VibttVyWUa5rQBRM/NR3U4uTv+YtuZw5CqvIfFx3mGeHXpoH0izLv+PRAzUXYLVuVAflIw+N76KB7feewFcnfPL/SNMJFzRTMABBGuckvStW0+wAUVLBlhD+wvCjzWNtB0J5pbn4xqKTuBGq7iY+EsLP2FxWUxfhu3qNTTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB6vjrJH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 474ACC4CEE7;
-	Mon, 13 Oct 2025 14:58:05 +0000 (UTC)
+	 MIME-Version; b=tX7xuAODMMgrECYd1sy9fVqUB/v8lqPGfCofAAIf0/zK//ug8/zG0L/Y2fbd2g7J3SkTLExGk4Pf8Z7K/li09yMbki0WylevO/vJ2O3ALWKEOGECEeklHmUomKak/O4zxQfXAqFKxFynHyDweYs0qY/jRdNC2yDvV2sfHwRTA0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhRVmwa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FC0C4CEE7;
+	Mon, 13 Oct 2025 15:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367485;
-	bh=vos9G9lutMyPuszJ1TMwvI9B+z819HFXlN6v62VJ5GM=;
+	s=korg; t=1760369688;
+	bh=ax6nfzvKgPmd4AfAbbxqQQFnfFy+y5McX5e3YB8lrag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JB6vjrJHlBo0K0l9Acnvu4RqLen/zpMhLmhDeN5XtCIFpLND6Q06O89huEOukILoK
-	 l25GXh1LGlzz+fka24OUvj2SW7+Bn4dYhY0f4SQnnAJCOc0ixzgynSYZkORbn78rwX
-	 4fkNbA9bq44/c+B+UVNEZYmF+xpIkhluS1aIbXYw=
+	b=yhRVmwa1y94bIOTXYtX2C1Cmj6xEPMVOh6M5dDBZLiR98cqTKzD3mgGzNGb6b4qbu
+	 HEUHO1L1rDTzgdNCXMxXijrt9lUDRIsBkTXU452aXnhK51Ids96s1OoT+GB8G2Mq00
+	 6pY8N35/WZnj7Hrxgze7fne8QJI4v7xZ29KYtPvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Polatel <alip@chesswob.org>,
-	Johannes Nixdorf <johannes@nixdorf.dev>,
-	Kees Cook <kees@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/196] seccomp: Fix a race with WAIT_KILLABLE_RECV if the tracer replies too fast
+Subject: [PATCH 6.17 333/563] ipv6: snmp: do not use SNMP_MIB_SENTINEL anymore
 Date: Mon, 13 Oct 2025 16:43:14 +0200
-Message-ID: <20251013144315.312537114@linuxfoundation.org>
+Message-ID: <20251013144423.326533208@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Nixdorf <johannes@nixdorf.dev>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cce436aafc2abad691fdd37de63ec8a4490b42ce ]
+[ Upstream commit ceac1fb2290d230eb83aff3761058c559440de13 ]
 
-Normally the tracee starts in SECCOMP_NOTIFY_INIT, sends an
-event to the tracer, and starts to wait interruptibly. With
-SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV, if the tracer receives the
-message (SECCOMP_NOTIFY_SENT is reached) while the tracee was waiting
-and is subsequently interrupted, the tracee begins to wait again
-uninterruptibly (but killable).
+Use ARRAY_SIZE(), so that we know the limit at compile time.
 
-This fails if SECCOMP_NOTIFY_REPLIED is reached before the tracee
-is interrupted, as the check only considered SECCOMP_NOTIFY_SENT as a
-condition to begin waiting again. In this case the tracee is interrupted
-even though the tracer already acted on its behalf. This breaks the
-assumption SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV wanted to ensure,
-namely that the tracer can be sure the syscall is not interrupted or
-restarted on the tracee after it is received on the tracer. Fix this
-by also considering SECCOMP_NOTIFY_REPLIED when evaluating whether to
-switch to uninterruptible waiting.
+Following patch needs this preliminary change.
 
-With the condition changed the loop in seccomp_do_user_notification()
-would exit immediately after deciding that noninterruptible waiting
-is required if the operation already reached SECCOMP_NOTIFY_REPLIED,
-skipping the code that processes pending addfd commands first. Prevent
-this by executing the remaining loop body one last time in this case.
-
-Fixes: c2aa2dfef243 ("seccomp: Add wait_killable semantic to seccomp user notifier")
-Reported-by: Ali Polatel <alip@chesswob.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220291
-Signed-off-by: Johannes Nixdorf <johannes@nixdorf.dev>
-Link: https://lore.kernel.org/r/20250725-seccomp-races-v2-1-cf8b9d139596@nixdorf.dev
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20250905165813.1470708-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 2fab94bcf313 ("ipv6: snmp: do not track per idev ICMP6_MIB_RATELIMITHOST")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/seccomp.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ include/net/ip.h | 24 ++++++++++++++++++++++++
+ net/ipv6/proc.c  | 43 ++++++++++++++++++++++++-------------------
+ 2 files changed, 48 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 255999ba9190a..1d26a0e978f26 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -1099,7 +1099,7 @@ static void seccomp_handle_addfd(struct seccomp_kaddfd *addfd, struct seccomp_kn
- static bool should_sleep_killable(struct seccomp_filter *match,
- 				  struct seccomp_knotif *n)
- {
--	return match->wait_killable_recv && n->state == SECCOMP_NOTIFY_SENT;
-+	return match->wait_killable_recv && n->state >= SECCOMP_NOTIFY_SENT;
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 6dbd2bf8fa9c9..a1624e8db1abd 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -338,6 +338,19 @@ static inline u64 snmp_fold_field64(void __percpu *mib, int offt, size_t syncp_o
+ 	} \
  }
  
- static int seccomp_do_user_notification(int this_syscall,
-@@ -1146,13 +1146,11 @@ static int seccomp_do_user_notification(int this_syscall,
++#define snmp_get_cpu_field64_batch_cnt(buff64, stats_list, cnt,	\
++				       mib_statistic, offset)	\
++{ \
++	int i, c; \
++	for_each_possible_cpu(c) { \
++		for (i = 0; i < cnt; i++) \
++			buff64[i] += snmp_get_cpu_field64( \
++					mib_statistic, \
++					c, stats_list[i].entry, \
++					offset); \
++	} \
++}
++
+ #define snmp_get_cpu_field_batch(buff, stats_list, mib_statistic) \
+ { \
+ 	int i, c; \
+@@ -349,6 +362,17 @@ static inline u64 snmp_fold_field64(void __percpu *mib, int offt, size_t syncp_o
+ 	} \
+ }
  
- 		if (err != 0) {
- 			/*
--			 * Check to see if the notifcation got picked up and
--			 * whether we should switch to wait killable.
-+			 * Check to see whether we should switch to wait
-+			 * killable. Only return the interrupted error if not.
- 			 */
--			if (!wait_killable && should_sleep_killable(match, &n))
--				continue;
--
--			goto interrupted;
-+			if (!(!wait_killable && should_sleep_killable(match, &n)))
-+				goto interrupted;
- 		}
++#define snmp_get_cpu_field_batch_cnt(buff, stats_list, cnt, mib_statistic) \
++{ \
++	int i, c; \
++	for_each_possible_cpu(c) { \
++		for (i = 0; i < cnt; i++) \
++			buff[i] += snmp_get_cpu_field( \
++						mib_statistic, \
++						c, stats_list[i].entry); \
++	} \
++}
++
+ static inline void inet_get_local_port_range(const struct net *net, int *low, int *high)
+ {
+ 	u32 range = READ_ONCE(net->ipv4.ip_local_ports.range);
+diff --git a/net/ipv6/proc.c b/net/ipv6/proc.c
+index 752327b10dde7..1a20d088bb13c 100644
+--- a/net/ipv6/proc.c
++++ b/net/ipv6/proc.c
+@@ -85,7 +85,6 @@ static const struct snmp_mib snmp6_ipstats_list[] = {
+ 	SNMP_MIB_ITEM("Ip6InECT0Pkts", IPSTATS_MIB_ECT0PKTS),
+ 	SNMP_MIB_ITEM("Ip6InCEPkts", IPSTATS_MIB_CEPKTS),
+ 	SNMP_MIB_ITEM("Ip6OutTransmits", IPSTATS_MIB_OUTPKTS),
+-	SNMP_MIB_SENTINEL
+ };
  
- 		addfd = list_first_entry_or_null(&n.addfd,
+ static const struct snmp_mib snmp6_icmp6_list[] = {
+@@ -96,7 +95,6 @@ static const struct snmp_mib snmp6_icmp6_list[] = {
+ 	SNMP_MIB_ITEM("Icmp6OutErrors", ICMP6_MIB_OUTERRORS),
+ 	SNMP_MIB_ITEM("Icmp6InCsumErrors", ICMP6_MIB_CSUMERRORS),
+ 	SNMP_MIB_ITEM("Icmp6OutRateLimitHost", ICMP6_MIB_RATELIMITHOST),
+-	SNMP_MIB_SENTINEL
+ };
+ 
+ /* RFC 4293 v6 ICMPMsgStatsTable; named items for RFC 2466 compatibility */
+@@ -129,7 +127,6 @@ static const struct snmp_mib snmp6_udp6_list[] = {
+ 	SNMP_MIB_ITEM("Udp6InCsumErrors", UDP_MIB_CSUMERRORS),
+ 	SNMP_MIB_ITEM("Udp6IgnoredMulti", UDP_MIB_IGNOREDMULTI),
+ 	SNMP_MIB_ITEM("Udp6MemErrors", UDP_MIB_MEMERRORS),
+-	SNMP_MIB_SENTINEL
+ };
+ 
+ static const struct snmp_mib snmp6_udplite6_list[] = {
+@@ -141,7 +138,6 @@ static const struct snmp_mib snmp6_udplite6_list[] = {
+ 	SNMP_MIB_ITEM("UdpLite6SndbufErrors", UDP_MIB_SNDBUFERRORS),
+ 	SNMP_MIB_ITEM("UdpLite6InCsumErrors", UDP_MIB_CSUMERRORS),
+ 	SNMP_MIB_ITEM("UdpLite6MemErrors", UDP_MIB_MEMERRORS),
+-	SNMP_MIB_SENTINEL
+ };
+ 
+ static void snmp6_seq_show_icmpv6msg(struct seq_file *seq, atomic_long_t *smib)
+@@ -182,35 +178,37 @@ static void snmp6_seq_show_icmpv6msg(struct seq_file *seq, atomic_long_t *smib)
+  */
+ static void snmp6_seq_show_item(struct seq_file *seq, void __percpu *pcpumib,
+ 				atomic_long_t *smib,
+-				const struct snmp_mib *itemlist)
++				const struct snmp_mib *itemlist,
++				int cnt)
+ {
+ 	unsigned long buff[SNMP_MIB_MAX];
+ 	int i;
+ 
+ 	if (pcpumib) {
+-		memset(buff, 0, sizeof(unsigned long) * SNMP_MIB_MAX);
++		memset(buff, 0, sizeof(unsigned long) * cnt);
+ 
+-		snmp_get_cpu_field_batch(buff, itemlist, pcpumib);
+-		for (i = 0; itemlist[i].name; i++)
++		snmp_get_cpu_field_batch_cnt(buff, itemlist, cnt, pcpumib);
++		for (i = 0; i < cnt; i++)
+ 			seq_printf(seq, "%-32s\t%lu\n",
+ 				   itemlist[i].name, buff[i]);
+ 	} else {
+-		for (i = 0; itemlist[i].name; i++)
++		for (i = 0; i < cnt; i++)
+ 			seq_printf(seq, "%-32s\t%lu\n", itemlist[i].name,
+ 				   atomic_long_read(smib + itemlist[i].entry));
+ 	}
+ }
+ 
+ static void snmp6_seq_show_item64(struct seq_file *seq, void __percpu *mib,
+-				  const struct snmp_mib *itemlist, size_t syncpoff)
++				  const struct snmp_mib *itemlist,
++				  int cnt, size_t syncpoff)
+ {
+ 	u64 buff64[SNMP_MIB_MAX];
+ 	int i;
+ 
+-	memset(buff64, 0, sizeof(u64) * SNMP_MIB_MAX);
++	memset(buff64, 0, sizeof(u64) * cnt);
+ 
+-	snmp_get_cpu_field64_batch(buff64, itemlist, mib, syncpoff);
+-	for (i = 0; itemlist[i].name; i++)
++	snmp_get_cpu_field64_batch_cnt(buff64, itemlist, cnt, mib, syncpoff);
++	for (i = 0; i < cnt; i++)
+ 		seq_printf(seq, "%-32s\t%llu\n", itemlist[i].name, buff64[i]);
+ }
+ 
+@@ -219,14 +217,19 @@ static int snmp6_seq_show(struct seq_file *seq, void *v)
+ 	struct net *net = (struct net *)seq->private;
+ 
+ 	snmp6_seq_show_item64(seq, net->mib.ipv6_statistics,
+-			    snmp6_ipstats_list, offsetof(struct ipstats_mib, syncp));
++			      snmp6_ipstats_list,
++			      ARRAY_SIZE(snmp6_ipstats_list),
++			      offsetof(struct ipstats_mib, syncp));
+ 	snmp6_seq_show_item(seq, net->mib.icmpv6_statistics,
+-			    NULL, snmp6_icmp6_list);
++			    NULL, snmp6_icmp6_list,
++			    ARRAY_SIZE(snmp6_icmp6_list));
+ 	snmp6_seq_show_icmpv6msg(seq, net->mib.icmpv6msg_statistics->mibs);
+ 	snmp6_seq_show_item(seq, net->mib.udp_stats_in6,
+-			    NULL, snmp6_udp6_list);
++			    NULL, snmp6_udp6_list,
++			    ARRAY_SIZE(snmp6_udp6_list));
+ 	snmp6_seq_show_item(seq, net->mib.udplite_stats_in6,
+-			    NULL, snmp6_udplite6_list);
++			    NULL, snmp6_udplite6_list,
++			    ARRAY_SIZE(snmp6_udplite6_list));
+ 	return 0;
+ }
+ 
+@@ -236,9 +239,11 @@ static int snmp6_dev_seq_show(struct seq_file *seq, void *v)
+ 
+ 	seq_printf(seq, "%-32s\t%u\n", "ifIndex", idev->dev->ifindex);
+ 	snmp6_seq_show_item64(seq, idev->stats.ipv6,
+-			    snmp6_ipstats_list, offsetof(struct ipstats_mib, syncp));
++			      snmp6_ipstats_list,
++			      ARRAY_SIZE(snmp6_ipstats_list),
++			      offsetof(struct ipstats_mib, syncp));
+ 	snmp6_seq_show_item(seq, NULL, idev->stats.icmpv6dev->mibs,
+-			    snmp6_icmp6_list);
++			    snmp6_icmp6_list, ARRAY_SIZE(snmp6_icmp6_list));
+ 	snmp6_seq_show_icmpv6msg(seq, idev->stats.icmpv6msgdev->mibs);
+ 	return 0;
+ }
 -- 
 2.51.0
 
