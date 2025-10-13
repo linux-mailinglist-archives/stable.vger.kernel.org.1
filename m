@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-184558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0F4BD4829
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:48:41 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9806DBD4B55
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C148D4FA7FF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:31 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 810F4344A31
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EB730BF55;
-	Mon, 13 Oct 2025 15:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980F3312806;
+	Mon, 13 Oct 2025 15:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fG9pHSUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jH4XZ0RU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B488D30AADB;
-	Mon, 13 Oct 2025 15:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49365228CB0;
+	Mon, 13 Oct 2025 15:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367778; cv=none; b=CqDV7sr0smbKleXyeq2PzMv9SbAue9xO3K82JltLdH7ebiZizklaGXSXxpfgudLpMf6OjvyJX2V7nFz5hI1C7imulPWijM9Ld+dAyJsdhSlGxiSFKtHB+ROGK1t10javWHy0TLsvuG6OZuOTQTupMJZGJGJuqpjMkuo/O9d90W0=
+	t=1760370049; cv=none; b=fyjxq6CJfj+jCLyiIMUZh5+p9MW1+hky2FMIMTdjCYy+DRWuj9ifNNlwUHyzn1QFy2Lw72UTVHPf7bn/2J2JQHfz5pvMtJ31ugKrxj74ZhI51YhmLQRqeE40eFh+V526gditcKJcw1zXIY8BGCBhsIyXbzfEgHI2tyvbwggULZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367778; c=relaxed/simple;
-	bh=Y4kSbedNVFl2u4y8P6bYsY01G2wGQscatg3v7ywRndU=;
+	s=arc-20240116; t=1760370049; c=relaxed/simple;
+	bh=1cH4kgdlW8y5Eie+oIkHKMD0tjS2g+TPBOMqwQ3AMIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PQQtpQR8+nY6+xNd+YsIDi5orfko125YSL4ckA6WGRk6XajPjF2L/pCYsB7EQS8NxgPxhaVlE2gAJ2yOWsTnwJEBjuFCrP8/+I8TJ+ItMTR98s/7cr96Sjt+jH+tKqE4dAGZKmB4p9YtHRfxCXdJ1CK4Mfo8E4N0/8d1Tvt3Gws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fG9pHSUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4034AC4CEE7;
-	Mon, 13 Oct 2025 15:02:58 +0000 (UTC)
+	 MIME-Version; b=i+ToM0VM6dQ4MB1fe/Bjx18cm8Q7wGz9vUj0k0NLf8XiVlOVo/XbDNXwewsEiupFDPN6mMy7v5wF1eqQhFQ1TSzmI6CRlJqd89ECddOtHvh3upSJMEGeEosYnv6uTpi93Pkl+N/aSZy+0XfFF9y+u4EbRE6V02YRUCZRG4P359c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jH4XZ0RU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA467C4CEFE;
+	Mon, 13 Oct 2025 15:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367778;
-	bh=Y4kSbedNVFl2u4y8P6bYsY01G2wGQscatg3v7ywRndU=;
+	s=korg; t=1760370049;
+	bh=1cH4kgdlW8y5Eie+oIkHKMD0tjS2g+TPBOMqwQ3AMIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fG9pHSUfTn5QACbFXzxPRaB94KLqeXjScBjHSvuVnnBjgYBJzjro4UuapvRry1V9t
-	 p0hAzeaXAzT684lWJ0Yqy2pUhAGuibVNY+WVKHHU+3YRP/MFOrjNmLU0PQ6xXkgTzP
-	 kV/olZMJix3lXWECqgVubAnw+ZcQrUKlkhZslOrM=
+	b=jH4XZ0RU50xQNYR3YhOazSPLCN4RdWwKKoL/h6nHcYkBfOBKzp7c3wOB2vphKb7Kx
+	 uUoC2W0oquYbrIsM+dXzbiQZy8p02WvfpyLDfu7uXK1IRIfrjkZzE2DvAK5ehgWLD7
+	 bHABPp63VR5kOkCDryBMTQBKKuoEJ9qwDFmxyzrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Yznaga <anthony.yznaga@oracle.com>,
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactcode.com>
-Subject: [PATCH 6.6 130/196] sparc: fix accurate exception reporting in copy_{from_to}_user for UltraSPARC III
-Date: Mon, 13 Oct 2025 16:45:21 +0200
-Message-ID: <20251013144320.013308338@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 461/563] Bluetooth: hci_sync: Fix using random address for BIG/PA advertisements
+Date: Mon, 13 Oct 2025 16:45:22 +0200
+Message-ID: <20251013144427.985732320@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 47b49c06eb62504075f0f2e2227aee2e2c2a58b3 ]
+[ Upstream commit 03ddb4ac251463ec5b7b069395d9ab89163dd56c ]
 
-Anthony Yznaga tracked down that a BUG_ON in ext4 code with large folios
-enabled resulted from copy_from_user() returning impossibly large values
-greater than the size to be copied. This lead to __copy_from_iter()
-returning impossible values instead of the actual number of bytes it was
-able to copy.
+When creating an advertisement for BIG the address shall not be
+non-resolvable since in case of acting as BASS/Broadcast Assistant the
+address must be the same as the connection in order to use the PAST
+method and even when PAST/BASS are not in the picture a Periodic
+Advertisement can still be synchronized thus the same argument as to
+connectable advertisements still stand.
 
-The BUG_ON has been reported in
-https://lore.kernel.org/r/b14f55642207e63e907965e209f6323a0df6dcee.camel@physik.fu-berlin.de
-
-The referenced commit introduced exception handlers on user-space memory
-references in copy_from_user and copy_to_user. These handlers return from
-the respective function and calculate the remaining bytes left to copy
-using the current register contents. The exception handlers expect that
-%o2 has already been masked during the bulk copy loop, but the masking was
-performed after that loop. This will fix the return value of copy_from_user
-and copy_to_user in the faulting case. The behaviour of memcpy stays
-unchanged.
-
-Fixes: ee841d0aff64 ("sparc64: Convert U3copy_{from,to}_user to accurate exception reporting.")
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on Sun Netra 240
-Reviewed-by: Anthony Yznaga <anthony.yznaga@oracle.com>
-Tested-by: René Rebe <rene@exactcode.com> # on UltraSparc III+ and UltraSparc IIIi
-Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-2-1ca72dda195b@mkarcher.dialup.fu-berlin.de
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/lib/U3memcpy.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_sync.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/sparc/lib/U3memcpy.S b/arch/sparc/lib/U3memcpy.S
-index 9248d59c734ce..bace3a18f836f 100644
---- a/arch/sparc/lib/U3memcpy.S
-+++ b/arch/sparc/lib/U3memcpy.S
-@@ -267,6 +267,7 @@ FUNC_NAME:	/* %o0=dst, %o1=src, %o2=len */
- 	faligndata	%f10, %f12, %f26
- 	EX_LD_FP(LOAD(ldd, %o1 + 0x040, %f0), U3_retl_o2)
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 7a7d498908584..eefdb6134ca53 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1325,7 +1325,7 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
+ {
+ 	struct hci_cp_le_set_ext_adv_params cp;
+ 	struct hci_rp_le_set_ext_adv_params rp;
+-	bool connectable;
++	bool connectable, require_privacy;
+ 	u32 flags;
+ 	bdaddr_t random_addr;
+ 	u8 own_addr_type;
+@@ -1363,10 +1363,12 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
+ 		return -EPERM;
  
-+	and		%o2, 0x3f, %o2
- 	subcc		GLOBAL_SPARE, 0x80, GLOBAL_SPARE
- 	add		%o1, 0x40, %o1
- 	bgu,pt		%XCC, 1f
-@@ -336,7 +337,6 @@ FUNC_NAME:	/* %o0=dst, %o1=src, %o2=len */
- 	 * Also notice how this code is careful not to perform a
- 	 * load past the end of the src buffer.
+ 	/* Set require_privacy to true only when non-connectable
+-	 * advertising is used. In that case it is fine to use a
+-	 * non-resolvable private address.
++	 * advertising is used and it is not periodic.
++	 * In that case it is fine to use a non-resolvable private address.
  	 */
--	and		%o2, 0x3f, %o2
- 	andcc		%o2, 0x38, %g2
- 	be,pn		%XCC, 2f
- 	 subcc		%g2, 0x8, %g2
+-	err = hci_get_random_address(hdev, !connectable,
++	require_privacy = !connectable && !(adv && adv->periodic);
++
++	err = hci_get_random_address(hdev, require_privacy,
+ 				     adv_use_rpa(hdev, flags), adv,
+ 				     &own_addr_type, &random_addr);
+ 	if (err < 0)
 -- 
 2.51.0
 
