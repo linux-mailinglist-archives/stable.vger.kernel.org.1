@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-185330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0BDBD4A6A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AACBD468E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8CA5235001C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:59:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3F8114F7802
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C65231158E;
-	Mon, 13 Oct 2025 15:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868CA3093A6;
+	Mon, 13 Oct 2025 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ucl6YnTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3WvXfvx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B60530DD2A;
-	Mon, 13 Oct 2025 15:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B5F2FD7A5;
+	Mon, 13 Oct 2025 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369987; cv=none; b=saoVVpOLFR/bfsJP6i93YROrmySSwOzeuXIPovpsnTg9B1r9/ixOav8HRQlC185sMeK87Y8jsI3pcQ57ay3K3syJcZASpSQ/uy+H23lQ3R2cI9UM+wUipg7vwXw0mmaIGAXbv9CIbNXpAmWGzPTtJHpk1fWRdezB/IEN8Z6dg4c=
+	t=1760368423; cv=none; b=FEjlo80wAAJdBzGpmRsd/CdR9S+foJ5jgws8AVOVfUlD7AsEswD8D/O3NNvK8kb/913nWiOGi8/11YgVz5a0criC830khjhgrmKwKql46ekDLGPYWawdCNwvFlfyG9XSdaDbc2RIs9eVSyfaqpeJyUdNAFjHyGNlJrD9PBTCCGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369987; c=relaxed/simple;
-	bh=8rmKOmo5WcIEYD7s3MluxSpq7sg0G9embvmyOj9Ugxo=;
+	s=arc-20240116; t=1760368423; c=relaxed/simple;
+	bh=5KzS5zCpHMIcFMPyRydXAIPA77f8vYjwD+emJJ/xTMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lwapywO1vzLyldRFt3t0Z21biMIXEe8jtxvKOfbit4sYum/6zjV/jgiGRI5ubipSfTkZCPrzj6La7DALrdAW4GRchYmml/LjMrYnH3fxQ1DUjmKBDDHQLYNelDcz2SWFyU7LCwMAxLm0W4g5gHX+d0VW/GV16KoPHT6jIrLn9J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ucl6YnTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB719C4CEE7;
-	Mon, 13 Oct 2025 15:39:46 +0000 (UTC)
+	 MIME-Version; b=W8/0SRv0afyYFyAs3/PkMGJzdRiLvokDUX+gKtGS3w4hvJ3OjnctUgCR84LZmKARhVWRMcPIbSfXtm/PBKuwgzlCzNn2R6B8brDpfUudaIb/q9zO7rBHy3yBE+mHm2gOMg4EEFKSj1/YtamUDIt/jDM2vHzcd/mC1WyuyX1odCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3WvXfvx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD17C113D0;
+	Mon, 13 Oct 2025 15:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369987;
-	bh=8rmKOmo5WcIEYD7s3MluxSpq7sg0G9embvmyOj9Ugxo=;
+	s=korg; t=1760368423;
+	bh=5KzS5zCpHMIcFMPyRydXAIPA77f8vYjwD+emJJ/xTMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ucl6YnTSFhEUeQ+Pc6uro69jVp7h3iL75sYftqzZcOCVMBTHKMjKrJ5O6RtNRVLTO
-	 /0VZd9tZv3kzb83k4GfRmv76uWM7mIvVK2mNhunpJs9cS8iA7Og/zfwnpxZENqho0o
-	 ZnIkV8P/VdHTORYiaLv7tSxGWUvlVMRka+ub66V4=
+	b=V3WvXfvxrhqOQRbpU6AnamMa/FFZ0ZuVZOtKA8ira4+2xCvIDbOl1byrX+7W7A9kK
+	 BgSu/3O7qptuMVpUUHPT1aueh75wLODpr50dmj+BEyiKh0hctR1IEvx8iUVxVH0uey
+	 uPlGJa0XNPWlqoWdaUskFkd8RNFVX1BfYRoLifgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 438/563] netfilter: nf_conntrack: do not skip entries in /proc/net/nf_conntrack
+Subject: [PATCH 6.12 157/262] scsi: qla2xxx: Fix incorrect sign of error code in START_SP_W_RETRIES()
 Date: Mon, 13 Oct 2025 16:44:59 +0200
-Message-ID: <20251013144427.150961155@linuxfoundation.org>
+Message-ID: <20251013144331.776117164@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit c5ba345b2d358b07cc4f07253ba1ada73e77d586 ]
+[ Upstream commit 1f037e3acda79639a78f096355f2c308a3d45492 ]
 
-ct_seq_show() has an opportunistic garbage collector :
+Change the error code EAGAIN to -EAGAIN in START_SP_W_RETRIES() to align
+with qla2x00_start_sp() returning negative error codes or QLA_SUCCESS,
+preventing logical errors.  Additionally, the '_rval' variable should
+store negative error codes to conform to Linux kernel error code
+conventions.
 
-if (nf_ct_should_gc(ct)) {
-    nf_ct_kill(ct);
-    goto release;
-}
-
-So if one nf_conn is killed there, next time ct_get_next() runs,
-we skip the following item in the bucket, even if it should have
-been displayed if gc did not take place.
-
-We can decrement st->skip_elems to tell ct_get_next() one of the items
-was removed from the chain.
-
-Fixes: 58e207e4983d ("netfilter: evict stale entries when user reads /proc/net/nf_conntrack")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Message-ID: <20250905075446.381139-3-rongqianfeng@vivo.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_standalone.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/qla2xxx/qla_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
-index 1f14ef0436c65..708b79380f047 100644
---- a/net/netfilter/nf_conntrack_standalone.c
-+++ b/net/netfilter/nf_conntrack_standalone.c
-@@ -317,6 +317,9 @@ static int ct_seq_show(struct seq_file *s, void *v)
- 	smp_acquire__after_ctrl_dep();
- 
- 	if (nf_ct_should_gc(ct)) {
-+		struct ct_iter_state *st = s->private;
-+
-+		st->skip_elems--;
- 		nf_ct_kill(ct);
- 		goto release;
- 	}
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 79cdfec2bca35..8bd4aa935e22b 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2059,11 +2059,11 @@ static void qla_marker_sp_done(srb_t *sp, int res)
+ 	int cnt = 5; \
+ 	do { \
+ 		if (_chip_gen != sp->vha->hw->chip_reset || _login_gen != sp->fcport->login_gen) {\
+-			_rval = EINVAL; \
++			_rval = -EINVAL; \
+ 			break; \
+ 		} \
+ 		_rval = qla2x00_start_sp(_sp); \
+-		if (_rval == EAGAIN) \
++		if (_rval == -EAGAIN) \
+ 			msleep(1); \
+ 		else \
+ 			break; \
 -- 
 2.51.0
 
