@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-184377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C832BD414D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55964BD4666
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 98567502E05
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:11:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CFE422C58
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178CD30C635;
-	Mon, 13 Oct 2025 14:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37A630BF5D;
+	Mon, 13 Oct 2025 15:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTzyzsRN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D61xtA2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE8E30C612;
-	Mon, 13 Oct 2025 14:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6255930BF55;
+	Mon, 13 Oct 2025 15:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367260; cv=none; b=eGP7HYEXj4jTnNIzXXYaE5OMtekldZp3PunKH5MrllrmHi3SurqgRg6CnGsozYvjS81OQxyKZAbChPaNDrEWoYZdj/tMp6NyZYsyrG+ZsDyszJLAa0+z91/QJrgrjsfXuIsP0cmUGHA/63L95zLDQkxfLp7XRXCMHSFsOdEVXF4=
+	t=1760367776; cv=none; b=LXEgpfoyuzJmQFwm9R8pn1Nv4S9P7eIsLr/V2ftKvNlfH3PWtDLfSgjBBKBgQ4Og/808iohHfAtF609PVR7/0xJqxu4Uv3aBkF6xvAs5VdlQx6HAvhsP71QxlKEWPnFCwULHJowS+Ea+nJRwZACVSFom8zLlWwAg4eUZGHdDU2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367260; c=relaxed/simple;
-	bh=L1IK29+S10OOcHhDWZwQJ5w9ICY2lZ8/DogndxN6PfU=;
+	s=arc-20240116; t=1760367776; c=relaxed/simple;
+	bh=Q10lgVH/CWaIyPgIfHEzfV59dHfrtu4SVnjsIM/nz34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eA1a3d2QIv44sXkkKQATwf3VZhMqpguaMiCIeyLbg8YDbbYGv0oQFKerJ/Ajr5FlWbF4E968cXk3LxXGi/NYIXDBNEQY3vmu33cZ2PvyZgWbHaQoI0Rkjx30QU0rXsrzCnqUljU7PdryJs5Ek+znn2tLjhLKsYKJ97LLB+2qF8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTzyzsRN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4491DC113D0;
-	Mon, 13 Oct 2025 14:54:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gse3QCrMUBu8U+QErvgM6YaiNo95Bx+4+P4HALIPCaJT/57dhRcC/aaznytq8yAROFYAz0l/KMLm01Ic2MyLXh4R/Sy70pRWxk/I3TXg06rmKbuJO6oMq4UvrYULcIRnQijK4Lvkg+p79myjc4GyAiWZtuwgkYGF6ZpgZaFvTkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D61xtA2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BC4C4CEFE;
+	Mon, 13 Oct 2025 15:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367260;
-	bh=L1IK29+S10OOcHhDWZwQJ5w9ICY2lZ8/DogndxN6PfU=;
+	s=korg; t=1760367775;
+	bh=Q10lgVH/CWaIyPgIfHEzfV59dHfrtu4SVnjsIM/nz34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTzyzsRNvVUNMelZiTrRiYvHqxCZL6gevgO+S+bUQulh0GriPCWkRdFMY2Yk9W+jR
-	 tri5LqO30GLnw3QipFIKjHSxh+75j+PFDwzXuUpVkLlKeFQ3EV9juNQ0FjYZ5S3NE2
-	 ZzBKSrSAxJdwWvpNnckHBKpxVmR1EkoM3KJoZARM=
+	b=D61xtA2UFD03+Rc7FmKd8xvpBgC2+UWl16b6WBrdg5T68//T/inEj5bQPcxl1rHMw
+	 gfJERe+CpVFdVgJTNaN7G3n0clSPuW0u3NL3dLb0uXpnB0aiZURBWgdzzOqb3ITIcE
+	 pE2WH30SvpjNHFe3F4a3tKir1VBO9uC/YQGurwW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/196] remoteproc: qcom: q6v5: Avoid disabling handover IRQ twice
+	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Sasha Levin <sashal@kernel.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactcode.com>,
+	Jonathan 'theJPster' Pallant <kernel@thejpster.org.uk>
+Subject: [PATCH 6.6 129/196] sparc: fix accurate exception reporting in copy_{from_to}_user for UltraSPARC
 Date: Mon, 13 Oct 2025 16:45:20 +0200
-Message-ID: <20251013144320.015880621@linuxfoundation.org>
+Message-ID: <20251013144319.976097416@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
 
-[ Upstream commit 110be46f5afe27b66caa2d12473a84cd397b1925 ]
+[ Upstream commit 4fba1713001195e59cfc001ff1f2837dab877efb ]
 
-enable_irq() and disable_irq() are reference counted, so we must make sure
-that each enable_irq() is always paired with a single disable_irq(). If we
-call disable_irq() twice followed by just a single enable_irq(), the IRQ
-will remain disabled forever.
+The referenced commit introduced exception handlers on user-space memory
+references in copy_from_user and copy_to_user. These handlers return from
+the respective function and calculate the remaining bytes left to copy
+using the current register contents. This commit fixes a couple of bad
+calculations. This will fix the return value of copy_from_user and
+copy_to_user in the faulting case. The behaviour of memcpy stays unchanged.
 
-For the error handling path in qcom_q6v5_wait_for_start(), disable_irq()
-will end up being called twice, because disable_irq() also happens in
-qcom_q6v5_unprepare() when rolling back the call to qcom_q6v5_prepare().
-
-Fix this by dropping disable_irq() in qcom_q6v5_wait_for_start(). Since
-qcom_q6v5_prepare() is the function that calls enable_irq(), it makes more
-sense to have the rollback handled always by qcom_q6v5_unprepare().
-
-Fixes: 3b415c8fb263 ("remoteproc: q6v5: Extract common resource handling")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-1-910b1a3aff71@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: cb736fdbb208 ("sparc64: Convert U1copy_{from,to}_user to accurate exception reporting.")
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on QEMU 10.0.3
+Tested-by: René Rebe <rene@exactcode.com> # on Ultra 5 UltraSparc IIi
+Tested-by: Jonathan 'theJPster' Pallant <kernel@thejpster.org.uk> # on Sun Netra T1
+Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-1-1ca72dda195b@mkarcher.dialup.fu-berlin.de
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/sparc/lib/U1memcpy.S | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
-index 497acfb33f8f8..6cce6dd9fd232 100644
---- a/drivers/remoteproc/qcom_q6v5.c
-+++ b/drivers/remoteproc/qcom_q6v5.c
-@@ -162,9 +162,6 @@ int qcom_q6v5_wait_for_start(struct qcom_q6v5 *q6v5, int timeout)
- 	int ret;
+diff --git a/arch/sparc/lib/U1memcpy.S b/arch/sparc/lib/U1memcpy.S
+index 635398ec7540e..154fbd35400ca 100644
+--- a/arch/sparc/lib/U1memcpy.S
++++ b/arch/sparc/lib/U1memcpy.S
+@@ -164,17 +164,18 @@ ENTRY(U1_gs_40_fp)
+ 	retl
+ 	 add		%o0, %o2, %o0
+ ENDPROC(U1_gs_40_fp)
+-ENTRY(U1_g3_0_fp)
+-	VISExitHalf
+-	retl
+-	 add		%g3, %o2, %o0
+-ENDPROC(U1_g3_0_fp)
+ ENTRY(U1_g3_8_fp)
+ 	VISExitHalf
+ 	add		%g3, 8, %g3
+ 	retl
+ 	 add		%g3, %o2, %o0
+ ENDPROC(U1_g3_8_fp)
++ENTRY(U1_g3_16_fp)
++	VISExitHalf
++	add		%g3, 16, %g3
++	retl
++	 add		%g3, %o2, %o0
++ENDPROC(U1_g3_16_fp)
+ ENTRY(U1_o2_0_fp)
+ 	VISExitHalf
+ 	retl
+@@ -547,18 +548,18 @@ FUNC_NAME:		/* %o0=dst, %o1=src, %o2=len */
+ 62:	FINISH_VISCHUNK(o0, f44, f46)
+ 63:	UNEVEN_VISCHUNK_LAST(o0, f46, f0)
  
- 	ret = wait_for_completion_timeout(&q6v5->start_done, timeout);
--	if (!ret)
--		disable_irq(q6v5->handover_irq);
--
- 	return !ret ? -ETIMEDOUT : 0;
- }
- EXPORT_SYMBOL_GPL(qcom_q6v5_wait_for_start);
+-93:	EX_LD_FP(LOAD(ldd, %o1, %f2), U1_g3_0_fp)
++93:	EX_LD_FP(LOAD(ldd, %o1, %f2), U1_g3_8_fp)
+ 	add		%o1, 8, %o1
+ 	subcc		%g3, 8, %g3
+ 	faligndata	%f0, %f2, %f8
+-	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_8_fp)
++	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_16_fp)
+ 	bl,pn		%xcc, 95f
+ 	 add		%o0, 8, %o0
+-	EX_LD_FP(LOAD(ldd, %o1, %f0), U1_g3_0_fp)
++	EX_LD_FP(LOAD(ldd, %o1, %f0), U1_g3_8_fp)
+ 	add		%o1, 8, %o1
+ 	subcc		%g3, 8, %g3
+ 	faligndata	%f2, %f0, %f8
+-	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_8_fp)
++	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_16_fp)
+ 	bge,pt		%xcc, 93b
+ 	 add		%o0, 8, %o0
+ 
 -- 
 2.51.0
 
