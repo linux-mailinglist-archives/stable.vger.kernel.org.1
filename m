@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11B4BD4213
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:17 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39390BD3C51
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9480B5044C3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EAB1134DCB1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44675308F23;
-	Mon, 13 Oct 2025 14:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B93827A123;
+	Mon, 13 Oct 2025 14:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to3adsO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHa7pNw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006F4308F1B;
-	Mon, 13 Oct 2025 14:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1718526E708;
+	Mon, 13 Oct 2025 14:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367489; cv=none; b=ePRGE+8W7rcrxuc8kzGZ6N4mGo8w1IvCz9Mzm2QK+67vcNx9WxaTbt8qCnvwLv8+3DVRKRQBY9WWkvzmDxJ0+3HLDDWiLadEnM83+h4J2andFXyk4+Bv47yhdjpMWxZHts4gMBhx8Su68krFQ+ZE+1kTyPOyqHKDoKwJQykn+r4=
+	t=1760366992; cv=none; b=siy25mJGaSL+ZHiE9VU10eWZzh3jqAPnG9m2AA7N+zyJ3Gy17d9o/OCSugoCxvV3WP9coqjQpCLElzkIbm+fT37n7ZSrrmhjPzD9CQVVCm2lN/uz4EoEWuFHB5tUc78F+oM5uLjcAdbPVPOz6trPfB+XuFB1q9K857GHzMGx+Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367489; c=relaxed/simple;
-	bh=pFti+lEhgzue0vGnNzPgenNVZ1p0HSonIF9e17OCpAo=;
+	s=arc-20240116; t=1760366992; c=relaxed/simple;
+	bh=JuRio9Zu17Pm99mBzIJ8d9ANe4X+hHXY0WB6Fkaf+FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxOJf1BGylRzQNZTasD3FJP2Fc6+IJvLCWi/3hjDgLV0roiJ4ZNkZi8+8nLOpgveBFueBjPW9LU981f9jJgFQY6QbK3b1/UgOw4rgxrPN8zFmRBMdj31J6tberAlTX+JKeF186q26HI5U1wf8OFBTconXzUgseWgbr/lti1KMXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to3adsO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189CDC4CEE7;
-	Mon, 13 Oct 2025 14:58:07 +0000 (UTC)
+	 MIME-Version; b=swBE6db4gnYEfIvuM59jVjDyGd5rL66UXqOSagz3hbr1nBLRryGKzJDFerg4X8ZxI1nIgB+NZq2fxm+myQoI54bbmup1RrDokTEcozkxF9VqeKQ4VJJYvG3ByVlJxKJB/TzqPjaqaa1zko+LbkvefCZraK2fX4AtwszR19RGeiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHa7pNw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9801BC4CEE7;
+	Mon, 13 Oct 2025 14:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367488;
-	bh=pFti+lEhgzue0vGnNzPgenNVZ1p0HSonIF9e17OCpAo=;
+	s=korg; t=1760366992;
+	bh=JuRio9Zu17Pm99mBzIJ8d9ANe4X+hHXY0WB6Fkaf+FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=to3adsO8LiIR1nqmtFPah0ryYd+KGZOK30jUiUMrh5ceVkSvXGSVVPoDXErio3Hrn
-	 Wx6zfcEo+9HRuedv+q247spEqYNE9un1c0DFbtwFhtrlDfgSRNWPd8l5h2YLNsQb5o
-	 1T7qoG5ObGCNgHyxXXXIZJEO0YsturcmAB9nZGqk=
+	b=rHa7pNw18aU79/ifURyCDw5kXMUni6gzLenDf4RAEBPkvDrd41muACsr6jspwKrnQ
+	 Jwz5tfqZoNfpJYWYTrl3zL2EZ14heQstRO6UdivQAlgbwv08KZ72DVVHWqx1E3W3EM
+	 T9d6SJQiyiFoI6NPqpNscraIINrRRn+ObhCOqwMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/196] selftests: arm64: Check fread return value in exec_target
+	David Laight <David.Laight@aculab.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.1 022/196] minmax: fix up min3() and max3() too
 Date: Mon, 13 Oct 2025 16:43:15 +0200
-Message-ID: <20251013144315.348789242@linuxfoundation.org>
+Message-ID: <20251013144315.379499375@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit a679e5683d3eef22ca12514ff8784b2b914ebedc ]
+[ Upstream commit 21b136cc63d2a9ddd60d4699552b69c214b32964 ]
 
-Fix -Wunused-result warning generated when compiled with gcc 13.3.0,
-by checking fread's return value and handling errors, preventing
-potential failures when reading from stdin.
+David Laight pointed out that we should deal with the min3() and max3()
+mess too, which still does excessive expansion.
 
-Fixes compiler warning:
-warning: ignoring return value of 'fread' declared with attribute
-'warn_unused_result' [-Wunused-result]
+And our current macros are actually rather broken.
 
-Fixes: 806a15b2545e ("kselftests/arm64: add PAuth test for whether exec() changes keys")
+In particular, the macros did this:
 
-Signed-off-by: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  #define min3(x, y, z) min((typeof(x))min(x, y), z)
+  #define max3(x, y, z) max((typeof(x))max(x, y), z)
+
+and that not only is a nested expansion of possibly very complex
+arguments with all that involves, the typing with that "typeof()" cast
+is completely wrong.
+
+For example, imagine what happens in max3() if 'x' happens to be a
+'unsigned char', but 'y' and 'z' are 'unsigned long'.  The types are
+compatible, and there's no warning - but the result is just random
+garbage.
+
+No, I don't think we've ever hit that issue in practice, but since we
+now have sane infrastructure for doing this right, let's just use it.
+It fixes any excessive expansion, and also avoids these kinds of broken
+type issues.
+
+Requested-by: David Laight <David.Laight@aculab.com>
+Acked-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/arm64/pauth/exec_target.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/minmax.h |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/arm64/pauth/exec_target.c b/tools/testing/selftests/arm64/pauth/exec_target.c
-index 4435600ca400d..e597861b26d6b 100644
---- a/tools/testing/selftests/arm64/pauth/exec_target.c
-+++ b/tools/testing/selftests/arm64/pauth/exec_target.c
-@@ -13,7 +13,12 @@ int main(void)
- 	unsigned long hwcaps;
- 	size_t val;
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -152,13 +152,20 @@
+ #define umax(x, y)	\
+ 	__careful_cmp(max, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
  
--	fread(&val, sizeof(size_t), 1, stdin);
-+	size_t size = fread(&val, sizeof(size_t), 1, stdin);
++#define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
++	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
++	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
++		#op"3("#x", "#y", "#z") signedness error");		\
++	__cmp(op, ux, __cmp(op, uy, uz)); })
 +
-+	if (size != 1) {
-+		fprintf(stderr, "Could not read input from stdin\n");
-+		return EXIT_FAILURE;
-+	}
+ /**
+  * min3 - return minimum of three values
+  * @x: first value
+  * @y: second value
+  * @z: third value
+  */
+-#define min3(x, y, z) min((typeof(x))min(x, y), z)
++#define min3(x, y, z) \
++	__careful_op3(min, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
  
- 	/* don't try to execute illegal (unimplemented) instructions) caller
- 	 * should have checked this and keep worker simple
--- 
-2.51.0
-
+ /**
+  * max3 - return maximum of three values
+@@ -166,7 +173,8 @@
+  * @y: second value
+  * @z: third value
+  */
+-#define max3(x, y, z) max((typeof(x))max(x, y), z)
++#define max3(x, y, z) \
++	__careful_op3(max, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+ 
+ /**
+  * min_not_zero - return the minimum that is _not_ zero, unless both are zero
 
 
 
