@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12803BD4D0B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:11:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E527ABD50D7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 149D05423CA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9173954780C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA602BEC34;
-	Mon, 13 Oct 2025 15:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA38308F32;
+	Mon, 13 Oct 2025 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7aaKGTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X58O/QBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A1B1F1313;
-	Mon, 13 Oct 2025 15:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138603090CB;
+	Mon, 13 Oct 2025 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368573; cv=none; b=bpbIJHVrgIWIEZDqwZu8btg3mzX6iikiRi13A5f8+dM2wiwxBAHrx2623UOJEhLH2WjJ0DTTD3SZDDay9UXmu+xuwtAlUTnKTXwIfXOcU1cEgKyqlIk1Ki3s7QdUNJpBCqLRx5+DhJboPg1m3bNw3ATlrvkANDabHU+MnWJrBjg=
+	t=1760370217; cv=none; b=Z0xbSDkCoIcotmQjinK8oMSlPPgAgBAAWg3UDw+XVvFKmoj9+cK0CGJzhy/oMM2qzVC6Gry0OdckubhNZ36BlSed3nSEafr2UKaI7V/17M5D6b13cSxERU5IGeLMgCIeHc651L34yo0FKkTB0NZYytxHqKrImurI84vn5gBJZq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368573; c=relaxed/simple;
-	bh=QL2G0q7JYoaf5JAwYZtPkQvBaczV7X45pdMs0UYJT9s=;
+	s=arc-20240116; t=1760370217; c=relaxed/simple;
+	bh=/HhLSqk1j56uD5CrwIdxs7SwvXxulaZmDSlnmrQAaaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSYIjuXOxocMF6WDXCdaNy/KcM6Osn6JA71b/TYQA2HceavZyN+CsRsL/vCpjkAjlBRBaTuYG0mWqThnOVqJd7xrd41K4pGnpqfOjvkOwwiRC4oDdBBS1W22fBgzcHDGj6VKquk9y4lP4hf/3IBvZoGFcpkSZx70u3oqncy/Wi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7aaKGTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE5CC4CEE7;
-	Mon, 13 Oct 2025 15:16:12 +0000 (UTC)
+	 MIME-Version; b=qxDg+15GoJnLZTIu7nYYUnAsNIjZU5EL2s+18annAQ2ibirC/y00m1F1FEWa/Wl2TazQ/lZpiRDm9Ov4bwpUPF9yEmQk4jxAEsQXXygpuvYWRZMfOU2cuiZF/N2kztUxtwqwEoBJ8DdTdCfjpHVyRA02gYNz+ZLoUbtS35n6tFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X58O/QBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0B9C4CEE7;
+	Mon, 13 Oct 2025 15:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368572;
-	bh=QL2G0q7JYoaf5JAwYZtPkQvBaczV7X45pdMs0UYJT9s=;
+	s=korg; t=1760370216;
+	bh=/HhLSqk1j56uD5CrwIdxs7SwvXxulaZmDSlnmrQAaaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7aaKGTQx6DOShPSmoH1YxQ7G4RI0DNwiMFUUVGOb6ZRh7eEXkCcAd6P7/ZMiWtB0
-	 nIebcyJy2nP625n8Qv/Ynj3uYgwo0Tv9wi9SfVu3o/u08TdUu0+7Ait9sQ2mXRUMbH
-	 dManKjdQjKkrecbHX7Y7r0VHVdExHIsllLYrzC3o=
+	b=X58O/QBi9TRY1U0K23VpbGUOy8j5nsLPxI1/5Fo58qhCy87qqyPxiKM6CZPHKCaEE
+	 Ggmsb7orF4+rm1eHS3hznDhxDvAoTQjHkPUBHFjWsK96yNFqB9yEa7JoP+mfzTlvVg
+	 EmxCIA3hvy8/S+oNm6ku/q503vU/YGiixjRjEPw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	"Stefano Garzarella" <sgarzare@redhat.com>,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 206/262] Bluetooth: hci_sync: Fix using random address for BIG/PA advertisements
+Subject: [PATCH 6.17 487/563] vhost: vringh: Modify the return value check
 Date: Mon, 13 Oct 2025 16:45:48 +0200
-Message-ID: <20251013144333.661766219@linuxfoundation.org>
+Message-ID: <20251013144428.935149533@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-[ Upstream commit 03ddb4ac251463ec5b7b069395d9ab89163dd56c ]
+[ Upstream commit 82a8d0fda55b35361ee7f35b54fa2b66d7847d2b ]
 
-When creating an advertisement for BIG the address shall not be
-non-resolvable since in case of acting as BASS/Broadcast Assistant the
-address must be the same as the connection in order to use the PAST
-method and even when PAST/BASS are not in the picture a Periodic
-Advertisement can still be synchronized thus the same argument as to
-connectable advertisements still stand.
+The return value of copy_from_iter and copy_to_iter can't be negative,
+check whether the copied lengths are equal.
 
-Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Fixes: 309bba39c945 ("vringh: iterate on iotlb_translate to handle large translations")
+Cc: "Stefano Garzarella" <sgarzare@redhat.com>
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Message-Id: <20250910091739.2999-1-zhangjiao2@cmss.chinamobile.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/vhost/vringh.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 333f32a9fd219..853acfa8e9433 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1325,7 +1325,7 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
- {
- 	struct hci_cp_le_set_ext_adv_params cp;
- 	struct hci_rp_le_set_ext_adv_params rp;
--	bool connectable;
-+	bool connectable, require_privacy;
- 	u32 flags;
- 	bdaddr_t random_addr;
- 	u8 own_addr_type;
-@@ -1363,10 +1363,12 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
- 		return -EPERM;
+diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
+index 1778eff7ab006..925858cc60964 100644
+--- a/drivers/vhost/vringh.c
++++ b/drivers/vhost/vringh.c
+@@ -1115,6 +1115,7 @@ static inline int copy_from_iotlb(const struct vringh *vrh, void *dst,
+ 		struct iov_iter iter;
+ 		u64 translated;
+ 		int ret;
++		size_t size;
  
- 	/* Set require_privacy to true only when non-connectable
--	 * advertising is used. In that case it is fine to use a
--	 * non-resolvable private address.
-+	 * advertising is used and it is not periodic.
-+	 * In that case it is fine to use a non-resolvable private address.
- 	 */
--	err = hci_get_random_address(hdev, !connectable,
-+	require_privacy = !connectable && !(adv && adv->periodic);
-+
-+	err = hci_get_random_address(hdev, require_privacy,
- 				     adv_use_rpa(hdev, flags), adv,
- 				     &own_addr_type, &random_addr);
- 	if (err < 0)
+ 		ret = iotlb_translate(vrh, (u64)(uintptr_t)src,
+ 				      len - total_translated, &translated,
+@@ -1132,9 +1133,9 @@ static inline int copy_from_iotlb(const struct vringh *vrh, void *dst,
+ 				      translated);
+ 		}
+ 
+-		ret = copy_from_iter(dst, translated, &iter);
+-		if (ret < 0)
+-			return ret;
++		size = copy_from_iter(dst, translated, &iter);
++		if (size != translated)
++			return -EFAULT;
+ 
+ 		src += translated;
+ 		dst += translated;
 -- 
 2.51.0
 
