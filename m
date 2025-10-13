@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-185440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E230BD5158
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:34:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C428BD5398
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 421AA500599
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8DE8F582071
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4203315786;
-	Mon, 13 Oct 2025 15:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52896316191;
+	Mon, 13 Oct 2025 15:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wN3ELFRT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWkhOZku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B244A1F91E3;
-	Mon, 13 Oct 2025 15:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF9A221555;
+	Mon, 13 Oct 2025 15:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370300; cv=none; b=QqjuFBZHk1tjf7+gZsAKI+qYD6EgTZdzj6EEuUOCT4esguQak1M0H7Dwn1B/CQVs5OtPaQWmJi4hHhha5AFsM5BvI+C3Ucp1sE8n/Z8o/cWEjNuRL0GCLND8IorPzZNnlsNVPyoIyg0yvJSpejwUe5lTnd9DtlrWC+KGLLVBxxc=
+	t=1760370321; cv=none; b=Wl/jxW4ANtEFelHWzbgYu1XGM5AOsPKpfrDJsfRdxscS6zxuFoqNOkoN8l+zu9H9pA7YXRnmukrkfyf/usRGrGtVCGpfgk4zcN+yAssGtypdFpWlUVKh1P6VQTdmxX57BFcwr2V/Vh80fi7Fp7eC3OF8e1LZ3tF1mMqZjx+GsMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370300; c=relaxed/simple;
-	bh=gJDDbiZC5scABqr3gZrotMNaHOpmLRLjaV3qoFIykGw=;
+	s=arc-20240116; t=1760370321; c=relaxed/simple;
+	bh=MHHkgcdQOQlZW/GI9KczamMHJ1R0Zc3WMmbod4nYrYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jVA0h8hf7Tg/zMiM7KzFNTio8eHxhhVnvncNPHXskh8ZP+Bi6CIuUyZOc1LM8NdWwObl5UqP9DrygT6kGTbUvVsP6b9DbnW8Zp3vLVGSLvyGxkQYgaE4zKwrqbandjqHpHWnt5QWiE49eCeD+JWupswHZiao9FoZXuJy4YO/j18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wN3ELFRT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AEAC4CEE7;
-	Mon, 13 Oct 2025 15:44:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CL6orq2AQiAFDKsP01InNtuu3j5TYNzORLYlMYIOSRmt6pcjUa6UJSuiqxpCOBqMQJuuPXYnBXsd+o5bb4gIYit7aM+lAC5/8oBkJhXjM7/8yBEVD6PZ3S8vZJFj+635kc2l8wgKnYdB5sTLYXw0hBkL3VvOP7ab394+/kLIqQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWkhOZku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89352C4AF1B;
+	Mon, 13 Oct 2025 15:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370300;
-	bh=gJDDbiZC5scABqr3gZrotMNaHOpmLRLjaV3qoFIykGw=;
+	s=korg; t=1760370320;
+	bh=MHHkgcdQOQlZW/GI9KczamMHJ1R0Zc3WMmbod4nYrYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wN3ELFRTwC/p1E9AxU5xC7kfeAyeO2QZ0RkP5gYgPnFcXfJyJG5vAj+aJ6F0V17By
-	 JanQAdqZmXs9lP+B8BeNvPTp5dwYuP4kwbkalHkuVZS3b5apKtBCA6tp3vs5Eo+DSt
-	 kDg7wquE0qI7lONhJ7SU/rIGYfqeu4NkeXFnTcJ0=
+	b=HWkhOZkuHB5jFlglFIn0wLnFT377E7Wm500j/mqKm1DauoALRBe7aJy0feXlHf/sF
+	 iCrEpvcwo7wDu+mUdD8MuiCcKVfLOtwBsq77lhtyrxsp6PLn9T+fzLv+82vpEjhQYc
+	 niaLmAR4lXIRevjqK34ps2brIglxrmQ2he+1KV4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youling Tang <tangyouling@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 521/563] LoongArch: Automatically disable kaslr if boot from kexec_file
-Date: Mon, 13 Oct 2025 16:46:22 +0200
-Message-ID: <20251013144430.186696640@linuxfoundation.org>
+	Xi Ruoyao <xry111@xry111.site>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.17 522/563] pwm: loongson: Fix LOONGSON_PWM_FREQ_DEFAULT
+Date: Mon, 13 Oct 2025 16:46:23 +0200
+Message-ID: <20251013144430.222740750@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -59,50 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youling Tang <tangyouling@kylinos.cn>
+From: Xi Ruoyao <xry111@xry111.site>
 
-commit c8168b4faf1d62cbb320a3e518ad31cdd567cb05 upstream.
+commit 75604e9a5b60707722028947d6dc6bdacb42282e upstream.
 
-Automatically disable kaslr when the kernel loads from kexec_file.
+Per the 7A1000 and 7A2000 user manual, the clock frequency of their
+PWM controllers is 50 MHz, not 50 kHz.
 
-kexec_file loads the secondary kernel image to a non-linked address,
-inherently providing KASLR-like randomization.
-
-However, on LoongArch where System RAM may be non-contiguous, enabling
-KASLR for the second kernel may relocate it to an invalid memory region
-and cause a boot failure. Thus, we disable KASLR when "kexec_file" is
-detected in the command line.
-
-To ensure compatibility with older kernels loaded via kexec_file, this
-patch should be backported to stable branches.
-
+Fixes: 2b62c89448dd ("pwm: Add Loongson PWM controller support")
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Reviewed-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20250816104904.4779-2-xry111@xry111.site
 Cc: stable@vger.kernel.org
-Signed-off-by: Youling Tang <tangyouling@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/relocate.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pwm/pwm-loongson.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/relocate.c
-+++ b/arch/loongarch/kernel/relocate.c
-@@ -166,6 +166,10 @@ static inline __init bool kaslr_disabled
- 		return true;
- #endif
+diff --git a/drivers/pwm/pwm-loongson.c b/drivers/pwm/pwm-loongson.c
+index 1ba16168cbb4..31a57edecfd0 100644
+--- a/drivers/pwm/pwm-loongson.c
++++ b/drivers/pwm/pwm-loongson.c
+@@ -49,7 +49,7 @@
+ #define LOONGSON_PWM_CTRL_REG_DZONE	BIT(10) /* Anti-dead Zone Enable Bit */
  
-+	str = strstr(boot_command_line, "kexec_file");
-+	if (str == boot_command_line || (str > boot_command_line && *(str - 1) == ' '))
-+		return true;
-+
- 	return false;
- }
+ /* default input clk frequency for the ACPI case */
+-#define LOONGSON_PWM_FREQ_DEFAULT	50000 /* Hz */
++#define LOONGSON_PWM_FREQ_DEFAULT	50000000 /* Hz */
  
+ struct pwm_loongson_ddata {
+ 	struct clk *clk;
+-- 
+2.51.0
+
 
 
 
