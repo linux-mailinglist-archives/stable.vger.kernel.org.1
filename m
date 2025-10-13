@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-185249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B1FBD543D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B9CBD4CD2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 486EB40459D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1BBB542894
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF4D3101BF;
-	Mon, 13 Oct 2025 15:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00E330C615;
+	Mon, 13 Oct 2025 15:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pN36fEDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUH6aXW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDAF3101C1;
-	Mon, 13 Oct 2025 15:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D70E305043;
+	Mon, 13 Oct 2025 15:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369759; cv=none; b=WkCEvr9gJgoioadi4E50xbsAJ90UnCl4qc1HcR7kirRXNVes6i0Yyik0LAdDzrz7+g+UsqWC7j3q6YEtj6kTbyQ0ndsNN/zWUr2Wjn/06DO0nMXPRv35WxV5Ffn7u7mGU+fmCsnPZcMAo1dQW2hLpj1B5IVPRvxEmrkIJicAouM=
+	t=1760369765; cv=none; b=W80/gISqbM24D+jXsJ7zv2n2Y2xIpmIhIUWSlA2MXejvLY6wN1ysC8LVrYLWA/vReXpzl768ujccYwKwkwxVwdnnTSncAbcaVaTH8chyreuh078+BvxcvEc2842WeusSxWRc2cPmu4pzsWWysevDq0au1M4XfmkwG21TXtXAn7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369759; c=relaxed/simple;
-	bh=PNIly1AwGLKjcVoQ0OPaj6pLyIdVImNZb7g8K69QqD4=;
+	s=arc-20240116; t=1760369765; c=relaxed/simple;
+	bh=xgOAbMF/yQgKeqxHjss2EKmHCQQbVvqh4oYiuZt3o+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlBdswY2743cJauqScmGZqvF2SqOeMc7SdvXEBrETxhe/n76DdyiIaaw9UJyshe/Jf5rLOGRB20Yzltjr/ntiNoCAb880e7AJXcGv+ezbr0xqsT7yj08Om3Nv77EvFBTe2Y0PHHeVF0Gf6ES+M91SvmI4MNOh7g22YhQRzENcQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pN36fEDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84AAC16AAE;
-	Mon, 13 Oct 2025 15:35:58 +0000 (UTC)
+	 MIME-Version; b=E5VtTR99qqxQtm/zlenBsZQkiIIkUHLNku979Y5Pyy7wxMil6gT5Gd5wS3VvbZ2bxUxvBBuOwit18PGf7h1Y5Xl9cpXfqf0Q5TEvQcI0YRA5GyeHv6p/smo+PBfV/RNTz+oxywbNfbIGg8UW/rEuTBDN5OwiOTEd6hHCKSDbNu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUH6aXW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B45DC116B1;
+	Mon, 13 Oct 2025 15:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369759;
-	bh=PNIly1AwGLKjcVoQ0OPaj6pLyIdVImNZb7g8K69QqD4=;
+	s=korg; t=1760369765;
+	bh=xgOAbMF/yQgKeqxHjss2EKmHCQQbVvqh4oYiuZt3o+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pN36fEDKpegaIYsmGELD6TMgrfmmJqr8DA2t2JdINRTu5ryCHGfAzptEid8ycFDXC
-	 09HVRs6+P21/O02mlVjyxfQLhR2b4rQ98xiiJ3Ln56+LgnhzLbC0qxlJulsDsCj9mu
-	 eopObsIjbB2vf0s9qa3JhXNLCqX67xuTvdik0J14=
+	b=cUH6aXW0z4/ILS1LKVSkucM1T46zSWK0cO68IlC0I0FhIlZKgqjmM0RiQ6PV7V9uj
+	 pvi1Y+IZr+kqIEadBdAfz7ZJ8sfym5/ryy2kmac0B6MCtQoGq7oIPekjiGbRSVIFRR
+	 theIz6ZIAHfVpz0FS1t7zMyGVl4LmJmXXFO79yLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 359/563] wifi: mt76: mt7996: Fix RX packets configuration for primary WED device
-Date: Mon, 13 Oct 2025 16:43:40 +0200
-Message-ID: <20251013144424.283337899@linuxfoundation.org>
+Subject: [PATCH 6.17 360/563] wifi: mt76: mt7996: Convert mt7996_wed_rro_addr to LE
+Date: Mon, 13 Oct 2025 16:43:41 +0200
+Message-ID: <20251013144424.320323224@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,41 +68,91 @@ Content-Transfer-Encoding: 8bit
 
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit cffed52dbf0ddd0db11f9df63f9976fe58ac9628 ]
+[ Upstream commit 809054a60d613ccca6e7f243bc68966b58044163 ]
 
-In order to properly set the number of rx packets for primary WED device
-if hif device is available, move hif pointer initialization before
-running mt7996_mmio_wed_init routine.
+Do not use bitmask in mt7996_wed_rro_addr DMA descriptor in order to not
+break endianness
 
-Fixes: 83eafc9251d6d ("wifi: mt76: mt7996: add wed tx support")
+Fixes: 950d0abb5cd94 ("wifi: mt76: mt7996: add wed rx support")
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250909-mt7996-rro-rework-v5-9-7d66f6eb7795@kernel.org
+Link: https://patch.msgid.link/20250909-mt7996-rro-rework-v5-11-7d66f6eb7795@kernel.org
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c   |  8 +++++---
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 11 +++++------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-index 19e99bc1c6c41..f5ce50056ee94 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-@@ -137,6 +137,7 @@ static int mt7996_pci_probe(struct pci_dev *pdev,
- 	mdev = &dev->mt76;
- 	mt7996_wfsys_reset(dev);
- 	hif2 = mt7996_pci_init_hif2(pdev);
-+	dev->hif2 = hif2;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index be729db5b75c1..84015ab24af62 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -734,6 +734,7 @@ void mt7996_wfsys_reset(struct mt7996_dev *dev)
+ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
+ {
+ #ifdef CONFIG_NET_MEDIATEK_SOC_WED
++	u32 val = FIELD_PREP(WED_RRO_ADDR_SIGNATURE_MASK, 0xff);
+ 	struct mtk_wed_device *wed = &dev->mt76.mmio.wed;
+ 	u32 reg = MT_RRO_ADDR_ELEM_SEG_ADDR0;
+ 	struct mt7996_wed_rro_addr *addr;
+@@ -773,7 +774,7 @@ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
  
- 	ret = mt7996_mmio_wed_init(dev, pdev, false, &irq);
- 	if (ret < 0)
-@@ -161,7 +162,6 @@ static int mt7996_pci_probe(struct pci_dev *pdev,
+ 		addr = dev->wed_rro.addr_elem[i].ptr;
+ 		for (j = 0; j < MT7996_RRO_WINDOW_MAX_SIZE; j++) {
+-			addr->signature = 0xff;
++			addr->data = cpu_to_le32(val);
+ 			addr++;
+ 		}
  
- 	if (hif2) {
- 		hif2_dev = container_of(hif2->dev, struct pci_dev, dev);
--		dev->hif2 = hif2;
+@@ -791,7 +792,7 @@ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
+ 	dev->wed_rro.session.ptr = ptr;
+ 	addr = dev->wed_rro.session.ptr;
+ 	for (i = 0; i < MT7996_RRO_WINDOW_MAX_LEN; i++) {
+-		addr->signature = 0xff;
++		addr->data = cpu_to_le32(val);
+ 		addr++;
+ 	}
  
- 		ret = mt7996_mmio_wed_init(dev, hif2_dev, true, &hif2_irq);
- 		if (ret < 0)
+@@ -891,6 +892,7 @@ static void mt7996_wed_rro_free(struct mt7996_dev *dev)
+ static void mt7996_wed_rro_work(struct work_struct *work)
+ {
+ #ifdef CONFIG_NET_MEDIATEK_SOC_WED
++	u32 val = FIELD_PREP(WED_RRO_ADDR_SIGNATURE_MASK, 0xff);
+ 	struct mt7996_dev *dev;
+ 	LIST_HEAD(list);
+ 
+@@ -927,7 +929,7 @@ static void mt7996_wed_rro_work(struct work_struct *work)
+ 				MT7996_RRO_WINDOW_MAX_LEN;
+ reset:
+ 			elem = ptr + elem_id * sizeof(*elem);
+-			elem->signature = 0xff;
++			elem->data |= cpu_to_le32(val);
+ 		}
+ 		mt7996_mcu_wed_rro_reset_sessions(dev, e->id);
+ out:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index b98cfe6e5be8c..048d9a9898c6e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -277,13 +277,12 @@ struct mt7996_hif {
+ 	int irq;
+ };
+ 
++#define WED_RRO_ADDR_SIGNATURE_MASK	GENMASK(31, 24)
++#define WED_RRO_ADDR_COUNT_MASK		GENMASK(14, 4)
++#define WED_RRO_ADDR_HEAD_HIGH_MASK	GENMASK(3, 0)
+ struct mt7996_wed_rro_addr {
+-	u32 head_low;
+-	u32 head_high : 4;
+-	u32 count: 11;
+-	u32 oor: 1;
+-	u32 rsv : 8;
+-	u32 signature : 8;
++	__le32 head_low;
++	__le32 data;
+ };
+ 
+ struct mt7996_wed_rro_session_id {
 -- 
 2.51.0
 
