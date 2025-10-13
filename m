@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-184302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFEE2BD3C7E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:06 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F6EBD4A37
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 092A518A08A7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9312B34FEFA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FF9308F24;
-	Mon, 13 Oct 2025 14:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0A530CDA5;
+	Mon, 13 Oct 2025 15:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3FjiUPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2T/V9hKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024762BF009;
-	Mon, 13 Oct 2025 14:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888C126F2B3;
+	Mon, 13 Oct 2025 15:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367044; cv=none; b=nkukHzdepdQyUVb56YaMy8TU3ZqR+MpuGC9umPxPiDUdw8m9X+8Mn/D0RsrE0uL/EoYGkhtE8eypjYrLQYrvyydT8VUg6bbGfBUWOMhx7wF5UZXsZaSRw/J0blsgtBfnojijbeKad/CBHT857JO2wFENf+raeyJcPT0goOgh5K4=
+	t=1760369927; cv=none; b=cMBYam/AY0YsqJ5k4UGDJt+Qyk1qAs8ZzYV+1kJixchLXaIQMKrf+eQVxSIScwocFS8nsooQOxLEmGXiGylKIWsT8l49FmpKs4Q9OsJb9b4i/CIznMctowLSvQOrfcyoBuJ9fGoXmhQH2ZL2xJ07Cx6gxxLMWC6DmDssa+pWMO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367044; c=relaxed/simple;
-	bh=R89kp0iLYdk1U26/++/e06fNrPuyMTwTnm1iRfn6sSg=;
+	s=arc-20240116; t=1760369927; c=relaxed/simple;
+	bh=vcBpJlOuhr0FaaQ4q4te8oBoZ72+r2mtmYAwyJzByrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o95OBXT9g1DO8FzoNEXc8I/jyMn327K2LyCkUZL84IhNcvpPQOAxmoBr1epViSCtoRhSOPDiw8Una4Q7ZBepY850xPpCee7zLPvCKpZSuHygBEaVkCgqXMlpM97CuSWsHxUDV3xjpqS4B0OlE78kmdJJhdVEyH5uClzcLIh1k6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3FjiUPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80328C4CEE7;
-	Mon, 13 Oct 2025 14:50:43 +0000 (UTC)
+	 MIME-Version; b=BIkPOTsC1p+4YTvn15sAokYRKETtOiiye/Z0v35BV8BIK1SZTePQtXve2sPQ9H0xRyTEppXG15HpV0sJ0RW9xZvbmb81r7zoR2h8lVWdTw1he38TP1+WClU1IePakPI/X4AadQOV4mfbArrx4xnBuWZfpn14ZLdl1bf0hciE09A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2T/V9hKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1362CC4CEE7;
+	Mon, 13 Oct 2025 15:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367043;
-	bh=R89kp0iLYdk1U26/++/e06fNrPuyMTwTnm1iRfn6sSg=;
+	s=korg; t=1760369927;
+	bh=vcBpJlOuhr0FaaQ4q4te8oBoZ72+r2mtmYAwyJzByrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3FjiUPiiXXMVThDwxC9HwMY7q+1UACKF9/ezuyfgqW2vmDsx69VhNNFduFVkFf9t
-	 iL/iRTJLWXjyNMoulOEVh/AB8ULteeih+vlqVVpJm+fX/tTlrQfhiNPymsg7AoWNfm
-	 YmAV2wjD/FXz4d4J+wm3+5lMjsqletEisZcrWESo=
+	b=2T/V9hKSmdc7Z5qQcBa42AP5YQNK100KSk3Q/3LRD2aAsZDtua5KdRal+B6olV/Jo
+	 TuxkBIsVFly8ZipqSZIaMk+OE0/BSsq5MCxZwgViEJGCDTZ64X1z4XP2mV6e5Gd3aY
+	 Vn3JT7QNlK0j0YcYCVoDL6jbPSwza7KlvSPRFqw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
-	Mike Christie <mchristi@redhat.com>,
-	"Richard W.M. Jones" <rjones@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Yu Kuai <yukuai1@huaweicloud.com>,
-	linux-block@vger.kernel.org,
-	nbd@other.debian.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/196] nbd: restrict sockets to TCP and UDP
+Subject: [PATCH 6.17 384/563] mptcp: Use __sk_dst_get() and dst_dev_rcu() in mptcp_active_enable().
 Date: Mon, 13 Oct 2025 16:44:05 +0200
-Message-ID: <20251013144317.182186217@linuxfoundation.org>
+Message-ID: <20251013144425.185476525@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,56 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 9f7c02e031570e8291a63162c6c046dc15ff85b0 ]
+[ Upstream commit 893c49a78d9f85e4b8081b908fb7c407d018106a ]
 
-Recently, syzbot started to abuse NBD with all kinds of sockets.
+mptcp_active_enable() is called from subflow_finish_connect(),
+which is icsk->icsk_af_ops->sk_rx_dst_set() and it's not always
+under RCU.
 
-Commit cf1b2326b734 ("nbd: verify socket is supported during setup")
-made sure the socket supported a shutdown() method.
+Using sk_dst_get(sk)->dev could trigger UAF.
 
-Explicitely accept TCP and UNIX stream sockets.
+Let's use __sk_dst_get() and dst_dev_rcu().
 
-Fixes: cf1b2326b734 ("nbd: verify socket is supported during setup")
-Reported-by: syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/CANn89iJ+76eE3A_8S_zTpSyW5hvPRn6V57458hCZGY5hbH_bFA@mail.gmail.com/T/#m081036e8747cd7e2626c1da5d78c8b9d1e55b154
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mike Christie <mchristi@redhat.com>
-Cc: Richard W.M. Jones <rjones@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Yu Kuai <yukuai1@huaweicloud.com>
-Cc: linux-block@vger.kernel.org
-Cc: nbd@other.debian.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250916214758.650211-8-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/mptcp/ctrl.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 120b75ee703d1..2a959c08bd3cb 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -1107,6 +1107,14 @@ static struct socket *nbd_get_socket(struct nbd_device *nbd, unsigned long fd,
- 	if (!sock)
- 		return NULL;
+diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
+index c0e516872b4b5..e8ffa62ec183f 100644
+--- a/net/mptcp/ctrl.c
++++ b/net/mptcp/ctrl.c
+@@ -501,12 +501,15 @@ void mptcp_active_enable(struct sock *sk)
+ 	struct mptcp_pernet *pernet = mptcp_get_pernet(sock_net(sk));
  
-+	if (!sk_is_tcp(sock->sk) &&
-+	    !sk_is_stream_unix(sock->sk)) {
-+		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: should be TCP or UNIX.\n");
-+		*err = -EINVAL;
-+		sockfd_put(sock);
-+		return NULL;
-+	}
-+
- 	if (sock->ops->shutdown == sock_no_shutdown) {
- 		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: shutdown callout must be supported.\n");
- 		*err = -EINVAL;
+ 	if (atomic_read(&pernet->active_disable_times)) {
+-		struct dst_entry *dst = sk_dst_get(sk);
++		struct net_device *dev;
++		struct dst_entry *dst;
+ 
+-		if (dst && dst->dev && (dst->dev->flags & IFF_LOOPBACK))
++		rcu_read_lock();
++		dst = __sk_dst_get(sk);
++		dev = dst ? dst_dev_rcu(dst) : NULL;
++		if (dev && (dev->flags & IFF_LOOPBACK))
+ 			atomic_set(&pernet->active_disable_times, 0);
+-
+-		dst_release(dst);
++		rcu_read_unlock();
+ 	}
+ }
+ 
 -- 
 2.51.0
 
