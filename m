@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F089BD3DC8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:06:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC463BD42B8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 62C6E4F44A3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:57:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAB41888FE9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8734C30F553;
-	Mon, 13 Oct 2025 14:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1704C3126AB;
+	Mon, 13 Oct 2025 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUYB9lBe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfX/VJJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4264830F52D;
-	Mon, 13 Oct 2025 14:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C855922257E;
+	Mon, 13 Oct 2025 15:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366946; cv=none; b=GgnG14pGBxq8L8esMSp7wE+2Ovc7s/MPWE7urHNMfth+Dz1BLAsS/DdpVPwD/dSQZxjY2ke2b8VHS6fRtR4m8eTdtaD3kaVj6IpBdM5eVdSsFVnLjL6UBRPS8JIN7UAzvg4prayC80ehPGP9GGibj3n5H/qAxq7R0RChan/BuKI=
+	t=1760368222; cv=none; b=E7zCu42eJqjLyg1E4uaYepm1MZ+UycUR2AR9XXymbylMoqC2awhqwWfJwArlYK+j0HNPb2Y715Eo+Wn9k37ds58rFDOVftann392FLegrh1yB1ZUSmvv6Mxg9vPBqJxUwVB8EUv1xUjLd6ZvBc2v9oFB9vsjjbL53Yp6zz7J05U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366946; c=relaxed/simple;
-	bh=zM22GH8U7MSWnzq1SCVQxW9B0nAeBbIV1lwMVb9t3I4=;
+	s=arc-20240116; t=1760368222; c=relaxed/simple;
+	bh=BKtDRRAmM4y8nbjtwbyi3qYS5X7iQk93+Oc+zyZ2CgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BE7lUWNbqhISaoDje7claCv9vvPrPPlr1ECkWhAQ/Pn/SwJAoSRLIHoctFePKxDagT3EYmo8gLzZl7beRdhkbCBo2aghn7S4JFBLXjlUW1zbBFcwwLh2CGNj/cp9Kpp+WfW/xkNjKpgmzss6UuHeOI1XXOAqA35QVmv1J9r9Qjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUYB9lBe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D42C4CEE7;
-	Mon, 13 Oct 2025 14:49:05 +0000 (UTC)
+	 MIME-Version; b=WA3VUiGxpL1EiCthq1c9TzsvK8FLK12lnGgIRsh81xyTqhs6SkXOdfgDAmTRlJKBgSGPhpt7VEl/saGtoFneNYciqmEikd9VyyCbtVh/lcRJ6O6iKy6kS1vlsgd1FP2qWrIzYJeCMyxWAn6ahcEoyyc07GJxYVi7kC8kJXqypRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfX/VJJd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F4EC4CEE7;
+	Mon, 13 Oct 2025 15:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366946;
-	bh=zM22GH8U7MSWnzq1SCVQxW9B0nAeBbIV1lwMVb9t3I4=;
+	s=korg; t=1760368222;
+	bh=BKtDRRAmM4y8nbjtwbyi3qYS5X7iQk93+Oc+zyZ2CgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUYB9lBevMc+RXg7YLo9+W3kcbACVYRAFAGCwj9s5d7hrjo5ZuGzAhwhR4aee5sr/
-	 g8+R9nZZxRmZMo+BM0jSgV4A/MD5wjZZ6NgmF2tz3P4RujDSXDfbEc4MDp5cl4dFAs
-	 5bHhbciPrWqgnqOiskDESjmHCe8Q2/PHTNXrQOTY=
+	b=SfX/VJJdePk85lWzA84eaOeXySV4k8yD48IhAL84DQ1QoGLrtukbLXB6t9RFTyJ2U
+	 Ww7S4Uxkx1ZEl62pWBGlZhI565wO5ydITbWTzxkDYDL24kdGywSCB2SS5rNiIMf+g1
+	 UK08O97Nx+KyMZYNwL8A/wNjPoivOfR0sr1Dy2ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Romain Sioen <romain.sioen@microchip.com>
-Subject: [PATCH 6.1 038/196] hid: fix I2C read buffer overflow in raw_event() for mcp2221
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 069/262] ACPICA: Fix largest possible resource descriptor index
 Date: Mon, 13 Oct 2025 16:43:31 +0200
-Message-ID: <20251013144315.965421740@linuxfoundation.org>
+Message-ID: <20251013144328.613169138@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit b56cc41a3ae7323aa3c6165f93c32e020538b6d2 upstream.
+[ Upstream commit 8ca944fea4d6d9019e01f2d6f6e766f315a9d73f ]
 
-As reported by syzbot, mcp2221_raw_event lacked
-validation of incoming I2C read data sizes, risking buffer
-overflows in mcp->rxbuf during multi-part transfers.
-As highlighted in the DS20005565B spec, p44, we have:
-"The number of read-back data bytes to follow in this packet:
-from 0 to a maximum of 60 bytes of read-back bytes."
-This patch enforces we don't exceed this limit.
+ACPI_RESOURCE_NAME_LARGE_MAX should be equal to the last actually
+used resource descriptor index (ACPI_RESOURCE_NAME_CLOCK_INPUT).
 
-Reported-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=52c1a7d3e5b361ccd346
-Tested-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Link: https://patch.msgid.link/20250726220931.7126-1-contact@arnaud-lcm.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Otherwise 'resource_index' in 'acpi_ut_validate_resource()' may be
+clamped incorrectly and resulting value may issue an out-of-bounds
+access for 'acpi_gbl_resource_types' array. Compile tested only.
+
+Fixes: 520d4a0ee5b6 ("ACPICA: add support for ClockInput resource (v6.5)")
+Link: https://github.com/acpica/acpica/commit/cf00116c
+Link: https://marc.info/?l=linux-acpi&m=175449676131260&w=2
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-mcp2221.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/acpica/aclocal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -791,6 +791,10 @@ static int mcp2221_raw_event(struct hid_
- 			}
- 			if (data[2] == MCP2221_I2C_READ_COMPL ||
- 			    data[2] == MCP2221_I2C_READ_PARTIAL) {
-+				if (!mcp->rxbuf || mcp->rxbuf_idx < 0 || data[3] > 60) {
-+					mcp->status = -EINVAL;
-+					break;
-+				}
- 				buf = mcp->rxbuf;
- 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
- 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
+diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
+index 6f4fe47c955bd..35460c2072a4a 100644
+--- a/drivers/acpi/acpica/aclocal.h
++++ b/drivers/acpi/acpica/aclocal.h
+@@ -1141,7 +1141,7 @@ struct acpi_port_info {
+ #define ACPI_RESOURCE_NAME_PIN_GROUP_FUNCTION   0x91
+ #define ACPI_RESOURCE_NAME_PIN_GROUP_CONFIG     0x92
+ #define ACPI_RESOURCE_NAME_CLOCK_INPUT          0x93
+-#define ACPI_RESOURCE_NAME_LARGE_MAX            0x94
++#define ACPI_RESOURCE_NAME_LARGE_MAX            0x93
+ 
+ /*****************************************************************************
+  *
+-- 
+2.51.0
+
 
 
 
