@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-185303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCA2BD4F99
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76AE9BD543A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0ADB256727C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A7C8F4F8746
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60F530CD91;
-	Mon, 13 Oct 2025 15:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEBB311C2A;
+	Mon, 13 Oct 2025 15:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukzds9eW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcpfjfLV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903C430CD85;
-	Mon, 13 Oct 2025 15:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2C830DEC5;
+	Mon, 13 Oct 2025 15:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369910; cv=none; b=EVEhAP4rfF5v3RewQeR9NfPpnRbp4YtpwwftQ3e+A8p0MdUm5dta+U1MkBLG8iwI+24Xey/cqvssYtiqB0FRUnyzjpUrro5H0TfZ8pMwyFremVRyKRKZxPI42jr2wetDB3xxzgH8pJ3xcgSTuPstKvbcRvuM3GDl2D1x1tUbEhg=
+	t=1760370032; cv=none; b=pfmahc8asFusn/UAhUgqezC8q4v/dCi2FgHYqSXtbwTGGb0Q6ZBnVjVvJL53UomLLbhGrglxVWkclNc6nIItkf86RMDUpTPo1HyJlYDXOa/vBn0aJd06M07JSyIFZh22uanU1IfF0j6kpQkBUqTpBDVngLV7VLfs9jg7B2q0WyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369910; c=relaxed/simple;
-	bh=D63vR17dUvi2DmAqEVjM1NScfai5San/quFb3zu7vfE=;
+	s=arc-20240116; t=1760370032; c=relaxed/simple;
+	bh=ZCzNjKdk246XFXR74q/V0z1wOiosCz2ZizO6aJU/P+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Olr8Kjhi31yf2sGuRK+7Lew44cuq9tM7Gzcejj5snJW3olHt4hcmPP/0Rn6KvsuHFmeDcKcX9YfcS9OXF13bjmDzWU12YSXcId2zgSBhP0Ts0xZLPtarVf/PkgyvieJkMblfRaBS8geZxNtbW07G7V/VPS7DQc1aHdnJndmgGI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukzds9eW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 163F9C4CEE7;
-	Mon, 13 Oct 2025 15:38:29 +0000 (UTC)
+	 MIME-Version; b=Wfi731duXs5H4UW//s9btRmpJ9wpthWSX2rj2cJBf8mRCzSn0wPNOxn/psvO6i4izdS6KKIrjkpJclu7I9R3PfO1y+4ACdxnV/+dlJVJQM6qmy/A5sLHsOpPp5Sj2msXLTy/iA8vZAdGAE5M+Z5FKhegNQiLbbh5TCUS6ANvKYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcpfjfLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274E4C4CEE7;
+	Mon, 13 Oct 2025 15:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369910;
-	bh=D63vR17dUvi2DmAqEVjM1NScfai5San/quFb3zu7vfE=;
+	s=korg; t=1760370032;
+	bh=ZCzNjKdk246XFXR74q/V0z1wOiosCz2ZizO6aJU/P+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukzds9eWE2otMG6FP5smxCz3H404YiAbsPMHCt7gsCBErM8jBdlMogI/D+q21Yebc
-	 JomtfC2DEy8hGIJywNAv1UIJ2fwAx1xhtk4z1uqlNrM/9ZnPJitzqCz5HnLuNq5pwN
-	 1Jowk0E7+l7rRIoZ8GqbCWRbf2/u9X9fvRcGSL2U=
+	b=GcpfjfLV1fKZwCT+4G93ce1wOwlFXV8IlIzqMqgHloF4aXGXJJlgJC4n9aMpcMXVA
+	 /kdhsN4FTjjL/yEjyRDklpy3Yoxafpc3yRdiIBy51hNDrFNVqft8pV46y3vxLX3IB0
+	 TJ9slCdJfFykT19stkFrlJX+cMxCVMFTbQAKu374=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
 	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 410/563] rpmsg: qcom_smd: Fix fallback to qcom,ipc parse
-Date: Mon, 13 Oct 2025 16:44:31 +0200
-Message-ID: <20251013144426.139193568@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Luca Weiss <luca@lucaweiss.eu>
+Subject: [PATCH 6.17 411/563] remoteproc: qcom_q6v5_mss: support loading MBN file on msm8974
+Date: Mon, 13 Oct 2025 16:44:32 +0200
+Message-ID: <20251013144426.176514850@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -62,47 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 09390ed9af37ed612dd0967ff2b0d639872b8776 ]
+[ Upstream commit 581e3dea0ece4b59cf714c9dfe195a178d3ae13b ]
 
-mbox_request_channel() returning value was changed in case of error.
-It uses returning value of of_parse_phandle_with_args().
-It is returning with -ENOENT instead of -ENODEV when no mboxes property
-exists.
+On MSM8974 / APQ8074, MSM8226 and MSM8926 the MSS requires loading raw
+MBA image instead of the ELF file. Skip the ELF headers if mba.mbn was
+specified as the firmware image.
 
-Fixes: 24fdd5074b20 ("mailbox: use error ret code of of_parse_phandle_with_args()")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Tested-by: Stephan Gerhold <stephan.gerhold@linaro.org> # msm8939
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20250725-fix-qcom-smd-v2-1-e4e43613f874@mainlining.org
+Fixes: a5a4e02d083d ("remoteproc: qcom: Add support for parsing fw dt bindings")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Tested-by: Luca Weiss <luca@lucaweiss.eu> # msm8974pro-fairphone-fp2
+Link: https://lore.kernel.org/r/20250706-msm8974-fix-mss-v4-1-630907dbd898@oss.qualcomm.com
+[bjorn: Unwrapped the long memcpy line, to taste]
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_smd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/qcom_q6v5_mss.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
-index 87c944d4b4f31..1cbe457b4e96f 100644
---- a/drivers/rpmsg/qcom_smd.c
-+++ b/drivers/rpmsg/qcom_smd.c
-@@ -1368,7 +1368,7 @@ static int qcom_smd_parse_edge(struct device *dev,
- 	edge->mbox_client.knows_txdone = true;
- 	edge->mbox_chan = mbox_request_channel(&edge->mbox_client, 0);
- 	if (IS_ERR(edge->mbox_chan)) {
--		if (PTR_ERR(edge->mbox_chan) != -ENODEV) {
-+		if (PTR_ERR(edge->mbox_chan) != -ENOENT) {
- 			ret = dev_err_probe(dev, PTR_ERR(edge->mbox_chan),
- 					    "failed to acquire IPC mailbox\n");
- 			goto put_node;
+diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
+index 0c0199fb0e68d..3087d895b87f4 100644
+--- a/drivers/remoteproc/qcom_q6v5_mss.c
++++ b/drivers/remoteproc/qcom_q6v5_mss.c
+@@ -498,6 +498,8 @@ static void q6v5_debug_policy_load(struct q6v5 *qproc, void *mba_region)
+ 	release_firmware(dp_fw);
+ }
+ 
++#define MSM8974_B00_OFFSET 0x1000
++
+ static int q6v5_load(struct rproc *rproc, const struct firmware *fw)
+ {
+ 	struct q6v5 *qproc = rproc->priv;
+@@ -516,7 +518,14 @@ static int q6v5_load(struct rproc *rproc, const struct firmware *fw)
+ 		return -EBUSY;
+ 	}
+ 
+-	memcpy(mba_region, fw->data, fw->size);
++	if ((qproc->version == MSS_MSM8974 ||
++	     qproc->version == MSS_MSM8226 ||
++	     qproc->version == MSS_MSM8926) &&
++	    fw->size > MSM8974_B00_OFFSET &&
++	    !memcmp(fw->data, ELFMAG, SELFMAG))
++		memcpy(mba_region, fw->data + MSM8974_B00_OFFSET, fw->size - MSM8974_B00_OFFSET);
++	else
++		memcpy(mba_region, fw->data, fw->size);
+ 	q6v5_debug_policy_load(qproc, mba_region);
+ 	memunmap(mba_region);
+ 
 -- 
 2.51.0
 
