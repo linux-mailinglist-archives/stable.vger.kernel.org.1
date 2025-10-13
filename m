@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-184697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B914BD4279
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4DF7BD44C6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2844C188620C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2976403CE7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB9531159C;
-	Mon, 13 Oct 2025 15:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15403311963;
+	Mon, 13 Oct 2025 15:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4iX74e0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYpJEhyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5822FD1D6;
-	Mon, 13 Oct 2025 15:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E7C17F4F6;
+	Mon, 13 Oct 2025 15:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368179; cv=none; b=rZkBE4lFxtCLaCcQSRzk8AVBCDAhy/NcL8/e2lIann6Eawu61xiiZ5QEecr7aSnDSvQKttgZjImy1KHpSg5RYDzQYK/LyPA256EdrDAEpv4Y5xhkU4wrSV9IQAPa6WOxCFN52zGqU62DvMmXbQwuh9sFjctgZzptrtMwMH3r2Do=
+	t=1760368182; cv=none; b=PmECBqtf87864nbedLAjSnWA93VHcjravHWblCh1jvzmwvjPCK1fLLvb+W8Q302x3aWgeKPnRD3zvJGkqyK5cuCn2kJJqVfHikT0jaO0yauLIBDlqxkEpzTsce+zu1ez0Rq8vQmtPVaTxT+8gNnoVw+3W4ImB7mVzA1INfdOlhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368179; c=relaxed/simple;
-	bh=+9iUi9FrzHRuxjxwpOF0NUyskK6oJmemITqJThWkiwQ=;
+	s=arc-20240116; t=1760368182; c=relaxed/simple;
+	bh=8WZzddaQ3pXgYKWv0Vw8SJ1++oReSi3+jW7W4wtLmc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HipBxTyDoX91eWtFnUiogyudBNdaPWNI7Z7w96LJwaj1SiuDgnBmkr4euiN2vODhynV7mIyqszylpaPgSByvGT2ju6Rh/Fr1qBVFskT2drmdK7UjGOic84s8uPkm8Vf0/th3Qaj+hZz0cUwRNNoH7v+m7z3eRSsCc4Z1tC209fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4iX74e0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA15C4CEE7;
-	Mon, 13 Oct 2025 15:09:39 +0000 (UTC)
+	 MIME-Version; b=pi8Ny6a6vHso/fyRk6XmiVLa88EQyNzL9HrPw4WvCW8/ctqa8gwbUBpUfzpCzHRPBrGBgw5WPT6l4DBVzOodhLF9D5wktc6vwGb1QeMSKZDOmE+zPu30lHDVtGiyyWl/uKceeT08KaUKNoDR/a6vL6iMI/TND/Mz6/GpGXt/bBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYpJEhyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A374C4CEE7;
+	Mon, 13 Oct 2025 15:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368179;
-	bh=+9iUi9FrzHRuxjxwpOF0NUyskK6oJmemITqJThWkiwQ=;
+	s=korg; t=1760368182;
+	bh=8WZzddaQ3pXgYKWv0Vw8SJ1++oReSi3+jW7W4wtLmc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4iX74e01i0cEe7OtAc9rrG05n5HLvRAQXt5Ip/UWspqFj3aiw9dc6zZn4pfo/Pn0
-	 2X9gllP/G3Upsq6Pm/jLm+MPuV/ocyv3m9DX/M9HblalXXMePAQeINY6ekmANDe7Ws
-	 DWFUwM8K3HIEXSwYc3fMKLsPjaqtYORWo0lqcbD4=
+	b=QYpJEhyY4M6ph112as77M8kVTArN49KSmReV49Oc7TrWn6RR6y6Ny5QnirXfYin2H
+	 5FSF59VYY+G1xVyXfT8ZrgZxy/ccYJhVFWWsa6bKhRZPtbMh9AV81hLzHxP8d4aqaC
+	 AE5Gaplv7SoS7qlUx8xr57EPRDIwnR6A8oZ6+eTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Andrei Lalaev <andrei.lalaev@anton-paar.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/262] selftests/nolibc: fix EXPECT_NZ macro
-Date: Mon, 13 Oct 2025 16:43:00 +0200
-Message-ID: <20251013144327.503938675@linuxfoundation.org>
+Subject: [PATCH 6.12 039/262] leds: leds-lp55xx: Use correct address for memory programming
+Date: Mon, 13 Oct 2025 16:43:01 +0200
+Message-ID: <20251013144327.539949484@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
 References: <20251013144326.116493600@linuxfoundation.org>
@@ -60,44 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Andrei Lalaev <andrei.lalaev@anton-paar.com>
 
-[ Upstream commit 6d33ce3634f99e0c6c9ce9fc111261f2c411cb48 ]
+[ Upstream commit d6058316d16ee0d1861c0550051b2492efb54b79 ]
 
-The expect non-zero macro was incorrect and never used. Fix its
-definition.
+Memory programming doesn't work for devices without page support.
+For example, LP5562 has 3 engines but doesn't support pages,
+the start address is changed depending on engine number.
+According to datasheet [1], the PROG MEM register addresses for each
+engine are as follows:
 
-Fixes: 362aecb2d8cfa ("selftests/nolibc: add basic infrastructure to ease creation of nolibc tests")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Link: https://lore.kernel.org/r/20250731201225.323254-2-benjamin@sipsolutions.net
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+  Engine 1: 0x10
+  Engine 2: 0x30
+  Engine 3: 0x50
+
+However, the current implementation incorrectly calculates the address
+of PROG MEM register using the engine index starting from 1:
+
+  prog_mem_base = 0x10
+  LP55xx_BYTES_PER_PAGE = 0x20
+
+  Engine 1: 0x10 + 0x20 * 1 = 0x30
+  Engine 2: 0x10 + 0x20 * 2 = 0x50
+  Engine 3: 0x10 + 0x20 * 3 = 0x70
+
+This results in writing to the wrong engine memory, causing pattern
+programming to fail.
+
+To correct it, the engine index should be decreased:
+  Engine 1: 0x10 + 0x20 * 0 = 0x10
+  Engine 2: 0x10 + 0x20 * 1 = 0x30
+  Engine 3: 0x10 + 0x20 * 2 = 0x50
+
+1 - https://www.ti.com/lit/ds/symlink/lp5562.pdf
+
+Fixes: 31379a57cf2f ("leds: leds-lp55xx: Generalize update_program_memory function")
+Signed-off-by: Andrei Lalaev <andrei.lalaev@anton-paar.com>
+Link: https://lore.kernel.org/r/20250820-lp5562-prog-mem-address-v1-1-8569647fa71d@anton-paar.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/nolibc/nolibc-test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/leds/leds-lp55xx-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-index 6fba7025c5e3c..d73bff23c61e7 100644
---- a/tools/testing/selftests/nolibc/nolibc-test.c
-+++ b/tools/testing/selftests/nolibc/nolibc-test.c
-@@ -196,8 +196,8 @@ int expect_zr(int expr, int llen)
- }
+diff --git a/drivers/leds/leds-lp55xx-common.c b/drivers/leds/leds-lp55xx-common.c
+index e71456a56ab8d..fd447eb7eb15e 100644
+--- a/drivers/leds/leds-lp55xx-common.c
++++ b/drivers/leds/leds-lp55xx-common.c
+@@ -212,7 +212,7 @@ int lp55xx_update_program_memory(struct lp55xx_chip *chip,
+ 	 * For LED chip that support page, PAGE is already set in load_engine.
+ 	 */
+ 	if (!cfg->pages_per_engine)
+-		start_addr += LP55xx_BYTES_PER_PAGE * idx;
++		start_addr += LP55xx_BYTES_PER_PAGE * (idx - 1);
  
- 
--#define EXPECT_NZ(cond, expr, val)			\
--	do { if (!(cond)) result(llen, SKIPPED); else ret += expect_nz(expr, llen; } while (0)
-+#define EXPECT_NZ(cond, expr)				\
-+	do { if (!(cond)) result(llen, SKIPPED); else ret += expect_nz(expr, llen); } while (0)
- 
- static __attribute__((unused))
- int expect_nz(int expr, int llen)
+ 	for (page = 0; page < program_length / LP55xx_BYTES_PER_PAGE; page++) {
+ 		/* Write to the next page each 32 bytes (if supported) */
 -- 
 2.51.0
 
