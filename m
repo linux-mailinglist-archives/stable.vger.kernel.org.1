@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-184725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3229FBD4732
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:02 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E50BDBD4633
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46306508DAE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D055B4FABD5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08443312809;
-	Mon, 13 Oct 2025 15:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78D5272801;
+	Mon, 13 Oct 2025 14:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnPK/3EL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUFPkh6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BF1253954;
-	Mon, 13 Oct 2025 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A510E12DDA1;
+	Mon, 13 Oct 2025 14:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368257; cv=none; b=ctrdpef0NlVKLbGa8L4u0+osCQPsseQ3OiC9snOhByd+F/rGPetRkPony1DaF+di5GYGQDyI9zJJE3+p+HMiQMN0nvxbkRUtF2vMkcJ2nlyPz9OAjaKm3wI6qAYhmvZWLU9Jy3y/rPWtlL5QEWffWcj0o3l3GVJst8gNTbKK574=
+	t=1760367543; cv=none; b=L5cYo9/ejKUVbcMGwZ0MwfW4MYncUaTBA9v1ZeL9ritf++JqptA2LirVduTDbWXTtTTVBjQePV0B9eT6YF/r3cOAz6jt8YS94FhcsxMeRr9+G78/aQkxxqf2un6tiPK9CWsKka3P6mQayYm06xXh9jtFGzk5OWnvMKWpFn036Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368257; c=relaxed/simple;
-	bh=A3PUrhz7suVHx3F5hVGL6tSDRnwFhAZpM7ns7TDGIac=;
+	s=arc-20240116; t=1760367543; c=relaxed/simple;
+	bh=AWYyWQGHJFQiRBnPvYrzJHTtPdsEi5SMrNah28WRMfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWF/tyfegAJN2Qa9ffj1y2gZ/WN8vMd6Mdu0h8crq8f1+TeR1gozj8X9OktdvOorupzWXb9IxLj0n9Svdu96IsP5GbP+PDk8OaQt4jEpEs7XeLWw/o1uawv0aHzHYbv//603lpRlfNs2m5CXnhKVWPtFROFESW/9L96DVxX6QmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnPK/3EL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E495C4CEE7;
-	Mon, 13 Oct 2025 15:10:57 +0000 (UTC)
+	 MIME-Version; b=ZfjN0JAoo9prYGVG2l99/mUBIRxbybdcdc6CWcIsL4qwNk8WoEnT7rBYhLGalh4BIGjxUO/JbuykOExM+VcfHlnKyr/DhAG1whLWum2k1UOOfx0fAdEWS4nEqVE0q9WyqTB7gzXrYTtXqHWBy+xkq8wg60HjpWYNyRyLGLax7/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUFPkh6q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F3FC4CEE7;
+	Mon, 13 Oct 2025 14:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368257;
-	bh=A3PUrhz7suVHx3F5hVGL6tSDRnwFhAZpM7ns7TDGIac=;
+	s=korg; t=1760367543;
+	bh=AWYyWQGHJFQiRBnPvYrzJHTtPdsEi5SMrNah28WRMfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RnPK/3ELYB1zDegqk/WpUf/35j5aVmsr7zaiLBwAy5letxlpr2Y0/UMIss3MCjjeK
-	 TYfhdQC/BmpUg69NmrXB8y48UGslwkx6NOk0in93go7cIOzC4PQ36Lqu8FkXpUQ49V
-	 FC3R7MD0zEgawtAbLsrzmkbiv+KZkXjiwoHl88O4=
+	b=aUFPkh6qCWupzjC3o0thcy9hGP9hyd7Gd8kvE7p4svzzHgf9BHrHn5Ecp+eezIw71
+	 RG1443jyXbcqsmjXK7KKH7r5ffm7FElX1MTx1ONL00PvnPXnlNO0OO1Jq9TSXIP1Uj
+	 wnx8ryR+riuentmvGWOhaDzr+7BiPPTsrn4CKKVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melody Olvera <quic_molvera@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Souradeep Chowdhury <quic_schowdhu@quicinc.com>,
-	Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/262] usb: misc: qcom_eud: Access EUD_MODE_MANAGER2 through secure calls
+Subject: [PATCH 6.6 048/196] i3c: master: svc: Use manual response for IBI events
 Date: Mon, 13 Oct 2025 16:43:59 +0200
-Message-ID: <20251013144329.621435417@linuxfoundation.org>
+Message-ID: <20251013144316.939118522@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,145 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Komal Bajaj <komal.bajaj@oss.qualcomm.com>
+From: Stanley Chu <yschu@nuvoton.com>
 
-[ Upstream commit c0485e864a2eaa1d5a84c71e573dd236d0e885ae ]
+[ Upstream commit a7869b0a2540fd122eccec00ae7d4243166b0a60 ]
 
-EUD_MODE_MANAGER2 register is mapped to a memory region that is marked
-as read-only for operating system running at EL1, enforcing access
-restrictions that prohibit direct memory-mapped writes via writel().
+Driver wants to nack the IBI request when the target is not in the
+known address list. In below code, svc_i3c_master_nack_ibi() will
+cause undefined behavior when using AUTOIBI with auto response rule,
+because hw always auto ack the IBI request.
 
-Attempts to write to this region from HLOS can result in silent failures
-or memory access violations, particularly when toggling EUD (Embedded
-USB Debugger) state. To ensure secure register access, modify the driver
-to use qcom_scm_io_writel(), which routes the write operation to Qualcomm
-Secure Channel Monitor (SCM). SCM has the necessary permissions to access
-protected memory regions, enabling reliable control over EUD state.
+    switch (ibitype) {
+    case SVC_I3C_MSTATUS_IBITYPE_IBI:
+            dev = svc_i3c_master_dev_from_addr(master, ibiaddr);
+            if (!dev || !is_events_enabled(master, SVC_I3C_EVENT_IBI))
+                    svc_i3c_master_nack_ibi(master);
+            ...
+            break;
 
-SC7280, the only user of EUD is also affected, indicating that this could
-never have worked on a properly fused device.
+AutoIBI has another issue that the controller doesn't quit AutoIBI state
+after IBIWON polling timeout when there is a SDA glitch(high->low->high).
+1. SDA high->low: raising an interrupt to execute IBI ISR
+2. SDA low->high
+3. Driver writes an AutoIBI request
+4. AutoIBI process does not start because SDA is not low
+5. IBIWON polling times out
+6. Controller reamins in AutoIBI state and doesn't accept EmitStop request
 
-Fixes: 9a1bf58ccd44 ("usb: misc: eud: Add driver support for Embedded USB Debugger(EUD)")
-Signed-off-by: Melody Olvera <quic_molvera@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
-Signed-off-by: Komal Bajaj <komal.bajaj@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250731-eud_mode_manager_secure_access-v8-1-4a5dcbb79f41@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Emitting broadcast address with IBIRESP_MANUAL avoids both issues.
+
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250829012309.3562585-2-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/Kconfig    |  1 +
- drivers/usb/misc/qcom_eud.c | 33 ++++++++++++++++++++++++---------
- 2 files changed, 25 insertions(+), 9 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 30 ++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/misc/Kconfig b/drivers/usb/misc/Kconfig
-index 6497c4e81e951..9bf8fc6247bac 100644
---- a/drivers/usb/misc/Kconfig
-+++ b/drivers/usb/misc/Kconfig
-@@ -147,6 +147,7 @@ config USB_APPLEDISPLAY
- config USB_QCOM_EUD
- 	tristate "QCOM Embedded USB Debugger(EUD) Driver"
- 	depends on ARCH_QCOM || COMPILE_TEST
-+	select QCOM_SCM
- 	select USB_ROLE_SWITCH
- 	help
- 	  This module enables support for Qualcomm Technologies, Inc.
-diff --git a/drivers/usb/misc/qcom_eud.c b/drivers/usb/misc/qcom_eud.c
-index 19906301a4eb8..012e3b9d9bcc8 100644
---- a/drivers/usb/misc/qcom_eud.c
-+++ b/drivers/usb/misc/qcom_eud.c
-@@ -15,6 +15,7 @@
- #include <linux/slab.h>
- #include <linux/sysfs.h>
- #include <linux/usb/role.h>
-+#include <linux/firmware/qcom/qcom_scm.h>
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index d1630d47ef6fc..1cfc8f480d15c 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -430,9 +430,24 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
+ 	 */
+ 	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
  
- #define EUD_REG_INT1_EN_MASK	0x0024
- #define EUD_REG_INT_STATUS_1	0x0044
-@@ -34,7 +35,7 @@ struct eud_chip {
- 	struct device			*dev;
- 	struct usb_role_switch		*role_sw;
- 	void __iomem			*base;
--	void __iomem			*mode_mgr;
-+	phys_addr_t			mode_mgr;
- 	unsigned int			int_status;
- 	int				irq;
- 	bool				enabled;
-@@ -43,18 +44,29 @@ struct eud_chip {
+-	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
+-	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
+-	       SVC_I3C_MCTRL_IBIRESP_AUTO,
++	/*
++	 * Write REQUEST_START_ADDR request to emit broadcast address for arbitration,
++	 * instend of using AUTO_IBI.
++	 *
++	 * Using AutoIBI request may cause controller to remain in AutoIBI state when
++	 * there is a glitch on SDA line (high->low->high).
++	 * 1. SDA high->low, raising an interrupt to execute IBI isr.
++	 * 2. SDA low->high.
++	 * 3. IBI isr writes an AutoIBI request.
++	 * 4. The controller will not start AutoIBI process because SDA is not low.
++	 * 5. IBIWON polling times out.
++	 * 6. Controller reamins in AutoIBI state and doesn't accept EmitStop request.
++	 */
++	writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
++	       SVC_I3C_MCTRL_TYPE_I3C |
++	       SVC_I3C_MCTRL_IBIRESP_MANUAL |
++	       SVC_I3C_MCTRL_DIR(SVC_I3C_MCTRL_DIR_WRITE) |
++	       SVC_I3C_MCTRL_ADDR(I3C_BROADCAST_ADDR),
+ 	       master->regs + SVC_I3C_MCTRL);
  
- static int enable_eud(struct eud_chip *priv)
- {
-+	int ret;
-+
-+	ret = qcom_scm_io_writel(priv->mode_mgr + EUD_REG_EUD_EN2, 1);
-+	if (ret)
-+		return ret;
-+
- 	writel(EUD_ENABLE, priv->base + EUD_REG_CSR_EUD_EN);
- 	writel(EUD_INT_VBUS | EUD_INT_SAFE_MODE,
- 			priv->base + EUD_REG_INT1_EN_MASK);
--	writel(1, priv->mode_mgr + EUD_REG_EUD_EN2);
- 
- 	return usb_role_switch_set_role(priv->role_sw, USB_ROLE_DEVICE);
- }
- 
--static void disable_eud(struct eud_chip *priv)
-+static int disable_eud(struct eud_chip *priv)
- {
-+	int ret;
-+
-+	ret = qcom_scm_io_writel(priv->mode_mgr + EUD_REG_EUD_EN2, 0);
-+	if (ret)
-+		return ret;
-+
- 	writel(0, priv->base + EUD_REG_CSR_EUD_EN);
--	writel(0, priv->mode_mgr + EUD_REG_EUD_EN2);
-+	return 0;
- }
- 
- static ssize_t enable_show(struct device *dev,
-@@ -82,11 +94,12 @@ static ssize_t enable_store(struct device *dev,
- 			chip->enabled = enable;
- 		else
- 			disable_eud(chip);
-+
- 	} else {
--		disable_eud(chip);
-+		ret = disable_eud(chip);
- 	}
- 
--	return count;
-+	return ret < 0 ? ret : count;
- }
- 
- static DEVICE_ATTR_RW(enable);
-@@ -178,6 +191,7 @@ static void eud_role_switch_release(void *data)
- static int eud_probe(struct platform_device *pdev)
- {
- 	struct eud_chip *chip;
-+	struct resource *res;
- 	int ret;
- 
- 	chip = devm_kzalloc(&pdev->dev, sizeof(*chip), GFP_KERNEL);
-@@ -200,9 +214,10 @@ static int eud_probe(struct platform_device *pdev)
- 	if (IS_ERR(chip->base))
- 		return PTR_ERR(chip->base);
- 
--	chip->mode_mgr = devm_platform_ioremap_resource(pdev, 1);
--	if (IS_ERR(chip->mode_mgr))
--		return PTR_ERR(chip->mode_mgr);
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-+	if (!res)
-+		return -ENODEV;
-+	chip->mode_mgr = res->start;
- 
- 	chip->irq = platform_get_irq(pdev, 0);
- 	if (chip->irq < 0)
+ 	/* Wait for IBIWON, should take approximately 100us */
+@@ -452,10 +467,15 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
+ 	switch (ibitype) {
+ 	case SVC_I3C_MSTATUS_IBITYPE_IBI:
+ 		dev = svc_i3c_master_dev_from_addr(master, ibiaddr);
+-		if (!dev || !is_events_enabled(master, SVC_I3C_EVENT_IBI))
++		if (!dev || !is_events_enabled(master, SVC_I3C_EVENT_IBI)) {
+ 			svc_i3c_master_nack_ibi(master);
+-		else
++		} else {
++			if (dev->info.bcr & I3C_BCR_IBI_PAYLOAD)
++				svc_i3c_master_ack_ibi(master, true);
++			else
++				svc_i3c_master_ack_ibi(master, false);
+ 			svc_i3c_master_handle_ibi(master, dev);
++		}
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_HOT_JOIN:
+ 		if (is_events_enabled(master, SVC_I3C_EVENT_HOTJOIN))
 -- 
 2.51.0
 
