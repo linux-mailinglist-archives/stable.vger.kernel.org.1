@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-185202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8445BD4ABF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:00:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9A8BD473F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC084486BBE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F117E421D1A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0022A30BF73;
-	Mon, 13 Oct 2025 15:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B5830C371;
+	Mon, 13 Oct 2025 15:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crF7HBN7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwpJGUlZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09BC30B515;
-	Mon, 13 Oct 2025 15:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1136310620;
+	Mon, 13 Oct 2025 15:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369622; cv=none; b=UN0oFrR46FsPLQkITbbmuX1sz/Ro/lv//yNAdxXxsz3IcQyymc/HdtxuQ+JnFUEd9lf322wYMYGUV5AJOouJsd0MEaG7sQ3WqhlMcbLadeSJ51y4JYKtbYXVr+I5savRclL5d7LM5+Hj7YfCTgDrgIfmgkpP9L/OHEXxu3bMQjA=
+	t=1760368044; cv=none; b=LiDhXWvLYFvC6CC3jNrWd2AvnSBhgPFQvpSg+8+2haTyyJi99gKML1sDD3Y5VVfZ31XcbxTuNQ+SAuR8ouvxqbUzwT97tvUlqP5zGYEpxZ352alSu0FinKJDUG41mXtJo1UNpqmeLMsuo7yAkGzRLckFjeD4ys19k589CRNkeBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369622; c=relaxed/simple;
-	bh=weBb+JQxBODjhQHLKGRrEEx01X0YNqyovP4/6a9ILOk=;
+	s=arc-20240116; t=1760368044; c=relaxed/simple;
+	bh=MZqDF+eFA91d5Xv74q3X55WuHfWGrrgN5sPNodntr6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mX9e6FI19bmU9IANAtSaI5VmhbS7DwfdPQvFVtnQlfFaJID6tjzvfrwGwqYaSY2PPU5HMMrwANkamARTogHfwe42UGW/Rk+bimffm9+0nDjkmhFWzTefcNt8IOyfewMZOf8hN85UYG02Zo9952ns9I+ddBxKCiRubi6yd5Bvh0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crF7HBN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC41C4CEE7;
-	Mon, 13 Oct 2025 15:33:42 +0000 (UTC)
+	 MIME-Version; b=RIm3wkG6sM015BSWWAOQochnbdrs3O4/Jv2ArMN0kbq+AwnjC5ATJ4Af/3L8V3JJv4dY7AsSjCinFcvEwJ9h2qKgAEroeXcGEYMaHw3D/SsAQU2etS7uZCPXCD07KI75cR8v4z73X5cifMMn9vLKq1GX2fIE8MP2ze6wgU0iYOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwpJGUlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2E5C4CEE7;
+	Mon, 13 Oct 2025 15:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369622;
-	bh=weBb+JQxBODjhQHLKGRrEEx01X0YNqyovP4/6a9ILOk=;
+	s=korg; t=1760368044;
+	bh=MZqDF+eFA91d5Xv74q3X55WuHfWGrrgN5sPNodntr6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crF7HBN7SFoaKr/kLGhkTMynzqHZOah/pi3ih7BT/JEjq3PaLvwfuLRpm6JHPyoJZ
-	 9Lb5A845hsodluIVAz9vCda9ZrX5MSYNL414o7MHpmWiDwxmcVLX80qF5OdDHhSTrI
-	 ia98abJ9v+tVVhpr0K/z1phalpR/p9bPGt3uglVY=
+	b=QwpJGUlZFDwCssB/IfzFao6Zcf8OsuND02ogIpo2OhL55drqHbi7MOC6QYKYVsv4P
+	 AwRptsqmYOcx6bccIrKCs6063Z9IGW9UBWkavpfXwCmIaXfBtqkYu7s+F3lRmLx2xy
+	 3hH3Mrb8MSmMm3Ri+Q1eLGaItIrcR5q79bE3KUOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 304/563] drm/amd/pm: Fix si_upload_smc_data (v3)
-Date: Mon, 13 Oct 2025 16:42:45 +0200
-Message-ID: <20251013144422.279386648@linuxfoundation.org>
+Subject: [PATCH 6.12 024/262] s390/bpf: Write back tail call counter for BPF_PSEUDO_CALL
+Date: Mon, 13 Oct 2025 16:42:46 +0200
+Message-ID: <20251013144327.003386087@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,108 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit a43b2cec04b02743338aa78f837ee0bdf066a6d5 ]
+[ Upstream commit c861a6b147137d10b5ff88a2c492ba376cd1b8b0 ]
 
-The si_upload_smc_data function uses si_write_smc_soft_register
-to set some register values in the SMC, and expects the result
-to be PPSMC_Result_OK which is 1.
+The tailcall_bpf2bpf_hierarchy_1 test hangs on s390. Its call graph is
+as follows:
 
-The PPSMC_Result_OK / PPSMC_Result_Failed values are used for
-checking the result of a command sent to the SMC.
-However, the si_write_smc_soft_register actually doesn't send
-any commands to the SMC and returns zero on success,
-so this check was incorrect.
+  entry()
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
 
-Fix that by not checking the return value, just like other
-calls to si_write_smc_soft_register.
+entry() copies its tail call counter to the subprog_tail()'s frame,
+which then increments it. However, the incremented result is discarded,
+leading to an astronomically large number of tail calls.
 
-v3:
-Additionally, when no display is plugged in, there is no need
-to restrict MCLK switching, so program the registers to zero.
+Fix by writing the incremented counter back to the entry()'s frame.
 
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: dd691e847d28 ("s390/bpf: Implement bpf_jit_supports_subprog_tailcalls()")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20250813121016.163375-3-iii@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 43 ++++++++++++----------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+ arch/s390/net/bpf_jit_comp.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index e71070a23b915..6736c592dfdc6 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -5813,9 +5813,9 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
- {
- 	struct amdgpu_crtc *amdgpu_crtc = NULL;
- 	int i;
--
--	if (adev->pm.dpm.new_active_crtc_count == 0)
--		return 0;
-+	u32 crtc_index = 0;
-+	u32 mclk_change_block_cp_min = 0;
-+	u32 mclk_change_block_cp_max = 0;
- 
- 	for (i = 0; i < adev->mode_info.num_crtc; i++) {
- 		if (adev->pm.dpm.new_active_crtcs & (1 << i)) {
-@@ -5824,26 +5824,31 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
- 		}
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index ead8d9ba9032c..a88d53fe87743 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -1775,13 +1775,6 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 		jit->seen |= SEEN_FUNC;
+ 		/*
+ 		 * Copy the tail call counter to where the callee expects it.
+-		 *
+-		 * Note 1: The callee can increment the tail call counter, but
+-		 * we do not load it back, since the x86 JIT does not do this
+-		 * either.
+-		 *
+-		 * Note 2: We assume that the verifier does not let us call the
+-		 * main program, which clears the tail call counter on entry.
+ 		 */
+ 		/* mvc STK_OFF_TCCNT(4,%r15),N(%r15) */
+ 		_EMIT6(0xd203f000 | STK_OFF_TCCNT,
+@@ -1807,6 +1800,22 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 		call_r1(jit);
+ 		/* lgr %b0,%r2: load return value into %b0 */
+ 		EMIT4(0xb9040000, BPF_REG_0, REG_2);
++
++		/*
++		 * Copy the potentially updated tail call counter back.
++		 */
++
++		if (insn->src_reg == BPF_PSEUDO_CALL)
++			/*
++			 * mvc frame_off+tail_call_cnt(%r15),
++			 *     tail_call_cnt(4,%r15)
++			 */
++			_EMIT6(0xd203f000 | (jit->frame_off +
++					     offsetof(struct prog_frame,
++						      tail_call_cnt)),
++			       0xf000 | offsetof(struct prog_frame,
++						 tail_call_cnt));
++
+ 		break;
  	}
- 
--	if (amdgpu_crtc == NULL)
--		return 0;
-+	/* When a display is plugged in, program these so that the SMC
-+	 * performs MCLK switching when it doesn't cause flickering.
-+	 * When no display is plugged in, there is no need to restrict
-+	 * MCLK switching, so program them to zero.
-+	 */
-+	if (adev->pm.dpm.new_active_crtc_count && amdgpu_crtc) {
-+		crtc_index = amdgpu_crtc->crtc_id;
- 
--	if (amdgpu_crtc->line_time <= 0)
--		return 0;
-+		if (amdgpu_crtc->line_time) {
-+			mclk_change_block_cp_min = amdgpu_crtc->wm_high / amdgpu_crtc->line_time;
-+			mclk_change_block_cp_max = amdgpu_crtc->wm_low / amdgpu_crtc->line_time;
-+		}
-+	}
- 
--	if (si_write_smc_soft_register(adev,
--				       SI_SMC_SOFT_REGISTER_crtc_index,
--				       amdgpu_crtc->crtc_id) != PPSMC_Result_OK)
--		return 0;
-+	si_write_smc_soft_register(adev,
-+		SI_SMC_SOFT_REGISTER_crtc_index,
-+		crtc_index);
- 
--	if (si_write_smc_soft_register(adev,
--				       SI_SMC_SOFT_REGISTER_mclk_change_block_cp_min,
--				       amdgpu_crtc->wm_high / amdgpu_crtc->line_time) != PPSMC_Result_OK)
--		return 0;
-+	si_write_smc_soft_register(adev,
-+		SI_SMC_SOFT_REGISTER_mclk_change_block_cp_min,
-+		mclk_change_block_cp_min);
- 
--	if (si_write_smc_soft_register(adev,
--				       SI_SMC_SOFT_REGISTER_mclk_change_block_cp_max,
--				       amdgpu_crtc->wm_low / amdgpu_crtc->line_time) != PPSMC_Result_OK)
--		return 0;
-+	si_write_smc_soft_register(adev,
-+		SI_SMC_SOFT_REGISTER_mclk_change_block_cp_max,
-+		mclk_change_block_cp_max);
- 
- 	return 0;
- }
+ 	case BPF_JMP | BPF_TAIL_CALL: {
 -- 
 2.51.0
 
