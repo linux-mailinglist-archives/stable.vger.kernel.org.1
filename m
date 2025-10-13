@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-185218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798EFBD4BAF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:55 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2467BD3C07
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:57:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E744563DA5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:52:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 532194F8BE7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5425E30F529;
-	Mon, 13 Oct 2025 15:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176F130AADA;
+	Mon, 13 Oct 2025 14:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4zjBFdZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ye5OIYl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0168930EF9B;
-	Mon, 13 Oct 2025 15:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C226630AAD0;
+	Mon, 13 Oct 2025 14:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369669; cv=none; b=oNu8HfqVGHGEDIExoefRE3OYrF4pd7FHYFXtWDf2oqMCqjgpHqx0nc3+QLMm71S7BWg7z+qK+l6BrHAS0Nqx4pCDTaabLsxWqq+FCCeFZlsmnWh0Yl37QcOKKdxICxuj7zLSUzVZgisc9gcUBaA0yk1llJA57kYCn/bY939vfms=
+	t=1760366899; cv=none; b=aPxbU5XLCkOsNNXYDlfnXJfMfxvKKdOdII+burwSVlECZaela74H2gISrwbl54DuZegkKCySmHJpbaazi6cYkgYZhdbd+LJcVgDhuq2xpL5a1yXTKnvYHq7KTTNZxnhT9hFo+W3waI4R6zozhe9HLCI/BXn7wqtG2BexbTPBrRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369669; c=relaxed/simple;
-	bh=4Mmd0n/8k09Yup6TStkwKgQbKwu9n/7cYGKJNHd/Eow=;
+	s=arc-20240116; t=1760366899; c=relaxed/simple;
+	bh=rrKltuquGOmoWYP1FrTr89lqU6jMHxBK+dgE1JcpVgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQ9nLWjEjGd7QdW22N6/Q+EG7XvLFLRVkUTCIB6nN0dRSNAjRyRTG+1uIsXqxqUuLjTSxvzJT5NZiunkKEtnRDMs741qbBe22yJfPeY/UTQxwePeJrqTxv5LcwIkmpa9mHrM5C8KWNDz+w9zSvE4ifCGuZ5k0u5FJyo3PQlOWB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4zjBFdZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFE9C4CEFE;
-	Mon, 13 Oct 2025 15:34:28 +0000 (UTC)
+	 MIME-Version; b=WBRykszVkxjIDLQy5JQMHHiRkM4c1J+rrUzevMtZAOdWMikT+aQy3hg7aaHn3GqV0YQmbDHCad6x0lkbkBuR9W8Y8OMd1hJr2y2b0lqrtaRZLvkg2CMC6RFsBmg+8aPREBCzuIDSZZkyQoqbu0T0PrNUWXGvZOKPuGWn2rhEx6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ye5OIYl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B880C4CEE7;
+	Mon, 13 Oct 2025 14:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369668;
-	bh=4Mmd0n/8k09Yup6TStkwKgQbKwu9n/7cYGKJNHd/Eow=;
+	s=korg; t=1760366899;
+	bh=rrKltuquGOmoWYP1FrTr89lqU6jMHxBK+dgE1JcpVgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r4zjBFdZ1l2iitirDKNSzixwq2/AQpUuyYKqX92WenR+Mv/I4kmX9bFa8mg7wFZmY
-	 WZx0S/V5+Xzg3uVoLhQhRQ//8S06EPvd304f+WgIi+Yk0p/Soz6BcxXRGnoX4vSJdK
-	 vkYWVybbfVpauBd2ec8E7tcpStCenYWT9P1JvC0k=
+	b=ye5OIYl1uhBmfJUhL8DnCOl+5n8ISak3k/mr3Bg5GBun9oBryRBLuvmOTT8GFIFss
+	 GK0xUxDtxVcIpYefj545GDRF2STF1zZf3ldRdLSyhRp9oppipJgkEEeTiqcsLnuZzd
+	 1+c4O7rkiAm0dyfoiz7v01+jVPQr8vQS9WIzF3QY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 327/563] drm/msm/mdp4: stop supporting no-IOMMU configuration
+	Ard Biesheuvel <ardb@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Kenneth Van Alstyne <kvanals@kvanals.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 015/196] KVM: arm64: Fix softirq masking in FPSIMD register saving sequence
 Date: Mon, 13 Oct 2025 16:43:08 +0200
-Message-ID: <20251013144423.108559617@linuxfoundation.org>
+Message-ID: <20251013144315.116824412@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit cc64568b522b64fb8f8c607da9eb4e2d9f72d0cf ]
+Stable commit 8f4dc4e54eed ("KVM: arm64: Fix kernel BUG() due to bad
+backport of FPSIMD/SVE/SME fix") fixed a kernel BUG() caused by a bad
+backport of upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally
+save+flush host FPSIMD/SVE/SME state") by ensuring that softirqs are
+disabled/enabled across the fpsimd register save operation.
 
-With the switch to GPUVM the msm driver no longer supports the no-IOMMU
-configurations (even without the actual GPU). Return an error in case we
-face the lack of the IOMMU for an MDP4 device.
+Unfortunately, although this fixes the original issue, it can now lead
+to deadlock when re-enabling softirqs causes pending softirqs to be
+handled with locks already held:
 
-Fixes: 111fdd2198e6 ("drm/msm: drm_gpuvm conversion")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/672557/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ | BUG: spinlock recursion on CPU#7, CPU 3/KVM/57616
+ |  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU 3/KVM/57616, .owner_cpu: 7
+ | CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O       6.1.152 #1
+ | Hardware name: SoftIron SoftIron Platform Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
+ | Call trace:
+ |  dump_backtrace+0xe4/0x110
+ |  show_stack+0x20/0x30
+ |  dump_stack_lvl+0x6c/0x88
+ |  dump_stack+0x18/0x34
+ |  spin_dump+0x98/0xac
+ |  do_raw_spin_lock+0x70/0x128
+ |  _raw_spin_lock+0x18/0x28
+ |  raw_spin_rq_lock_nested+0x18/0x28
+ |  update_blocked_averages+0x70/0x550
+ |  run_rebalance_domains+0x50/0x70
+ |  handle_softirqs+0x198/0x328
+ |  __do_softirq+0x1c/0x28
+ |  ____do_softirq+0x18/0x28
+ |  call_on_irq_stack+0x30/0x48
+ |  do_softirq_own_stack+0x24/0x30
+ |  do_softirq+0x74/0x90
+ |  __local_bh_enable_ip+0x64/0x80
+ |  fpsimd_save_and_flush_cpu_state+0x5c/0x68
+ |  kvm_arch_vcpu_put_fp+0x4c/0x88
+ |  kvm_arch_vcpu_put+0x28/0x88
+ |  kvm_sched_out+0x38/0x58
+ |  __schedule+0x55c/0x6c8
+ |  schedule+0x60/0xa8
+
+Take a tiny step towards the upstream fix in 9b19700e623f ("arm64:
+fpsimd: Drop unneeded 'busy' flag") by additionally disabling hardirqs
+while saving the fpsimd registers.
+
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.1.y
+Fixes: 8f4dc4e54eed ("KVM: arm64: Fix kernel BUG() due to bad backport of FPSIMD/SVE/SME fix")
+Reported-by: Kenneth Van Alstyne <kvanals@kvanals.org>
+Link: https://lore.kernel.org/r/010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/mdp4/mdp4_kms.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/kernel/fpsimd.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_kms.c b/drivers/gpu/drm/msm/disp/mdp4/mdp4_kms.c
-index 0952c7f18abdc..4d1ea9b261917 100644
---- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_kms.c
-+++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_kms.c
-@@ -463,9 +463,9 @@ static int mdp4_kms_init(struct drm_device *dev)
- 		ret = PTR_ERR(mmu);
- 		goto fail;
- 	} else if (!mmu) {
--		DRM_DEV_INFO(dev->dev, "no iommu, fallback to phys "
--				"contig buffers for scanout\n");
--		vm = NULL;
-+		DRM_DEV_INFO(dev->dev, "no IOMMU, bailing out\n");
-+		ret = -ENODEV;
-+		goto fail;
- 	} else {
- 		vm  = msm_gem_vm_create(dev, mmu, "mdp4",
- 					0x1000, 0x100000000 - 0x1000,
--- 
-2.51.0
-
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1848,13 +1848,17 @@ static void fpsimd_flush_cpu_state(void)
+  */
+ void fpsimd_save_and_flush_cpu_state(void)
+ {
++	unsigned long flags;
++
+ 	if (!system_supports_fpsimd())
+ 		return;
+ 	WARN_ON(preemptible());
+-	get_cpu_fpsimd_context();
++	local_irq_save(flags);
++	__get_cpu_fpsimd_context();
+ 	fpsimd_save();
+ 	fpsimd_flush_cpu_state();
+-	put_cpu_fpsimd_context();
++	__put_cpu_fpsimd_context();
++	local_irq_restore(flags);
+ }
+ 
+ #ifdef CONFIG_KERNEL_MODE_NEON
 
 
 
