@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B145BD3E6D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:09:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F53BD49A9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5EFC84F98A8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B5AA5504700
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE2C309DD8;
-	Mon, 13 Oct 2025 14:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A054308F1B;
+	Mon, 13 Oct 2025 15:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AQZf48s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUhHvbBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AC9309EFA;
-	Mon, 13 Oct 2025 14:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183F725784F;
+	Mon, 13 Oct 2025 15:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367149; cv=none; b=ddKXMkzGMvXoZdl+QZSo4C3257tNWtHsw4WRqDbiMaQ6i0yxU3Q2nwHzOojm9oeqg5qDLQZNyCfJX1o485Jby6vfvMFxLNYkif3Xf0pBQRDFzlRzTQYqsfhYqFHM+EEhaGF9QPzhMoTW7WWRC4cVFHTM+onirWYZAhwNMxtjG7w=
+	t=1760368500; cv=none; b=bZjendqZaMV0PELXgVJIPAsG+rnD6LDSKRuBogITStFmpxeOyA1mi5WW/+I389YsCiEFARD3nJpmUbWmv3w/t78j/R8Z7s7aB42qwcfhWmeTgsA2RKa8W8dZg10BU0YIiOOzmS9BR+Z1s4WUhcmYnvL5Co1BDq0jbPkrRssRaVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367149; c=relaxed/simple;
-	bh=Cq8LXpXX532+otaSRd8DrzKhZ+SC2UnrBqjWcjUx2nU=;
+	s=arc-20240116; t=1760368500; c=relaxed/simple;
+	bh=QiBUuJiwG3ey1MyPML+c3TcTZDZOfdHIM0/QsRjcjEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DYUG7bzxd64QapU7gKJvuyZUfY6d9knEv/GcSqJT09pDjXRCdJ5s1SEL/bLTs1/BA5GMUY5Tx6ZuzNowN7G+X3YniQeek7uPKSM3aXOg3uLlPfSaXs3YHPbQQKteWDpdO9YFIrzS7t9db9geV9NU+vqu1UtqWZQ9i/67a5L1HLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AQZf48s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F7EC4CEE7;
-	Mon, 13 Oct 2025 14:52:29 +0000 (UTC)
+	 MIME-Version; b=Z762hXBjKy6X67OgfW3RfXguHVO/VnLLpHd70ecVPmJhnBZ/Ow9emOin0MsXspvCgfC3U57Grfv7mL4pN9c9M2/D3w928Rl7S0rEXTPMCwbxTOPvxssQf2hBMynWA4sXX9i2QAWjLkBJyq63neEyHUV5N9bSGDaNKnkO6xFhaZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUhHvbBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D671C4CEE7;
+	Mon, 13 Oct 2025 15:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367149;
-	bh=Cq8LXpXX532+otaSRd8DrzKhZ+SC2UnrBqjWcjUx2nU=;
+	s=korg; t=1760368499;
+	bh=QiBUuJiwG3ey1MyPML+c3TcTZDZOfdHIM0/QsRjcjEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2AQZf48sMCu/y43ZoysbWA/JJK5Pm6NgXHDxxuyONTSzbKdPo+fmTimsOKToUYqMd
-	 fT4DSm6xTvGQQRomgyMSociWVi6O4uTlAXL6KNilEVDARK8WVtRfaLXtxdKdnjiMZQ
-	 wZvDGi/z1SKi73MLnQSkmA+yj4SCDBSHXn/rsVkM=
+	b=gUhHvbBemdAdfJECBs2PseFZ0dA3HWvW8IN6vrBw2v+FAr+GjtoKhvUblRUH5zHsb
+	 sylYnZQb1qotgqrJJz9nWoLtWIVhY2ecDIfbNZUjPs0PvFF74A9J7Gbme549gpmC4P
+	 P4llR+c8FpWW3rpcwTGxj02fTw9kRygzqmfMhh/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/196] drm/amd/pm: Disable SCLK switching on Oland with high pixel clocks (v3)
+Subject: [PATCH 6.12 140/262] iio: consumers: Fix handling of negative channel scale in iio_convert_raw_to_processed()
 Date: Mon, 13 Oct 2025 16:44:42 +0200
-Message-ID: <20251013144318.642378679@linuxfoundation.org>
+Message-ID: <20251013144331.165263641@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,100 +62,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 7009e3af0474aca5f64262b3c72fb6e23b232f9b ]
+[ Upstream commit 0f85406bf830eb8747dd555ab53c9d97ee4af293 ]
 
-Port of commit 227545b9a08c ("drm/radeon/dpm: Disable sclk
-switching on Oland when two 4K 60Hz monitors are connected")
+There is an issue with the handling of negative channel scales
+in iio_convert_raw_to_processed_unlocked() when the channel-scale
+is of the IIO_VAL_INT_PLUS_[MICRO|NANO] type:
 
-This is an ad-hoc DPM fix, necessary because we don't have
-proper bandwidth calculation for DCE 6.
+Things work for channel-scale values > -1.0 and < 0.0 because of
+the use of signed values in:
 
-We define "high pixelclock" for SI as higher than necessary
-for 4K 30Hz. For example, 4K 60Hz and 1080p 144Hz fall into
-this category.
+	*processed += div_s64(raw64 * (s64)scale_val2 * scale, 1000000LL);
 
-When two high pixel clock displays are connected to Oland,
-additionally disable shader clock switching, which results in
-a higher voltage, thereby addressing some visible flickering.
+Things will break however for scale values < -1.0. Lets for example say
+that raw = 2, (caller-provided)scale = 10 and (channel)scale_val = -1.5.
 
-v2:
-Add more comments.
-v3:
-Split into two commits for easier review.
+The result should then be 2 * 10 * -1.5 = -30.
 
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+channel-scale = -1.5 means scale_val = -1 and scale_val2 = 500000,
+now lets see what gets stored in processed:
+
+1. *processed = raw64 * scale_val * scale;
+2. *processed += raw64 * scale_val2 * scale / 1000000LL;
+
+1. Sets processed to 2 * -1 * 10 = -20
+2. Adds 2 * 500000 * 10 / 1000000 = 10 to processed
+
+And the end result is processed = -20 + 10 = -10, which is not correct.
+
+Fix this by always using the abs value of both scale_val and scale_val2
+and if either is negative multiply the end-result by -1.
+
+Note there seems to be an unwritten rule about negative
+IIO_VAL_INT_PLUS_[MICRO|NANO] values that:
+
+i.   values > -1.0 and < 0.0 are written as val=0 val2=-xxx
+ii.  values <= -1.0 are written as val=-xxx val2=xxx
+
+But iio_format_value() will also correctly display a third option:
+
+iii. values <= -1.0 written as val=-xxx val2=-xxx
+
+Since iio_format_value() uses abs(val) when val2 < 0.
+
+This fix also makes iio_convert_raw_to_processed() properly handle
+channel-scales using this third option.
+
+Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
+Cc: Matteo Martelli <matteomartelli3@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20250831104825.15097-2-hansg@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 31 ++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ drivers/iio/inkern.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index b3c011542daf7..7a85c042a6db9 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3430,12 +3430,14 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index 1155487f7aeac..0f394266ff8c0 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -10,6 +10,7 @@
+ #include <linux/mutex.h>
+ #include <linux/property.h>
+ #include <linux/slab.h>
++#include <linux/units.h>
+ 
+ #include <linux/iio/iio.h>
+ #include <linux/iio/iio-opaque.h>
+@@ -602,7 +603,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
  {
- 	struct  si_ps *ps = si_get_ps(rps);
- 	struct amdgpu_clock_and_voltage_limits *max_limits;
-+	struct amdgpu_connector *conn;
- 	bool disable_mclk_switching = false;
- 	bool disable_sclk_switching = false;
- 	u32 mclk, sclk;
- 	u16 vddc, vddci, min_vce_voltage = 0;
- 	u32 max_sclk_vddc, max_mclk_vddci, max_mclk_vddc;
- 	u32 max_sclk = 0, max_mclk = 0;
-+	u32 high_pixelclock_count = 0;
- 	int i;
+ 	int scale_type, scale_val, scale_val2;
+ 	int offset_type, offset_val, offset_val2;
+-	s64 raw64 = raw;
++	s64 denominator, raw64 = raw;
  
- 	if (adev->asic_type == CHIP_HAINAN) {
-@@ -3463,6 +3465,35 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 		}
- 	}
- 
-+	/* We define "high pixelclock" for SI as higher than necessary for 4K 30Hz.
-+	 * For example, 4K 60Hz and 1080p 144Hz fall into this category.
-+	 * Find number of such displays connected.
-+	 */
-+	for (i = 0; i < adev->mode_info.num_crtc; i++) {
-+		if (!(adev->pm.dpm.new_active_crtcs & (1 << i)) ||
-+			!adev->mode_info.crtcs[i]->enabled)
-+			continue;
-+
-+		conn = to_amdgpu_connector(adev->mode_info.crtcs[i]->connector);
-+
-+		if (conn->pixelclock_for_modeset > 297000)
-+			high_pixelclock_count++;
-+	}
-+
-+	/* These are some ad-hoc fixes to some issues observed with SI GPUs.
-+	 * They are necessary because we don't have something like dce_calcs
-+	 * for these GPUs to calculate bandwidth requirements.
-+	 */
-+	if (high_pixelclock_count) {
-+		/* On Oland, we observe some flickering when two 4K 60Hz
-+		 * displays are connected, possibly because voltage is too low.
-+		 * Raise the voltage by requiring a higher SCLK.
-+		 * (Voltage cannot be adjusted independently without also SCLK.)
-+		 */
-+		if (high_pixelclock_count > 1 && adev->asic_type == CHIP_OLAND)
-+			disable_sclk_switching = true;
-+	}
-+
- 	if (rps->vce_active) {
- 		rps->evclk = adev->pm.dpm.vce_states[adev->pm.dpm.vce_level].evclk;
- 		rps->ecclk = adev->pm.dpm.vce_states[adev->pm.dpm.vce_level].ecclk;
+ 	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
+ 				       IIO_CHAN_INFO_OFFSET);
+@@ -646,20 +647,19 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ 		*processed = raw64 * scale_val * scale;
+ 		break;
+ 	case IIO_VAL_INT_PLUS_MICRO:
+-		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val * scale;
+-		else
+-			*processed = raw64 * scale_val * scale;
+-		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+-				      1000000LL);
+-		break;
+ 	case IIO_VAL_INT_PLUS_NANO:
+-		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val * scale;
+-		else
+-			*processed = raw64 * scale_val * scale;
+-		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+-				      1000000000LL);
++		switch (scale_type) {
++		case IIO_VAL_INT_PLUS_MICRO:
++			denominator = MICRO;
++			break;
++		case IIO_VAL_INT_PLUS_NANO:
++			denominator = NANO;
++			break;
++		}
++		*processed = raw64 * scale * abs(scale_val);
++		*processed += div_s64(raw64 * scale * abs(scale_val2), denominator);
++		if (scale_val < 0 || scale_val2 < 0)
++			*processed *= -1;
+ 		break;
+ 	case IIO_VAL_FRACTIONAL:
+ 		*processed = div_s64(raw64 * (s64)scale_val * scale,
 -- 
 2.51.0
 
