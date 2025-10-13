@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85EEBD45A3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612B3BD49C4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:56:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 920E01883752
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 268454273E0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F382310768;
-	Mon, 13 Oct 2025 15:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA1B30C60C;
+	Mon, 13 Oct 2025 15:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvTi2qSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFxRmqee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD9430F95C;
-	Mon, 13 Oct 2025 15:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BB117F4F6;
+	Mon, 13 Oct 2025 15:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369010; cv=none; b=D49atbB0MHmPKZZ48S4k/zrWI6K8MIFFVKSRzYdY/pL64S1zzWduafb+Is1qvUnIZzwKpP5A+IIgHs1TQmMc9RLD28oEkCxFv03OQHkyEdPex2Tqu8DNIB/pHTrE/etyyABzSI2m1kEReaydErWPLNmbJ6ipvdAaD3T4DkySdVI=
+	t=1760369041; cv=none; b=qLxF6XY57sPYfDlW5NUQILy5z7VJrSQX/O9hJB92DiOf7yWlIPU6r5Vqg1ugpJ5CqvteSPI1NdP1vFdbguusIVqgLhgkMzgUL62QZELWYAWs/yNfTiv6oD2ufHt5kzzmMXU5xOJ/HSx6kRO8T+rbtAtUT0WChmWxcOwh5NT1Zvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369010; c=relaxed/simple;
-	bh=/NFYVuvu3ZJ66/+M+h5ir8CcoQScab33e7N4viit/dg=;
+	s=arc-20240116; t=1760369041; c=relaxed/simple;
+	bh=3AiykI2SAQfdfvnhNx/9KUeRlZAmK/dmnkcnAinrZ4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uP7myfsjiMBF4Nu4siWvZYK1uoaIvZUwDa99LwTl/wsYmV7S+iFZ1XDH0yp8yAtUkyyIaKuRtGxVdB4mCaYlBItHnkWaxUfCHLvpTN2h+7D7yyreRmwV4oGOfJQlC+uSIuP1wspUUzSFNBIh+0pyOd+KiceuUVXwBidTtmzCJE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvTi2qSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F88C116B1;
-	Mon, 13 Oct 2025 15:23:29 +0000 (UTC)
+	 MIME-Version; b=OoB0AubnsK7ATFqbO7LpxdWmQJzJfpFt5b3HyxB3kt/UFNJD4MxYuCQY8qHcSMRc+tvEe/enBJ6tLrXZu+jtXL7C1q+NNWIASeE5tB32GhTn4u2Mqg7UoEg2pdH5ShHaDrYvEBZdF+Vd5fPlCoh0qR9GR2jwHpOsyV1/2y2vq/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFxRmqee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A8DC4CEE7;
+	Mon, 13 Oct 2025 15:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369009;
-	bh=/NFYVuvu3ZJ66/+M+h5ir8CcoQScab33e7N4viit/dg=;
+	s=korg; t=1760369041;
+	bh=3AiykI2SAQfdfvnhNx/9KUeRlZAmK/dmnkcnAinrZ4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MvTi2qShEFmO/tYHFl5xYR+28wHOC5YFaoPpie1hIQQNgD7mVLdjT4BCdis0GL4no
-	 IHUNfa1g13CzYO2A/57NNwuOQ3VQ/KxhIkdv0GjbH9Z8khE7ls+wSM/2yZqSjXPbkk
-	 BHZnFnNOleF8biMad59RB5LcbxzIVUtWbanQanXs=
+	b=lFxRmqee96oulU0fop1WJ/D0I5J0tpBbspzid5uZDsw7Aiel0yYohDwQeBSJY1w0i
+	 V5Ct3RHpoqlURxW4KwbBgh+nwCMinRw56SEvUw1CpmT+RKkLAjvBGfGN5XcEpnvMt3
+	 A7LgfArgAsf8PekogCZp2QfKj4BHQwlFK43hVCZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	David Gow <davidgow@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 089/563] genirq/test: Drop CONFIG_GENERIC_IRQ_MIGRATION assumptions
-Date: Mon, 13 Oct 2025 16:39:10 +0200
-Message-ID: <20251013144414.522147431@linuxfoundation.org>
+Subject: [PATCH 6.17 090/563] genirq/test: Ensure CPU 1 is online for hotplug test
+Date: Mon, 13 Oct 2025 16:39:11 +0200
+Message-ID: <20251013144414.558646608@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -70,29 +70,21 @@ Content-Transfer-Encoding: 8bit
 
 From: Brian Norris <briannorris@chromium.org>
 
-[ Upstream commit add03fdb9d52411cabb3872fb7692df6f4c67586 ]
+[ Upstream commit 8ad25ebfa70e86860559b306bbc923c7db4fcac6 ]
 
-Not all platforms use the generic IRQ migration code, even if they select
-GENERIC_IRQ_MIGRATION. (See, for example, powerpc / pseries_cpu_disable().)
+It's possible to run these tests on platforms that think they have a
+hotpluggable CPU1, but for whatever reason, CPU1 is not online and can't be
+brought online:
 
-If such platforms don't perform managed shutdown the same way, the interrupt
-may not actually shut down, and these tests fail:
+    # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:210
+    Expected remove_cpu(1) == 0, but
+        remove_cpu(1) == 1 (0x1)
+CPU1: failed to boot: -38
+    # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:214
+    Expected add_cpu(1) == 0, but
+        add_cpu(1) == -38 (0xffffffffffffffda)
 
-[    4.357022][  T101]     # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:211
-[    4.357022][  T101]     Expected irqd_is_activated(data) to be false, but is true
-[    4.358128][  T101]     # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:212
-[    4.358128][  T101]     Expected irqd_is_started(data) to be false, but is true
-[    4.375558][  T101]     # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:216
-[    4.375558][  T101]     Expected irqd_is_activated(data) to be false, but is true
-[    4.376088][  T101]     # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:217
-[    4.376088][  T101]     Expected irqd_is_started(data) to be false, but is true
-[    4.377851][    T1]     # irq_cpuhotplug_test: pass:0 fail:1 skip:0 total:1
-[    4.377901][    T1]     not ok 4 irq_cpuhotplug_test
-[    4.378073][    T1] # irq_test_cases: pass:3 fail:1 skip:0 total:4
-
-Rather than test that PowerPC performs migration the same way as the
-unterrupt core, just drop the state checks. The point of the test was to
-ensure that the code kept |depth| balanced, which still can be tested for.
+Check that CPU1 is actually online before trying to run the test.
 
 Fixes: 66067c3c8a1e ("genirq: Add kunit tests for depth counts")
 Reported-by: Guenter Roeck <linux@roeck-us.net>
@@ -100,30 +92,25 @@ Signed-off-by: Brian Norris <briannorris@chromium.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Guenter Roeck <linux@roeck-us.net>
 Reviewed-by: David Gow <davidgow@google.com>
-Link: https://lore.kernel.org/all/20250822190140.2154646-6-briannorris@chromium.org
+Link: https://lore.kernel.org/all/20250822190140.2154646-7-briannorris@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/irq_test.c | 4 ----
- 1 file changed, 4 deletions(-)
+ kernel/irq/irq_test.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/kernel/irq/irq_test.c b/kernel/irq/irq_test.c
-index e220e7b2fc187..37568ec714b51 100644
+index 37568ec714b51..f71f46fdcfd5e 100644
 --- a/kernel/irq/irq_test.c
 +++ b/kernel/irq/irq_test.c
-@@ -208,13 +208,9 @@ static void irq_cpuhotplug_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, desc->depth, 1);
+@@ -178,6 +178,8 @@ static void irq_cpuhotplug_test(struct kunit *test)
+ 		kunit_skip(test, "requires more than 1 CPU for CPU hotplug");
+ 	if (!cpu_is_hotpluggable(1))
+ 		kunit_skip(test, "CPU 1 must be hotpluggable");
++	if (!cpu_online(1))
++		kunit_skip(test, "CPU 1 must be online");
  
- 	KUNIT_EXPECT_EQ(test, remove_cpu(1), 0);
--	KUNIT_EXPECT_FALSE(test, irqd_is_activated(data));
--	KUNIT_EXPECT_FALSE(test, irqd_is_started(data));
- 	KUNIT_EXPECT_GE(test, desc->depth, 1);
- 	KUNIT_EXPECT_EQ(test, add_cpu(1), 0);
+ 	cpumask_copy(&affinity.mask, cpumask_of(1));
  
--	KUNIT_EXPECT_FALSE(test, irqd_is_activated(data));
--	KUNIT_EXPECT_FALSE(test, irqd_is_started(data));
- 	KUNIT_EXPECT_EQ(test, desc->depth, 1);
- 
- 	enable_irq(virq);
 -- 
 2.51.0
 
