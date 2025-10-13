@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573E3BD4207
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBD3BD4676
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1D5AA504C3E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5AB33E7B62
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17E52737E3;
-	Mon, 13 Oct 2025 14:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A52530CD81;
+	Mon, 13 Oct 2025 15:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJT5B1BN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lxLydBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6B72248A5;
-	Mon, 13 Oct 2025 14:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074BB307AD6;
+	Mon, 13 Oct 2025 15:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367566; cv=none; b=cWbmip9tcUPgiCZ43sfmYvfXJ61QAqZ6BLTEjhg3VKwiavX2lP96cHdxq3s1xqQ/YDloaSb5iyP6bjWt3HcYtCqgTFGROEXkPH8VgYVldA76RVWR2wi0DuuPfBhG/5VIKyQkgBrwVGWYCTD7jREwtuWkHBJTGZiCTcZpLDDDIFY=
+	t=1760368358; cv=none; b=ev0rxeEGjaJBtErjghFxGlsMyWveeAjgU0g3DnLRsHHb0Z3W5+3Ss7cdPERXNU/Gb/6Wj7tFLx31bfyLrz2i6uNTP7Fj9Y55szQTCebsKx+73yMBGSEF7RlSiwDg5T1bGQ9DyxIp0QH7ZdayUpyK4yFSgRipiEUxY3r900NO31w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367566; c=relaxed/simple;
-	bh=1UTQFgpw2MrrYKzUHdIZid8TNIAQZIhakzYqtn53Wvk=;
+	s=arc-20240116; t=1760368358; c=relaxed/simple;
+	bh=/N/B7eQcwoprnayHjDG1E5EuaykzoftIRLy0jFc/zWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFRq/uqjjT6Z8JhoBPCRYgOpyt4cw8WSGezj9TV1Fsv7i6Qb5YZjxIwZqYz44OBw1luI2PXBg/GNBpNhIAz5CMJ5XIgyoFjOxAiwKGLOQC3u/4JQiBtkMZDyKCiOssltojXVJMAHYxkX3NIPVN2eQpHfNsKdpruh4XbqHdvuzK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJT5B1BN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED107C4CEFE;
-	Mon, 13 Oct 2025 14:59:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c9yEmS2WemauuMbeHG9vDUXQq1gZxKrex2dwyQ+uRMVI4XewEGFPpfyZolWiPTpjd8Qps7fgHcNcpYXQvvuOPw1iqDAsgg0vXaweRD3FegkJ5TOOhlnPY/ePNC7TRYI27g5aWwR8Dd90r3afYeJpgO+J96Xts+29z7K0l6HdRjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lxLydBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E90C4CEE7;
+	Mon, 13 Oct 2025 15:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367566;
-	bh=1UTQFgpw2MrrYKzUHdIZid8TNIAQZIhakzYqtn53Wvk=;
+	s=korg; t=1760368357;
+	bh=/N/B7eQcwoprnayHjDG1E5EuaykzoftIRLy0jFc/zWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJT5B1BNbTfeLZR7uMgA+3DClR1fjtPE9F3gUHUUjmofQAk8iwZXFsec2D+s/GWE5
-	 4XmUhYJxRJbYb/3pEAUCew5Pt40C4oMQ3N7cPb0PxTzKjm/oRoGLPIYpkhvPRqNgKW
-	 PCtdFJQcoQtX+N2KXluykaOw6Yq2Fv+T3uR/H3Fc=
+	b=2lxLydBNwpkHtz2DtcpnWbrqUnuj1OUuO9kvuETWWfLbnCVzybihhMIkBAoZ0MpE1
+	 Uypqn0N7Sdpt/Flya+hVP4hkmAMq94YEoNMVhSQXk5rh/zTxCjWTSMRXThxJC54T9z
+	 PaR044AwXlgWw3rtauNvNpfviYx8JvWBrHPRYja0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Chuck Lever <cel@kernel.org>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/196] thermal/drivers/qcom: Make LMH select QCOM_SCM
-Date: Mon, 13 Oct 2025 16:44:07 +0200
-Message-ID: <20251013144317.225078801@linuxfoundation.org>
+Subject: [PATCH 6.12 106/262] RDMA/mlx5: Better estimate max_qp_wr to reflect WQE count
+Date: Mon, 13 Oct 2025 16:44:08 +0200
+Message-ID: <20251013144329.944922847@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit 57eda47bd14b0c2876f2db42e757c57b7a671965 ]
+[ Upstream commit 1a7c18c485bf17ef408d5ebb7f83e1f8ef329585 ]
 
-The QCOM_SCM symbol is not user-visible, so it makes little sense to
-depend on it. Make LMH driver select QCOM_SCM as all other drivers do
-and, as the dependecy is now correctly handled, enable || COMPILE_TEST
-in order to include the driver into broader set of build tests.
+The mlx5 driver currently derives max_qp_wr directly from the
+log_max_qp_sz HCA capability:
 
-Fixes: 9e5a4fb84230 ("thermal/drivers/qcom/lmh: make QCOM_LMH depends on QCOM_SCM")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20250728-lmh-scm-v2-1-33bc58388ca5@oss.qualcomm.com
+    props->max_qp_wr = 1 << MLX5_CAP_GEN(mdev, log_max_qp_sz);
+
+However, this value represents the number of WQEs in units of Basic
+Blocks (see MLX5_SEND_WQE_BB), not actual number of WQEs.  Since the size
+of a WQE can vary depending on transport type and features (e.g., atomic
+operations, UMR, LSO), the actual number of WQEs can be significantly
+smaller than the WQEBB count suggests.
+
+This patch introduces a conservative estimation of the worst-case WQE size
+— considering largest segments possible with 1 SGE and no inline data or
+special features. It uses this to derive a more accurate max_qp_wr value.
+
+Fixes: 938fe83c8dcb ("net/mlx5_core: New device capabilities handling")
+Link: https://patch.msgid.link/r/7d992c9831c997ed5c33d30973406dc2dcaf5e89.1755088725.git.leon@kernel.org
+Reported-by: Chuck Lever <cel@kernel.org>
+Closes: https://lore.kernel.org/all/20250506142202.GJ2260621@ziepe.ca/
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/main.c | 48 ++++++++++++++++++++++++++++++-
+ 1 file changed, 47 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/qcom/Kconfig b/drivers/thermal/qcom/Kconfig
-index 2c7f3f9a26ebb..a6bb01082ec69 100644
---- a/drivers/thermal/qcom/Kconfig
-+++ b/drivers/thermal/qcom/Kconfig
-@@ -34,7 +34,8 @@ config QCOM_SPMI_TEMP_ALARM
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 435c456a4fd5b..29d0bc583169b 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -13,6 +13,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/slab.h>
+ #include <linux/bitmap.h>
++#include <linux/log2.h>
+ #include <linux/sched.h>
+ #include <linux/sched/mm.h>
+ #include <linux/sched/task.h>
+@@ -865,6 +866,51 @@ static void fill_esw_mgr_reg_c0(struct mlx5_core_dev *mdev,
+ 	resp->reg_c0.mask = mlx5_eswitch_get_vport_metadata_mask();
+ }
  
- config QCOM_LMH
- 	tristate "Qualcomm Limits Management Hardware"
--	depends on ARCH_QCOM && QCOM_SCM
-+	depends on ARCH_QCOM || COMPILE_TEST
-+	select QCOM_SCM
- 	help
- 	  This enables initialization of Qualcomm limits management
- 	  hardware(LMh). LMh allows for hardware-enforced mitigation for cpus based on
++/*
++ * Calculate maximum SQ overhead across all QP types.
++ * Other QP types (REG_UMR, UC, RC, UD/SMI/GSI, XRC_TGT)
++ * have smaller overhead than the types calculated below,
++ * so they are implicitly included.
++ */
++static u32 mlx5_ib_calc_max_sq_overhead(void)
++{
++	u32 max_overhead_xrc, overhead_ud_lso, a, b;
++
++	/* XRC_INI */
++	max_overhead_xrc = sizeof(struct mlx5_wqe_xrc_seg);
++	max_overhead_xrc += sizeof(struct mlx5_wqe_ctrl_seg);
++	a = sizeof(struct mlx5_wqe_atomic_seg) +
++	    sizeof(struct mlx5_wqe_raddr_seg);
++	b = sizeof(struct mlx5_wqe_umr_ctrl_seg) +
++	    sizeof(struct mlx5_mkey_seg) +
++	    MLX5_IB_SQ_UMR_INLINE_THRESHOLD / MLX5_IB_UMR_OCTOWORD;
++	max_overhead_xrc += max(a, b);
++
++	/* UD with LSO */
++	overhead_ud_lso = sizeof(struct mlx5_wqe_ctrl_seg);
++	overhead_ud_lso += sizeof(struct mlx5_wqe_eth_pad);
++	overhead_ud_lso += sizeof(struct mlx5_wqe_eth_seg);
++	overhead_ud_lso += sizeof(struct mlx5_wqe_datagram_seg);
++
++	return max(max_overhead_xrc, overhead_ud_lso);
++}
++
++static u32 mlx5_ib_calc_max_qp_wr(struct mlx5_ib_dev *dev)
++{
++	struct mlx5_core_dev *mdev = dev->mdev;
++	u32 max_wqe_bb_units = 1 << MLX5_CAP_GEN(mdev, log_max_qp_sz);
++	u32 max_wqe_size;
++	/* max QP overhead + 1 SGE, no inline, no special features */
++	max_wqe_size = mlx5_ib_calc_max_sq_overhead() +
++		       sizeof(struct mlx5_wqe_data_seg);
++
++	max_wqe_size = roundup_pow_of_two(max_wqe_size);
++
++	max_wqe_size = ALIGN(max_wqe_size, MLX5_SEND_WQE_BB);
++
++	return (max_wqe_bb_units * MLX5_SEND_WQE_BB) / max_wqe_size;
++}
++
+ static int mlx5_ib_query_device(struct ib_device *ibdev,
+ 				struct ib_device_attr *props,
+ 				struct ib_udata *uhw)
+@@ -1023,7 +1069,7 @@ static int mlx5_ib_query_device(struct ib_device *ibdev,
+ 	props->max_mr_size	   = ~0ull;
+ 	props->page_size_cap	   = ~(min_page_size - 1);
+ 	props->max_qp		   = 1 << MLX5_CAP_GEN(mdev, log_max_qp);
+-	props->max_qp_wr	   = 1 << MLX5_CAP_GEN(mdev, log_max_qp_sz);
++	props->max_qp_wr = mlx5_ib_calc_max_qp_wr(dev);
+ 	max_rq_sg =  MLX5_CAP_GEN(mdev, max_wqe_sz_rq) /
+ 		     sizeof(struct mlx5_wqe_data_seg);
+ 	max_sq_desc = min_t(int, MLX5_CAP_GEN(mdev, max_wqe_sz_sq), 512);
 -- 
 2.51.0
 
