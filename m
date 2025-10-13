@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-185225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4279BD4AE9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:01:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF08BD3DB6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:05:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 820F63E7986
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:53:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B92444F8F80
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21035277CB8;
-	Mon, 13 Oct 2025 15:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900DA308F3A;
+	Mon, 13 Oct 2025 14:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhRVmwa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1TDv+Dl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D396930F930;
-	Mon, 13 Oct 2025 15:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D48627A123;
+	Mon, 13 Oct 2025 14:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369688; cv=none; b=DyboqbkkbvUUbVgUqozEqsQdMSm3sMI7J5MBCrhGuTG7GcpE0iEkW6rNltWxXg1HIGqDJCZpKF9EyGwd6UXhyWZTvQ2WyLu1PHl22MfAev5tHmFsH8aZeeyz58Kd7cOuaOzYJKTB6GWiVmpbHA/kv20SKzG8GpQDSUNsfxZyQBg=
+	t=1760366989; cv=none; b=djEU6ZRvsXRviwI4BwVBL3fNVwpkNHZ7RoDM1bu/72zcehJ2v0EOYFKRTWNi8PDkfRK1AMy07Noki13w1CJ2C+EpqiyQ2jmFG2/XcBKxGqDRCugA79JUrftTg4TV2Y6nUx7YnIOjwXxz3C4aoseWMyjtVhKD+zWOB9AqUmCAEaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369688; c=relaxed/simple;
-	bh=ax6nfzvKgPmd4AfAbbxqQQFnfFy+y5McX5e3YB8lrag=;
+	s=arc-20240116; t=1760366989; c=relaxed/simple;
+	bh=stpHsb73cutQJfloQAQOkE/teljR2TqIz/0+TNieTwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tX7xuAODMMgrECYd1sy9fVqUB/v8lqPGfCofAAIf0/zK//ug8/zG0L/Y2fbd2g7J3SkTLExGk4Pf8Z7K/li09yMbki0WylevO/vJ2O3ALWKEOGECEeklHmUomKak/O4zxQfXAqFKxFynHyDweYs0qY/jRdNC2yDvV2sfHwRTA0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhRVmwa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FC0C4CEE7;
-	Mon, 13 Oct 2025 15:34:48 +0000 (UTC)
+	 MIME-Version; b=qfUcE6EpbELg4kyG477+75dSfExTgWNuaap1vqJYjUmt06xlcvBZS5GFhshmcWn+RVbdkllrE13975xvX5MWWKnVP+ke9MhhyPBbUhvqC5IA1Iiq0BxWa4d8/HRmBCxmE4Eekawk9AV0Rb+SewcU74qZDn9bhTWVI5f2xty4uDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1TDv+Dl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1319C4CEE7;
+	Mon, 13 Oct 2025 14:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369688;
-	bh=ax6nfzvKgPmd4AfAbbxqQQFnfFy+y5McX5e3YB8lrag=;
+	s=korg; t=1760366989;
+	bh=stpHsb73cutQJfloQAQOkE/teljR2TqIz/0+TNieTwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhRVmwa1y94bIOTXYtX2C1Cmj6xEPMVOh6M5dDBZLiR98cqTKzD3mgGzNGb6b4qbu
-	 HEUHO1L1rDTzgdNCXMxXijrt9lUDRIsBkTXU452aXnhK51Ids96s1OoT+GB8G2Mq00
-	 6pY8N35/WZnj7Hrxgze7fne8QJI4v7xZ29KYtPvY=
+	b=I1TDv+Dl4+JgKxvN5z+/u4xm7/duSh81SLRACno3Mfsyt9axTknXDmdqG3IsvGLtY
+	 xM6FspW67Sac2zgI37dna9pv9gRJUxbPfpijiLCASn3Cv+tjUZAQvvhPTzZrJwtwLy
+	 fYdLjm+gcQi+gzfy1rJYeprqa9gYqkCTpcQ1uwHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 333/563] ipv6: snmp: do not use SNMP_MIB_SENTINEL anymore
+	Arnd Bergmann <arnd@kernel.org>,
+	David Laight <David.Laight@aculab.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.1 021/196] minmax: improve macro expansion and type checking
 Date: Mon, 13 Oct 2025 16:43:14 +0200
-Message-ID: <20251013144423.326533208@linuxfoundation.org>
+Message-ID: <20251013144315.342307794@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,195 +64,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit ceac1fb2290d230eb83aff3761058c559440de13 ]
+[ Upstream commit 22f5468731491e53356ba7c028f0fdea20b18e2c ]
 
-Use ARRAY_SIZE(), so that we know the limit at compile time.
+This clarifies the rules for min()/max()/clamp() type checking and makes
+them a much more efficient macro expansion.
 
-Following patch needs this preliminary change.
+In particular, we now look at the type and range of the inputs to see
+whether they work together, generating a mask of acceptable comparisons,
+and then just verifying that the inputs have a shared case:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250905165813.1470708-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 2fab94bcf313 ("ipv6: snmp: do not track per idev ICMP6_MIB_RATELIMITHOST")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - an expression with a signed type can be used for
+    (1) signed comparisons
+    (2) unsigned comparisons if it is statically known to have a
+        non-negative value
+
+ - an expression with an unsigned type can be used for
+    (3) unsigned comparison
+    (4) signed comparisons if the type is smaller than 'int' and thus
+        the C integer promotion rules will make it signed anyway
+
+Here rule (1) and (3) are obvious, and rule (2) is important in order to
+allow obvious trivial constants to be used together with unsigned
+values.
+
+Rule (4) is not necessarily a good idea, but matches what we used to do,
+and we have extant cases of this situation in the kernel.  Notably with
+bcachefs having an expression like
+
+	min(bch2_bucket_sectors_dirty(a), ca->mi.bucket_size)
+
+where bch2_bucket_sectors_dirty() returns an 's64', and
+'ca->mi.bucket_size' is of type 'u16'.
+
+Technically that bcachefs comparison is clearly sensible on a C type
+level, because the 'u16' will go through the normal C integer promotion,
+and become 'int', and then we're comparing two signed values and
+everything looks sane.
+
+However, it's not entirely clear that a 'min(s64,u16)' operation makes a
+lot of conceptual sense, and it's possible that we will remove rule (4).
+After all, the _reason_ we have these complicated type checks is exactly
+that the C type promotion rules are not very intuitive.
+
+But at least for now the rule is in place for backwards compatibility.
+
+Also note that rule (2) existed before, but is hugely relaxed by this
+commit.  It used to be true only for the simplest compile-time
+non-negative integer constants.  The new macro model will allow cases
+where the compiler can trivially see that an expression is non-negative
+even if it isn't necessarily a constant.
+
+For example, the amdgpu driver does
+
+	min_t(size_t, sizeof(fru_info->serial), pia[addr] & 0x3F));
+
+because our old 'min()' macro would see that 'pia[addr] & 0x3F' is of
+type 'int' and clearly not a C constant expression, so doing a 'min()'
+with a 'size_t' is a signedness violation.
+
+Our new 'min()' macro still sees that 'pia[addr] & 0x3F' is of type
+'int', but is smart enough to also see that it is clearly non-negative,
+and thus would allow that case without any complaints.
+
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip.h | 24 ++++++++++++++++++++++++
- net/ipv6/proc.c  | 43 ++++++++++++++++++++++++-------------------
- 2 files changed, 48 insertions(+), 19 deletions(-)
+ include/linux/compiler.h |    9 +++++
+ include/linux/minmax.h   |   78 ++++++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 70 insertions(+), 17 deletions(-)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 6dbd2bf8fa9c9..a1624e8db1abd 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -338,6 +338,19 @@ static inline u64 snmp_fold_field64(void __percpu *mib, int offt, size_t syncp_o
- 	} \
- }
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -245,6 +245,15 @@ static inline void *offset_to_ptr(const
+ #define is_signed_type(type) (((type)(-1)) < (__force type)1)
  
-+#define snmp_get_cpu_field64_batch_cnt(buff64, stats_list, cnt,	\
-+				       mib_statistic, offset)	\
-+{ \
-+	int i, c; \
-+	for_each_possible_cpu(c) { \
-+		for (i = 0; i < cnt; i++) \
-+			buff64[i] += snmp_get_cpu_field64( \
-+					mib_statistic, \
-+					c, stats_list[i].entry, \
-+					offset); \
-+	} \
-+}
+ /*
++ * Useful shorthand for "is this condition known at compile-time?"
++ *
++ * Note that the condition may involve non-constant values,
++ * but the compiler may know enough about the details of the
++ * values to determine that the condition is statically true.
++ */
++#define statically_true(x) (__builtin_constant_p(x) && (x))
 +
- #define snmp_get_cpu_field_batch(buff, stats_list, mib_statistic) \
- { \
- 	int i, c; \
-@@ -349,6 +362,17 @@ static inline u64 snmp_fold_field64(void __percpu *mib, int offt, size_t syncp_o
- 	} \
- }
- 
-+#define snmp_get_cpu_field_batch_cnt(buff, stats_list, cnt, mib_statistic) \
-+{ \
-+	int i, c; \
-+	for_each_possible_cpu(c) { \
-+		for (i = 0; i < cnt; i++) \
-+			buff[i] += snmp_get_cpu_field( \
-+						mib_statistic, \
-+						c, stats_list[i].entry); \
-+	} \
-+}
-+
- static inline void inet_get_local_port_range(const struct net *net, int *low, int *high)
- {
- 	u32 range = READ_ONCE(net->ipv4.ip_local_ports.range);
-diff --git a/net/ipv6/proc.c b/net/ipv6/proc.c
-index 752327b10dde7..1a20d088bb13c 100644
---- a/net/ipv6/proc.c
-+++ b/net/ipv6/proc.c
-@@ -85,7 +85,6 @@ static const struct snmp_mib snmp6_ipstats_list[] = {
- 	SNMP_MIB_ITEM("Ip6InECT0Pkts", IPSTATS_MIB_ECT0PKTS),
- 	SNMP_MIB_ITEM("Ip6InCEPkts", IPSTATS_MIB_CEPKTS),
- 	SNMP_MIB_ITEM("Ip6OutTransmits", IPSTATS_MIB_OUTPKTS),
--	SNMP_MIB_SENTINEL
- };
- 
- static const struct snmp_mib snmp6_icmp6_list[] = {
-@@ -96,7 +95,6 @@ static const struct snmp_mib snmp6_icmp6_list[] = {
- 	SNMP_MIB_ITEM("Icmp6OutErrors", ICMP6_MIB_OUTERRORS),
- 	SNMP_MIB_ITEM("Icmp6InCsumErrors", ICMP6_MIB_CSUMERRORS),
- 	SNMP_MIB_ITEM("Icmp6OutRateLimitHost", ICMP6_MIB_RATELIMITHOST),
--	SNMP_MIB_SENTINEL
- };
- 
- /* RFC 4293 v6 ICMPMsgStatsTable; named items for RFC 2466 compatibility */
-@@ -129,7 +127,6 @@ static const struct snmp_mib snmp6_udp6_list[] = {
- 	SNMP_MIB_ITEM("Udp6InCsumErrors", UDP_MIB_CSUMERRORS),
- 	SNMP_MIB_ITEM("Udp6IgnoredMulti", UDP_MIB_IGNOREDMULTI),
- 	SNMP_MIB_ITEM("Udp6MemErrors", UDP_MIB_MEMERRORS),
--	SNMP_MIB_SENTINEL
- };
- 
- static const struct snmp_mib snmp6_udplite6_list[] = {
-@@ -141,7 +138,6 @@ static const struct snmp_mib snmp6_udplite6_list[] = {
- 	SNMP_MIB_ITEM("UdpLite6SndbufErrors", UDP_MIB_SNDBUFERRORS),
- 	SNMP_MIB_ITEM("UdpLite6InCsumErrors", UDP_MIB_CSUMERRORS),
- 	SNMP_MIB_ITEM("UdpLite6MemErrors", UDP_MIB_MEMERRORS),
--	SNMP_MIB_SENTINEL
- };
- 
- static void snmp6_seq_show_icmpv6msg(struct seq_file *seq, atomic_long_t *smib)
-@@ -182,35 +178,37 @@ static void snmp6_seq_show_icmpv6msg(struct seq_file *seq, atomic_long_t *smib)
++/*
+  * This is needed in functions which generate the stack canary, see
+  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
   */
- static void snmp6_seq_show_item(struct seq_file *seq, void __percpu *pcpumib,
- 				atomic_long_t *smib,
--				const struct snmp_mib *itemlist)
-+				const struct snmp_mib *itemlist,
-+				int cnt)
- {
- 	unsigned long buff[SNMP_MIB_MAX];
- 	int i;
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -26,19 +26,63 @@
+ #define __typecheck(x, y) \
+ 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
  
- 	if (pcpumib) {
--		memset(buff, 0, sizeof(unsigned long) * SNMP_MIB_MAX);
-+		memset(buff, 0, sizeof(unsigned long) * cnt);
+-/* is_signed_type() isn't a constexpr for pointer types */
+-#define __is_signed(x) 								\
+-	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
+-		is_signed_type(typeof(x)), 0)
+-
+-/* True for a non-negative signed int constant */
+-#define __is_noneg_int(x)	\
+-	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+-
+-#define __types_ok(x, y, ux, uy) 				\
+-	(__is_signed(ux) == __is_signed(uy) ||			\
+-	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
+-	 __is_noneg_int(x) || __is_noneg_int(y))
++/*
++ * __sign_use for integer expressions:
++ *   bit #0 set if ok for unsigned comparisons
++ *   bit #1 set if ok for signed comparisons
++ *
++ * In particular, statically non-negative signed integer
++ * expressions are ok for both.
++ *
++ * NOTE! Unsigned types smaller than 'int' are implicitly
++ * converted to 'int' in expressions, and are accepted for
++ * signed conversions for now. This is debatable.
++ *
++ * Note that 'x' is the original expression, and 'ux' is
++ * the unique variable that contains the value.
++ *
++ * We use 'ux' for pure type checking, and 'x' for when
++ * we need to look at the value (but without evaluating
++ * it for side effects! Careful to only ever evaluate it
++ * with sizeof() or __builtin_constant_p() etc).
++ *
++ * Pointers end up being checked by the normal C type
++ * rules at the actual comparison, and these expressions
++ * only need to be careful to not cause warnings for
++ * pointer use.
++ */
++#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
++#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
++#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
++	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
++
++/*
++ * To avoid warnings about casting pointers to integers
++ * of different sizes, we need that special sign type.
++ *
++ * On 64-bit we can just always use 'long', since any
++ * integer or pointer type can just be cast to that.
++ *
++ * This does not work for 128-bit signed integers since
++ * the cast would truncate them, but we do not use s128
++ * types in the kernel (we do use 'u128', but they will
++ * be handled by the !is_signed_type() case).
++ *
++ * NOTE! The cast is there only to avoid any warnings
++ * from when values that aren't signed integer types.
++ */
++#ifdef CONFIG_64BIT
++  #define __signed_type(ux) long
++#else
++  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
++#endif
++#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
++
++#define __types_ok(x,y,ux,uy) \
++	(__sign_use(x,ux) & __sign_use(y,uy))
++
++#define __types_ok3(x,y,z,ux,uy,uz) \
++	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
  
--		snmp_get_cpu_field_batch(buff, itemlist, pcpumib);
--		for (i = 0; itemlist[i].name; i++)
-+		snmp_get_cpu_field_batch_cnt(buff, itemlist, cnt, pcpumib);
-+		for (i = 0; i < cnt; i++)
- 			seq_printf(seq, "%-32s\t%lu\n",
- 				   itemlist[i].name, buff[i]);
- 	} else {
--		for (i = 0; itemlist[i].name; i++)
-+		for (i = 0; i < cnt; i++)
- 			seq_printf(seq, "%-32s\t%lu\n", itemlist[i].name,
- 				   atomic_long_read(smib + itemlist[i].entry));
- 	}
- }
+ #define __cmp_op_min <
+ #define __cmp_op_max >
+@@ -53,8 +97,8 @@
  
- static void snmp6_seq_show_item64(struct seq_file *seq, void __percpu *mib,
--				  const struct snmp_mib *itemlist, size_t syncpoff)
-+				  const struct snmp_mib *itemlist,
-+				  int cnt, size_t syncpoff)
- {
- 	u64 buff64[SNMP_MIB_MAX];
- 	int i;
+ #define __careful_cmp_once(op, x, y, ux, uy) ({		\
+ 	__auto_type ux = (x); __auto_type uy = (y);	\
+-	static_assert(__types_ok(x, y, ux, uy),		\
+-		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
++	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
++		#op"("#x", "#y") signedness error");	\
+ 	__cmp(op, ux, uy); })
  
--	memset(buff64, 0, sizeof(u64) * SNMP_MIB_MAX);
-+	memset(buff64, 0, sizeof(u64) * cnt);
+ #define __careful_cmp(op, x, y) \
+@@ -70,8 +114,8 @@
+ 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+ 			(lo) <= (hi), true),					\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+-	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
+-	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
++	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
++		"clamp("#val", "#lo", "#hi") signedness error");		\
+ 	__clamp(uval, ulo, uhi); })
  
--	snmp_get_cpu_field64_batch(buff64, itemlist, mib, syncpoff);
--	for (i = 0; itemlist[i].name; i++)
-+	snmp_get_cpu_field64_batch_cnt(buff64, itemlist, cnt, mib, syncpoff);
-+	for (i = 0; i < cnt; i++)
- 		seq_printf(seq, "%-32s\t%llu\n", itemlist[i].name, buff64[i]);
- }
- 
-@@ -219,14 +217,19 @@ static int snmp6_seq_show(struct seq_file *seq, void *v)
- 	struct net *net = (struct net *)seq->private;
- 
- 	snmp6_seq_show_item64(seq, net->mib.ipv6_statistics,
--			    snmp6_ipstats_list, offsetof(struct ipstats_mib, syncp));
-+			      snmp6_ipstats_list,
-+			      ARRAY_SIZE(snmp6_ipstats_list),
-+			      offsetof(struct ipstats_mib, syncp));
- 	snmp6_seq_show_item(seq, net->mib.icmpv6_statistics,
--			    NULL, snmp6_icmp6_list);
-+			    NULL, snmp6_icmp6_list,
-+			    ARRAY_SIZE(snmp6_icmp6_list));
- 	snmp6_seq_show_icmpv6msg(seq, net->mib.icmpv6msg_statistics->mibs);
- 	snmp6_seq_show_item(seq, net->mib.udp_stats_in6,
--			    NULL, snmp6_udp6_list);
-+			    NULL, snmp6_udp6_list,
-+			    ARRAY_SIZE(snmp6_udp6_list));
- 	snmp6_seq_show_item(seq, net->mib.udplite_stats_in6,
--			    NULL, snmp6_udplite6_list);
-+			    NULL, snmp6_udplite6_list,
-+			    ARRAY_SIZE(snmp6_udplite6_list));
- 	return 0;
- }
- 
-@@ -236,9 +239,11 @@ static int snmp6_dev_seq_show(struct seq_file *seq, void *v)
- 
- 	seq_printf(seq, "%-32s\t%u\n", "ifIndex", idev->dev->ifindex);
- 	snmp6_seq_show_item64(seq, idev->stats.ipv6,
--			    snmp6_ipstats_list, offsetof(struct ipstats_mib, syncp));
-+			      snmp6_ipstats_list,
-+			      ARRAY_SIZE(snmp6_ipstats_list),
-+			      offsetof(struct ipstats_mib, syncp));
- 	snmp6_seq_show_item(seq, NULL, idev->stats.icmpv6dev->mibs,
--			    snmp6_icmp6_list);
-+			    snmp6_icmp6_list, ARRAY_SIZE(snmp6_icmp6_list));
- 	snmp6_seq_show_icmpv6msg(seq, idev->stats.icmpv6msgdev->mibs);
- 	return 0;
- }
--- 
-2.51.0
-
+ #define __careful_clamp(val, lo, hi) \
 
 
 
