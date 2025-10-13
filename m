@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D5DBD41D1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:27 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0828EBD4018
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8253E1D11
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:08:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8504734E342
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CED313545;
-	Mon, 13 Oct 2025 14:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F0230E851;
+	Mon, 13 Oct 2025 15:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNeDqnN2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnUEExDc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F650313532;
-	Mon, 13 Oct 2025 14:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB7B30BF6E;
+	Mon, 13 Oct 2025 15:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367240; cv=none; b=mqqd6DnYlx+MTKaW6MNUo9TCBq3Ui/zNwbZ3EURGJj6ZEd7EIVlo2Y3okeyRc1XyAETOd6l3GkKvrBr9HXCUj6LbZOa/w1EWvl2Nnq/H08N/k+a76ll+f9lIMsFYeCuETCfBm5EAjnYuIgZJHzssAuoq+Uy0Yl/GN74t2TT1ITw=
+	t=1760367801; cv=none; b=NrgOPppA9GUefnAvAzOojmux+mo9srgzvAfswjuPNmxIGOT5DjMHtpirPnrLjhMbJ6Ur3Gs9rjej0PwtZms6OkYurCnCtvjcHhQAvXMtEa2TK2drRcc3QhXjRJIrZxcmZyeSE8a8q7BpjxrAFjsDD6lofYitQ8kIVR365nIVroY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367240; c=relaxed/simple;
-	bh=Fjf2Bmt9dM6gp/oMA/8XsukfYhDa0RMGrN30jjV2Cnk=;
+	s=arc-20240116; t=1760367801; c=relaxed/simple;
+	bh=U6fKqyIzDpd+KRgEAZ2Ua9t9Wm4dDopisqpaR4UZtX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDjgEIj7Y4KUNPFfFNd6mmvg9NrewTAjdh1qTbvFnxjRGuNUnDMVEXbZie1Zm19UHjQj5nRjvQMvQyTFQfLshdYC+bIcx1RmsUlIGGj2EwdNrFA+zrBpeDI1AepESwHuoI0QBpc0eq1k0+8pFcWto9035+6452RpOorL3yF0NrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNeDqnN2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D619C116D0;
-	Mon, 13 Oct 2025 14:53:59 +0000 (UTC)
+	 MIME-Version; b=Hsfw44YWN8MjiuTS5ZVgqN0CZeRthwPypiIh5kz+cRgCMwU1Kj1HAz4UB4J0IqXBUTvnLnBCCs4/fYoMWdLPFpRL+rxP6Pzeje2Gq7pLTLfMMIgB6ftNkwOrY/x1tUsZhC1I9D+2wkQsxYG7O93rLaStU+ryhcCUTDEulSEdQXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnUEExDc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5C6C4CEE7;
+	Mon, 13 Oct 2025 15:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367239;
-	bh=Fjf2Bmt9dM6gp/oMA/8XsukfYhDa0RMGrN30jjV2Cnk=;
+	s=korg; t=1760367800;
+	bh=U6fKqyIzDpd+KRgEAZ2Ua9t9Wm4dDopisqpaR4UZtX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNeDqnN2/Yl6G7WbxyLGixoHyMhFhFPOdaKGtmPwYHvHL7cbqYqWhTaS4ub879V3a
-	 dGE1IKOzrFgPpGuNCsnHh6FSBAd1ryYnKCa24OZarTsN6pZi5ekmgEMja2ZNgl02JC
-	 TikDjVgjNAzMxjUa22voHQYpIpS4dPYmlYy7FyHQ=
+	b=cnUEExDcaYbi+x4tF/NKms/gHMyXuKQ5lOdSBFQVycO62ZIgpzteIXRDdDdwee7j9
+	 AUg5NkXD8OVZq9IPUxwAk/33/n/xleDa8ESGeLNKQm4/Fa7A6fIibptfC5Ekbxtx6P
+	 eS0apF8BLTJWcHpFprhpxQLnAh98yneCF47r/Iqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Beguin <liambeguin@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/196] iio: consumers: Fix offset handling in iio_convert_raw_to_processed()
+Subject: [PATCH 6.6 105/196] fs: ntfs3: Fix integer overflow in run_unpack()
 Date: Mon, 13 Oct 2025 16:44:56 +0200
-Message-ID: <20251013144319.144915880@linuxfoundation.org>
+Message-ID: <20251013144319.113232072@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
 
-[ Upstream commit 33f5c69c4daff39c010b3ea6da8ebab285f4277b ]
+[ Upstream commit 736fc7bf5f68f6b74a0925b7e072c571838657d2 ]
 
-Fix iio_convert_raw_to_processed() offset handling for channels without
-a scale attribute.
+The MFT record relative to the file being opened contains its runlist,
+an array containing information about the file's location on the physical
+disk. Analysis of all Call Stack paths showed that the values of the
+runlist array, from which LCNs are calculated, are not validated before
+run_unpack function.
 
-The offset has been applied to the raw64 value not to the original raw
-value. Use the raw64 value so that the offset is taken into account.
+The run_unpack function decodes the compressed runlist data format
+from MFT attributes (for example, $DATA), converting them into a runs_tree
+structure, which describes the mapping of virtual clusters (VCN) to
+logical clusters (LCN). The NTFS3 subsystem also has a shortcut for
+deleting files from MFT records - in this case, the RUN_DEALLOCATE
+command is sent to the run_unpack input, and the function logic
+provides that all data transferred to the runlist about file or
+directory is deleted without creating a runs_tree structure.
 
-Fixes: 14b457fdde38 ("iio: inkern: apply consumer scale when no channel scale is available")
-Cc: Liam Beguin <liambeguin@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20250831104825.15097-3-hansg@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Substituting the runlist in the $DATA attribute of the MFT record for an
+arbitrary file can lead either to access to arbitrary data on the disk
+bypassing access checks to them (since the inode access check
+occurs above) or to destruction of arbitrary data on the disk.
+
+Add overflow check for addition operation.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/inkern.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/run.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 5c210f48bd9ce..c7795feb904ed 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -669,7 +669,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
- 		 * If no channel scaling is available apply consumer scale to
- 		 * raw value and return.
- 		 */
--		*processed = raw * scale;
-+		*processed = raw64 * scale;
- 		return 0;
- 	}
+diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
+index 44e93ad491ba7..0139124578d9e 100644
+--- a/fs/ntfs3/run.c
++++ b/fs/ntfs3/run.c
+@@ -9,6 +9,7 @@
+ #include <linux/blkdev.h>
+ #include <linux/fs.h>
+ #include <linux/log2.h>
++#include <linux/overflow.h>
  
+ #include "debug.h"
+ #include "ntfs.h"
+@@ -982,12 +983,16 @@ int run_unpack(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ 
+ 			if (!dlcn)
+ 				return -EINVAL;
+-			lcn = prev_lcn + dlcn;
++
++			if (check_add_overflow(prev_lcn, dlcn, &lcn))
++				return -EINVAL;
+ 			prev_lcn = lcn;
+ 		} else
+ 			return -EINVAL;
+ 
+-		next_vcn = vcn64 + len;
++		if (check_add_overflow(vcn64, len, &next_vcn))
++			return -EINVAL;
++
+ 		/* Check boundary. */
+ 		if (next_vcn > evcn + 1)
+ 			return -EINVAL;
+@@ -1151,7 +1156,8 @@ int run_get_highest_vcn(CLST vcn, const u8 *run_buf, u64 *highest_vcn)
+ 			return -EINVAL;
+ 
+ 		run_buf += size_size + offset_size;
+-		vcn64 += len;
++		if (check_add_overflow(vcn64, len, &vcn64))
++			return -EINVAL;
+ 
+ #ifndef CONFIG_NTFS3_64BIT_CLUSTER
+ 		if (vcn64 > 0x100000000ull)
 -- 
 2.51.0
 
