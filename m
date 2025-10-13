@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-185147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D3FBD4AF8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:01:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C38ABD4883
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74517485A68
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FDD1189F356
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C785530AACC;
-	Mon, 13 Oct 2025 15:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A847830AAC8;
+	Mon, 13 Oct 2025 15:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuQq3M14"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kj2onO0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85165241695;
-	Mon, 13 Oct 2025 15:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6575730AABF;
+	Mon, 13 Oct 2025 15:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369467; cv=none; b=C8YRgJ98rtyz9FMLy0J125u3qnoI516LZxlgKLskaNJ3eWwoZS/dcGJ3a6zR6JY6QaRgJ6KX6mpM2eVQemjWd/pazXHQxWvxBejtUoey+M21D3Sijfs7oX+JxFoEMdSPPWHfucQdBuNyYJuM9PsDSS3+Ay6XuK4UA+k4cvcYww4=
+	t=1760369478; cv=none; b=MBOHYSmOlzSYZ4osXX+VltOe/YgPWsqGlp10auT/X4LKNQtJ15SYeGOL/00DpKQjwPsVtUaqyzZcv+V1q1pk/XvGLlYigtsGuFJ6mPrahWGUKoZvmtlUN4jmtivLFoale7IGbEwJajznbuWlJCge/MS8h+qeKFFI0LveQH5NJII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369467; c=relaxed/simple;
-	bh=v2rPmvazy4ahexvevhR0nbSW5muok1L1B/whVBFjFyQ=;
+	s=arc-20240116; t=1760369478; c=relaxed/simple;
+	bh=gkOS/RGo4c9mFqQxep3kZF4DKT4Y1vBA+DfEDmzV1f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H87uzniP3I++4KDILpvc63HiPE5YVC38bU7tKCz4LlJNqurylfDRYSItkf4Ignz/NpvGfObP1OfrsggQ/a048smbwzvLR2VmgB4LFA/mZj6LPikqNQMew4YjpaWlLaGMewsjOGYEgQu7eQERP0b9UZVF6ltArlFcCrvUWQmsB/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuQq3M14; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93ECC4CEE7;
-	Mon, 13 Oct 2025 15:31:06 +0000 (UTC)
+	 MIME-Version; b=fSdknIlPcINXxPJXb1N67WRuTicWake/In+kscSpE751MDugWk2BKGXwpkgpMtMeL6plinO91h1wTGdiRuyWZ7zZ2+EF84m5TVdmaGpA74hF8cx5FRXnp/mr1csJs0FMOMOfuH59olxNCB3IcyxP3FyxxKBEm+RlS4cTZEZH8FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kj2onO0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD851C4CEE7;
+	Mon, 13 Oct 2025 15:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369467;
-	bh=v2rPmvazy4ahexvevhR0nbSW5muok1L1B/whVBFjFyQ=;
+	s=korg; t=1760369478;
+	bh=gkOS/RGo4c9mFqQxep3kZF4DKT4Y1vBA+DfEDmzV1f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IuQq3M14aNrq4o6cC4hTUVkfxz20jKwNq9uxbKH2c3SpZoC2toiM5XgbMZapIItRl
-	 oSswrNJlYIMF++fbpYYEjz1bIUjKXMt+Af1upIpSeFMx/maita4eDLtplgG5NIy9O7
-	 U/BL0YEKoknZQvkBFfv+Po2/6216sxSFd0rXqzCM=
+	b=kj2onO0KIclTU3YiBcnBSrzCaKycmYHK1BAy8GOzyWNnxQfNNNU8JzNBo8P8wRKXx
+	 fiNcXxe8bSwOKL7hwcKlTwdCTHxRqMWdp/Dw45ggZc1Oka4nlGaPMh2PkBHApR/s3O
+	 5FdAj+ICmqjt9A4gn9JjSlEppKcVjYpjK5ujMqx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 256/563] drm/dp: drm_edp_backlight_set_level: do not always send 3-byte commands
-Date: Mon, 13 Oct 2025 16:41:57 +0200
-Message-ID: <20251013144420.554210605@linuxfoundation.org>
+Subject: [PATCH 6.17 260/563] media: staging/ipu7: convert to use pci_alloc_irq_vectors() API
+Date: Mon, 13 Oct 2025 16:42:01 +0200
+Message-ID: <20251013144420.696687668@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,62 +67,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Bingbu Cao <bingbu.cao@intel.com>
 
-[ Upstream commit 4aa8961b1b9c7498550b41168a91cf1558133dd3 ]
+[ Upstream commit 283f7638c26c0f36e4ef5e147884e241b24fbebd ]
 
-At least some panels using the LSB register are not happy with the
-unconditional increase of the command buffer to 3 bytes.
+pci_enable_msi() is a deprecated API, thus switch to use modern
+pci_alloc_irq_vectors().
 
-With the BOE NE14QDM in my Dell Latitude 7455, the recent patches for
-luminance based brightness have introduced a regression: the brightness
-range stopped being contiguous and became nonsensical (it probably was
-interpreting the last 2 bytes of the buffer and not the first 2).
-
-Change from using a fixed sizeof() to a length variable that's only
-set to 3 when luminance is used. Let's leave the default as 2 even for
-the single-byte version, since that's how it worked before.
-
-Fixes: f2db78e37fe7 ("drm/dp: Modify drm_edp_backlight_set_level")
-Signed-off-by: Val Packett <val@packett.cool>
-Tested-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://lore.kernel.org/r/20250706204446.8918-1-val@packett.cool
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: b7fe4c0019b1 ("media: staging/ipu7: add Intel IPU7 PCI device driver")
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/staging/media/ipu7/ipu7.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
-index 1ecc3df7e3167..4aaeae4fa03c3 100644
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -3962,6 +3962,7 @@ int drm_edp_backlight_set_level(struct drm_dp_aux *aux, const struct drm_edp_bac
- 	int ret;
- 	unsigned int offset = DP_EDP_BACKLIGHT_BRIGHTNESS_MSB;
- 	u8 buf[3] = { 0 };
-+	size_t len = 2;
+diff --git a/drivers/staging/media/ipu7/ipu7.c b/drivers/staging/media/ipu7/ipu7.c
+index 1b4f01db13ca2..a8e8b0e231989 100644
+--- a/drivers/staging/media/ipu7/ipu7.c
++++ b/drivers/staging/media/ipu7/ipu7.c
+@@ -2248,20 +2248,13 @@ void ipu7_dump_fw_error_log(const struct ipu7_bus_device *adev)
+ }
+ EXPORT_SYMBOL_NS_GPL(ipu7_dump_fw_error_log, "INTEL_IPU7");
  
- 	/* The panel uses the PWM for controlling brightness levels */
- 	if (!(bl->aux_set || bl->luminance_set))
-@@ -3974,6 +3975,7 @@ int drm_edp_backlight_set_level(struct drm_dp_aux *aux, const struct drm_edp_bac
- 		buf[1] = (level & 0x00ff00) >> 8;
- 		buf[2] = (level & 0xff0000) >> 16;
- 		offset = DP_EDP_PANEL_TARGET_LUMINANCE_VALUE;
-+		len = 3;
- 	} else if (bl->lsb_reg_used) {
- 		buf[0] = (level & 0xff00) >> 8;
- 		buf[1] = (level & 0x00ff);
-@@ -3981,7 +3983,7 @@ int drm_edp_backlight_set_level(struct drm_dp_aux *aux, const struct drm_edp_bac
- 		buf[0] = level;
- 	}
+-static int ipu7_pci_config_setup(struct pci_dev *dev)
++static void ipu7_pci_config_setup(struct pci_dev *dev)
+ {
+ 	u16 pci_command;
+-	int ret;
  
--	ret = drm_dp_dpcd_write_data(aux, offset, buf, sizeof(buf));
-+	ret = drm_dp_dpcd_write_data(aux, offset, buf, len);
- 	if (ret < 0) {
- 		drm_err(aux->drm_dev,
- 			"%s: Failed to write aux backlight level: %d\n",
+ 	pci_read_config_word(dev, PCI_COMMAND, &pci_command);
+ 	pci_command |= PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER;
+ 	pci_write_config_word(dev, PCI_COMMAND, pci_command);
+-
+-	ret = pci_enable_msi(dev);
+-	if (ret)
+-		dev_err(&dev->dev, "Failed to enable msi (%d)\n", ret);
+-
+-	return ret;
+ }
+ 
+ static int ipu7_map_fw_code_region(struct ipu7_bus_device *sys,
+@@ -2510,13 +2503,15 @@ static int ipu7_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	dma_set_max_seg_size(dev, UINT_MAX);
+ 
+-	ret = ipu7_pci_config_setup(pdev);
+-	if (ret)
+-		return ret;
++	ipu7_pci_config_setup(pdev);
++
++	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to alloc irq vector\n");
+ 
+ 	ret = ipu_buttress_init(isp);
+ 	if (ret)
+-		return ret;
++		goto pci_irq_free;
+ 
+ 	dev_info(dev, "firmware cpd file: %s\n", isp->cpd_fw_name);
+ 
+@@ -2632,6 +2627,8 @@ static int ipu7_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	release_firmware(isp->cpd_fw);
+ buttress_exit:
+ 	ipu_buttress_exit(isp);
++pci_irq_free:
++	pci_free_irq_vectors(pdev);
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
