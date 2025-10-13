@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA7CBD463F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:40:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BCBBD45FA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 012C0540BF3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F952422195
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C929C309DB1;
-	Mon, 13 Oct 2025 15:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B3E30CD8D;
+	Mon, 13 Oct 2025 14:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HD4oXAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpHkadyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C7D3081D1;
-	Mon, 13 Oct 2025 15:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EF8306B3C;
+	Mon, 13 Oct 2025 14:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368420; cv=none; b=SbtQlgDlexGYq+bW6gKuN/FNqZBpNxR0ScHSXmYCu8DlzzKm9ucr/0S1cku/9XODpj9HNmLCJ8FTF2VY4ngnpniinIsgwGi2oiE5919VGUe63lMavRINZ3v8+nmRNgbQGUoXgVNTTHCsPwHHuJyga3fRU0i9E0vQJ7wbAUV5LUM=
+	t=1760367292; cv=none; b=T/LHhPnnMRrxRwSvTAOenE8mo8tep0xT4bwIWKEVNU3xcHa9untcRTnEg1U69hijKNndDU9xEAwWcJ4GVjL9E8QxxJRTYHbQg8hJw5AlduzZ9WYKpzh5K/IUWKMi1SLWlJEy92/RiZzXuZS1QmPkzGDoiB/n6acw3hawqv2+gP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368420; c=relaxed/simple;
-	bh=XKiya8boNgNUpgl3JiOzuUAoZA79lofCMbWTUQAtOaU=;
+	s=arc-20240116; t=1760367292; c=relaxed/simple;
+	bh=ZDAiOTMtgwG1Gan5z55wb3j+x56HOCPWWSuBc6hqOH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQz9dtzIKI78/fz4ORP3oMO/fyZ2tTc+dBDOa42f1eOv2Cz/suRNFB3pXMr4quCCludygtAKoZi+3jMCV9Y9SK7GAVhRolbRfGVMh20LYpwAZtvzFItRQu9c6VFCJey4NkM7eYU/FuOtbB1A26/fuMlKA1/Of4nNesakbV/Yx3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HD4oXAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05940C4CEE7;
-	Mon, 13 Oct 2025 15:13:39 +0000 (UTC)
+	 MIME-Version; b=aTmPS9/0d/ltBf8h5KcxcsFoVDMzYGJdf+tF3SHTODWpEG4nzWVGrjBAbPPWetv8hrRlZWV3DqAgLq/ZBPe664kpq6pJf1v05FJkW+tMQ5MWeNFJapzZOHo2Zy876fJnNv7ktrwiqDhXvxtxxZlodHgFqh6LGUMSaUnEcY/kp4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpHkadyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3375C4CEE7;
+	Mon, 13 Oct 2025 14:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368420;
-	bh=XKiya8boNgNUpgl3JiOzuUAoZA79lofCMbWTUQAtOaU=;
+	s=korg; t=1760367292;
+	bh=ZDAiOTMtgwG1Gan5z55wb3j+x56HOCPWWSuBc6hqOH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0HD4oXALLCC/PgY8O3T7J6W42sDlfwwotedent8J1Byr+xrl+ZN6CD4J7zYUZqlXw
-	 xomgEeXfqtrLeAaHZ2Vq8WzBj9o7eTZfptvO8UPJIxIfkkDDmNE7WcSUMrklkbdgEu
-	 onZaFXFxOYAgpkiZvGZGUJorKkgID6bSnEHVmr4M=
+	b=qpHkadyiBj6SpDnrCZQHrg4fuz1Bd4f5TwMyjBZ7/R4CPSOEkJWfEih/GgHgjNUAR
+	 at1SlxT1wfRd/Nw6/HxmY2bJdyo2YtviexS45C85/1nMEJPCuV1udLhykN0a96UOCr
+	 2XFXRRR26mg84JFGntkpD9IDCgrcwhKy/LCa30nM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/262] scsi: qla2xxx: edif: Fix incorrect sign of error code
+Subject: [PATCH 6.1 125/196] watchdog: mpc8xxx_wdt: Reload the watchdog timer when enabling the watchdog
 Date: Mon, 13 Oct 2025 16:44:58 +0200
-Message-ID: <20251013144331.739001491@linuxfoundation.org>
+Message-ID: <20251013144319.217493076@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 066b8f3fa85c1be7fb7dbae202231e131d38f7bc ]
+[ Upstream commit 7dfd80f70ef00d871df5af7c391133f7ba61ad9b ]
 
-Change the error code EAGAIN to -EAGAIN in qla24xx_sadb_update() and
-qla_edif_process_els() to align with qla2x00_start_sp() returning
-negative error codes or QLA_SUCCESS, preventing logical errors.
+When the watchdog gets enabled with this driver, it leaves enough time
+for the core watchdog subsystem to start pinging it. But when the
+watchdog is already started by hardware or by the boot loader, little
+time remains before it fires and it happens that the core watchdog
+subsystem doesn't have time to start pinging it.
 
-Fixes: 0b3f3143d473 ("scsi: qla2xxx: edif: Add retry for ELS passthrough")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Message-ID: <20250905075446.381139-2-rongqianfeng@vivo.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Until commit 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker
+function") pinging was managed by the driver itself and the watchdog
+was immediately pinged by setting the timer expiry to 0.
+
+So restore similar behaviour by pinging it when enabling it so that
+if it was already enabled the watchdog timer counter is reloaded.
+
+Fixes: 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker function")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_edif.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/watchdog/mpc8xxx_wdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/qla2xxx/qla_edif.c b/drivers/scsi/qla2xxx/qla_edif.c
-index dcde55c8ee5de..be20e2c457b8e 100644
---- a/drivers/scsi/qla2xxx/qla_edif.c
-+++ b/drivers/scsi/qla2xxx/qla_edif.c
-@@ -1797,7 +1797,7 @@ qla24xx_sadb_update(struct bsg_job *bsg_job)
- 	switch (rval) {
- 	case QLA_SUCCESS:
- 		break;
--	case EAGAIN:
-+	case -EAGAIN:
- 		msleep(EDIF_MSLEEP_INTERVAL);
- 		cnt++;
- 		if (cnt < EDIF_RETRY_COUNT)
-@@ -3648,7 +3648,7 @@ int qla_edif_process_els(scsi_qla_host_t *vha, struct bsg_job *bsg_job)
- 		       p->e.extra_rx_xchg_address, p->e.extra_control_flags,
- 		       sp->handle, sp->remap.req.len, bsg_job);
- 		break;
--	case EAGAIN:
-+	case -EAGAIN:
- 		msleep(EDIF_MSLEEP_INTERVAL);
- 		cnt++;
- 		if (cnt < EDIF_RETRY_COUNT)
+diff --git a/drivers/watchdog/mpc8xxx_wdt.c b/drivers/watchdog/mpc8xxx_wdt.c
+index 1c569be72ea29..15644ae2387fd 100644
+--- a/drivers/watchdog/mpc8xxx_wdt.c
++++ b/drivers/watchdog/mpc8xxx_wdt.c
+@@ -100,6 +100,8 @@ static int mpc8xxx_wdt_start(struct watchdog_device *w)
+ 	ddata->swtc = tmp >> 16;
+ 	set_bit(WDOG_HW_RUNNING, &ddata->wdd.status);
+ 
++	mpc8xxx_wdt_keepalive(ddata);
++
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
