@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7BCABD3C9F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5344BD42D0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B5C318A08E2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 507D1188DDD0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE0D2248A5;
-	Mon, 13 Oct 2025 14:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E1C30C62F;
+	Mon, 13 Oct 2025 15:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKVko5vk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tQkEee1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A88021930A;
-	Mon, 13 Oct 2025 14:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F020D30C611;
+	Mon, 13 Oct 2025 15:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367073; cv=none; b=TnOBTlzp1M/bUyVNNyPMPw6c5/Oa/i+wieu6aFzSGbgPpuzv6CdZDZz/MYekJB0HZs7sRqBjJJfDxsM+8jeuu0zEAOrYDi81YNcc1slaQSz0SyYWZUiwKmtgwFouQrVtJ4Sn62uExm6faj/nHW+nmjpB1cq69UKykhTDH29ntBg=
+	t=1760368298; cv=none; b=XsphwBeQmskhqtRdDY2n+L7iPfbhZBNvEVVs1lyUDuPEfBdJbENJ2WMDq0Cfyu6mCcy55i2gP1PydfwuPZugcXi+ZeYqt+tRSs8zcfFhaKLPLCzWhsOSXxL172LIy6ozUfn1jMxgjdpbu9U/PjNZRhb1jb7g03DdEqxqI7Li3AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367073; c=relaxed/simple;
-	bh=lOatsqyLwW7OpJHMlJbIPqGte9KB238N1QzZph2n7RE=;
+	s=arc-20240116; t=1760368298; c=relaxed/simple;
+	bh=csxZDkJkBq7OCqlnRiqthjgHCyDPNTmub2/nf74bSkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJrVKYxv5FgL0H/+ZoDFf/eBdRFuv9iynQ+mTGvP1vzb51d8vIuU40i10kkFF+6xeT2kK3zYjBfJ9wkNs297UzjVJJTxo4/w8hjRe9fc+OMBMnVS5TdNI8v6KWE8OKOZCjseha1XIkaozmvpwuMTiAyhAmZ5m9jCSQtL87wwM7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKVko5vk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A499C4CEE7;
-	Mon, 13 Oct 2025 14:51:12 +0000 (UTC)
+	 MIME-Version; b=NI6UxbbYxB9MnaXA6Mkh8QMIYeXoQtgJYF+dO7i+zS7K9EvMnLhbZBMLDdeuA4aalA4KeCW6/RwPR9QP50200+eCKIPrF7K/QGTOpek5EgobaoVTQHRJMZO4YwY61yw2pnwNoAu26J+4vsyo2fTmrVSHFCGsk96b42RQ3T1cooM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tQkEee1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C71EC4CEE7;
+	Mon, 13 Oct 2025 15:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367073;
-	bh=lOatsqyLwW7OpJHMlJbIPqGte9KB238N1QzZph2n7RE=;
+	s=korg; t=1760368297;
+	bh=csxZDkJkBq7OCqlnRiqthjgHCyDPNTmub2/nf74bSkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKVko5vk/0bD/BGBdSnaxOQIzppODKDlCWfw5gJIifL/3vDmsgtlm8VW70kYYQ/32
-	 1/Nxu5K95be7FseqbOsegvZ18MgS5FQ31TQ0wmBbGOVh8USnMpBls4rjPyY96xmeKW
-	 CLkzycNe0CkW5zbJUBMicfgZGM1eX1rQjjJpuM7o=
+	b=2tQkEee1DbUv4x3WByKh3Ui0QYTceIrcNNBGY/BQpCRdyeEsAPK2xdclsMyH3wxKj
+	 N+GsmaFS27riksG0ancNnFhy3Gt+KJdQEsrhMS1sfPsetpRg1wVld1No3MJ/Wceg8R
+	 X5t1op1xrWJjg2KQ/gtHZqugjQemlWJrqAImwQQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Zhushuai Yin <yinzhushuai@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/196] bpf: Explicitly check accesses to bpf_sock_addr
-Date: Mon, 13 Oct 2025 16:44:14 +0200
-Message-ID: <20251013144317.504702352@linuxfoundation.org>
+Subject: [PATCH 6.12 113/262] crypto: hisilicon/qm - check whether the input function and PF are on the same device
+Date: Mon, 13 Oct 2025 16:44:15 +0200
+Message-ID: <20251013144330.194614490@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Zhushuai Yin <yinzhushuai@huawei.com>
 
-[ Upstream commit 6fabca2fc94d33cdf7ec102058983b086293395f ]
+[ Upstream commit 6a2c9164b52e6bc134127fd543461fdef95cc8ec ]
 
-Syzkaller found a kernel warning on the following sock_addr program:
+Function rate limiting is set through physical function driver.
+Users configure by providing function information and rate limit values.
+Before configuration, it is necessary to check whether the
+provided function and PF belong to the same device.
 
-    0: r0 = 0
-    1: r2 = *(u32 *)(r1 +60)
-    2: exit
-
-which triggers:
-
-    verifier bug: error during ctx access conversion (0)
-
-This is happening because offset 60 in bpf_sock_addr corresponds to an
-implicit padding of 4 bytes, right after msg_src_ip4. Access to this
-padding isn't rejected in sock_addr_is_valid_access and it thus later
-fails to convert the access.
-
-This patch fixes it by explicitly checking the various fields of
-bpf_sock_addr in sock_addr_is_valid_access.
-
-I checked the other ctx structures and is_valid_access functions and
-didn't find any other similar cases. Other cases of (properly handled)
-padding are covered in new tests in a subsequent patch.
-
-Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
-Reported-by: syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://syzkaller.appspot.com/bug?extid=136ca59d411f92e821b7
-Link: https://lore.kernel.org/bpf/b58609d9490649e76e584b0361da0abd3c2c1779.1758094761.git.paul.chaignon@gmail.com
+Fixes: 22d7a6c39cab ("crypto: hisilicon/qm - add pci bdf number check")
+Signed-off-by: Zhushuai Yin <yinzhushuai@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/crypto/hisilicon/qm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index cd0c28e94979a..183ede9345e61 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -9100,13 +9100,17 @@ static bool sock_addr_is_valid_access(int off, int size,
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
- 		break;
--	default:
--		if (type == BPF_READ) {
--			if (size != size_default)
--				return false;
--		} else {
-+	case bpf_ctx_range(struct bpf_sock_addr, user_family):
-+	case bpf_ctx_range(struct bpf_sock_addr, family):
-+	case bpf_ctx_range(struct bpf_sock_addr, type):
-+	case bpf_ctx_range(struct bpf_sock_addr, protocol):
-+		if (type != BPF_READ)
- 			return false;
--		}
-+		if (size != size_default)
-+			return false;
-+		break;
-+	default:
-+		return false;
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index 5bbb2759a6691..a9550a05dfbd3 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -3657,6 +3657,10 @@ static ssize_t qm_get_qos_value(struct hisi_qm *qm, const char *buf,
  	}
  
- 	return true;
+ 	pdev = container_of(dev, struct pci_dev, dev);
++	if (pci_physfn(pdev) != qm->pdev) {
++		pci_err(qm->pdev, "the pdev input does not match the pf!\n");
++		return -EINVAL;
++	}
+ 
+ 	*fun_index = pdev->devfn;
+ 
 -- 
 2.51.0
 
