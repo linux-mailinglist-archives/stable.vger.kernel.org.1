@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037CABD4669
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:25 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0BDBD4A6A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9A61423015
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8CA5235001C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A09730EF75;
-	Mon, 13 Oct 2025 15:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C65231158E;
+	Mon, 13 Oct 2025 15:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dO96JG0l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ucl6YnTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A4630EF6D;
-	Mon, 13 Oct 2025 15:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B60530DD2A;
+	Mon, 13 Oct 2025 15:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367810; cv=none; b=XQ5nkkBGsOO4ZmcOk21TXh3/pT6/atZR7/A5b2x3XHRjFqKoHEUmRicPONWjwGyKT8AfmuLtF2vzgddt9ifetMXPeKWPU4GBn7rg+TDN5hSxNFjomLwWRvLqJeuqimQdRoGgwHVFlAfgdaG5YLy+GKlzCGaw/a53a1U36nJloQM=
+	t=1760369987; cv=none; b=saoVVpOLFR/bfsJP6i93YROrmySSwOzeuXIPovpsnTg9B1r9/ixOav8HRQlC185sMeK87Y8jsI3pcQ57ay3K3syJcZASpSQ/uy+H23lQ3R2cI9UM+wUipg7vwXw0mmaIGAXbv9CIbNXpAmWGzPTtJHpk1fWRdezB/IEN8Z6dg4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367810; c=relaxed/simple;
-	bh=ZUhEa3hiRqvHATtGWxXIfG/Y1oTa+pQZ/MdT0Ju86Zs=;
+	s=arc-20240116; t=1760369987; c=relaxed/simple;
+	bh=8rmKOmo5WcIEYD7s3MluxSpq7sg0G9embvmyOj9Ugxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/okyGm27uo30ZOzED72rOVOHU5vVUDFfKkphOTgjtbVVVLOcabZUo4fiFFdde+03vb0XDyQEgwwYCewqxQXkrGXyXUn7iRB1SgkEoVX5+TJ8t+RMvYxTLm+i1lAOeadzuK0l1JKtaj65V/fi0qSjkeKNiwp3OB0QZD135dOcAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dO96JG0l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0706CC4CEE7;
-	Mon, 13 Oct 2025 15:03:28 +0000 (UTC)
+	 MIME-Version; b=lwapywO1vzLyldRFt3t0Z21biMIXEe8jtxvKOfbit4sYum/6zjV/jgiGRI5ubipSfTkZCPrzj6La7DALrdAW4GRchYmml/LjMrYnH3fxQ1DUjmKBDDHQLYNelDcz2SWFyU7LCwMAxLm0W4g5gHX+d0VW/GV16KoPHT6jIrLn9J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ucl6YnTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB719C4CEE7;
+	Mon, 13 Oct 2025 15:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367809;
-	bh=ZUhEa3hiRqvHATtGWxXIfG/Y1oTa+pQZ/MdT0Ju86Zs=;
+	s=korg; t=1760369987;
+	bh=8rmKOmo5WcIEYD7s3MluxSpq7sg0G9embvmyOj9Ugxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dO96JG0l/i34zHmh+eGmgaKtAunPtmTjHhrUO+yQDDa1hTTxTJgvX6S71VC1Oxy6L
-	 Z33Rl0iHRLbxMA98fVFMxM5Q+0cSNNKsPXjxKb8oWDyVRWqpD1/D4YNPeOAod9VWOr
-	 tHSV4jQan0r73Cfum/qrm7i3O47SV3hVFRww/2Go=
+	b=Ucl6YnTSFhEUeQ+Pc6uro69jVp7h3iL75sYftqzZcOCVMBTHKMjKrJ5O6RtNRVLTO
+	 /0VZd9tZv3kzb83k4GfRmv76uWM7mIvVK2mNhunpJs9cS8iA7Og/zfwnpxZENqho0o
+	 ZnIkV8P/VdHTORYiaLv7tSxGWUvlVMRka+ub66V4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Beguin <liambeguin@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/196] iio: consumers: Fix offset handling in iio_convert_raw_to_processed()
+Subject: [PATCH 6.17 438/563] netfilter: nf_conntrack: do not skip entries in /proc/net/nf_conntrack
 Date: Mon, 13 Oct 2025 16:44:59 +0200
-Message-ID: <20251013144319.220696194@linuxfoundation.org>
+Message-ID: <20251013144427.150961155@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 33f5c69c4daff39c010b3ea6da8ebab285f4277b ]
+[ Upstream commit c5ba345b2d358b07cc4f07253ba1ada73e77d586 ]
 
-Fix iio_convert_raw_to_processed() offset handling for channels without
-a scale attribute.
+ct_seq_show() has an opportunistic garbage collector :
 
-The offset has been applied to the raw64 value not to the original raw
-value. Use the raw64 value so that the offset is taken into account.
+if (nf_ct_should_gc(ct)) {
+    nf_ct_kill(ct);
+    goto release;
+}
 
-Fixes: 14b457fdde38 ("iio: inkern: apply consumer scale when no channel scale is available")
-Cc: Liam Beguin <liambeguin@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20250831104825.15097-3-hansg@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+So if one nf_conn is killed there, next time ct_get_next() runs,
+we skip the following item in the bucket, even if it should have
+been displayed if gc did not take place.
+
+We can decrement st->skip_elems to tell ct_get_next() one of the items
+was removed from the chain.
+
+Fixes: 58e207e4983d ("netfilter: evict stale entries when user reads /proc/net/nf_conntrack")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/inkern.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_standalone.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 34abbf46916cc..c7b2ab7870993 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -671,7 +671,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
- 		 * If no channel scaling is available apply consumer scale to
- 		 * raw value and return.
- 		 */
--		*processed = raw * scale;
-+		*processed = raw64 * scale;
- 		return 0;
- 	}
+diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+index 1f14ef0436c65..708b79380f047 100644
+--- a/net/netfilter/nf_conntrack_standalone.c
++++ b/net/netfilter/nf_conntrack_standalone.c
+@@ -317,6 +317,9 @@ static int ct_seq_show(struct seq_file *s, void *v)
+ 	smp_acquire__after_ctrl_dep();
  
+ 	if (nf_ct_should_gc(ct)) {
++		struct ct_iter_state *st = s->private;
++
++		st->skip_elems--;
+ 		nf_ct_kill(ct);
+ 		goto release;
+ 	}
 -- 
 2.51.0
 
