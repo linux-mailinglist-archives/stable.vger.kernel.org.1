@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-185216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C12BD5137
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:33:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F2EBD517C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DDD9487133
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:52:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0634C56406C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5254830EF62;
-	Mon, 13 Oct 2025 15:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DA330F7E4;
+	Mon, 13 Oct 2025 15:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BB1aRHzu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2E22Eq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0915F30E85B;
-	Mon, 13 Oct 2025 15:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44B130F540;
+	Mon, 13 Oct 2025 15:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369663; cv=none; b=oHC4cZCHiyrB5raf+yiX/7e2srlAfN/JW77fU6kjHhAexZYcrlWpkdbTIHgHZ3pBPChU/64MMzxMD/iv11SkuDWB/akjsVRZhJN5/20Z44q03Ltqy8kb7cpzG+190mbaSchVSsWXpNxwdYDyju62qb6vJCALREYZ1ituNEnYzrY=
+	t=1760369674; cv=none; b=iaj7bVF4391PLSInvyKBPl1Vk3UVlyloY7i9rpliCIrv+YROOpu3BQTq6x+TMKf5OAY3l25kIl6mwJYzYQ/LNAx77L3pX8XhGOrbC9R/ASgT5MdhNWBQrS2wwTJAr+RF879WtOeOHQCPrx+MnRlPQO7bNa1XF89BxW+QG/tTzf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369663; c=relaxed/simple;
-	bh=o9eDurtjHrCzx0YkQ9cndzQqYhYf0yLouX9BUMzpSaQ=;
+	s=arc-20240116; t=1760369674; c=relaxed/simple;
+	bh=YTg2LZFHG/8/Kj2LbIZZDOIbC7ODWi1UW6vtP3KD2Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRaK9BAiDNTBtTfqn+YKDIYj9WG3MK955Cqw1E9w/lnS1Vn6rwuf56pm/+TvIjfc8xE0fxWuMc9f7HMWbyQVGc/JQe3WyCN1ju6ezTMalYWB9BSDrT+HJygF2Z9TCg7y521eYwQewGHYNH/wrJJaTVzD+BsRnZ7FOkDjKzp10vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BB1aRHzu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD62C19424;
-	Mon, 13 Oct 2025 15:34:22 +0000 (UTC)
+	 MIME-Version; b=YM9AECZLEPyn5LmeIAWrTyJFdTT8/Vw9ajwO+zG621/uQhEMI1WLIYuSEoSQX2v+x+FAJk+9MhCGuG4U7PZ4ntp+XjXyRyfMl7gZzIJPjPXvlT3SRtNbyTvGtSoJQZkuiOkNyEDy6R84cs6VVp+bKaWO/lKusMspC76R0tn9vEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2E22Eq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A143C4CEFE;
+	Mon, 13 Oct 2025 15:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369662;
-	bh=o9eDurtjHrCzx0YkQ9cndzQqYhYf0yLouX9BUMzpSaQ=;
+	s=korg; t=1760369674;
+	bh=YTg2LZFHG/8/Kj2LbIZZDOIbC7ODWi1UW6vtP3KD2Gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BB1aRHzuemii2nGKZUf5zkb6/ktMS5ISrllMDup08p8Uxf6Zfh3ZM9sC+TrMQd0Vx
-	 /4yeBW99WrCEJgkCLb9AIY9KfLjbYObSN+vteX0WKyGbVyzBVBWOajKEzXWBm5vvgO
-	 0IQRfROv6/IRKVmQMvHfHtKiLEbSsUh3eGv0gMjw=
+	b=T2E22Eq+qErONmNyHtrSmVl6OIjut0h+rpDZtSUqS5B5vvWJXw/Y88B1g9kDscAWW
+	 kujT+Yp27KPJcn0kaecsqkDY03YuGhxNtjBbgeTvr/Yaa5Vi+X37UAx8HYyjdI1WE4
+	 1ktl7juB+erR0w4KbRjoTUUQ/sh5UUKKqx64/Bew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Ramu R <ramu.r@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 325/563] drm/msm: Fix missing VM_BIND offset/range validation
-Date: Mon, 13 Oct 2025 16:43:06 +0200
-Message-ID: <20251013144423.035908700@linuxfoundation.org>
+Subject: [PATCH 6.17 329/563] idpf: fix Rx descriptor ready check barrier in splitq
+Date: Mon, 13 Oct 2025 16:43:10 +0200
+Message-ID: <20251013144423.180269320@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,39 +68,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit 3a3bef68a6c15d079646a964ebc4dc8bb0aedb06 ]
+[ Upstream commit c20edbacc0295fd36f5f634b3421647ce3e08fd7 ]
 
-We need to reject the MAP op if offset+range is larger than the BO size.
+No idea what the current barrier position was meant for. At that point,
+nothing is read from the descriptor, only the pointer to the actual one
+is fetched.
+The correct barrier usage here is after the generation check, so that
+only the first qword is read if the descriptor is not yet ready and we
+need to stop polling. Debatable on coherent DMA as the Rx descriptor
+size is <= cacheline size, but anyway, the current barrier position
+only makes the codegen worse.
 
-Reported-by: Connor Abbott <cwabbott0@gmail.com>
-Fixes: 2e6a8a1fe2b2 ("drm/msm: Add VM_BIND ioctl")
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Tested-by: Connor Abbott <cwabbott0@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/669781/
+Fixes: 3a8845af66ed ("idpf: add RX splitq napi poll support")
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Tested-by: Ramu R <ramu.r@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_vma.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_vma.c b/drivers/gpu/drm/msm/msm_gem_vma.c
-index 209154be5efcc..381a0853c05ba 100644
---- a/drivers/gpu/drm/msm/msm_gem_vma.c
-+++ b/drivers/gpu/drm/msm/msm_gem_vma.c
-@@ -1080,6 +1080,12 @@ vm_bind_job_lookup_ops(struct msm_vm_bind_job *job, struct drm_msm_vm_bind *args
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index eaad52a83b04c..50f90ed3107ec 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3187,18 +3187,14 @@ static int idpf_rx_splitq_clean(struct idpf_rx_queue *rxq, int budget)
+ 		/* get the Rx desc from Rx queue based on 'next_to_clean' */
+ 		rx_desc = &rxq->rx[ntc].flex_adv_nic_3_wb;
  
- 		op->obj = obj;
- 		cnt++;
+-		/* This memory barrier is needed to keep us from reading
+-		 * any other fields out of the rx_desc
+-		 */
+-		dma_rmb();
+-
+ 		/* if the descriptor isn't done, no work yet to do */
+ 		gen_id = le16_get_bits(rx_desc->pktlen_gen_bufq_id,
+ 				       VIRTCHNL2_RX_FLEX_DESC_ADV_GEN_M);
+-
+ 		if (idpf_queue_has(GEN_CHK, rxq) != gen_id)
+ 			break;
+ 
++		dma_rmb();
 +
-+		if ((op->range + op->obj_offset) > obj->size) {
-+			ret = UERR(EINVAL, dev, "invalid range: %016llx + %016llx > %016zx\n",
-+				   op->range, op->obj_offset, obj->size);
-+			goto out_unlock;
-+		}
- 	}
- 
- 	*nr_bos = cnt;
+ 		rxdid = FIELD_GET(VIRTCHNL2_RX_FLEX_DESC_ADV_RXDID_M,
+ 				  rx_desc->rxdid_ucast);
+ 		if (rxdid != VIRTCHNL2_RXDID_2_FLEX_SPLITQ) {
 -- 
 2.51.0
 
