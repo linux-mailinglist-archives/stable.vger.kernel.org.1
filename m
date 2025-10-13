@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-184385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFA7BD4294
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70939BD437E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 604E7503435
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52F9C1888614
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2988A3064A5;
-	Mon, 13 Oct 2025 14:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DDD308F23;
+	Mon, 13 Oct 2025 15:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lna6d695"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbWeYJZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D3130CD9A;
-	Mon, 13 Oct 2025 14:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAFF3090DC;
+	Mon, 13 Oct 2025 15:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367283; cv=none; b=J9lU3aMrsxxwTZjlgCmU0PcmYOMVZdf5GoO/tzGItgKz/EbxlBRleIrjBAUQZbhm2SGfCn6t4irOkbpjnbgx88M/CALhIcMQ6ac8g924cZvoDzw1AahdUQRALdG+GUyC2QKI2cP3nqLYZXQKr8dd1QKbHpgusXFhom5a+PHXNhA=
+	t=1760368505; cv=none; b=QLu+ozb/DQn5Y1l9W9Ttz+W9lnkU/s9C/Po44QYlD+vlpbi41JbAWzt+D3aro7hfgBh06MPz6j2EGUTkQ6QroyY/JPTEaOlMr3e9XThiHPuTLKOVpGy8B8mbUh+bnO85jITkp6vxJ2RQx4evJsDuX8i1qVMQX3S+4yWo418nQAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367283; c=relaxed/simple;
-	bh=965D2CY6vzZiESy5vz+SDcAsXhkkz1rvEFXPYDGZeAk=;
+	s=arc-20240116; t=1760368505; c=relaxed/simple;
+	bh=u84p/Wp8PcVxbqa2052II7GG5IN6JTT79FHPc1l2Smw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqHS0xFF+1XCyIM10kHy51Y4ZehbjopNNT9lP+oQpTZYdEm97Yp/JBqpvfbffXiNjqVad+VNGUphqfy0cRb4BAr3YXG40u5opR19egfiKZujYP1u5VJNXyaI0u9YWSyAIGUfqD1Ycw4rr8vfeDT9dprGkDgT/Pm7hnz5dIxt4R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lna6d695; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D32DC4CEE7;
-	Mon, 13 Oct 2025 14:54:43 +0000 (UTC)
+	 MIME-Version; b=eYM6ug6PtX4IbX97Dy2znrko+uy2T83IVmw/xp3reGDdQWB+AvMyJnNpBKE18rMyA563QfJAVxgzQ0AvDMOALDhrCd07vDTiB2s3iwnyHMLPUgDkluhAcAT1pCnzOeuRzq/fw6pr5WyUoNy4I89ekDk3gYJ43uxIHqiqTDbxG/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbWeYJZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A3DC4CEE7;
+	Mon, 13 Oct 2025 15:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367283;
-	bh=965D2CY6vzZiESy5vz+SDcAsXhkkz1rvEFXPYDGZeAk=;
+	s=korg; t=1760368505;
+	bh=u84p/Wp8PcVxbqa2052II7GG5IN6JTT79FHPc1l2Smw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lna6d695OFLS/qEodXCN9bISRCM0p8Uh1rV8kduVfyMrsVto07alZxHkOy0D2dNNQ
-	 nni26n6B0U9T6NHDFigu55bfA53MfNRTskSV6FhlhK7oQUz7RcY934lsNLoqhW+gaT
-	 PHYizUPEsgOmge1dl9/yKGYudQIDiAggptouIwAs=
+	b=YbWeYJZTiJhY2wTVs7F/iYTlo6FdytEk2KW+UXgCKQRC++1pVqB9CAgmIsScTMsI+
+	 lMk2Ob9ReIJ9gzBoIEiKLKiLSFdFVLwZ1698hueA6rPGx8KVQ5by1pP5nqj8diAJ41
+	 lx+O/wVKgo626LzvsTMmljbEIo8JVW5wpol/Gr2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	Bernard Metzler <bernard.metzler@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/196] RDMA/siw: Always report immediate post SQ errors
+Subject: [PATCH 6.12 185/262] coresight: etm4x: Support atclk
 Date: Mon, 13 Oct 2025 16:45:27 +0200
-Message-ID: <20251013144320.270446600@linuxfoundation.org>
+Message-ID: <20251013144332.790191475@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +65,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Metzler <bernard.metzler@linux.dev>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit fdd0fe94d68649322e391c5c27dd9f436b4e955e ]
+[ Upstream commit 40c0cdc9cbbebae9f43bef1cab9ce152318d0cce ]
 
-In siw_post_send(), any immediate error encountered during processing of
-the work request list must be reported to the caller, even if previous
-work requests in that list were just accepted and added to the send queue.
+The atclk is an optional clock for the CoreSight ETMv4, but the driver
+misses to initialize it.
 
-Not reporting those errors confuses the caller, which would wait
-indefinitely for the failing and potentially subsequently aborted work
-requests completion.
+This change enables atclk in probe of the ETMv4 driver, and dynamically
+control the clock during suspend and resume.
 
-This fixes a case where immediate errors were overwritten by subsequent
-code in siw_post_send().
+No need to check the driver data and clock pointer in the runtime
+suspend and resume, so remove checks.  And add error handling in the
+resume function.
 
-Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
-Link: https://patch.msgid.link/r/20250923144536.103825-1-bernard.metzler@linux.dev
-Suggested-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Bernard Metzler <bernard.metzler@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Add a minor fix to the comment format when adding the atclk field.
+
+Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250731-arm_cs_fix_clock_v4-v6-3-1dfe10bb3f6f@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_verbs.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ .../coresight/coresight-etm4x-core.c          | 20 ++++++++++++++-----
+ drivers/hwtracing/coresight/coresight-etm4x.h |  4 +++-
+ 2 files changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
-index 193f7d58d3845..dce86f5aee1f7 100644
---- a/drivers/infiniband/sw/siw/siw_verbs.c
-+++ b/drivers/infiniband/sw/siw/siw_verbs.c
-@@ -761,7 +761,7 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	struct siw_wqe *wqe = tx_wqe(qp);
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index cdfd35e03c1dc..7b9eaeb115d21 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -2157,6 +2157,10 @@ static int etm4_probe(struct device *dev)
+ 	if (WARN_ON(!drvdata))
+ 		return -ENOMEM;
  
- 	unsigned long flags;
--	int rv = 0;
-+	int rv = 0, imm_err = 0;
++	drvdata->atclk = devm_clk_get_optional_enabled(dev, "atclk");
++	if (IS_ERR(drvdata->atclk))
++		return PTR_ERR(drvdata->atclk);
++
+ 	if (pm_save_enable == PARAM_PM_SAVE_FIRMWARE)
+ 		pm_save_enable = coresight_loses_context_with_cpu(dev) ?
+ 			       PARAM_PM_SAVE_SELF_HOSTED : PARAM_PM_SAVE_NEVER;
+@@ -2405,8 +2409,8 @@ static int etm4_runtime_suspend(struct device *dev)
+ {
+ 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
  
- 	if (wr && !rdma_is_kernel_res(&qp->base_qp.res)) {
- 		siw_dbg_qp(qp, "wr must be empty for user mapped sq\n");
-@@ -947,9 +947,17 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	 * Send directly if SQ processing is not in progress.
- 	 * Eventual immediate errors (rv < 0) do not affect the involved
- 	 * RI resources (Verbs, 8.3.1) and thus do not prevent from SQ
--	 * processing, if new work is already pending. But rv must be passed
--	 * to caller.
-+	 * processing, if new work is already pending. But rv and pointer
-+	 * to failed work request must be passed to caller.
- 	 */
-+	if (unlikely(rv < 0)) {
-+		/*
-+		 * Immediate error
-+		 */
-+		siw_dbg_qp(qp, "Immediate error %d\n", rv);
-+		imm_err = rv;
-+		*bad_wr = wr;
-+	}
- 	if (wqe->wr_status != SIW_WR_IDLE) {
- 		spin_unlock_irqrestore(&qp->sq_lock, flags);
- 		goto skip_direct_sending;
-@@ -974,15 +982,10 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
+-	if (drvdata->pclk && !IS_ERR(drvdata->pclk))
+-		clk_disable_unprepare(drvdata->pclk);
++	clk_disable_unprepare(drvdata->atclk);
++	clk_disable_unprepare(drvdata->pclk);
  
- 	up_read(&qp->state_lock);
- 
--	if (rv >= 0)
--		return 0;
--	/*
--	 * Immediate error
--	 */
--	siw_dbg_qp(qp, "error %d\n", rv);
-+	if (unlikely(imm_err))
-+		return imm_err;
- 
--	*bad_wr = wr;
--	return rv;
-+	return (rv >= 0) ? 0 : rv;
+ 	return 0;
  }
+@@ -2414,11 +2418,17 @@ static int etm4_runtime_suspend(struct device *dev)
+ static int etm4_runtime_resume(struct device *dev)
+ {
+ 	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
++	int ret;
++
++	ret = clk_prepare_enable(drvdata->pclk);
++	if (ret)
++		return ret;
  
- /*
+-	if (drvdata->pclk && !IS_ERR(drvdata->pclk))
+-		clk_prepare_enable(drvdata->pclk);
++	ret = clk_prepare_enable(drvdata->atclk);
++	if (ret)
++		clk_disable_unprepare(drvdata->pclk);
+ 
+-	return 0;
++	return ret;
+ }
+ #endif
+ 
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
+index 899790c8777a9..3683966bd0603 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -920,7 +920,8 @@ struct etmv4_save_state {
+ 
+ /**
+  * struct etm4_drvdata - specifics associated to an ETM component
+- * @pclk        APB clock if present, otherwise NULL
++ * @pclk:       APB clock if present, otherwise NULL
++ * @atclk:      Optional clock for the core parts of the ETMv4.
+  * @base:       Memory mapped base address for this component.
+  * @csdev:      Component vitals needed by the framework.
+  * @spinlock:   Only one at a time pls.
+@@ -988,6 +989,7 @@ struct etmv4_save_state {
+  */
+ struct etmv4_drvdata {
+ 	struct clk			*pclk;
++	struct clk			*atclk;
+ 	void __iomem			*base;
+ 	struct coresight_device		*csdev;
+ 	spinlock_t			spinlock;
 -- 
 2.51.0
 
