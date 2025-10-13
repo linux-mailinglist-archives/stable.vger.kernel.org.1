@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F4DBD4243
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612A3BD43B1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CCFF34F9689
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 630CA3B2F50
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5169230DEC8;
-	Mon, 13 Oct 2025 14:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2B330F54D;
+	Mon, 13 Oct 2025 15:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvK8c4KU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vx1ZRHN+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D65730DECB;
-	Mon, 13 Oct 2025 14:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE8C3093DD;
+	Mon, 13 Oct 2025 15:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367412; cv=none; b=R40uPbx1raPnpURtQ409YfRyRDZ5b4qaOuURnkzxWy1t8htHz2jU9Lb9gGNg5bP0TULUEcHYGVfAOdJJt+7c0vgJJ89hDYn6UgCPOiMDAnnWpYJi65+wpEr9/ngYEcUlEckZY4CuTQxJkoBzMAOGsuP3w5UdZD45IjOwdl1M/vY=
+	t=1760367826; cv=none; b=sx00jmmAQS8MwRw6p5Qd89iKMxkqrdYriMjava9uTt6n2xQFIqp3D0E4w4fD1dP93KjY+ouYeJcmf9vHwlP3XT1jRwqOzlFJpB7QEaK91sLWBTNC9w5K6UZMwG6PO9W+Y3GtjPJReyBBFisJcoH6o5P/2iddxM357fYmOeXMWYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367412; c=relaxed/simple;
-	bh=lO8ZEIPF28ASxHKhbC6YwHLY2bXGKP1GQg0RS8NhYsY=;
+	s=arc-20240116; t=1760367826; c=relaxed/simple;
+	bh=SewuOOZ2UnIp9qEe539bIv6sJjZgrwF8haygyXrT5zM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NvzvaydvmqfgQ1GrFG5SeZ/ZhnCvymgLlBWhZgeCAhV4uWDXulpZonQe122sPkE9KBEWSit7bMwi0NgD0cClKJZflz70KaYKHT0VSV3c4GO1LuMELqYCppOlfUyNCeA339hyCtLGgnMF1Aj2HaGSxiTPx6RnGUjYje0kAwHw4vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvK8c4KU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416A9C4CEFE;
-	Mon, 13 Oct 2025 14:56:51 +0000 (UTC)
+	 MIME-Version; b=hwGIapB/nfybIrDdml7/e3e+0kHD3jtw0WOc9NTm4Fg4xdvBkKLIKXj5v33yQGEeQFvjcF//Oc63t/UqnXwD8sfNSBmkH1/5M7xJ6Fq+2hxO6LLDw4jbYqXkpFAqGnaWT5DdxaPrwHpr2p+Revf/JwHkPI5k2algv8X07/Xmdxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vx1ZRHN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E951AC4CEE7;
+	Mon, 13 Oct 2025 15:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367411;
-	bh=lO8ZEIPF28ASxHKhbC6YwHLY2bXGKP1GQg0RS8NhYsY=;
+	s=korg; t=1760367826;
+	bh=SewuOOZ2UnIp9qEe539bIv6sJjZgrwF8haygyXrT5zM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvK8c4KUBfn6UIi9xAVNJAK/D4kpuo3A45D2mEcYW3kjJQi4jZo2w1bLemJ+wad1p
-	 mnWOKn3rpdwDVQyd8BCZ0n+cCPM5SCQlLo/po9cz0pMmuJuniYFEvkCteG+BJs3XgW
-	 jrWIWjfHLNzCXbQx4OoInX1Pf6ogs0N5oYW+kSFo=
+	b=vx1ZRHN+ics5Y8f8Y+eU5i2RXfmVrDCSL0tRStdgVa2d+PUVWvBdTr9lrkCRYz0F6
+	 CZOIpA0JM0Q/payuzURBk9iJQ3WjDbOXFCKebzLV21mmf+Cdwa3tCr7G09WydJuXLS
+	 HZHfAer0vXrY7l07sIY+lY0p20FUjOIvH9aJoqI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	I Viswanath <viswanathiyyappan@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/196] net: ena: return 0 in ena_get_rxfh_key_size() when RSS hash key is not configurable
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 148/196] net: usb: Remove disruptive netif_wake_queue in rtl8150_set_multicast
 Date: Mon, 13 Oct 2025 16:45:39 +0200
-Message-ID: <20251013144320.703058159@linuxfoundation.org>
+Message-ID: <20251013144320.666086537@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit f017156aea60db8720e47591ed1e041993381ad2 ]
+[ Upstream commit 958baf5eaee394e5fd976979b0791a875f14a179 ]
 
-In EC2 instances where the RSS hash key is not configurable, ethtool
-shows bogus RSS hash key since ena_get_rxfh_key_size() unconditionally
-returns ENA_HASH_KEY_SIZE.
+syzbot reported WARNING in rtl8150_start_xmit/usb_submit_urb.
+This is the sequence of events that leads to the warning:
 
-Commit 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not
-supported") added proper handling for devices that don't support RSS
-hash key configuration, but ena_get_rxfh_key_size() has been unchanged.
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);
+}
 
-When the RSS hash key is not configurable, return 0 instead of
-ENA_HASH_KEY_SIZE to clarify getting the value is not supported.
+rtl8150_set_multicast() {
+	netif_stop_queue();
+	netif_wake_queue();		<-- wakes up TX queue before URB is done
+}
 
-Tested on m5 instance families.
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);	<-- double submission
+}
 
-Without patch:
- # ethtool -x ens5 | grep -A 1 "RSS hash key"
- RSS hash key:
- 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
+rtl8150_set_multicast being the ndo_set_rx_mode callback should not be
+calling netif_stop_queue and notif_start_queue as these handle
+TX queue synchronization.
 
-With patch:
- # ethtool -x ens5 | grep -A 1 "RSS hash key"
- RSS hash key:
- Operation not supported
+The net core function dev_set_rx_mode handles the synchronization
+for rtl8150_set_multicast making it safe to remove these locks.
 
-Fixes: 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not supported")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Link: https://patch.msgid.link/20250929050247.51680-1-enjuk@amazon.com
+Reported-and-tested-by: syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=78cae3f37c62ad092caa
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Link: https://patch.msgid.link/20250924134350.264597-1-viswanathiyyappan@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_ethtool.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/usb/rtl8150.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_ethtool.c b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-index 444ccef76da29..b93abcc4d64b0 100644
---- a/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-@@ -695,7 +695,10 @@ static u32 ena_get_rxfh_indir_size(struct net_device *netdev)
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index ddff6f19ff98e..92add3daadbb1 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -664,7 +664,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	u16 rx_creg = 0x9e;
  
- static u32 ena_get_rxfh_key_size(struct net_device *netdev)
- {
--	return ENA_HASH_KEY_SIZE;
-+	struct ena_adapter *adapter = netdev_priv(netdev);
-+	struct ena_rss *rss = &adapter->ena_dev->rss;
-+
-+	return rss->hash_key ? ENA_HASH_KEY_SIZE : 0;
+-	netif_stop_queue(netdev);
+ 	if (netdev->flags & IFF_PROMISC) {
+ 		rx_creg |= 0x0001;
+ 		dev_info(&netdev->dev, "%s: promiscuous mode\n", netdev->name);
+@@ -678,7 +677,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 		rx_creg &= 0x00fc;
+ 	}
+ 	async_set_registers(dev, RCR, sizeof(rx_creg), rx_creg);
+-	netif_wake_queue(netdev);
  }
  
- static int ena_indirection_table_set(struct ena_adapter *adapter,
+ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
 -- 
 2.51.0
 
