@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88F6BD41F8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D220BD47FF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9D5F14F8683
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E9DAD54262F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB7B30DEAD;
-	Mon, 13 Oct 2025 14:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BA82EE274;
+	Mon, 13 Oct 2025 15:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/UXOm9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUozcsr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5A930DD24;
-	Mon, 13 Oct 2025 14:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8424A1F1313;
+	Mon, 13 Oct 2025 15:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367389; cv=none; b=rrJPUF+1WcFflRiTBPa9lo/BZ5F+Yjbp0K7RAxyS+G/UKGbdbdDICe1yEjntjWAzkCJO8O2D3xzZ6ZUqJNNxA8C5XNvwGzqbUSTYWp9j07//qbiYU3ulXYhxtCaZcrdSon7n4RwdYLTKyMRk62X1I4wzOGYE4B0b5MPvMCm4zYQ=
+	t=1760368612; cv=none; b=IqUNiTCgihEeHTzeKTrpfWioCWmIzORK8kdClN89WJMGOGVE3a6mlwhbK5gjUarkIUoLeD5+23rxcPnPOt0s5IAnollEuCtdy0iZ4lj4oF4KK4gI8VI9w6thYjB/qEqygoe/oFhyzTEfGyD11vugtdRLlZQ161rYffPNNggNH9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367389; c=relaxed/simple;
-	bh=5yg5qJ5/zM49pWD7vxt7FAPJpmcUH8Q5KWP6u/rgIxc=;
+	s=arc-20240116; t=1760368612; c=relaxed/simple;
+	bh=ihIb1d3M8qT/oCM3pQVvM40GTuMRfZj8WYdOzbAayDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLVuNZY1v4wTr2sxQfmfV3FkTsYVD8yYL0RHunPpn5CxJae3z+7S1cBdLVBZDSdDw3qszQHan6yqCyNX1brTsT9A8auLJ7ixevklqbAc28D6ZrNsrBh/AGzmfZhVYo3cuFPczbXkfXqWzORXLNoCzGNh89DmUO6XkNyLooRH+zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/UXOm9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAE9C4CEE7;
-	Mon, 13 Oct 2025 14:56:28 +0000 (UTC)
+	 MIME-Version; b=WJY1WkXNhVDgZmKYz7/IfBiDS1ASRc08lJYaHsQNZYXk3lQ2z0iG7gFQsQCuw3l1vdliV9XxtKdZmhpPUCj3tP0p6JMHvKuFry+8cjtfyHApfagDiUXFkg5eezbwWaPdPV69esc42v2Ei9wRzUO8uoqoT1rS0DZzkD5Zq4njJ3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUozcsr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C929C4CEE7;
+	Mon, 13 Oct 2025 15:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367389;
-	bh=5yg5qJ5/zM49pWD7vxt7FAPJpmcUH8Q5KWP6u/rgIxc=;
+	s=korg; t=1760368612;
+	bh=ihIb1d3M8qT/oCM3pQVvM40GTuMRfZj8WYdOzbAayDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q/UXOm9pCITEziWD0JwLYGMHtPsG/pxAUf2WRqAD30DFZgH4xxWI54BeEFmVBai8e
-	 U2dhbC3pLbAKZUjGCngc3UK1Znm8Z6keAfpbR8Q8eAZQq5HQAwFksybug9qL6LJ1KS
-	 rWbNo9nZ13YjV9Vyh/IG51SS0k/0y7LZ/63cwCNE=
+	b=hUozcsr9gIozv9MAp7d4tBPNyZtH7LpQclqF8OIBaWVblyUrM0oVsdJ4YiCkPfPp5
+	 PqJuFbu7QObnt+oN7U/40Tt2PfCgkon1FB+L9bd/gFqQpazvRHwP0/SD0GYiBvcrRr
+	 N5LdaIY7TYjZJfbqcGs3bx3QVEzh+Hg62DwDQHcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.1 190/196] bus: fsl-mc: Check return value of platform_get_resource()
-Date: Mon, 13 Oct 2025 16:46:03 +0200
-Message-ID: <20251013144321.564670583@linuxfoundation.org>
+	"Stefano Garzarella" <sgarzare@redhat.com>,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 222/262] vhost: vringh: Modify the return value check
+Date: Mon, 13 Oct 2025 16:46:04 +0200
+Message-ID: <20251013144334.238194052@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-commit 25f526507b8ccc6ac3a43bc094d09b1f9b0b90ae upstream.
+[ Upstream commit 82a8d0fda55b35361ee7f35b54fa2b66d7847d2b ]
 
-platform_get_resource() returns NULL in case of failure, so check its
-return value and propagate the error in order to prevent NULL pointer
-dereference.
+The return value of copy_from_iter and copy_to_iter can't be negative,
+check whether the copied lengths are equal.
 
-Fixes: 6305166c8771 ("bus: fsl-mc: Add ACPI support for fsl-mc")
-Cc: stable@vger.kernel.org
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Acked-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/aKwuK6TRr5XNYQ8u@pc
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 309bba39c945 ("vringh: iterate on iotlb_translate to handle large translations")
+Cc: "Stefano Garzarella" <sgarzare@redhat.com>
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Message-Id: <20250910091739.2999-1-zhangjiao2@cmss.chinamobile.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vhost/vringh.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -1172,6 +1172,9 @@ static int fsl_mc_bus_probe(struct platf
- 	 * Get physical address of MC portal for the root DPRC:
- 	 */
- 	plat_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!plat_res)
-+		return -EINVAL;
-+
- 	mc_portal_phys_addr = plat_res->start;
- 	mc_portal_size = resource_size(plat_res);
- 	mc_portal_base_phys_addr = mc_portal_phys_addr & ~0x3ffffff;
+diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
+index 0db4f3babe961..781731eb95cfe 100644
+--- a/drivers/vhost/vringh.c
++++ b/drivers/vhost/vringh.c
+@@ -1191,6 +1191,7 @@ static inline int copy_from_iotlb(const struct vringh *vrh, void *dst,
+ 		struct iov_iter iter;
+ 		u64 translated;
+ 		int ret;
++		size_t size;
+ 
+ 		ret = iotlb_translate(vrh, (u64)(uintptr_t)src,
+ 				      len - total_translated, &translated,
+@@ -1208,9 +1209,9 @@ static inline int copy_from_iotlb(const struct vringh *vrh, void *dst,
+ 				      translated);
+ 		}
+ 
+-		ret = copy_from_iter(dst, translated, &iter);
+-		if (ret < 0)
+-			return ret;
++		size = copy_from_iter(dst, translated, &iter);
++		if (size != translated)
++			return -EFAULT;
+ 
+ 		src += translated;
+ 		dst += translated;
+-- 
+2.51.0
+
 
 
 
