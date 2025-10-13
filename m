@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29CDBD403C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9C0BD41A4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A78C74FF930
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 776C1189BC0F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB6A30DD17;
-	Mon, 13 Oct 2025 14:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F7C30F93C;
+	Mon, 13 Oct 2025 15:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evFZVKaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APzOY3qV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E77E30AD1C;
-	Mon, 13 Oct 2025 14:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EE830F818;
+	Mon, 13 Oct 2025 15:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367358; cv=none; b=cJpXS4chXvzvKPd+eluKj0W7d1t++ho7Bw+xRgVSxx+cPJ3WkEw5RaVN6kSxGBgm3etq91VgFf5qFauQLu1QDcc0ARfZK72JdL0NooYKbo7qo05qqxi+owlaPhjRvZp37Mh4X0kqh/vXpOE66TYrIomXG/JgkaGUvX0lBjSp99M=
+	t=1760367876; cv=none; b=RwFdN8x+CbNgd28bk5q7R3FEfYAW7CD+Re781+LpjC5FVygfOVT7Yuk/GAa8O+jGN2D8xLITbJI+95DAcBkfbH5BHtC/AqgMv/DaWc4AdyQlUIEJ9qWM8668Q7rbOTL99JMsUZe/RZM/EY2cG4YdqzSrbYic95xK4hyTpfG7vAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367358; c=relaxed/simple;
-	bh=zH6EcuSC/04eYEUtKR9zTvE6sUADSgPN/XYDn54u3rc=;
+	s=arc-20240116; t=1760367876; c=relaxed/simple;
+	bh=42akdj8HUScdXPNot71D7Kz75kSZlBNYGbxQGJcvHRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIR0vbOtHT5xSVEQncw6qVxQOUbjdwO0LCG0hiG1+zYFVnoRJIS0M+4DWb4yWhWg8URkraFJivGRffwy11D6cw9kflyENaFa2d7yPtQuABm4gbEEik+R/KNzMPhgpQ0uA3n8yg/YwFrJ+/1Om5wF1cjAmvecV6aSQYXs0863rFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evFZVKaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187B5C4CEE7;
-	Mon, 13 Oct 2025 14:55:57 +0000 (UTC)
+	 MIME-Version; b=RhiLYYY3qYFGdTULTxLR7zQRa5hOmK0aE8Xo6wCCgJCcXvQylFv+kaqylunW1DrHS6UtcTXfj5nKdbAfZEQA1VXo1ZKLdS/U/mY+xX7aQC8RqdfWo6op7zIGF0aTufm+Lfv4ZUJkdKJEVN1eL1Xdf1liozoxAXRu+R5Ymc9A3Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APzOY3qV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9727AC4CEE7;
+	Mon, 13 Oct 2025 15:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367358;
-	bh=zH6EcuSC/04eYEUtKR9zTvE6sUADSgPN/XYDn54u3rc=;
+	s=korg; t=1760367876;
+	bh=42akdj8HUScdXPNot71D7Kz75kSZlBNYGbxQGJcvHRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evFZVKaOjqImAb0J39MwPX1Cj2RNokx9dndKQHUxWfMyEy5ngX5PX5iRIAKknk4Jx
-	 OQ5FfUTSYjVB2fhwgPPyWZiIvTzbNzWG6X33ZxvFYu87/jE9F649dBbmLUxE+7ABRK
-	 EaI3Om/xd11ctLI9O40zpGiuDajv1q9fadUaoN8I=
+	b=APzOY3qVd2M8QypCIR3LUUyXq4MzEzw5aprKkeuUviwhdDJGR6HNm3zcINUGiyp5j
+	 i74S3o0+R5hzlB3ne99hYUCdol0i3LMyM3T0zk1nyMW6FMSQKtjVIdFShFr+0YxYIn
+	 WJ+yFk5LHZWk7MbLicujpc/gCRubbXcz6Fbgr/BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 181/196] ext4: fix checks for orphan inodes
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 163/196] net/mlx5: pagealloc: Fix reclaim race during command interface teardown
 Date: Mon, 13 Oct 2025 16:45:54 +0200
-Message-ID: <20251013144321.242435976@linuxfoundation.org>
+Message-ID: <20251013144321.207799607@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Shay Drory <shayd@nvidia.com>
 
-commit acf943e9768ec9d9be80982ca0ebc4bfd6b7631e upstream.
+[ Upstream commit 79a0e32b32ac4e4f9e4bb22be97f371c8c116c88 ]
 
-When orphan file feature is enabled, inode can be tracked as orphan
-either in the standard orphan list or in the orphan file. The first can
-be tested by checking ei->i_orphan list head, the second is recorded by
-EXT4_STATE_ORPHAN_FILE inode state flag. There are several places where
-we want to check whether inode is tracked as orphan and only some of
-them properly check for both possibilities. Luckily the consequences are
-mostly minor, the worst that can happen is that we track an inode as
-orphan although we don't need to and e2fsck then complains (resulting in
-occasional ext4/307 xfstest failures). Fix the problem by introducing a
-helper for checking whether an inode is tracked as orphan and use it in
-appropriate places.
+The reclaim_pages_cmd() function sends a command to the firmware to
+reclaim pages if the command interface is active.
 
-Fixes: 4a79a98c7b19 ("ext4: Improve scalability of ext4 orphan file handling")
-Cc: stable@kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Message-ID: <20250925123038.20264-2-jack@suse.cz>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A race condition can occur if the command interface goes down (e.g., due
+to a PCI error) while the mlx5_cmd_do() call is in flight. In this
+case, mlx5_cmd_do() will return an error. The original code would
+propagate this error immediately, bypassing the software-based page
+reclamation logic that is supposed to run when the command interface is
+down.
+
+Fix this by checking whether mlx5_cmd_do() returns -ENXIO, which mark
+that command interface is down. If this is the case, fall through to
+the software reclamation path. If the command failed for any another
+reason, or finished successfully, return as before.
+
+Fixes: b898ce7bccf1 ("net/mlx5: cmdif, Avoid skipping reclaim pages if FW is not accessible")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h   |   10 ++++++++++
- fs/ext4/file.c   |    2 +-
- fs/ext4/inode.c  |    2 +-
- fs/ext4/orphan.c |    6 +-----
- fs/ext4/super.c  |    4 ++--
- 5 files changed, 15 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1962,6 +1962,16 @@ static inline bool ext4_verity_in_progre
- #define NEXT_ORPHAN(inode) EXT4_I(inode)->i_dtime
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+index e0581c6f9cecd..5df1472fe2be2 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+@@ -489,9 +489,12 @@ static int reclaim_pages_cmd(struct mlx5_core_dev *dev,
+ 	u32 func_id;
+ 	u32 npages;
+ 	u32 i = 0;
++	int err;
  
- /*
-+ * Check whether the inode is tracked as orphan (either in orphan file or
-+ * orphan list).
-+ */
-+static inline bool ext4_inode_orphan_tracked(struct inode *inode)
-+{
-+	return ext4_test_inode_state(inode, EXT4_STATE_ORPHAN_FILE) ||
-+		!list_empty(&EXT4_I(inode)->i_orphan);
-+}
-+
-+/*
-  * Codes for operating systems
-  */
- #define EXT4_OS_LINUX		0
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -344,7 +344,7 @@ static void ext4_inode_extension_cleanup
- 	 * to cleanup the orphan list in ext4_handle_inode_extension(). Do it
- 	 * now.
- 	 */
--	if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
-+	if (ext4_inode_orphan_tracked(inode) && inode->i_nlink) {
- 		handle_t *handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
+-	if (!mlx5_cmd_is_down(dev))
+-		return mlx5_cmd_do(dev, in, in_size, out, out_size);
++	err = mlx5_cmd_do(dev, in, in_size, out, out_size);
++	/* If FW is gone (-ENXIO), proceed to forceful reclaim */
++	if (err != -ENXIO)
++		return err;
  
- 		if (IS_ERR(handle)) {
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4394,7 +4394,7 @@ static int ext4_fill_raw_inode(struct in
- 		 * old inodes get re-used with the upper 16 bits of the
- 		 * uid/gid intact.
- 		 */
--		if (ei->i_dtime && list_empty(&ei->i_orphan)) {
-+		if (ei->i_dtime && !ext4_inode_orphan_tracked(inode)) {
- 			raw_inode->i_uid_high = 0;
- 			raw_inode->i_gid_high = 0;
- 		} else {
---- a/fs/ext4/orphan.c
-+++ b/fs/ext4/orphan.c
-@@ -109,11 +109,7 @@ int ext4_orphan_add(handle_t *handle, st
- 
- 	WARN_ON_ONCE(!(inode->i_state & (I_NEW | I_FREEING)) &&
- 		     !inode_is_locked(inode));
--	/*
--	 * Inode orphaned in orphan file or in orphan list?
--	 */
--	if (ext4_test_inode_state(inode, EXT4_STATE_ORPHAN_FILE) ||
--	    !list_empty(&EXT4_I(inode)->i_orphan))
-+	if (ext4_inode_orphan_tracked(inode))
- 		return 0;
- 
- 	/*
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1379,9 +1379,9 @@ static void ext4_free_in_core_inode(stru
- 
- static void ext4_destroy_inode(struct inode *inode)
- {
--	if (!list_empty(&(EXT4_I(inode)->i_orphan))) {
-+	if (ext4_inode_orphan_tracked(inode)) {
- 		ext4_msg(inode->i_sb, KERN_ERR,
--			 "Inode %lu (%p): orphan list check failed!",
-+			 "Inode %lu (%p): inode tracked as orphan!",
- 			 inode->i_ino, EXT4_I(inode));
- 		print_hex_dump(KERN_INFO, "", DUMP_PREFIX_ADDRESS, 16, 4,
- 				EXT4_I(inode), sizeof(struct ext4_inode_info),
+ 	/* No hard feelings, we want our pages back! */
+ 	npages = MLX5_GET(manage_pages_in, in, input_num_entries);
+-- 
+2.51.0
+
 
 
 
