@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4B1BD3E0A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:07:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E60C0BD4A07
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:57:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B63C3E44E0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530581891A4B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBA325DAF0;
-	Mon, 13 Oct 2025 14:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E06030C630;
+	Mon, 13 Oct 2025 15:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWQAmg9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0a/3xHFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F732701BB;
-	Mon, 13 Oct 2025 14:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7B9309EE9;
+	Mon, 13 Oct 2025 15:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367052; cv=none; b=V3T7JKp4JejHcjrl+VQh1+w+dMVEjpVgsU58IQLXJMuAh2DLGOcs8j8HG9q32Fn9sGTcW9KH2KNKK54Zrxv8JljgevDB2xxafrbgINyT2/f0R0EJVt8c3PNg55tWnB0olq9SP3CLisktMqbEDZ/gojTYNPvTfWsF39lVLCezpKk=
+	t=1760369839; cv=none; b=C9AJoJwOtM1Ke/r79TyIfGwNB9mncPNUOpEJ2pPyOmD+Xda89/3CYK7NGk0dlsDQGdxzGeZJAvToQtNxRPn6heFp+B4vX78LccHSBUsSii22m7xoaVegs8edxDEuNh5UqV1m/DgfT17+0dHYBopj3nLkinh5PCtqHMnuGJiZBDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367052; c=relaxed/simple;
-	bh=VN2JkLohh+8h937wy8zKJ+1DjVMsRkQCVVeJDHwfrKM=;
+	s=arc-20240116; t=1760369839; c=relaxed/simple;
+	bh=W+HBipdf4dRVgb5q7kLbJzDLx+P5Sxvn0m06XbdAves=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBpNd/H2SB2jzmap5oJhcNlN0hz+9QBq3AVVus22eBiPJkai7f3SMS5lW3MxCcx/DdCg9hetDINEpalR68OIh1LGoZ0afFjFEDi02wnLU2lh/YbEJD00UdlG8NuCQeYr02xxLWhf1//lXwTkIn9YGHoj1ZMoC1szwnTZBKEpgVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWQAmg9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F251CC4CEE7;
-	Mon, 13 Oct 2025 14:50:51 +0000 (UTC)
+	 MIME-Version; b=DFqxC4JjAaAJsSvL64Zox8wAEBlkotGqzS13n5/5RtzMsLQMbOGGeNiNv3enMoTjkdp65JxGJiUeSPNKxHfWLH7U9hQP56UomRkXHsV9mmwvuWix9IWQLBv17bcXtTV/C0azYxPgfOwxxF5tVc7KbVmmjLoabpv/0HBEN/kk+aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0a/3xHFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B448BC4CEFE;
+	Mon, 13 Oct 2025 15:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367052;
-	bh=VN2JkLohh+8h937wy8zKJ+1DjVMsRkQCVVeJDHwfrKM=;
+	s=korg; t=1760369839;
+	bh=W+HBipdf4dRVgb5q7kLbJzDLx+P5Sxvn0m06XbdAves=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWQAmg9sNYHQOVNSVgd/Tc+ymvv+Rbu5D4u50XHB/LRMVyT0aV2f1xRh3E1DSDEkr
-	 XNdhT2Qc8vf2l8xWrHkyYmlcEgc5uTdORkbIgyvzG56Ku6nVzDg+z3RmQRgbZMelMW
-	 +ogXNlt9X0GPVvOrWvjj+ufZmNImpTkbykEraJuQ=
+	b=0a/3xHFzCWI3Rk9vDRanE4e5z1BqqnRE+q5+NNVXBTQwc9aA/Sw6qTDg4elmq+sYc
+	 h9UHkypDF9cDyGklhEfUh1xrHLBDxAiVFlNBusek1X/Gy/fb6qViCdIsK+jtyjL9uD
+	 HtuCzHJx0CpnyDytfYxNgZ7AIoi/bkqS7Yxd7LOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Fei Shao <fshao@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/196] arm64: dts: mediatek: mt8516-pumpkin: Fix machine compatible
+Subject: [PATCH 6.17 387/563] IB/sa: Fix sa_local_svc_timeout_ms read race
 Date: Mon, 13 Oct 2025 16:44:08 +0200
-Message-ID: <20251013144317.290693392@linuxfoundation.org>
+Message-ID: <20251013144425.294053333@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Vlad Dumitrescu <vdumitrescu@nvidia.com>
 
-[ Upstream commit ffe6a5d1dd4d4d8af0779526cf4e40522647b25f ]
+[ Upstream commit 1428cd764cd708d53a072a2f208d87014bfe05bc ]
 
-This devicetree contained only the SoC compatible but lacked the
-machine specific one: add a "mediatek,mt8516-pumpkin" compatible
-to the list to fix dtbs_check warnings.
+When computing the delta, the sa_local_svc_timeout_ms is read without
+ib_nl_request_lock held. Though unlikely in practice, this can cause
+a race condition if multiple local service threads are managing the
+timeout.
 
-Fixes: 9983822c8cf9 ("arm64: dts: mediatek: add pumpkin board dts")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20250724083914.61351-39-angelogioacchino.delregno@collabora.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Fixes: 2ca546b92a02 ("IB/sa: Route SA pathrecord query through netlink")
+Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Reviewed-by: Mark Zhang <markzhang@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20250916163112.98414-1-edwards@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/core/sa_query.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
-index cce642c538128..3d3db33a64dc6 100644
---- a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
-@@ -11,7 +11,7 @@
+diff --git a/drivers/infiniband/core/sa_query.c b/drivers/infiniband/core/sa_query.c
+index 53571e6b3162c..66df5bed6a562 100644
+--- a/drivers/infiniband/core/sa_query.c
++++ b/drivers/infiniband/core/sa_query.c
+@@ -1013,6 +1013,8 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
+ 	if (timeout > IB_SA_LOCAL_SVC_TIMEOUT_MAX)
+ 		timeout = IB_SA_LOCAL_SVC_TIMEOUT_MAX;
  
- / {
- 	model = "Pumpkin MT8516";
--	compatible = "mediatek,mt8516";
-+	compatible = "mediatek,mt8516-pumpkin", "mediatek,mt8516";
++	spin_lock_irqsave(&ib_nl_request_lock, flags);
++
+ 	delta = timeout - sa_local_svc_timeout_ms;
+ 	if (delta < 0)
+ 		abs_delta = -delta;
+@@ -1020,7 +1022,6 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
+ 		abs_delta = delta;
  
- 	memory@40000000 {
- 		device_type = "memory";
+ 	if (delta != 0) {
+-		spin_lock_irqsave(&ib_nl_request_lock, flags);
+ 		sa_local_svc_timeout_ms = timeout;
+ 		list_for_each_entry(query, &ib_nl_request_list, list) {
+ 			if (delta < 0 && abs_delta > query->timeout)
+@@ -1038,9 +1039,10 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
+ 		if (delay)
+ 			mod_delayed_work(ib_nl_wq, &ib_nl_timed_work,
+ 					 (unsigned long)delay);
+-		spin_unlock_irqrestore(&ib_nl_request_lock, flags);
+ 	}
+ 
++	spin_unlock_irqrestore(&ib_nl_request_lock, flags);
++
+ settimeout_out:
+ 	return 0;
+ }
 -- 
 2.51.0
 
