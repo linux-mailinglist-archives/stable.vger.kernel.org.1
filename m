@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-185265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E971BBD542E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:53:39 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35608BD4F03
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9CA9F5083A6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 563144F7236
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5593112A9;
-	Mon, 13 Oct 2025 15:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1173112A5;
+	Mon, 13 Oct 2025 15:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j26TtFry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qa9jayW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5DD28D8DA;
-	Mon, 13 Oct 2025 15:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAE930C614;
+	Mon, 13 Oct 2025 15:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369805; cv=none; b=m6FTwj7AD8/aQbGMym8MNcdURK/S9aFNVndoerfhf3EcGHJh/UnVX3Q2GmQUtr3GoAx3idAi4lM7SgOYB5a4rphFTuz3kt5a4SO3BqJNHtlDkoAHch/oyO1U/M/pFDYg9ErN2yyIz6m8PKUmAkt+aujtJpw1vBH0xSTkRaf36X4=
+	t=1760369807; cv=none; b=IRONxCpQAi8slnCK0QtqlF28jU+X70nRDa9CU4+v0BJPSdKe+qMVFm93oVblA02LQowE7KXVLMkMzCLyy1bntq+cChy4MorxpDuKIVTPaV8dP/S26BhaNa78F1PJdMuqyQFjaEQGbBA6sDpRWF8nP32NkaL6lvEx//o1lrQYOzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369805; c=relaxed/simple;
-	bh=zrzKMcvcgRkX2Qz1zXQfyC0TR9YrxevSSvUWViFjckw=;
+	s=arc-20240116; t=1760369807; c=relaxed/simple;
+	bh=67F7clzCZL84ZwplXOoI6Bze+e6g8y7rRoxO0yq1xXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LdKDqZpkzG69XNeeDspgnFaSR766moqjSy/i2M336umoO9kOQF89TfpbE5CWaj2syfQ84Hs4XLTDB2Lbb6WBuMoEKvRoJYFQSdCBWf4CBTLOFJlghNQioAcU4ifkkVp3ZhLsfHhLlrIg9y4xLjoPtt/xI0QBZ9GT98dE7NbMcs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j26TtFry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FDCC4CEE7;
-	Mon, 13 Oct 2025 15:36:44 +0000 (UTC)
+	 MIME-Version; b=sCuso5ked+SazlbSY6RJsX3qoLW4+SSCuIYhB4b4nrRJxdEBpQigLocS/T9nGrOPl9xCumLclZnVG72lQXkm/MuHJ7YbmwRiUbY1JnafB9V+6EDJPBZIShhpcpCpQrWRJ1sLDhhtAdn6b5/o7uptlMl/so8OVRCYW82ikKwq0rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qa9jayW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C981C4CEE7;
+	Mon, 13 Oct 2025 15:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369804;
-	bh=zrzKMcvcgRkX2Qz1zXQfyC0TR9YrxevSSvUWViFjckw=;
+	s=korg; t=1760369807;
+	bh=67F7clzCZL84ZwplXOoI6Bze+e6g8y7rRoxO0yq1xXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j26TtFrysHQDlFT59+LnEXWC31y5tyveqjMzg/tDTR0TCefLbiwYesmfXPGzMBVLh
-	 qzdqluACSTu+JdQkG/IrGl4NWFdY6MQv0IdN4Vr2AB7Cj3HyRFWFdT4mxd8yS9jf0A
-	 uKVyRxfCLDyLEwIWRfJ339/TzV4sr/ixXKL7Sscw=
+	b=1qa9jayWesiy7St4a8bzHzq7jWmGuAMLMjo6GlZ3TORIzu1P1+vlUbK+ms5vuQply
+	 g9AFr5/FOrG/FUi3tUFBxSokYp9uN8NShug2F9hD1sb/p/ILc7CvbU5UXc1e53qdyb
+	 04oi8EaXfTnG85SIJhKtY/pcJium750sBN4Y/2Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Qianfeng Rong <rongqianfeng@vivo.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 373/563] scsi: qla2xxx: edif: Fix incorrect sign of error code
-Date: Mon, 13 Oct 2025 16:43:54 +0200
-Message-ID: <20251013144424.788591343@linuxfoundation.org>
+Subject: [PATCH 6.17 374/563] scsi: qla2xxx: Fix incorrect sign of error code in START_SP_W_RETRIES()
+Date: Mon, 13 Oct 2025 16:43:55 +0200
+Message-ID: <20251013144424.824428724@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,43 +68,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 066b8f3fa85c1be7fb7dbae202231e131d38f7bc ]
+[ Upstream commit 1f037e3acda79639a78f096355f2c308a3d45492 ]
 
-Change the error code EAGAIN to -EAGAIN in qla24xx_sadb_update() and
-qla_edif_process_els() to align with qla2x00_start_sp() returning
-negative error codes or QLA_SUCCESS, preventing logical errors.
+Change the error code EAGAIN to -EAGAIN in START_SP_W_RETRIES() to align
+with qla2x00_start_sp() returning negative error codes or QLA_SUCCESS,
+preventing logical errors.  Additionally, the '_rval' variable should
+store negative error codes to conform to Linux kernel error code
+conventions.
 
-Fixes: 0b3f3143d473 ("scsi: qla2xxx: edif: Add retry for ELS passthrough")
+Fixes: 9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
 Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Message-ID: <20250905075446.381139-2-rongqianfeng@vivo.com>
+Message-ID: <20250905075446.381139-3-rongqianfeng@vivo.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_edif.c | 4 ++--
+ drivers/scsi/qla2xxx/qla_init.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_edif.c b/drivers/scsi/qla2xxx/qla_edif.c
-index 91bbd3b75bff9..ccd4485087a10 100644
---- a/drivers/scsi/qla2xxx/qla_edif.c
-+++ b/drivers/scsi/qla2xxx/qla_edif.c
-@@ -1798,7 +1798,7 @@ qla24xx_sadb_update(struct bsg_job *bsg_job)
- 	switch (rval) {
- 	case QLA_SUCCESS:
- 		break;
--	case EAGAIN:
-+	case -EAGAIN:
- 		msleep(EDIF_MSLEEP_INTERVAL);
- 		cnt++;
- 		if (cnt < EDIF_RETRY_COUNT)
-@@ -3649,7 +3649,7 @@ int qla_edif_process_els(scsi_qla_host_t *vha, struct bsg_job *bsg_job)
- 		       p->e.extra_rx_xchg_address, p->e.extra_control_flags,
- 		       sp->handle, sp->remap.req.len, bsg_job);
- 		break;
--	case EAGAIN:
-+	case -EAGAIN:
- 		msleep(EDIF_MSLEEP_INTERVAL);
- 		cnt++;
- 		if (cnt < EDIF_RETRY_COUNT)
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index be211ff22acbd..6a2e1c7fd1251 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2059,11 +2059,11 @@ static void qla_marker_sp_done(srb_t *sp, int res)
+ 	int cnt = 5; \
+ 	do { \
+ 		if (_chip_gen != sp->vha->hw->chip_reset || _login_gen != sp->fcport->login_gen) {\
+-			_rval = EINVAL; \
++			_rval = -EINVAL; \
+ 			break; \
+ 		} \
+ 		_rval = qla2x00_start_sp(_sp); \
+-		if (_rval == EAGAIN) \
++		if (_rval == -EAGAIN) \
+ 			msleep(1); \
+ 		else \
+ 			break; \
 -- 
 2.51.0
 
