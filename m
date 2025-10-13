@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3303BBD4BE5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:05:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747D6BD51A0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AF54B562317
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71CE4852E9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE37D2BF009;
-	Mon, 13 Oct 2025 15:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785CC2E7F1C;
+	Mon, 13 Oct 2025 15:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQnSVzSa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijFsQr4w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCB722A4D5;
-	Mon, 13 Oct 2025 15:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EC02D2384;
+	Mon, 13 Oct 2025 15:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369350; cv=none; b=EwujiDHAZNhSnMTht/I41MG5WCzbAM4arUejVPs57Jo2fUhagxSZ0gzgfark0701uNGvPKgZpguZsqBGTGsm6iK1Q6s2Zv3rr1MGyCh/znFxwj1bCIWrUOstI6ehpDsTb4ayijLXJx412KS4+n5DrqhzhqHP+pmoZDz9EBYBGf8=
+	t=1760369382; cv=none; b=H5t0CiHY3S1jh+Zq2dcsQOCs60huN69lc5A1/EoIODpGQBLNlZJkkds5tji7ubfupmR0EYGo4meCATiXO3cifo7lCluHlbvq5ITah3ObNXIvqe55xH5TXUL2scJYg6Qal14X16Pmfz8OEcBhkR3ya/Ogb+MBWFqjXXfUrTmXw0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369350; c=relaxed/simple;
-	bh=RDPCOUxf69+xvClnECG92S0e190BCrCnAP2F2NjbC18=;
+	s=arc-20240116; t=1760369382; c=relaxed/simple;
+	bh=kzVZEDlBkJfsKsrHmry1kNON0X3aMRsEKSZnH+F06Sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIv1dv8IZU41rE0fwJd4l9ximUpRZIwreu2BunLSdbhDOSaY4RWafplADtHzudSxRwjarfcX+sbf7JcCTpUeEIeSRfEze7vN/d3R59w/Am0efGK463nOYkyyLgBx1F/4wAMvkwD7NjbCSXtnnucSBHyBkQAZAk5krarJbk8Xslc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQnSVzSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EB2C4CEE7;
-	Mon, 13 Oct 2025 15:29:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wqz1RG2Yggw+tqu51RjpsuTLF1RDLRaKwK9OWgipA8eAuKEZXroOxJb8MwC0e35ZYxhOPLtmbL0fekZNSqWiWXdYwFqDIPSJ990tY2Y6gTYlMQ0MwG3Y9xz/ljDzQRn/kdg7s+gADwBJEPc29JFJIciyaq48wR1u5IkQ1MOam48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijFsQr4w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3761C4CEE7;
+	Mon, 13 Oct 2025 15:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369350;
-	bh=RDPCOUxf69+xvClnECG92S0e190BCrCnAP2F2NjbC18=;
+	s=korg; t=1760369382;
+	bh=kzVZEDlBkJfsKsrHmry1kNON0X3aMRsEKSZnH+F06Sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQnSVzSaSux1hr+xTWw5v2xBtQS1aJnJnshu+vBuk32Yg+wIpzCzGYjHj76VhgoEM
-	 5gZ8oR9Mhcny+gGv4oK8ijyjptCH20UisKdMWEALKK6kKl0LfQjYMxK+m4+3wrkgw4
-	 as1sIFJn5HAUFc56cKfdzwrxJWG6jP+KNxLwuNC0=
+	b=ijFsQr4wm2z8Ml9JFiNC//iUXdA07iHe21FyXwjytpV5nFpBpQ25dJZKZtmrxD1XY
+	 ACVbXN3CwAOa6PP0SnuqUCEzkX0U1ZYxsnK/FKFVF83+UkDcopN8yc0lF6ZkBDF8uA
+	 l9QdEriblgDeb78qJJm4DCE/LaQr0zJpqziTdTUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Leilk.Liu" <leilk.liu@mediatek.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 198/563] thermal/drivers/qcom/lmh: Add missing IRQ includes
-Date: Mon, 13 Oct 2025 16:40:59 +0200
-Message-ID: <20251013144418.457837281@linuxfoundation.org>
+Subject: [PATCH 6.17 199/563] i2c: mediatek: fix potential incorrect use of I2C_MASTER_WRRD
+Date: Mon, 13 Oct 2025 16:41:00 +0200
+Message-ID: <20251013144418.496378165@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -61,45 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Leilk.Liu <leilk.liu@mediatek.com>
 
-[ Upstream commit b50b2c53f98fcdb6957e184eb488c16502db9575 ]
+[ Upstream commit b492183652808e0f389272bf63dc836241b287ff ]
 
-As reported by LKP, the Qualcomm LMH driver needs to include several
-IRQ-related headers, which decrlare necessary IRQ functionality.
-Currently driver builds on ARM64 platforms, where the headers are pulled
-in implicitly by other headers, but fails to build on other platforms.
+The old IC does not support the I2C_MASTER_WRRD (write-then-read)
+function, but the current code’s handling of i2c->auto_restart may
+potentially lead to entering the I2C_MASTER_WRRD software flow,
+resulting in unexpected bugs.
 
-Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507270042.KdK0KKht-lkp@intel.com/
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20250728-lmh-scm-v2-2-33bc58388ca5@oss.qualcomm.com
+Instead of repurposing the auto_restart flag, add a separate flag
+to signal I2C_MASTER_WRRD operations.
+
+Also fix handling of msgs. If the operation (i2c->op) is
+I2C_MASTER_WRRD, then the msgs pointer is incremented by 2.
+For all other operations, msgs is simply incremented by 1.
+
+Fixes: b2ed11e224a2 ("I2C: mediatek: Add driver for MediaTek MT8173 I2C controller")
+Signed-off-by: Leilk.Liu <leilk.liu@mediatek.com>
+Suggested-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/lmh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-mt65xx.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/thermal/qcom/lmh.c b/drivers/thermal/qcom/lmh.c
-index 75eaa9a68ab8a..c681a3c89ffa0 100644
---- a/drivers/thermal/qcom/lmh.c
-+++ b/drivers/thermal/qcom/lmh.c
-@@ -5,6 +5,8 @@
-  */
- #include <linux/module.h>
- #include <linux/interrupt.h>
-+#include <linux/irq.h>
-+#include <linux/irqdesc.h>
- #include <linux/irqdomain.h>
- #include <linux/err.h>
- #include <linux/platform_device.h>
+diff --git a/drivers/i2c/busses/i2c-mt65xx.c b/drivers/i2c/busses/i2c-mt65xx.c
+index ab456c3717db1..dee40704825cb 100644
+--- a/drivers/i2c/busses/i2c-mt65xx.c
++++ b/drivers/i2c/busses/i2c-mt65xx.c
+@@ -1243,6 +1243,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ {
+ 	int ret;
+ 	int left_num = num;
++	bool write_then_read_en = false;
+ 	struct mtk_i2c *i2c = i2c_get_adapdata(adap);
+ 
+ 	ret = clk_bulk_enable(I2C_MT65XX_CLK_MAX, i2c->clocks);
+@@ -1256,6 +1257,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		if (!(msgs[0].flags & I2C_M_RD) && (msgs[1].flags & I2C_M_RD) &&
+ 		    msgs[0].addr == msgs[1].addr) {
+ 			i2c->auto_restart = 0;
++			write_then_read_en = true;
+ 		}
+ 	}
+ 
+@@ -1280,12 +1282,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		else
+ 			i2c->op = I2C_MASTER_WR;
+ 
+-		if (!i2c->auto_restart) {
+-			if (num > 1) {
+-				/* combined two messages into one transaction */
+-				i2c->op = I2C_MASTER_WRRD;
+-				left_num--;
+-			}
++		if (write_then_read_en) {
++			/* combined two messages into one transaction */
++			i2c->op = I2C_MASTER_WRRD;
++			left_num--;
+ 		}
+ 
+ 		/* always use DMA mode. */
+@@ -1293,7 +1293,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		if (ret < 0)
+ 			goto err_exit;
+ 
+-		msgs++;
++		if (i2c->op == I2C_MASTER_WRRD)
++			msgs += 2;
++		else
++			msgs++;
+ 	}
+ 	/* the return value is number of executed messages */
+ 	ret = num;
 -- 
 2.51.0
 
