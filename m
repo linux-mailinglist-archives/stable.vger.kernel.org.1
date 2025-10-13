@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-185285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC48BD51D9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:38:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF9EBD5389
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00CB7485BD8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D77F550361D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7358C3081B1;
-	Mon, 13 Oct 2025 15:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D182257828;
+	Mon, 13 Oct 2025 15:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bomraiyy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuximC+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC27307AD6;
-	Mon, 13 Oct 2025 15:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FDB1E9B0D;
+	Mon, 13 Oct 2025 15:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369859; cv=none; b=S8zdi5abOyj8EuVmXbzoQEVHckMwLEgxzMSijJra78AecJSy0QHW7tBQ2R/yuGCovhhkdJ+eOyR9QQfaN+ibHhNC3SAQ1Hxrxz32YtR0z/oHKare9v4eRxFhDi0jBtT3t74Mg9qI+9T/57fvJVqgLUKwT3urfnB4pOT1VIRo14g=
+	t=1760369865; cv=none; b=O6Skwd6l7/q6Wp/cPkUZuJOWX5unmCvA/0xpcRGMSGtPWAuq7GZC2oVYavfoP5URDPxJ1SMlPCjOil9LAh6nTGczxENdba8h4YWydpU+Uqd9ppDIJmlBjVTcSHi+qqRFolmdfJvZwsY6R2YFKb+Jnrp1Cw6Rkz9cX5jyFgDWYjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369859; c=relaxed/simple;
-	bh=z1o9Jr6xR/a/tgjrvQqSHFOfmyGi5o+onPaPpJnppCo=;
+	s=arc-20240116; t=1760369865; c=relaxed/simple;
+	bh=nzW55T/pVpg+30YMS+y+GAAiLqAdXJ2R6xLt7sfBQAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXCfkQRhfy1z4ZiPa/vhOZOtoliTm4uXQd0SFlndwvgRgTYLJa82TZmMkKlALhKrCQlatlxaTJHq5okiMtMdsC+EpsjFKPyfhhgY4OnV3UUaHwkMzgamN6D8E328OPeD2eVYHGfCAtWGCbhNqj2WX4h23tHzsAGt81Lrqd0+jCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bomraiyy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC20AC4CEE7;
-	Mon, 13 Oct 2025 15:37:38 +0000 (UTC)
+	 MIME-Version; b=HmM8DUHjydIN2LBc4H8WiKZs3kr0OzKJuU72qG7zSn8KHITL+g0z9yfk90gkBy1Vfr6S7LfxhCQ/67M5tEg33FbtwNnUtp4C4YUd5XJ6JLfhEeOJaPqarB185tcnNCXi7p/zNSTe5F6MkFZdJuzH/Jz9q1qMsI7dGOq76o/TBwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuximC+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7702AC4CEE7;
+	Mon, 13 Oct 2025 15:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369859;
-	bh=z1o9Jr6xR/a/tgjrvQqSHFOfmyGi5o+onPaPpJnppCo=;
+	s=korg; t=1760369864;
+	bh=nzW55T/pVpg+30YMS+y+GAAiLqAdXJ2R6xLt7sfBQAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bomraiyy1gtq2774CthHkqAy0cQXcH8vF4VfIC7b4Df9ULnc325SRuH/mXiGDCWQv
-	 jPP2UA3bNY5PRTZPgiPx/zQdsoNGltona4nWvPop6zpxQOahC06X52MAlEGV57DHFc
-	 rQjmvH4WhQAulvEzRfKMIYpxdwxFOTCCQ2UawtMg=
+	b=TuximC+RFeLvwHgmi0YQYgd70ik5F1tNgmmswhTQwEMscdfdOFoJng79ipkp7iQzV
+	 nQPAYX+SVYSQZgRhVlgUNAsXl/wZ3j4JHzJP/j1CIrZfvl2owoUFklTWN/nO0Z2aHS
+	 KpcN9RLe1zk9byknwNMwFDW67UsE7BakjXpB5ar0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <kang.yang@oss.qualcomm.com>,
+	Sriram R <quic_srirrama@quicinc.com>,
+	Vinith Kumar R <quic_vinithku@quicinc.com>,
+	Aishwarya R <aishwarya.r@oss.qualcomm.com>,
 	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
 	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 394/563] wifi: ath12k: fix the fetching of combined rssi
-Date: Mon, 13 Oct 2025 16:44:15 +0200
-Message-ID: <20251013144425.557789671@linuxfoundation.org>
+Subject: [PATCH 6.17 395/563] wifi: ath12k: Add fallback for invalid channel number in PHY metadata
+Date: Mon, 13 Oct 2025 16:44:16 +0200
+Message-ID: <20251013144425.593893341@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,90 +70,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kang Yang <kang.yang@oss.qualcomm.com>
+From: Sriram R <quic_srirrama@quicinc.com>
 
-[ Upstream commit 7695fa71c1d50a375e54426421acbc8d457bc5a3 ]
+[ Upstream commit 26f8fc0b24fd1a9dba1000bc9b5f2b199b7775a0 ]
 
-Currently, host fetches combined rssi from rssi_comb in struct
-hal_rx_phyrx_rssi_legacy_info.
+Currently, ath12k_dp_rx_h_ppdu() determines the band and frequency
+based on the channel number and center frequency from the RX descriptor's
+PHY metadata. However, in rare cases, it is observed that frequency
+retrieved from the metadata may be invalid or unexpected especially for
+6 GHz frames.
+This can result in a NULL sband, which prevents proper frequency assignment
+in rx_status and potentially leading to incorrect RX packet classification.
 
-rssi_comb is 8th to 15th bits of the second to last variable.
-rssi_comb_ppdu is the 0th to 7th of the last variable.
+To fix this potential issue, add a fallback mechanism that uses
+ar->rx_channel to populate the band and frequency when the derived
+sband is invalid or missing.
 
-When bandwidth = 20MHz, rssi_comb = rssi_comb_ppdu. But when bandwidth >
-20MHz, rssi_comb < rssi_comb_ppdu because rssi_comb only includes power
-of primary 20 MHz while rssi_comb_ppdu includes power of active
-RUs/subchannels. So should fetch combined rssi from rssi_comb_ppdu.
-
-Also related macro definitions are too long, rename them.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
 Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
+Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+Co-developed-by: Vinith Kumar R <quic_vinithku@quicinc.com>
+Signed-off-by: Vinith Kumar R <quic_vinithku@quicinc.com>
+Signed-off-by: Aishwarya R <aishwarya.r@oss.qualcomm.com>
 Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250722095934.67-4-kang.yang@oss.qualcomm.com
+Link: https://patch.msgid.link/20250723190651.699828-1-aishwarya.r@oss.qualcomm.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 8 ++++----
- drivers/net/wireless/ath/ath12k/hal_rx.h | 9 +++++----
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index e93ede5e6197c..abd611ac37f06 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -1655,18 +1655,18 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k *ar,
- 		const struct hal_rx_phyrx_rssi_legacy_info *rssi = tlv_data;
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 8ab91273592c8..adb0cfe109e67 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2533,6 +2533,8 @@ void ath12k_dp_rx_h_ppdu(struct ath12k *ar, struct ath12k_dp_rx_info *rx_info)
+ 	channel_num = meta_data;
+ 	center_freq = meta_data >> 16;
  
- 		info[0] = __le32_to_cpu(rssi->info0);
--		info[1] = __le32_to_cpu(rssi->info1);
-+		info[2] = __le32_to_cpu(rssi->info2);
- 
- 		/* TODO: Please note that the combined rssi will not be accurate
- 		 * in MU case. Rssi in MU needs to be retrieved from
- 		 * PHYRX_OTHER_RECEIVE_INFO TLV.
- 		 */
- 		ppdu_info->rssi_comb =
--			u32_get_bits(info[1],
--				     HAL_RX_PHYRX_RSSI_LEGACY_INFO_INFO1_RSSI_COMB);
-+			u32_get_bits(info[2],
-+				     HAL_RX_RSSI_LEGACY_INFO_INFO2_RSSI_COMB_PPDU);
- 
- 		ppdu_info->bw = u32_get_bits(info[0],
--					     HAL_RX_PHYRX_RSSI_LEGACY_INFO_INFO0_RX_BW);
-+					     HAL_RX_RSSI_LEGACY_INFO_INFO0_RX_BW);
- 		break;
++	rx_status->band = NUM_NL80211_BANDS;
++
+ 	if (center_freq >= ATH12K_MIN_6GHZ_FREQ &&
+ 	    center_freq <= ATH12K_MAX_6GHZ_FREQ) {
+ 		rx_status->band = NL80211_BAND_6GHZ;
+@@ -2541,21 +2543,33 @@ void ath12k_dp_rx_h_ppdu(struct ath12k *ar, struct ath12k_dp_rx_info *rx_info)
+ 		rx_status->band = NL80211_BAND_2GHZ;
+ 	} else if (channel_num >= 36 && channel_num <= 173) {
+ 		rx_status->band = NL80211_BAND_5GHZ;
+-	} else {
++	}
++
++	if (unlikely(rx_status->band == NUM_NL80211_BANDS ||
++		     !ath12k_ar_to_hw(ar)->wiphy->bands[rx_status->band])) {
++		ath12k_warn(ar->ab, "sband is NULL for status band %d channel_num %d center_freq %d pdev_id %d\n",
++			    rx_status->band, channel_num, center_freq, ar->pdev_idx);
++
+ 		spin_lock_bh(&ar->data_lock);
+ 		channel = ar->rx_channel;
+ 		if (channel) {
+ 			rx_status->band = channel->band;
+ 			channel_num =
+ 				ieee80211_frequency_to_channel(channel->center_freq);
++			rx_status->freq = ieee80211_channel_to_frequency(channel_num,
++									 rx_status->band);
++		} else {
++			ath12k_err(ar->ab, "unable to determine channel, band for rx packet");
+ 		}
+ 		spin_unlock_bh(&ar->data_lock);
++		goto h_rate;
  	}
- 	case HAL_PHYRX_COMMON_USER_INFO: {
-diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.h b/drivers/net/wireless/ath/ath12k/hal_rx.h
-index 801a5f6d3458b..d1ad7747b82c4 100644
---- a/drivers/net/wireless/ath/ath12k/hal_rx.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_rx.h
-@@ -483,15 +483,16 @@ enum hal_rx_ul_reception_type {
- 	HAL_RECEPTION_TYPE_FRAMELESS
- };
  
--#define HAL_RX_PHYRX_RSSI_LEGACY_INFO_INFO0_RECEPTION	GENMASK(3, 0)
--#define HAL_RX_PHYRX_RSSI_LEGACY_INFO_INFO0_RX_BW	GENMASK(7, 5)
--#define HAL_RX_PHYRX_RSSI_LEGACY_INFO_INFO1_RSSI_COMB	GENMASK(15, 8)
-+#define HAL_RX_RSSI_LEGACY_INFO_INFO0_RECEPTION		GENMASK(3, 0)
-+#define HAL_RX_RSSI_LEGACY_INFO_INFO0_RX_BW		GENMASK(7, 5)
-+#define HAL_RX_RSSI_LEGACY_INFO_INFO1_RSSI_COMB		GENMASK(15, 8)
-+#define HAL_RX_RSSI_LEGACY_INFO_INFO2_RSSI_COMB_PPDU	GENMASK(7, 0)
+ 	if (rx_status->band != NL80211_BAND_6GHZ)
+ 		rx_status->freq = ieee80211_channel_to_frequency(channel_num,
+ 								 rx_status->band);
  
- struct hal_rx_phyrx_rssi_legacy_info {
- 	__le32 info0;
- 	__le32 rsvd0[39];
- 	__le32 info1;
--	__le32 rsvd1;
-+	__le32 info2;
- } __packed;
++h_rate:
+ 	ath12k_dp_rx_h_rate(ar, rx_info);
+ }
  
- #define HAL_RX_MPDU_START_INFO0_PPDU_ID			GENMASK(31, 16)
 -- 
 2.51.0
 
