@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F70BD4036
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D7EBD3C5A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCAB818A4795
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D06918A077B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6907130E848;
-	Mon, 13 Oct 2025 14:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5283081C7;
+	Mon, 13 Oct 2025 14:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJMzKYZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQS8kOHQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E433093C3;
-	Mon, 13 Oct 2025 14:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFD33090DD;
+	Mon, 13 Oct 2025 14:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367517; cv=none; b=WPml+NpxV+RIXrVgVRCLXODqLH3zr1gJxY0lwXAPGtGm0C8EN4VTNA51/LwdPSf6OJjUNuhhdBJtXLC2ZngS/yVJzzIuU9QnbL2SV2Llq2i//UvaAIo4LVFq2h25ymQtupcMsS2HtXzq+qWEfB2oSTLgnbrhTsZv101ezu6Sh1Q=
+	t=1760367003; cv=none; b=JD1aI4VdPWA9ycQXGpd+Q8a8zTB90RIrK2EcR5lZG6faP0qyJwbEfBe6CUo5k9vltnqH6VkJEzm/d3Vdg/Q1OLJ6Ai7KXIQ/Z+4WcDZUCHDpj4AthKI6v4VXXKyyVhpNFvzkSmxZWs9CadZtDy6x9csscqXG4DIVAGvWNfZEdHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367517; c=relaxed/simple;
-	bh=J1kci3dy8oEoEKHm8wWXgu0kxfMDFkrO2/M2kUPpbOI=;
+	s=arc-20240116; t=1760367003; c=relaxed/simple;
+	bh=d1fWQJQaOv9Y86HFQBrxxExID5RhVEDoJJoX1pJdJLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ez4qEyqF/x74QzGSbwKa9Y+Ule9KjntbsAh3gOq8QStZeaUB0JVK9nY+jfFLA25nlrcvsO0VEeAIouhxLfbkBnSHed1JDEyeaI/qosWaa5gAl17DRs1reIamCkGGtxnYIneQkKqUYhX4ByevGuXT305gpeFU5r7qGNneUX1o7/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJMzKYZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A09C4CEE7;
-	Mon, 13 Oct 2025 14:58:36 +0000 (UTC)
+	 MIME-Version; b=LoDHHK5AWkxPFEFKdebB2You9YsJOxT2D6Myo0JDNwG+n8qT3xwyvnP8En6dXulunDbz2GRoQUCwXPwY542X7U66EAiHTwwkTCotzHSSc+XaNOhG5fZ07y6FHQxBNQc2nDep5NxGsAn2P6exkKoIBvI83LLDnF7h3B4bX0Si8m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQS8kOHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377D2C4CEE7;
+	Mon, 13 Oct 2025 14:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367517;
-	bh=J1kci3dy8oEoEKHm8wWXgu0kxfMDFkrO2/M2kUPpbOI=;
+	s=korg; t=1760367003;
+	bh=d1fWQJQaOv9Y86HFQBrxxExID5RhVEDoJJoX1pJdJLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJMzKYZgiqk662154F2gLr/uJMe5P0xgnZTK/r6337f+rO8aXyEnrCefoHAg3jqxs
-	 S76sGScHRAHJEFXHiaGUZhfEQhLs9vx2w0KRblg7UlkdCVBwoTdc/ataJxCmny0xRw
-	 gZxYaHIjHD4j/5KVuJJL40FF18uGsvLAqyYO5nes=
+	b=fQS8kOHQ2jskfHW4xoUa4JiIlJ6ZruTMFST783urjLUGf8IrJI4CKLI3XspZycNVt
+	 RIKqJ3mDjq9TMuSomtq28meNlbO+cpJ7BQiUbo5UQCe3Ac5/oW3lFIMVd0cNMWEDjk
+	 qqMFjJLX2ei/p426CZH/2hIxdFsveVcbZyaXlF7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/196] firmware: firmware: meson-sm: fix compile-test default
-Date: Mon, 13 Oct 2025 16:43:51 +0200
-Message-ID: <20251013144316.652131670@linuxfoundation.org>
+Subject: [PATCH 6.1 059/196] cpufreq: scmi: Account for malformed DT in scmi_dev_used_by_cpus()
+Date: Mon, 13 Oct 2025 16:43:52 +0200
+Message-ID: <20251013144316.717197165@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 0454346d1c5f7fccb3ef6e3103985de8ab3469f3 ]
+[ Upstream commit cd5d4621ba846dad9b2e6b0c2d1518d083fcfa13 ]
 
-Enabling compile testing should not enable every individual driver (we
-have "allyesconfig" for that).
+Broadcom STB platforms were early adopters (2017) of the SCMI framework and as
+a result, not all deployed systems have a Device Tree entry where SCMI
+protocol 0x13 (PERFORMANCE) is declared as a clock provider, nor are the
+CPU Device Tree node(s) referencing protocol 0x13 as their clock
+provider. This was clarified in commit e11c480b6df1 ("dt-bindings:
+firmware: arm,scmi: Extend bindings for protocol@13") in 2023.
 
-Fixes: 4a434abc40d2 ("firmware: meson-sm: enable build as module")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250725075429.10056-1-johan@kernel.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+For those platforms, we allow the checks done by scmi_dev_used_by_cpus()
+to continue, and in the event of not having done an early return, we key
+off the documented compatible string and give them a pass to continue to
+use scmi-cpufreq.
+
+Fixes: 6c9bb8692272 ("cpufreq: scmi: Skip SCMI devices that aren't used by the CPUs")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/meson/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/scmi-cpufreq.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/firmware/meson/Kconfig b/drivers/firmware/meson/Kconfig
-index f2fdd37566482..179f5d46d8ddf 100644
---- a/drivers/firmware/meson/Kconfig
-+++ b/drivers/firmware/meson/Kconfig
-@@ -5,7 +5,7 @@
- config MESON_SM
- 	tristate "Amlogic Secure Monitor driver"
- 	depends on ARCH_MESON || COMPILE_TEST
--	default y
-+	default ARCH_MESON
- 	depends on ARM64_4K_PAGES
- 	help
- 	  Say y here to enable the Amlogic secure monitor driver
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 6ff77003a96ea..68325ebd56fe3 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -15,6 +15,7 @@
+ #include <linux/energy_model.h>
+ #include <linux/export.h>
+ #include <linux/module.h>
++#include <linux/of.h>
+ #include <linux/pm_opp.h>
+ #include <linux/slab.h>
+ #include <linux/scmi_protocol.h>
+@@ -330,6 +331,15 @@ static bool scmi_dev_used_by_cpus(struct device *scmi_dev)
+ 			return true;
+ 	}
+ 
++	/*
++	 * Older Broadcom STB chips had a "clocks" property for CPU node(s)
++	 * that did not match the SCMI performance protocol node, if we got
++	 * there, it means we had such an older Device Tree, therefore return
++	 * true to preserve backwards compatibility.
++	 */
++	if (of_machine_is_compatible("brcm,brcmstb"))
++		return true;
++
+ 	return false;
+ }
+ 
 -- 
 2.51.0
 
