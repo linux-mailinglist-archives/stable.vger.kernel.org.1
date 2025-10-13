@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0A0BD4BE8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF83BD4CB7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC4024C0523
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E094C0712
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D7930CDA5;
-	Mon, 13 Oct 2025 15:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D6430CDB2;
+	Mon, 13 Oct 2025 15:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vgxvM28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tl47HQiy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2039E3081C8;
-	Mon, 13 Oct 2025 15:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5C73081CE;
+	Mon, 13 Oct 2025 15:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369162; cv=none; b=DCJe3x4NPI2XEyZrXqPuvR6NNhPPHl78TIzjoKNuAjh4Uev4eSq4XcaJQLA5UWfTR+1DLW+Zhi9DknJqo4lKAP0iPrBlzGPmbkhWzjdSiIF/Qfq+Ob+TpL52yi51EqZ9cWdKeyV+MBXOQc9GCuS66cytPbsmLXvKo/flgNkUB1o=
+	t=1760369181; cv=none; b=fZlkpcpM8GhgWknwW3tpmq3+Qp/ErM1tJNUkCxO1Fll9GQ4MXCebIEaQ15KofE2CFe8kSUpVRzUMV3blSSJRF4ise1LldQWtnvtPHDmWIHziS+iTvegRFUtwYl1xg2tcNP6PgQ+MEajU5Twq+ceHeksnJer2mYPrCtUEi3hA1E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369162; c=relaxed/simple;
-	bh=hijtLW5mTlQQIuQRni4zwA42d4D++GfD2+eiYjq2i1k=;
+	s=arc-20240116; t=1760369181; c=relaxed/simple;
+	bh=/LxIyWOKsT+r2i8Qu5HWN/XLDGdb0Fcs7ZJrl6Mg2zY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLxZRxXhCLCPzjUEtrN5GJ1Q+gX174rl1huvIBmo/f4RG5fMQJCysPDKVp0wrRd812IIV5jOZAwz/17e20GHCVOjO8lOOgEgTiIJ1L2K2S2Umn+p5vv4HIqAq6Krj6NP/WBFyP/9xfqP84IbKJxh5yT5WrSqedO7dw6h7LAwYfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vgxvM28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5C9C4CEFE;
-	Mon, 13 Oct 2025 15:26:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pu6rKo7SCZtbBAwRpShKdwqZqZGJdqldqQtXpZ5TDYRkF49EjfX7QV6nUx2u496htKGtxYdPe0gvw1Z/bz2ZgkEmTqJ0oYmcMJa3iANg4pfhdg+Pl6GrXUEeVO9o4/pi/feRlvGQgOqiO1B10d1o3r08dcRkai+qygJIh6g1l0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tl47HQiy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576A8C4CEE7;
+	Mon, 13 Oct 2025 15:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369162;
-	bh=hijtLW5mTlQQIuQRni4zwA42d4D++GfD2+eiYjq2i1k=;
+	s=korg; t=1760369181;
+	bh=/LxIyWOKsT+r2i8Qu5HWN/XLDGdb0Fcs7ZJrl6Mg2zY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1vgxvM28WxsX/c7/04I50Y7goNLJ9TSfXMpLCzmiMcQosX86naiQJ8bPk6N8LGYOj
-	 ZpMUtT9lwKBL1ilXaMIKabLEJjVUaXy7UlLbHR5cFngAg8alGTdFu0MGD4F9LOUa0f
-	 wmQyCOs3hWX39s9t5bBnLZSBgoPdn6MUzRZkHdgI=
+	b=Tl47HQiy0ToDyb7FevODtkb6dWFUEc5r9ORyitm51IA4sU+TiKPuS+EPZ0RMTO4hX
+	 7CVR+edkILnNTsl8k9+KlobJBfJW16Nl6Khi2EbE+qpIhxEnXk8Sumxl9GYT6GXuPj
+	 gwNpzFUOpwbbcfqxPpH5r+hc62CKGMTuEFr5xBME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Fei Shao <fshao@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 149/563] arm64: dts: mediatek: mt8395-kontron-i1200: Fix MT6360 regulator nodes
-Date: Mon, 13 Oct 2025 16:40:10 +0200
-Message-ID: <20251013144416.689156121@linuxfoundation.org>
+Subject: [PATCH 6.17 155/563] pwm: tiehrpwm: Dont drop runtime PM reference in .free()
+Date: Mon, 13 Oct 2025 16:40:16 +0200
+Message-ID: <20251013144416.904327880@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -61,108 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 09a1e9c973973aff26e66a5673c19442d91b9e3d ]
+[ Upstream commit 21a5e91fda50fc662ce1a12bd0aae9d103455b43 ]
 
-All of the MT6360 regulator nodes were wrong and would not probe
-because the regulator names are supposed to be lower case, but
-they are upper case in this devicetree.
+The pwm driver calls pm_runtime_get_sync() when the hardware becomes
+enabled and pm_runtime_put_sync() when it becomes disabled. The PWM's
+state is kept when a consumer goes away, so the call to
+pm_runtime_put_sync() in the .free() callback is unbalanced resulting in
+a non-functional device and a reference underlow for the second consumer.
 
-Change all nodes to be lower case to get working regulators.
+The easiest fix for that issue is to just not drop the runtime PM
+reference in .free(), so do that.
 
-Fixes: 94aaf79a6af5 ("arm64: dts: mediatek: add Kontron 3.5"-SBC-i1200")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20250724083914.61351-38-angelogioacchino.delregno@collabora.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Fixes: 19891b20e7c2 ("pwm: pwm-tiehrpwm: PWM driver support for EHRPWM")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/bbb089c4b5650cc1f7b25cf582d817543fd25384.1754927682.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mediatek/mt8395-kontron-3-5-sbc-i1200.dts    | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/pwm/pwm-tiehrpwm.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts b/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts
-index 4985b65925a9e..d16f545cbbb27 100644
---- a/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts
-@@ -352,7 +352,7 @@ regulator {
- 			LDO_VIN2-supply = <&vsys>;
- 			LDO_VIN3-supply = <&vsys>;
+diff --git a/drivers/pwm/pwm-tiehrpwm.c b/drivers/pwm/pwm-tiehrpwm.c
+index 0125e73b98dfb..5e674a7bbf3be 100644
+--- a/drivers/pwm/pwm-tiehrpwm.c
++++ b/drivers/pwm/pwm-tiehrpwm.c
+@@ -391,11 +391,6 @@ static void ehrpwm_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+ {
+ 	struct ehrpwm_pwm_chip *pc = to_ehrpwm_pwm_chip(chip);
  
--			mt6360_buck1: BUCK1 {
-+			mt6360_buck1: buck1 {
- 				regulator-name = "emi_vdd2";
- 				regulator-min-microvolt = <600000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -362,7 +362,7 @@ MT6360_OPMODE_LP
- 				regulator-always-on;
- 			};
- 
--			mt6360_buck2: BUCK2 {
-+			mt6360_buck2: buck2 {
- 				regulator-name = "emi_vddq";
- 				regulator-min-microvolt = <300000>;
- 				regulator-max-microvolt = <1300000>;
-@@ -372,7 +372,7 @@ MT6360_OPMODE_LP
- 				regulator-always-on;
- 			};
- 
--			mt6360_ldo1: LDO1 {
-+			mt6360_ldo1: ldo1 {
- 				regulator-name = "mt6360_ldo1"; /* Test point */
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3600000>;
-@@ -380,7 +380,7 @@ mt6360_ldo1: LDO1 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo2: LDO2 {
-+			mt6360_ldo2: ldo2 {
- 				regulator-name = "panel1_p1v8";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -388,7 +388,7 @@ mt6360_ldo2: LDO2 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo3: LDO3 {
-+			mt6360_ldo3: ldo3 {
- 				regulator-name = "vmc_pmu";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -396,7 +396,7 @@ mt6360_ldo3: LDO3 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo5: LDO5 {
-+			mt6360_ldo5: ldo5 {
- 				regulator-name = "vmch_pmu";
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -404,7 +404,7 @@ mt6360_ldo5: LDO5 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo6: LDO6 {
-+			mt6360_ldo6: ldo6 {
- 				regulator-name = "mt6360_ldo6"; /* Test point */
- 				regulator-min-microvolt = <500000>;
- 				regulator-max-microvolt = <2100000>;
-@@ -412,7 +412,7 @@ mt6360_ldo6: LDO6 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo7: LDO7 {
-+			mt6360_ldo7: ldo7 {
- 				regulator-name = "emi_vmddr_en";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
+-	if (pwm_is_enabled(pwm)) {
+-		dev_warn(pwmchip_parent(chip), "Removing PWM device without disabling\n");
+-		pm_runtime_put_sync(pwmchip_parent(chip));
+-	}
+-
+ 	/* set period value to zero on free */
+ 	pc->period_cycles[pwm->hwpwm] = 0;
+ }
 -- 
 2.51.0
 
