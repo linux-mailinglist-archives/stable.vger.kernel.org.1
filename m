@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-184362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF373BD3EAC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:10:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB3CBD431C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBD9C406797
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:02:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EA6D18A4092
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A5E30F93F;
-	Mon, 13 Oct 2025 14:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365A93081CD;
+	Mon, 13 Oct 2025 15:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="myJTPhbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Da8IdU1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1CB30F7EE;
-	Mon, 13 Oct 2025 14:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EA6307AF6;
+	Mon, 13 Oct 2025 15:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367216; cv=none; b=dJpcZOVZ3TixwsR9HbyVh8jtdsxuj715UcP2mFDJW0O/WQKHUUg8t3DK8ri7XvPGdzh01ChLrTmfNlXwnE38khM7JcZ4negpcIr6QdQh1d7jdBZsMWn5ov2I4zzwy6Itiu1Ybk76EWabd/pkb2jj5CNo4YHAOiy3PRz9FKPfVi4=
+	t=1760368446; cv=none; b=cT8Fc/nIE3xmr6o7+q7uCB6NtnzunlT+Ng2RDyQH/DiJE3SD1QnCuwU6HjMN/jgouWVjny4ZxysTlZJKinwKKKQNH1FMFAh+hDZWxPUPbAEtZ71hQMoNst3ddmbMrfy9vwsGzNBNsJsb9w50YOcEV0GFUQh1x0hDBrsYjee4VFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367216; c=relaxed/simple;
-	bh=8Z+TTPaDnfSvaQKbGERH9iRpRw+SJP0QHBPlgsgwC44=;
+	s=arc-20240116; t=1760368446; c=relaxed/simple;
+	bh=pggi2wGubKR+iHMkCTnofBszBFtTA+68/+TjKuVXvgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfmbBIENdnupiUDrqL/mgkAQEWQkmoKEzkfS1F7ewv+ZXclDgVhQVshY7IbCHMzocSvL/ZGAT2+0ak+sFsUgP7e/mD7ysPxJcZAexnDuN87iQjjuBTJHRQTcvdryBRmeiXyp2zSSeIM0al0Sq22F7JaErDvjO1WmBMV7UGf+Phw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=myJTPhbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4023DC113D0;
-	Mon, 13 Oct 2025 14:53:35 +0000 (UTC)
+	 MIME-Version; b=AdZE8Rno58XIu/Fz3TiVonT9dPyBEjZ+vqlW7axK96O1aYnfXckc8t3GCkGd/JO+9PpvGqLWhsUwArA5wrcaQ8CuKN891srEU6+nOnz80Jg/F3RVEDpnUBlMxRkfKjYYygbjhJ78k2seUTq0o8lmdiPAjg4lJbTOzsXikCcHyI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Da8IdU1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8F8C4CEE7;
+	Mon, 13 Oct 2025 15:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367215;
-	bh=8Z+TTPaDnfSvaQKbGERH9iRpRw+SJP0QHBPlgsgwC44=;
+	s=korg; t=1760368445;
+	bh=pggi2wGubKR+iHMkCTnofBszBFtTA+68/+TjKuVXvgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=myJTPhbQdZ8LLjHeZUGQJjhFATHrkwStloII+bBdVuwz1CwoBcrjLSVmShrsrm/GK
-	 rSNCHYrWbIPZaM7xwHUjwWOGqrKZqgduOFIRCYlIMo+CJehKRMOtYIT8l8LNM7mP6i
-	 ZhagBI8S0JNod47p1HXIXnfadGM9oHxnEBWoXL/s=
+	b=Da8IdU1J4ZyRypeYNPDPOllKr+X+k7faxVpxPsrf6nhqRa1ANY0LzGMfSjQlBX4df
+	 kMx1KqjxBH5mxBYLKKGpClrElQryOyjr3N85HUhPdoSS0m0qsggN5midebvwx01DHZ
+	 Zaj6JPrWKyoWm+kQAHUk5YeraHAY7UCS4s2YL3IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/196] Revert "usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running"
+Subject: [PATCH 6.12 164/262] Documentation: trace: historgram-design: Separate sched_waking histogram section heading and the following diagram
 Date: Mon, 13 Oct 2025 16:45:06 +0200
-Message-ID: <20251013144319.505121113@linuxfoundation.org>
+Message-ID: <20251013144332.030374626@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-[ Upstream commit 08fa726e66039dfa80226dfa112931f60ad4c898 ]
+[ Upstream commit 8c716e87ea33519920811338100d6d8a7fb32456 ]
 
-This reverts commit 28a76fcc4c85dd39633fb96edb643c91820133e3.
+Section heading for sched_waking histogram is shown as normal paragraph
+instead due to codeblock marker for the following diagram being in the
+same line as the section underline. Separate them.
 
-No actual HW bugs are known where Endpoint Context shows Running state
-but Stop Endpoint fails repeatedly with Context State Error and leaves
-the endpoint state unchanged. Stop Endpoint retries on Running EPs have
-been performed since early 2021 with no such issues reported so far.
-
-Trying to handle this hypothetical case brings a more realistic danger:
-if Stop Endpoint fails on an endpoint which hasn't yet started after a
-doorbell ring and enough latency occurs before this completion event is
-handled, the driver may time out and begin removing cancelled TDs from
-a running endpoint, even though one more retry would stop it reliably.
-
-Such high latency is rare but not impossible, and removing TDs from a
-running endpoint can cause more damage than not giving back a cancelled
-URB (which wasn't happening anyway). So err on the side of caution and
-revert to the old policy of always retrying if the EP appears running.
-
-[Remove stable tag as we are dealing with theoretical cases -Mathias]
-
-Fixes: 28a76fcc4c85d ("usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running")
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250917210726.97100-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: daceabf1b494 ("tracing/doc: Fix ascii-art in histogram-design.rst")
+Reviewed-by: Tom Zanussi <zanussi@kernel.org>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Message-ID: <20250916054202.582074-5-bagasdotme@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ Documentation/trace/histogram-design.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index c8e1ead0c09e6..cb0bf8b6e0172 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1175,19 +1175,16 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 			 * Stopped state, but it will soon change to Running.
- 			 *
- 			 * Assume this bug on unexpected Stop Endpoint failures.
--			 * Keep retrying until the EP starts and stops again.
-+			 * Keep retrying until the EP starts and stops again, on
-+			 * chips where this is known to help. Wait for 100ms.
- 			 */
-+			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
-+				break;
- 			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
- 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
- 					GET_EP_CTX_STATE(ep_ctx));
--			/*
--			 * Don't retry forever if we guessed wrong or a defective HC never starts
--			 * the EP or says 'Running' but fails the command. We must give back TDs.
--			 */
--			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
--				break;
+diff --git a/Documentation/trace/histogram-design.rst b/Documentation/trace/histogram-design.rst
+index 5765eb3e9efa7..a30f4bed11b4e 100644
+--- a/Documentation/trace/histogram-design.rst
++++ b/Documentation/trace/histogram-design.rst
+@@ -380,7 +380,9 @@ entry, ts0, corresponding to the ts0 variable in the sched_waking
+ trigger above.
  
- 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 			if (!command) {
+ sched_waking histogram
+-----------------------::
++----------------------
++
++.. code-block::
+ 
+   +------------------+
+   | hist_data        |<-------------------------------------------------------+
 -- 
 2.51.0
 
