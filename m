@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBDFBD42D1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BF3BD3F8D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1A6B734E10E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF3C5188CB1E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AA030E832;
-	Mon, 13 Oct 2025 15:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30D430CDB2;
+	Mon, 13 Oct 2025 14:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jKB56IW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJe63nc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F99261B9C;
-	Mon, 13 Oct 2025 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA4F307AE1;
+	Mon, 13 Oct 2025 14:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368546; cv=none; b=aPnoZXoF+YarmUh464yj/SF1Oy6VfvHzP/jMUmsQ/2IfRi/XjMPKXp6sqJPvuTasyemgmjfmFQN0PnxUkETbSeYbz0Tj7NRd82HJ1370D6MyBSAlTjpN0zDtL/U+LYoHrq2DSWX8FgL49uL7YOKzyPTaI2J1MWk1qEO2W7AzWDs=
+	t=1760367315; cv=none; b=JazyjUGlUWYXiwJOQeSPs9yeCAVboJ9TaVojWI6OCTcWcnEWR16G7+pnr9/8IQjyn6UmeX9x2QCIX9J0STyEruL+nlSV0Mam+hW24qhuiIJJxcC4/ss/SfjN6TyMP5qUwSXpOLB8SXOHjVVDFP0lJSzX6eUqvqpGwJhJ/g/YUiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368546; c=relaxed/simple;
-	bh=WkOET0Fr4I9tLMOyiOUkb2cNbzMi7gX3uc8/TcMdHLQ=;
+	s=arc-20240116; t=1760367315; c=relaxed/simple;
+	bh=LVUuu9mY8N3vRN0eXhqweO0C/WhPxOqMr22JzvR4BOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQ4IpnNm+HGDlaI84QzmRcKXQah6ygakVHzYfmIIyFU2R4wl4s5JKg/t9lP9dYhMHnGVEs42hF5n0lt+CVVovA3R8sMT34q7dkEcyu3BoNLg9/yXbhSf9/0Feu+lsWV4qw3Lxl+10I2K0YCRo+rAtqfzueTdU0RCYj/w5nB0dq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jKB56IW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD91C116C6;
-	Mon, 13 Oct 2025 15:15:45 +0000 (UTC)
+	 MIME-Version; b=FYo80VA6dBA/BvRs3lVSnr8/jqIHxy3hSfZ+Ucxr0biZmp3xkXqZ4bHRS0Vkjmr4llGJ39kCw9lDVpzaf+BN/vLeNGufDCIMsjYqwadzQ6deGZyBiv4qTcn7mjtWY0TlLO707C64zjuEuSauig23125U5jbSayQBTGF0rYypVuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJe63nc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF54C4CEE7;
+	Mon, 13 Oct 2025 14:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368546;
-	bh=WkOET0Fr4I9tLMOyiOUkb2cNbzMi7gX3uc8/TcMdHLQ=;
+	s=korg; t=1760367315;
+	bh=LVUuu9mY8N3vRN0eXhqweO0C/WhPxOqMr22JzvR4BOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jKB56IWiB5siHe/nTmfLukfqvkgfwUQl7Jn0qD8DZJru9zc1g666pToYDdDGxHUG
-	 qM/f+V+IjnnD/mTPYeNgkHSQmGphgPKVOpFY2VGceyJZXb/aPANL6Y/Ii4zPsyAPpo
-	 DslqSxdXjksIF3SHUFVJ88zXgwSgU7U+k+kr/038=
+	b=cJe63nc4ObyGpgUhouCh72ubjyjalAocqKY8g0rtuvzGRsWvTUqqUN/uSjaSxGTY8
+	 fk0LtFC6hRIi/ja01ENWB9XW6xnDfCX7RcwW9euEOXXe2hGe25AOD6TRoSpikwX+AJ
+	 6fLXO/oZEnsapePOWHluodKil9vL0dJfGmNzRlPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	Bernard Metzler <bernard.metzler@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 198/262] RDMA/siw: Always report immediate post SQ errors
+Subject: [PATCH 6.1 167/196] net: dlink: handle copy_thresh allocation failure
 Date: Mon, 13 Oct 2025 16:45:40 +0200
-Message-ID: <20251013144333.377920363@linuxfoundation.org>
+Message-ID: <20251013144320.739072918@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Metzler <bernard.metzler@linux.dev>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-[ Upstream commit fdd0fe94d68649322e391c5c27dd9f436b4e955e ]
+[ Upstream commit 8169a6011c5fecc6cb1c3654c541c567d3318de8 ]
 
-In siw_post_send(), any immediate error encountered during processing of
-the work request list must be reported to the caller, even if previous
-work requests in that list were just accepted and added to the send queue.
+The driver did not handle failure of `netdev_alloc_skb_ip_align()`.
+If the allocation failed, dereferencing `skb->protocol` could lead to
+a NULL pointer dereference.
 
-Not reporting those errors confuses the caller, which would wait
-indefinitely for the failing and potentially subsequently aborted work
-requests completion.
+This patch tries to allocate `skb`. If the allocation fails, it falls
+back to the normal path.
 
-This fixes a case where immediate errors were overwritten by subsequent
-code in siw_post_send().
-
-Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
-Link: https://patch.msgid.link/r/20250923144536.103825-1-bernard.metzler@linux.dev
-Suggested-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Bernard Metzler <bernard.metzler@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Tested-on: D-Link DGE-550T Rev-A3
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250928190124.1156-1-yyyynoom@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_verbs.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/dlink/dl2k.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
-index 7ca0297d68a4a..d0c0cde09f118 100644
---- a/drivers/infiniband/sw/siw/siw_verbs.c
-+++ b/drivers/infiniband/sw/siw/siw_verbs.c
-@@ -773,7 +773,7 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	struct siw_wqe *wqe = tx_wqe(qp);
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 2acb63b547c35..bf58181589bf2 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -956,15 +956,18 @@ receive_packet (struct net_device *dev)
+ 		} else {
+ 			struct sk_buff *skb;
  
- 	unsigned long flags;
--	int rv = 0;
-+	int rv = 0, imm_err = 0;
- 
- 	if (wr && !rdma_is_kernel_res(&qp->base_qp.res)) {
- 		siw_dbg_qp(qp, "wr must be empty for user mapped sq\n");
-@@ -959,9 +959,17 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	 * Send directly if SQ processing is not in progress.
- 	 * Eventual immediate errors (rv < 0) do not affect the involved
- 	 * RI resources (Verbs, 8.3.1) and thus do not prevent from SQ
--	 * processing, if new work is already pending. But rv must be passed
--	 * to caller.
-+	 * processing, if new work is already pending. But rv and pointer
-+	 * to failed work request must be passed to caller.
- 	 */
-+	if (unlikely(rv < 0)) {
-+		/*
-+		 * Immediate error
-+		 */
-+		siw_dbg_qp(qp, "Immediate error %d\n", rv);
-+		imm_err = rv;
-+		*bad_wr = wr;
-+	}
- 	if (wqe->wr_status != SIW_WR_IDLE) {
- 		spin_unlock_irqrestore(&qp->sq_lock, flags);
- 		goto skip_direct_sending;
-@@ -986,15 +994,10 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 
- 	up_read(&qp->state_lock);
- 
--	if (rv >= 0)
--		return 0;
--	/*
--	 * Immediate error
--	 */
--	siw_dbg_qp(qp, "error %d\n", rv);
-+	if (unlikely(imm_err))
-+		return imm_err;
- 
--	*bad_wr = wr;
--	return rv;
-+	return (rv >= 0) ? 0 : rv;
- }
- 
- /*
++			skb = NULL;
+ 			/* Small skbuffs for short packets */
+-			if (pkt_len > copy_thresh) {
++			if (pkt_len <= copy_thresh)
++				skb = netdev_alloc_skb_ip_align(dev, pkt_len);
++			if (!skb) {
+ 				dma_unmap_single(&np->pdev->dev,
+ 						 desc_to_dma(desc),
+ 						 np->rx_buf_sz,
+ 						 DMA_FROM_DEVICE);
+ 				skb_put (skb = np->rx_skbuff[entry], pkt_len);
+ 				np->rx_skbuff[entry] = NULL;
+-			} else if ((skb = netdev_alloc_skb_ip_align(dev, pkt_len))) {
++			} else {
+ 				dma_sync_single_for_cpu(&np->pdev->dev,
+ 							desc_to_dma(desc),
+ 							np->rx_buf_sz,
 -- 
 2.51.0
 
