@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D791BD40E6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD17BBD4015
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F1C89504A1F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4673B402EC5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AA73093D8;
-	Mon, 13 Oct 2025 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8588A296BBC;
+	Mon, 13 Oct 2025 14:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikrhjKAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cua2fUT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A912A20125F;
-	Mon, 13 Oct 2025 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424C620125F;
+	Mon, 13 Oct 2025 14:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367525; cv=none; b=iKM0HiMVMYY7YHILNVarVrzOePKWEjpZv7ip1zvH10cvpBQzTqAucPFnAPFv3ihYxHgnArvr3/v7j1hRk2GxT5E9xKkz9fgvzpqSj+mxaqAsaEHCwOLPqRGaSbl8PF9fq3EgLmi/40JwdfouCLfsvBbONDtY+dI7Ysbg2FJHTAU=
+	t=1760367009; cv=none; b=V8TAA2y5lF/+Y1RmgZif7GwyxfOv93l6ySMK2fkGwi+Iq1sr3nvPt3kqI3AgSL0zXt/onnKIKSb15ztcMbLsFuvzAs+DQFlA618+tsLBMLix/FIvCTkwlHwG4lRe0sIBSkBf7Lxi0oq6gbhYRtEXMDW4hRSPinmfLF4XbqhbKZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367525; c=relaxed/simple;
-	bh=VJsAv2zgDDaRV4mfkwKEzkZlAxZ6V3oFjH4anLdMGvk=;
+	s=arc-20240116; t=1760367009; c=relaxed/simple;
+	bh=DwWMSEfQ5di+7rGEe4TpdOXWGE+6oeYyIE9k13HIXCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvpVPMpF6H0tDRmQFEAxHbhboJBN7PjZ9Hd5H90DA2MXABYxy9D9+7oY8R5hllD0eLgrqyzF0Ge5a1jLSaSMQQp/g/URpHHkUHAw4bcSla2EgfOhnrVcLMAmytwQnzFqeo+Z+MZZ+Mp7iU5zkMqzaSvIgwd7ei7fcLpJInaqYnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikrhjKAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2696AC4CEE7;
-	Mon, 13 Oct 2025 14:58:44 +0000 (UTC)
+	 MIME-Version; b=dMXGq3BX6pR8UezpPVLzpySIoZextMyZQJ7ABOMn5BMPGw571hUkSPGlUFmkGU6kvJ6kDxZwENSLDr2C1wSidMfU6iyouJJd3CLh3fRzaTr6bpCUcyEpv1x9/BmzK0QaZS79DBZ7rPWADqGKlWzOymVnyqKNdAeUhFrAWy3b+a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cua2fUT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DB1C4CEFE;
+	Mon, 13 Oct 2025 14:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367525;
-	bh=VJsAv2zgDDaRV4mfkwKEzkZlAxZ6V3oFjH4anLdMGvk=;
+	s=korg; t=1760367009;
+	bh=DwWMSEfQ5di+7rGEe4TpdOXWGE+6oeYyIE9k13HIXCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikrhjKAhKfI4DsKJjBOOX+29/+P/MMq+XwIC4OfzaVqepw630MRWKhbr6BUvx4RTN
-	 qi5P688CzZujFStePOjNBCqYw4hTO7PSJX1sNu1TfvXP4gqeQ/m6SlzkVgozlUPCTB
-	 O6TDRzSZiemCwnbZpEt+LekfJNQBsaENeWW5swbQ=
+	b=Cua2fUT6WRIOdX5wskoAH0EdMawBVnhFT6taT6mqGUeQDGP+EpiLCDcBchyKxAYNR
+	 2KgPKlZSebdEO1iSK8NNHRfy8ShFyoc7rBskIPyXdBb4JYhC8S6leV07sZ5+XzuEtQ
+	 Ra6ytnNUVRT6k4G6rQRQNxcId3I6Yw2fTOYIdZVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/196] arm64: dts: mediatek: mt6795-xperia-m5: Fix mmc0 latch-ck value
+Subject: [PATCH 6.1 061/196] soc: qcom: rpmh-rsc: Unconditionally clear _TRIGGER bit for TCS
 Date: Mon, 13 Oct 2025 16:43:54 +0200
-Message-ID: <20251013144316.762214193@linuxfoundation.org>
+Message-ID: <20251013144316.788388789@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
 
-[ Upstream commit 236681fb64102f25ed11df55999e6985c1bc2f7d ]
+[ Upstream commit f87412d18edb5b8393eb8cb1c2d4a54f90185a21 ]
 
-Change the latch-ck value from 0x14 to 4: as only bits [0-3] are
-actually used, the final value that gets written to the register
-field for DAT_LATCH_CK_SEL is just 0x4.
+Unconditionally clear the TCS_AMC_MODE_TRIGGER bit when a
+transaction completes. Previously this bit was only cleared when
+a wake TCS was borrowed as an AMC TCS but not for dedicated
+AMC TCS. Leaving this bit set for AMC TCS and entering deeper low
+power modes can generate a false completion IRQ.
 
-This also fixes dtbs_check warnings.
+Prevent this scenario by always clearing the TCS_AMC_MODE_TRIGGER
+bit upon receiving a completion IRQ.
 
-Fixes: 5a65dcccf483 ("arm64: dts: mediatek: mt6795-xperia-m5: Add eMMC, MicroSD slot, SDIO")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250724083914.61351-21-angelogioacchino.delregno@collabora.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Fixes: 15b3bf61b8d4 ("soc: qcom: rpmh-rsc: Clear active mode configuration for wake TCS")
+Signed-off-by: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250825-rpmh_rsc_change-v1-1-138202c31bf6@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/rpmh-rsc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
-index b5746e6d0b15a..110fae4ec11c9 100644
---- a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
-@@ -136,7 +136,7 @@ proximity@48 {
+diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
+index ff2b9eb9f669f..5797d95705417 100644
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -415,13 +415,10 @@ static irqreturn_t tcs_tx_done(int irq, void *p)
  
- &mmc0 {
- 	/* eMMC controller */
--	mediatek,latch-ck = <0x14>; /* hs400 */
-+	mediatek,latch-ck = <4>; /* hs400 */
- 	mediatek,hs200-cmd-int-delay = <1>;
- 	mediatek,hs400-cmd-int-delay = <1>;
- 	mediatek,hs400-ds-dly3 = <0x1a>;
+ 		trace_rpmh_tx_done(drv, i, req, err);
+ 
+-		/*
+-		 * If wake tcs was re-purposed for sending active
+-		 * votes, clear AMC trigger & enable modes and
++		/* Clear AMC trigger & enable modes and
+ 		 * disable interrupt for this TCS
+ 		 */
+-		if (!drv->tcs[ACTIVE_TCS].num_tcs)
+-			__tcs_set_trigger(drv, i, false);
++		__tcs_set_trigger(drv, i, false);
+ skip:
+ 		/* Reclaim the TCS */
+ 		write_tcs_reg(drv, RSC_DRV_CMD_ENABLE, i, 0);
 -- 
 2.51.0
 
