@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-185452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B796BD4C33
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:07:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29A6BD548B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EC9CB35097D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 045213E734C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196A130E0D0;
-	Mon, 13 Oct 2025 15:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B368315D2A;
+	Mon, 13 Oct 2025 15:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1fqxpTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBVI2Spg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C624228D84F;
-	Mon, 13 Oct 2025 15:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA793320393;
+	Mon, 13 Oct 2025 15:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370335; cv=none; b=injGG4mXftgpURatLYzjlbYrdvhJ+Fd7Pw+TFUUxwqDdvwctx5tSIhReXpNqJIgFPVkgSnxVLdz3O4nRAiHCQhHwcaawAYcvSAbR47UBcXW3ZUx64Bu2xJnGu4Hq7bJr7TupaXaRlrAESYVdpzRf/u9s+czy4MvbxQwqzhivbL8=
+	t=1760370239; cv=none; b=QA8a5/CKO8LpKsvDTdZBoeAyeVnf5mmMD4+KLiWwGsZpGw+uOYr10fbU+pHvLTV9AL3jXWfq2i1+OiDqgWZ0n9sP5yK8NdQ0OQDHDIUL3neP6afUUw64IQxndrQ5fl65yPh1gmB+R2QO7Scn+f1Npx1xFBbR42m2FXW3/P01s/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370335; c=relaxed/simple;
-	bh=trcywAFgWipGX9BpLjGd1txsBufWPpa88//2OYdhD4g=;
+	s=arc-20240116; t=1760370239; c=relaxed/simple;
+	bh=3AWumxtydUPH+tg9BQxpwgXtcxu2jWfEQRnUXnDQ0V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdtJ7ajCFn7DmtjDT4210xN87uwD5aOzdRXhCYUN1je6cUgxzCK7+1MyVsHZzJ9v2gnNgfAIwd8eCeCxZHIZUMSYu80BgI3kw6CYy8tq/zW6RcYoCpfx3Vd1As0/90sTCc9Kc2RVHpR0WmFwZYpgu0LjbImdFVavMe3eyPszErg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1fqxpTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1134C4CEE7;
-	Mon, 13 Oct 2025 15:45:34 +0000 (UTC)
+	 MIME-Version; b=jWY8n7udH1DOGCl+HaAPoLq3fEb+wp6AQYZqkgTl1cfDp2Suwdq8YVW7ri6X+ihCW9UKx3TSQpLyU914DPqGe7Zz7vWHybx7S8HkXjZxMNVWYx3pz3UYXRl8fJozP/lv2asGtyElGOUSag2S5YynBo3+iTkF9kdI0ag/Lg0vGl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBVI2Spg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8CDC116B1;
+	Mon, 13 Oct 2025 15:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370335;
-	bh=trcywAFgWipGX9BpLjGd1txsBufWPpa88//2OYdhD4g=;
+	s=korg; t=1760370239;
+	bh=3AWumxtydUPH+tg9BQxpwgXtcxu2jWfEQRnUXnDQ0V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1fqxpTU2Rd0rktlmcdvagQPvYnvXIvKWYIKhHZetwHbdJAAmNkGAcFPlviNRdk0x
-	 hVVGXrzdcT0pybPjjDpJG3p7G1r67ChlyH2+Iky/RhUzfaygAv4WvpNk+xvFOXR/kj
-	 7yMmHfPrMGHjR0QqhcKlhTKihOKkwABxE4NwToJY=
+	b=dBVI2Spg3PcP5iIwhgqvI8SYWWvw+F59ZWBq/HltJ9HdP2TS0IRa4ejkrfcCcLsGF
+	 spTtZm0gLi2qKF2h2Et/Lo4dp3bGsht0LWJq4kC6/FFXNVpw0mcwtZWsN1jD/FBS+o
+	 pHbhqIYRpIbNqcp0p1fmApFzJ6gzve3c5TzFyQiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vincent Li <vincent.mc.li@gmail.com>,
 	Hengqi Chen <hengqi.chen@gmail.com>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 527/563] LoongArch: BPF: Make error handling robust in arch_prepare_bpf_trampoline()
-Date: Mon, 13 Oct 2025 16:46:28 +0200
-Message-ID: <20251013144430.402707695@linuxfoundation.org>
+Subject: [PATCH 6.17 528/563] LoongArch: BPF: Remove duplicated bpf_flush_icache()
+Date: Mon, 13 Oct 2025 16:46:29 +0200
+Message-ID: <20251013144430.438194109@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,10 +68,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Hengqi Chen <hengqi.chen@gmail.com>
 
-commit de2c0b7788648850b68b75f7cc8698b2749dd31e upstream.
+commit b0f50dc09bf008b2e581d5e6ad570d325725881c upstream.
 
-Bail out instead of trying to perform a bpf_arch_text_copy() if
-__arch_prepare_bpf_trampoline() failed.
+The bpf_flush_icache() is called by bpf_arch_text_copy() already. So
+remove it. This has been done in arm64 and riscv.
 
 Cc: stable@vger.kernel.org
 Tested-by: Vincent Li <vincent.mc.li@gmail.com>
@@ -79,23 +79,19 @@ Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/net/bpf_jit.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/loongarch/net/bpf_jit.c |    1 -
+ 1 file changed, 1 deletion(-)
 
 --- a/arch/loongarch/net/bpf_jit.c
 +++ b/arch/loongarch/net/bpf_jit.c
-@@ -1756,7 +1756,10 @@ int arch_prepare_bpf_trampoline(struct b
- 
- 	jit_fill_hole(image, (unsigned int)(ro_image_end - ro_image));
- 	ret = __arch_prepare_bpf_trampoline(&ctx, im, m, tlinks, func_addr, flags);
--	if (ret > 0 && validate_code(&ctx) < 0) {
-+	if (ret < 0)
-+		goto out;
-+
-+	if (validate_code(&ctx) < 0) {
- 		ret = -EINVAL;
+@@ -1770,7 +1770,6 @@ int arch_prepare_bpf_trampoline(struct b
  		goto out;
  	}
+ 
+-	bpf_flush_icache(ro_image, ro_image_end);
+ out:
+ 	kvfree(image);
+ 	return ret < 0 ? ret : size;
 
 
 
