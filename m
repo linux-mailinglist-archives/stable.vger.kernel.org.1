@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1338BD44E3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14030BD42BE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82DAA4FFE97
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A31131889C68
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3FD309DA4;
-	Mon, 13 Oct 2025 14:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB63B3126BC;
+	Mon, 13 Oct 2025 15:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4VCw27x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQ86XmvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EFA3081CC;
-	Mon, 13 Oct 2025 14:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DB33126B6;
+	Mon, 13 Oct 2025 15:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367520; cv=none; b=euevnnCw8DihoxHXW1EquJNaQSNGnN8jP7VlKaoYTdCIS4zjsIDcV4sTBlZ+MVP2zf8giVp0Qd6xiR4TtbWvkpCcShQpbpZVRYCIxILplZae/zcCJD3911T0dZB9QzD4i7l+AxQygATuVHix9Z3k2wYaCVtsmWbKZzLDpYD3BbA=
+	t=1760368237; cv=none; b=Yf8tMNpwa92QGrsZWxQd5Ckdu0AZmQzDcHiuRoQQURNtvI/SQFbAHD7tU8/+OACKLD2EREiQCA0olEKq59YYrWEwKk3a5YF5raZs2tQj7MWexYgEeDvUIci9sbEsBAOXCuLNxr+6BY4mLeqvYdKpe4RwwCXhTGQJ9iihggq+lKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367520; c=relaxed/simple;
-	bh=ROcEf038plncaEgmhp3k/rT53Uj4lxj8PUkmCW5h7Bs=;
+	s=arc-20240116; t=1760368237; c=relaxed/simple;
+	bh=HWOvGk1DdFAV3O+hkYRjoq8WSdNZJ3WntlCPHx4BEF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DO0hvoF/F4eSEZrHyNE75l06ULczKe63eGm2wWtHR+pEXB9yffy5DsfdkWPndK3SkIrPv2NHueKga1pqH2UVU55dQJg4JV9IXdLVopJX+rhm5uLo6tblMDS49mKSkTuQSZdbDIiWLpvariQf6C7OigU5tCoragtDIeofehmd4Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4VCw27x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A4CC4CEE7;
-	Mon, 13 Oct 2025 14:58:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cyrJKESF9UBThLbnJdXIs1AFks+Wgu43Dl5Mz4fNNDoe7ULf8da3X0Ub/O1ENjephRvBrBWaP15rrlZw5+gClTdwXRyDtADKiB62YBiYVNpYcLuxl7tGs6rbOIlSRlvPdaL92K6XKCkf3cXuUuqGT/UU5bMfBU5iPCynenXC+Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQ86XmvN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72C3C4CEE7;
+	Mon, 13 Oct 2025 15:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367520;
-	bh=ROcEf038plncaEgmhp3k/rT53Uj4lxj8PUkmCW5h7Bs=;
+	s=korg; t=1760368237;
+	bh=HWOvGk1DdFAV3O+hkYRjoq8WSdNZJ3WntlCPHx4BEF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4VCw27xJR7N4vl2ehvJ+myxWkQb6YZrqpmw4rn4SmIlkc/mVbxFfmv77Ld2tsTEa
-	 y8YfEJKHm+EVHOlKSKMnVdRsMoVBUDqF/7GSzVsIpcCFT859a3sv1oqKHOkoyc+FB5
-	 wTbxGe3ZjI6dbp7tXrRnFf6QlxrcYhh1D9DLZhTU=
+	b=EQ86XmvN6Mwd3iLH+VKHGD/S1ng08Qrmbu00jlLj/dd+pN0/VT2KKF1gK4jMZNVbH
+	 ufmAjqgSca2i0GV0BezwnA+v/bdTV5naEk9WsXgNMmr0H+3lOIRIjsMFMGepMYw5kc
+	 BcgLRJng6D2jxaTVMScdJr7MNjMKetofoHn9huxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Brahmajit Das <listout@listout.xyz>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/196] cpuidle: qcom-spm: fix device and OF node leaks at probe
-Date: Mon, 13 Oct 2025 16:43:52 +0200
-Message-ID: <20251013144316.688679306@linuxfoundation.org>
+Subject: [PATCH 6.12 091/262] drm/radeon/r600_cs: clean up of dead code in r600_cs
+Date: Mon, 13 Oct 2025 16:43:53 +0200
+Message-ID: <20251013144329.405900176@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Brahmajit Das <listout@listout.xyz>
 
-[ Upstream commit cdc06f912670c8c199d5fa9e78b64b7ed8e871d0 ]
+[ Upstream commit 260dcf5b06d519bcf27a5dfdb5c626821a55c170 ]
 
-Make sure to drop the reference to the saw device taken by
-of_find_device_by_node() after retrieving its driver data during
-probe().
+GCC 16 enables -Werror=unused-but-set-variable= which results in build
+error with the following message.
 
-Also drop the reference to the CPU node sooner to avoid leaking it in
-case there is no saw node or device.
+drivers/gpu/drm/radeon/r600_cs.c: In function ‘r600_texture_size’:
+drivers/gpu/drm/radeon/r600_cs.c:1411:29: error: variable ‘level’ set but not used [-Werror=unused-but-set-variable=]
+ 1411 |         unsigned offset, i, level;
+      |                             ^~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:287: drivers/gpu/drm/radeon/r600_cs.o] Error 1
 
-Fixes: 60f3692b5f0b ("cpuidle: qcom_spm: Detach state machine from main SPM handling")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+level although is set, but in never used in the function
+r600_texture_size. Thus resulting in dead code and this error getting
+triggered.
+
+Fixes: 60b212f8ddcd ("drm/radeon: overhaul texture checking. (v3)")
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle-qcom-spm.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
-index 1fc9968eae199..b6b06a510fd86 100644
---- a/drivers/cpuidle/cpuidle-qcom-spm.c
-+++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-@@ -96,20 +96,23 @@ static int spm_cpuidle_register(struct device *cpuidle_dev, int cpu)
- 		return -ENODEV;
- 
- 	saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
-+	of_node_put(cpu_node);
- 	if (!saw_node)
- 		return -ENODEV;
- 
- 	pdev = of_find_device_by_node(saw_node);
- 	of_node_put(saw_node);
--	of_node_put(cpu_node);
- 	if (!pdev)
- 		return -ENODEV;
- 
- 	data = devm_kzalloc(cpuidle_dev, sizeof(*data), GFP_KERNEL);
--	if (!data)
-+	if (!data) {
-+		put_device(&pdev->dev);
- 		return -ENOMEM;
-+	}
- 
- 	data->spm = dev_get_drvdata(&pdev->dev);
-+	put_device(&pdev->dev);
- 	if (!data->spm)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
+index ac77d1246b945..811265648a582 100644
+--- a/drivers/gpu/drm/radeon/r600_cs.c
++++ b/drivers/gpu/drm/radeon/r600_cs.c
+@@ -1408,7 +1408,7 @@ static void r600_texture_size(unsigned nfaces, unsigned blevel, unsigned llevel,
+ 			      unsigned block_align, unsigned height_align, unsigned base_align,
+ 			      unsigned *l0_size, unsigned *mipmap_size)
+ {
+-	unsigned offset, i, level;
++	unsigned offset, i;
+ 	unsigned width, height, depth, size;
+ 	unsigned blocksize;
+ 	unsigned nbx, nby;
+@@ -1420,7 +1420,7 @@ static void r600_texture_size(unsigned nfaces, unsigned blevel, unsigned llevel,
+ 	w0 = r600_mip_minify(w0, 0);
+ 	h0 = r600_mip_minify(h0, 0);
+ 	d0 = r600_mip_minify(d0, 0);
+-	for(i = 0, offset = 0, level = blevel; i < nlevels; i++, level++) {
++	for (i = 0, offset = 0; i < nlevels; i++) {
+ 		width = r600_mip_minify(w0, i);
+ 		nbx = r600_fmt_get_nblocksx(format, width);
  
 -- 
 2.51.0
