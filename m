@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6ABBD3FCE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E382BD426D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D215918A3881
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4B32188B78D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BA430E0D4;
-	Mon, 13 Oct 2025 14:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9A0311942;
+	Mon, 13 Oct 2025 15:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbFVg9MW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9iknPrw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DE13081B0;
-	Mon, 13 Oct 2025 14:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7ED3115BC;
+	Mon, 13 Oct 2025 15:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367434; cv=none; b=OExNRXK33ikh7rjRUyiczgTgEpovljcVUX0zQ6lX9iwOFwWqPkulcO+Hx8yIlx236zWQFrkOME6naKPjGpcS18AOr0ProuS094E2FpI3M4RvDQbypKoad+nFJ6pPZmASdf4qRXfRI2yOrvhQUiouSL4/dqEWTZiujYetSMJPhn4=
+	t=1760368147; cv=none; b=N9KoPJqOtyHuqVzDGNUWwd5T426zbGMj4u4yk9tk0d3yjgz2PZ8Cc+VGSR4ZtG0bbi3MEti8MlEVIZheaY5Z9pGb94G8PzaoqAXrOEs47WL4iuLfsQz1wMc5b7nkPQIZMgTl23Z5/azMA+ZJ6ZDoE+pJDPV0U53MLSIzz9bEhSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367434; c=relaxed/simple;
-	bh=/3wuewW+j1WqSHkuPe+CE4oqRJxAVkL5B8f5Cfb1XgY=;
+	s=arc-20240116; t=1760368147; c=relaxed/simple;
+	bh=NVYmvdxbTY/acpC62Z9lQDPv0WRXWupIM6/nwmJUew4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BZQS6AGjlmWzhaZsAyuVcDlwL7tDempUG6hgxlPHd1JUi3pMtsfMPfIUfHce0/H4odSGE9M10HYw1FZeRfTcIgDClg9wIL5k4ccMEkJ1Ws2luAGblumyIHwgWOBinwF+ZaH36gSQoD8owMIcNM0JqvC9SZb4e6zn0WW5Ff0EGi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbFVg9MW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F3CC4CEE7;
-	Mon, 13 Oct 2025 14:57:13 +0000 (UTC)
+	 MIME-Version; b=INlOMQKso7yqyM0BsDx8oxpMpp/mlW3jRm7awkSUcuRaeX6sg2zhiym+M0l9SmCsjGscUBJSp06ttJMoKh7NaXwkamQdj5XiloYiUZ+x0S4oRq6KxVLBemDNlV6JqGKddNJSPVg8TreRYpNV/xO8dfKING3A9liyyaQEHjb/LJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9iknPrw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE60C4CEE7;
+	Mon, 13 Oct 2025 15:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367434;
-	bh=/3wuewW+j1WqSHkuPe+CE4oqRJxAVkL5B8f5Cfb1XgY=;
+	s=korg; t=1760368147;
+	bh=NVYmvdxbTY/acpC62Z9lQDPv0WRXWupIM6/nwmJUew4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbFVg9MWg1WbJGWm13qh5eIz4vj+9EzSFTowangohEe+pj6EnxVnlgSiuZWzzy/7s
-	 oho2FifTWxcsGCaDKk/18gOtV35BciJ44K1UNhk8pObZg0Dk6eUd+e/B1EBfgPOH31
-	 a44hM2PNwJg9TecfJSMN7H7msV9D6U9yoepwdLXs=
+	b=I9iknPrwX6N3BxXuNPwdNL1sQESwrk8TN/MeWYnvh8/JsVHmfGke3f08OXh5ouvlR
+	 KRRGpPbr+7WFaDSc3k/l/mdQPu+xrXtQEv81zBq/7Yf5HkiV+SOmjUEZIpQeC/UFjp
+	 2XriIIuV6gz3NWqDboIhewtzifu7imFetl5+2QWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Fei Shao <fshao@chromium.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/196] arm64: dts: renesas: rzg2lc-smarc: Disable CAN-FD channel0
+Subject: [PATCH 6.12 060/262] arm64: dts: mediatek: mt6331: Fix pmic, regulators, rtc, keys node names
 Date: Mon, 13 Oct 2025 16:43:22 +0200
-Message-ID: <20251013144315.603525369@linuxfoundation.org>
+Message-ID: <20251013144328.290480622@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit ae014fbc99c7f986ee785233e7a5336834e39af4 ]
+[ Upstream commit 98967109c9c0e2de4140827628c63f96314099ab ]
 
-On RZ/G2LC SMARC EVK, CAN-FD channel0 is not populated, and currently we
-are deleting a wrong and nonexistent node.  Fixing the wrong node would
-invoke a dtb warning message, as channel0 is a required property.
-Disable CAN-FD channel0 instead of deleting the node.
+The node names for "pmic", "regulators", "rtc", and "keys" are
+dictated by the PMIC MFD binding: change those to adhere to it.
 
-Fixes: 46da632734a5 ("arm64: dts: renesas: rzg2lc-smarc: Enable CANFD channel 1")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250801121959.267424-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: aef783f3e0ca ("arm64: dts: mediatek: Add MT6331 PMIC devicetree")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20250724083914.61351-17-angelogioacchino.delregno@collabora.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt6331.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi b/arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi
-index 83fce96a25752..0234dbe95413c 100644
---- a/arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi
-+++ b/arch/arm64/boot/dts/renesas/rzg2lc-smarc.dtsi
-@@ -38,7 +38,10 @@ hdmi_con_out: endpoint {
- #if (SW_SCIF_CAN || SW_RSPI_CAN)
- &canfd {
- 	pinctrl-0 = <&can1_pins>;
--	/delete-node/ channel@0;
-+
-+	channel0 {
-+		status = "disabled";
-+	};
- };
- #else
- &canfd {
+diff --git a/arch/arm64/boot/dts/mediatek/mt6331.dtsi b/arch/arm64/boot/dts/mediatek/mt6331.dtsi
+index d89858c73ab1b..243afbffa21fd 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6331.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt6331.dtsi
+@@ -6,12 +6,12 @@
+ #include <dt-bindings/input/input.h>
+ 
+ &pwrap {
+-	pmic: mt6331 {
++	pmic: pmic {
+ 		compatible = "mediatek,mt6331";
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
+ 
+-		mt6331regulator: mt6331regulator {
++		mt6331regulator: regulators {
+ 			compatible = "mediatek,mt6331-regulator";
+ 
+ 			mt6331_vdvfs11_reg: buck-vdvfs11 {
+@@ -258,7 +258,7 @@ mt6331_vrtc_reg: ldo-vrtc {
+ 			};
+ 
+ 			mt6331_vdig18_reg: ldo-vdig18 {
+-				regulator-name = "dvdd18_dig";
++				regulator-name = "vdig18";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+ 				regulator-ramp-delay = <0>;
+@@ -266,11 +266,11 @@ mt6331_vdig18_reg: ldo-vdig18 {
+ 			};
+ 		};
+ 
+-		mt6331rtc: mt6331rtc {
++		mt6331rtc: rtc {
+ 			compatible = "mediatek,mt6331-rtc";
+ 		};
+ 
+-		mt6331keys: mt6331keys {
++		mt6331keys: keys {
+ 			compatible = "mediatek,mt6331-keys";
+ 			power {
+ 				linux,keycodes = <KEY_POWER>;
 -- 
 2.51.0
 
