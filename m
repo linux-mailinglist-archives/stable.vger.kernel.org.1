@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-184685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E382BD426D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDB9BD3D3E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:02:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4B32188B78D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6738040097A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9A0311942;
-	Mon, 13 Oct 2025 15:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14E430C61C;
+	Mon, 13 Oct 2025 14:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9iknPrw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXAzFb43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7ED3115BC;
-	Mon, 13 Oct 2025 15:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE7830BF6B;
+	Mon, 13 Oct 2025 14:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368147; cv=none; b=N9KoPJqOtyHuqVzDGNUWwd5T426zbGMj4u4yk9tk0d3yjgz2PZ8Cc+VGSR4ZtG0bbi3MEti8MlEVIZheaY5Z9pGb94G8PzaoqAXrOEs47WL4iuLfsQz1wMc5b7nkPQIZMgTl23Z5/azMA+ZJ6ZDoE+pJDPV0U53MLSIzz9bEhSk=
+	t=1760366916; cv=none; b=LcDKBa/KOlGeQUAt1uO4Mxe57T0dYGqANfBd+H/yiHIYi1KXw7t7puxVzilNmi6vJ06qllhz/DJI1gG0HLlRVq73S2/Rj/UozF06/QrscIJQTnsmQSVFPENcvNAJUvGCaFHBUH72xrPxAqK3xG3zg5tSldXRZ6iFC1gCogNNPjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368147; c=relaxed/simple;
-	bh=NVYmvdxbTY/acpC62Z9lQDPv0WRXWupIM6/nwmJUew4=;
+	s=arc-20240116; t=1760366916; c=relaxed/simple;
+	bh=eyux3/Y3XiIQDUcNziIS9zhvsCxaeEDkpaYNZ994HWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INlOMQKso7yqyM0BsDx8oxpMpp/mlW3jRm7awkSUcuRaeX6sg2zhiym+M0l9SmCsjGscUBJSp06ttJMoKh7NaXwkamQdj5XiloYiUZ+x0S4oRq6KxVLBemDNlV6JqGKddNJSPVg8TreRYpNV/xO8dfKING3A9liyyaQEHjb/LJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9iknPrw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE60C4CEE7;
-	Mon, 13 Oct 2025 15:09:06 +0000 (UTC)
+	 MIME-Version; b=JNF0h6bBqeIZQErMY1ES9ZsfvJ11huw86NmTA12BIsQGU4Ga7enx7Vwyd4iC4t5BM6NC4uySye7/MStEu2soFJPyLYupUVwL1bbdPpSomQ6toUZuC99JV0+igZj7vpl4vAESuMnYJWGUFS+KcXWryLRmWO7Z3xZuNqISm4fzrcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXAzFb43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5609C4CEE7;
+	Mon, 13 Oct 2025 14:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368147;
-	bh=NVYmvdxbTY/acpC62Z9lQDPv0WRXWupIM6/nwmJUew4=;
+	s=korg; t=1760366916;
+	bh=eyux3/Y3XiIQDUcNziIS9zhvsCxaeEDkpaYNZ994HWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9iknPrwX6N3BxXuNPwdNL1sQESwrk8TN/MeWYnvh8/JsVHmfGke3f08OXh5ouvlR
-	 KRRGpPbr+7WFaDSc3k/l/mdQPu+xrXtQEv81zBq/7Yf5HkiV+SOmjUEZIpQeC/UFjp
-	 2XriIIuV6gz3NWqDboIhewtzifu7imFetl5+2QWM=
+	b=LXAzFb43PSHSOqujJ8VHOPawHHX/MAdqjnzj/ETL9Az8hLgRM5+KfQHyaCbOf2uz9
+	 qOAgppzruZ/0BYXi126mwdXJf5eqcVdoCpoHoO2LqRvLJlJlHhv1mlU6eb120tJMl5
+	 kIVS8UMbEN3MfmpNHd3kqkJ4HV79ub+Izlh3bwPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Fei Shao <fshao@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/262] arm64: dts: mediatek: mt6331: Fix pmic, regulators, rtc, keys node names
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.1 029/196] minmax.h: remove some #defines that are only expanded once
 Date: Mon, 13 Oct 2025 16:43:22 +0200
-Message-ID: <20251013144328.290480622@linuxfoundation.org>
+Message-ID: <20251013144315.642568838@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +72,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 98967109c9c0e2de4140827628c63f96314099ab ]
+[ Upstream commit 2b97aaf74ed534fb838d09867d09a3ca5d795208 ]
 
-The node names for "pmic", "regulators", "rtc", and "keys" are
-dictated by the PMIC MFD binding: change those to adhere to it.
+The bodies of __signed_type_use() and __unsigned_type_use() are much the
+same size as their names - so put the bodies in the only line that expands
+them.
 
-Fixes: aef783f3e0ca ("arm64: dts: mediatek: Add MT6331 PMIC devicetree")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20250724083914.61351-17-angelogioacchino.delregno@collabora.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Similarly __signed_type() is defined separately for 64bit and then used
+exactly once just below.
+
+Change the test for __signed_type from CONFIG_64BIT to one based on gcc
+defined macros so that the code is valid if it gets used outside of a
+kernel build.
+
+Link: https://lkml.kernel.org/r/9386d1ebb8974fbabbed2635160c3975@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt6331.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/minmax.h |   14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6331.dtsi b/arch/arm64/boot/dts/mediatek/mt6331.dtsi
-index d89858c73ab1b..243afbffa21fd 100644
---- a/arch/arm64/boot/dts/mediatek/mt6331.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6331.dtsi
-@@ -6,12 +6,12 @@
- #include <dt-bindings/input/input.h>
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -46,10 +46,8 @@
+  * comparison, and these expressions only need to be careful to not cause
+  * warnings for pointer use.
+  */
+-#define __signed_type_use(ux) (2 + __is_nonneg(ux))
+-#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
+ #define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
+-	__signed_type_use(ux) : __unsigned_type_use(ux))
++	(2 + __is_nonneg(ux)) : (1 + 2 * (sizeof(ux) < 4)))
  
- &pwrap {
--	pmic: mt6331 {
-+	pmic: pmic {
- 		compatible = "mediatek,mt6331";
- 		interrupt-controller;
- 		#interrupt-cells = <2>;
+ /*
+  * Check whether a signed value is always non-negative.
+@@ -57,7 +55,7 @@
+  * A cast is needed to avoid any warnings from values that aren't signed
+  * integer types (in which case the result doesn't matter).
+  *
+- * On 64-bit any integer or pointer type can safely be cast to 'long'.
++ * On 64-bit any integer or pointer type can safely be cast to 'long long'.
+  * But on 32-bit we need to avoid warnings about casting pointers to integers
+  * of different sizes without truncating 64-bit values so 'long' or 'long long'
+  * must be used depending on the size of the value.
+@@ -66,12 +64,12 @@
+  * them, but we do not use s128 types in the kernel (we do use 'u128',
+  * but they are handled by the !is_signed_type() case).
+  */
+-#ifdef CONFIG_64BIT
+-  #define __signed_type(ux) long
++#if __SIZEOF_POINTER__ == __SIZEOF_LONG_LONG__
++#define __is_nonneg(ux) statically_true((long long)(ux) >= 0)
+ #else
+-  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
++#define __is_nonneg(ux) statically_true( \
++	(typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L)))(ux) >= 0)
+ #endif
+-#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
  
--		mt6331regulator: mt6331regulator {
-+		mt6331regulator: regulators {
- 			compatible = "mediatek,mt6331-regulator";
- 
- 			mt6331_vdvfs11_reg: buck-vdvfs11 {
-@@ -258,7 +258,7 @@ mt6331_vrtc_reg: ldo-vrtc {
- 			};
- 
- 			mt6331_vdig18_reg: ldo-vdig18 {
--				regulator-name = "dvdd18_dig";
-+				regulator-name = "vdig18";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
- 				regulator-ramp-delay = <0>;
-@@ -266,11 +266,11 @@ mt6331_vdig18_reg: ldo-vdig18 {
- 			};
- 		};
- 
--		mt6331rtc: mt6331rtc {
-+		mt6331rtc: rtc {
- 			compatible = "mediatek,mt6331-rtc";
- 		};
- 
--		mt6331keys: mt6331keys {
-+		mt6331keys: keys {
- 			compatible = "mediatek,mt6331-keys";
- 			power {
- 				linux,keycodes = <KEY_POWER>;
--- 
-2.51.0
-
+ #define __types_ok(ux, uy) \
+ 	(__sign_use(ux) & __sign_use(uy))
 
 
 
