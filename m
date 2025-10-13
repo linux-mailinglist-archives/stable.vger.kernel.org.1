@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-184898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233FCBD467C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 451D6BD48EA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C174240202F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB50642129A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E74330BF4B;
-	Mon, 13 Oct 2025 15:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFCC30BB96;
+	Mon, 13 Oct 2025 15:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZcBbIMT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q661xT1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4061A9B46;
-	Mon, 13 Oct 2025 15:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378A6279DC9;
+	Mon, 13 Oct 2025 15:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368752; cv=none; b=VPsYy7UZBVW9BzO/KtBP/BanouL/+ROXBGpxwzOt9IujkpcV0HxD1RqKdYMhr0l/fx3aVtE8OuUvqroEv/mwMGynO0tgMsrouejXYKmqtONs+R6bnTqX8roc7Cf/ATVqT6CPd/rTtHbmauEhrNfu+nyY006SnXFELqajGGg+1oM=
+	t=1760368707; cv=none; b=e4vYEdyyhOhbEoPH90EVjFkija/qze0dHdOpJRO3n2IozSTe0zMm8oB0QZo1CFvBszOYfPfBq4JXKw0deL1b5ybBhLK+JAfWrhgEBuWknyjlqeVq8CJ7fFvM7GSDl7Fu3DjpgZx3cVjxcZmsu0JzhlsrQCpouFcrFmhZHj/GKNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368752; c=relaxed/simple;
-	bh=6RAqLPfosLsFnfTUtjtlL9nUIxjVcHyV/A8Tz4byi2g=;
+	s=arc-20240116; t=1760368707; c=relaxed/simple;
+	bh=Re3nb0bWzHssVecQsjFJKLp1AgjSA/rKXPbeduxtcz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWnzDcSvHY6d16zCfzECmooPunBvW7m/7v1VVnkhYHc38ndNkSd7CumN5OD9/pn/DRpGJAoIKhDUA784gHalll7NMXMJhxMe6AAxQxGmE5IkC5qr6ZXvpNGma7TtbhjXoHITSlGyYArP+kA+FZdd2OPU9DzUPLf8wvGHsH2S0dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZcBbIMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40551C4CEE7;
-	Mon, 13 Oct 2025 15:19:12 +0000 (UTC)
+	 MIME-Version; b=uVCU4/zpRIJOoVgYCtO39TuDpIIwDiYF4ZVwTaKuv1YEyiyk2JwCcL2MstUV7+V4iL0++2BwQW5WT/6WkqO6PHIlUSvUa5u6WyLoKkj5iYl+4hTMuWZngHlEWj0/CRzCFS/dAbvYjUrU4GWbGzNRWPCdOYQuC0Q60y2xUd50TLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q661xT1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0BAC4CEE7;
+	Mon, 13 Oct 2025 15:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368752;
-	bh=6RAqLPfosLsFnfTUtjtlL9nUIxjVcHyV/A8Tz4byi2g=;
+	s=korg; t=1760368706;
+	bh=Re3nb0bWzHssVecQsjFJKLp1AgjSA/rKXPbeduxtcz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZcBbIMTT4f9fcaoR8lGgKf1Nk5NL/lmss0sIVE/nsyISliiuXbWEV8NWV1Rzagbc
-	 c58wYp0cGzV78cpObjr9zlDXOFWHDSVgwGasKVoRwzm0xJh186bIvb+ZOcULcwAu89
-	 mxgJ28Q9c8hvsLB3DXS4ptFX5pjW7HoJYP5EIqj4=
+	b=q661xT1sODkLOQ7wztrwFKDRVO3egEanLfOw2R/DmhQkhpbc69i8wQYWqI/RaomAj
+	 tVWx6THFAft3hpMr91WvdPa4yHlc1C0/JMrsoduRRHmxmUvbGgN5BHaAi53lgrkua+
+	 j+WBAdf0F6USAo7JJkDzVm+1KK7vNNz2cRp6JVwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.12 246/262] nvdimm: ndtest: Return -ENOMEM if devm_kcalloc() fails in ndtest_probe()
-Date: Mon, 13 Oct 2025 16:46:28 +0200
-Message-ID: <20251013144335.097194450@linuxfoundation.org>
+	stable@kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
+	Ling Xu <quic_lxu5@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.12 247/262] misc: fastrpc: Save actual DMA size in fastrpc_map structure
+Date: Mon, 13 Oct 2025 16:46:29 +0200
+Message-ID: <20251013144335.132915571@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
 References: <20251013144326.116493600@linuxfoundation.org>
@@ -67,57 +69,112 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Ling Xu <quic_lxu5@quicinc.com>
 
-commit a9e6aa994917ee602798bbb03180a194b37865bb upstream.
+commit 8b5b456222fd604079b5cf2af1f25ad690f54a25 upstream.
 
-devm_kcalloc() may fail. ndtest_probe() allocates three DMA address
-arrays (dcr_dma, label_dma, dimm_dma) and later unconditionally uses
-them in ndtest_nvdimm_init(), which can lead to a NULL pointer
-dereference under low-memory conditions.
+For user passed fd buffer, map is created using DMA calls. The
+map related information is stored in fastrpc_map structure. The
+actual DMA size is not stored in the structure. Store the actual
+size of buffer and check it against the user passed size.
 
-Check all three allocations and return -ENOMEM if any allocation fails,
-jumping to the common error path. Do not emit an extra error message
-since the allocator already warns on allocation failure.
-
-Fixes: 9399ab61ad82 ("ndtest: Add dimms to the two buses")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
+Cc: stable@kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250912131236.303102-2-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/nvdimm/test/ndtest.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |   27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
---- a/tools/testing/nvdimm/test/ndtest.c
-+++ b/tools/testing/nvdimm/test/ndtest.c
-@@ -850,11 +850,22 @@ static int ndtest_probe(struct platform_
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -323,11 +323,11 @@ static void fastrpc_free_map(struct kref
  
- 	p->dcr_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
- 				 sizeof(dma_addr_t), GFP_KERNEL);
-+	if (!p->dcr_dma) {
-+		rc = -ENOMEM;
-+		goto err;
+ 			perm.vmid = QCOM_SCM_VMID_HLOS;
+ 			perm.perm = QCOM_SCM_PERM_RWX;
+-			err = qcom_scm_assign_mem(map->phys, map->size,
++			err = qcom_scm_assign_mem(map->phys, map->len,
+ 				&src_perms, &perm, 1);
+ 			if (err) {
+ 				dev_err(map->fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d\n",
+-						map->phys, map->size, err);
++						map->phys, map->len, err);
+ 				return;
+ 			}
+ 		}
+@@ -758,7 +758,8 @@ static int fastrpc_map_create(struct fas
+ 	struct fastrpc_session_ctx *sess = fl->sctx;
+ 	struct fastrpc_map *map = NULL;
+ 	struct sg_table *table;
+-	int err = 0;
++	struct scatterlist *sgl = NULL;
++	int err = 0, sgl_index = 0;
+ 
+ 	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
+ 		return 0;
+@@ -798,7 +799,15 @@ static int fastrpc_map_create(struct fas
+ 		map->phys = sg_dma_address(map->table->sgl);
+ 		map->phys += ((u64)fl->sctx->sid << 32);
+ 	}
+-	map->size = len;
++	for_each_sg(map->table->sgl, sgl, map->table->nents,
++		sgl_index)
++		map->size += sg_dma_len(sgl);
++	if (len > map->size) {
++		dev_dbg(sess->dev, "Bad size passed len 0x%llx map size 0x%llx\n",
++				len, map->size);
++		err = -EINVAL;
++		goto map_err;
 +	}
- 	p->label_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
- 				   sizeof(dma_addr_t), GFP_KERNEL);
-+	if (!p->label_dma) {
-+		rc = -ENOMEM;
-+		goto err;
-+	}
- 	p->dimm_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
- 				  sizeof(dma_addr_t), GFP_KERNEL);
--
-+	if (!p->dimm_dma) {
-+		rc = -ENOMEM;
-+		goto err;
-+	}
- 	rc = ndtest_nvdimm_init(p);
- 	if (rc)
- 		goto err;
+ 	map->va = sg_virt(map->table->sgl);
+ 	map->len = len;
+ 
+@@ -815,10 +824,10 @@ static int fastrpc_map_create(struct fas
+ 		dst_perms[1].vmid = fl->cctx->vmperms[0].vmid;
+ 		dst_perms[1].perm = QCOM_SCM_PERM_RWX;
+ 		map->attr = attr;
+-		err = qcom_scm_assign_mem(map->phys, (u64)map->size, &src_perms, dst_perms, 2);
++		err = qcom_scm_assign_mem(map->phys, (u64)map->len, &src_perms, dst_perms, 2);
+ 		if (err) {
+ 			dev_err(sess->dev, "Failed to assign memory with phys 0x%llx size 0x%llx err %d\n",
+-					map->phys, map->size, err);
++					map->phys, map->len, err);
+ 			goto map_err;
+ 		}
+ 	}
+@@ -2044,7 +2053,7 @@ static int fastrpc_req_mem_map(struct fa
+ 	args[0].length = sizeof(req_msg);
+ 
+ 	pages.addr = map->phys;
+-	pages.size = map->size;
++	pages.size = map->len;
+ 
+ 	args[1].ptr = (u64) (uintptr_t) &pages;
+ 	args[1].length = sizeof(pages);
+@@ -2059,7 +2068,7 @@ static int fastrpc_req_mem_map(struct fa
+ 	err = fastrpc_internal_invoke(fl, true, FASTRPC_INIT_HANDLE, sc, &args[0]);
+ 	if (err) {
+ 		dev_err(dev, "mem mmap error, fd %d, vaddr %llx, size %lld\n",
+-			req.fd, req.vaddrin, map->size);
++			req.fd, req.vaddrin, map->len);
+ 		goto err_invoke;
+ 	}
+ 
+@@ -2072,7 +2081,7 @@ static int fastrpc_req_mem_map(struct fa
+ 	if (copy_to_user((void __user *)argp, &req, sizeof(req))) {
+ 		/* unmap the memory and release the buffer */
+ 		req_unmap.vaddr = (uintptr_t) rsp_msg.vaddr;
+-		req_unmap.length = map->size;
++		req_unmap.length = map->len;
+ 		fastrpc_req_mem_unmap_impl(fl, &req_unmap);
+ 		return -EFAULT;
+ 	}
 
 
 
