@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-185178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5802BD51B2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D64ABD4F84
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AE3A656317D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2BC2B5631D2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA0530B51E;
-	Mon, 13 Oct 2025 15:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F0F30B527;
+	Mon, 13 Oct 2025 15:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T56C1/W7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARpSf+Qv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DD82FE564;
-	Mon, 13 Oct 2025 15:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E2E2D23AD;
+	Mon, 13 Oct 2025 15:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369555; cv=none; b=LbvLIKnmqtymGWOz93wrRenAUADPmE8ot91/fqu3fMm1TeRoVDhzpsTOMLJQ3Vp+NtO6J2atQTS4ZQ3EiGVMNTynxUASNFD11TKP1paFMhKoIAppbaYbQiNPRrMOLKvx98j8egygwHHwQD+O3CLH5TF8RO/9zkHN04I7T79o3sg=
+	t=1760369560; cv=none; b=EVlzkq2c5+h2jJY17k5K/Dbk9QruNEk0QMMaROjTRJe/WpaqwAHoBLRw/k/FTcCGkL973JThawQqYSzU+utxrNu/o5FNpEixhAYoic+ukSYRyfd/uNN4+cBPOs2ibA9l2CfR3QdggHj2+sRhe/iFXq9Hm+6LUEdkOXAZLZwBtyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369555; c=relaxed/simple;
-	bh=QWnclDFuNMYmP9RYZNUEzDJ+SFURDxQvdsHDI2hCqqA=;
+	s=arc-20240116; t=1760369560; c=relaxed/simple;
+	bh=8pfhLcNxJ5L2E9CfaugqBQaaVhBRt72UO8BMHp1gfdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCDlGfCBvY5e0q29/Rcex6z5QEjSOicgG4gU8hrFD4z/wbmdzBJWtU4rIwml/c4i7F6FZZQ2iyM9idhtjUAEoa8IqtFiGAkq0GZy7NB0IzarpaKogNRunitUsSyCGN27nND+aVSIZbojA7ZG1+3tNFeoh9xa0XwT3MtA2jitMAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T56C1/W7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F41BC4CEE7;
-	Mon, 13 Oct 2025 15:32:34 +0000 (UTC)
+	 MIME-Version; b=lWNeE/LtvacAlPTczPMgk0mU3GGJdui3mVnk+wg/JBA6zGadUwGoR7HfGnXsUYSutLO7ej0OGTvejOVZzaHlMQW2uMih0C2J/oni9aZ4tVINsXzk3kpH3Ev5E38jSDykWWSWBRudZZy7hlntn5AZqZJJlpJsg8GMlsKX601NrVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARpSf+Qv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A9DC4CEFE;
+	Mon, 13 Oct 2025 15:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369554;
-	bh=QWnclDFuNMYmP9RYZNUEzDJ+SFURDxQvdsHDI2hCqqA=;
+	s=korg; t=1760369560;
+	bh=8pfhLcNxJ5L2E9CfaugqBQaaVhBRt72UO8BMHp1gfdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T56C1/W7Tsv43JOiMRg4cOL2Ib2uZmTxhSP/qt07EPOZsB1qYUFTR//EKtheQsJgK
-	 erD6wfuL7lssXQ9CeGTKlgRi+Hq4uunb+yrDNEkmD9kFkGtC2PlmaO93h5rUdbzle6
-	 Pgjadxe5kD5uDJkOcP8zYvCIyKEi0UpSRLJge05E=
+	b=ARpSf+QvzfeMysQr71Y6vLoMY2stChOt1yKJRKFsfqlN2ggtxAHWG8V4kYDt0mt7Q
+	 6bLFVU1SH+WhEoyO0OFTXmOj5E+f00nj3fg0Q0vLcm9/+5UHflWk2/HWLeQQCZE2Hv
+	 qh4nT+7dkfqZt+7y8osq+6JNbm3+QRNarUxgs6rQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 287/563] ipv6: use RCU in ip6_xmit()
-Date: Mon, 13 Oct 2025 16:42:28 +0200
-Message-ID: <20251013144421.667101407@linuxfoundation.org>
+Subject: [PATCH 6.17 289/563] net: use dst_dev_rcu() in sk_setup_caps()
+Date: Mon, 13 Oct 2025 16:42:30 +0200
+Message-ID: <20251013144421.739021790@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -69,107 +69,138 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9085e56501d93af9f2d7bd16f7fcfacdde47b99c ]
+[ Upstream commit 99a2ace61b211b0be861b07fbaa062fca4b58879 ]
 
-Use RCU in ip6_xmit() in order to use dst_dev_rcu() to prevent
-possible UAF.
+Use RCU to protect accesses to dst->dev from sk_setup_caps()
+and sk_dst_gso_max_size().
+
+Also use dst_dev_rcu() in ip6_dst_mtu_maybe_forward(),
+and ip_dst_mtu_maybe_forward().
+
+ip4_dst_hoplimit() can use dst_dev_net_rcu().
 
 Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-4-edumazet@google.com
+Link: https://patch.msgid.link/20250828195823.3958522-6-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ include/net/ip.h        |  6 ++++--
+ include/net/ip6_route.h |  2 +-
+ include/net/route.h     |  2 +-
+ net/core/sock.c         | 16 ++++++++++------
+ 4 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 1e1410237b6ef..e234640433d6b 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -268,35 +268,36 @@ bool ip6_autoflowlabel(struct net *net, const struct sock *sk)
- int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 	     __u32 mark, struct ipv6_txoptions *opt, int tclass, u32 priority)
+diff --git a/include/net/ip.h b/include/net/ip.h
+index befcba575129a..6dbd2bf8fa9c9 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -467,12 +467,14 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
+ 						    bool forwarding)
  {
--	struct net *net = sock_net(sk);
- 	const struct ipv6_pinfo *np = inet6_sk(sk);
- 	struct in6_addr *first_hop = &fl6->daddr;
- 	struct dst_entry *dst = skb_dst(skb);
--	struct net_device *dev = dst_dev(dst);
- 	struct inet6_dev *idev = ip6_dst_idev(dst);
- 	struct hop_jumbo_hdr *hop_jumbo;
- 	int hoplen = sizeof(*hop_jumbo);
-+	struct net *net = sock_net(sk);
- 	unsigned int head_room;
-+	struct net_device *dev;
- 	struct ipv6hdr *hdr;
- 	u8  proto = fl6->flowi6_proto;
- 	int seg_len = skb->len;
--	int hlimit = -1;
-+	int ret, hlimit = -1;
- 	u32 mtu;
+ 	const struct rtable *rt = dst_rtable(dst);
++	const struct net_device *dev;
+ 	unsigned int mtu, res;
+ 	struct net *net;
  
-+	rcu_read_lock();
-+
+ 	rcu_read_lock();
+ 
+-	net = dev_net_rcu(dst_dev(dst));
 +	dev = dst_dev_rcu(dst);
- 	head_room = sizeof(struct ipv6hdr) + hoplen + LL_RESERVED_SPACE(dev);
- 	if (opt)
- 		head_room += opt->opt_nflen + opt->opt_flen;
++	net = dev_net_rcu(dev);
+ 	if (READ_ONCE(net->ipv4.sysctl_ip_fwd_use_pmtu) ||
+ 	    ip_mtu_locked(dst) ||
+ 	    !forwarding) {
+@@ -486,7 +488,7 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
+ 	if (mtu)
+ 		goto out;
  
- 	if (unlikely(head_room > skb_headroom(skb))) {
--		/* Make sure idev stays alive */
--		rcu_read_lock();
-+		/* idev stays alive while we hold rcu_read_lock(). */
- 		skb = skb_expand_head(skb, head_room);
- 		if (!skb) {
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
--			rcu_read_unlock();
--			return -ENOBUFS;
-+			ret = -ENOBUFS;
-+			goto unlock;
- 		}
--		rcu_read_unlock();
+-	mtu = READ_ONCE(dst_dev(dst)->mtu);
++	mtu = READ_ONCE(dev->mtu);
+ 
+ 	if (unlikely(ip_mtu_locked(dst))) {
+ 		if (rt->rt_uses_gateway && mtu > 576)
+diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+index 9255f21818ee7..59f48ca3abdf5 100644
+--- a/include/net/ip6_route.h
++++ b/include/net/ip6_route.h
+@@ -337,7 +337,7 @@ static inline unsigned int ip6_dst_mtu_maybe_forward(const struct dst_entry *dst
+ 
+ 	mtu = IPV6_MIN_MTU;
+ 	rcu_read_lock();
+-	idev = __in6_dev_get(dst_dev(dst));
++	idev = __in6_dev_get(dst_dev_rcu(dst));
+ 	if (idev)
+ 		mtu = READ_ONCE(idev->cnf.mtu6);
+ 	rcu_read_unlock();
+diff --git a/include/net/route.h b/include/net/route.h
+index 7ea840daa775b..c916bbe25a774 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -390,7 +390,7 @@ static inline int ip4_dst_hoplimit(const struct dst_entry *dst)
+ 		const struct net *net;
+ 
+ 		rcu_read_lock();
+-		net = dev_net_rcu(dst_dev(dst));
++		net = dst_dev_net_rcu(dst);
+ 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
+ 		rcu_read_unlock();
  	}
- 
- 	if (opt) {
-@@ -358,17 +359,21 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 		 * skb to its handler for processing
- 		 */
- 		skb = l3mdev_ip6_out((struct sock *)sk, skb);
--		if (unlikely(!skb))
--			return 0;
-+		if (unlikely(!skb)) {
-+			ret = 0;
-+			goto unlock;
-+		}
- 
- 		/* hooks should never assume socket lock is held.
- 		 * we promote our socket to non const
- 		 */
--		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
--			       net, (struct sock *)sk, skb, NULL, dev,
--			       dst_output);
-+		ret = NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
-+			      net, (struct sock *)sk, skb, NULL, dev,
-+			      dst_output);
-+		goto unlock;
- 	}
- 
-+	ret = -EMSGSIZE;
- 	skb->dev = dev;
- 	/* ipv6_local_error() does not require socket lock,
- 	 * we promote our socket to non const
-@@ -377,7 +382,9 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 
- 	IP6_INC_STATS(net, idev, IPSTATS_MIB_FRAGFAILS);
- 	kfree_skb(skb);
--	return -EMSGSIZE;
-+unlock:
-+	rcu_read_unlock();
-+	return ret;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 158bddd23134c..e21348ead7e76 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2584,7 +2584,7 @@ struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority)
  }
- EXPORT_SYMBOL(ip6_xmit);
+ EXPORT_SYMBOL_GPL(sk_clone_lock);
+ 
+-static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
++static u32 sk_dst_gso_max_size(struct sock *sk, const struct net_device *dev)
+ {
+ 	bool is_ipv6 = false;
+ 	u32 max_size;
+@@ -2594,8 +2594,8 @@ static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
+ 		   !ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr));
+ #endif
+ 	/* pairs with the WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
+-	max_size = is_ipv6 ? READ_ONCE(dst_dev(dst)->gso_max_size) :
+-			READ_ONCE(dst_dev(dst)->gso_ipv4_max_size);
++	max_size = is_ipv6 ? READ_ONCE(dev->gso_max_size) :
++			READ_ONCE(dev->gso_ipv4_max_size);
+ 	if (max_size > GSO_LEGACY_MAX_SIZE && !sk_is_tcp(sk))
+ 		max_size = GSO_LEGACY_MAX_SIZE;
+ 
+@@ -2604,9 +2604,12 @@ static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
+ 
+ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
+ {
++	const struct net_device *dev;
+ 	u32 max_segs = 1;
+ 
+-	sk->sk_route_caps = dst_dev(dst)->features;
++	rcu_read_lock();
++	dev = dst_dev_rcu(dst);
++	sk->sk_route_caps = dev->features;
+ 	if (sk_is_tcp(sk)) {
+ 		struct inet_connection_sock *icsk = inet_csk(sk);
+ 
+@@ -2622,13 +2625,14 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
+ 			sk->sk_route_caps &= ~NETIF_F_GSO_MASK;
+ 		} else {
+ 			sk->sk_route_caps |= NETIF_F_SG | NETIF_F_HW_CSUM;
+-			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dst);
++			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dev);
+ 			/* pairs with the WRITE_ONCE() in netif_set_gso_max_segs() */
+-			max_segs = max_t(u32, READ_ONCE(dst_dev(dst)->gso_max_segs), 1);
++			max_segs = max_t(u32, READ_ONCE(dev->gso_max_segs), 1);
+ 		}
+ 	}
+ 	sk->sk_gso_max_segs = max_segs;
+ 	sk_dst_set(sk, dst);
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(sk_setup_caps);
  
 -- 
 2.51.0
