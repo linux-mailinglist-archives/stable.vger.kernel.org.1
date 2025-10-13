@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A31BD4172
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:57 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDC8BD41CE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C8E8504D63
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:53 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8A3FD34EF62
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7655827815D;
-	Mon, 13 Oct 2025 14:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B2130CDA0;
+	Mon, 13 Oct 2025 15:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+rZ3Fxu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHTPT/Yv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B90D1F1313;
-	Mon, 13 Oct 2025 14:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB83A8F54;
+	Mon, 13 Oct 2025 15:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367575; cv=none; b=WvK7Z/jaI6kqvvvbqlcLVkNa9PXbDjtJl7oVZup1V7no6mW7RNJUFk3l6eOxid23uVgXTnKEzmgVTHkhPmuC5ZV0o8hqv/ZBQi3bz4q7wg2Q8YpG6wSk28omvaZaez0rwTcTtlvDaYmqgNyEMHhs79oMbvmRa7amZs+AjAVb1p8=
+	t=1760368380; cv=none; b=hKBUUbb2Qxza8KHYNSEDA7REZ0is2L2ZOFk7QXL8uoXyiEp0eCQh5KDitz+2HznDLnTDAYy7wx4BgIKVn2l7gWVjGydoMwOSNCOQ5MByQXtzyrVbY0jvXc+A8fy3ORhfthXY/jn3ERfKDuLzeK0L5WW5X58Q/sJL7vOwmslilag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367575; c=relaxed/simple;
-	bh=jvjwU3UFKyakl6j35gy5D111aTt5mZEcu5Be5l1xUss=;
+	s=arc-20240116; t=1760368380; c=relaxed/simple;
+	bh=Y9b2BjPwrDel7+3z1hDmTtKuVMElHeNC3SLI0/t6bQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kRRLIJr4abvWxP+wmPHrVtWXO3FL7kwJj9DcjwHhItsuTHYDWJlLxSPkL9rhgaDGH9wUsOQL4mOhWSAEinGLmCTadydDkd8UejFSPWD+FbeNeHmYtET6rL3eieyHV8Ot03ji6ipzqqpgKvKiDBt9ZYxcnmG+nIX/vsmmSLmYRlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+rZ3Fxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE9BC4CEFE;
-	Mon, 13 Oct 2025 14:59:34 +0000 (UTC)
+	 MIME-Version; b=DIuewGO4E1+yR3d9X03PhIw9QGAgbNmfUv4hjXcbgTGww9oLSSYLPZQxs77e1Wl54DjoIWIHM+4Wc5GJuGa6CkjmqgZtd7GK4dzsae/g9cDujJEUf7eDn5YRe3SuesNs2tU2tS3/KSg/kk/iD3n6duvFxijdiCSNkCGHLxbXpDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHTPT/Yv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471F7C4CEE7;
+	Mon, 13 Oct 2025 15:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367575;
-	bh=jvjwU3UFKyakl6j35gy5D111aTt5mZEcu5Be5l1xUss=;
+	s=korg; t=1760368380;
+	bh=Y9b2BjPwrDel7+3z1hDmTtKuVMElHeNC3SLI0/t6bQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+rZ3FxuE3nBUGRbbpGSXBj1s5umM2zKU8jjtc28Ifqy4Ixg0hmAtVIgzfMEeKQtE
-	 OBL24tWX4S7u+VqJNRsNrQ/M+uOPO1YFxB2QQtEBxopQ9iPgcLBmUYEfm8GTU9wTsh
-	 d4y/snXAz0Gjcf4VMn1OIXlj4wRx9H7bZztcs2m8=
+	b=uHTPT/YvritLxJGDXvQiYTRRtPbHE59EhpBOJrEp+wEGqI0fczG0qvh+jUsqa6knT
+	 EheOttmVIiO0lBWKmnNpwGMyhWKFojOsXHjyySTLy5B+XLXA81HTlJauw8e/pDmkUd
+	 RY4beQxtaZH+/QtzrXGDrhJyhhjW5dZYOvEvig7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Leilk.Liu" <leilk.liu@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/196] i2c: mediatek: fix potential incorrect use of I2C_MASTER_WRRD
+Subject: [PATCH 6.12 107/262] RDMA/mlx5: Fix vport loopback forcing for MPV device
 Date: Mon, 13 Oct 2025 16:44:09 +0200
-Message-ID: <20251013144317.295419980@linuxfoundation.org>
+Message-ID: <20251013144329.980486659@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +62,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leilk.Liu <leilk.liu@mediatek.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit b492183652808e0f389272bf63dc836241b287ff ]
+[ Upstream commit 08aae7860450c89eebbc6fd4d38416e53c7a33d2 ]
 
-The old IC does not support the I2C_MASTER_WRRD (write-then-read)
-function, but the current code’s handling of i2c->auto_restart may
-potentially lead to entering the I2C_MASTER_WRRD software flow,
-resulting in unexpected bugs.
+Previously loopback for MPV was supposed to be permanently enabled,
+however other driver flows were able to over-ride that configuration and
+disable it.
 
-Instead of repurposing the auto_restart flag, add a separate flag
-to signal I2C_MASTER_WRRD operations.
+Add force_lb parameter that indicates that loopback should always be
+enabled which prevents all other driver flows from disabling it.
 
-Also fix handling of msgs. If the operation (i2c->op) is
-I2C_MASTER_WRRD, then the msgs pointer is incremented by 2.
-For all other operations, msgs is simply incremented by 1.
-
-Fixes: b2ed11e224a2 ("I2C: mediatek: Add driver for MediaTek MT8173 I2C controller")
-Signed-off-by: Leilk.Liu <leilk.liu@mediatek.com>
-Suggested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: a9a9e68954f2 ("RDMA/mlx5: Fix vport loopback for MPV device")
+Link: https://patch.msgid.link/r/cfc6b1f0f99f8100b087483cc14da6025317f901.1755088808.git.leon@kernel.org
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-mt65xx.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/infiniband/hw/mlx5/main.c    | 19 +++++++++++++++----
+ drivers/infiniband/hw/mlx5/mlx5_ib.h |  1 +
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-mt65xx.c b/drivers/i2c/busses/i2c-mt65xx.c
-index 1a9b5a068ef1b..6b788bca64d54 100644
---- a/drivers/i2c/busses/i2c-mt65xx.c
-+++ b/drivers/i2c/busses/i2c-mt65xx.c
-@@ -1243,6 +1243,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 29d0bc583169b..f3e58797705d7 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -1813,7 +1813,8 @@ static void deallocate_uars(struct mlx5_ib_dev *dev,
+ }
+ 
+ static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
+-				struct mlx5_core_dev *slave)
++				struct mlx5_core_dev *slave,
++				struct mlx5_ib_lb_state *lb_state)
  {
- 	int ret;
- 	int left_num = num;
-+	bool write_then_read_en = false;
- 	struct mtk_i2c *i2c = i2c_get_adapdata(adap);
+ 	int err;
  
- 	ret = clk_bulk_enable(I2C_MT65XX_CLK_MAX, i2c->clocks);
-@@ -1256,6 +1257,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
- 		if (!(msgs[0].flags & I2C_M_RD) && (msgs[1].flags & I2C_M_RD) &&
- 		    msgs[0].addr == msgs[1].addr) {
- 			i2c->auto_restart = 0;
-+			write_then_read_en = true;
- 		}
- 	}
+@@ -1825,6 +1826,7 @@ static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
+ 	if (err)
+ 		goto out;
  
-@@ -1280,12 +1282,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
- 		else
- 			i2c->op = I2C_MASTER_WR;
++	lb_state->force_enable = true;
+ 	return 0;
  
--		if (!i2c->auto_restart) {
--			if (num > 1) {
--				/* combined two messages into one transaction */
--				i2c->op = I2C_MASTER_WRRD;
--				left_num--;
--			}
-+		if (write_then_read_en) {
-+			/* combined two messages into one transaction */
-+			i2c->op = I2C_MASTER_WRRD;
-+			left_num--;
- 		}
+ out:
+@@ -1833,16 +1835,22 @@ static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
+ }
  
- 		/* always use DMA mode. */
-@@ -1293,7 +1293,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
- 		if (ret < 0)
- 			goto err_exit;
+ static void mlx5_ib_disable_lb_mp(struct mlx5_core_dev *master,
+-				  struct mlx5_core_dev *slave)
++				  struct mlx5_core_dev *slave,
++				  struct mlx5_ib_lb_state *lb_state)
+ {
+ 	mlx5_nic_vport_update_local_lb(slave, false);
+ 	mlx5_nic_vport_update_local_lb(master, false);
++
++	lb_state->force_enable = false;
+ }
  
--		msgs++;
-+		if (i2c->op == I2C_MASTER_WRRD)
-+			msgs += 2;
-+		else
-+			msgs++;
- 	}
- 	/* the return value is number of executed messages */
- 	ret = num;
+ int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
+ {
+ 	int err = 0;
+ 
++	if (dev->lb.force_enable)
++		return 0;
++
+ 	mutex_lock(&dev->lb.mutex);
+ 	if (td)
+ 		dev->lb.user_td++;
+@@ -1864,6 +1872,9 @@ int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
+ 
+ void mlx5_ib_disable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
+ {
++	if (dev->lb.force_enable)
++		return;
++
+ 	mutex_lock(&dev->lb.mutex);
+ 	if (td)
+ 		dev->lb.user_td--;
+@@ -3521,7 +3532,7 @@ static void mlx5_ib_unbind_slave_port(struct mlx5_ib_dev *ibdev,
+ 
+ 	lockdep_assert_held(&mlx5_ib_multiport_mutex);
+ 
+-	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev);
++	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev, &ibdev->lb);
+ 
+ 	mlx5_core_mp_event_replay(ibdev->mdev,
+ 				  MLX5_DRIVER_EVENT_AFFILIATION_REMOVED,
+@@ -3618,7 +3629,7 @@ static bool mlx5_ib_bind_slave_port(struct mlx5_ib_dev *ibdev,
+ 				  MLX5_DRIVER_EVENT_AFFILIATION_DONE,
+ 				  &key);
+ 
+-	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev);
++	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev, &ibdev->lb);
+ 	if (err)
+ 		goto unbind;
+ 
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 29bde64ea1eac..f49cb588a856d 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -1083,6 +1083,7 @@ struct mlx5_ib_lb_state {
+ 	u32			user_td;
+ 	int			qps;
+ 	bool			enabled;
++	bool			force_enable;
+ };
+ 
+ struct mlx5_ib_pf_eq {
 -- 
 2.51.0
 
