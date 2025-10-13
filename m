@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDDCBD4A49
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:06 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A86EBD4351
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D2FC84F9B4F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 928BC4F4295
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA9D311948;
-	Mon, 13 Oct 2025 15:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C85830E0D9;
+	Mon, 13 Oct 2025 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fv5R8t+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0H2xPIA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98529311945;
-	Mon, 13 Oct 2025 15:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1709430E0CE;
+	Mon, 13 Oct 2025 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368153; cv=none; b=AYEeslYhiAvfG3iLSTIYTeMbgNHFFGLycbqWEM8Q2DXmCLofL1pPngC8jdPurO9CgfuEBelldIZQQK1YFX14zQWVl9fBPf5nx+kwk/2QH/Vh1zpR3/Y8xPwF3fyxum5HkMcsRNoVebxuRiDbs4/v1wh5Fz8v3np6dCVRXPbyQwE=
+	t=1760367437; cv=none; b=I7O0ti+NZzcZNx0pnFcM4QiTTF/UqwP35eg1TGBLRngiV0QHxUO4e7efdTF9m5eVxL+dhM66xhHlK5uJf2wWEA6nAWzjq5AP9TTQntlR8NKQWby+4cLIQ2uWPie7zJiOE8gRUsD0uKxxpjRTo7MbbFuTtNzivw3L8z39cQd/rHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368153; c=relaxed/simple;
-	bh=yLHX+tCEAkzMlUx6ZnXWpRIuxACtz0XSb1zqMiYflTo=;
+	s=arc-20240116; t=1760367437; c=relaxed/simple;
+	bh=KTGgZEAafyPgkshie/WXIpccFthq2NC5Aek0VLLdLH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6iiwNq2kLhT3bFuTkUXhmkMOzCKXEJP2j3QueFH/4QfuG0A15CnbnZmV99hDwbq+Gy5pF/UapxqRLx35jKJZcA8EErCeFfCQs7y7ABvVpDRIF320etV5mg1b99CNC0uUVOQc7/uDS8IKBpC8GtifaynthtboZRSVMVCDdFMi9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fv5R8t+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B76C4CEE7;
-	Mon, 13 Oct 2025 15:09:12 +0000 (UTC)
+	 MIME-Version; b=dRi7aF6j5OZYMruR1ebyEQ6Ykzoc0bk6qe0SpDrxjV/0noM1o7i6ta3SDJ1YSeD18+gSlDfzyDkUAtRPCGDlUZTV2SfnNJMU9qteUn2bmp5Qem6JlOT8yue0ZoLVdZhXQyOV59v90KtfX7vN8xT/0YUkc14Ab2GbIK8cB5oMcX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0H2xPIA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AD2C4CEE7;
+	Mon, 13 Oct 2025 14:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368153;
-	bh=yLHX+tCEAkzMlUx6ZnXWpRIuxACtz0XSb1zqMiYflTo=;
+	s=korg; t=1760367437;
+	bh=KTGgZEAafyPgkshie/WXIpccFthq2NC5Aek0VLLdLH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fv5R8t+eze5DP32hwU1Hf68qaPYvdYcBIGd4/yzeUKrDh9RRtlIna7/OyEPaCi1NT
-	 WDID9E0G1U42EGsLZA730xHCe6U8HBCDFmaKI0fTy3kMfHSikzvib1n7yw/KAdwBz4
-	 fRFToQSPC7U7QtZWidaqZAoAQJL1+JVlrkWJVM7w=
+	b=w0H2xPIAV7E4y4a/o04WJpSZbkC2VctCrWvqMt5D2MsJ02MUgpoW0fQqfBv0DUTcT
+	 lm5O+NjNwiLO0vNIbBP8v1j9tiHRf9rx2fTLPSsswyBQ1iiX6NUbqI3Xn4qxdokncw
+	 wKUqHQGFFtu6FyMUHHZML16OZw5Oy+YMmzvTjT6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@sandisk.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Bean Huo <beanhuo@micron.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/262] mmc: core: Fix variable shadowing in mmc_route_rpmb_frames()
+Subject: [PATCH 6.6 012/196] regmap: Remove superfluous check for !config in __regmap_init()
 Date: Mon, 13 Oct 2025 16:43:23 +0200
-Message-ID: <20251013144328.326001766@linuxfoundation.org>
+Message-ID: <20251013144315.639690877@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bean Huo <beanhuo@micron.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 072755cca7e743c28a273fcb69b0e826109473d7 ]
+[ Upstream commit 5c36b86d2bf68fbcad16169983ef7ee8c537db59 ]
 
-Rename the inner 'frm' variable to 'resp_frm' in the write path of
-mmc_route_rpmb_frames() to avoid shadowing the outer 'frm' variable.
+The first thing __regmap_init() do is check if config is non-NULL,
+so there is no need to check for this again later.
 
-The function declares 'frm' at function scope pointing to the request
-frame, but then redeclares another 'frm' variable inside the write
-block pointing to the response frame. This shadowing makes the code
-confusing and error-prone.
-
-Using 'resp_frm' for the response frame makes the distinction clear
-and improves code readability.
-
-Fixes: 7852028a35f0 ("mmc: block: register RPMB partition with the RPMB subsystem")
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
-Signed-off-by: Bean Huo <beanhuo@micron.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: d77e745613680c54 ("regmap: Add bulk read/write callbacks into regmap_config")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/a154d9db0f290dda96b48bd817eb743773e846e1.1755090330.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/base/regmap/regmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 1d08009f2bd83..08b8276e1da93 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -2876,15 +2876,15 @@ static int mmc_route_rpmb_frames(struct device *dev, u8 *req,
- 		return -ENOMEM;
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 1209e01f8c7f9..9603c28a3ed82 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -827,7 +827,7 @@ struct regmap *__regmap_init(struct device *dev,
+ 		map->read_flag_mask = bus->read_flag_mask;
+ 	}
  
- 	if (write) {
--		struct rpmb_frame *frm = (struct rpmb_frame *)resp;
-+		struct rpmb_frame *resp_frm = (struct rpmb_frame *)resp;
- 
- 		/* Send write request frame(s) */
- 		set_idata(idata[0], MMC_WRITE_MULTIPLE_BLOCK,
- 			  1 | MMC_CMD23_ARG_REL_WR, req, req_len);
- 
- 		/* Send result request frame */
--		memset(frm, 0, sizeof(*frm));
--		frm->req_resp = cpu_to_be16(RPMB_RESULT_READ);
-+		memset(resp_frm, 0, sizeof(*resp_frm));
-+		resp_frm->req_resp = cpu_to_be16(RPMB_RESULT_READ);
- 		set_idata(idata[1], MMC_WRITE_MULTIPLE_BLOCK, 1, resp,
- 			  resp_len);
- 
+-	if (config && config->read && config->write) {
++	if (config->read && config->write) {
+ 		map->reg_read  = _regmap_bus_read;
+ 		if (config->reg_update_bits)
+ 			map->reg_update_bits = config->reg_update_bits;
 -- 
 2.51.0
 
