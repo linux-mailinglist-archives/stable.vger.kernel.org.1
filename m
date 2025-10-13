@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C725BD4255
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:05 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E554CBD42CA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DDBDF34F299
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 500D6505ACB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F72308F0F;
-	Mon, 13 Oct 2025 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D85230BBAA;
+	Mon, 13 Oct 2025 15:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZDDH5J7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMlF5aXK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0356C3016FC;
-	Mon, 13 Oct 2025 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A2D30BBA2;
+	Mon, 13 Oct 2025 15:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368476; cv=none; b=k2bvvjAJZO+N9Mq9b1jWeOjUNl+r5XY0HLDLh3STPEiRGTPpTDrSI8fTwFRW5i/LZI9M2yuXwKYNUdEn6W0C1atyjDqiGR2NQYe4tnias3IPzAIvrrzqE70SGvlujZCkT67Far7rsRdycjiZ9gnL9NORLxlq9rP3Z1migtCjJ2U=
+	t=1760367762; cv=none; b=GtTq7BrfLZBGpHjwbCekxGU02WxM1Wiuf7z2m+Bu9NM+g0TsHAQr2DGaK9x/O4QJHHp3uDIjpP5PyYLogVQjQ43DKRGP9wc3OpQCxjz/aGz6gbQnvlL8q7bJmBsBjdxOh9IsXj1uE6YY28LqfuZ0fDkpmGwZe7UrTQliOUQAOdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368476; c=relaxed/simple;
-	bh=7OhCsowzkoqkRm31uaABjxVl60CDsp0Qz7XUL0hMObQ=;
+	s=arc-20240116; t=1760367762; c=relaxed/simple;
+	bh=qx8OXZZnOn+kFpjp1qW7F6psKt7SFI6Zu2axctJ7xhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVoQf/8ULDN83J9CR8VisDHQv+lv3+nQUNAB2zkfv5Van3ktB9hAiDp6hNs/eEBayqdcF+wLiciXBipMdr0u3DvhqeD+9fneZWWDzYzKZLWH58b1WH7y3vfl8qqV4yt4yATia8aJbC0rDw1bS8//fT5dnaDLexz39KPkg+VI69w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZDDH5J7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BBDC4CEE7;
-	Mon, 13 Oct 2025 15:14:35 +0000 (UTC)
+	 MIME-Version; b=fOzIV44tWc8RUzXy/5CR/ff/K8ZISuFKiM+VeMVT7JFtCMumbkIbEFNDKmmddknR4Fr1lzPO9B6AdhyVP9CHHNpDVx0EepQs1KpFlgDWTzYiney3xmCHYdWpqtai7XKTgTxwF6pxyqDmHRNDnBEpPLrz+frhC+7JDWvIaeYL3kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMlF5aXK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1B6C4CEE7;
+	Mon, 13 Oct 2025 15:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368475;
-	bh=7OhCsowzkoqkRm31uaABjxVl60CDsp0Qz7XUL0hMObQ=;
+	s=korg; t=1760367761;
+	bh=qx8OXZZnOn+kFpjp1qW7F6psKt7SFI6Zu2axctJ7xhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZDDH5J739bdpgqkWtrOa1V4bUehJ2eP6e0xmJTjt/hb4IXA+1XJ8fgGOBwguagoz
-	 sZYiJvpmn3awtjnYCwRPOQQ0xB7Q/7WiWRhOTIu1owaxdOz5DQBXfuGLTb3+96pneX
-	 vtBVO/xeVDi59gwE8gJc1GcVVA13d5NKfJlAvxT8=
+	b=WMlF5aXKhRVuQr6V5kd91OX0NheQsUTRZCtt5dTaKFX1q3aSSJcu2REbzp0qiZh+l
+	 yE4liY7lDFuqrPcUWw25xkII1HHp5ocHuOMaDd+hSnD6hsgTEXGjjlWC1EW+3JFX50
+	 OwOQt7+KWyI/42U3HV6ukgttnQ5mSigWoiepwbxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: [PATCH 6.12 173/262] sparc: fix accurate exception reporting in copy_to_user for Niagara 4
+	Parav Pandit <parav@nvidia.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 124/196] RDMA/core: Resolve MAC of next-hop device without ARP support
 Date: Mon, 13 Oct 2025 16:45:15 +0200
-Message-ID: <20251013144332.358335988@linuxfoundation.org>
+Message-ID: <20251013144319.794716249@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+From: Parav Pandit <parav@nvidia.com>
 
-[ Upstream commit 5a746c1a2c7980de6c888b6373299f751ad7790b ]
+[ Upstream commit 200651b9b8aadfbbec852f0e5d042d9abe75e2ab ]
 
-The referenced commit introduced exception handlers on user-space memory
-references in copy_from_user and copy_to_user. These handlers return from
-the respective function and calculate the remaining bytes left to copy
-using the current register contents. This commit fixes a bad calculation.
-This will fix the return value of copy_to_user in a specific faulting case.
-The behaviour of memcpy stays unchanged.
+Currently, if the next-hop netdevice does not support ARP resolution,
+the destination MAC address is silently set to zero without reporting
+an error. This leads to incorrect behavior and may result in packet
+transmission failures.
 
-Fixes: 957077048009 ("sparc64: Convert NG4copy_{from,to}_user to accurate exception reporting.")
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on Oracle SPARC T4-1
-Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-4-1ca72dda195b@mkarcher.dialup.fu-berlin.de
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Fix this by deferring MAC resolution to the IP stack via neighbour
+lookup, allowing proper resolution or error reporting as appropriate.
+
+Fixes: 7025fcd36bd6 ("IB: address translation to map IP toIB addresses (GIDs)")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20250916111103.84069-3-edwards@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/lib/NG4memcpy.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/core/addr.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/arch/sparc/lib/NG4memcpy.S b/arch/sparc/lib/NG4memcpy.S
-index 7ad58ebe0d009..df0ec1bd19489 100644
---- a/arch/sparc/lib/NG4memcpy.S
-+++ b/arch/sparc/lib/NG4memcpy.S
-@@ -281,7 +281,7 @@ FUNC_NAME:	/* %o0=dst, %o1=src, %o2=len */
- 	subcc		%o5, 0x20, %o5
- 	EX_ST(STORE(stx, %g1, %o0 + 0x00), memcpy_retl_o2_plus_o5_plus_32)
- 	EX_ST(STORE(stx, %g2, %o0 + 0x08), memcpy_retl_o2_plus_o5_plus_24)
--	EX_ST(STORE(stx, GLOBAL_SPARE, %o0 + 0x10), memcpy_retl_o2_plus_o5_plus_24)
-+	EX_ST(STORE(stx, GLOBAL_SPARE, %o0 + 0x10), memcpy_retl_o2_plus_o5_plus_16)
- 	EX_ST(STORE(stx, %o4, %o0 + 0x18), memcpy_retl_o2_plus_o5_plus_8)
- 	bne,pt		%icc, 1b
- 	 add		%o0, 0x20, %o0
+diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
+index f20dfe70fa0e4..8bf705921618c 100644
+--- a/drivers/infiniband/core/addr.c
++++ b/drivers/infiniband/core/addr.c
+@@ -460,14 +460,10 @@ static int addr_resolve_neigh(const struct dst_entry *dst,
+ {
+ 	int ret = 0;
+ 
+-	if (ndev_flags & IFF_LOOPBACK) {
++	if (ndev_flags & IFF_LOOPBACK)
+ 		memcpy(addr->dst_dev_addr, addr->src_dev_addr, MAX_ADDR_LEN);
+-	} else {
+-		if (!(ndev_flags & IFF_NOARP)) {
+-			/* If the device doesn't do ARP internally */
+-			ret = fetch_ha(dst, addr, dst_in, seq);
+-		}
+-	}
++	else
++		ret = fetch_ha(dst, addr, dst_in, seq);
+ 	return ret;
+ }
+ 
 -- 
 2.51.0
 
