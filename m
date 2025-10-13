@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-185062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31BCBD4A0F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A25BD46F9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A0B2B4FFF74
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:42:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5959318838F2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB767314D1B;
-	Mon, 13 Oct 2025 15:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABDF1F03C9;
+	Mon, 13 Oct 2025 15:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4/iZIDl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gemHdtYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98391314D16;
-	Mon, 13 Oct 2025 15:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CD130DED8;
+	Mon, 13 Oct 2025 15:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369224; cv=none; b=l4L4XCf9MpkzFhu3nlq7NsZ+yDayAbN78/25W3ALGVz9Ue34gl54OrWFJQsY3GDDIx0KEWsnqKTAi/E5uYeV9jtGgVRXEJBGBbZAkJpNqP7bomKJpNPB6MTbwNlDkDrZv48boQzgNJMTsMVIlG86J5xorWKk8OsnQOdiRz0zeQI=
+	t=1760369229; cv=none; b=o+DwNnV5ZwCcKKeSJXBLEQss12SCaFZAnmxfEPMvm/04nSDM334YDKn4uLuVqMCovnAYD6FN3KgKFzHUf0wU/RK68kdbAxGS9F0bkPInDQViOI5p/59t23wB4Ck/t01KUASQ4MyBkIJGNh4EmXttTAdoZxHNirkORHKMngnbKvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369224; c=relaxed/simple;
-	bh=H5wjjLNruY6/cSC/elI9joYxf2kVzBI6i0qa62zH9Fs=;
+	s=arc-20240116; t=1760369229; c=relaxed/simple;
+	bh=PV1x5lluH/CczC+FechKmw2Pb8oCh9670eEDCHjGouM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=capHTBfQO2m+rgNGvjv46IeNaJ0igHO9p2DpJhTeZNnjsV8ocfefTX8wdVObhZ9PQJ/ztW3uaU3tk+E39ajuXK6QlG8EuvAXrwaZK6QQIPdomN5akT5JNmQBsjAD6NrK+QpPJ0Xa+s2E4Jat+xGmwvkhBigkqXRDLJt+xzGFICE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4/iZIDl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD6CC116B1;
-	Mon, 13 Oct 2025 15:27:03 +0000 (UTC)
+	 MIME-Version; b=DGAgR+1MHqwv7N0uhCppd+Fb5X2Xn2bTgXVZgHtaiyMLqL7ecTg3BfZEOiHENRdoXtMbyjqWIvXoNBCJU7HkqfJHUXtR+Bg/9AdfJFmtCZuVC/e1IG7jmrScHlYP7bsp83ktFd6DPzDA7NUtP04LHi7Qv/4PusOXIFk6RrL1Y6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gemHdtYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B7DC4CEE7;
+	Mon, 13 Oct 2025 15:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369224;
-	bh=H5wjjLNruY6/cSC/elI9joYxf2kVzBI6i0qa62zH9Fs=;
+	s=korg; t=1760369229;
+	bh=PV1x5lluH/CczC+FechKmw2Pb8oCh9670eEDCHjGouM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4/iZIDl+iXvEU1nDhsRzlMw7l0T9Yc97KNMiU8D71tgZGcsjE4gQgtoP6kwydI4y
-	 UsclcXs8MROIFsQkiUbyiB8N66s+vTxY7GB59aPGKBtVzMHdibqW1zFLAA1QkWzjJx
-	 qjLmwCiReymWZFIs6exMqWJBrbpheYXAifX0sdJ4=
+	b=gemHdtYZ3ld1AwlFzsUd2oeqEibldibS6sPamXxaAsOknoytxfDl+m54vQrocoSVz
+	 ZOM8OeYc14RV2+1go4C2eepzb7PDezAHYUY+21+LRBfnuObYwBIExUM5OPjfQgN9FP
+	 5x415snJR4a2w16x6qEjRqIk2OjZ1XLdd6nrsm64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 172/563] blk-throttle: fix throtl_data leak during disk release
-Date: Mon, 13 Oct 2025 16:40:33 +0200
-Message-ID: <20251013144417.518763645@linuxfoundation.org>
+Subject: [PATCH 6.17 174/563] mmc: select REGMAP_MMIO with MMC_LOONGSON2
+Date: Mon, 13 Oct 2025 16:40:35 +0200
+Message-ID: <20251013144417.590902245@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,60 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-[ Upstream commit 336aec7b06be860477be80a4299263a2e9355789 ]
+[ Upstream commit 67da3f16e5f97a864a0beb4f9758d09e1890a76e ]
 
-Tightening the throttle activation check in blk_throtl_activated() to
-require both q->td presence and policy bit set introduced a memory leak
-during disk release:
+COMPILE_TEST with MMC_LOONGSON2 failed to link due to
+undeclared dependency:
 
-blkg_destroy_all() clears the policy bit first during queue deactivation,
-causing subsequent blk_throtl_exit() to skip throtl_data cleanup when
-blk_throtl_activated() fails policy check.
+ERROR: modpost: "__devm_regmap_init_mmio_clk"
+[drivers/mmc/host/loongson2-mmc.ko] undefined!
 
-Idealy we should avoid modifying blk_throtl_exit() activation check because
-it's intuitive that blk-throtl start from blk_throtl_init() and end in
-blk_throtl_exit(). However, call blk_throtl_exit() before
-blkg_destroy_all() will make a long term deadlock problem easier to
-trigger[1], hence fix this problem by checking if q->td is NULL from
-blk_throtl_exit(), and remove policy deactivation as well since it's
-useless.
+Fixes: 2115772014bd ("mmc: loongson2: Add Loongson-2K SD/SDIO controller driver")
 
-[1] https://lore.kernel.org/all/CAHj4cs9p9H5yx+ywsb3CMUdbqGPhM+8tuBvhW=9ADiCjAqza9w@mail.gmail.com/#t
-
-Fixes: bd9fd5be6bc0 ("blk-throttle: fix access race during throttle policy activation")
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/all/CAHj4cs-p-ZwBEKigBj7T6hQCOo-H68-kVwCrV6ZvRovrr9Z+HA@mail.gmail.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Suggested-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-throttle.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/mmc/host/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/blk-throttle.c b/block/blk-throttle.c
-index f510ae072868c..2c5b64b1a724a 100644
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -1842,12 +1842,15 @@ void blk_throtl_exit(struct gendisk *disk)
- {
- 	struct request_queue *q = disk->queue;
- 
--	if (!blk_throtl_activated(q))
-+	/*
-+	 * blkg_destroy_all() already deactivate throtl policy, just check and
-+	 * free throtl data.
-+	 */
-+	if (!q->td)
- 		return;
- 
- 	timer_delete_sync(&q->td->service_queue.pending_timer);
- 	throtl_shutdown_wq(q);
--	blkcg_deactivate_policy(disk, &blkcg_policy_throtl);
- 	kfree(q->td);
- }
- 
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index 7232de1c06887..5cc415ba4f550 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -1115,6 +1115,7 @@ config MMC_LOONGSON2
+ 	tristate "Loongson-2K SD/SDIO/eMMC Host Interface support"
+ 	depends on LOONGARCH || COMPILE_TEST
+ 	depends on HAS_DMA
++	select REGMAP_MMIO
+ 	help
+ 	  This selects support for the SD/SDIO/eMMC Host Controller on
+ 	  Loongson-2K series CPUs.
 -- 
 2.51.0
 
