@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-185015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1D7BD4B31
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:02:44 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5920BD499A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6104028F3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7B660547D5F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFAB30BF6B;
-	Mon, 13 Oct 2025 15:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D8B30DD10;
+	Mon, 13 Oct 2025 15:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yup7bkW8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFYkLCwY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D18430C35C;
-	Mon, 13 Oct 2025 15:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EE23148D4;
+	Mon, 13 Oct 2025 15:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369090; cv=none; b=CcVoct+T7H6eZ7mFDADB6OVJQPBM6GoHcyoJel6dYZ+fEjvZ9wZWNONGOWAXqM8LxxyUIGGt8SQDM8U1l/E0WEYD8V7BGByoXVx6MldTr3IVBA5afb4Bs+4FYr9eNf7jZiutKmt2vKsqy43lemu26E5FAj58ukwxfJoxelkkX+Y=
+	t=1760369213; cv=none; b=grPYvOzm2mjItFLD+UGTz6WYDmvnxZj1+6pltbMfRO9m0Li/rgKvor1WT8jt36kxKxKBjdmNIENiGhVCpjvM2xVAv6T7Ijpxvd/AXSDTNCM910UVdX2gqS0D2ShBOpEOrVPtoodKmoS5D2G3yjUz6RoRQbE/zfsZt9ETYXTBqXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369090; c=relaxed/simple;
-	bh=Jj7Ebs5D1rUUdBoFnjQpprEhC+Hx+eRY0/Tc3R/Z+eU=;
+	s=arc-20240116; t=1760369213; c=relaxed/simple;
+	bh=pe/gq6GXn55t6uAHoAsCnKjz8M02ynqRYTmG/2qLYPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBIMVgFPMcOhZjkUWaZkk9FZmdiKck8M7NOyngeOXXAMfXiUZDeEpB7AawckQCBCrGA8oNmx1iiBSYuj/3QObGMDtGu6qklJSlgbnEPfVqQPy/Ydwd54c3Hvv1BC5zEnBAOUdqRAETliE4aGigfDvwEjTGN9MPfAiOnMM6b2O98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yup7bkW8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78601C4CEFE;
-	Mon, 13 Oct 2025 15:24:49 +0000 (UTC)
+	 MIME-Version; b=nnXUdrvMqEGwyW6bQbmH8raFpWkq3lDAxqaqGFemXaTZzBcopywl6Uw347uaJ12zuED/mlRq7vllVSqnLe0rwXoyzPPH+4e15CxBx24GvIJazhhlreXV6LYAW2mippLniIQJfhva6ioo15rFtFK+7OChoohjxtzxH4f14gPbze8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFYkLCwY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600F0C4CEE7;
+	Mon, 13 Oct 2025 15:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369089;
-	bh=Jj7Ebs5D1rUUdBoFnjQpprEhC+Hx+eRY0/Tc3R/Z+eU=;
+	s=korg; t=1760369212;
+	bh=pe/gq6GXn55t6uAHoAsCnKjz8M02ynqRYTmG/2qLYPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yup7bkW8cN8tNyiBxN5I5MctTQPEW6FhjBKwInKEe5G264My3N+0S76V1cwKmRcQk
-	 Ilb+elqthEeonfIiYPfPCETyHFopSCT3dGM4VC9vX9ueIKicPIHFHNLiqXCgN0rMpM
-	 PEfvZq9TQ3aB3i4Z9wX2q6kXwRBlk3UVHx7lQUtY=
+	b=IFYkLCwYmVyNv3giVXXZCLwcA0/bVQCmONnHzxY3Qxb+SPvRox8LvLcBnOJQ51jeu
+	 aCCVvXqwpz449KRc5gSCGxfu8KxKNaPMvrQCzOSYvARKqqDrcRFrCfpo0B0whGoFDy
+	 s2w9JmXnDKm1ztOgQX6Bmhs6HlllTnFwIiHFZ5eU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Tie Ren <tieren@fnnas.com>,
 	Yu Kuai <yukuai3@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
 	Christoph Hellwig <hch@lst.de>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 123/563] block: skip unnecessary checks for split bio
-Date: Mon, 13 Oct 2025 16:39:44 +0200
-Message-ID: <20251013144415.749291210@linuxfoundation.org>
+Subject: [PATCH 6.17 124/563] block: fix ordering of recursive split IO
+Date: Mon, 13 Oct 2025 16:39:45 +0200
+Message-ID: <20251013144415.785974566@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -69,68 +71,226 @@ Content-Transfer-Encoding: 8bit
 
 From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 0b64682e78f7a53ea863e368b1aa66f05767858d ]
+[ Upstream commit b2f5974079d82a4761f002e80601064d4e39a81f ]
 
-Lots of checks are already done while submitting this bio the first
-time, and there is no need to check them again when this bio is
-resubmitted after split.
+Currently, split bio will be chained to original bio, and original bio
+will be resubmitted to the tail of current->bio_list, waiting for
+split bio to be issued. However, if split bio get split again, the IO
+order will be messed up. This problem, on the one hand, will cause
+performance degradation, especially for mdraid with large IO size; on
+the other hand, will cause write errors for zoned block devices[1].
 
-Hence open code should_fail_bio() and blk_throtl_bio() that are still
-necessary from submit_bio_split_bioset().
+For example, in raid456 IO will first be split by max_sector from
+md_submit_bio(), and then later be split again by chunksize for internal
+handling:
 
+For example, assume max_sectors is 1M, and chunksize is 512k
+
+1) issue a 2M IO:
+
+bio issuing: 0+2M
+current->bio_list: NULL
+
+2) md_submit_bio() split by max_sector:
+
+bio issuing: 0+1M
+current->bio_list: 1M+1M
+
+3) chunk_aligned_read() split by chunksize:
+
+bio issuing: 0+512k
+current->bio_list: 1M+1M -> 512k+512k
+
+4) after first bio issued, __submit_bio_noacct() will contuine issuing
+next bio:
+
+bio issuing: 1M+1M
+current->bio_list: 512k+512k
+bio issued: 0+512k
+
+5) chunk_aligned_read() split by chunksize:
+
+bio issuing: 1M+512k
+current->bio_list: 512k+512k -> 1536k+512k
+bio issued: 0+512k
+
+6) no split afterwards, finally the issue order is:
+
+0+512k -> 1M+512k -> 512k+512k -> 1536k+512k
+
+This behaviour will cause large IO read on raid456 endup to be small
+discontinuous IO in underlying disks. Fix this problem by placing split
+bio to the head of current->bio_list.
+
+Test script: test on 8 disk raid5 with 64k chunksize
+dd if=/dev/md0 of=/dev/null bs=4480k iflag=direct
+
+Test results:
+Before this patch
+1) iostat results:
+Device            r/s     rMB/s   rrqm/s  %rrqm r_await rareq-sz  aqu-sz  %util
+md0           52430.00   3276.87     0.00   0.00    0.62    64.00   32.60  80.10
+sd*           4487.00    409.00  2054.00  31.40    0.82    93.34    3.68  71.20
+2) blktrace G stage:
+  8,0    0   486445    11.357392936   843  G   R 14071424 + 128 [dd]
+  8,0    0   486451    11.357466360   843  G   R 14071168 + 128 [dd]
+  8,0    0   486454    11.357515868   843  G   R 14071296 + 128 [dd]
+  8,0    0   486468    11.357968099   843  G   R 14072192 + 128 [dd]
+  8,0    0   486474    11.358031320   843  G   R 14071936 + 128 [dd]
+  8,0    0   486480    11.358096298   843  G   R 14071552 + 128 [dd]
+  8,0    0   486490    11.358303858   843  G   R 14071808 + 128 [dd]
+3) io seek for sdx:
+Noted io seek is the result from blktrace D stage, statistic of:
+ABS((offset of next IO) - (offset + len of previous IO))
+
+Read|Write seek
+cnt 55175, zero cnt 25079
+    >=(KB) .. <(KB)     : count       ratio |distribution                            |
+         0 .. 1         : 25079       45.5% |########################################|
+         1 .. 2         : 0            0.0% |                                        |
+         2 .. 4         : 0            0.0% |                                        |
+         4 .. 8         : 0            0.0% |                                        |
+         8 .. 16        : 0            0.0% |                                        |
+        16 .. 32        : 0            0.0% |                                        |
+        32 .. 64        : 12540       22.7% |#####################                   |
+        64 .. 128       : 2508         4.5% |#####                                   |
+       128 .. 256       : 0            0.0% |                                        |
+       256 .. 512       : 10032       18.2% |#################                       |
+       512 .. 1024      : 5016         9.1% |#########                               |
+
+After this patch:
+1) iostat results:
+Device            r/s     rMB/s   rrqm/s  %rrqm r_await rareq-sz  aqu-sz  %util
+md0           87965.00   5271.88     0.00   0.00    0.16    61.37   14.03  90.60
+sd*           6020.00    658.44  5117.00  45.95    0.44   112.00    2.68  86.50
+2) blktrace G stage:
+  8,0    0   206296     5.354894072   664  G   R 7156992 + 128 [dd]
+  8,0    0   206305     5.355018179   664  G   R 7157248 + 128 [dd]
+  8,0    0   206316     5.355204438   664  G   R 7157504 + 128 [dd]
+  8,0    0   206319     5.355241048   664  G   R 7157760 + 128 [dd]
+  8,0    0   206333     5.355500923   664  G   R 7158016 + 128 [dd]
+  8,0    0   206344     5.355837806   664  G   R 7158272 + 128 [dd]
+  8,0    0   206353     5.355960395   664  G   R 7158528 + 128 [dd]
+  8,0    0   206357     5.356020772   664  G   R 7158784 + 128 [dd]
+3) io seek for sdx
+Read|Write seek
+cnt 28644, zero cnt 21483
+    >=(KB) .. <(KB)     : count       ratio |distribution                            |
+         0 .. 1         : 21483       75.0% |########################################|
+         1 .. 2         : 0            0.0% |                                        |
+         2 .. 4         : 0            0.0% |                                        |
+         4 .. 8         : 0            0.0% |                                        |
+         8 .. 16        : 0            0.0% |                                        |
+        16 .. 32        : 0            0.0% |                                        |
+        32 .. 64        : 7161        25.0% |##############                          |
+
+BTW, this looks like a long term problem from day one, and large
+sequential IO read is pretty common case like video playing.
+
+And even with this patch, in this test case IO is merged to at most 128k
+is due to block layer plug limit BLK_PLUG_FLUSH_SIZE, increase such
+limit can get even better performance. However, we'll figure out how to do
+this properly later.
+
+[1] https://lore.kernel.org/all/e40b076d-583d-406b-b223-005910a9f46f@acm.org/
+
+Fixes: d89d87965dcb ("When stacked block devices are in-use (e.g. md or dm), the recursive calls")
+Reported-by: Tie Ren <tieren@fnnas.com>
+Closes: https://lore.kernel.org/all/7dro5o7u5t64d6bgiansesjavxcuvkq5p2pok7dtwkav7b7ape@3isfr44b6352/
 Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: b2f5974079d8 ("block: fix ordering of recursive split IO")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c  | 2 +-
- block/blk-merge.c | 6 +++++-
- block/blk.h       | 1 +
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ block/blk-core.c     | 16 ++++++++++------
+ block/blk-merge.c    |  2 +-
+ block/blk-throttle.c |  2 +-
+ block/blk.h          |  2 +-
+ 4 files changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/block/blk-core.c b/block/blk-core.c
-index e5af6eda5a459..03a5d4c9cbf72 100644
+index 03a5d4c9cbf72..14ae73eebe0d7 100644
 --- a/block/blk-core.c
 +++ b/block/blk-core.c
-@@ -539,7 +539,7 @@ static inline void bio_check_ro(struct bio *bio)
- 	}
+@@ -727,7 +727,7 @@ static void __submit_bio_noacct_mq(struct bio *bio)
+ 	current->bio_list = NULL;
  }
  
--static noinline int should_fail_bio(struct bio *bio)
-+int should_fail_bio(struct bio *bio)
+-void submit_bio_noacct_nocheck(struct bio *bio)
++void submit_bio_noacct_nocheck(struct bio *bio, bool split)
  {
- 	if (should_fail_request(bdev_whole(bio->bi_bdev), bio->bi_iter.bi_size))
- 		return -EIO;
+ 	blk_cgroup_bio_start(bio);
+ 
+@@ -746,12 +746,16 @@ void submit_bio_noacct_nocheck(struct bio *bio)
+ 	 * to collect a list of requests submited by a ->submit_bio method while
+ 	 * it is active, and then process them after it returned.
+ 	 */
+-	if (current->bio_list)
+-		bio_list_add(&current->bio_list[0], bio);
+-	else if (!bdev_test_flag(bio->bi_bdev, BD_HAS_SUBMIT_BIO))
++	if (current->bio_list) {
++		if (split)
++			bio_list_add_head(&current->bio_list[0], bio);
++		else
++			bio_list_add(&current->bio_list[0], bio);
++	} else if (!bdev_test_flag(bio->bi_bdev, BD_HAS_SUBMIT_BIO)) {
+ 		__submit_bio_noacct_mq(bio);
+-	else
++	} else {
+ 		__submit_bio_noacct(bio);
++	}
+ }
+ 
+ static blk_status_t blk_validate_atomic_write_op_size(struct request_queue *q,
+@@ -872,7 +876,7 @@ void submit_bio_noacct(struct bio *bio)
+ 
+ 	if (blk_throtl_bio(bio))
+ 		return;
+-	submit_bio_noacct_nocheck(bio);
++	submit_bio_noacct_nocheck(bio, false);
+ 	return;
+ 
+ not_supported:
 diff --git a/block/blk-merge.c b/block/blk-merge.c
-index 51fe4ed5b7c0b..c411045fcf03a 100644
+index c411045fcf03a..77488f11a9441 100644
 --- a/block/blk-merge.c
 +++ b/block/blk-merge.c
-@@ -130,7 +130,11 @@ struct bio *bio_submit_split_bioset(struct bio *bio, unsigned int split_sectors,
- 	bio_chain(split, bio);
- 	trace_block_split(split, bio->bi_iter.bi_sector);
- 	WARN_ON_ONCE(bio_zone_write_plugging(bio));
--	submit_bio_noacct(bio);
-+
-+	if (should_fail_bio(bio))
-+		bio_io_error(bio);
-+	else if (!blk_throtl_bio(bio))
-+		submit_bio_noacct_nocheck(bio);
+@@ -134,7 +134,7 @@ struct bio *bio_submit_split_bioset(struct bio *bio, unsigned int split_sectors,
+ 	if (should_fail_bio(bio))
+ 		bio_io_error(bio);
+ 	else if (!blk_throtl_bio(bio))
+-		submit_bio_noacct_nocheck(bio);
++		submit_bio_noacct_nocheck(bio, true);
  
  	return split;
  }
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index cfa1cd60d2c5f..f510ae072868c 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -1224,7 +1224,7 @@ static void blk_throtl_dispatch_work_fn(struct work_struct *work)
+ 	if (!bio_list_empty(&bio_list_on_stack)) {
+ 		blk_start_plug(&plug);
+ 		while ((bio = bio_list_pop(&bio_list_on_stack)))
+-			submit_bio_noacct_nocheck(bio);
++			submit_bio_noacct_nocheck(bio, false);
+ 		blk_finish_plug(&plug);
+ 	}
+ }
 diff --git a/block/blk.h b/block/blk.h
-index 0268deb222688..18cc3c2afdd4d 100644
+index 18cc3c2afdd4d..d9efc8693aa48 100644
 --- a/block/blk.h
 +++ b/block/blk.h
-@@ -615,6 +615,7 @@ extern const struct address_space_operations def_blk_aops;
- int disk_register_independent_access_ranges(struct gendisk *disk);
- void disk_unregister_independent_access_ranges(struct gendisk *disk);
+@@ -54,7 +54,7 @@ bool blk_queue_start_drain(struct request_queue *q);
+ bool __blk_freeze_queue_start(struct request_queue *q,
+ 			      struct task_struct *owner);
+ int __bio_queue_enter(struct request_queue *q, struct bio *bio);
+-void submit_bio_noacct_nocheck(struct bio *bio);
++void submit_bio_noacct_nocheck(struct bio *bio, bool split);
+ void bio_await_chain(struct bio *bio);
  
-+int should_fail_bio(struct bio *bio);
- #ifdef CONFIG_FAIL_MAKE_REQUEST
- bool should_fail_request(struct block_device *part, unsigned int bytes);
- #else /* CONFIG_FAIL_MAKE_REQUEST */
+ static inline bool blk_try_enter_queue(struct request_queue *q, bool pm)
 -- 
 2.51.0
 
