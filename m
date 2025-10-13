@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-184798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AADCBD436A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE1ABD4171
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2BB18874A9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED8A5405DCC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA67030E0CE;
-	Mon, 13 Oct 2025 15:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554E730AAB0;
+	Mon, 13 Oct 2025 15:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnrSZABx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhe78Orv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D273081A3;
-	Mon, 13 Oct 2025 15:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A9130AAAD;
+	Mon, 13 Oct 2025 15:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368464; cv=none; b=GOLJUB7UTwtggZaaKwt/e/PmDrmBOymvW2HZ2cZ/Jen5ma3bpLxgR9NN9hnd6dTZl8OD1Z79BweHNpZFEE3MAf5H7udLF1DSsoTtBYuGGa12oH5Y7ch4YNYZmXugDD34HGkOin7yKGiaH+GUZ1lKS3UlxsQyQE0idIXjR/x/UpQ=
+	t=1760367679; cv=none; b=h8O+QgIAS805qkCo9I4QuyaRvLtcJTYRgCtRji9G7XOZJObmdLH4jBWNrAp+MQ9nJsywZ9R6FFYAm74DrYs48kQ42GCAkQMSfv9VKvYjzFlx5xrMLi55OJtpDD7GOECKM8tLzL784HrFy6ki6+JxHB8plgy0Kl+yU42+yyrZs1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368464; c=relaxed/simple;
-	bh=Swy3Rm4Z/gVDbeUz5UWgJTW4ZanAI9UGoQPgN0XmC1o=;
+	s=arc-20240116; t=1760367679; c=relaxed/simple;
+	bh=iz8NZymndqihdgdSpyEjGm0M9xjhbSPGB0M8DinSmxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opXYhtkWz6fEeodmKV12CkBqgVsP0RYAC99yrMlW4tHQebQtEHbT7DRfSbOLFqw8gDqK5vaNunVAA7XK/Nvyj/f7dhJTVlSa7qhkYUUWxebxU/KW+cExIKzlYAvTKVL2/XjiRyRBjmN1nv2ZzzCB89dOdrrWjZQr4eyIISWsVRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnrSZABx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBDFC4CEE7;
-	Mon, 13 Oct 2025 15:14:23 +0000 (UTC)
+	 MIME-Version; b=NEuhmWSJqx5sW5pfIU3Ijs1/8g+sBkio4rb75QS3ZMivc1USSDID9fr4pXk5Q9F0pta+toCdzNTtuyupbrBCtAMO7+jVCKcuY57Zbacw9kcixcYfHcEuyieYHQ6md78b0OITdidphHuNk/oHcKmB8xbIWAon1227TgR6H80xVMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhe78Orv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85942C4CEE7;
+	Mon, 13 Oct 2025 15:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368464;
-	bh=Swy3Rm4Z/gVDbeUz5UWgJTW4ZanAI9UGoQPgN0XmC1o=;
+	s=korg; t=1760367678;
+	bh=iz8NZymndqihdgdSpyEjGm0M9xjhbSPGB0M8DinSmxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnrSZABxRNmCHZmtGJkwa73/60z6iOXsdCebEPuwOyTm+wb82NJBYH3PQY2xfW33o
-	 PqANwooWQa6oGhghZao+5RT3IwUNIlXrBLuP4UH3HgpPCMvyKGY5+4F0gZKnDScxdf
-	 ouBGu88y3wgFEfiOACWQB9WO3n+WRiD2FqmC6Aq0=
+	b=hhe78Orvvbv0aGl+p0LAnQ4sY4HOVTmGMOBWZLpSN9gTYU6FIDXRK9J+rL1DU2f95
+	 hVdMIRc88rjdYIGOnywbdsmpnsLdJoNy5ol71W/cme/F2aqTze6utPtQ5uTWPA6keq
+	 b8fQfVhe0WR5NEAv2aDjs3G4M2BmcMvgdsl1QW64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1651b5234028c294c339@syzkaller.appspotmail.com,
-	Julian Anastasov <ja@ssi.bg>,
-	Zhang Tengfei <zhtfdev@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 143/262] ipvs: Use READ_ONCE/WRITE_ONCE for ipvs->enable
+Subject: [PATCH 6.6 094/196] tcp: fix __tcp_close() to only send RST when required
 Date: Mon, 13 Oct 2025 16:44:45 +0200
-Message-ID: <20251013144331.273678748@linuxfoundation.org>
+Message-ID: <20251013144318.718184722@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,225 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Tengfei <zhtfdev@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 944b6b216c0387ac3050cd8b773819ae360bfb1c ]
+[ Upstream commit 5f9238530970f2993b23dd67fdaffc552a2d2e98 ]
 
-KCSAN reported a data-race on the `ipvs->enable` flag, which is
-written in the control path and read concurrently from many other
-contexts.
+If the receive queue contains payload that was already
+received, __tcp_close() can send an unexpected RST.
 
-Following a suggestion by Julian, this patch fixes the race by
-converting all accesses to use `WRITE_ONCE()/READ_ONCE()`.
-This lightweight approach ensures atomic access and acts as a
-compiler barrier, preventing unsafe optimizations where the flag
-is checked in loops (e.g., in ip_vs_est.c).
+Refine the code to take tp->copied_seq into account,
+as we already do in tcp recvmsg().
 
-Additionally, the `enable` checks in the fast-path hooks
-(`ip_vs_in_hook`, `ip_vs_out_hook`, `ip_vs_forward_icmp`) are
-removed. These are unnecessary since commit 857ca89711de
-("ipvs: register hooks only with services"). The `enable=0`
-condition they check for can only occur in two rare and non-fatal
-scenarios: 1) after hooks are registered but before the flag is set,
-and 2) after hooks are unregistered on cleanup_net. In the worst
-case, a single packet might be mishandled (e.g., dropped), which
-does not lead to a system crash or data corruption. Adding a check
-in the performance-critical fast-path to handle this harmless
-condition is not a worthwhile trade-off.
-
-Fixes: 857ca89711de ("ipvs: register hooks only with services")
-Reported-by: syzbot+1651b5234028c294c339@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1651b5234028c294c339
-Suggested-by: Julian Anastasov <ja@ssi.bg>
-Link: https://lore.kernel.org/lvs-devel/2189fc62-e51e-78c9-d1de-d35b8e3657e3@ssi.bg/
-Signed-off-by: Zhang Tengfei <zhtfdev@gmail.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Link: https://patch.msgid.link/20250903084720.1168904-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_conn.c |  4 ++--
- net/netfilter/ipvs/ip_vs_core.c | 11 ++++-------
- net/netfilter/ipvs/ip_vs_ctl.c  |  6 +++---
- net/netfilter/ipvs/ip_vs_est.c  | 16 ++++++++--------
- 4 files changed, 17 insertions(+), 20 deletions(-)
+ net/ipv4/tcp.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
-index c0289f83f96df..327baa17882a8 100644
---- a/net/netfilter/ipvs/ip_vs_conn.c
-+++ b/net/netfilter/ipvs/ip_vs_conn.c
-@@ -885,7 +885,7 @@ static void ip_vs_conn_expire(struct timer_list *t)
- 			 * conntrack cleanup for the net.
- 			 */
- 			smp_rmb();
--			if (ipvs->enable)
-+			if (READ_ONCE(ipvs->enable))
- 				ip_vs_conn_drop_conntrack(cp);
- 		}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 40a2f172be2cb..7d824578f217a 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2786,8 +2786,8 @@ bool tcp_check_oom(struct sock *sk, int shift)
  
-@@ -1433,7 +1433,7 @@ void ip_vs_expire_nodest_conn_flush(struct netns_ipvs *ipvs)
- 		cond_resched_rcu();
- 
- 		/* netns clean up started, abort delayed work */
--		if (!ipvs->enable)
-+		if (!READ_ONCE(ipvs->enable))
- 			break;
- 	}
- 	rcu_read_unlock();
-diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
-index c7a8a08b73089..5ea7ab8bf4dcc 100644
---- a/net/netfilter/ipvs/ip_vs_core.c
-+++ b/net/netfilter/ipvs/ip_vs_core.c
-@@ -1353,9 +1353,6 @@ ip_vs_out_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *stat
- 	if (unlikely(!skb_dst(skb)))
- 		return NF_ACCEPT;
- 
--	if (!ipvs->enable)
--		return NF_ACCEPT;
--
- 	ip_vs_fill_iph_skb(af, skb, false, &iph);
- #ifdef CONFIG_IP_VS_IPV6
- 	if (af == AF_INET6) {
-@@ -1940,7 +1937,7 @@ ip_vs_in_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *state
- 		return NF_ACCEPT;
- 	}
- 	/* ipvs enabled in this netns ? */
--	if (unlikely(sysctl_backup_only(ipvs) || !ipvs->enable))
-+	if (unlikely(sysctl_backup_only(ipvs)))
- 		return NF_ACCEPT;
- 
- 	ip_vs_fill_iph_skb(af, skb, false, &iph);
-@@ -2108,7 +2105,7 @@ ip_vs_forward_icmp(void *priv, struct sk_buff *skb,
- 	int r;
- 
- 	/* ipvs enabled in this netns ? */
--	if (unlikely(sysctl_backup_only(ipvs) || !ipvs->enable))
-+	if (unlikely(sysctl_backup_only(ipvs)))
- 		return NF_ACCEPT;
- 
- 	if (state->pf == NFPROTO_IPV4) {
-@@ -2295,7 +2292,7 @@ static int __net_init __ip_vs_init(struct net *net)
- 		return -ENOMEM;
- 
- 	/* Hold the beast until a service is registered */
--	ipvs->enable = 0;
-+	WRITE_ONCE(ipvs->enable, 0);
- 	ipvs->net = net;
- 	/* Counters used for creating unique names */
- 	ipvs->gen = atomic_read(&ipvs_netns_cnt);
-@@ -2367,7 +2364,7 @@ static void __net_exit __ip_vs_dev_cleanup_batch(struct list_head *net_list)
- 		ipvs = net_ipvs(net);
- 		ip_vs_unregister_hooks(ipvs, AF_INET);
- 		ip_vs_unregister_hooks(ipvs, AF_INET6);
--		ipvs->enable = 0;	/* Disable packet reception */
-+		WRITE_ONCE(ipvs->enable, 0);	/* Disable packet reception */
- 		smp_wmb();
- 		ip_vs_sync_net_cleanup(ipvs);
- 	}
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 3224f6e17e736..3219338feca4d 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -256,7 +256,7 @@ static void est_reload_work_handler(struct work_struct *work)
- 		struct ip_vs_est_kt_data *kd = ipvs->est_kt_arr[id];
- 
- 		/* netns clean up started, abort delayed work */
--		if (!ipvs->enable)
-+		if (!READ_ONCE(ipvs->enable))
- 			goto unlock;
- 		if (!kd)
- 			continue;
-@@ -1482,9 +1482,9 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
- 
- 	*svc_p = svc;
- 
--	if (!ipvs->enable) {
-+	if (!READ_ONCE(ipvs->enable)) {
- 		/* Now there is a service - full throttle */
--		ipvs->enable = 1;
-+		WRITE_ONCE(ipvs->enable, 1);
- 
- 		/* Start estimation for first time */
- 		ip_vs_est_reload_start(ipvs);
-diff --git a/net/netfilter/ipvs/ip_vs_est.c b/net/netfilter/ipvs/ip_vs_est.c
-index f821ad2e19b35..3492108bb3b97 100644
---- a/net/netfilter/ipvs/ip_vs_est.c
-+++ b/net/netfilter/ipvs/ip_vs_est.c
-@@ -231,7 +231,7 @@ static int ip_vs_estimation_kthread(void *data)
- void ip_vs_est_reload_start(struct netns_ipvs *ipvs)
+ void __tcp_close(struct sock *sk, long timeout)
  {
- 	/* Ignore reloads before first service is added */
--	if (!ipvs->enable)
-+	if (!READ_ONCE(ipvs->enable))
- 		return;
- 	ip_vs_est_stopped_recalc(ipvs);
- 	/* Bump the kthread configuration genid */
-@@ -305,7 +305,7 @@ static int ip_vs_est_add_kthread(struct netns_ipvs *ipvs)
- 	int i;
++	bool data_was_unread = false;
+ 	struct sk_buff *skb;
+-	int data_was_unread = 0;
+ 	int state;
  
- 	if ((unsigned long)ipvs->est_kt_count >= ipvs->est_max_threads &&
--	    ipvs->enable && ipvs->est_max_threads)
-+	    READ_ONCE(ipvs->enable) && ipvs->est_max_threads)
- 		return -EINVAL;
+ 	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
+@@ -2806,11 +2806,12 @@ void __tcp_close(struct sock *sk, long timeout)
+ 	 *  reader process may not have drained the data yet!
+ 	 */
+ 	while ((skb = __skb_dequeue(&sk->sk_receive_queue)) != NULL) {
+-		u32 len = TCP_SKB_CB(skb)->end_seq - TCP_SKB_CB(skb)->seq;
++		u32 end_seq = TCP_SKB_CB(skb)->end_seq;
  
- 	mutex_lock(&ipvs->est_mutex);
-@@ -342,7 +342,7 @@ static int ip_vs_est_add_kthread(struct netns_ipvs *ipvs)
+ 		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN)
+-			len--;
+-		data_was_unread += len;
++			end_seq--;
++		if (after(end_seq, tcp_sk(sk)->copied_seq))
++			data_was_unread = true;
+ 		__kfree_skb(skb);
  	}
  
- 	/* Start kthread tasks only when services are present */
--	if (ipvs->enable && !ip_vs_est_stopped(ipvs)) {
-+	if (READ_ONCE(ipvs->enable) && !ip_vs_est_stopped(ipvs)) {
- 		ret = ip_vs_est_kthread_start(ipvs, kd);
- 		if (ret < 0)
- 			goto out;
-@@ -485,7 +485,7 @@ int ip_vs_start_estimator(struct netns_ipvs *ipvs, struct ip_vs_stats *stats)
- 	struct ip_vs_estimator *est = &stats->est;
- 	int ret;
- 
--	if (!ipvs->est_max_threads && ipvs->enable)
-+	if (!ipvs->est_max_threads && READ_ONCE(ipvs->enable))
- 		ipvs->est_max_threads = ip_vs_est_max_threads(ipvs);
- 
- 	est->ktid = -1;
-@@ -662,7 +662,7 @@ static int ip_vs_est_calc_limits(struct netns_ipvs *ipvs, int *chain_max)
- 			/* Wait for cpufreq frequency transition */
- 			wait_event_idle_timeout(wq, kthread_should_stop(),
- 						HZ / 50);
--			if (!ipvs->enable || kthread_should_stop())
-+			if (!READ_ONCE(ipvs->enable) || kthread_should_stop())
- 				goto stop;
- 		}
- 
-@@ -680,7 +680,7 @@ static int ip_vs_est_calc_limits(struct netns_ipvs *ipvs, int *chain_max)
- 		rcu_read_unlock();
- 		local_bh_enable();
- 
--		if (!ipvs->enable || kthread_should_stop())
-+		if (!READ_ONCE(ipvs->enable) || kthread_should_stop())
- 			goto stop;
- 		cond_resched();
- 
-@@ -756,7 +756,7 @@ static void ip_vs_est_calc_phase(struct netns_ipvs *ipvs)
- 	mutex_lock(&ipvs->est_mutex);
- 	for (id = 1; id < ipvs->est_kt_count; id++) {
- 		/* netns clean up started, abort */
--		if (!ipvs->enable)
-+		if (!READ_ONCE(ipvs->enable))
- 			goto unlock2;
- 		kd = ipvs->est_kt_arr[id];
- 		if (!kd)
-@@ -786,7 +786,7 @@ static void ip_vs_est_calc_phase(struct netns_ipvs *ipvs)
- 	id = ipvs->est_kt_count;
- 
- next_kt:
--	if (!ipvs->enable || kthread_should_stop())
-+	if (!READ_ONCE(ipvs->enable) || kthread_should_stop())
- 		goto unlock;
- 	id--;
- 	if (id < 0)
 -- 
 2.51.0
 
