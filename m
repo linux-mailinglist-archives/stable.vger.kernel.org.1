@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-185212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0909DBD4FFC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:25:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7F7BD4F78
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4DDEF54505B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8A0E486EA5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A0C30C342;
-	Mon, 13 Oct 2025 15:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DF430CD97;
+	Mon, 13 Oct 2025 15:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtA6+tsH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whsJhXcG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A7330BF7B;
-	Mon, 13 Oct 2025 15:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433FA30C363;
+	Mon, 13 Oct 2025 15:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369651; cv=none; b=Y6cEF0+EqNP3Bmr3wOgeM1pCCaLDTNtONfkCZru7ok8L9bDi5CbAHYV5eN3wT8WPE+/LJiOyFxVhXAA0KzUpea41Ny+zDG5XAcgSkA32frWnM68s2BftozZN21wSnHF9U/cUFm22PsHffUAzIAKQYAkD/FJtOLGtBsQQ85QTL4s=
+	t=1760369657; cv=none; b=sWDPvA5orzB2c0cLeGve+bpBf7Fr8rTH4Bf9tEAGHzhUOyC79CoWksGQ9jncYMWfZTdsAqjfgEYMZ0yT1oUeUF3dQ7RmbhFkFcguFhAc2qSOAlYOv1aJVadhJWHBRv//hsKkmoleTGh7wFHaby4A9InWvok/95eQDHnbYQtgX/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369651; c=relaxed/simple;
-	bh=g1E9tttMJiN8Nv+OGuHuEVm2uye3rdaNSdLjHBaqGjI=;
+	s=arc-20240116; t=1760369657; c=relaxed/simple;
+	bh=WC4wlNeXWvNUvdi90CZWfaUWyIBFGamIiDKQ06o9vyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j6FbA3RT+/lj5K8Sdj1YO0P8WvN7kRqdH5vARIc6JV4PoffG9lmZyId0ksiIqWRfKBh06WE9vCEyUPJ0S1LqIdQmQvARUZ09hwrp/5EIMxnRSL8D/uczIFDrihpOFiWV8Ag/PDpXJXgfusPR45349xFvtqy0mpBttC/aeEIspxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtA6+tsH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B419C4CEE7;
-	Mon, 13 Oct 2025 15:34:10 +0000 (UTC)
+	 MIME-Version; b=krChU/lKTv5AY/HxuLfrCNMW47NTx51nbL3J4R2u3wEkRIXKjoRRqwCwlx8LrPwrhxVAoG4xwPKc7TyqYL+SOXKuRYNCaMQRvv8ycyMojf7e+uB6ZqINTbEKMUgTunGyRAQqDTDl/RYE5HgzIU74CcEf4dzZ4xr6g0HKTopdFog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whsJhXcG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDF5C4CEE7;
+	Mon, 13 Oct 2025 15:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369651;
-	bh=g1E9tttMJiN8Nv+OGuHuEVm2uye3rdaNSdLjHBaqGjI=;
+	s=korg; t=1760369657;
+	bh=WC4wlNeXWvNUvdi90CZWfaUWyIBFGamIiDKQ06o9vyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xtA6+tsHAUHtF8q5P2THnsiqjI4Z9nh64Vkl25zUGaGMRZHFs+nUk1NtxXQIHnJAd
-	 XQIc2vMnAxtjubIHu1FZ7arSUitVwZYEo8E/LkuD+5rceJqAh9eWt23e8XS7SVasf8
-	 AGvU0InNcyF9fT0PDSdjVoBS4M56VIxYhEzaUlV4=
+	b=whsJhXcG04qcBjz4kHZTVQoekamAxTdZSM04CzSK1MWn+PfuUB+BhoWAUWHzSAHJj
+	 dUqhPY0aSbCFgP3jqGlZnXIaabB7/iTA+lorvMRzUc3Ldk53LJFLrLJ+qf+9zIBxmY
+	 joCww4Mg0L0866OSv+8mBKHWVoSROyHtjJ626G/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
+	Wang Liang <wangliang74@huawei.com>,
+	Calvin Owens <calvin@wbinvd.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 322/563] misc: genwqe: Fix incorrect cmd field being reported in error
-Date: Mon, 13 Oct 2025 16:43:03 +0200
-Message-ID: <20251013144422.929615656@linuxfoundation.org>
+Subject: [PATCH 6.17 323/563] pps: fix warning in pps_register_cdev when register device fail
+Date: Mon, 13 Oct 2025 16:43:04 +0200
+Message-ID: <20251013144422.965147670@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -65,36 +66,113 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit 6b26053819dccc664120e07c56f107fb6f72f3fa ]
+[ Upstream commit b0531cdba5029f897da5156815e3bdafe1e9b88d ]
 
-There is a dev_err message that is reporting the value of
-cmd->asiv_length when it should be reporting cmd->asv_length
-instead. Fix this.
+Similar to previous commit 2a934fdb01db ("media: v4l2-dev: fix error
+handling in __video_register_device()"), the release hook should be set
+before device_register(). Otherwise, when device_register() return error
+and put_device() try to callback the release function, the below warning
+may happen.
 
-Fixes: eaf4722d4645 ("GenWQE Character device and DDCB queue")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20250902113712.2624743-1-colin.i.king@gmail.com
+  ------------[ cut here ]------------
+  WARNING: CPU: 1 PID: 4760 at drivers/base/core.c:2567 device_release+0x1bd/0x240 drivers/base/core.c:2567
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 4760 Comm: syz.4.914 Not tainted 6.17.0-rc3+ #1 NONE
+  RIP: 0010:device_release+0x1bd/0x240 drivers/base/core.c:2567
+  Call Trace:
+   <TASK>
+   kobject_cleanup+0x136/0x410 lib/kobject.c:689
+   kobject_release lib/kobject.c:720 [inline]
+   kref_put include/linux/kref.h:65 [inline]
+   kobject_put+0xe9/0x130 lib/kobject.c:737
+   put_device+0x24/0x30 drivers/base/core.c:3797
+   pps_register_cdev+0x2da/0x370 drivers/pps/pps.c:402
+   pps_register_source+0x2f6/0x480 drivers/pps/kapi.c:108
+   pps_tty_open+0x190/0x310 drivers/pps/clients/pps-ldisc.c:57
+   tty_ldisc_open+0xa7/0x120 drivers/tty/tty_ldisc.c:432
+   tty_set_ldisc+0x333/0x780 drivers/tty/tty_ldisc.c:563
+   tiocsetd drivers/tty/tty_io.c:2429 [inline]
+   tty_ioctl+0x5d1/0x1700 drivers/tty/tty_io.c:2728
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:598 [inline]
+   __se_sys_ioctl fs/ioctl.c:584 [inline]
+   __x64_sys_ioctl+0x194/0x210 fs/ioctl.c:584
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x5f/0x2a0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
+
+Before commit c79a39dc8d06 ("pps: Fix a use-after-free"),
+pps_register_cdev() call device_create() to create pps->dev, which will
+init dev->release to device_create_release(). Now the comment is outdated,
+just remove it.
+
+Thanks for the reminder from Calvin Owens, 'kfree_pps' should be removed
+in pps_register_source() to avoid a double free in the failure case.
+
+Link: https://lore.kernel.org/all/20250827065010.3208525-1-wangliang74@huawei.com/
+Fixes: c79a39dc8d06 ("pps: Fix a use-after-free")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-By: Calvin Owens <calvin@wbinvd.org>
+Link: https://lore.kernel.org/r/20250830075023.3498174-1-wangliang74@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/genwqe/card_ddcb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pps/kapi.c | 5 +----
+ drivers/pps/pps.c  | 5 ++---
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/misc/genwqe/card_ddcb.c b/drivers/misc/genwqe/card_ddcb.c
-index 500b1feaf1f6f..fd7d5cd50d396 100644
---- a/drivers/misc/genwqe/card_ddcb.c
-+++ b/drivers/misc/genwqe/card_ddcb.c
-@@ -923,7 +923,7 @@ int __genwqe_execute_raw_ddcb(struct genwqe_dev *cd,
+diff --git a/drivers/pps/kapi.c b/drivers/pps/kapi.c
+index 92d1b62ea239d..e9389876229ea 100644
+--- a/drivers/pps/kapi.c
++++ b/drivers/pps/kapi.c
+@@ -109,16 +109,13 @@ struct pps_device *pps_register_source(struct pps_source_info *info,
+ 	if (err < 0) {
+ 		pr_err("%s: unable to create char device\n",
+ 					info->name);
+-		goto kfree_pps;
++		goto pps_register_source_exit;
  	}
- 	if (cmd->asv_length > DDCB_ASV_LENGTH) {
- 		dev_err(&pci_dev->dev, "[%s] err: wrong asv_length of %d\n",
--			__func__, cmd->asiv_length);
-+			__func__, cmd->asv_length);
- 		return -EINVAL;
+ 
+ 	dev_dbg(&pps->dev, "new PPS source %s\n", info->name);
+ 
+ 	return pps;
+ 
+-kfree_pps:
+-	kfree(pps);
+-
+ pps_register_source_exit:
+ 	pr_err("%s: unable to register source\n", info->name);
+ 
+diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
+index 9463232af8d2e..c6b8b64782761 100644
+--- a/drivers/pps/pps.c
++++ b/drivers/pps/pps.c
+@@ -374,6 +374,7 @@ int pps_register_cdev(struct pps_device *pps)
+ 			       pps->info.name);
+ 			err = -EBUSY;
+ 		}
++		kfree(pps);
+ 		goto out_unlock;
  	}
- 	rc = __genwqe_enqueue_ddcb(cd, req, f_flags);
+ 	pps->id = err;
+@@ -383,13 +384,11 @@ int pps_register_cdev(struct pps_device *pps)
+ 	pps->dev.devt = MKDEV(pps_major, pps->id);
+ 	dev_set_drvdata(&pps->dev, pps);
+ 	dev_set_name(&pps->dev, "pps%d", pps->id);
++	pps->dev.release = pps_device_destruct;
+ 	err = device_register(&pps->dev);
+ 	if (err)
+ 		goto free_idr;
+ 
+-	/* Override the release function with our own */
+-	pps->dev.release = pps_device_destruct;
+-
+ 	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name, pps_major,
+ 		 pps->id);
+ 
 -- 
 2.51.0
 
