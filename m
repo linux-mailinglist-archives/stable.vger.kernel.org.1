@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7766CBD44AA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:22 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A536BD3EEE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:13:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EACE1882C50
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CB819343643
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C7430B534;
-	Mon, 13 Oct 2025 15:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320BB307AE6;
+	Mon, 13 Oct 2025 14:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcLhSmET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6QKXjub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F0730B52A;
-	Mon, 13 Oct 2025 15:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79CF30DD1E;
+	Mon, 13 Oct 2025 14:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368693; cv=none; b=obP9BQHw31shzVbzlnYlwJVRFgzk4mcnOOpvEvR0mR9vZ94czFVQBOTzEZKERLEtMjTrNIdoKpve4ePX1+9s6oMatXAAHeefl+l5a7OU1koDBDcCccFU/+SqUGNTrkfnD9nOLni28ek9nzOZg2FRlLXlxCm2OmIx2xYqRC/A7c0=
+	t=1760367370; cv=none; b=PlZTC4Tqp6VrE8xwqGv+W10raWQUSbWzyDZ8iHIna/qIGllHO6ABHtHWQa6jrCEjF+x/19IknHciqu+QQDwj1c7lA6/Qo8FmgLj0WcRLYde+iA+Pm9ZdlpCJEwTNcVw+nWQMMGZ+tMd80kscVyeOE7XBYATX1A8uXcqgjz4qgOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368693; c=relaxed/simple;
-	bh=efIPciUUja163d1fAgnDKDo1P5MJXN40eA6A9gC9jYo=;
+	s=arc-20240116; t=1760367370; c=relaxed/simple;
+	bh=maw307nq1PXyc7LvQmlZTdXZuEu4YqdRlMQEEH9Oyco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVBPLW5YejbqqtwwbX/mMOcUN3L4f43WrH/PAQCM1QppQOxVS64NzJXSaMzr7CmhcH8HPFQSwvc15nFBsSHEfFr+lYLeBeRmGj4uhNXrPPe/dxZpcuo9xOnmvX5QLzJUkKFmPP08Sd+pVgdGz1tfj0o/rm/ifWVuvPg7zkVuCfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcLhSmET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28510C4CEE7;
-	Mon, 13 Oct 2025 15:18:11 +0000 (UTC)
+	 MIME-Version; b=KVgL796h7RoH6pe9I0ijjkf4NfCtGQfMa4E2J4vuNvkjLzMPSyMHtnj+1wC/flmLZecbi1PYGXXLnb/ZC+1RncEqwZJcw7ddaEwOvSTv9KGRMgv61xrPqR53bkXRvWDcqYrSHAXIa1vSTVWUjnZc7djUcnFO0D1EI/0GjJRQWOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6QKXjub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBA1C4CEE7;
+	Mon, 13 Oct 2025 14:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368692;
-	bh=efIPciUUja163d1fAgnDKDo1P5MJXN40eA6A9gC9jYo=;
+	s=korg; t=1760367370;
+	bh=maw307nq1PXyc7LvQmlZTdXZuEu4YqdRlMQEEH9Oyco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcLhSmETWyGMKZ3mBzM/8sm5G6azpNyKamo+T5nHlxoonVMHEcQOi/HWgPBIIre+O
-	 405zsRaBsC+lkCLPw2fthJIozW+v79F0jSuBuzuhJdhgrI6UGKttPQo4Cv1087G4dX
-	 NmXabnZR/vYXNDeT2YKZAze5wYOU8eu6kCuewBEw=
+	b=P6QKXjubGpl9Ljql8QN2wkCP2Ri6Ua5kfL7dOxbTtYQw4Tzhk1lPw80V3cMDQstRg
+	 xrSOoGwvoaUTkgQKlchRJi0US27+6honwpXC8Yx/ULjecZ+38sD5Zjwrc4haoghsAl
+	 Txr/PqalS4Qw6n9T+TlqgZWs+P5qg0J3gvZPJ9bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 216/262] net: dlink: handle copy_thresh allocation failure
+	stable@kernel.org,
+	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
+	Ling Xu <quic_lxu5@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.1 185/196] misc: fastrpc: fix possible map leak in fastrpc_put_args
 Date: Mon, 13 Oct 2025 16:45:58 +0200
-Message-ID: <20251013144334.023757643@linuxfoundation.org>
+Message-ID: <20251013144321.385730409@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeounsu Moon <yyyynoom@gmail.com>
+From: Ling Xu <quic_lxu5@quicinc.com>
 
-[ Upstream commit 8169a6011c5fecc6cb1c3654c541c567d3318de8 ]
+commit da1ba64176e0138f2bfa96f9e43e8c3640d01e1e upstream.
 
-The driver did not handle failure of `netdev_alloc_skb_ip_align()`.
-If the allocation failed, dereferencing `skb->protocol` could lead to
-a NULL pointer dereference.
+copy_to_user() failure would cause an early return without cleaning up
+the fdlist, which has been updated by the DSP. This could lead to map
+leak. Fix this by redirecting to a cleanup path on failure, ensuring
+that all mapped buffers are properly released before returning.
 
-This patch tries to allocate `skb`. If the allocation fails, it falls
-back to the normal path.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Tested-on: D-Link DGE-550T Rev-A3
-Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250928190124.1156-1-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
+Cc: stable@kernel.org
+Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250912131236.303102-4-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/misc/fastrpc.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 2c1b551e14423..92856cf387c76 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -953,15 +953,18 @@ receive_packet (struct net_device *dev)
- 		} else {
- 			struct sk_buff *skb;
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1018,6 +1018,7 @@ static int fastrpc_put_args(struct fastr
+ 	struct fastrpc_phy_page *pages;
+ 	u64 *fdlist;
+ 	int i, inbufs, outbufs, handles;
++	int ret = 0;
  
-+			skb = NULL;
- 			/* Small skbuffs for short packets */
--			if (pkt_len > copy_thresh) {
-+			if (pkt_len <= copy_thresh)
-+				skb = netdev_alloc_skb_ip_align(dev, pkt_len);
-+			if (!skb) {
- 				dma_unmap_single(&np->pdev->dev,
- 						 desc_to_dma(desc),
- 						 np->rx_buf_sz,
- 						 DMA_FROM_DEVICE);
- 				skb_put (skb = np->rx_skbuff[entry], pkt_len);
- 				np->rx_skbuff[entry] = NULL;
--			} else if ((skb = netdev_alloc_skb_ip_align(dev, pkt_len))) {
-+			} else {
- 				dma_sync_single_for_cpu(&np->pdev->dev,
- 							desc_to_dma(desc),
- 							np->rx_buf_sz,
--- 
-2.51.0
-
+ 	inbufs = REMOTE_SCALARS_INBUFS(ctx->sc);
+ 	outbufs = REMOTE_SCALARS_OUTBUFS(ctx->sc);
+@@ -1033,14 +1034,17 @@ static int fastrpc_put_args(struct fastr
+ 			u64 len = rpra[i].buf.len;
+ 
+ 			if (!kernel) {
+-				if (copy_to_user((void __user *)dst, src, len))
+-					return -EFAULT;
++				if (copy_to_user((void __user *)dst, src, len)) {
++					ret = -EFAULT;
++					goto cleanup_fdlist;
++				}
+ 			} else {
+ 				memcpy(dst, src, len);
+ 			}
+ 		}
+ 	}
+ 
++cleanup_fdlist:
+ 	/* Clean up fdlist which is updated by DSP */
+ 	for (i = 0; i < FASTRPC_MAX_FDLIST; i++) {
+ 		if (!fdlist[i])
+@@ -1049,7 +1053,7 @@ static int fastrpc_put_args(struct fastr
+ 			fastrpc_map_put(mmap);
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int fastrpc_invoke_send(struct fastrpc_session_ctx *sctx,
 
 
 
