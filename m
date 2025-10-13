@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A631BD3AE0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:51:26 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2CC2BD450A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38063189FCBB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:51:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CEADC4FC88B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3BE2727E7;
-	Mon, 13 Oct 2025 14:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D03C31195B;
+	Mon, 13 Oct 2025 15:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yP2lYGpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUE7Ml1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B002248A5;
-	Mon, 13 Oct 2025 14:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A94311953;
+	Mon, 13 Oct 2025 15:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366882; cv=none; b=j4LRl7L/ncFvc7N7uthTtKg2E4+aYJCw3rVBYT5/LQUzkiKh4PyS2ngrQeFlCvfFdKBFLiJ12QjgnG9zpEgNL9QYBtmECyKwFwFnJ48kQVw4kQKGqMu7wDbUBzt3yevkaqLozn3BjIaloisgMlQaRzULL+PXdW+f/FfgHkid08E=
+	t=1760368174; cv=none; b=GFBv2zuQzaaoFj2MX1JWbMx9SAt7pmDa3IB2S6oexeO6tNHRVrWGcemulXLwiZVGSKw8lNRvPakiFAeHp2BLJ3GkGFa1nQDEZ5irDFIbFrty/kk7OuuXKsbLjsPvOqlxlsB+fMgHDhoYTRzI9z/RIAFZOtuMtpRzwCEHnhvD0dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366882; c=relaxed/simple;
-	bh=+Ajfpe6KLtdO+Sk0ycGZX3Fp41+iPghzmLy/5fv34Ps=;
+	s=arc-20240116; t=1760368174; c=relaxed/simple;
+	bh=yevQA/WqChuG1Zo0ClfRr6/DjXJuanv71k5hbKnsAMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9/xSxiW3Qo2tnM6y9Pb/Nbg8UDiNE2clSJOR08CgxS6Aqx+8sevGMRzKgm6cYukWT7uBNh8pFSYMdXTC0BgJQC3IFh8SfTH9exlLwBSvu7oRoZm+JAQqTti7XglLC0ilMq0uJVEJ2j+fbPW21eGGeiLwU/YH/Fcva3ITuiOECk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yP2lYGpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA8DC4CEE7;
-	Mon, 13 Oct 2025 14:48:01 +0000 (UTC)
+	 MIME-Version; b=LMepKtyFRJ9iJGrP8S33ziKMSBke2fTsQgrqhykTbl88pu/gbDROQqEEyPj3QoIyiJGlAGTAsseMpZz7xmoG0nQPCbBOU6qheGzsFI4hjyxDb1FdM9gtuAhTz8duyPK7MZCTbpdG+YNDEGbIaX/WeUDYIyQEpJAn2jUhSGH0Dl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUE7Ml1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC52C4CEE7;
+	Mon, 13 Oct 2025 15:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366882;
-	bh=+Ajfpe6KLtdO+Sk0ycGZX3Fp41+iPghzmLy/5fv34Ps=;
+	s=korg; t=1760368173;
+	bh=yevQA/WqChuG1Zo0ClfRr6/DjXJuanv71k5hbKnsAMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yP2lYGpjBO01wIBWL2dHYWpHul2AVWbsEGfDUsQJv3GyJH+UgfaXuYrceQ6wtgTNu
-	 7kxWoaicKoj1Fx2XA4oSFh6mLHR/Kw5X5dZD7zNuy/O/oxF6tOYydg+MIpi9lFDKkw
-	 U136+ZFvPrEWfRhK2ncK1Fkk2pXbsf6H43baumGs=
+	b=TUE7Ml1lSUUcxsTbmzx/WwJ0QtZeZZpNdgx49wX770DSzVGsFrVNe225lBSZCSpno
+	 ycgkHc6s9Hx1SscMk4FQhRygjjoesdL7KOd9T3Oq5qQvzNkADwfDaizh3WVMdwhxAI
+	 sMlKb5RHgzA+rosO8przgcj0lSWmqBXiJSD0dGFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.1 005/196] cacheinfo: Check cache-unified property to count cache leaves
+	Neal Gompa <neal@gompa.dev>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 036/262] arm64: dts: apple: t8103-j457: Fix PCIe ethernet iommu-map
 Date: Mon, 13 Oct 2025 16:42:58 +0200
-Message-ID: <20251013144314.754511334@linuxfoundation.org>
+Message-ID: <20251013144327.432400092@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Janne Grunau <j@jannau.net>
 
-commit de0df442ee49cb1f6ee58f3fec5dcb5e5eb70aab upstream.
+[ Upstream commit 6e08cdd604edcec2c277af17c7d36caf827057ff ]
 
-The DeviceTree Specification v0.3 specifies that the cache node
-'[d-|i-|]cache-size' property is required. The 'cache-unified'
-property is specifies whether the cache level is separate
-or unified.
+PCIe `port01` of t8103-j457 (iMac, M1, 2 USB-C ports, 2021) is unused
+and disabled. Linux' PCI subsystem assigns the ethernet nic from
+`port02` to bus 02. This results into assigning `pcie0_dart_1` from the
+disabled port as iommu. The `pcie0_dart_1` instance is disabled and
+probably fused off (it is on the M2 Pro Mac mini which has a disabled
+PCIe port as well).
+Without iommu the ethernet nic is not expected work.
+Adjusts the "bus-range" and the PCIe devices "reg" property to PCI
+subsystem's bus number.
 
-If the cache-size property is missing, no cache leaves is accounted.
-This can lead to a 'BUG: KASAN: slab-out-of-bounds' [1] bug.
-
-Check 'cache-unified' property and always account for at least
-one cache leaf when parsing the device tree.
-
-[1] https://lore.kernel.org/all/0f19cb3f-d6cf-4032-66d2-dedc9d09a0e3@linaro.org/
-
-Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230104183033.755668-4-pierre.gondois@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Wen Yang <wen.yang@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7c77ab91b33d ("arm64: dts: apple: Add missing M1 (t8103) devices")
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Reviewed-by: Sven Peter <sven@kernel.org>
+Signed-off-by: Janne Grunau <j@jannau.net>
+Link: https://lore.kernel.org/r/20250823-apple-dt-sync-6-17-v2-1-6dc0daeb4786@jannau.net
+Signed-off-by: Sven Peter <sven@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/cacheinfo.c |   37 ++++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/apple/t8103-j457.dts | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -224,12 +224,9 @@ static int cache_setup_of_node(unsigned
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/apple/t8103-j457.dts b/arch/arm64/boot/dts/apple/t8103-j457.dts
+index 152f95fd49a21..7089ccf3ce556 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j457.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j457.dts
+@@ -21,6 +21,14 @@ aliases {
+ 	};
+ };
  
--int init_of_cache_level(unsigned int cpu)
-+static int of_count_cache_leaves(struct device_node *np)
- {
--	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
--	struct device_node *np = of_cpu_device_node_get(cpu);
--	struct device_node *prev = NULL;
--	unsigned int levels = 0, leaves = 0, level;
-+	unsigned int leaves = 0;
++/*
++ * Adjust pcie0's iommu-map to account for the disabled port01.
++ */
++&pcie0 {
++	iommu-map = <0x100 &pcie0_dart_0 1 1>,
++			<0x200 &pcie0_dart_2 1 1>;
++};
++
+ &bluetooth0 {
+ 	brcm,board-type = "apple,santorini";
+ };
+@@ -36,10 +44,10 @@ &wifi0 {
+  */
  
- 	if (of_property_read_bool(np, "cache-size"))
- 		++leaves;
-@@ -237,6 +234,28 @@ int init_of_cache_level(unsigned int cpu
- 		++leaves;
- 	if (of_property_read_bool(np, "d-cache-size"))
- 		++leaves;
-+
-+	if (!leaves) {
-+		/* The '[i-|d-|]cache-size' property is required, but
-+		 * if absent, fallback on the 'cache-unified' property.
-+		 */
-+		if (of_property_read_bool(np, "cache-unified"))
-+			return 1;
-+		else
-+			return 2;
-+	}
-+
-+	return leaves;
-+}
-+
-+int init_of_cache_level(unsigned int cpu)
-+{
-+	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-+	struct device_node *np = of_cpu_device_node_get(cpu);
-+	struct device_node *prev = NULL;
-+	unsigned int levels = 0, leaves, level;
-+
-+	leaves = of_count_cache_leaves(np);
- 	if (leaves > 0)
- 		levels = 1;
- 
-@@ -250,12 +269,8 @@ int init_of_cache_level(unsigned int cpu
- 			goto err_out;
- 		if (level <= levels)
- 			goto err_out;
--		if (of_property_read_bool(np, "cache-size"))
--			++leaves;
--		if (of_property_read_bool(np, "i-cache-size"))
--			++leaves;
--		if (of_property_read_bool(np, "d-cache-size"))
--			++leaves;
-+
-+		leaves += of_count_cache_leaves(np);
- 		levels = level;
- 	}
- 
+ &port02 {
+-	bus-range = <3 3>;
++	bus-range = <2 2>;
+ 	status = "okay";
+ 	ethernet0: ethernet@0,0 {
+-		reg = <0x30000 0x0 0x0 0x0 0x0>;
++		reg = <0x20000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+ 		local-mac-address = [00 10 18 00 00 00];
+ 	};
+-- 
+2.51.0
+
 
 
 
