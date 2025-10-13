@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDDC8BD41CE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3032BD3C87
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8A3FD34EF62
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B751818A09ED
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B2130CDA0;
-	Mon, 13 Oct 2025 15:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BE12727E2;
+	Mon, 13 Oct 2025 14:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHTPT/Yv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8NU50+Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB83A8F54;
-	Mon, 13 Oct 2025 15:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A0A26560B;
+	Mon, 13 Oct 2025 14:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368380; cv=none; b=hKBUUbb2Qxza8KHYNSEDA7REZ0is2L2ZOFk7QXL8uoXyiEp0eCQh5KDitz+2HznDLnTDAYy7wx4BgIKVn2l7gWVjGydoMwOSNCOQ5MByQXtzyrVbY0jvXc+A8fy3ORhfthXY/jn3ERfKDuLzeK0L5WW5X58Q/sJL7vOwmslilag=
+	t=1760367055; cv=none; b=nkqs9UPIQ4XudNImvmyKvyyMDSa+w16AYZPe+Kc5+0BAApD0h+owJ5sEjuf7klqI6Go3i4vci5in8NxjJNb6s28nCMwbrUwUBnatRIW1Y+ZsijrQE5QiWaW7u03sVfnveV1NCazo4IJRBlLanrGTBZG0I4+PAdyeKMcJiueG9E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368380; c=relaxed/simple;
-	bh=Y9b2BjPwrDel7+3z1hDmTtKuVMElHeNC3SLI0/t6bQk=;
+	s=arc-20240116; t=1760367055; c=relaxed/simple;
+	bh=BYc745sVAG9KQd81OmPOtIXDnA0TDdmhHnfzEnb44Oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIuewGO4E1+yR3d9X03PhIw9QGAgbNmfUv4hjXcbgTGww9oLSSYLPZQxs77e1Wl54DjoIWIHM+4Wc5GJuGa6CkjmqgZtd7GK4dzsae/g9cDujJEUf7eDn5YRe3SuesNs2tU2tS3/KSg/kk/iD3n6duvFxijdiCSNkCGHLxbXpDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHTPT/Yv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471F7C4CEE7;
-	Mon, 13 Oct 2025 15:13:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bupwWPG/7dr/lMtU2Rj8uU69/Bc4fa/KDHBDkCokCc8MZwsID2gVgR9a9lL01uFMdkZ0jY1i4DBwXCGWe9AlY0XGqW3Va+kyIcoGUnvxf0n66+ygF2bQFeX6mxA9yjeWR9k/OM8zjt09Tpxm/UPY11UuOzsbZXEZc7pLzOHLKdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8NU50+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF40C4CEE7;
+	Mon, 13 Oct 2025 14:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368380;
-	bh=Y9b2BjPwrDel7+3z1hDmTtKuVMElHeNC3SLI0/t6bQk=;
+	s=korg; t=1760367055;
+	bh=BYc745sVAG9KQd81OmPOtIXDnA0TDdmhHnfzEnb44Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uHTPT/YvritLxJGDXvQiYTRRtPbHE59EhpBOJrEp+wEGqI0fczG0qvh+jUsqa6knT
-	 EheOttmVIiO0lBWKmnNpwGMyhWKFojOsXHjyySTLy5B+XLXA81HTlJauw8e/pDmkUd
-	 RY4beQxtaZH+/QtzrXGDrhJyhhjW5dZYOvEvig7M=
+	b=k8NU50+Zx+8vAloZNxrt9TBoCmIqQDZ263xlPG4shoIfvSTYTlV1j6FKMbS5plNZ4
+	 UJb5ccK1sPtjXkkRMGWo0FHVdaQr7T5JIkqwcPCBojO09pM31tQ0myz1fxg6xc3vD0
+	 Atx9Ue++l9CWhdGfP+9JGdeucl+ki+bDuYJlcimg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/262] RDMA/mlx5: Fix vport loopback forcing for MPV device
+Subject: [PATCH 6.1 076/196] pwm: tiehrpwm: Fix corner case in clock divisor calculation
 Date: Mon, 13 Oct 2025 16:44:09 +0200
-Message-ID: <20251013144329.980486659@linuxfoundation.org>
+Message-ID: <20251013144317.326008566@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 08aae7860450c89eebbc6fd4d38416e53c7a33d2 ]
+[ Upstream commit 00f83f0e07e44e2f1fb94b223e77ab7b18ee2d7d ]
 
-Previously loopback for MPV was supposed to be permanently enabled,
-however other driver flows were able to over-ride that configuration and
-disable it.
+The function set_prescale_div() is responsible for calculating the clock
+divisor settings such that the input clock rate is divided down such that
+the required period length is at most 0x10000 clock ticks. If period_cycles
+is an integer multiple of 0x10000, the divisor period_cycles / 0x10000 is
+good enough. So round up in the calculation of the required divisor and
+compare it using >= instead of >.
 
-Add force_lb parameter that indicates that loopback should always be
-enabled which prevents all other driver flows from disabling it.
-
-Fixes: a9a9e68954f2 ("RDMA/mlx5: Fix vport loopback for MPV device")
-Link: https://patch.msgid.link/r/cfc6b1f0f99f8100b087483cc14da6025317f901.1755088808.git.leon@kernel.org
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 19891b20e7c2 ("pwm: pwm-tiehrpwm: PWM driver support for EHRPWM")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/85488616d7bfcd9c32717651d0be7e330e761b9c.1754927682.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c    | 19 +++++++++++++++----
- drivers/infiniband/hw/mlx5/mlx5_ib.h |  1 +
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ drivers/pwm/pwm-tiehrpwm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 29d0bc583169b..f3e58797705d7 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -1813,7 +1813,8 @@ static void deallocate_uars(struct mlx5_ib_dev *dev,
- }
+diff --git a/drivers/pwm/pwm-tiehrpwm.c b/drivers/pwm/pwm-tiehrpwm.c
+index 48ca0ff690ae2..6b3248be2bf10 100644
+--- a/drivers/pwm/pwm-tiehrpwm.c
++++ b/drivers/pwm/pwm-tiehrpwm.c
+@@ -167,7 +167,7 @@ static int set_prescale_div(unsigned long rqst_prescaler, u16 *prescale_div,
  
- static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
--				struct mlx5_core_dev *slave)
-+				struct mlx5_core_dev *slave,
-+				struct mlx5_ib_lb_state *lb_state)
- {
- 	int err;
+ 			*prescale_div = (1 << clkdiv) *
+ 					(hspclkdiv ? (hspclkdiv * 2) : 1);
+-			if (*prescale_div > rqst_prescaler) {
++			if (*prescale_div >= rqst_prescaler) {
+ 				*tb_clk_div = (clkdiv << TBCTL_CLKDIV_SHIFT) |
+ 					(hspclkdiv << TBCTL_HSPCLKDIV_SHIFT);
+ 				return 0;
+@@ -266,7 +266,7 @@ static int ehrpwm_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	pc->period_cycles[pwm->hwpwm] = period_cycles;
  
-@@ -1825,6 +1826,7 @@ static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
- 	if (err)
- 		goto out;
- 
-+	lb_state->force_enable = true;
- 	return 0;
- 
- out:
-@@ -1833,16 +1835,22 @@ static int mlx5_ib_enable_lb_mp(struct mlx5_core_dev *master,
- }
- 
- static void mlx5_ib_disable_lb_mp(struct mlx5_core_dev *master,
--				  struct mlx5_core_dev *slave)
-+				  struct mlx5_core_dev *slave,
-+				  struct mlx5_ib_lb_state *lb_state)
- {
- 	mlx5_nic_vport_update_local_lb(slave, false);
- 	mlx5_nic_vport_update_local_lb(master, false);
-+
-+	lb_state->force_enable = false;
- }
- 
- int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
- {
- 	int err = 0;
- 
-+	if (dev->lb.force_enable)
-+		return 0;
-+
- 	mutex_lock(&dev->lb.mutex);
- 	if (td)
- 		dev->lb.user_td++;
-@@ -1864,6 +1872,9 @@ int mlx5_ib_enable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
- 
- void mlx5_ib_disable_lb(struct mlx5_ib_dev *dev, bool td, bool qp)
- {
-+	if (dev->lb.force_enable)
-+		return;
-+
- 	mutex_lock(&dev->lb.mutex);
- 	if (td)
- 		dev->lb.user_td--;
-@@ -3521,7 +3532,7 @@ static void mlx5_ib_unbind_slave_port(struct mlx5_ib_dev *ibdev,
- 
- 	lockdep_assert_held(&mlx5_ib_multiport_mutex);
- 
--	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev);
-+	mlx5_ib_disable_lb_mp(ibdev->mdev, mpi->mdev, &ibdev->lb);
- 
- 	mlx5_core_mp_event_replay(ibdev->mdev,
- 				  MLX5_DRIVER_EVENT_AFFILIATION_REMOVED,
-@@ -3618,7 +3629,7 @@ static bool mlx5_ib_bind_slave_port(struct mlx5_ib_dev *ibdev,
- 				  MLX5_DRIVER_EVENT_AFFILIATION_DONE,
- 				  &key);
- 
--	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev);
-+	err = mlx5_ib_enable_lb_mp(ibdev->mdev, mpi->mdev, &ibdev->lb);
- 	if (err)
- 		goto unbind;
- 
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 29bde64ea1eac..f49cb588a856d 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -1083,6 +1083,7 @@ struct mlx5_ib_lb_state {
- 	u32			user_td;
- 	int			qps;
- 	bool			enabled;
-+	bool			force_enable;
- };
- 
- struct mlx5_ib_pf_eq {
+ 	/* Configure clock prescaler to support Low frequency PWM wave */
+-	if (set_prescale_div(period_cycles/PERIOD_MAX, &ps_divval,
++	if (set_prescale_div(DIV_ROUND_UP(period_cycles, PERIOD_MAX), &ps_divval,
+ 			     &tb_divval)) {
+ 		dev_err(chip->dev, "Unsupported values\n");
+ 		return -EINVAL;
 -- 
 2.51.0
 
