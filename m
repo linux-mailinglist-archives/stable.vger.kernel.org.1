@@ -1,64 +1,54 @@
-Return-Path: <stable+bounces-185357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401DABD4E1C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D4DBD5458
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:54:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D69EA5808B4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8EA4D4FB784
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D045531281B;
-	Mon, 13 Oct 2025 15:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED3D313555;
+	Mon, 13 Oct 2025 15:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0er+Kt3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFVBJUp4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859DB312812;
-	Mon, 13 Oct 2025 15:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA25312836;
+	Mon, 13 Oct 2025 15:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370063; cv=none; b=B2RqTv2GhssDahvyhd/rEFwatrg8T9qycR8YVgEIUtKjjCsD9mNDlCc4R5fhBwhvyyzoc26fkxwKRCIk7jOFAPjEZW1XGV24fhTrdcXrgUfmeA4kXrdxnyF623ua7hUFeaZNkwDQa1a3sdyhfxWzqr1Zdsd4Xtnq2/yWYAgRRhc=
+	t=1760370069; cv=none; b=G+6KxhSg44+KTZznyWWuOk1jB5Ajg5NJgPl7zaVty3hVRX/M9+Wm4v41M3Y1DOcseY1ikY83RW8rrtGjBWpsKLU3FJ5ovrHkDXh1JY5+ubyylohu7CPZsbxS2Ag920TvgwUDcMp2VJDgvmscd9u6Q92cwTZO82VjWfd5Yo8doWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370063; c=relaxed/simple;
-	bh=/pJEl/i4RiNgxfpdFXiAf8AkpeiCaUxyLjLRhhnSOSs=;
+	s=arc-20240116; t=1760370069; c=relaxed/simple;
+	bh=egNqu0Q8lomb4hFII0ucFiZe5Iu5WnY6N51hfwyu9I8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C1fklthse/3rlVH19qdri3oVVDl6ZDkg46xbp+FkjwzttffL9uoqSof6+EitfQtEHSupHu93CQkUbaEA44MMauM83U1IuYvQzPNQQ1vdpum+3FIeYzdFZrue4IH8Fs4bF/nZPiZJbwyEANQOGhwNJZUkZJ3g1nOS+H7KOaAUq64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0er+Kt3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFE3C4CEE7;
-	Mon, 13 Oct 2025 15:41:02 +0000 (UTC)
+	 MIME-Version; b=DPS68IEIMeyHK6DcyUwaMO7+XoQYuxk78iYax19DRdoTLVdoQajSBTZWQ2nzxRQKWTNuNpzzMzxCUf3ThHT+UD5YVDdhGCwrdw0Ctc9vprW+A+NUNGsZ77JplNx0yc+kIo9l/Mvq8xdvvuBDCsUswCOUVMnl2uIN/AbP/ZvoFzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFVBJUp4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957A8C4CEE7;
+	Mon, 13 Oct 2025 15:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370063;
-	bh=/pJEl/i4RiNgxfpdFXiAf8AkpeiCaUxyLjLRhhnSOSs=;
+	s=korg; t=1760370069;
+	bh=egNqu0Q8lomb4hFII0ucFiZe5Iu5WnY6N51hfwyu9I8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k0er+Kt3s0PtViiE7DdbgfMm2YmuTNi102gL7OsGYjn6AXpvaOzWTZCDDVuY/ny8+
-	 0ben1StWgce2v21jcZ1mdmOxRGcOOH89/VCjXTSxM8+5bFADW9e3ITrYNNZM3tsKK8
-	 09DWEL8dUVn7r8fUrKSp3IGR8Vtc2IQfsUlONLx4=
+	b=CFVBJUp4I6zVnSM/3ZdzWNUbe3/XPj6Coj7stP9IDWdhAEV6vEd8SShF+54v8i3CD
+	 H/9NwHE8VsvHKkl6wS0V3r4psaQm755V+A7cHa0lLlsPIfc/t57EzsatkSrVZbr9lo
+	 r24QnBRt1UvZ5tmQAz9p+bO8g8QuagOxxW63Pqc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Chris Mason <clm@meta.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	JY <JY.Ho@mediatek.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 466/563] drivers/base/node: fix double free in register_one_node()
-Date: Mon, 13 Oct 2025 16:45:27 +0200
-Message-ID: <20251013144428.170614452@linuxfoundation.org>
+Subject: [PATCH 6.17 467/563] f2fs: fix UAF issue in f2fs_merge_page_bio()
+Date: Mon, 13 Oct 2025 16:45:28 +0200
+Message-ID: <20251013144428.207186029@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -77,54 +67,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 0efdedfa537eb534c251a5b4794caaf72cc55869 ]
+[ Upstream commit edf7e9040fc52c922db947f9c6c36f07377c52ea ]
 
-When device_register() fails in register_node(), it calls
-put_device(&node->dev).  This triggers node_device_release(), which calls
-kfree(to_node(dev)), thereby freeing the entire node structure.
+As JY reported in bugzilla [1],
 
-As a result, when register_node() returns an error, the node memory has
-already been freed.  Calling kfree(node) again in register_one_node()
-leads to a double free.
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+pc : [0xffffffe51d249484] f2fs_is_cp_guaranteed+0x70/0x98
+lr : [0xffffffe51d24adbc] f2fs_merge_page_bio+0x520/0x6d4
+CPU: 3 UID: 0 PID: 6790 Comm: kworker/u16:3 Tainted: P    B   W  OE      6.12.30-android16-5-maybe-dirty-4k #1 5f7701c9cbf727d1eebe77c89bbbeb3371e895e5
+Tainted: [P]=PROPRIETARY_MODULE, [B]=BAD_PAGE, [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Workqueue: writeback wb_workfn (flush-254:49)
+Call trace:
+ f2fs_is_cp_guaranteed+0x70/0x98
+ f2fs_inplace_write_data+0x174/0x2f4
+ f2fs_do_write_data_page+0x214/0x81c
+ f2fs_write_single_data_page+0x28c/0x764
+ f2fs_write_data_pages+0x78c/0xce4
+ do_writepages+0xe8/0x2fc
+ __writeback_single_inode+0x4c/0x4b4
+ writeback_sb_inodes+0x314/0x540
+ __writeback_inodes_wb+0xa4/0xf4
+ wb_writeback+0x160/0x448
+ wb_workfn+0x2f0/0x5dc
+ process_scheduled_works+0x1c8/0x458
+ worker_thread+0x334/0x3f0
+ kthread+0x118/0x1ac
+ ret_from_fork+0x10/0x20
 
-This patch removes the redundant kfree(node) from register_one_node() to
-prevent the double free.
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=220575
 
-Link: https://lkml.kernel.org/r/20250918054144.58980-1-donettom@linux.ibm.com
-Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Chris Mason <clm@meta.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
-Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The panic was caused by UAF issue w/ below race condition:
+
+kworker
+- writepages
+ - f2fs_write_cache_pages
+  - f2fs_write_single_data_page
+   - f2fs_do_write_data_page
+    - f2fs_inplace_write_data
+     - f2fs_merge_page_bio
+      - add_inu_page
+      : cache page #1 into bio & cache bio in
+        io->bio_list
+  - f2fs_write_single_data_page
+   - f2fs_do_write_data_page
+    - f2fs_inplace_write_data
+     - f2fs_merge_page_bio
+      - add_inu_page
+      : cache page #2 into bio which is linked
+        in io->bio_list
+						write
+						- f2fs_write_begin
+						: write page #1
+						 - f2fs_folio_wait_writeback
+						  - f2fs_submit_merged_ipu_write
+						   - f2fs_submit_write_bio
+						   : submit bio which inclues page #1 and #2
+
+						software IRQ
+						- f2fs_write_end_io
+						 - fscrypt_free_bounce_page
+						 : freed bounced page which belongs to page #2
+      - inc_page_count( , WB_DATA_TYPE(data_folio), false)
+      : data_folio points to fio->encrypted_page
+        the bounced page can be freed before
+        accessing it in f2fs_is_cp_guarantee()
+
+It can reproduce w/ below testcase:
+Run below script in shell #1:
+for ((i=1;i>0;i++)) do xfs_io -f /mnt/f2fs/enc/file \
+-c "pwrite 0 32k" -c "fdatasync"
+
+Run below script in shell #2:
+for ((i=1;i>0;i++)) do xfs_io -f /mnt/f2fs/enc/file \
+-c "pwrite 0 32k" -c "fdatasync"
+
+So, in f2fs_merge_page_bio(), let's avoid using fio->encrypted_page after
+commit page into internal ipu cache.
+
+Fixes: 0b20fcec8651 ("f2fs: cache global IPU bio")
+Reported-by: JY <JY.Ho@mediatek.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/f2fs/data.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 45d512939c408..67b01d5797377 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -887,7 +887,6 @@ int register_one_node(int nid)
- 	error = register_node(node_devices[nid], nid);
- 	if (error) {
- 		node_devices[nid] = NULL;
--		kfree(node);
- 		return error;
- 	}
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 6e39a15a942a9..50c90bd039235 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -911,7 +911,7 @@ int f2fs_merge_page_bio(struct f2fs_io_info *fio)
+ 	if (fio->io_wbc)
+ 		wbc_account_cgroup_owner(fio->io_wbc, folio, folio_size(folio));
  
+-	inc_page_count(fio->sbi, WB_DATA_TYPE(data_folio, false));
++	inc_page_count(fio->sbi, WB_DATA_TYPE(folio, false));
+ 
+ 	*fio->last_block = fio->new_blkaddr;
+ 	*fio->bio = bio;
 -- 
 2.51.0
 
