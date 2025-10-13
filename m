@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F9CBD3BB5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:56:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40751BD4925
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3421234D9C8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:56:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C2D8507CBA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1EDE30E0E1;
-	Mon, 13 Oct 2025 14:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6D631158E;
+	Mon, 13 Oct 2025 15:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fea1djAx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eE3jFD2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0BF30E0DD;
-	Mon, 13 Oct 2025 14:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A9E30F7FA;
+	Mon, 13 Oct 2025 15:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366930; cv=none; b=NSZntpRyDMRM1cgtj2TAPX69HBKESnUsmXuQGts3Fqb4ls5oYUB1Ht2e33qgvrSoBsJWnXU7jby73kvI1lWXRRWAJN9QvA7ioej7Il5jJInmkp1xx3tgcordJco+7FiDswvzvRCEyqNAl9R47gIQ/3zWq7QOdUu05yLj6KXFQXA=
+	t=1760368107; cv=none; b=nbs7SL1v0m+gTCWoPudoUO55rH02cdMHEm5VrtO5ulVqj/bdTLWQq0dCEANYWELJ/7JNOIWIUHLQOJA1YQ1WwCPxTaAqvfJPZ/EPQ23U9OBIUdXnFeY+rsZpHFoI3Ibc0mqhD797p5Shjc68r9+L+ni2z6ksFxGONGEnZXU1KmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366930; c=relaxed/simple;
-	bh=GJ+8evf/FEqm8jFiVm7m7kwMuPQ3116SQpPyMhY94us=;
+	s=arc-20240116; t=1760368107; c=relaxed/simple;
+	bh=ahPAIgUXjdha2I3mzIGsNCEUHcKP3w0JfHcXGbveVEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVI1jUCtieF7TqzTYXquTCsVVTiALKXUMmc0b0AdX41vbQ+1SHP1WpRQAxLM0vBgV1PqoAfLJeh29gbcpD5oROD9qw1iTjWWtXwKJCWkkEh4dM00j5en2v/AGGvTc61708WvX+fwT/2JbbqqhkrqHSfgusGqB6RIbOzV36hOq2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fea1djAx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2769FC116C6;
-	Mon, 13 Oct 2025 14:48:49 +0000 (UTC)
+	 MIME-Version; b=aXE7zKBVFlpL7VHpvltEmHPg9Ky/LzaWHgOYrXIVQdda+sIo7rAgR/netS0cfI5uFi9CPn81M0NhSBQoczLLkZzVMhqe0s79qyTigNsQfvQNZMCJNpmzsNpt1YNwCWap1QFuP+1zYMVYrolGLVGG9tKf/Nj4yFDKmpM0AhxWER8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eE3jFD2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D8AC4CEE7;
+	Mon, 13 Oct 2025 15:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366930;
-	bh=GJ+8evf/FEqm8jFiVm7m7kwMuPQ3116SQpPyMhY94us=;
+	s=korg; t=1760368107;
+	bh=ahPAIgUXjdha2I3mzIGsNCEUHcKP3w0JfHcXGbveVEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fea1djAxC23CSFuYsnZFT3qsTUisJaNzo6+TmWdKEvQ23LPaWrfiCDULqrVjkBwQ/
-	 k7L2VdSOj6GORf3p3c2Va5wV5e03MKa0NYUaWDaZVutUv+wYAJNonwajqGXF6jnJiE
-	 o0ISqJiolRnIVg+dEq61jsr83azPRs7EN5PxE6NU=
+	b=eE3jFD2KdjN2Vn4vl24kGKguVcKwkNvSjAKCYVcD/XG1NZOdyWsWyiUU3eT52PE6I
+	 TTPazwdQTx1VGhpU3dMpuLpZwra+chBV7Ls4FGt1OcyKrTQLNn6rIhQCFusEZwthAr
+	 axyzrnLrhIr3a5ByGB154cWjUiiBk7aGHeed5dj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <shuah.kh@samsung.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Andy Yan <andyshrk@163.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/196] media: tunner: xc5000: Refactor firmware load
+Subject: [PATCH 6.12 047/262] power: supply: cw2015: Fix a alignment coding style issue
 Date: Mon, 13 Oct 2025 16:43:09 +0200
-Message-ID: <20251013144315.154316391@linuxfoundation.org>
+Message-ID: <20251013144327.824921931@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Andy Yan <andyshrk@163.com>
 
-[ Upstream commit 8e1f5da59dd4a1966f859639860b803a7e8b8bfb ]
+[ Upstream commit def5612170a8c6c4c6a3ea5bd6c3cfc8de6ba4b1 ]
 
-Make sure the firmware is released when we leave
-xc_load_fw_and_init_tuner()
+Fix the checkpatch warning:
+CHECK: Alignment should match open parenthesis
 
-This change makes smatch happy:
-drivers/media/tuners/xc5000.c:1213 xc_load_fw_and_init_tuner() warn: 'fw' from request_firmware() not released on lines: 1213.
-
-Cc: Shuah Khan <shuah.kh@samsung.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: 40b7a19f321e ("media: tuner: xc5000: Fix use-after-free in xc5000_release")
+Fixes: 0cb172a4918e ("power: supply: cw2015: Use device managed API to simplify the code")
+Signed-off-by: Andy Yan <andyshrk@163.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/tuners/xc5000.c |   41 ++++++++++++++++++-----------------------
- 1 file changed, 18 insertions(+), 23 deletions(-)
+ drivers/power/supply/cw2015_battery.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/media/tuners/xc5000.c
-+++ b/drivers/media/tuners/xc5000.c
-@@ -58,7 +58,7 @@ struct xc5000_priv {
- 	struct dvb_frontend *fe;
- 	struct delayed_work timer_sleep;
+diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
+index f63c3c4104515..382dff8805c62 100644
+--- a/drivers/power/supply/cw2015_battery.c
++++ b/drivers/power/supply/cw2015_battery.c
+@@ -702,8 +702,7 @@ static int cw_bat_probe(struct i2c_client *client)
+ 	if (!cw_bat->battery_workqueue)
+ 		return -ENOMEM;
  
--	const struct firmware   *firmware;
-+	bool inited;
- };
- 
- /* Misc Defines */
-@@ -1110,23 +1110,19 @@ static int xc_load_fw_and_init_tuner(str
- 	if (!force && xc5000_is_firmware_loaded(fe) == 0)
- 		return 0;
- 
--	if (!priv->firmware) {
--		ret = request_firmware(&fw, desired_fw->name,
--					priv->i2c_props.adap->dev.parent);
--		if (ret) {
--			pr_err("xc5000: Upload failed. rc %d\n", ret);
--			return ret;
--		}
--		dprintk(1, "firmware read %zu bytes.\n", fw->size);
--
--		if (fw->size != desired_fw->size) {
--			pr_err("xc5000: Firmware file with incorrect size\n");
--			release_firmware(fw);
--			return -EINVAL;
--		}
--		priv->firmware = fw;
--	} else
--		fw = priv->firmware;
-+	ret = request_firmware(&fw, desired_fw->name,
-+			       priv->i2c_props.adap->dev.parent);
-+	if (ret) {
-+		pr_err("xc5000: Upload failed. rc %d\n", ret);
-+		return ret;
-+	}
-+	dprintk(1, "firmware read %zu bytes.\n", fw->size);
-+
-+	if (fw->size != desired_fw->size) {
-+		pr_err("xc5000: Firmware file with incorrect size\n");
-+		release_firmware(fw);
-+		return -EINVAL;
-+	}
- 
- 	/* Try up to 5 times to load firmware */
- 	for (i = 0; i < 5; i++) {
-@@ -1204,6 +1200,7 @@ static int xc_load_fw_and_init_tuner(str
- 	}
- 
- err:
-+	release_firmware(fw);
- 	if (!ret)
- 		printk(KERN_INFO "xc5000: Firmware %s loaded and running.\n",
- 		       desired_fw->name);
-@@ -1274,7 +1271,7 @@ static int xc5000_resume(struct dvb_fron
- 
- 	/* suspended before firmware is loaded.
- 	   Avoid firmware load in resume path. */
--	if (!priv->firmware)
-+	if (!priv->inited)
- 		return 0;
- 
- 	return xc5000_set_params(fe);
-@@ -1293,6 +1290,8 @@ static int xc5000_init(struct dvb_fronte
- 	if (debug)
- 		xc_debug_dump(priv);
- 
-+	priv->inited = true;
-+
+-	devm_delayed_work_autocancel(&client->dev,
+-							  &cw_bat->battery_delay_work, cw_bat_work);
++	devm_delayed_work_autocancel(&client->dev, &cw_bat->battery_delay_work, cw_bat_work);
+ 	queue_delayed_work(cw_bat->battery_workqueue,
+ 			   &cw_bat->battery_delay_work, msecs_to_jiffies(10));
  	return 0;
- }
- 
-@@ -1306,10 +1305,6 @@ static void xc5000_release(struct dvb_fr
- 
- 	if (priv) {
- 		cancel_delayed_work(&priv->timer_sleep);
--		if (priv->firmware) {
--			release_firmware(priv->firmware);
--			priv->firmware = NULL;
--		}
- 		hybrid_tuner_release_state(priv);
- 	}
- 
+-- 
+2.51.0
+
 
 
 
