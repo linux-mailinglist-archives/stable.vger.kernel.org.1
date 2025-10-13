@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4ABBD3BC4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:56:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4518BD4A8F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 34CEE4F8392
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:50:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 12CC8501681
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829252749D7;
-	Mon, 13 Oct 2025 14:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF67311597;
+	Mon, 13 Oct 2025 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAdok2U9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sjt3QJSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D305273D6B;
-	Mon, 13 Oct 2025 14:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597F2311582;
+	Mon, 13 Oct 2025 15:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366859; cv=none; b=KdsHhnyYVgfxu994CO95famiiJvo7aERHvo0OogaV2dK5IMIXGZr3R9QRrJx3LqkLfh+0xLGQHLGlZbmpf7BSAvaHLOCxEwy8MYnBdC7PzL1R+zDJkCMBrfFM0ZTBYZCg06aNUHTyvrCUhaqH8a3HbMUcd1nlT8J2uH2fnf57dg=
+	t=1760368119; cv=none; b=Tc+6SfGfm/I91sw0zH4hkBskA1l0yZR2TcoflCsR00WXOCGD9/tHIZbd5PO6D9wwDpbL5K9/jPcsi/cG3WWraSTKsKt4I+RVZaghrhkPyakhnerTlQN5BrOihDYB1VrmKlWJnSL1EqTpA8qEqw+WU5/bkLiuviwoqsFtlSjyhdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366859; c=relaxed/simple;
-	bh=NOnedFGvdCd0oXHmveVDpO1fYdnBK/rQ8Vqv8O2bnTU=;
+	s=arc-20240116; t=1760368119; c=relaxed/simple;
+	bh=6hLqYnfQMm4KX9Tr776SvGzdoO9Sh7NwkXx6OpyyTvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9/2Xab31fFGsqEZdCdOYgg/ZaU5P8JlROTkqRXoAzJbz4wfnU8Uxzai/S/nrdzTZtNcDSRSONtI6qwokm/0KxlCod0lXcAto+egDw3DrI6eFK2K10Zrb2vAlKtkLklM6+6wIXemdIvqdx7Alqbywpk6AIZi1BoxKY3rxPjWqjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAdok2U9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55392C4CEE7;
-	Mon, 13 Oct 2025 14:47:38 +0000 (UTC)
+	 MIME-Version; b=Ko/OIpazGRmrkjY3Ne9ocaBca8UA8dcgXNwHsTs+7orX0Eu5dN87FWgG+jtFKw51WUv4+k3OlDzjDXkYtGyycveb6N7Ip+QWpy4PTCrb2EqhQjFYHRv6ZdXbqO/03SccICNqznwPKzG/d1jp/sfDqNzZW/czk8iyLCDkXb9yTGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sjt3QJSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DFAAC4CEE7;
+	Mon, 13 Oct 2025 15:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366858;
-	bh=NOnedFGvdCd0oXHmveVDpO1fYdnBK/rQ8Vqv8O2bnTU=;
+	s=korg; t=1760368118;
+	bh=6hLqYnfQMm4KX9Tr776SvGzdoO9Sh7NwkXx6OpyyTvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAdok2U9zFq+XwoVHJfoCQI+hPppCzMauEbasq154RPWxrGdSR+ECjpQ5nzNmAAbu
-	 e25D7LIT3/4YDPVywaGbfCWanI94WncomLmEX5cjqYE8AM5lgo2joVaIblbzqfIrOI
-	 zVXAe0eSKKnRVsmWCAeE+XedJ4NQbSYMKwREEIXQ=
+	b=Sjt3QJSmVDinmIzN2K37x3n5qAIEBsatBzaJcFhcIlVOsqZrNhrYknjJtRUnKuQts
+	 fqcPdy/arxCOhRH3BKjQ2XaL6UTH/gYGqykAi3XPY5aGYqDOq+sdztopDPe0NVRSNX
+	 24UMJVLO4AfYP1J5wra4yLCqW2FqH1y0Ia76/vXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Tobias Fleig <tfleig@meta.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.1 001/196] crypto: sha256 - fix crash at kexec
-Date: Mon, 13 Oct 2025 16:42:54 +0200
-Message-ID: <20251013144314.606419114@linuxfoundation.org>
+	Da Xue <da@libre.computer>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 033/262] pinctrl: meson-gxl: add missing i2c_d pinmux
+Date: Mon, 13 Oct 2025 16:42:55 +0200
+Message-ID: <20251013144327.325723235@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Da Xue <da@libre.computer>
 
-Loading a large (~2.1G) files with kexec crashes the host with when
-running:
+[ Upstream commit d8c2a9edd181f0cc4a66eec954b3d8f6a1d954a7 ]
 
-  # kexec --load kernel --initrd initrd_with_2G_or_more
+Amlogic GXL has 4 I2C attached to gpio-periphs. I2C_D is on GPIOX_10/11.
 
-  UBSAN: signed-integer-overflow in ./include/crypto/sha256_base.h:64:19
-  34152083 * 64 cannot be represented in type 'int'
-  ...
-  BUG: unable to handle page fault for address: ff9fffff83b624c0
-  sha256_update (lib/crypto/sha256.c:137)
-  crypto_sha256_update (crypto/sha256_generic.c:40)
-  kexec_calculate_store_digests (kernel/kexec_file.c:769)
-  __se_sys_kexec_file_load (kernel/kexec_file.c:397 kernel/kexec_file.c:332)
-  ...
+Add the relevant func 3 pinmux per the datasheet for S805X/S905X/S905D.
 
-(Line numbers based on commit da274362a7bd9 ("Linux 6.12.49")
-
-This started happening after commit f4da7afe07523f
-("kexec_file: increase maximum file size to 4G") that landed in v6.0,
-which increased the file size for kexec.
-
-This is not happening upstream (v6.16+), given that `block` type was
-upgraded from "int" to "size_t" in commit 74a43a2cf5e8 ("crypto:
-lib/sha256 - Move partial block handling out")
-
-Upgrade the block type similar to the commit above, avoiding hitting the
-overflow.
-
-This patch is only suitable for the stable tree, and before 6.16, which
-got commit 74a43a2cf5e8 ("crypto: lib/sha256 - Move partial block
-handling out"). This is not required before f4da7afe07523f ("kexec_file:
-increase maximum file size to 4G"). In other words, this fix is required
-between versions v6.0 and v6.16.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Fixes: f4da7afe07523f ("kexec_file: increase maximum file size to 4G") # Before v6.16
-Reported-by: Michael van der Westhuizen <rmikey@meta.com>
-Reported-by: Tobias Fleig <tfleig@meta.com>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0f15f500ff2c ("pinctrl: meson: Add GXL pinctrl definitions")
+Signed-off-by: Da Xue <da@libre.computer>
+Link: https://lore.kernel.org/20250821233335.1707559-1-da@libre.computer
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/crypto/sha256_base.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/meson/pinctrl-meson-gxl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/include/crypto/sha256_base.h
-+++ b/include/crypto/sha256_base.h
-@@ -46,7 +46,7 @@ static inline int sha256_base_do_update(
- 	sctx->count += len;
+diff --git a/drivers/pinctrl/meson/pinctrl-meson-gxl.c b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
+index 9171de657f978..a75762e4d2641 100644
+--- a/drivers/pinctrl/meson/pinctrl-meson-gxl.c
++++ b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
+@@ -187,6 +187,9 @@ static const unsigned int i2c_sda_c_pins[]	= { GPIODV_28 };
+ static const unsigned int i2c_sck_c_dv19_pins[] = { GPIODV_19 };
+ static const unsigned int i2c_sda_c_dv18_pins[] = { GPIODV_18 };
  
- 	if (unlikely((partial + len) >= SHA256_BLOCK_SIZE)) {
--		int blocks;
-+		unsigned int blocks;
++static const unsigned int i2c_sck_d_pins[]	= { GPIOX_11 };
++static const unsigned int i2c_sda_d_pins[]	= { GPIOX_10 };
++
+ static const unsigned int eth_mdio_pins[]	= { GPIOZ_0 };
+ static const unsigned int eth_mdc_pins[]	= { GPIOZ_1 };
+ static const unsigned int eth_clk_rx_clk_pins[] = { GPIOZ_2 };
+@@ -411,6 +414,8 @@ static const struct meson_pmx_group meson_gxl_periphs_groups[] = {
+ 	GPIO_GROUP(GPIO_TEST_N),
  
- 		if (partial) {
- 			int p = SHA256_BLOCK_SIZE - partial;
+ 	/* Bank X */
++	GROUP(i2c_sda_d,	5,	5),
++	GROUP(i2c_sck_d,	5,	4),
+ 	GROUP(sdio_d0,		5,	31),
+ 	GROUP(sdio_d1,		5,	30),
+ 	GROUP(sdio_d2,		5,	29),
+@@ -651,6 +656,10 @@ static const char * const i2c_c_groups[] = {
+ 	"i2c_sck_c", "i2c_sda_c", "i2c_sda_c_dv18", "i2c_sck_c_dv19",
+ };
+ 
++static const char * const i2c_d_groups[] = {
++	"i2c_sck_d", "i2c_sda_d",
++};
++
+ static const char * const eth_groups[] = {
+ 	"eth_mdio", "eth_mdc", "eth_clk_rx_clk", "eth_rx_dv",
+ 	"eth_rxd0", "eth_rxd1", "eth_rxd2", "eth_rxd3",
+@@ -777,6 +786,7 @@ static const struct meson_pmx_func meson_gxl_periphs_functions[] = {
+ 	FUNCTION(i2c_a),
+ 	FUNCTION(i2c_b),
+ 	FUNCTION(i2c_c),
++	FUNCTION(i2c_d),
+ 	FUNCTION(eth),
+ 	FUNCTION(pwm_a),
+ 	FUNCTION(pwm_b),
+-- 
+2.51.0
+
 
 
 
