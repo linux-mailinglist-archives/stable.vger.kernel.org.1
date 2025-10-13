@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-184382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B0EBD43C9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7859FBD43D5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 72CE65032F0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 228D61885BDA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C4630CD8F;
-	Mon, 13 Oct 2025 14:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6862ECEBB;
+	Mon, 13 Oct 2025 15:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1zbjnlx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxrHqhcJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4425E30C60F;
-	Mon, 13 Oct 2025 14:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5C1221F00;
+	Mon, 13 Oct 2025 15:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367275; cv=none; b=ab5qe5GFyfsp48OaFNhBAFgnGD6vskqpdA1AB5eV4iQUG7WX9sNKERCyUANN/4t/Hg8gI34KYH69eKQvE7uYWeOL1/DYDAA4eCyyaEojexGT9nrX8RijPfrfbcM/3e5t0CIm+nYcf/nBjTdXW4W83okWLtXktl6ygtseJw1NWaM=
+	t=1760368595; cv=none; b=J3FIzbcdakTFxGbQ2YiAEIWSBWOl5gxxgyZ30mz6+6HkVw1pJ4XorG+yILbjuB1u73xgT7N5Nsz/dTxuSug+F4OmBJXpp51+EWza5JT370lVEGCZ4XNduz5hz0IUsHr2WVst6A8aNMcCBRPwAmHgLpKOoEz4cyh9EEEwW2/d+NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367275; c=relaxed/simple;
-	bh=IExKoojoE4V4lpcaS0BwynnJo+9sAbZ/XGpqplYpVvI=;
+	s=arc-20240116; t=1760368595; c=relaxed/simple;
+	bh=fgVtJs/sAab0R9tK7JfmOcVErXJqH07VFcQmKEgUXZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7KMGXATz3rUrr8o5kzYfCE+7AHD8XwlZ72WaXeEizYpiG29coehjzuAacRKcCcgCtXCtxtuvIaQb6K69DMZ2Vq5zHBV1Is7an9qeomiJOwx3QRDAK33Eszo6foW9K3GT8GbfVttYvsopKenXpMu878WwkBJZDQz6nSE3LhJ8RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1zbjnlx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9603C4CEE7;
-	Mon, 13 Oct 2025 14:54:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q+ZK6yr+pAA4I4YnwymMhXcE5cWDh28j20zf74rWSgUEu3SiCX64leS5cib4EiNLnG5e3AyomjUi4uEfaTKyZteuUDwvfVpWbRWFWcNFA/06l7oqqHQQ+axtsU1B+IR+/fu2hBcX3S3g+3+ktsHBRz/WUDW2bU+uISN3T6FTlFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxrHqhcJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDFDC4CEE7;
+	Mon, 13 Oct 2025 15:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367275;
-	bh=IExKoojoE4V4lpcaS0BwynnJo+9sAbZ/XGpqplYpVvI=;
+	s=korg; t=1760368595;
+	bh=fgVtJs/sAab0R9tK7JfmOcVErXJqH07VFcQmKEgUXZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1zbjnlxS2JBMN4yVzoEjvc9BCK25B1l6HWRqnYrPk1o6b2OddkN30vKlbJe4x+sF
-	 1WLcBSMjGxJ+KDt8vPx2Km5A+Fz2BYFZSd1BQlJGi+7IQeT8c8OL8Rs57v9SXy20mU
-	 HszUXsaiG8sKBbxONy3eYqyZhr798tXPcK4qXLWA=
+	b=JxrHqhcJJDKRfI9TFL/vEIzA/XesLPZXogE1k2OxeBnGx1eY7bweULW6Fj2zkeJh4
+	 UO7lu30PT072n6ddj7FHIs7/nKDFn0H3csSaM4KoOCir0c0rUYstDsrTS11/D7ZmYe
+	 +SWAJjD5Glx4FvMCjVpNyRIHwOmrWsTEINX4fg1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Anastasov <ja@ssi.bg>,
-	Slavin Liu <slavin452@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/196] ipvs: Defer ip_vs_ftp unregister during netns cleanup
-Date: Mon, 13 Oct 2025 16:45:24 +0200
-Message-ID: <20251013144320.161230710@linuxfoundation.org>
+Subject: [PATCH 6.12 183/262] coresight: tmc: Support atclk
+Date: Mon, 13 Oct 2025 16:45:25 +0200
+Message-ID: <20251013144332.718989370@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slavin Liu <slavin452@gmail.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 134121bfd99a06d44ef5ba15a9beb075297c0821 ]
+[ Upstream commit 8a79026926b329d4ab0c6d0921373a80ec8aab6e ]
 
-On the netns cleanup path, __ip_vs_ftp_exit() may unregister ip_vs_ftp
-before connections with valid cp->app pointers are flushed, leading to a
-use-after-free.
+The atclk is an optional clock for the CoreSight TMC, but the driver
+misses to initialize it.  In most cases, TMC shares the atclk clock with
+other CoreSight components.  Since these components enable the clock
+before the TMC device is initialized, the TMC continues properly,
+which is why we don’t observe any lockup issues.
 
-Fix this by introducing a global `exiting_module` flag, set to true in
-ip_vs_ftp_exit() before unregistering the pernet subsystem. In
-__ip_vs_ftp_exit(), skip ip_vs_ftp unregister if called during netns
-cleanup (when exiting_module is false) and defer it to
-__ip_vs_cleanup_batch(), which unregisters all apps after all connections
-are flushed. If called during module exit, unregister ip_vs_ftp
-immediately.
+This change enables atclk in probe of the TMC driver.  Given the clock
+is optional, it is possible to return NULL if the clock does not exist.
+IS_ERR() is tolerant for this case.
 
-Fixes: 61b1ab4583e2 ("IPVS: netns, add basic init per netns.")
-Suggested-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Slavin Liu <slavin452@gmail.com>
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Dynamically disable and enable atclk during suspend and resume.  The
+clock pointers will never be error values if the driver has successfully
+probed, and the case of a NULL pointer case will be handled by the clock
+core layer.  The driver data is always valid after probe. Therefore,
+remove the related checks.  Also in the resume flow adds error handling.
+
+Fixes: bc4bf7fe98da ("coresight-tmc: add CoreSight TMC driver")
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250731-arm_cs_fix_clock_v4-v6-1-1dfe10bb3f6f@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ftp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../hwtracing/coresight/coresight-tmc-core.c  | 22 ++++++++++++++-----
+ drivers/hwtracing/coresight/coresight-tmc.h   |  2 ++
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-index ef1f45e43b630..61d3797fb7995 100644
---- a/net/netfilter/ipvs/ip_vs_ftp.c
-+++ b/net/netfilter/ipvs/ip_vs_ftp.c
-@@ -53,6 +53,7 @@ enum {
- 	IP_VS_FTP_EPSV,
- };
+diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
+index 475fa4bb6813b..96ef2517dd439 100644
+--- a/drivers/hwtracing/coresight/coresight-tmc-core.c
++++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
+@@ -480,6 +480,10 @@ static int __tmc_probe(struct device *dev, struct resource *res)
+ 	struct coresight_desc desc = { 0 };
+ 	struct coresight_dev_list *dev_list = NULL;
  
-+static bool exiting_module;
- /*
-  * List of ports (up to IP_VS_APP_MAX_PORTS) to be handled by helper
-  * First port is set to the default port.
-@@ -605,7 +606,7 @@ static void __ip_vs_ftp_exit(struct net *net)
++	drvdata->atclk = devm_clk_get_optional_enabled(dev, "atclk");
++	if (IS_ERR(drvdata->atclk))
++		return PTR_ERR(drvdata->atclk);
++
+ 	ret = -ENOMEM;
+ 
+ 	/* Validity for the resource is already checked by the AMBA core */
+@@ -700,18 +704,26 @@ static int tmc_runtime_suspend(struct device *dev)
  {
- 	struct netns_ipvs *ipvs = net_ipvs(net);
+ 	struct tmc_drvdata *drvdata = dev_get_drvdata(dev);
  
--	if (!ipvs)
-+	if (!ipvs || !exiting_module)
- 		return;
- 
- 	unregister_ip_vs_app(ipvs, &ip_vs_ftp);
-@@ -627,6 +628,7 @@ static int __init ip_vs_ftp_init(void)
-  */
- static void __exit ip_vs_ftp_exit(void)
- {
-+	exiting_module = true;
- 	unregister_pernet_subsys(&ip_vs_ftp_ops);
- 	/* rcu_barrier() is called by netns */
+-	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+-		clk_disable_unprepare(drvdata->pclk);
++	clk_disable_unprepare(drvdata->atclk);
++	clk_disable_unprepare(drvdata->pclk);
++
+ 	return 0;
  }
+ 
+ static int tmc_runtime_resume(struct device *dev)
+ {
+ 	struct tmc_drvdata *drvdata = dev_get_drvdata(dev);
++	int ret;
+ 
+-	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+-		clk_prepare_enable(drvdata->pclk);
+-	return 0;
++	ret = clk_prepare_enable(drvdata->pclk);
++	if (ret)
++		return ret;
++
++	ret = clk_prepare_enable(drvdata->atclk);
++	if (ret)
++		clk_disable_unprepare(drvdata->pclk);
++
++	return ret;
+ }
+ #endif
+ 
+diff --git a/drivers/hwtracing/coresight/coresight-tmc.h b/drivers/hwtracing/coresight/coresight-tmc.h
+index 2671926be62a3..2a53acbb5990b 100644
+--- a/drivers/hwtracing/coresight/coresight-tmc.h
++++ b/drivers/hwtracing/coresight/coresight-tmc.h
+@@ -166,6 +166,7 @@ struct etr_buf {
+ 
+ /**
+  * struct tmc_drvdata - specifics associated to an TMC component
++ * @atclk:	optional clock for the core parts of the TMC.
+  * @pclk:	APB clock if present, otherwise NULL
+  * @base:	memory mapped base address for this component.
+  * @csdev:	component vitals needed by the framework.
+@@ -191,6 +192,7 @@ struct etr_buf {
+  * @perf_buf:	PERF buffer for ETR.
+  */
+ struct tmc_drvdata {
++	struct clk		*atclk;
+ 	struct clk		*pclk;
+ 	void __iomem		*base;
+ 	struct coresight_device	*csdev;
 -- 
 2.51.0
 
