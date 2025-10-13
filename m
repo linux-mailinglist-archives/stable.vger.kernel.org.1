@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-184284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39390BD3C51
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0B4BD4642
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EAB1134DCB1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEAFD4078F5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B93827A123;
-	Mon, 13 Oct 2025 14:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44BF3115A3;
+	Mon, 13 Oct 2025 15:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHa7pNw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJxKLbA0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1718526E708;
-	Mon, 13 Oct 2025 14:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7D03093C9;
+	Mon, 13 Oct 2025 15:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760366992; cv=none; b=siy25mJGaSL+ZHiE9VU10eWZzh3jqAPnG9m2AA7N+zyJ3Gy17d9o/OCSugoCxvV3WP9coqjQpCLElzkIbm+fT37n7ZSrrmhjPzD9CQVVCm2lN/uz4EoEWuFHB5tUc78F+oM5uLjcAdbPVPOz6trPfB+XuFB1q9K857GHzMGx+Tw=
+	t=1760368127; cv=none; b=m3/xZ0hULEBw5FQneaM3480NOXfVuvaIIcjEd0a2de4RPIipvlOTsx8h4pYo8Qni8Sh85TZ+KDDHhV4OhMe0ZU3/ZaKf2k18jLQaXmf1VRYodctsAOAHX+74KCwqDcf7fl1Z7D9L4sdLMWwfTY/5UxdaQC/cYDsmHVNBEb6rWjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760366992; c=relaxed/simple;
-	bh=JuRio9Zu17Pm99mBzIJ8d9ANe4X+hHXY0WB6Fkaf+FM=;
+	s=arc-20240116; t=1760368127; c=relaxed/simple;
+	bh=c52cp2Mq362xHgpMzwKWS5joqtAlHPq8sZ/xvOXwK24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swBE6db4gnYEfIvuM59jVjDyGd5rL66UXqOSagz3hbr1nBLRryGKzJDFerg4X8ZxI1nIgB+NZq2fxm+myQoI54bbmup1RrDokTEcozkxF9VqeKQ4VJJYvG3ByVlJxKJB/TzqPjaqaa1zko+LbkvefCZraK2fX4AtwszR19RGeiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHa7pNw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9801BC4CEE7;
-	Mon, 13 Oct 2025 14:49:51 +0000 (UTC)
+	 MIME-Version; b=RgCEBUfcok3cpQCSYxCitzteNqQzitle8NzzdXCcYGShhpS2kA+B/JSLxT702diY4M6iV5zy/U/SJ8j7wirI+PL1+wInwX5PSkhiKh4Ie1Rd3xVYIPlmEgZ+ThTmQ52Kmgx/YwLxTMrVI0oplaFoYK0Y2k9xRWd2wXd879T4p0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJxKLbA0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E984AC4CEE7;
+	Mon, 13 Oct 2025 15:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760366992;
-	bh=JuRio9Zu17Pm99mBzIJ8d9ANe4X+hHXY0WB6Fkaf+FM=;
+	s=korg; t=1760368127;
+	bh=c52cp2Mq362xHgpMzwKWS5joqtAlHPq8sZ/xvOXwK24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rHa7pNw18aU79/ifURyCDw5kXMUni6gzLenDf4RAEBPkvDrd41muACsr6jspwKrnQ
-	 Jwz5tfqZoNfpJYWYTrl3zL2EZ14heQstRO6UdivQAlgbwv08KZ72DVVHWqx1E3W3EM
-	 T9d6SJQiyiFoI6NPqpNscraIINrRRn+ObhCOqwMk=
+	b=aJxKLbA0nWhBNpVz99PKT3emcCD1IRwFkbkumzSCbivaqleU6SVLi1yxySlleW2ck
+	 k80O2909vWIlR3zTwU8VBB6iVWNv3fvnldKsLyuFtKt/pNrOhtEzPrMwcHRniXvlyJ
+	 a/o40+blZ1pSwEREqTzpuJB7f5A6SnmFvo8zXmLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <David.Laight@aculab.com>,
-	Arnd Bergmann <arnd@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.1 022/196] minmax: fix up min3() and max3() too
+	syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Mike Christie <mchristi@redhat.com>,
+	"Richard W.M. Jones" <rjones@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Yu Kuai <yukuai1@huaweicloud.com>,
+	linux-block@vger.kernel.org,
+	nbd@other.debian.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 053/262] nbd: restrict sockets to TCP and UDP
 Date: Mon, 13 Oct 2025 16:43:15 +0200
-Message-ID: <20251013144315.379499375@linuxfoundation.org>
+Message-ID: <20251013144328.039218970@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +68,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 21b136cc63d2a9ddd60d4699552b69c214b32964 ]
+[ Upstream commit 9f7c02e031570e8291a63162c6c046dc15ff85b0 ]
 
-David Laight pointed out that we should deal with the min3() and max3()
-mess too, which still does excessive expansion.
+Recently, syzbot started to abuse NBD with all kinds of sockets.
 
-And our current macros are actually rather broken.
+Commit cf1b2326b734 ("nbd: verify socket is supported during setup")
+made sure the socket supported a shutdown() method.
 
-In particular, the macros did this:
+Explicitely accept TCP and UNIX stream sockets.
 
-  #define min3(x, y, z) min((typeof(x))min(x, y), z)
-  #define max3(x, y, z) max((typeof(x))max(x, y), z)
-
-and that not only is a nested expansion of possibly very complex
-arguments with all that involves, the typing with that "typeof()" cast
-is completely wrong.
-
-For example, imagine what happens in max3() if 'x' happens to be a
-'unsigned char', but 'y' and 'z' are 'unsigned long'.  The types are
-compatible, and there's no warning - but the result is just random
-garbage.
-
-No, I don't think we've ever hit that issue in practice, but since we
-now have sane infrastructure for doing this right, let's just use it.
-It fixes any excessive expansion, and also avoids these kinds of broken
-type issues.
-
-Requested-by: David Laight <David.Laight@aculab.com>
-Acked-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cf1b2326b734 ("nbd: verify socket is supported during setup")
+Reported-by: syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/CANn89iJ+76eE3A_8S_zTpSyW5hvPRn6V57458hCZGY5hbH_bFA@mail.gmail.com/T/#m081036e8747cd7e2626c1da5d78c8b9d1e55b154
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Mike Christie <mchristi@redhat.com>
+Cc: Richard W.M. Jones <rjones@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Yu Kuai <yukuai1@huaweicloud.com>
+Cc: linux-block@vger.kernel.org
+Cc: nbd@other.debian.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/block/nbd.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -152,13 +152,20 @@
- #define umax(x, y)	\
- 	__careful_cmp(max, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index c705acc4d6f4b..de692eed98740 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -1156,6 +1156,14 @@ static struct socket *nbd_get_socket(struct nbd_device *nbd, unsigned long fd,
+ 	if (!sock)
+ 		return NULL;
  
-+#define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
-+	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
-+	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
-+		#op"3("#x", "#y", "#z") signedness error");		\
-+	__cmp(op, ux, __cmp(op, uy, uz)); })
++	if (!sk_is_tcp(sock->sk) &&
++	    !sk_is_stream_unix(sock->sk)) {
++		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: should be TCP or UNIX.\n");
++		*err = -EINVAL;
++		sockfd_put(sock);
++		return NULL;
++	}
 +
- /**
-  * min3 - return minimum of three values
-  * @x: first value
-  * @y: second value
-  * @z: third value
-  */
--#define min3(x, y, z) min((typeof(x))min(x, y), z)
-+#define min3(x, y, z) \
-+	__careful_op3(min, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
- 
- /**
-  * max3 - return maximum of three values
-@@ -166,7 +173,8 @@
-  * @y: second value
-  * @z: third value
-  */
--#define max3(x, y, z) max((typeof(x))max(x, y), z)
-+#define max3(x, y, z) \
-+	__careful_op3(max, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
- 
- /**
-  * min_not_zero - return the minimum that is _not_ zero, unless both are zero
+ 	if (sock->ops->shutdown == sock_no_shutdown) {
+ 		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: shutdown callout must be supported.\n");
+ 		*err = -EINVAL;
+-- 
+2.51.0
+
 
 
 
