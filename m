@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA45BD4874
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E40BD3C30
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7020D5038E0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47708188C9C6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96882311C2C;
-	Mon, 13 Oct 2025 15:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8E930F7E2;
+	Mon, 13 Oct 2025 14:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGGeICq9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+LitHN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523B7311C20;
-	Mon, 13 Oct 2025 15:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE7A30F55D;
+	Mon, 13 Oct 2025 14:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368191; cv=none; b=Dp+GLtPI/MSrgMULVOFkLVFadvwOpZao32/pLKPQ/1Ulz6bueTwifsErLQ7Ia1FOytYvk2uzBVR7ydtsgxYH+ZsIcbDcpSUj249k3DsBhDPq4vlExp/ussbRh6bUWKd99RLYAwZR3pbay9do0Os1vQV5/xZdqRWm/NsTyP8aoW0=
+	t=1760366943; cv=none; b=PMw6A6hDL0wzDw1kCPQ0DVjH6ABd3xMFmhi7CBqpXFPG38kGOJvredurxEDVgPhL7Ea97cdvQaxxNaIQ58Zb6q4wX8XDzysilctuYhObnDzgx0axA2Wd2r48rtDv0m+EngawBbW7X4XDUhnzm+J7xr4WN40lllR2iRfxpxVxagg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368191; c=relaxed/simple;
-	bh=ouN30tGe5Chl15z6LNQleJKIYr8SDDHv7ynvbfIyb1g=;
+	s=arc-20240116; t=1760366943; c=relaxed/simple;
+	bh=ZPXH9nQInaUlLDUrnJ94HGlDZXWZ0vEjQD3m/BmlLA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nKtj+jahx2RQaGWUa34QhIZ5qiTX18OVLtV0R8N1k4Eb2lrZ1wiP/KafISWDoK87T+JucLA1t6EkTvIkEVwvC8AdxoRTWFneTFf9rIsHI0IWdkwBvUX4TSXmGaP4ntW6tobTOW1ZcKGGKuKq1L3+SFTrnoaFsFfH2AJ5xa6Dv10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGGeICq9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF871C4CEE7;
-	Mon, 13 Oct 2025 15:09:50 +0000 (UTC)
+	 MIME-Version; b=MsYtDMmk3CH7xkoUN8hGS3Nb/B505BJREGVisw+jHI0UB8yvv1AX/x2Ggb7BHMEEE4DnJ+7YaULLo+TYlcRqYdK/yQDHFKAn2Lq96bRiiLGH05AOwDHPwL9dCqZlmeQ401Al9s4tqAPqJTXxfx4jMu+Jc7uQfjUwXDjGdlXI42Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+LitHN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9702EC4CEE7;
+	Mon, 13 Oct 2025 14:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368191;
-	bh=ouN30tGe5Chl15z6LNQleJKIYr8SDDHv7ynvbfIyb1g=;
+	s=korg; t=1760366943;
+	bh=ZPXH9nQInaUlLDUrnJ94HGlDZXWZ0vEjQD3m/BmlLA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGGeICq9OEQD17pGxpXYY/WudtgV5vpjd6cmOplacjmA0GoReEbQ5pUpUhUhKOXv9
-	 e2upXI0ssSP2AsFLVnoFcJIwbuinJBEFdha/oNSxsVzHtNonBp6P7O5h85BVMB9qOp
-	 aTgBX2Ub5MoXNw+pfGDNTRImoWXteMlHM+iw5MOk=
+	b=m+LitHN6R+gEHWn1URJZnBcP5W2Eb9yiwzRzWPtXFfqyBDBwP7+iips46ZlEpQ5Kx
+	 C4yrYzu2pLCSazUQG7I+BSTDUVJvJFIRFZinWq+Uwnjygwp1mIj9h6mnkK73+iPXzD
+	 VCgIQWgdXHZ76jOIIOS29TFtf72/dWY0o34gnSYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Tranh Ha <tranh.ha.xb@renesas.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/262] pwm: tiehrpwm: Fix corner case in clock divisor calculation
+Subject: [PATCH 6.1 037/196] can: rcar_canfd: Fix controller mode setting
 Date: Mon, 13 Oct 2025 16:43:30 +0200
-Message-ID: <20251013144328.577141589@linuxfoundation.org>
+Message-ID: <20251013144315.929277331@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Duy Nguyen <duy.nguyen.rh@renesas.com>
 
-[ Upstream commit 00f83f0e07e44e2f1fb94b223e77ab7b18ee2d7d ]
+[ Upstream commit 5cff263606a10102a0ea19ff579eaa18fd5577ad ]
 
-The function set_prescale_div() is responsible for calculating the clock
-divisor settings such that the input clock rate is divided down such that
-the required period length is at most 0x10000 clock ticks. If period_cycles
-is an integer multiple of 0x10000, the divisor period_cycles / 0x10000 is
-good enough. So round up in the calculation of the required divisor and
-compare it using >= instead of >.
+Driver configures register to choose controller mode before
+setting all channels to reset mode leading to failure.
+The patch corrects operation of mode setting.
 
-Fixes: 19891b20e7c2 ("pwm: pwm-tiehrpwm: PWM driver support for EHRPWM")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/85488616d7bfcd9c32717651d0be7e330e761b9c.1754927682.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Signed-off-by: Tranh Ha <tranh.ha.xb@renesas.com>
+Link: https://patch.msgid.link/TYWPR01MB87434739F83E27EDCD23DF44B416A@TYWPR01MB8743.jpnprd01.prod.outlook.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-tiehrpwm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/rcar/rcar_canfd.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pwm/pwm-tiehrpwm.c b/drivers/pwm/pwm-tiehrpwm.c
-index a23e48b8523db..7a86cb090f76f 100644
---- a/drivers/pwm/pwm-tiehrpwm.c
-+++ b/drivers/pwm/pwm-tiehrpwm.c
-@@ -161,7 +161,7 @@ static int set_prescale_div(unsigned long rqst_prescaler, u16 *prescale_div,
+diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
+index a1f68b74229e6..3d6daeea83553 100644
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -717,9 +717,6 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
+ 	/* Reset Global error flags */
+ 	rcar_canfd_write(gpriv->base, RCANFD_GERFL, 0x0);
  
- 			*prescale_div = (1 << clkdiv) *
- 					(hspclkdiv ? (hspclkdiv * 2) : 1);
--			if (*prescale_div > rqst_prescaler) {
-+			if (*prescale_div >= rqst_prescaler) {
- 				*tb_clk_div = (clkdiv << TBCTL_CLKDIV_SHIFT) |
- 					(hspclkdiv << TBCTL_HSPCLKDIV_SHIFT);
- 				return 0;
-@@ -224,7 +224,7 @@ static int ehrpwm_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	pc->period_cycles[pwm->hwpwm] = period_cycles;
+-	/* Set the controller into appropriate mode */
+-	rcar_canfd_set_mode(gpriv);
+-
+ 	/* Transition all Channels to reset mode */
+ 	for_each_set_bit(ch, &gpriv->channels_mask, gpriv->max_channels) {
+ 		rcar_canfd_clear_bit(gpriv->base,
+@@ -739,6 +736,10 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
+ 			return err;
+ 		}
+ 	}
++
++	/* Set the controller into appropriate mode */
++	rcar_canfd_set_mode(gpriv);
++
+ 	return 0;
+ }
  
- 	/* Configure clock prescaler to support Low frequency PWM wave */
--	if (set_prescale_div(period_cycles/PERIOD_MAX, &ps_divval,
-+	if (set_prescale_div(DIV_ROUND_UP(period_cycles, PERIOD_MAX), &ps_divval,
- 			     &tb_divval)) {
- 		dev_err(pwmchip_parent(chip), "Unsupported values\n");
- 		return -EINVAL;
 -- 
 2.51.0
 
