@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40751BD4925
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2FCBD3DD7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C2D8507CBA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3255A4F63EF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6D631158E;
-	Mon, 13 Oct 2025 15:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C456308F25;
+	Mon, 13 Oct 2025 14:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eE3jFD2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpUCTM9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A9E30F7FA;
-	Mon, 13 Oct 2025 15:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED046308F0B;
+	Mon, 13 Oct 2025 14:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368107; cv=none; b=nbs7SL1v0m+gTCWoPudoUO55rH02cdMHEm5VrtO5ulVqj/bdTLWQq0dCEANYWELJ/7JNOIWIUHLQOJA1YQ1WwCPxTaAqvfJPZ/EPQ23U9OBIUdXnFeY+rsZpHFoI3Ibc0mqhD797p5Shjc68r9+L+ni2z6ksFxGONGEnZXU1KmQ=
+	t=1760366964; cv=none; b=Qc9MeqPcG48pc+2ZB9u9ACqSSr5zYfl9SzLIjmAqfy/gvWsD1LR3nwwUpSvowVJ3yJtj69asnVuZOWGZubbTllYIJpnflj8br6t2dAqpGAAyCtoGnrf0RLzlUq9zZxdW251gOQ7w17cuocEPP6im5bfjql+22CP6TZ+tk6QWlN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368107; c=relaxed/simple;
-	bh=ahPAIgUXjdha2I3mzIGsNCEUHcKP3w0JfHcXGbveVEY=;
+	s=arc-20240116; t=1760366964; c=relaxed/simple;
+	bh=awBKnoXDe2L+IYIHCsd0osFWqzYnT5PC8zTJ/cBqKMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXE7zKBVFlpL7VHpvltEmHPg9Ky/LzaWHgOYrXIVQdda+sIo7rAgR/netS0cfI5uFi9CPn81M0NhSBQoczLLkZzVMhqe0s79qyTigNsQfvQNZMCJNpmzsNpt1YNwCWap1QFuP+1zYMVYrolGLVGG9tKf/Nj4yFDKmpM0AhxWER8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eE3jFD2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D8AC4CEE7;
-	Mon, 13 Oct 2025 15:08:26 +0000 (UTC)
+	 MIME-Version; b=e43BBvaBjUGSnpIDKH1BPXoyOm/icr28KYTBz8Wo5E7c1/kG0Zh1hnSfEeCBGHfV6gXNf1WELDlPeuLO4j2wejjuZUdl5hQ9JOCCbYyKMiFeQnZ+0FD+VsNawP4bkoivZugrrgrCCVSPi74wpLm1eTWNWL/vlJUu/YcdrwsqH+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpUCTM9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30959C4CEE7;
+	Mon, 13 Oct 2025 14:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368107;
-	bh=ahPAIgUXjdha2I3mzIGsNCEUHcKP3w0JfHcXGbveVEY=;
+	s=korg; t=1760366963;
+	bh=awBKnoXDe2L+IYIHCsd0osFWqzYnT5PC8zTJ/cBqKMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eE3jFD2KdjN2Vn4vl24kGKguVcKwkNvSjAKCYVcD/XG1NZOdyWsWyiUU3eT52PE6I
-	 TTPazwdQTx1VGhpU3dMpuLpZwra+chBV7Ls4FGt1OcyKrTQLNn6rIhQCFusEZwthAr
-	 axyzrnLrhIr3a5ByGB154cWjUiiBk7aGHeed5dj0=
+	b=RpUCTM9vEBGsycmdmSGXPC1KGlNxe5bPFE85GrinpqlZnmk9IdCUXs3uhq7NAB9F8
+	 hwsQxgUFUzt1F5iniUd7BloBCdWrZrjVhoF4q+vv6OTyJ00bkCduBWV7UUILSO+WmI
+	 igwrIQwcJ43BRNk5MrGSUdd0bnjCIISY7pr75hY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andyshrk@163.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/262] power: supply: cw2015: Fix a alignment coding style issue
-Date: Mon, 13 Oct 2025 16:43:09 +0200
-Message-ID: <20251013144327.824921931@linuxfoundation.org>
+Subject: [PATCH 6.1 017/196] media: tuner: xc5000: Fix use-after-free in xc5000_release
+Date: Mon, 13 Oct 2025 16:43:10 +0200
+Message-ID: <20251013144315.191628841@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andyshrk@163.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit def5612170a8c6c4c6a3ea5bd6c3cfc8de6ba4b1 ]
+[ Upstream commit 40b7a19f321e65789612ebaca966472055dab48c ]
 
-Fix the checkpatch warning:
-CHECK: Alignment should match open parenthesis
+The original code uses cancel_delayed_work() in xc5000_release(), which
+does not guarantee that the delayed work item timer_sleep has fully
+completed if it was already running. This leads to use-after-free scenarios
+where xc5000_release() may free the xc5000_priv while timer_sleep is still
+active and attempts to dereference the xc5000_priv.
 
-Fixes: 0cb172a4918e ("power: supply: cw2015: Use device managed API to simplify the code")
-Signed-off-by: Andy Yan <andyshrk@163.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+A typical race condition is illustrated below:
+
+CPU 0 (release thread)                 | CPU 1 (delayed work callback)
+xc5000_release()                       | xc5000_do_timer_sleep()
+  cancel_delayed_work()                |
+  hybrid_tuner_release_state(priv)     |
+    kfree(priv)                        |
+                                       |   priv = container_of() // UAF
+
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the timer_sleep is properly canceled before the xc5000_priv memory
+is deallocated.
+
+A deadlock concern was considered: xc5000_release() is called in a process
+context and is not holding any locks that the timer_sleep work item might
+also need. Therefore, the use of the _sync() variant is safe here.
+
+This bug was initially identified through static analysis.
+
+Fixes: f7a27ff1fb77 ("[media] xc5000: delay tuner sleep to 5 seconds")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[hverkuil: fix typo in Subject: tunner -> tuner]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/cw2015_battery.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/tuners/xc5000.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
-index f63c3c4104515..382dff8805c62 100644
---- a/drivers/power/supply/cw2015_battery.c
-+++ b/drivers/power/supply/cw2015_battery.c
-@@ -702,8 +702,7 @@ static int cw_bat_probe(struct i2c_client *client)
- 	if (!cw_bat->battery_workqueue)
- 		return -ENOMEM;
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -1304,7 +1304,7 @@ static void xc5000_release(struct dvb_fr
+ 	mutex_lock(&xc5000_list_mutex);
  
--	devm_delayed_work_autocancel(&client->dev,
--							  &cw_bat->battery_delay_work, cw_bat_work);
-+	devm_delayed_work_autocancel(&client->dev, &cw_bat->battery_delay_work, cw_bat_work);
- 	queue_delayed_work(cw_bat->battery_workqueue,
- 			   &cw_bat->battery_delay_work, msecs_to_jiffies(10));
- 	return 0;
--- 
-2.51.0
-
+ 	if (priv) {
+-		cancel_delayed_work(&priv->timer_sleep);
++		cancel_delayed_work_sync(&priv->timer_sleep);
+ 		hybrid_tuner_release_state(priv);
+ 	}
+ 
 
 
 
