@@ -1,104 +1,193 @@
-Return-Path: <stable+bounces-185547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0459BD6B9C
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 01:22:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F8EBD6BCF
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 01:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AA8019A234E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 23:22:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4242B4E52A3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 23:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECDF2C15B4;
-	Mon, 13 Oct 2025 23:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB022D780A;
+	Mon, 13 Oct 2025 23:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luQ/umcM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AA2rzImz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB592C0F97
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 23:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDF52C3761
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 23:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760397750; cv=none; b=h5gUhV6AgUvUOXnNcZxewAflcOiRZeDIuxsjC+r2YH7hcqMUUxM3CWZFGfIxAtMaJtV6QDZTjubms1nr/VIPc5rC8GWlufUXs3/BgHZRvTnjx4rZoi3Z3bXZH1CDz3naprL5tgxzNovJWsyPdnQRFfLChdFKav6TkPCiKAi09Ic=
+	t=1760398168; cv=none; b=DD0vly/dfwc6IdUUwLsNplmvJ1foVgU6sJv976Cpr5wvxKeBr9eISTgNs9yhIHwf91Who7JgxB+OzKpz3F2S6zqBKS7o8G1zaJ3Ij0CowJiZfk3IQTLVZp/LwsmqVgWH+kIwMy15uhy+aY9FplGSZuxhi4r4xA4Gxi2QYg5EqJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760397750; c=relaxed/simple;
-	bh=XcL9QjoRPmBcISaKGc6DA3deq8LonPS0dDzFHw9XF8k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JmZf14B9EpbmYAY6o6/gVepxcx2jMisLrRJb0i4gVyg6ryjsL49mCLsggUtLrPw+7i4qn0H1TCHaJHH7j+GgCXgkQevfbBpbHmkTvl6KUgfm8juLTD/B0cNRBHeNk5rH35arRMyGny+UQ/RsLM9n3LoECapDGGxlkDGQgn/zWVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luQ/umcM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811C6C116D0;
-	Mon, 13 Oct 2025 23:22:29 +0000 (UTC)
+	s=arc-20240116; t=1760398168; c=relaxed/simple;
+	bh=SQ0gWNpV8fChoEYMNhzwQKlfjtJr3sfa5X67jWtrJdY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=malTdwWtEfQsPgtsGQXLFiZTDv4aVz2FbKudgobdZVISpYwhamZhVXSYwAtLMhrJIQgf0AErQMalF07AGH4ZoDVAmlOdLlmYTlT+zKs0P5Al5fdJJi6nH2lVYrbYqwmHg3ebZWCsg9ox3K8ID8vEeduzapBJv/dPaNJJcEi9bDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AA2rzImz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5BDC19421
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 23:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760397750;
-	bh=XcL9QjoRPmBcISaKGc6DA3deq8LonPS0dDzFHw9XF8k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=luQ/umcMYGbojk/q10umTtIDsEouAq6ASPVqEvPAd1QLZEN/VzeF6Wrozs0NgzdDD
-	 chTiwG7Z1UW2rF8+Wq9TIPPaQ0VeOexdoBCq+YVzOBlliVmQbR3ep05K3fCSWyYzLJ
-	 LYrtdkkB5Nj/wz0d7i9EzHxE/MFBFsi2TO8qklaOzcZ6fWOwGmAQIPPBB9c8o8cZ0C
-	 ALYvC2W/pn+3jnYX/tyQ//qUGw6onB1ZQqiSnEB5+av58ttT8aJ8DLXJmY8Zd22v4P
-	 +8mEspbBOOlGf+SdCNRqjqRaPsgj00R80YjA01apLYWw+2n3UQaAhipDGyX1Rf4Qw0
-	 BNS70Ho/ziVSw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Hans de Goede <hansg@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 3/3] mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag
-Date: Mon, 13 Oct 2025 19:22:24 -0400
-Message-ID: <20251013232224.3709547-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013232224.3709547-1-sashal@kernel.org>
-References: <2025101308-pedometer-broadness-3e95@gregkh>
- <20251013232224.3709547-1-sashal@kernel.org>
+	s=k20201202; t=1760398168;
+	bh=SQ0gWNpV8fChoEYMNhzwQKlfjtJr3sfa5X67jWtrJdY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AA2rzImzN90s32cp8e0uwxg8bh+IjSrBFwpjEddVpnqKHWTywbZioOr0J4+B2+ryR
+	 6Vj65aj4/Jbxu5yjl8Tf3filr+PibU/tnHSjELxYuuqqhhgicq0E5yOHhTRhY9GhCa
+	 //C/BizcUv+ovNYskkqnpPRn7qXYGMtMin76zujrPEvJsYEE2CAu1GZUx1XkGtDm7D
+	 rLlyd9sW1z+Ura6VViHuNKRkQqEf/6aU6qYqQ9loMmIZmUZpad8P+7l13LaYhnHco4
+	 swGL1cA6UGnaJbyJhluocGtxILsD0r89J/6htBaI/ycF9tu1yGeolAqfbhk3WUbTxq
+	 O/kaCYjnm3V3Q==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b3f5e0e2bf7so882794966b.3
+        for <stable@vger.kernel.org>; Mon, 13 Oct 2025 16:29:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXo4MFZo2PLfsJtke2/Ux55/UcL3r98soKhu9Otd1EXCwYRGA6yld2DAlB54C42yg1a7xYmxtY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLS7feEPMDLcO7SfB+38VQ0wQDKtajnMdQxG55G3rbq4lJIgqM
+	OnupQc0y+RiGywj0nyrE00q3bt5YbCah/p3lQc7CS69uBwu1MsdLQuriBxg25E+QuJT9g7v74Z+
+	qhR77vafGiXZy+kJ4SMjX0X56PCfTpww=
+X-Google-Smtp-Source: AGHT+IGKMgfNlTuVRjrvwrgGu5wAUKAOzjA5+Qj4nhVCZNyzu4FakDZO2A4HdYX7LTuYYFd1tWuBIeotI0oHcIElStI=
+X-Received: by 2002:a17:907:971e:b0:b4c:1ad1:d08c with SMTP id
+ a640c23a62f3a-b50aa393b8amr2537644866b.17.1760398166753; Mon, 13 Oct 2025
+ 16:29:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251013134708.1270704-1-aha310510@gmail.com> <20251013164625.nphymwx25fde5eyk@pali>
+In-Reply-To: <20251013164625.nphymwx25fde5eyk@pali>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Tue, 14 Oct 2025 08:29:14 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd8bhyHrf=fMRrv2oWeWf8gshGdHd2zb=C40vD632Lgm_g@mail.gmail.com>
+X-Gm-Features: AS18NWA2a1YxuJIOARSQtQYwyd5cLkP4zCGhLc1g0fsPOO2REg4pII5pSv2KDSU
+Message-ID: <CAKYAXd8bhyHrf=fMRrv2oWeWf8gshGdHd2zb=C40vD632Lgm_g@mail.gmail.com>
+Subject: Re: [PATCH v3] exfat: fix out-of-bounds in exfat_nls_to_ucs2()
+To: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Cc: Jeongjun Park <aha310510@gmail.com>, Ethan Ferguson <ethan.ferguson@zetier.com>, 
+	Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, 
+	Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Hans de Goede <hansg@kernel.org>
-
-[ Upstream commit 64e0d839c589f4f2ecd2e3e5bdb5cee6ba6bade9 ]
-
-Testing has shown that reading multiple registers at once (for 10-bit
-ADC values) does not work. Set the use_single_read regmap_config flag
-to make regmap split these for us.
-
-This should fix temperature opregion accesses done by
-drivers/acpi/pmic/intel_pmic_chtdc_ti.c and is also necessary for
-the upcoming drivers for the ADC and battery MFD cells.
-
-Fixes: 6bac0606fdba ("mfd: Add support for Cherry Trail Dollar Cove TI PMIC")
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250804133240.312383-1-hansg@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/mfd/intel_soc_pmic_chtdc_ti.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/mfd/intel_soc_pmic_chtdc_ti.c b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-index 18b763a23df7c..5eb790047a4e1 100644
---- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-+++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-@@ -82,6 +82,8 @@ static const struct regmap_config chtdc_ti_regmap_config = {
- 	.reg_bits = 8,
- 	.val_bits = 8,
- 	.max_register = 0xff,
-+	/* The hardware does not support reading multiple registers at once */
-+	.use_single_read = true,
- };
- 
- static const struct regmap_irq chtdc_ti_irqs[] = {
--- 
-2.51.0
-
+On Tue, Oct 14, 2025 at 1:46=E2=80=AFAM Pali Roh=C3=A1r <pali@kernel.org> w=
+rote:
+>
+> On Monday 13 October 2025 22:47:08 Jeongjun Park wrote:
+> > Since the len argument value passed to exfat_ioctl_set_volume_label()
+> > from exfat_nls_to_utf16() is passed 1 too large, an out-of-bounds read
+> > occurs when dereferencing p_cstring in exfat_nls_to_ucs2() later.
+> >
+> > And because of the NLS_NAME_OVERLEN macro, another error occurs when
+> > creating a file with a period at the end using utf8 and other iocharset=
+s,
+> > so the NLS_NAME_OVERLEN macro should be removed and the len argument va=
+lue
+> > should be passed as FSLABEL_MAX - 1.
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Reported-by: syzbot+98cc76a76de46b3714d4@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=3D98cc76a76de46b3714d4
+> > Fixes: 370e812b3ec1 ("exfat: add nls operations")
+>
+> Fixes: line is for sure wrong as the affected
+> exfat_ioctl_set_volume_label function is not available in the mentioned
+> commit.
+>
+> I guess it should be commit d01579d590f72d2d91405b708e96f6169f24775a.
+>
+> Now I have looked at that commit and I think I finally understood what
+> was the issue. exfat_nls_to_utf16() function is written in a way that
+> it expects null-term string and its strlen as 3rd argument.
+>
+> This was achieved for all code paths except the new one introduced in
+> that commit. "label" is declared as char label[FSLABEL_MAX]; so the
+> FSLABEL_MAX argument in exfat_nls_to_utf16() is effectively
+> sizeof(label). And here comes the problem, it should have been
+> strlen(label) (or rather strnlen(label, sizeof(label)-1) in case
+> userspace pass non-nul term string).
+>
+> So the change below to FSLABEL_MAX - 1 effectively fix the overflow
+> problem. But not the usage of exfat_nls_to_utf16.
+>
+> API of FS_IOC_SETFSLABEL is defined to always take nul-term string:
+> https://man7.org/linux/man-pages/man2/fs_ioc_setfslabel.2const.html
+>
+> And size of buffer is not the length of nul-term string. We should
+> discard anything after nul-term byte.
+>
+> So in my opinion exfat_ioctl_set_volume_label() should be fixed in a way
+> it would call exfat_nls_to_utf16() with 3rd argument passed as:
+>
+>   strnlen(label, sizeof(label) - 1)
+>
+> or
+>
+>   strnlen(label, FSLABEL_MAX - 1)
+>
+> Or personally I prefer to store this length into new variable (e.g.
+> label_len) and then passing it to exfat_nls_to_utf16() function.
+> For example:
+>
+>   ret =3D exfat_nls_to_utf16(sb, label, label_len, &uniname, &lossy);
+Right, I agree.
+>
+> Adding Ethan to CC as author of the mentioned commit.
+>
+>
+> And about NLS_NAME_OVERLEN, it is being used by the
+> __exfat_resolve_path() function. So removal of the "setting" of
+> NLS_NAME_OVERLEN bit but still checking if the NLS_NAME_OVERLEN bit is
+> set is quite wrong.
+Right, The use of NLS_NAME_OVERLEN in __exfat_resolve_path() and
+in the header should also be removed.
+>
+>
+> Namjae, could you re-check my analysis? Just to be sure that I have not
+> misunderstood something. It is better to do proper analysis than having
+> incomplete or incorrect fix.
+Yes, I agree with your analysis.
+Thanks!
+>
+> > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> > ---
+> >  fs/exfat/file.c | 2 +-
+> >  fs/exfat/nls.c  | 3 ---
+> >  2 files changed, 1 insertion(+), 4 deletions(-)
+> >
+> > diff --git a/fs/exfat/file.c b/fs/exfat/file.c
+> > index f246cf439588..7ce0fb6f2564 100644
+> > --- a/fs/exfat/file.c
+> > +++ b/fs/exfat/file.c
+> > @@ -521,7 +521,7 @@ static int exfat_ioctl_set_volume_label(struct supe=
+r_block *sb,
+> >
+> >       memset(&uniname, 0, sizeof(uniname));
+> >       if (label[0]) {
+> > -             ret =3D exfat_nls_to_utf16(sb, label, FSLABEL_MAX,
+> > +             ret =3D exfat_nls_to_utf16(sb, label, FSLABEL_MAX - 1,
+> >                                        &uniname, &lossy);
+> >               if (ret < 0)
+> >                       return ret;
+> > diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
+> > index 8243d94ceaf4..57db08a5271c 100644
+> > --- a/fs/exfat/nls.c
+> > +++ b/fs/exfat/nls.c
+> > @@ -616,9 +616,6 @@ static int exfat_nls_to_ucs2(struct super_block *sb=
+,
+> >               unilen++;
+> >       }
+> >
+> > -     if (p_cstring[i] !=3D '\0')
+> > -             lossy |=3D NLS_NAME_OVERLEN;
+> > -
+> >       *uniname =3D '\0';
+> >       p_uniname->name_len =3D unilen;
+> >       p_uniname->name_hash =3D exfat_calc_chksum16(upname, unilen << 1,=
+ 0,
+> > --
 
