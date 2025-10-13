@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC7ABD4135
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C936DBD4144
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8CFF834A57D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2DF185044F9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DFF3115A9;
-	Mon, 13 Oct 2025 15:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AEB30648A;
+	Mon, 13 Oct 2025 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha8qGzIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TS3HNyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA693093C9;
-	Mon, 13 Oct 2025 15:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D35291C33;
+	Mon, 13 Oct 2025 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368133; cv=none; b=K4kGwAQp2AVQg+8mCBVq8Y7LDsFDIzDEyQnieykttGP0IpztLJks071Zpadc7O9Dp+XEZMBp7xhJnlt84VbqEiYHT+ilKGZhXJLC3cSwAno6mtSYHixyKzT5TlsUHv8eK+o9BFkTRrYBaym/maLfhT25xuNRbXS79K6d4BqYnzw=
+	t=1760367494; cv=none; b=Wo29IisjAI0qvCGv/qXOLD40rvyGazr0YqVl5vtW/k+dw+3koOnK+7C4EOr562e0GwzEbToXYyZOuhGEOF0g3LWp/EYOAwBs0W9S8M3IfY3gWaDN6fyhOmD0YCdu9NiKwSO1uPE6zZpxM2twawnCods1lVSM4RG5/6c4RTX5b2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368133; c=relaxed/simple;
-	bh=XcnLqL92Z40LC1u1L4BPcZS9nc8H4jm3mpm8H3OEOJM=;
+	s=arc-20240116; t=1760367494; c=relaxed/simple;
+	bh=09aH5h9Iu9XMh5ZWg+XEBazBKb5I2fa4HRaKHV+aECg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnD2UWXogsikmFre8P52n2QxdrvCwnJBWJMPQsjRxaB3KZjo8nXckyxdQ9PXkJP1NjzX2UbZgM90bqTmsE6yobtHz2GhLK+QmdyZmzXOJ7Oq98k6gzu5saVOnSgIMQeTx7KW2B6QUwymDH9YDoCT/rQujOrabv+6F8Q5GDLRjww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha8qGzIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50E3C4CEE7;
-	Mon, 13 Oct 2025 15:08:52 +0000 (UTC)
+	 MIME-Version; b=dHdaK07NsqXpIxXo2KmhVHuBwnIPYYB4zVBA7TTRtk/0TDEeOMNSD0SMu1FQozQnjc0bk8pAhvJl5412/rP0eQ1VCjXKl18VzMrkp3zRX9xCkQbRlxFjbHC/jlXvV7ddNTEfyB9smiKqdj1sR1abBP7AD0dMefJOpbMQX9/zF8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TS3HNyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7234C4CEE7;
+	Mon, 13 Oct 2025 14:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368133;
-	bh=XcnLqL92Z40LC1u1L4BPcZS9nc8H4jm3mpm8H3OEOJM=;
+	s=korg; t=1760367494;
+	bh=09aH5h9Iu9XMh5ZWg+XEBazBKb5I2fa4HRaKHV+aECg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ha8qGzIu4Eu1D8LlZ/tx/OiV/Vfdu227cAzVObljooh6KWi9YEr5Haj16DQ676FqY
-	 D4XskqTOmF+n9g15UqQIBdo5pU3EkOxQVdGbyja6h6ijTV2vxHRuCxJCTFdolPctV/
-	 3ypDvP7nyuqFnQE4uz5WAanh/qp90lBf7B8jx5pw=
+	b=0TS3HNyIwQ/MF0AMvEViQCVkplbYiBM0tgqDKew9IC3tsdDVjMkP6jruJdOrqhg/v
+	 Q2kKko/q0DNfBwZm05xmPnZe6WdMYu0MvgW9CBfSFO9YeBxx7yDZ8KiTXKFWLkm95s
+	 BzqCbZycbJdzl4z6H/IvW6vMBeXTqaS0yxgw+/ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/262] firmware: firmware: meson-sm: fix compile-test default
+Subject: [PATCH 6.6 006/196] coresight: trbe: Prevent overflow in PERF_IDX2OFF()
 Date: Mon, 13 Oct 2025 16:43:17 +0200
-Message-ID: <20251013144328.110353116@linuxfoundation.org>
+Message-ID: <20251013144315.423914179@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 0454346d1c5f7fccb3ef6e3103985de8ab3469f3 ]
+[ Upstream commit 105f56877f2d5f82d71e20b45eb7be7c24c3d908 ]
 
-Enabling compile testing should not enable every individual driver (we
-have "allyesconfig" for that).
+Cast nr_pages to unsigned long to avoid overflow when handling large
+AUX buffer sizes (>= 2 GiB).
 
-Fixes: 4a434abc40d2 ("firmware: meson-sm: enable build as module")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250725075429.10056-1-johan@kernel.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/meson/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-trbe.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/meson/Kconfig b/drivers/firmware/meson/Kconfig
-index f2fdd37566482..179f5d46d8ddf 100644
---- a/drivers/firmware/meson/Kconfig
-+++ b/drivers/firmware/meson/Kconfig
-@@ -5,7 +5,7 @@
- config MESON_SM
- 	tristate "Amlogic Secure Monitor driver"
- 	depends on ARCH_MESON || COMPILE_TEST
--	default y
-+	default ARCH_MESON
- 	depends on ARM64_4K_PAGES
- 	help
- 	  Say y here to enable the Amlogic secure monitor driver
+diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
+index e20c1c6acc731..7f91b1ffe66a5 100644
+--- a/drivers/hwtracing/coresight/coresight-trbe.c
++++ b/drivers/hwtracing/coresight/coresight-trbe.c
+@@ -21,7 +21,8 @@
+ #include "coresight-self-hosted-trace.h"
+ #include "coresight-trbe.h"
+ 
+-#define PERF_IDX2OFF(idx, buf) ((idx) % ((buf)->nr_pages << PAGE_SHIFT))
++#define PERF_IDX2OFF(idx, buf) \
++	((idx) % ((unsigned long)(buf)->nr_pages << PAGE_SHIFT))
+ 
+ /*
+  * A padding packet that will help the user space tools
 -- 
 2.51.0
 
