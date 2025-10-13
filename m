@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5372CBD3CC6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:00:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FAEBD421F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADC6C18A0B03
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DA3E3E4D8A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18271309DDD;
-	Mon, 13 Oct 2025 14:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D71309DC1;
+	Mon, 13 Oct 2025 15:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4HJ8FVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZytXOv1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CBA309EFD;
-	Mon, 13 Oct 2025 14:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F6324A06A;
+	Mon, 13 Oct 2025 15:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367132; cv=none; b=VgB+tdEn2xidW7cNOBg3HfvLXmouf5Ywp95zPJ/2345bs9wFbgBLkNOkbzeya17QDb/BKsWrDff86mgfg0qtHCGqj/wPCICGuY8YELRWRLVHKM9JVfIpyk2fIXMWAZomNPnzGORNyBgyWZxDJJs26OPVweFmaqdkL+L/JHa6zok=
+	t=1760367653; cv=none; b=S/DukINYsLsxzdwZUR30Or+XRc21ZxVAu3iKSJGhWMMvkFBjKro0dtskOuk+zn0rCZjsaMRjtdm5WxWoOoVQ5IFb4X2Ryo5itYHwwQ4CJN/f+Jli+MRTzrDnd6rHYO/7h/fhvKu978ylrrT0UGEzGskhcmj2NipNgohdlmwbfRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367132; c=relaxed/simple;
-	bh=St/Yhxoed6tWbvA7pYyhplY8UwdgC4l+A4Esh2d4yFw=;
+	s=arc-20240116; t=1760367653; c=relaxed/simple;
+	bh=4+TD6mfvXTXFjGwlcwpGuouiDIxcp8w5QgjDdK+PyOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kb01sYBUaOva5d09t8RzpX6GdBrJ5zmC6P0NPuhNlioAxvk1PkmLCECST0gaiaY+xcNGXCvAUJwwnkLDwB/l95hdyNcYinf35v1nru3D45CaB3Wao6yRfigzHwYp8sR7TsfqOJINyZjq3ZAS1mwOgG5Xjo6nv62X5OfLAHGr8jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4HJ8FVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08614C4CEE7;
-	Mon, 13 Oct 2025 14:52:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oKNNcLIDp2ZsT1qDhNjDmY2cFb9/i0TDNUWnAY+nYbaqa1b+S8dTT0ibFE/MsXnRJsGDPAEcGanman7DvaWz8zIc805tdpG6UNG+byJ9Kr+AYkCToHRst4U4H9Cr2dPXufmC1Ma25bZ/vff7cUtRmIMRaOLrgaMEhIj1IKIJPYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZytXOv1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80CEC4CEE7;
+	Mon, 13 Oct 2025 15:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367132;
-	bh=St/Yhxoed6tWbvA7pYyhplY8UwdgC4l+A4Esh2d4yFw=;
+	s=korg; t=1760367653;
+	bh=4+TD6mfvXTXFjGwlcwpGuouiDIxcp8w5QgjDdK+PyOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4HJ8FVFtxgE4IvxU16iZyFsAZCRMjHXBYvZvawFQV6PpmWwQhSFMJ8nAkocwZ7iP
-	 33DEnBBBdNeGAFfMQNxqT3JuShvkWx+IFW16X2oUV62/qoMhg5ulH59Z584aFxCi06
-	 9dlNdjQ6XjYOvRHeBarqhXgrUpJYKIzMWRHEERXA=
+	b=ZytXOv1nlmY/fYmOQw9vjrZLDj6twiaTVoO0CIjTxbUj9eZWc3sHoOP9gCgc3V5Qf
+	 ija7s8tjBrMs17Zv8cgHuvjJjN6Jh8sZF1c0vxN4DgTCblL7aJbFCHqO2Tq34CI1cj
+	 hYf0blD4xtBvojufQWmEOdrflpFjobmjBjDuUyho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/196] drm/amd/pm: Disable ULV even if unsupported (v3)
+Subject: [PATCH 6.6 086/196] drm/amd/pm: Disable ULV even if unsupported (v3)
 Date: Mon, 13 Oct 2025 16:44:37 +0200
-Message-ID: <20251013144318.462279522@linuxfoundation.org>
+Message-ID: <20251013144318.427923102@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -88,7 +88,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 52e4397d4a2a9..c17d567cf8bc5 100644
+index e7b1fa2feb928..8be367c49367d 100644
 --- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
 +++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
 @@ -5617,14 +5617,10 @@ static int si_populate_smc_t(struct amdgpu_device *adev,
