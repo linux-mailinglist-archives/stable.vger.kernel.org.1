@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891D1BD40E7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AEABD4931
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 34D3F34E8B7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1B5B18A5534
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C25310630;
-	Mon, 13 Oct 2025 15:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0611630F95B;
+	Mon, 13 Oct 2025 15:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2t5Hd1lz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4ATA7Rd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54423241C8C;
-	Mon, 13 Oct 2025 15:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86EF30C357;
+	Mon, 13 Oct 2025 15:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368047; cv=none; b=J0qSzPNris6WQq8qIHFGPKbk/9Te4dTns+HmKfJSNYy2uVxNopqEkCryWBy1F22p7Vgrg/R51Y+eerdxzoimHJBj/yKqGqr4PMOEe7hPxJJkUh6B01+UrrsZPjXekwnxAJ3a9M70MRmzVubXPHh1VIzuIDxUtu8uovM3a9x9d2I=
+	t=1760369708; cv=none; b=Jszsb3q1T6+LAZmvz+yu3SIk5dtP9NL5vilQ13hJBJs1RAc2B2/cRFvVlzp7Pja6OmJ9FaZfxl56LPiXSdmyWwyHBj/KeM7lBHds7OFL8yG5pkpVAGTGeJvrBpdzffLTqL3hSlZ8zulg6dNSzbYPDWX47TaTbBPPODEroXT7Z/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368047; c=relaxed/simple;
-	bh=mJ1FoUP+EEvcnOD5af9KBrYLof0R6Zk1/7XG+VsJiA0=;
+	s=arc-20240116; t=1760369708; c=relaxed/simple;
+	bh=uAuSLoMFaEgTntYgbbpR1rTOtk2rXqI/Tfe0vGkankI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDEWRovhvjAReNI0+l/gTi7IWjeKoXwRAI0roNWx5CSXxz00ooYJ66LN0VAUJRzXTVfKcpO2/KDCg2sKjcum0Qugg/dMTm+YT8+FpYYv3ml2pu/DNTz5tpu9teNlMGrwQdl7giQdTAovYIUKsE36agXTsHZzQ/rFGbwHaRjs1Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2t5Hd1lz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22D0C4CEE7;
-	Mon, 13 Oct 2025 15:07:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iwdqzOhFrXXNCOJsrP/Ll+EbeaaZ9Q0jrem9sYFqjTirdmSnPFCqe+srAEgo6lzKHdB/fp9thW5qa1DOqvyb+jklI1rwJ/SzKbwaubqu45fVoZS5cetiwMK/lVhTRj0bd3isAbqlL1xX43BHjsljRqp5qh/9z3LNBqZMHqNmduI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4ATA7Rd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9CFC4CEE7;
+	Mon, 13 Oct 2025 15:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368047;
-	bh=mJ1FoUP+EEvcnOD5af9KBrYLof0R6Zk1/7XG+VsJiA0=;
+	s=korg; t=1760369708;
+	bh=uAuSLoMFaEgTntYgbbpR1rTOtk2rXqI/Tfe0vGkankI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2t5Hd1lz+ILkiL+unLsQJsxg3cFQYvbqsuIsSeimuxO7kgPMFhiNzA723+MkDpI8Q
-	 Z/kVcebknwRpEUKz907v74N4b8vDnBdeo0H6hXUer/HeXSCngts+CDZUWSQkiRr3NQ
-	 xb7wksJ5KLATrWshS3ffoTWG9k7tbauQJTg9ff5w=
+	b=k4ATA7Rd2cupxWqFgJo4eD6Iu38F4WQDYatmmiWXrpabT6z2A9cA3D3xRFZ3HyKq8
+	 IPenndH/yqqDC7y+aM7/ldIunueQBQGn+wvEZ6yldpxoD4bCLvdq+VRRlhBzsegCkW
+	 mzu2sn6xrqi7v+f0/xwoOkQwVEjoKeqSyYuUtRKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/262] s390/bpf: Write back tail call counter for BPF_TRAMP_F_CALL_ORIG
-Date: Mon, 13 Oct 2025 16:42:47 +0200
-Message-ID: <20251013144327.038795680@linuxfoundation.org>
+Subject: [PATCH 6.17 307/563] drm/amd/pm: Disable MCLK switching with non-DC at 120 Hz+ (v2)
+Date: Mon, 13 Oct 2025 16:42:48 +0200
+Message-ID: <20251013144422.385736781@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit bc3905a71f02511607d3ccf732360580209cac4c ]
+[ Upstream commit ed3803533c7bf7df88bc3fc9f70bd317e1228ea8 ]
 
-The tailcall_bpf2bpf_hierarchy_fentry test hangs on s390. Its call
-graph is as follows:
+According to pp_pm_compute_clocks the non-DC display code
+has "issues with mclk switching with refresh rates over 120 hz".
+The workaround is to disable MCLK switching in this case.
 
-  entry()
-    subprog_tail()
-      trampoline()
-        fentry()
-        the rest of subprog_tail()  # via BPF_TRAMP_F_CALL_ORIG
-        return to entry()
+Do the same for legacy DPM.
 
-The problem is that the rest of subprog_tail() increments the tail call
-counter, but the trampoline discards the incremented value. This
-results in an astronomically large number of tail calls.
-
-Fix by making the trampoline write the incremented tail call counter
-back.
-
-Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20250813121016.163375-4-iii@linux.ibm.com
+Fixes: 6ddbd37f1074 ("drm/amd/pm: optimize the amdgpu_pm_compute_clocks() implementations")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/net/bpf_jit_comp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index a88d53fe87743..c15be6955cc7f 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -2808,6 +2808,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 		/* stg %r2,retval_off(%r15) */
- 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
- 			      tjit->retval_off);
-+		/* mvc tccnt_off(%r15),tail_call_cnt(4,%r15) */
-+		_EMIT6(0xd203f000 | tjit->tccnt_off,
-+		       0xf000 | offsetof(struct prog_frame, tail_call_cnt));
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
+index 42efe838fa85c..2d2d2d5e67634 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
+@@ -66,6 +66,13 @@ u32 amdgpu_dpm_get_vblank_time(struct amdgpu_device *adev)
+ 					(amdgpu_crtc->v_border * 2));
  
- 		im->ip_after_call = jit->prg_buf + jit->prg;
- 
+ 				vblank_time_us = vblank_in_pixels * 1000 / amdgpu_crtc->hw_mode.clock;
++
++				/* we have issues with mclk switching with
++				 * refresh rates over 120 hz on the non-DC code.
++				 */
++				if (drm_mode_vrefresh(&amdgpu_crtc->hw_mode) > 120)
++					vblank_time_us = 0;
++
+ 				break;
+ 			}
+ 		}
 -- 
 2.51.0
 
