@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D7EBD43F0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AA5BD4612
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D714F4F6093
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AC1A3E7A51
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0923A30E0CB;
-	Mon, 13 Oct 2025 14:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E09311598;
+	Mon, 13 Oct 2025 15:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CU6BLKam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PP4j3SLs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBDC3081C4;
-	Mon, 13 Oct 2025 14:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4077931158D;
+	Mon, 13 Oct 2025 15:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367428; cv=none; b=FSIfqoGu6hVLNaSW1rr8EVOGeNDNOJa4NWnOzzkSFG1SGrM+orY3Z1aC/uzLiuyr78hnYtpMVByBQ4foj1fcY7C76QAHzKZMJVXZPg66rt+GF7dWvLG6Bssqjkln3c6qi34WxoOTBR9q6KkCJdprXaq74wWc5yBMLS8jzu1Gjw8=
+	t=1760368116; cv=none; b=iqiNbGmz8uv+viOT2HkCfsWm7FuCPZXVjxtMBIocokdhQ6HrvI016maQDzsA5Omq8uCYEjdbyoSPLRRdTlbwQn4dYo0xchDdaELDOZK2Ys5Wy9Niu93RM3oUTqLseEFv8WZPoLOsjDLTrYFI7VPORQfweR3v/MmRd8fwz9RwCxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367428; c=relaxed/simple;
-	bh=UmJZt8XDlH0uy9nn4SeSNU3MW0UOqi6Hh4FIoeLwE/4=;
+	s=arc-20240116; t=1760368116; c=relaxed/simple;
+	bh=kthSEHILunhuwkzBvZYigXUFaJ/DZxJTGGW3P0Z1gUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPACYTaU/ZuxnNnvt7ruhHAlYUdWejgtt+Lw2fmKgEUK+zd3YT+A4Re87G7y+8XxnrrWQcb9LrrmZfFAMpSnlWoE7p1vEbuxl4DVe2ZG0ZD8kB1WgnZmMLnkOpsk+oUG86r7CU6nSo/Lmx+fCqzEG+k2nnhPBb4vowq05uHqF08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CU6BLKam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A163C4CEE7;
-	Mon, 13 Oct 2025 14:57:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HPMpr5OmQuCYLAjD8kGW2O2aovXM3EUurxvRa/ze29JZMkP/r2tDjqJXt7Bq+brrK9UKZTtrERBRxZmR2sDHePc0vlNw5okcQa8NRuEJTefoAXqbn+WhLb9PJjzHurh8OxzJm2CzkMJQTB3XylovNbi2f0ITAGzMUP6ucYA7qCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PP4j3SLs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1AFDC113D0;
+	Mon, 13 Oct 2025 15:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367428;
-	bh=UmJZt8XDlH0uy9nn4SeSNU3MW0UOqi6Hh4FIoeLwE/4=;
+	s=korg; t=1760368116;
+	bh=kthSEHILunhuwkzBvZYigXUFaJ/DZxJTGGW3P0Z1gUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CU6BLKamcg9vom7FaHvM3116CzE6/3yw/tM8qKhGCduLcca1WmSJIS5oJwTJSLtSN
-	 ZWtFiOopg1mUDE7dBwiX13sbJGYmtEc4MfjGW9wmFEl00yp7FB1vHOufq+65xvJeSK
-	 rbga4xHA+hhtwCmK4LsGPLgkW9/F8M5cXwt3zYh4=
+	b=PP4j3SLsDHspJ3Bmn5y7VJuN8zNAEGgJNOYR3cKs7/pgn+9mwlCN3fpKW15H9X6Oa
+	 1zSbDoUQKaKhA3/+6U3K2jrJDKjm9Rg7lb25LBU1anLiAAdGs5L53g70VRnp47N1P9
+	 FEkNxAjnFLqmH91ZpRQdZ6fryH/87NNpVa2/h7q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/196] filelock: add FL_RECLAIM to show_fl_flags() macro
+Subject: [PATCH 6.12 050/262] selftests: vDSO: Fix -Wunitialized in powerpc VDSO_CALL() wrapper
 Date: Mon, 13 Oct 2025 16:43:12 +0200
-Message-ID: <20251013144315.241039761@linuxfoundation.org>
+Message-ID: <20251013144327.931962096@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit c593b9d6c446510684da400833f9d632651942f0 ]
+[ Upstream commit 9f15e0f9ef514b8e1a80707931f6d07362e8ebc4 ]
 
-Show the FL_RECLAIM flag symbolically in tracepoints.
+The _rval register variable is meant to be an output operand of the asm
+statement but is instead used as input operand.
+clang 20.1 notices this and triggers -Wuninitialized warnings:
 
-Fixes: bb0a55bb7148 ("nfs: don't allow reexport reclaims")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/20250903-filelock-v1-1-f2926902962d@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+tools/testing/selftests/timers/auxclock.c:154:10: error: variable '_rval' is uninitialized when used here [-Werror,-Wuninitialized]
+  154 |                 return VDSO_CALL(self->vdso_clock_gettime64, 2, clockid, ts);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tools/testing/selftests/timers/../vDSO/vdso_call.h:59:10: note: expanded from macro 'VDSO_CALL'
+   59 |                 : "r" (_rval)                                           \
+      |                        ^~~~~
+tools/testing/selftests/timers/auxclock.c:154:10: note: variable '_rval' is declared here
+tools/testing/selftests/timers/../vDSO/vdso_call.h:47:2: note: expanded from macro 'VDSO_CALL'
+   47 |         register long _rval asm ("r3");                                 \
+      |         ^
+
+It seems the list of input and output operands have been switched around.
+However as the argument registers are not always initialized they can not
+be marked as pure inputs as that would trigger -Wuninitialized warnings.
+Adding _rval as another input and output operand does also not work as it
+would collide with the existing _r3 variable.
+
+Instead reuse _r3 for both the argument and the return value.
+
+Fixes: 6eda706a535c ("selftests: vDSO: fix the way vDSO functions are called for powerpc")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/all/20250812-vdso-tests-fixes-v2-1-90f499dd35f8@linutronix.de
+Closes: https://lore.kernel.org/oe-kbuild-all/202506180223.BOOk5jDK-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/filelock.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vDSO/vdso_call.h | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/include/trace/events/filelock.h b/include/trace/events/filelock.h
-index 1646dadd7f37c..3b1c8d93b2654 100644
---- a/include/trace/events/filelock.h
-+++ b/include/trace/events/filelock.h
-@@ -27,7 +27,8 @@
- 		{ FL_SLEEP,		"FL_SLEEP" },			\
- 		{ FL_DOWNGRADE_PENDING,	"FL_DOWNGRADE_PENDING" },	\
- 		{ FL_UNLOCK_PENDING,	"FL_UNLOCK_PENDING" },		\
--		{ FL_OFDLCK,		"FL_OFDLCK" })
-+		{ FL_OFDLCK,		"FL_OFDLCK" },			\
-+		{ FL_RECLAIM,		"FL_RECLAIM"})
+diff --git a/tools/testing/selftests/vDSO/vdso_call.h b/tools/testing/selftests/vDSO/vdso_call.h
+index bb237d771051b..e7205584cbdca 100644
+--- a/tools/testing/selftests/vDSO/vdso_call.h
++++ b/tools/testing/selftests/vDSO/vdso_call.h
+@@ -44,7 +44,6 @@
+ 	register long _r6 asm ("r6");					\
+ 	register long _r7 asm ("r7");					\
+ 	register long _r8 asm ("r8");					\
+-	register long _rval asm ("r3");					\
+ 									\
+ 	LOADARGS_##nr(fn, args);					\
+ 									\
+@@ -54,13 +53,13 @@
+ 		"	bns+	1f\n"					\
+ 		"	neg	3, 3\n"					\
+ 		"1:"							\
+-		: "+r" (_r0), "=r" (_r3), "+r" (_r4), "+r" (_r5),	\
++		: "+r" (_r0), "+r" (_r3), "+r" (_r4), "+r" (_r5),	\
+ 		  "+r" (_r6), "+r" (_r7), "+r" (_r8)			\
+-		: "r" (_rval)						\
++		:							\
+ 		: "r9", "r10", "r11", "r12", "cr0", "cr1", "cr5",	\
+ 		  "cr6", "cr7", "xer", "lr", "ctr", "memory"		\
+ 	);								\
+-	_rval;								\
++	_r3;								\
+ })
  
- #define show_fl_type(val)				\
- 	__print_symbolic(val,				\
+ #else
 -- 
 2.51.0
 
