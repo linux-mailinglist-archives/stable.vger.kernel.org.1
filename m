@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-185254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB093BD49C8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:56:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A07BD4087
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8DD8189121F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D842D1882CA6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF422F998D;
-	Mon, 13 Oct 2025 15:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1DD2EA171;
+	Mon, 13 Oct 2025 14:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukkL/3ms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txZxXBHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1022305043;
-	Mon, 13 Oct 2025 15:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A75211290;
+	Mon, 13 Oct 2025 14:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369774; cv=none; b=HjqQPqs9l6gw+BuC5Spbs6QhE1XOwNJC+0k4ww7bmBkuQu5zTALQn2i+QJgJzKTuhq9AUox9dYMRGLOAFULu/HJpFjj1d+/mD6LetsE4UOO6jM4LaZyUpycrHgqGlQy9zaXwvGO3JP2FHAk3vFLDgq66j172EZreHLtmSPE6OLM=
+	t=1760367598; cv=none; b=BPQi/vw0bc0swGyWQUVA2bvuMVA9wyNVeIyu2N2Kcw6xIht99wkOAdLapbcpfD+z72kzZzsnwzj5qJHWv5/AklvuvXdkpV/qe/yy7koTTuB7S5aWiZrhbKfMdjUmi5pbLB5WGHotjzr2gy8TM3cZP7zdTs4f/cjuUFiCzcmLgzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369774; c=relaxed/simple;
-	bh=YD5mi5yEhATSXwTJPV8OsckCqccbd/ZzFmaFd6hVx0Q=;
+	s=arc-20240116; t=1760367598; c=relaxed/simple;
+	bh=XDJlq+1PdtEwx7PXARcY3v+BoT34t66t/JNhmhB4uqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W8R5emZlqWtRO+q22fXKuQdwjjJmtlb29/kl8LftE0rlvpSN9UVXdFN/r2MKVqO22tIP98y+32dgaxCDwDHe5ALlZcgFuAe7hm4e2WpGDe6c3xeSgezAeB0sfgdfnUnFEzcjfRoVGVTi8fcTxfFy4MrixjpnROktyeEMkKbuZJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukkL/3ms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7E5C4CEE7;
-	Mon, 13 Oct 2025 15:36:13 +0000 (UTC)
+	 MIME-Version; b=I1NxyQgXUwRusIti6KP+TW+3NzAAb0ad7bnhrJ+ACGabGzGwVADIyiUiyhHbNFQb7AQSjYn5CW26NnxK/ovwZMYruo9CsRKNegYwr+W6LdcZzrDtMjqfz5k83UGw7/LUAIQOctGUQg9i6wvYynqIc5H/xENaJtQ2fi/jw3Rvk/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txZxXBHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810E2C4CEE7;
+	Mon, 13 Oct 2025 14:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369773;
-	bh=YD5mi5yEhATSXwTJPV8OsckCqccbd/ZzFmaFd6hVx0Q=;
+	s=korg; t=1760367597;
+	bh=XDJlq+1PdtEwx7PXARcY3v+BoT34t66t/JNhmhB4uqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukkL/3msMv86b6BKCluZZo9W8/OdTCDNkrfInsO/6nZLKJxwTiA9VqUBn0QqzcuGA
-	 ZdIcy68qqdEASqbMq/o552X3hv9uof6aXnhyryHC2bG/dAjmMvfDk9gqbbcXUpXriw
-	 qNDsZNpZquH05uYWZn5ViLL+jymuV1JfYSlaP5cE=
+	b=txZxXBHnsceVOxnDW6rPsQ3tvE4zvnjF2D/aBW2+B1dDWmvMTXzhUbYmW1WTpZEuD
+	 B2o8c0HmDA3MOKWnaC8v1HTBMlFy1SeW4WaHI/S2oPNloy9ptDV0QdBISWeKXhSVgX
+	 //SLU7/2BM+ihoH8/P/wUA0WYHK+TW2ZO2/fJCEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 363/563] ASoC: Intel: hda-sdw-bpt: set persistent_buffer false
-Date: Mon, 13 Oct 2025 16:43:44 +0200
-Message-ID: <20251013144424.429307020@linuxfoundation.org>
+Subject: [PATCH 6.6 034/196] PM / devfreq: mtk-cci: Fix potential error pointer dereference in probe()
+Date: Mon, 13 Oct 2025 16:43:45 +0200
+Message-ID: <20251013144316.438780956@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 8b184c34806e5da4d4847fabd3faeff38b47e70a ]
+[ Upstream commit fc33bf0e097c6834646b98a7b3da0ae5b617f0f9 ]
 
-The persistent_buffer agreement is false when hda_cl_prepare() is
-called. We should use the same value when hda_cl_cleanup() is called.
+The drv->sram_reg pointer could be set to ERR_PTR(-EPROBE_DEFER) which
+would lead to a error pointer dereference.  Use IS_ERR_OR_NULL() to check
+that the pointer is valid.
 
-Fixes: 5d5cb86fb46ea ("ASoC: SOF: Intel: hda-sdw-bpt: add helpers for SoundWire BPT DMA")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://patch.msgid.link/20250915024853.1153518-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e09bd5757b52 ("PM / devfreq: mtk-cci: Handle sram regulator probe deferral")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Link: https://patchwork.kernel.org/project/linux-pm/patch/aJTNHz8kk8s6Q2os@stanley.mountain/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-sdw-bpt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/devfreq/mtk-cci-devfreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/intel/hda-sdw-bpt.c b/sound/soc/sof/intel/hda-sdw-bpt.c
-index 1327f1cad0bcd..ff5abccf0d88b 100644
---- a/sound/soc/sof/intel/hda-sdw-bpt.c
-+++ b/sound/soc/sof/intel/hda-sdw-bpt.c
-@@ -150,7 +150,7 @@ static int hda_sdw_bpt_dma_deprepare(struct device *dev, struct hdac_ext_stream
- 	u32 mask;
- 	int ret;
+diff --git a/drivers/devfreq/mtk-cci-devfreq.c b/drivers/devfreq/mtk-cci-devfreq.c
+index 83a73f0ccd803..eff9b2c06aef4 100644
+--- a/drivers/devfreq/mtk-cci-devfreq.c
++++ b/drivers/devfreq/mtk-cci-devfreq.c
+@@ -385,7 +385,8 @@ static int mtk_ccifreq_probe(struct platform_device *pdev)
+ out_free_resources:
+ 	if (regulator_is_enabled(drv->proc_reg))
+ 		regulator_disable(drv->proc_reg);
+-	if (drv->sram_reg && regulator_is_enabled(drv->sram_reg))
++	if (!IS_ERR_OR_NULL(drv->sram_reg) &&
++	    regulator_is_enabled(drv->sram_reg))
+ 		regulator_disable(drv->sram_reg);
  
--	ret = hda_cl_cleanup(sdev->dev, dmab_bdl, true, sdw_bpt_stream);
-+	ret = hda_cl_cleanup(sdev->dev, dmab_bdl, false, sdw_bpt_stream);
- 	if (ret < 0) {
- 		dev_err(sdev->dev, "%s: SDW BPT DMA cleanup failed\n",
- 			__func__);
+ 	return ret;
 -- 
 2.51.0
 
