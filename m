@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-184715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4779FBD4420
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F70BD4036
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D0AC3E485B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCAB818A4795
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5DF3126B4;
-	Mon, 13 Oct 2025 15:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6907130E848;
+	Mon, 13 Oct 2025 14:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFb2xTeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJMzKYZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E5E22257E;
-	Mon, 13 Oct 2025 15:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E433093C3;
+	Mon, 13 Oct 2025 14:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368231; cv=none; b=YcXa/yj5kKcGd5ZAGXM+h1JhGN900on7fj/RKDt6sYx7UhPOiSRKs+f/prAYk3jDB5uuoUjh3gcF214aJHRuhfSc89br1OnQVgCWBT0W/RF0VEdUtuFcaj+RyMRam19QzI+fpnjrQQGG9DALODFmdXu6JG9OCkqaohtTMd8M1jc=
+	t=1760367517; cv=none; b=WPml+NpxV+RIXrVgVRCLXODqLH3zr1gJxY0lwXAPGtGm0C8EN4VTNA51/LwdPSf6OJjUNuhhdBJtXLC2ZngS/yVJzzIuU9QnbL2SV2Llq2i//UvaAIo4LVFq2h25ymQtupcMsS2HtXzq+qWEfB2oSTLgnbrhTsZv101ezu6Sh1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368231; c=relaxed/simple;
-	bh=byISUw4NLz7nqbPaDvfU2AnKml+cbSqTVCPNUd18KNY=;
+	s=arc-20240116; t=1760367517; c=relaxed/simple;
+	bh=J1kci3dy8oEoEKHm8wWXgu0kxfMDFkrO2/M2kUPpbOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jiXkPiED9H+K/qiK+aY8ZmPJY6MGZgA3l3uB6hMMXIVxst1yJ+9vxSIvkKIQEGTuflBS6TU/PGoTS1xR68WrQautJ7GSWdROQprEIkI+x7ZPlsiSjy0INGpiaVygppvbVEFWBNLkreZouBTLwGWOskM7e6XFi5bhyRSLkIvzRb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFb2xTeD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1CAC4CEE7;
-	Mon, 13 Oct 2025 15:10:30 +0000 (UTC)
+	 MIME-Version; b=ez4qEyqF/x74QzGSbwKa9Y+Ule9KjntbsAh3gOq8QStZeaUB0JVK9nY+jfFLA25nlrcvsO0VEeAIouhxLfbkBnSHed1JDEyeaI/qosWaa5gAl17DRs1reIamCkGGtxnYIneQkKqUYhX4ByevGuXT305gpeFU5r7qGNneUX1o7/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJMzKYZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A09C4CEE7;
+	Mon, 13 Oct 2025 14:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368231;
-	bh=byISUw4NLz7nqbPaDvfU2AnKml+cbSqTVCPNUd18KNY=;
+	s=korg; t=1760367517;
+	bh=J1kci3dy8oEoEKHm8wWXgu0kxfMDFkrO2/M2kUPpbOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFb2xTeDaFPPsqwHJ7vitfJvm8+7icxahA59SWtJm95BCLXgtrzfWjvRcFzDG+hji
-	 YgyNLYSB1Hv1I3RVMuFqetZ7cLnBxgah0JZsI96hNx3l/lB3OOPZUToovGY26QQ1jN
-	 t3Gzf5ecnFChtmtTdAsCUFbGV13aZs3zZU0X3pV4=
+	b=VJMzKYZgiqk662154F2gLr/uJMe5P0xgnZTK/r6337f+rO8aXyEnrCefoHAg3jqxs
+	 S76sGScHRAHJEFXHiaGUZhfEQhLs9vx2w0KRblg7UlkdCVBwoTdc/ataJxCmny0xRw
+	 gZxYaHIjHD4j/5KVuJJL40FF18uGsvLAqyYO5nes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/262] bpf: Enforce expected_attach_type for tailcall compatibility
+Subject: [PATCH 6.6 040/196] firmware: firmware: meson-sm: fix compile-test default
 Date: Mon, 13 Oct 2025 16:43:51 +0200
-Message-ID: <20251013144329.334725932@linuxfoundation.org>
+Message-ID: <20251013144316.652131670@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 4540aed51b12bc13364149bf95f6ecef013197c0 ]
+[ Upstream commit 0454346d1c5f7fccb3ef6e3103985de8ab3469f3 ]
 
-Yinhao et al. recently reported:
+Enabling compile testing should not enable every individual driver (we
+have "allyesconfig" for that).
 
-  Our fuzzer tool discovered an uninitialized pointer issue in the
-  bpf_prog_test_run_xdp() function within the Linux kernel's BPF subsystem.
-  This leads to a NULL pointer dereference when a BPF program attempts to
-  deference the txq member of struct xdp_buff object.
-
-The test initializes two programs of BPF_PROG_TYPE_XDP: progA acts as the
-entry point for bpf_prog_test_run_xdp() and its expected_attach_type can
-neither be of be BPF_XDP_DEVMAP nor BPF_XDP_CPUMAP. progA calls into a slot
-of a tailcall map it owns. progB's expected_attach_type must be BPF_XDP_DEVMAP
-to pass xdp_is_valid_access() validation. The program returns struct xdp_md's
-egress_ifindex, and the latter is only allowed to be accessed under mentioned
-expected_attach_type. progB is then inserted into the tailcall which progA
-calls.
-
-The underlying issue goes beyond XDP though. Another example are programs
-of type BPF_PROG_TYPE_CGROUP_SOCK_ADDR. sock_addr_is_valid_access() as well
-as sock_addr_func_proto() have different logic depending on the programs'
-expected_attach_type. Similarly, a program attached to BPF_CGROUP_INET4_GETPEERNAME
-should not be allowed doing a tailcall into a program which calls bpf_bind()
-out of BPF which is only enabled for BPF_CGROUP_INET4_CONNECT.
-
-In short, specifying expected_attach_type allows to open up additional
-functionality or restrictions beyond what the basic bpf_prog_type enables.
-The use of tailcalls must not violate these constraints. Fix it by enforcing
-expected_attach_type in __bpf_prog_map_compatible().
-
-Note that we only enforce this for tailcall maps, but not for BPF devmaps or
-cpumaps: There, the programs are invoked through dev_map_bpf_prog_run*() and
-cpu_map_bpf_prog_run*() which set up a new environment / context and therefore
-these situations are not prone to this issue.
-
-Fixes: 5e43f899b03a ("bpf: Check attach type at prog load time")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250926171201.188490-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 4a434abc40d2 ("firmware: meson-sm: enable build as module")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250725075429.10056-1-johan@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h | 1 +
- kernel/bpf/core.c   | 5 +++++
- 2 files changed, 6 insertions(+)
+ drivers/firmware/meson/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 6db72c66de91d..e8d9803cc6756 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -281,6 +281,7 @@ struct bpf_map_owner {
- 	bool xdp_has_frags;
- 	u64 storage_cookie[MAX_BPF_CGROUP_STORAGE_TYPE];
- 	const struct btf_type *attach_func_proto;
-+	enum bpf_attach_type expected_attach_type;
- };
- 
- struct bpf_map {
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 1f51c8f20722e..08bdb623f4f91 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2326,6 +2326,7 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
- 		map->owner->type  = prog_type;
- 		map->owner->jited = fp->jited;
- 		map->owner->xdp_has_frags = aux->xdp_has_frags;
-+		map->owner->expected_attach_type = fp->expected_attach_type;
- 		map->owner->attach_func_proto = aux->attach_func_proto;
- 		for_each_cgroup_storage_type(i) {
- 			map->owner->storage_cookie[i] =
-@@ -2337,6 +2338,10 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
- 		ret = map->owner->type  == prog_type &&
- 		      map->owner->jited == fp->jited &&
- 		      map->owner->xdp_has_frags == aux->xdp_has_frags;
-+		if (ret &&
-+		    map->map_type == BPF_MAP_TYPE_PROG_ARRAY &&
-+		    map->owner->expected_attach_type != fp->expected_attach_type)
-+			ret = false;
- 		for_each_cgroup_storage_type(i) {
- 			if (!ret)
- 				break;
+diff --git a/drivers/firmware/meson/Kconfig b/drivers/firmware/meson/Kconfig
+index f2fdd37566482..179f5d46d8ddf 100644
+--- a/drivers/firmware/meson/Kconfig
++++ b/drivers/firmware/meson/Kconfig
+@@ -5,7 +5,7 @@
+ config MESON_SM
+ 	tristate "Amlogic Secure Monitor driver"
+ 	depends on ARCH_MESON || COMPILE_TEST
+-	default y
++	default ARCH_MESON
+ 	depends on ARM64_4K_PAGES
+ 	help
+ 	  Say y here to enable the Amlogic secure monitor driver
 -- 
 2.51.0
 
