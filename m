@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-185224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA861BD4C36
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC5EBD50BF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:30:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EDE8487F67
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:53:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 857AD540110
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1A530F935;
-	Mon, 13 Oct 2025 15:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7ED030C37A;
+	Mon, 13 Oct 2025 15:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Im1AdVtQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsv/JrvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0856A30C375;
-	Mon, 13 Oct 2025 15:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A60309DC4;
+	Mon, 13 Oct 2025 15:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369686; cv=none; b=lLvDYD57e03fJqPF/KQzxp3PNCTf70LNUlyvYTKVfGqDxYvV4qWRvC5VMduNz8oLUH/VpPneELxIrlqsJWDLMkr2vO5QqNidPZ748+eBnQ+OAaXyAsF0nidGl864wIBQA5WiVUemmSKFtSWKdB9BqW7LGqu1hs+w7WfT+/ELOlo=
+	t=1760369711; cv=none; b=pVXeJQh6o/Lz1N/avptEaB1GvBBzgt0/MYPnt47Y5kpoDALCOj7xVMMJergI1jy2VdsWycLVdlxf9RNEwxTet44estsrvXB4G2bdd5P089bxNULkRVzqaEOzTGvZjBZr893b/XsSO3MHbhl5eEVtekmzkbf842ubcBMviXCn6CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369686; c=relaxed/simple;
-	bh=b6vUOrzE+Zd/p9mi7jeMweqqv3bOdhbiWdrPt2yKS8Q=;
+	s=arc-20240116; t=1760369711; c=relaxed/simple;
+	bh=sD5soiXnpEvsIDLDCpX8dqa9jMWvbPBYwcyVs7yKNSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kb8MeZkq0aKL4F6ptOa8Lb2L/IRMsw+H98xn6bYEYJxaAErt7iH/Ydh54mkvxNRHk1EyMVFWuU7lfVPLiN/vFd0EyERubLAskI+PzyrqYBha12i75wa9vNOsjGfWKiR/xZLWjnznigdtVqQAF+LkM+qJV0NObHYLNuk7fLlTO5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Im1AdVtQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88629C116D0;
-	Mon, 13 Oct 2025 15:34:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OpI3cGMNBHi+rLTHYIyniRXG+lDa2ddze+bJ6i0ZGJM8h+ZfMxL7g/dQdFnUcvgHmzwdlmhmugVi0hv6lwKJZ9r6blFwynCj3jwYRxBo3pbReor2a2HFUyCT732thbANYJ0ph90r/+sKxDwzW7BMCuACKnB9OS79YKlF5vrhcvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsv/JrvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E8EC4CEE7;
+	Mon, 13 Oct 2025 15:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369685;
-	bh=b6vUOrzE+Zd/p9mi7jeMweqqv3bOdhbiWdrPt2yKS8Q=;
+	s=korg; t=1760369711;
+	bh=sD5soiXnpEvsIDLDCpX8dqa9jMWvbPBYwcyVs7yKNSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Im1AdVtQpB4YvnEY9Jq1/Ru6VqOMSxTFKt5aeRM6JxKnuvWl7duMprTIO3yR/Lflb
-	 FBjwXWkHAebtbIfn7ZssgpFb4KdazPW06OTwv8xh818gYICLfHIDC4GUReduzYaYLf
-	 pT0aHi8KvDNsHYy4OyaoQuiJTjD/da74WTdK3KLw=
+	b=bsv/JrvSvCnghbTyo+2AMz+wng8Z1lSYb24DouuaRZ7Gu8/F7qLUIU9WlBDvacdhp
+	 18DzZAtHSwhTl2cb6M49wIZVA0vQ9Fg7tCPdHksACb/sTnI8CkZEGH/RdhWETrcWLt
+	 vWpoLAJMsd78FhGsnxZM0pF+Agk29oSeVHfQj4fQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 306/563] drm/amd/pm: Treat zero vblank time as too short in si_dpm (v3)
-Date: Mon, 13 Oct 2025 16:42:47 +0200
-Message-ID: <20251013144422.350152698@linuxfoundation.org>
+Subject: [PATCH 6.17 308/563] drm/amd/pm: Disable SCLK switching on Oland with high pixel clocks (v3)
+Date: Mon, 13 Oct 2025 16:42:49 +0200
+Message-ID: <20251013144422.421297145@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -69,17 +69,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 9003a0746864f39a0ef72bd45f8e1ad85d930d67 ]
+[ Upstream commit 7009e3af0474aca5f64262b3c72fb6e23b232f9b ]
 
-Some parts of the code base expect that MCLK switching is turned
-off when the vblank time is set to zero.
+Port of commit 227545b9a08c ("drm/radeon/dpm: Disable sclk
+switching on Oland when two 4K 60Hz monitors are connected")
 
-According to pp_pm_compute_clocks the non-DC code has issues
-with MCLK switching with refresh rates over 120 Hz.
+This is an ad-hoc DPM fix, necessary because we don't have
+proper bandwidth calculation for DCE 6.
 
+We define "high pixelclock" for SI as higher than necessary
+for 4K 30Hz. For example, 4K 60Hz and 1080p 144Hz fall into
+this category.
+
+When two high pixel clock displays are connected to Oland,
+additionally disable shader clock switching, which results in
+a higher voltage, thereby addressing some visible flickering.
+
+v2:
+Add more comments.
 v3:
-Add code comment to explain this better.
-Add an if statement instead of changing the switch_limit.
+Split into two commits for easier review.
 
 Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
 Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
@@ -87,28 +96,64 @@ Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 31 ++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
 diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index fb008c5980d67..c11c4cc111df5 100644
+index c11c4cc111df5..4236700fc1ad1 100644
 --- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
 +++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3085,7 +3085,13 @@ static bool si_dpm_vblank_too_short(void *handle)
- 	/* we never hit the non-gddr5 limit so disable it */
- 	u32 switch_limit = adev->gmc.vram_type == AMDGPU_VRAM_TYPE_GDDR5 ? 450 : 0;
+@@ -3449,12 +3449,14 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ {
+ 	struct  si_ps *ps = si_get_ps(rps);
+ 	struct amdgpu_clock_and_voltage_limits *max_limits;
++	struct amdgpu_connector *conn;
+ 	bool disable_mclk_switching = false;
+ 	bool disable_sclk_switching = false;
+ 	u32 mclk, sclk;
+ 	u16 vddc, vddci, min_vce_voltage = 0;
+ 	u32 max_sclk_vddc, max_mclk_vddci, max_mclk_vddc;
+ 	u32 max_sclk = 0, max_mclk = 0;
++	u32 high_pixelclock_count = 0;
+ 	int i;
  
--	if (vblank_time < switch_limit)
-+	/* Consider zero vblank time too short and disable MCLK switching.
-+	 * Note that the vblank time is set to maximum when no displays are attached,
-+	 * so we'll still enable MCLK switching in that case.
+ 	if (adev->asic_type == CHIP_HAINAN) {
+@@ -3482,6 +3484,35 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 		}
+ 	}
+ 
++	/* We define "high pixelclock" for SI as higher than necessary for 4K 30Hz.
++	 * For example, 4K 60Hz and 1080p 144Hz fall into this category.
++	 * Find number of such displays connected.
 +	 */
-+	if (vblank_time == 0)
-+		return true;
-+	else if (vblank_time < switch_limit)
- 		return true;
- 	else
- 		return false;
++	for (i = 0; i < adev->mode_info.num_crtc; i++) {
++		if (!(adev->pm.dpm.new_active_crtcs & (1 << i)) ||
++			!adev->mode_info.crtcs[i]->enabled)
++			continue;
++
++		conn = to_amdgpu_connector(adev->mode_info.crtcs[i]->connector);
++
++		if (conn->pixelclock_for_modeset > 297000)
++			high_pixelclock_count++;
++	}
++
++	/* These are some ad-hoc fixes to some issues observed with SI GPUs.
++	 * They are necessary because we don't have something like dce_calcs
++	 * for these GPUs to calculate bandwidth requirements.
++	 */
++	if (high_pixelclock_count) {
++		/* On Oland, we observe some flickering when two 4K 60Hz
++		 * displays are connected, possibly because voltage is too low.
++		 * Raise the voltage by requiring a higher SCLK.
++		 * (Voltage cannot be adjusted independently without also SCLK.)
++		 */
++		if (high_pixelclock_count > 1 && adev->asic_type == CHIP_OLAND)
++			disable_sclk_switching = true;
++	}
++
+ 	if (rps->vce_active) {
+ 		rps->evclk = adev->pm.dpm.vce_states[adev->pm.dpm.vce_level].evclk;
+ 		rps->ecclk = adev->pm.dpm.vce_states[adev->pm.dpm.vce_level].ecclk;
 -- 
 2.51.0
 
