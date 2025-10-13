@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-185094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C81BD4F57
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:23:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FA0BD4D3F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:13:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ABF440355D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:48:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FC12402A24
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DFC31A568;
-	Mon, 13 Oct 2025 15:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55606314D03;
+	Mon, 13 Oct 2025 15:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhhOU+OL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9T3vNxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4047431A562;
-	Mon, 13 Oct 2025 15:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A1A314D20;
+	Mon, 13 Oct 2025 15:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369316; cv=none; b=FO2IpsW1EYzJhGVIMBIih9hqfrePRNoAD+VWawqRisAZr3aCN6jQI5sDQaMJRY9qmWnxO0D3CMAgneGFdbOhUS6N2yjsJKXmFslMAYPGcOUXclp1SHfLrNr4ASEtFvlJjBtw7Y2GOCtlDEInmntxYE8nGN/UOb/gBNXN27ziQlg=
+	t=1760369227; cv=none; b=qzaqgySyQPTBHoVDIWLmPNvaGRew0FFDYyA7KeOkR2PGXhmOV3AuFtsY+ZIgQL+1mROjBm1TFBi1Jw+txghUSqHVWCfJ432IxnMl6SPIsCqS/Bfm5PMJrRwEO+Zo2LWJn3SBRXi/J1MukeuPedfNiizthlREboHIWXtCg32kDto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369316; c=relaxed/simple;
-	bh=jMSOF1Pa9lpCeGg5mzbIG9HO2ij97cf7KIeMabvq+2Q=;
+	s=arc-20240116; t=1760369227; c=relaxed/simple;
+	bh=qvdueRbxmSGqEostwvlfKwPWcSLDDNHYy5Yq5eYPKjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjZtiPjXMEe+BgzkK1z4Ls+A1fkVz+5R3Wqk+wb6dK+KgABJDkX0UZFjP0M2/m2NzdIL49ns+NJLZfvxOP+t7MQfkEp8/awq+yLRQPx/shcX2YdoYedmNxPdOQgQUhFBEOQA3mChEkwk9CeSFL9QXPx9OGXAspTltLX/5WiwuBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhhOU+OL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D25C116B1;
-	Mon, 13 Oct 2025 15:28:35 +0000 (UTC)
+	 MIME-Version; b=R5Rnsuxr8293Bh9xLzQrshYbfTvIYqcJ7zkg/yPmg2rnxRhmBLMzJbLXEwRQhnDUnUMqDqRKwj0lPwxc4JK7M9SJ4Ta3Un9E3j2FhStMhdgNn8MXaPlk0nCQFy+IZh60rTRPeHwUM/dt1RCY9TtGejfqmVaOQdqY2tyq1oGMkS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9T3vNxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91174C4CEFE;
+	Mon, 13 Oct 2025 15:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369315;
-	bh=jMSOF1Pa9lpCeGg5mzbIG9HO2ij97cf7KIeMabvq+2Q=;
+	s=korg; t=1760369226;
+	bh=qvdueRbxmSGqEostwvlfKwPWcSLDDNHYy5Yq5eYPKjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EhhOU+OLXmz7OkuWWvx+ovAjIfC96WT8WBX/dvMt+s3cJR5NccClpEq0VJHUjO6wl
-	 KpLOnBI0SH24jo7rvYGsj470MmmpeQCVnxShxfp6H8/nue4y8rEdYprQN6uEYPP9fe
-	 bUqpkZ1/c0QWLpAnokx4twp+yMJrY8dCr+vqMkbM=
+	b=W9T3vNxmjJGcbtTzCn0jt/IsAubJl/umhTZgoO75GF2NtUQOoscuPnPuHOddZEDJ5
+	 t8o5FFVUR2UN7wqyPpvXrQ6CSNOD/r/VzKzi6Xg8IZNlDYS4/3ha6GNG4Tm27gKRVQ
+	 FhKYRYPADq9jQ38TdfBDKnVWx1KGmm+hZ+w7uJY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 160/563] ACPICA: Fix largest possible resource descriptor index
-Date: Mon, 13 Oct 2025 16:40:21 +0200
-Message-ID: <20251013144417.087363193@linuxfoundation.org>
+Subject: [PATCH 6.17 173/563] bpf: Explicitly check accesses to bpf_sock_addr
+Date: Mon, 13 Oct 2025 16:40:34 +0200
+Message-ID: <20251013144417.554576797@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,40 +68,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 8ca944fea4d6d9019e01f2d6f6e766f315a9d73f ]
+[ Upstream commit 6fabca2fc94d33cdf7ec102058983b086293395f ]
 
-ACPI_RESOURCE_NAME_LARGE_MAX should be equal to the last actually
-used resource descriptor index (ACPI_RESOURCE_NAME_CLOCK_INPUT).
+Syzkaller found a kernel warning on the following sock_addr program:
 
-Otherwise 'resource_index' in 'acpi_ut_validate_resource()' may be
-clamped incorrectly and resulting value may issue an out-of-bounds
-access for 'acpi_gbl_resource_types' array. Compile tested only.
+    0: r0 = 0
+    1: r2 = *(u32 *)(r1 +60)
+    2: exit
 
-Fixes: 520d4a0ee5b6 ("ACPICA: add support for ClockInput resource (v6.5)")
-Link: https://github.com/acpica/acpica/commit/cf00116c
-Link: https://marc.info/?l=linux-acpi&m=175449676131260&w=2
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+which triggers:
+
+    verifier bug: error during ctx access conversion (0)
+
+This is happening because offset 60 in bpf_sock_addr corresponds to an
+implicit padding of 4 bytes, right after msg_src_ip4. Access to this
+padding isn't rejected in sock_addr_is_valid_access and it thus later
+fails to convert the access.
+
+This patch fixes it by explicitly checking the various fields of
+bpf_sock_addr in sock_addr_is_valid_access.
+
+I checked the other ctx structures and is_valid_access functions and
+didn't find any other similar cases. Other cases of (properly handled)
+padding are covered in new tests in a subsequent patch.
+
+Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
+Reported-by: syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Closes: https://syzkaller.appspot.com/bug?extid=136ca59d411f92e821b7
+Link: https://lore.kernel.org/bpf/b58609d9490649e76e584b0361da0abd3c2c1779.1758094761.git.paul.chaignon@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/aclocal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/filter.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
-index 0c41f0097e8d7..f98640086f4ef 100644
---- a/drivers/acpi/acpica/aclocal.h
-+++ b/drivers/acpi/acpica/aclocal.h
-@@ -1141,7 +1141,7 @@ struct acpi_port_info {
- #define ACPI_RESOURCE_NAME_PIN_GROUP_FUNCTION   0x91
- #define ACPI_RESOURCE_NAME_PIN_GROUP_CONFIG     0x92
- #define ACPI_RESOURCE_NAME_CLOCK_INPUT          0x93
--#define ACPI_RESOURCE_NAME_LARGE_MAX            0x94
-+#define ACPI_RESOURCE_NAME_LARGE_MAX            0x93
+diff --git a/net/core/filter.c b/net/core/filter.c
+index da391e2b0788d..2d326d35c3871 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -9284,13 +9284,17 @@ static bool sock_addr_is_valid_access(int off, int size,
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCKET;
+ 		break;
+-	default:
+-		if (type == BPF_READ) {
+-			if (size != size_default)
+-				return false;
+-		} else {
++	case bpf_ctx_range(struct bpf_sock_addr, user_family):
++	case bpf_ctx_range(struct bpf_sock_addr, family):
++	case bpf_ctx_range(struct bpf_sock_addr, type):
++	case bpf_ctx_range(struct bpf_sock_addr, protocol):
++		if (type != BPF_READ)
+ 			return false;
+-		}
++		if (size != size_default)
++			return false;
++		break;
++	default:
++		return false;
+ 	}
  
- /*****************************************************************************
-  *
+ 	return true;
 -- 
 2.51.0
 
