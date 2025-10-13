@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8AC9BD3C8D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E5DBD4063
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 913DB18A0A22
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9AE18A4CF8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755D6272E61;
-	Mon, 13 Oct 2025 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E263093B5;
+	Mon, 13 Oct 2025 14:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bz/dH5mL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OAlCIx4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B10211491;
-	Mon, 13 Oct 2025 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3158C2BF009;
+	Mon, 13 Oct 2025 14:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367061; cv=none; b=ZTVExS4aa9ebzBlsFdUKUEwSMeRDQCCgdFeI4o4gd3Gx9ajHgdy1GEZFOU0dNjQUwxW5AwJ0aNG9dGfOUPX+9VyhvsOL6YfKx117XrIcfnRDDpm4q3zu7CxmULqtByMsjSwZgAJQR7g6MFrFCyesqgSK6oLKore9KC/b3tVLFSc=
+	t=1760367581; cv=none; b=uDMLe48HzVxjD/161D5TaK9ScxD0WYf9dVcL0d9VdvihJ+9/MEEu7X7TblNcOkZze8GSeRjG6jkdDb8z1xedpb/fX0D9QPea6ApJBPKa7BCCAo2fJ4swPzXi/7DfUrgoe0Ezqq0JlGOgzH3ivLbYSf4pAVaQyKGZW1x4tY5zMyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367061; c=relaxed/simple;
-	bh=EpBND5AvBcn8GQP09s/SiwPC8NC6LhAfPKkQ7i8oWnU=;
+	s=arc-20240116; t=1760367581; c=relaxed/simple;
+	bh=28Fa+r6r9ehmUSj2dWg5hKeOrat5OaNL+BJwUpXp3pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8ue21nUH9eaIZoQx+NMPkphdhcGlL5/FHA43k/gFukcjueQ/939GZqLhB9YOQTEfVbwioUPN3tHAKAkod3LaVJPTnAqNnSPXVo93McFn7WxDnPv+U+p3Lm73ElU/bSv1HZADxBPBzAqqhJXNOqnRcB3f64cxsdAj4Ermzz3g2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bz/dH5mL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7BCC4CEE7;
-	Mon, 13 Oct 2025 14:51:00 +0000 (UTC)
+	 MIME-Version; b=KmCrIstdlxsUo+eDnHW+oEztKiGVSGhVGJ7/x8XxjvYSSp6lHS1j67eb3sToh2XF7FKaXRbJwELn4uQC2FafT+BJ1aoEGVDfQascXIPA4fIVurNQ/SWUPMJ/xfAPaLM4iTxb41yexB5yVebVL/h/5gdq+dA9eBxHtC9689jT1ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OAlCIx4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F67C4CEE7;
+	Mon, 13 Oct 2025 14:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367061;
-	bh=EpBND5AvBcn8GQP09s/SiwPC8NC6LhAfPKkQ7i8oWnU=;
+	s=korg; t=1760367580;
+	bh=28Fa+r6r9ehmUSj2dWg5hKeOrat5OaNL+BJwUpXp3pw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bz/dH5mLq/kT6iWVk1XPL8qcXsloK0gWRmIz4hXGgLL0SLvwD/04PSk1ObYl+5EVW
-	 EH4BkwhN0H+evcBLWp0bNhLMJ5DVnL5NYKSmpEDDFAaLNl1Z+4b61TGfBzMsF+7ADr
-	 46wsxEj3PL89UmxbTVzQf6SNXNtybijMRNK5EWaM=
+	b=2OAlCIx4dcWh2OjGX3EQPBEQ1xg3VeCMt/taDHLDPuSmVehrn/kMzFT3+gfq4V02b
+	 SVxDLjfey204Uuzkzq4PMR7uPvW61PK+F2MqiSKQ8i/W67C4j5xRsE8b+/OTX6L1/u
+	 EILDRgyJ1wDiMqRO/p1bXVXNIh0EzGqgal+3Sdms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Kohei Ito <ito.kohei@socionext.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/196] i3c: master: svc: Use manual response for IBI events
+Subject: [PATCH 6.6 060/196] i2c: designware: Add disabling clocks when probe fails
 Date: Mon, 13 Oct 2025 16:44:11 +0200
-Message-ID: <20251013144317.397796296@linuxfoundation.org>
+Message-ID: <20251013144317.367195620@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit a7869b0a2540fd122eccec00ae7d4243166b0a60 ]
+[ Upstream commit c149841b069ccc6e480b00e11f35a57b5d88c7bb ]
 
-Driver wants to nack the IBI request when the target is not in the
-known address list. In below code, svc_i3c_master_nack_ibi() will
-cause undefined behavior when using AUTOIBI with auto response rule,
-because hw always auto ack the IBI request.
+After an error occurs during probing state, dw_i2c_plat_pm_cleanup() is
+called. However, this function doesn't disable clocks and the clock-enable
+count keeps increasing. Should disable these clocks explicitly.
 
-    switch (ibitype) {
-    case SVC_I3C_MSTATUS_IBITYPE_IBI:
-            dev = svc_i3c_master_dev_from_addr(master, ibiaddr);
-            if (!dev || !is_events_enabled(master, SVC_I3C_EVENT_IBI))
-                    svc_i3c_master_nack_ibi(master);
-            ...
-            break;
-
-AutoIBI has another issue that the controller doesn't quit AutoIBI state
-after IBIWON polling timeout when there is a SDA glitch(high->low->high).
-1. SDA high->low: raising an interrupt to execute IBI ISR
-2. SDA low->high
-3. Driver writes an AutoIBI request
-4. AutoIBI process does not start because SDA is not low
-5. IBIWON polling times out
-6. Controller reamins in AutoIBI state and doesn't accept EmitStop request
-
-Emitting broadcast address with IBIRESP_MANUAL avoids both issues.
-
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250829012309.3562585-2-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 7272194ed391f ("i2c-designware: add minimal support for runtime PM")
+Co-developed-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 30 ++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-designware-platdrv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 9b287f92d078d..a18d5876678c1 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -422,9 +422,24 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
- 	 */
- 	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
+diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
+index ca6e1991ad13f..e6fa6cb1011ab 100644
+--- a/drivers/i2c/busses/i2c-designware-platdrv.c
++++ b/drivers/i2c/busses/i2c-designware-platdrv.c
+@@ -394,6 +394,7 @@ static int dw_i2c_plat_probe(struct platform_device *pdev)
  
--	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
--	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
--	       SVC_I3C_MCTRL_IBIRESP_AUTO,
-+	/*
-+	 * Write REQUEST_START_ADDR request to emit broadcast address for arbitration,
-+	 * instend of using AUTO_IBI.
-+	 *
-+	 * Using AutoIBI request may cause controller to remain in AutoIBI state when
-+	 * there is a glitch on SDA line (high->low->high).
-+	 * 1. SDA high->low, raising an interrupt to execute IBI isr.
-+	 * 2. SDA low->high.
-+	 * 3. IBI isr writes an AutoIBI request.
-+	 * 4. The controller will not start AutoIBI process because SDA is not low.
-+	 * 5. IBIWON polling times out.
-+	 * 6. Controller reamins in AutoIBI state and doesn't accept EmitStop request.
-+	 */
-+	writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
-+	       SVC_I3C_MCTRL_TYPE_I3C |
-+	       SVC_I3C_MCTRL_IBIRESP_MANUAL |
-+	       SVC_I3C_MCTRL_DIR(SVC_I3C_MCTRL_DIR_WRITE) |
-+	       SVC_I3C_MCTRL_ADDR(I3C_BROADCAST_ADDR),
- 	       master->regs + SVC_I3C_MCTRL);
- 
- 	/* Wait for IBIWON, should take approximately 100us */
-@@ -444,10 +459,15 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
- 	switch (ibitype) {
- 	case SVC_I3C_MSTATUS_IBITYPE_IBI:
- 		dev = svc_i3c_master_dev_from_addr(master, ibiaddr);
--		if (!dev || !is_events_enabled(master, SVC_I3C_EVENT_IBI))
-+		if (!dev || !is_events_enabled(master, SVC_I3C_EVENT_IBI)) {
- 			svc_i3c_master_nack_ibi(master);
--		else
-+		} else {
-+			if (dev->info.bcr & I3C_BCR_IBI_PAYLOAD)
-+				svc_i3c_master_ack_ibi(master, true);
-+			else
-+				svc_i3c_master_ack_ibi(master, false);
- 			svc_i3c_master_handle_ibi(master, dev);
-+		}
- 		break;
- 	case SVC_I3C_MSTATUS_IBITYPE_HOT_JOIN:
- 		if (is_events_enabled(master, SVC_I3C_EVENT_HOTJOIN))
+ exit_probe:
+ 	dw_i2c_plat_pm_cleanup(dev);
++	i2c_dw_prepare_clk(dev, false);
+ exit_reset:
+ 	reset_control_assert(dev->rst);
+ 	return ret;
 -- 
 2.51.0
 
