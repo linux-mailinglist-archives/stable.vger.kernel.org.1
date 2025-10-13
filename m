@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CDDBD41E6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D5DBD41D1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 13FC834F0C5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8253E1D11
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0999130CDB8;
-	Mon, 13 Oct 2025 15:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CED313545;
+	Mon, 13 Oct 2025 14:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcfbJp8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNeDqnN2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84E830C353;
-	Mon, 13 Oct 2025 15:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F650313532;
+	Mon, 13 Oct 2025 14:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368414; cv=none; b=ih3irrCjCLmlyZHE1MhTaoqFB0YIzlqSe1PYkj7SMLTWmcDiw/b+6ZjC3VwavGvShB7+lh0no63alE8aaST18Ywb86t1ADwIVKuaVJJo/otIQW9Pe8srGqtedr9az1/HnbCj/Sdo6K2735no1vSjZuXy+mej5tU8W2emkoCx1GY=
+	t=1760367240; cv=none; b=mqqd6DnYlx+MTKaW6MNUo9TCBq3Ui/zNwbZ3EURGJj6ZEd7EIVlo2Y3okeyRc1XyAETOd6l3GkKvrBr9HXCUj6LbZOa/w1EWvl2Nnq/H08N/k+a76ll+f9lIMsFYeCuETCfBm5EAjnYuIgZJHzssAuoq+Uy0Yl/GN74t2TT1ITw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368414; c=relaxed/simple;
-	bh=IMFFuu+ZGUjm9c+Pjsy5mUsLr05PUnYeQwxb1duNttE=;
+	s=arc-20240116; t=1760367240; c=relaxed/simple;
+	bh=Fjf2Bmt9dM6gp/oMA/8XsukfYhDa0RMGrN30jjV2Cnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVe3rItmyzgZufWxAQn46wKLX9YQin/8xzNClepy5a2SK8jyOzCu/OLp0xEziKwAzxjatoyTR5sAODfXsRhu1I/qiswHPkjN86RFROwIXUg7f+PqwRvNaP66kbYLEKRdCvQuxyR9GwPsmV8NZbnMVi0cKEVEtl3PyUqUBz7rq7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcfbJp8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411D6C4CEE7;
-	Mon, 13 Oct 2025 15:13:34 +0000 (UTC)
+	 MIME-Version; b=KDjgEIj7Y4KUNPFfFNd6mmvg9NrewTAjdh1qTbvFnxjRGuNUnDMVEXbZie1Zm19UHjQj5nRjvQMvQyTFQfLshdYC+bIcx1RmsUlIGGj2EwdNrFA+zrBpeDI1AepESwHuoI0QBpc0eq1k0+8pFcWto9035+6452RpOorL3yF0NrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNeDqnN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D619C116D0;
+	Mon, 13 Oct 2025 14:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368414;
-	bh=IMFFuu+ZGUjm9c+Pjsy5mUsLr05PUnYeQwxb1duNttE=;
+	s=korg; t=1760367239;
+	bh=Fjf2Bmt9dM6gp/oMA/8XsukfYhDa0RMGrN30jjV2Cnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcfbJp8X8Yiwhtwn1/6US12L8eB97jScdQwgDeKjcpil3HEhayNa1hXxRZd1Ex78d
-	 Cq5Me2ZlOUXTIcyIzTpX//S9fDKCSodxGj2QnhAcudHFuYERipx/fkkNW9XLSEDzqS
-	 HVoTXxoAsYHZy4L9T6laDR2CYNQNFzLhKrQbr6bs=
+	b=nNeDqnN2/Yl6G7WbxyLGixoHyMhFhFPOdaKGtmPwYHvHL7cbqYqWhTaS4ub879V3a
+	 dGE1IKOzrFgPpGuNCsnHh6FSBAd1ryYnKCa24OZarTsN6pZi5ekmgEMja2ZNgl02JC
+	 TikDjVgjNAzMxjUa22voHQYpIpS4dPYmlYy7FyHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+10b4363fb0f46527f3f3@syzkaller.appspotmail.com,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Liam Beguin <liambeguin@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 154/262] ALSA: pcm: Disable bottom softirqs as part of spin_lock_irq() on PREEMPT_RT
+Subject: [PATCH 6.1 123/196] iio: consumers: Fix offset handling in iio_convert_raw_to_processed()
 Date: Mon, 13 Oct 2025 16:44:56 +0200
-Message-ID: <20251013144331.665675700@linuxfoundation.org>
+Message-ID: <20251013144319.144915880@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 9fc4a3da9a0259a0500848b5d8657918efde176b ]
+[ Upstream commit 33f5c69c4daff39c010b3ea6da8ebab285f4277b ]
 
-snd_pcm_group_lock_irq() acquires a spinlock_t and disables interrupts
-via spin_lock_irq(). This also implicitly disables the handling of
-softirqs such as TIMER_SOFTIRQ.
-On PREEMPT_RT softirqs are preemptible and spin_lock_irq() does not
-disable them. That means a timer can be invoked during spin_lock_irq()
-on the same CPU. Due to synchronisations reasons local_bh_disable() has
-a per-CPU lock named softirq_ctrl.lock which synchronizes individual
-softirq against each other.
-syz-bot managed to trigger a lockdep report where softirq_ctrl.lock is
-acquired in hrtimer_cancel() in addition to hrtimer_run_softirq(). This
-is a possible deadlock.
+Fix iio_convert_raw_to_processed() offset handling for channels without
+a scale attribute.
 
-The softirq_ctrl.lock can not be made part of spin_lock_irq() as this
-would lead to too much synchronisation against individual threads on the
-system. To avoid the possible deadlock, softirqs must be manually
-disabled before the lock is acquired.
+The offset has been applied to the raw64 value not to the original raw
+value. Use the raw64 value so that the offset is taken into account.
 
-Disable softirqs before the lock is acquired on PREEMPT_RT.
-
-Reported-by: syzbot+10b4363fb0f46527f3f3@syzkaller.appspotmail.com
-Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 14b457fdde38 ("iio: inkern: apply consumer scale when no channel scale is available")
+Cc: Liam Beguin <liambeguin@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20250831104825.15097-3-hansg@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_native.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/iio/inkern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 9b91f68b3fff0..d15de21f6ebf0 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -84,19 +84,24 @@ void snd_pcm_group_init(struct snd_pcm_group *group)
- }
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index 5c210f48bd9ce..c7795feb904ed 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -669,7 +669,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ 		 * If no channel scaling is available apply consumer scale to
+ 		 * raw value and return.
+ 		 */
+-		*processed = raw * scale;
++		*processed = raw64 * scale;
+ 		return 0;
+ 	}
  
- /* define group lock helpers */
--#define DEFINE_PCM_GROUP_LOCK(action, mutex_action) \
-+#define DEFINE_PCM_GROUP_LOCK(action, bh_lock, bh_unlock, mutex_action) \
- static void snd_pcm_group_ ## action(struct snd_pcm_group *group, bool nonatomic) \
- { \
--	if (nonatomic) \
-+	if (nonatomic) { \
- 		mutex_ ## mutex_action(&group->mutex); \
--	else \
--		spin_ ## action(&group->lock); \
--}
--
--DEFINE_PCM_GROUP_LOCK(lock, lock);
--DEFINE_PCM_GROUP_LOCK(unlock, unlock);
--DEFINE_PCM_GROUP_LOCK(lock_irq, lock);
--DEFINE_PCM_GROUP_LOCK(unlock_irq, unlock);
-+	} else { \
-+		if (IS_ENABLED(CONFIG_PREEMPT_RT) && bh_lock)   \
-+			local_bh_disable();			\
-+		spin_ ## action(&group->lock);			\
-+		if (IS_ENABLED(CONFIG_PREEMPT_RT) && bh_unlock) \
-+			local_bh_enable();                      \
-+	}							\
-+}
-+
-+DEFINE_PCM_GROUP_LOCK(lock, false, false, lock);
-+DEFINE_PCM_GROUP_LOCK(unlock, false, false, unlock);
-+DEFINE_PCM_GROUP_LOCK(lock_irq, true, false, lock);
-+DEFINE_PCM_GROUP_LOCK(unlock_irq, false, true, unlock);
- 
- /**
-  * snd_pcm_stream_lock - Lock the PCM stream
 -- 
 2.51.0
 
