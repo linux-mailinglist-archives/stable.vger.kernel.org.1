@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-185428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0623BD5423
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:53:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D31DBD4C14
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 23450544B1F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:06:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 418A018952AF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E3A315D3C;
-	Mon, 13 Oct 2025 15:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5874F2F83D8;
+	Mon, 13 Oct 2025 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSBlGI89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bor1dsdC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D643090E8;
-	Mon, 13 Oct 2025 15:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C8D3090CE;
+	Mon, 13 Oct 2025 15:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370265; cv=none; b=QuewpVcqGsqYAfFp5rCZa0svXdkTBtjsg0UsIrfhheS9z887DT0NbhHnNzJR+GjMynuqxY+DeDuOfjdzpNreZ+hYaTZz45mqcWgseD9CiZ6RjyV+q0LwnJrPJYcjbgqkqzUHEf+DlAKmBuQf20Bgz2jaNnr/sg8trriXoowsFQY=
+	t=1760370272; cv=none; b=YQt0+vbgj1MQE1HfP6IiPRvL87uZzNWwI29xDyQRKR95mSDJ0FYfGRcJ/EH7E9ydcbuU3oa9utIA9uNCpjxH4Gk/zSwheUr11CxUZchyiVM+UwaOvFvm8gxinEl8s8gatNeYSbj1fz+AFaI56A59aLy7CA0228VeknRXcEW5+Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370265; c=relaxed/simple;
-	bh=ISandJV3s3VVvUf6Rb8SU1TgsOQreXfcXsuTZBbdCFM=;
+	s=arc-20240116; t=1760370272; c=relaxed/simple;
+	bh=+voAjPvjIfFIF4IzkHYvvSCJiTlLgBpj67sA9KvxG0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Trq6//3P4BKsctl12gpSvZaLIi0/4v6wApISCavdziuSLmFbvEg498r5+GYQBRe7/Ixgs3MG41E+RXV3wVIILGIqEjZ0mz28HXB7DPujtZV1mJ1wKgRvIsp+SVeglcM24kKvxc9oiqNVAUd9HIsdHTH1YrW5VFKb6/3vBmqbcpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSBlGI89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A04EC4CEE7;
-	Mon, 13 Oct 2025 15:44:25 +0000 (UTC)
+	 MIME-Version; b=bAPsWsU9bRXsMlQi3ij+MlyvQPzpxxuzPCNmBZ+0h2UemO6YSY4cAxwI/1/XSPeoXcgP9KuUzP9JuFslV9klxo0PmBImGl5esEJlMQvQiDV6xg+wp1p+dwG6cxCX0qk5KuK+RcUFGWXD00uEOjfAHucvuLOMrE5K3fXEhQx99wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bor1dsdC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD48C4CEE7;
+	Mon, 13 Oct 2025 15:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370265;
-	bh=ISandJV3s3VVvUf6Rb8SU1TgsOQreXfcXsuTZBbdCFM=;
+	s=korg; t=1760370271;
+	bh=+voAjPvjIfFIF4IzkHYvvSCJiTlLgBpj67sA9KvxG0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hSBlGI89tCZXJXTY0XL5n3Fhfng3KxeGMwWfQtX9mhz4IKs7jRtkjWQtzuhTYvZeM
-	 ivzrIWjCqB7OnrC6iI9DYbvA44sXMK2PzxxdREhipVX+s8tWwgNC42aID+GK24qDyC
-	 A8/ZbO2kpXZ/+gkuTW7Hp1t+hnbfRrGJIgsCuaaQ=
+	b=Bor1dsdCPM5Fd2J8Nh56F/enZk77IMz6uSOPFwcJvjp9q8HeINOjbe3yTTkRIce+K
+	 nAdCPpi53YT6T2PpDFfv+I6PVVEWAhrJzMrVI3b/QWk38LLVD2UTHwkmwY6CawqFM6
+	 9D07Kn8Z+VHB9u1maVdeIXs2FdXiOwxsk6ulEXVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.17 537/563] ext4: fix checks for orphan inodes
-Date: Mon, 13 Oct 2025 16:46:38 +0200
-Message-ID: <20251013144430.763410659@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.17 538/563] KVM: SVM: Skip fastpath emulation on VM-Exit if next RIP isnt valid
+Date: Mon, 13 Oct 2025 16:46:39 +0200
+Message-ID: <20251013144430.798513945@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,107 +64,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Sean Christopherson <seanjc@google.com>
 
-commit acf943e9768ec9d9be80982ca0ebc4bfd6b7631e upstream.
+commit 0910dd7c9ad45a2605c45fd2bf3d1bcac087687c upstream.
 
-When orphan file feature is enabled, inode can be tracked as orphan
-either in the standard orphan list or in the orphan file. The first can
-be tested by checking ei->i_orphan list head, the second is recorded by
-EXT4_STATE_ORPHAN_FILE inode state flag. There are several places where
-we want to check whether inode is tracked as orphan and only some of
-them properly check for both possibilities. Luckily the consequences are
-mostly minor, the worst that can happen is that we track an inode as
-orphan although we don't need to and e2fsck then complains (resulting in
-occasional ext4/307 xfstest failures). Fix the problem by introducing a
-helper for checking whether an inode is tracked as orphan and use it in
-appropriate places.
+Skip the WRMSR and HLT fastpaths in SVM's VM-Exit handler if the next RIP
+isn't valid, e.g. because KVM is running with nrips=false.  SVM must
+decode and emulate to skip the instruction if the CPU doesn't provide the
+next RIP, and getting the instruction bytes to decode requires reading
+guest memory.  Reading guest memory through the emulator can fault, i.e.
+can sleep, which is disallowed since the fastpath handlers run with IRQs
+disabled.
 
-Fixes: 4a79a98c7b19 ("ext4: Improve scalability of ext4 orphan file handling")
-Cc: stable@kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Message-ID: <20250925123038.20264-2-jack@suse.cz>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+ BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:106
+ in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 32611, name: qemu
+ preempt_count: 1, expected: 0
+ INFO: lockdep is turned off.
+ irq event stamp: 30580
+ hardirqs last  enabled at (30579): [<ffffffffc08b2527>] vcpu_run+0x1787/0x1db0 [kvm]
+ hardirqs last disabled at (30580): [<ffffffffb4f62e32>] __schedule+0x1e2/0xed0
+ softirqs last  enabled at (30570): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+ softirqs last disabled at (30568): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+ CPU: 298 UID: 0 PID: 32611 Comm: qemu Tainted: G     U              6.16.0-smp--e6c618b51cfe-sleep #782 NONE
+ Tainted: [U]=USER
+ Hardware name: Google Astoria-Turin/astoria, BIOS 0.20241223.2-0 01/17/2025
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x7d/0xb0
+  __might_resched+0x271/0x290
+  __might_fault+0x28/0x80
+  kvm_vcpu_read_guest_page+0x8d/0xc0 [kvm]
+  kvm_fetch_guest_virt+0x92/0xc0 [kvm]
+  __do_insn_fetch_bytes+0xf3/0x1e0 [kvm]
+  x86_decode_insn+0xd1/0x1010 [kvm]
+  x86_emulate_instruction+0x105/0x810 [kvm]
+  __svm_skip_emulated_instruction+0xc4/0x140 [kvm_amd]
+  handle_fastpath_invd+0xc4/0x1a0 [kvm]
+  vcpu_run+0x11a1/0x1db0 [kvm]
+  kvm_arch_vcpu_ioctl_run+0x5cc/0x730 [kvm]
+  kvm_vcpu_ioctl+0x578/0x6a0 [kvm]
+  __se_sys_ioctl+0x6d/0xb0
+  do_syscall_64+0x8a/0x2c0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ RIP: 0033:0x7f479d57a94b
+  </TASK>
+
+Note, this is essentially a reapply of commit 5c30e8101e8d ("KVM: SVM:
+Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"), but with
+different justification (KVM now grabs SRCU when skipping the instruction
+for other reasons).
+
+Fixes: b439eb8ab578 ("Revert "KVM: SVM: Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250805190526.1453366-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h   |   10 ++++++++++
- fs/ext4/file.c   |    2 +-
- fs/ext4/inode.c  |    2 +-
- fs/ext4/orphan.c |    6 +-----
- fs/ext4/super.c  |    4 ++--
- 5 files changed, 15 insertions(+), 9 deletions(-)
+ arch/x86/kvm/svm/svm.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1982,6 +1982,16 @@ static inline bool ext4_verity_in_progre
- #define NEXT_ORPHAN(inode) EXT4_I(inode)->i_dtime
- 
- /*
-+ * Check whether the inode is tracked as orphan (either in orphan file or
-+ * orphan list).
-+ */
-+static inline bool ext4_inode_orphan_tracked(struct inode *inode)
-+{
-+	return ext4_test_inode_state(inode, EXT4_STATE_ORPHAN_FILE) ||
-+		!list_empty(&EXT4_I(inode)->i_orphan);
-+}
-+
-+/*
-  * Codes for operating systems
-  */
- #define EXT4_OS_LINUX		0
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -354,7 +354,7 @@ static void ext4_inode_extension_cleanup
- 	 * to cleanup the orphan list in ext4_handle_inode_extension(). Do it
- 	 * now.
- 	 */
--	if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
-+	if (ext4_inode_orphan_tracked(inode) && inode->i_nlink) {
- 		handle_t *handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
- 
- 		if (IS_ERR(handle)) {
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4748,7 +4748,7 @@ static int ext4_fill_raw_inode(struct in
- 		 * old inodes get re-used with the upper 16 bits of the
- 		 * uid/gid intact.
- 		 */
--		if (ei->i_dtime && list_empty(&ei->i_orphan)) {
-+		if (ei->i_dtime && !ext4_inode_orphan_tracked(inode)) {
- 			raw_inode->i_uid_high = 0;
- 			raw_inode->i_gid_high = 0;
- 		} else {
---- a/fs/ext4/orphan.c
-+++ b/fs/ext4/orphan.c
-@@ -109,11 +109,7 @@ int ext4_orphan_add(handle_t *handle, st
- 
- 	WARN_ON_ONCE(!(inode->i_state & (I_NEW | I_FREEING)) &&
- 		     !inode_is_locked(inode));
--	/*
--	 * Inode orphaned in orphan file or in orphan list?
--	 */
--	if (ext4_test_inode_state(inode, EXT4_STATE_ORPHAN_FILE) ||
--	    !list_empty(&EXT4_I(inode)->i_orphan))
-+	if (ext4_inode_orphan_tracked(inode))
- 		return 0;
- 
- 	/*
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1438,9 +1438,9 @@ static void ext4_free_in_core_inode(stru
- 
- static void ext4_destroy_inode(struct inode *inode)
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4180,13 +4180,21 @@ static int svm_vcpu_pre_run(struct kvm_v
+ static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
  {
--	if (!list_empty(&(EXT4_I(inode)->i_orphan))) {
-+	if (ext4_inode_orphan_tracked(inode)) {
- 		ext4_msg(inode->i_sb, KERN_ERR,
--			 "Inode %lu (%p): orphan list check failed!",
-+			 "Inode %lu (%p): inode tracked as orphan!",
- 			 inode->i_ino, EXT4_I(inode));
- 		print_hex_dump(KERN_INFO, "", DUMP_PREFIX_ADDRESS, 16, 4,
- 				EXT4_I(inode), sizeof(struct ext4_inode_info),
+ 	struct vcpu_svm *svm = to_svm(vcpu);
++	struct vmcb_control_area *control = &svm->vmcb->control;
++
++	/*
++	 * Next RIP must be provided as IRQs are disabled, and accessing guest
++	 * memory to decode the instruction might fault, i.e. might sleep.
++	 */
++	if (!nrips || !control->next_rip)
++		return EXIT_FASTPATH_NONE;
+ 
+ 	if (is_guest_mode(vcpu))
+ 		return EXIT_FASTPATH_NONE;
+ 
+-	switch (svm->vmcb->control.exit_code) {
++	switch (control->exit_code) {
+ 	case SVM_EXIT_MSR:
+-		if (!svm->vmcb->control.exit_info_1)
++		if (!control->exit_info_1)
+ 			break;
+ 		return handle_fastpath_set_msr_irqoff(vcpu);
+ 	case SVM_EXIT_HLT:
 
 
 
