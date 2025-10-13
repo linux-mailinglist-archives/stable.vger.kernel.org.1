@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2DCBD4012
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:18:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BE6BD451A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A8741886E23
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A79450359A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B9F308F35;
-	Mon, 13 Oct 2025 14:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F45E311C35;
+	Mon, 13 Oct 2025 15:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWEyiBEZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKwsWmf5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DF2308F32;
-	Mon, 13 Oct 2025 14:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B81311C32;
+	Mon, 13 Oct 2025 15:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367509; cv=none; b=tORzrUyDgDRnCHdud8zwKaUzHZDgglbOT1QZIX4HYHWy2IZFaph5+BUEb9RtqaK5etwOHy2RStmZKxVa+8qwcVQ82MQcTPrHku8OK5dhhfEScAcDQIHBgLiN6djGwItwqrsA7CHLERMGOwbRelS/kHKcgJl9unxweOmPd89fzG4=
+	t=1760368197; cv=none; b=mUf3sBJW4LRxsIqKC74tTDxlduBg22qSqbt+BN9paKiJUuzwKzfOCa2LTKcjs4Qja9uJc/uayf8ylKqdDcwrx6oqMMvNq3CPWdJS4lIVnfXPj/vhSRxSqhWahpSeOIM/lVrvdrnWmZFeqtAKqVp1cTodVhHUppqDHnNMo+2yMQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367509; c=relaxed/simple;
-	bh=axFZr0YFp7MZIBUSgrMFDvkoLrfCw6+V2WSqYtRNL+c=;
+	s=arc-20240116; t=1760368197; c=relaxed/simple;
+	bh=jmdu65ogfbm+B9CALmrkG+NQBARvKatvba8Ieft/Y6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2OnKu5qNcXgJCZ+jg8ya/uFTYtE8ILVP2Us8e/bof02wrgHvB3CVkoQgBdCz9K+ulHdp98mM0aYgJwtYOA0ThbtPrf17VoCGyk84K436jEjWgM/McLHhEqYtUGhg3EwhLyufpR0fZtBKOvcWP87dlPgVF30M6IxgEZrBAFxlXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWEyiBEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C75FC4CEE7;
-	Mon, 13 Oct 2025 14:58:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DAp+APwxx0blTMP3p4HYfz827BzDL7Vx3DY7g7molVFb5eRBnVdD+8EbWG61YxObgKnI9STTtKgQIjDhUNcqVi5yHAnT8GE3/2I9zGEEtb3XxCbGIW2L6HOiqJgkrSEUkl/q4rdiGv3DWnHo5yrrZOI5WYrc0N2j7gCCJvYs5wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKwsWmf5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BECC4CEE7;
+	Mon, 13 Oct 2025 15:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367508;
-	bh=axFZr0YFp7MZIBUSgrMFDvkoLrfCw6+V2WSqYtRNL+c=;
+	s=korg; t=1760368197;
+	bh=jmdu65ogfbm+B9CALmrkG+NQBARvKatvba8Ieft/Y6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWEyiBEZoroOBuHXVWocwbWWgAWFC47o9tGxSya7f4Y331yBfUic+VcW8e9+CMKLR
-	 PpTgzBMV/oaQ4u4/pWscdCZB7LWEw7ZX7ThGdC0PMiWXfPHDjdsqma0KrujjdPSOay
-	 LFemSFPt183VMb1ixCzRDUKwwF3U1G3WWDYm6gdQ=
+	b=qKwsWmf5HzuM2oEluT5X7feB0d+Yb4g7/E8PJrGWjhmAys7JxYf0PnUt5PpwPA1F7
+	 f9rs2+DZs4uojzzvk78R/7Ci1YljV+LHi/O5oUGuIov/5a8H4mqUOFQM02HPoKonpU
+	 ZuU0cGBB1CkcK8k/tJ3ZfKYTHvNAINEUin0xJZnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Zhouyi Zhou <zhouzhouyi@gmail.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/196] block: use int to store blk_stack_limits() return value
+Subject: [PATCH 6.12 078/262] tools/nolibc: make time_t robust if __kernel_old_time_t is missing in host headers
 Date: Mon, 13 Oct 2025 16:43:40 +0200
-Message-ID: <20251013144316.250316076@linuxfoundation.org>
+Message-ID: <20251013144328.936514300@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
 
-[ Upstream commit b0b4518c992eb5f316c6e40ff186cbb7a5009518 ]
+[ Upstream commit 0ff52df6b32a6b04a7c9dfe3d7a387aff215b482 ]
 
-Change the 'ret' variable in blk_stack_limits() from unsigned int to int,
-as it needs to store negative value -1.
+Commit d5094bcb5bfd ("tools/nolibc: define time_t in terms of
+__kernel_old_time_t") made nolibc use the kernel's time type so that
+`time_t` matches `timespec::tv_sec` on all ABIs (notably x32).
 
-Storing the negative error codes in unsigned type, or performing equality
-comparisons (e.g., ret == -1), doesn't cause an issue at runtime [1] but
-can be confusing.  Additionally, assigning negative error codes to unsigned
-type may trigger a GCC warning when the -Wsign-conversion flag is enabled.
+But since __kernel_old_time_t is fairly new, notably from 2020 in commit
+94c467ddb273 ("y2038: add __kernel_old_timespec and __kernel_old_time_t"),
+nolibc builds that rely on host headers may fail.
 
-No effect on runtime.
+Switch to __kernel_time_t, which is the same as __kernel_old_time_t and
+has existed for longer.
 
-Link: https://lore.kernel.org/all/x3wogjf6vgpkisdhg3abzrx7v7zktmdnfmqeih5kosszmagqfs@oh3qxrgzkikf/ #1
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Fixes: fe0b393f2c0a ("block: Correct handling of bottom device misaligment")
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20250902130930.68317-1-rongqianfeng@vivo.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Tested in PPC VM of Open Source Lab of Oregon State University
+(./tools/testing/selftests/rcutorture/bin/mkinitrd.sh)
+
+Fixes: d5094bcb5bfd ("tools/nolibc: define time_t in terms of __kernel_old_time_t")
+Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+[Thomas: Reformat commit and its message a bit]
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/include/nolibc/std.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 021994f6d2d82..a891f27ff834d 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -553,7 +553,8 @@ static unsigned int blk_round_down_sectors(unsigned int sectors, unsigned int lb
- int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 		     sector_t start)
- {
--	unsigned int top, bottom, alignment, ret = 0;
-+	unsigned int top, bottom, alignment;
-+	int ret = 0;
+diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
+index a9d8b5b51f37f..f24953f8b949c 100644
+--- a/tools/include/nolibc/std.h
++++ b/tools/include/nolibc/std.h
+@@ -33,6 +33,6 @@ typedef unsigned long       nlink_t;
+ typedef   signed long         off_t;
+ typedef   signed long     blksize_t;
+ typedef   signed long      blkcnt_t;
+-typedef __kernel_old_time_t  time_t;
++typedef __kernel_time_t      time_t;
  
- 	t->max_sectors = min_not_zero(t->max_sectors, b->max_sectors);
- 	t->max_hw_sectors = min_not_zero(t->max_hw_sectors, b->max_hw_sectors);
+ #endif /* _NOLIBC_STD_H */
 -- 
 2.51.0
 
