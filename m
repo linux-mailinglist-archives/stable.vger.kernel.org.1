@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A02BD4021
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F767BD4438
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CF244FABDF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0E42950263B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714C530CD9D;
-	Mon, 13 Oct 2025 14:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6084279DCE;
+	Mon, 13 Oct 2025 15:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rrk+jbe3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuabf7ub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7C830CD97;
-	Mon, 13 Oct 2025 14:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726EF30E849;
+	Mon, 13 Oct 2025 15:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367281; cv=none; b=oe7LvKR3YNWYG3T3K+3gvayQf6ikd6QNF6TOo0SCitMvmb3dEJNgQEI/1dbmDsl5lUA4aHjfjL6dV9yOJHyzVJobUxQhNC1tkLDpxkcf22oN4SadmOTH8Z3ewLRrbWXMLrHL5XiKT4J9RBd28c7NNq+EHZqNoDq4NDtrlBqIjsI=
+	t=1760367795; cv=none; b=jIkbSE7F+onAansRYQfCo7Bge3iunlNnnAKPweg8mtuNnTkVSzftS84ueeEWAYtOWOk9T80CIV+Avkq+rj07RHN5IQE8xrOGPjE9zvpEsOFl1eHZTdyhGfPWi3dE2Tl4uQhN5c6iGBDoOxQFaEx7JDmxwk5B32jBXyaSamcYqIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367281; c=relaxed/simple;
-	bh=0o+Rg0zo4EmVySgy+4qtUyvO5zglJ9KgwQXzoYjjoxw=;
+	s=arc-20240116; t=1760367795; c=relaxed/simple;
+	bh=5VZa6XCmUNXRN87xcFHT470lLuEBoyT/gKPaON3yqp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRy6EPOU/ahWetQyRb9ksRIIyM386XM3N1dV3HOvY4cvj9NDOT+GPIbzhbeMhC8FuoFWtX0PNEfWQnEQoU1R0LFJyoxhUiFLEiIqE9Ge+coM405dmPIuKs3vyznTddlvgnOtujNEvFMB+CoknQ4iWsMySeqLTmkQL5e7NYrmFKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rrk+jbe3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2E7C4CEE7;
-	Mon, 13 Oct 2025 14:54:40 +0000 (UTC)
+	 MIME-Version; b=W89lAScPWF2YULJxMYrM4PH01OdQ7k46xHAd2cbZAxSXGRthb5yBg8r/Hc/W2B/HmpRzgiH9ndcU1mUkisYLnC2uHG7dAkXU1xzv0HrhvRJ2WZIFN49RwWtvHrbhZZh8soFjdSx+/tbxGDuwrdqnBORO18ABXWb7pMuOhxUmQw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuabf7ub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF40C4CEE7;
+	Mon, 13 Oct 2025 15:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367280;
-	bh=0o+Rg0zo4EmVySgy+4qtUyvO5zglJ9KgwQXzoYjjoxw=;
+	s=korg; t=1760367795;
+	bh=5VZa6XCmUNXRN87xcFHT470lLuEBoyT/gKPaON3yqp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rrk+jbe35gE8I3Tgq5qP7CQV6TOaMcq5x26KMKgCxE4P4aJ3uzykSd9Hz1bS0S8zr
-	 tC3D+hXpsE+b9Jo8IPQpirMaKSwXynhKnUpVCL/MLa9rixZDSFT0fCrdzrHXTJfwKZ
-	 mYFdhOUJGK1bETMw7dbS1Rp8fv94IheFTILQp4vk=
+	b=kuabf7ubU8SpzsZ4F8nUoQTlFu5koghRzxGTBMteNQosN5it+r0T9R9tUdZWFsZSL
+	 YTEcpUEJIvDUTLfV0WALy/cfo8FBGXOkZcDwLAKxmXOhUst1UuLWKh1p7cZhUsZTkm
+	 6prKnpiraPvcig4ylAZ8SX+TP/ggFtYm1EWwkmDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/196] usb: vhci-hcd: Prevent suspending virtually attached devices
+Subject: [PATCH 6.6 135/196] crypto: hisilicon/qm - set NULL to qm->debug.qm_diff_regs
 Date: Mon, 13 Oct 2025 16:45:26 +0200
-Message-ID: <20251013144320.233740495@linuxfoundation.org>
+Message-ID: <20251013144320.198587730@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit e40b984b6c4ce3f80814f39f86f87b2a48f2e662 ]
+[ Upstream commit f0cafb02de883b3b413d34eb079c9680782a9cc1 ]
 
-The VHCI platform driver aims to forbid entering system suspend when at
-least one of the virtual USB ports are bound to an active USB/IP
-connection.
+When the initialization of qm->debug.acc_diff_reg fails,
+the probe process does not exit. However, after qm->debug.qm_diff_regs is
+freed, it is not set to NULL. This can lead to a double free when the
+remove process attempts to free it again. Therefore, qm->debug.qm_diff_regs
+should be set to NULL after it is freed.
 
-However, in some cases, the detection logic doesn't work reliably, i.e.
-when all devices attached to the virtual root hub have been already
-suspended, leading to a broken suspend state, with unrecoverable resume.
-
-Ensure the virtually attached devices do not enter suspend by setting
-the syscore PM flag.  Note this is currently limited to the client side
-only, since the server side doesn't implement system suspend prevention.
-
-Fixes: 04679b3489e0 ("Staging: USB/IP: add client driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250902-vhci-hcd-suspend-fix-v3-1-864e4e833559@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8be091338971 ("crypto: hisilicon/debugfs - Fix debugfs uninit process issue")
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/usbip/vhci_hcd.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/crypto/hisilicon/debugfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
-index 6b98f5ab6dfed..e3c8483d7ba40 100644
---- a/drivers/usb/usbip/vhci_hcd.c
-+++ b/drivers/usb/usbip/vhci_hcd.c
-@@ -764,6 +764,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
- 				 ctrlreq->wValue, vdev->rhport);
- 
- 			vdev->udev = usb_get_dev(urb->dev);
-+			/*
-+			 * NOTE: A similar operation has been done via
-+			 * USB_REQ_GET_DESCRIPTOR handler below, which is
-+			 * supposed to always precede USB_REQ_SET_ADDRESS.
-+			 *
-+			 * It's not entirely clear if operating on a different
-+			 * usb_device instance here is a real possibility,
-+			 * otherwise this call and vdev->udev assignment above
-+			 * should be dropped.
-+			 */
-+			dev_pm_syscore_device(&vdev->udev->dev, true);
- 			usb_put_dev(old);
- 
- 			spin_lock(&vdev->ud.lock);
-@@ -784,6 +795,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
- 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
- 
- 			vdev->udev = usb_get_dev(urb->dev);
-+			/*
-+			 * Set syscore PM flag for the virtually attached
-+			 * devices to ensure they will not enter suspend on
-+			 * the client side.
-+			 *
-+			 * Note this doesn't have any impact on the physical
-+			 * devices attached to the host system on the server
-+			 * side, hence there is no need to undo the operation
-+			 * on disconnect.
-+			 */
-+			dev_pm_syscore_device(&vdev->udev->dev, true);
- 			usb_put_dev(old);
- 			goto out;
+diff --git a/drivers/crypto/hisilicon/debugfs.c b/drivers/crypto/hisilicon/debugfs.c
+index bd205f1f2279e..573c0033a5afe 100644
+--- a/drivers/crypto/hisilicon/debugfs.c
++++ b/drivers/crypto/hisilicon/debugfs.c
+@@ -865,6 +865,7 @@ static int qm_diff_regs_init(struct hisi_qm *qm,
+ 		dfx_regs_uninit(qm, qm->debug.qm_diff_regs, ARRAY_SIZE(qm_diff_regs));
+ 		ret = PTR_ERR(qm->debug.acc_diff_regs);
+ 		qm->debug.acc_diff_regs = NULL;
++		qm->debug.qm_diff_regs = NULL;
+ 		return ret;
+ 	}
  
 -- 
 2.51.0
