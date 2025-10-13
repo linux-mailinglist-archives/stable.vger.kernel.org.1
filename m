@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20409BD44DD
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428EBBD3CC9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11F67406A75
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 629BF18A0C83
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB09D307AD6;
-	Mon, 13 Oct 2025 15:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C388C2F9985;
+	Mon, 13 Oct 2025 14:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB8T0H8q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guktIolN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981142F83BA;
-	Mon, 13 Oct 2025 15:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767D624A06A;
+	Mon, 13 Oct 2025 14:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368369; cv=none; b=Hh9pqdtikxfCY7I6APXy9L4u5x5qE+AemC7aJ6WagePg3mKo56GJBg8dzPzJybweAIam8Yxv4glIixqpat8szqXjbVo1rJ+V/VYGIZhiQllhYlsC2vq4/z6VTHfuPCIy/tCwpAtCvKNnCna9CjZ6aB+4YO9QV6Bm1OfQ9aNRnCo=
+	t=1760367138; cv=none; b=dtXd7d/QRBEfyhec7a9YKvDwvWZbCHe9X2GL26O5hhnyaI4yLu9XUTEl4NnlaZ59FiTgRX55R7GkvZwg/5S5iMhzRHcBsbiaVO6x9siRAQOfP8616TzbFA5uQOduwrdo3XLuQOobauRAAJQL9d7l4/0hOi0+RfQALib8hGSQmUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368369; c=relaxed/simple;
-	bh=p8TeNejUx3QoB7hib6l1JBrU2au96INAEHjFl5VY8RM=;
+	s=arc-20240116; t=1760367138; c=relaxed/simple;
+	bh=YNMwc4w6vZCZzCDxuT9tvkj0juF0JJeCib41m/g5HFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQthljNihg/gfSs3WNy3Ttr7GeMNwLMrWn2Mi711z4tIK0yoVySMbUNRAk5reqwY0rEy85m0WKuDlNnfPMTzvqMZfyoxfmcTe5td8y2RpDhis9yHcTmCBwVvQPDi/9XkWnoht9HrOQ8H7HYcyab+jCC+cKeOKVIjGLsdTMEP7iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB8T0H8q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217E6C4CEE7;
-	Mon, 13 Oct 2025 15:12:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YnOAc19w7Khfmw4o0hQBF4UabpN1I5khWj5Pz083hQs/O2qrkRW81pLjg5QIUnYt2TcewW9L+Oe48vZJOCtT39qTXllva7hj7fRMGzTwPkAFeo6fjSxZtQRKxByMivQOI2jTb2CM2c9PGoonw0kWPowprRGwDfUQADRBtqVUlG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guktIolN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF439C4CEE7;
+	Mon, 13 Oct 2025 14:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368369;
-	bh=p8TeNejUx3QoB7hib6l1JBrU2au96INAEHjFl5VY8RM=;
+	s=korg; t=1760367138;
+	bh=YNMwc4w6vZCZzCDxuT9tvkj0juF0JJeCib41m/g5HFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JB8T0H8qQnUTHbVClSSo9rKvOVnL0VlbVYpPp0t1ACX7Ro9LDxGiqFoLDpwCnfTFx
-	 I/V6VzdDlKJYBJ9AYfzkHMNjSqaeADIUBi1Z0iSHB5tPjeOtrt5VqsIdX+R6ou70f3
-	 8HWAl5pxIHdYQNAt4pviotqsggfEegCaEsP5J7to=
+	b=guktIolNkzizAGwTzxs0goyXWX4yyCLD2qPK/oFiX93E/mpxZV9FqsX4Z0tVcAAVS
+	 XfwG8qo1mph7Szs3xcofVgO+F4K8MG2yqs9IRui+1/lT6FIi5oTcaQQPO0zEqg+pzG
+	 w9mhqQ1JcBakEe6+FprBk9fpLjYbTaZu6XwQV5rM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/262] ASoC: Intel: bytcr_rt5651: Fix invalid quirk input mapping
+Subject: [PATCH 6.1 105/196] drm/amd/pm: Fix si_upload_smc_data (v3)
 Date: Mon, 13 Oct 2025 16:44:38 +0200
-Message-ID: <20251013144331.022176106@linuxfoundation.org>
+Message-ID: <20251013144318.498627209@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +60,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 4336efb59ef364e691ef829a73d9dbd4d5ed7c7b ]
+[ Upstream commit a43b2cec04b02743338aa78f837ee0bdf066a6d5 ]
 
-When an invalid value is passed via quirk option, currently
-bytcr_rt5640 driver just ignores and leaves as is, which may lead to
-unepxected results like OOB access.
+The si_upload_smc_data function uses si_write_smc_soft_register
+to set some register values in the SMC, and expects the result
+to be PPSMC_Result_OK which is 1.
 
-This patch adds the sanity check and corrects the input mapping to the
-certain default value if an invalid value is passed.
+The PPSMC_Result_OK / PPSMC_Result_Failed values are used for
+checking the result of a command sent to the SMC.
+However, the si_write_smc_soft_register actually doesn't send
+any commands to the SMC and returns zero on success,
+so this check was incorrect.
 
-Fixes: 64484ccee7af ("ASoC: Intel: bytcr_rt5651: Set card long_name based on quirks")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Message-ID: <20250902171826.27329-4-tiwai@suse.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix that by not checking the return value, just like other
+calls to si_write_smc_soft_register.
+
+v3:
+Additionally, when no display is plugged in, there is no need
+to restrict MCLK switching, so program the registers to zero.
+
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5651.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 43 ++++++++++++----------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
-index 8e4b821efe927..6860ac41e6b32 100644
---- a/sound/soc/intel/boards/bytcr_rt5651.c
-+++ b/sound/soc/intel/boards/bytcr_rt5651.c
-@@ -58,7 +58,8 @@ enum {
- 	BYT_RT5651_OVCD_SF_1P5	= (RT5651_OVCD_SF_1P5 << 13),
- };
- 
--#define BYT_RT5651_MAP(quirk)		((quirk) & GENMASK(3, 0))
-+#define BYT_RT5651_MAP_MASK		GENMASK(3, 0)
-+#define BYT_RT5651_MAP(quirk)		((quirk) & BYT_RT5651_MAP_MASK)
- #define BYT_RT5651_JDSRC(quirk)		(((quirk) & GENMASK(7, 4)) >> 4)
- #define BYT_RT5651_OVCD_TH(quirk)	(((quirk) & GENMASK(12, 8)) >> 8)
- #define BYT_RT5651_OVCD_SF(quirk)	(((quirk) & GENMASK(14, 13)) >> 13)
-@@ -100,14 +101,29 @@ MODULE_PARM_DESC(quirk, "Board-specific quirk override");
- 
- static void log_quirks(struct device *dev)
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index c17d567cf8bc5..85ab0d87eb337 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -5793,9 +5793,9 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
  {
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_DMIC_MAP)
-+	int map;
-+
-+	map = BYT_RT5651_MAP(byt_rt5651_quirk);
-+	switch (map) {
-+	case BYT_RT5651_DMIC_MAP:
- 		dev_info(dev, "quirk DMIC_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_MAP)
-+		break;
-+	case BYT_RT5651_IN1_MAP:
- 		dev_info(dev, "quirk IN1_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN2_MAP)
-+		break;
-+	case BYT_RT5651_IN2_MAP:
- 		dev_info(dev, "quirk IN2_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_IN2_MAP)
-+		break;
-+	case BYT_RT5651_IN1_IN2_MAP:
- 		dev_info(dev, "quirk IN1_IN2_MAP enabled");
-+		break;
-+	default:
-+		dev_warn_once(dev, "quirk sets invalid input map: 0x%x, default to DMIC_MAP\n", map);
-+		byt_rt5651_quirk &= ~BYT_RT5651_MAP_MASK;
-+		byt_rt5651_quirk |= BYT_RT5651_DMIC_MAP;
-+		break;
+ 	struct amdgpu_crtc *amdgpu_crtc = NULL;
+ 	int i;
+-
+-	if (adev->pm.dpm.new_active_crtc_count == 0)
+-		return 0;
++	u32 crtc_index = 0;
++	u32 mclk_change_block_cp_min = 0;
++	u32 mclk_change_block_cp_max = 0;
+ 
+ 	for (i = 0; i < adev->mode_info.num_crtc; i++) {
+ 		if (adev->pm.dpm.new_active_crtcs & (1 << i)) {
+@@ -5804,26 +5804,31 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
+ 		}
+ 	}
+ 
+-	if (amdgpu_crtc == NULL)
+-		return 0;
++	/* When a display is plugged in, program these so that the SMC
++	 * performs MCLK switching when it doesn't cause flickering.
++	 * When no display is plugged in, there is no need to restrict
++	 * MCLK switching, so program them to zero.
++	 */
++	if (adev->pm.dpm.new_active_crtc_count && amdgpu_crtc) {
++		crtc_index = amdgpu_crtc->crtc_id;
+ 
+-	if (amdgpu_crtc->line_time <= 0)
+-		return 0;
++		if (amdgpu_crtc->line_time) {
++			mclk_change_block_cp_min = amdgpu_crtc->wm_high / amdgpu_crtc->line_time;
++			mclk_change_block_cp_max = amdgpu_crtc->wm_low / amdgpu_crtc->line_time;
++		}
 +	}
-+
- 	if (BYT_RT5651_JDSRC(byt_rt5651_quirk)) {
- 		dev_info(dev, "quirk realtek,jack-detect-source %ld\n",
- 			 BYT_RT5651_JDSRC(byt_rt5651_quirk));
+ 
+-	if (si_write_smc_soft_register(adev,
+-				       SI_SMC_SOFT_REGISTER_crtc_index,
+-				       amdgpu_crtc->crtc_id) != PPSMC_Result_OK)
+-		return 0;
++	si_write_smc_soft_register(adev,
++		SI_SMC_SOFT_REGISTER_crtc_index,
++		crtc_index);
+ 
+-	if (si_write_smc_soft_register(adev,
+-				       SI_SMC_SOFT_REGISTER_mclk_change_block_cp_min,
+-				       amdgpu_crtc->wm_high / amdgpu_crtc->line_time) != PPSMC_Result_OK)
+-		return 0;
++	si_write_smc_soft_register(adev,
++		SI_SMC_SOFT_REGISTER_mclk_change_block_cp_min,
++		mclk_change_block_cp_min);
+ 
+-	if (si_write_smc_soft_register(adev,
+-				       SI_SMC_SOFT_REGISTER_mclk_change_block_cp_max,
+-				       amdgpu_crtc->wm_low / amdgpu_crtc->line_time) != PPSMC_Result_OK)
+-		return 0;
++	si_write_smc_soft_register(adev,
++		SI_SMC_SOFT_REGISTER_mclk_change_block_cp_max,
++		mclk_change_block_cp_max);
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
