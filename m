@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-185261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B215DBD4C30
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:07:26 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEC9BD545B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC1642244F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C51654248C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6538E31B83B;
-	Mon, 13 Oct 2025 15:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC8F3112BE;
+	Mon, 13 Oct 2025 15:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/7zOTVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lL+UasWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2235131078B;
-	Mon, 13 Oct 2025 15:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE83530C614;
+	Mon, 13 Oct 2025 15:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369794; cv=none; b=a81O4j7ZSEPxUkcRGZhlxogZNzeJjLvRDhJSXe3jiqqKKpurtIjQIFMk/C1zBYiufLy6EjDcmZ9F59HIQudUokU28MTA4JYRW4uJWFhhwh174u07k4R3pzjU3N03U4yaQfNTIMHjDSe95C+6DWONnQxX0NZfOt5meOmJ5BH0GpY=
+	t=1760369810; cv=none; b=uQL4cq70rGYTWDLl6hUI5BtR+06WXdqOmO0/XxPPWfebK0/Opm3YF/vOb7fLvv4yx/wuLwS9dWG1vdxCrTLr0eTDB4vuTuZQck0kUiAdr31d+m9vxBsg+Mtyp2KHu9MPqOOqxUn5kO7GW1UyTztEO2UzE+OYLtam1D9W2RLyevQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369794; c=relaxed/simple;
-	bh=SiPmHXOQQDYAHH+ggc0b7UbTXO7WqpfBBsJ4EcG4Knw=;
+	s=arc-20240116; t=1760369810; c=relaxed/simple;
+	bh=241kqRbkJsTjz0tqmrgNVgTHOd1xXZn953hMDZp/dwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rhBjd42OascVA7hbuHJVE255CBjYcsgEWLI7RDUg7LTmYZiNsXsOd39TvoOSf4DJLzAmGUZ6bXBCLVPCGU+9WBTL0Jv6le+bt2nInnoB7wVQTnRN0K0+4EWERsu/eJ/WTQkddGcn6G+zTiHYkHEn1kBT5SWGKu0Ey3u2maneBkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/7zOTVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B67C4CEFE;
-	Mon, 13 Oct 2025 15:36:33 +0000 (UTC)
+	 MIME-Version; b=meYzomCCg0G9RSS8barkU4NAXn4mrK57H4sJWx1hO9xOX28676DDmRtBemA8JM2FMTzh/1VbjYahDT00KADBsMrgoq4/MC+2eVe79gHOC1NkZlzJXUqWqFxd0er0fhzLNt14487WDE9xgMmEwSKMNJ4IEsRPkNH/yisYuoYxDV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lL+UasWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1883EC4CEE7;
+	Mon, 13 Oct 2025 15:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369793;
-	bh=SiPmHXOQQDYAHH+ggc0b7UbTXO7WqpfBBsJ4EcG4Knw=;
+	s=korg; t=1760369810;
+	bh=241kqRbkJsTjz0tqmrgNVgTHOd1xXZn953hMDZp/dwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/7zOTVG+bhfcdTzbHMwkQDBH4E//T4my62IdhTNJKLJVs8UL4LLb+iTGljt3QgIU
-	 A+hS34F+tbfDVbetVRSYdzyIlczHRWD15pFQ74DJHMvB5evXCPA3bTHb4QohzWYEgm
-	 IJoRcq+Do9pKTda89hqbaOqfw/Xwudu9lN7An6yw=
+	b=lL+UasWrB9sVL1aUoFyUM6b59IXWNu3qaWbGaJJhd47YttHtX1R2Qjwho2X5Wo5Mi
+	 6kx9H2eUsmhqAsnkN2OFcGKODrujTh1RjCK82Bbu1PVXEz81PHhOo5Krb87+5Hj2BW
+	 PHm4eKwLfKcUF3ec+ZiecK9j5+uQ2dXHkd98lHys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Edward Srouji <edwards@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 343/563] tools: ynl: fix undefined variable name
-Date: Mon, 13 Oct 2025 16:43:24 +0200
-Message-ID: <20251013144423.696535399@linuxfoundation.org>
+Subject: [PATCH 6.17 344/563] RDMA/mlx5: Fix page size bitmap calculation for KSM mode
+Date: Mon, 13 Oct 2025 16:43:25 +0200
+Message-ID: <20251013144423.732584269@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -62,50 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Edward Srouji <edwards@nvidia.com>
 
-[ Upstream commit 7a3aaaa9fce710938c3557e5708ba5b00dd38226 ]
+[ Upstream commit 372fdb5c75b61f038f4abf596abdcf01acbdb7af ]
 
-This variable used in the error path was not defined according to Ruff.
-msg_format.attr_set is used instead, presumably the one that was
-supposed to be used originally.
+When using KSM (Key Scatter-gather Memory) access mode, the HW requires
+the IOVA to be aligned to the selected page size.
+Without this alignment, the HW may not function correctly.
 
-This is linked to Ruff error F821 [1]:
+Currently, mlx5_umem_mkc_find_best_pgsz() does not filter out page sizes
+that would result in misaligned IOVAs for KSM mode. This can lead to
+selecting page sizes that are incompatible with the given IOVA.
 
-  An undefined name is likely to raise NameError at runtime.
+Fix this by filtering the page size bitmap when in KSM mode, keeping
+only page sizes to which the IOVA is aligned to.
 
-Fixes: 1769e2be4baa ("tools/net/ynl: Add 'sub-message' attribute decoding to ynl")
-Link: https://docs.astral.sh/ruff/rules/undefined-name/ [1]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Link: https://patch.msgid.link/20250909-net-next-ynl-ruff-v1-1-238c2bccdd99@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fcfb03597b7d ("RDMA/mlx5: Align mkc page size capability check to PRM")
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20250824144839.154717-1-edwards@nvidia.com
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/pyynl/lib/ynl.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
-index 8244a5f440b2b..15ddb0b1adb63 100644
---- a/tools/net/ynl/pyynl/lib/ynl.py
-+++ b/tools/net/ynl/pyynl/lib/ynl.py
-@@ -746,7 +746,7 @@ class YnlFamily(SpecFamily):
-                 subdict = self._decode(NlAttrs(attr.raw, offset), msg_format.attr_set)
-                 decoded.update(subdict)
-             else:
--                raise Exception(f"Unknown attribute-set '{attr_space}' when decoding '{attr_spec.name}'")
-+                raise Exception(f"Unknown attribute-set '{msg_format.attr_set}' when decoding '{attr_spec.name}'")
-         return decoded
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 8d21ecf8a996f..15e3962633dc3 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -1803,6 +1803,10 @@ mlx5_umem_mkc_find_best_pgsz(struct mlx5_ib_dev *dev, struct ib_umem *umem,
  
-     def _decode(self, attrs, space, outer_attrs = None):
+ 	bitmap = GENMASK_ULL(max_log_entity_size_cap, min_log_entity_size_cap);
+ 
++	/* In KSM mode HW requires IOVA and mkey's page size to be aligned */
++	if (access_mode == MLX5_MKC_ACCESS_MODE_KSM && iova)
++		bitmap &= GENMASK_ULL(__ffs64(iova), 0);
++
+ 	return ib_umem_find_best_pgsz(umem, bitmap, iova);
+ }
+ 
 -- 
 2.51.0
 
