@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B82BD3F2D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:14:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8353FBD4A0A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4DCF234E0F9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E489508FA6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBBA30E0F7;
-	Mon, 13 Oct 2025 14:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F06312822;
+	Mon, 13 Oct 2025 15:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/+bOrq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHJ/Nf4K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E223081A3;
-	Mon, 13 Oct 2025 14:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BC630C628;
+	Mon, 13 Oct 2025 15:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367477; cv=none; b=Fn0Hv/eIn2JG/pqXHXeQXVwxUrNxCxV9JUVFJH5ZmQEBWoqKFwYxeU3A3P/e+I9tWhvoMHQUkyuuhX+yrn8rYfPi3ohkg8A1pmVOKzPypJnanQH3DncOthvPVn9F65OVjnKzroQJ3R22gBxYDhXX9M0Llrt6XWbIwu/lOWIcyd0=
+	t=1760368286; cv=none; b=lxKmu8kkCpF3Bm8R/TPFtg7q6bm8jrn0FRm4q4ZxOW7vq9XMC9yPyEjYkEvfaTiOSMqGFhH3fO8ZjN0ilkzZQTHuZ7FER6ljPB+xDKFQookHqdmifgu0+TKebGwVEUawNxAlPdKiCDnnD3MPTHQ9F5ts4CdmBVfXnhO1Qa+iZts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367477; c=relaxed/simple;
-	bh=kJT0S2Nz2CBmVdYYMPt9gMw4tbFY1/b4B+CIWuiivwg=;
+	s=arc-20240116; t=1760368286; c=relaxed/simple;
+	bh=E1FOUgV0zOlv/LiiaT3B0XVBIbVL/2DTrzs+D1xZ4vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pa235e2YtSuKyWZ427CPbp5AF9+FZkYS1+YRiHUYsUgRJalkz2o+obqP6i2snRHZGOSyMvsRa8tgspfXOTAVjvAV11kK00+vm+QKnl47f6sqt2yqYImO3ITVHJP+YT34DjWB0e2QhmRkkPXtNgKAdtG488aLOC8DCWd7cI/hqFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/+bOrq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A7BC4CEE7;
-	Mon, 13 Oct 2025 14:57:56 +0000 (UTC)
+	 MIME-Version; b=AjnTb2qBouYu/kBQZ4gZ4rrLkwYfFeqL1bXPM/mtb1SaV3o7VFtPsw4CwRfC9SrihdMLCHsY+jigC6dVsAUxQu/uh3PQZs48OvV6TAq7yFQgK/p3UObvo0FH0TqcFaC7a2wSjJCqVrg0YfbibN7UYkohTYCxkMVGpP+Gl4MUYuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHJ/Nf4K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D47C4CEE7;
+	Mon, 13 Oct 2025 15:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367476;
-	bh=kJT0S2Nz2CBmVdYYMPt9gMw4tbFY1/b4B+CIWuiivwg=;
+	s=korg; t=1760368285;
+	bh=E1FOUgV0zOlv/LiiaT3B0XVBIbVL/2DTrzs+D1xZ4vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/+bOrq1NvTjLJRjG7f0GIUpMbwjEZHfaMTWDEJof/LmjiVTlGiXWkDfyTZt5kfdG
-	 eOJqs3ZpX8dK9/Pa9XAyv7IhbDNqj0+4+dJfCpPHNJvCBgqseRVMyMnftrGEPcAMqH
-	 DXu+ryZTg/e8PY96DCYrXIULIW/vq0DJSV5nlNXw=
+	b=wHJ/Nf4KHVF+/pQqd8EC4nVTBGHHDBGdo+n+NjaNvwDxCvSZ731zjRh5fwHP2sacw
+	 jNo/pNac2yNM518ZegtVFeuoc9NehSCRXG/ZWOH0uzSpMZa4jN/oNyZ7uowyiGPsEj
+	 U3hw1Be5V49ofJPyEcmweM16skfA8GjoeEU0S0PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/196] ARM: at91: pm: fix MCKx restore routine
-Date: Mon, 13 Oct 2025 16:43:36 +0200
-Message-ID: <20251013144316.106038029@linuxfoundation.org>
+Subject: [PATCH 6.12 075/262] bpf: Explicitly check accesses to bpf_sock_addr
+Date: Mon, 13 Oct 2025 16:43:37 +0200
+Message-ID: <20251013144328.826677533@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 296302d3d81360e09fa956e9be9edc8223b69a12 ]
+[ Upstream commit 6fabca2fc94d33cdf7ec102058983b086293395f ]
 
-The at91_mckx_ps_restore() assembly function is responsible for setting
-back MCKx system bus clocks after exiting low power modes.
+Syzkaller found a kernel warning on the following sock_addr program:
 
-Fix a typo and use tmp3 variable instead of tmp2 to correctly set MCKx
-to previously saved state.
-Tmp2 was used without the needed changes in CSS and DIV. Moreover the
-required bit 7, telling that MCR register's content is to be changed
-(CMD/write), was not set.
+    0: r0 = 0
+    1: r2 = *(u32 *)(r1 +60)
+    2: exit
 
-Fix function comment to match tmp variables actually used.
+which triggers:
 
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Fixes: 28eb1d40fe57 ("ARM: at91: pm: add support for MCK1..4 save/restore for ulp modes")
-Link: https://lore.kernel.org/r/20250827145427.46819-3-nicolas.ferre@microchip.com
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-[claudiu.beznea: s/sate/state in commit description]
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+    verifier bug: error during ctx access conversion (0)
+
+This is happening because offset 60 in bpf_sock_addr corresponds to an
+implicit padding of 4 bytes, right after msg_src_ip4. Access to this
+padding isn't rejected in sock_addr_is_valid_access and it thus later
+fails to convert the access.
+
+This patch fixes it by explicitly checking the various fields of
+bpf_sock_addr in sock_addr_is_valid_access.
+
+I checked the other ctx structures and is_valid_access functions and
+didn't find any other similar cases. Other cases of (properly handled)
+padding are covered in new tests in a subsequent patch.
+
+Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
+Reported-by: syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Closes: https://syzkaller.appspot.com/bug?extid=136ca59d411f92e821b7
+Link: https://lore.kernel.org/bpf/b58609d9490649e76e584b0361da0abd3c2c1779.1758094761.git.paul.chaignon@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-at91/pm_suspend.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/filter.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-at91/pm_suspend.S b/arch/arm/mach-at91/pm_suspend.S
-index e5869cca5e791..94dece1839af3 100644
---- a/arch/arm/mach-at91/pm_suspend.S
-+++ b/arch/arm/mach-at91/pm_suspend.S
-@@ -872,7 +872,7 @@ e_done:
- /**
-  * at91_mckx_ps_restore: restore MCK1..4 settings
-  *
-- * Side effects: overwrites tmp1, tmp2
-+ * Side effects: overwrites tmp1, tmp2 and tmp3
-  */
- .macro at91_mckx_ps_restore
- #ifdef CONFIG_SOC_SAMA7
-@@ -916,7 +916,7 @@ r_ps:
- 	bic	tmp3, tmp3, #AT91_PMC_MCR_V2_ID_MSK
- 	orr	tmp3, tmp3, tmp1
- 	orr	tmp3, tmp3, #AT91_PMC_MCR_V2_CMD
--	str	tmp2, [pmc, #AT91_PMC_MCR_V2]
-+	str	tmp3, [pmc, #AT91_PMC_MCR_V2]
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 02fedc404d7f7..c850e5d6cbd87 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -9233,13 +9233,17 @@ static bool sock_addr_is_valid_access(int off, int size,
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCKET;
+ 		break;
+-	default:
+-		if (type == BPF_READ) {
+-			if (size != size_default)
+-				return false;
+-		} else {
++	case bpf_ctx_range(struct bpf_sock_addr, user_family):
++	case bpf_ctx_range(struct bpf_sock_addr, family):
++	case bpf_ctx_range(struct bpf_sock_addr, type):
++	case bpf_ctx_range(struct bpf_sock_addr, protocol):
++		if (type != BPF_READ)
+ 			return false;
+-		}
++		if (size != size_default)
++			return false;
++		break;
++	default:
++		return false;
+ 	}
  
- 	wait_mckrdy tmp1
- 
+ 	return true;
 -- 
 2.51.0
 
