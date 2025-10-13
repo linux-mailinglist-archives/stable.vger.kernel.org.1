@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-185173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B151BD48A4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F34BD475A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 17CDE34EBFC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E098402ABE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E51E27979A;
-	Mon, 13 Oct 2025 15:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5783101DE;
+	Mon, 13 Oct 2025 15:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYvqrrla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfWEjm4/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00E526F2B6;
-	Mon, 13 Oct 2025 15:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4243930C37C;
+	Mon, 13 Oct 2025 15:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369541; cv=none; b=uSNZ8SCuklQKqES7/VTrIQDmU88yaC4GD6QxcdovWU2FiAVsY70KOHBxqbc5gN/SmFxQwOXUJi3LKx/56hwLCmhRNal+wYR9CYQQlf1mU2bawoBzVAAUNkG93j6XUreH6McKtoWNm1WWV06FE3NUmghB+2GfGOYeDPPkkxBj4QY=
+	t=1760368030; cv=none; b=a4jTHz6eRez617P684asq/dvPauSm0EWqCwnr8IsCe916eylwHEW/ktOP1qPudZhbbsqGE7DOZarEbw+j8I7tR9AAGPFLDHoKisYQKR0GKDmT4WBam8mFe5GG8sQt61JSih5q/fhvHW2ZWX5STpTA6UdYsyf6snPihdqCLDIDio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369541; c=relaxed/simple;
-	bh=jzXuiocfFCcgtsKrddEckm6DYEqPHlmi15s7gwLQDiA=;
+	s=arc-20240116; t=1760368030; c=relaxed/simple;
+	bh=N/5BPihtvYNt2xoIYNvQ/k1uW41pannJLsELDzTDOg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBzqVtCEqHQBQUfpnzeJlatBR0xfSx1LLhxn4mi5v6tSKR1AScSpgKoJoM6x9o0NmXhfbMa8pWpwDrVzzJa9YRyZ4udPZSeSyy8uplLLP5RdpPMbHrvpVYCMpgCe1uftMePmS16clp+WTVzMthaWqGDPsAFyxEJ158nrZwHR0sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYvqrrla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469B9C4CEE7;
-	Mon, 13 Oct 2025 15:32:20 +0000 (UTC)
+	 MIME-Version; b=NHB54O+AlU//GAZukt65lQrIJry5H6YWKpgWI/dO5iHuw7AEi+2cqbfWKrwB9KTGOLo7y63A8DgwcbBi3xpDKi41kNdw1cGN+QoSyGNopnDRQt1yFkUU+6Y9/RN7j52NJAbluSpjJqlLONoOx27StbjmYlnxSeMjtEmCTapNy/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfWEjm4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED63C4CEE7;
+	Mon, 13 Oct 2025 15:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369540;
-	bh=jzXuiocfFCcgtsKrddEckm6DYEqPHlmi15s7gwLQDiA=;
+	s=korg; t=1760368029;
+	bh=N/5BPihtvYNt2xoIYNvQ/k1uW41pannJLsELDzTDOg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pYvqrrlacdFlNCxUBL1ZHkfpbtZHEOu8VLbty7Vg5d6zuf9ySCh463nDt98o9rsw0
-	 jqMZBKBS+Qwf0EjVfuHUm6dgB76FvmhvczMlHEOWgAOy537HNmbBRChk3/Qo7+z42n
-	 4IP0oJwQpMF+YsXU4MTOdRsG0wSvwtY5Cbmiky7w=
+	b=gfWEjm4/U4lZ2pQknJA19khgAh55BfLrBDyDso5G2rrCfs9U5NcW8fFw2sgnDSfe8
+	 sViwyl8Z5/o/IdoRKA9l7mfXuigWHthHmC4RU/BYD2bNLfbDmcw16z2qODMyPHiEof
+	 /F2CQivlTNskKh75EEzvla1SsXTy0mtC3Oq74CGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Richard Lyu <richard.lyu@suse.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Martin Wilck <mwilck@suse.com>,
+	David Disseldorp <ddiss@suse.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 283/563] efi: Explain OVMF acronym in OVMF_DEBUG_LOG help text
+Subject: [PATCH 6.12 002/262] init: INITRAMFS_PRESERVE_MTIME should depend on BLK_DEV_INITRD
 Date: Mon, 13 Oct 2025 16:42:24 +0200
-Message-ID: <20251013144421.523205724@linuxfoundation.org>
+Message-ID: <20251013144326.210839070@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 05e75ac35ee9e38f96bbfebf1830ec2cace2e7f8 ]
+[ Upstream commit 74792608606a525a0e0df7e8d48acd8000561389 ]
 
-People not very intimate with EFI may not know the meaning of the OVMF
-acronym.  Write it in full, to help users with making good decisions
-when configuring their kernels.
+INITRAMFS_PRESERVE_MTIME is only used in init/initramfs.c and
+init/initramfs_test.c.  Hence add a dependency on BLK_DEV_INITRD, to
+prevent asking the user about this feature when configuring a kernel
+without initramfs support.
 
-Fixes: f393a761763c5427 ("efi: add ovmf debug log driver")
+Fixes: 1274aea127b2e8c9 ("initramfs: add INITRAMFS_PRESERVE_MTIME Kconfig option")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Richard Lyu <richard.lyu@suse.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Martin Wilck <mwilck@suse.com>
+Reviewed-by: David Disseldorp <ddiss@suse.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/Kconfig | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ init/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index d528c94c5859b..29e0729299f5b 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -267,9 +267,10 @@ config OVMF_DEBUG_LOG
- 	bool "Expose OVMF firmware debug log via sysfs"
- 	depends on EFI
- 	help
--	  Recent OVMF versions (edk2-stable202508 + newer) can write
--	  their debug log to a memory buffer.  This driver exposes the
--	  log content via sysfs (/sys/firmware/efi/ovmf_debug_log).
-+	  Recent versions of the Open Virtual Machine Firmware
-+	  (edk2-stable202508 + newer) can write their debug log to a memory
-+	  buffer.  This driver exposes the log content via sysfs
-+	  (/sys/firmware/efi/ovmf_debug_log).
+diff --git a/init/Kconfig b/init/Kconfig
+index 45990792cb4a6..219ccdb0af732 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1440,6 +1440,7 @@ config BOOT_CONFIG_EMBED_FILE
  
- config UNACCEPTED_MEMORY
- 	bool
+ config INITRAMFS_PRESERVE_MTIME
+ 	bool "Preserve cpio archive mtimes in initramfs"
++	depends on BLK_DEV_INITRD
+ 	default y
+ 	help
+ 	  Each entry in an initramfs cpio archive carries an mtime value. When
 -- 
 2.51.0
 
