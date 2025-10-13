@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-185339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52779BD4B37
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:02:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8CDBD4322
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EA3303430F9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:02:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD9CF18A40B2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466113126C5;
-	Mon, 13 Oct 2025 15:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C0130DD09;
+	Mon, 13 Oct 2025 15:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+jxHgOF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUEXBi1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A9B30DEC7;
-	Mon, 13 Oct 2025 15:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8F22FF641;
+	Mon, 13 Oct 2025 15:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370013; cv=none; b=mzeYjtW56mWRdrPAp0hFZKbro7QJNrmgWQy8+plpOI6fWO8SuyXHQLiUkmc/SMxbO52fxTLFAN8/94q2bnuIKonoXRLrN0tG68VX+I0jO8h3Qn20tgEUuKYDAjiRH9jfUYX8FUichDRMWkvFFP0M2ukJlvkfP63q9p5Q+mTpZuM=
+	t=1760368448; cv=none; b=ElxTyO5J8PSVoUs+rYZLovw/B11qBxQfbXrQpacIQy/dBTQoj1R4UkZVFBlZLCjXVTLoqa+qHlkmKPVTKceRiIbl82xLcYu9AK32baAlf27ulFpuKDbBbsgoi4GM3lmD/AnLCYIU6+OC7+X0x/03N1eoGGgwcob0GAy9eekbLI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370013; c=relaxed/simple;
-	bh=MywPTQUOK2raOz2JHKM89J9o7nCDJ5UyICc1Tb3N2nI=;
+	s=arc-20240116; t=1760368448; c=relaxed/simple;
+	bh=ZYum/W4llIgPFp3VJCAw850iyFvPrpGiapdrCvi8hX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mN8Lv6NIuWPDzU2cMfRsq1KegWaTLdKGgXzH03yIWAdz+d0bMELzrLm5DpfxDt6Q8IBCf5K6gqlmgq7Zt/baUrEEty2xle5UmZHKQLrEF8RoNP6ePVs/RZpYvWeKU3NOGUPvE9Lk3GiHqLo54YefVKcM8wa37u/DVXaLlYVgAtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+jxHgOF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8267CC4CEE7;
-	Mon, 13 Oct 2025 15:40:12 +0000 (UTC)
+	 MIME-Version; b=UJUPOlpZoWXZLi+hyF6Qi+ryldNU8x+cmX5E6lzaH9od6dSbDVRG96eJ+0G81g8qEADrcvb3UjrRnw3tm8wrbX5guhpAX+tdEds6PPz0+JIn2y/CXv0RT1bYkLK5o+G5nZ3YNTfwbexfin2kel/SgU/1l1LD9syE+cbRvVdrX0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUEXBi1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D8FC4CEFE;
+	Mon, 13 Oct 2025 15:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370012;
-	bh=MywPTQUOK2raOz2JHKM89J9o7nCDJ5UyICc1Tb3N2nI=;
+	s=korg; t=1760368448;
+	bh=ZYum/W4llIgPFp3VJCAw850iyFvPrpGiapdrCvi8hX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+jxHgOFkG/jXgjao4zDUJyz/+CV4sVhayxZy2I41r1fv5yEOgMAuOWC6/XUPeBNG
-	 i8nfJL6hzr0at6NDjhclah4Wl0fVPR25kX2sOX1W66JUE7tD3Wor3GcWa8gSwbClqI
-	 qLe6klgHuswMUJJYE/bBimiFaHKuFLzaFJxRndao=
+	b=XUEXBi1rIB6brscT8MSTIeqF+jlwdk3fUhPnNxzEKMWH/RGjCkXYWVeuebFZt+vDs
+	 QeJs9ZJJ3HNfm9weWdsdAKzX05LO/ZQFBaCAyzCE5U+eNjsSKwfGbh6w444nPCSe07
+	 vbQ870VkiVoYzyo5OFd9h9hg8XinFA06W5ogX6sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 446/563] iommu/vt-d: Disallow dirty tracking if incoherent page walk
+Subject: [PATCH 6.12 165/262] wifi: ath12k: fix wrong logging ID used for CE
 Date: Mon, 13 Oct 2025 16:45:07 +0200
-Message-ID: <20251013144427.439082061@linuxfoundation.org>
+Message-ID: <20251013144332.067750688@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit 57f55048e564dedd8a4546d018e29d6bbfff0a7e ]
+[ Upstream commit 43746f13fec67f6f223d64cfe96c095c9b468e70 ]
 
-Dirty page tracking relies on the IOMMU atomically updating the dirty bit
-in the paging-structure entry. For this operation to succeed, the paging-
-structure memory must be coherent between the IOMMU and the CPU. In
-another word, if the iommu page walk is incoherent, dirty page tracking
-doesn't work.
+ATH12K_DBG_AHB is used for CE logging which is not proper. Add
+ATH12K_DBG_CE and replace ATH12K_DBG_AHB with it.
 
-The Intel VT-d specification, Section 3.10 "Snoop Behavior" states:
+Compile tested only.
 
-"Remapping hardware encountering the need to atomically update A/EA/D bits
- in a paging-structure entry that is not snooped will result in a non-
- recoverable fault."
-
-To prevent an IOMMU from being incorrectly configured for dirty page
-tracking when it is operating in an incoherent mode, mark SSADS as
-supported only when both ecap_slads and ecap_smpwc are supported.
-
-Fixes: f35f22cc760e ("iommu/vt-d: Access/Dirty bit support for SS domains")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20250924083447.123224-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250815-ath-dont-warn-on-ce-enqueue-fail-v1-2-f955ddc3ba7a@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/ce.c    | 2 +-
+ drivers/net/wireless/ath/ath12k/debug.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-index d09b928716592..2c261c069001c 100644
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -541,7 +541,8 @@ enum {
- #define pasid_supported(iommu)	(sm_supported(iommu) &&			\
- 				 ecap_pasid((iommu)->ecap))
- #define ssads_supported(iommu) (sm_supported(iommu) &&                 \
--				ecap_slads((iommu)->ecap))
-+				ecap_slads((iommu)->ecap) &&           \
-+				ecap_smpwc(iommu->ecap))
- #define nested_supported(iommu)	(sm_supported(iommu) &&			\
- 				 ecap_nest((iommu)->ecap))
+diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
+index b66d23d6b2bd9..bd21e8fe9c90b 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -388,7 +388,7 @@ static void ath12k_ce_recv_process_cb(struct ath12k_ce_pipe *pipe)
+ 	}
+ 
+ 	while ((skb = __skb_dequeue(&list))) {
+-		ath12k_dbg(ab, ATH12K_DBG_AHB, "rx ce pipe %d len %d\n",
++		ath12k_dbg(ab, ATH12K_DBG_CE, "rx ce pipe %d len %d\n",
+ 			   pipe->pipe_num, skb->len);
+ 		pipe->recv_cb(ab, skb);
+ 	}
+diff --git a/drivers/net/wireless/ath/ath12k/debug.h b/drivers/net/wireless/ath/ath12k/debug.h
+index f7005917362c6..ea711e02ca03c 100644
+--- a/drivers/net/wireless/ath/ath12k/debug.h
++++ b/drivers/net/wireless/ath/ath12k/debug.h
+@@ -26,6 +26,7 @@ enum ath12k_debug_mask {
+ 	ATH12K_DBG_DP_TX	= 0x00002000,
+ 	ATH12K_DBG_DP_RX	= 0x00004000,
+ 	ATH12K_DBG_WOW		= 0x00008000,
++	ATH12K_DBG_CE		= 0x00010000,
+ 	ATH12K_DBG_ANY		= 0xffffffff,
+ };
  
 -- 
 2.51.0
