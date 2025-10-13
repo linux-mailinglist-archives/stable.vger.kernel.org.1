@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428EBBD3CC9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F31FBD40BA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 629BF18A0C83
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3AB118880B0
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C388C2F9985;
-	Mon, 13 Oct 2025 14:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C37309F13;
+	Mon, 13 Oct 2025 15:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guktIolN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/gzGl+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767D624A06A;
-	Mon, 13 Oct 2025 14:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F41824A06A;
+	Mon, 13 Oct 2025 15:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367138; cv=none; b=dtXd7d/QRBEfyhec7a9YKvDwvWZbCHe9X2GL26O5hhnyaI4yLu9XUTEl4NnlaZ59FiTgRX55R7GkvZwg/5S5iMhzRHcBsbiaVO6x9siRAQOfP8616TzbFA5uQOduwrdo3XLuQOobauRAAJQL9d7l4/0hOi0+RfQALib8hGSQmUQ=
+	t=1760367656; cv=none; b=a8tuCPqHj7mU/WELARIPuYxULbxaWsz2JwETj++amHk86ZUKpXPRWBV9d12qUzq02QFNfMcpOidSrUwBbc4ldC/oaknbRDEgD6YtkkVcrzoMBVXgibb40D6DD5MWRLKOEkW7c8YW50hkGMSft2CGr7JSqsYUbxNw6R0fy3ca4PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367138; c=relaxed/simple;
-	bh=YNMwc4w6vZCZzCDxuT9tvkj0juF0JJeCib41m/g5HFE=;
+	s=arc-20240116; t=1760367656; c=relaxed/simple;
+	bh=2zdPcHyXhk82sqS868T1RIMXa4wEy1B87LTLCxqyqe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YnOAc19w7Khfmw4o0hQBF4UabpN1I5khWj5Pz083hQs/O2qrkRW81pLjg5QIUnYt2TcewW9L+Oe48vZJOCtT39qTXllva7hj7fRMGzTwPkAFeo6fjSxZtQRKxByMivQOI2jTb2CM2c9PGoonw0kWPowprRGwDfUQADRBtqVUlG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guktIolN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF439C4CEE7;
-	Mon, 13 Oct 2025 14:52:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e6lEwSTxYJocRtSpYLJsmMf+ePWczT8UUWnSb08NhleLe4xWS5Vxpid26DTUSMGtQijrvDCtc4r+Ahao6z73sRf5wQLxQDifiiVEMD0LojZA4rbafnl8BQNAchTdbgUA3nE011Wb8cDHp4nYKj7HmsQGFGL08Q8At58iyxVY9WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/gzGl+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EB5C4CEE7;
+	Mon, 13 Oct 2025 15:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367138;
-	bh=YNMwc4w6vZCZzCDxuT9tvkj0juF0JJeCib41m/g5HFE=;
+	s=korg; t=1760367655;
+	bh=2zdPcHyXhk82sqS868T1RIMXa4wEy1B87LTLCxqyqe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=guktIolNkzizAGwTzxs0goyXWX4yyCLD2qPK/oFiX93E/mpxZV9FqsX4Z0tVcAAVS
-	 XfwG8qo1mph7Szs3xcofVgO+F4K8MG2yqs9IRui+1/lT6FIi5oTcaQQPO0zEqg+pzG
-	 w9mhqQ1JcBakEe6+FprBk9fpLjYbTaZu6XwQV5rM=
+	b=d/gzGl+DdA2Pi5d5zKMsoF/DtzNFcv1YG/hEMuByprAUyulh/mPUnHv3qoICBxvEY
+	 QQElT9fJCe8FguBtaX7amTtXY7FeCOX34Qaj5Ydr1EeZ9zdVwuXIeXFQRT5Nbuw7tX
+	 OCqs+/yH1+Uziki66NZBf0+omkgKT9H1ZPxv+zfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/196] drm/amd/pm: Fix si_upload_smc_data (v3)
+Subject: [PATCH 6.6 087/196] drm/amd/pm: Fix si_upload_smc_data (v3)
 Date: Mon, 13 Oct 2025 16:44:38 +0200
-Message-ID: <20251013144318.498627209@linuxfoundation.org>
+Message-ID: <20251013144318.465347101@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -98,7 +98,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 24 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index c17d567cf8bc5..85ab0d87eb337 100644
+index 8be367c49367d..cff55daa68ab8 100644
 --- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
 +++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
 @@ -5793,9 +5793,9 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
