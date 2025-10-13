@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-184351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93938BD3CEE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:01:08 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4E8BD4276
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A250C18A0D16
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:01:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 851275035E4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F20B277814;
-	Mon, 13 Oct 2025 14:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A27230CD8E;
+	Mon, 13 Oct 2025 14:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER5pyeN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h79B19sE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA7B34BA40;
-	Mon, 13 Oct 2025 14:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352483064B7;
+	Mon, 13 Oct 2025 14:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367184; cv=none; b=C2FJKIahNXAZ9V0MxW1TTAfLT/juGXA5jNYmP1oLFAXVk71AF3nhSul0YJoFS7JdRLF11NAV2UUTCABE4pNVh+TImJnZau8ixhMrePXYnUzq5rmV8Eyo+1Rym3oIk7ED5JbCp72tyjNhnZMyb9rqh+6ZbqDj1Ay3rVDjIN56tSY=
+	t=1760367310; cv=none; b=CQ/tPfFI+F2E1Ufe3vaistO8nsyDZpMuQPXPC8sc25USS+uUdaUagvsdJdVTR5OQeZMyVzpIGvDUdGMQ3rJBHhBA5KFj1KFg713D9f8sK2Bkb3K/Gwag5Gx8zDd8P1R34JIH7J5U2mE/UN7Z25doUEwDJjHmKCt0ODYAHfcAXm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367184; c=relaxed/simple;
-	bh=lRPCop/zmG3oVkLgEFQhtWm5R/Qz8ufJNLDf0fN1yd0=;
+	s=arc-20240116; t=1760367310; c=relaxed/simple;
+	bh=pGEIrBnRN0oS0R+IaxT95hVDiDLvc4eISxI6UrdTCE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQf1SEUQOCb7xVdXukElNmP4PQRyPZl58+/6PqGixC4dB2Omaz6X+UOSbVgf2vs/4vDEG38TprQUfvz7MjZAFZJiI5BKS0NbbAagkTI9UtlE0yEuci1xScpAo00J2hWqzNUKYW03nJtW592pR6aUSnORXZXwChByYsU6/XEn8ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER5pyeN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A8DC4CEE7;
-	Mon, 13 Oct 2025 14:53:03 +0000 (UTC)
+	 MIME-Version; b=u0xDW2NqclDp8u6hp5AkqZxQnUceRp2QykU2LTA+zAMlI+qYZgSSD7YQ/50Sqyt1ZCxDDCIHOkcJI4VTVOltowxaQ23c2QNDUmgpDzMTe4EpQUhPOB9p4HlkOn2ZojiyDZ2+NP0AcOOefUDrLSt/Cx3vxlTok0I+8fQ0qNBWCLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h79B19sE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB1BC4CEE7;
+	Mon, 13 Oct 2025 14:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367183;
-	bh=lRPCop/zmG3oVkLgEFQhtWm5R/Qz8ufJNLDf0fN1yd0=;
+	s=korg; t=1760367309;
+	bh=pGEIrBnRN0oS0R+IaxT95hVDiDLvc4eISxI6UrdTCE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ER5pyeN5zBGIEB4oik40q/qc2HSseJ7UtiqElbu70W66yhyEBsUIi3PMOTZI2KsD3
-	 wddVZA8enhIbheb0TJafXKR4bC1o3Vj2psm40q6mdHtSXEwfgr+A1PeqBOFU83zOu+
-	 69ycJdLvjNphwlOGUQpX+Makd3xGoMeA/kywdNHs=
+	b=h79B19sEaDzrHzNqQZr5yOFViplKRZKQ7xFh92P014wZoN5yIOjeGzyH1aN7uxszl
+	 fEc5OwnfheLkXekeFzmnX4QGuEjVtvojzRpkfvCKpphMEVA2WPR+BciMs7+BGg6yZx
+	 xFblElE48sBpNyQ3qa7ca0LjpBuQ4S96TTx5OzUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/196] ASoC: Intel: bytcr_rt5651: Fix invalid quirk input mapping
-Date: Mon, 13 Oct 2025 16:44:53 +0200
-Message-ID: <20251013144319.037976515@linuxfoundation.org>
+Subject: [PATCH 6.1 121/196] drm/msm/dpu: fix incorrect type for ret
+Date: Mon, 13 Oct 2025 16:44:54 +0200
+Message-ID: <20251013144319.073400098@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
 References: <20251013144314.549284796@linuxfoundation.org>
@@ -66,74 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 4336efb59ef364e691ef829a73d9dbd4d5ed7c7b ]
+[ Upstream commit 88ec0e01a880e3326794e149efae39e3aa4dbbec ]
 
-When an invalid value is passed via quirk option, currently
-bytcr_rt5640 driver just ignores and leaves as is, which may lead to
-unepxected results like OOB access.
+Change 'ret' from unsigned long to int, as storing negative error codes
+in an unsigned long makes it never equal to -ETIMEDOUT, causing logical
+errors.
 
-This patch adds the sanity check and corrects the input mapping to the
-certain default value if an invalid value is passed.
-
-Fixes: 64484ccee7af ("ASoC: Intel: bytcr_rt5651: Set card long_name based on quirks")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Message-ID: <20250902171826.27329-4-tiwai@suse.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d7d0e73f7de3 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/671100/
+Link: https://lore.kernel.org/r/20250826092047.224341-1-rongqianfeng@vivo.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5651.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
-index d74d184e1c7f3..b9990cb1181ff 100644
---- a/sound/soc/intel/boards/bytcr_rt5651.c
-+++ b/sound/soc/intel/boards/bytcr_rt5651.c
-@@ -58,7 +58,8 @@ enum {
- 	BYT_RT5651_OVCD_SF_1P5	= (RT5651_OVCD_SF_1P5 << 13),
- };
- 
--#define BYT_RT5651_MAP(quirk)		((quirk) & GENMASK(3, 0))
-+#define BYT_RT5651_MAP_MASK		GENMASK(3, 0)
-+#define BYT_RT5651_MAP(quirk)		((quirk) & BYT_RT5651_MAP_MASK)
- #define BYT_RT5651_JDSRC(quirk)		(((quirk) & GENMASK(7, 4)) >> 4)
- #define BYT_RT5651_OVCD_TH(quirk)	(((quirk) & GENMASK(12, 8)) >> 8)
- #define BYT_RT5651_OVCD_SF(quirk)	(((quirk) & GENMASK(14, 13)) >> 13)
-@@ -100,14 +101,29 @@ MODULE_PARM_DESC(quirk, "Board-specific quirk override");
- 
- static void log_quirks(struct device *dev)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+index 05a09d86e1838..fd5f9d04f81e6 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+@@ -452,7 +452,7 @@ static void _dpu_encoder_phys_wb_handle_wbdone_timeout(
+ static int dpu_encoder_phys_wb_wait_for_commit_done(
+ 		struct dpu_encoder_phys *phys_enc)
  {
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_DMIC_MAP)
-+	int map;
-+
-+	map = BYT_RT5651_MAP(byt_rt5651_quirk);
-+	switch (map) {
-+	case BYT_RT5651_DMIC_MAP:
- 		dev_info(dev, "quirk DMIC_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_MAP)
-+		break;
-+	case BYT_RT5651_IN1_MAP:
- 		dev_info(dev, "quirk IN1_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN2_MAP)
-+		break;
-+	case BYT_RT5651_IN2_MAP:
- 		dev_info(dev, "quirk IN2_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_IN2_MAP)
-+		break;
-+	case BYT_RT5651_IN1_IN2_MAP:
- 		dev_info(dev, "quirk IN1_IN2_MAP enabled");
-+		break;
-+	default:
-+		dev_warn_once(dev, "quirk sets invalid input map: 0x%x, default to DMIC_MAP\n", map);
-+		byt_rt5651_quirk &= ~BYT_RT5651_MAP_MASK;
-+		byt_rt5651_quirk |= BYT_RT5651_DMIC_MAP;
-+		break;
-+	}
-+
- 	if (BYT_RT5651_JDSRC(byt_rt5651_quirk)) {
- 		dev_info(dev, "quirk realtek,jack-detect-source %ld\n",
- 			 BYT_RT5651_JDSRC(byt_rt5651_quirk));
+-	unsigned long ret;
++	int ret;
+ 	struct dpu_encoder_wait_info wait_info;
+ 	struct dpu_encoder_phys_wb *wb_enc = to_dpu_encoder_phys_wb(phys_enc);
+ 
 -- 
 2.51.0
 
