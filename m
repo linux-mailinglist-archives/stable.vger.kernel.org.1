@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E04BBD4442
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33460BD4A3A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD7184F73D4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9343818A62AA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745E53126DB;
-	Mon, 13 Oct 2025 15:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883AF1A9B46;
+	Mon, 13 Oct 2025 15:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="la/XP9VN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xiv1OWzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209BA3126D0;
-	Mon, 13 Oct 2025 15:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4510E30CD94;
+	Mon, 13 Oct 2025 15:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368246; cv=none; b=SHGg/tMxA2yCwhAAKremzmcUCKYJm5YEwfHUqgfpBp4QuwqqpCat34VvtN/+DnQN1m5sBXCMValgsddJHZHWl6glW9+rYljBfYWAu7H2N5vb0CHCGYmvRtgc9bjqJyt6FXPCp/4HwrAlEnrZDJk7G3xArQshjKHgraOeB0xgg80=
+	t=1760369930; cv=none; b=mz0ZuQYVZBPmKc9ZDkqnLLnLDXrXLCEm2+8J4OTVoHzyygjclKlYHX/4HAK/VbNyduyUVFbnGfo3w9F6KyxRI8uWIsX4PVscmZwx8ut7g3DnIpA7Z6hsokQJe4B0qXptZMBgbyHC6r7OHySk9n0ZpsUzjocbgZgVNtQl6oGrr7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368246; c=relaxed/simple;
-	bh=6ZoFtuEH6Des+p283L0HjsEVQeylKDjqJSJFYmhPyGI=;
+	s=arc-20240116; t=1760369930; c=relaxed/simple;
+	bh=0YkN3ixfBKpUPnDqLCMuaVAdv2B6GmZm0E7cOq0onVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvgN5rzRAgpL2zFOEThenAYc2AYfx3o3C2DFBRhW3g4alzMWdfwVqy5DMM9ZAof2JyA0SG4gvYLzc4sGtDfR+SVs45zbponE+Tgj0ecWcSC2B2xvbNbejLB75LGB3yUFTGAwE4O//u4KvXyb3jDWNY1XupFvEwQF4cB9eLOoKN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=la/XP9VN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5C7C4CEE7;
-	Mon, 13 Oct 2025 15:10:45 +0000 (UTC)
+	 MIME-Version; b=YPjSSmoOECB/FF9AR0z7+iW7zSlJ6mirtjBIlIkTplAJ3FXd2rHh6z9gajdgXRTXyIJpbKE1uxQvWjKWwvn4g+KBxCAkwdOw7+2EDjST0nSXXzaJffP4FVbLp9GEfjFsRw5w2hWu3cGu8ATEBUtcVRkKiDrknQu4YxwCfnTugEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xiv1OWzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91D2C4CEE7;
+	Mon, 13 Oct 2025 15:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368246;
-	bh=6ZoFtuEH6Des+p283L0HjsEVQeylKDjqJSJFYmhPyGI=;
+	s=korg; t=1760369930;
+	bh=0YkN3ixfBKpUPnDqLCMuaVAdv2B6GmZm0E7cOq0onVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=la/XP9VN+/74cuBvxaAQwY0p48ULFNq9e1Hu7bIjGluokU0eqip53ArKhslSMDgyZ
-	 2y5E96aQCNXQEQRc8eRG7GFteW2WkkJSFxdyRm8KT41UhqdcsAAVbdjPMt9tC4COCd
-	 8IPf0aoT5zuq0CDKRs/PPaK+fgoXtCjM0WTMut/4=
+	b=Xiv1OWzcs7yz8XZnN2lP5xjQtRq3x2Ltj28WWdfKm09nKdvS+r/hgCFzna0NTsWYc
+	 aD2fMJHQyahXhsN5CHvJVHHp62ktwonwKWkGfXmTpZ9X1VS6ZBAlsbz5txmskEkHqg
+	 OB4IMYCiARiIf8lfj2aIeX+weKWh47EeSRfC8qiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/262] media: zoran: Remove zoran_fh structure
+Subject: [PATCH 6.17 375/563] scsi: qla2xxx: Fix incorrect sign of error code in qla_nvme_xmt_ls_rsp()
 Date: Mon, 13 Oct 2025 16:43:56 +0200
-Message-ID: <20251013144329.513493137@linuxfoundation.org>
+Message-ID: <20251013144424.861750106@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit dc322d13cf417552b59e313e809a6da40b8b36ef ]
+[ Upstream commit 9877c004e9f4d10e7786ac80a50321705d76e036 ]
 
-The zoran_fh structure is a wrapper around v4l2_fh. Its usage has been
-mostly removed by commit 83f89a8bcbc3 ("media: zoran: convert to vb2"),
-but the structure stayed by mistake. It is now used in a single
-location, assigned from a void pointer and then recast to a void
-pointer, without being every accessed. Drop it.
+Change the error code EAGAIN to -EAGAIN in qla_nvme_xmt_ls_rsp() to
+align with qla2x00_start_sp() returning negative error codes or
+QLA_SUCCESS, preventing logical errors.
 
-Fixes: 83f89a8bcbc3 ("media: zoran: convert to vb2")
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Message-ID: <20250905075446.381139-4-rongqianfeng@vivo.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/zoran/zoran.h        | 6 ------
- drivers/media/pci/zoran/zoran_driver.c | 3 +--
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ drivers/scsi/qla2xxx/qla_nvme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/zoran/zoran.h b/drivers/media/pci/zoran/zoran.h
-index 1cd990468d3de..d05e222b39215 100644
---- a/drivers/media/pci/zoran/zoran.h
-+++ b/drivers/media/pci/zoran/zoran.h
-@@ -154,12 +154,6 @@ struct zoran_jpg_settings {
- 
- struct zoran;
- 
--/* zoran_fh contains per-open() settings */
--struct zoran_fh {
--	struct v4l2_fh fh;
--	struct zoran *zr;
--};
--
- struct card_info {
- 	enum card_type type;
- 	char name[32];
-diff --git a/drivers/media/pci/zoran/zoran_driver.c b/drivers/media/pci/zoran/zoran_driver.c
-index 5c05e64c71a90..80377992a6073 100644
---- a/drivers/media/pci/zoran/zoran_driver.c
-+++ b/drivers/media/pci/zoran/zoran_driver.c
-@@ -511,12 +511,11 @@ static int zoran_s_fmt_vid_cap(struct file *file, void *__fh,
- 			       struct v4l2_format *fmt)
- {
- 	struct zoran *zr = video_drvdata(file);
--	struct zoran_fh *fh = __fh;
- 	int i;
- 	int res = 0;
- 
- 	if (fmt->fmt.pix.pixelformat == V4L2_PIX_FMT_MJPEG)
--		return zoran_s_fmt_vid_out(file, fh, fmt);
-+		return zoran_s_fmt_vid_out(file, __fh, fmt);
- 
- 	for (i = 0; i < NUM_FORMATS; i++)
- 		if (fmt->fmt.pix.pixelformat == zoran_formats[i].fourcc)
+diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
+index 8ee2e337c9e1b..316594aa40cc5 100644
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -419,7 +419,7 @@ static int qla_nvme_xmt_ls_rsp(struct nvme_fc_local_port *lport,
+ 	switch (rval) {
+ 	case QLA_SUCCESS:
+ 		break;
+-	case EAGAIN:
++	case -EAGAIN:
+ 		msleep(PURLS_MSLEEP_INTERVAL);
+ 		cnt++;
+ 		if (cnt < PURLS_RETRY_COUNT)
 -- 
 2.51.0
 
