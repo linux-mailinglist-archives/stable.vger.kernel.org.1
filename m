@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-185404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A099EBD4BC4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:05:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C2EBD50E9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4D111350647
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:05:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5983456487C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310733081C1;
-	Mon, 13 Oct 2025 15:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92D93093D7;
+	Mon, 13 Oct 2025 15:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlSMHlYS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDVE0IP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E230C3081D4;
-	Mon, 13 Oct 2025 15:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770E3213E6D;
+	Mon, 13 Oct 2025 15:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370197; cv=none; b=fYtxSAqakJYpxCi3SaTYCWn4BFSqBP9tvK65NP+4B5aiBQxUXjMBhQRgLLD2xTdGotJ8JPX5OelcF13pO3FObaFo0Ei86HBUF8yzktE7DEHcQMFc52OQrpESGWRxEgiWW5ZYVSUFA2QTWf7OBfIO3bB4R/nchvdMAHHAhJr35CY=
+	t=1760370202; cv=none; b=I3NRTJDGSYb53X7eScYaFK7uYLqy715GgSsQt31aTdM20C/ahYi8+Ni2RAwX6gUudGxfqyRTRkb5/acDU5utKxGhdKLsz2f4OmzK09zIQdZROitDI66x6rRybFF6OJ0l0vECNcN9Cy6BcvT8PkzNaMUzxLYBvlumnzPxrf02emE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370197; c=relaxed/simple;
-	bh=ufCY0hAMzbjhckhHVAVUvyBgE2ig6MhzGIV1FlY9IRs=;
+	s=arc-20240116; t=1760370202; c=relaxed/simple;
+	bh=fwa+ktdqCZ2N3YWt53KUhF4dPzfQ6qtoBeRrQK2dJWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlyyCHbvt2uIhC4tFir/CiX4NQdf+iEmLeqVJcpE3+9fmqLb6dlyOh/xFX3ZXvspgp7n8zFUop3kokuk4Mh78gQo7ptNdS5uGdhfUF5dDgedh8+eTb9m+5Ppw4CxJmTWKluH/DbWTGstMsFpkHJKzg/SJZYL5UOehFNrxGE2DzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlSMHlYS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D51C116B1;
-	Mon, 13 Oct 2025 15:43:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OtNB92p0i8bVefi9kSZ7gCLMPgo7ITlb/a6oxtbES1m6KyV15dFwkXr7lqNQiQJcExPWR50mtm57whQSQZRnFSD7pQ5fA3MFIIOBgfvR95VtUQxiWrPLrnMXeEA1hxrXR9YKSoXPL9b9Nxk9bJznlO3Ye973g7vJJ6+8PQj0vew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDVE0IP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AD7C4CEE7;
+	Mon, 13 Oct 2025 15:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370196;
-	bh=ufCY0hAMzbjhckhHVAVUvyBgE2ig6MhzGIV1FlY9IRs=;
+	s=korg; t=1760370202;
+	bh=fwa+ktdqCZ2N3YWt53KUhF4dPzfQ6qtoBeRrQK2dJWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlSMHlYSjDuWdlPX67eydr6ZYeCtBdfsFsNcvoQCN0Grj0pd7JPCyG1O7SMmNUCc2
-	 7Jh3mnazurnCjXC/p0jaIbJ67GMsM+q3PEB/jK0AlUkfmzAmoaZgdQbaUC/PuhyIDC
-	 uiwSFxTQLaPyeEF/9riN2T03w0zv7cxjThHwRDGI=
+	b=bDVE0IP/6RD+tgtpdxgATD9+Rnhhv8leowQ61WOWinpG+qi5h8DeSCaVFtzRaTuFf
+	 IqZeBj5m2f9wkJmgVkLzHx3w6LGCHP/gTR8SQS85HRRUOKUIdJ7WOgCIc/diERLsND
+	 7KZ6abYyTxYVLT4AEYBeVd6Mp5v1TYAB8WlkmhyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.17 512/563] tracing: Fix lock imbalance in s_start() memory allocation failure path
-Date: Mon, 13 Oct 2025 16:46:13 +0200
-Message-ID: <20251013144429.856910300@linuxfoundation.org>
+	Yuan Chen <chenyuan@kylinos.cn>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.17 513/563] tracing: Fix race condition in kprobe initialization causing NULL pointer dereference
+Date: Mon, 13 Oct 2025 16:46:14 +0200
+Message-ID: <20251013144429.893113029@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -59,65 +59,277 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Levin <sashal@kernel.org>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-commit 61e19cd2e5c5235326a13a68df1a2f8ec4eeed7b upstream.
+commit 9cf9aa7b0acfde7545c1a1d912576e9bab28dc6f upstream.
 
-When s_start() fails to allocate memory for set_event_iter, it returns NULL
-before acquiring event_mutex. However, the corresponding s_stop() function
-always tries to unlock the mutex, causing a lock imbalance warning:
+There is a critical race condition in kprobe initialization that can lead to
+NULL pointer dereference and kernel crash.
 
-  WARNING: bad unlock balance detected!
-  6.17.0-rc7-00175-g2b2e0c04f78c #7 Not tainted
-  -------------------------------------
-  syz.0.85611/376514 is trying to release lock (event_mutex) at:
-  [<ffffffff8dafc7a4>] traverse.part.0.constprop.0+0x2c4/0x650 fs/seq_file.c:131
-  but there are no more locks to release!
+[1135630.084782] Unable to handle kernel paging request at virtual address 0000710a04630000
+...
+[1135630.260314] pstate: 404003c9 (nZcv DAIF +PAN -UAO)
+[1135630.269239] pc : kprobe_perf_func+0x30/0x260
+[1135630.277643] lr : kprobe_dispatcher+0x44/0x60
+[1135630.286041] sp : ffffaeff4977fa40
+[1135630.293441] x29: ffffaeff4977fa40 x28: ffffaf015340e400
+[1135630.302837] x27: 0000000000000000 x26: 0000000000000000
+[1135630.312257] x25: ffffaf029ed108a8 x24: ffffaf015340e528
+[1135630.321705] x23: ffffaeff4977fc50 x22: ffffaeff4977fc50
+[1135630.331154] x21: 0000000000000000 x20: ffffaeff4977fc50
+[1135630.340586] x19: ffffaf015340e400 x18: 0000000000000000
+[1135630.349985] x17: 0000000000000000 x16: 0000000000000000
+[1135630.359285] x15: 0000000000000000 x14: 0000000000000000
+[1135630.368445] x13: 0000000000000000 x12: 0000000000000000
+[1135630.377473] x11: 0000000000000000 x10: 0000000000000000
+[1135630.386411] x9 : 0000000000000000 x8 : 0000000000000000
+[1135630.395252] x7 : 0000000000000000 x6 : 0000000000000000
+[1135630.403963] x5 : 0000000000000000 x4 : 0000000000000000
+[1135630.412545] x3 : 0000710a04630000 x2 : 0000000000000006
+[1135630.421021] x1 : ffffaeff4977fc50 x0 : 0000710a04630000
+[1135630.429410] Call trace:
+[1135630.434828]  kprobe_perf_func+0x30/0x260
+[1135630.441661]  kprobe_dispatcher+0x44/0x60
+[1135630.448396]  aggr_pre_handler+0x70/0xc8
+[1135630.454959]  kprobe_breakpoint_handler+0x140/0x1e0
+[1135630.462435]  brk_handler+0xbc/0xd8
+[1135630.468437]  do_debug_exception+0x84/0x138
+[1135630.475074]  el1_dbg+0x18/0x8c
+[1135630.480582]  security_file_permission+0x0/0xd0
+[1135630.487426]  vfs_write+0x70/0x1c0
+[1135630.493059]  ksys_write+0x5c/0xc8
+[1135630.498638]  __arm64_sys_write+0x24/0x30
+[1135630.504821]  el0_svc_common+0x78/0x130
+[1135630.510838]  el0_svc_handler+0x38/0x78
+[1135630.516834]  el0_svc+0x8/0x1b0
 
-The issue was introduced by commit b355247df104 ("tracing: Cache ':mod:'
-events for modules not loaded yet") which added the kzalloc() allocation before
-the mutex lock, creating a path where s_start() could return without locking
-the mutex while s_stop() would still try to unlock it.
+kernel/trace/trace_kprobe.c: 1308
+0xffff3df8995039ec <kprobe_perf_func+0x2c>:     ldr     x21, [x24,#120]
+include/linux/compiler.h: 294
+0xffff3df8995039f0 <kprobe_perf_func+0x30>:     ldr     x1, [x21,x0]
 
-Fix this by unconditionally acquiring the mutex immediately after allocation,
-regardless of whether the allocation succeeded.
+kernel/trace/trace_kprobe.c
+1308: head = this_cpu_ptr(call->perf_events);
+1309: if (hlist_empty(head))
+1310: 	return 0;
 
+crash> struct trace_event_call -o
+struct trace_event_call {
+  ...
+  [120] struct hlist_head *perf_events;  //(call->perf_event)
+  ...
+}
+
+crash> struct trace_event_call ffffaf015340e528
+struct trace_event_call {
+  ...
+  perf_events = 0xffff0ad5fa89f088, //this value is correct, but x21 = 0
+  ...
+}
+
+Race Condition Analysis:
+
+The race occurs between kprobe activation and perf_events initialization:
+
+  CPU0                                    CPU1
+  ====                                    ====
+  perf_kprobe_init
+    perf_trace_event_init
+      tp_event->perf_events = list;(1)
+      tp_event->class->reg (2)← KPROBE ACTIVE
+                                          Debug exception triggers
+                                          ...
+                                          kprobe_dispatcher
+                                            kprobe_perf_func (tk->tp.flags & TP_FLAG_PROFILE)
+                                              head = this_cpu_ptr(call->perf_events)(3)
+                                              (perf_events is still NULL)
+
+Problem:
+1. CPU0 executes (1) assigning tp_event->perf_events = list
+2. CPU0 executes (2) enabling kprobe functionality via class->reg()
+3. CPU1 triggers and reaches kprobe_dispatcher
+4. CPU1 checks TP_FLAG_PROFILE - condition passes (step 2 completed)
+5. CPU1 calls kprobe_perf_func() and crashes at (3) because
+   call->perf_events is still NULL
+
+CPU1 sees that kprobe functionality is enabled but does not see that
+perf_events has been assigned.
+
+Add pairing read and write memory barriers to guarantee that if CPU1
+sees that kprobe functionality is enabled, it must also see that
+perf_events has been assigned.
+
+Link: https://lore.kernel.org/all/20251001022025.44626-1-chenyuan_fl@163.com/
+
+Fixes: 50d780560785 ("tracing/kprobes: Add probe handler dispatcher to support perf and ftrace concurrent use")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250929113238.3722055-1-sashal@kernel.org
-Fixes: b355247df104 ("tracing: Cache ":mod:" events for modules not loaded yet")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/trace/trace_fprobe.c |   10 ++++++----
+ kernel/trace/trace_kprobe.c |   11 +++++++----
+ kernel/trace/trace_probe.h  |    9 +++++++--
+ kernel/trace/trace_uprobe.c |   12 ++++++++----
+ 4 files changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 9f3e9537417d..e00da4182deb 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -1629,11 +1629,10 @@ static void *s_start(struct seq_file *m, loff_t *pos)
- 	loff_t l;
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -522,13 +522,14 @@ static int fentry_dispatcher(struct fpro
+ 			     void *entry_data)
+ {
+ 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
++	unsigned int flags = trace_probe_load_flag(&tf->tp);
+ 	int ret = 0;
  
- 	iter = kzalloc(sizeof(*iter), GFP_KERNEL);
-+	mutex_lock(&event_mutex);
- 	if (!iter)
- 		return NULL;
+-	if (trace_probe_test_flag(&tf->tp, TP_FLAG_TRACE))
++	if (flags & TP_FLAG_TRACE)
+ 		fentry_trace_func(tf, entry_ip, fregs);
  
--	mutex_lock(&event_mutex);
--
- 	iter->type = SET_EVENT_FILE;
- 	iter->file = list_entry(&tr->events, struct trace_event_file, list);
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tf->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		ret = fentry_perf_func(tf, entry_ip, fregs);
+ #endif
+ 	return ret;
+@@ -540,11 +541,12 @@ static void fexit_dispatcher(struct fpro
+ 			     void *entry_data)
+ {
+ 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
++	unsigned int flags = trace_probe_load_flag(&tf->tp);
  
--- 
-2.51.0
-
+-	if (trace_probe_test_flag(&tf->tp, TP_FLAG_TRACE))
++	if (flags & TP_FLAG_TRACE)
+ 		fexit_trace_func(tf, entry_ip, ret_ip, fregs, entry_data);
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tf->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		fexit_perf_func(tf, entry_ip, ret_ip, fregs, entry_data);
+ #endif
+ }
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1815,14 +1815,15 @@ static int kprobe_register(struct trace_
+ static int kprobe_dispatcher(struct kprobe *kp, struct pt_regs *regs)
+ {
+ 	struct trace_kprobe *tk = container_of(kp, struct trace_kprobe, rp.kp);
++	unsigned int flags = trace_probe_load_flag(&tk->tp);
+ 	int ret = 0;
+ 
+ 	raw_cpu_inc(*tk->nhit);
+ 
+-	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
++	if (flags & TP_FLAG_TRACE)
+ 		kprobe_trace_func(tk, regs);
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		ret = kprobe_perf_func(tk, regs);
+ #endif
+ 	return ret;
+@@ -1834,6 +1835,7 @@ kretprobe_dispatcher(struct kretprobe_in
+ {
+ 	struct kretprobe *rp = get_kretprobe(ri);
+ 	struct trace_kprobe *tk;
++	unsigned int flags;
+ 
+ 	/*
+ 	 * There is a small chance that get_kretprobe(ri) returns NULL when
+@@ -1846,10 +1848,11 @@ kretprobe_dispatcher(struct kretprobe_in
+ 	tk = container_of(rp, struct trace_kprobe, rp);
+ 	raw_cpu_inc(*tk->nhit);
+ 
+-	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
++	flags = trace_probe_load_flag(&tk->tp);
++	if (flags & TP_FLAG_TRACE)
+ 		kretprobe_trace_func(tk, ri, regs);
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		kretprobe_perf_func(tk, ri, regs);
+ #endif
+ 	return 0;	/* We don't tweak kernel, so just return 0 */
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -271,16 +271,21 @@ struct event_file_link {
+ 	struct list_head		list;
+ };
+ 
++static inline unsigned int trace_probe_load_flag(struct trace_probe *tp)
++{
++	return smp_load_acquire(&tp->event->flags);
++}
++
+ static inline bool trace_probe_test_flag(struct trace_probe *tp,
+ 					 unsigned int flag)
+ {
+-	return !!(tp->event->flags & flag);
++	return !!(trace_probe_load_flag(tp) & flag);
+ }
+ 
+ static inline void trace_probe_set_flag(struct trace_probe *tp,
+ 					unsigned int flag)
+ {
+-	tp->event->flags |= flag;
++	smp_store_release(&tp->event->flags, tp->event->flags | flag);
+ }
+ 
+ static inline void trace_probe_clear_flag(struct trace_probe *tp,
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -1547,6 +1547,7 @@ static int uprobe_dispatcher(struct upro
+ 	struct trace_uprobe *tu;
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb = NULL;
++	unsigned int flags;
+ 	int ret = 0;
+ 
+ 	tu = container_of(con, struct trace_uprobe, consumer);
+@@ -1561,11 +1562,12 @@ static int uprobe_dispatcher(struct upro
+ 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
+ 		return 0;
+ 
+-	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
++	flags = trace_probe_load_flag(&tu->tp);
++	if (flags & TP_FLAG_TRACE)
+ 		ret |= uprobe_trace_func(tu, regs, &ucb);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		ret |= uprobe_perf_func(tu, regs, &ucb);
+ #endif
+ 	uprobe_buffer_put(ucb);
+@@ -1579,6 +1581,7 @@ static int uretprobe_dispatcher(struct u
+ 	struct trace_uprobe *tu;
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb = NULL;
++	unsigned int flags;
+ 
+ 	tu = container_of(con, struct trace_uprobe, consumer);
+ 
+@@ -1590,11 +1593,12 @@ static int uretprobe_dispatcher(struct u
+ 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
+ 		return 0;
+ 
+-	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
++	flags = trace_probe_load_flag(&tu->tp);
++	if (flags & TP_FLAG_TRACE)
+ 		uretprobe_trace_func(tu, func, regs, &ucb);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		uretprobe_perf_func(tu, func, regs, &ucb);
+ #endif
+ 	uprobe_buffer_put(ucb);
 
 
 
