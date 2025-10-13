@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-185052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0FABD4946
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:54:03 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED9DBD465D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6BFE154694B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:39:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BFF8B34F870
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104F530DEC1;
-	Mon, 13 Oct 2025 15:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBDC313E22;
+	Mon, 13 Oct 2025 15:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtQ9iY7h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvKgrRL7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D1F311C20;
-	Mon, 13 Oct 2025 15:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DE3313E09;
+	Mon, 13 Oct 2025 15:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369195; cv=none; b=LosLA6N2qt6i1qt9wq1lR0sncSCEYY3EF5ocomf0ndszCUhp+qysHJqgGHy8R0ItgPWQYehT7HcGYMXlHLrFvK8DTlSvI2xLPW9cejhzkNs/SgnyoQxXKpgm2259OWPm7Mf6eisMfRrq6G/6tWuTGLhAze/yXoZhuim52RM3QSA=
+	t=1760369207; cv=none; b=tmxYxvrUEnFJ0u3y2/9khl1JIgdgJrCxBVj+JiN42moxKm5N6/HmDAPcwAtn8+6LRHsPHBui+VvfWN+AFayaxEzHtFYNE5AoGuXCinxoHg9erYiIkKZJPjg8YnTT8adTPyMs4GCtio6X0ywtIR+D21RB8H+pzhvCHyiuvieJ3a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369195; c=relaxed/simple;
-	bh=UJDip82Sj9PmZd7ejpS8KwfYWPtZ/A+12lUeDpDSfpA=;
+	s=arc-20240116; t=1760369207; c=relaxed/simple;
+	bh=Fp+y8LWQpWRStvyCnTuxWEXRULIUV9OjeGPAmjV7oNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bel5uKME0obs7s1v7OwXeUZGwajnXPvtz/9qv0ZDZ1LeDvgCNN3YaxhFOaS7F9NN5Z2a25t0JitSuc12xG7EE6K0RZGYwYOJZ19z2BSKo9TzRcRaw69GUArArCsrAMtdX+Qn/Mt35lZJUNpb5RzCgCCf4QEibNszgOI9l5rMS7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MtQ9iY7h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F74C116C6;
-	Mon, 13 Oct 2025 15:26:35 +0000 (UTC)
+	 MIME-Version; b=RdwvR/c4HCuX+cc8XmWQI5wTFVJ8AjBLu/bMYwFO8PLy2xkB3ZKs1CU9oDOQVKF9iWOPY+A3souq7VgxYtMM3WDzeQ8tnmYHLM31pPW+XSskyZ1yT3XT5nfBFFUBWMOw8Vx0S8bklHBAEylVLmJQ8E+p1jqnObsm3CkK+Eyl/ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvKgrRL7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0E9C4CEFE;
+	Mon, 13 Oct 2025 15:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369195;
-	bh=UJDip82Sj9PmZd7ejpS8KwfYWPtZ/A+12lUeDpDSfpA=;
+	s=korg; t=1760369207;
+	bh=Fp+y8LWQpWRStvyCnTuxWEXRULIUV9OjeGPAmjV7oNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MtQ9iY7h/VDsrxdaIT4AWJeYvK3pl3CYh8fBu5exllrX5r+j+XlSeIeCrsrRfvk93
-	 p929b+CEl03xPSUUKamJoMHRpee5ORtWW7rItsARVWJvpQXHVE/UHYVrVxT7IpBovh
-	 1rXV92IwNz70lXasR2Df7Xt/mI/AsnNJBFNBZQeM=
+	b=XvKgrRL7DnUzfFUBHrc1vjn7mGLdi2ojwiwZ7nPxXCzi/PTB59B8n23XDzdDoRKrG
+	 mbb5E/Ogu1GnxKk/xfugDbBZ9UMs3LlViaWWJtLvZN7r5SomryzyFqlKrWHPpO9fqM
+	 aoCSSuW4fbaaX1nMDX+sO8Kp6UCSsREmg5li7+pI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 128/563] blk-mq: cleanup shared tags case in blk_mq_update_nr_requests()
-Date: Mon, 13 Oct 2025 16:39:49 +0200
-Message-ID: <20251013144415.931894826@linuxfoundation.org>
+Subject: [PATCH 6.17 132/563] arm64: dts: allwinner: a527: cubie-a5e: Add ethernet PHY reset setting
+Date: Mon, 13 Oct 2025 16:39:53 +0200
+Message-ID: <20251013144416.075202173@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,102 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Chen-Yu Tsai <wens@csie.org>
 
-[ Upstream commit 7f2799c546dba9e12f9ff4d07936601e416c640d ]
+[ Upstream commit a15f095b590bcc1968fbf2ced8fe87fbd8d012e0 ]
 
-For shared tags case, all hctx->sched_tags/tags are the same, it doesn't
-make sense to call into blk_mq_tag_update_depth() multiple times for the
-same tags.
+The external Ethernet PHY has a reset pin that is connected to the SoC.
+It is missing from the original submission.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: b86433721f46 ("blk-mq: fix potential deadlock while nr_requests grown")
+Add it to complete the description.
+
+Fixes: acca163f3f51 ("arm64: dts: allwinner: a527: add EMAC0 to Radxa A5E board")
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20250908181059.1785605-7-wens@kernel.org
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq-tag.c |  7 -------
- block/blk-mq.c     | 43 ++++++++++++++++++++++---------------------
- 2 files changed, 22 insertions(+), 28 deletions(-)
+ arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/block/blk-mq-tag.c b/block/blk-mq-tag.c
-index 725210f27471c..aed84c5d5c2b2 100644
---- a/block/blk-mq-tag.c
-+++ b/block/blk-mq-tag.c
-@@ -596,13 +596,6 @@ int blk_mq_tag_update_depth(struct blk_mq_hw_ctx *hctx,
- 		struct blk_mq_tag_set *set = hctx->queue->tag_set;
- 		struct blk_mq_tags *new;
- 
--		/*
--		 * Only the sbitmap needs resizing since we allocated the max
--		 * initially.
--		 */
--		if (blk_mq_is_shared_tags(set->flags))
--			return 0;
--
- 		new = blk_mq_alloc_map_and_rqs(set, hctx->queue_num, tdepth);
- 		if (!new)
- 			return -ENOMEM;
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index a81ef562014d6..bcb7495893a09 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4934,34 +4934,35 @@ int blk_mq_update_nr_requests(struct request_queue *q, unsigned int nr)
- 
- 	blk_mq_quiesce_queue(q);
- 
--	queue_for_each_hw_ctx(q, hctx, i) {
--		if (!hctx->tags)
--			continue;
--		/*
--		 * If we're using an MQ scheduler, just update the scheduler
--		 * queue depth. This is similar to what the old code would do.
--		 */
--		if (hctx->sched_tags) {
--			ret = blk_mq_tag_update_depth(hctx, &hctx->sched_tags,
--						      nr);
--		} else {
--			ret = blk_mq_tag_update_depth(hctx, &hctx->tags, nr);
--		}
--		if (ret)
--			goto out;
--	}
--
--	q->nr_requests = nr;
--	if (q->elevator && q->elevator->type->ops.depth_updated)
--		q->elevator->type->ops.depth_updated(q);
--
- 	if (blk_mq_is_shared_tags(set->flags)) {
- 		if (q->elevator)
- 			blk_mq_tag_update_sched_shared_tags(q);
- 		else
- 			blk_mq_tag_resize_shared_tags(set, nr);
-+	} else {
-+		queue_for_each_hw_ctx(q, hctx, i) {
-+			if (!hctx->tags)
-+				continue;
-+			/*
-+			 * If we're using an MQ scheduler, just update the
-+			 * scheduler queue depth. This is similar to what the
-+			 * old code would do.
-+			 */
-+			if (hctx->sched_tags)
-+				ret = blk_mq_tag_update_depth(hctx,
-+							&hctx->sched_tags, nr);
-+			else
-+				ret = blk_mq_tag_update_depth(hctx,
-+							&hctx->tags, nr);
-+			if (ret)
-+				goto out;
-+		}
- 	}
- 
-+	q->nr_requests = nr;
-+	if (q->elevator && q->elevator->type->ops.depth_updated)
-+		q->elevator->type->ops.depth_updated(q);
-+
- out:
- 	blk_mq_unquiesce_queue(q);
+diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+index 553ad774ed13d..43251042d1bd5 100644
+--- a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
++++ b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+@@ -75,6 +75,9 @@ &mdio0 {
+ 	ext_rgmii_phy: ethernet-phy@1 {
+ 		compatible = "ethernet-phy-ieee802.3-c22";
+ 		reg = <1>;
++		reset-gpios = <&pio 7 8 GPIO_ACTIVE_LOW>; /* PH8 */
++		reset-assert-us = <10000>;
++		reset-deassert-us = <150000>;
+ 	};
+ };
  
 -- 
 2.51.0
