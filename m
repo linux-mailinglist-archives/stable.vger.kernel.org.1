@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-184557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55964BD4666
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175E1BD40EE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CFE422C58
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:18:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17ABC4F9E14
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37A630BF5D;
-	Mon, 13 Oct 2025 15:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF718314D30;
+	Mon, 13 Oct 2025 14:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D61xtA2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUW0QIYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6255930BF55;
-	Mon, 13 Oct 2025 15:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9621C314D2B;
+	Mon, 13 Oct 2025 14:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367776; cv=none; b=LXEgpfoyuzJmQFwm9R8pn1Nv4S9P7eIsLr/V2ftKvNlfH3PWtDLfSgjBBKBgQ4Og/808iohHfAtF609PVR7/0xJqxu4Uv3aBkF6xvAs5VdlQx6HAvhsP71QxlKEWPnFCwULHJowS+Ea+nJRwZACVSFom8zLlWwAg4eUZGHdDU2I=
+	t=1760367263; cv=none; b=VfbI0j/yMUWWmIK8dEx59HZoefEuGNJ8Z1a8zkfVuRYlSOOa4GUrBswu7bz/Mng+JkpqUQpMXkEwhC8ugRvQlNm03jM4bT6ZaYpPJ4L+sOWI0K1FYTRrUyYQvN1jK21VioPNXuBVsYN8f1M3Z5742yg4by/hM0ClZuRQx2LgEOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367776; c=relaxed/simple;
-	bh=Q10lgVH/CWaIyPgIfHEzfV59dHfrtu4SVnjsIM/nz34=;
+	s=arc-20240116; t=1760367263; c=relaxed/simple;
+	bh=NgKfNaBgMR+AWIy0tdQ7f6IgRzh18A4JfqXxRbI3zzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gse3QCrMUBu8U+QErvgM6YaiNo95Bx+4+P4HALIPCaJT/57dhRcC/aaznytq8yAROFYAz0l/KMLm01Ic2MyLXh4R/Sy70pRWxk/I3TXg06rmKbuJO6oMq4UvrYULcIRnQijK4Lvkg+p79myjc4GyAiWZtuwgkYGF6ZpgZaFvTkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D61xtA2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BC4C4CEFE;
-	Mon, 13 Oct 2025 15:02:55 +0000 (UTC)
+	 MIME-Version; b=bjyTXiNYHfK3E5nM//oznmjdDtIUc/VwJCwGjPLf708PsvnS1L0ssfDbNao5ThcxrumbmPJcBxq2dhhMCROIdsC39vWU+AC67nUmcEuBZQkejk+5s/1ITcTvnA9BHmZy1yl9hSL1RyFU5vyJpB/ENV6PYU6pwZ3jJde70REV/Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUW0QIYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2066AC113D0;
+	Mon, 13 Oct 2025 14:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367775;
-	bh=Q10lgVH/CWaIyPgIfHEzfV59dHfrtu4SVnjsIM/nz34=;
+	s=korg; t=1760367263;
+	bh=NgKfNaBgMR+AWIy0tdQ7f6IgRzh18A4JfqXxRbI3zzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D61xtA2UFD03+Rc7FmKd8xvpBgC2+UWl16b6WBrdg5T68//T/inEj5bQPcxl1rHMw
-	 gfJERe+CpVFdVgJTNaN7G3n0clSPuW0u3NL3dLb0uXpnB0aiZURBWgdzzOqb3ITIcE
-	 pE2WH30SvpjNHFe3F4a3tKir1VBO9uC/YQGurwW8=
+	b=ZUW0QIYCjJuQYHDACM0ym9xLQ+cOk1HC8iAB6Yu8JIwLSzLwzfCfaBDncNDw5sQ/1
+	 9NK/cJvbHtqXe4vYvRfb1Hz9hWK0niVYHcIM//E+rataXRGKK3BYV3dfEz4VrHe9/s
+	 K1zQG5Ill+TmvomJbKU60lO0bh+3p7nySB/EfZ8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactcode.com>,
-	Jonathan 'theJPster' Pallant <kernel@thejpster.org.uk>
-Subject: [PATCH 6.6 129/196] sparc: fix accurate exception reporting in copy_{from_to}_user for UltraSPARC
-Date: Mon, 13 Oct 2025 16:45:20 +0200
-Message-ID: <20251013144319.976097416@linuxfoundation.org>
+	Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>,
+	James Clark <james.clark@linaro.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 148/196] coresight-etm4x: Conditionally access register TRCEXTINSELR
+Date: Mon, 13 Oct 2025 16:45:21 +0200
+Message-ID: <20251013144320.051573762@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+From: Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>
 
-[ Upstream commit 4fba1713001195e59cfc001ff1f2837dab877efb ]
+[ Upstream commit dcdc42f5dcf9b9197c51246c62966e2d54a033d8 ]
 
-The referenced commit introduced exception handlers on user-space memory
-references in copy_from_user and copy_to_user. These handlers return from
-the respective function and calculate the remaining bytes left to copy
-using the current register contents. This commit fixes a couple of bad
-calculations. This will fix the return value of copy_from_user and
-copy_to_user in the faulting case. The behaviour of memcpy stays unchanged.
+The TRCEXTINSELR is only implemented if TRCIDR5.NUMEXTINSEL > 0.
+To avoid invalid accesses, introduce a check on numextinsel
+(derived from TRCIDR5[11:9]) before reading or writing to this register.
 
-Fixes: cb736fdbb208 ("sparc64: Convert U1copy_{from,to}_user to accurate exception reporting.")
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on QEMU 10.0.3
-Tested-by: René Rebe <rene@exactcode.com> # on Ultra 5 UltraSparc IIi
-Tested-by: Jonathan 'theJPster' Pallant <kernel@thejpster.org.uk> # on Sun Netra T1
-Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-1-1ca72dda195b@mkarcher.dialup.fu-berlin.de
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Fixes: f5bd523690d2 ("coresight: etm4x: Convert all register accesses")
+Signed-off-by: Yuanfang Zhang <yuanfang.zhang@oss.qualcomm.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250812-trcextinselr_issue-v2-1-e6eb121dfcf4@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/lib/U1memcpy.S | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 11 ++++++++---
+ drivers/hwtracing/coresight/coresight-etm4x.h      |  2 ++
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/sparc/lib/U1memcpy.S b/arch/sparc/lib/U1memcpy.S
-index 635398ec7540e..154fbd35400ca 100644
---- a/arch/sparc/lib/U1memcpy.S
-+++ b/arch/sparc/lib/U1memcpy.S
-@@ -164,17 +164,18 @@ ENTRY(U1_gs_40_fp)
- 	retl
- 	 add		%o0, %o2, %o0
- ENDPROC(U1_gs_40_fp)
--ENTRY(U1_g3_0_fp)
--	VISExitHalf
--	retl
--	 add		%g3, %o2, %o0
--ENDPROC(U1_g3_0_fp)
- ENTRY(U1_g3_8_fp)
- 	VISExitHalf
- 	add		%g3, 8, %g3
- 	retl
- 	 add		%g3, %o2, %o0
- ENDPROC(U1_g3_8_fp)
-+ENTRY(U1_g3_16_fp)
-+	VISExitHalf
-+	add		%g3, 16, %g3
-+	retl
-+	 add		%g3, %o2, %o0
-+ENDPROC(U1_g3_16_fp)
- ENTRY(U1_o2_0_fp)
- 	VISExitHalf
- 	retl
-@@ -547,18 +548,18 @@ FUNC_NAME:		/* %o0=dst, %o1=src, %o2=len */
- 62:	FINISH_VISCHUNK(o0, f44, f46)
- 63:	UNEVEN_VISCHUNK_LAST(o0, f46, f0)
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 1ad689db74da1..d89153d0517ec 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -451,7 +451,8 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, config->seq_rst, TRCSEQRSTEVR);
+ 		etm4x_relaxed_write32(csa, config->seq_state, TRCSEQSTR);
+ 	}
+-	etm4x_relaxed_write32(csa, config->ext_inp, TRCEXTINSELR);
++	if (drvdata->numextinsel)
++		etm4x_relaxed_write32(csa, config->ext_inp, TRCEXTINSELR);
+ 	for (i = 0; i < drvdata->nr_cntr; i++) {
+ 		etm4x_relaxed_write32(csa, config->cntrldvr[i], TRCCNTRLDVRn(i));
+ 		etm4x_relaxed_write32(csa, config->cntr_ctrl[i], TRCCNTCTLRn(i));
+@@ -1239,6 +1240,7 @@ static void etm4_init_arch_data(void *info)
+ 	etmidr5 = etm4x_relaxed_read32(csa, TRCIDR5);
+ 	/* NUMEXTIN, bits[8:0] number of external inputs implemented */
+ 	drvdata->nr_ext_inp = FIELD_GET(TRCIDR5_NUMEXTIN_MASK, etmidr5);
++	drvdata->numextinsel = FIELD_GET(TRCIDR5_NUMEXTINSEL_MASK, etmidr5);
+ 	/* TRACEIDSIZE, bits[21:16] indicates the trace ID width */
+ 	drvdata->trcid_size = FIELD_GET(TRCIDR5_TRACEIDSIZE_MASK, etmidr5);
+ 	/* ATBTRIG, bit[22] implementation can support ATB triggers? */
+@@ -1671,7 +1673,9 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 		state->trcseqrstevr = etm4x_read32(csa, TRCSEQRSTEVR);
+ 		state->trcseqstr = etm4x_read32(csa, TRCSEQSTR);
+ 	}
+-	state->trcextinselr = etm4x_read32(csa, TRCEXTINSELR);
++
++	if (drvdata->numextinsel)
++		state->trcextinselr = etm4x_read32(csa, TRCEXTINSELR);
  
--93:	EX_LD_FP(LOAD(ldd, %o1, %f2), U1_g3_0_fp)
-+93:	EX_LD_FP(LOAD(ldd, %o1, %f2), U1_g3_8_fp)
- 	add		%o1, 8, %o1
- 	subcc		%g3, 8, %g3
- 	faligndata	%f0, %f2, %f8
--	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_8_fp)
-+	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_16_fp)
- 	bl,pn		%xcc, 95f
- 	 add		%o0, 8, %o0
--	EX_LD_FP(LOAD(ldd, %o1, %f0), U1_g3_0_fp)
-+	EX_LD_FP(LOAD(ldd, %o1, %f0), U1_g3_8_fp)
- 	add		%o1, 8, %o1
- 	subcc		%g3, 8, %g3
- 	faligndata	%f2, %f0, %f8
--	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_8_fp)
-+	EX_ST_FP(STORE(std, %f8, %o0), U1_g3_16_fp)
- 	bge,pt		%xcc, 93b
- 	 add		%o0, 8, %o0
+ 	for (i = 0; i < drvdata->nr_cntr; i++) {
+ 		state->trccntrldvr[i] = etm4x_read32(csa, TRCCNTRLDVRn(i));
+@@ -1803,7 +1807,8 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, state->trcseqrstevr, TRCSEQRSTEVR);
+ 		etm4x_relaxed_write32(csa, state->trcseqstr, TRCSEQSTR);
+ 	}
+-	etm4x_relaxed_write32(csa, state->trcextinselr, TRCEXTINSELR);
++	if (drvdata->numextinsel)
++		etm4x_relaxed_write32(csa, state->trcextinselr, TRCEXTINSELR);
  
+ 	for (i = 0; i < drvdata->nr_cntr; i++) {
+ 		etm4x_relaxed_write32(csa, state->trccntrldvr[i], TRCCNTRLDVRn(i));
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
+index 31754173091b9..b183d1d12f129 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -162,6 +162,7 @@
+ #define TRCIDR4_NUMVMIDC_MASK			GENMASK(31, 28)
+ 
+ #define TRCIDR5_NUMEXTIN_MASK			GENMASK(8, 0)
++#define TRCIDR5_NUMEXTINSEL_MASK               GENMASK(11, 9)
+ #define TRCIDR5_TRACEIDSIZE_MASK		GENMASK(21, 16)
+ #define TRCIDR5_ATBTRIG				BIT(22)
+ #define TRCIDR5_LPOVERRIDE			BIT(23)
+@@ -995,6 +996,7 @@ struct etmv4_drvdata {
+ 	u8				nr_cntr;
+ 	u8				nr_ext_inp;
+ 	u8				numcidc;
++	u8				numextinsel;
+ 	u8				numvmidc;
+ 	u8				nrseqstate;
+ 	u8				nr_event;
 -- 
 2.51.0
 
