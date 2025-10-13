@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-185381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C72BD5509
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 19:01:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D85BD538C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EE8248623C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 11238580702
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB593148C6;
-	Mon, 13 Oct 2025 15:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BB830DECE;
+	Mon, 13 Oct 2025 15:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUwJF73U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fgya7U2T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7950530DEDC;
-	Mon, 13 Oct 2025 15:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F852309DB1;
+	Mon, 13 Oct 2025 15:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370131; cv=none; b=lBO3rAA7b9BEyGb6CLjlig6N35Co0ND3FO+XK6weLqYs2sRTqbNCiTTjN22iUF6Om+V23yOux0jdUlzo95SI2O2nuSw8zk84J5/0ZXBt7qgok5sYbHM72WP2d7YRFIjCL5V99rCsfKVRBdjblfzi0k+hmaCk6FSfaBEkKn19lhU=
+	t=1760370044; cv=none; b=DOPmBPcR2lfH6+coMsiyMkTBfcxeYpgvQwYWqiQ+KmXdQsQfLoKW4jFzw7yxnViE+XnTLtQv/x4RZyFDVfwmVBHqepyUmAv3iT+dndP819JBGrJKKUWebcp6w9EbiceBu7Ppz09ZS3tW0OYunL8kQnM/4Lua0XEys+wmeKsPPng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370131; c=relaxed/simple;
-	bh=9emgkTb41Bf+8SolO66ddkGD6KT5YagCXYrvLj3SWRE=;
+	s=arc-20240116; t=1760370044; c=relaxed/simple;
+	bh=th26xk+qs2gz5c06yLQwGHFHj2pioVBxMHBbjVi18DA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BKPj2W4jNYRwyrt/7uwMg84J2WwpAxUuupnxnXk0UgzC+9ssdtxqXMk5popXqk4YXhYI/Hr4sww2qS2g5cXHhtLn8Ky6Enc2JCzdhVd3Ps2BFGNc2XPJIkd1pSBn2VGc3kLC4LWDskb/gOgk27R+NgfOF98AAdjPayey0gi8GEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUwJF73U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001ECC4CEE7;
-	Mon, 13 Oct 2025 15:42:10 +0000 (UTC)
+	 MIME-Version; b=Sb5lDPCWz09tt5wObudwpwGqakPMj18LgDJ61NruU6XStB0KsA2N10J+9GAsd+NEfr7IITH3arLOVeS6uYE9kGFcduUBEt1lrxLEWyX2BoIh0269V4IQvEAfaZlJMQ5hgST++C9BONxh5rv5Md68tuLgkk9Y7DUIBh+GvCSg2v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fgya7U2T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55224C4CEE7;
+	Mon, 13 Oct 2025 15:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370131;
-	bh=9emgkTb41Bf+8SolO66ddkGD6KT5YagCXYrvLj3SWRE=;
+	s=korg; t=1760370043;
+	bh=th26xk+qs2gz5c06yLQwGHFHj2pioVBxMHBbjVi18DA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUwJF73UlODDd/4/+rIWh6F7LDhyiUmRszSYJctxWVMF/XX8paBxxzm1QWuazzs3Z
-	 kSUfFXZBGNV4LKGq4xfajMvxL+GpEYXU/DiCYvcdNZHfPaVBBL1jFqQxIdTx9T0Jim
-	 LK/b4L7dKjz1Tmz0k5CZk4u55pN62pq5CSJOCOlo=
+	b=Fgya7U2TDFA2TxJM7lVNRRK2M0XPZ2lkxaO6nc98PZ0QHq/x2mNRCYkodc8AVOEWe
+	 7FizY4dc/CBKjMuo6e9mVI5HIIFY9p5/TRdU7kGimVBriz7Xuynqmv2tZsHBYqN0S2
+	 iXCfaI+0DAUPDIyaJRGpdzFrQPcugnJSdTr3Xjcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran K <kiran.k@intel.com>,
+	Pauli Virtanen <pav@iki.fi>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 456/563] Bluetooth: btintel_pcie: Refactor Device Coredump
-Date: Mon, 13 Oct 2025 16:45:17 +0200
-Message-ID: <20251013144427.803515201@linuxfoundation.org>
+Subject: [PATCH 6.17 459/563] Bluetooth: ISO: free rx_skb if not consumed
+Date: Mon, 13 Oct 2025 16:45:20 +0200
+Message-ID: <20251013144427.913518869@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,360 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 58fddb364dd5c4e9bf223a2113a42538d9c040de ]
+[ Upstream commit 6ba85da5804efffe15c89b03742ea868f20b4172 ]
 
-As device coredumps are not HCI traces, maintain the device coredump at
-the driver level and eliminate the dependency on hdev_devcd*()
+If iso_conn is freed when RX is incomplete, free any leftover skb piece.
 
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Fixes: 07e6bddb54b4 ("Bluetooth: btintel_pcie: Add support for device coredump")
+Fixes: dc26097bdb86 ("Bluetooth: ISO: Use kref to track lifetime of iso_conn")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel_pcie.c | 220 +++++++++++--------------------
- drivers/bluetooth/btintel_pcie.h |   2 +
- 2 files changed, 77 insertions(+), 145 deletions(-)
+ net/bluetooth/iso.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index 6e7bbbd35279f..585de143ab255 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -15,6 +15,7 @@
- #include <linux/interrupt.h>
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index c047a15e3fa39..9170c46eb47c6 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -111,6 +111,8 @@ static void iso_conn_free(struct kref *ref)
+ 	/* Ensure no more work items will run since hci_conn has been dropped */
+ 	disable_delayed_work_sync(&conn->timeout_work);
  
- #include <linux/unaligned.h>
-+#include <linux/devcoredump.h>
- 
- #include <net/bluetooth/bluetooth.h>
- #include <net/bluetooth/hci_core.h>
-@@ -554,25 +555,6 @@ static void btintel_pcie_mac_init(struct btintel_pcie_data *data)
- 	btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
++	kfree_skb(conn->rx_skb);
++
+ 	kfree(conn);
  }
  
--static int btintel_pcie_add_dmp_data(struct hci_dev *hdev, const void *data, int size)
--{
--	struct sk_buff *skb;
--	int err;
--
--	skb = alloc_skb(size, GFP_ATOMIC);
--	if (!skb)
--		return -ENOMEM;
--
--	skb_put_data(skb, data, size);
--	err = hci_devcd_append(hdev, skb);
--	if (err) {
--		bt_dev_err(hdev, "Failed to append data in the coredump");
--		return err;
--	}
--
--	return 0;
--}
--
- static int btintel_pcie_get_mac_access(struct btintel_pcie_data *data)
- {
- 	u32 reg;
-@@ -617,30 +599,35 @@ static void btintel_pcie_release_mac_access(struct btintel_pcie_data *data)
- 	btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
- }
- 
--static void btintel_pcie_copy_tlv(struct sk_buff *skb, enum btintel_pcie_tlv_type type,
--				  void *data, int size)
-+static void *btintel_pcie_copy_tlv(void *dest, enum btintel_pcie_tlv_type type,
-+				   void *data, size_t size)
- {
- 	struct intel_tlv *tlv;
- 
--	tlv = skb_put(skb, sizeof(*tlv) + size);
-+	tlv = dest;
- 	tlv->type = type;
- 	tlv->len = size;
- 	memcpy(tlv->val, data, tlv->len);
-+	return dest + sizeof(*tlv) + size;
- }
- 
- static int btintel_pcie_read_dram_buffers(struct btintel_pcie_data *data)
- {
--	u32 offset, prev_size, wr_ptr_status, dump_size, i;
-+	u32 offset, prev_size, wr_ptr_status, dump_size, data_len;
- 	struct btintel_pcie_dbgc *dbgc = &data->dbgc;
--	u8 buf_idx, dump_time_len, fw_build;
- 	struct hci_dev *hdev = data->hdev;
-+	u8 *pdata, *p, buf_idx;
- 	struct intel_tlv *tlv;
- 	struct timespec64 now;
--	struct sk_buff *skb;
- 	struct tm tm_now;
--	char buf[256];
--	u16 hdr_len;
--	int ret;
-+	char fw_build[128];
-+	char ts[128];
-+	char vendor[64];
-+	char driver[64];
-+
-+	if (!IS_ENABLED(CONFIG_DEV_COREDUMP))
-+		return -EOPNOTSUPP;
-+
- 
- 	wr_ptr_status = btintel_pcie_rd_dev_mem(data, BTINTEL_PCIE_DBGC_CUR_DBGBUFF_STATUS);
- 	offset = wr_ptr_status & BTINTEL_PCIE_DBG_OFFSET_BIT_MASK;
-@@ -657,88 +644,84 @@ static int btintel_pcie_read_dram_buffers(struct btintel_pcie_data *data)
- 	else
- 		return -EINVAL;
- 
-+	snprintf(vendor, sizeof(vendor), "Vendor: Intel\n");
-+	snprintf(driver, sizeof(driver), "Driver: %s\n",
-+		 data->dmp_hdr.driver_name);
-+
- 	ktime_get_real_ts64(&now);
- 	time64_to_tm(now.tv_sec, 0, &tm_now);
--	dump_time_len = snprintf(buf, sizeof(buf), "Dump Time: %02d-%02d-%04ld %02d:%02d:%02d",
-+	snprintf(ts, sizeof(ts), "Dump Time: %02d-%02d-%04ld %02d:%02d:%02d",
- 				 tm_now.tm_mday, tm_now.tm_mon + 1, tm_now.tm_year + 1900,
- 				 tm_now.tm_hour, tm_now.tm_min, tm_now.tm_sec);
- 
--	fw_build = snprintf(buf + dump_time_len, sizeof(buf) - dump_time_len,
-+	snprintf(fw_build, sizeof(fw_build),
- 			    "Firmware Timestamp: Year %u WW %02u buildtype %u build %u",
- 			    2000 + (data->dmp_hdr.fw_timestamp >> 8),
- 			    data->dmp_hdr.fw_timestamp & 0xff, data->dmp_hdr.fw_build_type,
- 			    data->dmp_hdr.fw_build_num);
- 
--	hdr_len = sizeof(*tlv) + sizeof(data->dmp_hdr.cnvi_bt) +
--		  sizeof(*tlv) + sizeof(data->dmp_hdr.write_ptr) +
--		  sizeof(*tlv) + sizeof(data->dmp_hdr.wrap_ctr) +
--		  sizeof(*tlv) + sizeof(data->dmp_hdr.trigger_reason) +
--		  sizeof(*tlv) + sizeof(data->dmp_hdr.fw_git_sha1) +
--		  sizeof(*tlv) + sizeof(data->dmp_hdr.cnvr_top) +
--		  sizeof(*tlv) + sizeof(data->dmp_hdr.cnvi_top) +
--		  sizeof(*tlv) + dump_time_len +
--		  sizeof(*tlv) + fw_build;
-+	data_len = sizeof(*tlv) + sizeof(data->dmp_hdr.cnvi_bt) +
-+		sizeof(*tlv) + sizeof(data->dmp_hdr.write_ptr) +
-+		sizeof(*tlv) + sizeof(data->dmp_hdr.wrap_ctr) +
-+		sizeof(*tlv) + sizeof(data->dmp_hdr.trigger_reason) +
-+		sizeof(*tlv) + sizeof(data->dmp_hdr.fw_git_sha1) +
-+		sizeof(*tlv) + sizeof(data->dmp_hdr.cnvr_top) +
-+		sizeof(*tlv) + sizeof(data->dmp_hdr.cnvi_top) +
-+		sizeof(*tlv) + strlen(ts) +
-+		sizeof(*tlv) + strlen(fw_build) +
-+		sizeof(*tlv) + strlen(vendor) +
-+		sizeof(*tlv) + strlen(driver);
- 
--	dump_size = hdr_len + sizeof(hdr_len);
-+	/*
-+	 * sizeof(u32) - signature
-+	 * sizeof(data_len) - to store tlv data size
-+	 * data_len - TLV data
-+	 */
-+	dump_size = sizeof(u32) + sizeof(data_len) + data_len;
- 
--	skb = alloc_skb(dump_size, GFP_KERNEL);
--	if (!skb)
--		return -ENOMEM;
- 
- 	/* Add debug buffers data length to dump size */
- 	dump_size += BTINTEL_PCIE_DBGC_BUFFER_SIZE * dbgc->count;
- 
--	ret = hci_devcd_init(hdev, dump_size);
--	if (ret) {
--		bt_dev_err(hdev, "Failed to init devcoredump, err %d", ret);
--		kfree_skb(skb);
--		return ret;
--	}
-+	pdata = vmalloc(dump_size);
-+	if (!pdata)
-+		return -ENOMEM;
-+	p = pdata;
-+
-+	*(u32 *)p = BTINTEL_PCIE_MAGIC_NUM;
-+	p += sizeof(u32);
- 
--	skb_put_data(skb, &hdr_len, sizeof(hdr_len));
-+	*(u32 *)p = data_len;
-+	p += sizeof(u32);
- 
--	btintel_pcie_copy_tlv(skb, BTINTEL_CNVI_BT, &data->dmp_hdr.cnvi_bt,
--			      sizeof(data->dmp_hdr.cnvi_bt));
- 
--	btintel_pcie_copy_tlv(skb, BTINTEL_WRITE_PTR, &data->dmp_hdr.write_ptr,
--			      sizeof(data->dmp_hdr.write_ptr));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_VENDOR, vendor, strlen(vendor));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_DRIVER, driver, strlen(driver));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_DUMP_TIME, ts, strlen(ts));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_FW_BUILD, fw_build,
-+				  strlen(fw_build));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_CNVI_BT, &data->dmp_hdr.cnvi_bt,
-+				  sizeof(data->dmp_hdr.cnvi_bt));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_WRITE_PTR, &data->dmp_hdr.write_ptr,
-+				  sizeof(data->dmp_hdr.write_ptr));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_WRAP_CTR, &data->dmp_hdr.wrap_ctr,
-+				  sizeof(data->dmp_hdr.wrap_ctr));
- 
- 	data->dmp_hdr.wrap_ctr = btintel_pcie_rd_dev_mem(data,
- 							 BTINTEL_PCIE_DBGC_DBGBUFF_WRAP_ARND);
- 
--	btintel_pcie_copy_tlv(skb, BTINTEL_WRAP_CTR, &data->dmp_hdr.wrap_ctr,
--			      sizeof(data->dmp_hdr.wrap_ctr));
--
--	btintel_pcie_copy_tlv(skb, BTINTEL_TRIGGER_REASON, &data->dmp_hdr.trigger_reason,
--			      sizeof(data->dmp_hdr.trigger_reason));
--
--	btintel_pcie_copy_tlv(skb, BTINTEL_FW_SHA, &data->dmp_hdr.fw_git_sha1,
--			      sizeof(data->dmp_hdr.fw_git_sha1));
--
--	btintel_pcie_copy_tlv(skb, BTINTEL_CNVR_TOP, &data->dmp_hdr.cnvr_top,
--			      sizeof(data->dmp_hdr.cnvr_top));
--
--	btintel_pcie_copy_tlv(skb, BTINTEL_CNVI_TOP, &data->dmp_hdr.cnvi_top,
--			      sizeof(data->dmp_hdr.cnvi_top));
--
--	btintel_pcie_copy_tlv(skb, BTINTEL_DUMP_TIME, buf, dump_time_len);
--
--	btintel_pcie_copy_tlv(skb, BTINTEL_FW_BUILD, buf + dump_time_len, fw_build);
--
--	ret = hci_devcd_append(hdev, skb);
--	if (ret)
--		goto exit_err;
--
--	for (i = 0; i < dbgc->count; i++) {
--		ret = btintel_pcie_add_dmp_data(hdev, dbgc->bufs[i].data,
--						BTINTEL_PCIE_DBGC_BUFFER_SIZE);
--		if (ret)
--			break;
--	}
--
--exit_err:
--	hci_devcd_complete(hdev);
--	return ret;
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_TRIGGER_REASON, &data->dmp_hdr.trigger_reason,
-+				  sizeof(data->dmp_hdr.trigger_reason));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_FW_SHA, &data->dmp_hdr.fw_git_sha1,
-+				  sizeof(data->dmp_hdr.fw_git_sha1));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_CNVR_TOP, &data->dmp_hdr.cnvr_top,
-+				  sizeof(data->dmp_hdr.cnvr_top));
-+	p = btintel_pcie_copy_tlv(p, BTINTEL_CNVI_TOP, &data->dmp_hdr.cnvi_top,
-+				  sizeof(data->dmp_hdr.cnvi_top));
-+
-+	memcpy(p, dbgc->bufs[0].data, dbgc->count * BTINTEL_PCIE_DBGC_BUFFER_SIZE);
-+	dev_coredumpv(&hdev->dev, pdata, dump_size, GFP_KERNEL);
-+	return 0;
- }
- 
- static void btintel_pcie_dump_traces(struct hci_dev *hdev)
-@@ -760,51 +743,6 @@ static void btintel_pcie_dump_traces(struct hci_dev *hdev)
- 		bt_dev_err(hdev, "Failed to dump traces: (%d)", ret);
- }
- 
--static void btintel_pcie_dump_hdr(struct hci_dev *hdev, struct sk_buff *skb)
--{
--	struct btintel_pcie_data *data = hci_get_drvdata(hdev);
--	u16 len = skb->len;
--	u16 *hdrlen_ptr;
--	char buf[80];
--
--	hdrlen_ptr = skb_put_zero(skb, sizeof(len));
--
--	snprintf(buf, sizeof(buf), "Controller Name: 0x%X\n",
--		 INTEL_HW_VARIANT(data->dmp_hdr.cnvi_bt));
--	skb_put_data(skb, buf, strlen(buf));
--
--	snprintf(buf, sizeof(buf), "Firmware Build Number: %u\n",
--		 data->dmp_hdr.fw_build_num);
--	skb_put_data(skb, buf, strlen(buf));
--
--	snprintf(buf, sizeof(buf), "Driver: %s\n", data->dmp_hdr.driver_name);
--	skb_put_data(skb, buf, strlen(buf));
--
--	snprintf(buf, sizeof(buf), "Vendor: Intel\n");
--	skb_put_data(skb, buf, strlen(buf));
--
--	*hdrlen_ptr = skb->len - len;
--}
--
--static void btintel_pcie_dump_notify(struct hci_dev *hdev, int state)
--{
--	struct btintel_pcie_data *data = hci_get_drvdata(hdev);
--
--	switch (state) {
--	case HCI_DEVCOREDUMP_IDLE:
--		data->dmp_hdr.state = HCI_DEVCOREDUMP_IDLE;
--		break;
--	case HCI_DEVCOREDUMP_ACTIVE:
--		data->dmp_hdr.state = HCI_DEVCOREDUMP_ACTIVE;
--		break;
--	case HCI_DEVCOREDUMP_TIMEOUT:
--	case HCI_DEVCOREDUMP_ABORT:
--	case HCI_DEVCOREDUMP_DONE:
--		data->dmp_hdr.state = HCI_DEVCOREDUMP_IDLE;
--		break;
--	}
--}
--
- /* This function enables BT function by setting BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_INIT bit in
-  * BTINTEL_PCIE_CSR_FUNC_CTRL_REG register and wait for MSI-X with
-  * BTINTEL_PCIE_MSIX_HW_INT_CAUSES_GP0.
-@@ -1378,6 +1316,11 @@ static void btintel_pcie_rx_work(struct work_struct *work)
- 					struct btintel_pcie_data, rx_work);
- 	struct sk_buff *skb;
- 
-+	if (test_bit(BTINTEL_PCIE_COREDUMP_INPROGRESS, &data->flags)) {
-+		btintel_pcie_dump_traces(data->hdev);
-+		clear_bit(BTINTEL_PCIE_COREDUMP_INPROGRESS, &data->flags);
-+	}
-+
- 	if (test_bit(BTINTEL_PCIE_HWEXP_INPROGRESS, &data->flags)) {
- 		/* Unlike usb products, controller will not send hardware
- 		 * exception event on exception. Instead controller writes the
-@@ -1390,11 +1333,6 @@ static void btintel_pcie_rx_work(struct work_struct *work)
- 		clear_bit(BTINTEL_PCIE_HWEXP_INPROGRESS, &data->flags);
- 	}
- 
--	if (test_bit(BTINTEL_PCIE_COREDUMP_INPROGRESS, &data->flags)) {
--		btintel_pcie_dump_traces(data->hdev);
--		clear_bit(BTINTEL_PCIE_COREDUMP_INPROGRESS, &data->flags);
--	}
--
- 	/* Process the sk_buf in queue and send to the HCI layer */
- 	while ((skb = skb_dequeue(&data->rx_skb_q))) {
- 		btintel_pcie_recv_frame(data, skb);
-@@ -2184,13 +2122,6 @@ static int btintel_pcie_setup_internal(struct hci_dev *hdev)
- 	if (ver_tlv.img_type == 0x02 || ver_tlv.img_type == 0x03)
- 		data->dmp_hdr.fw_git_sha1 = ver_tlv.git_sha1;
- 
--	err = hci_devcd_register(hdev, btintel_pcie_dump_traces, btintel_pcie_dump_hdr,
--				 btintel_pcie_dump_notify);
--	if (err) {
--		bt_dev_err(hdev, "Failed to register coredump (%d)", err);
--		goto exit_error;
--	}
--
- 	btintel_print_fseq_info(hdev);
- exit_error:
- 	kfree_skb(skb);
-@@ -2319,7 +2250,6 @@ static void btintel_pcie_removal_work(struct work_struct *wk)
- 	btintel_pcie_synchronize_irqs(data);
- 
- 	flush_work(&data->rx_work);
--	flush_work(&data->hdev->dump.dump_rx);
- 
- 	bt_dev_dbg(data->hdev, "Release bluetooth interface");
- 	btintel_pcie_release_hdev(data);
-diff --git a/drivers/bluetooth/btintel_pcie.h b/drivers/bluetooth/btintel_pcie.h
-index 0fa876c5b954a..04b21f968ad30 100644
---- a/drivers/bluetooth/btintel_pcie.h
-+++ b/drivers/bluetooth/btintel_pcie.h
-@@ -132,6 +132,8 @@ enum btintel_pcie_tlv_type {
- 	BTINTEL_CNVI_TOP,
- 	BTINTEL_DUMP_TIME,
- 	BTINTEL_FW_BUILD,
-+	BTINTEL_VENDOR,
-+	BTINTEL_DRIVER
- };
- 
- /* causes for the MBOX interrupts */
 -- 
 2.51.0
 
