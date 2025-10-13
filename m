@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-185238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC93EBD4940
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:59 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2472BD452B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B04D18A5AD8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:54:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76B624FCD60
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E4930FC12;
-	Mon, 13 Oct 2025 15:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A5D310623;
+	Mon, 13 Oct 2025 15:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLkAZ6m5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqQTiTP7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0634E30FC09;
-	Mon, 13 Oct 2025 15:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DD030C37A;
+	Mon, 13 Oct 2025 15:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369726; cv=none; b=sp6IMiL0V7kotahMmjHphwVxpfx4qu/B8+YEz4D+p/iyEpdMMTw71iO8JVwLZue8XHngvspNfHd9hH+h/5dkgm2QfM7AzlSJeJJyXY0/i/4Hb06BsaMxYc5lL5lfoU6Ic+56WgokyETpef/yN6eTWYu5MOQNvXk9fEaDbKt1f0I=
+	t=1760368038; cv=none; b=EheaEXhqwahbxpn36JVS6qpPyn0lOL8J8MY/6+0QfP71J15bVHiy1RF6O+QBq/CBPYamggw7E2R4frZ0Myo8kg35BPGVx+Zs2mz09MBBOju+lF6jAU/I/aniYbtaCUFDGpHxhInyUMBc3fYBg75ReOTvM2t/V1hFPsFUOf5bC74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369726; c=relaxed/simple;
-	bh=hUJPqrhWB3M2DTSNvEs+gyAstiGyzTxSie2GeUzqEds=;
+	s=arc-20240116; t=1760368038; c=relaxed/simple;
+	bh=rK7Htv5gUeprbWN6enzdxJVWQx4B+pBk8HSpE6azPjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KEAjPM1899b7Oab7TnhK2YLHqiXg2gWAHGtfNUm5TRkDU9EGimWAOJUAJpCk2b5qZe14TYvE1+20GbNcwKiNWwhpDuW/3Uokr8xNLvAoj0UWE8gKCgO52Zy1MpSzE4Y02N7jlxVelPZP0eA2jvdH63toQ8vGXaypErcQX7sRv/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLkAZ6m5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3B8C4CEFE;
-	Mon, 13 Oct 2025 15:35:25 +0000 (UTC)
+	 MIME-Version; b=dm6Uhu54XAx2GXVi3cjkgmsgDKA1Tt9w+QwDnjpIgi0y9RNtpIUk1YTGBbWUczPV38VRjv/Q+MlIl2caTvpFOt/HrFObK+oFXD2DkiBfuFKyaimEptVFWFCM+xr4KwmeYPlUrsrbDYMGChRyfGviwrpB5YzquHsz20JU078i5Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqQTiTP7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17567C4CEE7;
+	Mon, 13 Oct 2025 15:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369725;
-	bh=hUJPqrhWB3M2DTSNvEs+gyAstiGyzTxSie2GeUzqEds=;
+	s=korg; t=1760368038;
+	bh=rK7Htv5gUeprbWN6enzdxJVWQx4B+pBk8HSpE6azPjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLkAZ6m5mVcStZ90R40u60ovIEdVpEjwu6Cu5F4SN1UFwYebjBGsv3XYVAj/Vash0
-	 qbTDvdC8/FgW6fRtqw9vuQmAzvO9CMhY5TulPKa0xzWreVXpW83ctnmCBhJ4Luf2Un
-	 VSdZUkhIfW+H5DEm3LIptGuAYLirRnc9Rf9JL0zA=
+	b=XqQTiTP7WOxyw1tVYGYSDNJ17F5ZUjD+xG/V+A8gQCZeyFozcUcxzxN5AZhF4AD7A
+	 6yrvMt5mqhFE0pneztJM83iOg+otTcz5FnRdS9pFo77qEdt7VKuurPA5AMPUQz5TVZ
+	 RGx/3j0kfhch97CNkaTT8UXd3TUUQ/JoqPxHutoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 303/563] drm/amd/pm: Disable ULV even if unsupported (v3)
+Subject: [PATCH 6.12 022/262] ARM: dts: renesas: porter: Fix CAN pin group
 Date: Mon, 13 Oct 2025 16:42:44 +0200
-Message-ID: <20251013144422.243809265@linuxfoundation.org>
+Message-ID: <20251013144326.930566283@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 3a0c3a4035f995e1f993dfaf4d63dc19e9b4bc1c ]
+[ Upstream commit 287066b295051729fb08c3cff12ae17c6fe66133 ]
 
-Always send PPSMC_MSG_DisableULV to the SMC, even if ULV mode
-is unsupported, to make sure it is properly turned off.
+According to the schematics, the CAN transceiver is connected to pins
+GP7_3 and GP7_4, which correspond to CAN0 data group B.
 
-v3:
-Simplify si_disable_ulv further.
-Always check the return value of amdgpu_si_send_msg_to_smc.
-
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0768fbad7fba1d27 ("ARM: shmobile: porter: add CAN0 DT support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/70ad9bc44d6cea92197c42eedcad6b3d0641d26a.1751032025.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ arch/arm/boot/dts/renesas/r8a7791-porter.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 52e732be59e36..e71070a23b915 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -5637,14 +5637,10 @@ static int si_populate_smc_t(struct amdgpu_device *adev,
+diff --git a/arch/arm/boot/dts/renesas/r8a7791-porter.dts b/arch/arm/boot/dts/renesas/r8a7791-porter.dts
+index 93c86e9216455..b255eb228dd74 100644
+--- a/arch/arm/boot/dts/renesas/r8a7791-porter.dts
++++ b/arch/arm/boot/dts/renesas/r8a7791-porter.dts
+@@ -290,7 +290,7 @@ vin0_pins: vin0 {
+ 	};
  
- static int si_disable_ulv(struct amdgpu_device *adev)
- {
--	struct si_power_info *si_pi = si_get_pi(adev);
--	struct si_ulv_param *ulv = &si_pi->ulv;
-+	PPSMC_Result r;
+ 	can0_pins: can0 {
+-		groups = "can0_data";
++		groups = "can0_data_b";
+ 		function = "can0";
+ 	};
  
--	if (ulv->supported)
--		return (amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV) == PPSMC_Result_OK) ?
--			0 : -EINVAL;
--
--	return 0;
-+	r = amdgpu_si_send_msg_to_smc(adev, PPSMC_MSG_DisableULV);
-+	return (r == PPSMC_Result_OK) ? 0 : -EINVAL;
- }
- 
- static bool si_is_state_ulv_compatible(struct amdgpu_device *adev,
 -- 
 2.51.0
 
