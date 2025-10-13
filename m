@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38BCBD4591
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F089BD3DC8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D992150418C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 62C6E4F44A3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0E730E0E6;
-	Mon, 13 Oct 2025 14:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8734C30F553;
+	Mon, 13 Oct 2025 14:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4dAetI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUYB9lBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248533081CE;
-	Mon, 13 Oct 2025 14:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4264830F52D;
+	Mon, 13 Oct 2025 14:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367457; cv=none; b=BZ6QYnvV3r44oenZsNSHNKdEda2krNff+FAD+KFzsYpIeSh2U8r7b80PopaAwkJNbjV/6GsLnRRUhf8Doswphsz19XzqL/LdTI7y4NVQjL2IRV8Ep7eqiuYjnhQZPs4QWnVWNxaJCkK3Dh2mqlbpl4+CYwHugow+B8Yfwq/S1NM=
+	t=1760366946; cv=none; b=GgnG14pGBxq8L8esMSp7wE+2Ovc7s/MPWE7urHNMfth+Dz1BLAsS/DdpVPwD/dSQZxjY2ke2b8VHS6fRtR4m8eTdtaD3kaVj6IpBdM5eVdSsFVnLjL6UBRPS8JIN7UAzvg4prayC80ehPGP9GGibj3n5H/qAxq7R0RChan/BuKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367457; c=relaxed/simple;
-	bh=ARqsYD1o3WrFji041nkJIdJoEtdUmMjE7miSnROBb+g=;
+	s=arc-20240116; t=1760366946; c=relaxed/simple;
+	bh=zM22GH8U7MSWnzq1SCVQxW9B0nAeBbIV1lwMVb9t3I4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxUgN74KnJ8IYVTp8tI1PLF1dm6LRtXLWDEiYBjA7tawup6Yosxy9PcRzDmBmzEx6zxNZOup8lewsEozWWqsmqC/+UVXBrjeyAmnHUs45lTTFpBleJJCCjEEcmExwlaDK/0aP6p5bkeeSs0QH4//yazXUiMou1BYdh4rq52TAYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4dAetI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF46C4CEE7;
-	Mon, 13 Oct 2025 14:57:36 +0000 (UTC)
+	 MIME-Version; b=BE7lUWNbqhISaoDje7claCv9vvPrPPlr1ECkWhAQ/Pn/SwJAoSRLIHoctFePKxDagT3EYmo8gLzZl7beRdhkbCBo2aghn7S4JFBLXjlUW1zbBFcwwLh2CGNj/cp9Kpp+WfW/xkNjKpgmzss6UuHeOI1XXOAqA35QVmv1J9r9Qjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUYB9lBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D42C4CEE7;
+	Mon, 13 Oct 2025 14:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367457;
-	bh=ARqsYD1o3WrFji041nkJIdJoEtdUmMjE7miSnROBb+g=;
+	s=korg; t=1760366946;
+	bh=zM22GH8U7MSWnzq1SCVQxW9B0nAeBbIV1lwMVb9t3I4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4dAetI9F3DDPnhGMYBtspp93WVOAhBbzbAqjzDGEvxTalz84ys/g7icnUpHp0ibP
-	 rtVT6TmMCHl2z5GB4zQDhCnBudHTknRgmwFdPIE2y5NjprEb9HhzgG8G6Tt4JjuC7R
-	 aSOveyGHc1cbH/oNhMBKs1mJ1Bd5q640C5Wipb2Y=
+	b=KUYB9lBevMc+RXg7YLo9+W3kcbACVYRAFAGCwj9s5d7hrjo5ZuGzAhwhR4aee5sr/
+	 g8+R9nZZxRmZMo+BM0jSgV4A/MD5wjZZ6NgmF2tz3P4RujDSXDfbEc4MDp5cl4dFAs
+	 5bHhbciPrWqgnqOiskDESjmHCe8Q2/PHTNXrQOTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/196] s390/bpf: Write back tail call counter for BPF_TRAMP_F_CALL_ORIG
-Date: Mon, 13 Oct 2025 16:43:30 +0200
-Message-ID: <20251013144315.891872462@linuxfoundation.org>
+	syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Romain Sioen <romain.sioen@microchip.com>
+Subject: [PATCH 6.1 038/196] hid: fix I2C read buffer overflow in raw_event() for mcp2221
+Date: Mon, 13 Oct 2025 16:43:31 +0200
+Message-ID: <20251013144315.965421740@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit bc3905a71f02511607d3ccf732360580209cac4c ]
+commit b56cc41a3ae7323aa3c6165f93c32e020538b6d2 upstream.
 
-The tailcall_bpf2bpf_hierarchy_fentry test hangs on s390. Its call
-graph is as follows:
+As reported by syzbot, mcp2221_raw_event lacked
+validation of incoming I2C read data sizes, risking buffer
+overflows in mcp->rxbuf during multi-part transfers.
+As highlighted in the DS20005565B spec, p44, we have:
+"The number of read-back data bytes to follow in this packet:
+from 0 to a maximum of 60 bytes of read-back bytes."
+This patch enforces we don't exceed this limit.
 
-  entry()
-    subprog_tail()
-      trampoline()
-        fentry()
-        the rest of subprog_tail()  # via BPF_TRAMP_F_CALL_ORIG
-        return to entry()
-
-The problem is that the rest of subprog_tail() increments the tail call
-counter, but the trampoline discards the incremented value. This
-results in an astronomically large number of tail calls.
-
-Fix by making the trampoline write the incremented tail call counter
-back.
-
-Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20250813121016.163375-4-iii@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=52c1a7d3e5b361ccd346
+Tested-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Link: https://patch.msgid.link/20250726220931.7126-1-contact@arnaud-lcm.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/net/bpf_jit_comp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/hid-mcp2221.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 31a4bbd2e7dc4..fe0354ad3bb96 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -2442,6 +2442,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 		/* stg %r2,retval_off(%r15) */
- 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
- 			      tjit->retval_off);
-+		/* mvc tccnt_off(%r15),tail_call_cnt(4,%r15) */
-+		_EMIT6(0xd203f000 | tjit->tccnt_off,
-+		       0xf000 | offsetof(struct prog_frame, tail_call_cnt));
- 
- 		im->ip_after_call = jit->prg_buf + jit->prg;
- 
--- 
-2.51.0
-
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -791,6 +791,10 @@ static int mcp2221_raw_event(struct hid_
+ 			}
+ 			if (data[2] == MCP2221_I2C_READ_COMPL ||
+ 			    data[2] == MCP2221_I2C_READ_PARTIAL) {
++				if (!mcp->rxbuf || mcp->rxbuf_idx < 0 || data[3] > 60) {
++					mcp->status = -EINVAL;
++					break;
++				}
+ 				buf = mcp->rxbuf;
+ 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
+ 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
 
 
 
