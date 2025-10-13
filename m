@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-185273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFCAEBD4F93
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:24:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 004CFBD51B8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 645975669BC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:57:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 156984256E5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1990530ACFD;
-	Mon, 13 Oct 2025 15:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3456030FC1F;
+	Mon, 13 Oct 2025 15:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJVkybxh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dlh8wGtY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB08C274669;
-	Mon, 13 Oct 2025 15:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D463530FC2A;
+	Mon, 13 Oct 2025 15:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369824; cv=none; b=gSYzGO8Y2uvTeweZOfDGkBOFWIesztrsxF0mvQxqsUeFAAr8vfm8kyZEx+98DopJlsiG+fEhJbHqxggGzYhHJJ6eU+NGaNLRE50cOEk6ooGnW2N8N97pmlNYRx4PJue8XjbOQt26cecMWDh/IEKM+M/Ix/qce3PNhUxK0mn02FI=
+	t=1760369731; cv=none; b=k/F51JtPgwV1dVv2sfBmWNxpFxIryvotVgszYOQdrxwA4MW9a/qOs0aRuE1SB0KWLgyhQwcW3i9URhGwsf9S+5ESfWiQ0rLQBAsbk/xUD9+6hMj2y1CMLelRmmzdjUvSWy4/DBC6rDCV4bximB4Lrh5khwrL1oEa8XkzXJpzmDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369824; c=relaxed/simple;
-	bh=R6TOlV92cJuxlkwKv0mUXHrcZXNCmYKKfps3qhYFX7E=;
+	s=arc-20240116; t=1760369731; c=relaxed/simple;
+	bh=FYJQYpK8RGK/FJibNslU53VOCvl10D1ZqkDl4uPzQOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8BHNS1xn4ae15LrBDFwmLeO/JEDkY4+l6+W/VbWxRPap6hmerZ3OxaB9gyAXVxz/dezmVY7uZimNPtX1kf2XrFlKjXQ2/lCfTi9067Yby3dnNguI7cmXYuyncDLMXAPJmMJ7VPUHPuaVuVZyFh0wGxS12kty6oG4N5OtOTcM3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJVkybxh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50005C4CEE7;
-	Mon, 13 Oct 2025 15:37:04 +0000 (UTC)
+	 MIME-Version; b=GGwd2GJ4x2dtUqEZFdWBoFNQnbAUuZ52d8XP6aMBfguq7qmI+xz36MEVdcIzOg+BEi5a94+f0IbFh8INNXNkyeBmgZSuWAD5hvREgqMu7MsylebNDk56FYh8po+9raXGRjH0Kgc6rNONE+J6X58A42YEr6D+guj0W4sJR067sSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dlh8wGtY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC1EC4CEE7;
+	Mon, 13 Oct 2025 15:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369824;
-	bh=R6TOlV92cJuxlkwKv0mUXHrcZXNCmYKKfps3qhYFX7E=;
+	s=korg; t=1760369731;
+	bh=FYJQYpK8RGK/FJibNslU53VOCvl10D1ZqkDl4uPzQOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJVkybxhyTJSNPLvu0ZIIFoVTqH1f+3hOANzAhzBKDtFAZ9I+GKQXl8DCiS5Bvhpt
-	 q/EjVq50gXjrb3hJwsym6xqYHd973p6EhTE8bTjjpj662n3dFU0dH9mobBK8mczuJi
-	 2rHKYkKnF+ebBiU70brt2g+1pJ50ZFVEOnusx41A=
+	b=Dlh8wGtYpL8ZnM2eq8BZkKbBbKYbp4kkM758DlmSmSXWmnWcTBHigfxrOIJNN+mjH
+	 Ydu0oF2Pff5cAIOIVIrjRsoCm2I8e0uDjD3/wQROr7mqVbPqpzKLVTDh25PKdIF2In
+	 xGTJbMZTvRzlMbS+/duBvH4u2imHhL+ZalgUpzws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 349/563] watchdog: mpc8xxx_wdt: Reload the watchdog timer when enabling the watchdog
-Date: Mon, 13 Oct 2025 16:43:30 +0200
-Message-ID: <20251013144423.913037370@linuxfoundation.org>
+Subject: [PATCH 6.17 350/563] PCI: endpoint: pci-epf-test: Fix doorbell test support
+Date: Mon, 13 Oct 2025 16:43:31 +0200
+Message-ID: <20251013144423.949373549@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,46 +68,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 7dfd80f70ef00d871df5af7c391133f7ba61ad9b ]
+[ Upstream commit f272210b28d050df56ec7dfaecb9fa3bebca6419 ]
 
-When the watchdog gets enabled with this driver, it leaves enough time
-for the core watchdog subsystem to start pinging it. But when the
-watchdog is already started by hardware or by the boot loader, little
-time remains before it fires and it happens that the core watchdog
-subsystem doesn't have time to start pinging it.
+The doorbell feature temporarily overrides the inbound translation to point
+to the address stored in epf_test->db_bar.phys_addr, i.e., it calls
+set_bar() twice without ever calling clear_bar(), as calling clear_bar()
+would clear the BAR's PCI address assigned by the host.
 
-Until commit 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker
-function") pinging was managed by the driver itself and the watchdog
-was immediately pinged by setting the timer expiry to 0.
+Thus, when disabling the doorbell, restore the inbound translation to point
+to the memory allocated for the BAR.
 
-So restore similar behaviour by pinging it when enabling it so that
-if it was already enabled the watchdog timer counter is reloaded.
+Without this, running the PCI endpoint kselftest doorbell test case more
+than once would fail.
 
-Fixes: 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker function")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: eff0c286aa91 ("PCI: endpoint: pci-epf-test: Add doorbell test support")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250908161942.534799-2-cassel@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/mpc8xxx_wdt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/mpc8xxx_wdt.c b/drivers/watchdog/mpc8xxx_wdt.c
-index 867f9f3113797..a4b497ecfa205 100644
---- a/drivers/watchdog/mpc8xxx_wdt.c
-+++ b/drivers/watchdog/mpc8xxx_wdt.c
-@@ -100,6 +100,8 @@ static int mpc8xxx_wdt_start(struct watchdog_device *w)
- 	ddata->swtc = tmp >> 16;
- 	set_bit(WDOG_HW_RUNNING, &ddata->wdd.status);
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index e091193bd8a8a..2a85d3eda92f0 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -772,12 +772,24 @@ static void pci_epf_test_disable_doorbell(struct pci_epf_test *epf_test,
+ 	u32 status = le32_to_cpu(reg->status);
+ 	struct pci_epf *epf = epf_test->epf;
+ 	struct pci_epc *epc = epf->epc;
++	int ret;
  
-+	mpc8xxx_wdt_keepalive(ddata);
+ 	if (bar < BAR_0)
+ 		goto set_status_err;
+ 
+ 	pci_epf_test_doorbell_cleanup(epf_test);
+-	pci_epc_clear_bar(epc, epf->func_no, epf->vfunc_no, &epf_test->db_bar);
 +
- 	return 0;
- }
++	/*
++	 * The doorbell feature temporarily overrides the inbound translation
++	 * to point to the address stored in epf_test->db_bar.phys_addr, i.e.,
++	 * it calls set_bar() twice without ever calling clear_bar(), as
++	 * calling clear_bar() would clear the BAR's PCI address assigned by
++	 * the host. Thus, when disabling the doorbell, restore the inbound
++	 * translation to point to the memory allocated for the BAR.
++	 */
++	ret = pci_epc_set_bar(epc, epf->func_no, epf->vfunc_no, &epf->bar[bar]);
++	if (ret)
++		goto set_status_err;
  
+ 	status |= STATUS_DOORBELL_DISABLE_SUCCESS;
+ 	reg->status = cpu_to_le32(status);
 -- 
 2.51.0
 
