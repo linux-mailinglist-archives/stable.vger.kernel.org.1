@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-184827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E777DBD4740
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:13 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 488BABD405A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FEE4420A38
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:28:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E858034E4AD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E95331283D;
-	Mon, 13 Oct 2025 15:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E862330F552;
+	Mon, 13 Oct 2025 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNWJT3DQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxynRJbC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB95271459;
-	Mon, 13 Oct 2025 15:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56E030BF4E;
+	Mon, 13 Oct 2025 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368550; cv=none; b=i/UF5LJPlvo8dmea+OqlBfKGHAGqXM0VuXPv4+cDMJa1+vPkZLcjJD1NMZV94AdSmg7MDx0i2flLD+a0o61fW5ISw5ZF6At0f1ZEWGzCj9lSiB6mfo4b8YOjxlIEXnNmchXkb4r+nup6auacRAonjYqUYREVkuR5gObseRuNRjc=
+	t=1760367832; cv=none; b=quPCDVB8PIJ6t5kfI3LGLYNWeaI7LLmKpO4R9Pdi+wR4q0NSf7uN9XRS/Jf7vzDbDxAlKmPiESrwYq2UCfS06f6yufDpCW2bqWNueoNq0F90zs3CKb2UilTNBwnX3JA/0tFoIYgcFFpLEfuoolGz/lXW9m1HW2rXieZtOLV00zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368550; c=relaxed/simple;
-	bh=2ciQsK59mO7tKJqWx7NEV3dkadT2FeL3fUt3tiPkGR0=;
+	s=arc-20240116; t=1760367832; c=relaxed/simple;
+	bh=gjNIs6WYlG+3HccoDIDj3/uDhx0weW+uBG390mqRGYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLphi2a6lVa9ubypcLKE8AT2M6YB6+IBP97pkhdb2rXe2jbxdhzN71lvaFS/+MU0cWG8TXNhmsDvY/HlHcRzNEp9LQtgU9nSW1TbfHUFWCY35OxJWBMP2efDOZCqUTR4Gv2VbNpuFNv/CqQozpptadLZv4CFn9OGhFXom/ta62g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNWJT3DQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46324C4CEE7;
-	Mon, 13 Oct 2025 15:15:49 +0000 (UTC)
+	 MIME-Version; b=Sd69fz4mbXsAj2kFmkXH2qwEht1f51AJ5jWUETIkTAJsjGfYfYLAVQR1ywibBhUcTBnWgRvjjInK2BqcU8Xxy8KYi89H5NiCGxdDf1+2ozUBMxUAm+i0gRTyIw2EJ50xyWu02j+q9dwfkAm/9aASbJzmPyMQgesNFxgc0w4y+yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxynRJbC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99B8C4CEE7;
+	Mon, 13 Oct 2025 15:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368549;
-	bh=2ciQsK59mO7tKJqWx7NEV3dkadT2FeL3fUt3tiPkGR0=;
+	s=korg; t=1760367832;
+	bh=gjNIs6WYlG+3HccoDIDj3/uDhx0weW+uBG390mqRGYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNWJT3DQdch061J5PDFyQIhOVCQpLmBej2iywX3vNXOG8mupq1pBacjdvA5BoR50O
-	 m2lEeHgLzvkOELKZGva8yUpJF6bpjsNk66HefRYR2jMD9DcdyiztQBe8NXJ+D7Tu4u
-	 xdm77r1SQr4nfKp2pGKc2v3DU1/d06WOwbva2g6A=
+	b=CxynRJbCTk5tXq5u0eGyOVJ9ZQl4pZOO3JdQPubuiXGj+yIJvaV6BamojFBizuXoK
+	 LgeSonSdq00pRjAQ9rtoogopx1ZznlRyqw6qbXkqdbuaxMEc/TkskOOE2OZRMU0dEw
+	 Q/WC2P0+pCd9Kxza1KTCcK2/1aAeF2x2zFiu7Nn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	I Viswanath <viswanathiyyappan@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
-Subject: [PATCH 6.12 199/262] net: usb: Remove disruptive netif_wake_queue in rtl8150_set_multicast
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 150/196] Bluetooth: MGMT: Fix not exposing debug UUID on MGMT_OP_READ_EXP_FEATURES_INFO
 Date: Mon, 13 Oct 2025 16:45:41 +0200
-Message-ID: <20251013144333.413266667@linuxfoundation.org>
+Message-ID: <20251013144320.737160341@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Viswanath <viswanathiyyappan@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 958baf5eaee394e5fd976979b0791a875f14a179 ]
+[ Upstream commit 79e562a52adea4afa0601a15964498fae66c823c ]
 
-syzbot reported WARNING in rtl8150_start_xmit/usb_submit_urb.
-This is the sequence of events that leads to the warning:
+The debug UUID was only getting set if MGMT_OP_READ_EXP_FEATURES_INFO
+was not called with a specific index which breaks the likes of
+bluetoothd since it only invokes MGMT_OP_READ_EXP_FEATURES_INFO when an
+adapter is plugged, so instead of depending hdev not to be set just
+enable the UUID on any index like it was done with iso_sock_uuid.
 
-rtl8150_start_xmit() {
-	netif_stop_queue();
-	usb_submit_urb(dev->tx_urb);
-}
-
-rtl8150_set_multicast() {
-	netif_stop_queue();
-	netif_wake_queue();		<-- wakes up TX queue before URB is done
-}
-
-rtl8150_start_xmit() {
-	netif_stop_queue();
-	usb_submit_urb(dev->tx_urb);	<-- double submission
-}
-
-rtl8150_set_multicast being the ndo_set_rx_mode callback should not be
-calling netif_stop_queue and notif_start_queue as these handle
-TX queue synchronization.
-
-The net core function dev_set_rx_mode handles the synchronization
-for rtl8150_set_multicast making it safe to remove these locks.
-
-Reported-and-tested-by: syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=78cae3f37c62ad092caa
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
-Link: https://patch.msgid.link/20250924134350.264597-1-viswanathiyyappan@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e625e50ceee1 ("Bluetooth: Introduce debug feature when dynamic debug is disabled")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/bluetooth/mgmt.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index ddff6f19ff98e..92add3daadbb1 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -664,7 +664,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
- 	rtl8150_t *dev = netdev_priv(netdev);
- 	u16 rx_creg = 0x9e;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 9b01eaaa0eb2d..54ddbb2635e2f 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -4405,13 +4405,11 @@ static int read_exp_features_info(struct sock *sk, struct hci_dev *hdev,
+ 		return -ENOMEM;
  
--	netif_stop_queue(netdev);
- 	if (netdev->flags & IFF_PROMISC) {
- 		rx_creg |= 0x0001;
- 		dev_info(&netdev->dev, "%s: promiscuous mode\n", netdev->name);
-@@ -678,7 +677,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
- 		rx_creg &= 0x00fc;
- 	}
- 	async_set_registers(dev, RCR, sizeof(rx_creg), rx_creg);
--	netif_wake_queue(netdev);
- }
+ #ifdef CONFIG_BT_FEATURE_DEBUG
+-	if (!hdev) {
+-		flags = bt_dbg_get() ? BIT(0) : 0;
++	flags = bt_dbg_get() ? BIT(0) : 0;
  
- static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+-		memcpy(rp->features[idx].uuid, debug_uuid, 16);
+-		rp->features[idx].flags = cpu_to_le32(flags);
+-		idx++;
+-	}
++	memcpy(rp->features[idx].uuid, debug_uuid, 16);
++	rp->features[idx].flags = cpu_to_le32(flags);
++	idx++;
+ #endif
+ 
+ 	if (hdev && hci_dev_le_state_simultaneous(hdev)) {
 -- 
 2.51.0
 
