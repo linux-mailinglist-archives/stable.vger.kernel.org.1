@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33537BD51E8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:39:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A695DBD4E00
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:16:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C58D425AA8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 21079541BE6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0ED3279DB3;
-	Mon, 13 Oct 2025 15:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483D2280018;
+	Mon, 13 Oct 2025 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjSlCS8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H68rGoBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC201F1313;
-	Mon, 13 Oct 2025 15:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012D924A06A;
+	Mon, 13 Oct 2025 15:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369365; cv=none; b=tTjVftf/9OCa2QN8IUBMc7QGLQf+uxzE+dX3fqQyr7Htijv5ZN66BfzaafNgYr0VmBVwXQpTJRalyISw8LHT4FbmqJNTZz/JoFRaRfxjRBjbXvAD+7NeDqW8uPsaimU+6nR9hHIXKVZeynNDhlhthR3eC1XnYFdGLI7XeHwlJ04=
+	t=1760369371; cv=none; b=DqfFBMBPqvMzBnEyCRtYK2NfpH5qHctpbkaxSrX3O8VxjqZRvAv92T56t0CGDUN9s1DITfhbdf4fjTXOtMZB2QEPD1fWk3mRbt+wu0hMvpnlq38kY6YuHHfLapDVmeQ5CSnrBPlxPyGKf2xRIB154DtjLgAQhn+G7WEk5AaaNq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369365; c=relaxed/simple;
-	bh=Wg2k9n5PK4OsCEeLGUMy8a9blhUx7n5sdWZ1G1PboNI=;
+	s=arc-20240116; t=1760369371; c=relaxed/simple;
+	bh=Ww4tNlScWI5474GnrGR6yvwCN8d3SY8FxNDHcOYhluc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0nvO/3liEc1qW6SrjQYvSc5wvO2V7KhHi6dSUMoPQOYS5XFCaUKHNIuKw2hufXaygqgBrQEkk2+06MNcZQ4ftknzMhXkPF560yMZcLHIgZHTepUA5aD0jZAfHGITTa8mGs7tBnOUV0+4BHdJA1TnE+LbPpqrbh7j72WRd1JWwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjSlCS8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59DBC4CEE7;
-	Mon, 13 Oct 2025 15:29:24 +0000 (UTC)
+	 MIME-Version; b=KZWGIKBJbUA6fmjF5Mg+faOUhkjDwMy3A6udqRhsPRUu5ZrVeu/eJF7P3uQn+JmIETfV5dc23K70cZ93z5GGx4ce/jr6ctFd2Sk6DvfHopef0os6Nub4cVWXKgDSec6dHLHwDAsG1cjXlQl6DGtVj+8jooVo+kcnjKB2eZ5VAL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H68rGoBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8256BC4CEE7;
+	Mon, 13 Oct 2025 15:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369365;
-	bh=Wg2k9n5PK4OsCEeLGUMy8a9blhUx7n5sdWZ1G1PboNI=;
+	s=korg; t=1760369370;
+	bh=Ww4tNlScWI5474GnrGR6yvwCN8d3SY8FxNDHcOYhluc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QjSlCS8kU0cylmI1bb+1IUWMpMp159lAiqkUlPu2G49MDGWjrFmxVTd5V3azqCtiE
-	 cDV8Scv9KvxnrlIw4wtOrhawqGO1SlYruhRTkHUJ69LyTzRT5EL+lSiMoqCpuKMY81
-	 /IFStGhNhy5DVpYNW95f/BhYBADwqSDvJnXWYKfQ=
+	b=H68rGoBTZBBt0Uz+Jj+M7fWDFJeyGMBjWPI8mZpaW0sTUNVV2sPpfjaSS0CIjuX6B
+	 kibylNcfS03IzAKTWM9fz8WNG4RntDkEWH6niCJoLILQ5R+bVpWoyqTzw5/fDVtYNZ
+	 axKeNl2jFxutXtGT2ykKFSByMHzqiEeCflyc6KzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Liu <xiang.liu@amd.com>,
-	"Stanley.Yang" <Stanley.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 220/563] drm/amdgpu: Fix vcn v4.0.3 poison irq call trace on sriov guest
-Date: Mon, 13 Oct 2025 16:41:21 +0200
-Message-ID: <20251013144419.252736086@linuxfoundation.org>
+Subject: [PATCH 6.17 222/563] PCI: xgene-msi: Return negative -EINVAL in xgene_msi_handler_setup()
+Date: Mon, 13 Oct 2025 16:41:23 +0200
+Message-ID: <20251013144419.324222661@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,55 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiang Liu <xiang.liu@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 58364f01db4a155356f92cce1474761d7a0eda3d ]
+[ Upstream commit b26fc701a25195134ff0327709a0421767c4c7b2 ]
 
-Sriov guest side doesn't init ras feature hence the poison irq shouldn't
-be put during hw fini.
+There is a typo so we accidentally return positive EINVAL instead of
+negative -EINVAL. Add the missing '-' character.
 
-[25209.468816] Call Trace:
-[25209.468817]  <TASK>
-[25209.468818]  ? srso_alias_return_thunk+0x5/0x7f
-[25209.468820]  ? show_trace_log_lvl+0x28e/0x2ea
-[25209.468822]  ? show_trace_log_lvl+0x28e/0x2ea
-[25209.468825]  ? vcn_v4_0_3_hw_fini+0xaf/0xe0 [amdgpu]
-[25209.468936]  ? show_regs.part.0+0x23/0x29
-[25209.468939]  ? show_regs.cold+0x8/0xd
-[25209.468940]  ? amdgpu_irq_put+0x9e/0xc0 [amdgpu]
-[25209.469038]  ? __warn+0x8c/0x100
-[25209.469040]  ? amdgpu_irq_put+0x9e/0xc0 [amdgpu]
-[25209.469135]  ? report_bug+0xa4/0xd0
-[25209.469138]  ? handle_bug+0x39/0x90
-[25209.469140]  ? exc_invalid_op+0x19/0x70
-[25209.469142]  ? asm_exc_invalid_op+0x1b/0x20
-[25209.469146]  ? amdgpu_irq_put+0x9e/0xc0 [amdgpu]
-[25209.469241]  vcn_v4_0_3_hw_fini+0xaf/0xe0 [amdgpu]
-[25209.469343]  amdgpu_ip_block_hw_fini+0x34/0x61 [amdgpu]
-[25209.469511]  amdgpu_device_fini_hw+0x3b3/0x467 [amdgpu]
-
-Fixes: 4c4a89149608 ("drm/amdgpu: Register aqua vanjaram vcn poison irq")
-Signed-off-by: Xiang Liu <xiang.liu@amd.com>
-Reviewed-by: Stanley.Yang <Stanley.Yang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 6aceb36f17ab ("PCI: xgene-msi: Restructure handler setup/teardown")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://patch.msgid.link/aIzCbVd93ivPinne@stanley.mountain
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c | 2 +-
+ drivers/pci/controller/pci-xgene-msi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-index 2a3663b551af9..52613205669e1 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-@@ -391,7 +391,7 @@ static int vcn_v4_0_3_hw_fini(struct amdgpu_ip_block *ip_block)
- 			vinst->set_pg_state(vinst, AMD_PG_STATE_GATE);
- 	}
+diff --git a/drivers/pci/controller/pci-xgene-msi.c b/drivers/pci/controller/pci-xgene-msi.c
+index 0a37a3f1809c5..654639bccd10e 100644
+--- a/drivers/pci/controller/pci-xgene-msi.c
++++ b/drivers/pci/controller/pci-xgene-msi.c
+@@ -311,7 +311,7 @@ static int xgene_msi_handler_setup(struct platform_device *pdev)
+ 		msi_val = xgene_msi_int_read(xgene_msi, i);
+ 		if (msi_val) {
+ 			dev_err(&pdev->dev, "Failed to clear spurious IRQ\n");
+-			return EINVAL;
++			return -EINVAL;
+ 		}
  
--	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN))
-+	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN) && !amdgpu_sriov_vf(adev))
- 		amdgpu_irq_put(adev, &adev->vcn.inst->ras_poison_irq, 0);
- 
- 	return 0;
+ 		irq = platform_get_irq(pdev, i);
 -- 
 2.51.0
 
