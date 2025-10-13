@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151D5BD445F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:33:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18182BD476F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B5F5B34A9CA
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:33:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CBAC40207C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B0230E85B;
-	Mon, 13 Oct 2025 15:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075F030F548;
+	Mon, 13 Oct 2025 15:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQvS8AFD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7ixcOaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F118E30E853;
-	Mon, 13 Oct 2025 15:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E6B30C365;
+	Mon, 13 Oct 2025 15:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368803; cv=none; b=ptYzgx4STVKZAG4UJyGad0sT4CgpJLUUBDe+AC8OXXUSu9VDTQDjMnXaLmzr87LU8ou2bDmezEvTt5w9IAz6/UUqF/vUveX3gQyKSziNEHlsabpTREpbYzUUBP+bifLSR2Z+7mREdlOh+Xwvnv3FOYfo/ZT3gT3LjTSxk++0KNk=
+	t=1760368834; cv=none; b=ELF/E9FygauaGGdw7hXSAtrI5xIQBrD7TC+vy7qpeqVgxZIZ6dXCt/9rjQCvDT6xqz+y0kfoqU4QO+GbDlf0iQRQoXLYfdlwRZp/hUulXke/NLP0N9ZwJEmbbZeSDpU27U7Okowne5eMD93H6CKrA8KULvlvmdUu5KU600PNJcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368803; c=relaxed/simple;
-	bh=uaMocS3TzhOzds5M8AzkxT1h10qJPjcAEvhPX/SAjC8=;
+	s=arc-20240116; t=1760368834; c=relaxed/simple;
+	bh=eXIAg6Il2/1inf5eKNflVbBtP/fx93NF6JmxWUtRwUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlJAn/lGRYEdaTGsBlGZd50GizEJ24BzDduB2D17XEAJmcGChlbnpZEDoFZrTKy2xxz8Kd6FboWTr0RzuiPQNYPhwdHmYQFpeLBsuScRoZRbxBzHKj7wG5NVAcZ98uMyMYFv/jOZPI14aduHE9tb6zJw9uNzYmKyOv8avMCFSl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQvS8AFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41299C4CEE7;
-	Mon, 13 Oct 2025 15:20:02 +0000 (UTC)
+	 MIME-Version; b=mlKi+GyIShdMWFNX30RSNps7bcRFZ8z0Cyjm+s3OtzHWxq6NVlRDb+RkPC/3h+/5WSxSkvZVLJDN0J17d7++3jZgr2b83Fz7T7sM2apO6ttF/16gwYUCYpsovr27LVXmPITLk87aQRZxJO//0bu0QKM5rVApkGVWl4vUSv7qtoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7ixcOaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A78C116B1;
+	Mon, 13 Oct 2025 15:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368802;
-	bh=uaMocS3TzhOzds5M8AzkxT1h10qJPjcAEvhPX/SAjC8=;
+	s=korg; t=1760368834;
+	bh=eXIAg6Il2/1inf5eKNflVbBtP/fx93NF6JmxWUtRwUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQvS8AFDH2YrCNCW4PoBJgEdSI2FkYVHabRzwKjcsa8q0HO/tN9Z36YYZWEhc4YSq
-	 uXKDoerxAIXq6Cl7PRALlcC2Un1RJb8VzJfNxS/uUXdF4N53V3Vy4p61YCEud3up8u
-	 wM7gHt+ZXBacTQlTXaSUCyjDjZ4dHkScC44rpIXk=
+	b=I7ixcOaIvjHQ43USSAPzzKoF+2s3tBmlLwnYI8qCUo5epjG3Pqcpnx4idljt2ZHf5
+	 YnQra4n052bnoP0cHfNPsDwgs3BuvXIn6sS0zbKEMSB3YJL+UF5Mdlplk0Fta/kYSi
+	 59ggGG/Nwtqcoy2muyC00oJLuPt/cEK1jgs6YCaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Andrew Price <anprice@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 017/563] gfs2: Get rid of GLF_INVALIDATE_IN_PROGRESS
-Date: Mon, 13 Oct 2025 16:37:58 +0200
-Message-ID: <20251013144411.915411080@linuxfoundation.org>
+Subject: [PATCH 6.17 018/563] gfs2: do_xmote cleanup
+Date: Mon, 13 Oct 2025 16:37:59 +0200
+Message-ID: <20251013144411.950515486@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,102 +68,52 @@ Content-Transfer-Encoding: 8bit
 
 From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit bddb53b776fb7ce81dfba7c24884d9f2c0c68e50 ]
+[ Upstream commit 2309a01351e56446f43c89e200d643647d47e739 ]
 
-Get rid of the GLF_INVALIDATE_IN_PROGRESS flag: it was originally used
-to indicate to add_to_queue() that the ->go_sync() and ->go_invalid()
-operations were in progress, but as we have established in commit "gfs2:
-Fix LM_FLAG_TRY* logic in add_to_queue", add_to_queue() has no need to
-know.
+Check for asynchronous completion and clear the GLF_PENDING_REPLY flag
+earlier in do_xmote().  This will make future changes more readable.
 
-Commit d99724c3c36a describes a race in which GLF_INVALIDATE_IN_PROGRESS
-is used to serialize two processes which are both in do_xmote() at the
-same time.  That analysis is wrong: the serialization happens via the
-GLF_LOCK flag, which ensures that at most one glock operation can be
-active at any time.
-
-Fixes: d99724c3c36a ("gfs2: Close timing window with GLF_INVALIDATE_IN_PROGRESS")
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Reviewed-by: Andrew Price <anprice@redhat.com>
+Stable-dep-of: 6ab26555c9ff ("gfs2: Add proper lockspace locking")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c      | 16 +---------------
- fs/gfs2/incore.h     |  1 -
- fs/gfs2/trace_gfs2.h |  1 -
- 3 files changed, 1 insertion(+), 17 deletions(-)
+ fs/gfs2/glock.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 93aae10d78f30..68e943e13dd53 100644
+index 68e943e13dd53..54c011ff00ddc 100644
 --- a/fs/gfs2/glock.c
 +++ b/fs/gfs2/glock.c
-@@ -703,17 +703,6 @@ __acquires(&gl->gl_lockref.lock)
- 	lck_flags &= (LM_FLAG_TRY | LM_FLAG_TRY_1CB | LM_FLAG_NOEXP);
- 	GLOCK_BUG_ON(gl, gl->gl_state == target);
- 	GLOCK_BUG_ON(gl, gl->gl_state == gl->gl_target);
--	if ((target == LM_ST_UNLOCKED || target == LM_ST_DEFERRED) &&
--	    glops->go_inval) {
--		/*
--		 * If another process is already doing the invalidate, let that
--		 * finish first.  The glock state machine will get back to this
--		 * holder again later.
--		 */
--		if (test_and_set_bit(GLF_INVALIDATE_IN_PROGRESS,
--				     &gl->gl_flags))
+@@ -794,6 +794,12 @@ __acquires(&gl->gl_lockref.lock)
+ 		ret = ls->ls_ops->lm_lock(gl, target, lck_flags);
+ 		spin_lock(&gl->gl_lockref.lock);
+ 
++		if (!ret) {
++			/* The operation will be completed asynchronously. */
++			return;
++		}
++		clear_bit(GLF_PENDING_REPLY, &gl->gl_flags);
++
+ 		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
+ 		    target == LM_ST_UNLOCKED &&
+ 		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
+@@ -801,14 +807,10 @@ __acquires(&gl->gl_lockref.lock)
+ 			 * The lockspace has been released and the lock has
+ 			 * been unlocked implicitly.
+ 			 */
+-		} else if (ret) {
++		} else {
+ 			fs_err(sdp, "lm_lock ret %d\n", ret);
+ 			target = gl->gl_state | LM_OUT_ERROR;
+-		} else {
+-			/* The operation will be completed asynchronously. */
 -			return;
--	}
- 	if (!glops->go_inval || !glops->go_sync)
- 		goto skip_inval;
- 
-@@ -732,7 +721,7 @@ __acquires(&gl->gl_lockref.lock)
- 		goto skip_inval;
- 	}
- 
--	if (test_bit(GLF_INVALIDATE_IN_PROGRESS, &gl->gl_flags)) {
-+	if (target == LM_ST_UNLOCKED || target == LM_ST_DEFERRED) {
- 		/*
- 		 * The call to go_sync should have cleared out the ail list.
- 		 * If there are still items, we have a problem. We ought to
-@@ -747,7 +736,6 @@ __acquires(&gl->gl_lockref.lock)
- 			gfs2_dump_glock(NULL, gl, true);
  		}
- 		glops->go_inval(gl, target == LM_ST_DEFERRED ? 0 : DIO_METADATA);
--		clear_bit(GLF_INVALIDATE_IN_PROGRESS, &gl->gl_flags);
+-		clear_bit(GLF_PENDING_REPLY, &gl->gl_flags);
  	}
- 	spin_lock(&gl->gl_lockref.lock);
  
-@@ -2313,8 +2301,6 @@ static const char *gflags2str(char *buf, const struct gfs2_glock *gl)
- 		*p++ = 'y';
- 	if (test_bit(GLF_LFLUSH, gflags))
- 		*p++ = 'f';
--	if (test_bit(GLF_INVALIDATE_IN_PROGRESS, gflags))
--		*p++ = 'i';
- 	if (test_bit(GLF_PENDING_REPLY, gflags))
- 		*p++ = 'R';
- 	if (test_bit(GLF_HAVE_REPLY, gflags))
-diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index d4ad82f47eeea..c390f208654c1 100644
---- a/fs/gfs2/incore.h
-+++ b/fs/gfs2/incore.h
-@@ -319,7 +319,6 @@ enum {
- 	GLF_DEMOTE_IN_PROGRESS		= 5,
- 	GLF_DIRTY			= 6,
- 	GLF_LFLUSH			= 7,
--	GLF_INVALIDATE_IN_PROGRESS	= 8,
- 	GLF_HAVE_REPLY			= 9,
- 	GLF_INITIAL			= 10,
- 	GLF_HAVE_FROZEN_REPLY		= 11,
-diff --git a/fs/gfs2/trace_gfs2.h b/fs/gfs2/trace_gfs2.h
-index 26036ffc3f338..1c2507a273180 100644
---- a/fs/gfs2/trace_gfs2.h
-+++ b/fs/gfs2/trace_gfs2.h
-@@ -52,7 +52,6 @@
- 	{(1UL << GLF_DEMOTE_IN_PROGRESS),	"p" },		\
- 	{(1UL << GLF_DIRTY),			"y" },		\
- 	{(1UL << GLF_LFLUSH),			"f" },		\
--	{(1UL << GLF_INVALIDATE_IN_PROGRESS),	"i" },		\
- 	{(1UL << GLF_PENDING_REPLY),		"R" },		\
- 	{(1UL << GLF_HAVE_REPLY),		"r" },		\
- 	{(1UL << GLF_INITIAL),			"a" },		\
+ 	/* Complete the operation now. */
 -- 
 2.51.0
 
