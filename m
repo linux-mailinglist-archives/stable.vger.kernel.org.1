@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D560FBD443B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:44 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E99ABD3CBA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BA15C4FCFF0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E1CA034DE76
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470CE3093DB;
-	Mon, 13 Oct 2025 15:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45479309EF6;
+	Mon, 13 Oct 2025 14:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtqKxENj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erefXECJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018E6306B3C;
-	Mon, 13 Oct 2025 15:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38142EC08B;
+	Mon, 13 Oct 2025 14:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368355; cv=none; b=J/l+6PkBP1CoO8OxT3N8HiRwUiTmOnxAPyt1hlDc9alUZW4bNdvwA8bXqrrXb0vZPAdfXna9ov7dLlC3SX+gs+ZCiapYCgXX4gCsB0fAlomvTNFNw7aUPVevVet05nZPfPiYUrXIzOCbvvra2MT7t7+BZ6yZIpBV3JdBcCL0MbY=
+	t=1760367124; cv=none; b=l4lt/Cx/2xWKeDEyyYTfyadka2Gg5gkMOL2qIOk1U5zAbq/S2md29E0PrnpAa1IJq9s70Ov9E84I3ZMw70j5mJ9dK8EFVCa1EWFeNSFOfaUlj7egRzaDYxzlyKO3iN+UXplpumIFwGCLqWeuOUttwm0jcK2eE9qtza+RFarNuQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368355; c=relaxed/simple;
-	bh=1HGtm1Nim5g+htlCLbH8ZbvM6cD29SolrDMQGqQBczc=;
+	s=arc-20240116; t=1760367124; c=relaxed/simple;
+	bh=+2/qSUapj2nzwCI/gnUo0M2L6G3AI62BaWZWaNw0xTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDcbbXytmYjgnefHOD4p4yhBgpRGIIvrSJYOEnqrJtLhgxbD6zwed9viVNFbaFjht1WI97CzdFxyeJO6XiJrj67w1H8NsO+CtXpmMSEoRjGPTkedFB0xJPT+7No+UqL3t3WEZiYTvrVDyP+jYiEVoLb6yi68JHq7lRwwUDLcrCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtqKxENj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839DCC4CEFE;
-	Mon, 13 Oct 2025 15:12:34 +0000 (UTC)
+	 MIME-Version; b=ebDHIP9jWSTN+TFN/DjrpRUJr73+R8ybaZvsrAp0fsVDSdZXYPtg214it4X90INdSzrB3ZyxJQ84JVBs7K9Mcpx1ZVEtK57onAQrNEKXb3dav5dYpPwVScU8TZa8O720+s6KgxF2Z6qXJITwcImBw6EQeYPAn2jE8xOW4XGUaC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erefXECJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6961EC116D0;
+	Mon, 13 Oct 2025 14:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368354;
-	bh=1HGtm1Nim5g+htlCLbH8ZbvM6cD29SolrDMQGqQBczc=;
+	s=korg; t=1760367123;
+	bh=+2/qSUapj2nzwCI/gnUo0M2L6G3AI62BaWZWaNw0xTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtqKxENj6Uyjh70OwT/g4AtirmnM21Eev4u2Oe/rSAzJRWhAfqI1AdV1EHcQumOZk
-	 k9hcvnBvN8CiWlBH9XhNGV8LJURvHiNBElTRWEJJjXA6BqHcILaHVYKud/pPME+4zV
-	 /A/TvlNsZ9wqSvdLXXM3ApEdB16e8bwwK3CTtr6Y=
+	b=erefXECJ+r34DhW9i5nd+Gr1rfRvZ8SqF1tbqHbwI20T3oaUbqnfXtol5zK84Nh/L
+	 Q516Dgmne9Z0PngqUB81sZuZfSjx1IAZD7vqQQTPL9OJdyM7jitdq/E93R0a1zwWPo
+	 vTnoW0xpThOwrs9ATv8BEgM0xokl4sOukfuxrQF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Yuanhong <liaoyuanhong@vivo.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 132/262] wifi: iwlwifi: Remove redundant header files
+Subject: [PATCH 6.1 101/196] crypto: hisilicon/zip - remove unnecessary validation for high-performance mode configurations
 Date: Mon, 13 Oct 2025 16:44:34 +0200
-Message-ID: <20251013144330.876971816@linuxfoundation.org>
+Message-ID: <20251013144318.353371820@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Yuanhong <liaoyuanhong@vivo.com>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit b4b34ba66443696cc5f3e95493f9d7597259b728 ]
+[ Upstream commit d4e081510471e79171c4e0a11f6cb608e49bc082 ]
 
-The header file "fw/img.h" is already included on line 9. Remove the
-redundant include.
+When configuring the high-performance mode register, there is no
+need to verify whether the register has been successfully
+enabled, as there is no possibility of a write failure for this
+register.
 
-Fixes: 2594e4d9e1a2d ("wifi: iwlwifi: prepare for reading SAR tables from UEFI")
-Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
-Link: https://patch.msgid.link/20250819121201.608770-2-liaoyuanhong@vivo.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Fixes: a9864bae1806 ("crypto: hisilicon/zip - add zip comp high perf mode configuration")
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/regulatory.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/crypto/hisilicon/zip/zip_main.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-index 81787501d4a4f..11704163876b8 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-@@ -12,7 +12,6 @@
- #include "fw/api/phy.h"
- #include "fw/api/config.h"
- #include "fw/api/nvm-reg.h"
--#include "fw/img.h"
- #include "iwl-trans.h"
+diff --git a/drivers/crypto/hisilicon/zip/zip_main.c b/drivers/crypto/hisilicon/zip/zip_main.c
+index 86e5178120936..4e10090067f18 100644
+--- a/drivers/crypto/hisilicon/zip/zip_main.c
++++ b/drivers/crypto/hisilicon/zip/zip_main.c
+@@ -470,10 +470,9 @@ bool hisi_zip_alg_support(struct hisi_qm *qm, u32 alg)
+ 	return false;
+ }
  
- #define BIOS_SAR_MAX_PROFILE_NUM	4
+-static int hisi_zip_set_high_perf(struct hisi_qm *qm)
++static void hisi_zip_set_high_perf(struct hisi_qm *qm)
+ {
+ 	u32 val;
+-	int ret;
+ 
+ 	val = readl_relaxed(qm->io_base + HZIP_HIGH_PERF_OFFSET);
+ 	if (perf_mode == HZIP_HIGH_COMP_PERF)
+@@ -483,13 +482,6 @@ static int hisi_zip_set_high_perf(struct hisi_qm *qm)
+ 
+ 	/* Set perf mode */
+ 	writel(val, qm->io_base + HZIP_HIGH_PERF_OFFSET);
+-	ret = readl_relaxed_poll_timeout(qm->io_base + HZIP_HIGH_PERF_OFFSET,
+-					 val, val == perf_mode, HZIP_DELAY_1_US,
+-					 HZIP_POLL_TIMEOUT_US);
+-	if (ret)
+-		pci_err(qm->pdev, "failed to set perf mode\n");
+-
+-	return ret;
+ }
+ 
+ static void hisi_zip_open_sva_prefetch(struct hisi_qm *qm)
+@@ -1181,9 +1173,7 @@ static int hisi_zip_pf_probe_init(struct hisi_zip *hisi_zip)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = hisi_zip_set_high_perf(qm);
+-	if (ret)
+-		return ret;
++	hisi_zip_set_high_perf(qm);
+ 
+ 	hisi_zip_open_sva_prefetch(qm);
+ 	hisi_qm_dev_err_init(qm);
 -- 
 2.51.0
 
