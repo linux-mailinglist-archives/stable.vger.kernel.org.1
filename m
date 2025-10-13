@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-185200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC549BD4D5E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D12BD4E6D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4286B3E6A28
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:51:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20E243E57D9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83F630BF6E;
-	Mon, 13 Oct 2025 15:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDA230AD1D;
+	Mon, 13 Oct 2025 15:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjTbQLWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rQfC+qA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765DF30BF63;
-	Mon, 13 Oct 2025 15:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D740830AD14;
+	Mon, 13 Oct 2025 15:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369617; cv=none; b=GS6FVJn/O/ntxSWpFVHlKWJu1Ojf+fCd+neA2MbxsT7CSULuNzGrSso+7eWN9DxQPCgTot6z0Puc31D/p/XITytsYx7ZChLLj90GEvcu+2tTZHXOnkSAqfexP1x+ea/ADGZUwMDCYTl3/AUpfWWJE+QTDiYQ6DeFzS+BCX+62kU=
+	t=1760369523; cv=none; b=QT6hEmdBft4R98/q0PU+i04BRVncIsgBvAWZ3Ri/P8Md4k4PgH+GeACxHKYeRbnmOYjMcKRlHU6kQYxT+SqKCAPXOdyZ9kOJAozT9TJ7PsTZpiDjkPz1iVpSlOe0zJlYnB+RTJYVpXs24IY3RTxzZoSSBsowmSJJzddvLvAU72w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369617; c=relaxed/simple;
-	bh=3CpiIlcG9po4F9c2NGdSatt8mUUZsnrgsLtns01K948=;
+	s=arc-20240116; t=1760369523; c=relaxed/simple;
+	bh=BXpmzA7mIKgn659a/h1mDWIYjJ6Co+h5sULQlLZmsDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/RLGT2/yfFSzaTQf+t636i33hfVEfnwpmfT6FngzZPzE+jKBfe46okPAWXb1vAhquaOlObfW31kDf8PjqZ/0pvrQPTzADs+sdiO4FKb65xEx+BEctLuk9VpcVacKYhmltdW92THFDT0dq+9l1kL2UyR2Nh8/B7KPtNb2QyyjKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CjTbQLWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC19FC4CEE7;
-	Mon, 13 Oct 2025 15:33:36 +0000 (UTC)
+	 MIME-Version; b=L/K6xHSJoHlCWk0VP1rZyyXbG5fxidD+KHDGiKngHNA0uqSxgxJMYq5mXnathoVRWSKY3wboibqwoH5PpQgUeGNqh9kNUf3+hogJybAdr6Pttvo9Obiq4ZWkeQzBmlFx09PR2DNH0QKtXGmEfCaH4JfU1mYbjyVqSOFNRThsNnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rQfC+qA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B19C4CEFE;
+	Mon, 13 Oct 2025 15:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369617;
-	bh=3CpiIlcG9po4F9c2NGdSatt8mUUZsnrgsLtns01K948=;
+	s=korg; t=1760369523;
+	bh=BXpmzA7mIKgn659a/h1mDWIYjJ6Co+h5sULQlLZmsDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CjTbQLWGBBrZFhJnHqwWjeN4FeidLyTtnKDqcC4PTNxbOBhURGcXhVkbZXfQpv7FX
-	 bh0fObCNoQdBVeKsrg9GfxIzFPQjdT5l0CduEgEK7jFgDvWE9pG6dTd3JwRk/E99YQ
-	 0hRuDkZJbZGUnpvbcqU0zSFkZVMfbTCKmVEMYd3I=
+	b=0rQfC+qAuRIPZu0X2z5962p0xz9T4GzIqNW8is6xJhqv0qD3gDfyylvNxlOAldm2b
+	 Wxd+wULxKV6G7KQQUi94oE2TVpI1jtFih7EFI5JprauMwkrjqqpPOH7wBvopHDEdJ/
+	 wwcsU6gmTQDGvaL0NYBapQe9ICTxebXGuZwg/mw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 276/563] HID: i2c-hid: Fix test in i2c_hid_core_register_panel_follower()
-Date: Mon, 13 Oct 2025 16:42:17 +0200
-Message-ID: <20251013144421.271701885@linuxfoundation.org>
+Subject: [PATCH 6.17 277/563] ALSA: lx_core: use int type to store negative error codes
+Date: Mon, 13 Oct 2025 16:42:18 +0200
+Message-ID: <20251013144421.307470597@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,38 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 5c76c794bf29399394ebacaa5af8436b8bed0d46 ]
+[ Upstream commit 4ef353d546cda466fc39b7daca558d7bcec21c09 ]
 
-Bitwise AND was intended instead of OR.  With the current code the
-condition is always true.
+Change the 'ret' variable from u16 to int to store negative error codes or
+zero returned by lx_message_send_atomic().
 
-Fixes: cbdd16b818ee ("HID: i2c-hid: Make elan touch controllers power on after panel is enabled")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Pin-yen Lin <treapking@chromium.org>
-Acked-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/aK8Au3CgZSTvfEJ6@stanley.mountain
+Storing the negative error codes in unsigned type, doesn't cause an issue
+at runtime but it's ugly as pants. Additionally, assigning negative error
+codes to unsigned type may trigger a GCC warning when the -Wsign-conversion
+flag is enabled.
+
+No effect on runtime.
+
+Fixes: 02bec4904508 ("ALSA: lx6464es - driver for the digigram lx6464es interface")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Link: https://patch.msgid.link/20250828081312.393148-1-rongqianfeng@vivo.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/lx6464es/lx_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 99ce6386176c6..30ebde1273be3 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -1189,7 +1189,7 @@ static int i2c_hid_core_register_panel_follower(struct i2c_hid *ihid)
- 	struct device *dev = &ihid->client->dev;
- 	int ret;
+diff --git a/sound/pci/lx6464es/lx_core.c b/sound/pci/lx6464es/lx_core.c
+index 9d95ecb299aed..a99acd1125e74 100644
+--- a/sound/pci/lx6464es/lx_core.c
++++ b/sound/pci/lx6464es/lx_core.c
+@@ -316,7 +316,7 @@ static int lx_message_send_atomic(struct lx6464es *chip, struct lx_rmh *rmh)
+ /* low-level dsp access */
+ int lx_dsp_get_version(struct lx6464es *chip, u32 *rdsp_version)
+ {
+-	u16 ret;
++	int ret;
  
--	if (ihid->hid->initial_quirks | HID_QUIRK_POWER_ON_AFTER_BACKLIGHT)
-+	if (ihid->hid->initial_quirks & HID_QUIRK_POWER_ON_AFTER_BACKLIGHT)
- 		ihid->panel_follower.funcs = &i2c_hid_core_panel_follower_enable_funcs;
- 	else
- 		ihid->panel_follower.funcs = &i2c_hid_core_panel_follower_prepare_funcs;
+ 	mutex_lock(&chip->msg_lock);
+ 
+@@ -330,10 +330,10 @@ int lx_dsp_get_version(struct lx6464es *chip, u32 *rdsp_version)
+ 
+ int lx_dsp_get_clock_frequency(struct lx6464es *chip, u32 *rfreq)
+ {
+-	u16 ret = 0;
+ 	u32 freq_raw = 0;
+ 	u32 freq = 0;
+ 	u32 frequency = 0;
++	int ret;
+ 
+ 	mutex_lock(&chip->msg_lock);
+ 
 -- 
 2.51.0
 
