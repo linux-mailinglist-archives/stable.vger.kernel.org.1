@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-185375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DF3BD53C5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:52:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 938F3BD52B7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E3EC64F9521
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF437547C8A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3EBE3148B7;
-	Mon, 13 Oct 2025 15:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E77B31577E;
+	Mon, 13 Oct 2025 15:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/zhUjID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUeZP8E7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7DD3081D6;
-	Mon, 13 Oct 2025 15:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0975E3093D3;
+	Mon, 13 Oct 2025 15:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370114; cv=none; b=Ar/wSHlZE1FNrjVhv1tDsVtLsIPzw/DoAqEjeOaXK7BpMPHIg5WQh+dO/B6X67QNKAzbRDJ9X0xXDr3ZGJsluCRFiZFUbBXuGRJKdjAN7u6rnSFcNIgDuDr4rIk2gLBLWJe+A/uUbRTl4Y8fv/0DHoAIlamRse9yw7AZQRUriaw=
+	t=1760370234; cv=none; b=JL3EF/r3iXHJbjs33L5GqQofAhXuJX3sPQAlPON3L03LGhqLzqYsiln5DyBd9lsXN//MMGn8M1nA7sVGN2rUeRsxsYijFl9A1nbTDQoc4JcRcXoRIvebOOGuRngeJqHHxh6LjEwJFkXHOkrhZkUpzx6Aco+0wpDCQ2D7LSixoAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370114; c=relaxed/simple;
-	bh=Hl2TbKh8jKK146+8NmxuK0LSAYfLpNFzGb5G2Rxp4XQ=;
+	s=arc-20240116; t=1760370234; c=relaxed/simple;
+	bh=CIjVEFpzfLa5TECtBq1d4ZitCExNuos+rOOXM2553Wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sReylmBbph7wrubNXKwMkPJ47iR/BzIiyxbcEgndAJmUnkCjRTBj9GbPMyIHEkBr+EuwzGX4LLGqaU5cMhG0Zh4ko3zcYPPvVsAJDBAgZJVeu2NSJcyaA7FWGuhLDbW1FQrzn0874Q+uf8I3Thh5CEeKeLTtb84I69B60fMcD2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/zhUjID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D145C4CEFE;
-	Mon, 13 Oct 2025 15:41:54 +0000 (UTC)
+	 MIME-Version; b=A1sHDRMQYQqqb5sANdIVpiYW9uPnpaYFPTrp6/56q6GWbd87OhB9KRgDnQN+IOqQANSvR0wc2npEJOUatI/OsD+B4AM9Mk1RLSsfiYrFkQvYxfods/6i/S0MRXdFL7ZqunI8u3D+mcDDxDMc7mVhZrfloflzOPmWIhkpGyJt1IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUeZP8E7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B6CC116C6;
+	Mon, 13 Oct 2025 15:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370114;
-	bh=Hl2TbKh8jKK146+8NmxuK0LSAYfLpNFzGb5G2Rxp4XQ=;
+	s=korg; t=1760370233;
+	bh=CIjVEFpzfLa5TECtBq1d4ZitCExNuos+rOOXM2553Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/zhUjID0Ycc1O6FogGzayd3/IopAl61KeTPyZF8VEiNRrp3XDsYHYT8Ogsh+/2ib
-	 OCQljfPdyfzeJtaHnM6FQj63Yo84Le9MLk8QECUe8deG5Nmq1otZSSsnvWi/9W+7/O
-	 Pp7hjS7yNmVwtKzdUSoRTufKfFdwQ+54+RNVdiL4=
+	b=OUeZP8E7Y0bvhYShseNRuV88gQN9+n1wpDWfy95/Dkl0i5E0KWlM79kU4J2ZvaVbE
+	 1w0MGD0+uBPGat/uFbzkImD52USdUEna2iwTwCWOV+lIVTyxUqeLPYwHC0SL+dMvbr
+	 G41FZllyR+ioi/qKXQ7QSc0SngPYuhbrgyFddESA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 482/563] Revert "net/mlx5e: Update and set Xon/Xoff upon MTU set"
-Date: Mon, 13 Oct 2025 16:45:43 +0200
-Message-ID: <20251013144428.752857844@linuxfoundation.org>
+Subject: [PATCH 6.17 483/563] NFSD: filecache: add STATX_DIOALIGN and STATX_DIO_READ_ALIGN support
+Date: Mon, 13 Oct 2025 16:45:44 +0200
+Message-ID: <20251013144428.789490550@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,112 +69,188 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Mike Snitzer <snitzer@kernel.org>
 
-[ Upstream commit 6f5dacf88a32b3fd8b52c8ea781bf188c42aaa95 ]
+[ Upstream commit d11f6cd1bb4a416b4515702d020a7480ac667f0f ]
 
-This reverts commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb.
+Use STATX_DIOALIGN and STATX_DIO_READ_ALIGN to get DIO alignment
+attributes from the underlying filesystem and store them in the
+associated nfsd_file. This is done when the nfsd_file is first
+opened for each regular file.
 
-Commit in question breaks the mapping of PGs to pools for some SKUs.
-Specifically multi-host NICs seem to be shipped with a custom buffer
-configuration which maps the lossy PG to pool 4. But the bad commit
-overrides this with pool 0 which does not have sufficient buffer space
-reserved. Resulting in ~40% packet loss. The commit also breaks BMC /
-OOB connection completely (100% packet loss).
-
-Revert, similarly to commit 3fbfe251cc9f ("Revert "net/mlx5e: Update and
-set Xon/Xoff upon port speed set""). The breakage is exactly the same,
-the only difference is that quoted commit would break the NIC immediately
-on boot, and the currently reverted commit only when MTU is changed.
-
-Note: "good" kernels do not restore the configuration, so downgrade isn't
-enough to recover machines. A NIC power cycle seems to be necessary to
-return to a healthy state (or overriding the relevant registers using
-a custom patch).
-
-Fixes: ceddedc969f0 ("net/mlx5e: Update and set Xon/Xoff upon MTU set")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250929181529.1848157-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Stable-dep-of: 25ba2b84c38f ("nfs/localio: avoid issuing misaligned IO using O_DIRECT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en/port_buffer.h         | 12 ------------
- .../net/ethernet/mellanox/mlx5/core/en_main.c   | 17 +----------------
- 2 files changed, 1 insertion(+), 28 deletions(-)
+ fs/nfsd/filecache.c     | 34 ++++++++++++++++++++++++++++++++++
+ fs/nfsd/filecache.h     |  4 ++++
+ fs/nfsd/trace.h         | 27 +++++++++++++++++++++++++++
+ fs/nfsd/vfs.h           |  4 ++++
+ include/trace/misc/fs.h | 22 ++++++++++++++++++++++
+ 5 files changed, 91 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-index 66d276a1be836..f4a19ffbb641c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-@@ -66,23 +66,11 @@ struct mlx5e_port_buffer {
- 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_NETWORK_BUFFER];
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 732abf6b92a56..7ca1dedf4e04a 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -231,6 +231,9 @@ nfsd_file_alloc(struct net *net, struct inode *inode, unsigned char need,
+ 	refcount_set(&nf->nf_ref, 1);
+ 	nf->nf_may = need;
+ 	nf->nf_mark = NULL;
++	nf->nf_dio_mem_align = 0;
++	nf->nf_dio_offset_align = 0;
++	nf->nf_dio_read_offset_align = 0;
+ 	return nf;
+ }
+ 
+@@ -1069,6 +1072,35 @@ nfsd_file_is_cached(struct inode *inode)
+ 	return ret;
+ }
+ 
++static __be32
++nfsd_file_get_dio_attrs(const struct svc_fh *fhp, struct nfsd_file *nf)
++{
++	struct inode *inode = file_inode(nf->nf_file);
++	struct kstat stat;
++	__be32 status;
++
++	/* Currently only need to get DIO alignment info for regular files */
++	if (!S_ISREG(inode->i_mode))
++		return nfs_ok;
++
++	status = fh_getattr(fhp, &stat);
++	if (status != nfs_ok)
++		return status;
++
++	trace_nfsd_file_get_dio_attrs(inode, &stat);
++
++	if (stat.result_mask & STATX_DIOALIGN) {
++		nf->nf_dio_mem_align = stat.dio_mem_align;
++		nf->nf_dio_offset_align = stat.dio_offset_align;
++	}
++	if (stat.result_mask & STATX_DIO_READ_ALIGN)
++		nf->nf_dio_read_offset_align = stat.dio_read_offset_align;
++	else
++		nf->nf_dio_read_offset_align = nf->nf_dio_offset_align;
++
++	return nfs_ok;
++}
++
+ static __be32
+ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct net *net,
+ 		     struct svc_cred *cred,
+@@ -1187,6 +1219,8 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct net *net,
+ 			}
+ 			status = nfserrno(ret);
+ 			trace_nfsd_file_open(nf, status);
++			if (status == nfs_ok)
++				status = nfsd_file_get_dio_attrs(fhp, nf);
+ 		}
+ 	} else
+ 		status = nfserr_jukebox;
+diff --git a/fs/nfsd/filecache.h b/fs/nfsd/filecache.h
+index 722b26c71e454..237a05c74211b 100644
+--- a/fs/nfsd/filecache.h
++++ b/fs/nfsd/filecache.h
+@@ -54,6 +54,10 @@ struct nfsd_file {
+ 	struct list_head	nf_gc;
+ 	struct rcu_head		nf_rcu;
+ 	ktime_t			nf_birthtime;
++
++	u32			nf_dio_mem_align;
++	u32			nf_dio_offset_align;
++	u32			nf_dio_read_offset_align;
  };
  
--#ifdef CONFIG_MLX5_CORE_EN_DCB
- int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 				    u32 change, unsigned int mtu,
- 				    struct ieee_pfc *pfc,
- 				    u32 *buffer_size,
- 				    u8 *prio2buffer);
--#else
--static inline int
--mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
--				u32 change, unsigned int mtu,
--				void *pfc,
--				u32 *buffer_size,
--				u8 *prio2buffer)
--{
--	return 0;
--}
--#endif
+ int nfsd_file_cache_init(void);
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index a664fdf1161e9..6e2c8e2aab10a 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -1133,6 +1133,33 @@ TRACE_EVENT(nfsd_file_alloc,
+ 	)
+ );
  
- int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
- 			    struct mlx5e_port_buffer *port_buffer);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 15eded36b872a..21bb88c5d3dce 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -49,7 +49,6 @@
- #include "en.h"
- #include "en/dim.h"
- #include "en/txrx.h"
--#include "en/port_buffer.h"
- #include "en_tc.h"
- #include "en_rep.h"
- #include "en_accel/ipsec.h"
-@@ -3041,11 +3040,9 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 	struct mlx5e_params *params = &priv->channels.params;
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
--	u16 mtu, prev_mtu;
-+	u16 mtu;
- 	int err;
++TRACE_EVENT(nfsd_file_get_dio_attrs,
++	TP_PROTO(
++		const struct inode *inode,
++		const struct kstat *stat
++	),
++	TP_ARGS(inode, stat),
++	TP_STRUCT__entry(
++		__field(const void *, inode)
++		__field(unsigned long, mask)
++		__field(u32, mem_align)
++		__field(u32, offset_align)
++		__field(u32, read_offset_align)
++	),
++	TP_fast_assign(
++		__entry->inode = inode;
++		__entry->mask = stat->result_mask;
++		__entry->mem_align = stat->dio_mem_align;
++		__entry->offset_align = stat->dio_offset_align;
++		__entry->read_offset_align = stat->dio_read_offset_align;
++	),
++	TP_printk("inode=%p flags=%s mem_align=%u offset_align=%u read_offset_align=%u",
++		__entry->inode, show_statx_mask(__entry->mask),
++		__entry->mem_align, __entry->offset_align,
++		__entry->read_offset_align
++	)
++);
++
+ TRACE_EVENT(nfsd_file_acquire,
+ 	TP_PROTO(
+ 		const struct svc_rqst *rqstp,
+diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
+index eff04959606fe..fde3e0c11dbaf 100644
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -185,6 +185,10 @@ static inline __be32 fh_getattr(const struct svc_fh *fh, struct kstat *stat)
+ 	u32 request_mask = STATX_BASIC_STATS;
+ 	struct path p = {.mnt = fh->fh_export->ex_path.mnt,
+ 			 .dentry = fh->fh_dentry};
++	struct inode *inode = d_inode(p.dentry);
++
++	if (S_ISREG(inode->i_mode))
++		request_mask |= (STATX_DIOALIGN | STATX_DIO_READ_ALIGN);
  
--	mlx5e_query_mtu(mdev, params, &prev_mtu);
--
- 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
- 	if (err)
- 		return err;
-@@ -3055,18 +3052,6 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
- 			    __func__, mtu, params->sw_mtu);
- 
--	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
--		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
--						      NULL, NULL, NULL);
--		if (err) {
--			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
--				    __func__, mtu, err, prev_mtu);
--
--			mlx5e_set_mtu(mdev, params, prev_mtu);
--			return err;
--		}
--	}
--
- 	params->sw_mtu = mtu;
- 	return 0;
- }
+ 	if (fh->fh_maxsize == NFS4_FHSIZE)
+ 		request_mask |= (STATX_BTIME | STATX_CHANGE_COOKIE);
+diff --git a/include/trace/misc/fs.h b/include/trace/misc/fs.h
+index 0406ebe2a80a4..7ead1c61f0cb1 100644
+--- a/include/trace/misc/fs.h
++++ b/include/trace/misc/fs.h
+@@ -141,3 +141,25 @@
+ 		{ ATTR_TIMES_SET,	"TIMES_SET" },	\
+ 		{ ATTR_TOUCH,		"TOUCH"},	\
+ 		{ ATTR_DELEG,		"DELEG"})
++
++#define show_statx_mask(flags)					\
++	__print_flags(flags, "|",				\
++		{ STATX_TYPE,		"TYPE" },		\
++		{ STATX_MODE,		"MODE" },		\
++		{ STATX_NLINK,		"NLINK" },		\
++		{ STATX_UID,		"UID" },		\
++		{ STATX_GID,		"GID" },		\
++		{ STATX_ATIME,		"ATIME" },		\
++		{ STATX_MTIME,		"MTIME" },		\
++		{ STATX_CTIME,		"CTIME" },		\
++		{ STATX_INO,		"INO" },		\
++		{ STATX_SIZE,		"SIZE" },		\
++		{ STATX_BLOCKS,		"BLOCKS" },		\
++		{ STATX_BASIC_STATS,	"BASIC_STATS" },	\
++		{ STATX_BTIME,		"BTIME" },		\
++		{ STATX_MNT_ID,		"MNT_ID" },		\
++		{ STATX_DIOALIGN,	"DIOALIGN" },		\
++		{ STATX_MNT_ID_UNIQUE,	"MNT_ID_UNIQUE" },	\
++		{ STATX_SUBVOL,		"SUBVOL" },		\
++		{ STATX_WRITE_ATOMIC,	"WRITE_ATOMIC" },	\
++		{ STATX_DIO_READ_ALIGN,	"DIO_READ_ALIGN" })
 -- 
 2.51.0
 
