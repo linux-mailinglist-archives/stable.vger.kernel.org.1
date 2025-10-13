@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-184408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E81CBD3F9C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:16:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC9FBD468A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A714188EE9D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A016740524C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B05130DD0B;
-	Mon, 13 Oct 2025 14:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF4B2D1F7E;
+	Mon, 13 Oct 2025 15:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ap5U8fOF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehy0FRMr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2489B30CDB9;
-	Mon, 13 Oct 2025 14:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C90C145B3F;
+	Mon, 13 Oct 2025 15:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367350; cv=none; b=XRp9AyZTI81Bx4yMpSGaaGh/zM/jlz4oeT4jFa4L4s8MaQAmJzKu+lD9kM9U+3tgRQ6ggaBKNCz41HgpiSoTtjIt7q9U7Uyg1pitOidkGxB8TW7ZdeOoRGH7QvC/4OODcUUncR6sb1wSZAjU9IEQIu66nzrCIHWOnIRv5btCU3Q=
+	t=1760368581; cv=none; b=uT8peIFYSa/t+Ljwn/XgqW7R5YhxKUf+cYpNf8bcf0v2BzQxy7P64bFdmVz4QqEfOm+jiG3cdlS2Znpi7gMOpEDswePKgCTQ9fDshJsnUhkDrQ2HQA8xZP1FjGGt7hnH4ur6M/QH+rJVLSky92f6veWAT99JmER6//g6oCz1nQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367350; c=relaxed/simple;
-	bh=YXR+Vagoev1l9n3xH17K+ponOxGVyVKt/pAOAX7JoP8=;
+	s=arc-20240116; t=1760368581; c=relaxed/simple;
+	bh=5mIzBpzqu3ZmtHBvvRG5yynm1078mL4kNLqpfiiCLyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vb2+Juh0yF61z498Th/txGqanC1SlKZSiwizE6NdT21HjOml9gA2eLqkpuuQ4SBOOw0i/L9aeWJRzSsmW3JqRqgcGT7GpHzYs3WzSCpwIL158zAncL5RSQD3vcsHME85pcDt6NqNeZIUKz9qYC2sCc5SKlQltEtUhBZpfT/QENI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ap5U8fOF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D483C4CEE7;
-	Mon, 13 Oct 2025 14:55:49 +0000 (UTC)
+	 MIME-Version; b=g0KwIy7qkH6aitlDhqSY7ePjLg4VJWOZdA081ZU8nYe5/juexNvTlLikcSiGWBFRUOdFVbRJ2Jlp8Fl+nDPBVpWtZRNpNRCwxyi77IBsY365dQ7WU2AfegiJtZ9SlY9swfNbbBNzk+XjtlXHUzJM/08lees1AAbD6FDTbHJJwJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehy0FRMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E69C4CEE7;
+	Mon, 13 Oct 2025 15:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367349;
-	bh=YXR+Vagoev1l9n3xH17K+ponOxGVyVKt/pAOAX7JoP8=;
+	s=korg; t=1760368581;
+	bh=5mIzBpzqu3ZmtHBvvRG5yynm1078mL4kNLqpfiiCLyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ap5U8fOF+PUp110X7eWmLMBwKX4pfb82Q3I9qIIbAAtzr/r9wn4uw0LCnVQ+wNit0
-	 2W44j7sGcqh19B5y2XUKPB1asSBE0/cDnZ+z/sdVbcJAM6yUFif3trp9TydGwmqDFc
-	 Ba5L9LAsAFiWQpCMbbx4cJapXT+W62Ije8QpvaJY=
+	b=ehy0FRMrfoCXQD2YSSHniIRTC636x1zoWeVzMRIjd+BMylVsHtYL02PG5neat9NrS
+	 9szMrzQQa+XBD3WpLKlCjKUPFuucPvVKK3k7L0qfxnO639pmKKEFE2HrYa8FS9cKRL
+	 1a6ub1TxFvUocMMvrA2a1RsZhjLWWfTFoJFOdbYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 178/196] dm: fix queue start/stop imbalance under suspend/load/resume races
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Goldwyn Rodrigues <rgoldwyn@suse.de>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 209/262] ocfs2: fix double free in user_cluster_connect()
 Date: Mon, 13 Oct 2025 16:45:51 +0200
-Message-ID: <20251013144321.134661285@linuxfoundation.org>
+Message-ID: <20251013144333.770581622@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +69,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 7f597c2cdb9d3263a6fce07c4fc0a9eaa8e8fc43 upstream.
+[ Upstream commit 8f45f089337d924db24397f55697cda0e6960516 ]
 
-When suspend and load run concurrently, before q->mq_ops is set in
-blk_mq_init_allocated_queue(), __dm_suspend() skip dm_stop_queue(). As a
-result, the queue's quiesce depth is not incremented.
+user_cluster_disconnect() frees "conn->cc_private" which is "lc" but then
+the error handling frees "lc" a second time.  Set "lc" to NULL on this
+path to avoid a double free.
 
-Later, once table load has finished and __dm_resume() runs, which triggers
-q->quiesce_depth ==0 warning in blk_mq_unquiesce_queue():
-Call Trace:
- <TASK>
- dm_start_queue+0x16/0x20 [dm_mod]
- __dm_resume+0xac/0xb0 [dm_mod]
- dm_resume+0x12d/0x150 [dm_mod]
- do_resume+0x2c2/0x420 [dm_mod]
- dev_suspend+0x30/0x130 [dm_mod]
- ctl_ioctl+0x402/0x570 [dm_mod]
- dm_ctl_ioctl+0x23/0x30 [dm_mod]
-
-Fix this by explicitly tracking whether the request queue was
-stopped in __dm_suspend() via a new DMF_QUEUE_STOPPED flag.
-Only call dm_start_queue() in __dm_resume() if the queue was
-actually stopped.
-
-Fixes: e70feb8b3e68 ("blk-mq: support concurrent queue quiesce/unquiesce")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/aNKDz_7JF7aycZ0k@stanley.mountain
+Fixes: c994c2ebdbbc ("ocfs2: use the new DLM operation callbacks while requesting new lockspace")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Goldwyn Rodrigues <rgoldwyn@suse.de>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-core.h |    1 +
- drivers/md/dm.c      |    8 +++++---
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ fs/ocfs2/stack_user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/dm-core.h
-+++ b/drivers/md/dm-core.h
-@@ -160,6 +160,7 @@ struct mapped_device {
- #define DMF_SUSPENDED_INTERNALLY 7
- #define DMF_POST_SUSPENDING 8
- #define DMF_EMULATE_ZONE_APPEND 9
-+#define DMF_QUEUE_STOPPED 10
- 
- void disable_discard(struct mapped_device *md);
- void disable_write_zeroes(struct mapped_device *md);
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2720,8 +2720,10 @@ static int __dm_suspend(struct mapped_de
- 	 * Stop md->queue before flushing md->wq in case request-based
- 	 * dm defers requests to md->wq from md->queue.
- 	 */
--	if (dm_request_based(md))
-+	if (dm_request_based(md)) {
- 		dm_stop_queue(md->queue);
-+		set_bit(DMF_QUEUE_STOPPED, &md->flags);
-+	}
- 
- 	flush_workqueue(md->wq);
- 
-@@ -2743,7 +2745,7 @@ static int __dm_suspend(struct mapped_de
- 	if (r < 0) {
- 		dm_queue_flush(md);
- 
--		if (dm_request_based(md))
-+		if (test_and_clear_bit(DMF_QUEUE_STOPPED, &md->flags))
- 			dm_start_queue(md->queue);
- 
- 		unlock_fs(md);
-@@ -2826,7 +2828,7 @@ static int __dm_resume(struct mapped_dev
- 	 * so that mapping of targets can work correctly.
- 	 * Request-based dm is queueing the deferred I/Os in its request_queue.
- 	 */
--	if (dm_request_based(md))
-+	if (test_and_clear_bit(DMF_QUEUE_STOPPED, &md->flags))
- 		dm_start_queue(md->queue);
- 
- 	unlock_fs(md);
+diff --git a/fs/ocfs2/stack_user.c b/fs/ocfs2/stack_user.c
+index 77edcd70f72c2..c5236b3ed168f 100644
+--- a/fs/ocfs2/stack_user.c
++++ b/fs/ocfs2/stack_user.c
+@@ -1018,6 +1018,7 @@ static int user_cluster_connect(struct ocfs2_cluster_connection *conn)
+ 			printk(KERN_ERR "ocfs2: Could not determine"
+ 					" locking version\n");
+ 			user_cluster_disconnect(conn);
++			lc = NULL;
+ 			goto out;
+ 		}
+ 		wait_event(lc->oc_wait, (atomic_read(&lc->oc_this_node) > 0));
+-- 
+2.51.0
+
 
 
 
