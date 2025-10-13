@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04439BD43EF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA01BD42B2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A1F61882B34
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:30:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 675483E33BB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74178309EE0;
-	Mon, 13 Oct 2025 15:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C26A30FC13;
+	Mon, 13 Oct 2025 15:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rU34jCZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfrzS9YG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5D5309DDB;
-	Mon, 13 Oct 2025 15:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE28C30F923;
+	Mon, 13 Oct 2025 15:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368652; cv=none; b=J49eqOuuLMc4qC6mF30jprQyY09AHYG3BIvwuIYia1cSULiLumKCvSCPWEM+MbpjS/MaoP9MHmQrCoFnMWtS+ssGtM1VB3v9Kjfu8ZseDqN29m0A6aQ+uFzvglBzhfQuTt49jPdkaCGGMajGssuqQgPYGse45axKeuEhOOCzzoE=
+	t=1760367939; cv=none; b=mQGhbRUKbd6w2ziVOMi92zp1k64/QHObDGjfzOx+sS431UCqpr6ErDxfADd8fID5eDkScmIgVnq8nUTzPgHrOZAEdBIBqZ5LbMF/97V1zGW2QhM+66awjuVS1bYg0EfO9N450L3RGvU98AaGkl+UqXudXC2fHwbHRgmVedPnQOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368652; c=relaxed/simple;
-	bh=Oe/4ipeL1qKLTfyRUdy7OeJ2pN2E5BYpoB88YH+SY5M=;
+	s=arc-20240116; t=1760367939; c=relaxed/simple;
+	bh=PMrVlJLDRpaJlDUhJWMFRsZ5becqYUC9W8nnRSL7DKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MEMUpNQLz0xFVYpfibpjN0DQZkVK/yDefJf4VBG3QqKg7f08IInUCFlrx6Yq6KCDB0sGxgHPQwrASnAEk5Jf4dZ3Gy0vjVDCZA6NUqxqQoFquCmiTGC0X4sveYk6V5CaBkQVG8PL3Kw5kvJrNa/yBpsi+aZ8OjtQ00M6voq+cgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rU34jCZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C2FC113D0;
-	Mon, 13 Oct 2025 15:17:31 +0000 (UTC)
+	 MIME-Version; b=INvPYr4Vt4UFdkXhl4MzHTYhof5AmqbExC2OKRjBla5B0NDJwG83SizetukivvmRJmBoMCCrhJQGkm7nYdTQ0IwvTp+Y4EHHKgLfFKKwtcZt9E5u6UzUIa6n/kJFHQmJX69+bittMjAU0A/q6b92ykMMpPuwj8Ex//uGM6MEVtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfrzS9YG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B16FC4CEE7;
+	Mon, 13 Oct 2025 15:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368652;
-	bh=Oe/4ipeL1qKLTfyRUdy7OeJ2pN2E5BYpoB88YH+SY5M=;
+	s=korg; t=1760367938;
+	bh=PMrVlJLDRpaJlDUhJWMFRsZ5becqYUC9W8nnRSL7DKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rU34jCZZUzyE7ys1y/12mMx9Uv8CUnmlUhrqJDq+1PhUByBuqG0qnTRpf4F+PS8aY
-	 Kv2KN0fHfeYMcQi1Gfp85BGxxp/CTwI44srHLDjw269ANDfnTYaCRA/DaxY4ioM4kj
-	 ROc8H/tbDfmCrHFqrV0RhCwB9g8mnXlhUiH+Bfp4=
+	b=IfrzS9YGKQbCBHmUC/mFjxCiHoXS9MtUDyB4Yk6J9ATmpEBp1VKW/vDfsz4KaBP61
+	 eSgXrUeEUUgdoM5DioyMQ0buJ1vpuFOAhupzEEl3ck78gNCp17hCre3GuYFuROhw4G
+	 dnrzJ6H8AYsW4vdbX+EotmFJDaZNgHUxO99V3HPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.12 235/262] mfd: vexpress-sysreg: Check the return value of devm_gpiochip_add_data()
+	stable@kernel.org,
+	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
+	Ling Xu <quic_lxu5@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.6 186/196] misc: fastrpc: Skip reference for DMA handles
 Date: Mon, 13 Oct 2025 16:46:17 +0200
-Message-ID: <20251013144334.703208258@linuxfoundation.org>
+Message-ID: <20251013144322.035842526@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Ling Xu <quic_lxu5@quicinc.com>
 
-commit 1efbee6852f1ff698a9981bd731308dd027189fb upstream.
+commit 10df039834f84a297c72ec962c0f9b7c8c5ca31a upstream.
 
-Commit 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
-removed the return value check from the call to gpiochip_add_data() (or
-rather gpiochip_add() back then and later converted to devres) with no
-explanation. This function however can still fail, so check the return
-value and bail-out if it does.
+If multiple dma handles are passed with same fd over a remote call
+the kernel driver takes a reference and expects that put for the
+map will be called as many times to free the map. But DSP only
+updates the fd one time in the fd list when the DSP refcount
+goes to zero and hence kernel make put call only once for the
+fd. This can cause SMMU fault issue as the same fd can be used
+in future for some other call.
 
-Cc: stable@vger.kernel.org
-Fixes: 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 35a82b87135d ("misc: fastrpc: Add dma handle implementation")
+Cc: stable@kernel.org
+Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250912131236.303102-5-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/vexpress-sysreg.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |   45 +++++++++++++++++++++++++++------------------
+ 1 file changed, 27 insertions(+), 18 deletions(-)
 
---- a/drivers/mfd/vexpress-sysreg.c
-+++ b/drivers/mfd/vexpress-sysreg.c
-@@ -90,6 +90,7 @@ static int vexpress_sysreg_probe(struct
- 	struct resource *mem;
- 	void __iomem *base;
- 	struct gpio_chip *mmc_gpio_chip;
-+	int ret;
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -362,9 +362,8 @@ static int fastrpc_map_get(struct fastrp
  
- 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!mem)
-@@ -110,7 +111,10 @@ static int vexpress_sysreg_probe(struct
- 	bgpio_init(mmc_gpio_chip, &pdev->dev, 0x4, base + SYS_MCI,
- 			NULL, NULL, NULL, NULL, 0);
- 	mmc_gpio_chip->ngpio = 2;
--	devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
+ 
+ static int fastrpc_map_lookup(struct fastrpc_user *fl, int fd,
+-			    struct fastrpc_map **ppmap, bool take_ref)
++			    struct fastrpc_map **ppmap)
+ {
+-	struct fastrpc_session_ctx *sess = fl->sctx;
+ 	struct fastrpc_map *map = NULL;
+ 	struct dma_buf *buf;
+ 	int ret = -ENOENT;
+@@ -378,15 +377,6 @@ static int fastrpc_map_lookup(struct fas
+ 		if (map->fd != fd || map->buf != buf)
+ 			continue;
+ 
+-		if (take_ref) {
+-			ret = fastrpc_map_get(map);
+-			if (ret) {
+-				dev_dbg(sess->dev, "%s: Failed to get map fd=%d ret=%d\n",
+-					__func__, fd, ret);
+-				break;
+-			}
+-		}
+-
+ 		*ppmap = map;
+ 		ret = 0;
+ 		break;
+@@ -756,7 +746,7 @@ static const struct dma_buf_ops fastrpc_
+ 	.release = fastrpc_release,
+ };
+ 
+-static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
++static int fastrpc_map_attach(struct fastrpc_user *fl, int fd,
+ 			      u64 len, u32 attr, struct fastrpc_map **ppmap)
+ {
+ 	struct fastrpc_session_ctx *sess = fl->sctx;
+@@ -764,9 +754,6 @@ static int fastrpc_map_create(struct fas
+ 	struct sg_table *table;
+ 	int err = 0;
+ 
+-	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
+-		return 0;
+-
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+ 	if (!map)
+ 		return -ENOMEM;
+@@ -843,6 +830,24 @@ get_err:
+ 	return err;
+ }
+ 
++static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
++			      u64 len, u32 attr, struct fastrpc_map **ppmap)
++{
++	struct fastrpc_session_ctx *sess = fl->sctx;
++	int err = 0;
 +
-+	ret = devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
-+	if (ret)
-+		return ret;
++	if (!fastrpc_map_lookup(fl, fd, ppmap)) {
++		if (!fastrpc_map_get(*ppmap))
++			return 0;
++		dev_dbg(sess->dev, "%s: Failed to get map fd=%d\n",
++			__func__, fd);
++	}
++
++	err = fastrpc_map_attach(fl, fd, len, attr, ppmap);
++
++	return err;
++}
++
+ /*
+  * Fastrpc payload buffer with metadata looks like:
+  *
+@@ -915,8 +920,12 @@ static int fastrpc_create_maps(struct fa
+ 		    ctx->args[i].length == 0)
+ 			continue;
  
- 	return devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
- 			vexpress_sysreg_cells,
+-		err = fastrpc_map_create(ctx->fl, ctx->args[i].fd,
+-			 ctx->args[i].length, ctx->args[i].attr, &ctx->maps[i]);
++		if (i < ctx->nbufs)
++			err = fastrpc_map_create(ctx->fl, ctx->args[i].fd,
++				 ctx->args[i].length, ctx->args[i].attr, &ctx->maps[i]);
++		else
++			err = fastrpc_map_attach(ctx->fl, ctx->args[i].fd,
++				 ctx->args[i].length, ctx->args[i].attr, &ctx->maps[i]);
+ 		if (err) {
+ 			dev_err(dev, "Error Creating map %d\n", err);
+ 			return -EINVAL;
+@@ -1103,7 +1112,7 @@ cleanup_fdlist:
+ 	for (i = 0; i < FASTRPC_MAX_FDLIST; i++) {
+ 		if (!fdlist[i])
+ 			break;
+-		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap, false))
++		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap))
+ 			fastrpc_map_put(mmap);
+ 	}
+ 
 
 
 
