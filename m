@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-184689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4DEBD4273
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A35BD3B9D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C2D2188BA05
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E3D71883A1F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB943311946;
-	Mon, 13 Oct 2025 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1DD30DEA0;
+	Mon, 13 Oct 2025 14:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEMZ/pZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOBeS2p+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845B73093C9;
-	Mon, 13 Oct 2025 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47DC30DD35;
+	Mon, 13 Oct 2025 14:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368159; cv=none; b=pMjj29Hpc9T7j8yp4JoBB7rA+7l/9nol5ZWqfMAVrS/rnJyfIlWk2DrMMkYsqweDXW+VBPPCPSZJQWUJjMqdN5/0I4vi9Hkho3GqUFpEfaDJqvxg0WC8Vrjq8R2XdR/zppRdVVuHqh67wsghYZuHjWoDHpkIv8z9mgRHcxxWwjg=
+	t=1760366924; cv=none; b=h1OXW08hK0oC7jB/eBPkJnQd3xC5lgsT2utqfUWdYDv9a/2//1GST1IiKsThuBmh/fR4CByE52doS2d++s7IRMSpYHw4ktKGuIH33Zj9mdK8rEOFyRDJHBEm04ymmWIBl6THfGicZZ/ugolBe/eFv6AB4rbfLONoyOkFt9iROcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368159; c=relaxed/simple;
-	bh=UnqK5brO30YKIhwtYxoijZ3VRb0bGciiMHlnXBV1oyY=;
+	s=arc-20240116; t=1760366924; c=relaxed/simple;
+	bh=QTianJLxAYV7DXNZLYdOGFXDHPXi87WeFX01GVo77iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMHOmvWm4uV1QzUKR9NKVY1UiMuPNGs9DKKxjacb8B1PXK085U8VH/4LTjixMnAtG2visRBBTRhUVwXLPliLkR8mxMKkzPymE5MTLC3jR+e4aPnkQVfwQtW2kZh81oTj4EWAO+4Jmpr2OxeV39UNmyMPDh+on+4taCwmWGUSWds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEMZ/pZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE97BC4CEE7;
-	Mon, 13 Oct 2025 15:09:18 +0000 (UTC)
+	 MIME-Version; b=j5T5vB4n0cXgs9TN5aSReBCoB/vjYfb/AVW7Vn8fOcjHQ8PKJnGl0tDNVIpHvZA/m17lkb6zNEXAFBbboNBtTxOlujcMYB+nzGjSEtfXqVU2zelCxLcgVvTsFmVZ/EMx0u6QpHp2vGlIXbi3riXOwbPoXtuW4hCBUFPaJUS6UaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOBeS2p+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9D1C4CEFE;
+	Mon, 13 Oct 2025 14:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368159;
-	bh=UnqK5brO30YKIhwtYxoijZ3VRb0bGciiMHlnXBV1oyY=;
+	s=korg; t=1760366924;
+	bh=QTianJLxAYV7DXNZLYdOGFXDHPXi87WeFX01GVo77iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEMZ/pZf0xfIn/qh/p5fvihz5FMMteNTkD4dZo9T3CcIYtDNZOrtOluq8+9Kg4Ohi
-	 bw9ZH4Yigf1wfaNHNfMTS9FRgjJMyWM/atFLu0GuJPfn3h96OtAJXNV2yfVy8stfb0
-	 CzMzMQimXb67NXzbCTyUB1bvxGyev8KynZEYI6bI=
+	b=FOBeS2p+BeskRqj/4MXGAJtVDtwvWZ9s+lYCUlP1L32LxWwfTZULUCdbbyJqPhJEJ
+	 3qz19mdc2cG28UQ0ILs+zCbhHu9oOGDTZlgWjv8Eh9wAnK8Pvy158JrcGVbk+xJDmy
+	 vuOwm+kMQFKU4sH/SPrFzMiwjFBeEbh9Ua+aqJ4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Fei Shao <fshao@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/262] arm64: dts: mediatek: mt8395-kontron-i1200: Fix MT6360 regulator nodes
+Subject: [PATCH 6.1 032/196] dm-integrity: limit MAX_TAG_SIZE to 255
 Date: Mon, 13 Oct 2025 16:43:25 +0200
-Message-ID: <20251013144328.398116954@linuxfoundation.org>
+Message-ID: <20251013144315.751081962@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 09a1e9c973973aff26e66a5673c19442d91b9e3d ]
+[ Upstream commit 77b8e6fbf9848d651f5cb7508f18ad0971f3ffdb ]
 
-All of the MT6360 regulator nodes were wrong and would not probe
-because the regulator names are supposed to be lower case, but
-they are upper case in this devicetree.
+MAX_TAG_SIZE was 0x1a8 and it may be truncated in the "bi->metadata_size
+= ic->tag_size" assignment. We need to limit it to 255.
 
-Change all nodes to be lower case to get working regulators.
-
-Fixes: 94aaf79a6af5 ("arm64: dts: mediatek: add Kontron 3.5"-SBC-i1200")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20250724083914.61351-38-angelogioacchino.delregno@collabora.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mediatek/mt8395-kontron-3-5-sbc-i1200.dts    | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/md/dm-integrity.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts b/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts
-index e2e75b8ff9188..9ab4fee769e40 100644
---- a/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8395-kontron-3-5-sbc-i1200.dts
-@@ -351,7 +351,7 @@ regulator {
- 			LDO_VIN2-supply = <&vsys>;
- 			LDO_VIN3-supply = <&vsys>;
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index fc9cb626ca917..19a0b1919a096 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -128,7 +128,7 @@ struct journal_sector {
+ 	commit_id_t commit_id;
+ };
  
--			mt6360_buck1: BUCK1 {
-+			mt6360_buck1: buck1 {
- 				regulator-name = "emi_vdd2";
- 				regulator-min-microvolt = <600000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -361,7 +361,7 @@ MT6360_OPMODE_LP
- 				regulator-always-on;
- 			};
+-#define MAX_TAG_SIZE			(JOURNAL_SECTOR_DATA - JOURNAL_MAC_PER_SECTOR - offsetof(struct journal_entry, last_bytes[MAX_SECTORS_PER_BLOCK]))
++#define MAX_TAG_SIZE			255
  
--			mt6360_buck2: BUCK2 {
-+			mt6360_buck2: buck2 {
- 				regulator-name = "emi_vddq";
- 				regulator-min-microvolt = <300000>;
- 				regulator-max-microvolt = <1300000>;
-@@ -371,7 +371,7 @@ MT6360_OPMODE_LP
- 				regulator-always-on;
- 			};
+ #define METADATA_PADDING_SECTORS	8
  
--			mt6360_ldo1: LDO1 {
-+			mt6360_ldo1: ldo1 {
- 				regulator-name = "mt6360_ldo1"; /* Test point */
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3600000>;
-@@ -379,7 +379,7 @@ mt6360_ldo1: LDO1 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo2: LDO2 {
-+			mt6360_ldo2: ldo2 {
- 				regulator-name = "panel1_p1v8";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -387,7 +387,7 @@ mt6360_ldo2: LDO2 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo3: LDO3 {
-+			mt6360_ldo3: ldo3 {
- 				regulator-name = "vmc_pmu";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -395,7 +395,7 @@ mt6360_ldo3: LDO3 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo5: LDO5 {
-+			mt6360_ldo5: ldo5 {
- 				regulator-name = "vmch_pmu";
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -403,7 +403,7 @@ mt6360_ldo5: LDO5 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo6: LDO6 {
-+			mt6360_ldo6: ldo6 {
- 				regulator-name = "mt6360_ldo6"; /* Test point */
- 				regulator-min-microvolt = <500000>;
- 				regulator-max-microvolt = <2100000>;
-@@ -411,7 +411,7 @@ mt6360_ldo6: LDO6 {
- 							   MT6360_OPMODE_LP>;
- 			};
- 
--			mt6360_ldo7: LDO7 {
-+			mt6360_ldo7: ldo7 {
- 				regulator-name = "emi_vmddr_en";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
 -- 
 2.51.0
 
