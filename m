@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-185057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 949E8BD46AB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F525BD4607
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B57318827C9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:41:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 957B018876C6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B26C3148AB;
-	Mon, 13 Oct 2025 15:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAAE63093CB;
+	Mon, 13 Oct 2025 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSdAUaLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uz5oagxO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BA73148A7;
-	Mon, 13 Oct 2025 15:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883F123F294;
+	Mon, 13 Oct 2025 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369210; cv=none; b=KTdE5u7pJNYItABAdOWuTvigNS37zylpX5f8UAPZpFkBB4CaP3wuK6rMqR0tZNUzvCELYfRn8VAJK7/QCYUrPlIfO/aFLgL3gLTh+rYzJyt7lnK93Np00HcPkvOli1yZEwUOzvtlqy/oyE3AuQhoUsMUK17iMy2aYFbSdOTpA+Q=
+	t=1760369118; cv=none; b=UTGdV+vRovqn15CQvzbUPr/WFpEafjLbxclZGJbi2GYsU+MyaLLzHnbOPwMc8wqKqTw8HLRVWcSJZ0Dk9YNuoIj13y1GFfLhttiKG/SmeBZDCu0CP3ltObajl14Go+PQjLHsVQhvO4mxBdrGGAspU8u+Skv3M9JLEZ6o5BVH77M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369210; c=relaxed/simple;
-	bh=pj+Ho1HSziqp1nrc8lPRnNjMNLH+Sk945piiY2wG+xg=;
+	s=arc-20240116; t=1760369118; c=relaxed/simple;
+	bh=/GTwU0p139y9tv+6Wob/2YAFaLk4/AYPxd9Vb/G3gMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNjAhnsDj5c2cVZwsSzCtAjFulbz3WbEG8GP/IlB50pTyqrWdqP7HkZTgx/xBIJjSVuNrBMyRMxUI/lsVny2f7bIq+OoowafdBSSJ9FHop97kqD/RTgv1yPUo/0vOm33SIwDwnvfByTkv4dwREwDadpqRRQMA9pZ6R62OsuUOpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSdAUaLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F4DC116D0;
-	Mon, 13 Oct 2025 15:26:49 +0000 (UTC)
+	 MIME-Version; b=MbZGiJGznFcls2EB1qQATDgAsqgABa7lNG0pEXzOoqCUTTTrUujEiolHhkPrMN65z0C9FZufW1moMYqu0e9sHj1wEEudQxTIbWS/JL65JorFbY+6ovo9zEE0V8Q+BsPRXTxjhxtvixXUrSm9EN6IH3GLSmQKhqdq/+M9fZShlpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uz5oagxO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C820C4CEFE;
+	Mon, 13 Oct 2025 15:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369209;
-	bh=pj+Ho1HSziqp1nrc8lPRnNjMNLH+Sk945piiY2wG+xg=;
+	s=korg; t=1760369118;
+	bh=/GTwU0p139y9tv+6Wob/2YAFaLk4/AYPxd9Vb/G3gMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSdAUaLO1BinPrFemvSW/La0+Ge61Eq6zOZdrnCDsX7jZMdxa42wHDpppsAF/7K6L
-	 BoGpPHOSlZ4zU0FRVcyB+0nQXJaadNmCmKg/usy2eeKcDT4AbmOEGl/hTFwz6Hi+cd
-	 lcu4wZW8IqPytDMl2cfW/k5fqg3q3VKWt4Mw7yZU=
+	b=uz5oagxOjmWjX9UtImtS87XZBeDdBp3wjS3XD3tr3NxCvW1nmPcPK0CLX81/RvxcJ
+	 QmiEMXAq3ZpxiyznNxYCwI+Q6ID2SxrzVPJdiw4xHbBxS/iGMl3lbCMXNqd61tOLHJ
+	 /DDMhpy39uSR+1n/lkCne1XV5LlpIpko680PAv9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Pavel Zhovner <pavel@flipperdevices.com>,
+	Alexey Charkov <alchark@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 133/563] arm64: dts: allwinner: t527: avaota-a1: Add ethernet PHY reset setting
-Date: Mon, 13 Oct 2025 16:39:54 +0200
-Message-ID: <20251013144416.110718397@linuxfoundation.org>
+Subject: [PATCH 6.17 135/563] arm64: dts: rockchip: Add WiFi on rk3576-evb1-v10
+Date: Mon, 13 Oct 2025 16:39:56 +0200
+Message-ID: <20251013144416.182287071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -66,38 +67,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Alexey Charkov <alchark@gmail.com>
 
-[ Upstream commit 8dc3f973b2ff7ea19f7637983c11b005daa8fe45 ]
+[ Upstream commit ebf8183ad08afc4fcabe1379a5098354829d950d ]
 
-The external Ethernet PHY has a reset pin that is connected to the SoC.
-It is missing from the original submission.
+Add device tree nodes to enable the onboard Ampak AP6275P WiFi chip
+connected over a PCIe link on Rockchip RK3576 EVB1.
 
-Add it to complete the description.
+It takes an external 32 kHz clock from the RTC chip and requires the
+WIFI_REG_ON signal to be enabled before the bus is enumerated to
+initialize properly.
 
-Fixes: c6800f15998b ("arm64: dts: allwinner: t527: add EMAC0 to Avaota-A1 board")
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20250908181059.1785605-9-wens@kernel.org
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Tested-by: Pavel Zhovner <pavel@flipperdevices.com>
+Signed-off-by: Alexey Charkov <alchark@gmail.com>
+Link: https://lore.kernel.org/r/20250813-evb1-rtcwifibt-v1-2-d13c83422971@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Stable-dep-of: 843367c7ed19 ("arm64: dts: rockchip: Fix network on rk3576 evb1 board")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts | 3 +++
- 1 file changed, 3 insertions(+)
+ .../boot/dts/rockchip/rk3576-evb1-v10.dts     | 58 +++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-index b9eeb6753e9e3..e7713678208d4 100644
---- a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-@@ -85,6 +85,9 @@ &mdio0 {
- 	ext_rgmii_phy: ethernet-phy@1 {
- 		compatible = "ethernet-phy-ieee802.3-c22";
- 		reg = <1>;
-+		reset-gpios = <&pio 7 8 GPIO_ACTIVE_LOW>; /* PH8 */
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <150000>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts
+index bfefd37a1ab8c..3007e0179611b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dts
+@@ -232,6 +232,20 @@ vcc_ufs_s0: regulator-vcc-ufs-s0 {
+ 		regulator-max-microvolt = <3300000>;
+ 		vin-supply = <&vcc_sys>;
+ 	};
++
++	vcc_wifi_reg_on: regulator-wifi-reg-on {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpios = <&gpio1 RK_PC6 GPIO_ACTIVE_HIGH>;
++		pinctrl-0 = <&wifi_reg_on>;
++		pinctrl-names = "default";
++		regulator-name = "wifi_reg_on";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		vin-supply = <&vcc_1v8_s3>;
++	};
+ };
+ 
+ &cpu_l0 {
+@@ -242,6 +256,10 @@ &cpu_b0 {
+ 	cpu-supply = <&vdd_cpu_big_s0>;
+ };
+ 
++&combphy0_ps {
++	status = "okay";
++};
++
+ &combphy1_psu {
+ 	status = "okay";
+ };
+@@ -712,6 +730,30 @@ rgmii_phy1: phy@1 {
  	};
  };
  
++&pcie0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pcie0_rst>;
++	reset-gpios = <&gpio2 RK_PB4 GPIO_ACTIVE_HIGH>;
++	vpcie3v3-supply = <&vcc_3v3_s3>;
++	status = "okay";
++
++	pcie@0,0 {
++		reg = <0x0 0 0 0 0>;
++		bus-range = <0x0 0xf>;
++		device_type = "pci";
++		ranges;
++		#address-cells = <3>;
++		#size-cells = <2>;
++
++		wifi: wifi@0,0 {
++			compatible = "pci14e4,449d";
++			reg = <0x10000 0 0 0 0>;
++			clocks = <&hym8563>;
++			clock-names = "lpo";
++		};
++	};
++};
++
+ &pcie1 {
+ 	reset-gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
+ 	vpcie3v3-supply = <&vcc3v3_pcie1>;
+@@ -730,6 +772,12 @@ rtc_int: rtc-int {
+ 		};
+ 	};
+ 
++	pcie0 {
++		pcie0_rst: pcie0-rst {
++			rockchip,pins = <2 RK_PB4 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
+ 	usb {
+ 		usb_host_pwren: usb-host-pwren {
+ 			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
+@@ -743,6 +791,16 @@ usbc0_int: usbc0-int {
+ 			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
+ 	};
++
++	wifi {
++		wifi_reg_on: wifi-reg-on {
++			rockchip,pins = <1 RK_PC6 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
++
++		wifi_wake_host: wifi-wake-host {
++			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_down>;
++		};
++	};
+ };
+ 
+ &sdmmc {
 -- 
 2.51.0
 
