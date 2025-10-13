@@ -1,110 +1,220 @@
-Return-Path: <stable+bounces-185516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DE6BD63E8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 22:47:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD570BD6574
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 23:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D34314F7671
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 20:44:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9F0784EB9DC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 21:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E1030BB91;
-	Mon, 13 Oct 2025 20:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA36F2DF13A;
+	Mon, 13 Oct 2025 21:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cpsH+v89"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJGpzaO/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40103309DB1
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 20:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820A71A9F9B;
+	Mon, 13 Oct 2025 21:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760388091; cv=none; b=Yy9E9B8db7IiNHyBGfGVIPcfyX14QaFr0NEQfItmjMtjrkxtZQw+bQItBaxOiUtjTMkqB6oSyh3IuY4UvS+8uO4MkjbF6osduTfrf5hCcaqljTAcpbxep7Qc2wCWlUGxHsl8cXjVqYPTXgIuRC+LokqmVn0qqJUCrVM8IjH4PNs=
+	t=1760390210; cv=none; b=HAb/2q2Jg7BTjkmvkgyU6miWkYHPHGbyf7yzrm72FB6t/zdlJUqRqmG3YsIOywfnMhDnnA/cthEPArj9KCCAiZInlRbeEtjW3Wb3NxIL53RkiV5TYbVptSJORmXr9jJSSo7mbXix71k6fDEFSLIMDl9jU1PoXkvYrW1DFewcYwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760388091; c=relaxed/simple;
-	bh=auI4kF96Ov5mjIOIHXwuNHhvI0RkFNraAXup3IXlDZI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvHWBvQYXCMsa+9rOEKHWr+g+5yrcIkvTrG2q1P1O34m6vllQqTJtcSIByAneaz8PoETp5v+IXlYtX5cb3nvNywVVUCo5qMosEg7mPB/1TuisKNjnqXrLL+ylyPpdCnKlMEgQgGXeTFZ7aHx8/9cA6vfswPNPONiyXm+D+Ctinw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cpsH+v89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18776C19423;
-	Mon, 13 Oct 2025 20:41:30 +0000 (UTC)
+	s=arc-20240116; t=1760390210; c=relaxed/simple;
+	bh=YZTcR6Frhh1tL4uhDqTV7X9j8XQL569lYi9mClkyuJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=H6ys/zE0A7OuSMQDvWD8cxkbYg9ACoQpyXEbPDpIKkSY5OTTFwZ0DlTuYldWVDd90pfTMKajw8ujT1VwP3cH1LTHmPU99fFFkhRg0wa8hkiknizTWN477ZEfA6GHs7a9GJlpOOI7hNpv9UcLjrWUkvEG6SLhGXcqQT1JSISynzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJGpzaO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4098C4CEE7;
+	Mon, 13 Oct 2025 21:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760388090;
-	bh=auI4kF96Ov5mjIOIHXwuNHhvI0RkFNraAXup3IXlDZI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpsH+v89dLt9z+8aBsMCfJfpNQ/0bZWqULIQDdoujudzggtbnLcGpVYHSkdMLA6qI
-	 e8iDuEzPrR99wsTtwrOLqCLy1WCg35qVcIXY5XsqXNThoN4oCNLqpf2QndEF1Rs7j3
-	 Kgzi07JarMrB+T0/AiO3kTp9s3CCGa8RyO3TREx2G1d4KQuH0PYf1N/KSXBCKa/CaV
-	 dYtLAKdiFb0pOlTdr5NRcwjWz2BE7Gs+IV4nkalzmL484TFc68mZ8vh/iL5FVcUlyQ
-	 B+CWnw8TV32dYS+mHNid+8hEA9bdPL3qNbOIx3KiiPY4XnMvIPDL6ZwtejP0TEM3Xl
-	 xsz8bvuhMBAjQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Phillip Lougher <phillip@squashfs.org.uk>,
-	syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com,
-	Amir Goldstein <amir73il@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] Squashfs: reject negative file sizes in squashfs_read_inode()
-Date: Mon, 13 Oct 2025 16:41:27 -0400
-Message-ID: <20251013204127.3599792-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013204127.3599792-1-sashal@kernel.org>
-References: <2025101320-padding-swagger-0208@gregkh>
- <20251013204127.3599792-1-sashal@kernel.org>
+	s=k20201202; t=1760390210;
+	bh=YZTcR6Frhh1tL4uhDqTV7X9j8XQL569lYi9mClkyuJU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=dJGpzaO/brVvHWxo2sp9cjZZ2GIotA5Inp+D8bNi6575pld9Q7b3gtM/OkiKAs9nT
+	 jukpxudYmCSV2AiyfTUsay4O5wtlzX7q15i9MCKN0AyKI+RcKB/OdNNVT/1kIVht55
+	 SzVFBiXIn6pTB27Mx2ARt5rhXHv8fMyfqVcBkc6o98HlV3T5mO1S+c8hD0a19pmP/f
+	 9XvMxO1GLMgMgthOTjzCDpg6CMWzcq7jDFS2kjXqbuszCx5yoofhtfMUfmTTSyhJ3k
+	 mfhrS6Ye32WBhtVPtlSf9LMlun/zX8t8Lw0PQR6zXe/FNABTx9MgemhG11fqfjjIAv
+	 LL9m5+5hGwcSQ==
+Date: Mon, 13 Oct 2025 16:16:48 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>, Kenneth Crudup <kenny@panix.com>,
+	Genes Lists <lists@sapience.com>, Jens Axboe <axboe@kernel.dk>,
+	Todd Brandt <todd.e.brandt@intel.com>
+Subject: Re: [PATCH 6.17 068/563] PCI/MSI: Add startup/shutdown for per
+ device domains
+Message-ID: <20251013211648.GA864848@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251013144413.753811471@linuxfoundation.org>
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+[+cc Kenny, Gene, Jens, Todd]
 
-[ Upstream commit 9f1c14c1de1bdde395f6cc893efa4f80a2ae3b2b ]
+On Mon, Oct 13, 2025 at 04:38:49PM +0200, Greg Kroah-Hartman wrote:
+> 6.17-stable review patch.  If anyone has any objections, please let me know.
 
-Syskaller reports a "WARNING in ovl_copy_up_file" in overlayfs.
+We have open regression reports about this, so I don't think we
+should backport it yet:
 
-This warning is ultimately caused because the underlying Squashfs file
-system returns a file with a negative file size.
+  https://lore.kernel.org/r/af5f1790-c3b3-4f43-97d5-759d43e09c7b@panix.com
 
-This commit checks for a negative file size and returns EINVAL.
-
-[phillip@squashfs.org.uk: only need to check 64 bit quantity]
-  Link: https://lkml.kernel.org/r/20250926222305.110103-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20250926215935.107233-1-phillip@squashfs.org.uk
-Fixes: 6545b246a2c8 ("Squashfs: inode operations")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68d580e5.a00a0220.303701.0019.GAE@google.com/
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/squashfs/inode.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index eb6f577154d59..f32db16dc18ba 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -192,6 +192,10 @@ int squashfs_read_inode(struct inode *inode, long long ino)
- 			goto failed_read;
- 
- 		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
-+		if (inode->i_size < 0) {
-+			err = -EINVAL;
-+			goto failed_read;
-+		}
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
- 			/*
--- 
-2.51.0
-
+> ------------------
+> 
+> From: Inochi Amaoto <inochiama@gmail.com>
+> 
+> [ Upstream commit 54f45a30c0d0153d2be091ba2d683ab6db6d1d5b ]
+> 
+> As the RISC-V PLIC cannot apply affinity settings without invoking
+> irq_enable(), it will make the interrupt unavailble when used as an
+> underlying interrupt chip for the MSI controller.
+> 
+> Implement the irq_startup() and irq_shutdown() callbacks for the PCI MSI
+> and MSI-X templates.
+> 
+> For chips that specify MSI_FLAG_PCI_MSI_STARTUP_PARENT, the parent startup
+> and shutdown functions are invoked. That allows the interrupt on the parent
+> chip to be enabled if the interrupt has not been enabled during
+> allocation. This is necessary for MSI controllers which use PLIC as
+> underlying parent interrupt chip.
+> 
+> Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Tested-by: Chen Wang <unicorn_wang@outlook.com> # Pioneerbox
+> Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Link: https://lore.kernel.org/all/20250813232835.43458-3-inochiama@gmail.com
+> Stable-dep-of: 9d8c41816bac ("irqchip/sg2042-msi: Fix broken affinity setting")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/pci/msi/irqdomain.c | 52 +++++++++++++++++++++++++++++++++++++
+>  include/linux/msi.h         |  2 ++
+>  2 files changed, 54 insertions(+)
+> 
+> diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
+> index 0938ef7ebabf2..e0a800f918e81 100644
+> --- a/drivers/pci/msi/irqdomain.c
+> +++ b/drivers/pci/msi/irqdomain.c
+> @@ -148,6 +148,23 @@ static void pci_device_domain_set_desc(msi_alloc_info_t *arg, struct msi_desc *d
+>  	arg->hwirq = desc->msi_index;
+>  }
+>  
+> +static void cond_shutdown_parent(struct irq_data *data)
+> +{
+> +	struct msi_domain_info *info = data->domain->host_data;
+> +
+> +	if (unlikely(info->flags & MSI_FLAG_PCI_MSI_STARTUP_PARENT))
+> +		irq_chip_shutdown_parent(data);
+> +}
+> +
+> +static unsigned int cond_startup_parent(struct irq_data *data)
+> +{
+> +	struct msi_domain_info *info = data->domain->host_data;
+> +
+> +	if (unlikely(info->flags & MSI_FLAG_PCI_MSI_STARTUP_PARENT))
+> +		return irq_chip_startup_parent(data);
+> +	return 0;
+> +}
+> +
+>  static __always_inline void cond_mask_parent(struct irq_data *data)
+>  {
+>  	struct msi_domain_info *info = data->domain->host_data;
+> @@ -164,6 +181,23 @@ static __always_inline void cond_unmask_parent(struct irq_data *data)
+>  		irq_chip_unmask_parent(data);
+>  }
+>  
+> +static void pci_irq_shutdown_msi(struct irq_data *data)
+> +{
+> +	struct msi_desc *desc = irq_data_get_msi_desc(data);
+> +
+> +	pci_msi_mask(desc, BIT(data->irq - desc->irq));
+> +	cond_shutdown_parent(data);
+> +}
+> +
+> +static unsigned int pci_irq_startup_msi(struct irq_data *data)
+> +{
+> +	struct msi_desc *desc = irq_data_get_msi_desc(data);
+> +	unsigned int ret = cond_startup_parent(data);
+> +
+> +	pci_msi_unmask(desc, BIT(data->irq - desc->irq));
+> +	return ret;
+> +}
+> +
+>  static void pci_irq_mask_msi(struct irq_data *data)
+>  {
+>  	struct msi_desc *desc = irq_data_get_msi_desc(data);
+> @@ -194,6 +228,8 @@ static void pci_irq_unmask_msi(struct irq_data *data)
+>  static const struct msi_domain_template pci_msi_template = {
+>  	.chip = {
+>  		.name			= "PCI-MSI",
+> +		.irq_startup		= pci_irq_startup_msi,
+> +		.irq_shutdown		= pci_irq_shutdown_msi,
+>  		.irq_mask		= pci_irq_mask_msi,
+>  		.irq_unmask		= pci_irq_unmask_msi,
+>  		.irq_write_msi_msg	= pci_msi_domain_write_msg,
+> @@ -210,6 +246,20 @@ static const struct msi_domain_template pci_msi_template = {
+>  	},
+>  };
+>  
+> +static void pci_irq_shutdown_msix(struct irq_data *data)
+> +{
+> +	pci_msix_mask(irq_data_get_msi_desc(data));
+> +	cond_shutdown_parent(data);
+> +}
+> +
+> +static unsigned int pci_irq_startup_msix(struct irq_data *data)
+> +{
+> +	unsigned int ret = cond_startup_parent(data);
+> +
+> +	pci_msix_unmask(irq_data_get_msi_desc(data));
+> +	return ret;
+> +}
+> +
+>  static void pci_irq_mask_msix(struct irq_data *data)
+>  {
+>  	pci_msix_mask(irq_data_get_msi_desc(data));
+> @@ -234,6 +284,8 @@ EXPORT_SYMBOL_GPL(pci_msix_prepare_desc);
+>  static const struct msi_domain_template pci_msix_template = {
+>  	.chip = {
+>  		.name			= "PCI-MSIX",
+> +		.irq_startup		= pci_irq_startup_msix,
+> +		.irq_shutdown		= pci_irq_shutdown_msix,
+>  		.irq_mask		= pci_irq_mask_msix,
+>  		.irq_unmask		= pci_irq_unmask_msix,
+>  		.irq_write_msi_msg	= pci_msi_domain_write_msg,
+> diff --git a/include/linux/msi.h b/include/linux/msi.h
+> index e5e86a8529fb6..3111ba95fbde4 100644
+> --- a/include/linux/msi.h
+> +++ b/include/linux/msi.h
+> @@ -568,6 +568,8 @@ enum {
+>  	MSI_FLAG_PARENT_PM_DEV		= (1 << 8),
+>  	/* Support for parent mask/unmask */
+>  	MSI_FLAG_PCI_MSI_MASK_PARENT	= (1 << 9),
+> +	/* Support for parent startup/shutdown */
+> +	MSI_FLAG_PCI_MSI_STARTUP_PARENT	= (1 << 10),
+>  
+>  	/* Mask for the generic functionality */
+>  	MSI_GENERIC_FLAGS_MASK		= GENMASK(15, 0),
+> -- 
+> 2.51.0
+> 
+> 
+> 
 
