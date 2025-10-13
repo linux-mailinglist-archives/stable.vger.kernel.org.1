@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-184807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208BBBD4907
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:52:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8FEDBD4522
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 651F14205E7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 277875024C8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FEB30648A;
-	Mon, 13 Oct 2025 15:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B457E30AAD4;
+	Mon, 13 Oct 2025 15:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyB+StN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsU+KBJM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98081CBEAA;
-	Mon, 13 Oct 2025 15:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705392D46B3;
+	Mon, 13 Oct 2025 15:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368490; cv=none; b=jO7QrRdP77HtIA4McGoryP0tXGNf32ib7yZckN9aFWli7Af45eY2WiT92stvxk5wDWf6iAnyc4/zVWE9XX7p1OqlYL+pf1jqOy4DMt0VuSMnmd3PC+2+9cvJOwk7lHGRDJECo5S+sWb5rXlHq4tmL18bqsctEdhiJ9co5MxFN3s=
+	t=1760367690; cv=none; b=Arcnqlsmzf3Tc9f1TJntCCVKhsWXn7RWXxktWyT131PPKNCG8A4EQw0jlqDub8JAKvTypSRoc456ZrZxwaDb0Ix4ykiB/EPVkmfU0Sq5Jiik9lhAldDE2Pn0zgAPpG3sQdYINE/mdYI5F9v6pGDJrAts0itepidVk+FRvU73U9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368490; c=relaxed/simple;
-	bh=D5iwSav7aP+pvUngOMTls0I6KDJrFb1v5Gr4u6V+3Q4=;
+	s=arc-20240116; t=1760367690; c=relaxed/simple;
+	bh=fDLHY/9Jg0MZ//jHvSJVW++HRSO39KMtVCZsNpA3Ozk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRPYWzTWvFqHBaWDTKHncEmUtbZcsbXSsz/BAutRC+Y+vmCFLbrr9aSpgXEd1XvtMxArLW7uTrKCMVOzCgqabrc9DyDLhX5gCtnfTKXxS9cHr023pUunSPMMk3qu4IBnOmVNfaN/YpF/IRQqJ1gPrk3gd9AJhllb9fIRgGAq9Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyB+StN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621DAC4CEE7;
-	Mon, 13 Oct 2025 15:14:50 +0000 (UTC)
+	 MIME-Version; b=k264teg83v5U3XwUfqcFTjLeMWLq4YUBJ1GpiZlmZXq5FrhCgLes2Bn2kXlBpeBZG64swAxvZuwOkgTbVqqGKzc+MrYIJGmm7SWn6sz53xAIveSOj52XwY+0FpQFqJfQG1AN+I67EYWxUE2ynMibTtxys95gP/AJ8BrNgvW2Qfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsU+KBJM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6EBC4CEFE;
+	Mon, 13 Oct 2025 15:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368490;
-	bh=D5iwSav7aP+pvUngOMTls0I6KDJrFb1v5Gr4u6V+3Q4=;
+	s=korg; t=1760367690;
+	bh=fDLHY/9Jg0MZ//jHvSJVW++HRSO39KMtVCZsNpA3Ozk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IyB+StN0g+bSxDMzZjqVof7MabjRgl8YaSHD0KvY1oIIkK9EIw12iBI2CrqWDVfqQ
-	 WGUd5pH5e1clFRwhPIeuX9dTO2du3MM/QHz3qOFr+guIKpQ6B7R5mR9hytrAPfklg/
-	 wtk6VzkGQ7ZWHiUZwRb07HPgnpVz/MBwUnb8YBkg=
+	b=VsU+KBJMX0Yu//yytB1M95NdxKO7LG7jMW4sdd2sVecUkDI8ydyLEpZeEs+APWVA3
+	 isOv9qgABn6SzO9kd+LKf4JvwTEQM032rWxALpE+17O6lucra2UrOPSZzDlThTIKh7
+	 vKnFg+jtVUJ191I40gXVsc2TJ0mQA7WiKN+5+8Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Seppo Takalo <seppo.takalo@nordicsemi.no>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 147/262] wifi: mt76: fix potential memory leak in mt76_wmac_probe()
+Subject: [PATCH 6.6 098/196] tty: n_gsm: Dont block input queue by waiting MSC
 Date: Mon, 13 Oct 2025 16:44:49 +0200
-Message-ID: <20251013144331.416221906@linuxfoundation.org>
+Message-ID: <20251013144318.862531197@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Seppo Takalo <seppo.takalo@nordicsemi.no>
 
-[ Upstream commit 42754b7de2b1a2cf116c5e3f1e8e78392f4ed700 ]
+[ Upstream commit 3cf0b3c243e56bc43be560617416c1d9f301f44c ]
 
-In mt76_wmac_probe(), when the mt76_alloc_device() call succeeds, memory
-is allocated for both struct ieee80211_hw and a workqueue. However, on
-the error path, the workqueue is not freed. Fix that by calling
-mt76_free_device() on the error path.
+Currently gsm_queue() processes incoming frames and when opening
+a DLC channel it calls gsm_dlci_open() which calls gsm_modem_update().
+If basic mode is used it calls gsm_modem_upd_via_msc() and it
+cannot block the input queue by waiting the response to come
+into the same input queue.
 
-Fixes: c8846e101502 ("mt76: add driver for MT7603E and MT7628/7688")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://patch.msgid.link/20250709145532.41246-1-abdun.nihaal@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Instead allow sending Modem Status Command without waiting for remote
+end to respond. Define a new function gsm_modem_send_initial_msc()
+for this purpose. As MSC is only valid for basic encoding, it does
+not do anything for advanced or when convergence layer type 2 is used.
+
+Fixes: 48473802506d ("tty: n_gsm: fix missing update of modem controls after DLCI open")
+Signed-off-by: Seppo Takalo <seppo.takalo@nordicsemi.no>
+Link: https://lore.kernel.org/r/20250827123221.1148666-1-seppo.takalo@nordicsemi.no
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7603/soc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/n_gsm.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
-index ec02148a7f1f7..2ee8a6e1e310e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
-@@ -48,7 +48,7 @@ mt76_wmac_probe(struct platform_device *pdev)
+diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
+index 8559ba1361c64..901f5c8311fbf 100644
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -460,6 +460,7 @@ static int gsm_send_packet(struct gsm_mux *gsm, struct gsm_msg *msg);
+ static struct gsm_dlci *gsm_dlci_alloc(struct gsm_mux *gsm, int addr);
+ static void gsmld_write_trigger(struct gsm_mux *gsm);
+ static void gsmld_write_task(struct work_struct *work);
++static int gsm_modem_send_initial_msc(struct gsm_dlci *dlci);
  
- 	return 0;
- error:
--	ieee80211_free_hw(mt76_hw(dev));
-+	mt76_free_device(mdev);
- 	return ret;
+ /**
+  *	gsm_fcs_add	-	update FCS
+@@ -2173,7 +2174,7 @@ static void gsm_dlci_open(struct gsm_dlci *dlci)
+ 		pr_debug("DLCI %d goes open.\n", dlci->addr);
+ 	/* Send current modem state */
+ 	if (dlci->addr) {
+-		gsm_modem_update(dlci, 0);
++		gsm_modem_send_initial_msc(dlci);
+ 	} else {
+ 		/* Start keep-alive control */
+ 		gsm->ka_num = 0;
+@@ -4156,6 +4157,28 @@ static int gsm_modem_upd_via_msc(struct gsm_dlci *dlci, u8 brk)
+ 	return gsm_control_wait(dlci->gsm, ctrl);
  }
  
++/**
++ * gsm_modem_send_initial_msc - Send initial modem status message
++ *
++ * @dlci channel
++ *
++ * Send an initial MSC message after DLCI open to set the initial
++ * modem status lines. This is only done for basic mode.
++ * Does not wait for a response as we cannot block the input queue
++ * processing.
++ */
++static int gsm_modem_send_initial_msc(struct gsm_dlci *dlci)
++{
++	u8 modembits[2];
++
++	if (dlci->adaption != 1 || dlci->gsm->encoding != GSM_BASIC_OPT)
++		return 0;
++
++	modembits[0] = (dlci->addr << 2) | 2 | EA; /* DLCI, Valid, EA */
++	modembits[1] = (gsm_encode_modem(dlci) << 1) | EA;
++	return gsm_control_command(dlci->gsm, CMD_MSC, (const u8 *)&modembits, 2);
++}
++
+ /**
+  *	gsm_modem_update	-	send modem status line state
+  *	@dlci: channel
 -- 
 2.51.0
 
