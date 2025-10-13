@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-184434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EA6BD3FC7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82308BD41DD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11EDB18A31FC
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3823F1883423
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CB630E0C5;
-	Mon, 13 Oct 2025 14:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B74630FF3B;
+	Mon, 13 Oct 2025 15:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSmKKvIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fKDq6tQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80E83081C4;
-	Mon, 13 Oct 2025 14:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D2B30FF34;
+	Mon, 13 Oct 2025 15:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367425; cv=none; b=L/erOHvPQrOuaJnPDSqB9gr9US8us9OR5zdShYAjTqlqmrMgeV6vIBDDPdIEpJsASoTPwv3wNwI3nj1Y2uAkqejwpi867NgrlRgIicOVN9ytnpLfB3thiAEtCvTLkYaiXrIiDfaN6gVCufqRFUItZsWLTJWgJpSLIUTJWrAiTqM=
+	t=1760367978; cv=none; b=taEVHSPxM9lUEsLQMyDz9DiE1vFz9O8bTaTsNtgpAY3B5wWwVWS/Yw8oKaX2zwsoCiIZIUCf/465ENBYGG3BM7g2e30BklyqQB0TeqWYkBmDAPpVvwEkzurXwzF0qc9pd+v9HEiuI9BwGhfFWAeKpOqdnC1zPsvXFq/w+77GtB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367425; c=relaxed/simple;
-	bh=B8wNVsGHWbA4Uu85oN2hUfDWgqkmd8XhXZVvSVk2pwM=;
+	s=arc-20240116; t=1760367978; c=relaxed/simple;
+	bh=Xg/V4XGWSZPZQPB4HNqA28Fzg4Fb1+lAesxqCfnAQRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t6WVwosFxv2RHhUcfL295FgAzI8sKXuGoy+myWZh95WDnUodM1Jagv8Y79MEOvkrCsfLsoSw7Ble3lDthAemA3l9XZvLDe4iwtmYV2Q27b8XL17ks6evTjhmtfaNX13+xGuVVeVkcMhdN4evFICeakVdrhN/ljyTYrk94jf1c7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSmKKvIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F004C4CEE7;
-	Mon, 13 Oct 2025 14:57:05 +0000 (UTC)
+	 MIME-Version; b=AwKTC1j3vRQu/BdUFGTamBr46yQEiVFNkDepAHAEWOE2X4K3gBohFzzyL3rFPaW8FmJYTJ89WDYvnmi61PB3Iu1c7j43bKzriA81YAEjeb8V6bmdzPEZGGYyOFRxX+bcfVl+WY6u8srl4MKTmOqUrFEJ74eqyPdzNprvGRNDZgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fKDq6tQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB068C4CEFE;
+	Mon, 13 Oct 2025 15:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367425;
-	bh=B8wNVsGHWbA4Uu85oN2hUfDWgqkmd8XhXZVvSVk2pwM=;
+	s=korg; t=1760367978;
+	bh=Xg/V4XGWSZPZQPB4HNqA28Fzg4Fb1+lAesxqCfnAQRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSmKKvIHcJxq3UazCZMVP6KSWilVjXSDuFvbHb8nkfmJbi5ME6P7tRb8zKF7Ap3Np
-	 1P8fHhYDHeMy6HVm6Y4fuoPhr81XNu6ngfiVSfSEF0otk0tyfJyytazCF+pEFpP6cQ
-	 ABYJUjka1bk8AUz2ihxrA3VJwlt8flbpp3z2Am/M=
+	b=0fKDq6tQQ1gbN990dhC89aEGk/8/bcwoTaEpb2ASE57ewuyp2Ec5P2N7V++BQGnAv
+	 sDHSEtMvS+CxMyZUzefFMt493+Y3tKFEMXOP6DlJntmit4LXQH2Ta0FFcxlKg2WX9L
+	 yVf0jrFDF7hlGFfZXVEb/a/vpofGPQ8ys+IYuUss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>
-Subject: [PATCH 6.1 193/196] usb: cdns3: cdnsp-pci: remove redundant pci_disable_device() call
-Date: Mon, 13 Oct 2025 16:46:06 +0200
-Message-ID: <20251013144321.671990745@linuxfoundation.org>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 176/196] mfd: vexpress-sysreg: Check the return value of devm_gpiochip_add_data()
+Date: Mon, 13 Oct 2025 16:46:07 +0200
+Message-ID: <20251013144321.675750641@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit e9c206324eeb213957a567a9d066bdeb355c7491 upstream.
+commit 1efbee6852f1ff698a9981bd731308dd027189fb upstream.
 
-The cdnsp-pci driver uses pcim_enable_device() to enable a PCI device,
-which means the device will be automatically disabled on driver detach
-through the managed device framework. The manual pci_disable_device()
-call in the error path is therefore redundant.
+Commit 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+removed the return value check from the call to gpiochip_add_data() (or
+rather gpiochip_add() back then and later converted to devres) with no
+explanation. This function however can still fail, so check the return
+value and bail-out if it does.
 
-Found via static anlaysis and this is similar to commit 99ca0b57e49f
-("thermal: intel: int340x: processor: Fix warning during module unload").
-
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250903141613.2535472-1-linmq006@gmail.com
+Fixes: 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdnsp-pci.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/mfd/vexpress-sysreg.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/cdnsp-pci.c
-+++ b/drivers/usb/cdns3/cdnsp-pci.c
-@@ -90,7 +90,7 @@ static int cdnsp_pci_probe(struct pci_de
- 		cdnsp = kzalloc(sizeof(*cdnsp), GFP_KERNEL);
- 		if (!cdnsp) {
- 			ret = -ENOMEM;
--			goto disable_pci;
-+			goto put_pci;
- 		}
- 	}
+--- a/drivers/mfd/vexpress-sysreg.c
++++ b/drivers/mfd/vexpress-sysreg.c
+@@ -90,6 +90,7 @@ static int vexpress_sysreg_probe(struct
+ 	struct resource *mem;
+ 	void __iomem *base;
+ 	struct gpio_chip *mmc_gpio_chip;
++	int ret;
  
-@@ -173,9 +173,6 @@ free_cdnsp:
- 	if (!pci_is_enabled(func))
- 		kfree(cdnsp);
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!mem)
+@@ -110,7 +111,10 @@ static int vexpress_sysreg_probe(struct
+ 	bgpio_init(mmc_gpio_chip, &pdev->dev, 0x4, base + SYS_MCI,
+ 			NULL, NULL, NULL, NULL, 0);
+ 	mmc_gpio_chip->ngpio = 2;
+-	devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
++
++	ret = devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
++	if (ret)
++		return ret;
  
--disable_pci:
--	pci_disable_device(pdev);
--
- put_pci:
- 	pci_dev_put(func);
- 
+ 	return devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
+ 			vexpress_sysreg_cells,
 
 
 
