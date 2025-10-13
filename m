@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB1EBD3CE1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:00:52 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0806DBD4994
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DED718A0EF7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4160F4FA120
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B90430AAD2;
-	Mon, 13 Oct 2025 14:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A72D30DD01;
+	Mon, 13 Oct 2025 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MY9ngXx+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5eajRT7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9961309F02;
-	Mon, 13 Oct 2025 14:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF57730CDBE;
+	Mon, 13 Oct 2025 15:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367156; cv=none; b=AFdO0+qy4efZdLmFwuoFYlkJ3tUxxllCkU24CFH5khXJUBeq3lpxvzlUhlMDqhsQyNtdXlws4v/dVgk42YcVkN0shTC0fTTtMWGTicqytfqhiNy+PTkJJEsXIeSC43peB/5qWZgdKxTBPcxVeb98+640ZCnblNvVL9jyTdVF3hQ=
+	t=1760368431; cv=none; b=pnLpSlO0QYPpy+qQyfjKQtd98O6ep/8rwazkN6nr8vgtr6dQYYM1c18HiYfOyypt2xM9Xb8Bvy6IsfLsY2xJiZPcBbttJcJoEta5fJIkWDfTCKHVvriMxDFpFui6T59hpdzUELOy5OFLnsA7X1mqt+hVM1ot7sIkCqg2Pe38abs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367156; c=relaxed/simple;
-	bh=UxDMh6u9RacQvk4cbDgKlV45ZLm0wn/FXB0YJHuy11g=;
+	s=arc-20240116; t=1760368431; c=relaxed/simple;
+	bh=MU8/ERNspMI7iq3YBRqWOk6u0PmNlK4tUgwKHIjzOv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9b9hnLfgH+szB4fSIS3Q61icdB1jPXSdhkBFKtCndvOYcHU3PJEesJDZja5IxtLjlUDIH+To92e9FEQVjg2gxUFQA5N1UX2Rgay3xORAXRgrBOnkrWrpPc5PmJz9hIOvChcgnm5ivniwDgjV6b6ZB4OA94PLbQ1nV3wc2omthg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MY9ngXx+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144D4C4CEE7;
-	Mon, 13 Oct 2025 14:52:34 +0000 (UTC)
+	 MIME-Version; b=hyuCuk5hRmNekc0itKQhJ0PV5aeGq2jwfffdm8RxGPOulGutXv9Ythp3ZJ/DmTEp/a73dFZzreWJ0dB9obw1IOekAhGST2qlztx4Hyqo21PbYkpJ60Cg2+R95V2b6rfn0J2EF3Bc6WJ0iPJro1k/1tbUJnWqcqtFKe0fuiMCjFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5eajRT7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577B8C4CEE7;
+	Mon, 13 Oct 2025 15:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367155;
-	bh=UxDMh6u9RacQvk4cbDgKlV45ZLm0wn/FXB0YJHuy11g=;
+	s=korg; t=1760368431;
+	bh=MU8/ERNspMI7iq3YBRqWOk6u0PmNlK4tUgwKHIjzOv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MY9ngXx+QfgUTD830s6UEsFxSDrqWyjQ7BvEIYgXRf49g7RZTLLIGcSXVvUHz1l3B
-	 aBWG1zx/k3Mrib+9/lZf3l6qtitDlnF8+V9+i7ZgMo5kRSXj9dab8LRgs+UK+Pl3Er
-	 n4Yf9Xgn/ghkrqVxdxZQZkF12UERJ5xVg1nKPYz0=
+	b=C5eajRT7NwQA+SHnY4lbAFCDuNYHCkhX9XdlZecTkr1lNKELsS9RviNqXfw70zwsg
+	 6cCEmz4S2yjEoYYMhMTSPmIqqu4IDIbhXDOn87EgBgcFyb4TaGo8Jkt/rAAhEzS77g
+	 JAemr0Y/V+KIj43Jr8nppSgaaGzzZCCHRSr3enM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Phil Sutter <phil@nwl.cc>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/196] PCI: tegra: Fix devm_kcalloc() argument order for port->phys allocation
+Subject: [PATCH 6.12 142/262] netfilter: ipset: Remove unused htable_bits in macro ahash_region
 Date: Mon, 13 Oct 2025 16:44:44 +0200
-Message-ID: <20251013144318.715059263@linuxfoundation.org>
+Message-ID: <20251013144331.237167121@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit e1a8805e5d263453ad76a4f50ab3b1c18ea07560 ]
+[ Upstream commit ba941796d7cd1e81f51eed145dad1b47240ff420 ]
 
-Fix incorrect argument order in devm_kcalloc() when allocating port->phys.
-The original call used sizeof(phy) as the number of elements and
-port->lanes as the element size, which is reversed.  While this happens to
-produce the correct total allocation size with current pointer size and
-lane counts, the argument order is wrong.
+Since the ahash_region() macro was redefined to calculate the region
+index solely from HTABLE_REGION_BITS, the htable_bits parameter became
+unused.
 
-Fixes: 6fe7c187e026 ("PCI: tegra: Support per-lane PHYs")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-[mani: added Fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250819150436.3105973-1-alok.a.tiwari@oracle.com
+Remove the unused htable_bits argument and its call sites, simplifying
+the code without changing semantics.
+
+Fixes: 8478a729c046 ("netfilter: ipset: fix region locking in hash types")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pci-tegra.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_hash_gen.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
-index 8e323e93be915..c165f69454590 100644
---- a/drivers/pci/controller/pci-tegra.c
-+++ b/drivers/pci/controller/pci-tegra.c
-@@ -1346,7 +1346,7 @@ static int tegra_pcie_port_get_phys(struct tegra_pcie_port *port)
- 	unsigned int i;
- 	int err;
- 
--	port->phys = devm_kcalloc(dev, sizeof(phy), port->lanes, GFP_KERNEL);
-+	port->phys = devm_kcalloc(dev, port->lanes, sizeof(phy), GFP_KERNEL);
- 	if (!port->phys)
- 		return -ENOMEM;
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index 5251524b96afa..5e4453e9ef8e7 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -63,7 +63,7 @@ struct hbucket {
+ 		: jhash_size((htable_bits) - HTABLE_REGION_BITS))
+ #define ahash_sizeof_regions(htable_bits)		\
+ 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
+-#define ahash_region(n, htable_bits)		\
++#define ahash_region(n)		\
+ 	((n) / jhash_size(HTABLE_REGION_BITS))
+ #define ahash_bucket_start(h,  htable_bits)	\
+ 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
+@@ -702,7 +702,7 @@ mtype_resize(struct ip_set *set, bool retried)
+ #endif
+ 				key = HKEY(data, h->initval, htable_bits);
+ 				m = __ipset_dereference(hbucket(t, key));
+-				nr = ahash_region(key, htable_bits);
++				nr = ahash_region(key);
+ 				if (!m) {
+ 					m = kzalloc(sizeof(*m) +
+ 					    AHASH_INIT_SIZE * dsize,
+@@ -852,7 +852,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	elements = t->hregion[r].elements;
+ 	maxelem = t->maxelem;
+@@ -1050,7 +1050,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	rcu_read_unlock_bh();
  
 -- 
 2.51.0
