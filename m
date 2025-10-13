@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6AB9BD4F3C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:23:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33537BD51E8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57D1248507E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C58D425AA8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF39273811;
-	Mon, 13 Oct 2025 15:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0ED3279DB3;
+	Mon, 13 Oct 2025 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYBY0M2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjSlCS8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EC721E0AD;
-	Mon, 13 Oct 2025 15:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC201F1313;
+	Mon, 13 Oct 2025 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369356; cv=none; b=tQxO4xtVZleQrT/K/vpyUn1l5IvM7LqMhczmSs1fFiUVX75qAylhky5Q0oeOU1LWmyYdI6Mbvbc26HM9lRkyUXkkulaPRg+A95qBU0Wrj8F1vR6gRVxfv7KDNUCeRw0ZNasHsyWmS8mD2HrjSmZ0eVFqrSuQ8JLLdTIqveK69rQ=
+	t=1760369365; cv=none; b=tTjVftf/9OCa2QN8IUBMc7QGLQf+uxzE+dX3fqQyr7Htijv5ZN66BfzaafNgYr0VmBVwXQpTJRalyISw8LHT4FbmqJNTZz/JoFRaRfxjRBjbXvAD+7NeDqW8uPsaimU+6nR9hHIXKVZeynNDhlhthR3eC1XnYFdGLI7XeHwlJ04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369356; c=relaxed/simple;
-	bh=DI2NAFoNFWAUkzhHhBLJDDJhCYqJx0F/UXrqBhR+NJQ=;
+	s=arc-20240116; t=1760369365; c=relaxed/simple;
+	bh=Wg2k9n5PK4OsCEeLGUMy8a9blhUx7n5sdWZ1G1PboNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nEmhtx34Noq3uFonydx+W+++YUiQEPRZKswwMG47k6oKEcm8WZPaN70UPgz66HuW6kXIwzx+VVxzc+Sg5KzGTvy+HBFcd08OpWI4yEoT52LrbDmMMt5/+3Ob1G6PyIa8+HXYXcDVwFZ/Q4vpkzWL4TEnpHnfAKsxmvJD3TQjBVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYBY0M2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C92C4CEFE;
-	Mon, 13 Oct 2025 15:29:15 +0000 (UTC)
+	 MIME-Version; b=P0nvO/3liEc1qW6SrjQYvSc5wvO2V7KhHi6dSUMoPQOYS5XFCaUKHNIuKw2hufXaygqgBrQEkk2+06MNcZQ4ftknzMhXkPF560yMZcLHIgZHTepUA5aD0jZAfHGITTa8mGs7tBnOUV0+4BHdJA1TnE+LbPpqrbh7j72WRd1JWwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjSlCS8k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59DBC4CEE7;
+	Mon, 13 Oct 2025 15:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369356;
-	bh=DI2NAFoNFWAUkzhHhBLJDDJhCYqJx0F/UXrqBhR+NJQ=;
+	s=korg; t=1760369365;
+	bh=Wg2k9n5PK4OsCEeLGUMy8a9blhUx7n5sdWZ1G1PboNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYBY0M2j3fTAetHYcyP6gka6WJK0zjpzIV20ns8IS6JCjBl0fQeLrnnBmywd3MSyR
-	 BgUsDbMZ+2aOxJLgbHZpbx9hJscrRDJcSq+j+uEcwzv5vF+9i9lSoAml3sRXMgpj27
-	 YflWWO7nUgYApwriHPvkrRNTTYdmQVpgZV4RbgEE=
+	b=QjSlCS8kU0cylmI1bb+1IUWMpMp159lAiqkUlPu2G49MDGWjrFmxVTd5V3azqCtiE
+	 cDV8Scv9KvxnrlIw4wtOrhawqGO1SlYruhRTkHUJ69LyTzRT5EL+lSiMoqCpuKMY81
+	 /IFStGhNhy5DVpYNW95f/BhYBADwqSDvJnXWYKfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Brigham Campbell <me@brighamcampbell.com>,
+	Xiang Liu <xiang.liu@amd.com>,
+	"Stanley.Yang" <Stanley.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 217/563] drm/panel: novatek-nt35560: Fix invalid return value
-Date: Mon, 13 Oct 2025 16:41:18 +0200
-Message-ID: <20251013144419.145421540@linuxfoundation.org>
+Subject: [PATCH 6.17 220/563] drm/amdgpu: Fix vcn v4.0.3 poison irq call trace on sriov guest
+Date: Mon, 13 Oct 2025 16:41:21 +0200
+Message-ID: <20251013144419.252736086@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,40 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Brigham Campbell <me@brighamcampbell.com>
+From: Xiang Liu <xiang.liu@amd.com>
 
-[ Upstream commit 125459e19ec654924e472f3ff5aeea40358dbebf ]
+[ Upstream commit 58364f01db4a155356f92cce1474761d7a0eda3d ]
 
-Fix bug in nt35560_set_brightness() which causes the function to
-erroneously report an error. mipi_dsi_dcs_write() returns either a
-negative value when an error occurred or a positive number of bytes
-written when no error occurred. The buggy code reports an error under
-either condition.
+Sriov guest side doesn't init ras feature hence the poison irq shouldn't
+be put during hw fini.
 
-Fixes: 8152c2bfd780 ("drm/panel: Add driver for Sony ACX424AKP panel")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250731032343.1258366-2-me@brighamcampbell.com
+[25209.468816] Call Trace:
+[25209.468817]  <TASK>
+[25209.468818]  ? srso_alias_return_thunk+0x5/0x7f
+[25209.468820]  ? show_trace_log_lvl+0x28e/0x2ea
+[25209.468822]  ? show_trace_log_lvl+0x28e/0x2ea
+[25209.468825]  ? vcn_v4_0_3_hw_fini+0xaf/0xe0 [amdgpu]
+[25209.468936]  ? show_regs.part.0+0x23/0x29
+[25209.468939]  ? show_regs.cold+0x8/0xd
+[25209.468940]  ? amdgpu_irq_put+0x9e/0xc0 [amdgpu]
+[25209.469038]  ? __warn+0x8c/0x100
+[25209.469040]  ? amdgpu_irq_put+0x9e/0xc0 [amdgpu]
+[25209.469135]  ? report_bug+0xa4/0xd0
+[25209.469138]  ? handle_bug+0x39/0x90
+[25209.469140]  ? exc_invalid_op+0x19/0x70
+[25209.469142]  ? asm_exc_invalid_op+0x1b/0x20
+[25209.469146]  ? amdgpu_irq_put+0x9e/0xc0 [amdgpu]
+[25209.469241]  vcn_v4_0_3_hw_fini+0xaf/0xe0 [amdgpu]
+[25209.469343]  amdgpu_ip_block_hw_fini+0x34/0x61 [amdgpu]
+[25209.469511]  amdgpu_device_fini_hw+0x3b3/0x467 [amdgpu]
+
+Fixes: 4c4a89149608 ("drm/amdgpu: Register aqua vanjaram vcn poison irq")
+Signed-off-by: Xiang Liu <xiang.liu@amd.com>
+Reviewed-by: Stanley.Yang <Stanley.Yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-novatek-nt35560.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35560.c b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
-index 98f0782c84111..17898a29efe87 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt35560.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt35560.c
-@@ -161,7 +161,7 @@ static int nt35560_set_brightness(struct backlight_device *bl)
- 		par = 0x00;
- 		ret = mipi_dsi_dcs_write(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY,
- 					 &par, 1);
--		if (ret) {
-+		if (ret < 0) {
- 			dev_err(nt->dev, "failed to disable display backlight (%d)\n", ret);
- 			return ret;
- 		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
+index 2a3663b551af9..52613205669e1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
+@@ -391,7 +391,7 @@ static int vcn_v4_0_3_hw_fini(struct amdgpu_ip_block *ip_block)
+ 			vinst->set_pg_state(vinst, AMD_PG_STATE_GATE);
+ 	}
+ 
+-	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN))
++	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__VCN) && !amdgpu_sriov_vf(adev))
+ 		amdgpu_irq_put(adev, &adev->vcn.inst->ras_poison_irq, 0);
+ 
+ 	return 0;
 -- 
 2.51.0
 
