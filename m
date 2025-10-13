@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-185219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C02BD4A77
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:56 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F9CBD3BB5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD1148773D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:52:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3421234D9C8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083F730EF97;
-	Mon, 13 Oct 2025 15:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1EDE30E0E1;
+	Mon, 13 Oct 2025 14:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsVs5FVL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fea1djAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA64730F543;
-	Mon, 13 Oct 2025 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0BF30E0DD;
+	Mon, 13 Oct 2025 14:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369671; cv=none; b=bI6oMETOU2NfNZu0rjDpDQK5EvoIbJmnK8TLXu5d5lBw0fLvYACvg9PEFcroEHHk81x5csB2vCDl+dxo5Np//FXrSF+DXXr6LmI8W3Wy3P3o638yV01rhphZEglrAL+gTInoehth9txNn2urffnK1nFO/AAd4RT40auJl+2F+kc=
+	t=1760366930; cv=none; b=NSZntpRyDMRM1cgtj2TAPX69HBKESnUsmXuQGts3Fqb4ls5oYUB1Ht2e33qgvrSoBsJWnXU7jby73kvI1lWXRRWAJN9QvA7ioej7Il5jJInmkp1xx3tgcordJco+7FiDswvzvRCEyqNAl9R47gIQ/3zWq7QOdUu05yLj6KXFQXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369671; c=relaxed/simple;
-	bh=Lg0ENwjqkNiTcYTPxDc437r4y+WAd9VH1CGkSHqWdqY=;
+	s=arc-20240116; t=1760366930; c=relaxed/simple;
+	bh=GJ+8evf/FEqm8jFiVm7m7kwMuPQ3116SQpPyMhY94us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdG2jJ5AXRd3mUmkJ2U/KtOMfqOvmVxVRlEeeYHK9tdLBmIuCOXHNrHGnAzA+a2HPrExoRSSiz/+AK0q1bVO3Muf0fxaredwXcLUzpl9Buan5zTspssWsywweWbCyqBMsdBBKpVs2lApucGvv5E4OeWheqwJEuSq3isiKz6a86U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsVs5FVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45076C116B1;
-	Mon, 13 Oct 2025 15:34:31 +0000 (UTC)
+	 MIME-Version; b=HVI1jUCtieF7TqzTYXquTCsVVTiALKXUMmc0b0AdX41vbQ+1SHP1WpRQAxLM0vBgV1PqoAfLJeh29gbcpD5oROD9qw1iTjWWtXwKJCWkkEh4dM00j5en2v/AGGvTc61708WvX+fwT/2JbbqqhkrqHSfgusGqB6RIbOzV36hOq2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fea1djAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2769FC116C6;
+	Mon, 13 Oct 2025 14:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369671;
-	bh=Lg0ENwjqkNiTcYTPxDc437r4y+WAd9VH1CGkSHqWdqY=;
+	s=korg; t=1760366930;
+	bh=GJ+8evf/FEqm8jFiVm7m7kwMuPQ3116SQpPyMhY94us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EsVs5FVLMoRy9ILxaHHJBTgHogzVOHL1XFAkziyeE6fjE1iM64sUo2VGpWXqePYW1
-	 BZ9g8ileiUwC9cSwpVTFFpJ+kTUCxI8ubHsy/A2xHbQ5ANYA256FrDMc7oKAwRzXjJ
-	 /0xp277WwF/QXL533q3vDp1tzZgbe8xWEkWALjtM=
+	b=fea1djAxC23CSFuYsnZFT3qsTUisJaNzo6+TmWdKEvQ23LPaWrfiCDULqrVjkBwQ/
+	 k7L2VdSOj6GORf3p3c2Va5wV5e03MKa0NYUaWDaZVutUv+wYAJNonwajqGXF6jnJiE
+	 o0ISqJiolRnIVg+dEq61jsr83azPRs7EN5PxE6NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Shuah Khan <shuah.kh@samsung.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 328/563] drm/msm: stop supporting no-IOMMU configuration
+Subject: [PATCH 6.1 016/196] media: tunner: xc5000: Refactor firmware load
 Date: Mon, 13 Oct 2025 16:43:09 +0200
-Message-ID: <20251013144423.144801786@linuxfoundation.org>
+Message-ID: <20251013144315.154316391@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit c94fc6d35685587aa0cb9a8d7d7062c73ab04d89 ]
+[ Upstream commit 8e1f5da59dd4a1966f859639860b803a7e8b8bfb ]
 
-With the switch to GPUVM the msm driver no longer supports the no-IOMMU
-configurations (even without the actual GPU). Return an error in case we
-face the lack of the IOMMU.
+Make sure the firmware is released when we leave
+xc_load_fw_and_init_tuner()
 
-Fixes: 111fdd2198e6 ("drm/msm: drm_gpuvm conversion")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/672559/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+This change makes smatch happy:
+drivers/media/tuners/xc5000.c:1213 xc_load_fw_and_init_tuner() warn: 'fw' from request_firmware() not released on lines: 1213.
+
+Cc: Shuah Khan <shuah.kh@samsung.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 40b7a19f321e ("media: tuner: xc5000: Fix use-after-free in xc5000_release")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_kms.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/media/tuners/xc5000.c |   41 ++++++++++++++++++-----------------------
+ 1 file changed, 18 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_kms.c b/drivers/gpu/drm/msm/msm_kms.c
-index 56828d218e88a..4c4dcb095c4df 100644
---- a/drivers/gpu/drm/msm/msm_kms.c
-+++ b/drivers/gpu/drm/msm/msm_kms.c
-@@ -195,14 +195,13 @@ struct drm_gpuvm *msm_kms_init_vm(struct drm_device *dev)
- 		iommu_dev = mdp_dev;
- 	else
- 		iommu_dev = mdss_dev;
--
- 	mmu = msm_iommu_disp_new(iommu_dev, 0);
- 	if (IS_ERR(mmu))
- 		return ERR_CAST(mmu);
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -58,7 +58,7 @@ struct xc5000_priv {
+ 	struct dvb_frontend *fe;
+ 	struct delayed_work timer_sleep;
  
- 	if (!mmu) {
--		drm_info(dev, "no IOMMU, fallback to phys contig buffers for scanout\n");
--		return NULL;
-+		drm_info(dev, "no IOMMU, bailing out\n");
-+		return ERR_PTR(-ENODEV);
+-	const struct firmware   *firmware;
++	bool inited;
+ };
+ 
+ /* Misc Defines */
+@@ -1110,23 +1110,19 @@ static int xc_load_fw_and_init_tuner(str
+ 	if (!force && xc5000_is_firmware_loaded(fe) == 0)
+ 		return 0;
+ 
+-	if (!priv->firmware) {
+-		ret = request_firmware(&fw, desired_fw->name,
+-					priv->i2c_props.adap->dev.parent);
+-		if (ret) {
+-			pr_err("xc5000: Upload failed. rc %d\n", ret);
+-			return ret;
+-		}
+-		dprintk(1, "firmware read %zu bytes.\n", fw->size);
+-
+-		if (fw->size != desired_fw->size) {
+-			pr_err("xc5000: Firmware file with incorrect size\n");
+-			release_firmware(fw);
+-			return -EINVAL;
+-		}
+-		priv->firmware = fw;
+-	} else
+-		fw = priv->firmware;
++	ret = request_firmware(&fw, desired_fw->name,
++			       priv->i2c_props.adap->dev.parent);
++	if (ret) {
++		pr_err("xc5000: Upload failed. rc %d\n", ret);
++		return ret;
++	}
++	dprintk(1, "firmware read %zu bytes.\n", fw->size);
++
++	if (fw->size != desired_fw->size) {
++		pr_err("xc5000: Firmware file with incorrect size\n");
++		release_firmware(fw);
++		return -EINVAL;
++	}
+ 
+ 	/* Try up to 5 times to load firmware */
+ 	for (i = 0; i < 5; i++) {
+@@ -1204,6 +1200,7 @@ static int xc_load_fw_and_init_tuner(str
  	}
  
- 	vm = msm_gem_vm_create(dev, mmu, "mdp_kms",
--- 
-2.51.0
-
+ err:
++	release_firmware(fw);
+ 	if (!ret)
+ 		printk(KERN_INFO "xc5000: Firmware %s loaded and running.\n",
+ 		       desired_fw->name);
+@@ -1274,7 +1271,7 @@ static int xc5000_resume(struct dvb_fron
+ 
+ 	/* suspended before firmware is loaded.
+ 	   Avoid firmware load in resume path. */
+-	if (!priv->firmware)
++	if (!priv->inited)
+ 		return 0;
+ 
+ 	return xc5000_set_params(fe);
+@@ -1293,6 +1290,8 @@ static int xc5000_init(struct dvb_fronte
+ 	if (debug)
+ 		xc_debug_dump(priv);
+ 
++	priv->inited = true;
++
+ 	return 0;
+ }
+ 
+@@ -1306,10 +1305,6 @@ static void xc5000_release(struct dvb_fr
+ 
+ 	if (priv) {
+ 		cancel_delayed_work(&priv->timer_sleep);
+-		if (priv->firmware) {
+-			release_firmware(priv->firmware);
+-			priv->firmware = NULL;
+-		}
+ 		hybrid_tuner_release_state(priv);
+ 	}
+ 
 
 
 
