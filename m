@@ -1,125 +1,155 @@
-Return-Path: <stable+bounces-185481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02122BD57D4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 19:28:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6434BD57C2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 19:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D359A426F18
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:09:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7830F4E2CF7
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF682C0F6E;
-	Mon, 13 Oct 2025 17:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8C1302759;
+	Mon, 13 Oct 2025 17:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lHLQscY2"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="all1xLsw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D6629B22F
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 17:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E0427055F
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 17:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760375385; cv=none; b=joJkhfLloD+gGzi/OIR31OhKHb51aVLnLeJuR60IG91b/negMIePNj8IBm6YGyXOZBc2HZ5E1pNdxdR7t6qy365EF6E9zX1bBkaogqmYBvmfi4gG2BVu44OXRUD79YTcxmm+JkyGVo1DMRsVWBjAvZxtYUlcBxJb34hEqPYXRFc=
+	t=1760376339; cv=none; b=J6Gd++i2XjbLbqYs948IjRcsWVqUV6GfEEquC1RWqUjg7uRhQttXGycW9UfOQuHk0jvev2BGMQsvF+F0pIeGXWeq0XyLreD9+ZZm96xxjmYtgMcRnCkJIj1G6Xvph3NZuzG/A39CIIskTZCzNnoAddhM0YGUJP4LK/1aslEj7Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760375385; c=relaxed/simple;
-	bh=9u0qMy/Cq9gqm/KPJ3Ei6I8Bl+VxQM9WS7DtgkWaO50=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uClStXrrPejmqelixm5VxPEHVM36KQi9iHtFvpGaB8m/Y83FD9TvrYc3QuEk0TRFKuLMfmZSfyIU5l47Zs6pnjr5pjHeMhbKe0yMS3Yihm2igc5gxSWC+hJIP32Z1+3PPtKI1TEp+O6oOUrmPuS1/ZvthOjWHyd0idfLmSQVxkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lHLQscY2; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8572d7b2457so672256385a.1
-        for <stable@vger.kernel.org>; Mon, 13 Oct 2025 10:09:43 -0700 (PDT)
+	s=arc-20240116; t=1760376339; c=relaxed/simple;
+	bh=ZEA6rYeR4lkZSXHd7mmsLSm511INpr8RKZX37WK0S8c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s4ejplU5Uuy/hGPjGfUdrIZ3M2awb3DpdRf/JkFI6vNf1wYZwgWAW3VW6JD3DH5MZ3VCjNueDA7hjOX6yfM2LsvwE+pbzq6BJ6C6YK3PxGCwXBBwM/DQdMdHmisQpQ0tYY0ZG/Behliper1Rtfuf8sCaQbAhYTSWr0AOgbSeoHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=all1xLsw; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3652d7800a8so32996231fa.0
+        for <stable@vger.kernel.org>; Mon, 13 Oct 2025 10:25:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760375382; x=1760980182; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Zq9D0oiH0XGev2bvZJNS+y4TMnPelGliSASbJ0U8VMY=;
-        b=lHLQscY2jSPd6VKhZSx1pFzuEv7MuQQCCj9YK8FJYsrohv5LcFXGQAVcm0YlwU7cmA
-         KLzrnflWZNoAhnGC1Qa6lS8wWVQh5dVG0zrModFqiFKhsWhTc/Q3Nsu79ce9R2HRHrXg
-         29BGDk7lWrcN/IT0Pn1v8BZBnTNXjeKj4EpOxEdE1iNJxkJTbXK8Nq6xvgUdl6yAJQqt
-         ohBGRLG8353+97rIpQZMlmIJdHlgy0QSMkdf57NOBZAGbBj02X1sapKTJZvbmP4AH7aK
-         sC0UqviytEeVyxTt+yIR+AtQbUNoLq2zZZlrzNxx63piIlo/JZNKdddwYJ3RjzQu8s72
-         i4Fw==
+        d=google.com; s=20230601; t=1760376335; x=1760981135; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HRwYTXjoxqZ2EJL/erceADAy/EsJNIvDopSca1hjqQw=;
+        b=all1xLswa1n0JODPBjj7pDEOOa9cjSdZ2MZHWQz9FC1XFanHzMZZhZOKus59dvFPFu
+         3+DBLomsAe4/Ho+bL0T+7NX5dl49OXxJm24y8JwFnjFpAIATmKi22MvmbeHQPLymkddw
+         zbjNptrrg/vnphghCBwV2Kr2o8y3752/H1CJme6BZbnS36kB5h7iLGt0WhdPDG9FMXPE
+         pTE+HrL3Q3cGqZ6vC1yv3dYUdtDqt8qqb1T08osSITpzFebb+ZnfxytUtDIDbka0JrRM
+         1Af3yTeV/kdmqzwxpMHXobSAxLQjH7bQmrUXjpR169YDDfjlNoiaguoxQ4ZNj0yjhUP9
+         vtCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760375382; x=1760980182;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zq9D0oiH0XGev2bvZJNS+y4TMnPelGliSASbJ0U8VMY=;
-        b=R2hb9ZOFClu40SdOmzJY7G7i5pE14EIQVNvSRgdfYeNV0qK57AfrWGTVpQy6sAsT2A
-         dbHmnIVz4Pr6cjEKEKVz8PLVCH00MP33lSUkgLNRKg1T2/pOvcizP8YCtcRxiXdqPxF9
-         V+AIkrp2F2vfgd3sNyo8b23Rt5wA3hThaC8YT38Obr4clc6T7M5OESEgIKVZ2zBnwQOv
-         zt6sBwRxw7B88BXppl92i5rFWMuZMxbQ6CDZt0JRieKOspf3zVBMnfKmzp8D3sB/gc7i
-         IxVjL1VeE3LqdO3C9pNjRg4NCexScCDFGJ/Q1/ZQmOpYxKwvrzORpdaNmcf2XpjQ+UcH
-         PfOA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/A4222wOcJV5iSdTsDXzeRtwuyWbyOAEmr1jd3aCPKgUopIUKKB6q+Jpgl8D1GVUggC83UuI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVHIA+JbPB+Za7Hkw5NpWdHt/eDGAR5r9XiQUoq/gOlt9ry/45
-	LjCIbSWyokxXMBEKkObXyCD4ow6RGlKXLZ4YD5UKhWAS4oEPySiJ30oF
-X-Gm-Gg: ASbGncsX0OKq6kpnKzRigOKiR59PcbH9a1XpBWti//mObuEfv+J8GVve6VHgSbGxUXz
-	8dpswHzeIDqEf4NooYQzUgzaHg+/rzeV5OkRYwaaWbVMtFfP+N2Rh/jP5tlag4wTqMFjuvnXZBh
-	XEN0iEhzanwm8IX1wbdOYlLYTEKezpK3nlGHgw+P5QmiVNUKSrFTo/mlzjzm2p37g5YJbQRfeUc
-	S/CQVm3sK/NQ0B/7vW+uROXEjr3lev6NHflGTnon/Pi4rcYdnsTgI7FgQklJuBh1N2pDRFv5t84
-	WT0XndZ8UjxEo50fbb9ugsekfXifzk27S2SI4TQ+TfrwIdohv8EcvkroYox6eNtqLXMmwODwmzw
-	a6XYhi6KG2ANN7Nsp8MXgpxYam/PQSy8/gCif5nItDOf9boU09ywyly2kDg94k7tFLroE
-X-Google-Smtp-Source: AGHT+IH+yeZp4fthmE6bMZB75N7lU2V9amhOgMmYrKXlYcGZT8jtMuHVCUKmGe6PAoHqnGK3ukeXPA==
-X-Received: by 2002:a05:620a:1927:b0:87d:9a55:7566 with SMTP id af79cd13be357-8820cbc5160mr3723625285a.28.1760375382268;
-        Mon, 13 Oct 2025 10:09:42 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8849f3d862csm1029109385a.10.2025.10.13.10.09.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Oct 2025 10:09:41 -0700 (PDT)
-Message-ID: <8bf9a72e-759b-4c98-ab11-6c31461db7f6@gmail.com>
-Date: Mon, 13 Oct 2025 10:09:35 -0700
+        d=1e100.net; s=20230601; t=1760376335; x=1760981135;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HRwYTXjoxqZ2EJL/erceADAy/EsJNIvDopSca1hjqQw=;
+        b=snw6LPYdh+0ogjqiOfy1vePKarNUlEpUpiYhVCii56VRALANb0M8CoxGKt5JXogxBB
+         UJVSJyYbwva+IPzul6doYxBlZKE0qf9hGyZfUPZUI1gIsVkx7t0JR4fciVQ9qQJLz5S9
+         TMKsP7ooiE9gQKbd/gBAaUBpQj5F3puvBgxmXWP52Eo2+FvcVufYGzQqtTpFcXYfKrKl
+         aIOKh/epDqnkw0wAxcTA1WRDn0JlzZ8UCKfhtkLY6EximiSX6kRZIRjUBgypaY5XR/u1
+         lnI5QQ3S6pas5yMByMvsTwe88wvkdf34c/Yy4Nu9IL4izfLAinFUKBHVc1JyNuMRanJ/
+         T22A==
+X-Forwarded-Encrypted: i=1; AJvYcCUCfFN9aRs5ygZAHDCRFFo9AnrayeRGtT321DNcDdWZRVcyFve1qdJbpqrqaarbtkFW5Aj7uww=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTklVTUFukPuctpjwGwcHy5wp88IVoW3aJWHezIZXCXbadN+Bx
+	mmYLV2lVTde1jv4TMHtyu7KYlkG5skQ+4Z1ccycdg28JcOXO0gQwrG6eIbmHgGZ/4fa3LgzaxGd
+	QQhy7kxAYd0bzP77JVVXbnhKSgOzMHrrqV2m8h/HQ
+X-Gm-Gg: ASbGncuWo6J4909+W6gpi4cpA1NUS3U4D2MrVuFU2mdnIRzRyShWs5q+zUGK3uu8//v
+	A1+em9HtoakUk6aN6jqT1abujEUmVWy6dgJb6b0vazHyMvyEkpKziElJHMWLccUbPgYwDrZF/9Z
+	sHka3hOFAMTqzj8uiYJQCtX32I9qPWb/tmDbuKw4uulG0bRVU4NKN8FQt688opbiuqB8PQO3Slq
+	Q5eon7+uzAJCcALc9Nyh7MEREpA8JcwZf5mfSrOfxMLO32o6/6lvcLpnekqxwmtnD2on+uDpw==
+X-Google-Smtp-Source: AGHT+IHepxhLhn9l925Vl8JJClATG9RgSEp0EWwky24jMVXCvwGtaN5iMmiyr5bdE2bETlV8IxWTOwQ2I1Gqe1OQRKY=
+X-Received: by 2002:a05:651c:1504:b0:36d:501:76d5 with SMTP id
+ 38308e7fff4ca-37609e04b12mr54595741fa.26.1760376335223; Mon, 13 Oct 2025
+ 10:25:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.17 000/563] 6.17.3-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20251013144411.274874080@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20251013-b4-ml-topic-tcpm-v2-1-63c9b2ab8a0b@pengutronix.de>
+In-Reply-To: <20251013-b4-ml-topic-tcpm-v2-1-63c9b2ab8a0b@pengutronix.de>
+From: Badhri Jagan Sridharan <badhri@google.com>
+Date: Mon, 13 Oct 2025 10:24:57 -0700
+X-Gm-Features: AS18NWBjMOJ6B2vTw7qkNIU1gCMuQD8AnUYjhkyTglgRIZitzY8883Iq0mSGLV8
+Message-ID: <CAPTae5+sq5uFGpOoHziFoBKbhyzeJ_r6QmJA98wuQhFaTXKmug@mail.gmail.com>
+Subject: Re: [PATCH v2] tcpm: switch check for role_sw device with fw_node
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kernel@pengutronix.de, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/13/25 07:37, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.17.3 release.
-> There are 563 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 15 Oct 2025 14:42:41 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.3-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Mon, Oct 13, 2025 at 2:43=E2=80=AFAM Michael Grzeschik
+<m.grzeschik@pengutronix.de> wrote:
+>
+> When there is no port entry in the tcpci entry itself, the driver will
+> trigger an error message "OF: graph: no port node found in /...../typec" =
+.
+>
+> It is documented that the dts node should contain an connector entry
+> with ports and several port pointing to devices with usb-role-switch
+> property set. Only when those connector entry is missing, it should
+> check for port entries in the main node.
+>
+> We switch the search order for looking after ports, which will avoid the
+> failure message while there are explicit connector entries.
+>
+> Fixes: d56de8c9a17d ("usb: typec: tcpm: try to get role switch from tcpc =
+fwnode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+> ---
+> Changes in v2:
+> - fixed typos in the description
+> - added fixes tag
+> - added Cc: stable@vger.kernel.org
+> - Link to v1: https://lore.kernel.org/r/20251003-b4-ml-topic-tcpm-v1-1-3c=
+dd05588acb@pengutronix.de
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.=
+c
+> index b2a568a5bc9b0ba5c50b7031d8e21ee09cefa349..cc78770509dbc6460d75816f5=
+44173d6ab4ef873 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -7876,9 +7876,9 @@ struct tcpm_port *tcpm_register_port(struct device =
+*dev, struct tcpc_dev *tcpc)
+>
+>         port->partner_desc.identity =3D &port->partner_ident;
+>
+> -       port->role_sw =3D usb_role_switch_get(port->dev);
+> +       port->role_sw =3D fwnode_usb_role_switch_get(tcpc->fwnode);
+>         if (!port->role_sw)
+> -               port->role_sw =3D fwnode_usb_role_switch_get(tcpc->fwnode=
+);
+> +               port->role_sw =3D usb_role_switch_get(port->dev);
+>         if (IS_ERR(port->role_sw)) {
+>                 err =3D PTR_ERR(port->role_sw);
+>                 goto out_destroy_wq;
+>
+> ---
+> base-commit: e406d57be7bd2a4e73ea512c1ae36a40a44e499e
+> change-id: 20251003-b4-ml-topic-tcpm-27146727d76a
+>
+> Best regards,
+> --
+> Michael Grzeschik <m.grzeschik@pengutronix.de>
+>
 
