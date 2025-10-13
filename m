@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90FBBD452E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2859BBD3EBE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D15684F9A1C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B58BB3E51AB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE01830C626;
-	Mon, 13 Oct 2025 15:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2DD2BEC34;
+	Mon, 13 Oct 2025 14:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QrJjk5+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDjsyo8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA4E1EF36E;
-	Mon, 13 Oct 2025 15:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A5E274B55;
+	Mon, 13 Oct 2025 14:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368337; cv=none; b=KFNs/UNbRc7f3BVVF/Z29qIeAbU/83auCuxv8dPUyySDgJUYTSod2VG1EWgriXhqnaXQeC0ZW/e12LKvjP84rVFOaP4nAb51jKeJ7uUCz5kXfT+eLPpkj0Pd3MqLl8H2znHuHIxiHSqHD3m9NT7FeNh1wi9Kk2Jq+Bxpihl3sRA=
+	t=1760367107; cv=none; b=IKClWvYxCULzIifWHWkCH6CaNLTu+0XlCECQyjCLFxeipMzRs8ByXQ5ElsrxY/0DHYFvDChLi+HqVN7DxNXnIx7d+DAmwFXvvNtMnTEwxsQMWBxfWPd7yiPgU2aNxAbr8An0q2wzpF6PHE+Xh2HNfVhf/4BB/RyR1mauMkQvogU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368337; c=relaxed/simple;
-	bh=5lvpuJ+m8O5sEqdDb/BSGz9w440QHySnFZhFQUzkSe8=;
+	s=arc-20240116; t=1760367107; c=relaxed/simple;
+	bh=WLQdK+uJw6NAOdQGj0GaLo6GibTa3aGDmLMWb2quFm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hr8ETarPQoarjmjwYFfJbzFjOrNXS+G2AHRLf/a/7soxCHKTAv6jAZt0PzeBe0ZpQLAmLcxi4AnM/3rpJ2Hixj2FfP8SZ0dOHnrLwxC6KPGqkeyDsroaW9Lvi5D95gjic+nCRBY6DTIw6viAErtp3nZqfmMcMKF1fjNQqYKcNEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QrJjk5+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CF9C4CEE7;
-	Mon, 13 Oct 2025 15:12:16 +0000 (UTC)
+	 MIME-Version; b=ONk4z0uzhrURIklhDMTbQvmbsuG4txOkNmrMeCMAUwTvf/veePjvp2sUQBCHKfD0yrS+2F36FbO02zKzub/+EJmHsr/qhNxY6wjlobcuvcYn56le3yOAZ75rJXooMfegKdH3LmfagRf+9h6xwFATN9uTbxXyIvNxJ0V1arb35HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDjsyo8k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A2FC4CEE7;
+	Mon, 13 Oct 2025 14:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368337;
-	bh=5lvpuJ+m8O5sEqdDb/BSGz9w440QHySnFZhFQUzkSe8=;
+	s=korg; t=1760367107;
+	bh=WLQdK+uJw6NAOdQGj0GaLo6GibTa3aGDmLMWb2quFm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QrJjk5+lhrNMcI5ijPPoJika2wGkyT+29ZNhIwNaNtMmbDa/wFpwKz3bOYRrQMKQN
-	 NkRh2FcTv+be41hypPPSa3oCmDtAro4yvDSFK/K/Ty9uBAOmronsJJX1PH3Qq6ihmK
-	 YmiGCPddxj+1JzZzAV4m75ugX72t1qQm7wpNPJZ0=
+	b=eDjsyo8kG7fRJ70gLzKo97nHX7MYWrcJG5IWSTcfLDCYLQlMg2Vh4DbXfxmTjhIqU
+	 YCvZ5nsXt0mDy7PMF4P6NhT6t+FcWDP0jsIN7KFNLWR020jbEp+eyyVmFsyKrHQ+be
+	 /VbJ0RYEOxTqfcmm6IpX7zKXe+M6uxihj/uh2fTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/262] drm/amdkfd: Fix error code sign for EINVAL in svm_ioctl()
+Subject: [PATCH 6.1 095/196] hwrng: nomadik - add ARM_AMBA dependency
 Date: Mon, 13 Oct 2025 16:44:28 +0200
-Message-ID: <20251013144330.662180770@linuxfoundation.org>
+Message-ID: <20251013144318.137137754@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit cbda64f3f58027f68211dda8ea94d52d7e493995 ]
+[ Upstream commit efaa2d815a0e4d1c06750e587100f6f7f4ee5497 ]
 
-Use negative error code -EINVAL instead of positive EINVAL in the default
-case of svm_ioctl() to conform to Linux kernel error code conventions.
+Compile-testing this driver is only possible when the AMBA bus driver is
+available in the kernel:
 
-Fixes: 42de677f7999 ("drm/amdkfd: register svm range")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+x86_64-linux-ld: drivers/char/hw_random/nomadik-rng.o: in function `nmk_rng_remove':
+nomadik-rng.c:(.text+0x67): undefined reference to `amba_release_regions'
+x86_64-linux-ld: drivers/char/hw_random/nomadik-rng.o: in function `nmk_rng_probe':
+nomadik-rng.c:(.text+0xee): undefined reference to `amba_request_regions'
+x86_64-linux-ld: nomadik-rng.c:(.text+0x18d): undefined reference to `amba_release_regions'
+
+The was previously implied by the 'depends on ARCH_NOMADIK', but needs to be
+specified for the COMPILE_TEST case.
+
+Fixes: d5e93b3374e4 ("hwrng: Kconfig - Add helper dependency on COMPILE_TEST")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/hw_random/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 3e9e0f36cd3f4..a8d4b3a3e77af 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -4231,7 +4231,7 @@ svm_ioctl(struct kfd_process *p, enum kfd_ioctl_svm_op op, uint64_t start,
- 		r = svm_range_get_attr(p, mm, start, size, nattrs, attrs);
- 		break;
- 	default:
--		r = EINVAL;
-+		r = -EINVAL;
- 		break;
- 	}
- 
+diff --git a/drivers/char/hw_random/Kconfig b/drivers/char/hw_random/Kconfig
+index 3da8e85f8aae0..84e13fd67ea6c 100644
+--- a/drivers/char/hw_random/Kconfig
++++ b/drivers/char/hw_random/Kconfig
+@@ -286,6 +286,7 @@ config HW_RANDOM_INGENIC_TRNG
+ config HW_RANDOM_NOMADIK
+ 	tristate "ST-Ericsson Nomadik Random Number Generator support"
+ 	depends on ARCH_NOMADIK || COMPILE_TEST
++	depends on ARM_AMBA
+ 	default HW_RANDOM
+ 	help
+ 	  This driver provides kernel-side support for the Random Number
 -- 
 2.51.0
 
