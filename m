@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B7FCBD4126
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E57CBD4313
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A15C503580
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D0A31885491
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DCE30BB97;
-	Mon, 13 Oct 2025 14:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F8E30CDBB;
+	Mon, 13 Oct 2025 15:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtO+WYNF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hedq7JMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97DC3064B7;
-	Mon, 13 Oct 2025 14:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34D73081AE;
+	Mon, 13 Oct 2025 15:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367304; cv=none; b=DSnL2UBxiTSGC4GvgCx669BLAnxvTokksLCKjqUkf0tBajyJjDcCPByGj7GMBy6AoPUlGDkW1J0AtJiKubN2G/TnmbajCxgHcUjKSl9BLWhAMapYUBNdaoEkluyk3Qtv2X1c3qwi8YxCQqQJ685lm1K1+y2yTX0GZDsVtnwCz/Q=
+	t=1760368434; cv=none; b=JOBQiWg34eFfj+xG2VyQMQwBXq40byFJAHqkNJbriBKH/6ZcjWlubaAWmsAOuK8Gkcav1iuOQXvBedSY5IDffDfqZQsCLLUqAegKThqqAI4KxN5TnCXzsQfemQYZfG3vKVmGpMoCyzl0qb5YKLY5kyyT6ecivuc7WEkfgZIF76Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367304; c=relaxed/simple;
-	bh=+r0YGKvSwzDCAC1nxSyBrOy37f+OLXm1LqeEHYoRdJk=;
+	s=arc-20240116; t=1760368434; c=relaxed/simple;
+	bh=0oxSeif3SZGcH7MQi9Sr9y8BX7DuNVpvnRaasDSdLSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ln+ZYHSTFygKfUiZKXwR43+nwbDYRqlW9PrFB6nmIl2P26exBTPsEp0QDxyPAL9booC9w/vnIg4Xk5aIaDNioORkbx/MkdAZrVMq90LIrD59dUJ+xuE2gehUF/HaH3axsorKtQ86mmjvD2laotiHleFO1WbtfwXN6Mgf6EwkQzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtO+WYNF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74269C4CEE7;
-	Mon, 13 Oct 2025 14:55:03 +0000 (UTC)
+	 MIME-Version; b=SSG+PLZ8WJKYtZ/7WgqGEcmmB8Wln2vboijqANVldCGjMzapb0TKl1BbqUN7InulTgJ/pMw1PuVKU2dZLR+F/JZ0ukXLEtnsCXylfhzqSrmiMdYMsUEXstZPuQhbqGfwcPVEsnDAC08fDikhgszq3P5ZoqYtJa+zTaPfzafjnlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hedq7JMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2988AC4CEE7;
+	Mon, 13 Oct 2025 15:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367303;
-	bh=+r0YGKvSwzDCAC1nxSyBrOy37f+OLXm1LqeEHYoRdJk=;
+	s=korg; t=1760368434;
+	bh=0oxSeif3SZGcH7MQi9Sr9y8BX7DuNVpvnRaasDSdLSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtO+WYNFq89sxD6z/+8BDbYQ8uMg5jAOE9a1kAxjEyS+VTL1NLROm2De5Wun0eP04
-	 Hol8w1Aa6jsnt09yzxnwohHKdwvsZvLjeFchw2kWOKkyklNm5VzUKs14M+uVUCD4sh
-	 Kw5+Uyt2xcH/lvHL12fczWKxKqy0d2Li+TtJQ4B0=
+	b=Hedq7JMQG0FsYHLcrVUkLCJu8JhdJGdLevYmkr2xOKROEitsECep/dmeUcSzfAjoR
+	 a4bj/TtAX9Axr1wwMF8H0U2v0uvwgDHI3PfgH8ubqgghO5gxF96EeQQNOtHmwx1ZTm
+	 xzAzR3ZaXZCiIyngfFBiugnObmI6tZuXXSJsA288=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+	wangzijie <wangzijie1@honor.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/196] ACPI: NFIT: Fix incorrect ndr_desc being reportedin dev_err message
+Subject: [PATCH 6.12 160/262] f2fs: fix zero-sized extent for precache extents
 Date: Mon, 13 Oct 2025 16:45:02 +0200
-Message-ID: <20251013144319.361290844@linuxfoundation.org>
+Message-ID: <20251013144331.884771089@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: wangzijie <wangzijie1@honor.com>
 
-[ Upstream commit d1a599a8136b16522b5afebd122395524496d549 ]
+[ Upstream commit 8175c864391753b210f3dcfae1aeed686a226ebb ]
 
-There appears to be a cut-n-paste error with the incorrect field
-ndr_desc->numa_node being reported for the target node. Fix this by
-using ndr_desc->target_node instead.
+Script to reproduce:
+f2fs_io write 1 0 1881 rand dsync testfile
+f2fs_io fallocate 0 7708672 4096 testfile
+f2fs_io write 1 1881 1 rand buffered testfile
+fsync testfile
+umount
+mount
+f2fs_io precache_extents testfile
 
-Fixes: f060db99374e ("ACPI: NFIT: Use fallback node id when numa info in NFIT table is incorrect")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+When the data layout is something like this:
+dnode1:                     dnode2:
+[0]      A                  [0]    NEW_ADDR
+[1]      A+1                [1]    0x0
+...
+[1016]   A+1016
+[1017]   B (B!=A+1017)      [1017] 0x0
+
+During precache_extents, we map the last block(valid blkaddr) in dnode1:
+map->m_flags |= F2FS_MAP_MAPPED;
+map->m_pblk = blkaddr(valid blkaddr);
+map->m_len = 1;
+then we goto next_dnode, meet the first block in dnode2(hole), goto sync_out:
+map->m_flags & F2FS_MAP_MAPPED == true, and we make zero-sized extent:
+
+map->m_len = 1
+ofs = start_pgofs - map->m_lblk = 1882 - 1881 = 1
+ei.fofs = start_pgofs = 1882
+ei.len = map->m_len - ofs = 1 - 1 = 0
+
+Rebased on patch[1], this patch can cover these cases to avoid zero-sized extent:
+A,B,C is valid blkaddr
+case1:
+dnode1:                     dnode2:
+[0]      A                  [0]    NEW_ADDR
+[1]      A+1                [1]    0x0
+...                         ....
+[1016]   A+1016
+[1017]   B (B!=A+1017)      [1017] 0x0
+
+case2:
+dnode1:                     dnode2:
+[0]      A                  [0]    C (C!=B+1)
+[1]      A+1                [1]    C+1
+...                         ....
+[1016]   A+1016
+[1017]   B (B!=A+1017)      [1017] 0x0
+
+case3:
+dnode1:                     dnode2:
+[0]      A                  [0]    C (C!=B+2)
+[1]      A+1                [1]    C+1
+...                         ....
+[1015]   A+1015
+[1016]   B (B!=A+1016)
+[1017]   B+1                [1017] 0x0
+
+[1] https://lore.kernel.org/linux-f2fs-devel/20250912081250.44383-1-chao@kernel.org/
+
+Fixes: c4020b2da4c9 ("f2fs: support F2FS_IOC_PRECACHE_EXTENTS")
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/nfit/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/data.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 129c503b0951e..78c9f56b4ba34 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -2643,7 +2643,7 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
- 	if (ndr_desc->target_node == NUMA_NO_NODE) {
- 		ndr_desc->target_node = phys_to_target_node(spa->address);
- 		dev_info(acpi_desc->dev, "changing target node from %d to %d for nfit region [%pa-%pa]",
--			NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
-+			NUMA_NO_NODE, ndr_desc->target_node, &res.start, &res.end);
- 	}
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index a008d70b9f5ec..040c06dfb8c03 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1781,9 +1781,10 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
+ 		if (map->m_flags & F2FS_MAP_MAPPED) {
+ 			unsigned int ofs = start_pgofs - map->m_lblk;
  
- 	/*
+-			f2fs_update_read_extent_cache_range(&dn,
+-				start_pgofs, map->m_pblk + ofs,
+-				map->m_len - ofs);
++			if (map->m_len > ofs)
++				f2fs_update_read_extent_cache_range(&dn,
++					start_pgofs, map->m_pblk + ofs,
++					map->m_len - ofs);
+ 		}
+ 		if (map->m_next_extent)
+ 			*map->m_next_extent = is_hole ? pgofs + 1 : pgofs;
 -- 
 2.51.0
 
