@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-185151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C38ABD4883
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:50:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDD5BD4A5B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FDD1189F356
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 121E7485CF8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A847830AAC8;
-	Mon, 13 Oct 2025 15:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2525130ACED;
+	Mon, 13 Oct 2025 15:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kj2onO0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9338D24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6575730AABF;
-	Mon, 13 Oct 2025 15:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19CD30ACE9;
+	Mon, 13 Oct 2025 15:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369478; cv=none; b=MBOHYSmOlzSYZ4osXX+VltOe/YgPWsqGlp10auT/X4LKNQtJ15SYeGOL/00DpKQjwPsVtUaqyzZcv+V1q1pk/XvGLlYigtsGuFJ6mPrahWGUKoZvmtlUN4jmtivLFoale7IGbEwJajznbuWlJCge/MS8h+qeKFFI0LveQH5NJII=
+	t=1760369489; cv=none; b=acxMidlvhQTn4e/IdKVJf9WpJG6e5NlesaiHz/QaamhF++pjJNeoy347KRHLwokjBYDKJLl7onWdK8p2oXPcpulA2fo1hjXCdp3eFnKrMQeuLOKIFTGIkmdo/iuU9osgI54WSkgCaKf1c5QLGR9XojH/gCAg9NOBkm6Saej/Dhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369478; c=relaxed/simple;
-	bh=gkOS/RGo4c9mFqQxep3kZF4DKT4Y1vBA+DfEDmzV1f8=;
+	s=arc-20240116; t=1760369489; c=relaxed/simple;
+	bh=aEfyGl9vQVVaooeqxyD5GvUymJvVKJdHeyxqWGcLeno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSdknIlPcINXxPJXb1N67WRuTicWake/In+kscSpE751MDugWk2BKGXwpkgpMtMeL6plinO91h1wTGdiRuyWZ7zZ2+EF84m5TVdmaGpA74hF8cx5FRXnp/mr1csJs0FMOMOfuH59olxNCB3IcyxP3FyxxKBEm+RlS4cTZEZH8FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kj2onO0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD851C4CEE7;
-	Mon, 13 Oct 2025 15:31:17 +0000 (UTC)
+	 MIME-Version; b=YytTPoISXpKIcGveFt8NQqiOepBJqHA6QtlBrJoiK8ZmWeoW3q3hkugiV0/OpH+FzS49ghmykJ1jux/Fp43pwNeZkECyo1ALbs7jxv5DPkWrjYTf7RIaCzmzPy2wdTi/27S3acLZkWwTphRbYPNPw6iyM2qNFW3tq7JvwSsJ/Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9338D24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05836C4CEE7;
+	Mon, 13 Oct 2025 15:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369478;
-	bh=gkOS/RGo4c9mFqQxep3kZF4DKT4Y1vBA+DfEDmzV1f8=;
+	s=korg; t=1760369489;
+	bh=aEfyGl9vQVVaooeqxyD5GvUymJvVKJdHeyxqWGcLeno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kj2onO0KIclTU3YiBcnBSrzCaKycmYHK1BAy8GOzyWNnxQfNNNU8JzNBo8P8wRKXx
-	 fiNcXxe8bSwOKL7hwcKlTwdCTHxRqMWdp/Dw45ggZc1Oka4nlGaPMh2PkBHApR/s3O
-	 5FdAj+ICmqjt9A4gn9JjSlEppKcVjYpjK5ujMqx0=
+	b=V9338D24Qo95w5FLGVj2s0g0oDfFSYam315MXtWVXTDppeZL4JxX35sdzqDr+0Bew
+	 GmHqYp0JSSgV4UcYzj6wuLTVRA8pnbosGO5lhBykien52vRUiGjL8IAUC+CKWZlJvL
+	 bO0A8tKJIP00UPFe1/e/nKDs7CR5R7y8DenCoWRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 260/563] media: staging/ipu7: convert to use pci_alloc_irq_vectors() API
-Date: Mon, 13 Oct 2025 16:42:01 +0200
-Message-ID: <20251013144420.696687668@linuxfoundation.org>
+Subject: [PATCH 6.17 263/563] media: i2c: vd55g1: Fix duster register address
+Date: Mon, 13 Oct 2025 16:42:04 +0200
+Message-ID: <20251013144420.805835512@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,77 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
 
-[ Upstream commit 283f7638c26c0f36e4ef5e147884e241b24fbebd ]
+[ Upstream commit ba4b8886c22a3e8c3f41c6dd373b177d7d41bcf8 ]
 
-pci_enable_msi() is a deprecated API, thus switch to use modern
-pci_alloc_irq_vectors().
+The duster register needs to be disabled on test patterns. While the
+code is correctly doing so, the register address contained a typo, thus
+not disabling the duster correctly. Fix the typo.
 
-Fixes: b7fe4c0019b1 ("media: staging/ipu7: add Intel IPU7 PCI device driver")
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Fixes: e56616d7b23c ("media: i2c: Add driver for ST VD55G1 camera sensor")
+
+Signed-off-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/ipu7/ipu7.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ drivers/media/i2c/vd55g1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/ipu7/ipu7.c b/drivers/staging/media/ipu7/ipu7.c
-index 1b4f01db13ca2..a8e8b0e231989 100644
---- a/drivers/staging/media/ipu7/ipu7.c
-+++ b/drivers/staging/media/ipu7/ipu7.c
-@@ -2248,20 +2248,13 @@ void ipu7_dump_fw_error_log(const struct ipu7_bus_device *adev)
- }
- EXPORT_SYMBOL_NS_GPL(ipu7_dump_fw_error_log, "INTEL_IPU7");
- 
--static int ipu7_pci_config_setup(struct pci_dev *dev)
-+static void ipu7_pci_config_setup(struct pci_dev *dev)
- {
- 	u16 pci_command;
--	int ret;
- 
- 	pci_read_config_word(dev, PCI_COMMAND, &pci_command);
- 	pci_command |= PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER;
- 	pci_write_config_word(dev, PCI_COMMAND, pci_command);
--
--	ret = pci_enable_msi(dev);
--	if (ret)
--		dev_err(&dev->dev, "Failed to enable msi (%d)\n", ret);
--
--	return ret;
- }
- 
- static int ipu7_map_fw_code_region(struct ipu7_bus_device *sys,
-@@ -2510,13 +2503,15 @@ static int ipu7_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 
- 	dma_set_max_seg_size(dev, UINT_MAX);
- 
--	ret = ipu7_pci_config_setup(pdev);
--	if (ret)
--		return ret;
-+	ipu7_pci_config_setup(pdev);
-+
-+	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to alloc irq vector\n");
- 
- 	ret = ipu_buttress_init(isp);
- 	if (ret)
--		return ret;
-+		goto pci_irq_free;
- 
- 	dev_info(dev, "firmware cpd file: %s\n", isp->cpd_fw_name);
- 
-@@ -2632,6 +2627,8 @@ static int ipu7_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	release_firmware(isp->cpd_fw);
- buttress_exit:
- 	ipu_buttress_exit(isp);
-+pci_irq_free:
-+	pci_free_irq_vectors(pdev);
- 
- 	return ret;
- }
+diff --git a/drivers/media/i2c/vd55g1.c b/drivers/media/i2c/vd55g1.c
+index 7c39183dd44bf..4a62d35006829 100644
+--- a/drivers/media/i2c/vd55g1.c
++++ b/drivers/media/i2c/vd55g1.c
+@@ -66,7 +66,7 @@
+ #define VD55G1_REG_READOUT_CTRL				CCI_REG8(0x052e)
+ #define VD55G1_READOUT_CTRL_BIN_MODE_NORMAL		0
+ #define VD55G1_READOUT_CTRL_BIN_MODE_DIGITAL_X2		1
+-#define VD55G1_REG_DUSTER_CTRL				CCI_REG8(0x03ea)
++#define VD55G1_REG_DUSTER_CTRL				CCI_REG8(0x03ae)
+ #define VD55G1_DUSTER_ENABLE				BIT(0)
+ #define VD55G1_DUSTER_DISABLE				0
+ #define VD55G1_DUSTER_DYN_ENABLE			BIT(1)
 -- 
 2.51.0
 
