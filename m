@@ -1,60 +1,86 @@
-Return-Path: <stable+bounces-184120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B2BBD0C19
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 22:39:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0604BD0FFA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 02:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E13111895F53
-	for <lists+stable@lfdr.de>; Sun, 12 Oct 2025 20:39:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 606D63B61D4
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 00:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1736F235041;
-	Sun, 12 Oct 2025 20:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C7D1D8E10;
+	Mon, 13 Oct 2025 00:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ve1Cgubv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SVn3TM5H"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E4D2192F4
-	for <stable@vger.kernel.org>; Sun, 12 Oct 2025 20:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED4B72610
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 00:43:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760301551; cv=none; b=a0LFXDUwCWNks/hB/d32iieqkCUzcNj3lfYyZUt9alQxMwFJidDq1ubz4uQl/LPQFlmDY6kNqt/xneG0YF8Ec2XoI+KVaG/yyuEf6ORnlJ/JYfS39WrV9TsoKbnwesIpSaDklXJZTVuR82Hq6LZ/cRyr7DZDt+gEYyoffAOOsvI=
+	t=1760316189; cv=none; b=LMv4/oJehxLvNeTZ7zg8I9voE+cEZxGxN7aWzNUSWrJ7UKSoKxnHG+zSgCaTvOXMb7mNnBQtzlRHURXO8EbZskRYqK6SXGotD8zK884LSOUX0nxyPob977XlBkuDuve64hrs2CVSH5dpdEZagNGCbSMZJ6UOPONsZAzMUDR147E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760301551; c=relaxed/simple;
-	bh=YIkTgYn9i2yw0iFaIALqYXIa9CMh1bynZaoWnsC+ihU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PyyGvGYxasjDOgilTEhWngQhGHqCp2h/znw7F803LiTbOguXu7LulvkgnTvPayoPXqTQrrgyOAm9FgnC0nxh8F0AqGsSV76QVsAbFAVAeVgpq7oA8517EjUB+Sgm6LHXE9qABI5fJ71UbGn3VtiwUlq2nHNKBRPPaeNG1tBakks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ve1Cgubv; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760301538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FKhJ/WufXxLbU2grf7XLNEYhgrmN020loyUIXPWxv7U=;
-	b=ve1Cgubv0YcbugdHFD/N9LGuipVUBqST1XmwsuU84PKVu2uM3x+m1bkJTcWy2AAarJi8+l
-	c7hO7tTAUiGx2wGD4AH7FzxgTuboVUdpgh7uNLpfzF6T5/ZIpDTGqrojsT0uGVSiGDBRvD
-	JCcCTaLZvjt7DEBEcWZn77cEA2mT55U=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: David Howells <dhowells@redhat.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Vivek Goyal <vgoyal@redhat.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
-Date: Sun, 12 Oct 2025 22:38:40 +0200
-Message-ID: <20251012203841.60230-1-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1760316189; c=relaxed/simple;
+	bh=J4Yzb9iZ9EpboV9biYUfsNSETmRqq2TmKs+QNpM5zWU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cCacdhFbTYCgw79jjSTH8J907hvl3VXkIQiXNxqAXomCKonGDcoHGJ30mpOPHqLfXfNuQZeTFrKC5hO+4m7knZZ+tKd8iY8r/YeLKRg6iX6YXxMDffHdMRTqJhDlBVLJJTlggJXLWp3uH2kHeTHl4ysmisz3b86vCJAIKUvJ4pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SVn3TM5H; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-791c287c10dso3151723b3a.1
+        for <stable@vger.kernel.org>; Sun, 12 Oct 2025 17:43:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760316187; x=1760920987; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0XzRaVDpvVh3GxyQKpxmp+g1qh+O73uHDOdF7bHEjts=;
+        b=SVn3TM5HQN7tb9zzH877a4+kDQttUfuzhw2t8CA3Bww4x8WwXvR3JTGKyXKpF1PCIk
+         Y2BefxNjqM44fZHXGKLQmUqzZz2Ota0ppHK2Og1vrKUkmcnjTcTnpvRn8zUf3Zl0gvDq
+         1227QsmoM9zSu6VGe6c7TenULzpnf1YJCcryrcIFXCsfzjjNolkLBuemM9SsToRObGJ5
+         Cfp3jnZhhsFXfV38Ny08spOukosDg2KLALgcr7rhc1ENqVBhw1iKLzuASeLjyQCdb3zi
+         T21UV0MdwNn7uvQY9RsqV06cvLRm+HjXtGK7QZYtjj254k23Lq1/UFB9lfvN4eQa9vuV
+         rmNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760316187; x=1760920987;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0XzRaVDpvVh3GxyQKpxmp+g1qh+O73uHDOdF7bHEjts=;
+        b=Gdb3JwLcICZHfXgh0trXmD2DxvExOd8oA6zxL5NLwvugwRm2A4Ruk/YtPMhC/Rc/5T
+         FWsArLOSXbSeU94KQvLeXNr759geMfDmVtuUzwr4J+vIRdwOCpIyQ/rd4OWKoQzoQ9NP
+         oJBldkHCKj5iDhfXiFpbNiceuEEqWdi09s9cRV46mEIXiUKqryrKiI/l9nC4zSFY3NEM
+         DNPUdACKLe2Xclgm/hj/xJ4XhqsCSWC+LR3kGAF2XRtOaYzBM13gm3NCpQ2n9TGVyolA
+         uLEPsNsgbr+voAL3NN99SteCh/1gjeVHroeCGL3yYNQVj+irxOq7qFuzaTUUiR5hCQco
+         S6tg==
+X-Gm-Message-State: AOJu0Yxxrb5oF8o44FTlNyjPleUrqt2S6wIT3ubbe95IcpNavIE5fBCN
+	RrJiyn7JPjLVREsZ7BXJU+8eTTb8Kkjiq6DE53Mt+aZED2mPwrEvjcgSxJvUKADz
+X-Gm-Gg: ASbGnctd3h3vnvQ953xqxnJKeVxqgEO9V3pCUf3xlIBUve0CJDMq03CvMQ3F2mXnigr
+	T+deEHDZ9GyKaVBU+2QCRzo6uhdXKMIEemcYrSnk6b4QYijDAmEyA5QnwyTmbnly8QEFUEKJiwY
+	Wce36NcrEWbv/dz+mx8G2QInFK35yXpolrSGJRGnBNRR9GL8BJwNmfuz1lKA0UxoBP00OqFspqx
+	okIggImmaiWqnyHtPgN12EgZFgcmzb8VNpxPwcSqLTnXEE/ylFo3coVHwWPS+r1Y9/wW2IPNHkR
+	HofslJSXYjzwD0zwsn7XWH2wog5dl/vUFgbVht0waJ1tJ2RrANzc68CBiKmZdjP7k6657NGHr9Y
+	B8nDeucmTDfLNffmxNLkqwt/pE8cTUOf39dzH6lRY5tQHsUd6wT0rJcPy5qSU7LEdp2IttXts4x
+	B1puq1F5yuP8IqRI0i8SBGj2GRT00DKbMzStU/Rqyk
+X-Google-Smtp-Source: AGHT+IEJ9+3If9FCMPigZ3r6dNXt7DjswUYuB0YkB/zAzqOWxFcGsIafhkW8OCsnNf8/fBxmvhWCDw==
+X-Received: by 2002:a05:6a21:99a1:b0:302:c800:bc0b with SMTP id adf61e73a8af0-32da83e64d7mr24494230637.44.1760316187101;
+        Sun, 12 Oct 2025 17:43:07 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:7f7:56b1:ddb:2ccb])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b626d284bsm9847620a91.18.2025.10.12.17.43.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Oct 2025 17:43:06 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: stable@vger.kernel.org,
+	stable-commits@vger.kernel.org
+Cc: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@redhat.com
+Subject: Re: Patch "hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list" has been added to the 6.16-stable tree
+Date: Mon, 13 Oct 2025 06:13:01 +0530
+Message-ID: <20251013004301.4700-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,62 +88,22 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Use check_add_overflow() to guard against a potential integer overflow
-when adding the binary blob lengths in asymmetric_key_generate_id() and
-return -EOVERFLOW accordingly. This prevents a possible buffer overflow
-when copying data from potentially malicious X.509 fields that can be
-arbitrarily large, such as ASN.1 INTEGER serial numbers, issuer names,
-etc.
+Hi Sasha,
 
-Also use struct_size() to calculate the number of bytes to allocate for
-the new asymmetric key id.
+Please do NOT backport commit dd83609b8898 alone to stable. This patch 
+causes a regression in fallocate(PUNCH_HOLE) operations where pages are 
+not freed immediately, as reported by Mark Brown.
 
-Cc: stable@vger.kernel.org
-Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
-Changes in v2:
-- Use check_add_overflow() and error out as suggested by Lukas
-- Update patch description
-- Add Fixes: tag and @stable for backporting
-- Link to v1: https://lore.kernel.org/lkml/20251007185220.234611-2-thorsten.blum@linux.dev/
----
- crypto/asymmetric_keys/asymmetric_type.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+The fix for this regression is already in linux-next as commit 
+91a830422707 ("hugetlbfs: check for shareable lock before calling 
+huge_pmd_unshare()").
 
-diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-index ba2d9d1ea235..bd96f799757d 100644
---- a/crypto/asymmetric_keys/asymmetric_type.c
-+++ b/crypto/asymmetric_keys/asymmetric_type.c
-@@ -11,6 +11,7 @@
- #include <crypto/public_key.h>
- #include <linux/seq_file.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/ctype.h>
- #include <keys/system_keyring.h>
-@@ -141,12 +142,14 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
- 						     size_t len_2)
- {
- 	struct asymmetric_key_id *kid;
-+	size_t len;
- 
--	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
--		      GFP_KERNEL);
-+	if (check_add_overflow(len_1, len_2, &len))
-+		return ERR_PTR(-EOVERFLOW);
-+	kid = kmalloc(struct_size(kid, data, len), GFP_KERNEL);
- 	if (!kid)
- 		return ERR_PTR(-ENOMEM);
--	kid->len = len_1 + len_2;
-+	kid->len = len;
- 	memcpy(kid->data, val_1, len_1);
- 	memcpy(kid->data + len_1, val_2, len_2);
- 	return kid;
--- 
-2.51.0
+Please backport both commits together to avoid introducing the 
+regression in stable kernels:
+- dd83609b88986f4add37c0871c3434310652ebd5 ("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
+- 91a830422707a62629fc4fbf8cdc3c8acf56ca64  ("hugetlbfs: check for shareable lock before calling huge_pmd_unshare()")
 
+Thanks,
+Deepanshu Kartikey
 
