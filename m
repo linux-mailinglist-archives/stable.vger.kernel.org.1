@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-184602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EACA1BD4084
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE34BD4168
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9735034E66D
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53A91405FF8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1027F30F955;
-	Mon, 13 Oct 2025 15:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A807930DD28;
+	Mon, 13 Oct 2025 14:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTP/07WU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWIq8Dj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF83A30F94F;
-	Mon, 13 Oct 2025 15:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEA1274B3A;
+	Mon, 13 Oct 2025 14:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367907; cv=none; b=Zmj2a+TFExf2uc0XsFGumKzwWfzvYNu1plVfu+RU4DBGrLsrXb7IvuGzZmob0maAbkqPsCi9kSkZxOOttF/J9lspRVBuGE2i+m+r1GVUMzU6QHZoz6eHsFHGwGyfDR4TYFUPLjIy6e/DIcS8ZcG77mOUICvAGlmJjwDr18VffFc=
+	t=1760367377; cv=none; b=XDWRrMZMaEpngjPKwm5kRcrcI07zIJWni9cXzNGVgcWO2XN4VtSemXKSyMjUZj/fXGEhc59azOEKwWSUHKNsm4tWBuCLoFsliM7qLEXET65XuIjQpXpUQVlGBf072YKyllyhLDgUaYDIy++9caNhtk1NVMK5XEuHbJGuuxgYd5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367907; c=relaxed/simple;
-	bh=mqg1pmPSB84sObNBxHIBPYw6NC5qO0GMW/nYPZFN+t4=;
+	s=arc-20240116; t=1760367377; c=relaxed/simple;
+	bh=zlRivWcastJA2kNX65gFrtLUQHc+0Xj3MBy5TAHQ8Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwALAK+znZB1wVpw3g+t4SgtLxSS3uxZdlfcaBLSbFeY96EpomOG/lnbWdpTYtTx7BYmzPbcSeBqv2m7XxabX8YAYFB2eqFY1c8SsAIBdDBPFMrqhYv/wboGzP4EZzfO5MwbqfpTUqMLpGecvCxp3ERpqrTG8tJVQGsRHh2OcHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTP/07WU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478E7C4CEE7;
-	Mon, 13 Oct 2025 15:05:07 +0000 (UTC)
+	 MIME-Version; b=kMi6110v/8+xgbUDCgGGRyNx0Fy2o+tW/DTOZ9BiJwDwnALZVhkmFYzUoy1Q3L1zypq9kUe4Rt0zmJ7EZ3TRjC3+IF4wqaR/A0HyFCm4oP39WNll7fwYzLggyhMMcehaECqm68xQTgvGV0byEZ/jWRT84jmExQ3Q9w5dVBWG1i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWIq8Dj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE16C4CEE7;
+	Mon, 13 Oct 2025 14:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367907;
-	bh=mqg1pmPSB84sObNBxHIBPYw6NC5qO0GMW/nYPZFN+t4=;
+	s=korg; t=1760367377;
+	bh=zlRivWcastJA2kNX65gFrtLUQHc+0Xj3MBy5TAHQ8Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTP/07WUHqGj8x+ibFvU8cZvHwP190lx18wljBcqXkfOMQVVYOaspeDSQv/EoHjOC
-	 P7W+xtNz5XUWKqvZMug3dBJRGlIqr0DrN485fuFFsmhkX+W0ZnlJ57a4aE/cgiTxmY
-	 N1nDvXSgniqSRW0FQ7o9Cdgk75peP36S51qYGF5A=
+	b=SWIq8Dj67D3t7u5caCiS3FacfojJrgB1/ol1tYQRhOXwnx7frVudDvxEVszVp5MwL
+	 8xbIJHpubtess28NMjWY8yu8Is3twPHVuiW5A04kwY1vrGl/W/tjKDffpuFFHL6UDT
+	 0EkAcy0c4OZvXXtYGVZYaUsNetFhc92GQFew+mWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamas Zsoldos <tamas.zsoldos@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/196] coresight: trbe: Return NULL pointer for allocation failures
+Subject: [PATCH 6.1 160/196] Bluetooth: hci_sync: Fix using random address for BIG/PA advertisements
 Date: Mon, 13 Oct 2025 16:45:33 +0200
-Message-ID: <20251013144320.450635666@linuxfoundation.org>
+Message-ID: <20251013144320.487115632@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 8a55c161f7f9c1aa1c70611b39830d51c83ef36d ]
+[ Upstream commit 03ddb4ac251463ec5b7b069395d9ab89163dd56c ]
 
-When the TRBE driver fails to allocate a buffer, it currently returns
-the error code "-ENOMEM". However, the caller etm_setup_aux() only
-checks for a NULL pointer, so it misses the error. As a result, the
-driver continues and eventually causes a kernel panic.
+When creating an advertisement for BIG the address shall not be
+non-resolvable since in case of acting as BASS/Broadcast Assistant the
+address must be the same as the connection in order to use the PAST
+method and even when PAST/BASS are not in the picture a Periodic
+Advertisement can still be synchronized thus the same argument as to
+connectable advertisements still stand.
 
-Fix this by returning a NULL pointer from arm_trbe_alloc_buffer() on
-allocation failures. This allows that the callers can properly handle
-the failure.
-
-Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
-Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250904-cs_etm_auxsetup_fix_error_handling-v2-1-a502d0bafb95@arm.com
+Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-trbe.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/bluetooth/hci_sync.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
-index 7f91b1ffe66a5..a564bd5c8b62d 100644
---- a/drivers/hwtracing/coresight/coresight-trbe.c
-+++ b/drivers/hwtracing/coresight/coresight-trbe.c
-@@ -744,12 +744,12 @@ static void *arm_trbe_alloc_buffer(struct coresight_device *csdev,
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 4c1b2468989a8..851a43a5aee0c 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1304,7 +1304,7 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
+ {
+ 	struct hci_cp_le_set_ext_adv_params cp;
+ 	struct hci_rp_le_set_ext_adv_params rp;
+-	bool connectable;
++	bool connectable, require_privacy;
+ 	u32 flags;
+ 	bdaddr_t random_addr;
+ 	u8 own_addr_type;
+@@ -1342,10 +1342,12 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
+ 		return -EPERM;
  
- 	buf = kzalloc_node(sizeof(*buf), GFP_KERNEL, trbe_alloc_node(event));
- 	if (!buf)
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 
- 	pglist = kcalloc(nr_pages, sizeof(*pglist), GFP_KERNEL);
- 	if (!pglist) {
- 		kfree(buf);
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 	}
- 
- 	for (i = 0; i < nr_pages; i++)
-@@ -759,7 +759,7 @@ static void *arm_trbe_alloc_buffer(struct coresight_device *csdev,
- 	if (!buf->trbe_base) {
- 		kfree(pglist);
- 		kfree(buf);
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 	}
- 	buf->trbe_limit = buf->trbe_base + nr_pages * PAGE_SIZE;
- 	buf->trbe_write = buf->trbe_base;
+ 	/* Set require_privacy to true only when non-connectable
+-	 * advertising is used. In that case it is fine to use a
+-	 * non-resolvable private address.
++	 * advertising is used and it is not periodic.
++	 * In that case it is fine to use a non-resolvable private address.
+ 	 */
+-	err = hci_get_random_address(hdev, !connectable,
++	require_privacy = !connectable && !(adv && adv->periodic);
++
++	err = hci_get_random_address(hdev, require_privacy,
+ 				     adv_use_rpa(hdev, flags), adv,
+ 				     &own_addr_type, &random_addr);
+ 	if (err < 0)
 -- 
 2.51.0
 
