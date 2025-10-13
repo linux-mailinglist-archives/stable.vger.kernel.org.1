@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14030BD42BE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D854EBD3C60
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A31131889C68
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB48818A0618
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB63B3126BC;
-	Mon, 13 Oct 2025 15:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CCB3090E8;
+	Mon, 13 Oct 2025 14:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQ86XmvN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ag4AUwno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DB33126B6;
-	Mon, 13 Oct 2025 15:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED493090E1;
+	Mon, 13 Oct 2025 14:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368237; cv=none; b=Yf8tMNpwa92QGrsZWxQd5Ckdu0AZmQzDcHiuRoQQURNtvI/SQFbAHD7tU8/+OACKLD2EREiQCA0olEKq59YYrWEwKk3a5YF5raZs2tQj7MWexYgEeDvUIci9sbEsBAOXCuLNxr+6BY4mLeqvYdKpe4RwwCXhTGQJ9iihggq+lKQ=
+	t=1760367006; cv=none; b=SBtfY+9OBFcsEyBn1T6rx0n/FyUJiov+NdxbOZ43Mh/4/E3t0gNji25+xImDjhgd2+eDvxTw+MpcAP+JGMbAm2zWz6b5/waz9s9HFnvyZydX8KD4dlagagDgsrbBEjmQ6lHpDx/P2zusAXCIznxoY3VOfjN6toKm8+1sz2cwixU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368237; c=relaxed/simple;
-	bh=HWOvGk1DdFAV3O+hkYRjoq8WSdNZJ3WntlCPHx4BEF4=;
+	s=arc-20240116; t=1760367006; c=relaxed/simple;
+	bh=HuEudgYtkX6qYDy1c41amkHXMCr2g9QC71xVhsYbKpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cyrJKESF9UBThLbnJdXIs1AFks+Wgu43Dl5Mz4fNNDoe7ULf8da3X0Ub/O1ENjephRvBrBWaP15rrlZw5+gClTdwXRyDtADKiB62YBiYVNpYcLuxl7tGs6rbOIlSRlvPdaL92K6XKCkf3cXuUuqGT/UU5bMfBU5iPCynenXC+Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQ86XmvN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72C3C4CEE7;
-	Mon, 13 Oct 2025 15:10:36 +0000 (UTC)
+	 MIME-Version; b=cuG+jc51hCQ6qmehPbuBU5Bu6PtcUUpJt4ugVFC4ilfGjvphU2Q/ERU8v2J9ptL6ZtSwUqK7JS+0gxJsjKRensy7TfwKcBtk/BJ8PLJM53eLY7E8j4qG4bx+UXE0s4iVw7nX3V8qDqbp73XR+DaV+Rsa9Yfn7u4e5U4kUwVGlk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ag4AUwno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA36C4CEE7;
+	Mon, 13 Oct 2025 14:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368237;
-	bh=HWOvGk1DdFAV3O+hkYRjoq8WSdNZJ3WntlCPHx4BEF4=;
+	s=korg; t=1760367006;
+	bh=HuEudgYtkX6qYDy1c41amkHXMCr2g9QC71xVhsYbKpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQ86XmvN6Mwd3iLH+VKHGD/S1ng08Qrmbu00jlLj/dd+pN0/VT2KKF1gK4jMZNVbH
-	 ufmAjqgSca2i0GV0BezwnA+v/bdTV5naEk9WsXgNMmr0H+3lOIRIjsMFMGepMYw5kc
-	 BcgLRJng6D2jxaTVMScdJr7MNjMKetofoHn9huxI=
+	b=Ag4AUwnokNSPCN9dd/oQeWgriW7vG341lBwZUQ3xvYtLOYW9eYSYgC6YBA40LrZfZ
+	 7rSrp4/0JutiVB3f7KfZHOl42mCbOQJU5Hx39BLnFfsBJ9tRncW1SwbRQ45E1MV5I6
+	 6Je+jSQCeXid/GlBRm8pWIlaOjHP1WNdNeqoRsEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Brahmajit Das <listout@listout.xyz>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/262] drm/radeon/r600_cs: clean up of dead code in r600_cs
+Subject: [PATCH 6.1 060/196] ACPI: processor: idle: Fix memory leak when register cpuidle device failed
 Date: Mon, 13 Oct 2025 16:43:53 +0200
-Message-ID: <20251013144329.405900176@linuxfoundation.org>
+Message-ID: <20251013144316.752677598@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Huisong Li <lihuisong@huawei.com>
 
-[ Upstream commit 260dcf5b06d519bcf27a5dfdb5c626821a55c170 ]
+[ Upstream commit 11b3de1c03fa9f3b5d17e6d48050bc98b3704420 ]
 
-GCC 16 enables -Werror=unused-but-set-variable= which results in build
-error with the following message.
+The cpuidle device's memory is leaked when cpuidle device registration
+fails in acpi_processor_power_init().  Free it as appropriate.
 
-drivers/gpu/drm/radeon/r600_cs.c: In function ‘r600_texture_size’:
-drivers/gpu/drm/radeon/r600_cs.c:1411:29: error: variable ‘level’ set but not used [-Werror=unused-but-set-variable=]
- 1411 |         unsigned offset, i, level;
-      |                             ^~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:287: drivers/gpu/drm/radeon/r600_cs.o] Error 1
-
-level although is set, but in never used in the function
-r600_texture_size. Thus resulting in dead code and this error getting
-triggered.
-
-Fixes: 60b212f8ddcd ("drm/radeon: overhaul texture checking. (v3)")
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 3d339dcbb56d ("cpuidle / ACPI : move cpuidle_device field out of the acpi_processor_power structure")
+Signed-off-by: Huisong Li <lihuisong@huawei.com>
+Link: https://patch.msgid.link/20250728070612.1260859-2-lihuisong@huawei.com
+[ rjw: Changed the order of the new statements, added empty line after if () ]
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/processor_idle.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
-index ac77d1246b945..811265648a582 100644
---- a/drivers/gpu/drm/radeon/r600_cs.c
-+++ b/drivers/gpu/drm/radeon/r600_cs.c
-@@ -1408,7 +1408,7 @@ static void r600_texture_size(unsigned nfaces, unsigned blevel, unsigned llevel,
- 			      unsigned block_align, unsigned height_align, unsigned base_align,
- 			      unsigned *l0_size, unsigned *mipmap_size)
- {
--	unsigned offset, i, level;
-+	unsigned offset, i;
- 	unsigned width, height, depth, size;
- 	unsigned blocksize;
- 	unsigned nbx, nby;
-@@ -1420,7 +1420,7 @@ static void r600_texture_size(unsigned nfaces, unsigned blevel, unsigned llevel,
- 	w0 = r600_mip_minify(w0, 0);
- 	h0 = r600_mip_minify(h0, 0);
- 	d0 = r600_mip_minify(d0, 0);
--	for(i = 0, offset = 0, level = blevel; i < nlevels; i++, level++) {
-+	for (i = 0, offset = 0; i < nlevels; i++) {
- 		width = r600_mip_minify(w0, i);
- 		nbx = r600_fmt_get_nblocksx(format, width);
- 
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 3386d01c1f157..afa3b4ac367a3 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1411,6 +1411,9 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+ 		if (retval) {
+ 			if (acpi_processor_registered == 0)
+ 				cpuidle_unregister_driver(&acpi_idle_driver);
++
++			per_cpu(acpi_cpuidle_device, pr->id) = NULL;
++			kfree(dev);
+ 			return retval;
+ 		}
+ 		acpi_processor_registered++;
 -- 
 2.51.0
 
