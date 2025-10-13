@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-184450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B24BD3F2A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:14:18 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D92BD3DB3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C360E34E0B4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88EC14F632E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA313081D3;
-	Mon, 13 Oct 2025 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB499308F03;
+	Mon, 13 Oct 2025 14:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4BySYBD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOUa90nl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4D827A10D;
-	Mon, 13 Oct 2025 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74729308F09;
+	Mon, 13 Oct 2025 14:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367471; cv=none; b=qANlx+kXWKIdW88bgOZhIZmrHRjlpDYygjU3NBwN4xuv95g0wQp3mZhlxpiJmSnrSOju7FK6J3HqmYCvpL9NvUTQ1h662grU0mNPpuQKDLyN2M0JsQ4vxfJ38uZq/ZjxsmKnD7CT9/0r+60TZHl/Xu+0AQCM2PQFmebBfw9Ndzo=
+	t=1760366955; cv=none; b=nd/0xbkhmWUuSgJUJ+LJ3CfP1QnbCV/+4AoXLogLbbFHL+obg6MPuOGPmLakNxQBFLytx5q4ccSKpafmU+O80yz1sZSz/ag3HbxPpsQ8CqTD/VLTuyMUME0cr63uFc4YJUmb86u8aWX2ibQ2s75T2OnJOsSHMcUVs4f3Et/S7cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367471; c=relaxed/simple;
-	bh=/Xn5P4ZvV4UgEiFYqCht+x244CmA/ep4dSt8YTf1BKY=;
+	s=arc-20240116; t=1760366955; c=relaxed/simple;
+	bh=vUicEagmKcYIdkX3jiffEN/Cy/IngjMX4REhp1Sj3J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6rVWekmYQeab1Jpvixyy4qf0SMarb8+3XeEM84uB3cSCDrkFlXMhIDpJluAdfYzmMQK8mAU1y1gEE/V3CfWlo6jn1cg90DmgOU3lrJSFmyRy+VjPjcmmYUkfNTY5asnb2lCfk++NzU9n/xFGci+NfRPyXUHfdQN8BC9THnuvaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4BySYBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA75C4CEE7;
-	Mon, 13 Oct 2025 14:57:50 +0000 (UTC)
+	 MIME-Version; b=CYukkCnUFDr2Gypqc1bFXqXDwBoAZkkMdJD4B6cTZ52ZYJhB400PoP2rbVh3G5AAmzS6bjOLC4KQOX7esHJC3Nn/1zJ1xHgLszypJEi3iy1BIHRzImv5WDvXy8xnHKghhd53ZhhVxx3FAqiojYVDAXas0D3mU7or2DVn0xxdmcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOUa90nl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56F9C4CEE7;
+	Mon, 13 Oct 2025 14:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367471;
-	bh=/Xn5P4ZvV4UgEiFYqCht+x244CmA/ep4dSt8YTf1BKY=;
+	s=korg; t=1760366955;
+	bh=vUicEagmKcYIdkX3jiffEN/Cy/IngjMX4REhp1Sj3J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4BySYBDoKybyTjtnzOHPCw0frGmalXkt6WMUIvreyYeLv/6/ShblOw9DV54z4o15
-	 4fQgwIbQnM9aUGOi5PSW4DiGCyDj7FbcF+6w6EkoaHyxQfoyWO+Kg/vgl9+mqFmE+k
-	 FgPzvmmSprMWB7CdLqZgHwkVr5UThcijEZ/a8phE=
+	b=tOUa90nlba6p0XNK9hrhCF13yHxN0xrTzwPFeueFX+Fbaq4MyiwnlsufK7c2op/Ck
+	 h12/OWNyjrvXkXpb5M1zTzK2RQiR8qNLThFj3vfO8R4SzFQbuw2+9V87qq9wgArKg4
+	 N6zB7oSAD9gyiK/Lu814ber4yf8WiJyxr5vdCYlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Da Xue <da@libre.computer>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/196] pinctrl: meson-gxl: add missing i2c_d pinmux
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 6.1 041/196] staging: axis-fifo: fix TX handling on copy_from_user() failure
 Date: Mon, 13 Oct 2025 16:43:34 +0200
-Message-ID: <20251013144316.035042084@linuxfoundation.org>
+Message-ID: <20251013144316.071582630@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Da Xue <da@libre.computer>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit d8c2a9edd181f0cc4a66eec954b3d8f6a1d954a7 ]
+commit 6d07bee10e4bdd043ec7152cbbb9deb27033c9e2 upstream.
 
-Amlogic GXL has 4 I2C attached to gpio-periphs. I2C_D is on GPIOX_10/11.
+If copy_from_user() fails, write() currently returns -EFAULT, but any
+partially written data leaves the TX FIFO in an inconsistent state.
+Subsequent write() calls then fail with "transmit length mismatch"
+errors.
 
-Add the relevant func 3 pinmux per the datasheet for S805X/S905X/S905D.
+Once partial data is written to the hardware FIFO, it cannot be removed
+without a TX reset. Commit c6e8d85fafa7 ("staging: axis-fifo: Remove
+hardware resets for user errors") removed a full FIFO reset for this case,
+which fixed a potential RX data loss, but introduced this TX issue.
 
-Fixes: 0f15f500ff2c ("pinctrl: meson: Add GXL pinctrl definitions")
-Signed-off-by: Da Xue <da@libre.computer>
-Link: https://lore.kernel.org/20250821233335.1707559-1-da@libre.computer
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by introducing a bounce buffer: copy the full packet from
+userspace first, and write to the hardware FIFO only if the copy
+was successful.
+
+Fixes: c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for user errors")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250912101322.1282507-1-ovidiu.panait.oss@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson-gxl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/staging/axis-fifo/axis-fifo.c |   36 +++++++++-------------------------
+ 1 file changed, 10 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-meson-gxl.c b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-index 51408996255bd..e2601e45935e6 100644
---- a/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson-gxl.c
-@@ -187,6 +187,9 @@ static const unsigned int i2c_sda_c_pins[]	= { GPIODV_28 };
- static const unsigned int i2c_sck_c_dv19_pins[] = { GPIODV_19 };
- static const unsigned int i2c_sda_c_dv18_pins[] = { GPIODV_18 };
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -44,7 +44,6 @@
+ #define DRIVER_NAME "axis_fifo"
  
-+static const unsigned int i2c_sck_d_pins[]	= { GPIOX_11 };
-+static const unsigned int i2c_sda_d_pins[]	= { GPIOX_10 };
-+
- static const unsigned int eth_mdio_pins[]	= { GPIOZ_0 };
- static const unsigned int eth_mdc_pins[]	= { GPIOZ_1 };
- static const unsigned int eth_clk_rx_clk_pins[] = { GPIOZ_2 };
-@@ -411,6 +414,8 @@ static struct meson_pmx_group meson_gxl_periphs_groups[] = {
- 	GPIO_GROUP(GPIO_TEST_N),
+ #define READ_BUF_SIZE 128U /* read buffer length in words */
+-#define WRITE_BUF_SIZE 128U /* write buffer length in words */
  
- 	/* Bank X */
-+	GROUP(i2c_sda_d,	5,	5),
-+	GROUP(i2c_sck_d,	5,	4),
- 	GROUP(sdio_d0,		5,	31),
- 	GROUP(sdio_d1,		5,	30),
- 	GROUP(sdio_d2,		5,	29),
-@@ -651,6 +656,10 @@ static const char * const i2c_c_groups[] = {
- 	"i2c_sck_c", "i2c_sda_c", "i2c_sda_c_dv18", "i2c_sck_c_dv19",
- };
+ /* ----------------------------
+  *     IP register offsets
+@@ -473,11 +472,8 @@ static ssize_t axis_fifo_write(struct fi
+ {
+ 	struct axis_fifo *fifo = (struct axis_fifo *)f->private_data;
+ 	unsigned int words_to_write;
+-	unsigned int copied;
+-	unsigned int copy;
+-	unsigned int i;
++	u32 *txbuf;
+ 	int ret;
+-	u32 tmp_buf[WRITE_BUF_SIZE];
  
-+static const char * const i2c_d_groups[] = {
-+	"i2c_sck_d", "i2c_sda_d",
-+};
-+
- static const char * const eth_groups[] = {
- 	"eth_mdio", "eth_mdc", "eth_clk_rx_clk", "eth_rx_dv",
- 	"eth_rxd0", "eth_rxd1", "eth_rxd2", "eth_rxd3",
-@@ -777,6 +786,7 @@ static struct meson_pmx_func meson_gxl_periphs_functions[] = {
- 	FUNCTION(i2c_a),
- 	FUNCTION(i2c_b),
- 	FUNCTION(i2c_c),
-+	FUNCTION(i2c_d),
- 	FUNCTION(eth),
- 	FUNCTION(pwm_a),
- 	FUNCTION(pwm_b),
--- 
-2.51.0
-
+ 	if (len % sizeof(u32)) {
+ 		dev_err(fifo->dt_device,
+@@ -542,32 +538,20 @@ static ssize_t axis_fifo_write(struct fi
+ 		}
+ 	}
+ 
+-	/* write data from an intermediate buffer into the fifo IP, refilling
+-	 * the buffer with userspace data as needed
+-	 */
+-	copied = 0;
+-	while (words_to_write > 0) {
+-		copy = min(words_to_write, WRITE_BUF_SIZE);
+-
+-		if (copy_from_user(tmp_buf, buf + copied * sizeof(u32),
+-				   copy * sizeof(u32))) {
+-			ret = -EFAULT;
+-			goto end_unlock;
+-		}
+-
+-		for (i = 0; i < copy; i++)
+-			iowrite32(tmp_buf[i], fifo->base_addr +
+-				  XLLF_TDFD_OFFSET);
+-
+-		copied += copy;
+-		words_to_write -= copy;
++	txbuf = vmemdup_user(buf, len);
++	if (IS_ERR(txbuf)) {
++		ret = PTR_ERR(txbuf);
++		goto end_unlock;
+ 	}
+ 
+-	ret = copied * sizeof(u32);
++	for (int i = 0; i < words_to_write; ++i)
++		iowrite32(txbuf[i], fifo->base_addr + XLLF_TDFD_OFFSET);
+ 
+ 	/* write packet size to fifo */
+-	iowrite32(ret, fifo->base_addr + XLLF_TLR_OFFSET);
++	iowrite32(len, fifo->base_addr + XLLF_TLR_OFFSET);
+ 
++	ret = len;
++	kvfree(txbuf);
+ end_unlock:
+ 	mutex_unlock(&fifo->write_lock);
+ 
 
 
 
