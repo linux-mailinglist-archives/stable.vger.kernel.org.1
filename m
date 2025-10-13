@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-185382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607F0BD4B91
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0899BD45A6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0C0EA350596
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3233E42F9
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D633148CA;
-	Mon, 13 Oct 2025 15:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BBF30DD07;
+	Mon, 13 Oct 2025 15:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uK7QNUFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIXsHsiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C1730DEDC;
-	Mon, 13 Oct 2025 15:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153C830DD3B;
+	Mon, 13 Oct 2025 15:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370134; cv=none; b=l6K3PIE5uNs8QnmsTp4zujavKdHBsuA4V3vn96nLHFZCedTvX2uJnMPQOEUP+ePiZelGPYOOwnknJZb6iFABG5KxlszWk662+vIhL63CZRsMqTo6uubraWrduepYsApMLwGaIUy/PhLB4MwVADVc7qZSr8bB+v4sJ0dJGyxdpMg=
+	t=1760368452; cv=none; b=m5hrI2+9HS5Fc48lZlOXrl5nEnUDyaFQckmlgBf22jVka0JCakj+44XYXUBccClAugl84pgBRg4bGCO9G6aoaH2bKJ/sMFFToChl4ZUnHXp74A6KGpt2YYcw2XV0HS4f7v7oO3r/4w7ddSAjHOUr5N1WukFpqFEabKURFvd6Xyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370134; c=relaxed/simple;
-	bh=36FZGd4nd2adIXtYQnH4J8z9p2N5OWTOJ9ylGdfO5WQ=;
+	s=arc-20240116; t=1760368452; c=relaxed/simple;
+	bh=4qmZPRBYmK5+GONLJtVkyQDDeW1gUqohvHsNigLUfuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G8Te4+reGtZHXyKWb2wLeIXlbaUG/VyVJpyyIZ8Con3hba8bHS08zYHoJv7B0CaO09CEdOIJoqNgFAimtpQbixTlI8RGkasyDbp+U8jj3ET5zYU+WlaAi7PVcLYX1DGj2ojIJSb6/QQZuGTB0WWNAwZH0PGalOuYrrAX4yBq4VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uK7QNUFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69AFC4CEE7;
-	Mon, 13 Oct 2025 15:42:13 +0000 (UTC)
+	 MIME-Version; b=iMtmTlorhsTbeEBc5D9z+E2ARMKxW0YBWtLdr5YCXptj1/mbncCNeAHzc06xjnEKt9gE4EisaHp0usRRaeuDkgJxZ55o9GUY5b/cGtJHYQ2Y9aLzci+YuDr4m8FqOlA8Oz+f51ZknWRFjwct+1oirSRrJ0Nx3ZJNPV1x/cEALVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIXsHsiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848ADC113D0;
+	Mon, 13 Oct 2025 15:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370134;
-	bh=36FZGd4nd2adIXtYQnH4J8z9p2N5OWTOJ9ylGdfO5WQ=;
+	s=korg; t=1760368451;
+	bh=4qmZPRBYmK5+GONLJtVkyQDDeW1gUqohvHsNigLUfuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uK7QNUFeu0YQ9JHAnElxdHQ4CDwREiT0DaokrPHo+AuRNxTOBD4bVAAowotzWlGtx
-	 PafJIOdQIjLayExYP/ng1pQeAqfFyYROIJiaXzcD+hNURmkKurPy/QE6oXRFxCYkso
-	 T8WFr8K/7yW+tTFFd5owxLBba0VoC6e1cF6KCiww=
+	b=OIXsHsiSkKLK82kW/bd74Fp4+X18FQsEMxe5CjE8TtsRDygMkZnuYx2Obi9r3liwK
+	 +DWEN+kTUXX0oHqxACYCPF9bk4HsS8APv2xiqeBSdTGqu158Dv1cHSm0hSx1FeQOai
+	 9VAaT2BZ3HwFMCxckBdNeDcz2qNZ2f3k0y+b6Yac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessandro Zanni <alessandro.zanni87@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 447/563] iommu/selftest: prevent use of uninitialized variable
+Subject: [PATCH 6.12 166/262] wifi: ath10k: avoid unnecessary wait for service ready message
 Date: Mon, 13 Oct 2025 16:45:08 +0200
-Message-ID: <20251013144427.475036772@linuxfoundation.org>
+Message-ID: <20251013144332.103021042@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Zanni <alessandro.zanni87@gmail.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit 1d235d8494259b588bc3b7d29bc73ce34bf885bc ]
+[ Upstream commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a ]
 
-Fix to avoid the usage of the `res` variable uninitialized in the
-following macro expansions.
+Commit e57b7d62a1b2 ("wifi: ath10k: poll service ready message before
+failing") works around the failure in waiting for the service ready
+message by active polling. Note the polling is triggered after initial
+wait timeout, which means that the wait-till-timeout can not be avoided
+even the message is ready.
 
-It solves the following warning:
-In function ‘iommufd_viommu_vdevice_alloc’,
-  inlined from ‘wrapper_iommufd_viommu_vdevice_alloc’ at iommufd.c:2889:1:
-../kselftest_harness.h:760:12: warning: ‘ret’ may be used uninitialized [-Wmaybe-uninitialized]
-  760 |   if (!(__exp _t __seen)) { \
-      |      ^
-../kselftest_harness.h:513:9: note: in expansion of macro ‘__EXPECT’
-  513 |   __EXPECT(expected, #expected, seen, #seen, ==, 1)
-      |   ^~~~~~~~
-iommufd_utils.h:1057:9: note: in expansion of macro ‘ASSERT_EQ’
- 1057 |   ASSERT_EQ(0, _test_cmd_trigger_vevents(self->fd, dev_id, nvevents))
-      |   ^~~~~~~~~
-iommufd.c:2924:17: note: in expansion of macro ‘test_cmd_trigger_vevents’
- 2924 |   test_cmd_trigger_vevents(dev_id, 3);
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~
+A possible fix is to do polling once before wait as well, however this
+can not handle the race that the message arrives right after polling.
+So the solution is to do periodic polling until timeout.
 
-The issue can be reproduced, building the tests, with the command: make -C
-tools/testing/selftests TARGETS=iommu
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
 
-Link: https://patch.msgid.link/r/20250924171629.50266-1-alessandro.zanni87@gmail.com
-Fixes: 97717a1f283f ("iommufd/selftest: Add IOMMU_VEVENTQ_ALLOC test coverage")
-Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: e57b7d62a1b2 ("wifi: ath10k: poll service ready message before failing")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/all/97a15967-5518-4731-a8ff-d43ff7f437b0@molgen.mpg.de
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250811-ath10k-avoid-unnecessary-wait-v1-1-db2deb87c39b@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/iommu/iommufd_utils.h | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 39 +++++++++++++--------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
-diff --git a/tools/testing/selftests/iommu/iommufd_utils.h b/tools/testing/selftests/iommu/iommufd_utils.h
-index 3c3e08b8c90eb..772ca1db6e597 100644
---- a/tools/testing/selftests/iommu/iommufd_utils.h
-+++ b/tools/testing/selftests/iommu/iommufd_utils.h
-@@ -1042,15 +1042,13 @@ static int _test_cmd_trigger_vevents(int fd, __u32 dev_id, __u32 nvevents)
- 			.dev_id = dev_id,
- 		},
- 	};
--	int ret;
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 09066e6aca402..fdab67a56e438 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1764,33 +1764,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
  
- 	while (nvevents--) {
--		ret = ioctl(fd, _IOMMU_TEST_CMD(IOMMU_TEST_OP_TRIGGER_VEVENT),
--			    &trigger_vevent_cmd);
--		if (ret < 0)
-+		if (!ioctl(fd, _IOMMU_TEST_CMD(IOMMU_TEST_OP_TRIGGER_VEVENT),
-+			    &trigger_vevent_cmd))
- 			return -1;
- 	}
--	return ret;
-+	return 0;
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+ {
++	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
+ 	unsigned long time_left, i;
+ 
+-	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-						WMI_SERVICE_READY_TIMEOUT_HZ);
+-	if (!time_left) {
+-		/* Sometimes the PCI HIF doesn't receive interrupt
+-		 * for the service ready message even if the buffer
+-		 * was completed. PCIe sniffer shows that it's
+-		 * because the corresponding CE ring doesn't fires
+-		 * it. Workaround here by polling CE rings once.
+-		 */
+-		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
+-
++	/* Sometimes the PCI HIF doesn't receive interrupt
++	 * for the service ready message even if the buffer
++	 * was completed. PCIe sniffer shows that it's
++	 * because the corresponding CE ring doesn't fires
++	 * it. Workaround here by polling CE rings. Since
++	 * the message could arrive at any time, continue
++	 * polling until timeout.
++	 */
++	do {
+ 		for (i = 0; i < CE_COUNT; i++)
+ 			ath10k_hif_send_complete_check(ar, i, 1);
+ 
++		/* The 100 ms granularity is a tradeoff considering scheduler
++		 * overhead and response latency
++		 */
+ 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-							WMI_SERVICE_READY_TIMEOUT_HZ);
+-		if (!time_left) {
+-			ath10k_warn(ar, "polling timed out\n");
+-			return -ETIMEDOUT;
+-		}
+-
+-		ath10k_warn(ar, "service ready completion received, continuing normally\n");
+-	}
++							msecs_to_jiffies(100));
++		if (time_left)
++			return 0;
++	} while (time_before(jiffies, timeout));
+ 
+-	return 0;
++	ath10k_warn(ar, "failed to receive service ready completion\n");
++	return -ETIMEDOUT;
  }
  
- #define test_cmd_trigger_vevents(dev_id, nvevents) \
+ int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
 -- 
 2.51.0
 
