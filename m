@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179B6BD3EA7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E6BBD46BA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 124584FCE0A
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2C81D5013DC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3D534BA40;
-	Mon, 13 Oct 2025 14:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE53D30ACF8;
+	Mon, 13 Oct 2025 15:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKFuxSp4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0he5A2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFEB309EE6;
-	Mon, 13 Oct 2025 14:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BADA26F2B6;
+	Mon, 13 Oct 2025 15:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367192; cv=none; b=okDRVIFNmCWxEWIoJA3x3IohO7IrcLnJH/2dUcVKvK5PtaN8nR0hbWkPAIR+zUklcyAZhgwIn55nxJvVTrj+NcQQIShnjHfGnLbW4zS5D6S1GKj/wSlFwJfqlbt3KBtEiLi152XSNpSkHFLFsbzg48FHvf3h2hk0W0OOLMirG7k=
+	t=1760367713; cv=none; b=MIV6zrgRHzxfEE4P4P/Ys8cWpXDvKU4BechOcFlJmhlATgZuZN1Pe/9+K6DvS3822za6RE19V6uetKxiWtzlasTLcBkmM2/kOuID9W3/PDphlncIRqHyItHYSrKw3yQjiFAohUZjRrPMlTOFaDAcJ0YWDnKLxprXIEiojf2nsMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367192; c=relaxed/simple;
-	bh=K67+G9JejPvHyxsqNKTmvxotVNZDzAAfFKlIp6/CB3Y=;
+	s=arc-20240116; t=1760367713; c=relaxed/simple;
+	bh=H8rXO36gjAXKImzST7gMS5/1QR9m8aeaDY/79KdQNVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fi58LGnIc/NGbRgwIPHYy+yf7wb/7MHz8I/s+cM0Nehgk6GPY9ETgpekVKZDejmOhYEUKJN1NI8+M8nM0WJafUqKOnBmBgQWEF9WoxFwL5JfciJtBEcGv7F+8Ng/dGaiofHdRXGK3h/rwpbUhKBAhXl95sVexwlfpBm6clMb09I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKFuxSp4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3DBC4CEE7;
-	Mon, 13 Oct 2025 14:53:11 +0000 (UTC)
+	 MIME-Version; b=KtWHLj+IS2cieptRNa6HCxinJTbM1iH8dsiKly+k99Rj55yDySSX6URLRG7HgPYi0jRiTkbTAGb3wS3WEoGrrqDmin+hfB6qYKnPUpz5ULqPn+3w5UP5brAKk+LnabCXtwSVWX/1Ya6IE5VKc9wLwDh8f2HCCUwLpBiFZ5FEz8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0he5A2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26FBC4CEE7;
+	Mon, 13 Oct 2025 15:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367192;
-	bh=K67+G9JejPvHyxsqNKTmvxotVNZDzAAfFKlIp6/CB3Y=;
+	s=korg; t=1760367713;
+	bh=H8rXO36gjAXKImzST7gMS5/1QR9m8aeaDY/79KdQNVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKFuxSp4n0LO2GBEazJ3gbmMHY/mgJWyhhtbFt2y/UxXAXgILPyM7NKdomE9+n/Es
-	 b6I5ferFe/PxdmHOsdf60wvXJvpE65LfMuARPLC6Mjg2NZ4QpP0fcFdewbfCNJ2iVC
-	 gXirRAuNQOGSS+EtgS15DYT5Z7QShl9QpcILJch0=
+	b=m0he5A2KhohrQkzsPSgobTwTQDz9jYskJYVY00Wogmb7iCJ2KTOFYzwYdgOMG5Nqw
+	 PV2Av9k/AgsgyNM/NW1bhBbkgV/h8fakuX0E/RIHBn8cDV/H+zk/oVITks42AabiTe
+	 IZ2AbiouY+YFDHGiqzk501r+NjcR/mQeaJ7sEmr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Brahmajit Das <listout@listout.xyz>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/196] drm/radeon/r600_cs: clean up of dead code in r600_cs
+Subject: [PATCH 6.6 073/196] hwrng: nomadik - add ARM_AMBA dependency
 Date: Mon, 13 Oct 2025 16:44:24 +0200
-Message-ID: <20251013144317.862871648@linuxfoundation.org>
+Message-ID: <20251013144317.831518127@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 260dcf5b06d519bcf27a5dfdb5c626821a55c170 ]
+[ Upstream commit efaa2d815a0e4d1c06750e587100f6f7f4ee5497 ]
 
-GCC 16 enables -Werror=unused-but-set-variable= which results in build
-error with the following message.
+Compile-testing this driver is only possible when the AMBA bus driver is
+available in the kernel:
 
-drivers/gpu/drm/radeon/r600_cs.c: In function ‘r600_texture_size’:
-drivers/gpu/drm/radeon/r600_cs.c:1411:29: error: variable ‘level’ set but not used [-Werror=unused-but-set-variable=]
- 1411 |         unsigned offset, i, level;
-      |                             ^~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:287: drivers/gpu/drm/radeon/r600_cs.o] Error 1
+x86_64-linux-ld: drivers/char/hw_random/nomadik-rng.o: in function `nmk_rng_remove':
+nomadik-rng.c:(.text+0x67): undefined reference to `amba_release_regions'
+x86_64-linux-ld: drivers/char/hw_random/nomadik-rng.o: in function `nmk_rng_probe':
+nomadik-rng.c:(.text+0xee): undefined reference to `amba_request_regions'
+x86_64-linux-ld: nomadik-rng.c:(.text+0x18d): undefined reference to `amba_release_regions'
 
-level although is set, but in never used in the function
-r600_texture_size. Thus resulting in dead code and this error getting
-triggered.
+The was previously implied by the 'depends on ARCH_NOMADIK', but needs to be
+specified for the COMPILE_TEST case.
 
-Fixes: 60b212f8ddcd ("drm/radeon: overhaul texture checking. (v3)")
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: d5e93b3374e4 ("hwrng: Kconfig - Add helper dependency on COMPILE_TEST")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/hw_random/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
-index 780352f794e91..b63d935391dcd 100644
---- a/drivers/gpu/drm/radeon/r600_cs.c
-+++ b/drivers/gpu/drm/radeon/r600_cs.c
-@@ -1408,7 +1408,7 @@ static void r600_texture_size(unsigned nfaces, unsigned blevel, unsigned llevel,
- 			      unsigned block_align, unsigned height_align, unsigned base_align,
- 			      unsigned *l0_size, unsigned *mipmap_size)
- {
--	unsigned offset, i, level;
-+	unsigned offset, i;
- 	unsigned width, height, depth, size;
- 	unsigned blocksize;
- 	unsigned nbx, nby;
-@@ -1420,7 +1420,7 @@ static void r600_texture_size(unsigned nfaces, unsigned blevel, unsigned llevel,
- 	w0 = r600_mip_minify(w0, 0);
- 	h0 = r600_mip_minify(h0, 0);
- 	d0 = r600_mip_minify(d0, 0);
--	for(i = 0, offset = 0, level = blevel; i < nlevels; i++, level++) {
-+	for (i = 0, offset = 0; i < nlevels; i++) {
- 		width = r600_mip_minify(w0, i);
- 		nbx = r600_fmt_get_nblocksx(format, width);
- 
+diff --git a/drivers/char/hw_random/Kconfig b/drivers/char/hw_random/Kconfig
+index 8de74dcfa18cf..ece2d794174d4 100644
+--- a/drivers/char/hw_random/Kconfig
++++ b/drivers/char/hw_random/Kconfig
+@@ -286,6 +286,7 @@ config HW_RANDOM_INGENIC_TRNG
+ config HW_RANDOM_NOMADIK
+ 	tristate "ST-Ericsson Nomadik Random Number Generator support"
+ 	depends on ARCH_NOMADIK || COMPILE_TEST
++	depends on ARM_AMBA
+ 	default HW_RANDOM
+ 	help
+ 	  This driver provides kernel-side support for the Random Number
 -- 
 2.51.0
 
