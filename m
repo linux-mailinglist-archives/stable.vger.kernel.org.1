@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-184621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814F4BD43A5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C74BD443E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5EFB506EF8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A483188257C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F027F30FC24;
-	Mon, 13 Oct 2025 15:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369E730AD10;
+	Mon, 13 Oct 2025 15:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NTYuhBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17Y6RYod"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8BF30C36D;
-	Mon, 13 Oct 2025 15:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E1826F2B6;
+	Mon, 13 Oct 2025 15:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367963; cv=none; b=cGhC//fAifxMjJqAWHMf3f89qI3SERwJnh36f2jqZZsoo2v97oKlMMp/5jLujGTHeolmhCoYgVJs8CbnkS8SHs8b6k+KzBO7TcogzOsVOLA0V79/SxJLAuQLzjSiKoRjexcCrmEwOvokt/El3lq1zZhpC/3MtenqYu0qdMnX1Ec=
+	t=1760368678; cv=none; b=TP1g+ETFu1rk6OiaMRJX83vOgE7d4EG+2UCHJolL4Zv519xVJPhAVF1YHUWOmXZH2mfDpeb5BkBwP+DZJwhcVcBErccLCFzqiMOjQ3BkosHmkiUqMk3I08PCxlDdF93Z5N1YrcpA3aRiE2pvJ9Ur/Or37ere7InrWot9uYx0eRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367963; c=relaxed/simple;
-	bh=C1mdMzvcXmfSV1i9OYR7bgg1fCRyJb8dTR8tPXTTU34=;
+	s=arc-20240116; t=1760368678; c=relaxed/simple;
+	bh=2bTBrIJJ46mdcT2DGtbFI6VGcKZZyFMkC26EU8pZckI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uhS5dlgZbvvx9MCqOSIrBfJyIxw5d1Jl+LQzdqmVMPAIKz2KkXzDSAk2nDoPsAPFHzj50q91Zs9wGfX014vAE4/k9IQSeMpRuJjIc9LyCWNleEYNveO8zsazN/b/dEHN35Z0jJlRC58mZA5rXBFjYf+iLzeYy+lON3L8OCq9glM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NTYuhBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B726C4CEE7;
-	Mon, 13 Oct 2025 15:06:02 +0000 (UTC)
+	 MIME-Version; b=TIF0432nVrHxYrf2xJaSEhtw7p1mvMLk3Wnvm7hFZb/TBNPXs7XSek8ihv0OXPg3oWJeA6BKwRvetnnEvFfUcsn40GGcofrZSvGJTEePYVqKLNoLu2aIjH8gHOO0nVfAUim99KZ3JNsCKRWAkxH1WTn/OTeFhviiTwapssJbfiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17Y6RYod; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBFEC4CEFE;
+	Mon, 13 Oct 2025 15:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367963;
-	bh=C1mdMzvcXmfSV1i9OYR7bgg1fCRyJb8dTR8tPXTTU34=;
+	s=korg; t=1760368677;
+	bh=2bTBrIJJ46mdcT2DGtbFI6VGcKZZyFMkC26EU8pZckI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2NTYuhBiFtDLJq1cX3lck+H2k50+r3PZPmjP+yj9DfHroAxKKfcSVCoD/4/o2YThW
-	 P02mftYJirGo9Ku05RLl1CYNcQkXpTA/IU6jvHp0h/T1RtwiHqCKcHvVqtHKbQIzOm
-	 rzb2ypEY0dN4WzXQMBFIG4ZdDjAcY+gtbbiyvEVg=
+	b=17Y6RYodPx8avSqcbI9FKzl6g7oCedYNCKVY3QyrV+AAkEL16QzzgXq8a8qU+hH05
+	 hMRw6kae7ptKx9jAJAwuDNDciPEYtHQoFISUJ0vZt6gj3JZFcxN3WaRMd9GMNNzkDC
+	 lcuCxyAyG+yicr/o4sKJWHDkMswHDCUUPl7P3LI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 193/196] net: usb: asix: hold PM usage ref to avoid PM/MDIO + RTNL deadlock
-Date: Mon, 13 Oct 2025 16:46:24 +0200
-Message-ID: <20251013144322.286630799@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 243/262] KVM: SVM: Skip fastpath emulation on VM-Exit if next RIP isnt valid
+Date: Mon, 13 Oct 2025 16:46:25 +0200
+Message-ID: <20251013144334.988919932@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +58,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 3d3c4cd5c62f24bb3cb4511b7a95df707635e00a upstream.
+commit 0910dd7c9ad45a2605c45fd2bf3d1bcac087687c upstream.
 
-Prevent USB runtime PM (autosuspend) for AX88772* in bind.
+Skip the WRMSR and HLT fastpaths in SVM's VM-Exit handler if the next RIP
+isn't valid, e.g. because KVM is running with nrips=false.  SVM must
+decode and emulate to skip the instruction if the CPU doesn't provide the
+next RIP, and getting the instruction bytes to decode requires reading
+guest memory.  Reading guest memory through the emulator can fault, i.e.
+can sleep, which is disallowed since the fastpath handlers run with IRQs
+disabled.
 
-usbnet enables runtime PM (autosuspend) by default, so disabling it via
-the usb_driver flag is ineffective. On AX88772B, autosuspend shows no
-measurable power saving with current driver (no link partner, admin
-up/down). The ~0.453 W -> ~0.248 W drop on v6.1 comes from phylib powering
-the PHY off on admin-down, not from USB autosuspend.
+ BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:106
+ in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 32611, name: qemu
+ preempt_count: 1, expected: 0
+ INFO: lockdep is turned off.
+ irq event stamp: 30580
+ hardirqs last  enabled at (30579): [<ffffffffc08b2527>] vcpu_run+0x1787/0x1db0 [kvm]
+ hardirqs last disabled at (30580): [<ffffffffb4f62e32>] __schedule+0x1e2/0xed0
+ softirqs last  enabled at (30570): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+ softirqs last disabled at (30568): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+ CPU: 298 UID: 0 PID: 32611 Comm: qemu Tainted: G     U              6.16.0-smp--e6c618b51cfe-sleep #782 NONE
+ Tainted: [U]=USER
+ Hardware name: Google Astoria-Turin/astoria, BIOS 0.20241223.2-0 01/17/2025
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x7d/0xb0
+  __might_resched+0x271/0x290
+  __might_fault+0x28/0x80
+  kvm_vcpu_read_guest_page+0x8d/0xc0 [kvm]
+  kvm_fetch_guest_virt+0x92/0xc0 [kvm]
+  __do_insn_fetch_bytes+0xf3/0x1e0 [kvm]
+  x86_decode_insn+0xd1/0x1010 [kvm]
+  x86_emulate_instruction+0x105/0x810 [kvm]
+  __svm_skip_emulated_instruction+0xc4/0x140 [kvm_amd]
+  handle_fastpath_invd+0xc4/0x1a0 [kvm]
+  vcpu_run+0x11a1/0x1db0 [kvm]
+  kvm_arch_vcpu_ioctl_run+0x5cc/0x730 [kvm]
+  kvm_vcpu_ioctl+0x578/0x6a0 [kvm]
+  __se_sys_ioctl+0x6d/0xb0
+  do_syscall_64+0x8a/0x2c0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ RIP: 0033:0x7f479d57a94b
+  </TASK>
 
-The real hazard is that with runtime PM enabled, ndo_open() (under RTNL)
-may synchronously trigger autoresume (usb_autopm_get_interface()) into
-asix_resume() while the USB PM lock is held. Resume paths then invoke
-phylink/phylib and MDIO, which also expect RTNL, leading to possible
-deadlocks or PM lock vs MDIO wake issues.
+Note, this is essentially a reapply of commit 5c30e8101e8d ("KVM: SVM:
+Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"), but with
+different justification (KVM now grabs SRCU when skipping the instruction
+for other reasons).
 
-To avoid this, keep the device runtime-PM active by taking a usage
-reference in ax88772_bind() and dropping it in unbind(). A non-zero PM
-usage count blocks runtime suspend regardless of userspace policy
-(.../power/control - pm_runtime_allow/forbid), making this approach
-robust against sysfs overrides.
-
-Holding a runtime-PM usage ref does not affect system-wide suspend;
-system sleep/resume callbacks continue to run as before.
-
-Fixes: 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC")
-Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
-Closes: https://lore.kernel.org/all/DCGHG5UJT9G3.2K1GHFZ3H87T0@gmail.com
-Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com
+Fixes: b439eb8ab578 ("Revert "KVM: SVM: Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"")
 Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20251005081203.3067982-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20250805190526.1453366-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/asix_devices.c |   29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/x86/kvm/svm/svm.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -625,6 +625,21 @@ static void ax88772_suspend(struct usbne
- 		   asix_read_medium_status(dev, 1));
- }
- 
-+/* Notes on PM callbacks and locking context:
-+ *
-+ * - asix_suspend()/asix_resume() are invoked for both runtime PM and
-+ *   system-wide suspend/resume. For struct usb_driver the ->resume()
-+ *   callback does not receive pm_message_t, so the resume type cannot
-+ *   be distinguished here.
-+ *
-+ * - The MAC driver must hold RTNL when calling phylink interfaces such as
-+ *   phylink_suspend()/resume(). Those calls will also perform MDIO I/O.
-+ *
-+ * - Taking RTNL and doing MDIO from a runtime-PM resume callback (while
-+ *   the USB PM lock is held) is fragile. Since autosuspend brings no
-+ *   measurable power saving here, we block it by holding a PM usage
-+ *   reference in ax88772_bind().
-+ */
- static int asix_suspend(struct usb_interface *intf, pm_message_t message)
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4237,13 +4237,21 @@ static int svm_vcpu_pre_run(struct kvm_v
+ static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
  {
- 	struct usbnet *dev = usb_get_intfdata(intf);
-@@ -919,6 +934,13 @@ static int ax88772_bind(struct usbnet *d
- 	if (ret)
- 		goto initphy_err;
- 
-+	/* Keep this interface runtime-PM active by taking a usage ref.
-+	 * Prevents runtime suspend while bound and avoids resume paths
-+	 * that could deadlock (autoresume under RTNL while USB PM lock
-+	 * is held, phylink/MDIO wants RTNL).
-+	 */
-+	pm_runtime_get_noresume(&intf->dev);
+ 	struct vcpu_svm *svm = to_svm(vcpu);
++	struct vmcb_control_area *control = &svm->vmcb->control;
 +
- 	return 0;
- 
- initphy_err:
-@@ -948,6 +970,8 @@ static void ax88772_unbind(struct usbnet
- 	phylink_destroy(priv->phylink);
- 	ax88772_mdio_unregister(priv);
- 	asix_rx_fixup_common_free(dev->driver_priv);
-+	/* Drop the PM usage ref taken in bind() */
-+	pm_runtime_put(&intf->dev);
- }
- 
- static void ax88178_unbind(struct usbnet *dev, struct usb_interface *intf)
-@@ -1600,6 +1624,11 @@ static struct usb_driver asix_driver = {
- 	.resume =	asix_resume,
- 	.reset_resume =	asix_resume,
- 	.disconnect =	usbnet_disconnect,
-+	/* usbnet enables autosuspend by default (supports_autosuspend=1).
-+	 * We keep runtime-PM active for AX88772* by taking a PM usage
-+	 * reference in ax88772_bind() (pm_runtime_get_noresume()) and
-+	 * dropping it in unbind(), which effectively blocks autosuspend.
++	/*
++	 * Next RIP must be provided as IRQs are disabled, and accessing guest
++	 * memory to decode the instruction might fault, i.e. might sleep.
 +	 */
- 	.supports_autosuspend = 1,
- 	.disable_hub_initiated_lpm = 1,
- };
++	if (!nrips || !control->next_rip)
++		return EXIT_FASTPATH_NONE;
+ 
+ 	if (is_guest_mode(vcpu))
+ 		return EXIT_FASTPATH_NONE;
+ 
+-	switch (svm->vmcb->control.exit_code) {
++	switch (control->exit_code) {
+ 	case SVM_EXIT_MSR:
+-		if (!svm->vmcb->control.exit_info_1)
++		if (!control->exit_info_1)
+ 			break;
+ 		return handle_fastpath_set_msr_irqoff(vcpu);
+ 	case SVM_EXIT_HLT:
 
 
 
