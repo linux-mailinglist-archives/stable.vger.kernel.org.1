@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AAF1BD4594
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB02BD45E2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FFF24236BB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 607EF5007DA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FAE31076B;
-	Mon, 13 Oct 2025 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E4630FF2B;
+	Mon, 13 Oct 2025 15:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THmswBU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3jHUELY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4F9310768;
-	Mon, 13 Oct 2025 15:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8F03101AD;
+	Mon, 13 Oct 2025 15:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368081; cv=none; b=n+dHq3XTJaVhgc2ml/xE84teZ9n5YT2TlANEPDq5gVdTjmHXH+TaJBKJwE3GEg6JEtpZeqMdOXzj4d0ZSzgg0vCpkSDtRCLafodElWPq6E3eGFYHNQzGPl7rEHTEiImdP9CWWUWhtaAwdha35qRx+UjI/I7/3B5z0qOnKDJiq6M=
+	t=1760368001; cv=none; b=qVXmEbmuSgzGBalR2cKM/JCXJ9TTAVnKEmvBJ8kGUIRBPjFEWZbl5ju9zCxMoeqL1KhrSHxiLol2aFLIntzvj7DcDIYsF1h7TAuyAeIstLWB0u/37rHIMnVL9FJvXBSL3nFi6lgJrjNe1oTgFpBkHiUzoAmEHv1v7NLmlyYmGEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368081; c=relaxed/simple;
-	bh=B4kqeZBAOGz8rLMynEnwNsnmrBfqJYrIpkOLI/C3i9Q=;
+	s=arc-20240116; t=1760368001; c=relaxed/simple;
+	bh=56EIppqCiW4JSTYvZcgtig6eu5uBfP/mij7hy5TLKr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8+rkxYJy5PhY/bSKUDPDT/16c/gux8L6Nk5yVyfw9/66hXQs8KYC1bfAcrMpZB0uew3OnOUWMp6aWzhtEDdbZtoTR2chBJMFBWPQ8nWCpcXh9pmFaUHpDP/2gxDx+uI7YgM3WgXWi+fadeU8yots0W9CZlz02B1jGFa6MVeLn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THmswBU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435BCC4CEE7;
-	Mon, 13 Oct 2025 15:08:01 +0000 (UTC)
+	 MIME-Version; b=RAjHqv3N6upaXqNaeZ93aERYr+aYJY7c/vLaFSueHZzAIpWUBfvWOHV94g71aVcsSYaPp6y16lGG1GX/rLqQRpMa7VoZhVsfQbl0hIX6SEELISTugkhJqv/9H03SBXXHUhUtz8yla6LU/D0HmA3U2xI9qQes9VLYASmZrVkgHm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3jHUELY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17121C4CEE7;
+	Mon, 13 Oct 2025 15:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368081;
-	bh=B4kqeZBAOGz8rLMynEnwNsnmrBfqJYrIpkOLI/C3i9Q=;
+	s=korg; t=1760368001;
+	bh=56EIppqCiW4JSTYvZcgtig6eu5uBfP/mij7hy5TLKr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THmswBU2YJOpQIn7ncHNqB6vQe0O7l1SApu8UbtnPw76Lbc7ZBZGQMQ0Nn7RYbybT
-	 8F4W+1Ml24O4DEeMu600lteToVXiCQAyGhpYoW8ysJ8QH0Q9nQ54kM2x5V9So7OeTe
-	 Fcb+l12XOKGJritMhuyvRZ87g2bHDR9sOozNAczA=
+	b=O3jHUELYdx5LNGrzFgkBTG/1rpoRNUckzMlTFzex1nvoi+a3zbZC1YdidYUErFVXT
+	 kAVggDj/uxejheb/kqInmF72jJIUv4tEImyGNYhzfnJunnLVIUgqVSa0XWCX/l/L6L
+	 XrpcwKv6nM5i0gV7ep4LzDtDWOhZXa6jQJ11ECjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Leo Yan <leo.yan@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/262] coresight: trbe: Prevent overflow in PERF_IDX2OFF()
-Date: Mon, 13 Oct 2025 16:42:31 +0200
-Message-ID: <20251013144326.461390327@linuxfoundation.org>
+Subject: [PATCH 6.12 010/262] perf: arm_spe: Prevent overflow in PERF_IDX2OFF()
+Date: Mon, 13 Oct 2025 16:42:32 +0200
+Message-ID: <20251013144326.497607845@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
 References: <20251013144326.116493600@linuxfoundation.org>
@@ -68,33 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 105f56877f2d5f82d71e20b45eb7be7c24c3d908 ]
+[ Upstream commit a29fea30dd93da16652930162b177941abd8c75e ]
 
 Cast nr_pages to unsigned long to avoid overflow when handling large
 AUX buffer sizes (>= 2 GiB).
 
-Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
+Fixes: d5d9696b0380 ("drivers/perf: Add support for ARMv8.2 Statistical Profiling Extension")
 Signed-off-by: Leo Yan <leo.yan@arm.com>
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-trbe.c | 3 ++-
+ drivers/perf/arm_spe_pmu.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
-index 96a32b2136699..492b2612f64e0 100644
---- a/drivers/hwtracing/coresight/coresight-trbe.c
-+++ b/drivers/hwtracing/coresight/coresight-trbe.c
-@@ -22,7 +22,8 @@
- #include "coresight-self-hosted-trace.h"
- #include "coresight-trbe.h"
+diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
+index 3569050f9cf37..abd23430dc033 100644
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -96,7 +96,8 @@ struct arm_spe_pmu {
+ #define to_spe_pmu(p) (container_of(p, struct arm_spe_pmu, pmu))
  
--#define PERF_IDX2OFF(idx, buf) ((idx) % ((buf)->nr_pages << PAGE_SHIFT))
+ /* Convert a free-running index from perf into an SPE buffer offset */
+-#define PERF_IDX2OFF(idx, buf)	((idx) % ((buf)->nr_pages << PAGE_SHIFT))
 +#define PERF_IDX2OFF(idx, buf) \
 +	((idx) % ((unsigned long)(buf)->nr_pages << PAGE_SHIFT))
  
- /*
-  * A padding packet that will help the user space tools
+ /* Keep track of our dynamic hotplug state */
+ static enum cpuhp_state arm_spe_pmu_online;
 -- 
 2.51.0
 
