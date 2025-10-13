@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAE8BD4252
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:04 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075F1BD3F3C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECD4F1882DE9
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:23:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A82A634E0D1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2085430C60B;
-	Mon, 13 Oct 2025 15:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DFA308F03;
+	Mon, 13 Oct 2025 14:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ux0BWdGa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qW/iLWhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22273115A9;
-	Mon, 13 Oct 2025 15:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7221D3081D4;
+	Mon, 13 Oct 2025 14:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368130; cv=none; b=JB+/ug0q6PwZjQ6tpBKUCfZ5p1xOfccrQbhcLcDKSHSicfmYfKBC2q0YhSiRqQRjrjCUrJSSDR+3K9PVQBhRjjUkkDyRBgzq+tq1nqAVEX9KLZmUgJCqA2U25vXS7+u1wsrJvpbRu0pDOn67OJaounj3WrCtkGVsI6YrHTDGVF8=
+	t=1760367491; cv=none; b=H6OqtzYtjA2DHves6edYMk8iuYGTzSmpC0A7U4ptwP+uYIchtmUuMc1a20BzVEwg7myPwejCDIp6zc8Bqd9QJHyqCQPDuiEGQJ60eWPGppgLXcesNx7Zma/ujkpCQXNbnI3u3my0NGTROZocuN39dU0RrbO4duDuFRsxQKRTkcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368130; c=relaxed/simple;
-	bh=mKk5N6+3NKiQiDQjyY/REGL+N/hch1f4VktunBszK0w=;
+	s=arc-20240116; t=1760367491; c=relaxed/simple;
+	bh=4j9BRhMW9uF4Xk5qLOopVfG7Sad98plYXTCUXLGmkxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0ze27yF7sfl37rJplInZy/CjWktY01ewaGwrU18wR3VXokv530cf8hW3hTTjw4FlRVKUYpoZn5nluQlR7Rf7sdR1xc6NWRUuc5bh3sfu3wcTsbPgb3wHWms172OpbFabSPnlih9HIeCbnwF+Rqbh8j0NOnfCel3tD7Yk1/3Cqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ux0BWdGa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB243C4CEE7;
-	Mon, 13 Oct 2025 15:08:49 +0000 (UTC)
+	 MIME-Version; b=rw2FhK7P1x1reFSWkjLiX4zo3r0W5KEraaUq1tbvbzkfuE6LQQHKNP9O1ZMIOMn6m+XGuivyAa3FzOeNVu6rFWW0gMLY8GJ32MAIwzoL80qk6365iCwI6EgoMmp3SnApAYAQlHkS7fJHL9JG/YCDcnPqVAXKXvP07VOsXHGC0nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qW/iLWhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9AEC4CEE7;
+	Mon, 13 Oct 2025 14:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368130;
-	bh=mKk5N6+3NKiQiDQjyY/REGL+N/hch1f4VktunBszK0w=;
+	s=korg; t=1760367491;
+	bh=4j9BRhMW9uF4Xk5qLOopVfG7Sad98plYXTCUXLGmkxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ux0BWdGarnzqssRiRPV1HT8l/JHuxe+sRYobY602j82NTV9rlIpClxVhjPalAhdRa
-	 V5jUbc/3tD/GBAOuxkuQ6PjzoSNdLIE+f6YBh442XrUJa0wHDhDEIna4AhhwPdFrZS
-	 IrzxsfhEBrVvGnWszMPCXdsY22I8jXzRm3jfLQK4=
+	b=qW/iLWhu0KcMkj3Diasrrif0dnqdXi85yHsc+q+M5o7utHLbnhpnUYdudFVvkH9e8
+	 WtMc8lH59Ks8l12vKahZ22g7jnksEzkvMCLYT3zWF83EtFkQvOIS5BqbN8R4vXHQJj
+	 Z1Em81J4IyNwhOIJR1AWmLhi0T7ZRbW7zRrxPVn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Andrew Price <anprice@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/262] PM / devfreq: rockchip-dfi: double count on RK3588
+Subject: [PATCH 6.6 005/196] gfs2: Fix GLF_INVALIDATE_IN_PROGRESS flag clearing in do_xmote
 Date: Mon, 13 Oct 2025 16:43:16 +0200
-Message-ID: <20251013144328.075353339@linuxfoundation.org>
+Message-ID: <20251013144315.384303484@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit f89c7fb83ae95578e355bed1a7aeea5f3ca5a067 ]
+[ Upstream commit 061df28b82af6b22fb5fa529a8f2ef00474ee004 ]
 
-On RK3588 with LPDDR4X memory, the cycle count as returned by
+Commit 865cc3e9cc0b ("gfs2: fix a deadlock on withdraw-during-mount")
+added a statement to do_xmote() to clear the GLF_INVALIDATE_IN_PROGRESS
+flag a second time after it has already been cleared.  Fix that.
 
-  perf stat -a -e rockchip_ddr/cycles/ sleep 1
-
-consistently reads half as much as what the actual DDR frequency is at.
-For a LPDDR4X module running at 2112MHz, I get more like 1056059916
-cycles per second, which is almost bang-on half what it should be. No,
-I'm not mixing up megatransfers and megahertz.
-
-Consulting the downstream driver, this appears to be because the RK3588
-hardware specifically (and RK3528 as well, for future reference) needs a
-multiplier of 2 to get to the correct frequency with everything but
-LPDDR5.
-
-The RK3588's actual memory bandwidth measurements in MB/s are correct
-however, as confirmed with stress-ng --stream. This makes me think the
-access counters are not affected in the same way. This tracks with the
-vendor kernel not multiplying the access counts either.
-
-Solve this by adding a new member to the dfi struct, which each SoC can
-set to whatever they want, but defaults to 1 if left unset by the SoC
-init functions. The event_get_count op can then use this multiplier if
-the cycle count is requested.
-
-The cycle multiplier is not used in rockchip_dfi_get_event because the
-vendor driver doesn't use it there either, and we don't do other actual
-bandwidth unit conversion stuff in there anyway.
-
-Fixes: 481d97ba61e1 ("PM / devfreq: rockchip-dfi: add support for RK3588")
-Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Link: https://lore.kernel.org/lkml/20250530-rk3588-dfi-improvements-v1-1-6e077c243a95@collabora.com/
+Fixes: 865cc3e9cc0b ("gfs2: fix a deadlock on withdraw-during-mount")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andrew Price <anprice@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/event/rockchip-dfi.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/gfs2/glock.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/devfreq/event/rockchip-dfi.c b/drivers/devfreq/event/rockchip-dfi.c
-index e2a1e4463b6f5..712df781436ce 100644
---- a/drivers/devfreq/event/rockchip-dfi.c
-+++ b/drivers/devfreq/event/rockchip-dfi.c
-@@ -116,6 +116,7 @@ struct rockchip_dfi {
- 	int buswidth[DMC_MAX_CHANNELS];
- 	int ddrmon_stride;
- 	bool ddrmon_ctrl_single;
-+	unsigned int count_multiplier;	/* number of data clocks per count */
- };
- 
- static int rockchip_dfi_enable(struct rockchip_dfi *dfi)
-@@ -435,7 +436,7 @@ static u64 rockchip_ddr_perf_event_get_count(struct perf_event *event)
- 
- 	switch (event->attr.config) {
- 	case PERF_EVENT_CYCLES:
--		count = total.c[0].clock_cycles;
-+		count = total.c[0].clock_cycles * dfi->count_multiplier;
- 		break;
- 	case PERF_EVENT_READ_BYTES:
- 		for (i = 0; i < dfi->max_channels; i++)
-@@ -656,6 +657,9 @@ static int rockchip_ddr_perf_init(struct rockchip_dfi *dfi)
- 		break;
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 687670075d225..c4bc86c3535ba 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -811,8 +811,6 @@ __acquires(&gl->gl_lockref.lock)
+ 			clear_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
+ 			gfs2_glock_queue_work(gl, GL_GLOCK_DFT_HOLD);
+ 			return;
+-		} else {
+-			clear_bit(GLF_INVALIDATE_IN_PROGRESS, &gl->gl_flags);
+ 		}
  	}
  
-+	if (!dfi->count_multiplier)
-+		dfi->count_multiplier = 1;
-+
- 	ret = perf_pmu_register(pmu, "rockchip_ddr", -1);
- 	if (ret)
- 		return ret;
-@@ -752,6 +756,7 @@ static int rk3588_dfi_init(struct rockchip_dfi *dfi)
- 	dfi->max_channels = 4;
- 
- 	dfi->ddrmon_stride = 0x4000;
-+	dfi->count_multiplier = 2;
- 
- 	return 0;
- };
 -- 
 2.51.0
 
