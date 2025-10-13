@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-184420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02114BD4399
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:34 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 405E1BD483B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1123F3B3D55
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89DAC500F7B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C403081B9;
-	Mon, 13 Oct 2025 14:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBD230FF2E;
+	Mon, 13 Oct 2025 15:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcxCWnYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vG8wkjzt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A5730DD1D;
-	Mon, 13 Oct 2025 14:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2A930BF7D;
+	Mon, 13 Oct 2025 15:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367386; cv=none; b=mzTHkpBg2RSMlwlzdoduJ9CR7WzHx89hdez9AJ7zZO/vdvebcvgfK89ttSXpHaaiQ7p6ILqm8eURfZE/wSJT3xvMZzlrBV65haP34vFvhx/mjF1xc2Ld2pPl+7BwLw4ufmB9dDTT+Zx9TEHB+rTEm4/w0G+KLkViDB+K4KC+z2U=
+	t=1760367995; cv=none; b=HG0wH+L1sZG0kN6hO6c8Der+8jgsfNdeBblae69Fy+Kizt7gxzLqYHfuWqddPck7nf0W3cZy4l4PXz/ARfIfGJ/W2/WX7EoUSCAV6lm46RPFCR5bO2dn8JFGsIFpsZsCFxyc8id0uJk232fsilyDPW+B1kw2n09P2v3Nk6chtos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367386; c=relaxed/simple;
-	bh=Vm4IuV33O9Xb2xveG7BmLChEFI40tphhmArYYN4F7K8=;
+	s=arc-20240116; t=1760367995; c=relaxed/simple;
+	bh=RuP//OzXCBgB/hVa5fVydrygztCQA9vQQjTG5D0FI2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gn10ZS9u+UHiSYuTHANfIz8ZXbycckO6jOgvGER8bjxIJ75E2FYobVfBo/FCz2IYK0f0dFVtCIME65TYoWCCnYFA92reFpfIiGMJK81p+HqRv1gGGqboXVZsCgPNsg7qYJHDkAncrltwQHarJwjUzs1+2MwWOWssIaVM8Yu2QOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcxCWnYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDF2C113D0;
-	Mon, 13 Oct 2025 14:56:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nMIj0RS50znHxJuqmcz08F/D92pYW5du3h3zU+ovRBxirwXZeUBTX6dAhfBxX8Nf1HeokXRBtWEtKFqcsGhkzivrdTPgvDiPL40em1ecuL8+CG3PRYvWeeYQi6Pusl1huuybXSndloPutMVRC/qrtEPOeW5ftrWz07PDCGzM824=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vG8wkjzt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB8EC4CEE7;
+	Mon, 13 Oct 2025 15:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367386;
-	bh=Vm4IuV33O9Xb2xveG7BmLChEFI40tphhmArYYN4F7K8=;
+	s=korg; t=1760367995;
+	bh=RuP//OzXCBgB/hVa5fVydrygztCQA9vQQjTG5D0FI2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bcxCWnYjA3/lWwazOdw+M9g/YYyHCFrOjHId15o4m8TGIpiSt2AM4ZzhSbuoYmMLN
-	 XyuasUIVQKHL5+sbhEa6uQk41YGyo8q5SE5L6vRqxZH32Ewt7cP2lrXf7qqCu/Tab6
-	 zhm1iiTxniXnFAnG2db3u5FqfpJTVhct73vAy75g=
+	b=vG8wkjztY8W9YbOAmq6LymHwz2Q1m3rAG2UVK1l549c7uxFBG47wY8fzU3ys6TdQd
+	 evUBRRnylxovQqn5UYUdrk4N5EUGGQbu1aF6ptidOJjLvyunL6S5rzvpoqnJQLeZef
+	 xda3vWr0P1MStNnWmiI6eru3NiTADGdOXiOxwjMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 189/196] pinctrl: check the return value of pinmux_ops::get_function_name()
-Date: Mon, 13 Oct 2025 16:46:02 +0200
-Message-ID: <20251013144321.528852252@linuxfoundation.org>
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 172/196] ASoC: SOF: ipc3-topology: Fix multi-core and static pipelines tear down
+Date: Mon, 13 Oct 2025 16:46:03 +0200
+Message-ID: <20251013144321.531522015@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 
-commit 4002ee98c022d671ecc1e4a84029e9ae7d8a5603 upstream.
+commit 59abe7bc7e7c70e9066b3e46874d1b7e6a13de14 upstream.
 
-While the API contract in docs doesn't specify it explicitly, the
-generic implementation of the get_function_name() callback from struct
-pinmux_ops - pinmux_generic_get_function_name() - can fail and return
-NULL. This is already checked in pinmux_check_ops() so add a similar
-check in pinmux_func_name_to_selector() instead of passing the returned
-pointer right down to strcmp() where the NULL can get dereferenced. This
-is normal operation when adding new pinfunctions.
+In the case of static pipelines, freeing the widgets in the pipelines
+that were not suspended after freeing the scheduler widgets results in
+errors because the secondary cores are powered off when the scheduler
+widgets are freed. Fix this by tearing down the leftover pipelines before
+powering off the secondary cores.
 
 Cc: stable@vger.kernel.org
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: d7332c4a4f1a ("ASoC: SOF: ipc3-topology: Fix pipeline tear down logic")
+Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20251002073125.32471-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinmux.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/ipc3-topology.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/pinctrl/pinmux.c
-+++ b/drivers/pinctrl/pinmux.c
-@@ -328,7 +328,7 @@ static int pinmux_func_name_to_selector(
- 	while (selector < nfuncs) {
- 		const char *fname = ops->get_function_name(pctldev, selector);
+--- a/sound/soc/sof/ipc3-topology.c
++++ b/sound/soc/sof/ipc3-topology.c
+@@ -2394,11 +2394,6 @@ static int sof_ipc3_tear_down_all_pipeli
+ 	if (ret < 0)
+ 		return ret;
  
--		if (!strcmp(function, fname))
-+		if (fname && !strcmp(function, fname))
- 			return selector;
+-	/* free all the scheduler widgets now */
+-	ret = sof_ipc3_free_widgets_in_list(sdev, true, &dyn_widgets, verify);
+-	if (ret < 0)
+-		return ret;
+-
+ 	/*
+ 	 * Tear down all pipelines associated with PCMs that did not get suspended
+ 	 * and unset the prepare flag so that they can be set up again during resume.
+@@ -2414,6 +2409,11 @@ static int sof_ipc3_tear_down_all_pipeli
+ 		}
+ 	}
  
- 		selector++;
++	/* free all the scheduler widgets now. This will also power down the secondary cores */
++	ret = sof_ipc3_free_widgets_in_list(sdev, true, &dyn_widgets, verify);
++	if (ret < 0)
++		return ret;
++
+ 	list_for_each_entry(sroute, &sdev->route_list, list)
+ 		sroute->setup = false;
+ 
 
 
 
