@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-184543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D48BD46F6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2AEBD3D98
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8E66B505774
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9023418A1CF5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803CD30B510;
-	Mon, 13 Oct 2025 15:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE7C30FC01;
+	Mon, 13 Oct 2025 14:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgUL3X2a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMHKlKSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE37299948;
-	Mon, 13 Oct 2025 15:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC79B30FC24;
+	Mon, 13 Oct 2025 14:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367736; cv=none; b=Ejfa5g6DzGPCONpJvQ+Rg+38fCXUQavwdruMTXtojinr4wFJv9y0GbyaHMmhTTpX0pMqFy/rLD2Q/it3RH2U94hHTV2OlWQqKUWeLH0WHps0a3PtnSCd0wtOuTiqxlkd92FwL0ro9hbTPPe4cyqDhXEBwSCKVooUHuquqyh9DII=
+	t=1760367219; cv=none; b=sJ5YDHaHLFxZ4bFW84+7lL4oci6STvPopVn/xg5X0lawCP20MPLff+MGKhz43iRPyG577gikWe0bmKZTDy2NfxT94FRR9FvFCmmqIRN/OPusMdYBPMoYD2ZijLqFL0EcpYivd/3Tfl5EuVe+nq6UCuX/p34RshZnvUxnJglJLgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367736; c=relaxed/simple;
-	bh=o76ZkAKGjwwOich42hTAb5srdrxbscIygpBr6LFSNuY=;
+	s=arc-20240116; t=1760367219; c=relaxed/simple;
+	bh=2n7k2Twaw1LjTN3UDyvhHBa/Yt2Cpsh7sjklLR8FvQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hWLBzw5x2qp2jf/hR6Er440QAYq5osDqFvcHzvWun3DPC4sMPqE5xuSdvuiMLjFMyjzjwM2s/k62PqVJ8vhFs7fjhULTcxX4TKyMr4BJy30gRXltTxmHDA4n1bloCybnnFnVBgNmo86wb06HCbg+ZaViWKE2YzJ8LVBHhdqUkT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgUL3X2a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77D2C4CEE7;
-	Mon, 13 Oct 2025 15:02:15 +0000 (UTC)
+	 MIME-Version; b=JKZANFDXe9gK4Xy5FZD78P4tQ70ByyE0mY9maBhUj2ozs2vvQa00I2COOOSNKqM4SMeQhQmC+GVM//cmU2AlYOQYur8e8m2Jm/6NWkYOAB9yzpUwrWVQMxKYLwSQvq12eMNm+hIy60dnGnPlamI9DWnHEUnS9ySxeeMsieRLNxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMHKlKSh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499E2C19421;
+	Mon, 13 Oct 2025 14:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367736;
-	bh=o76ZkAKGjwwOich42hTAb5srdrxbscIygpBr6LFSNuY=;
+	s=korg; t=1760367218;
+	bh=2n7k2Twaw1LjTN3UDyvhHBa/Yt2Cpsh7sjklLR8FvQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgUL3X2ak08H0eY8bG9xsHRV22oWyqYcufIw4ROUgTfQbPQvdv2E9E+BKwpb2PWh/
-	 8aizw21RJs4guavpd1Pi1EkwDjX75A2i8+nJrum8mebDEaShzYn/1yZllT5WlOmKjB
-	 OcyDynKKB+iafI1+7qX1OHgORMvH67O9eLSFpGLc=
+	b=aMHKlKShByveW36SAdbWXXkJofanlt1Ppu7AwfMJctcVJOghqbcwkaMwdyBAbV2j+
+	 HLcbKTtKZE0D0qbWIvGIEFzs/AbQ0NGHRVp1o2C+2AOZrcLQ0Hfq/0YWHi+2BoJZAg
+	 26WhcGGgfXOgC1IdclBOUrQ3q4II+g9seMeISHTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+90266696fe5daacebd35@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Parav Pandit <parav@nvidia.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/196] f2fs: fix to truncate first page in error path of f2fs_truncate()
+Subject: [PATCH 6.1 134/196] RDMA/core: Resolve MAC of next-hop device without ARP support
 Date: Mon, 13 Oct 2025 16:45:07 +0200
-Message-ID: <20251013144319.506808672@linuxfoundation.org>
+Message-ID: <20251013144319.541754818@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Parav Pandit <parav@nvidia.com>
 
-[ Upstream commit 9251a9e6e871cb03c4714a18efa8f5d4a8818450 ]
+[ Upstream commit 200651b9b8aadfbbec852f0e5d042d9abe75e2ab ]
 
-syzbot reports a bug as below:
+Currently, if the next-hop netdevice does not support ARP resolution,
+the destination MAC address is silently set to zero without reporting
+an error. This leads to incorrect behavior and may result in packet
+transmission failures.
 
-loop0: detected capacity change from 0 to 40427
-F2FS-fs (loop0): Wrong SSA boundary, start(3584) end(4096) blocks(3072)
-F2FS-fs (loop0): Can't find valid F2FS filesystem in 1th superblock
-F2FS-fs (loop0): invalid crc value
-F2FS-fs (loop0): f2fs_convert_inline_folio: corrupted inline inode ino=3, i_addr[0]:0x1601, run fsck to fix.
-------------[ cut here ]------------
-kernel BUG at fs/inode.c:753!
-RIP: 0010:clear_inode+0x169/0x190 fs/inode.c:753
-Call Trace:
- <TASK>
- evict+0x504/0x9c0 fs/inode.c:810
- f2fs_fill_super+0x5612/0x6fa0 fs/f2fs/super.c:5047
- get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1692
- vfs_get_tree+0x8f/0x2b0 fs/super.c:1815
- do_new_mount+0x2a2/0x9e0 fs/namespace.c:3808
- do_mount fs/namespace.c:4136 [inline]
- __do_sys_mount fs/namespace.c:4347 [inline]
- __se_sys_mount+0x317/0x410 fs/namespace.c:4324
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Fix this by deferring MAC resolution to the IP stack via neighbour
+lookup, allowing proper resolution or error reporting as appropriate.
 
-During f2fs_evict_inode(), clear_inode() detects that we missed to truncate
-all page cache before destorying inode, that is because in below path, we
-will create page #0 in cache, but missed to drop it in error path, let's fix
-it.
-
-- evict
- - f2fs_evict_inode
-  - f2fs_truncate
-   - f2fs_convert_inline_inode
-    - f2fs_grab_cache_folio
-    : create page #0 in cache
-    - f2fs_convert_inline_folio
-    : sanity check failed, return -EFSCORRUPTED
-  - clear_inode detects that inode->i_data.nrpages is not zero
-
-Fixes: 92dffd01790a ("f2fs: convert inline_data when i_size becomes large")
-Reported-by: syzbot+90266696fe5daacebd35@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/68c09802.050a0220.3c6139.000e.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 7025fcd36bd6 ("IB: address translation to map IP toIB addresses (GIDs)")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20250916111103.84069-3-edwards@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/addr.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 031015823acb2..20d102009f715 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -844,8 +844,16 @@ int f2fs_truncate(struct inode *inode)
- 	/* we should check inline_data size */
- 	if (!f2fs_may_inline_data(inode)) {
- 		err = f2fs_convert_inline_inode(inode);
--		if (err)
-+		if (err) {
-+			/*
-+			 * Always truncate page #0 to avoid page cache
-+			 * leak in evict() path.
-+			 */
-+			truncate_inode_pages_range(inode->i_mapping,
-+					F2FS_BLK_TO_BYTES(0),
-+					F2FS_BLK_END_BYTES(0));
- 			return err;
-+		}
- 	}
+diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
+index f253295795f0a..cdb3b99e057cf 100644
+--- a/drivers/infiniband/core/addr.c
++++ b/drivers/infiniband/core/addr.c
+@@ -460,14 +460,10 @@ static int addr_resolve_neigh(const struct dst_entry *dst,
+ {
+ 	int ret = 0;
  
- 	err = f2fs_truncate_blocks(inode, i_size_read(inode), true);
+-	if (ndev_flags & IFF_LOOPBACK) {
++	if (ndev_flags & IFF_LOOPBACK)
+ 		memcpy(addr->dst_dev_addr, addr->src_dev_addr, MAX_ADDR_LEN);
+-	} else {
+-		if (!(ndev_flags & IFF_NOARP)) {
+-			/* If the device doesn't do ARP internally */
+-			ret = fetch_ha(dst, addr, dst_in, seq);
+-		}
+-	}
++	else
++		ret = fetch_ha(dst, addr, dst_in, seq);
+ 	return ret;
+ }
+ 
 -- 
 2.51.0
 
