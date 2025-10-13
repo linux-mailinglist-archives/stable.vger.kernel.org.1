@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-184868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC7BBD48C2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:51:16 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67598BD4B97
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C55D5059F4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:30:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1377A3505FA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593FF30AAD3;
-	Mon, 13 Oct 2025 15:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066493148CF;
+	Mon, 13 Oct 2025 15:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu38Ai9j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKx/Jkr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B3D30AAC5;
-	Mon, 13 Oct 2025 15:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EC330E0C7;
+	Mon, 13 Oct 2025 15:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368667; cv=none; b=gASPkJuz5MWIitQR6Nr+QLeXzWCqpF5bt410qd30hIucihU9vdZ5dOmJO4u5jFk6pTsD2A7Ce0LIjvc/NHqXYcQKhoKuD33tBCSpuFXMCy9LGIkCgIJG7YPScmH4cOebRW4OMNShQyGjOWGBTUR+eUME9y4Zlhdj79NLGiH7Mw0=
+	t=1760370142; cv=none; b=LrOSsOEtNtuYXKBJPnY1lUSUMTC2+WJU80JbRNMwSQEWWWy4r6er5ARG7RMclw7G4qeQjrbkdDlSdNvw9mpHXOZkBSy+gDj4AqhPRkvGZCfV8zohEdQvQ7fYWf3IzC/Pz0qvI2izjs1BEjEocY4xbB172GZ3j7BMNDgUdDW7U+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368667; c=relaxed/simple;
-	bh=ADvhm+VkO019plS7ru1m4pHLxOxECyX/NZld75surPo=;
+	s=arc-20240116; t=1760370142; c=relaxed/simple;
+	bh=+o+0bQUUOCbSylMWvL/EcsZJsNKbzm12344QEbja4Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6T6KGDZsE+C4Vrevl8ooRW6YPDGVviF3oW2P1vQuO36ihSxpX9p1w8v+JkG9KwvVcBbhXUaD/WuDIuV7gx4gvy99WncDelf84hxLcTirSD1Yfd9kvH//6xkfIoSoFr6z7F7Zza/xG5ZldxZO0+poDxlUdW5U4eYPrVIVLNKdwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu38Ai9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F71BC4CEE7;
-	Mon, 13 Oct 2025 15:17:46 +0000 (UTC)
+	 MIME-Version; b=ITvkVgmG17/h2S9fB21FxAp86jslLI3+IiJPyzL4yWtaK0q59Zs3z2RJL3pB8VDM6m1BG87JTv/L5EjF016SUn7DPzPwvDM7nuN6uApAOUetJtp91ZJhi4GibBJO3qb/Mk8mcQMtcSej3yN8u99+7Z5o/qpcUrn6dCEXSFP7UPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKx/Jkr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F7CC4CEE7;
+	Mon, 13 Oct 2025 15:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368666;
-	bh=ADvhm+VkO019plS7ru1m4pHLxOxECyX/NZld75surPo=;
+	s=korg; t=1760370142;
+	bh=+o+0bQUUOCbSylMWvL/EcsZJsNKbzm12344QEbja4Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tu38Ai9jDtt/KaOue5vw/RFFVCKzgm0xf/5IZI4XG3yd3CVxk0Oqhb7zc5kRuxyGT
-	 nT2UPjl1WIFjeEkGq7AZI1f8ulQJJtvWJQeceCCgXffHje33z+hy7seUoW+Yc+v22l
-	 vfTBq58DwQYdp7A/qYjokVkhQ6UK90usfkOFTVcc=
+	b=JKx/Jkr+TB9wB/wxWEFgJ7Gg6VOzBbYr5WRSw14Ba5kVtOFNZb5TNEfokGme908ZY
+	 +rDPpYSWBiImrjyG6nkMq+Abq8ddewWihu0SJtJSU0J5uMtQbr4BkTbeYx+X9h47Ve
+	 PjmkR1RC5wjxbL8RuzcSaeFl38IyMFGt1ac3QVGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 213/262] idpf: fix mismatched free function for dma_alloc_coherent
+	Steven Steve Kendall <skend@chromium.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.17 494/563] ALSA: hda/hdmi: Add pin fix for HP ProDesk model
 Date: Mon, 13 Oct 2025 16:45:55 +0200
-Message-ID: <20251013144333.916024732@linuxfoundation.org>
+Message-ID: <20251013144429.190471407@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Steven 'Steve' Kendall <skend@chromium.org>
 
-[ Upstream commit b9bd25f47eb79c9eb275e3d9ac3983dc88577dd4 ]
+commit 74662f9f92b67c0ca55139c5aa392da0f0a26c08 upstream.
 
-The mailbox receive path allocates coherent DMA memory with
-dma_alloc_coherent(), but frees it with dmam_free_coherent().
-This is incorrect since dmam_free_coherent() is only valid for
-buffers allocated with dmam_alloc_coherent().
+The HP ProDesk 400 (SSID 103c:83f3) also needs a quirk for
+enabling HDMI outputs.  This patch adds the required quirk
+entry.
 
-Fix the mismatch by using dma_free_coherent() instead of
-dmam_free_coherent
-
-Fixes: e54232da1238 ("idpf: refactor idpf_recv_mb_msg")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Link: https://patch.msgid.link/20250925180212.415093-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Steven 'Steve' Kendall <skend@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/hda/codecs/hdmi/hdmi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index f27a8cf3816db..d1f374da00981 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -727,9 +727,9 @@ int idpf_recv_mb_msg(struct idpf_adapter *adapter)
- 		/* If post failed clear the only buffer we supplied */
- 		if (post_err) {
- 			if (dma_mem)
--				dmam_free_coherent(&adapter->pdev->dev,
--						   dma_mem->size, dma_mem->va,
--						   dma_mem->pa);
-+				dma_free_coherent(&adapter->pdev->dev,
-+						  dma_mem->size, dma_mem->va,
-+						  dma_mem->pa);
- 			break;
- 		}
- 
--- 
-2.51.0
-
+--- a/sound/hda/codecs/hdmi/hdmi.c
++++ b/sound/hda/codecs/hdmi/hdmi.c
+@@ -1583,6 +1583,7 @@ static const struct snd_pci_quirk force_
+ 	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x845a, "HP EliteDesk 800 G4 DM 65W", 1),
++	SND_PCI_QUIRK(0x103c, 0x83f3, "HP ProDesk 400", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
 
 
 
