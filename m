@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-184967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA11BD4DD3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:15:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C4EBD4F2A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 25EDA5449AE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:35:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E1E535406F2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A07330FC09;
-	Mon, 13 Oct 2025 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A9E30FC0E;
+	Mon, 13 Oct 2025 15:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yfsicj6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfKA5iXP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3725230FC05;
-	Mon, 13 Oct 2025 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA47630FC0C;
+	Mon, 13 Oct 2025 15:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368953; cv=none; b=RjsbOS+NlNs9C9qnzBaHw7OADv748Jprp8P/Wpeujfvr0rAuWsURT6JfRP/2D+jFRElyWNfV2qZ6shaYsOIBBdtRqWdgTIddSzzO3ifsP9ggiUhEhJZ9YGnKmP8GS2Xe9sM4ELEZm+2raZUYCkmfa86vUv11BkO43YAEGkG1WYQ=
+	t=1760368959; cv=none; b=n5eMx8Etol0xyshu2MGRPk3sV/fBcEOtu5qWwX62TctzPBwSjxbTX/lOJLMcxaKlXwuw0w8QdELFca5CJFhXikK+VEZH+hjI2CUY7dXJivRgEJ/ICgCk79/nxOtCiP4oC/IfUwd3QCNfCNq49z8uHNjcwcs9f9d8Mux96o0PLIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368953; c=relaxed/simple;
-	bh=w0iMV6mPl27s2KKJD7rRLhtfVhunM+2PnAaFYXLOZRE=;
+	s=arc-20240116; t=1760368959; c=relaxed/simple;
+	bh=zMYobK/ABnSR1/oHInTfxeAlOG2JT2sWWD37e+Qj48k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJTx4aEOznlrO5KiteemPMUoAu9IH0yA8cOxQCq35tdfrLVteTKFgxk++rxrUxOQmzoq4MOqyD1bZL0DqhWTdwp8qQzsm0tFN+tlrlUmzng+G37GZcrQPV1eY6sxrMiOnuL+R0RxwDBdH1nPI6szZMGhPb0tZ1Ms9+Hk0s0z1fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yfsicj6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3852C4CEE7;
-	Mon, 13 Oct 2025 15:22:32 +0000 (UTC)
+	 MIME-Version; b=KOHiQE62mK7o2AwTIFBdkVL8xvUqFjnltIyz8dVsmyOeOdltk/ZYRRLvIAEhpXfeWIdoruNNcVcJQkOQ5t2gcoN4SHlHeR0zeoHM8TvRKbCXlFBuATVjy3DKYIsruRYjMaYhI8b1pYRi0qs4nssQGgT1gP5/C0MtdQLC9sSAIN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfKA5iXP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A12AC4CEE7;
+	Mon, 13 Oct 2025 15:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368953;
-	bh=w0iMV6mPl27s2KKJD7rRLhtfVhunM+2PnAaFYXLOZRE=;
+	s=korg; t=1760368958;
+	bh=zMYobK/ABnSR1/oHInTfxeAlOG2JT2sWWD37e+Qj48k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yfsicj6N4sQ5CLSuebQFPDUNuv0KOYfL8ewMsBz92DZb7TieHmw+huLS/V9yTZMxy
-	 NiV/IXlFYf5+sRLyJJPjfO3xOiUt0qGmJeWHk8blFJQoTjqwA6MNwcAcqhkKRmr+WI
-	 to68qFW8m9z3BVklqTE9IYocjnfAM5FN7GFrQVnY=
+	b=QfKA5iXPRBl8tHcLNQfRqQyh9TSsvlHOTauUK4D6TtqPiP5VZwxZ8XgKzX31+uK6y
+	 xBH2yr1g8BGcmBNTf5i1fllaBtsi/8jJ0P+YzfeHGDctvbJlg45/Gcba1VnfsgZUrq
+	 tKhazIhkEhTUXK9mxstkd0KFPIQazUyrF1S+DXP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Gompa <neal@gompa.dev>,
-	Sven Peter <sven@kernel.org>,
-	Janne Grunau <j@jannau.net>,
+	Waiman Long <longman@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 076/563] arm64: dts: apple: t8103-j457: Fix PCIe ethernet iommu-map
-Date: Mon, 13 Oct 2025 16:38:57 +0200
-Message-ID: <20251013144414.046045227@linuxfoundation.org>
+Subject: [PATCH 6.17 078/563] selftests/futex: Fix some futex_numa_mpol subtests
+Date: Mon, 13 Oct 2025 16:38:59 +0200
+Message-ID: <20251013144414.116532219@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -67,63 +67,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 6e08cdd604edcec2c277af17c7d36caf827057ff ]
+[ Upstream commit d8e2f919997b14665e4509ef9a5278f291598d6e ]
 
-PCIe `port01` of t8103-j457 (iMac, M1, 2 USB-C ports, 2021) is unused
-and disabled. Linux' PCI subsystem assigns the ethernet nic from
-`port02` to bus 02. This results into assigning `pcie0_dart_1` from the
-disabled port as iommu. The `pcie0_dart_1` instance is disabled and
-probably fused off (it is on the M2 Pro Mac mini which has a disabled
-PCIe port as well).
-Without iommu the ethernet nic is not expected work.
-Adjusts the "bus-range" and the PCIe devices "reg" property to PCI
-subsystem's bus number.
+The "Memory out of range" subtest of futex_numa_mpol assumes that memory
+access outside of the mmap'ed area is invalid. That may not be the case
+depending on the actual memory layout of the test application. When that
+subtest was run on an x86-64 system with latest upstream kernel, the test
+passed as an error was returned from futex_wake(). On another PowerPC system,
+the same subtest failed because futex_wake() returned 0.
 
-Fixes: 7c77ab91b33d ("arm64: dts: apple: Add missing M1 (t8103) devices")
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Reviewed-by: Sven Peter <sven@kernel.org>
-Signed-off-by: Janne Grunau <j@jannau.net>
-Link: https://lore.kernel.org/r/20250823-apple-dt-sync-6-17-v2-1-6dc0daeb4786@jannau.net
-Signed-off-by: Sven Peter <sven@kernel.org>
+  Bail out! futex2_wake(64, 0x86) should fail, but didn't
+
+Looking further into the passed subtest on x86-64, it was found that an
+-EINVAL was returned instead of -EFAULT. The -EINVAL error was returned
+because the node value test with FLAGS_NUMA set failed with a node value
+of 0x7f7f. IOW, the futex memory was accessible and futex_wake() failed
+because the supposed node number wasn't valid. If that memory location
+happens to have a very small value (e.g. 0), the test will pass and no
+error will be returned.
+
+Since this subtest is non-deterministic, drop it unless a guard page beyond
+the mmap region is explicitly set.
+
+The other problematic test is the "Memory too small" test. The futex_wake()
+function returns the -EINVAL error code because the given futex address isn't
+8-byte aligned, not because only 4 of the 8 bytes are valid and the other
+4 bytes are not. So change the name of this subtest to "Mis-aligned futex" to
+reflect the reality.
+
+  [ bp: Massage commit message. ]
+
+Fixes: 3163369407ba ("selftests/futex: Add futex_numa_mpol")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/20250827130011.677600-3-bigeasy@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/apple/t8103-j457.dts | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ tools/testing/selftests/futex/functional/futex_numa_mpol.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/apple/t8103-j457.dts b/arch/arm64/boot/dts/apple/t8103-j457.dts
-index 152f95fd49a21..7089ccf3ce556 100644
---- a/arch/arm64/boot/dts/apple/t8103-j457.dts
-+++ b/arch/arm64/boot/dts/apple/t8103-j457.dts
-@@ -21,6 +21,14 @@ aliases {
- 	};
- };
+diff --git a/tools/testing/selftests/futex/functional/futex_numa_mpol.c b/tools/testing/selftests/futex/functional/futex_numa_mpol.c
+index a9ecfb2d3932a..802c15c821906 100644
+--- a/tools/testing/selftests/futex/functional/futex_numa_mpol.c
++++ b/tools/testing/selftests/futex/functional/futex_numa_mpol.c
+@@ -182,12 +182,10 @@ int main(int argc, char *argv[])
+ 	if (futex_numa->numa == FUTEX_NO_NODE)
+ 		ksft_exit_fail_msg("NUMA node is left uninitialized\n");
  
-+/*
-+ * Adjust pcie0's iommu-map to account for the disabled port01.
-+ */
-+&pcie0 {
-+	iommu-map = <0x100 &pcie0_dart_0 1 1>,
-+			<0x200 &pcie0_dart_2 1 1>;
-+};
-+
- &bluetooth0 {
- 	brcm,board-type = "apple,santorini";
- };
-@@ -36,10 +44,10 @@ &wifi0 {
-  */
+-	ksft_print_msg("Memory too small\n");
++	/* FUTEX2_NUMA futex must be 8-byte aligned */
++	ksft_print_msg("Mis-aligned futex\n");
+ 	test_futex(futex_ptr + mem_size - 4, 1);
  
- &port02 {
--	bus-range = <3 3>;
-+	bus-range = <2 2>;
- 	status = "okay";
- 	ethernet0: ethernet@0,0 {
--		reg = <0x30000 0x0 0x0 0x0 0x0>;
-+		reg = <0x20000 0x0 0x0 0x0 0x0>;
- 		/* To be filled by the loader */
- 		local-mac-address = [00 10 18 00 00 00];
- 	};
+-	ksft_print_msg("Memory out of range\n");
+-	test_futex(futex_ptr + mem_size, 1);
+-
+ 	futex_numa->numa = FUTEX_NO_NODE;
+ 	mprotect(futex_ptr, mem_size, PROT_READ);
+ 	ksft_print_msg("Memory, RO\n");
 -- 
 2.51.0
 
