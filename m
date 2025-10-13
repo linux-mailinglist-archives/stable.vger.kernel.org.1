@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E12ABD4928
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C008BD4934
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 21ACC500B84
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86ACE18A5846
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F562310650;
-	Mon, 13 Oct 2025 15:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDFF30FC01;
+	Mon, 13 Oct 2025 15:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0iC3lnB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chWo5Dnz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6A0310647;
-	Mon, 13 Oct 2025 15:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FAB3093CE;
+	Mon, 13 Oct 2025 15:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368056; cv=none; b=G45kmLdfJFg5UiM/KMsPBQtpb6yDUYWewCThAsg0tVEJiOG3Tnm9vD8Yu1wOp/DYl7Uhc4Xh5C1Ayn1r3kgXXtaW83+ex4ki5uHjsj9OML+sLQ23BtCfvYE8p+kjhDVrL+bCqlgYLYzx+WGcImWSK5zzpx9RUvgPpeGr9eL1Gjg=
+	t=1760369717; cv=none; b=NKT+uyMwHxv6kPXFhmhDs8z6MjJF4kIIOuJAL8Kw5Gywa3Q4CCl2Q1n5ns0TLYnsW2Eyu3OuoIq2jO9NvHsrn8+U6DbouU49VtHXSOgUx3uhv4z91W2UA6duT7rk+h2GoWh2zpqiGREEPuIg8UyeDbZ/2zuOEtmleLyRlprJSlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368056; c=relaxed/simple;
-	bh=HH3oeZDSyADqvX0iubnVbyGIL0X3C8zuwT8++nVKBCs=;
+	s=arc-20240116; t=1760369717; c=relaxed/simple;
+	bh=wTNoRkrPZTVPHmKcVvYacHJdTg/dLeKrEuG3jDwglQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MR8iXKHoLFuNNW3FMq4+V/9Qlbta7GOSd10uHVrVvkOos2UAViajPVGiIyRPZ62jw0jCoIJ8UhVTfF2DPJSSKLRHbue94zJ9ivplex6d2XVzU7UqQ2FCMjVv6wjv6BVDMqqH6m/FoezVX0KBxD8NjW4MLqMZ0etjrJS26NQzBcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0iC3lnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D6BC4CEE7;
-	Mon, 13 Oct 2025 15:07:35 +0000 (UTC)
+	 MIME-Version; b=TRlDd3x0SutD2EdtdEv6Mvi8XgfBGduoSPtoe5RTab7cVozBhTF3mzDt8ybPK47Lu2hi6IkZxVhLVJFTZT4sm3R9m98x6JSeDzEQDdSc/NjZzi4w5sSrgHghSCtGtnZXXkV4pYnjRB7zBA8uLiA2vAH8bZPTELJRU0JZilaGn60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chWo5Dnz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0207C4CEE7;
+	Mon, 13 Oct 2025 15:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368056;
-	bh=HH3oeZDSyADqvX0iubnVbyGIL0X3C8zuwT8++nVKBCs=;
+	s=korg; t=1760369717;
+	bh=wTNoRkrPZTVPHmKcVvYacHJdTg/dLeKrEuG3jDwglQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0iC3lnB8eyt3zYLPvsSdncoVCi150Ces/vpJKyl1UJ2AB05rhSGJC9bMPLRjlOap
-	 FZ5J3+7Mb4eSH2e0881Of+abqxocDoFJSP/LBxgyTP5wxYZjurZ3qbU908kBQl554i
-	 veFE3YCJbpCoHRJcxCgwi1sEe6pn7L4zfgemlnUw=
+	b=chWo5DnzJnrxC8AutlrA6ELXV4aevyqF5GU57j7SG1a16afkJR58AkNzM4auY0/EQ
+	 BUQ3LX1COWVFVTZ8Omd9zxkAU/Os4pi1JO2xVkqm/Bi9xCNdiDv3fw1UanRBTBBI75
+	 MDKtG1BtOHTt8XN9gHVt34WY0Y+ottWsoWW1fPF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Annette Kobou <annette.kobou@kontron.de>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Kerkmann <s.kerkmann@pengutronix.de>,
+	Jeff Chen <jeff.chen_1@nxp.con>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/262] arm64: dts: imx93-kontron: Fix GPIO for panel regulator
-Date: Mon, 13 Oct 2025 16:42:50 +0200
-Message-ID: <20251013144327.146401032@linuxfoundation.org>
+Subject: [PATCH 6.17 310/563] wifi: mwifiex: send world regulatory domain to driver
+Date: Mon, 13 Oct 2025 16:42:51 +0200
+Message-ID: <20251013144422.495377882@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Annette Kobou <annette.kobou@kontron.de>
+From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
-[ Upstream commit f3e011388dd08d15e0414e3b6b974f946305e7af ]
+[ Upstream commit 56819d00bc2ebaa6308913c28680da5d896852b8 ]
 
-The regulator uses the wrong GPIO. Fix this.
+The world regulatory domain is a restrictive subset of channel
+configurations which allows legal operation of the adapter all over the
+world. Changing to this domain should not be prevented.
 
-Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Fixes: 2b52fd6035b7 ("arm64: dts: Add support for Kontron i.MX93 OSM-S SoM and BL carrier board")
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: dd4a9ac05c8e1 ("mwifiex: send regulatory domain info to firmware only if alpha2 changed") changed
+Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.con>
+Link: https://patch.msgid.link/20250804-fix-mwifiex-regulatory-domain-v1-1-e4715c770c4d@pengutronix.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx93-kontron-bl-osm-s.dts    | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts b/arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts
-index 89e97c604bd3e..9a9e5d0daf3ba 100644
---- a/arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts
-@@ -33,7 +33,9 @@ pwm-beeper {
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 4c8c7a5fdf23e..be23a29e7de09 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -686,10 +686,9 @@ static void mwifiex_reg_notifier(struct wiphy *wiphy,
+ 		return;
+ 	}
  
- 	reg_vcc_panel: regulator-vcc-panel {
- 		compatible = "regulator-fixed";
--		gpio = <&gpio4 3 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_vcc_panel>;
-+		gpio = <&gpio2 21 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-min-microvolt = <3300000>;
-@@ -161,3 +163,11 @@ &usdhc2 {
- 	vmmc-supply = <&reg_vdd_3v3>;
- 	status = "okay";
- };
-+
-+&iomuxc {
-+	pinctrl_reg_vcc_panel: regvccpanelgrp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO21__GPIO2_IO21		0x31e /* PWM_2 */
-+		>;
-+	};
-+};
+-	/* Don't send world or same regdom info to firmware */
+-	if (strncmp(request->alpha2, "00", 2) &&
+-	    strncmp(request->alpha2, adapter->country_code,
+-		    sizeof(request->alpha2))) {
++	/* Don't send same regdom info to firmware */
++	if (strncmp(request->alpha2, adapter->country_code,
++		    sizeof(request->alpha2)) != 0) {
+ 		memcpy(adapter->country_code, request->alpha2,
+ 		       sizeof(request->alpha2));
+ 		mwifiex_send_domain_info_cmd_fw(wiphy);
 -- 
 2.51.0
 
