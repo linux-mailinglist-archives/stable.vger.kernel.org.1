@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C39FBD48ED
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:52:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACEF8BD3E2E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AAC404F4123
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14ECD4038F3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A046030C61E;
-	Mon, 13 Oct 2025 15:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E220309EFD;
+	Mon, 13 Oct 2025 14:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqsqNpTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJ/d2fOV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF5D2F83BA;
-	Mon, 13 Oct 2025 15:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4878724A06A;
+	Mon, 13 Oct 2025 14:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368372; cv=none; b=X2QQSQBErtblX6PkXzf4Fu389gF6Advqvt54esEpUN4iwoc7BA3Jd0hQsxvJiKqPowOl8QsYktFgN8yWwk5CFuxCsR7KakssXcEI/M2Rt/SGqiRelVWNXSJ9eNGUUq1WpppJI7SxQXSI+hNIt2N+frD5NgCyVvIoz4jqebBur50=
+	t=1760367141; cv=none; b=JHNMHbJmKKYugKls9NnNhnUva+6eZ9T2RvSQOOzOx05pFDLAXeC1I+lsEZrJEXsUrc2JRAbN2ABP7q16GzXx1vCghQwbgMqlbbZwHuD3TXgQGCj/zzMVda4i6BOQCQCuuRMMJk+jd0HRdZW1H/9va1bwF8bEMZzMpDGkIB0kVZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368372; c=relaxed/simple;
-	bh=ECFo0pJ+d1o3ApQtNsY+XjHYfl6q82N3I7WEVx1BPoc=;
+	s=arc-20240116; t=1760367141; c=relaxed/simple;
+	bh=/93KMfoRwWJ9m8YgBl5h/fnC3B+7Cx56A6uQQpjmzfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSyxLItHxiIhUYElyJvzBKbtQRpicDIQOmhpuEo6dcxiqZvsxmsC/KKj/G0mchqv2mdXY2bDjbcWk163Hcctv+JU4xT1dPHvy4Tvz/QuGkF69xA70ZMfnwZrR5uU33L4PFfBYS1O8RsC8yMh4nxM2CV96maWd8DWVfzOz/DObnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqsqNpTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEC4C4CEE7;
-	Mon, 13 Oct 2025 15:12:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jzTU+aK3p3W6TXrsMxGD1g21+c17fQTPXfsS5sabep/ST6ZGQVPs1dZ/algTysSDy+F/nUz51UUwHBVO3lh2g0Vmep+gAmgP4lTbFyH4gLENxIOjDNM6bGSXz7XD4MrEu0cS/R+9Qx83lAVmaGiWO6XQGS0bEPCpBr3Q9w7LXPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJ/d2fOV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E69C4CEE7;
+	Mon, 13 Oct 2025 14:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368372;
-	bh=ECFo0pJ+d1o3ApQtNsY+XjHYfl6q82N3I7WEVx1BPoc=;
+	s=korg; t=1760367141;
+	bh=/93KMfoRwWJ9m8YgBl5h/fnC3B+7Cx56A6uQQpjmzfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqsqNpTLTSGaqPMk8no3/Xsyih+Qe9danckElXRUVKR/63m1kHbLR/wDTUnAPdvMd
-	 KR//81pmk9vMCC/W26z6NMfr1RC9/HL79kC0MbULv6GSTE469xeSF/s9S8m3AinTI+
-	 kHohFB9YtZGx+KTvj4yZkutaLpsN5qCJ5uEXQd4c=
+	b=jJ/d2fOVJEK/t2sJiIXgGlErUWL7cB+VaL/C4L1+kkwaO2B/Rz1EcPtMkXd3Du/dY
+	 mP5GNa2vt7Eyy6toy5quIoDLrJn5i1v7DZ5MPtZAdmRSDPvakyNFMDo7KsHZ86r5B7
+	 7tsMrsM0Cnv43jXH7Tm8K1EKaOlAbYuZp7KlMzRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 137/262] drm/msm/dpu: fix incorrect type for ret
+Subject: [PATCH 6.1 106/196] drm/amd/pm: Adjust si_upload_smc_data register programming (v3)
 Date: Mon, 13 Oct 2025 16:44:39 +0200
-Message-ID: <20251013144331.058022916@linuxfoundation.org>
+Message-ID: <20251013144318.534490549@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 88ec0e01a880e3326794e149efae39e3aa4dbbec ]
+[ Upstream commit ce025130127437dc884c84c254170e27b2ce9309 ]
 
-Change 'ret' from unsigned long to int, as storing negative error codes
-in an unsigned long makes it never equal to -ETIMEDOUT, causing logical
-errors.
+Based on some comments in dm_pp_display_configuration
+above the crtc_index and line_time fields, these values
+are programmed to the SMC to work around an SMC hang
+when it switches MCLK.
 
-Fixes: d7d0e73f7de3 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/671100/
-Link: https://lore.kernel.org/r/20250826092047.224341-1-rongqianfeng@vivo.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+According to Alex, the Windows driver programs them to:
+mclk_change_block_cp_min = 200 / line_time
+mclk_change_block_cp_max = 100 / line_time
+Let's use the same for the sake of consistency.
+
+Previously we used the watermark values, but it seemed buggy
+as the code was mixing up low/high and A/B watermarks, and
+was not saving a low watermark value on DCE 6, so
+mclk_change_block_cp_max would be always zero previously.
+
+Split this change off from the previous si_upload_smc_data
+to make it easier to bisect, in case it causes any issues.
+
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-index 07035ab77b792..4597fdb653588 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-@@ -445,7 +445,7 @@ static void _dpu_encoder_phys_wb_handle_wbdone_timeout(
- static int dpu_encoder_phys_wb_wait_for_commit_done(
- 		struct dpu_encoder_phys *phys_enc)
- {
--	unsigned long ret;
-+	int ret;
- 	struct dpu_encoder_wait_info wait_info;
- 	struct dpu_encoder_phys_wb *wb_enc = to_dpu_encoder_phys_wb(phys_enc);
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 85ab0d87eb337..267aa96edc890 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -5813,8 +5813,8 @@ static int si_upload_smc_data(struct amdgpu_device *adev)
+ 		crtc_index = amdgpu_crtc->crtc_id;
+ 
+ 		if (amdgpu_crtc->line_time) {
+-			mclk_change_block_cp_min = amdgpu_crtc->wm_high / amdgpu_crtc->line_time;
+-			mclk_change_block_cp_max = amdgpu_crtc->wm_low / amdgpu_crtc->line_time;
++			mclk_change_block_cp_min = 200 / amdgpu_crtc->line_time;
++			mclk_change_block_cp_max = 100 / amdgpu_crtc->line_time;
+ 		}
+ 	}
  
 -- 
 2.51.0
