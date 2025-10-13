@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-185039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69040BD4769
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE903BD462D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB3304FF173
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5F51188D20E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBBA237A4F;
-	Mon, 13 Oct 2025 15:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8552A3081C8;
+	Mon, 13 Oct 2025 15:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cko0GSnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PknxODS9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C88E3081AE;
-	Mon, 13 Oct 2025 15:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356F330CD9D;
+	Mon, 13 Oct 2025 15:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369159; cv=none; b=ndxx/R+Rls9gXT3cdU2dqRAkqe+fc7a0Bo830QTXGNHjyIPiPawjfndjvU6HzZ1/HjgHxtwZGMVJD91IaX7whMBMuN/xaxQ0erxQD4l8Z2Pzxk9OWeVtGcwj7czlDMV2KpdJVfSR8qFPo5mSBIUBBgrQ7DWmWKEy3rMt4Ror7VU=
+	t=1760369165; cv=none; b=Pkxyh/r4Inr3mC5OdMKta89hlJYrWEqS7rCF6smMtxICWHQUWmAdmZrtftyGBPeZXyudS9hVEr45+UKGCr2aTMPlCQummlqgtGWWmy7eH4h6rxa0PF2R/SdlU/XEAn80oPTmjmE8ZumC805o5XHY3Ghz1cjDWLycaZvBfzsV6fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369159; c=relaxed/simple;
-	bh=IhQL0EEB/qp12jsKNEs4tBDgEtyGN91y6J/gULrLqn4=;
+	s=arc-20240116; t=1760369165; c=relaxed/simple;
+	bh=rJin859nnPn+jR+NZqjOXKNiV/oQLG3VZpxP6PR6N3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9UXtq42cRRE38ZuuzQWlLULySWqD1LetVyImELPhz2Eks88xiOy5bGELqFt53sBgYSHvdLHEjGf6ZzOm+1pUQnm8E4FLbFXARBhPe0gyr976gV3zM9rh7Pl0tx2wDTQuJZMSZskd3O3VsZa7lkQbawR9UPPefPH3z2zg0csW2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cko0GSnK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD96EC4CEE7;
-	Mon, 13 Oct 2025 15:25:58 +0000 (UTC)
+	 MIME-Version; b=YQ6sCCyHgt7jenvWy0YDLaNXXkDtFITJw2ZytS6mPeO9kvlH5wwep2aiyWXw0Wcs8t9LBdY4LcoN24QdtLvEy4iU3D6wi85pYfTOZLPiH0vzc0sS7q+u5BgXxTX0N0QKskWAPJrnufLWyFxfjbsej/nOp6qH/wX1PWFXCSZ7/vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PknxODS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C9EC4CEE7;
+	Mon, 13 Oct 2025 15:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369159;
-	bh=IhQL0EEB/qp12jsKNEs4tBDgEtyGN91y6J/gULrLqn4=;
+	s=korg; t=1760369164;
+	bh=rJin859nnPn+jR+NZqjOXKNiV/oQLG3VZpxP6PR6N3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cko0GSnKDXZEUxvVGVEDy2+8+197LQnnmpVxSpq6HPv3X0RF0gFsv9s9FRGwBkXfQ
-	 ATL+LXgVMpQjMf0W49ILPgTH9DPtbamnFp4dkS4L2yiJ96SdPuNX1g06V5YMWcxXmc
-	 haN+ioJcNXKFYG5WwIaz+T0/7WjsiAljjO8/5kGI=
+	b=PknxODS9Wy9dpinJNncUDHrH41xoV1cI1yYeCFlii/hZZ5GMbBiqCJgSUgQE+HYWt
+	 xtH1HhAZHnXAf/AoQgoIKJF6E+aKpd/OeRGVL/FnPiSIzyM+fE26kh/IkCgQRykxRH
+	 0V24yptnVFrqCjSuO3NShrTzTXd23XXcxaaHJ8oA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Fei Shao <fshao@chromium.org>,
 	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 148/563] arm64: dts: mediatek: mt7986a: Fix PCI-Express T-PHY node address
-Date: Mon, 13 Oct 2025 16:40:09 +0200
-Message-ID: <20251013144416.652594074@linuxfoundation.org>
+Subject: [PATCH 6.17 150/563] arm64: dts: mediatek: mt8516-pumpkin: Fix machine compatible
+Date: Mon, 13 Oct 2025 16:40:11 +0200
+Message-ID: <20251013144416.724689925@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -69,54 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 6b3fff78c13f1a2ba5a355a101fa1ca0a13054ad ]
+[ Upstream commit ffe6a5d1dd4d4d8af0779526cf4e40522647b25f ]
 
-The PCIe TPHY is under the soc bus, which provides MMIO, and all
-nodes under that must use the bus, otherwise those would clearly
-be out of place.
+This devicetree contained only the SoC compatible but lacked the
+machine specific one: add a "mediatek,mt8516-pumpkin" compatible
+to the list to fix dtbs_check warnings.
 
-Add ranges to the PCIe tphy and assign the address to the main
-node to silence a dtbs_check warning, and fix the children to
-use the MMIO range of t-phy.
-
-Fixes: 963c3b0c47ec ("arm64: dts: mediatek: fix t-phy unit name")
-Fixes: 918aed7abd2d ("arm64: dts: mt7986: add pcie related device nodes")
+Fixes: 9983822c8cf9 ("arm64: dts: mediatek: add pumpkin board dts")
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Reviewed-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20250724083914.61351-24-angelogioacchino.delregno@collabora.com
+Link: https://lore.kernel.org/r/20250724083914.61351-39-angelogioacchino.delregno@collabora.com
 Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7986a.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-index 559990dcd1d17..3211905b6f86d 100644
---- a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-@@ -428,16 +428,16 @@ pcie_intc: interrupt-controller {
- 			};
- 		};
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
+index cce642c538128..3d3db33a64dc6 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8516-pumpkin.dts
+@@ -11,7 +11,7 @@
  
--		pcie_phy: t-phy {
-+		pcie_phy: t-phy@11c00000 {
- 			compatible = "mediatek,mt7986-tphy",
- 				     "mediatek,generic-tphy-v2";
--			ranges;
--			#address-cells = <2>;
--			#size-cells = <2>;
-+			ranges = <0 0 0x11c00000 0x20000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
- 			status = "disabled";
+ / {
+ 	model = "Pumpkin MT8516";
+-	compatible = "mediatek,mt8516";
++	compatible = "mediatek,mt8516-pumpkin", "mediatek,mt8516";
  
--			pcie_port: pcie-phy@11c00000 {
--				reg = <0 0x11c00000 0 0x20000>;
-+			pcie_port: pcie-phy@0 {
-+				reg = <0 0x20000>;
- 				clocks = <&clk40m>;
- 				clock-names = "ref";
- 				#phy-cells = <1>;
+ 	memory@40000000 {
+ 		device_type = "memory";
 -- 
 2.51.0
 
