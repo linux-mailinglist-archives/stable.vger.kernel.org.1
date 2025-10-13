@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-185464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57E6BD53FB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B986BBD5075
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F14C35089F7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BDC48546945
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED25239562;
-	Mon, 13 Oct 2025 15:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CA73161AC;
+	Mon, 13 Oct 2025 15:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yf/NVpze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quVYWZSN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED1F30E0EF;
-	Mon, 13 Oct 2025 15:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AB326B971;
+	Mon, 13 Oct 2025 15:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370366; cv=none; b=Af1heSgnf0Cpi6JNsMWebDOG+1LnJaKVa+1aOozvPbhH+GTDOdJwvIkdpCi+4xgLVe9kMIEfIr8LZjiq3Hn7HhcNEx9ZdOVTP55YjftvkelVjLlZcqj4bd5doANI9tSzQQ3kbwt/dRcb0s2PtF4lYUMu5rhSDZQ+zp68GBj8KyU=
+	t=1760370341; cv=none; b=etqISXs0OdABD/88CsHO3bQ8jTEV2ggCe1Byxku0gbZRYR9Tyax4/H6dJuYKEDv9EhdQOL4k52GlHTMZzTKxs5TGiPs1e+oCncw6CKjTj/wPMx77a/tBaB1IucABA8t7PBTX8IJxbTGIiK5uDbGf9Y5UFUmPlzasajLxWXtinF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370366; c=relaxed/simple;
-	bh=ODZYIhcFA86BiEpzbfpQtw8mRSwQ/ZRCImp3AAAjSUc=;
+	s=arc-20240116; t=1760370341; c=relaxed/simple;
+	bh=CDvjOBYHPIoQ+pZy97zIiFouQ65yBRh0fbK6oitjoFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKFipDa0Zrle/nLbOyUeNTgeq0LBsgl0huGtp+bdA+9F7C2TezfRiMsup6X/YtzeIFKOpPjqKwU9hOjLogPaXJbUMhZBbufUUcAZ2P+DdWGKZMS3q92OP6hs2Hg3SFbJlaqDz5imI2y5tgAfWNv5YsxLsiI6mkCk8DsUinH7u3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yf/NVpze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B11DC4CEE7;
-	Mon, 13 Oct 2025 15:46:06 +0000 (UTC)
+	 MIME-Version; b=u/ucn31gfutz9TPy0qziM2qf4/ic44JHB4g6QLlcL8IdrRv3yXV31ZD5N/FY5R3UavqvHSOk8gRyjD/jGzDWIoGzu/nSgZLXeTSRxkhp7QZlp24bpoqpjs3GP1H4wpg/lYJhAnjQMsBexk3BBw2tPwbsBKuPyEc8dw6Vg1Rv+Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quVYWZSN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0DDBC4CEE7;
+	Mon, 13 Oct 2025 15:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760370366;
-	bh=ODZYIhcFA86BiEpzbfpQtw8mRSwQ/ZRCImp3AAAjSUc=;
+	s=korg; t=1760370341;
+	bh=CDvjOBYHPIoQ+pZy97zIiFouQ65yBRh0fbK6oitjoFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yf/NVpzeztpWvap04IgiSAKP+QjkEJ63r5axi8Eh/Q77H/2xWd5MNW6N+xf4pYvEq
-	 UXCWODl38y2+RMAENRPHTbcXGcl2faKjN7fuECYfhegK89HN4BnoFCT9rOeuu3G5YX
-	 oMsRfJcYs1FylCjj9LXEVC01veDRW7Szyg/kj63Y=
+	b=quVYWZSN0nScsUmG7IlO3bRERdHLOU7EW5bWePjHeRrYH3xIoRHBzDH96aef+tkCS
+	 u6NvTumsL45Dro2BRjqRBIqC11CVALZ7LdyKU3L+tQL5QpGSv7Ufa73bIW6Rc56gWl
+	 +76+Q8CepbtdCbGVbEVsWCgfHDNe7JBz44AnVfcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Ichikawa <masami256@gmail.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>
-Subject: [PATCH 6.17 554/563] tee: fix register_shm_helper()
-Date: Mon, 13 Oct 2025 16:46:55 +0200
-Message-ID: <20251013144431.372821921@linuxfoundation.org>
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.17 555/563] pinctrl: check the return value of pinmux_ops::get_function_name()
+Date: Mon, 13 Oct 2025 16:46:56 +0200
+Message-ID: <20251013144431.408617643@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -65,46 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jens Wiklander <jens.wiklander@linaro.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit d5cf5b37064b1699d946e8b7ab4ac7d7d101814c upstream.
+commit 4002ee98c022d671ecc1e4a84029e9ae7d8a5603 upstream.
 
-In register_shm_helper(), fix incorrect error handling for a call to
-iov_iter_extract_pages(). A case is missing for when
-iov_iter_extract_pages() only got some pages and return a number larger
-than 0, but not the requested amount.
-
-This fixes a possible NULL pointer dereference following a bad input from
-ioctl(TEE_IOC_SHM_REGISTER) where parts of the buffer isn't mapped.
+While the API contract in docs doesn't specify it explicitly, the
+generic implementation of the get_function_name() callback from struct
+pinmux_ops - pinmux_generic_get_function_name() - can fail and return
+NULL. This is already checked in pinmux_check_ops() so add a similar
+check in pinmux_func_name_to_selector() instead of passing the returned
+pointer right down to strcmp() where the NULL can get dereferenced. This
+is normal operation when adding new pinfunctions.
 
 Cc: stable@vger.kernel.org
-Reported-by: Masami Ichikawa <masami256@gmail.com>
-Closes: https://lore.kernel.org/op-tee/CACOXgS-Bo2W72Nj1_44c7bntyNYOavnTjJAvUbEiQfq=u9W+-g@mail.gmail.com/
-Tested-by: Masami Ichikawa <masami256@gmail.com>
-Fixes: 7bdee4157591 ("tee: Use iov_iter to better support shared buffer registration")
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tee/tee_shm.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pinctrl/pinmux.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tee/tee_shm.c
-+++ b/drivers/tee/tee_shm.c
-@@ -321,6 +321,14 @@ register_shm_helper(struct tee_context *
- 	if (unlikely(len <= 0)) {
- 		ret = len ? ERR_PTR(len) : ERR_PTR(-ENOMEM);
- 		goto err_free_shm_pages;
-+	} else if (DIV_ROUND_UP(len + off, PAGE_SIZE) != num_pages) {
-+		/*
-+		 * If we only got a few pages, update to release the
-+		 * correct amount below.
-+		 */
-+		shm->num_pages = len / PAGE_SIZE;
-+		ret = ERR_PTR(-ENOMEM);
-+		goto err_put_shm_pages;
- 	}
+--- a/drivers/pinctrl/pinmux.c
++++ b/drivers/pinctrl/pinmux.c
+@@ -337,7 +337,7 @@ static int pinmux_func_name_to_selector(
+ 	while (selector < nfuncs) {
+ 		const char *fname = ops->get_function_name(pctldev, selector);
  
- 	/*
+-		if (!strcmp(function, fname))
++		if (fname && !strcmp(function, fname))
+ 			return selector;
+ 
+ 		selector++;
 
 
 
