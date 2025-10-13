@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A9BBD3CAE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 16:59:51 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9023ABD3F75
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B357218A05A1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:59:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3B47D34E1EF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8CE1F1313;
-	Mon, 13 Oct 2025 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B59279335;
+	Mon, 13 Oct 2025 14:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlpitBJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YINelSBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B0726F2A0;
-	Mon, 13 Oct 2025 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6385B27815D;
+	Mon, 13 Oct 2025 14:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367101; cv=none; b=skuZkmDYqYgGFffLUn9DKww59LcaU/rJ6JlVsQdTtejf4t41MHVAHczE9smjGZVz7FV3XsesxvEtYBO/htC7rXnL9rRWacctXviuwXty1kcABxpmWBaz4Cq5QFm2VnlYSP1gEGZP8dipVnJL0FtK79nTAzIhZ8WQInSNcODZocc=
+	t=1760367572; cv=none; b=V2SIJy2Sfh/MasgMxYXRWJtXcvhXuiqmJfphrQ5r37RpxvhvM58o/RIq/BzQzDUkuqkTmZAdwai08Ze2q9JtP3W9LzWdw8JDfdnpJesyrGWdLzgoQ8VhsVLBEdPfXQjTX/8rQ5bLEGjsYgKVyNNDtEifFDjcMHc6p+qGBOPq7i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367101; c=relaxed/simple;
-	bh=/gELB85Facq97UNnhWZ1U74WY119jXukpobHojdx8AQ=;
+	s=arc-20240116; t=1760367572; c=relaxed/simple;
+	bh=V+Lrfl/+0q4D3mfEQcr7p90DkwwV+lAIMQvzBMaTmb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFwgb4AJsjoMnTzUbtBpF2PuUK39sSuxCjoh7c3u7nh/cHy+ttpsQI514rOfgxcDdQYFGEsdhu+AOx6ubfjtRzWmMLqadUFsiJs2E5DNmVQ1QfBWhGt9YTXOROhrc/uqEiC5K857503NNSsYO0HryqBNjrAiLX+dz4SgaZtoP9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlpitBJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CEAC4CEE7;
-	Mon, 13 Oct 2025 14:51:40 +0000 (UTC)
+	 MIME-Version; b=N6vwu4UE7dFqmu1m6rdpEwz2obcpmc5f4rK4lMkG8riXcK1c1QOMineqUeZn4xSyn3m7Kqi2j/uo239zNtm31LuuOlX6F7f5AXm+/pRAw4lRJxUcUonUrFGrbkycBMwYiEXxf6KKcTI89WTT8uF41/ZRz9ValDurx4IGzcRZfOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YINelSBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA0FC113D0;
+	Mon, 13 Oct 2025 14:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367101;
-	bh=/gELB85Facq97UNnhWZ1U74WY119jXukpobHojdx8AQ=;
+	s=korg; t=1760367572;
+	bh=V+Lrfl/+0q4D3mfEQcr7p90DkwwV+lAIMQvzBMaTmb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlpitBJK/Nd8EYIpCbvwNO7kT7b0O/ZPDWEeLv8DHfRmQd3s6EX1I+XSzJFowjeQn
-	 BUrMy0s9tLjN5xrvoMmoTmfy4roViJ08N2pFupHmDwdwIOGdKjd/Txo0b3y8oD1hq5
-	 Vm1Bur+LrNOoT7Z4yfoceO5f6JUbUdiVCdmRjqyY=
+	b=YINelSBe2iO+pAn1DOy3L4lfUvVU+0uOhNJvgz10fMjAY13GotKbZ8o3PLRKoDZB8
+	 W5g3lbJSedvE05AEQT38QLaQ/kswkOCFfPylJh5R+IwGbb0HdeMbMCKn6+PEvy9xJL
+	 6bN7E/V8PYOOBzsbMQcwLfwAFdPRvuWkOExCANe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/196] selftests: arm64: Check fread return value in exec_target
+Subject: [PATCH 6.6 031/196] ARM: dts: ti: omap: am335x-baltos: Fix ti,en-ck32k-xtal property in DTS to use correct boolean syntax
 Date: Mon, 13 Oct 2025 16:43:42 +0200
-Message-ID: <20251013144316.359423266@linuxfoundation.org>
+Message-ID: <20251013144316.323228908@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit a679e5683d3eef22ca12514ff8784b2b914ebedc ]
+[ Upstream commit 9658a92fad1889ff92fa4bd668cd61052687245a ]
 
-Fix -Wunused-result warning generated when compiled with gcc 13.3.0,
-by checking fread's return value and handling errors, preventing
-potential failures when reading from stdin.
+The ti,en-ck32k-xtal property, defined as a boolean in the Device Tree
+schema, was incorrectly assigned a value (<1>) in the DTS file, causing
+a validation error: "size (4) error for type flag". The driver uses
+of_property_read_bool(), expecting a boolean. Remove the value to fix
+the dtbs_check error.
 
-Fixes compiler warning:
-warning: ignoring return value of 'fread' declared with attribute
-'warn_unused_result' [-Wunused-result]
-
-Fixes: 806a15b2545e ("kselftests/arm64: add PAuth test for whether exec() changes keys")
-
-Signed-off-by: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 262178b6b8e5 ("ARM: dts: split am335x-baltos-ir5221 into dts and dtsi files")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Link: https://lore.kernel.org/all/20250822222530.113520-1-jihed.chaibi.dev@gmail.com/
+Link: https://lore.kernel.org/r/20250822222530.113520-1-jihed.chaibi.dev@gmail.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/pauth/exec_target.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/arm64/pauth/exec_target.c b/tools/testing/selftests/arm64/pauth/exec_target.c
-index 4435600ca400d..e597861b26d6b 100644
---- a/tools/testing/selftests/arm64/pauth/exec_target.c
-+++ b/tools/testing/selftests/arm64/pauth/exec_target.c
-@@ -13,7 +13,12 @@ int main(void)
- 	unsigned long hwcaps;
- 	size_t val;
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
+index c14d5b70c72f6..56f704082f94a 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
+@@ -270,7 +270,7 @@ &tps {
+ 	vcc7-supply = <&vbat>;
+ 	vccio-supply = <&vbat>;
  
--	fread(&val, sizeof(size_t), 1, stdin);
-+	size_t size = fread(&val, sizeof(size_t), 1, stdin);
-+
-+	if (size != 1) {
-+		fprintf(stderr, "Could not read input from stdin\n");
-+		return EXIT_FAILURE;
-+	}
+-	ti,en-ck32k-xtal = <1>;
++	ti,en-ck32k-xtal;
  
- 	/* don't try to execute illegal (unimplemented) instructions) caller
- 	 * should have checked this and keep worker simple
+ 	regulators {
+ 		vrtc_reg: regulator@0 {
 -- 
 2.51.0
 
