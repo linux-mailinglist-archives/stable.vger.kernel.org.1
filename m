@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950E6BD47E8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D11B4BD4213
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C50874FE5ED
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:22:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9480B5044C3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8893115A1;
-	Mon, 13 Oct 2025 15:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44675308F23;
+	Mon, 13 Oct 2025 14:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gc/Krv2q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to3adsO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DBD3093C9;
-	Mon, 13 Oct 2025 15:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006F4308F1B;
+	Mon, 13 Oct 2025 14:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368124; cv=none; b=P/37bZ1D7nxrnOLnTtzG5HkQBDk8FtPkdAdCVzWl7suHHWaXqVSeB34BeskfPEb7PVBuU9wDLTfOdqtHcVBswWyVJ+KyXsyls5mbQDPCN0caXp0no9eMKfbiKP6eFpNwPLICRwiH4aAYcnOLzX6rUnBJeOBim22RmKZfNaCXGS4=
+	t=1760367489; cv=none; b=ePRGE+8W7rcrxuc8kzGZ6N4mGo8w1IvCz9Mzm2QK+67vcNx9WxaTbt8qCnvwLv8+3DVRKRQBY9WWkvzmDxJ0+3HLDDWiLadEnM83+h4J2andFXyk4+Bv47yhdjpMWxZHts4gMBhx8Su68krFQ+ZE+1kTyPOyqHKDoKwJQykn+r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368124; c=relaxed/simple;
-	bh=paa7JaKwW3ECcFr/xLgof+WcKk50N9oB3+yY57WsB7w=;
+	s=arc-20240116; t=1760367489; c=relaxed/simple;
+	bh=pFti+lEhgzue0vGnNzPgenNVZ1p0HSonIF9e17OCpAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0NTD/6593mS7xZRB3yDAB5zJjMXj/Q9+XjWr/WmkPo4gLy8Zm/6fOTYFpoYDwwe+XHPXsYz7wFbayb3A7ObjNpPCDH7h+X8Kyotm6Itwlnr8JfBTZOFxNgs+RiE62zxSXFlfkif8vL8rkqWx3bzJXZ3tkC2/EP7kilfDXTx1aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gc/Krv2q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27945C4CEE7;
-	Mon, 13 Oct 2025 15:08:43 +0000 (UTC)
+	 MIME-Version; b=CxOJf1BGylRzQNZTasD3FJP2Fc6+IJvLCWi/3hjDgLV0roiJ4ZNkZi8+8nLOpgveBFueBjPW9LU981f9jJgFQY6QbK3b1/UgOw4rgxrPN8zFmRBMdj31J6tberAlTX+JKeF186q26HI5U1wf8OFBTconXzUgseWgbr/lti1KMXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to3adsO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189CDC4CEE7;
+	Mon, 13 Oct 2025 14:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368124;
-	bh=paa7JaKwW3ECcFr/xLgof+WcKk50N9oB3+yY57WsB7w=;
+	s=korg; t=1760367488;
+	bh=pFti+lEhgzue0vGnNzPgenNVZ1p0HSonIF9e17OCpAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gc/Krv2qWjdbHU3fSQZjvFRGK1hAjglPkObDTVH4UQzDAI2U6daDlR8q200x/1NS5
-	 vQIaoe52HmwzzpoTS8ey0juA9TBVyfibusMOwacABDLfOdUuo/m0om/Z+vF2JJw4Be
-	 K/kUgL/52rdbnLDl6NJ1HilXU3oGEITRbRjhq+7M=
+	b=to3adsO8LiIR1nqmtFPah0ryYd+KGZOK30jUiUMrh5ceVkSvXGSVVPoDXErio3Hrn
+	 Wx6zfcEo+9HRuedv+q247spEqYNE9un1c0DFbtwFhtrlDfgSRNWPd8l5h2YLNsQb5o
+	 1T7qoG5ObGCNgHyxXXXIZJEO0YsturcmAB9nZGqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoqing Jiang <guoqing.jiang@canonical.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Macpaul Lin <macpaul.lin@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/262] arm64: dts: mediatek: mt8195: Remove suspend-breaking reset from pcie0
-Date: Mon, 13 Oct 2025 16:43:14 +0200
-Message-ID: <20251013144328.002595205@linuxfoundation.org>
+Subject: [PATCH 6.6 004/196] selftests: arm64: Check fread return value in exec_target
+Date: Mon, 13 Oct 2025 16:43:15 +0200
+Message-ID: <20251013144315.348789242@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@canonical.com>
+From: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
 
-[ Upstream commit 3374b5fb26b300809ecd6aed9f414987dd17c313 ]
+[ Upstream commit a679e5683d3eef22ca12514ff8784b2b914ebedc ]
 
-When test suspend resume with 6.8 based kernel, system can't resume
-and I got below error which can be also reproduced with 6.16 rc6+
-kernel.
+Fix -Wunused-result warning generated when compiled with gcc 13.3.0,
+by checking fread's return value and handling errors, preventing
+potential failures when reading from stdin.
 
-mtk-pcie-gen3 112f0000.pcie: PCIe link down, current LTSSM state: detect.quiet (0x0)
-mtk-pcie-gen3 112f0000.pcie: PM: dpm_run_callback(): genpd_resume_noirq returns -110
-mtk-pcie-gen3 112f0000.pcie: PM: failed to resume noirq: error -110
+Fixes compiler warning:
+warning: ignoring return value of 'fread' declared with attribute
+'warn_unused_result' [-Wunused-result]
 
-After investigation, looks pcie0 has the same problem as pcie1 as
-decribed in commit 3d7fdd8e38aa ("arm64: dts: mediatek: mt8195:
-Remove suspend-breaking reset from pcie1").
+Fixes: 806a15b2545e ("kselftests/arm64: add PAuth test for whether exec() changes keys")
 
-Fixes: ecc0af6a3fe6 ("arm64: dts: mt8195: Add pcie and pcie phy nodes")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@canonical.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Link: https://lore.kernel.org/r/20250721095959.57703-1-guoqing.jiang@canonical.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ tools/testing/selftests/arm64/pauth/exec_target.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 2e138b54f5563..451aa278bef50 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -1563,9 +1563,6 @@ pcie0: pcie@112f0000 {
+diff --git a/tools/testing/selftests/arm64/pauth/exec_target.c b/tools/testing/selftests/arm64/pauth/exec_target.c
+index 4435600ca400d..e597861b26d6b 100644
+--- a/tools/testing/selftests/arm64/pauth/exec_target.c
++++ b/tools/testing/selftests/arm64/pauth/exec_target.c
+@@ -13,7 +13,12 @@ int main(void)
+ 	unsigned long hwcaps;
+ 	size_t val;
  
- 			power-domains = <&spm MT8195_POWER_DOMAIN_PCIE_MAC_P0>;
+-	fread(&val, sizeof(size_t), 1, stdin);
++	size_t size = fread(&val, sizeof(size_t), 1, stdin);
++
++	if (size != 1) {
++		fprintf(stderr, "Could not read input from stdin\n");
++		return EXIT_FAILURE;
++	}
  
--			resets = <&infracfg_ao MT8195_INFRA_RST2_PCIE_P0_SWRST>;
--			reset-names = "mac";
--
- 			#interrupt-cells = <1>;
- 			interrupt-map-mask = <0 0 0 7>;
- 			interrupt-map = <0 0 0 1 &pcie_intc0 0>,
+ 	/* don't try to execute illegal (unimplemented) instructions) caller
+ 	 * should have checked this and keep worker simple
 -- 
 2.51.0
 
