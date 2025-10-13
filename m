@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DC5BD40ED
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C24BD4790
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 638AD503868
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B27305013FD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E68630CDB9;
-	Mon, 13 Oct 2025 14:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBAB273811;
+	Mon, 13 Oct 2025 15:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIJ8J3md"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwIVUMBI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B662798FA;
-	Mon, 13 Oct 2025 14:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C2927A477;
+	Mon, 13 Oct 2025 15:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367355; cv=none; b=f2ylpBRR+aTeMntqpRy13Hsmd7Znw3PJOOhDVG2mXIzni0uyX8v8swdDv1LWkcz5DXbCsLJpVo1/sDp0sPMnkgMDGq8EvldyP6HW+aW6yRcbkaC8TOWkTL2c/26ThAUPuaoFrfP3Xtn6VGIM5+cLd4EDqftrO4vf5GCyeuBsURw=
+	t=1760368604; cv=none; b=HwfmNUC7zMZqcOP9JiXhzMT2S4z1Ds2PdTVM9eIQ4Lt3qXcC8HEZm4DLRTy0NmMGBj3ud6jAgX9vl0H5J9iIUxuShv2VtCgephm81HQY4qhxxvDJrGZZnW74UZTpL1GKLZb0o865J6n32m0tpdtVIWr+8PnPEI2PSSLlAm49gjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367355; c=relaxed/simple;
-	bh=jCu5KqEwKF3xDmmXm1tuvl1mNDZK33ESROoacAATyOI=;
+	s=arc-20240116; t=1760368604; c=relaxed/simple;
+	bh=zUNQ3Dg+ZcKDe7zvWyYHJrrfgwibo3lZk59eELRkZkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuOAXi3VwBjSp5AU7Z/FZFtzUU6v+gnAZqy/Ta1H40TfdYORXexIOdMTNV1z3ter1Wx6wOhWRp8I9/reoww6jcjLSJG8xWaEcMbf7A/1Xx678CFA6ndkwLSgfg657UF1EQRvm8Y7C+qN87iBpNC6O8E7x7WMweKpgx3/XfAjOzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIJ8J3md; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47809C4CEE7;
-	Mon, 13 Oct 2025 14:55:55 +0000 (UTC)
+	 MIME-Version; b=V+cPf9vscPJwCYYms/1F2LxXB+ZAml2UijvYQcbBSVI/wuhqZgDP3e2k8+eF5+HYfQHUKEQa2HDTv6hWeJVbZM1DLRbpJEMOybZ8cRJ/ewoYAno+Ekzqj8bes2GlsH5iXbXT+emVpbZdzQZ0COIeCNb01k/ptgo20tv23U0o6+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwIVUMBI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9628EC4CEE7;
+	Mon, 13 Oct 2025 15:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367355;
-	bh=jCu5KqEwKF3xDmmXm1tuvl1mNDZK33ESROoacAATyOI=;
+	s=korg; t=1760368604;
+	bh=zUNQ3Dg+ZcKDe7zvWyYHJrrfgwibo3lZk59eELRkZkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hIJ8J3mdyV1e8rXDwEvDArYQwB5dAMtrdwFI42p+D1YeqVvc2uZJRIxHScU+F0ajg
-	 0lsuoTqL7GQim4jly/i9EOnDUVP7b+72MwB9VHGY4s4U+FnOe6RrU1EfvvzWBAp6/N
-	 G8aKX2pSLSCE/wwwlBgiL/znq6v9Pa8PWGBQSeZc=
+	b=mwIVUMBIe9TSDgruOhRPPjLfYKADNMa628lx0yn7KxofO2+29UQhvUyyRdBdvLGZU
+	 ApMrQZBgYkAb40RG9opwBftE9P0l9DqN22PrULB+yVxApGdCDsmU1dpGqON5BAxGC4
+	 CGyfVGczPv4UQ0VLSIbZIv1G1sLSvriwT5QM7OaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matvey Kovalev <matvey.kovalev@ispras.ru>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 180/196] ksmbd: fix error code overwriting in smb2_get_info_filesystem()
+	Erick Karanja <karanja99erick@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 211/262] mtd: rawnand: atmel: Fix error handling path in atmel_nand_controller_add_nands
 Date: Mon, 13 Oct 2025 16:45:53 +0200
-Message-ID: <20251013144321.206521786@linuxfoundation.org>
+Message-ID: <20251013144333.842494583@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matvey Kovalev <matvey.kovalev@ispras.ru>
+From: Erick Karanja <karanja99erick@gmail.com>
 
-commit 88daf2f448aad05a2e6df738d66fe8b0cf85cee0 upstream.
+[ Upstream commit 8ed4728eb9f10b57c3eb02e0f6933a89ffcb8a91 ]
 
-If client doesn't negotiate with SMB3.1.1 POSIX Extensions,
-then proper error code won't be returned due to overwriting.
+In case of a jump to the  err label due to atmel_nand_create() or
+atmel_nand_controller_add_nand() failure, the reference to nand_np
+need to be released
 
-Return error immediately.
+Use for_each_child_of_node_scoped() to fix the issue.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
 
-Fixes: e2f34481b24db ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matvey Kovalev <matvey.kovalev@ispras.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/atmel/nand-controller.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5233,7 +5233,8 @@ static int smb2_get_info_filesystem(stru
+diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
+index 5b02119d8ba23..543a0be9dc645 100644
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1858,7 +1858,7 @@ atmel_nand_controller_legacy_add_nands(struct atmel_nand_controller *nc)
  
- 		if (!work->tcon->posix_extensions) {
- 			pr_err("client doesn't negotiate with SMB3.1.1 POSIX Extensions\n");
--			rc = -EOPNOTSUPP;
-+			path_put(&path);
-+			return -EOPNOTSUPP;
- 		} else {
- 			info = (struct filesystem_posix_info *)(rsp->Buffer);
- 			info->OptimalTransferSize = cpu_to_le32(stfs.f_bsize);
+ static int atmel_nand_controller_add_nands(struct atmel_nand_controller *nc)
+ {
+-	struct device_node *np, *nand_np;
++	struct device_node *np;
+ 	struct device *dev = nc->dev;
+ 	int ret, reg_cells;
+ 	u32 val;
+@@ -1885,7 +1885,7 @@ static int atmel_nand_controller_add_nands(struct atmel_nand_controller *nc)
+ 
+ 	reg_cells += val;
+ 
+-	for_each_child_of_node(np, nand_np) {
++	for_each_child_of_node_scoped(np, nand_np) {
+ 		struct atmel_nand *nand;
+ 
+ 		nand = atmel_nand_create(nc, nand_np, reg_cells);
+-- 
+2.51.0
+
 
 
 
