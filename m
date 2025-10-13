@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-184216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F48BD2D5B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 13:45:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF19BD2D61
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 13:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58B96189D6F6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 11:46:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E9DC189D9EA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 11:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A09F1A9B46;
-	Mon, 13 Oct 2025 11:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE9B1F78E6;
+	Mon, 13 Oct 2025 11:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IufWgM9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CABqVTn5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0886819ABDE
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 11:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCE8944F
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 11:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760355950; cv=none; b=Qu3NdqD7JoaaaR4dVqNFRTSCj3d621Y/W40aOlc4HkQyuRIIi2qkKGlcv/PotRuJbLc+A8maBaXeE4Bm0k+PT0aCN1WmpYEfHsoq9oPQiTzhMKGK+h41fJ1+nq02F4IPB8Fk/h9RtH1VCNMiKMczh3UBzxgUb0hb5TsZMOOXqIw=
+	t=1760355960; cv=none; b=Uo1SLNhBW3OQlywuMAvNE70S+Yx5CG0SBi1h6FA5Dk3cbdQZeUedIydUMOzKxVgvkEhIyEAtA66bVk3Oapo6WtDTpHMLMsk6J9ImGp/hFFrZoKMtIQbyjKhq5VNNQiJsZd6jXFa5MwhRnHohMdy6/FNE+yez9zDrBsb7p94LbBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760355950; c=relaxed/simple;
-	bh=9yjSFGu//eR/kP2+hxgWzDr/19xWAAfzpi7PgiKYT6Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CLU8sGYYNYQ8Ix5Q7HdDIC/O9wut5yr5TOsiAkUHtuytLJq0T+TvnOJVZNYLfAsntYNI72SXTW0xexms8Hb93XB5JBzadV+StEsx9GSKgPoh8uw1lNcYqYqZx+Ft28T6QLBTrnRYQ5JZpdro+HntKKbaBTneRY6c0Fjb45FH1V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IufWgM9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496D3C4CEE7;
-	Mon, 13 Oct 2025 11:45:48 +0000 (UTC)
+	s=arc-20240116; t=1760355960; c=relaxed/simple;
+	bh=/53ED3EwKP16ijAi1Fbn54EF4/catrtkFCnTMCPOa7w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ClBO49ZLwbU+J17zxI3sxBbwDUBziQKe8ymB9KEOF3qa64w8saEm0SGUUYx/Cs+an5CslSA8Em+nOBazwPDmw6i0wrIjAI3f+f+uNCqqh1fPMj//eM9pEnT38SrIyBMetALfNv/JHz+pOe9TuXKtwSAYldcDUEOQd5ERDF5sW5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CABqVTn5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2E8C4CEE7;
+	Mon, 13 Oct 2025 11:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760355948;
-	bh=9yjSFGu//eR/kP2+hxgWzDr/19xWAAfzpi7PgiKYT6Y=;
+	s=korg; t=1760355959;
+	bh=/53ED3EwKP16ijAi1Fbn54EF4/catrtkFCnTMCPOa7w=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IufWgM9oVUtqTz61FIPXeMUeYdhXq0MzsCxUXo+c77+YBkhkhfxRae0NEs6jzbGi1
-	 CanuXNq+cSKPOCIqxSOCYKLcbs+nfdp/drz9nPRUsxT8MfVIdSGNb4Gep7Y1FRNjU8
-	 piqJDxn6gt3rqH8GSdBc7eUty36AaKO6Bbu/jcXE=
-Subject: FAILED: patch "[PATCH] misc: fastrpc: Save actual DMA size in fastrpc_map structure" failed to apply to 5.4-stable tree
-To: quic_lxu5@quicinc.com,dmitry.baryshkov@linaro.org,dmitry.baryshkov@oss.qualcomm.com,ekansh.gupta@oss.qualcomm.com,gregkh@linuxfoundation.org,srini@kernel.org
+	b=CABqVTn5vyo2NQue8UrmuFX3RcA00lVDSLVOq8pvsa7xNZiPc0lAN2xjx4JZ5BAbw
+	 iF56H972ofbJCvwD4eT+w40uK7XUrlOsVTtfY6NfIAQR66vvzKe4J2v5I02pO5OCiq
+	 rdG9C/67g4Xna2GS461yeDjW07G++3/+eNPCDA8I=
+Subject: FAILED: patch "[PATCH] misc: fastrpc: Fix fastrpc_map_lookup operation" failed to apply to 5.15-stable tree
+To: quic_lxu5@quicinc.com,dmitry.baryshkov@oss.qualcomm.com,ekansh.gupta@oss.qualcomm.com,gregkh@linuxfoundation.org,srini@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Oct 2025 13:45:31 +0200
-Message-ID: <2025101331-obtain-numerate-1cfd@gregkh>
+Date: Mon, 13 Oct 2025 13:45:47 +0200
+Message-ID: <2025101347-concept-litigate-de3c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8b5b456222fd604079b5cf2af1f25ad690f54a25
+git cherry-pick -x 9031626ade38b092b72638dfe0c6ffce8d8acd43
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101331-obtain-numerate-1cfd@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101347-concept-litigate-de3c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,111 +77,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8b5b456222fd604079b5cf2af1f25ad690f54a25 Mon Sep 17 00:00:00 2001
+From 9031626ade38b092b72638dfe0c6ffce8d8acd43 Mon Sep 17 00:00:00 2001
 From: Ling Xu <quic_lxu5@quicinc.com>
-Date: Fri, 12 Sep 2025 14:12:33 +0100
-Subject: [PATCH] misc: fastrpc: Save actual DMA size in fastrpc_map structure
+Date: Fri, 12 Sep 2025 14:12:34 +0100
+Subject: [PATCH] misc: fastrpc: Fix fastrpc_map_lookup operation
 
-For user passed fd buffer, map is created using DMA calls. The
-map related information is stored in fastrpc_map structure. The
-actual DMA size is not stored in the structure. Store the actual
-size of buffer and check it against the user passed size.
+Fastrpc driver creates maps for user allocated fd buffers. Before
+creating a new map, the map list is checked for any already existing
+maps using map fd. Checking with just map fd is not sufficient as the
+user can pass offsetted buffer with less size when the map is created
+and then a larger size the next time which could result in memory
+issues. Check for dma_buf object also when looking up for the map.
 
 Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
 Cc: stable@kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
 Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
 Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250912131236.303102-2-srini@kernel.org
+Link: https://lore.kernel.org/r/20250912131236.303102-3-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index 53e88a1bc430..52571916acd4 100644
+index 52571916acd4..1815b1e0c607 100644
 --- a/drivers/misc/fastrpc.c
 +++ b/drivers/misc/fastrpc.c
-@@ -323,11 +323,11 @@ static void fastrpc_free_map(struct kref *ref)
- 
- 			perm.vmid = QCOM_SCM_VMID_HLOS;
- 			perm.perm = QCOM_SCM_PERM_RWX;
--			err = qcom_scm_assign_mem(map->phys, map->size,
-+			err = qcom_scm_assign_mem(map->phys, map->len,
- 				&src_perms, &perm, 1);
- 			if (err) {
- 				dev_err(map->fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d\n",
--						map->phys, map->size, err);
-+						map->phys, map->len, err);
- 				return;
- 			}
- 		}
-@@ -758,7 +758,8 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
+@@ -367,11 +367,16 @@ static int fastrpc_map_lookup(struct fastrpc_user *fl, int fd,
+ {
  	struct fastrpc_session_ctx *sess = fl->sctx;
  	struct fastrpc_map *map = NULL;
- 	struct sg_table *table;
--	int err = 0;
-+	struct scatterlist *sgl = NULL;
-+	int err = 0, sgl_index = 0;
++	struct dma_buf *buf;
+ 	int ret = -ENOENT;
  
- 	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
- 		return 0;
-@@ -798,7 +799,15 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 		map->phys = sg_dma_address(map->table->sgl);
- 		map->phys += ((u64)fl->sctx->sid << 32);
- 	}
--	map->size = len;
-+	for_each_sg(map->table->sgl, sgl, map->table->nents,
-+		sgl_index)
-+		map->size += sg_dma_len(sgl);
-+	if (len > map->size) {
-+		dev_dbg(sess->dev, "Bad size passed len 0x%llx map size 0x%llx\n",
-+				len, map->size);
-+		err = -EINVAL;
-+		goto map_err;
-+	}
- 	map->va = sg_virt(map->table->sgl);
- 	map->len = len;
++	buf = dma_buf_get(fd);
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
+ 	spin_lock(&fl->lock);
+ 	list_for_each_entry(map, &fl->maps, node) {
+-		if (map->fd != fd)
++		if (map->fd != fd || map->buf != buf)
+ 			continue;
  
-@@ -815,10 +824,10 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 		dst_perms[1].vmid = fl->cctx->vmperms[0].vmid;
- 		dst_perms[1].perm = QCOM_SCM_PERM_RWX;
- 		map->attr = attr;
--		err = qcom_scm_assign_mem(map->phys, (u64)map->size, &src_perms, dst_perms, 2);
-+		err = qcom_scm_assign_mem(map->phys, (u64)map->len, &src_perms, dst_perms, 2);
- 		if (err) {
- 			dev_err(sess->dev, "Failed to assign memory with phys 0x%llx size 0x%llx err %d\n",
--					map->phys, map->size, err);
-+					map->phys, map->len, err);
- 			goto map_err;
- 		}
- 	}
-@@ -2046,7 +2055,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
- 	args[0].length = sizeof(req_msg);
- 
- 	pages.addr = map->phys;
--	pages.size = map->size;
-+	pages.size = map->len;
- 
- 	args[1].ptr = (u64) (uintptr_t) &pages;
- 	args[1].length = sizeof(pages);
-@@ -2061,7 +2070,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
- 	err = fastrpc_internal_invoke(fl, true, FASTRPC_INIT_HANDLE, sc, &args[0]);
- 	if (err) {
- 		dev_err(dev, "mem mmap error, fd %d, vaddr %llx, size %lld\n",
--			req.fd, req.vaddrin, map->size);
-+			req.fd, req.vaddrin, map->len);
- 		goto err_invoke;
- 	}
- 
-@@ -2074,7 +2083,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
- 	if (copy_to_user((void __user *)argp, &req, sizeof(req))) {
- 		/* unmap the memory and release the buffer */
- 		req_unmap.vaddr = (uintptr_t) rsp_msg.vaddr;
--		req_unmap.length = map->size;
-+		req_unmap.length = map->len;
- 		fastrpc_req_mem_unmap_impl(fl, &req_unmap);
- 		return -EFAULT;
- 	}
+ 		if (take_ref) {
 
 
