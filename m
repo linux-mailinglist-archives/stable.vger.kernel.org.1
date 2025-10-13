@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C775DBD455E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:36:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA875BD40EF
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53C2B3E4B73
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17331884334
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFC1312829;
-	Mon, 13 Oct 2025 15:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F043730AD0C;
+	Mon, 13 Oct 2025 15:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCwVUV7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8pOzXEY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A7030CD80;
-	Mon, 13 Oct 2025 15:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A528B30ACEA;
+	Mon, 13 Oct 2025 15:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368318; cv=none; b=n8Op+It/E0d7Glftk5Tuy2lwDrZyM4RyngYitHcQRf0FDGJB4lnZk8WCLETOyDsj13ql8sEp5P97K8TBgH5zIcrWGVq47OjTPO0OTHvRONyIOfQqiSuD8NgcM5aDG3BH8cfmOS60y7dLQTuNBbPysBZe6CK1bwgmaGGAI3gCNr4=
+	t=1760367707; cv=none; b=WSV3E3RWm/BKYNjVoIsNHAuhuwKd5QY8cx/8V7PGzBHQL8ewZy8T7C2n2jb9onw8PL+umBzRf6Qz6Exu9HABpTG8gp5tjgWKwCtiorKfimAUax6StfG1H2JeZ6Td3j/fhkB5d6YtX+Avw4LkthHtwH2yt5UGuAHUZLi+N2uQNk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368318; c=relaxed/simple;
-	bh=6oSO/sy2EdHRTMuSqU69ai3TvlQTs9Ce+Z7UFzMXIDQ=;
+	s=arc-20240116; t=1760367707; c=relaxed/simple;
+	bh=Kx1g2Z7eOXqKUgBDW6g8yU+bdPj9AiBWyDXo6wOyJNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GS0ldWpsi+6+RsuHMA6b+r/+WsSiJ0ycPq2sDyAhE3RdJSFGo9O2kW/uNb3bdi18JH7X/bvJvU7mRRBaPqvVJEnnagxRWSs7gnMXKUg56DsVHvXcOGMG97z6AsI9vGiigm6A8Ho5u0Qyqul8sYvzHO8paf1/g7UptDyAbfELwG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCwVUV7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EACC4CEE7;
-	Mon, 13 Oct 2025 15:11:57 +0000 (UTC)
+	 MIME-Version; b=O+Us2oDty2JjtZ3BpNtDutg2lsOo4TeNfKlt6Yd+pGBO9re+M/IPPEryP27LiaYOzSLbs7M0YQ8ZeztL8wfKX70L3rjnEWxu8OL9mrhcXCnKwnBLlEUge7W1vc7mpupJkHUpkBRJkGO6sGj1KnfBKgkl8lZNKQ2xYOoa5y8sjaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8pOzXEY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302DDC4CEE7;
+	Mon, 13 Oct 2025 15:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368317;
-	bh=6oSO/sy2EdHRTMuSqU69ai3TvlQTs9Ce+Z7UFzMXIDQ=;
+	s=korg; t=1760367707;
+	bh=Kx1g2Z7eOXqKUgBDW6g8yU+bdPj9AiBWyDXo6wOyJNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCwVUV7OnlUOgpRnKgVEl2Uj+iOPVj2gIYEoxxIek9N+Q+ecLLGBytXpJyzYZpZoj
-	 EFu/7M1iRFBpL7xMXS63GydVfUaz1hioJwcyJHF+Ns1leM4P5qcUGca665wtCDH0wx
-	 Vqzskkz+hanbWYfm4OZdegEyl9dHmNa7Yrj8oqgM=
+	b=f8pOzXEY36OtX0KkTXb84tnp+j9mvN4J00hQsdrN5uHfDqqgreYatJHLorYzgo/MO
+	 xp4wlVG4T7XEBadVQGxjvwUipt8D2MGtinbMTbuFH+0FZrfPyFDIdUGIbk6GJFs28M
+	 aZMhABwSxhANXqklPyAvDjH9r18v9ZUIMYF3HIn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Liao Yuanhong <liaoyuanhong@vivo.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/262] drm/amd/pm: Treat zero vblank time as too short in si_dpm (v3)
+Subject: [PATCH 6.6 071/196] drm/amd/display: Remove redundant semicolons
 Date: Mon, 13 Oct 2025 16:44:22 +0200
-Message-ID: <20251013144330.446999296@linuxfoundation.org>
+Message-ID: <20251013144317.760737811@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Liao Yuanhong <liaoyuanhong@vivo.com>
 
-[ Upstream commit 9003a0746864f39a0ef72bd45f8e1ad85d930d67 ]
+[ Upstream commit 90b810dd859c0df9db2290da1ac5842e5f031267 ]
 
-Some parts of the code base expect that MCLK switching is turned
-off when the vblank time is set to zero.
+Remove unnecessary semicolons.
 
-According to pp_pm_compute_clocks the non-DC code has issues
-with MCLK switching with refresh rates over 120 Hz.
-
-v3:
-Add code comment to explain this better.
-Add an if statement instead of changing the switch_limit.
-
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Fixes: dda4fb85e433 ("drm/amd/display: DML changes for DCN32/321")
+Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c    | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index a8fe6aa6845eb..76fc08cda7480 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3066,7 +3066,13 @@ static bool si_dpm_vblank_too_short(void *handle)
- 	/* we never hit the non-gddr5 limit so disable it */
- 	u32 switch_limit = adev->gmc.vram_type == AMDGPU_VRAM_TYPE_GDDR5 ? 450 : 0;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
+index 9ba6cb67655f4..6c75aa82327ac 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_rq_dlg_calc_32.c
+@@ -139,7 +139,6 @@ void dml32_rq_dlg_get_rq_reg(display_rq_regs_st *rq_regs,
+ 	if (dual_plane) {
+ 		unsigned int p1_pte_row_height_linear = get_dpte_row_height_linear_c(mode_lib, e2e_pipe_param,
+ 				num_pipes, pipe_idx);
+-		;
+ 		if (src->sw_mode == dm_sw_linear)
+ 			ASSERT(p1_pte_row_height_linear >= 8);
  
--	if (vblank_time < switch_limit)
-+	/* Consider zero vblank time too short and disable MCLK switching.
-+	 * Note that the vblank time is set to maximum when no displays are attached,
-+	 * so we'll still enable MCLK switching in that case.
-+	 */
-+	if (vblank_time == 0)
-+		return true;
-+	else if (vblank_time < switch_limit)
- 		return true;
- 	else
- 		return false;
 -- 
 2.51.0
 
