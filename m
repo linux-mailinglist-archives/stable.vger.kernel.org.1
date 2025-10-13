@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-184334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7505ABD3F7B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:15:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6C2BD40EB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535193E2935
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E585E188D5A2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA52C309F00;
-	Mon, 13 Oct 2025 14:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3003F30AAC5;
+	Mon, 13 Oct 2025 15:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVkx5Rg7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVUt/RcD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783B624A06A;
-	Mon, 13 Oct 2025 14:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D513630AD05;
+	Mon, 13 Oct 2025 15:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367135; cv=none; b=IhaHlrqbsU6k8jIbS63AuexHKkpgv9QPfhZcYdW2DRhJMQF3GGSU1TI0LciWAKbnSdD8Q+HF+N7qKGc63GsEXxV61zuvug6C2D33SenzvRIwg12CatoRIKv+M6ftqvkhMJI3G2r8e8dy3a/qMYD/1inQDjANusbVI1KPPtg5WfI=
+	t=1760367701; cv=none; b=uYp/RR9QuCwv0Q1Zp+oknLpVqJID6J14KL22s2BouLL/pMPqdVxPxhRCvwBut3UP5Nw5Oivs7piXyXFIc1Z3U/qkCOshzxS3H91os1SLuWe/6fn+bxSeONC+P1rpL2cvOcW2lFmv+JtXkao43uIYXrRBRArJM2nTzywHAiLcF9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367135; c=relaxed/simple;
-	bh=Mw9eMDO5h2Vp73by5rD1idxLm45V3FlfKqeQhsrk1go=;
+	s=arc-20240116; t=1760367701; c=relaxed/simple;
+	bh=8s9NtSgAbEprt+ssMyIhenXz2r3Sp+cOYqQc9ax6Wso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EdopEVv5Zz7Al35iOCn1TKM/i5Y7c7tFfpWyJgdY6Hl+v/M30q8cBFpG3IXXE0la1R9FvKL76i3PI6cs77QJD1Pn2XiDVu3nEhhvd6xe80PW+XW47GlNEy1e6pA1K9w1+G+qHk1XWMR5+FnQid265O9rlYnVnTsXgETn5+jYVmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVkx5Rg7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16E7C4CEE7;
-	Mon, 13 Oct 2025 14:52:14 +0000 (UTC)
+	 MIME-Version; b=pPcinf8mvUHahrbgU7WDiO3dKxifnPipsVDIgZMMRLvPrxhHFl6OMbEJAXnydvY1jGl/Q7vu1h+GRrgFvsOc+0ugUR3GWz+Fwm+WbZZQZlwHp+P3V0OAhw83HEUM9GmtIztriuWb3Ungg2V4FB9JZk4s6OKT9IxBvDvQXArF5iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVUt/RcD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5150EC2BCB0;
+	Mon, 13 Oct 2025 15:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367135;
-	bh=Mw9eMDO5h2Vp73by5rD1idxLm45V3FlfKqeQhsrk1go=;
+	s=korg; t=1760367701;
+	bh=8s9NtSgAbEprt+ssMyIhenXz2r3Sp+cOYqQc9ax6Wso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVkx5Rg7zaJbnlvaNaYAxFLOAIkX/Nyq+RVVUQy1ebd+RTX+WVR2HsMHKBSo3+U3N
-	 Fsj/Kpgye5udgsJrTbRm+G5bRW+kEPBC7pkMWc6qg74b1/ifs6dkwMo1LblP4OlVLj
-	 owaC4E4tURptrAOm+OjBofSFRhP7Ce/JMHKMKWZI=
+	b=HVUt/RcDf0w0OhJX+jKcJQfahg81HGXotFGc2H52CUs3ce75GRTzU54FYQIScBP4L
+	 bLg/euAsZ1FW4um6hEyiKmq9rheJyYGkUQzdc6ez1Vil6811vLjcWlLe6SwtU63IyP
+	 gLLQg6Qwy9TU7xaj7RoKlSO02h8mgoT8Q6D1/hgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Leilk.Liu" <leilk.liu@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Melody Olvera <quic_molvera@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Souradeep Chowdhury <quic_schowdhu@quicinc.com>,
+	Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/196] i2c: mediatek: fix potential incorrect use of I2C_MASTER_WRRD
+Subject: [PATCH 6.6 069/196] usb: misc: qcom_eud: Access EUD_MODE_MANAGER2 through secure calls
 Date: Mon, 13 Oct 2025 16:44:20 +0200
-Message-ID: <20251013144317.719721984@linuxfoundation.org>
+Message-ID: <20251013144317.689582706@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +63,147 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leilk.Liu <leilk.liu@mediatek.com>
+From: Komal Bajaj <komal.bajaj@oss.qualcomm.com>
 
-[ Upstream commit b492183652808e0f389272bf63dc836241b287ff ]
+[ Upstream commit c0485e864a2eaa1d5a84c71e573dd236d0e885ae ]
 
-The old IC does not support the I2C_MASTER_WRRD (write-then-read)
-function, but the current code’s handling of i2c->auto_restart may
-potentially lead to entering the I2C_MASTER_WRRD software flow,
-resulting in unexpected bugs.
+EUD_MODE_MANAGER2 register is mapped to a memory region that is marked
+as read-only for operating system running at EL1, enforcing access
+restrictions that prohibit direct memory-mapped writes via writel().
 
-Instead of repurposing the auto_restart flag, add a separate flag
-to signal I2C_MASTER_WRRD operations.
+Attempts to write to this region from HLOS can result in silent failures
+or memory access violations, particularly when toggling EUD (Embedded
+USB Debugger) state. To ensure secure register access, modify the driver
+to use qcom_scm_io_writel(), which routes the write operation to Qualcomm
+Secure Channel Monitor (SCM). SCM has the necessary permissions to access
+protected memory regions, enabling reliable control over EUD state.
 
-Also fix handling of msgs. If the operation (i2c->op) is
-I2C_MASTER_WRRD, then the msgs pointer is incremented by 2.
-For all other operations, msgs is simply incremented by 1.
+SC7280, the only user of EUD is also affected, indicating that this could
+never have worked on a properly fused device.
 
-Fixes: b2ed11e224a2 ("I2C: mediatek: Add driver for MediaTek MT8173 I2C controller")
-Signed-off-by: Leilk.Liu <leilk.liu@mediatek.com>
-Suggested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: 9a1bf58ccd44 ("usb: misc: eud: Add driver support for Embedded USB Debugger(EUD)")
+Signed-off-by: Melody Olvera <quic_molvera@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
+Signed-off-by: Komal Bajaj <komal.bajaj@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250731-eud_mode_manager_secure_access-v8-1-4a5dcbb79f41@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-mt65xx.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/usb/misc/Kconfig    |  1 +
+ drivers/usb/misc/qcom_eud.c | 33 ++++++++++++++++++++++++---------
+ 2 files changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-mt65xx.c b/drivers/i2c/busses/i2c-mt65xx.c
-index fc7bfd98156ba..38d3dff7a2614 100644
---- a/drivers/i2c/busses/i2c-mt65xx.c
-+++ b/drivers/i2c/busses/i2c-mt65xx.c
-@@ -1218,6 +1218,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+diff --git a/drivers/usb/misc/Kconfig b/drivers/usb/misc/Kconfig
+index 99b15b77dfd57..fe1b5fec1dfca 100644
+--- a/drivers/usb/misc/Kconfig
++++ b/drivers/usb/misc/Kconfig
+@@ -147,6 +147,7 @@ config USB_APPLEDISPLAY
+ config USB_QCOM_EUD
+ 	tristate "QCOM Embedded USB Debugger(EUD) Driver"
+ 	depends on ARCH_QCOM || COMPILE_TEST
++	select QCOM_SCM
+ 	select USB_ROLE_SWITCH
+ 	help
+ 	  This module enables support for Qualcomm Technologies, Inc.
+diff --git a/drivers/usb/misc/qcom_eud.c b/drivers/usb/misc/qcom_eud.c
+index 7f371ea1248c3..cfb195a0f6ce2 100644
+--- a/drivers/usb/misc/qcom_eud.c
++++ b/drivers/usb/misc/qcom_eud.c
+@@ -15,6 +15,7 @@
+ #include <linux/slab.h>
+ #include <linux/sysfs.h>
+ #include <linux/usb/role.h>
++#include <linux/firmware/qcom/qcom_scm.h>
+ 
+ #define EUD_REG_INT1_EN_MASK	0x0024
+ #define EUD_REG_INT_STATUS_1	0x0044
+@@ -34,7 +35,7 @@ struct eud_chip {
+ 	struct device			*dev;
+ 	struct usb_role_switch		*role_sw;
+ 	void __iomem			*base;
+-	void __iomem			*mode_mgr;
++	phys_addr_t			mode_mgr;
+ 	unsigned int			int_status;
+ 	int				irq;
+ 	bool				enabled;
+@@ -43,18 +44,29 @@ struct eud_chip {
+ 
+ static int enable_eud(struct eud_chip *priv)
  {
- 	int ret;
- 	int left_num = num;
-+	bool write_then_read_en = false;
- 	struct mtk_i2c *i2c = i2c_get_adapdata(adap);
++	int ret;
++
++	ret = qcom_scm_io_writel(priv->mode_mgr + EUD_REG_EUD_EN2, 1);
++	if (ret)
++		return ret;
++
+ 	writel(EUD_ENABLE, priv->base + EUD_REG_CSR_EUD_EN);
+ 	writel(EUD_INT_VBUS | EUD_INT_SAFE_MODE,
+ 			priv->base + EUD_REG_INT1_EN_MASK);
+-	writel(1, priv->mode_mgr + EUD_REG_EUD_EN2);
  
- 	ret = clk_bulk_enable(I2C_MT65XX_CLK_MAX, i2c->clocks);
-@@ -1231,6 +1232,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
- 		if (!(msgs[0].flags & I2C_M_RD) && (msgs[1].flags & I2C_M_RD) &&
- 		    msgs[0].addr == msgs[1].addr) {
- 			i2c->auto_restart = 0;
-+			write_then_read_en = true;
- 		}
- 	}
+ 	return usb_role_switch_set_role(priv->role_sw, USB_ROLE_DEVICE);
+ }
  
-@@ -1255,12 +1257,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+-static void disable_eud(struct eud_chip *priv)
++static int disable_eud(struct eud_chip *priv)
+ {
++	int ret;
++
++	ret = qcom_scm_io_writel(priv->mode_mgr + EUD_REG_EUD_EN2, 0);
++	if (ret)
++		return ret;
++
+ 	writel(0, priv->base + EUD_REG_CSR_EUD_EN);
+-	writel(0, priv->mode_mgr + EUD_REG_EUD_EN2);
++	return 0;
+ }
+ 
+ static ssize_t enable_show(struct device *dev,
+@@ -82,11 +94,12 @@ static ssize_t enable_store(struct device *dev,
+ 			chip->enabled = enable;
  		else
- 			i2c->op = I2C_MASTER_WR;
- 
--		if (!i2c->auto_restart) {
--			if (num > 1) {
--				/* combined two messages into one transaction */
--				i2c->op = I2C_MASTER_WRRD;
--				left_num--;
--			}
-+		if (write_then_read_en) {
-+			/* combined two messages into one transaction */
-+			i2c->op = I2C_MASTER_WRRD;
-+			left_num--;
- 		}
- 
- 		/* always use DMA mode. */
-@@ -1268,7 +1268,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
- 		if (ret < 0)
- 			goto err_exit;
- 
--		msgs++;
-+		if (i2c->op == I2C_MASTER_WRRD)
-+			msgs += 2;
-+		else
-+			msgs++;
+ 			disable_eud(chip);
++
+ 	} else {
+-		disable_eud(chip);
++		ret = disable_eud(chip);
  	}
- 	/* the return value is number of executed messages */
- 	ret = num;
+ 
+-	return count;
++	return ret < 0 ? ret : count;
+ }
+ 
+ static DEVICE_ATTR_RW(enable);
+@@ -178,6 +191,7 @@ static void eud_role_switch_release(void *data)
+ static int eud_probe(struct platform_device *pdev)
+ {
+ 	struct eud_chip *chip;
++	struct resource *res;
+ 	int ret;
+ 
+ 	chip = devm_kzalloc(&pdev->dev, sizeof(*chip), GFP_KERNEL);
+@@ -200,9 +214,10 @@ static int eud_probe(struct platform_device *pdev)
+ 	if (IS_ERR(chip->base))
+ 		return PTR_ERR(chip->base);
+ 
+-	chip->mode_mgr = devm_platform_ioremap_resource(pdev, 1);
+-	if (IS_ERR(chip->mode_mgr))
+-		return PTR_ERR(chip->mode_mgr);
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	if (!res)
++		return -ENODEV;
++	chip->mode_mgr = res->start;
+ 
+ 	chip->irq = platform_get_irq(pdev, 0);
+ 	ret = devm_request_threaded_irq(&pdev->dev, chip->irq, handle_eud_irq,
 -- 
 2.51.0
 
