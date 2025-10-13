@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-184506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C8ABD4702
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:44:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6E7BD4496
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A23F74F269E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 204C440573C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E53309F0A;
-	Mon, 13 Oct 2025 15:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A73B309F00;
+	Mon, 13 Oct 2025 15:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLraV/Wd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NToomgBB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CBA309F00;
-	Mon, 13 Oct 2025 15:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0735C27A477;
+	Mon, 13 Oct 2025 15:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367633; cv=none; b=aZ7rY2/dgb1nGH1Rj73/uCREhvSqhaE9WhEw6hrUbhWaobd82dP+pMhMzqTeCdPuNMPkBiN00vLqUs9Cy5hg8x2aZFGIU7QCO953DRu7/440ypQ+vfVBNf3ZoWW13owf/rYutOpI/b3yvRm5BKwmyJ9kcirJ6u8UA2f+u8rrrNc=
+	t=1760367636; cv=none; b=dK81++/Oji8Pdwf2W1/8iU1iImLUTTlX7X2+PQ+sSwLAcnGrIzNadFeYGJXSN/uypefIm0Ml9R0HDf+A9OGhmcFy/OVHSR5xEZuimzvIacekQJL3e03/fWO0RdPVUMRviErOPwI6AWC1T/vRu7LNgdplPd5xLs7m8DGK65FYyTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367633; c=relaxed/simple;
-	bh=QHw4dncETxSk9SU8m2ykMOAuwpcnd7U4iGlTygG61ZI=;
+	s=arc-20240116; t=1760367636; c=relaxed/simple;
+	bh=we3SVKs0k+edK3JWQ4+4fknKuiZNleTxoALk8wQXEfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOOj7rK/j8o1fiQgMsCi9hIZeX2PKkGeF6DcmrVMGYoC94NmR2s9T7scyFlAWv+2lKD48zmR7OzFqt83wW0uH1saMbG/819sAE3ofiHlklL+ZdtQ/4BFXK32bbeuNFyQpBjXevIXxVnBkdFW/dv/QmmbY5fkpSgb26dAoweJFU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLraV/Wd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA46C4CEFE;
-	Mon, 13 Oct 2025 15:00:32 +0000 (UTC)
+	 MIME-Version; b=JHj+IMWTlFJU0uCaGN10HBtQ95ZJJnbNCSeybFGepGGZGQAlECGTTm4+oBNDQKdXSv9MiCSg7KO4YT8iHGlYA73MDtcYdZs+K4vpV6aXXDzua5AEEChbVzVuMKFEp/lh34gvwaCAA2zhxsp80BuK6Mvhr6tXLJMVbZf6S+QjYcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NToomgBB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32776C4CEE7;
+	Mon, 13 Oct 2025 15:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367632;
-	bh=QHw4dncETxSk9SU8m2ykMOAuwpcnd7U4iGlTygG61ZI=;
+	s=korg; t=1760367635;
+	bh=we3SVKs0k+edK3JWQ4+4fknKuiZNleTxoALk8wQXEfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLraV/WdfUC+omYQf2+ZgDAklWEClhF76W1dQn0WB8iljwEqjTcH2/Wm7yiQlfDFD
-	 sxUjsB4BnW+6YsprV11yPTvQmpqtgqmyvYFeC6ETZ6Qk9jwbavEaZypPx4CNjhKDxP
-	 Y3kAANXC2ApLh8XpX3bTBg4PQWhOv0wg5qISXesA=
+	b=NToomgBB7ck6PNvK9hRstdClmUCVz71GoV7SVtYz70jd3Wh8LCQDRkpjWBKdlPT4G
+	 xRRbUivnjPkXYs0vPoHDZSDxv6eHFHC3Yq9l7G+P7WqphSPZMUN4NIRyWZhWHy1ZFx
+	 RH7OGQb2KHWgK/SlVru/J+yqgcNBWEPdF9kM+dGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chenghai Huang <huangchenghai2@huawei.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/196] crypto: hisilicon/zip - remove unnecessary validation for high-performance mode configurations
-Date: Mon, 13 Oct 2025 16:44:31 +0200
-Message-ID: <20251013144318.210274886@linuxfoundation.org>
+Subject: [PATCH 6.6 081/196] crypto: hisilicon - re-enable address prefetch after device resuming
+Date: Mon, 13 Oct 2025 16:44:32 +0200
+Message-ID: <20251013144318.246134297@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
 References: <20251013144315.184275491@linuxfoundation.org>
@@ -68,62 +68,196 @@ Content-Transfer-Encoding: 8bit
 
 From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit d4e081510471e79171c4e0a11f6cb608e49bc082 ]
+[ Upstream commit 0dcd21443d9308ed88909d35aa0490c3fc680a47 ]
 
-When configuring the high-performance mode register, there is no
-need to verify whether the register has been successfully
-enabled, as there is no possibility of a write failure for this
-register.
+When the device resumes from a suspended state, it will revert to its
+initial state and requires re-enabling. Currently, the address prefetch
+function is not re-enabled after device resuming. Move the address prefetch
+enable to the initialization process. In this way, the address prefetch
+can be enabled when the device resumes by calling the initialization
+process.
 
-Fixes: a9864bae1806 ("crypto: hisilicon/zip - add zip comp high perf mode configuration")
+Fixes: 607c191b371d ("crypto: hisilicon - support runtime PM for accelerator device")
 Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/zip/zip_main.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/crypto/hisilicon/hpre/hpre_main.c |  3 +-
+ drivers/crypto/hisilicon/qm.c             |  3 -
+ drivers/crypto/hisilicon/sec2/sec_main.c  | 80 +++++++++++------------
+ drivers/crypto/hisilicon/zip/zip_main.c   |  5 +-
+ 4 files changed, 43 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/zip/zip_main.c b/drivers/crypto/hisilicon/zip/zip_main.c
-index 66e553115adfd..6e419c5165cb4 100644
---- a/drivers/crypto/hisilicon/zip/zip_main.c
-+++ b/drivers/crypto/hisilicon/zip/zip_main.c
-@@ -469,10 +469,9 @@ bool hisi_zip_alg_support(struct hisi_qm *qm, u32 alg)
- 	return false;
- }
+diff --git a/drivers/crypto/hisilicon/hpre/hpre_main.c b/drivers/crypto/hisilicon/hpre/hpre_main.c
+index 762a2a54ca821..e3d113334d4e4 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre_main.c
++++ b/drivers/crypto/hisilicon/hpre/hpre_main.c
+@@ -689,6 +689,7 @@ static int hpre_set_user_domain_and_cache(struct hisi_qm *qm)
  
--static int hisi_zip_set_high_perf(struct hisi_qm *qm)
-+static void hisi_zip_set_high_perf(struct hisi_qm *qm)
- {
- 	u32 val;
--	int ret;
+ 	/* Config data buffer pasid needed by Kunpeng 920 */
+ 	hpre_config_pasid(qm);
++	hpre_open_sva_prefetch(qm);
  
- 	val = readl_relaxed(qm->io_base + HZIP_HIGH_PERF_OFFSET);
- 	if (perf_mode == HZIP_HIGH_COMP_PERF)
-@@ -482,13 +481,6 @@ static int hisi_zip_set_high_perf(struct hisi_qm *qm)
+ 	hpre_enable_clock_gate(qm);
  
- 	/* Set perf mode */
- 	writel(val, qm->io_base + HZIP_HIGH_PERF_OFFSET);
--	ret = readl_relaxed_poll_timeout(qm->io_base + HZIP_HIGH_PERF_OFFSET,
--					 val, val == perf_mode, HZIP_DELAY_1_US,
--					 HZIP_POLL_TIMEOUT_US);
--	if (ret)
--		pci_err(qm->pdev, "failed to set perf mode\n");
--
--	return ret;
- }
- 
- static void hisi_zip_open_sva_prefetch(struct hisi_qm *qm)
-@@ -1180,9 +1172,7 @@ static int hisi_zip_pf_probe_init(struct hisi_zip *hisi_zip)
+@@ -1366,8 +1367,6 @@ static int hpre_pf_probe_init(struct hpre *hpre)
  	if (ret)
  		return ret;
  
--	ret = hisi_zip_set_high_perf(qm);
--	if (ret)
--		return ret;
-+	hisi_zip_set_high_perf(qm);
- 
- 	hisi_zip_open_sva_prefetch(qm);
+-	hpre_open_sva_prefetch(qm);
+-
  	hisi_qm_dev_err_init(qm);
+ 	ret = hpre_show_last_regs_init(qm);
+ 	if (ret)
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index 7921409791fb0..183885619eb8b 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -4363,9 +4363,6 @@ static void qm_restart_prepare(struct hisi_qm *qm)
+ {
+ 	u32 value;
+ 
+-	if (qm->err_ini->open_sva_prefetch)
+-		qm->err_ini->open_sva_prefetch(qm);
+-
+ 	if (qm->ver >= QM_HW_V3)
+ 		return;
+ 
+diff --git a/drivers/crypto/hisilicon/sec2/sec_main.c b/drivers/crypto/hisilicon/sec2/sec_main.c
+index 6aaaaf784ddc0..064fbc8db16fc 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_main.c
++++ b/drivers/crypto/hisilicon/sec2/sec_main.c
+@@ -436,6 +436,45 @@ static void sec_set_endian(struct hisi_qm *qm)
+ 	writel_relaxed(reg, qm->io_base + SEC_CONTROL_REG);
+ }
+ 
++static void sec_close_sva_prefetch(struct hisi_qm *qm)
++{
++	u32 val;
++	int ret;
++
++	if (!test_bit(QM_SUPPORT_SVA_PREFETCH, &qm->caps))
++		return;
++
++	val = readl_relaxed(qm->io_base + SEC_PREFETCH_CFG);
++	val |= SEC_PREFETCH_DISABLE;
++	writel(val, qm->io_base + SEC_PREFETCH_CFG);
++
++	ret = readl_relaxed_poll_timeout(qm->io_base + SEC_SVA_TRANS,
++					 val, !(val & SEC_SVA_DISABLE_READY),
++					 SEC_DELAY_10_US, SEC_POLL_TIMEOUT_US);
++	if (ret)
++		pci_err(qm->pdev, "failed to close sva prefetch\n");
++}
++
++static void sec_open_sva_prefetch(struct hisi_qm *qm)
++{
++	u32 val;
++	int ret;
++
++	if (!test_bit(QM_SUPPORT_SVA_PREFETCH, &qm->caps))
++		return;
++
++	/* Enable prefetch */
++	val = readl_relaxed(qm->io_base + SEC_PREFETCH_CFG);
++	val &= SEC_PREFETCH_ENABLE;
++	writel(val, qm->io_base + SEC_PREFETCH_CFG);
++
++	ret = readl_relaxed_poll_timeout(qm->io_base + SEC_PREFETCH_CFG,
++					 val, !(val & SEC_PREFETCH_DISABLE),
++					 SEC_DELAY_10_US, SEC_POLL_TIMEOUT_US);
++	if (ret)
++		pci_err(qm->pdev, "failed to open sva prefetch\n");
++}
++
+ static void sec_engine_sva_config(struct hisi_qm *qm)
+ {
+ 	u32 reg;
+@@ -469,45 +508,7 @@ static void sec_engine_sva_config(struct hisi_qm *qm)
+ 		writel_relaxed(reg, qm->io_base +
+ 				SEC_INTERFACE_USER_CTRL1_REG);
+ 	}
+-}
+-
+-static void sec_open_sva_prefetch(struct hisi_qm *qm)
+-{
+-	u32 val;
+-	int ret;
+-
+-	if (!test_bit(QM_SUPPORT_SVA_PREFETCH, &qm->caps))
+-		return;
+-
+-	/* Enable prefetch */
+-	val = readl_relaxed(qm->io_base + SEC_PREFETCH_CFG);
+-	val &= SEC_PREFETCH_ENABLE;
+-	writel(val, qm->io_base + SEC_PREFETCH_CFG);
+-
+-	ret = readl_relaxed_poll_timeout(qm->io_base + SEC_PREFETCH_CFG,
+-					 val, !(val & SEC_PREFETCH_DISABLE),
+-					 SEC_DELAY_10_US, SEC_POLL_TIMEOUT_US);
+-	if (ret)
+-		pci_err(qm->pdev, "failed to open sva prefetch\n");
+-}
+-
+-static void sec_close_sva_prefetch(struct hisi_qm *qm)
+-{
+-	u32 val;
+-	int ret;
+-
+-	if (!test_bit(QM_SUPPORT_SVA_PREFETCH, &qm->caps))
+-		return;
+-
+-	val = readl_relaxed(qm->io_base + SEC_PREFETCH_CFG);
+-	val |= SEC_PREFETCH_DISABLE;
+-	writel(val, qm->io_base + SEC_PREFETCH_CFG);
+-
+-	ret = readl_relaxed_poll_timeout(qm->io_base + SEC_SVA_TRANS,
+-					 val, !(val & SEC_SVA_DISABLE_READY),
+-					 SEC_DELAY_10_US, SEC_POLL_TIMEOUT_US);
+-	if (ret)
+-		pci_err(qm->pdev, "failed to close sva prefetch\n");
++	sec_open_sva_prefetch(qm);
+ }
+ 
+ static void sec_enable_clock_gate(struct hisi_qm *qm)
+@@ -1090,7 +1091,6 @@ static int sec_pf_probe_init(struct sec_dev *sec)
+ 	if (ret)
+ 		return ret;
+ 
+-	sec_open_sva_prefetch(qm);
+ 	hisi_qm_dev_err_init(qm);
+ 	sec_debug_regs_clear(qm);
+ 	ret = sec_show_last_regs_init(qm);
+diff --git a/drivers/crypto/hisilicon/zip/zip_main.c b/drivers/crypto/hisilicon/zip/zip_main.c
+index 6e419c5165cb4..b70aa6032874e 100644
+--- a/drivers/crypto/hisilicon/zip/zip_main.c
++++ b/drivers/crypto/hisilicon/zip/zip_main.c
+@@ -577,6 +577,7 @@ static int hisi_zip_set_user_domain_and_cache(struct hisi_qm *qm)
+ 		writel(AXUSER_BASE, base + HZIP_DATA_WUSER_32_63);
+ 		writel(AXUSER_BASE, base + HZIP_SGL_RUSER_32_63);
+ 	}
++	hisi_zip_open_sva_prefetch(qm);
+ 
+ 	/* let's open all compression/decompression cores */
+ 	dcomp_bm = qm->cap_tables.dev_cap_table[ZIP_DECOMP_ENABLE_BITMAP_IDX].cap_val;
+@@ -588,6 +589,7 @@ static int hisi_zip_set_user_domain_and_cache(struct hisi_qm *qm)
+ 	       CQC_CACHE_WB_ENABLE | FIELD_PREP(SQC_CACHE_WB_THRD, 1) |
+ 	       FIELD_PREP(CQC_CACHE_WB_THRD, 1), base + QM_CACHE_CTL);
+ 
++	hisi_zip_set_high_perf(qm);
+ 	hisi_zip_enable_clock_gate(qm);
+ 
+ 	return 0;
+@@ -1172,9 +1174,6 @@ static int hisi_zip_pf_probe_init(struct hisi_zip *hisi_zip)
+ 	if (ret)
+ 		return ret;
+ 
+-	hisi_zip_set_high_perf(qm);
+-
+-	hisi_zip_open_sva_prefetch(qm);
+ 	hisi_qm_dev_err_init(qm);
+ 	hisi_zip_debug_regs_clear(qm);
+ 
 -- 
 2.51.0
 
