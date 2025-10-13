@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-184751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE02BBD41BF
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EB4BD3F8A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8A16334EF0E
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 221B64053B2
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7724E30C617;
-	Mon, 13 Oct 2025 15:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2773309EE6;
+	Mon, 13 Oct 2025 14:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eev3VRcd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rjwafhl3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3252C1EF36E;
-	Mon, 13 Oct 2025 15:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E904226CFE;
+	Mon, 13 Oct 2025 14:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368329; cv=none; b=OR2avgt5peVRxGCeE/xc11Qinj3GcWDDf8CZqwqSFxG5aMruilaii9oP9VRRH2lRzIapWN1TuLEsWtpsFy2Skkg+M8v1Bl+OnQ2L61KcJRff56ro06bD+wcEFFTnTp6wnTctSTMEmz+CDGKJkkWD56JriaSaNwQGlYkDQwPxE0U=
+	t=1760367195; cv=none; b=MZ3bP+xKedJICLlh3l7gf3OaKKHvuLboJS46/qmTywEMSQpUxTsTeMHaCk/+GX2cuLF8e/KWpBAV1t39Edt8R96rpUq0TN4iMBjyxZjMmFGLnHR1WklNpYj0/yGDlGeKeCvzpr98HSfARGY2kskqMO2zvOpMlVLHR7VU+Ez0bEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368329; c=relaxed/simple;
-	bh=Tl53nBm+npSWF/yKe/tkfIvjW7MdvFhRZS79rCb2260=;
+	s=arc-20240116; t=1760367195; c=relaxed/simple;
+	bh=0Kr8/VEq7Ts61TeSjkqzdNMncoIhNA0IXS7Xx4BDsMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RF9AgK4WOMvwKSPcg0X0iqA4oshP4f/8GbF7AdCwDU24MotUVq9H9SOc8MFwYlpP2GWxNzpzHuM/G7/LCsTwCViCAPid2bQyFOYajs2yiL/3LwNpQeRrEEPpo19n5uZwt/neBVa3xof0eSbi5FU8a1TqNLsdqeF2ychg+31giRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eev3VRcd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47FAC4CEE7;
-	Mon, 13 Oct 2025 15:12:08 +0000 (UTC)
+	 MIME-Version; b=UvxLVlmFw5s5EvgleF2+26kkHNsY7OzWob0Lx+HUegsfX6iEYZQGpWkDlSPHYANkA7hhsWcV1ZWNyklUHNdnjOQt7V2XGw4iF/pjxNDC1jPZnmJqOfwxOuRqcpk0UDQqWR1BcGFNMR7fiIBukTR/ZhM8s9rcWJ1oEobXjezJenQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rjwafhl3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89CFC4CEE7;
+	Mon, 13 Oct 2025 14:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368329;
-	bh=Tl53nBm+npSWF/yKe/tkfIvjW7MdvFhRZS79rCb2260=;
+	s=korg; t=1760367195;
+	bh=0Kr8/VEq7Ts61TeSjkqzdNMncoIhNA0IXS7Xx4BDsMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eev3VRcdPGeIKRiUXjvRgLJw2zsz8fUJQyAH4yX7ntL0XBFUVJf8tUKEF3RoTVlt9
-	 z3AYEDJNlxCK2nG4Za0bDZYiMO1pq+G2wqul8pDKduCzNTRqS0zcSXmc2bIXZZvmhJ
-	 tyqDDmyMcz0fww65DI4kzfDT3z4I8dfTH2fA2HI4=
+	b=Rjwafhl3NFxi1Z/aTByoajKY2yaF0QM4BDvVtWLhOJCC3s4CvL5Gc/rB/b91m5Ugu
+	 S9WBEDxtHJIFU0nIFNFLDOZQeIgqRTcxZim9DVa8qSYMGRzU63WUmD0aHuAqubrqDf
+	 Yy7UzA2fbE9HCccTtnfcT9MFkNolVy5QmRv2F38Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Kerkmann <s.kerkmann@pengutronix.de>,
-	Jeff Chen <jeff.chen_1@nxp.con>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 123/262] wifi: mwifiex: send world regulatory domain to driver
+Subject: [PATCH 6.1 092/196] usb: host: max3421-hcd: Fix error pointer dereference in probe cleanup
 Date: Mon, 13 Oct 2025 16:44:25 +0200
-Message-ID: <20251013144330.555419202@linuxfoundation.org>
+Message-ID: <20251013144318.028852569@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 56819d00bc2ebaa6308913c28680da5d896852b8 ]
+[ Upstream commit 186e8f2bdba551f3ae23396caccd452d985c23e3 ]
 
-The world regulatory domain is a restrictive subset of channel
-configurations which allows legal operation of the adapter all over the
-world. Changing to this domain should not be prevented.
+The kthread_run() function returns error pointers so the
+max3421_hcd->spi_thread pointer can be either error pointers or NULL.
+Check for both before dereferencing it.
 
-Fixes: dd4a9ac05c8e1 ("mwifiex: send regulatory domain info to firmware only if alpha2 changed") changed
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Reviewed-by: Jeff Chen <jeff.chen_1@nxp.con>
-Link: https://patch.msgid.link/20250804-fix-mwifiex-regulatory-domain-v1-1-e4715c770c4d@pengutronix.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 05dfa5c9bc37 ("usb: host: max3421-hcd: fix "spi_rd8" uses dynamic stack allocation warning")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJTMVAPtRe5H6jug@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/usb/host/max3421-hcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 59bea82eab294..8801b93eacd42 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -684,10 +684,9 @@ static void mwifiex_reg_notifier(struct wiphy *wiphy,
- 		return;
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index 8aaafba058aa9..f170741206e1d 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1925,7 +1925,7 @@ max3421_probe(struct spi_device *spi)
+ 	if (hcd) {
+ 		kfree(max3421_hcd->tx);
+ 		kfree(max3421_hcd->rx);
+-		if (max3421_hcd->spi_thread)
++		if (!IS_ERR_OR_NULL(max3421_hcd->spi_thread))
+ 			kthread_stop(max3421_hcd->spi_thread);
+ 		usb_put_hcd(hcd);
  	}
- 
--	/* Don't send world or same regdom info to firmware */
--	if (strncmp(request->alpha2, "00", 2) &&
--	    strncmp(request->alpha2, adapter->country_code,
--		    sizeof(request->alpha2))) {
-+	/* Don't send same regdom info to firmware */
-+	if (strncmp(request->alpha2, adapter->country_code,
-+		    sizeof(request->alpha2)) != 0) {
- 		memcpy(adapter->country_code, request->alpha2,
- 		       sizeof(request->alpha2));
- 		mwifiex_send_domain_info_cmd_fw(wiphy);
 -- 
 2.51.0
 
