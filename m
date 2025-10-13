@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-184728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A625FBD45F2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:39:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3AABD4051
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 485F74FCFF6
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:24:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3864118A49B6
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BEB312812;
-	Mon, 13 Oct 2025 15:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AED239562;
+	Mon, 13 Oct 2025 14:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsUu80ii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1X0ladP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301CA253954;
-	Mon, 13 Oct 2025 15:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802D425DAF0;
+	Mon, 13 Oct 2025 14:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368266; cv=none; b=eWzVTs+IRlozVAUTUpVwLI9SX10kTjiJcECqtG/H9FWrtcdPOHYqidaAedrMUSFzb9PKZmOQGVomooFI5n5AisZ8UjEWyfroxX+u1WwZ4Uh7Op1W70zge0bILEsdDMdB0Tt6/xUR7IZ48ZBTtxHXy9NufJthT4s9ypsa6ot9g7s=
+	t=1760367552; cv=none; b=ee9vgvyuvtwWapHNDViN1ow2MtZIU5EDOeZ36RtSOLwoYXdqfGFaQXzLiXkr8iS12gy3JJe56Izba7yYFU+4KbnzEXFxfK5dkGjc0yXm+9eN6Dg3Yrq/1D3UUfUq6evke1QiOw0Igu4ajth2ypfG+okfdx6gjsQKizSBNCWZrDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368266; c=relaxed/simple;
-	bh=uXMTvqsI2n/tBXURiBCa5WEMX/rk0DbmwtBSWCgPc5A=;
+	s=arc-20240116; t=1760367552; c=relaxed/simple;
+	bh=u5jr6tc03Zs8to21XcncneidQRWDx0qP/S5vWMn3aR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYecrsPyEHC1Ei0bLfXY82Q1vFjXbx1ULqzGQGtMgfyj/ssq/1z0QvqfDH7pU37+1fEoIR9zuqVUuTAevsYHUEIzqL5TGsbqKE8fegupSwyd+enUHbPGFJVSTqyxpRUun1IYq21d9ny3dvsPLBb8Xg4qBaz+KW3iuCosIVruFpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsUu80ii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0827C4CEE7;
-	Mon, 13 Oct 2025 15:11:05 +0000 (UTC)
+	 MIME-Version; b=GtHd8oBU8L/qZ5F2Zeaegvt20wodB5FlDikLhIVj7A08L++j2mSlncrOoZLJ9WJlU6Hdd2ZaRf7H4hoWRn+MjztSdTiYHWbbpCnfVRuFUJTfIcQ5e6418YjZChDiK5KGvUHnDy8DQGJEI9vmV1XJbSI1HlNS8Wq1g7ElDr9RA80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1X0ladP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DA6C4CEE7;
+	Mon, 13 Oct 2025 14:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368266;
-	bh=uXMTvqsI2n/tBXURiBCa5WEMX/rk0DbmwtBSWCgPc5A=;
+	s=korg; t=1760367552;
+	bh=u5jr6tc03Zs8to21XcncneidQRWDx0qP/S5vWMn3aR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VsUu80ii8fO1iwqi7Lkk5bPbmutagabHH+z2guBmd/2nriXlufjl2QNL4UJPrcN3L
-	 cjUWtV9vdNVE2P1GF0Fchr014NDKfeZ8NmtE8iQa0ZPhhv55Ab/YKFIEwaNq6QEn2o
-	 oiIBqHZr0GH18s/GbaZR+p2ftVvjmo2fuva3X2O8=
+	b=A1X0ladPbaTcIfVStdOfg0euFFwVBV7zGDSutPS+25fp0MTIQXBetyBagdX6Ahsoa
+	 aE2TdtpeqnufEatAUPZFM5q1ALfeYB1IzKdnBKxNAwNK89mkEubp3lZevKjrMSHAvK
+	 2usgwio4RrmEDlJgRZTlZpsVQGPTPVycuL5+373M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/262] crypto: keembay - Add missing check after sg_nents_for_len()
+Subject: [PATCH 6.6 051/196] bpf: Explicitly check accesses to bpf_sock_addr
 Date: Mon, 13 Oct 2025 16:44:02 +0200
-Message-ID: <20251013144329.732448155@linuxfoundation.org>
+Message-ID: <20251013144317.047236769@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 4e53be21dd0315c00eaf40cc8f8c0facd4d9a6b2 ]
+[ Upstream commit 6fabca2fc94d33cdf7ec102058983b086293395f ]
 
-sg_nents_for_len() returns an int which is negative in case of error.
+Syzkaller found a kernel warning on the following sock_addr program:
 
-Fixes: 472b04444cd3 ("crypto: keembay - Add Keem Bay OCS HCU driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+    0: r0 = 0
+    1: r2 = *(u32 *)(r1 +60)
+    2: exit
+
+which triggers:
+
+    verifier bug: error during ctx access conversion (0)
+
+This is happening because offset 60 in bpf_sock_addr corresponds to an
+implicit padding of 4 bytes, right after msg_src_ip4. Access to this
+padding isn't rejected in sock_addr_is_valid_access and it thus later
+fails to convert the access.
+
+This patch fixes it by explicitly checking the various fields of
+bpf_sock_addr in sock_addr_is_valid_access.
+
+I checked the other ctx structures and is_valid_access functions and
+didn't find any other similar cases. Other cases of (properly handled)
+padding are covered in new tests in a subsequent patch.
+
+Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
+Reported-by: syzbot+136ca59d411f92e821b7@syzkaller.appspotmail.com
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Closes: https://syzkaller.appspot.com/bug?extid=136ca59d411f92e821b7
+Link: https://lore.kernel.org/bpf/b58609d9490649e76e584b0361da0abd3c2c1779.1758094761.git.paul.chaignon@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/core/filter.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-index fdeca861933cb..903f31dc663e9 100644
---- a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-+++ b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-@@ -232,7 +232,7 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
- 	struct device *dev = rctx->hcu_dev->dev;
- 	unsigned int remainder = 0;
- 	unsigned int total;
--	size_t nents;
-+	int nents;
- 	size_t count;
- 	int rc;
- 	int i;
-@@ -253,6 +253,9 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
- 	/* Determine the number of scatter gather list entries to process. */
- 	nents = sg_nents_for_len(req->src, rctx->sg_data_total - remainder);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 7afb7658c3883..b6dbcef649654 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -9156,13 +9156,17 @@ static bool sock_addr_is_valid_access(int off, int size,
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCKET;
+ 		break;
+-	default:
+-		if (type == BPF_READ) {
+-			if (size != size_default)
+-				return false;
+-		} else {
++	case bpf_ctx_range(struct bpf_sock_addr, user_family):
++	case bpf_ctx_range(struct bpf_sock_addr, family):
++	case bpf_ctx_range(struct bpf_sock_addr, type):
++	case bpf_ctx_range(struct bpf_sock_addr, protocol):
++		if (type != BPF_READ)
+ 			return false;
+-		}
++		if (size != size_default)
++			return false;
++		break;
++	default:
++		return false;
+ 	}
  
-+	if (nents < 0)
-+		return nents;
-+
- 	/* If there are entries to process, map them. */
- 	if (nents) {
- 		rctx->sg_dma_nents = dma_map_sg(dev, req->src, nents,
+ 	return true;
 -- 
 2.51.0
 
