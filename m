@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-184345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DA1BD3E5B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:08:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22BFBD4597
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 330294FE9C5
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4456500302
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E5A309DC1;
-	Mon, 13 Oct 2025 14:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E180330AD0E;
+	Mon, 13 Oct 2025 15:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+Z/rKoI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaw6k8Lq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E9F2DF139;
-	Mon, 13 Oct 2025 14:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993C830ACEB;
+	Mon, 13 Oct 2025 15:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367167; cv=none; b=NCoiGM2ACGj98AsDIk5UYEFRi/Bbz6Xn10QEU9MZZlNTDF87QizCGEDnFzcZsh/uMMNgxl3V/eGcsaNSWXI1CVFmifjao4wn45Y2JfaqcovXDTS9uadfdUDfmsii/9IVbI55GphgryO7Ks39Q4eaArgytFeioNCQinhvOarpR3k=
+	t=1760367704; cv=none; b=oGCwBbRI+ORbB6fEcddAmck82O3wutHH54AtR+wBfPw3T4O5m8KGgA8rm6xK7XVTJm9QvWTwWB1mNSyBHoe/VjEiHkLjW0pmo2XudyTAqmMVvKbePB4sMptwFoFHtbuX7KWIGAmoKFPPClPVPoTxQxsPKCL8ZNXheWJ7BaNRHTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367167; c=relaxed/simple;
-	bh=9ZPHbAOd+CawNmXw6hwMk3I0l4hl9dbuGmZ/xGdlOI0=;
+	s=arc-20240116; t=1760367704; c=relaxed/simple;
+	bh=b1DmzkKcyY/hDRIUqkz+PP/5bjNpCZ1oN/7cB0VuSvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwoomjTk2Ym+J2o66XKImyHqlsZQ+qo9jCnvbrO5OXDfuMDQQNLFjkrjwqDk56CJ0FgRspyFQtk0mU9Mm1waORAcL44eTpgGMiaIgQwcCKZdp/1rA7U4VCCzAFha4kEGQCoaCDr6ApvBCNRj/wjGa3Lqp8OOiHhPyRzL0gUWY+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+Z/rKoI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC0DC4CEE7;
-	Mon, 13 Oct 2025 14:52:46 +0000 (UTC)
+	 MIME-Version; b=A/yhq4s+p3XZCwKRLgk6pXwvF+riLyCfm0ugWlwX2ekUbw3+BMMeY8Mf3jW4xtRt1GH9hGF00+83Kp6MfZ69aIrWRrs1XKcdZ+brDPq1J5ZWjOChN0ekFxu0nL1wyc6xHgIdRTFkZM9CC3UfJRsoBFGfjgvt2T2DyrB2p8S4jp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaw6k8Lq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24579C4CEE7;
+	Mon, 13 Oct 2025 15:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367167;
-	bh=9ZPHbAOd+CawNmXw6hwMk3I0l4hl9dbuGmZ/xGdlOI0=;
+	s=korg; t=1760367704;
+	bh=b1DmzkKcyY/hDRIUqkz+PP/5bjNpCZ1oN/7cB0VuSvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h+Z/rKoIZB+TgL+wjnzVob7zo+lngtxcXCXg7SIoruqK/5cBgKCFPiXdC/xS+YKSa
-	 RLgTdJAfuG/ylyH4I/y4rtlCCnjbV78aBfhPG35LSvjQ2Bf1BkuBdBpKCtxn+DSzOT
-	 p7l/gEVhLIoG18NiLukvsl8PVVIeVvp+PQf0mXsA=
+	b=oaw6k8Lqsgx4fAbiz6QFYlqNaNf8rlFpjtfYkF6TPsTvKYJNouXBpvuaIHUeqsTOt
+	 tangQAxYsAux2k8ERYih8/LK9jeCzWm2sNyAncXGbxt/G+OGtYXf46TZUYIltdcTGp
+	 r2vdS7c3CqW489oUXbytiHd2wNKRcJpMRczeI378=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Ito <ito.kohei@socionext.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/196] i2c: designware: Add disabling clocks when probe fails
+Subject: [PATCH 6.6 070/196] serial: max310x: Add error checking in probe()
 Date: Mon, 13 Oct 2025 16:44:21 +0200
-Message-ID: <20251013144317.755024818@linuxfoundation.org>
+Message-ID: <20251013144317.725498396@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c149841b069ccc6e480b00e11f35a57b5d88c7bb ]
+[ Upstream commit 672a37ba8af1f2ebcedeb94aea2cdd047f805f30 ]
 
-After an error occurs during probing state, dw_i2c_plat_pm_cleanup() is
-called. However, this function doesn't disable clocks and the clock-enable
-count keeps increasing. Should disable these clocks explicitly.
+Check if devm_i2c_new_dummy_device() fails.
 
-Fixes: 7272194ed391f ("i2c-designware: add minimal support for runtime PM")
-Co-developed-by: Kohei Ito <ito.kohei@socionext.com>
-Signed-off-by: Kohei Ito <ito.kohei@socionext.com>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJTMPZiKqeXSE-KM@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-platdrv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/max310x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index 74182db03a88b..a29f4ef793cf3 100644
---- a/drivers/i2c/busses/i2c-designware-platdrv.c
-+++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -380,6 +380,7 @@ static int dw_i2c_plat_probe(struct platform_device *pdev)
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index e339abff926d3..e10dcdeeda2d3 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -1659,6 +1659,8 @@ static int max310x_i2c_probe(struct i2c_client *client)
+ 		port_client = devm_i2c_new_dummy_device(&client->dev,
+ 							client->adapter,
+ 							port_addr);
++		if (IS_ERR(port_client))
++			return PTR_ERR(port_client);
  
- exit_probe:
- 	dw_i2c_plat_pm_cleanup(dev);
-+	i2c_dw_prepare_clk(dev, false);
- exit_reset:
- 	reset_control_assert(dev->rst);
- 	return ret;
+ 		regmaps[i] = devm_regmap_init_i2c(port_client, &regcfg_i2c);
+ 	}
 -- 
 2.51.0
 
