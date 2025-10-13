@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-184423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D83CBD42B3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:46 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613E2BD4330
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 53AE4503C63
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 07D7134F591
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A5B30DEAF;
-	Mon, 13 Oct 2025 14:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B420279DB3;
+	Mon, 13 Oct 2025 15:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/HuwrKr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOkjTsnL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24CF30DD1D;
-	Mon, 13 Oct 2025 14:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5780210942;
+	Mon, 13 Oct 2025 15:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367394; cv=none; b=Y9BeqdCAari6/Dg4/Ky+1SKAO92SLxtDyHcos5pU58bqTUqSG45QoAyfzeUPiHWoiXkg89zjTZ/kGOoXZXxpdqJC9QLwKB2FpdSXazcGLzZgxRKdSddV4Bgbkl1wKVLmEtTPZupyq4oID/WHc75xkoFlJV3xRdt8emgiZ87XlTs=
+	t=1760368615; cv=none; b=IApUvosBd3erhJ/DHp6LdTU4n3HikF9zX892Bvgmzn393+cGfhEit8qsPfABBMP+pToaQ/4pW02wEBhOTsQFZ8UTXDBhWdII4T8asucK0WMjM6G2cMFxmpy+vYDUI7ZNau5RnECZeVrAtL0lcj+WVSrweP+BRZjPLCgRszY91b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367394; c=relaxed/simple;
-	bh=2PrLHXKLAAK9GvgEdBu7jYd/NHUNZqlOKM+ftSObTzQ=;
+	s=arc-20240116; t=1760368615; c=relaxed/simple;
+	bh=SfbFCdwXFHxdhFEzD+/sg7mjc538JQ8D+gb1ufsBS5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/k98yJvxeGi7O5Qu0K/UNYGARHRz+O4luCaNdwt3Ge0Vb5IH5GsTy0I7S6OG+Zo+hDWaw51GeKT4hQr8MMqwo8GCSBkxAhvXHUmQh9DjuBscVFM5X+p0YrC6uaLKWRwfMjUtnG0aZESGav/0K9dgEllMu40zLVcU0cuCPlFTBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/HuwrKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D36AC4CEE7;
-	Mon, 13 Oct 2025 14:56:34 +0000 (UTC)
+	 MIME-Version; b=Fef7D3GfXUtsklKvW1fmRIoMnzyFLHeztmkWKYit2QyraYvImC31d/brY/nu1V+q3UzJUU7ULDRqleifpwPgo8AZSgmFdTPpfTMXaOzOpLSE6WzQQ054IJ/Is0udFPdDUcv/PSUgHvq//gdrcKEfu2sxPpc2jeU/qFVJVoVD/b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOkjTsnL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86A9C4CEE7;
+	Mon, 13 Oct 2025 15:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367394;
-	bh=2PrLHXKLAAK9GvgEdBu7jYd/NHUNZqlOKM+ftSObTzQ=;
+	s=korg; t=1760368615;
+	bh=SfbFCdwXFHxdhFEzD+/sg7mjc538JQ8D+gb1ufsBS5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/HuwrKrNJjk0oKvLR3yl4I2+lOL/OLxcRo3CMCXO9RFDqGaEE2eUrte4Mi+AQwaX
-	 V3SavieyXr6vPydw2CGzVN7ulBcjn6UkzqpIb1ahcqz9/gcX0pVX2ZC5BWfuuacbje
-	 rfph3MXQXImXsknbc/C8FaxzS+D/esUEBwPRVtlY=
+	b=uOkjTsnLE1zVsxPaPqJyrJbL+m9bSDBRnyvgyEif5JTUx1HDQErVF8+1XWr+4mJQZ
+	 1EGqrKnWJ1FSFSEVzXvDMOrhcN/oL0C824gp6regWZWrKIamn+kQhTDNqdvNySMKk9
+	 hxtIe7nifnn9wtIcJevAVfI4Uw1T5ijq8NtmfZQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neal Gompa <neal@gompa.dev>,
-	Sven Peter <sven@kernel.org>
-Subject: [PATCH 6.1 192/196] usb: typec: tipd: Clear interrupts first
+	Shenghao Yuan <shenghaoyuan0928@163.com>,
+	Tianci Cao <ziye@zju.edu.cn>,
+	Yazhou Tang <tangyazhou518@outlook.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 223/262] bpf: Reject negative offsets for ALU ops
 Date: Mon, 13 Oct 2025 16:46:05 +0200
-Message-ID: <20251013144321.636338904@linuxfoundation.org>
+Message-ID: <20251013144334.273455057@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Peter <sven@kernel.org>
+From: Yazhou Tang <tangyazhou518@outlook.com>
 
-commit be5ae730ffa6fd774a00a4705c1e11e078b08ca1 upstream.
+[ Upstream commit 55c0ced59fe17dee34e9dfd5f7be63cbab207758 ]
 
-Right now the interrupt handler first reads all updated status registers
-and only then clears the interrupts. It's possible that a duplicate
-interrupt for a changed register or plug state comes in after the
-interrupts have been processed but before they have been cleared:
+When verifying BPF programs, the check_alu_op() function validates
+instructions with ALU operations. The 'offset' field in these
+instructions is a signed 16-bit integer.
 
-* plug is inserted, TPS_REG_INT_PLUG_EVENT is set
-* TPS_REG_INT_EVENT1 is read
-* tps6598x_handle_plug_event() has run and registered the plug
-* plug is removed again, TPS_REG_INT_PLUG_EVENT is set (again)
-* TPS_REG_INT_CLEAR1 is written, TPS_REG_INT_PLUG_EVENT is cleared
+The existing check 'insn->off > 1' was intended to ensure the offset is
+either 0, or 1 for BPF_MOD/BPF_DIV. However, because 'insn->off' is
+signed, this check incorrectly accepts all negative values (e.g., -1).
 
-We then have no plug connected and no pending interrupt but the tipd
-core still thinks there is a plug. It's possible to trigger this with
-e.g. a slightly broken Type-C to USB A converter.
+This commit tightens the validation by changing the condition to
+'(insn->off != 0 && insn->off != 1)'. This ensures that any value
+other than the explicitly permitted 0 and 1 is rejected, hardening the
+verifier against malformed BPF programs.
 
-Fix this by first clearing the interrupts and only then reading the
-updated registers.
-
-Fixes: 45188f27b3d0 ("usb: typec: tipd: Add support for Apple CD321X")
-Fixes: 0a4c005bd171 ("usb: typec: driver for TI TPS6598x USB Power Delivery controllers")
-Cc: stable@kernel.org
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Sven Peter <sven@kernel.org>
-Link: https://lore.kernel.org/r/20250914-apple-usb3-tipd-v1-1-4e99c8649024@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Shenghao Yuan <shenghaoyuan0928@163.com>
+Signed-off-by: Shenghao Yuan <shenghaoyuan0928@163.com>
+Co-developed-by: Tianci Cao <ziye@zju.edu.cn>
+Signed-off-by: Tianci Cao <ziye@zju.edu.cn>
+Signed-off-by: Yazhou Tang <tangyazhou518@outlook.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Fixes: ec0e2da95f72 ("bpf: Support new signed div/mod instructions.")
+Link: https://lore.kernel.org/r/tencent_70D024BAE70A0A309A4781694C7B764B0608@qq.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tipd/core.c |   24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ kernel/bpf/verifier.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -491,24 +491,23 @@ static irqreturn_t cd321x_interrupt(int
- 	if (!event)
- 		goto err_unlock;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 1829f62a74a9e..96640a80fd9c4 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -14545,7 +14545,7 @@ static int check_alu_op(struct bpf_verifier_env *env, struct bpf_insn *insn)
+ 	} else {	/* all other ALU ops: and, sub, xor, add, ... */
  
-+	tps6598x_write64(tps, TPS_REG_INT_CLEAR1, event);
-+
- 	if (!tps6598x_read_status(tps, &status))
--		goto err_clear_ints;
-+		goto err_unlock;
- 
- 	if (event & APPLE_CD_REG_INT_POWER_STATUS_UPDATE)
- 		if (!tps6598x_read_power_status(tps))
--			goto err_clear_ints;
-+			goto err_unlock;
- 
- 	if (event & APPLE_CD_REG_INT_DATA_STATUS_UPDATE)
- 		if (!tps6598x_read_data_status(tps))
--			goto err_clear_ints;
-+			goto err_unlock;
- 
- 	/* Handle plug insert or removal */
- 	if (event & APPLE_CD_REG_INT_PLUG_EVENT)
- 		tps6598x_handle_plug_event(tps, status);
- 
--err_clear_ints:
--	tps6598x_write64(tps, TPS_REG_INT_CLEAR1, event);
--
- err_unlock:
- 	mutex_unlock(&tps->lock);
- 
-@@ -555,25 +554,24 @@ static irqreturn_t tps6598x_interrupt(in
- 	if (!(event1[0] | event1[1] | event2[0] | event2[1]))
- 		goto err_unlock;
- 
-+	tps6598x_block_write(tps, TPS_REG_INT_CLEAR1, event1, intev_len);
-+	tps6598x_block_write(tps, TPS_REG_INT_CLEAR2, event2, intev_len);
-+
- 	if (!tps6598x_read_status(tps, &status))
--		goto err_clear_ints;
-+		goto err_unlock;
- 
- 	if ((event1[0] | event2[0]) & TPS_REG_INT_POWER_STATUS_UPDATE)
- 		if (!tps6598x_read_power_status(tps))
--			goto err_clear_ints;
-+			goto err_unlock;
- 
- 	if ((event1[0] | event2[0]) & TPS_REG_INT_DATA_STATUS_UPDATE)
- 		if (!tps6598x_read_data_status(tps))
--			goto err_clear_ints;
-+			goto err_unlock;
- 
- 	/* Handle plug insert or removal */
- 	if ((event1[0] | event2[0]) & TPS_REG_INT_PLUG_EVENT)
- 		tps6598x_handle_plug_event(tps, status);
- 
--err_clear_ints:
--	tps6598x_block_write(tps, TPS_REG_INT_CLEAR1, event1, intev_len);
--	tps6598x_block_write(tps, TPS_REG_INT_CLEAR2, event2, intev_len);
--
- err_unlock:
- 	mutex_unlock(&tps->lock);
- 
+ 		if (BPF_SRC(insn->code) == BPF_X) {
+-			if (insn->imm != 0 || insn->off > 1 ||
++			if (insn->imm != 0 || (insn->off != 0 && insn->off != 1) ||
+ 			    (insn->off == 1 && opcode != BPF_MOD && opcode != BPF_DIV)) {
+ 				verbose(env, "BPF_ALU uses reserved fields\n");
+ 				return -EINVAL;
+@@ -14555,7 +14555,7 @@ static int check_alu_op(struct bpf_verifier_env *env, struct bpf_insn *insn)
+ 			if (err)
+ 				return err;
+ 		} else {
+-			if (insn->src_reg != BPF_REG_0 || insn->off > 1 ||
++			if (insn->src_reg != BPF_REG_0 || (insn->off != 0 && insn->off != 1) ||
+ 			    (insn->off == 1 && opcode != BPF_MOD && opcode != BPF_DIV)) {
+ 				verbose(env, "BPF_ALU uses reserved fields\n");
+ 				return -EINVAL;
+-- 
+2.51.0
+
 
 
 
