@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-184588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03387BD4066
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E81CBD3F9C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A371434E5A7
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A714188EE9D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950EC30F934;
-	Mon, 13 Oct 2025 15:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B05130DD0B;
+	Mon, 13 Oct 2025 14:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npxz+2HP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ap5U8fOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523B330F931;
-	Mon, 13 Oct 2025 15:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2489B30CDB9;
+	Mon, 13 Oct 2025 14:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367867; cv=none; b=dYMavfINSn66GcgOCMBDfuYCXAEABkztcWhwRm6umYzoRa0sG/12CZThuOjS1D7yKKja4WngFU9GLhB5taAmO9mGPM0chV4NbplvSXlLKarUKXRJenPIGQETPHV24Kog3ID6/2VVGPJAhUxQQsjN8psex1GHC19sABdk5SWT8/k=
+	t=1760367350; cv=none; b=XRp9AyZTI81Bx4yMpSGaaGh/zM/jlz4oeT4jFa4L4s8MaQAmJzKu+lD9kM9U+3tgRQ6ggaBKNCz41HgpiSoTtjIt7q9U7Uyg1pitOidkGxB8TW7ZdeOoRGH7QvC/4OODcUUncR6sb1wSZAjU9IEQIu66nzrCIHWOnIRv5btCU3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367867; c=relaxed/simple;
-	bh=40C6nvBsSeMwaGzv5nwGBFPcUViP8Kz+qlkReaG8wUo=;
+	s=arc-20240116; t=1760367350; c=relaxed/simple;
+	bh=YXR+Vagoev1l9n3xH17K+ponOxGVyVKt/pAOAX7JoP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2ZzwOup+nae3p1ia+NreMkgPZkRlnfSYGaPWeE3AZ/lLcKrvewnEBv0ezoCc8j3/Y17DgVyvgPoIud2cIvS8B2Qs+rGDeteYGVmvhlZYZoUZW5Ynxykmr7aOtZOsCeaIFaGwe1UiCdfI3ygDg7xOyFXsuOlK30X7HH1ajXqvcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npxz+2HP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFE7C4CEE7;
-	Mon, 13 Oct 2025 15:04:26 +0000 (UTC)
+	 MIME-Version; b=Vb2+Juh0yF61z498Th/txGqanC1SlKZSiwizE6NdT21HjOml9gA2eLqkpuuQ4SBOOw0i/L9aeWJRzSsmW3JqRqgcGT7GpHzYs3WzSCpwIL158zAncL5RSQD3vcsHME85pcDt6NqNeZIUKz9qYC2sCc5SKlQltEtUhBZpfT/QENI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ap5U8fOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D483C4CEE7;
+	Mon, 13 Oct 2025 14:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367867;
-	bh=40C6nvBsSeMwaGzv5nwGBFPcUViP8Kz+qlkReaG8wUo=;
+	s=korg; t=1760367349;
+	bh=YXR+Vagoev1l9n3xH17K+ponOxGVyVKt/pAOAX7JoP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npxz+2HPI2bpZeCA7Y0EGCIH/IfNPIFTz7Prcd22cmm8euSiR9l/XUin1klhZ702q
-	 2f7GNbWZJAoUbsy2ptTtHRhmHMZW4eWqeYvrcldvLCSiL6dJIJF2IpfmsYj3s6QdR9
-	 cwkAASlA8z5SsmTTlC5UTHKMMeOyync1nh9if/Ag=
+	b=ap5U8fOF+PUp110X7eWmLMBwKX4pfb82Q3I9qIIbAAtzr/r9wn4uw0LCnVQ+wNit0
+	 2W44j7sGcqh19B5y2XUKPB1asSBE0/cDnZ+z/sdVbcJAM6yUFif3trp9TydGwmqDFc
+	 Ba5L9LAsAFiWQpCMbbx4cJapXT+W62Ije8QpvaJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/196] net: ena: return 0 in ena_get_rxfh_key_size() when RSS hash key is not configurable
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 178/196] dm: fix queue start/stop imbalance under suspend/load/resume races
 Date: Mon, 13 Oct 2025 16:45:51 +0200
-Message-ID: <20251013144321.099222122@linuxfoundation.org>
+Message-ID: <20251013144321.134661285@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit f017156aea60db8720e47591ed1e041993381ad2 ]
+commit 7f597c2cdb9d3263a6fce07c4fc0a9eaa8e8fc43 upstream.
 
-In EC2 instances where the RSS hash key is not configurable, ethtool
-shows bogus RSS hash key since ena_get_rxfh_key_size() unconditionally
-returns ENA_HASH_KEY_SIZE.
+When suspend and load run concurrently, before q->mq_ops is set in
+blk_mq_init_allocated_queue(), __dm_suspend() skip dm_stop_queue(). As a
+result, the queue's quiesce depth is not incremented.
 
-Commit 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not
-supported") added proper handling for devices that don't support RSS
-hash key configuration, but ena_get_rxfh_key_size() has been unchanged.
+Later, once table load has finished and __dm_resume() runs, which triggers
+q->quiesce_depth ==0 warning in blk_mq_unquiesce_queue():
+Call Trace:
+ <TASK>
+ dm_start_queue+0x16/0x20 [dm_mod]
+ __dm_resume+0xac/0xb0 [dm_mod]
+ dm_resume+0x12d/0x150 [dm_mod]
+ do_resume+0x2c2/0x420 [dm_mod]
+ dev_suspend+0x30/0x130 [dm_mod]
+ ctl_ioctl+0x402/0x570 [dm_mod]
+ dm_ctl_ioctl+0x23/0x30 [dm_mod]
 
-When the RSS hash key is not configurable, return 0 instead of
-ENA_HASH_KEY_SIZE to clarify getting the value is not supported.
+Fix this by explicitly tracking whether the request queue was
+stopped in __dm_suspend() via a new DMF_QUEUE_STOPPED flag.
+Only call dm_start_queue() in __dm_resume() if the queue was
+actually stopped.
 
-Tested on m5 instance families.
-
-Without patch:
- # ethtool -x ens5 | grep -A 1 "RSS hash key"
- RSS hash key:
- 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
-
-With patch:
- # ethtool -x ens5 | grep -A 1 "RSS hash key"
- RSS hash key:
- Operation not supported
-
-Fixes: 6a4f7dc82d1e ("net: ena: rss: do not allocate key when not supported")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Link: https://patch.msgid.link/20250929050247.51680-1-enjuk@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e70feb8b3e68 ("blk-mq: support concurrent queue quiesce/unquiesce")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_ethtool.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/md/dm-core.h |    1 +
+ drivers/md/dm.c      |    8 +++++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_ethtool.c b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-index d901877544445..82a7c52fdb721 100644
---- a/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-@@ -752,7 +752,10 @@ static u32 ena_get_rxfh_indir_size(struct net_device *netdev)
+--- a/drivers/md/dm-core.h
++++ b/drivers/md/dm-core.h
+@@ -160,6 +160,7 @@ struct mapped_device {
+ #define DMF_SUSPENDED_INTERNALLY 7
+ #define DMF_POST_SUSPENDING 8
+ #define DMF_EMULATE_ZONE_APPEND 9
++#define DMF_QUEUE_STOPPED 10
  
- static u32 ena_get_rxfh_key_size(struct net_device *netdev)
- {
--	return ENA_HASH_KEY_SIZE;
-+	struct ena_adapter *adapter = netdev_priv(netdev);
-+	struct ena_rss *rss = &adapter->ena_dev->rss;
-+
-+	return rss->hash_key ? ENA_HASH_KEY_SIZE : 0;
- }
+ void disable_discard(struct mapped_device *md);
+ void disable_write_zeroes(struct mapped_device *md);
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2720,8 +2720,10 @@ static int __dm_suspend(struct mapped_de
+ 	 * Stop md->queue before flushing md->wq in case request-based
+ 	 * dm defers requests to md->wq from md->queue.
+ 	 */
+-	if (dm_request_based(md))
++	if (dm_request_based(md)) {
+ 		dm_stop_queue(md->queue);
++		set_bit(DMF_QUEUE_STOPPED, &md->flags);
++	}
  
- static int ena_indirection_table_set(struct ena_adapter *adapter,
--- 
-2.51.0
-
+ 	flush_workqueue(md->wq);
+ 
+@@ -2743,7 +2745,7 @@ static int __dm_suspend(struct mapped_de
+ 	if (r < 0) {
+ 		dm_queue_flush(md);
+ 
+-		if (dm_request_based(md))
++		if (test_and_clear_bit(DMF_QUEUE_STOPPED, &md->flags))
+ 			dm_start_queue(md->queue);
+ 
+ 		unlock_fs(md);
+@@ -2826,7 +2828,7 @@ static int __dm_resume(struct mapped_dev
+ 	 * so that mapping of targets can work correctly.
+ 	 * Request-based dm is queueing the deferred I/Os in its request_queue.
+ 	 */
+-	if (dm_request_based(md))
++	if (test_and_clear_bit(DMF_QUEUE_STOPPED, &md->flags))
+ 		dm_start_queue(md->queue);
+ 
+ 	unlock_fs(md);
 
 
 
