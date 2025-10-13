@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-184531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6C2BD40EB
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:22:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DA1BD3E5B
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E585E188D5A2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 330294FE9C5
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3003F30AAC5;
-	Mon, 13 Oct 2025 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E5A309DC1;
+	Mon, 13 Oct 2025 14:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVUt/RcD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+Z/rKoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D513630AD05;
-	Mon, 13 Oct 2025 15:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E9F2DF139;
+	Mon, 13 Oct 2025 14:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367701; cv=none; b=uYp/RR9QuCwv0Q1Zp+oknLpVqJID6J14KL22s2BouLL/pMPqdVxPxhRCvwBut3UP5Nw5Oivs7piXyXFIc1Z3U/qkCOshzxS3H91os1SLuWe/6fn+bxSeONC+P1rpL2cvOcW2lFmv+JtXkao43uIYXrRBRArJM2nTzywHAiLcF9s=
+	t=1760367167; cv=none; b=NCoiGM2ACGj98AsDIk5UYEFRi/Bbz6Xn10QEU9MZZlNTDF87QizCGEDnFzcZsh/uMMNgxl3V/eGcsaNSWXI1CVFmifjao4wn45Y2JfaqcovXDTS9uadfdUDfmsii/9IVbI55GphgryO7Ks39Q4eaArgytFeioNCQinhvOarpR3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367701; c=relaxed/simple;
-	bh=8s9NtSgAbEprt+ssMyIhenXz2r3Sp+cOYqQc9ax6Wso=;
+	s=arc-20240116; t=1760367167; c=relaxed/simple;
+	bh=9ZPHbAOd+CawNmXw6hwMk3I0l4hl9dbuGmZ/xGdlOI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pPcinf8mvUHahrbgU7WDiO3dKxifnPipsVDIgZMMRLvPrxhHFl6OMbEJAXnydvY1jGl/Q7vu1h+GRrgFvsOc+0ugUR3GWz+Fwm+WbZZQZlwHp+P3V0OAhw83HEUM9GmtIztriuWb3Ungg2V4FB9JZk4s6OKT9IxBvDvQXArF5iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVUt/RcD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5150EC2BCB0;
-	Mon, 13 Oct 2025 15:01:41 +0000 (UTC)
+	 MIME-Version; b=mwoomjTk2Ym+J2o66XKImyHqlsZQ+qo9jCnvbrO5OXDfuMDQQNLFjkrjwqDk56CJ0FgRspyFQtk0mU9Mm1waORAcL44eTpgGMiaIgQwcCKZdp/1rA7U4VCCzAFha4kEGQCoaCDr6ApvBCNRj/wjGa3Lqp8OOiHhPyRzL0gUWY+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+Z/rKoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC0DC4CEE7;
+	Mon, 13 Oct 2025 14:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367701;
-	bh=8s9NtSgAbEprt+ssMyIhenXz2r3Sp+cOYqQc9ax6Wso=;
+	s=korg; t=1760367167;
+	bh=9ZPHbAOd+CawNmXw6hwMk3I0l4hl9dbuGmZ/xGdlOI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVUt/RcDf0w0OhJX+jKcJQfahg81HGXotFGc2H52CUs3ce75GRTzU54FYQIScBP4L
-	 bLg/euAsZ1FW4um6hEyiKmq9rheJyYGkUQzdc6ez1Vil6811vLjcWlLe6SwtU63IyP
-	 gLLQg6Qwy9TU7xaj7RoKlSO02h8mgoT8Q6D1/hgA=
+	b=h+Z/rKoIZB+TgL+wjnzVob7zo+lngtxcXCXg7SIoruqK/5cBgKCFPiXdC/xS+YKSa
+	 RLgTdJAfuG/ylyH4I/y4rtlCCnjbV78aBfhPG35LSvjQ2Bf1BkuBdBpKCtxn+DSzOT
+	 p7l/gEVhLIoG18NiLukvsl8PVVIeVvp+PQf0mXsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melody Olvera <quic_molvera@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Souradeep Chowdhury <quic_schowdhu@quicinc.com>,
-	Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
+	Kohei Ito <ito.kohei@socionext.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/196] usb: misc: qcom_eud: Access EUD_MODE_MANAGER2 through secure calls
-Date: Mon, 13 Oct 2025 16:44:20 +0200
-Message-ID: <20251013144317.689582706@linuxfoundation.org>
+Subject: [PATCH 6.1 088/196] i2c: designware: Add disabling clocks when probe fails
+Date: Mon, 13 Oct 2025 16:44:21 +0200
+Message-ID: <20251013144317.755024818@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,145 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Komal Bajaj <komal.bajaj@oss.qualcomm.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit c0485e864a2eaa1d5a84c71e573dd236d0e885ae ]
+[ Upstream commit c149841b069ccc6e480b00e11f35a57b5d88c7bb ]
 
-EUD_MODE_MANAGER2 register is mapped to a memory region that is marked
-as read-only for operating system running at EL1, enforcing access
-restrictions that prohibit direct memory-mapped writes via writel().
+After an error occurs during probing state, dw_i2c_plat_pm_cleanup() is
+called. However, this function doesn't disable clocks and the clock-enable
+count keeps increasing. Should disable these clocks explicitly.
 
-Attempts to write to this region from HLOS can result in silent failures
-or memory access violations, particularly when toggling EUD (Embedded
-USB Debugger) state. To ensure secure register access, modify the driver
-to use qcom_scm_io_writel(), which routes the write operation to Qualcomm
-Secure Channel Monitor (SCM). SCM has the necessary permissions to access
-protected memory regions, enabling reliable control over EUD state.
-
-SC7280, the only user of EUD is also affected, indicating that this could
-never have worked on a properly fused device.
-
-Fixes: 9a1bf58ccd44 ("usb: misc: eud: Add driver support for Embedded USB Debugger(EUD)")
-Signed-off-by: Melody Olvera <quic_molvera@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
-Signed-off-by: Komal Bajaj <komal.bajaj@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250731-eud_mode_manager_secure_access-v8-1-4a5dcbb79f41@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7272194ed391f ("i2c-designware: add minimal support for runtime PM")
+Co-developed-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/Kconfig    |  1 +
- drivers/usb/misc/qcom_eud.c | 33 ++++++++++++++++++++++++---------
- 2 files changed, 25 insertions(+), 9 deletions(-)
+ drivers/i2c/busses/i2c-designware-platdrv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/misc/Kconfig b/drivers/usb/misc/Kconfig
-index 99b15b77dfd57..fe1b5fec1dfca 100644
---- a/drivers/usb/misc/Kconfig
-+++ b/drivers/usb/misc/Kconfig
-@@ -147,6 +147,7 @@ config USB_APPLEDISPLAY
- config USB_QCOM_EUD
- 	tristate "QCOM Embedded USB Debugger(EUD) Driver"
- 	depends on ARCH_QCOM || COMPILE_TEST
-+	select QCOM_SCM
- 	select USB_ROLE_SWITCH
- 	help
- 	  This module enables support for Qualcomm Technologies, Inc.
-diff --git a/drivers/usb/misc/qcom_eud.c b/drivers/usb/misc/qcom_eud.c
-index 7f371ea1248c3..cfb195a0f6ce2 100644
---- a/drivers/usb/misc/qcom_eud.c
-+++ b/drivers/usb/misc/qcom_eud.c
-@@ -15,6 +15,7 @@
- #include <linux/slab.h>
- #include <linux/sysfs.h>
- #include <linux/usb/role.h>
-+#include <linux/firmware/qcom/qcom_scm.h>
+diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
+index 74182db03a88b..a29f4ef793cf3 100644
+--- a/drivers/i2c/busses/i2c-designware-platdrv.c
++++ b/drivers/i2c/busses/i2c-designware-platdrv.c
+@@ -380,6 +380,7 @@ static int dw_i2c_plat_probe(struct platform_device *pdev)
  
- #define EUD_REG_INT1_EN_MASK	0x0024
- #define EUD_REG_INT_STATUS_1	0x0044
-@@ -34,7 +35,7 @@ struct eud_chip {
- 	struct device			*dev;
- 	struct usb_role_switch		*role_sw;
- 	void __iomem			*base;
--	void __iomem			*mode_mgr;
-+	phys_addr_t			mode_mgr;
- 	unsigned int			int_status;
- 	int				irq;
- 	bool				enabled;
-@@ -43,18 +44,29 @@ struct eud_chip {
- 
- static int enable_eud(struct eud_chip *priv)
- {
-+	int ret;
-+
-+	ret = qcom_scm_io_writel(priv->mode_mgr + EUD_REG_EUD_EN2, 1);
-+	if (ret)
-+		return ret;
-+
- 	writel(EUD_ENABLE, priv->base + EUD_REG_CSR_EUD_EN);
- 	writel(EUD_INT_VBUS | EUD_INT_SAFE_MODE,
- 			priv->base + EUD_REG_INT1_EN_MASK);
--	writel(1, priv->mode_mgr + EUD_REG_EUD_EN2);
- 
- 	return usb_role_switch_set_role(priv->role_sw, USB_ROLE_DEVICE);
- }
- 
--static void disable_eud(struct eud_chip *priv)
-+static int disable_eud(struct eud_chip *priv)
- {
-+	int ret;
-+
-+	ret = qcom_scm_io_writel(priv->mode_mgr + EUD_REG_EUD_EN2, 0);
-+	if (ret)
-+		return ret;
-+
- 	writel(0, priv->base + EUD_REG_CSR_EUD_EN);
--	writel(0, priv->mode_mgr + EUD_REG_EUD_EN2);
-+	return 0;
- }
- 
- static ssize_t enable_show(struct device *dev,
-@@ -82,11 +94,12 @@ static ssize_t enable_store(struct device *dev,
- 			chip->enabled = enable;
- 		else
- 			disable_eud(chip);
-+
- 	} else {
--		disable_eud(chip);
-+		ret = disable_eud(chip);
- 	}
- 
--	return count;
-+	return ret < 0 ? ret : count;
- }
- 
- static DEVICE_ATTR_RW(enable);
-@@ -178,6 +191,7 @@ static void eud_role_switch_release(void *data)
- static int eud_probe(struct platform_device *pdev)
- {
- 	struct eud_chip *chip;
-+	struct resource *res;
- 	int ret;
- 
- 	chip = devm_kzalloc(&pdev->dev, sizeof(*chip), GFP_KERNEL);
-@@ -200,9 +214,10 @@ static int eud_probe(struct platform_device *pdev)
- 	if (IS_ERR(chip->base))
- 		return PTR_ERR(chip->base);
- 
--	chip->mode_mgr = devm_platform_ioremap_resource(pdev, 1);
--	if (IS_ERR(chip->mode_mgr))
--		return PTR_ERR(chip->mode_mgr);
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-+	if (!res)
-+		return -ENODEV;
-+	chip->mode_mgr = res->start;
- 
- 	chip->irq = platform_get_irq(pdev, 0);
- 	ret = devm_request_threaded_irq(&pdev->dev, chip->irq, handle_eud_irq,
+ exit_probe:
+ 	dw_i2c_plat_pm_cleanup(dev);
++	i2c_dw_prepare_clk(dev, false);
+ exit_reset:
+ 	reset_control_assert(dev->rst);
+ 	return ret;
 -- 
 2.51.0
 
