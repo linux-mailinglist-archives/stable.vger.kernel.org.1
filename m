@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-184492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220ECBD42F4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E963BD3DBC
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 823334F6D48
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:16:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D3CB34FC40E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 14:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37192D5924;
-	Mon, 13 Oct 2025 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83ECC3090D1;
+	Mon, 13 Oct 2025 14:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaAD4WGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2MCL8wb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB977083C;
-	Mon, 13 Oct 2025 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D07226B742;
+	Mon, 13 Oct 2025 14:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367592; cv=none; b=QPTMGj3jSmTNJcIWLyf1FqgUjBh0sqyJMKInapRdQcZrZkZ4dCgpmBSHeF9o2wQW8dmE87EnaYZSw3EFP5Asj2/WnZoeaRlhoQO+vb1f6VhZ9QnPDZR6u6Q4eVyFfxOqKZXpFF6VR0VUxCr9gJsaSazSh7aut71OVqvg7x1QZN0=
+	t=1760367001; cv=none; b=eUsosa9UPe2o9E6SdzEUVouHqpczaqEBuMPkMF4dsicABjf78b9NLDaJp/OXvWnHeyLomNViV+Ybl/e/4T6R6konWqoE7RcsVTZOEh9tVTGvjOi0dAsaAzyeMBRsz7J4A1GjvtjOaZ8nmhIExEqti81fLEI5yVjdow9V+5DO6B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367592; c=relaxed/simple;
-	bh=MXjHWmCaBM5WFaWXVtMuwXmsvIKN06X6Kxf67/A2b2E=;
+	s=arc-20240116; t=1760367001; c=relaxed/simple;
+	bh=NovrTsFIN0u24jhXaH3iWAl7+xDAlFdRiB6/qQqTcQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1m4P9WuovFW2XYmHctLJWkwTLokuiE/DWQ7E6YRTwG67PZ3Hnd85XVtuxsvTiTYmTke2zR7Tn+flObCN5LnDOmXypJaRFZEpT2nIqPKJJP9L2YXFo4ONCs/AGrBhuih+K/zmdwc4xW2v0t26z6f2u8AGXPsyhwwYDc195m5Y9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaAD4WGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE727C4CEE7;
-	Mon, 13 Oct 2025 14:59:51 +0000 (UTC)
+	 MIME-Version; b=sc4qCceFOzXGgHw9WuUjErys2WtB45kFBHoos0aL2qr2IXfbL1z5uo3k9h46oiy0hfN8/bFs+WzhvTUYdqDB6N6ranTOxy/jgs9zd/WyaUXCmMq1YivokNj7+I8Wi7HZYOYtSS/HaEXGBIRg2VrTCub+kf9Ky6Mi8PJkYGbA/Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2MCL8wb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514D5C4CEFE;
+	Mon, 13 Oct 2025 14:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367592;
-	bh=MXjHWmCaBM5WFaWXVtMuwXmsvIKN06X6Kxf67/A2b2E=;
+	s=korg; t=1760367000;
+	bh=NovrTsFIN0u24jhXaH3iWAl7+xDAlFdRiB6/qQqTcQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eaAD4WGeEdawS9V7heAAcFX+zRikaBWiNMTinT4bNKxotFODLoLkhPYB6hi2MMr+W
-	 oSJS+fEhlLkpNOyD4XQNEQRoKmj/AbK74Vz+o/vxqW/Mu0/iFcNq6D2GjqYZTQ9yX5
-	 7QxzMEtV8QheTMSHg1vgnM/V/qBRgffofclRUvJM=
+	b=A2MCL8wb91MPEQnx5dn2UHIspazvtqSN09a609JjkHA109sOEGTr21kf5yMz/12rJ
+	 8gcHD86XB7lkiMW+X/R7diFQGd3ogixofTa8mbC2rJ7QbyTV65xOCkTXLZ+vWWo32z
+	 ziHvZZVjy24rF8Y5Hoyny/craF/9qWnCkhZO3Fxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/196] ARM: dts: ti: omap: omap3-devkit8000-lcd: Fix ti,keep-vref-on property to use correct boolean syntax in DTS
+Subject: [PATCH 6.1 050/196] coresight: trbe: Prevent overflow in PERF_IDX2OFF()
 Date: Mon, 13 Oct 2025 16:43:43 +0200
-Message-ID: <20251013144316.360017612@linuxfoundation.org>
+Message-ID: <20251013144316.395891582@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
+References: <20251013144314.549284796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 5af5b85505bc859adb338fe5d6e4842e72cdf932 ]
+[ Upstream commit 105f56877f2d5f82d71e20b45eb7be7c24c3d908 ]
 
-The ti,keep-vref-on property, defined as a boolean flag in the Device
-Tree schema, was incorrectly assigned a value (<1>) in the DTS file,
-causing a validation error: "size (4) error for type flag". Remove
-the value to match the schema and ensure compatibility with the driver
-using device_property_read_bool(). This fixes the dtbs_check error.
+Cast nr_pages to unsigned long to avoid overflow when handling large
+AUX buffer sizes (>= 2 GiB).
 
-Fixes: ed05637c30e6 ("ARM: dts: omap3-devkit8000: Add ADS7846 Touchscreen support")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Link: https://lore.kernel.org/r/20250822225052.136919-1-jihed.chaibi.dev@gmail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/omap3-devkit8000-lcd-common.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-trbe.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-devkit8000-lcd-common.dtsi b/arch/arm/boot/dts/ti/omap/omap3-devkit8000-lcd-common.dtsi
-index a7f99ae0c1fe9..78c657429f641 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-devkit8000-lcd-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap3-devkit8000-lcd-common.dtsi
-@@ -65,7 +65,7 @@ ads7846@0 {
- 		ti,debounce-max = /bits/ 16 <10>;
- 		ti,debounce-tol = /bits/ 16 <5>;
- 		ti,debounce-rep = /bits/ 16 <1>;
--		ti,keep-vref-on = <1>;
-+		ti,keep-vref-on;
- 		ti,settle-delay-usec = /bits/ 16 <150>;
+diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
+index 925f6c9cecff4..bc6e247443e80 100644
+--- a/drivers/hwtracing/coresight/coresight-trbe.c
++++ b/drivers/hwtracing/coresight/coresight-trbe.c
+@@ -21,7 +21,8 @@
+ #include "coresight-self-hosted-trace.h"
+ #include "coresight-trbe.h"
  
- 		wakeup-source;
+-#define PERF_IDX2OFF(idx, buf) ((idx) % ((buf)->nr_pages << PAGE_SHIFT))
++#define PERF_IDX2OFF(idx, buf) \
++	((idx) % ((unsigned long)(buf)->nr_pages << PAGE_SHIFT))
+ 
+ /*
+  * A padding packet that will help the user space tools
 -- 
 2.51.0
 
