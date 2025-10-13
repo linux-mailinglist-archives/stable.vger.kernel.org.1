@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-185246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01E1BD544C
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:54:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AC5BD51D3
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7D9F5565B29
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 55195502931
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECAF31B11E;
-	Mon, 13 Oct 2025 15:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA494313548;
+	Mon, 13 Oct 2025 15:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSd5welr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUYG3Nu0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094793101BA;
-	Mon, 13 Oct 2025 15:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986D03101CD;
+	Mon, 13 Oct 2025 15:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369750; cv=none; b=oohhjTj/JE5yN1HZm/XM0NubQis4Iy2YufvVVdcG/OJkjlm+xnJKhbUdXNSn27tcJ2eFcRO1Ectv3qukl3cz5MX/5bhB5cq0FGaJJK8xAOs+bd0g1hK3Pwssm8Uorh/dZ/onzYD9UCQ5Rom8ILn6zItMvhehnNRmJqWkyN7gLlo=
+	t=1760369756; cv=none; b=mwBNJdTi0DbNkkMGnLfVF2noOHDEKqJ5joEIacXP0E09SfC21BZMUTwwHbkraEuH7w6DnjdyQs2JdT04PQnJmO/iMNY5zqLVapM7b/VReclp9AjN5dzoi88EWI2br8jh5ZKLKz+LwHwYQ5P6Khwi3BGBdOuwC73msjKZppqfCrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369750; c=relaxed/simple;
-	bh=tMEa8L59a6xRsmo+aaZs3x9EVtpzsv1vzoAPqcFnF0Y=;
+	s=arc-20240116; t=1760369756; c=relaxed/simple;
+	bh=O/l61dwBdpAY2q00V4FaI0Bj+zAuRuXsMXm96RvQRpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qffF1HmNU4LGTAGylAciUVlOUedbpqF8Iz5Iv2/X4LNjPPsy7+Iw1RcQ6+fQnOB26GlhpDNulfwyqYj2BTsWfwlnTeGfbG8e12me5aosLtRQZJ6PIzunLRzagbeQLdBQrsIfKdR7KbLtCu/4gsLg9Kw3ykB1p75vCFcbpV3ip0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSd5welr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1B6C4AF09;
-	Mon, 13 Oct 2025 15:35:49 +0000 (UTC)
+	 MIME-Version; b=fe1nK0K3r7trTY19s0K4wCtii9Rnj7u57BsKOxbTEdnao6FFrX9hmcndxyfMSaqayQhTt6QaJX1KYFxAcyL49CX6zoUidr6Tb5E0vPUE+anxetplaxfLL2UX2/fVo8HPS6nf3V20rW38HaaEvhsnYdU2mB3seusfvPHzIbd+LeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUYG3Nu0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C44C16AAE;
+	Mon, 13 Oct 2025 15:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369749;
-	bh=tMEa8L59a6xRsmo+aaZs3x9EVtpzsv1vzoAPqcFnF0Y=;
+	s=korg; t=1760369756;
+	bh=O/l61dwBdpAY2q00V4FaI0Bj+zAuRuXsMXm96RvQRpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSd5welr9pCDNALEsQ4QpQPcueP8f9pdyEXR5QHkJfQ+DIOP73I8tVeTQsjSEg2kA
-	 r+9nC6GM9kWYQ4Rbo02dIoTjD8XLgpuaa4IQ9YVvWeF/h9C5GPJfjEdWZ2RWLggvTh
-	 0A8teAwI6F0izAjzlD2WCWBOqdL2qAvhTHtvwNU4=
+	b=uUYG3Nu0T5+ZfTjY0dG0buaWtqDoowd/J1K08iE2WhbydJqkdX4r8z6dvMbPggG3c
+	 El29vL18UJDbWRQrSzT+1VqgwJTSPRX37BkixiIXaYmuTpbhAdwvi4+tqeFxY/Wn7t
+	 A8KO+uXBnairkMWZZL3yEBvoYYNQt8Lkoj7aS5fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Sujuan Chen <sujuan.chen@mediatek.com>,
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	Rex Lu <rex.lu@mediatek.com>,
 	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 356/563] wifi: mt76: mt7996: Use proper link_id in link_sta_rc_update callback
-Date: Mon, 13 Oct 2025 16:43:37 +0200
-Message-ID: <20251013144424.165509852@linuxfoundation.org>
+Subject: [PATCH 6.17 358/563] wifi: mt76: mt7996: Fix tx-queues initialization for second phy on mt7996
+Date: Mon, 13 Oct 2025 16:43:39 +0200
+Message-ID: <20251013144424.247101640@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,101 +71,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit afff4325548f0cf872e404df2856bf8bd9581c7e ]
+[ Upstream commit 77ff8caf3b17626ad91568cef63d75e288aa4052 ]
 
-Do not always use deflink_id in link_sta_rc_update mac80211
-callback but use the proper link_id provided by mac80211.
+Fix the second phy tx queue initialization if hif device is not
+available for MT7990 chipset.
 
-Fixes: 0762bdd30279f ("wifi: mt76: mt7996: rework mt7996_mac_sta_rc_work to support MLO")
+Fixes: 83eafc9251d6d ("wifi: mt76: mt7996: add wed tx support")
+Co-developed-by: Sujuan Chen <sujuan.chen@mediatek.com>
+Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
+Co-developed-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Co-developed-by: Rex Lu <rex.lu@mediatek.com>
+Signed-off-by: Rex Lu <rex.lu@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250901-mt7996-fix-link_sta_rc_update-callback-v1-1-e24caf196222@kernel.org
+Link: https://patch.msgid.link/20250909-mt7996-rro-rework-v5-8-7d66f6eb7795@kernel.org
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/main.c  | 43 ++++++++++++-------
- 1 file changed, 28 insertions(+), 15 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/init.c  | 21 ++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 3c34a4980afa0..81391db535866 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1663,19 +1663,13 @@ static void mt7996_sta_statistics(struct ieee80211_hw *hw,
- 	}
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index a9599c286328e..be729db5b75c1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -671,13 +671,20 @@ static int mt7996_register_phy(struct mt7996_dev *dev, enum mt76_band_id band)
  
--static void mt7996_link_rate_ctrl_update(void *data, struct ieee80211_sta *sta)
-+static void mt7996_link_rate_ctrl_update(void *data,
-+					 struct mt7996_sta_link *msta_link)
- {
--	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-+	struct mt7996_sta *msta = msta_link->sta;
- 	struct mt7996_dev *dev = msta->vif->deflink.phy->dev;
--	struct mt7996_sta_link *msta_link;
- 	u32 *changed = data;
- 
--	rcu_read_lock();
--
--	msta_link = rcu_dereference(msta->link[msta->deflink_id]);
--	if (!msta_link)
--		goto out;
--
- 	spin_lock_bh(&dev->mt76.sta_poll_lock);
- 
- 	msta_link->changed |= *changed;
-@@ -1683,8 +1677,6 @@ static void mt7996_link_rate_ctrl_update(void *data, struct ieee80211_sta *sta)
- 		list_add_tail(&msta_link->rc_list, &dev->sta_rc_list);
- 
- 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
--out:
--	rcu_read_unlock();
- }
- 
- static void mt7996_link_sta_rc_update(struct ieee80211_hw *hw,
-@@ -1692,11 +1684,32 @@ static void mt7996_link_sta_rc_update(struct ieee80211_hw *hw,
- 				      struct ieee80211_link_sta *link_sta,
- 				      u32 changed)
- {
--	struct mt7996_dev *dev = mt7996_hw_dev(hw);
- 	struct ieee80211_sta *sta = link_sta->sta;
-+	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-+	struct mt7996_sta_link *msta_link;
- 
--	mt7996_link_rate_ctrl_update(&changed, sta);
--	ieee80211_queue_work(hw, &dev->rc_work);
-+	rcu_read_lock();
+ 	/* init wiphy according to mphy and phy */
+ 	mt7996_init_wiphy_band(mphy->hw, phy);
+-	ret = mt7996_init_tx_queues(mphy->priv,
+-				    MT_TXQ_ID(band),
+-				    MT7996_TX_RING_SIZE,
+-				    MT_TXQ_RING_BASE(band) + hif1_ofs,
+-				    wed);
+-	if (ret)
+-		goto error;
 +
-+	msta_link = rcu_dereference(msta->link[link_sta->link_id]);
-+	if (msta_link) {
-+		struct mt7996_dev *dev = mt7996_hw_dev(hw);
++	if (is_mt7996(&dev->mt76) && !dev->hif2 && band == MT_BAND1) {
++		int i;
 +
-+		mt7996_link_rate_ctrl_update(&changed, msta_link);
-+		ieee80211_queue_work(hw, &dev->rc_work);
++		for (i = 0; i <= MT_TXQ_PSD; i++)
++			mphy->q_tx[i] = dev->mt76.phys[MT_BAND0]->q_tx[0];
++	} else {
++		ret = mt7996_init_tx_queues(mphy->priv, MT_TXQ_ID(band),
++					    MT7996_TX_RING_SIZE,
++					    MT_TXQ_RING_BASE(band) + hif1_ofs,
++					    wed);
++		if (ret)
++			goto error;
 +	}
-+
-+	rcu_read_unlock();
-+}
-+
-+static void mt7996_sta_rate_ctrl_update(void *data, struct ieee80211_sta *sta)
-+{
-+	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-+	struct mt7996_sta_link *msta_link;
-+	u32 *changed = data;
-+
-+	msta_link = rcu_dereference(msta->link[msta->deflink_id]);
-+	if (msta_link)
-+		mt7996_link_rate_ctrl_update(&changed, msta_link);
- }
  
- static int
-@@ -1717,7 +1730,7 @@ mt7996_set_bitrate_mask(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	 * - multiple rates: if it's not in range format i.e 0-{7,8,9} for VHT
- 	 * then multiple MCS setting (MCS 4,5,6) is not supported.
- 	 */
--	ieee80211_iterate_stations_atomic(hw, mt7996_link_rate_ctrl_update,
-+	ieee80211_iterate_stations_atomic(hw, mt7996_sta_rate_ctrl_update,
- 					  &changed);
- 	ieee80211_queue_work(hw, &dev->rc_work);
- 
+ 	ret = mt76_register_phy(mphy, true, mt76_rates,
+ 				ARRAY_SIZE(mt76_rates));
 -- 
 2.51.0
 
