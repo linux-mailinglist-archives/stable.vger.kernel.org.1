@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190E9BD44F8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:35:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9DDBD42CE
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C59C402D7B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:14:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A14FF188D8DB
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5698730E0F5;
-	Mon, 13 Oct 2025 14:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FB6312826;
+	Mon, 13 Oct 2025 15:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoDaWVff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TkAtPs3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1319030E0F2;
-	Mon, 13 Oct 2025 14:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3135930C624;
+	Mon, 13 Oct 2025 15:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367474; cv=none; b=pj4tout4x26PBinKXovycaJM/pnqmpSzQEpMDnAo/U3X/toeZHJGNZE8u7PBjO3Hvvts6dSorHXiQDjAAzp974gB3wnNmM/aIHMLIqb7R1cUWYn9y3N/P9s3dhme+dLSUKEkM8cNKdrdqKpHml+eIKwhUZ/7/4GPh6F6U8NMMwg=
+	t=1760368283; cv=none; b=thYsGdtNG301/UPuXAz7DPgkQUo0Jhk3p6NNlat6aQhPvz5/+Qv9MqR49CjY/qmqy6Oq76IXkudsbDjERmOPTlYDgMd+86IRPbsuSCIXxfUIvJSBtZ0BXw75Tkw3N00ldJ9l4gPJ2hD0TSeMFRFPy/5ZmVqI4R+zNIQQzziLBys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367474; c=relaxed/simple;
-	bh=P+jy2rSyQAzeON7lSSh/h+nVnl5iyz5Oi4qn5tAWZy4=;
+	s=arc-20240116; t=1760368283; c=relaxed/simple;
+	bh=ihTj8WGjg8MDAXw1fCR5ThdAFlmxE59iBS3s4t0P7qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukixhg3lDoPZQKcNNamaSyRLHkgaOUho5ihepXitOsOQbNqxbHkHj338OqkmeqlpSTZiOVrGRvDVEA3+HgKqDqLSkigR7ZnbYtJo21d7TVnho1BzdMEIzwP0EFxDJgsOVZYrHK3UFcQ0d7YeGaCvb+DZwY2gN8GsdFK4yE7T1k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoDaWVff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2B8C4CEE7;
-	Mon, 13 Oct 2025 14:57:53 +0000 (UTC)
+	 MIME-Version; b=a8h53s1Zx7LiLs8kjjR8HxoeH5O2WobaFoVfkuj+YS1eVFZDASRYIo2N9oBmlk7dZBjYuJyF8FJJGuWlXvGyPS80oHe06Di3JFq7qVX6S3F7tk5DPAu+sBj5fmxQNsenq0UeqDIPsu1OPwHX+9bUF99cQdGOFHpFPjcU9Xf5OJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TkAtPs3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7DEC4CEE7;
+	Mon, 13 Oct 2025 15:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367473;
-	bh=P+jy2rSyQAzeON7lSSh/h+nVnl5iyz5Oi4qn5tAWZy4=;
+	s=korg; t=1760368283;
+	bh=ihTj8WGjg8MDAXw1fCR5ThdAFlmxE59iBS3s4t0P7qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EoDaWVffa7GhbpkadBM4TjcRdxam9tDE3pQ0arsa10JdcvPU8S5m1M4IcsOjfwBm+
-	 fd+16uOvM0Zr7bIijE7yW2ubu3jQV4bqBlxWf63vmzwwn8Pd5hTGeJEG4MmGPONjrW
-	 3sUBh8bajyxK0iBqItfGr8coOBL6i+aFx0pUgj2U=
+	b=0TkAtPs33eX3iLEbkXQcWKsyBvCrRBL9XhHf2Tx36C1PfapISd4DtaDjAZjbple3S
+	 XSWCme/7QB/nrj3Fwk3/2ZBZKnfV17ciWm02hvXsBM7awMW7Ugc4kqHDc1KGj3yeYY
+	 aY5W06nRtxXQrUVsRTrYWuP2Qbbh1A9BMTJQxyfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/196] blk-mq: check kobject state_in_sysfs before deleting in blk_mq_unregister_hctx
-Date: Mon, 13 Oct 2025 16:43:35 +0200
-Message-ID: <20251013144316.070210929@linuxfoundation.org>
+Subject: [PATCH 6.12 074/262] selftests: watchdog: skip ping loop if WDIOF_KEEPALIVEPING not supported
+Date: Mon, 13 Oct 2025 16:43:36 +0200
+Message-ID: <20251013144328.790702764@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
 
-[ Upstream commit 4c7ef92f6d4d08a27d676e4c348f4e2922cab3ed ]
+[ Upstream commit e8cfc524eaf3c0ed88106177edb6961e202e6716 ]
 
-In __blk_mq_update_nr_hw_queues() the return value of
-blk_mq_sysfs_register_hctxs() is not checked. If sysfs creation for hctx
-fails, later changing the number of hw_queues or removing disk will
-trigger the following warning:
+Check if watchdog device supports WDIOF_KEEPALIVEPING option before
+entering keep_alive() ping test loop. Fix watchdog-test silently looping
+if ioctl based ping is not supported by the device. Exit from test in
+such case instead of getting stuck in loop executing failing keep_alive()
 
-  kernfs: can not remove 'nr_tags', no directory
-  WARNING: CPU: 2 PID: 637 at fs/kernfs/dir.c:1707 kernfs_remove_by_name_ns+0x13f/0x160
-  Call Trace:
-   remove_files.isra.1+0x38/0xb0
-   sysfs_remove_group+0x4d/0x100
-   sysfs_remove_groups+0x31/0x60
-   __kobject_del+0x23/0xf0
-   kobject_del+0x17/0x40
-   blk_mq_unregister_hctx+0x5d/0x80
-   blk_mq_sysfs_unregister_hctxs+0x94/0xd0
-   blk_mq_update_nr_hw_queues+0x124/0x760
-   nullb_update_nr_hw_queues+0x71/0xf0 [null_blk]
-   nullb_device_submit_queues_store+0x92/0x120 [null_blk]
+watchdog_info:
+ identity:              m41t93 rtc Watchdog
+ firmware_version:      0
+Support/Status: Set timeout (in seconds)
+Support/Status: Watchdog triggers a management or other external alarm not a reboot
 
-kobjct_del() was called unconditionally even if sysfs creation failed.
-Fix it by checkig the kobject creation statusbefore deleting it.
+Watchdog card disabled.
+Watchdog timeout set to 5 seconds.
+Watchdog ping rate set to 2 seconds.
+Watchdog card enabled.
+WDIOC_KEEPALIVE not supported by this device
 
-Fixes: 477e19dedc9d ("blk-mq: adjust debugfs and sysfs register when updating nr_hw_queues")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250826084854.1030545-1-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+without this change
+Watchdog card disabled.
+Watchdog timeout set to 5 seconds.
+Watchdog ping rate set to 2 seconds.
+Watchdog card enabled.
+Watchdog Ticking Away!
+(Where test stuck here forver silently)
+
+Updated change log at commit time:
+Shuah Khan <skhan@linuxfoundation.org>
+
+Link: https://lore.kernel.org/r/20250914152840.GA3047348@bhairav-test.ee.iitb.ac.in
+Fixes: d89d08ffd2c5 ("selftests: watchdog: Fix ioctl SET* error paths to take oneshot exit path")
+Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq-sysfs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/block/blk-mq-sysfs.c b/block/blk-mq-sysfs.c
-index 156e9bb07abf1..2fb234ab467b1 100644
---- a/block/blk-mq-sysfs.c
-+++ b/block/blk-mq-sysfs.c
-@@ -150,9 +150,11 @@ static void blk_mq_unregister_hctx(struct blk_mq_hw_ctx *hctx)
- 		return;
+diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
+index a1f506ba55786..4f09c5db0c7f3 100644
+--- a/tools/testing/selftests/watchdog/watchdog-test.c
++++ b/tools/testing/selftests/watchdog/watchdog-test.c
+@@ -332,6 +332,12 @@ int main(int argc, char *argv[])
+ 	if (oneshot)
+ 		goto end;
  
- 	hctx_for_each_ctx(hctx, ctx, i)
--		kobject_del(&ctx->kobj);
-+		if (ctx->kobj.state_in_sysfs)
-+			kobject_del(&ctx->kobj);
++	/* Check if WDIOF_KEEPALIVEPING is supported */
++	if (!(info.options & WDIOF_KEEPALIVEPING)) {
++		printf("WDIOC_KEEPALIVE not supported by this device\n");
++		goto end;
++	}
++
+ 	printf("Watchdog Ticking Away!\n");
  
--	kobject_del(&hctx->kobj);
-+	if (hctx->kobj.state_in_sysfs)
-+		kobject_del(&hctx->kobj);
- }
- 
- static int blk_mq_register_hctx(struct blk_mq_hw_ctx *hctx)
+ 	/*
 -- 
 2.51.0
 
