@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-184367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61339BD3E58
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:08:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF8EBD4576
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9913118864C2
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:07:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 273543E794D
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55EF3126DB;
-	Mon, 13 Oct 2025 14:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECBE30B526;
+	Mon, 13 Oct 2025 15:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et58Biae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAdoSKf6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFA93126C7;
-	Mon, 13 Oct 2025 14:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF5D30B51F;
+	Mon, 13 Oct 2025 15:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367231; cv=none; b=CGlV9WBQHdo5IHdn+rhhtKdSSnoGSJgvhIL6zK+FvSMYLFH3aZ0ij3Gn6bwJrnmjnukf5NU4GyVvwFqqYphu1HzwaUSQQWuBAjLdQuigQ6QzBM9tAhywF+f0+hJeGAzGjRHbp6rjGTMSzlNI5T8pcqdfnPOhb9HUgsv+5W7zGdw=
+	t=1760367748; cv=none; b=ix62mTF419fz1KpQIRk+ReAEs/4eUk2e1fjUMohI0wMcU75hDp74PGQ+yecqYR3Pdkp+7grSmy3zauhQ6vUH5U2kYM042TucrQX2MtwUbnzvcf+OWJGOKgoylKSA9LJLS0oMgnbUAG8VvWXq2Ea9B7VuQl1IPp6Chw5NaxIhLkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367231; c=relaxed/simple;
-	bh=KdYrs9I4QF1W/PE8R8fEhyWPlR//YoO9FkHUgjDtUu8=;
+	s=arc-20240116; t=1760367748; c=relaxed/simple;
+	bh=GFxvUIq4zSXJIHgnJEh1fU6qz2MLI5UgK00NtgZnZB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bokM+bVzo/xVuxkG3Huee0YCsu59VG+84U7TUvKTCYgFQS58k+XdvH1tAPjgnwNfSYVNjzFmbHM9RXkJo4OmfL7/ySpYK+aNCWXQTz+eNpOR7LRzLG7Kh3LJbFE0e++GWXM+8QT6EcQQQu1i69lwH0vVWi0HA1ordRDVa1GYUTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et58Biae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AC6C19421;
-	Mon, 13 Oct 2025 14:53:50 +0000 (UTC)
+	 MIME-Version; b=nJ/kp+mRxX5QAsbHozffyha7F9D5J4eWUyrY+5VPZSnpbx5tIPnQR36i4OIu/3EaaUphTHffj6UL/lZ9NjSe1CHcCtTS9nt49dFy8m6HP3AXYPpwwSdshbujG3ABsiLZd1OUzzQ4ahvjQhkxNwBfMJ6CEgve8hENQzJCkiabklw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAdoSKf6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F937C4CEE7;
+	Mon, 13 Oct 2025 15:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367230;
-	bh=KdYrs9I4QF1W/PE8R8fEhyWPlR//YoO9FkHUgjDtUu8=;
+	s=korg; t=1760367747;
+	bh=GFxvUIq4zSXJIHgnJEh1fU6qz2MLI5UgK00NtgZnZB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et58BiaeYXqnDaiY6wYo4mv5XutEXfVNz9ZjVPriqmrUDEVE7u2pTsoD1aOzaITq/
-	 WSy2BCkjlDnRlTC+pq5YOP+80aJ2TutJ8FBPF/Mt8vbu+QsF6mj8PYyCMW4OHrNfnB
-	 Ctu59NW4N09TT7HqbiG4r6XJNEnC1QiDs8MtWBdI=
+	b=AAdoSKf6auLZQeBcDmI9MKkz/1Pz+q5Ps32TXeSuTXTWQf+h88WL0TepPp0tfUtqP
+	 ie+oDjUCngWhiyLV3pTZLh/ZM6SJeI2SU7fbQIGyzdd/XaEiKv/UvCCFpxlYmLBxrV
+	 nnnBnpH8/es/I2n5VE1Tu8o0j9rHoqwLanFX/0dU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/196] wifi: mac80211: fix Rx packet handling when pubsta information is not available
+Subject: [PATCH 6.6 120/196] scsi: qla2xxx: Fix incorrect sign of error code in START_SP_W_RETRIES()
 Date: Mon, 13 Oct 2025 16:45:11 +0200
-Message-ID: <20251013144319.685506378@linuxfoundation.org>
+Message-ID: <20251013144319.650504212@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 32d340ae675800672e1219444a17940a8efe5cca ]
+[ Upstream commit 1f037e3acda79639a78f096355f2c308a3d45492 ]
 
-In ieee80211_rx_handle_packet(), if the caller does not provide pubsta
-information, an attempt is made to find the station using the address 2
-(source address) field in the header. Since pubsta is missing, link
-information such as link_valid and link_id is also unavailable. Now if such
-a situation comes, and if a matching ML station entry is found based on
-the source address, currently the packet is dropped due to missing link ID
-in the status field which is not correct.
+Change the error code EAGAIN to -EAGAIN in START_SP_W_RETRIES() to align
+with qla2x00_start_sp() returning negative error codes or QLA_SUCCESS,
+preventing logical errors.  Additionally, the '_rval' variable should
+store negative error codes to conform to Linux kernel error code
+conventions.
 
-Hence, to fix this issue, if link_valid is not set and the station is an
-ML station, make an attempt to find a link station entry using the source
-address. If a valid link station is found, derive the link ID and proceed
-with packet processing. Otherwise, drop the packet as per the existing
-flow.
-
-Fixes: ea9d807b5642 ("wifi: mac80211: add link information in ieee80211_rx_status")
-Suggested-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250917-fix_data_packet_rx_with_mlo_and_no_pubsta-v1-1-8cf971a958ac@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Message-ID: <20250905075446.381139-3-rongqianfeng@vivo.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 8c9267acb227b..776f9fcf05abe 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -5106,12 +5106,20 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 			}
- 
- 			rx.sdata = prev_sta->sdata;
-+			if (!status->link_valid && prev_sta->sta.mlo) {
-+				struct link_sta_info *link_sta;
-+
-+				link_sta = link_sta_info_get_bss(rx.sdata,
-+								 hdr->addr2);
-+				if (!link_sta)
-+					continue;
-+
-+				link_id = link_sta->link_id;
-+			}
-+
- 			if (!ieee80211_rx_data_set_sta(&rx, prev_sta, link_id))
- 				goto out;
- 
--			if (!status->link_valid && prev_sta->sta.mlo)
--				continue;
--
- 			ieee80211_prepare_and_rx_handle(&rx, skb, false);
- 
- 			prev_sta = sta;
-@@ -5119,10 +5127,18 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 
- 		if (prev_sta) {
- 			rx.sdata = prev_sta->sdata;
--			if (!ieee80211_rx_data_set_sta(&rx, prev_sta, link_id))
--				goto out;
-+			if (!status->link_valid && prev_sta->sta.mlo) {
-+				struct link_sta_info *link_sta;
-+
-+				link_sta = link_sta_info_get_bss(rx.sdata,
-+								 hdr->addr2);
-+				if (!link_sta)
-+					goto out;
- 
--			if (!status->link_valid && prev_sta->sta.mlo)
-+				link_id = link_sta->link_id;
-+			}
-+
-+			if (!ieee80211_rx_data_set_sta(&rx, prev_sta, link_id))
- 				goto out;
- 
- 			if (ieee80211_prepare_and_rx_handle(&rx, skb, true))
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 5fa2727c1bea7..e881d704b45d1 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2059,11 +2059,11 @@ static void qla_marker_sp_done(srb_t *sp, int res)
+ 	int cnt = 5; \
+ 	do { \
+ 		if (_chip_gen != sp->vha->hw->chip_reset || _login_gen != sp->fcport->login_gen) {\
+-			_rval = EINVAL; \
++			_rval = -EINVAL; \
+ 			break; \
+ 		} \
+ 		_rval = qla2x00_start_sp(_sp); \
+-		if (_rval == EAGAIN) \
++		if (_rval == -EAGAIN) \
+ 			msleep(1); \
+ 		else \
+ 			break; \
 -- 
 2.51.0
 
