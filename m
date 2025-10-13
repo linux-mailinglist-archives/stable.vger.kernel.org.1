@@ -1,100 +1,116 @@
-Return-Path: <stable+bounces-184146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF765BD2043
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:23:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE12BD206C
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 10:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9F31E4EDD32
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 08:23:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BE8FB4EE628
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 08:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252182F2902;
-	Mon, 13 Oct 2025 08:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367C42F2902;
+	Mon, 13 Oct 2025 08:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="O2nd+b5Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbFXrNCw"
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8412EB5C9;
-	Mon, 13 Oct 2025 08:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8442EC0B7
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 08:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760343793; cv=none; b=cZucVFEGKVFM7pOl25amp6ziWEle+rSnIlrsyfSqMFU8Pqy8v1gd8YshaQOP6Rl10l6/pX54DLbhufOWY0vIeynATbPFytghJo2AjvXosWShuzGpqpj898dvNYfuN4ahaXnPJrsYLP+L51XMRWbKTKnVT+zfawWA05NZNDc64V8=
+	t=1760343819; cv=none; b=TipJhwC28ICs0seQj/6fxjIcypjE8uXdtUH0NQ3zYTEzvu6sR9wvf91pKCVOzOUJW/rhcBBySpxuQSL1P8FQT0/IfBfbYVZ7iCuLVl9AZ9gP/A+E8b8RXIxykzEQIPyVx9A7kS7syIt1nZVJcOJP2IYaOowVIEE+6Eb5z87O5Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760343793; c=relaxed/simple;
-	bh=1kR31gbBKnUscwS6ZTjsnygKJs8ivj+9YtUWNXRZP3Q=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ZbFFeE+sldQUBKqyAXmWv7iXh8btwxFtf3SS556QYE9/u4F5uDilfERc4pe86ImffFiTNbGCD+DJ8OKFrXyIiGSIgZCsQPjkZQlvBKbDhRvj2G2m1queIuaV5wmPk3W6GjaHIp1neVeT8gzJzTAdfjAQmZtqPzYxvVC0Ux4K1qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=O2nd+b5Z; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760343786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vvAwE+mYlFFTAsj2rEKkqTesljDavewgCpk7RarO+os=;
-	b=O2nd+b5ZQqqRTbpp7mYz1uktv8h7XNclbxxqpyGymBYBngnMHmyYjuFOAgkEMdPm8i0pzh
-	P+JyicDM6y7IsHrVTw1R7I7HNePuy38/7pTu2zdYsYE3XVc5zlyKySaLNJ/bZIVwE2lNnc
-	qtcTON8QsOaizF3zblxb4jSQlMXxQAE=
+	s=arc-20240116; t=1760343819; c=relaxed/simple;
+	bh=Ws5p1fAR6aCmkr3XR3fLfO27JblGjT4wsqGK44b6DXk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JviSBmdJb0lDxSt0DailgqlnNu2XPDVj+TnWK1JwWLhvzYDp8zDpPPMOKNTvsrkSq5xJ0Ql1UBpvLLYN0aOu6UgKCWo7Vd3GyFPXesPD0mezxupjXpBqBW7udpCTkPXzzfAMHug+GT1wMscRnNtDRQlg7GKqYJPYVWpmOZ/HkkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbFXrNCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C3CC4CEE7;
+	Mon, 13 Oct 2025 08:23:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760343818;
+	bh=Ws5p1fAR6aCmkr3XR3fLfO27JblGjT4wsqGK44b6DXk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=MbFXrNCwdfP15/N3Vnr3amsdcjresn8i4i5nCz0jTWdeHp/fYvXGv9Z/OiSLT2j0h
+	 rPIA8MvK3CdL2hJC7JjNzms77Er2MpWxtZqKuOGv0TfGCipAzXsJK/4h1h29XAPqRL
+	 jfXJFTk4ZepaHaHRxJ4sYszBJRxapOD27Y9r5x5w=
+Subject: FAILED: patch "[PATCH] media: mc: Clear minor number before put device" failed to apply to 6.17-stable tree
+To: eadavis@qq.com,hverkuil+cisco@kernel.org,sakari.ailus@linux.intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Oct 2025 10:23:35 +0200
+Message-ID: <2025101335-script-feeble-03de@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v2 1/2] crypto: asymmetric_keys - prevent overflow in
- asymmetric_key_generate_id
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-In-Reply-To: <aOybIZ2iqXExpTUw@wunner.de>
-Date: Mon, 13 Oct 2025 10:23:01 +0200
-Cc: David Howells <dhowells@redhat.com>,
- Ignat Korchagin <ignat@cloudflare.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
- Vivek Goyal <vgoyal@redhat.com>,
- stable@vger.kernel.org,
- keyrings@vger.kernel.org,
- linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4AF8BE0F-D400-4020-A8F6-EF61A797A24E@linux.dev>
-References: <20251012203841.60230-1-thorsten.blum@linux.dev>
- <aOybIZ2iqXExpTUw@wunner.de>
-To: Lukas Wunner <lukas@wunner.de>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 13. Oct 2025, at 08:24, Lukas Wunner wrote:
-> On Sun, Oct 12, 2025 at 10:38:40PM +0200, Thorsten Blum wrote:
->> +++ b/crypto/asymmetric_keys/asymmetric_type.c
->> @@ -141,12 +142,14 @@ struct asymmetric_key_id =
-*asymmetric_key_generate_id(const void *val_1,
->> 						     size_t len_2)
->> {
->> 	struct asymmetric_key_id *kid;
->> +	size_t len;
->>=20
->> -	kid =3D kmalloc(sizeof(struct asymmetric_key_id) + len_1 + =
-len_2,
->> -		      GFP_KERNEL);
->> +	if (check_add_overflow(len_1, len_2, &len))
->> +		return ERR_PTR(-EOVERFLOW);
->> +	kid =3D kmalloc(struct_size(kid, data, len), GFP_KERNEL);
->=20
-> This will add (at least) 2 bytes to len (namely the size of struct
-> asymmetric_key_id)) and may cause an overflow (even if len_1 + len_2
-> did not overflow).
 
-Could you explain which part adds "(at least) 2 bytes to len"?
+The patch below does not apply to the 6.17-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thanks,
-Thorsten
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8cfc8cec1b4da88a47c243a11f384baefd092a50
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101335-script-feeble-03de@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8cfc8cec1b4da88a47c243a11f384baefd092a50 Mon Sep 17 00:00:00 2001
+From: Edward Adam Davis <eadavis@qq.com>
+Date: Wed, 10 Sep 2025 09:15:27 +0800
+Subject: [PATCH] media: mc: Clear minor number before put device
+
+The device minor should not be cleared after the device is released.
+
+Fixes: 9e14868dc952 ("media: mc: Clear minor number reservation at unregistration time")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=031d0cfd7c362817963f
+Tested-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+
+diff --git a/drivers/media/mc/mc-devnode.c b/drivers/media/mc/mc-devnode.c
+index 0d01cbae98f2..6daa7aa99442 100644
+--- a/drivers/media/mc/mc-devnode.c
++++ b/drivers/media/mc/mc-devnode.c
+@@ -276,13 +276,10 @@ void media_devnode_unregister(struct media_devnode *devnode)
+ 	/* Delete the cdev on this minor as well */
+ 	cdev_device_del(&devnode->cdev, &devnode->dev);
+ 	devnode->media_dev = NULL;
++	clear_bit(devnode->minor, media_devnode_nums);
+ 	mutex_unlock(&media_devnode_lock);
+ 
+ 	put_device(&devnode->dev);
+-
+-	mutex_lock(&media_devnode_lock);
+-	clear_bit(devnode->minor, media_devnode_nums);
+-	mutex_unlock(&media_devnode_lock);
+ }
+ 
+ /*
 
 
