@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8764BD41E3
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:25:40 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3335EBD408A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C13BD503C96
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:13:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D438E34E68E
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38FE306B17;
-	Mon, 13 Oct 2025 14:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F031930CDA6;
+	Mon, 13 Oct 2025 15:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULp+uVDZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAy9NTfy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912043081A8;
-	Mon, 13 Oct 2025 14:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA4830C36A;
+	Mon, 13 Oct 2025 15:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367397; cv=none; b=gmWqMABlhHl4B1LSUZlLaeg72i98Xkyqs/7wS4Cxdv/YKZ6Zj7DDmHws3PuFTkf0BUMRm7WPXoXsMKdpjkJw/6t+JmooNDA5Gw0P7Ms9auYT2KCKSgA5C+/SxfvPOZ9ppu2h1ntsBUNLp6RR45p/tCQk4S4Dm1omGtWNmfiq9DQ=
+	t=1760367910; cv=none; b=Uzxg7Ztkg+aJWtKk++oqH27S9htKNWiBynXaGMoZ0oLFuvmg+zZVdGjsBgljOxxkiPoDi92IMewNXsMRB9Jd6GVseBLrxb0gkr2shsDObXb3YoKnH4gcZ/TfjPRATCfhzuPAw6umxsW7iGzpjWIBSA7GqGyikHtIY8h+0ivrDZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367397; c=relaxed/simple;
-	bh=nqyeynbYbjUzr9Yt2+quL04I73r0tVUTSMp9x5MfnlM=;
+	s=arc-20240116; t=1760367910; c=relaxed/simple;
+	bh=nACUUktla0KaHPFrF5aRrfC4PLL2auupTChIMyBzgp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUnvChFPfw3ppUdjLT0xt1vhapDTQdnYvvuqaxV1T3mvc+/KMhDvOhq6OGnZgbnq5bPVxYMd24OWxHfJHialWnEH0ON+R4D+sKTQ1C0d+zSmHSPOvDNGv3nmGvLbjU446dnJuN8OBvV+Ppsj3d/wCXMXW7Kd0yIsL8AGDGyaoBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULp+uVDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181FAC4CEE7;
-	Mon, 13 Oct 2025 14:56:36 +0000 (UTC)
+	 MIME-Version; b=AA27mYCRR7CVFH4p+d5RFfLDtxtT+MnZ1odRVxUVWVDmRc+WNe5cfPb6LSaBujzRJn8z9rI91s0L/nh4YlsO4o+fKhiG/FZBBzVQGVgYFwchWbDa9neQ4/7Ha8uhuUL5jdKe+YRQKKnKezQGU+Ni3SBfY+KhGMleWi8aGr4JL0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAy9NTfy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32464C4CEE7;
+	Mon, 13 Oct 2025 15:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367397;
-	bh=nqyeynbYbjUzr9Yt2+quL04I73r0tVUTSMp9x5MfnlM=;
+	s=korg; t=1760367910;
+	bh=nACUUktla0KaHPFrF5aRrfC4PLL2auupTChIMyBzgp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULp+uVDZ/yNLlP9QGmbM4NGLoutlSE9XKBHGwxgHVOw802TBQxz9BDpZJ6One2Pdl
-	 7Hi8ZOXLz0OKQXcIfGxOcmfqQ0e+JSzItQOvILVpZAJbqY3Y/q29VkjiBc+rnKfn3p
-	 K0mVYjF0Ez5DTfPlE6MZIkBnJ9jYHNRMVLSJqJAY=
+	b=PAy9NTfyacM2aHfDb9c4hPLsn2WCwlAHAy5pWVmyXNIXmU+epZNSenrf/S/FvjF3h
+	 ozx6uaY4Zz4aMgmpNYcQ7VxRWGhi2QfOI3EJiKaPfyKukHdFgFuIwrGw24Z3jEnStv
+	 PBPxkIAzJ8rRcNrxyudrS6sa3M1P0KuvSQoM+jl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nishanth Menon <nm@ti.com>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Anthony Iliopoulos <ailiop@suse.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/196] hwrng: ks-sa - fix division by zero in ks_sa_rng_init
+Subject: [PATCH 6.6 143/196] NFSv4.1: fix backchannel max_resp_sz verification check
 Date: Mon, 13 Oct 2025 16:45:34 +0200
-Message-ID: <20251013144320.523234431@linuxfoundation.org>
+Message-ID: <20251013144320.485925391@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Menon <nm@ti.com>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit 612b1dfeb414dfa780a6316014ceddf9a74ff5c0 ]
+[ Upstream commit 191512355e520dfc45c8bc3b56d4de59c3ade33e ]
 
-Fix division by zero in ks_sa_rng_init caused by missing clock
-pointer initialization. The clk_get_rate() call is performed on
-an uninitialized clk pointer, resulting in division by zero when
-calculating delay values.
+When the client max_resp_sz is larger than what the server encodes in
+its reply, the nfs4_verify_back_channel_attrs() check fails and this
+causes nfs4_proc_create_session() to fail, in cases where the client
+page size is larger than that of the server and the server does not want
+to negotiate upwards.
 
-Add clock initialization code before using the clock.
+While this is not a problem with the linux nfs server that will reflect
+the proposed value in its reply irrespective of the local page size,
+other nfs server implementations may insist on their own max_resp_sz
+value, which could be smaller.
 
-Fixes: 6d01d8511dce ("hwrng: ks-sa - Add minimum sleep time before ready-polling")
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fix this by accepting smaller max_resp_sz values from the server, as
+this does not violate the protocol. The server is allowed to decrease
+but not increase proposed the size, and as such values smaller than the
+client-proposed ones are valid.
 
- drivers/char/hw_random/ks-sa-rng.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 43c2e885be25 ("nfs4: fix channel attribute sanity-checks")
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/ks-sa-rng.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nfs/nfs4proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/hw_random/ks-sa-rng.c b/drivers/char/hw_random/ks-sa-rng.c
-index 2f2f21f1b659e..d7b42888f25c2 100644
---- a/drivers/char/hw_random/ks-sa-rng.c
-+++ b/drivers/char/hw_random/ks-sa-rng.c
-@@ -240,6 +240,10 @@ static int ks_sa_rng_probe(struct platform_device *pdev)
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 124b9cee6fed7..94a1caf326699 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -9226,7 +9226,7 @@ static int nfs4_verify_back_channel_attrs(struct nfs41_create_session_args *args
+ 		goto out;
+ 	if (rcvd->max_rqst_sz > sent->max_rqst_sz)
  		return -EINVAL;
- 	}
- 
-+	ks_sa_rng->clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(ks_sa_rng->clk))
-+		return dev_err_probe(dev, PTR_ERR(ks_sa_rng->clk), "Failed to get clock\n");
-+
- 	pm_runtime_enable(dev);
- 	ret = pm_runtime_resume_and_get(dev);
- 	if (ret < 0) {
+-	if (rcvd->max_resp_sz < sent->max_resp_sz)
++	if (rcvd->max_resp_sz > sent->max_resp_sz)
+ 		return -EINVAL;
+ 	if (rcvd->max_resp_sz_cached > sent->max_resp_sz_cached)
+ 		return -EINVAL;
 -- 
 2.51.0
 
