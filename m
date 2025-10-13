@@ -1,145 +1,112 @@
-Return-Path: <stable+bounces-185527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCDCBD6972
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 00:13:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974C9BD69A6
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 00:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B376940814B
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 22:13:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8DAEE4E17A1
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 22:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857D02F5320;
-	Mon, 13 Oct 2025 22:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDE62F3620;
+	Mon, 13 Oct 2025 22:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="hGIzS1P+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+4ZKzAT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B333E2FB0BD
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 22:13:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DAB2FE04C
+	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 22:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760393598; cv=none; b=HnAQivRp+fO9cOXZqceHfQkrPGjc6qQYW/0824lFMNql+/ASMMWvDE6iTLIvUDKvh+y8iJ6ZKY7mI3WJMAsSwhemdBKKHFMc20u2hiblvrJqwHUr89zCiN08/QUAD2WS2vC4vtox4mlhbdsDYdQ/hZLy0PDoac3u1p158yNLF2s=
+	t=1760394108; cv=none; b=plbQPYrPU4gcS7wBmSaSGzLDZMXfqhdia2eKM3l9pM+q6LRinOVa5GuIjtgHr7ERX7Iu4hkMjSfSBQZbXE8jtyOyUQC5+rHYyzCqOjHpO1028bzEC+h09SKAxcwU794ET+nefKAMZFMDwCDmpaxY1w7UgtGATx+Gpa77SBcTPfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760393598; c=relaxed/simple;
-	bh=wjoYvXDZz0DfsX9uSWQcckKoP6w9GXLrRSh8PGU2nkw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aZPWsL/+MVa06WE+NMylS9TvEhnVpMcUt/IMZtnNRgM1Gr2Nv75GfnOLaTHfKaAlUVviUORHx0RGqXkargCJlmh0Fo1WRuccLzubYMsQI0FZ2v3zaiOSEIaCNU6yBgk4XRnIZA4J3EfVFQsICVe5rZMXVuYfsQYeHpog0WGyl8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=hGIzS1P+; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-271d1305ad7so75400075ad.2
-        for <stable@vger.kernel.org>; Mon, 13 Oct 2025 15:13:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760393596; x=1760998396; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PwDIVnwjatb9wZcHCyfzRACsLl5kuks0bwo7xSwJ8VY=;
-        b=hGIzS1P+9aouRtCGIyPObV5aQOQTsIoji7nzyHJQ1Jj2Gr/mCXDEbbQG8I5ZfxeRzi
-         o1KTI1s1MmHDMicgBi3YxeJGXzEQOXHpw30f2X+/dnhi+wOv+lG3vjBrocf+mXPMN4Wm
-         rwM1d6RQjW2UQNK1ZP+4cXxvjDun1s4bdF3sg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760393596; x=1760998396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PwDIVnwjatb9wZcHCyfzRACsLl5kuks0bwo7xSwJ8VY=;
-        b=RoOMJmQWGFD6gxkl9xFrto8Zq8/nD1L10qiSiKIMAz2vtAYlq+344BepD/DCEH/GXh
-         Jzhb4AormxFuiuaa4XNFxsG1ijSo6+fDOsGlxLjnplIqydrpe4i6unIES0NsorgIvrQT
-         CbuEck0/I+MyHIK1WIHAAZh61qbdwewrl7duNqePwSqdFKs+N5eaMppLqGSq6AWupWqW
-         Qz9g87qCj4ILt7YNM0X57XeF7uPWr3t2RBeZfF89FoM0x123zogHq+UvPs0G7uLV5YWu
-         IEwFlXz8Nl50Ga8JDc6PqHl3MAJoLRdTo1k/Ag6aXCpwQoWkT4CLEhDsilNTsVz0ZTgR
-         Mq0w==
-X-Forwarded-Encrypted: i=1; AJvYcCW1zBjbJQ40BC7tXm4xlNEP0GRs5SO2U4Vu39XN3YCRtHtQXhTBC7rBbC8YAtsEsVUkxCxEwkc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmlTYiSvYdqwsFUbzr8ylBc7ihV4YwB68WmCWhU4H6yCbmBZ3X
-	9XjzQqcaKNZ6n3GZbk0CO42xYL7QxsMQ5RUGwk8FxJaDvshzQBkmNuWmbuo07zSLbg==
-X-Gm-Gg: ASbGncsNobSRybhJ6QPdSrzp2rZ+GS3iQ8sH+mV6i56C/0ni6SZnBHbj4fnj1Xbz6rO
-	2q3BnWu3i8pUjqOwkax1mnRf4L/J6oU5BjavyfPiQ/gDj/nIVfj10oN6oDzJKLfwSSWBBzUNzC0
-	4poUMLADAH8mYWkpiOtZRIojKG4mvjX4lMQld9HpaVhXlchVVXBACzObPVZ7QjNhW+T3/Mo/3KH
-	3jMLjo9I7XNjdqjHphbf+HPZjLbokytzOxIYFYRJhBW0ipsWTnEEqfDm9yIrS6pgZkGJdmWzHwJ
-	BO68Q0UdQctl9rujVATR+Iopz72cO8UVEXOiK0xGzSqnR2q9gkEFj06aWK9Qeaax/6DkDJ2g920
-	QUzon94+gdyULLffbPzm4y0Tx3yAHxKczlxbcIl/Yc62JnIgszDCkPo6yMAMXTMh9/WH8GwHHS+
-	tw1XVgmeqprHcDeoT8mobgvDY=
-X-Google-Smtp-Source: AGHT+IGFg5uCIhEU3lcn0qGmOLjSNLHjIAYyVFAFUM7gEwBM59gQGW1r0WNu8Fra1LpnKfzMHn+JxQ==
-X-Received: by 2002:a17:902:d607:b0:269:8f2e:e38 with SMTP id d9443c01a7336-29027356528mr293017275ad.6.1760393595967;
-        Mon, 13 Oct 2025 15:13:15 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e7c:8:4cf5:d692:bb78:20c])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-29034f36cb1sm142736965ad.100.2025.10.13.15.13.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Oct 2025 15:13:15 -0700 (PDT)
-Date: Mon, 13 Oct 2025 15:13:12 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] PCI/PM: Avoid redundant delays on D3hot->D3cold
-Message-ID: <aO15eFW430nuXMa5@google.com>
-References: <aOQLRhot8-MtXeE3@google.com>
- <20251006193333.GA537409@bhelgaas>
- <v7ynntv43urqjfdfzzbai2btsohaxpprni2pix2wnjfoazlfcl@xdbhvnpmoebt>
+	s=arc-20240116; t=1760394108; c=relaxed/simple;
+	bh=SPnlhZFfWC1tysTb7iIRRnyH45rfFqRinc4g0EKEJJw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kET9Xuy9GVXn7MoMYJQApwA11FeNG1onvRlf1vvkxdAt8iK9fJ/lGiYjQ8eO6rYsvJuPuEdacQIqiAYKO2cGNAr0wY9VHB2U6AWzh/uRgU29x2yv4BzmNQ+HGvEC57UZJRb4bA2Ovz1h36Mbp6QjIIrz21HsE/3AP3Ssi6jf6JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+4ZKzAT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF155C4CEE7;
+	Mon, 13 Oct 2025 22:21:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760394107;
+	bh=SPnlhZFfWC1tysTb7iIRRnyH45rfFqRinc4g0EKEJJw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=l+4ZKzATChjj5TeCsV/nWpHrp4ucYc2/KbIDjx84N5zizfUcy98epC1fJXYumQLbB
+	 p6IumNJs2RdjxctPNYRtfmmAzLen5Osom7QEl8p8/f8OzRgHkjpYQxpeCGg/dthAM0
+	 QolNc01yq1eyNqK6sn0WaJid2+0Db8Ahm1K7E2xPZbG+dmpeMpUqLg+GrfPGVU4tZr
+	 18j3TSO7v36CLZSMYUUL8y9Kfe8Nu4H1idI521MfDz1QW3D9UjNr/vkzRJ7H7EEbGP
+	 nrLdTAnoT3OCLHomhVyrTJIEP30JL4GRPfS8zrJlTyqGpMGBt44TOH5BD6tK2YOdxp
+	 oiCE9CIaLXdQg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Edward Adam Davis <eadavis@qq.com>,
+	syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] media: mc: Clear minor number before put device
+Date: Mon, 13 Oct 2025 18:21:45 -0400
+Message-ID: <20251013222145.3663624-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101338-swab-rut-c1d4@gregkh>
+References: <2025101338-swab-rut-c1d4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <v7ynntv43urqjfdfzzbai2btsohaxpprni2pix2wnjfoazlfcl@xdbhvnpmoebt>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 06, 2025 at 04:13:26PM -0700, Manivannan Sadhasivam wrote:
-> On Mon, Oct 06, 2025 at 02:33:33PM -0500, Bjorn Helgaas wrote:
-> > On Mon, Oct 06, 2025 at 11:32:38AM -0700, Brian Norris wrote:
-> > > Some PCI drivers call pci_set_power_state(..., PCI_D3hot) on their own
-> > > when preparing for runtime or system suspend, so by the time they hit
-> > > pci_finish_runtime_suspend(), they're in D3hot. Then, pci_target_state()
-> > > may still pick a lower state (D3cold).
-> > 
-> > We might need this change, but maybe this is also an opportunity to
-> > remove some of those pci_set_power_state(..., PCI_D3hot) calls from
-> > drivers.
-> > 
-> 
-> Agree. The PCI client drivers should have no business in opting for D3Hot in the
-> suspend path.
+From: Edward Adam Davis <eadavis@qq.com>
 
-I dunno. There are various reasons a device might want to go to D3Hot
-some time before fully suspending the system, and possibly even before
-runtime suspend (or they may not support runtime PM at all). For
-example, on the first step on my alphabetical trawl through
+[ Upstream commit 8cfc8cec1b4da88a47c243a11f384baefd092a50 ]
 
-  git grep -l '\<pci_set_power_state\>' drivers/
+The device minor should not be cleared after the device is released.
 
-I found a driver that supports some power-toggling via debugfs, in
-drivers/accel/habanalabs/common/debugfs.c. It would take nontrivial
-effort to evaluate every case like that for removal.
+Fixes: 9e14868dc952 ("media: mc: Clear minor number reservation at unregistration time")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=031d0cfd7c362817963f
+Tested-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ moved clear_bit from media_devnode_release callback to media_devnode_unregister before put_device ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/media/mc/mc-devnode.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-BTW, we even have documentation for this:
+diff --git a/drivers/media/mc/mc-devnode.c b/drivers/media/mc/mc-devnode.c
+index f249199dc616b..f8257aa5fc584 100644
+--- a/drivers/media/mc/mc-devnode.c
++++ b/drivers/media/mc/mc-devnode.c
+@@ -50,11 +50,6 @@ static void media_devnode_release(struct device *cd)
+ {
+ 	struct media_devnode *devnode = to_media_devnode(cd);
+ 
+-	mutex_lock(&media_devnode_lock);
+-	/* Mark device node number as free */
+-	clear_bit(devnode->minor, media_devnode_nums);
+-	mutex_unlock(&media_devnode_lock);
+-
+ 	/* Release media_devnode and perform other cleanups as needed. */
+ 	if (devnode->release)
+ 		devnode->release(devnode);
+@@ -283,6 +278,7 @@ void media_devnode_unregister(struct media_devnode *devnode)
+ 	/* Delete the cdev on this minor as well */
+ 	cdev_device_del(&devnode->cdev, &devnode->dev);
+ 	devnode->media_dev = NULL;
++	clear_bit(devnode->minor, media_devnode_nums);
+ 	mutex_unlock(&media_devnode_lock);
+ 
+ 	put_device(&devnode->dev);
+-- 
+2.51.0
 
-https://docs.kernel.org/power/pci.html#suspend
-
-"However, in some rare case it is convenient to carry out these operations in
-a PCI driver.  Then, pci_save_state(), pci_prepare_to_sleep(), and
-pci_set_power_state() should be used to save the device's standard configuration
-registers, to prepare it for system wakeup (if necessary), and to put it into a
-low-power state, respectively."
-
-So sure, it should be rare (like the docs say), and it's probably
-redundant in many cases, but I'm not that interested in shaving various
-drivers' yaks right now. I'm just fixing a (small) performance
-regression in documented behavior.
-
-> It should be the other way around, they should opt-out if they
-> want by calling pci_save_state(), but that is also subject to discussion.
-
-FWIW, that's also documented in the above link.
-
-Brian
 
