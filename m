@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-185022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7365BD4D11
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C18BD4C9F
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 18:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F4EA3E77A1
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7991C427B08
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387E2306483;
-	Mon, 13 Oct 2025 15:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED17306497;
+	Mon, 13 Oct 2025 15:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNJaY0mz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAPYZuy+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19B030C625;
-	Mon, 13 Oct 2025 15:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC1630C619;
+	Mon, 13 Oct 2025 15:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369110; cv=none; b=BmMUHVjLqHYm4Jo6rC9PAv+fEQGfRLyfm3bprSgn6HbgYUH3ip33niYqVsTP4CTWKpkh3jgFce+TFZDT3LQaA0m++tr9rq/WnOc5jO4mqPovABt0unbnZZimWf756FBrMU64Jo/gBncTNXDjWyCobPUAT4ovNZoMA43in1HzvD8=
+	t=1760369095; cv=none; b=THfqVvPq63X82dPLxoBvZ9nmRU+Fsa7PPD5zPwpV7ihPeH+3LW5U1c2hwFw4yfVoUxb5GN/XqhK8K2VS86xOYUi0yA6U6RuH4zIt/1U1O+p666oUmhXUTKgV/07TQSOGPWXMBnEtmn8UNxWdNjMwjkkoPqYA4w+0N/N2aAYnOTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369110; c=relaxed/simple;
-	bh=zvmNBfvx22HP3dI0EPfpIgpbm8Eb2kITcpgPqfiQlgc=;
+	s=arc-20240116; t=1760369095; c=relaxed/simple;
+	bh=oQNdw+GNas9qvlqup/FP01HN8hc3dArs18erXJru2rI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQVIADblKqBfu/pSKaafYSEiy0le7Qt3ph9dPGxoFDdQ/W5PiWStEl1R6bvyXPZpumH3RH9FsYNRlrNfFJQgk5XKLjaQbJgmuS5IXcKhUqHRFjCxQo9fUrQGpobwHaBuz8M6DvKbidmDe6FkPj5Y7az075d0Eruumn3OyDD8ans=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNJaY0mz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641A8C4CEE7;
-	Mon, 13 Oct 2025 15:25:09 +0000 (UTC)
+	 MIME-Version; b=WVhn37yBNIFwYmtD+YlrsTdlU45u6lPEVzYAjQi/imaQEbSTfeiUAeXZ5/e9mtNfOOin4u5WJLGB1qXawaxdhPTYDkUMxX0d6Unv1N3GxfMjC7HVxcR+ogKZ0Dy+oU/UzGn/DwfAdjI76lurfFPa3Gm+THltnm8n/RH4j7PgnSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAPYZuy+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC37EC4CEE7;
+	Mon, 13 Oct 2025 15:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760369109;
-	bh=zvmNBfvx22HP3dI0EPfpIgpbm8Eb2kITcpgPqfiQlgc=;
+	s=korg; t=1760369095;
+	bh=oQNdw+GNas9qvlqup/FP01HN8hc3dArs18erXJru2rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BNJaY0mzqtDV8gThR0pVskCqfmUpx2E9Zi36sNRwU/FRAF5gIHteE7/+tw59XiEcP
-	 1JyuUMCIIbn0KBsBkxrsLJriCulR/fq1dIMCdMhM4mqt3WsJCbDzmbkjMQqzP1YOfC
-	 RXmQWlSZGnmMosfjZKLS+msDtTZ4cd5e2ay3Qvmo=
+	b=GAPYZuy+RP6H99g5oZbAtAM0rzBpXNuqR0gxbY/CuLWho06YxVMa2KCnus8N8JFBI
+	 q0sB+2970j0fSV+bwrChxL83o7xWQbEa6w4rUA2GsiJYcDUski5+94pyG+MFRFeKEV
+	 Ct505VXrh5dPxWBmFwmV/MpgRitOF6DlSZDOJ25A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Brian Norris <briannorris@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	David Gow <davidgow@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 088/563] genirq/test: Depend on SPARSE_IRQ
-Date: Mon, 13 Oct 2025 16:39:09 +0200
-Message-ID: <20251013144414.486368779@linuxfoundation.org>
+Subject: [PATCH 6.17 093/563] PM: sleep: core: Clear power.must_resume in noirq suspend error path
+Date: Mon, 13 Oct 2025 16:39:14 +0200
+Message-ID: <20251013144414.666262563@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
 References: <20251013144411.274874080@linuxfoundation.org>
@@ -68,50 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Brian Norris <briannorris@chromium.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 0c888bc86d672e551ce5c58b891c8b44f8967643 ]
+[ Upstream commit be82483d1b60baf6747884bd74cb7de484deaf76 ]
 
-Some architectures have a static interrupt layout, with a limited number of
-interrupts. Without SPARSE_IRQ, the test may not be able to allocate any
-fake interrupts, and the test will fail. (This occurs on ARCH=m68k, for
-example.)
+If system suspend is aborted in the "noirq" phase (for instance, due to
+an error returned by one of the device callbacks), power.is_noirq_suspended
+will not be set for some devices and device_resume_noirq() will return
+early for them.  Consequently, noirq resume callbacks will not run for
+them at all because the noirq suspend callbacks have not run for them
+yet.
 
-Additionally, managed-affinity is only supported with CONFIG_SPARSE_IRQ=y,
-so irq_shutdown_depth_test() and irq_cpuhotplug_test() would fail without
-it.
+If any of them has power.must_resume set and late suspend has been
+skipped for it (due to power.smart_suspend), early resume should be
+skipped for it either, or its state may become inconsistent (for
+instance, if the early resume assumes that it will always follow
+noirq resume).
 
-Add a 'SPARSE_IRQ' dependency to avoid these problems.
+Make that happen by clearing power.must_resume in device_resume_noirq()
+for devices with power.is_noirq_suspended clear that have been left in
+suspend by device_suspend_late(), which will subsequently cause
+device_resume_early() to leave the device in suspend and avoid
+changing its state.
 
-Many architectures 'select SPARSE_IRQ', so this is easy to miss.
-
-Notably, this also excludes ARCH=um from running any of these tests, even
-though some of them might work.
-
-Fixes: 66067c3c8a1e ("genirq: Add kunit tests for depth counts")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: David Gow <davidgow@google.com>
-Link: https://lore.kernel.org/all/20250822190140.2154646-5-briannorris@chromium.org
+Fixes: 0d4b54c6fee8 ("PM / core: Add LEAVE_SUSPENDED driver flag")
+Link: https://lore.kernel.org/linux-pm/5d692b81-6f58-4e86-9cb0-ede69a09d799@rowland.harvard.edu/
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/3381776.aeNJFYEL58@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/power/main.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
-index 08088b8e95ae9..a75df2bb9db66 100644
---- a/kernel/irq/Kconfig
-+++ b/kernel/irq/Kconfig
-@@ -147,6 +147,7 @@ config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
- config IRQ_KUNIT_TEST
- 	bool "KUnit tests for IRQ management APIs" if !KUNIT_ALL_TESTS
- 	depends on KUNIT=y
-+	depends on SPARSE_IRQ
- 	default KUNIT_ALL_TESTS
- 	select IRQ_DOMAIN
- 	imply SMP
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 2ea6e05e6ec90..c883b01ffbddc 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -724,8 +724,20 @@ static void device_resume_noirq(struct device *dev, pm_message_t state, bool asy
+ 	if (dev->power.syscore || dev->power.direct_complete)
+ 		goto Out;
+ 
+-	if (!dev->power.is_noirq_suspended)
++	if (!dev->power.is_noirq_suspended) {
++		/*
++		 * This means that system suspend has been aborted in the noirq
++		 * phase before invoking the noirq suspend callback for the
++		 * device, so if device_suspend_late() has left it in suspend,
++		 * device_resume_early() should leave it in suspend either in
++		 * case the early resume of it depends on the noirq resume that
++		 * has not run.
++		 */
++		if (dev_pm_skip_suspend(dev))
++			dev->power.must_resume = false;
++
+ 		goto Out;
++	}
+ 
+ 	if (!dpm_wait_for_superior(dev, async))
+ 		goto Out;
 -- 
 2.51.0
 
