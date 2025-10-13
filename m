@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9C0BD41A4
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:24:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623A0BD46D8
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:43:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 776C1189BC0F
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48CBE421C43
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F7C30F93C;
-	Mon, 13 Oct 2025 15:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4337B3090DE;
+	Mon, 13 Oct 2025 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APzOY3qV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/Rbq4Ww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EE830F818;
-	Mon, 13 Oct 2025 15:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37003081CC;
+	Mon, 13 Oct 2025 15:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367876; cv=none; b=RwFdN8x+CbNgd28bk5q7R3FEfYAW7CD+Re781+LpjC5FVygfOVT7Yuk/GAa8O+jGN2D8xLITbJI+95DAcBkfbH5BHtC/AqgMv/DaWc4AdyQlUIEJ9qWM8668Q7rbOTL99JMsUZe/RZM/EY2cG4YdqzSrbYic95xK4hyTpfG7vAs=
+	t=1760368635; cv=none; b=BpV396ywERG7g0EdAXiqd8lL7esm3KHbPuugedsOsn2abPWlydioaNBizmmkgtBSSc3J0JCLQgbpShUmVe+aGTHNVM+SmXd0r37Ki12tKYXexIOEisDFFwBpFnOGj3JKbZ/TyBHu6CDub2aZSHYZLfbffIHXbcjpA0D4kUKrJWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367876; c=relaxed/simple;
-	bh=42akdj8HUScdXPNot71D7Kz75kSZlBNYGbxQGJcvHRo=;
+	s=arc-20240116; t=1760368635; c=relaxed/simple;
+	bh=rnWGzEBAAYxCTwWfZQnoWLyr+je+iYsOago3w7uvGAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhiLYYY3qYFGdTULTxLR7zQRa5hOmK0aE8Xo6wCCgJCcXvQylFv+kaqylunW1DrHS6UtcTXfj5nKdbAfZEQA1VXo1ZKLdS/U/mY+xX7aQC8RqdfWo6op7zIGF0aTufm+Lfv4ZUJkdKJEVN1eL1Xdf1liozoxAXRu+R5Ymc9A3Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APzOY3qV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9727AC4CEE7;
-	Mon, 13 Oct 2025 15:04:35 +0000 (UTC)
+	 MIME-Version; b=LQ7eqDOFbsLFqdZEgQriQ5faNOiCdQDAk+1nK1pHuM+5T5SQ/euej6OwkDtsRKoWgUD8VbovTHDfKpzbzxhhO4dIwNsry8wooCm/Pg1aFLsRSjKgA0C3JY5/OjIgCOSS4KUeprmSaDqgbSsZBfuvWrx1Tlz73MoJJ9ZPwW1gIUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/Rbq4Ww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEABC4CEE7;
+	Mon, 13 Oct 2025 15:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367876;
-	bh=42akdj8HUScdXPNot71D7Kz75kSZlBNYGbxQGJcvHRo=;
+	s=korg; t=1760368634;
+	bh=rnWGzEBAAYxCTwWfZQnoWLyr+je+iYsOago3w7uvGAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APzOY3qVd2M8QypCIR3LUUyXq4MzEzw5aprKkeuUviwhdDJGR6HNm3zcINUGiyp5j
-	 i74S3o0+R5hzlB3ne99hYUCdol0i3LMyM3T0zk1nyMW6FMSQKtjVIdFShFr+0YxYIn
-	 WJ+yFk5LHZWk7MbLicujpc/gCRubbXcz6Fbgr/BA=
+	b=k/Rbq4WwNhLLUDewOunQY52YsmSojb0wPfNGlrkY5/V6pavZfWJOTwv8Mv0GIWX+s
+	 +wYVkMF2+9v0ufAtAr5Y3hpaJi1zwf/nAXp0J71+TYvqX6uHyCHzuk3bihuXS2D5Z8
+	 dJBwesGhiGwPXKQPXHQkHXjni6o/qOz0UQy5ktKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/196] net/mlx5: pagealloc: Fix reclaim race during command interface teardown
+Subject: [PATCH 6.12 212/262] PCI: j721e: Fix incorrect error message in probe()
 Date: Mon, 13 Oct 2025 16:45:54 +0200
-Message-ID: <20251013144321.207799607@linuxfoundation.org>
+Message-ID: <20251013144333.878405162@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 79a0e32b32ac4e4f9e4bb22be97f371c8c116c88 ]
+[ Upstream commit cfcd6cab2f33c24a68517f9e3131480b4000c2be ]
 
-The reclaim_pages_cmd() function sends a command to the firmware to
-reclaim pages if the command interface is active.
+The probe() function prints "pm_runtime_get_sync failed" when
+j721e_pcie_ctrl_init() returns an error. This is misleading since
+the failure is not from pm_runtime, but from the controller init
+routine. Update the error message to correctly reflect the source.
 
-A race condition can occur if the command interface goes down (e.g., due
-to a PCI error) while the mlx5_cmd_do() call is in flight. In this
-case, mlx5_cmd_do() will return an error. The original code would
-propagate this error immediately, bypassing the software-based page
-reclamation logic that is supposed to run when the command interface is
-down.
+No functional changes.
 
-Fix this by checking whether mlx5_cmd_do() returns -ENXIO, which mark
-that command interface is down. If this is the case, fall through to
-the software reclamation path. If the command failed for any another
-reason, or finished successfully, return as before.
-
-Fixes: b898ce7bccf1 ("net/mlx5: cmdif, Avoid skipping reclaim pages if FW is not accessible")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://patch.msgid.link/20250905211436.3048282-1-alok.a.tiwari@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pci/controller/cadence/pci-j721e.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-index e0581c6f9cecd..5df1472fe2be2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-@@ -489,9 +489,12 @@ static int reclaim_pages_cmd(struct mlx5_core_dev *dev,
- 	u32 func_id;
- 	u32 npages;
- 	u32 i = 0;
-+	int err;
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index bae829ac759e1..eb772c18d44ed 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -531,7 +531,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
  
--	if (!mlx5_cmd_is_down(dev))
--		return mlx5_cmd_do(dev, in, in_size, out, out_size);
-+	err = mlx5_cmd_do(dev, in, in_size, out, out_size);
-+	/* If FW is gone (-ENXIO), proceed to forceful reclaim */
-+	if (err != -ENXIO)
-+		return err;
+ 	ret = j721e_pcie_ctrl_init(pcie);
+ 	if (ret < 0) {
+-		dev_err_probe(dev, ret, "pm_runtime_get_sync failed\n");
++		dev_err_probe(dev, ret, "j721e_pcie_ctrl_init failed\n");
+ 		goto err_get_sync;
+ 	}
  
- 	/* No hard feelings, we want our pages back! */
- 	npages = MLX5_GET(manage_pages_in, in, input_num_entries);
 -- 
 2.51.0
 
