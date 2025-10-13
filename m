@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-184844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB041BD43D8
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:31:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9013FBD4156
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:23:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70892188C3A0
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:29:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5A418927DD
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937EA24466C;
-	Mon, 13 Oct 2025 15:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8367330E849;
+	Mon, 13 Oct 2025 15:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axhWDVqv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVMqW6mG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DFE2566;
-	Mon, 13 Oct 2025 15:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC9830BF6E;
+	Mon, 13 Oct 2025 15:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368598; cv=none; b=qrA+cKkIJzzo+5Cpkh0sFq4yJgu/C1oMo4IMRPuqB7nlAdlW1mqBsReykoCrM/sCltDDaB08WGqmP2i70EOPeRqxziZfz/w/M6yonBPdHBxEbYPjpiiyjzdawhBYiYwJ2sKunPqZWxheuzIf4k+xof0Pho4kypMbMFqeXWLtpeM=
+	t=1760367798; cv=none; b=jB8DSZjTYDZCnuWl9K63q/1tSQSVf0p/GQN/yQLH6s5doLebl/W5tFx1RjJFcOC4etw7TdYr5eZEEIzkJvSqUUVORMZEC2+OBbWoF9OI8WWbRr94Cx8EAHecssA6ryFgi+7E/nYZSPA5c4hju4sNo2HDiVoa3xLL8py+ji9bk0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368598; c=relaxed/simple;
-	bh=lBeYqI3q0xqorbvc4Y38kLueYjUD6u9igsX/tGddTMA=;
+	s=arc-20240116; t=1760367798; c=relaxed/simple;
+	bh=Yxd2ZkHNEwMnqr10GPZba+AWEYyRZyruOeIedl1m1KI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ah/W7vCfsqJSvC+qHyYZIZ+ycr7+jVowrTGwEZjR2bUS3rGwppKp0kAo0K/7wbDTTQz/beGhQAvhJ4Q2Ec5Kcg89bQsa2g+KyPSeq2x1r7/Su39NcKc16oHGprOle89Hia3AQYsB71+wAbSKPCfXjMBOC50lQJ8ngAAYI12NOAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axhWDVqv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1C3C4CEE7;
-	Mon, 13 Oct 2025 15:16:37 +0000 (UTC)
+	 MIME-Version; b=oQipVrxRff2TB/nakX/xTgiAI783OZqF1dY+Nl6Bc8QI/2ufW/JdJ0CvNpMfcAFcexpYi6rCt9K28DzzTPhSJV4tVAVt/tYhy2pqD7HtyUAtKgdlFe4AWIqg6dLlx2oqfZjozZTB7NGrqJpz1/hDRDiKEuSUN5Y7uRIoCsmPyzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVMqW6mG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA605C4CEE7;
+	Mon, 13 Oct 2025 15:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760368598;
-	bh=lBeYqI3q0xqorbvc4Y38kLueYjUD6u9igsX/tGddTMA=;
+	s=korg; t=1760367798;
+	bh=Yxd2ZkHNEwMnqr10GPZba+AWEYyRZyruOeIedl1m1KI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axhWDVqvr/F9AM6K0C8poYc30IWyn69oSN5h43DLh7jwCMKmgWauLqUyELEIn1Yu3
-	 PW1YTrNY0SD0vNDvztl1LScgfDw0DHnlfkOHT1zS2iQEINtpX1g7Pkb9ut+pTiNsZC
-	 gaD08QhN+ss3JYTcP4el59Oglf8+wyjiE1qDENoA=
+	b=JVMqW6mGl6K+Guccj5N3DJEPk8lzaJeIjgIBlU/8QemVueT+EHtPFNgoba9FRxsYP
+	 CX+cKweHJOPt6cyDUbSIUg7aUEe5xEIfNxTOq+2YRkGQs7+nzHqXRdRPAVNb5idC1G
+	 I+a9z1b3RoDeANlYUmfNJk4K7cTGg9sXNTpG8hXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 184/262] coresight: catu: Support atclk
-Date: Mon, 13 Oct 2025 16:45:26 +0200
-Message-ID: <20251013144332.754325015@linuxfoundation.org>
+Subject: [PATCH 6.6 136/196] RDMA/rxe: Fix race in do_task() when draining
+Date: Mon, 13 Oct 2025 16:45:27 +0200
+Message-ID: <20251013144320.234588369@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-References: <20251013144326.116493600@linuxfoundation.org>
+In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
+References: <20251013144315.184275491@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 5483624effea2e893dc0df6248253a6a2a085451 ]
+[ Upstream commit 8ca7eada62fcfabf6ec1dc7468941e791c1d8729 ]
 
-The atclk is an optional clock for the CoreSight CATU, but the driver
-misses to initialize it.
+When do_task() exhausts its iteration budget (!ret), it sets the state
+to TASK_STATE_IDLE to reschedule, without a secondary check on the
+current task->state. This can overwrite the TASK_STATE_DRAINING state
+set by a concurrent call to rxe_cleanup_task() or rxe_disable_task().
 
-This change enables atclk in probe of the CATU driver, and dynamically
-control the clock during suspend and resume.
+While state changes are protected by a spinlock, both rxe_cleanup_task()
+and rxe_disable_task() release the lock while waiting for the task to
+finish draining in the while(!is_done(task)) loop. The race occurs if
+do_task() hits its iteration limit and acquires the lock in this window.
+The cleanup logic may then proceed while the task incorrectly
+reschedules itself, leading to a potential use-after-free.
 
-The checks for driver data and clocks in suspend and resume are not
-needed, remove them.  Add error handling in the resume function.
+This bug was introduced during the migration from tasklets to workqueues,
+where the special handling for the draining case was lost.
 
-Fixes: fcacb5c154ba ("coresight: Introduce support for Coresight Address Translation Unit")
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250731-arm_cs_fix_clock_v4-v6-2-1dfe10bb3f6f@arm.com
+Fix this by restoring the original pre-migration behavior. If the state is
+TASK_STATE_DRAINING when iterations are exhausted, set cont to 1 to
+force a new loop iteration. This allows the task to finish its work, so
+that a subsequent iteration can reach the switch statement and correctly
+transition the state to TASK_STATE_DRAINED, stopping the task as intended.
+
+Fixes: 9b4b7c1f9f54 ("RDMA/rxe: Add workqueue support for rxe tasks")
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20250919025212.1682087-1-hanguidong02@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-catu.c | 22 +++++++++++++++-----
- drivers/hwtracing/coresight/coresight-catu.h |  1 +
- 2 files changed, 18 insertions(+), 5 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_task.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
-index 25fd02955c38d..abfff42b20c93 100644
---- a/drivers/hwtracing/coresight/coresight-catu.c
-+++ b/drivers/hwtracing/coresight/coresight-catu.c
-@@ -521,6 +521,10 @@ static int __catu_probe(struct device *dev, struct resource *res)
- 	struct coresight_platform_data *pdata = NULL;
- 	void __iomem *base;
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
+index 80332638d9e3a..be6cd8ce4d97e 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.c
++++ b/drivers/infiniband/sw/rxe/rxe_task.c
+@@ -132,8 +132,12 @@ static void do_task(struct rxe_task *task)
+ 		 * yield the cpu and reschedule the task
+ 		 */
+ 		if (!ret) {
+-			task->state = TASK_STATE_IDLE;
+-			resched = 1;
++			if (task->state != TASK_STATE_DRAINING) {
++				task->state = TASK_STATE_IDLE;
++				resched = 1;
++			} else {
++				cont = 1;
++			}
+ 			goto exit;
+ 		}
  
-+	drvdata->atclk = devm_clk_get_optional_enabled(dev, "atclk");
-+	if (IS_ERR(drvdata->atclk))
-+		return PTR_ERR(drvdata->atclk);
-+
- 	catu_desc.name = coresight_alloc_device_name(&catu_devs, dev);
- 	if (!catu_desc.name)
- 		return -ENOMEM;
-@@ -668,18 +672,26 @@ static int catu_runtime_suspend(struct device *dev)
- {
- 	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
- 
--	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
--		clk_disable_unprepare(drvdata->pclk);
-+	clk_disable_unprepare(drvdata->atclk);
-+	clk_disable_unprepare(drvdata->pclk);
-+
- 	return 0;
- }
- 
- static int catu_runtime_resume(struct device *dev)
- {
- 	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
-+	int ret;
- 
--	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
--		clk_prepare_enable(drvdata->pclk);
--	return 0;
-+	ret = clk_prepare_enable(drvdata->pclk);
-+	if (ret)
-+		return ret;
-+
-+	ret = clk_prepare_enable(drvdata->atclk);
-+	if (ret)
-+		clk_disable_unprepare(drvdata->pclk);
-+
-+	return ret;
- }
- #endif
- 
-diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
-index 755776cd19c5b..6e6b7aac206dc 100644
---- a/drivers/hwtracing/coresight/coresight-catu.h
-+++ b/drivers/hwtracing/coresight/coresight-catu.h
-@@ -62,6 +62,7 @@
- 
- struct catu_drvdata {
- 	struct clk *pclk;
-+	struct clk *atclk;
- 	void __iomem *base;
- 	struct coresight_device *csdev;
- 	int irq;
 -- 
 2.51.0
 
