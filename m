@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-184387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF26BD4261
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:27:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A32A9BD4387
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:30:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9961422171
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:12:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C213188645A
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4375530CDA0;
-	Mon, 13 Oct 2025 14:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB02527874F;
+	Mon, 13 Oct 2025 15:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKNC3iWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTiM6gTq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F513064B7;
-	Mon, 13 Oct 2025 14:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B23309EEC;
+	Mon, 13 Oct 2025 15:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367290; cv=none; b=XuWzQjT6gorkRUv86tJMfy0auLxSfuwnwQgysU0OMrirbzvPlggIngwwIA+GgcApYRQAsZO63aWvxVYCUy4Bu6oxJ/bEcRnZmVizxXFaZl18GJqGlEy98CywY3xYSHHiJVP5IJcmhNpsGkclGrJMGgERNl2Bv0i3AHBbssItvOw=
+	t=1760368514; cv=none; b=EfMQmIhemDsbk9GqDQEdfuGjvZ2W0Gq6UKxARWM3jdMKkKk56iXt1mp66UKFCKUdy4kIk/lqX10WpyN54u3Kv29d028hwHghQoidnicr4HCWUH2iNmiplR75wkjs+cCyz/A69uu7odiwsN5+3Af5uDSpWF2kAVOY9fbkTJXO1ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367290; c=relaxed/simple;
-	bh=u82e+pLHyakCKJnPPKFjW2M+6d5Cyk7oxIHdVoFLbko=;
+	s=arc-20240116; t=1760368514; c=relaxed/simple;
+	bh=SkP1MvfpMlPq/9fxIjtw6iCJ8n3JR9gslw0NchviMV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIOXLsbNfTelIVGHBjzGuoReAXcvB/TPYeRAS0MlINbQsOmxNekuNUozgFAvJ1btoIvKQCrKbde6eFwitGJbCv25rPwGBMT9lVbaoh7msuMjKNpDD+ZgW74igxyKiI6+lQeqx5MbbUJZgbPX83LjHYkNtsF4TyI02a863xOU9O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKNC3iWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35660C4CEFE;
-	Mon, 13 Oct 2025 14:54:49 +0000 (UTC)
+	 MIME-Version; b=H3RR5lgVDu/Y73vCATYT/A2e+xbYIxWn+iHMwOMTOyCFE3Q0xy7/Q5twcUcLRohUgyRVPWxldv5crQWmZuMJuWTG2ynK8Cngg2elEUrp8kRK+FczdTWP7r8g0PAYNrU3AsRE8p1hYHfQxFs98aOcDDzv/pNPnd52lpBoIBmOpas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTiM6gTq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC72C4CEE7;
+	Mon, 13 Oct 2025 15:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367289;
-	bh=u82e+pLHyakCKJnPPKFjW2M+6d5Cyk7oxIHdVoFLbko=;
+	s=korg; t=1760368514;
+	bh=SkP1MvfpMlPq/9fxIjtw6iCJ8n3JR9gslw0NchviMV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TKNC3iWzh2sAirnpPOoi+N7p0lM2JNEID5le+OIqqmkB7y37ZEcSoEhcqwJ7s1v28
-	 5eKQG0bo8hGrQHkylhOST2gDHJ7qA+982TRhyQdfs7xpLkAfzpsHDKMHwWApEk92Yl
-	 KaQT/nHZIeNL2FlXLOTVApCmBBhJNPIm1qh4Dj+c=
+	b=JTiM6gTqM47uAQyAJlF1Hpvgbi2fp9OLxuFF2UYQe0eCSV34m6nsC/T03w/4oAKYa
+	 8lzmUC9Ke/r9sxdSdah7v13E8lcfY+IQlLgbOXXZ5OPLoNsAV8pDFXHX53DkopAeJZ
+	 PcqxKfaUEnMGeWzWiucKN9rG8UFx3wtqD4Wq+Glc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lin Yujun <linyujun809@h-partners.com>,
+	James Clark <james.clark@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/196] vhost: vringh: Fix copy_to_iter return value check
-Date: Mon, 13 Oct 2025 16:45:29 +0200
-Message-ID: <20251013144320.343298393@linuxfoundation.org>
+Subject: [PATCH 6.12 188/262] coresight: Fix incorrect handling for return value of devm_kzalloc
+Date: Mon, 13 Oct 2025 16:45:30 +0200
+Message-ID: <20251013144333.020198520@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Lin Yujun <linyujun809@h-partners.com>
 
-[ Upstream commit 439263376c2c4e126cac0d07e4987568de4eaba5 ]
+[ Upstream commit 70714eb7243eaf333d23501d4c7bdd9daf011c01 ]
 
-The return value of copy_to_iter can't be negative, check whether the
-copied length is equal to the requested length instead of checking for
-negative values.
+The return value of devm_kzalloc could be an null pointer,
+use "!desc.pdata" to fix incorrect handling return value
+of devm_kzalloc.
 
-Cc: zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Link: https://lore.kernel.org/all/20250910091739.2999-1-zhangjiao2@cmss.chinamobile.com
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 309bba39c945 ("vringh: iterate on iotlb_translate to handle large translations")
-Link: https://patch.msgid.link/cd637504a6e3967954a9e80fc1b75e8c0978087b.1758723310.git.mst@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4277f035d227 ("coresight: trbe: Add a representative coresight_platform_data for TRBE")
+Signed-off-by: Lin Yujun <linyujun809@h-partners.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250908122022.1315399-1-linyujun809@h-partners.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vringh.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hwtracing/coresight/coresight-trbe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-index 10bfc5f1c50d5..c570d214d5b68 100644
---- a/drivers/vhost/vringh.c
-+++ b/drivers/vhost/vringh.c
-@@ -1195,6 +1195,7 @@ static inline int copy_to_iotlb(const struct vringh *vrh, void *dst,
- 		struct iov_iter iter;
- 		u64 translated;
- 		int ret;
-+		size_t size;
+diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
+index 5755674913723..d771980a278dc 100644
+--- a/drivers/hwtracing/coresight/coresight-trbe.c
++++ b/drivers/hwtracing/coresight/coresight-trbe.c
+@@ -1267,7 +1267,7 @@ static void arm_trbe_register_coresight_cpu(struct trbe_drvdata *drvdata, int cp
+ 	 * into the device for that purpose.
+ 	 */
+ 	desc.pdata = devm_kzalloc(dev, sizeof(*desc.pdata), GFP_KERNEL);
+-	if (IS_ERR(desc.pdata))
++	if (!desc.pdata)
+ 		goto cpu_clear;
  
- 		ret = iotlb_translate(vrh, (u64)(uintptr_t)dst,
- 				      len - total_translated, &translated,
-@@ -1206,9 +1207,9 @@ static inline int copy_to_iotlb(const struct vringh *vrh, void *dst,
- 
- 		iov_iter_bvec(&iter, ITER_DEST, iov, ret, translated);
- 
--		ret = copy_to_iter(src, translated, &iter);
--		if (ret < 0)
--			return ret;
-+		size = copy_to_iter(src, translated, &iter);
-+		if (size != translated)
-+			return -EFAULT;
- 
- 		src += translated;
- 		dst += translated;
+ 	desc.type = CORESIGHT_DEV_TYPE_SINK;
 -- 
 2.51.0
 
