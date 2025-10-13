@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-184594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29508BD47DE
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:47:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7766CBD44AA
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 17:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DCBF54FC484
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:20:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EACE1882C50
+	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 15:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD9D30F7EA;
-	Mon, 13 Oct 2025 15:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C7430B534;
+	Mon, 13 Oct 2025 15:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgpPyYdS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcLhSmET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D3830C365;
-	Mon, 13 Oct 2025 15:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F0730B52A;
+	Mon, 13 Oct 2025 15:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367885; cv=none; b=d8YkELvYZbo1jAXeDkc4Qt5qW6YceyEUEqwM9K9K73KK0+Dljj1McTl8Frvme4Ybbtig35Ysy00t1fQborvTdEUVT1R0uEZ3yG6dXrkTXBfU6cBO8Q/ht6ruAtB7j2VGwIgwtONGl4qK8jqFjBfPGnSaFvHy+q64b6DNr1qoYI8=
+	t=1760368693; cv=none; b=obP9BQHw31shzVbzlnYlwJVRFgzk4mcnOOpvEvR0mR9vZ94czFVQBOTzEZKERLEtMjTrNIdoKpve4ePX1+9s6oMatXAAHeefl+l5a7OU1koDBDcCccFU/+SqUGNTrkfnD9nOLni28ek9nzOZg2FRlLXlxCm2OmIx2xYqRC/A7c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367885; c=relaxed/simple;
-	bh=D7L/IC8VRsT7zAr7WdPq07aFGyjhjPkEhKnFKhmyvek=;
+	s=arc-20240116; t=1760368693; c=relaxed/simple;
+	bh=efIPciUUja163d1fAgnDKDo1P5MJXN40eA6A9gC9jYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThF/F9Ve+ml9/BzWpbNKC/qXl1YnMFNUs4x71l4RuDpKue49wZ7PkMImZSYaL9r+qb7m2JZv5cSU8DK2CwJcJi40++nnZUI9vVQ6o2SdWSah1yeX4IknLNKPw6kFJdmlUOy5B/FN7YxMNjq4WTPS9Pt0V/0GumBaWEjXrOJihNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgpPyYdS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69317C4CEE7;
-	Mon, 13 Oct 2025 15:04:44 +0000 (UTC)
+	 MIME-Version; b=KVBPLW5YejbqqtwwbX/mMOcUN3L4f43WrH/PAQCM1QppQOxVS64NzJXSaMzr7CmhcH8HPFQSwvc15nFBsSHEfFr+lYLeBeRmGj4uhNXrPPe/dxZpcuo9xOnmvX5QLzJUkKFmPP08Sd+pVgdGz1tfj0o/rm/ifWVuvPg7zkVuCfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcLhSmET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28510C4CEE7;
+	Mon, 13 Oct 2025 15:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760367884;
-	bh=D7L/IC8VRsT7zAr7WdPq07aFGyjhjPkEhKnFKhmyvek=;
+	s=korg; t=1760368692;
+	bh=efIPciUUja163d1fAgnDKDo1P5MJXN40eA6A9gC9jYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IgpPyYdSrK5TWouhPvmERaUL1JQqmOttCCDPYXetpQrhdl3wNeM8np38JWKXO9JUF
-	 t9ekqyuLa6UozmD3CzBJ+0O0WirGofF/E8uAIqqBy6E1E3J8lljFZ+JbGjYgjqhIGg
-	 vxJd8E45m7Ad16D9uyy0y8npTYgDrh5FTef27BN4=
+	b=VcLhSmETWyGMKZ3mBzM/8sm5G6azpNyKamo+T5nHlxoonVMHEcQOi/HWgPBIIre+O
+	 405zsRaBsC+lkCLPw2fthJIozW+v79F0jSuBuzuhJdhgrI6UGKttPQo4Cv1087G4dX
+	 NmXabnZR/vYXNDeT2YKZAze5wYOU8eu6kCuewBEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jakub Kicinski <kuba@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/196] Revert "net/mlx5e: Update and set Xon/Xoff upon MTU set"
-Date: Mon, 13 Oct 2025 16:45:57 +0200
-Message-ID: <20251013144321.315115810@linuxfoundation.org>
+Subject: [PATCH 6.12 216/262] net: dlink: handle copy_thresh allocation failure
+Date: Mon, 13 Oct 2025 16:45:58 +0200
+Message-ID: <20251013144334.023757643@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013144315.184275491@linuxfoundation.org>
-References: <20251013144315.184275491@linuxfoundation.org>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+References: <20251013144326.116493600@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-[ Upstream commit 6f5dacf88a32b3fd8b52c8ea781bf188c42aaa95 ]
+[ Upstream commit 8169a6011c5fecc6cb1c3654c541c567d3318de8 ]
 
-This reverts commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb.
+The driver did not handle failure of `netdev_alloc_skb_ip_align()`.
+If the allocation failed, dereferencing `skb->protocol` could lead to
+a NULL pointer dereference.
 
-Commit in question breaks the mapping of PGs to pools for some SKUs.
-Specifically multi-host NICs seem to be shipped with a custom buffer
-configuration which maps the lossy PG to pool 4. But the bad commit
-overrides this with pool 0 which does not have sufficient buffer space
-reserved. Resulting in ~40% packet loss. The commit also breaks BMC /
-OOB connection completely (100% packet loss).
+This patch tries to allocate `skb`. If the allocation fails, it falls
+back to the normal path.
 
-Revert, similarly to commit 3fbfe251cc9f ("Revert "net/mlx5e: Update and
-set Xon/Xoff upon port speed set""). The breakage is exactly the same,
-the only difference is that quoted commit would break the NIC immediately
-on boot, and the currently reverted commit only when MTU is changed.
-
-Note: "good" kernels do not restore the configuration, so downgrade isn't
-enough to recover machines. A NIC power cycle seems to be necessary to
-return to a healthy state (or overriding the relevant registers using
-a custom patch).
-
-Fixes: ceddedc969f0 ("net/mlx5e: Update and set Xon/Xoff upon MTU set")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Tested-on: D-Link DGE-550T Rev-A3
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250928190124.1156-1-yyyynoom@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250929181529.1848157-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en/port_buffer.h         | 12 ------------
- .../net/ethernet/mellanox/mlx5/core/en_main.c   | 17 +----------------
- 2 files changed, 1 insertion(+), 28 deletions(-)
+ drivers/net/ethernet/dlink/dl2k.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-index 66d276a1be836..f4a19ffbb641c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-@@ -66,23 +66,11 @@ struct mlx5e_port_buffer {
- 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_NETWORK_BUFFER];
- };
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 2c1b551e14423..92856cf387c76 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -953,15 +953,18 @@ receive_packet (struct net_device *dev)
+ 		} else {
+ 			struct sk_buff *skb;
  
--#ifdef CONFIG_MLX5_CORE_EN_DCB
- int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 				    u32 change, unsigned int mtu,
- 				    struct ieee_pfc *pfc,
- 				    u32 *buffer_size,
- 				    u8 *prio2buffer);
--#else
--static inline int
--mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
--				u32 change, unsigned int mtu,
--				void *pfc,
--				u32 *buffer_size,
--				u8 *prio2buffer)
--{
--	return 0;
--}
--#endif
- 
- int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
- 			    struct mlx5e_port_buffer *port_buffer);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 09ba60b2e744b..5c6f01abdcb91 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -44,7 +44,6 @@
- #include "eswitch.h"
- #include "en.h"
- #include "en/txrx.h"
--#include "en/port_buffer.h"
- #include "en_tc.h"
- #include "en_rep.h"
- #include "en_accel/ipsec.h"
-@@ -2723,11 +2722,9 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 	struct mlx5e_params *params = &priv->channels.params;
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
--	u16 mtu, prev_mtu;
-+	u16 mtu;
- 	int err;
- 
--	mlx5e_query_mtu(mdev, params, &prev_mtu);
--
- 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
- 	if (err)
- 		return err;
-@@ -2737,18 +2734,6 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
- 			    __func__, mtu, params->sw_mtu);
- 
--	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
--		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
--						      NULL, NULL, NULL);
--		if (err) {
--			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
--				    __func__, mtu, err, prev_mtu);
--
--			mlx5e_set_mtu(mdev, params, prev_mtu);
--			return err;
--		}
--	}
--
- 	params->sw_mtu = mtu;
- 	return 0;
- }
++			skb = NULL;
+ 			/* Small skbuffs for short packets */
+-			if (pkt_len > copy_thresh) {
++			if (pkt_len <= copy_thresh)
++				skb = netdev_alloc_skb_ip_align(dev, pkt_len);
++			if (!skb) {
+ 				dma_unmap_single(&np->pdev->dev,
+ 						 desc_to_dma(desc),
+ 						 np->rx_buf_sz,
+ 						 DMA_FROM_DEVICE);
+ 				skb_put (skb = np->rx_skbuff[entry], pkt_len);
+ 				np->rx_skbuff[entry] = NULL;
+-			} else if ((skb = netdev_alloc_skb_ip_align(dev, pkt_len))) {
++			} else {
+ 				dma_sync_single_for_cpu(&np->pdev->dev,
+ 							desc_to_dma(desc),
+ 							np->rx_buf_sz,
 -- 
 2.51.0
 
