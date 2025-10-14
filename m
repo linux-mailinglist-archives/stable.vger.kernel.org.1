@@ -1,302 +1,168 @@
-Return-Path: <stable+bounces-185638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BB6BD9105
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:37:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A41EFBD910B
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CCED18915AA
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:37:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E3133BE77B
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DAE308F34;
-	Tue, 14 Oct 2025 11:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2C32E3B03;
+	Tue, 14 Oct 2025 11:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sjxn6ts+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QNBGE8X4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B4D2FE055
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 11:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66AE1D435F
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 11:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760441837; cv=none; b=Igc0ilZOna5PE7NY14Yk+o+DBB9sNcpD4ml+aW2PeZe2Bi7K7P8TQTrT9Q9GxewW7GPt/3oK7D4hwzVMbCUpHyDOO8Pck11Vf3oOkOb0CxowcVjhAYeTZ9HnK8zHHXIaKexWexUuCPvHLsPfG30sdUYJyDt1tKyuo2J00ekMrhM=
+	t=1760441986; cv=none; b=EjtT63V5Cm10YnEIIJehb3MDCxfDxmTeunBZFnjteMr20E+42x7W67NIYr9NlOygA/0AxJtIuaT62HzVsj+fv0a5Mw/7b9IC2kgnVm0n/DXmxFQ6bN+5rZJCpKT4uHT5yVwG5/EcPztc6gSpgXgEWgeN8ohYuQFBwv4jdOmf8aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760441837; c=relaxed/simple;
-	bh=dVLBljEe6rgwbM8yOlqOIM/ECk5Zs3tMOBm/XxxPLaU=;
+	s=arc-20240116; t=1760441986; c=relaxed/simple;
+	bh=IsCeuBoV3+N1354qy4A6TG5Hp6mvrO1HU8FqJGS4VaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iiQt7dyXXOSWE8HZQPHXtMNXQYmUht+6oBBVYwmU7RwpF68iB8u1CtAOS3NqOKb3BBlg+bvE2mvM+/m8rMFW8a6b8QcpSZhB0snnNS0CzGxQInuaL4w4JejJJxWqY5wmkgjk00T+BpllFz7c1SBxHE6Vc/mP70iTmURg+yM6vr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sjxn6ts+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FDEC4CEE7;
-	Tue, 14 Oct 2025 11:37:16 +0000 (UTC)
+	 MIME-Version; b=kVDIg10woJlSNpgLCPaUhee60nkkAftqJtP+OS/Ne9B6MZmeU0y2ODz9XKxj+Aeejp3uS6UE4ywSHg3U21LsR9Dq04sIPE+Pq0+LIxKkW1tuGOfSVM51uALrsB5RXc0q+AImudZn71hVIQq/VdOscmHm3n16hRhkL3hk/ueflIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QNBGE8X4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B546C4CEE7;
+	Tue, 14 Oct 2025 11:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760441837;
-	bh=dVLBljEe6rgwbM8yOlqOIM/ECk5Zs3tMOBm/XxxPLaU=;
+	s=k20201202; t=1760441986;
+	bh=IsCeuBoV3+N1354qy4A6TG5Hp6mvrO1HU8FqJGS4VaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sjxn6ts+6oq3soqHCWzqCFpUXN72vTSoZWLyLEP4UFISrkCAoisJwOJ2LWfIXfzIQ
-	 CUJVeVKifgTRAIeWFSA/cLKAoGlcF5FaRGfaRYLMXwVER5XMNIBdC+/tELqiNqOP7p
-	 RfalbvJ9XwYrRsRoCMpnt+1ELQ9JS10fZ9Y+AWLdB3SEKqsFV3ZyiLbFar2Ca83pfm
-	 EpMLUogpFpnfFJgM/G2AxjGwC0gyTLEeQi2FJ+9iTt4hBVuZl03knJ4/8MwKlOANzd
-	 BzNNUzObhsWDw9S79JkItyR9K+ku+3pmhtrKqsIVCR9x+nbwefAYbiyEWdkbb3+Lz8
-	 dAToR6SubxizA==
+	b=QNBGE8X4uys1Oy88qa8+FA5xIjc3kFNnTsmNR0tVjuLNDtvY4qcc7BlrmgffVhX//
+	 CrxPxePmqO//qaKWLh38ilDjnd5mhi60tSHvgpf09UqXghrlr+gYcLJx4cWRPPAshF
+	 RvytGudR/vfQA42IsuRfJ2lv8h+XL146ANDws29Kpmt9UO0gb0E2sHP11Mp0F2gbVY
+	 c0HxsTlk+v6HNovdgOVXTfs/nrY4rYWATfn4IoN/pwKoPUDpOCaAIR2wfkrfG/OFgm
+	 bapADdD1a9cw6OqRrpzb3mwGlopiKgUS5XBm2IqkZlaSuxfcKlYxJlxFYli64pUNz/
+	 5o4bYUdF87buw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Yuan Chen <chenyuan@kylinos.cn>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+Cc: Donet Tom <donettom@linux.ibm.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] tracing: Fix race condition in kprobe initialization causing NULL pointer dereference
-Date: Tue, 14 Oct 2025 07:37:14 -0400
-Message-ID: <20251014113714.4153034-1-sashal@kernel.org>
+Subject: [PATCH 6.17.y] mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
+Date: Tue, 14 Oct 2025 07:39:43 -0400
+Message-ID: <20251014113943.4156526-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101325-slinging-idealism-2cdf@gregkh>
-References: <2025101325-slinging-idealism-2cdf@gregkh>
+In-Reply-To: <2025101357-monorail-juror-352b@gregkh>
+References: <2025101357-monorail-juror-352b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit 9cf9aa7b0acfde7545c1a1d912576e9bab28dc6f ]
+[ Upstream commit 4d6fc29f36341d7795db1d1819b4c15fe9be7b23 ]
 
-There is a critical race condition in kprobe initialization that can lead to
-NULL pointer dereference and kernel crash.
+Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
+fork", v3.
 
-[1135630.084782] Unable to handle kernel paging request at virtual address 0000710a04630000
-...
-[1135630.260314] pstate: 404003c9 (nZcv DAIF +PAN -UAO)
-[1135630.269239] pc : kprobe_perf_func+0x30/0x260
-[1135630.277643] lr : kprobe_dispatcher+0x44/0x60
-[1135630.286041] sp : ffffaeff4977fa40
-[1135630.293441] x29: ffffaeff4977fa40 x28: ffffaf015340e400
-[1135630.302837] x27: 0000000000000000 x26: 0000000000000000
-[1135630.312257] x25: ffffaf029ed108a8 x24: ffffaf015340e528
-[1135630.321705] x23: ffffaeff4977fc50 x22: ffffaeff4977fc50
-[1135630.331154] x21: 0000000000000000 x20: ffffaeff4977fc50
-[1135630.340586] x19: ffffaf015340e400 x18: 0000000000000000
-[1135630.349985] x17: 0000000000000000 x16: 0000000000000000
-[1135630.359285] x15: 0000000000000000 x14: 0000000000000000
-[1135630.368445] x13: 0000000000000000 x12: 0000000000000000
-[1135630.377473] x11: 0000000000000000 x10: 0000000000000000
-[1135630.386411] x9 : 0000000000000000 x8 : 0000000000000000
-[1135630.395252] x7 : 0000000000000000 x6 : 0000000000000000
-[1135630.403963] x5 : 0000000000000000 x4 : 0000000000000000
-[1135630.412545] x3 : 0000710a04630000 x2 : 0000000000000006
-[1135630.421021] x1 : ffffaeff4977fc50 x0 : 0000710a04630000
-[1135630.429410] Call trace:
-[1135630.434828]  kprobe_perf_func+0x30/0x260
-[1135630.441661]  kprobe_dispatcher+0x44/0x60
-[1135630.448396]  aggr_pre_handler+0x70/0xc8
-[1135630.454959]  kprobe_breakpoint_handler+0x140/0x1e0
-[1135630.462435]  brk_handler+0xbc/0xd8
-[1135630.468437]  do_debug_exception+0x84/0x138
-[1135630.475074]  el1_dbg+0x18/0x8c
-[1135630.480582]  security_file_permission+0x0/0xd0
-[1135630.487426]  vfs_write+0x70/0x1c0
-[1135630.493059]  ksys_write+0x5c/0xc8
-[1135630.498638]  __arm64_sys_write+0x24/0x30
-[1135630.504821]  el0_svc_common+0x78/0x130
-[1135630.510838]  el0_svc_handler+0x38/0x78
-[1135630.516834]  el0_svc+0x8/0x1b0
+The first patch in this series fixes the incorrect accounting of KSM
+counters such as ksm_merging_pages, ksm_rmap_items, and the global
+ksm_zero_pages during fork.
 
-kernel/trace/trace_kprobe.c: 1308
-0xffff3df8995039ec <kprobe_perf_func+0x2c>:     ldr     x21, [x24,#120]
-include/linux/compiler.h: 294
-0xffff3df8995039f0 <kprobe_perf_func+0x30>:     ldr     x1, [x21,x0]
+The following patch add a selftest to verify the ksm_merging_pages counter
+was updated correctly during fork.
 
-kernel/trace/trace_kprobe.c
-1308: head = this_cpu_ptr(call->perf_events);
-1309: if (hlist_empty(head))
-1310: 	return 0;
+Test Results
+============
+Without the first patch
+-----------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ not ok 10 ksm_merging_page in child: 32
 
-crash> struct trace_event_call -o
-struct trace_event_call {
-  ...
-  [120] struct hlist_head *perf_events;  //(call->perf_event)
-  ...
-}
+With the first patch
+--------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ ok 10 ksm_merging_pages is not inherited after fork
 
-crash> struct trace_event_call ffffaf015340e528
-struct trace_event_call {
-  ...
-  perf_events = 0xffff0ad5fa89f088, //this value is correct, but x21 = 0
-  ...
-}
+This patch (of 2):
 
-Race Condition Analysis:
+Currently, the KSM-related counters in `mm_struct`, such as
+`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
+by the child process during fork.  This results in inconsistent
+accounting.
 
-The race occurs between kprobe activation and perf_events initialization:
+When a process uses KSM, identical pages are merged and an rmap item is
+created for each merged page.  The `ksm_merging_pages` and
+`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
+these counters are copied to the child while the corresponding rmap items
+are not.  As a result, when the child later triggers an unmerge, there are
+no rmap items present in the child, so the counters remain stale, leading
+to incorrect accounting.
 
-  CPU0                                    CPU1
-  ====                                    ====
-  perf_kprobe_init
-    perf_trace_event_init
-      tp_event->perf_events = list;(1)
-      tp_event->class->reg (2)← KPROBE ACTIVE
-                                          Debug exception triggers
-                                          ...
-                                          kprobe_dispatcher
-                                            kprobe_perf_func (tk->tp.flags & TP_FLAG_PROFILE)
-                                              head = this_cpu_ptr(call->perf_events)(3)
-                                              (perf_events is still NULL)
+A similar issue exists with `ksm_zero_pages`, which maintains both a
+global counter and a per-process counter.  During fork, the per-process
+counter is inherited by the child, but the global counter is not
+incremented.  Since the child also references zero pages, the global
+counter should be updated as well.  Otherwise, during zero-page unmerge,
+both the global and per-process counters are decremented, causing the
+global counter to become inconsistent.
 
-Problem:
-1. CPU0 executes (1) assigning tp_event->perf_events = list
-2. CPU0 executes (2) enabling kprobe functionality via class->reg()
-3. CPU1 triggers and reaches kprobe_dispatcher
-4. CPU1 checks TP_FLAG_PROFILE - condition passes (step 2 completed)
-5. CPU1 calls kprobe_perf_func() and crashes at (3) because
-   call->perf_events is still NULL
+To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
+fork, and the global ksm_zero_pages counter is updated with the
+per-process ksm_zero_pages value inherited by the child.  This ensures
+that KSM statistics remain accurate and reflect the activity of each
+process correctly.
 
-CPU1 sees that kprobe functionality is enabled but does not see that
-perf_events has been assigned.
-
-Add pairing read and write memory barriers to guarantee that if CPU1
-sees that kprobe functionality is enabled, it must also see that
-perf_events has been assigned.
-
-Link: https://lore.kernel.org/all/20251001022025.44626-1-chenyuan_fl@163.com/
-
-Fixes: 50d780560785 ("tracing/kprobes: Add probe handler dispatcher to support perf and ftrace concurrent use")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-[ Drop fprobe changes + context ]
+Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
+Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
+Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
+Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ replaced mm_flags_test() calls with test_bit() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_kprobe.c | 11 +++++++----
- kernel/trace/trace_probe.h  |  9 +++++++--
- kernel/trace/trace_uprobe.c | 12 ++++++++----
- 3 files changed, 22 insertions(+), 10 deletions(-)
+ include/linux/ksm.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index e062f4efec8d0..03d4ac41d9031 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1722,14 +1722,15 @@ static int kprobe_register(struct trace_event_call *event,
- static int kprobe_dispatcher(struct kprobe *kp, struct pt_regs *regs)
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index c17b955e7b0b0..8d61d04542936 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -56,8 +56,14 @@ static inline long mm_ksm_zero_pages(struct mm_struct *mm)
+ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
  {
- 	struct trace_kprobe *tk = container_of(kp, struct trace_kprobe, rp.kp);
-+	unsigned int flags = trace_probe_load_flag(&tk->tp);
- 	int ret = 0;
- 
- 	raw_cpu_inc(*tk->nhit);
- 
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		kprobe_trace_func(tk, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret = kprobe_perf_func(tk, regs);
- #endif
- 	return ret;
-@@ -1741,6 +1742,7 @@ kretprobe_dispatcher(struct kretprobe_instance *ri, struct pt_regs *regs)
- {
- 	struct kretprobe *rp = get_kretprobe(ri);
- 	struct trace_kprobe *tk;
-+	unsigned int flags;
- 
- 	/*
- 	 * There is a small chance that get_kretprobe(ri) returns NULL when
-@@ -1753,10 +1755,11 @@ kretprobe_dispatcher(struct kretprobe_instance *ri, struct pt_regs *regs)
- 	tk = container_of(rp, struct trace_kprobe, rp);
- 	raw_cpu_inc(*tk->nhit);
- 
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tk->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		kretprobe_trace_func(tk, ri, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		kretprobe_perf_func(tk, ri, regs);
- #endif
- 	return 0;	/* We don't tweak kernel, so just return 0 */
-diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index 82e1df8aefcb3..b08aa3946868c 100644
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -258,16 +258,21 @@ struct event_file_link {
- 	struct list_head		list;
- };
- 
-+static inline unsigned int trace_probe_load_flag(struct trace_probe *tp)
-+{
-+	return smp_load_acquire(&tp->event->flags);
-+}
+ 	/* Adding mm to ksm is best effort on fork. */
+-	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags))
++	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags)) {
++		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
 +
- static inline bool trace_probe_test_flag(struct trace_probe *tp,
- 					 unsigned int flag)
- {
--	return !!(tp->event->flags & flag);
-+	return !!(trace_probe_load_flag(tp) & flag);
++		mm->ksm_merging_pages = 0;
++		mm->ksm_rmap_items = 0;
++		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
+ 		__ksm_enter(mm);
++	}
  }
  
- static inline void trace_probe_set_flag(struct trace_probe *tp,
- 					unsigned int flag)
- {
--	tp->event->flags |= flag;
-+	smp_store_release(&tp->event->flags, tp->event->flags | flag);
- }
- 
- static inline void trace_probe_clear_flag(struct trace_probe *tp,
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 322d56661d04a..707c5373476ae 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1485,6 +1485,7 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb;
- 	int dsize, esize;
-+	unsigned int flags;
- 	int ret = 0;
- 
- 
-@@ -1505,11 +1506,12 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
- 	ucb = uprobe_buffer_get();
- 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		ret |= uprobe_trace_func(tu, regs, ucb, dsize);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret |= uprobe_perf_func(tu, regs, ucb, dsize);
- #endif
- 	uprobe_buffer_put(ucb);
-@@ -1523,6 +1525,7 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb;
- 	int dsize, esize;
-+	unsigned int flags;
- 
- 	tu = container_of(con, struct trace_uprobe, consumer);
- 
-@@ -1540,11 +1543,12 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
- 	ucb = uprobe_buffer_get();
- 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		uretprobe_trace_func(tu, func, regs, ucb, dsize);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		uretprobe_perf_func(tu, func, regs, ucb, dsize);
- #endif
- 	uprobe_buffer_put(ucb);
+ static inline int ksm_execve(struct mm_struct *mm)
 -- 
 2.51.0
 
