@@ -1,83 +1,102 @@
-Return-Path: <stable+bounces-185656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E022CBD99A0
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:13:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BC0BD9A3E
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 396C6582972
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:08:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36D4B188B619
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1073B313E2B;
-	Tue, 14 Oct 2025 13:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFF3319613;
+	Tue, 14 Oct 2025 13:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Hqoz/6gc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D1srO15R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA72313E0D
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 13:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728BA319600;
+	Tue, 14 Oct 2025 13:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760447008; cv=none; b=UX0McSORbb86u/WFnSfTpG34u+xDoxT6gooueMxzqCmLKmMHe08zRKEMkYSCM6KdbLGn3N4+w77hJX3pNrkUkqiARd+ZkQM/jCN7RvARQ/3KgwmmNSIGJ/OqEQE0eBSsxb80emXY+b3eXc/RvXKetX09gJSOBiOgvkE16ieQqR0=
+	t=1760447303; cv=none; b=aRy4AVQwoIBSiSoI1X3kBMKoltrrWChJCymsc9N53NMITVB4eyxgV2Es65Rcpn6m1bZS7NtjP2kyBWtsJMfFBJwOJKelyFoxsK/nMR68BnOZfYrJRnRbgdwTtyc0TT9CbjJklLpN7/7lRyMj7vm3d95T4cQbVSDP2FievSdPfLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760447008; c=relaxed/simple;
-	bh=SP2U989xex4C6Fto19vPYxyQ4UBx+cDWFuowar3Zxfc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o97Rzvi8stRQBbZk9BQq//5bnwbJv7n4fLd+/4F32r63TzgYU21tHIffsrqjKAJM176MpKtrRKOlUBwPvtHkPuK9EsfeYaUDhEwn52/VoEuqK2xuKjpOs3gIJtI6uL1wF136Gs/3qzKIGQF5DkCJcnUHyYyBmb9GdlgwL4Ct+OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Hqoz/6gc; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b62ed9c3e79so3350938a12.0
-        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 06:03:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760447006; x=1761051806; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jcx2gdXEOdzx2axNlQonr/s0IBOWZwAKq17ub/P7vxU=;
-        b=Hqoz/6gcuCXBUA/rCS1nQ+mP3ovG6LwBvGEW9elFmIuIoB3XaK4fh7EAcmkFuz0o/G
-         Nmya1SBsSih0L+nMHR2KrirXETUwJuDNQiZeedYgG0crEPFCeKeXBv5ghYEyGUgThJeF
-         HsQ8gdVnXIjkWRf1khTdk35VsQh4loBxNJIoA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760447006; x=1761051806;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jcx2gdXEOdzx2axNlQonr/s0IBOWZwAKq17ub/P7vxU=;
-        b=ONTW0UGn/Y92LBKosFZ9Mw58vV0xNc3s7Bt/wWxWA7LRkgiA9xbO7adD8wopDX4XSV
-         y8E+27yYAM5CRezP9wpy/LCp/7NM0rlkDansMlTCNXje/qubIYXunz335+5Or7nFKzCP
-         g7bW6MeTg/4NF1hkMuR4ZCxHmf4w/HRg2A7E8aOq2/uJ2kAEcPyyl4KgShIWsF5UjJ4u
-         lkqquBQ6gyS80Z33/VUcGh6ySA7yqVV+7T1GFU0mwu8rkDdXKKqmmmvrMtRjTm7pnwJu
-         4bI5OQCFHJO2KX0yxLn/ldo4Y3i+I1N+HGk9FCXA0SWkbacTgPGnyDV0Vzt3xqM/WXS9
-         1rag==
-X-Gm-Message-State: AOJu0YwkpDfqFNhG+dOg1M7BqA7Wy8JIWJIRfZuHyS4Zr+4lKWoVlSt9
-	k7uUCRM3qG/n7BXUlM1GFCDc8Ar7/6sidE0ohUZuyVcDNkyeAnxW9dGtmXj4twgmh3d795ag3wd
-	aXQ0=
-X-Gm-Gg: ASbGncsp5//b8QlT9wvbOJDRYW4HMLCQeShSHB7HPPZLd6UA+ZdATIinfHWkamHvO5y
-	g+nZ0jX5huE7Hy5wMdn18lbws6whk9BDDQn5gRq8k9fiqCqQg9lUuN3cO36tKhz5+zJVOR7bdd0
-	qzNqWrLqZ1AqhJm9ETO9J4rEl0bfblnyFEqfbJDyano4x1t9MsE6yAKzr/g6/gpWScChLC6/bE+
-	KZJ8IXNuFZoQgUgiBOoJISu+rxuvxkCUkPld/br8k3+L/na5+09Bwh2nyGT+lORAeqg5bFiS86p
-	w4ezO9wl4xOUChUtPoqZpEzyFcDE+8jrSXKirYZg+yC1Ft3In9thuXo5l181K7Rqx4XbddJGd6R
-	3s+B+lX+zIFo30Ejd3frG50zBY2cwgcPed7rct6DLgDkfrYrFgNQmZmCNiAS4D6zOOQ==
-X-Google-Smtp-Source: AGHT+IHZODtcpLFAQ8qmfD86hGB8K21J6ff90V6NB6tvU/644nzRccH8t67oRiqnruKfz9jHVtr4tg==
-X-Received: by 2002:a17:903:2c10:b0:27e:e96a:4c3 with SMTP id d9443c01a7336-29027374b5amr279849765ad.14.1760447005568;
-        Tue, 14 Oct 2025 06:03:25 -0700 (PDT)
-Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:f7c9:39b0:1a9:7d97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f95ecbsm158967595ad.130.2025.10.14.06.03.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 06:03:25 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] cpuidle: governors: menu: Avoid using invalid recent intervals data
-Date: Tue, 14 Oct 2025 22:03:00 +0900
-Message-ID: <20251014130300.2365621-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.51.0.760.g7b8bcc2412-goog
+	s=arc-20240116; t=1760447303; c=relaxed/simple;
+	bh=i9IOH9O/QwIEJOJX4Hmu4TbYsCb1D/4y6+SywTSOJWg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OH5ArCG6LgVuiztDoqpbfDJvRNN0MEUiMWmCWmNAQwim7s7UPZuX9lqK1mL2AgX4aA52SRbD0yOp/js0CnNaZZcNv84tMOp1+KxofgZCm/p0Z2/lpDdGxyKK2ecukOAo/6mxlt8O+Hltds40fLc4HYXMi40joEYt98nOZ0Ckwyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D1srO15R; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760447302; x=1791983302;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=i9IOH9O/QwIEJOJX4Hmu4TbYsCb1D/4y6+SywTSOJWg=;
+  b=D1srO15RM0Gmo4UiVPf1izv1zpJjKaHumqUgW7BuMIO4wKzsynFbRuhJ
+   d2zu/gia5D4GDpx7O8mQLkvppgri/vJBHyg2Mbn46WDgkX0i/72gKArbd
+   VHkH/awaFyGhMd6PQjmEcydwQdgVUW5BiC1ysKmbdUrVFWyYp/MlBZOPh
+   XiKuetaFRTE0dAK73WOgTqtTVGkMdWj0PycpWZGEgsE358eHWlwoUiiyo
+   drGTm1FUivnrSq91PUdm2pCngwVaIdhR5eJmoP0o6UN5ki5VTFrzU4R1i
+   TtfGDderCrnkkbH79dUoSErY2NyvS+pOsJKFBZI70L11oAqFCF7ByNqL8
+   A==;
+X-CSE-ConnectionGUID: MEkm/SdZTzSHkqR8yyPaJw==
+X-CSE-MsgGUID: J5VHLOpFS4+1owjjQlt6Pg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62515502"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62515502"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 06:08:21 -0700
+X-CSE-ConnectionGUID: 53aYxaR4Qh2tVgAdaUeJww==
+X-CSE-MsgGUID: cJiEiFtbThGI+AD5JzUPxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
+   d="scan'208";a="182675720"
+Received: from allen-box.sh.intel.com ([10.239.159.52])
+  by fmviesa010.fm.intel.com with ESMTP; 14 Oct 2025 06:08:13 -0700
+From: Lu Baolu <baolu.lu@linux.intel.com>
+To: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Yi Lai <yi1.lai@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>
+Cc: iommu@lists.linux.dev,
+	security@kernel.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v6 7/7] iommu/sva: Invalidate stale IOTLB entries for kernel address space
+Date: Tue, 14 Oct 2025 21:04:37 +0800
+Message-ID: <20251014130437.1090448-8-baolu.lu@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
+References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,91 +105,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU hardware
+shares and walks the CPU's page tables. The x86 architecture maps the
+kernel's virtual address space into the upper portion of every process's
+page table. Consequently, in an SVA context, the IOMMU hardware can walk
+and cache kernel page table entries.
 
-[ Upstream commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed ]
+The Linux kernel currently lacks a notification mechanism for kernel page
+table changes, specifically when page table pages are freed and reused.
+The IOMMU driver is only notified of changes to user virtual address
+mappings. This can cause the IOMMU's internal caches to retain stale
+entries for kernel VA.
 
-Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
-discarding useful information") caused the number of wakeup interrupts
-to increase on an idle system [1], which was not expected to happen
-after merely allowing shallower idle states to be selected by the
-governor in some cases.
+A Use-After-Free (UAF) and Write-After-Free (WAF) condition arises when
+kernel page table pages are freed and later reallocated. The IOMMU could
+misinterpret the new data as valid page table entries. The IOMMU might
+then walk into attacker-controlled memory, leading to arbitrary physical
+memory DMA access or privilege escalation. This is also a Write-After-Free
+issue, as the IOMMU will potentially continue to write Accessed and Dirty
+bits to the freed memory while attempting to walk the stale page tables.
 
-However, on the system in question, all of the idle states deeper than
-WFI are rejected by the driver due to a firmware issue [2].  This causes
-the governor to only consider the recent interval duriation data
-corresponding to attempts to enter WFI that are successful and the
-recent invervals table is filled with values lower than the scheduler
-tick period.  Consequently, the governor predicts an idle duration
-below the scheduler tick period length and avoids stopping the tick
-more often which leads to the observed symptom.
+Currently, SVA contexts are unprivileged and cannot access kernel
+mappings. However, the IOMMU will still walk kernel-only page tables
+all the way down to the leaf entries, where it realizes the mapping
+is for the kernel and errors out. This means the IOMMU still caches
+these intermediate page table entries, making the described vulnerability
+a real concern.
 
-Address it by modifying the governor to update the recent intervals
-table also when entering the previously selected idle state fails, so
-it knows that the short idle intervals might have been the minority
-had the selected idle states been actually entered every time.
+To mitigate this, a new IOMMU interface is introduced to flush IOTLB
+entries for the kernel address space. This interface is invoked from the
+x86 architecture code that manages combined user and kernel page tables,
+specifically before any kernel page table page is freed and reused.
 
-Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
-Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
-Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-(cherry picked from commit 7337a6356dffc93194af24ee31023b3578661a5b)
+This addresses the main issue with vfree() which is a common occurrence
+and can be triggered by unprivileged users. While this resolves the
+primary problem, it doesn't address some extremely rare case related to
+memory unplug of memory that was present as reserved memory at boot,
+which cannot be triggered by unprivileged users. The discussion can be
+found at the link below.
+
+Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
+Cc: stable@vger.kernel.org
+Suggested-by: Jann Horn <jannh@google.com>
+Co-developed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/linux-iommu/04983c62-3b1d-40d4-93ae-34ca04b827e5@intel.com/
 ---
- drivers/cpuidle/governors/menu.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ include/linux/iommu.h     |  4 ++++
+ drivers/iommu/iommu-sva.c | 29 ++++++++++++++++++++++++++++-
+ mm/pgtable-generic.c      |  2 ++
+ 3 files changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index 4edac724983a..0b3c917d505d 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -158,6 +158,14 @@ static inline int performance_multiplier(unsigned int nr_iowaiters)
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index c30d12e16473..66e4abb2df0d 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -1134,7 +1134,9 @@ struct iommu_sva {
  
- static DEFINE_PER_CPU(struct menu_device, menu_devices);
+ struct iommu_mm_data {
+ 	u32			pasid;
++	struct mm_struct	*mm;
+ 	struct list_head	sva_domains;
++	struct list_head	mm_list_elm;
+ };
  
-+static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
-+{
-+	/* Update the repeating-pattern data. */
-+	data->intervals[data->interval_ptr++] = interval_us;
-+	if (data->interval_ptr >= INTERVALS)
-+		data->interval_ptr = 0;
-+}
-+
- static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev);
- 
- /*
-@@ -288,6 +296,14 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 	if (data->needs_update) {
- 		menu_update(drv, dev);
- 		data->needs_update = 0;
-+	} else if (!dev->last_residency_ns) {
-+		/*
-+		 * This happens when the driver rejects the previously selected
-+		 * idle state and returns an error, so update the recent
-+		 * intervals table to prevent invalid information from being
-+		 * used going forward.
-+		 */
-+		menu_update_intervals(data, UINT_MAX);
- 	}
- 
- 	/* determine the expected residency time, round up */
-@@ -542,10 +558,7 @@ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
- 
- 	data->correction_factor[data->bucket] = new_factor;
- 
--	/* update the repeating-pattern data */
--	data->intervals[data->interval_ptr++] = ktime_to_us(measured_ns);
--	if (data->interval_ptr >= INTERVALS)
--		data->interval_ptr = 0;
-+	menu_update_intervals(data, ktime_to_us(measured_ns));
+ int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode);
+@@ -1615,6 +1617,7 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev,
+ 					struct mm_struct *mm);
+ void iommu_sva_unbind_device(struct iommu_sva *handle);
+ u32 iommu_sva_get_pasid(struct iommu_sva *handle);
++void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end);
+ #else
+ static inline struct iommu_sva *
+ iommu_sva_bind_device(struct device *dev, struct mm_struct *mm)
+@@ -1639,6 +1642,7 @@ static inline u32 mm_get_enqcmd_pasid(struct mm_struct *mm)
  }
  
- /**
+ static inline void mm_pasid_drop(struct mm_struct *mm) {}
++static inline void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end) {}
+ #endif /* CONFIG_IOMMU_SVA */
+ 
+ #ifdef CONFIG_IOMMU_IOPF
+diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
+index 1a51cfd82808..d236aef80a8d 100644
+--- a/drivers/iommu/iommu-sva.c
++++ b/drivers/iommu/iommu-sva.c
+@@ -10,6 +10,8 @@
+ #include "iommu-priv.h"
+ 
+ static DEFINE_MUTEX(iommu_sva_lock);
++static bool iommu_sva_present;
++static LIST_HEAD(iommu_sva_mms);
+ static struct iommu_domain *iommu_sva_domain_alloc(struct device *dev,
+ 						   struct mm_struct *mm);
+ 
+@@ -42,6 +44,7 @@ static struct iommu_mm_data *iommu_alloc_mm_data(struct mm_struct *mm, struct de
+ 		return ERR_PTR(-ENOSPC);
+ 	}
+ 	iommu_mm->pasid = pasid;
++	iommu_mm->mm = mm;
+ 	INIT_LIST_HEAD(&iommu_mm->sva_domains);
+ 	/*
+ 	 * Make sure the write to mm->iommu_mm is not reordered in front of
+@@ -132,8 +135,13 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev, struct mm_struct *mm
+ 	if (ret)
+ 		goto out_free_domain;
+ 	domain->users = 1;
+-	list_add(&domain->next, &mm->iommu_mm->sva_domains);
+ 
++	if (list_empty(&iommu_mm->sva_domains)) {
++		if (list_empty(&iommu_sva_mms))
++			iommu_sva_present = true;
++		list_add(&iommu_mm->mm_list_elm, &iommu_sva_mms);
++	}
++	list_add(&domain->next, &iommu_mm->sva_domains);
+ out:
+ 	refcount_set(&handle->users, 1);
+ 	mutex_unlock(&iommu_sva_lock);
+@@ -175,6 +183,13 @@ void iommu_sva_unbind_device(struct iommu_sva *handle)
+ 		list_del(&domain->next);
+ 		iommu_domain_free(domain);
+ 	}
++
++	if (list_empty(&iommu_mm->sva_domains)) {
++		list_del(&iommu_mm->mm_list_elm);
++		if (list_empty(&iommu_sva_mms))
++			iommu_sva_present = false;
++	}
++
+ 	mutex_unlock(&iommu_sva_lock);
+ 	kfree(handle);
+ }
+@@ -312,3 +327,15 @@ static struct iommu_domain *iommu_sva_domain_alloc(struct device *dev,
+ 
+ 	return domain;
+ }
++
++void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end)
++{
++	struct iommu_mm_data *iommu_mm;
++
++	guard(mutex)(&iommu_sva_lock);
++	if (!iommu_sva_present)
++		return;
++
++	list_for_each_entry(iommu_mm, &iommu_sva_mms, mm_list_elm)
++		mmu_notifier_arch_invalidate_secondary_tlbs(iommu_mm->mm, start, end);
++}
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index 1c7caa8ef164..8c22be79b734 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -13,6 +13,7 @@
+ #include <linux/swap.h>
+ #include <linux/swapops.h>
+ #include <linux/mm_inline.h>
++#include <linux/iommu.h>
+ #include <asm/pgalloc.h>
+ #include <asm/tlb.h>
+ 
+@@ -430,6 +431,7 @@ static void kernel_pgtable_work_func(struct work_struct *work)
+ 	list_splice_tail_init(&kernel_pgtable_work.list, &page_list);
+ 	spin_unlock(&kernel_pgtable_work.lock);
+ 
++	iommu_sva_invalidate_kva_range(PAGE_OFFSET, TLB_FLUSH_ALL);
+ 	list_for_each_entry_safe(pt, next, &page_list, pt_list)
+ 		__pagetable_free(pt);
+ }
 -- 
-2.51.0.760.g7b8bcc2412-goog
+2.43.0
 
 
