@@ -1,99 +1,146 @@
-Return-Path: <stable+bounces-185668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D12BD9CD6
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FA2BD9CF5
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B2E44E9038
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:47:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3876B4E805A
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328122571A1;
-	Tue, 14 Oct 2025 13:47:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZZURML6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32B721E0BB;
+	Tue, 14 Oct 2025 13:49:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E279A18A6B0
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 13:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0D52248B4
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 13:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760449640; cv=none; b=LQdOpiBZsgNyOviqszttBpBp9Qju+C45sEI2WWswrvmsVl2CIrt8zgvaOOCwytEhF/MX/N90rco4mIMuXAKlbfAEGt5cnPgtC3Urn97PUjRjLnAccGC5tAzM4Xrc+2MP3hinsVTbBjD7aZ369l0kcxVUunCA6603qAnEy7fx9q4=
+	t=1760449777; cv=none; b=UqdruxQ1GAf4VyzRCXnrjYYFcxV6C6b5XojjatO8I/jaNDnAqoyJa+2jDqe1fUApRDo/Cj4XglcoJrmfUlKiQIqWw+brRLCxQTf9d80MKYQ6ztjmTKssQJso9lb2g7lVPxZs11fWGBYOppF7O/MDus2zoY8uhC7Cg3SW/k43cXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760449640; c=relaxed/simple;
-	bh=FiyH3HbysJHIUya6HD8TWJH15efuCVgzlLJ6VhuzQDs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yi9+2SDtcty6BBDWZIhgF7I5cmnU6/0pQjnBxpUZUelUxp+8MRDE7La0K6nybJNIThCKZxeoGCs+PINup88r5oSZF+g5UbQ3UZEF+DRhLMqFL+7DiInw7KCLOJAs0Syh0bTD4Zjo8ABREjdLE/+rO4gp1rkToGZavzeuSSmJOX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZZURML6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849BDC19425
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 13:47:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760449639;
-	bh=FiyH3HbysJHIUya6HD8TWJH15efuCVgzlLJ6VhuzQDs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VZZURML6hVuzmSChY5ByDgxyVVw95GXY/1dlNcW0WnkqJjc52ZPgL/r1NczJ0I/k4
-	 EHgmRoU9b6E9LLfG9i0FbRBR91L8PqfbzmBGrG431fMC9JvR7SzicgEk6VY4R90VV6
-	 Y5pmSGxh2wj7ygfgxFdiCJCJ/DypLLwjRtgt/Tw9p1nufVNw9WdjXdxwcXQdOcrSwp
-	 G2AUX4ZTFRqi3LNjmyRnHK3lTyD3eXnlSBVs2sUihIUPLjNKv7OJpCeUIzHIwr7ehk
-	 DSNjHK8gBhZh5NGbYw+fqvokYMyIXcUxx4LNTfjjFRysZk2cgS4Wh87RhiS4YjXYFZ
-	 6U202kW/zAlsQ==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7a32c0163bfso4338486a34.1
-        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 06:47:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUYVLeLpNI8qP9PjLtOOciy5bhazgMXrixUtkqAao0BgjsCQ8d3WWkOWRPU6MZJlHRbDXX2H8g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzljkqbnCo/x9/ZfO2YpoiVMNgt2PS6LDaULIxmAC4WTHumgsru
-	9NxKzPAh7mr06bQvGPMSYHhAedUPaENEmdczxsgiHSCXQ8XvlN71HVIJWuT+JupNx7xy+HPH/Ts
-	sA0zVb8Zp4W2o3rg9NKyOGKPFlGMPmxQ=
-X-Google-Smtp-Source: AGHT+IFKdZN6ge3UA9PmzHlP2xLrNNqxW7vEeMa7BKOK7ktylhLXEl8XSOWc6vfk0wQTHsMb6jpquijdfDXJa+k9Sqc=
-X-Received: by 2002:a05:6808:2028:b0:434:ef1:568a with SMTP id
- 5614622812f47-43fefa71ec3mr13128919b6e.0.1760449638648; Tue, 14 Oct 2025
- 06:47:18 -0700 (PDT)
+	s=arc-20240116; t=1760449777; c=relaxed/simple;
+	bh=SfCFNYBXcCrtPxXmsfTBPO4f4d2n6Mu4PuSlLeMvCo4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cUI+260cHizUNNRZpu7JEv1chGQKDCSrlqmXJsVN8Amtw0oIfGB3zOpcRkqFYpVsaQ0Qq5BQJBMA36V71M1kLpk8vByTrDdzPs2ObLfYzZMdjkwhPuD5L/PfRCEdkzNgJgilRUHT5xtzbAjwo9G4gwz/5BXgJk+f4umiRC7ul3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 44D201A9A;
+	Tue, 14 Oct 2025 06:49:27 -0700 (PDT)
+Received: from [10.57.66.74] (unknown [10.57.66.74])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 686983F66E;
+	Tue, 14 Oct 2025 06:49:34 -0700 (PDT)
+Message-ID: <325e1296-b2c1-498b-9c56-6d94bfcf22d5@arm.com>
+Date: Tue, 14 Oct 2025 14:49:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7>
- <08529809-5ca1-4495-8160-15d8e85ad640@arm.com> <2zreguw4djctgcmvgticnm4dctcuja7yfnp3r6bxaqon3i2pxf@thee3p3qduoq>
-In-Reply-To: <2zreguw4djctgcmvgticnm4dctcuja7yfnp3r6bxaqon3i2pxf@thee3p3qduoq>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 14 Oct 2025 15:47:06 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0h-=MU2uwC0+TZy0WpyyMpFibW58=t68+NPqE0W9WxWtQ@mail.gmail.com>
-X-Gm-Features: AS18NWDOTKJOUDRsGacceCYS3_zrSEM9Fs-sfsGd6d-Fu57AFnPpu7CbKcyjsmo
-Message-ID: <CAJZ5v0h-=MU2uwC0+TZy0WpyyMpFibW58=t68+NPqE0W9WxWtQ@mail.gmail.com>
-Subject: Re: stable: commit "cpuidle: menu: Avoid discarding useful
- information" causes regressions
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Christian Loehle <christian.loehle@arm.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>, Sasha Levin <sashal@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1.y] cpuidle: governors: menu: Avoid using invalid
+ recent intervals data
+To: Sergey Senozhatsky <senozhatsky@chromium.org>, stable@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+References: <20251014130300.2365621-1-senozhatsky@chromium.org>
+Content-Language: en-US
+From: Christian Loehle <christian.loehle@arm.com>
+In-Reply-To: <20251014130300.2365621-1-senozhatsky@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 14, 2025 at 12:23=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> On (25/10/14 10:50), Christian Loehle wrote:
-> > > Upstream fixup fa3fa55de0d ("cpuidle: governors: menu: Avoid using
-> > > invalid recent intervals data") doesn't address the problems we are
-> > > observing.  Revert seems to be bringing performance metrics back to
-> > > pre-regression levels.
-> >
-> > Any details would be much appreciated.
-> > How do the idle state usages differ with and without
-> > "cpuidle: menu: Avoid discarding useful information"?
-> > What do the idle states look like in your platform?
->
-> Sure, I can run tests.
+On 10/14/25 14:03, Sergey Senozhatsky wrote:
+> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> 
+> [ Upstream commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed ]
+> 
+> Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
+> discarding useful information") caused the number of wakeup interrupts
+> to increase on an idle system [1], which was not expected to happen
+> after merely allowing shallower idle states to be selected by the
+> governor in some cases.
+> 
+> However, on the system in question, all of the idle states deeper than
+> WFI are rejected by the driver due to a firmware issue [2].  This causes
+> the governor to only consider the recent interval duriation data
+> corresponding to attempts to enter WFI that are successful and the
+> recent invervals table is filled with values lower than the scheduler
+> tick period.  Consequently, the governor predicts an idle duration
+> below the scheduler tick period length and avoids stopping the tick
+> more often which leads to the observed symptom.
+> 
+> Address it by modifying the governor to update the recent intervals
+> table also when entering the previously selected idle state fails, so
+> it knows that the short idle intervals might have been the minority
+> had the selected idle states been actually entered every time.
+> 
+> Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
+> Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
+> Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Tested-by: Christian Loehle <christian.loehle@arm.com>
+> Tested-by: Marc Zyngier <maz@kernel.org>
+> Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+> Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> (cherry picked from commit 7337a6356dffc93194af24ee31023b3578661a5b)
+> ---
+>  drivers/cpuidle/governors/menu.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+> index 4edac724983a..0b3c917d505d 100644
+> --- a/drivers/cpuidle/governors/menu.c
+> +++ b/drivers/cpuidle/governors/menu.c
+> @@ -158,6 +158,14 @@ static inline int performance_multiplier(unsigned int nr_iowaiters)
+>  
+>  static DEFINE_PER_CPU(struct menu_device, menu_devices);
+>  
+> +static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
+> +{
+> +	/* Update the repeating-pattern data. */
+> +	data->intervals[data->interval_ptr++] = interval_us;
+> +	if (data->interval_ptr >= INTERVALS)
+> +		data->interval_ptr = 0;
+> +}
+> +
+>  static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev);
+>  
+>  /*
+> @@ -288,6 +296,14 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+>  	if (data->needs_update) {
+>  		menu_update(drv, dev);
+>  		data->needs_update = 0;
+> +	} else if (!dev->last_residency_ns) {
+> +		/*
+> +		 * This happens when the driver rejects the previously selected
+> +		 * idle state and returns an error, so update the recent
+> +		 * intervals table to prevent invalid information from being
+> +		 * used going forward.
+> +		 */
+> +		menu_update_intervals(data, UINT_MAX);
+>  	}
+>  
+>  	/* determine the expected residency time, round up */
+> @@ -542,10 +558,7 @@ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
+>  
+>  	data->correction_factor[data->bucket] = new_factor;
+>  
+> -	/* update the repeating-pattern data */
+> -	data->intervals[data->interval_ptr++] = ktime_to_us(measured_ns);
+> -	if (data->interval_ptr >= INTERVALS)
+> -		data->interval_ptr = 0;
+> +	menu_update_intervals(data, ktime_to_us(measured_ns));
+>  }
+>  
+>  /**
 
-Would it be possible to check if the mainline has this issue?  That
-is, compare the benchmark results on unmodified 6.17 (say) and on 6.17
-with commit 85975daeaa4 reverted?
+For the backport:
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Thank you Sergey!
 
