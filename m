@@ -1,141 +1,169 @@
-Return-Path: <stable+bounces-185642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9C3BD9213
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:53:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CCABD9270
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9792425773
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:52:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0D174205D3
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42C63101C1;
-	Tue, 14 Oct 2025 11:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA433101BF;
+	Tue, 14 Oct 2025 11:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="p8gsXycd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZuaLFccV"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A58F3101B6;
-	Tue, 14 Oct 2025 11:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B21330F932
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 11:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760442750; cv=none; b=JUO+dtNEvieH92L2l48EHNBbk5ntWpHEgmnGc+16rshof8n9OWcxNK2qsuJHcwj6QB6wAaHIjVY0X+rCSlnfB5HSzvVY4XAe+t3thP4yUQbViPRseZON9TbAi3OmFZ32CpkmUun4KuZPR/5y7eOJugn6DCA+M2tK4cd6GKaqL/Q=
+	t=1760442918; cv=none; b=u7zigxg55j7YiA5f3GspSqpJnog2yK+qHmjMQW3ZsUhfwkuuA/UwtZoH3aJZiEioNh9JaH88vAoDcjgu0jHQbiLnirA1K1UmWgLZ/GNRhNXm7sLYB1jZmEUcdwl4pa6MYiONulkKAgSpbcT9PWsG1cg1dpX33KQF2Wdk2+u1IZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760442750; c=relaxed/simple;
-	bh=3XVJuLXTqcUwfWrdJ5RIn39dvkfVJ7NKAlswAxMmqtk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ch2KmE/X6/nz5ziSWq3IB5XfjNt30zwkOh53PVgSxuG6eje2mvz2S02Rfkm2/eKZNkeNRZFrLqCQeSdF/gdpEUYjZ6R5dn033unqJv4MdnTM86AMorFVWrO7SNQURqa7+4RFUYTZNwooJa+2ZM+n6M3peQPrato5jEKRY1/2j2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=p8gsXycd; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from ideasonboard.com (93-46-82-201.ip106.fastwebnet.it [93.46.82.201])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C22B3C7B;
-	Tue, 14 Oct 2025 13:50:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1760442642;
-	bh=3XVJuLXTqcUwfWrdJ5RIn39dvkfVJ7NKAlswAxMmqtk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p8gsXycdcA3BtZ7uS5smhn0oU3DLtZaFu41WcGnW99Wf2sh46ZnM8v/1cWyjefm0E
-	 7DeLaXAVKw+nIBtIsampBkDXrt5TYy6HQvxGaOgLQSQA/wiebRWih8jk3eNXGiPCiq
-	 9h3kVgyIcYP7+XexV3f+SxWlu77qkZy+xYRHxZkQ=
-Date: Tue, 14 Oct 2025 13:52:18 +0200
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To: Hans Verkuil <hverkuil+cisco@kernel.org>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
-	Andy Walls <awalls@md.metrocast.net>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] media: pci: Fix invalid access to file *
-Message-ID: <3cqjf6pts5fzs5gziog3g3jay6txcvxshm554uqpzgb6ymnukh@dsbo27d47rol>
-References: <20250819-cx18-v4l2-fh-v4-0-9db1635d6787@ideasonboard.com>
- <0627cfba-798a-482b-b335-cc78a609c150@kernel.org>
+	s=arc-20240116; t=1760442918; c=relaxed/simple;
+	bh=IUjPdMJEcBrCXAYH42rCMIC1qypN2byOqr2htwb0xXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CPx7RdMOdOM2VqOoTkFSI3TIkU0YEU7cKACCBpjJDjT1yGRwsqa3xUdZ0qwg4rhUTnohTg80H+zKK6XBnKEj/aVxhwL2arjwNgls5gA7MqxNlODPMFWr9ITaf7W7KhGJy3jAhvZKa69N1q4ruNcdmWNNViYGTMwoOwU85KhR05M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZuaLFccV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C601C2BC86;
+	Tue, 14 Oct 2025 11:55:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760442916;
+	bh=IUjPdMJEcBrCXAYH42rCMIC1qypN2byOqr2htwb0xXE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZuaLFccVkGbt7bWklcuGCCRQV2CNy4chW6kp4hAh3cg8wulem4RYgLPuhnkbQvlFu
+	 xuOzCH5Tc0gk2oaFPmgFdin+U0m/h6urjq6jFqYJIr2pzfgYUDOowVenBwN5TlbxFe
+	 +pe3MzTLs5CprytpqOA4Dmrx/7DtPWyNj6EKPofbhsxZQGTA4Ss3cite7VsKPPgYie
+	 NznkcTP9N7R1HNqZi9dMN3lP8VYYYDcpqybIVqyijJWi65jVOL8xEaBRbkLJ2mgb+E
+	 4kC9br5dxjlCPhpcEOu7/0v1a3PIOLrWFxRPv0lel9LgyoRGfzdMHGJHh0A0o9kDi8
+	 L3ILbr3TZO8lA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Donet Tom <donettom@linux.ibm.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
+Date: Tue, 14 Oct 2025 07:55:13 -0400
+Message-ID: <20251014115513.4165766-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101358-bucket-cadet-c4d4@gregkh>
+References: <2025101358-bucket-cadet-c4d4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <0627cfba-798a-482b-b335-cc78a609c150@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi Hans
+From: Donet Tom <donettom@linux.ibm.com>
 
-On Tue, Oct 14, 2025 at 09:05:20AM +0200, Hans Verkuil wrote:
-> Hi Jacopo,
->
-> On 19/08/2025 09:07, Jacopo Mondi wrote:
-> > Since commits
-> > 7b9eb53e8591 ("media: cx18: Access v4l2_fh from file")
-> > 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
-> >
-> > All the ioctl handlers access their private data structures
-> > from file *
-> >
-> > The ivtv and cx18 drivers call the ioctl handlers from their
-> > DVB layer without a valid file *, causing invalid memory access.
-> >
-> > The issue has been reported by smatch in
-> > "[bug report] media: cx18: Access v4l2_fh from file"
-> >
-> > Fix this by providing wrappers for the ioctl handlers to be
-> > used by the DVB layer that do not require a valid file *.
->
-> This series should go to the fixes branch for v6.18, right?
-> This looks like a pure regression, so I think that makes sense.
->
+[ Upstream commit 4d6fc29f36341d7795db1d1819b4c15fe9be7b23 ]
 
-I think so, yes
+Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
+fork", v3.
 
-> BTW, why is there a Link: tag in the cx18 patch? It just links to
-> the v1 of the patch and that doesn't add meaningful information.
-> Linus likes Link:, but only if it really adds useful information.
+The first patch in this series fixes the incorrect accounting of KSM
+counters such as ksm_merging_pages, ksm_rmap_items, and the global
+ksm_zero_pages during fork.
 
-Good question. I presume it's probably a copy&paste error, as it has no
-place in the patch.
+The following patch add a selftest to verify the ksm_merging_pages counter
+was updated correctly during fork.
 
-Would you like me to resend or will you remove it ?
+Test Results
+============
+Without the first patch
+-----------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ not ok 10 ksm_merging_page in child: 32
 
+With the first patch
+--------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ ok 10 ksm_merging_pages is not inherited after fork
 
->
-> Regards,
->
-> 	Hans
->
-> >
-> > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> > ---
-> > Changes in v4:
-> > - Slightly adjust commit messages
-> > - Link to v3: https://lore.kernel.org/r/20250818-cx18-v4l2-fh-v3-0-5e2f08f3cadc@ideasonboard.com
-> >
-> > Changes in v3:
-> > - Change helpers to accept the type they're going to operate on instead
-> >   of using the open_id wrapper type as suggested by Laurent
-> > - Link to v2: https://lore.kernel.org/r/20250818-cx18-v4l2-fh-v2-0-3f53ce423663@ideasonboard.com
-> >
-> > Changes in v2:
-> > - Add Cc: stable@vger.kernel.org per-patch
-> >
-> > ---
-> > Jacopo Mondi (2):
-> >       media: cx18: Fix invalid access to file *
-> >       media: ivtv: Fix invalid access to file *
-> >
-> >  drivers/media/pci/cx18/cx18-driver.c |  9 +++------
-> >  drivers/media/pci/cx18/cx18-ioctl.c  | 30 +++++++++++++++++++-----------
-> >  drivers/media/pci/cx18/cx18-ioctl.h  |  8 +++++---
-> >  drivers/media/pci/ivtv/ivtv-driver.c | 11 ++++-------
-> >  drivers/media/pci/ivtv/ivtv-ioctl.c  | 22 +++++++++++++++++-----
-> >  drivers/media/pci/ivtv/ivtv-ioctl.h  |  6 ++++--
-> >  6 files changed, 52 insertions(+), 34 deletions(-)
-> > ---
-> > base-commit: a75b8d198c55e9eb5feb6f6e155496305caba2dc
-> > change-id: 20250818-cx18-v4l2-fh-7eaa6199fdde
-> >
-> > Best regards,
->
+This patch (of 2):
+
+Currently, the KSM-related counters in `mm_struct`, such as
+`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
+by the child process during fork.  This results in inconsistent
+accounting.
+
+When a process uses KSM, identical pages are merged and an rmap item is
+created for each merged page.  The `ksm_merging_pages` and
+`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
+these counters are copied to the child while the corresponding rmap items
+are not.  As a result, when the child later triggers an unmerge, there are
+no rmap items present in the child, so the counters remain stale, leading
+to incorrect accounting.
+
+A similar issue exists with `ksm_zero_pages`, which maintains both a
+global counter and a per-process counter.  During fork, the per-process
+counter is inherited by the child, but the global counter is not
+incremented.  Since the child also references zero pages, the global
+counter should be updated as well.  Otherwise, during zero-page unmerge,
+both the global and per-process counters are decremented, causing the
+global counter to become inconsistent.
+
+To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
+fork, and the global ksm_zero_pages counter is updated with the
+per-process ksm_zero_pages value inherited by the child.  This ensures
+that KSM statistics remain accurate and reflect the activity of each
+process correctly.
+
+Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
+Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
+Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
+Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ replaced mm_flags_test() calls with test_bit() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/linux/ksm.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index ec9c05044d4fe..af303641819a3 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -57,8 +57,14 @@ static inline long mm_ksm_zero_pages(struct mm_struct *mm)
+ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+ {
+ 	/* Adding mm to ksm is best effort on fork. */
+-	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags))
++	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags)) {
++		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
++
++		mm->ksm_merging_pages = 0;
++		mm->ksm_rmap_items = 0;
++		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
+ 		__ksm_enter(mm);
++	}
+ }
+ 
+ static inline int ksm_execve(struct mm_struct *mm)
+-- 
+2.51.0
+
 
