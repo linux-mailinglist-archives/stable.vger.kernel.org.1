@@ -1,339 +1,112 @@
-Return-Path: <stable+bounces-185558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5F5BD6DC3
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 02:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA08BD6DC6
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 02:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD04C4051E3
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 00:19:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 356F04063E2
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 00:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320972C3268;
-	Tue, 14 Oct 2025 00:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227242C324F;
+	Tue, 14 Oct 2025 00:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtmGvG9c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoKTJB2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D45218821
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57D3218821
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760401160; cv=none; b=f/maelJ72kbF4r+jsZC7AezY7ocCaiT2Yl2G/V1oXPZ/KJRVV+vuXA/P/NaC0i1qhSb/7npjKGnz5FE2cnwK8aBR1gmHnPsI+7V0B/f4rebeiB7zHGXsxHfHUV7B1GA/K05pVfP5q0cYY9sx3XzNqIc0pGOVe9JCHSBrZ5vX5F0=
+	t=1760401202; cv=none; b=ptO8IML/tcmG0FtzWcodmjfdj4u/92s6hwAsuBIyrMEe48JuL0QE4D3w+FLdRjcWJ/EvxgV630XCDlJLBx3Y5Dcrt0tGV6a3Odn7swKVf+4kdo8WoXBmUfBoJpBY2FzHzxOybRhEMm3trHymYe1WeGUESP7dOKZzbNd3Lem9Ffg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760401160; c=relaxed/simple;
-	bh=VYcG6clMhsrn46Jl8ySBMCeKbEadKWMOGFoQG8mIPWw=;
+	s=arc-20240116; t=1760401202; c=relaxed/simple;
+	bh=kkeO3cevuyV78fmnY3yyIk9+JKidFaXixgFoZjzu60s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GruM4+FNXsVcER9pCXmYBHa3UrupcbtjeJZ8xJBXCLT4lc4aa/JckdrQqf9kKNttex+qadS2ta/hexhXp1crBRlGkMWy+Whh4nAA7eNUtIaRmqpzOPkif3wWttv938HeDeWuPLQScHHhwUwCF2wIZtqp8QFu1Iv991u9o8z0BgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtmGvG9c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93BCC4CEE7;
-	Tue, 14 Oct 2025 00:19:18 +0000 (UTC)
+	 MIME-Version; b=a7Na1h5WOzsgrPPcsylwRpDeEzUSOwHkJMMd3g8XqdgfxD2TGVX8kzlfa++OZL3uJg0LLwvzZCxvxqtspMH5A1P6yqoNaSKkSt5dKLmUpZ7BALHpKoJwfspb6qXSVYqWhBK+bU4LxmsdHjCIbAtkxb+dLJ1r43r54BHohDJ5ELc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoKTJB2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA43C4CEE7;
+	Tue, 14 Oct 2025 00:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760401159;
-	bh=VYcG6clMhsrn46Jl8ySBMCeKbEadKWMOGFoQG8mIPWw=;
+	s=k20201202; t=1760401202;
+	bh=kkeO3cevuyV78fmnY3yyIk9+JKidFaXixgFoZjzu60s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtmGvG9cLeaxfVM80610MZOzXY0RUQb6Dr/q1bstMFBDEGNuQP600G0k6Y1KwRo4C
-	 QYqIsXfQmLLw0EvQqIo0xqddR7BtGQ3LNDEnzJFVHx1xdF4/nNFo5camuX/mu4Pa54
-	 j1W0e9GjpfbIsgRV7pPjQAaorAFG79hZpFbjxg18LgGR4aBlflAko1dLAuqD7pZQgW
-	 qFlXP8l2lChb5TNPmE2Rteg79GCj5OJSbQGh+ZlqF/jA7fFcGUds9yEGn7HEmUZK4e
-	 t0ixVeKPiw3i503fEEpStrqY2BecHar8rF+pnoECFGBBWLsXbPl7/kWr2rOkGeMzaL
-	 xtZvm1nJrpHyw==
+	b=SoKTJB2zqXJfcxXK/xtWLr/PalFba6qhJvkCljei5izcg8Y/9UYKYC4i+bWQNBmEK
+	 zeJwuQfLknf2tvAh1f8+lQ0plqY8rGLwlIaCszisOqYy8dmixAYjymrAhiEoybsFCg
+	 OdXPWnf5idEaWCVo8+lMbHIhvH3W/K8+BBwP/KY75ZlzHnxJBJO4sQuo/FNmGBoCL2
+	 ndQQHAtO+6lkGJ46hOGBrdvndbmoz4zfWxxFGWCK0Rnfp0epRIB/Jj8G/UD4/Rv6lg
+	 JhTaogU03AQxyJxN5hK3VJDlLweCrlhuAr/gejvDCsBrGRBAvhRZB5lzDtfXoInlDr
+	 7rncD2YoqltOw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Yuan Chen <chenyuan@kylinos.cn>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] tracing: Fix race condition in kprobe initialization causing NULL pointer dereference
-Date: Mon, 13 Oct 2025 20:19:15 -0400
-Message-ID: <20251014001915.3749537-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] mfd: vexpress-sysreg: Check the return value of devm_gpiochip_add_data()
+Date: Mon, 13 Oct 2025 20:20:00 -0400
+Message-ID: <20251014002000.3750354-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101316-morse-diary-ea9a@gregkh>
-References: <2025101316-morse-diary-ea9a@gregkh>
+In-Reply-To: <2025101336-abrasion-hatchling-01bc@gregkh>
+References: <2025101336-abrasion-hatchling-01bc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 9cf9aa7b0acfde7545c1a1d912576e9bab28dc6f ]
+[ Upstream commit 1efbee6852f1ff698a9981bd731308dd027189fb ]
 
-There is a critical race condition in kprobe initialization that can lead to
-NULL pointer dereference and kernel crash.
+Commit 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+removed the return value check from the call to gpiochip_add_data() (or
+rather gpiochip_add() back then and later converted to devres) with no
+explanation. This function however can still fail, so check the return
+value and bail-out if it does.
 
-[1135630.084782] Unable to handle kernel paging request at virtual address 0000710a04630000
-...
-[1135630.260314] pstate: 404003c9 (nZcv DAIF +PAN -UAO)
-[1135630.269239] pc : kprobe_perf_func+0x30/0x260
-[1135630.277643] lr : kprobe_dispatcher+0x44/0x60
-[1135630.286041] sp : ffffaeff4977fa40
-[1135630.293441] x29: ffffaeff4977fa40 x28: ffffaf015340e400
-[1135630.302837] x27: 0000000000000000 x26: 0000000000000000
-[1135630.312257] x25: ffffaf029ed108a8 x24: ffffaf015340e528
-[1135630.321705] x23: ffffaeff4977fc50 x22: ffffaeff4977fc50
-[1135630.331154] x21: 0000000000000000 x20: ffffaeff4977fc50
-[1135630.340586] x19: ffffaf015340e400 x18: 0000000000000000
-[1135630.349985] x17: 0000000000000000 x16: 0000000000000000
-[1135630.359285] x15: 0000000000000000 x14: 0000000000000000
-[1135630.368445] x13: 0000000000000000 x12: 0000000000000000
-[1135630.377473] x11: 0000000000000000 x10: 0000000000000000
-[1135630.386411] x9 : 0000000000000000 x8 : 0000000000000000
-[1135630.395252] x7 : 0000000000000000 x6 : 0000000000000000
-[1135630.403963] x5 : 0000000000000000 x4 : 0000000000000000
-[1135630.412545] x3 : 0000710a04630000 x2 : 0000000000000006
-[1135630.421021] x1 : ffffaeff4977fc50 x0 : 0000710a04630000
-[1135630.429410] Call trace:
-[1135630.434828]  kprobe_perf_func+0x30/0x260
-[1135630.441661]  kprobe_dispatcher+0x44/0x60
-[1135630.448396]  aggr_pre_handler+0x70/0xc8
-[1135630.454959]  kprobe_breakpoint_handler+0x140/0x1e0
-[1135630.462435]  brk_handler+0xbc/0xd8
-[1135630.468437]  do_debug_exception+0x84/0x138
-[1135630.475074]  el1_dbg+0x18/0x8c
-[1135630.480582]  security_file_permission+0x0/0xd0
-[1135630.487426]  vfs_write+0x70/0x1c0
-[1135630.493059]  ksys_write+0x5c/0xc8
-[1135630.498638]  __arm64_sys_write+0x24/0x30
-[1135630.504821]  el0_svc_common+0x78/0x130
-[1135630.510838]  el0_svc_handler+0x38/0x78
-[1135630.516834]  el0_svc+0x8/0x1b0
-
-kernel/trace/trace_kprobe.c: 1308
-0xffff3df8995039ec <kprobe_perf_func+0x2c>:     ldr     x21, [x24,#120]
-include/linux/compiler.h: 294
-0xffff3df8995039f0 <kprobe_perf_func+0x30>:     ldr     x1, [x21,x0]
-
-kernel/trace/trace_kprobe.c
-1308: head = this_cpu_ptr(call->perf_events);
-1309: if (hlist_empty(head))
-1310: 	return 0;
-
-crash> struct trace_event_call -o
-struct trace_event_call {
-  ...
-  [120] struct hlist_head *perf_events;  //(call->perf_event)
-  ...
-}
-
-crash> struct trace_event_call ffffaf015340e528
-struct trace_event_call {
-  ...
-  perf_events = 0xffff0ad5fa89f088, //this value is correct, but x21 = 0
-  ...
-}
-
-Race Condition Analysis:
-
-The race occurs between kprobe activation and perf_events initialization:
-
-  CPU0                                    CPU1
-  ====                                    ====
-  perf_kprobe_init
-    perf_trace_event_init
-      tp_event->perf_events = list;(1)
-      tp_event->class->reg (2)← KPROBE ACTIVE
-                                          Debug exception triggers
-                                          ...
-                                          kprobe_dispatcher
-                                            kprobe_perf_func (tk->tp.flags & TP_FLAG_PROFILE)
-                                              head = this_cpu_ptr(call->perf_events)(3)
-                                              (perf_events is still NULL)
-
-Problem:
-1. CPU0 executes (1) assigning tp_event->perf_events = list
-2. CPU0 executes (2) enabling kprobe functionality via class->reg()
-3. CPU1 triggers and reaches kprobe_dispatcher
-4. CPU1 checks TP_FLAG_PROFILE - condition passes (step 2 completed)
-5. CPU1 calls kprobe_perf_func() and crashes at (3) because
-   call->perf_events is still NULL
-
-CPU1 sees that kprobe functionality is enabled but does not see that
-perf_events has been assigned.
-
-Add pairing read and write memory barriers to guarantee that if CPU1
-sees that kprobe functionality is enabled, it must also see that
-perf_events has been assigned.
-
-Link: https://lore.kernel.org/all/20251001022025.44626-1-chenyuan_fl@163.com/
-
-Fixes: 50d780560785 ("tracing/kprobes: Add probe handler dispatcher to support perf and ftrace concurrent use")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-[ Adjust context ]
+Fixes: 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+[ Use non-devm variants ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_fprobe.c | 11 +++++++----
- kernel/trace/trace_kprobe.c | 11 +++++++----
- kernel/trace/trace_probe.h  |  9 +++++++--
- kernel/trace/trace_uprobe.c | 12 ++++++++----
- 4 files changed, 29 insertions(+), 14 deletions(-)
+ drivers/mfd/vexpress-sysreg.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
-index af7d6e2060d9d..440dbfa6bbfd5 100644
---- a/kernel/trace/trace_fprobe.c
-+++ b/kernel/trace/trace_fprobe.c
-@@ -343,12 +343,14 @@ static int fentry_dispatcher(struct fprobe *fp, unsigned long entry_ip,
- 			     void *entry_data)
- {
- 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
-+	unsigned int flags = trace_probe_load_flag(&tf->tp);
- 	int ret = 0;
+diff --git a/drivers/mfd/vexpress-sysreg.c b/drivers/mfd/vexpress-sysreg.c
+index c68ff56dbdb12..1463cf43687df 100644
+--- a/drivers/mfd/vexpress-sysreg.c
++++ b/drivers/mfd/vexpress-sysreg.c
+@@ -160,6 +160,7 @@ static int vexpress_sysreg_probe(struct platform_device *pdev)
+ 	struct gpio_chip *mmc_gpio_chip;
+ 	int master;
+ 	u32 dt_hbi;
++	int ret;
  
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		fentry_trace_func(tf, entry_ip, regs);
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!mem)
+@@ -195,7 +196,10 @@ static int vexpress_sysreg_probe(struct platform_device *pdev)
+ 	bgpio_init(mmc_gpio_chip, &pdev->dev, 0x4, base + SYS_MCI,
+ 			NULL, NULL, NULL, NULL, 0);
+ 	mmc_gpio_chip->ngpio = 2;
+-	gpiochip_add_data(mmc_gpio_chip, NULL);
 +
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret = fentry_perf_func(tf, entry_ip, regs);
- #endif
- 	return ret;
-@@ -360,11 +362,12 @@ static void fexit_dispatcher(struct fprobe *fp, unsigned long entry_ip,
- 			     void *entry_data)
- {
- 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
-+	unsigned int flags = trace_probe_load_flag(&tf->tp);
++	ret = gpiochip_add_data(mmc_gpio_chip, NULL);
++	if (ret)
++		return ret;
  
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		fexit_trace_func(tf, entry_ip, ret_ip, regs, entry_data);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		fexit_perf_func(tf, entry_ip, ret_ip, regs, entry_data);
- #endif
- }
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 6b9c3f3f870f4..b273611c5026c 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1799,14 +1799,15 @@ static int kprobe_register(struct trace_event_call *event,
- static int kprobe_dispatcher(struct kprobe *kp, struct pt_regs *regs)
- {
- 	struct trace_kprobe *tk = container_of(kp, struct trace_kprobe, rp.kp);
-+	unsigned int flags = trace_probe_load_flag(&tk->tp);
- 	int ret = 0;
- 
- 	raw_cpu_inc(*tk->nhit);
- 
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		kprobe_trace_func(tk, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret = kprobe_perf_func(tk, regs);
- #endif
- 	return ret;
-@@ -1818,6 +1819,7 @@ kretprobe_dispatcher(struct kretprobe_instance *ri, struct pt_regs *regs)
- {
- 	struct kretprobe *rp = get_kretprobe(ri);
- 	struct trace_kprobe *tk;
-+	unsigned int flags;
- 
- 	/*
- 	 * There is a small chance that get_kretprobe(ri) returns NULL when
-@@ -1830,10 +1832,11 @@ kretprobe_dispatcher(struct kretprobe_instance *ri, struct pt_regs *regs)
- 	tk = container_of(rp, struct trace_kprobe, rp);
- 	raw_cpu_inc(*tk->nhit);
- 
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tk->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		kretprobe_trace_func(tk, ri, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		kretprobe_perf_func(tk, ri, regs);
- #endif
- 	return 0;	/* We don't tweak kernel, so just return 0 */
-diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index 8a6797c2278d9..4f54f7935d5db 100644
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -269,16 +269,21 @@ struct event_file_link {
- 	struct list_head		list;
- };
- 
-+static inline unsigned int trace_probe_load_flag(struct trace_probe *tp)
-+{
-+	return smp_load_acquire(&tp->event->flags);
-+}
-+
- static inline bool trace_probe_test_flag(struct trace_probe *tp,
- 					 unsigned int flag)
- {
--	return !!(tp->event->flags & flag);
-+	return !!(trace_probe_load_flag(tp) & flag);
- }
- 
- static inline void trace_probe_set_flag(struct trace_probe *tp,
- 					unsigned int flag)
- {
--	tp->event->flags |= flag;
-+	smp_store_release(&tp->event->flags, tp->event->flags | flag);
- }
- 
- static inline void trace_probe_clear_flag(struct trace_probe *tp,
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 9916677acf24e..f210e71bc1550 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1531,6 +1531,7 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
- 	struct trace_uprobe *tu;
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb = NULL;
-+	unsigned int flags;
- 	int ret = 0;
- 
- 	tu = container_of(con, struct trace_uprobe, consumer);
-@@ -1545,11 +1546,12 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
- 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
- 		return 0;
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		ret |= uprobe_trace_func(tu, regs, &ucb);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret |= uprobe_perf_func(tu, regs, &ucb);
- #endif
- 	uprobe_buffer_put(ucb);
-@@ -1562,6 +1564,7 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
- 	struct trace_uprobe *tu;
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb = NULL;
-+	unsigned int flags;
- 
- 	tu = container_of(con, struct trace_uprobe, consumer);
- 
-@@ -1573,11 +1576,12 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
- 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
- 		return 0;
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		uretprobe_trace_func(tu, func, regs, &ucb);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		uretprobe_perf_func(tu, func, regs, &ucb);
- #endif
- 	uprobe_buffer_put(ucb);
+ 	return mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
+ 			vexpress_sysreg_cells,
 -- 
 2.51.0
 
