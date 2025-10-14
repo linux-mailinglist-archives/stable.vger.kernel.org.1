@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-185553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54655BD6D0A
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 01:57:16 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF918BD6E02
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 02:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2AE5420723
-	for <lists+stable@lfdr.de>; Mon, 13 Oct 2025 23:56:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7360934EB4D
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 00:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584F42F49F8;
-	Mon, 13 Oct 2025 23:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF8B2C0303;
+	Tue, 14 Oct 2025 00:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dXroGxIZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0U/r095"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AB826E6FA
-	for <stable@vger.kernel.org>; Mon, 13 Oct 2025 23:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0E32BF3CF
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760399788; cv=none; b=p80P/Hx8HJcSTeCu4av87OUHtmHKN3XWj3ZeivhAmYq105zVptRYxTx9Uj5eyY0vUvyNt8aOPtOnijMdSUT+Y97KgrwTxO7S+jGxiROzV2ur1Uys2J0mPLh2RLCjPmifL9hHBJrz7DSjZRPGVRfhE3ID0IIogWJZgrexZgJ3HKM=
+	t=1760401057; cv=none; b=BluKYgxsv+5ohvaxZ7URCnxL/9t/DGJgaGI+3tD0+VM1Zs/YUudCnBUCmbZRrl/R7eVxBl3RcSfhd4Onft39c7H4fxMs3C32y62247esDYZ3hQQlB5r/r0TQbhA/mDpKNtuOF4hUDzTeHeIRo/qVPhoyEzaE2YRfQ9e+dd5mE0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760399788; c=relaxed/simple;
-	bh=RCgVmzfCtn8oLkMrVC1ZpjfNbKz/4uqOuALe3a4Oxt8=;
+	s=arc-20240116; t=1760401057; c=relaxed/simple;
+	bh=N/ZQMFzVhPoV1pD5/tnnXgDoT9Z807F3DJnnElnOYuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zt2hPQE2fBy8rCj2sbzNIf2iBtc0b0o8zGnOZ0Fqf3RQkT7CVKKwW5vkucjTbndcMWrF7TNbkNXOWnNlCZbfjbFWQ1Yjdurq9pJUvfQjUAJ5x/EbL7ngknEiyFQXIecA65FiMGRk8KAWVeTAPsnbAtwPO/UvykoP+ifdi8XXnNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dXroGxIZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD75C4CEE7;
-	Mon, 13 Oct 2025 23:56:27 +0000 (UTC)
+	 MIME-Version; b=s6d3Ltl9Lvxt7j++uU5K3FmV1kIAZn0Or3t1SqYTVJqWLgzRSuQQuutTfMsj3tNeGtedmAhnuqeZTLO/K3qGvgKQFW3BTiD0SIVH8EJl3F/JW25WCLCIKOTGIMdwBh5cxwlY6vXIvx6TnGuNmUJLYUveQ5UQbGhaBo2NV9GXhfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0U/r095; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F064C4CEE7;
+	Tue, 14 Oct 2025 00:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760399787;
-	bh=RCgVmzfCtn8oLkMrVC1ZpjfNbKz/4uqOuALe3a4Oxt8=;
+	s=k20201202; t=1760401057;
+	bh=N/ZQMFzVhPoV1pD5/tnnXgDoT9Z807F3DJnnElnOYuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dXroGxIZAD5xYNbMEzFsdYzsLNgB74oOmKVoYuH9dN5U3rqhVdAzbHMVrRnq8P5rv
-	 APg1JyknU9lXZgfj4rr36vB92mQjhy23UDZMFn03xIdDHbPseSxXEUCThgw/DSx6D+
-	 4ibP6F+aQaizZ+5EmNZzJOrEoFDypGDy8VX7j0Ca33ElsFCFDgbcMKkYmPaVV5gqN7
-	 omY87Uplmyo/wFL22pU8EvBxjjo6hpIxXMexowhhGTS+4U92tbooV61LoxKW3wJGP6
-	 ALLqZycaoc21ygTxISQ0WFrqyqePr/7EHxSzTgAhbT35MlyP5h2LzS1FrOLy2Gom9Z
-	 OS9UNP1RVvnIA==
+	b=g0U/r0951EaxOqBZzn45TUyPQga8OW/QY4FfKml//Gn7PbwFkZN+052KFaUo1dMce
+	 Rpg6kilHayrY2sDMOZ16Me92Df4ShWLFsT7u8cr4lwc+l50TsRop8YcMcppN2yYWGX
+	 6NuE2IH9mU2tcpoHgkRdczJrj0JtAIEZ2l2LapcPwc0vUnX5wNN/tdMsYvstByF9G2
+	 lQfbDWKBZwocUhbcYfy0t34MfOLHQGA09TxHcOpx10RKuBnXZE6Y+TWK1vvxJSBvy/
+	 jFU08qCfwypHJPmhEWk6NcnV0EXUBVd2inac5pk92KvVuirTAJbULoTu2nOvgbvDOS
+	 anypxMVzKKiTw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Hans de Goede <hansg@kernel.org>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
 	Andy Shevchenko <andy@kernel.org>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 3/3] mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag
-Date: Mon, 13 Oct 2025 19:56:23 -0400
-Message-ID: <20251013235623.3733198-3-sashal@kernel.org>
+Subject: [PATCH 5.4.y 1/3] mfd: intel_soc_pmic_chtdc_ti: Fix invalid regmap-config max_register value
+Date: Mon, 13 Oct 2025 20:17:32 -0400
+Message-ID: <20251014001734.3748199-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013235623.3733198-1-sashal@kernel.org>
-References: <2025101315-glue-daylight-739b@gregkh>
- <20251013235623.3733198-1-sashal@kernel.org>
+In-Reply-To: <2025101316-disarm-pried-7a1f@gregkh>
+References: <2025101316-disarm-pried-7a1f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,42 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hansg@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 64e0d839c589f4f2ecd2e3e5bdb5cee6ba6bade9 ]
+[ Upstream commit 70e997e0107e5ed85c1a3ef2adfccbe351c29d71 ]
 
-Testing has shown that reading multiple registers at once (for 10-bit
-ADC values) does not work. Set the use_single_read regmap_config flag
-to make regmap split these for us.
+The max_register = 128 setting in the regmap config is not valid.
 
-This should fix temperature opregion accesses done by
-drivers/acpi/pmic/intel_pmic_chtdc_ti.c and is also necessary for
-the upcoming drivers for the ADC and battery MFD cells.
+The Intel Dollar Cove TI PMIC has an eeprom unlock register at address 0x88
+and a number of EEPROM registers at 0xF?. Increase max_register to 0xff so
+that these registers can be accessed.
 
-Fixes: 6bac0606fdba ("mfd: Add support for Cherry Trail Dollar Cove TI PMIC")
-Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250804133240.312383-1-hansg@kernel.org
+Link: https://lore.kernel.org/r/20241208150028.325349-1-hdegoede@redhat.com
 Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_chtdc_ti.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mfd/intel_soc_pmic_chtdc_ti.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/mfd/intel_soc_pmic_chtdc_ti.c b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-index 31b30a919348c..c629624fd4a59 100644
+index 64b5c3cc30e74..e787d5655a315 100644
 --- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
 +++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-@@ -82,6 +82,8 @@ static const struct regmap_config chtdc_ti_regmap_config = {
+@@ -81,7 +81,7 @@ static struct mfd_cell chtdc_ti_dev[] = {
+ static const struct regmap_config chtdc_ti_regmap_config = {
  	.reg_bits = 8,
  	.val_bits = 8,
- 	.max_register = 0xff,
-+	/* The hardware does not support reading multiple registers at once */
-+	.use_single_read = true,
+-	.max_register = 128,
++	.max_register = 0xff,
+ 	.cache_type = REGCACHE_NONE,
  };
  
- static const struct regmap_irq chtdc_ti_irqs[] = {
 -- 
 2.51.0
 
