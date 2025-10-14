@@ -1,179 +1,125 @@
-Return-Path: <stable+bounces-185702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D3ABDAB82
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 18:56:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A90BDAB8E
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 18:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ED5CD4EA5E9
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 16:56:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2DD7402D2E
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 16:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E94D3043AC;
-	Tue, 14 Oct 2025 16:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B1A304BB2;
+	Tue, 14 Oct 2025 16:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJ6WfqNp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pz016Vad"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9A4302CC7
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 16:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33022877E3
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 16:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760460978; cv=none; b=U0kYU8UtS3RWvkC1PW07GOfHe4Nt39quC64H17wqYUvuvC5BDNGBdV6fVnT8SWeRR76gtJ4FsYWgCul/vzPlQTSg++oPdL4at63FXsivAdBqboNBfTKSzz+1C0U95SsTXFNu6hPzVRRmz0+7nGljiIPvYgVS5WBQWioQNoIyqSI=
+	t=1760461111; cv=none; b=vFIZ/mWhJ39FDMcgn/b3r9R0ml0zWb4rjl5OJGVJnm2Kio0FsYtY3xz09ZHHjlIqPDG0dvmxt/dFOPzR12GDV2Wy80sWv946IZ/Db2YHMK5LGR9MQDjFMKxzqk/CVcmtF3y/DSFm2Rwcgqakq069wBSFfg87ZatETsDABYwUMlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760460978; c=relaxed/simple;
-	bh=QoMVJb45Y9NTxBXyk2hjN2vNoE35t3zjlN5O7L6MW1o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dBzKmu/U3A8VRg/zJaaOm1c8jH/Es7brEc4XI2exR26jgCQ+t8VTJ7YZYji+rGnlKKqeNrv8n6y4Bi7Ri15UOi0fV9SxIuheRH0nOZv5FDYjM12Ex+JEMUo88MTys1Bp6b2LofKIF+XJW52cuaR+dNFMqZFCQJt+TOB+fvrzxFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJ6WfqNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC7BC4CEE7;
-	Tue, 14 Oct 2025 16:56:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760460977;
-	bh=QoMVJb45Y9NTxBXyk2hjN2vNoE35t3zjlN5O7L6MW1o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJ6WfqNpBrTZR1TWyM0WVPmEihkeQM9ZPXLA22bxTWAsCYDeQUujesHs2pWQtZ1bk
-	 2UPZgcMVpI7z5MWD4IMVovvu9NL73ZS5XMLw6DYqYma0gTq2PybK9HZCTrKPtRHmdD
-	 QltMdmnX2kh0TFxIrhoRVO9zoLiuBXWHd55XXtDTJjssnf0gGo+UByewYVna2aUAT9
-	 k9/1DXNtcCRBNIC8htniQzGMNMpDslHWqrljjsWQm2yq+i5CmXfTsnZWCNpd/pjWYI
-	 oevGaRmbXWekgG3EsUb1nrVA4eyMa+fF+lJNM1FGT4utRyDvyhhjwuZCXb3HeLzYA4
-	 HTvOPb46Rzvug==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] net: usb: asix: hold PM usage ref to avoid PM/MDIO + RTNL deadlock
-Date: Tue, 14 Oct 2025 12:56:14 -0400
-Message-ID: <20251014165614.192458-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101349-reptile-seldom-427d@gregkh>
-References: <2025101349-reptile-seldom-427d@gregkh>
+	s=arc-20240116; t=1760461111; c=relaxed/simple;
+	bh=YsyUZHgi1wpE/vvikQRglq+UzixFkapYZ/q1X/Cvgvw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hrDoKMuj674RJL5GWsV9lWVFVZRqNMzeWLbce8Uh8Wm7kxCy4YB+0rHntCdFjPrTULov21nK2aUFAizU9Z9XvCtxTxuxD3HipASi2jScn5Ht+ArdzI9pB3n7MHO5cbhsVustRE36VtYudwIyPCX4IsIgxbly4PwjlGupftWKdsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pz016Vad; arc=none smtp.client-ip=209.85.166.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-90a0b3ddebeso228357039f.0
+        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 09:58:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1760461109; x=1761065909; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Uv1jmh2eVmOSopdUqtY+w8Wv8v5i6enZZ9ZLD535XmM=;
+        b=Pz016VadKeqX6h0q61li9LvHotGJ5c8iwMK0L7/J7LkMBtb5OgWmJBNDaOiRJDhJz9
+         BVFaJ5euH7T1cEWcASANOmCLQamYIOgZSAHVxBWmuw/x3gzdh8nktjdjOb2DiOqTYkNg
+         puoCRzlTrMsc0TWaZThOQwHdFIMiUWb3KGqvM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760461109; x=1761065909;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uv1jmh2eVmOSopdUqtY+w8Wv8v5i6enZZ9ZLD535XmM=;
+        b=Cf2W+jfqxg3yP+PC9pSu4Zd6FE4H3+4aw9oOm/8aZ2YMqBZMDK17/QVuseziiRZBQJ
+         FNdYLCvtBurCTo+plfVCq4R+X7RHToovnf+iKun9BxN7uf20XaZO0uyFavMlnNHEQUqn
+         y+i+YQVlT9a3N2YmRCuaYKRq+6N2uJMce7qHsWzjwVn9kXpf2v7MyyMi1v8wrRpXUzjH
+         VBE7DYzdvBKirnSTTpFUcaqQmNAUl7Rvl8OcwRX1njTgePTGpRg7+MIupJ4Wb7LggGCt
+         jWNzUfdyF4ER6UmAz+GzmYEwctfOHTN3r4XLeJm0uzOTaZp/Ct6mM1RwYmQKcMkIAuDj
+         8Mig==
+X-Forwarded-Encrypted: i=1; AJvYcCVmy4mOp0sXqIRGAYBxZScC/dIrmebA+d6Uue86JL/Cl65Pbr7z5YiXqbQxUGvnuIEbtnA7n5c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJrvkFyOhf3fpUN6UisRwFvwbS9ztsa5bCySav0FzbPUyhjNeJ
+	tFHy6/1t7i4eusU28BzIr/AsRnOHYGk5i2/TiiXtpLFvtCs/yarZqtfaGLVSNazQ+4Q=
+X-Gm-Gg: ASbGncsP7DmRj3lP+sSGhjIUufFuOpjsn60r75Yz2J9JzHPAfHV4H1lFGwzUAxu6cBu
+	JZqzELNqwNONE1jmLcLJ/STcZtG8l7DScKvzQbQ1/9k3ATE5HC5pOod7PBenXWiTPggE/BdoWR7
+	K7ovf63jaX7lxE2xVKzLm+661r8EHTp2UtneCz5QGq1ZXCKameKXUMJKqQ4D792WUyiHMFImPL7
+	pb/UoJ+Ys/9v5j2gjSLQMxY7bPrnn2SUE15QDvfeK2WP9/EHFzo7FwmUi3pUvbrfkzd/Bh9m1gT
+	LLowOGGCm386zCG5D6kNEx2z+y9yQbPvWhDc/UHzLNMEo9Aje7JEQb+y7UZfjURUNf0GmJCKVwJ
+	w8ssGbGIph4gVjieCfF7ciFqHxlSbHqMBaZb1Gl5yEjbHdBjDp7/ypEfzrdTVdyt9Ob8swyRRvj
+	k=
+X-Google-Smtp-Source: AGHT+IEpt/iipPZMrqhw1wAspnajPgF214RYw1OdoUghqLh/7sXAtLGEGZrEJbe94Pt4al96RJkdQg==
+X-Received: by 2002:a05:6602:29d2:b0:8a6:e722:a9e8 with SMTP id ca18e2360f4ac-93bd189ad24mr3241436639f.6.1760461108974;
+        Tue, 14 Oct 2025 09:58:28 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-93e25a63c81sm487119339f.18.2025.10.14.09.58.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Oct 2025 09:58:28 -0700 (PDT)
+Message-ID: <1263d6cd-f9a8-4558-9c59-57f9b5503473@linuxfoundation.org>
+Date: Tue, 14 Oct 2025 10:58:26 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.17 000/563] 6.17.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
+References: <20251013144411.274874080@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+On 10/13/25 08:37, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.17.3 release.
+> There are 563 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 15 Oct 2025 14:42:41 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.3-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-[ Upstream commit 3d3c4cd5c62f24bb3cb4511b7a95df707635e00a ]
+Compiled and booted on my test system. No dmesg regressions.
 
-Prevent USB runtime PM (autosuspend) for AX88772* in bind.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-usbnet enables runtime PM (autosuspend) by default, so disabling it via
-the usb_driver flag is ineffective. On AX88772B, autosuspend shows no
-measurable power saving with current driver (no link partner, admin
-up/down). The ~0.453 W -> ~0.248 W drop on v6.1 comes from phylib powering
-the PHY off on admin-down, not from USB autosuspend.
-
-The real hazard is that with runtime PM enabled, ndo_open() (under RTNL)
-may synchronously trigger autoresume (usb_autopm_get_interface()) into
-asix_resume() while the USB PM lock is held. Resume paths then invoke
-phylink/phylib and MDIO, which also expect RTNL, leading to possible
-deadlocks or PM lock vs MDIO wake issues.
-
-To avoid this, keep the device runtime-PM active by taking a usage
-reference in ax88772_bind() and dropping it in unbind(). A non-zero PM
-usage count blocks runtime suspend regardless of userspace policy
-(.../power/control - pm_runtime_allow/forbid), making this approach
-robust against sysfs overrides.
-
-Holding a runtime-PM usage ref does not affect system-wide suspend;
-system sleep/resume callbacks continue to run as before.
-
-Fixes: 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC")
-Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
-Closes: https://lore.kernel.org/all/DCGHG5UJT9G3.2K1GHFZ3H87T0@gmail.com
-Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20251005081203.3067982-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted to phylib-only ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/usb/asix_devices.c | 35 +++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index 97d2037e7fee7..2e22be26921b8 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -608,6 +608,21 @@ static void ax88772_suspend(struct usbnet *dev)
- 		   asix_read_medium_status(dev, 1));
- }
- 
-+/* Notes on PM callbacks and locking context:
-+ *
-+ * - asix_suspend()/asix_resume() are invoked for both runtime PM and
-+ *   system-wide suspend/resume. For struct usb_driver the ->resume()
-+ *   callback does not receive pm_message_t, so the resume type cannot
-+ *   be distinguished here.
-+ *
-+ * - The MAC driver must hold RTNL when calling phylink interfaces such as
-+ *   phylink_suspend()/resume(). Those calls will also perform MDIO I/O.
-+ *
-+ * - Taking RTNL and doing MDIO from a runtime-PM resume callback (while
-+ *   the USB PM lock is held) is fragile. Since autosuspend brings no
-+ *   measurable power saving here, we block it by holding a PM usage
-+ *   reference in ax88772_bind().
-+ */
- static int asix_suspend(struct usb_interface *intf, pm_message_t message)
- {
- 	struct usbnet *dev = usb_get_intfdata(intf);
-@@ -809,7 +824,18 @@ static int ax88772_bind(struct usbnet *dev, struct usb_interface *intf)
- 	if (ret)
- 		return ret;
- 
--	return ax88772_init_phy(dev);
-+	ret = ax88772_init_phy(dev);
-+	if (ret)
-+		return ret;
-+
-+	/* Keep this interface runtime-PM active by taking a usage ref.
-+	 * Prevents runtime suspend while bound and avoids resume paths
-+	 * that could deadlock (autoresume under RTNL while USB PM lock
-+	 * is held, phylink/MDIO wants RTNL).
-+	 */
-+	pm_runtime_get_noresume(&intf->dev);
-+
-+	return 0;
- }
- 
- static int ax88772_stop(struct usbnet *dev)
-@@ -827,6 +853,8 @@ static void ax88772_unbind(struct usbnet *dev, struct usb_interface *intf)
- 
- 	phy_disconnect(priv->phydev);
- 	asix_rx_fixup_common_free(dev->driver_priv);
-+	/* Drop the PM usage ref taken in bind() */
-+	pm_runtime_put(&intf->dev);
- }
- 
- static void ax88178_unbind(struct usbnet *dev, struct usb_interface *intf)
-@@ -1452,6 +1480,11 @@ static struct usb_driver asix_driver = {
- 	.resume =	asix_resume,
- 	.reset_resume =	asix_resume,
- 	.disconnect =	usbnet_disconnect,
-+	/* usbnet enables autosuspend by default (supports_autosuspend=1).
-+	 * We keep runtime-PM active for AX88772* by taking a PM usage
-+	 * reference in ax88772_bind() (pm_runtime_get_noresume()) and
-+	 * dropping it in unbind(), which effectively blocks autosuspend.
-+	 */
- 	.supports_autosuspend = 1,
- 	.disable_hub_initiated_lpm = 1,
- };
--- 
-2.51.0
-
+thanks,
+-- Shuah
 
