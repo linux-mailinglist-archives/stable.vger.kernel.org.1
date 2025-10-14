@@ -1,110 +1,124 @@
-Return-Path: <stable+bounces-185561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24470BD6EC2
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 03:12:28 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12C0BD6F92
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 03:19:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F36407CEC
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 01:11:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C53494FEAB3
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 01:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8771236454;
-	Tue, 14 Oct 2025 01:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2883253B58;
+	Tue, 14 Oct 2025 01:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EfNfPOua"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Ig1/UQxf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D61C22ACF3;
-	Tue, 14 Oct 2025 01:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA8B239E91
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 01:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760404250; cv=none; b=S2k649fkpGcJIFAj/KLdEApLrPkxkTCvUxolh1M5x9p0cd3oiKnlTfdW1ADqZfZ7nzJXxr2FBsGlaCMwlzdw1xDVKezzYpFq1YHaJ56cyUhy8TXKD9QUoa+f0niGVRVnVzU3eDxVYNvHDnz2hNXe0Skc6j3nTlRNIEgrsc+VovY=
+	t=1760404446; cv=none; b=tmFkqROr5QshyHeqHTsdo6ziEBsevqDHPAU9DsXlxduW4d4G3eak1HxVyBL/76isgXs44+ggeXLI+i37CgjTOc06Uv8bv6CWjqFD+6FKDLO/Z5WMyqzmU8iQOFDE3ZpkrbtQ39rYJO/K12vVbhV1vilGM6wEuMRIQVheiaxLDRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760404250; c=relaxed/simple;
-	bh=UlXz9SPqWN5GDVnFExB0oh6QNhIDQhd3TElVGi7zvhg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PUn5AgKUzynDOigKJ8cX9j9P1k+OgtbJ4gEq5RQoLdDiQ6JTDT/gsaYF3rhOMD5QLsTb3qZc1PBmaR02nZO4es0sOLDxJzeUQlIqwuZc9prJitkKs6XGmz4LXldjLUoS3S4rFpGxKYRURhOAPzon+jeqhfh9sT+H7fetkZNJcXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EfNfPOua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261FBC113D0;
-	Tue, 14 Oct 2025 01:10:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760404250;
-	bh=UlXz9SPqWN5GDVnFExB0oh6QNhIDQhd3TElVGi7zvhg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=EfNfPOuatkzswozxFgDSQQBdTWRLfqqarbr9q7X8shTPkkBtLpE6iJtdvh3HehQV/
-	 Ji2oNodQ/uETWpBWECBAreFuzBeVIv4VpK+A5FKn10uMeEdnSnpPR+5GABvDv2y3LP
-	 VNqgpRN/oYBnWi4vHQhOa89E5dbqUu4F8EWYeNu6SBD7xMX+aire+3o2MpQTifSu1x
-	 nEc+uMldBAVF8A+Y7IwU+JTtDzCHbZhmwJhuzecQ8S3DBSDyszmEsiS/hNfFGZUaHb
-	 fzS9PTZ1AVB0OrPxbftsSJkhkfVHz4qwt72wA/8Kug4K/xly6dEJY3yQMggCgwANRq
-	 x2Zsvba7a12xw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB0F2380A962;
-	Tue, 14 Oct 2025 01:10:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1760404446; c=relaxed/simple;
+	bh=VLDmeT4V4bMf/s8VcnNmz25fy91luPLGLGwIAeMLYJ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P8f8STlQoNec6cv65IeK00kNH09hdQVU7x7Nmaqqdgpuer+lTul3LjNVFU2CkbQPJJu+gHB3UAy2iJgucP04JTlXSK+IBxuN/53I9FLmhqszIcR+sawDTtEH/bNOq+gUROldN+lPC6pOH5xAgX2BrzC8kDir10dYNJo37ZMSYnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Ig1/UQxf; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-46e33b260b9so38632615e9.2
+        for <stable@vger.kernel.org>; Mon, 13 Oct 2025 18:14:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1760404443; x=1761009243; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BotW9r6xL/UMcoaCPy9Ldu6h3UcOKuy5CPivX5Mz6y0=;
+        b=Ig1/UQxfiN5Fk/yO7ZJaSTtwT5JlC5gyQ3uBPDmOgXayMr5Z2naQM68l+Voq1LLoP3
+         MyCrf80r59/7qzxlHPs0kpm/9eek0+fnEZQzKDw175M8QI02a6OlE0K2GbyepmtR7jeT
+         BFeCNKPT+2wtlAo3Oo7V4svPlQLH3U0YyI1c5d5M9IVpV0EahD0HY/+Hwu9z1gkAR9Sp
+         jFD1trNvSkT+tqNvc4IiMcCCJ3R38f5ZKk6zFE0OzRCn6NUu183DH+a2T9vf/z2++eCh
+         HcyaFZcILGSnL99yrypSZPA85SvmNq9z4ghoCL1BffF+l+piB5XpCfEdxvHCPxHmm9CQ
+         19GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760404443; x=1761009243;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BotW9r6xL/UMcoaCPy9Ldu6h3UcOKuy5CPivX5Mz6y0=;
+        b=jUXrvY7mqJyjKw8WzGW7AxQHoRusnBShQDuzwPGQGnG5+gfGMGl3vnMdW4SrlJaIu1
+         VuZeCjCghZoEweqHqrdQMdHGzN+ruLJYbe6KeFK7q5TZyNwqZzZLC4Z7OXcBeOWJPzSV
+         FBf2ns7gz59MQLlW2F+A/HerLcY9spSBKJwOw9rWMM+HUxnnGE6umlkAhIh+t6CL5ZIH
+         cfK54rY690XdjVRnZiR85U2ltHpzdgeJp4DZj9jJiphxFZF6tnj9lYaJjAOJZ10HvtMM
+         eTHBrFTs8PMBAw/AXFSHXvYzM/XRk/Eijt8qTY8CR/IV2uILNskHOoy4m6wD4wj75Dos
+         SY+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWtFq8HzpQDQvRIUehhpPBhtxX1ablv0LFJOWpUZGkabyDh0VSYwEKxYjSDvjUK2JjpyMQSEsw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm2JyVwdBFOZNW1SzDqCNzZS+7lIlnKIXQjQYESSeLLw4sSwCN
+	5gSK5USp2Giqj5Z8wz86YFIjkPIlVHMsf1/Fjduec/4j76yoa9R4foM=
+X-Gm-Gg: ASbGnctnY8WAJciFKW+sQcgXs2aamPpRc6U5EBwDlDrdj2X8wIvmCIYNUx9sx/pMLSh
+	nOeWcHeSvBaZciZ61mNb9ARZZOmKrZ8q4CqURzS3W+2GgPko9YJvjqWt/8CsKGNiCTxiVSdCkS3
+	owgKh/AlMq5SXk4unLi7LbtAiCQ/4/espeF11eTxcjn9Ezi7yJmhHo6LMTo1LQck6p13hTRS11X
+	9vjfaGswyX25X+nOb4E7CQGdeNGBjoM3dCIUDUn4Xn1ATkihsZeKWqtYMCrbqEehuvrTuXsdISH
+	sKSTxF3FeFKtSCqQBlqILDJ1zwRmQrk6oYf0ZgsetvaCaf8vblXSaUuFD+sBokcYTYHEaHwedaN
+	B0kJ0jYYBRotWTRZdnrZAB5UsuGUkXJiafwWUkmwIt9rnqD3ZLn6URtlAr6qGgpn3qppjSLfzWp
+	O8Z2WCZD95cdaNFn+HVU8=
+X-Google-Smtp-Source: AGHT+IEn0zN7JJO7ozOpfwGf2FFNELh91wduawTwnU1AdEj1SfIBN2yVJEWWjvkaEB0nGVf1WaDqGQ==
+X-Received: by 2002:a05:600c:4688:b0:45c:b540:763d with SMTP id 5b1f17b1804b1-46fa9b18258mr170118175e9.33.1760404443223;
+        Mon, 13 Oct 2025 18:14:03 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2aca8d.dip0.t-ipconnect.de. [91.42.202.141])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb482ba41sm212307565e9.4.2025.10.13.18.14.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Oct 2025 18:14:02 -0700 (PDT)
+Message-ID: <121e043b-f873-46cc-ab7a-22100c936dea@googlemail.com>
+Date: Tue, 14 Oct 2025 03:14:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/262] 6.12.53-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20251013144326.116493600@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/6] Intel Wired LAN Driver Updates 2025-10-01
- (idpf, ixgbe, ixgbevf)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176040423576.3390136.9978557000620458920.git-patchwork-notify@kernel.org>
-Date: Tue, 14 Oct 2025 01:10:35 +0000
-References: <20251009-jk-iwl-net-2025-10-01-v3-0-ef32a425b92a@intel.com>
-In-Reply-To: <20251009-jk-iwl-net-2025-10-01-v3-0-ef32a425b92a@intel.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- emil.s.tantilov@intel.com, aleksander.lobakin@intel.com, willemb@google.com,
- sridhar.samudrala@intel.com, phani.r.burra@intel.com,
- piotr.kwapulinski@intel.com, horms@kernel.org, radoslawx.tyl@intel.com,
- jedrzej.jagielski@intel.com, konstantin.ilichev@intel.com,
- milena.olech@intel.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- aleksandr.loktionov@intel.com, Samuel.salin@intel.com,
- stable@vger.kernel.org, rafal.romanowski@intel.com, den@valinux.co.jp,
- sx.rinitha@intel.com, pmenzel@molgen.mpg.de
 
-Hello:
+Am 13.10.2025 um 16:42 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.53 release.
+> There are 262 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-On Thu, 09 Oct 2025 17:03:45 -0700 you wrote:
-> For idpf:
-> Milena fixes a memory leak in the idpf reset logic when the driver resets
-> with an outstanding Tx timestamp.
-> 
-> For ixgbe and ixgbevf:
-> Jedrzej fixes an issue with reporting link speed on E610 VFs.
-> 
-> [...]
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Here is the summary with links:
-  - [net,v3,1/6] idpf: cleanup remaining SKBs in PTP flows
-    https://git.kernel.org/netdev/net/c/a3f8c0a27312
-  - [net,v3,2/6] ixgbevf: fix getting link speed data for E610 devices
-    (no matching commit)
-  - [net,v3,3/6] ixgbe: handle IXGBE_VF_GET_PF_LINK_STATE mailbox operation
-    https://git.kernel.org/netdev/net/c/f7f97cbc03a4
-  - [net,v3,4/6] ixgbevf: fix mailbox API compatibility by negotiating supported features
-    https://git.kernel.org/netdev/net/c/a7075f501bd3
-  - [net,v3,5/6] ixgbe: handle IXGBE_VF_FEATURES_NEGOTIATE mbox cmd
-    https://git.kernel.org/netdev/net/c/823be089f9c8
-  - [net,v3,6/6] ixgbe: fix too early devlink_free() in ixgbe_remove()
-    https://git.kernel.org/netdev/net/c/5feef67b646d
 
-You are awesome, thank you!
+Beste Grüße,
+Peter Schneider
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
