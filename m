@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-185691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DA4BDA411
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 17:13:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A874DBDA60A
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 17:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 746D934D047
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:13:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 52CAB502DA8
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0123009D4;
-	Tue, 14 Oct 2025 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAA32FFFB5;
+	Tue, 14 Oct 2025 15:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OCJRv0ok"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZL2B6sH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C84F3009CC
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2397A2FFFAB
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 15:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760454750; cv=none; b=IXxNBEQyx/X7MuwnrAk32XrD/rseAmOHl11MWGOMvChSB6YvOlalDMzYHhtgUHsT9yscGcdu6YCqB7zDGBk5JlgNpLc2q3m5D+IsA/s2goHJTVGJJTl6P09aVVXk/5YdgaWL73XybhP3jCbMzK9rJzVo4zTavoXou05LSki6v4w=
+	t=1760455543; cv=none; b=jOebkgpWCFnj7hz0QQwJLs9z+lCuvFf2Ayc4qn9dGwDxKitmxVtX/g3htR2CHLDMDnAyUQWp1NSYXVLoY+NUwaPudm/yt6OmLM3/nEzI9+9HqyLf+C5IXQSR1t1oEI9SUlTaUsUog3pVB3gTTXslbhYsxvcK/oYIV7Xg58QmN4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760454750; c=relaxed/simple;
-	bh=5MHnFkE/CM4zGXmiFbCB7i4SLRasL7W5MN8/MgSH3/o=;
+	s=arc-20240116; t=1760455543; c=relaxed/simple;
+	bh=l0gG3iNF0rcrsWcjAWTNV2MLTjfVXBKkpEN3kIxUPKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxlNB31iw+xCuXCgpQ2bAiAHx7rSkodPAcImldz0rcbSZ0Pum1L2i6WXR6r1pcBx47ROJwwPS1s4LjNYYoHlZV5CAi626YxS6zeiVaeXG0YbzqFtNO8lfwXucVYpPlXZ23bom9nAtIsVFyqro8WTKVI7Jp8enDje3RbFCK0h8bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCJRv0ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E95C113D0;
-	Tue, 14 Oct 2025 15:12:28 +0000 (UTC)
+	 MIME-Version; b=WDpwv1BSstp2cCc26TSbR+Li6pzh6Sc93MwCkRQd2k5qCcSO295eKQ8F5g5Qk4owrrIWvUwldJP2OQua5jBqdHAhe6xRTr4C9i6iqtCA5gnR9wHR6CCeTxeBY/7G7gWO6Eg/EsLEUrGyTi8N58I9CLLrvJ64/LD64blKFonBqJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZL2B6sH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13102C116C6;
+	Tue, 14 Oct 2025 15:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760454750;
-	bh=5MHnFkE/CM4zGXmiFbCB7i4SLRasL7W5MN8/MgSH3/o=;
+	s=k20201202; t=1760455542;
+	bh=l0gG3iNF0rcrsWcjAWTNV2MLTjfVXBKkpEN3kIxUPKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCJRv0ok+bcmVs5+nKR54BtBr+Ja+P1FG4H+0sHMJL87aVTTCc82pjB68m5rQZYFF
-	 hOK9edMYokMXiNGFDBY2RzSD+5EnUjFBtVL2NR4dnU104WwzMGWwtoqo5vPlL0J3bO
-	 xBQlsKrz53ys+fvIcKS8G+ip15/QExazYNpLcHtxvjMRipuzFR5EYh6ksMzWIpApvx
-	 RIjr8HWXAZuWvqyYS+4sJEH9hwfUy0igncuxI3yPdscZvCheuLhhvs3U6lgjo5oMOa
-	 5KwuZN/ONPHSRpPMTMn/dEEt/H3Gc4r+aloWn+LwhUj39C6dN/cGtRt8MlDpS6QEd2
-	 ohHLSq5kDcJlA==
+	b=cZL2B6sHXOkDMxK6OfzLOYJyQ/vZgAkr7F88esbjl2WxUJRl7gPbIjwT+DanlqSm6
+	 IAci0JM6/V7VjNYP2LeNhnD7i0zUzfvwCsgxAvSJmGeq9X6uVlmnIjILzLPqmDOcS9
+	 Ml0b92+F5mnubVaQxoOL+BqKm2ufqcitlVB73tX2NEH1pXHfqb1QJkmBNXMLSh85BS
+	 5ZkE5xI+L9Qv1rAwHJIz0/T6t9+dDy4U+K57Uiu4EtKoi9pxrEkaEIyofudoW64v/T
+	 7ZhOkvrp9PQw7CJMecZLcs0cCV32JtnOGtJwiaONoM/pNLtABWTX56fQqEAawgN3L7
+	 V8kbVbaThPW2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ling Xu <quic_lxu5@quicinc.com>,
-	stable@kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] misc: fastrpc: Save actual DMA size in fastrpc_map structure
-Date: Tue, 14 Oct 2025 11:12:26 -0400
-Message-ID: <20251014151226.111084-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y] ksmbd: add max ip connections parameter
+Date: Tue, 14 Oct 2025 11:25:39 -0400
+Message-ID: <20251014152539.122137-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251014151226.111084-1-sashal@kernel.org>
-References: <2025101329-freestyle-unfair-5d44@gregkh>
- <20251014151226.111084-1-sashal@kernel.org>
+In-Reply-To: <2025101339-chunk-hassle-3d8e@gregkh>
+References: <2025101339-chunk-hassle-3d8e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,115 +60,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ling Xu <quic_lxu5@quicinc.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 8b5b456222fd604079b5cf2af1f25ad690f54a25 ]
+[ Upstream commit d8b6dc9256762293048bf122fc11c4e612d0ef5d ]
 
-For user passed fd buffer, map is created using DMA calls. The
-map related information is stored in fastrpc_map structure. The
-actual DMA size is not stored in the structure. Store the actual
-size of buffer and check it against the user passed size.
+This parameter set the maximum number of connections per ip address.
+The default is 8.
 
-Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
-Cc: stable@kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250912131236.303102-2-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: c0d41112f1a5 ("ksmbd: extend the connection limiting mechanism to support IPv6")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adjust reserved room ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ fs/smb/server/ksmbd_netlink.h |  5 +++--
+ fs/smb/server/server.h        |  1 +
+ fs/smb/server/transport_ipc.c |  3 +++
+ fs/smb/server/transport_tcp.c | 27 ++++++++++++++++-----------
+ 4 files changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index 83f0f516a230b..55386528da0de 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -322,11 +322,11 @@ static void fastrpc_free_map(struct kref *ref)
+diff --git a/fs/smb/server/ksmbd_netlink.h b/fs/smb/server/ksmbd_netlink.h
+index 4464a62228cf3..d3c0b985eb8c1 100644
+--- a/fs/smb/server/ksmbd_netlink.h
++++ b/fs/smb/server/ksmbd_netlink.h
+@@ -107,10 +107,11 @@ struct ksmbd_startup_request {
+ 	__u32	smb2_max_credits;	/* MAX credits */
+ 	__u32	smbd_max_io_size;	/* smbd read write size */
+ 	__u32	max_connections;	/* Number of maximum simultaneous connections */
+-	__u32	reserved[126];		/* Reserved room */
++	__u32	max_ip_connections;	/* Number of maximum connection per ip address */
++	__u32	reserved[125];		/* Reserved room */
+ 	__u32	ifc_list_sz;		/* interfaces list size */
+ 	__s8	____payload[];
+-};
++} __packed;
  
- 			perm.vmid = QCOM_SCM_VMID_HLOS;
- 			perm.perm = QCOM_SCM_PERM_RWX;
--			err = qcom_scm_assign_mem(map->phys, map->size,
-+			err = qcom_scm_assign_mem(map->phys, map->len,
- 				&src_perms, &perm, 1);
- 			if (err) {
- 				dev_err(map->fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d\n",
--						map->phys, map->size, err);
-+						map->phys, map->len, err);
- 				return;
+ #define KSMBD_STARTUP_CONFIG_INTERFACES(s)	((s)->____payload)
+ 
+diff --git a/fs/smb/server/server.h b/fs/smb/server/server.h
+index db72781817603..2cb1b855a39e2 100644
+--- a/fs/smb/server/server.h
++++ b/fs/smb/server/server.h
+@@ -42,6 +42,7 @@ struct ksmbd_server_config {
+ 	struct smb_sid		domain_sid;
+ 	unsigned int		auth_mechs;
+ 	unsigned int		max_connections;
++	unsigned int		max_ip_connections;
+ 
+ 	char			*conf[SERVER_CONF_WORK_GROUP + 1];
+ };
+diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
+index 7fc4b33b89e36..3ca820d0b8d62 100644
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -318,6 +318,9 @@ static int ipc_server_config_on_startup(struct ksmbd_startup_request *req)
+ 	if (req->max_connections)
+ 		server_conf.max_connections = req->max_connections;
+ 
++	if (req->max_ip_connections)
++		server_conf.max_ip_connections = req->max_ip_connections;
++
+ 	ret = ksmbd_set_netbios_name(req->netbios_name);
+ 	ret |= ksmbd_set_server_string(req->server_string);
+ 	ret |= ksmbd_set_work_group(req->work_group);
+diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
+index a4e7d1a5d64d7..4ef032e737f37 100644
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -236,6 +236,7 @@ static int ksmbd_kthread_fn(void *p)
+ 	struct interface *iface = (struct interface *)p;
+ 	struct ksmbd_conn *conn;
+ 	int ret;
++	unsigned int max_ip_conns;
+ 
+ 	while (!kthread_should_stop()) {
+ 		mutex_lock(&iface->sock_release_lock);
+@@ -253,34 +254,38 @@ static int ksmbd_kthread_fn(void *p)
+ 			continue;
+ 		}
+ 
++		if (!server_conf.max_ip_connections)
++			goto skip_max_ip_conns_limit;
++
+ 		/*
+ 		 * Limits repeated connections from clients with the same IP.
+ 		 */
++		max_ip_conns = 0;
+ 		down_read(&conn_list_lock);
+-		list_for_each_entry(conn, &conn_list, conns_list)
++		list_for_each_entry(conn, &conn_list, conns_list) {
+ #if IS_ENABLED(CONFIG_IPV6)
+ 			if (client_sk->sk->sk_family == AF_INET6) {
+ 				if (memcmp(&client_sk->sk->sk_v6_daddr,
+-					   &conn->inet6_addr, 16) == 0) {
+-					ret = -EAGAIN;
+-					break;
+-				}
++					   &conn->inet6_addr, 16) == 0)
++					max_ip_conns++;
+ 			} else if (inet_sk(client_sk->sk)->inet_daddr ==
+-				 conn->inet_addr) {
+-				ret = -EAGAIN;
+-				break;
+-			}
++				 conn->inet_addr)
++				max_ip_conns++;
+ #else
+ 			if (inet_sk(client_sk->sk)->inet_daddr ==
+-			    conn->inet_addr) {
++			    conn->inet_addr)
++				max_ip_conns++;
++#endif
++			if (server_conf.max_ip_connections <= max_ip_conns) {
+ 				ret = -EAGAIN;
+ 				break;
  			}
- 		}
-@@ -757,7 +757,8 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 	struct fastrpc_session_ctx *sess = fl->sctx;
- 	struct fastrpc_map *map = NULL;
- 	struct sg_table *table;
--	int err = 0;
-+	struct scatterlist *sgl = NULL;
-+	int err = 0, sgl_index = 0;
+-#endif
++		}
+ 		up_read(&conn_list_lock);
+ 		if (ret == -EAGAIN)
+ 			continue;
  
- 	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
- 		return 0;
-@@ -797,7 +798,15 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 		map->phys = sg_dma_address(map->table->sgl);
- 		map->phys += ((u64)fl->sctx->sid << 32);
- 	}
--	map->size = len;
-+	for_each_sg(map->table->sgl, sgl, map->table->nents,
-+		sgl_index)
-+		map->size += sg_dma_len(sgl);
-+	if (len > map->size) {
-+		dev_dbg(sess->dev, "Bad size passed len 0x%llx map size 0x%llx\n",
-+				len, map->size);
-+		err = -EINVAL;
-+		goto map_err;
-+	}
- 	map->va = sg_virt(map->table->sgl);
- 	map->len = len;
- 
-@@ -814,10 +823,10 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 		dst_perms[1].vmid = fl->cctx->vmperms[0].vmid;
- 		dst_perms[1].perm = QCOM_SCM_PERM_RWX;
- 		map->attr = attr;
--		err = qcom_scm_assign_mem(map->phys, (u64)map->size, &src_perms, dst_perms, 2);
-+		err = qcom_scm_assign_mem(map->phys, (u64)map->len, &src_perms, dst_perms, 2);
- 		if (err) {
- 			dev_err(sess->dev, "Failed to assign memory with phys 0x%llx size 0x%llx err %d\n",
--					map->phys, map->size, err);
-+					map->phys, map->len, err);
- 			goto map_err;
- 		}
- 	}
-@@ -2045,7 +2054,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
- 	args[0].length = sizeof(req_msg);
- 
- 	pages.addr = map->phys;
--	pages.size = map->size;
-+	pages.size = map->len;
- 
- 	args[1].ptr = (u64) (uintptr_t) &pages;
- 	args[1].length = sizeof(pages);
-@@ -2060,7 +2069,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
- 	err = fastrpc_internal_invoke(fl, true, FASTRPC_INIT_HANDLE, sc, &args[0]);
- 	if (err) {
- 		dev_err(dev, "mem mmap error, fd %d, vaddr %llx, size %lld\n",
--			req.fd, req.vaddrin, map->size);
-+			req.fd, req.vaddrin, map->len);
- 		goto err_invoke;
- 	}
- 
-@@ -2073,7 +2082,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
- 	if (copy_to_user((void __user *)argp, &req, sizeof(req))) {
- 		/* unmap the memory and release the buffer */
- 		req_unmap.vaddr = (uintptr_t) rsp_msg.vaddr;
--		req_unmap.length = map->size;
-+		req_unmap.length = map->len;
- 		fastrpc_req_mem_unmap_impl(fl, &req_unmap);
- 		return -EFAULT;
- 	}
++skip_max_ip_conns_limit:
+ 		if (server_conf.max_connections &&
+ 		    atomic_inc_return(&active_num_conn) >= server_conf.max_connections) {
+ 			pr_info_ratelimited("Limit the maximum number of connections(%u)\n",
 -- 
 2.51.0
 
