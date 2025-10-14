@@ -1,134 +1,105 @@
-Return-Path: <stable+bounces-185590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 250F5BD7F9E
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:41:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525A7BD7FAE
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D80BC4E534E
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 07:41:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BACF64E7CFC
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 07:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C95E2727E7;
-	Tue, 14 Oct 2025 07:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49C02989B7;
+	Tue, 14 Oct 2025 07:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="NksN+hxK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839562D9EF6;
-	Tue, 14 Oct 2025 07:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F396522A4DA
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 07:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760427686; cv=none; b=ss8NcSNdLe3J4v4py0JGgJDWbA5D0c/jzKhvnHdCkSAt4g3vHNt9qxOHScxCwBbD+90UEc3T1tqOnDu+AjljsfsWbC3YV9VSVdhSTdUsKktOwPAgJQ+FQ5cLDx9pw/4pIbdMQ6udX7HTlr6HCs9obdT67dmbomOu2imc4+Idpls=
+	t=1760427831; cv=none; b=bTblAmx++WbBdLvA3dvkblXcZlYxYZEmv3vDe4i/ZocQEzqUACcQUZ8tPpl8/D4ro2+6SxHuWPYbynKOFJxYCWHBdP3vKibz2FP3hLWMvRQQIV7Q4UvkEVUJvFTk8s/2vL9EJEaO5X1MLArjR5nMdrMKBbQbeq/2bORAA1EYam4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760427686; c=relaxed/simple;
-	bh=wDM35rgVxVwoNdmY6Y9MC3x7jXbMbSj//nUk1VoIbSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kY/UnbWXSZjSFXYeE2jT+d5ZaRON/P+X9ZYkvRcZcwB6QpEuuLXJi640yClWYBX1JLUsqOrTTFJoxsWHW3fNIboBj+VZnh64jJQ0Hl3TvfCqyfGCUFFb5Xa8a9XumAAyhSknuKwy6kdZpM8Q+J2iBxmAiQGXGJt0ya564t4DLso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.198])
-	by gateway (Coremail) with SMTP id _____8CxaNGa_u1owOsVAA--.47472S3;
-	Tue, 14 Oct 2025 15:41:14 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.198])
-	by front1 (Coremail) with SMTP id qMiowJAxPMGV_u1o8CvhAA--.17379S2;
-	Tue, 14 Oct 2025 15:41:13 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>
-Cc: linux-pci@vger.kernel.org,
-	Jianmin Lv <lvjianmin@loongson.cn>,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Huacai Chen <chenhuacai@gmail.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	s=arc-20240116; t=1760427831; c=relaxed/simple;
+	bh=5XIOTuXhcfgvMyryjkrWnOKtBwIw5u4qV0qabQznBgs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=gOhN4GhVGSe1dxWf3mqrKMLt57aEsLAFC0aA1TDGIwfBUFPaZfo/tIhiSg0lzKjS7FqoWUzz3QTesWX5TUekGRNDKHJnBa4pk1ynlJ+F9Q/lQO4xCBSYmwNKXNU/fu3giD5UAE0sHy0zM9+q6SSsAQelgnBcMC4iDMRn2bTnmZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=NksN+hxK; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-781010ff051so3568926b3a.0
+        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:43:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1760427829; x=1761032629; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4DlbE9d0672+FMSDbkuv7W0GPOS3Q83G9ePLSrqsDOM=;
+        b=NksN+hxKLeRHLLpxmy7kf/1BCi1nudO+y+Chk7V8qgehN8PwHKRjbPvsBxHpGnb2Hl
+         yiorbUOgyGHRcLzxQukCkUlvFDrHW51kFxySNmpJ803W6JNWGY504dmB2AIo++eqFucm
+         QvU8d5ISe15jsZf8kCnR8d/vgwsscCWSGzgKU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760427829; x=1761032629;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4DlbE9d0672+FMSDbkuv7W0GPOS3Q83G9ePLSrqsDOM=;
+        b=Bv2Ap2OcYUi28lUZRKgFxhhzO9LHFzA1XbLhVlmrqdV+KRiXdupDEruAoxNC/RtRF1
+         Ax5WEt3XBODGQ665i67CjdJ5rw8Yw0Yn7105DiPzq4N5jXpfuUzTMmsNhBZD6oR97BJW
+         HiPXtswemQtKD6PcGoGRmU4Xy2qSO2rGLrFclrqQUbIizO1tuoX+5Kwge0WhMutj7GhK
+         UQ+SvKBPbospB5Hka9GzBMC2gtP3tTjItwTlrfRRF868JhS4W0gXBM/v6usiHG7WzNq7
+         nh7dVcb7M+Eq1dfECZ8Ux3kVEri+4A7U6KY85YRpit9oQ3M3eAw92+0UJYNstk2QJCGz
+         PEWw==
+X-Forwarded-Encrypted: i=1; AJvYcCUr+5I0+ItBnCb+onG0GJJRkbAGPwxD9Mm+dT44bk8KgxjZ7pcb2TRzbWJ1qOlhdz6pvfxVk0Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNbnUZ6qWo16QUxZklGEBifKDow+IM54xY5Ziq2Jp5a24C2eGh
+	TtcCjs8AOb+NgnVwK+p02lYiGZm6OUL9UmHQY2wVfOUnqjcuW1DB3ZaGKMhRwFUIaQ==
+X-Gm-Gg: ASbGncukT98ZWVmv6nRavOFmofBX25zeX7Yn9c0Du4tpDS2n5L9OmexHkBzNYV/TTn6
+	EHnqO+EZ6h3QbOOfcC/3NW0qyzjnZHVRDw82+Gdsf3wOdJJJ5jdOkdU44VPF71Q233UKvgRtn4+
+	6gWJMmobV2SwNt7pG14oZcabykMjKTJoXEHEIR20klfWg4pEFP3bO6FDqQhsfln2hDQ6rSd1RFP
+	zb/sWY3ZjPLIEF+qcDeOJjMOPRYWCSSAchgWzah34Icuq4FWUTt9zF4PIJrUJenMMPUpNgQfw3i
+	7c1UaU7pbutyO2L8kec/Rk67Bl4e3NjzUBycOAUeCloRWycNJqdsxhbDlsS0JVf424ROD2Zr4AI
+	G5aC9vUADZyx4fSuTLfOTyCTEY50wyd9RZbt6zFzvfWDI5qtfZ7tUBg==
+X-Google-Smtp-Source: AGHT+IE0JPbH8RFvmKwtEh2tQIpvat5nn43ulCK2cRbdX4/desLZYKw49GjSVt+mBH4CgFZZKXWYLg==
+X-Received: by 2002:a05:6a20:3d94:b0:2ee:4037:1df7 with SMTP id adf61e73a8af0-32da80b7fccmr27471304637.7.1760427829259;
+        Tue, 14 Oct 2025 00:43:49 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:f7c9:39b0:1a9:7d97])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b67af9dbf32sm7952404a12.21.2025.10.14.00.43.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 00:43:48 -0700 (PDT)
+Date: Tue, 14 Oct 2025 16:43:43 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>, 
+	Christian Loehle <christian.loehle@arm.com>, Sasha Levin <sashal@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Tomasz Figa <tfiga@chromium.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
 	stable@vger.kernel.org
-Subject: [PATCH Resend] PCI: Limit islolated function probing on bus 0 for LoongArch
-Date: Tue, 14 Oct 2025 15:41:00 +0800
-Message-ID: <20251014074100.2149737-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.3
+Subject: stable: commit "cpuidle: menu: Avoid discarding useful information"
+ causes regressions
+Message-ID: <36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxPMGV_u1o8CvhAA--.17379S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJry8Cr43tF1DZFyxAFyxWFX_yoW8Ar48pF
-	Z5u3y8Ary0kFy3AFZIy3y0kry3Ka97A34UCFWUG3y5XFsxt3WIq398tFyaqrnrGrZ2vFyS
-	qa1DZrZ8u3WxA3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUJ529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0L0ePUUUUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-We found some discrete AMD graphics devices hide funtion 0 and the whole
-is not supposed to be probed.
+Hello,
 
-Since our original purpose is to allow integrated devices (on bus 0) to
-be probed without function 0, we can limit the islolated function probing
-only on bus 0.
+We are observing performance regressions (cpu usage, power
+consumption, dropped frames in video playback test, etc.)
+after updating to recent stable kernels.  We tracked it down
+to commit 3cd2aa93674e in linux-6.1.y and commit 3cd2aa93674
+in linux-6.6.y ("cpuidle: menu: Avoid discarding useful information",
+upstream commit 85975daeaa4).
 
-Cc: stable@vger.kernel.org
-Fixes: a02fd05661d73a8 ("PCI: Extend isolated function probing to LoongArch")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
-Resend to correct the subject line.
-
- drivers/pci/probe.c        | 2 +-
- include/linux/hypervisor.h | 8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index c83e75a0ec12..da6a2aef823a 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2883,7 +2883,7 @@ int pci_scan_slot(struct pci_bus *bus, int devfn)
- 			 * a hypervisor that passes through individual PCI
- 			 * functions.
- 			 */
--			if (!hypervisor_isolated_pci_functions())
-+			if (!hypervisor_isolated_pci_functions(bus->number))
- 				break;
- 		}
- 		fn = next_fn(bus, dev, fn);
-diff --git a/include/linux/hypervisor.h b/include/linux/hypervisor.h
-index be5417303ecf..30ece04a16d9 100644
---- a/include/linux/hypervisor.h
-+++ b/include/linux/hypervisor.h
-@@ -32,13 +32,15 @@ static inline bool jailhouse_paravirt(void)
- 
- #endif /* !CONFIG_X86 */
- 
--static inline bool hypervisor_isolated_pci_functions(void)
-+static inline bool hypervisor_isolated_pci_functions(int bus)
- {
- 	if (IS_ENABLED(CONFIG_S390))
- 		return true;
- 
--	if (IS_ENABLED(CONFIG_LOONGARCH))
--		return true;
-+	if (IS_ENABLED(CONFIG_LOONGARCH)) {
-+		if (bus == 0)
-+			return true;
-+	}
- 
- 	return jailhouse_paravirt();
- }
--- 
-2.47.3
-
+Upstream fixup fa3fa55de0d ("cpuidle: governors: menu: Avoid using
+invalid recent intervals data") doesn't address the problems we are
+observing.  Revert seems to be bringing performance metrics back to
+pre-regression levels.
 
