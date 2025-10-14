@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-185584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62DDBD7F59
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:36:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2EABD7F50
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 171E93B1502
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 07:35:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EE0B188A51D
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 07:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D041E2D9491;
-	Tue, 14 Oct 2025 07:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA70730EF63;
+	Tue, 14 Oct 2025 07:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iMdIXGjq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KB3uhROu"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AAD2D3EE4
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 07:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E25E2D9EF2
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 07:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760427297; cv=none; b=AeAx40JwoPTtsiDYPCZkWLTNsL/53X7RhwxG/TReGW353JvlZLeuFmqjwLTQRvj4pC3vexXEoMQ2FT4mdKZmybC5jBa793Rt39X6PP+yOglUzVM64cQf77cMOVvYYO7MJ5CldFojFKLEtWemYVWAmaNsDv/NYmYUwHztKIBgTCI=
+	t=1760427365; cv=none; b=UjW8OSSnl5CeWW1A7Y191CtsKMIGlYrI/6kU3YtGmdXGg6LR1FiJKTJIBEoyykFfnufSoySnfG+PypfRG0gV2ViI0EwNPeb0qy0S3z92m3JXBVqhL3/c3tG3KRKWIgMBDsQB6S27rlOkmTz6+5CCBo0/BEGGsknmJYMY15P0gfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760427297; c=relaxed/simple;
-	bh=insi5QuAvcDo4ELXBPMiD7HNYLAxnQ0SSVuXp/JizwI=;
+	s=arc-20240116; t=1760427365; c=relaxed/simple;
+	bh=XfX2nsV/d+yZ3Hk6qajB1hKvZGTfh/kspXwGH+T7Yv4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=L0FL1MuuQFWc6d0kN6Di8WYepWwOPnDh2wbn1gEQtnryIq1pvWz/PqnwZr9NcCceZSyG9icBrAdLTYche01qFpVLAQA5pmpNhHEKyWo8F2m/vqjt1XKerTFakXAJ7QSPuZxr7eRbHGTpkBo0RMihl6FbBiwz5XE+bUhXyG++RGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iMdIXGjq; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=Te7+alD5xH13H5jKOIuJaNS7dXCTxvu+V7ai8XfLC1FXybGVKIJg70eO/YHNZcZ57Iljb45M6MmynMF20wxxQ+n9dKwIKYcIygdpjQte+lAmkuRAiUrRU2m944OOikKnldS7n+yAoQ0QhbjFgoqQCBNMHun35fwib/7b3KjE+Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KB3uhROu; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760427295;
+	s=mimecast20190719; t=1760427363;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vZAYJ7xq6WZ4FioBhdfbaQnlgRPAlKAdI8jcSI5iXTs=;
-	b=iMdIXGjqdcdMDoRIKCjXv4W8pnoSXZYu+OiqyLVQdbWgVIr8SIaM1OLTk1g/vZKLjsAOYm
-	JKaYFOVRx6eakAIoBQn9k7I1XEmSymfiXszJnStjMSTzWnAOSwadZQfb4nOOzODIGRQfFa
-	ztu5jaU/mrt/dYAjWbWjsSA7hHuVihA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=rp2yi8Bcjq1dxm5BHjQD+Bw0UYm59cbcglHsDw8XOKA=;
+	b=KB3uhROu9sIz4ZN5GrSSg48MaiYBhbu6dDwiveWwumueYAbBbv+aTmvKwfBpDuXz3gG1O/
+	nu3lBkqsY1LnWd0IAau1M+etok4q7FtJeuVdgHAH5bfgT3idpWOOMz3xBNi1KEtT/2Z/Qj
+	19tdv/oLVPmrKWy8MDFUy4MHsw6I5Vk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-322-5KRLBX65N-mJtYXgFee2FQ-1; Tue, 14 Oct 2025 03:34:53 -0400
-X-MC-Unique: 5KRLBX65N-mJtYXgFee2FQ-1
-X-Mimecast-MFC-AGG-ID: 5KRLBX65N-mJtYXgFee2FQ_1760427292
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ed9557f976so5254179f8f.3
-        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:34:53 -0700 (PDT)
+ us-mta-55-_mb9iVz7P7ao2Q72IncZRA-1; Tue, 14 Oct 2025 03:35:59 -0400
+X-MC-Unique: _mb9iVz7P7ao2Q72IncZRA-1
+X-Mimecast-MFC-AGG-ID: _mb9iVz7P7ao2Q72IncZRA_1760427358
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-426d2cd59e4so2905164f8f.1
+        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:35:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760427292; x=1761032092;
+        d=1e100.net; s=20230601; t=1760427358; x=1761032158;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vZAYJ7xq6WZ4FioBhdfbaQnlgRPAlKAdI8jcSI5iXTs=;
-        b=vBkfs/gB1qG2CiAcx85ekTm+F6TBbpL+4KvhJ2I6tu7QHYMvO9U63ZbwOEGakNpj/K
-         pLmDDCHS8RasVd0o7EfeBmBfFw26Fsw4juhWHHngvJUPCSIuAujmpcMMsmadNN5+qbXB
-         2bKiWVyf50Gl8XbYdCEs6r3zqijSDkX0yKWstzxE5NZ2QNULUGT3slU0fCscBVZeZG6x
-         Rp5MLVwpefnfH4CJqfR4pkAnuhYHpwsI4Fo4wRSXJjzJ7ml7NfQJUjpsYGoMkzLcxVHG
-         YA+Y/dmyPObsGu4tG4EUSxu0v+6XKljwp7Deo+R4AK6l4M2dYMq5w12HN3f7Tff9Ol5b
-         opbg==
-X-Gm-Message-State: AOJu0Yw5kkql86S6hTRQP8It1OSTQtYuFXjiMYoLZidQdCDobc2ymGMs
-	DA1st/SfPhoxK9GjKICzzxZ1RufOlAqq3fCBahFaMX75Yw6qXlSKTFO4MDcyJxJkyOI+ZCObn6J
-	Yw41CYYlgU4lgnswgYUGWnV1YOXyw8+IZuyl4tMn1xjK+fkkIfD1pHV8Ebg==
-X-Gm-Gg: ASbGncu1rI8JJK3+pvj25qcB8HgRS+8iN4V5TSPDq9JsC99bh2ugMbWLJaBDfdZx/aX
-	PREOpV/cRfUOpk9l5hYub4XYKmx6+VrdIQZNw8V5B/sWK2Ca0khbgu4lTpA4vBjMzlWsqcB2ix3
-	NQ8HiwyYA7JIJpKKIuK3g15fafkZNVZkw3GtXFqWkvyLvo8qvjsWm7SG+RY4S4YUn2oVCgAbkVH
-	9ThWfcNlvOGzjHjT9KOmlfrQroLZWx8lbRqzHy+/VStj4XVytLtfDsfjozZccDUYd02JEH1IM6x
-	eve8kE3XrYnlezCbyXD++w+OhcEHPJgPhBTl28rMMI+fucPG+IM4fJ721LvAbl5HRXMvYl6LJ0L
-	jGBFaRfgG8laMttv3LyrY0Ns=
-X-Received: by 2002:a05:6000:2401:b0:3e7:46bf:f89d with SMTP id ffacd0b85a97d-4266e8de2c2mr16860031f8f.44.1760427292309;
-        Tue, 14 Oct 2025 00:34:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxNwSeqZAx1bogXJDeVtjJdr6RSvW9zsie6Xf2fYECED9RUObVAre57ulfyG8aTO0EyMtU8g==
-X-Received: by 2002:a05:6000:2401:b0:3e7:46bf:f89d with SMTP id ffacd0b85a97d-4266e8de2c2mr16860020f8f.44.1760427291948;
-        Tue, 14 Oct 2025 00:34:51 -0700 (PDT)
+        bh=rp2yi8Bcjq1dxm5BHjQD+Bw0UYm59cbcglHsDw8XOKA=;
+        b=VNug81edPr+stgE+UwI6Tg3m0LkurPCgcS8BEUW3grWVHvTrBIB7b9W3b6SVTbj2re
+         ZDB1bwOKyR2pQ49ZZIrHIQe4izzEeAIt7fX1t/ES2BCMcZxpQGrFQEcFm5gsMjtTqbKr
+         A/qHV32ekTELsx4HrqcVglkBkYHjviwXeXa1UITtYAQcM4et7qWVinpDnIk8YpjX1dSf
+         PMK2hFDs3q/KxYaGU2QDZjKZdqWcYxX0Ic+/X2YXHWDI7Mce0XPYF6UTu3anPhQRyG3N
+         kRK22ZOdCCxK3IB2UxsZQwt84Pchr2H0v8Buar8nOVomT8KaDj0qt4tDGduAY9RmjvJR
+         /dZQ==
+X-Gm-Message-State: AOJu0YxU2WgwhDp8zHPBldilLstMRza6tS4D4V/j8blxPWH0C0VOhclY
+	SrUrUcz9SuUjeombJmZrolNipYzx7zxJjm9rUaZ0JzEL8p+C6eNUXcaJ/Uos2T1SUoCqmF7KLiL
+	CCA/zIetjHNWCHVyZx/JhaqoYrnyEc5iAtewRLdK5IXGaAUwCf14KMRv0DQ==
+X-Gm-Gg: ASbGnctiyJgODhWBtGjeuGi6X69BYN9faP9XI/a3cTudZcbn33XP3HjfE8iRoMvJEWl
+	j+3caOwDsGPa1g7zIXZSlAheGYmYr5nggp9ojeagO+piKV+Eo84OC2Jj4xss3hqzeS1dXaNp5R+
+	DqDcsVclQ0sCl7ln+G8/7Lh6kFIsFxpF055P1hbJbjeLBsefBIHA/tjP/aGUi58Z1KTBgAD1cPp
+	JdL+FAnwiYAdfo3l/imyMSwAZpC+BP5ngXHZFeigwZg/XbAE5HFQm0cmXfxCgDGLhUf8yc7TG+Y
+	Zsxv9NpR8FH521xycTyT8U8RUq7jgnbSfcOWkcVyIIafpw3ofS5S7H37BWGxCqWbg669wxAfPhO
+	08U8tKUUD9cK1n22R9Q9fFlY=
+X-Received: by 2002:a05:600c:198f:b0:46e:38cc:d3e2 with SMTP id 5b1f17b1804b1-46fa9af3125mr171576585e9.22.1760427358273;
+        Tue, 14 Oct 2025 00:35:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHWYlHv6WiUrgd9vj3CbYtPVGZ9RfLX5CoNkDJzKegevpgk8U/J3XAJpcTsFc+GvZf4Vvir4A==
+X-Received: by 2002:a05:600c:198f:b0:46e:38cc:d3e2 with SMTP id 5b1f17b1804b1-46fa9af3125mr171576295e9.22.1760427357923;
+        Tue, 14 Oct 2025 00:35:57 -0700 (PDT)
 Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5d015esm22720436f8f.33.2025.10.14.00.34.51
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb479c171sm224366945e9.0.2025.10.14.00.35.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 00:34:51 -0700 (PDT)
+        Tue, 14 Oct 2025 00:35:57 -0700 (PDT)
 From: Javier Martinez Canillas <javierm@redhat.com>
 To: Jocelyn Falempe <jfalempe@redhat.com>, Maarten Lankhorst
  <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
@@ -84,12 +84,12 @@ To: Jocelyn Falempe <jfalempe@redhat.com>, Maarten Lankhorst
  Simona Vetter <simona@ffwll.ch>, Jocelyn Falempe <jfalempe@redhat.com>,
  linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
 Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 3/6] drm/panic: Fix qr_code, ensure vmargin is positive
-In-Reply-To: <20251009122955.562888-4-jfalempe@redhat.com>
+Subject: Re: [PATCH 4/6] drm/panic: Fix kmsg text drawing rectangle
+In-Reply-To: <20251009122955.562888-5-jfalempe@redhat.com>
 References: <20251009122955.562888-1-jfalempe@redhat.com>
- <20251009122955.562888-4-jfalempe@redhat.com>
-Date: Tue, 14 Oct 2025 09:34:50 +0200
-Message-ID: <87cy6qq6lh.fsf@ocarina.mail-host-address-is-not-set>
+ <20251009122955.562888-5-jfalempe@redhat.com>
+Date: Tue, 14 Oct 2025 09:35:56 +0200
+Message-ID: <87a51uq6jn.fsf@ocarina.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,13 +100,9 @@ Content-Type: text/plain
 
 Jocelyn Falempe <jfalempe@redhat.com> writes:
 
-> Depending on qr_code size and screen size, the vertical margin can
-> be negative, that means there is not enough room to draw the qr_code.
+> The rectangle height was larger than the screen size. This has no
+> real impact.
 >
-> So abort early, to avoid a segfault by trying to draw at negative
-> coordinates.
->
-> Fixes: cb5164ac43d0f ("drm/panic: Add a QR code panic screen")
 > Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
 > ---
 
