@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-185701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39596BDA95D
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 18:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D3ABDAB82
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 18:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB58B4E17FE
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 16:14:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ED5CD4EA5E9
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 16:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442F82BE652;
-	Tue, 14 Oct 2025 16:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E94D3043AC;
+	Tue, 14 Oct 2025 16:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5m1c65+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJ6WfqNp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0370C2C1786
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 16:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9A4302CC7
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 16:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760458450; cv=none; b=koTwwKln/HIBVnT6V3EjoEwoQcC6HVNmJ2SvhIBXGkMGofUbOxUDyD7g1O7JIfYwfHF8PQr/tuUOpPhFzFJzyWE+vxrNE6GPBN8V4j7GAd2+8ffNviqb/fcxJeet4hfjqzw4K/w6xE3IXu8h2PiBPRwFgWylegh0CWf7EnK4htY=
+	t=1760460978; cv=none; b=U0kYU8UtS3RWvkC1PW07GOfHe4Nt39quC64H17wqYUvuvC5BDNGBdV6fVnT8SWeRR76gtJ4FsYWgCul/vzPlQTSg++oPdL4at63FXsivAdBqboNBfTKSzz+1C0U95SsTXFNu6hPzVRRmz0+7nGljiIPvYgVS5WBQWioQNoIyqSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760458450; c=relaxed/simple;
-	bh=cDh8bj6mUIBnACIEadYB8LhNilZbE6NGoxmD3qyDHa0=;
+	s=arc-20240116; t=1760460978; c=relaxed/simple;
+	bh=QoMVJb45Y9NTxBXyk2hjN2vNoE35t3zjlN5O7L6MW1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dDKVuwfcLla0Rw9Ym8JfZdgbCZTQqtpb3tIdUMeRUIneMthQLLNwa3FR0a8WhxOYEOxTaAdcbSrkIz8RWbREhRMwJDvfFr4Aqv5yaOd2yndah/R/uVwmvdwmnOxIeBRPz1S3S9Y5F2GXO1eJ/bUJVGRiWKf+2FYDJbq9c/vWq+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5m1c65+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48EAC4CEF9;
-	Tue, 14 Oct 2025 16:14:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dBzKmu/U3A8VRg/zJaaOm1c8jH/Es7brEc4XI2exR26jgCQ+t8VTJ7YZYji+rGnlKKqeNrv8n6y4Bi7Ri15UOi0fV9SxIuheRH0nOZv5FDYjM12Ex+JEMUo88MTys1Bp6b2LofKIF+XJW52cuaR+dNFMqZFCQJt+TOB+fvrzxFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJ6WfqNp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC7BC4CEE7;
+	Tue, 14 Oct 2025 16:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760458449;
-	bh=cDh8bj6mUIBnACIEadYB8LhNilZbE6NGoxmD3qyDHa0=;
+	s=k20201202; t=1760460977;
+	bh=QoMVJb45Y9NTxBXyk2hjN2vNoE35t3zjlN5O7L6MW1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5m1c65+Akh8LzQHfNcWnD9kSbK83pK8XLMYOPr8jwkMwEwdOzrk/gyu4HnIiADTB
-	 1gCAIguHz0k5rSawXkR9plj25E/H2ez8L17dMpYQy/V4feN8HFZUGRuLX4pDJ3kpKH
-	 lMLVb4KFYkfE5Ad48GZ+LZ7DLMtiaH5bok/61a2A57RBxifdMKJa77RIPnRyEgfv1q
-	 pyfduxa1o8uI3FMxbA205kyJuZl7cp61I2KJA+K+r0gP3/pwqJc4eOMn1eKnKOWNDz
-	 Bzu65txvzHFiEcT91qYxO9iARWrD9WpG1RVOtKKnqaPdMILEBuZopESoYqOJRGgscq
-	 jynT9qVULoGoA==
+	b=HJ6WfqNpBrTZR1TWyM0WVPmEihkeQM9ZPXLA22bxTWAsCYDeQUujesHs2pWQtZ1bk
+	 2UPZgcMVpI7z5MWD4IMVovvu9NL73ZS5XMLw6DYqYma0gTq2PybK9HZCTrKPtRHmdD
+	 QltMdmnX2kh0TFxIrhoRVO9zoLiuBXWHd55XXtDTJjssnf0gGo+UByewYVna2aUAT9
+	 k9/1DXNtcCRBNIC8htniQzGMNMpDslHWqrljjsWQm2yq+i5CmXfTsnZWCNpd/pjWYI
+	 oevGaRmbXWekgG3EsUb1nrVA4eyMa+fF+lJNM1FGT4utRyDvyhhjwuZCXb3HeLzYA4
+	 HTvOPb46Rzvug==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release
-Date: Tue, 14 Oct 2025 12:14:06 -0400
-Message-ID: <20251014161406.164458-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y] net: usb: asix: hold PM usage ref to avoid PM/MDIO + RTNL deadlock
+Date: Tue, 14 Oct 2025 12:56:14 -0400
+Message-ID: <20251014165614.192458-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251014161406.164458-1-sashal@kernel.org>
-References: <2025101341-gallon-ungloved-bc19@gregkh>
- <20251014161406.164458-1-sashal@kernel.org>
+In-Reply-To: <2025101349-reptile-seldom-427d@gregkh>
+References: <2025101349-reptile-seldom-427d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,74 +63,116 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 85afa9ea122dd9d4a2ead104a951d318975dcd25 ]
+[ Upstream commit 3d3c4cd5c62f24bb3cb4511b7a95df707635e00a ]
 
-The fields dma_chan_tx and dma_chan_rx of the struct pci_epf_test can be
-NULL even after EPF initialization. Then it is prudent to check that
-they have non-NULL values before releasing the channels. Add the checks
-in pci_epf_test_clean_dma_chan().
+Prevent USB runtime PM (autosuspend) for AX88772* in bind.
 
-Without the checks, NULL pointer dereferences happen and they can lead
-to a kernel panic in some cases:
+usbnet enables runtime PM (autosuspend) by default, so disabling it via
+the usb_driver flag is ineffective. On AX88772B, autosuspend shows no
+measurable power saving with current driver (no link partner, admin
+up/down). The ~0.453 W -> ~0.248 W drop on v6.1 comes from phylib powering
+the PHY off on admin-down, not from USB autosuspend.
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000050
-  Call trace:
-   dma_release_channel+0x2c/0x120 (P)
-   pci_epf_test_epc_deinit+0x94/0xc0 [pci_epf_test]
-   pci_epc_deinit_notify+0x74/0xc0
-   tegra_pcie_ep_pex_rst_irq+0x250/0x5d8
-   irq_thread_fn+0x34/0xb8
-   irq_thread+0x18c/0x2e8
-   kthread+0x14c/0x210
-   ret_from_fork+0x10/0x20
+The real hazard is that with runtime PM enabled, ndo_open() (under RTNL)
+may synchronously trigger autoresume (usb_autopm_get_interface()) into
+asix_resume() while the USB PM lock is held. Resume paths then invoke
+phylink/phylib and MDIO, which also expect RTNL, leading to possible
+deadlocks or PM lock vs MDIO wake issues.
 
-Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
-Fixes: 5ebf3fc59bd2 ("PCI: endpoint: functions/pci-epf-test: Add DMA support to transfer data")
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-[mani: trimmed the stack trace]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+To avoid this, keep the device runtime-PM active by taking a usage
+reference in ax88772_bind() and dropping it in unbind(). A non-zero PM
+usage count blocks runtime suspend regardless of userspace policy
+(.../power/control - pm_runtime_allow/forbid), making this approach
+robust against sysfs overrides.
+
+Holding a runtime-PM usage ref does not affect system-wide suspend;
+system sleep/resume callbacks continue to run as before.
+
+Fixes: 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC")
+Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Closes: https://lore.kernel.org/all/DCGHG5UJT9G3.2K1GHFZ3H87T0@gmail.com
+Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250916025756.34807-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20251005081203.3067982-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted to phylib-only ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/usb/asix_devices.c | 35 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 4ebc49f1a467c..3fe2187cdd0ba 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -282,15 +282,20 @@ static void pci_epf_test_clean_dma_chan(struct pci_epf_test *epf_test)
- 	if (!epf_test->dma_supported)
- 		return;
- 
--	dma_release_channel(epf_test->dma_chan_tx);
--	if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
-+	if (epf_test->dma_chan_tx) {
-+		dma_release_channel(epf_test->dma_chan_tx);
-+		if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
-+			epf_test->dma_chan_tx = NULL;
-+			epf_test->dma_chan_rx = NULL;
-+			return;
-+		}
- 		epf_test->dma_chan_tx = NULL;
--		epf_test->dma_chan_rx = NULL;
--		return;
- 	}
- 
--	dma_release_channel(epf_test->dma_chan_rx);
--	epf_test->dma_chan_rx = NULL;
-+	if (epf_test->dma_chan_rx) {
-+		dma_release_channel(epf_test->dma_chan_rx);
-+		epf_test->dma_chan_rx = NULL;
-+	}
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 97d2037e7fee7..2e22be26921b8 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -608,6 +608,21 @@ static void ax88772_suspend(struct usbnet *dev)
+ 		   asix_read_medium_status(dev, 1));
  }
  
- static void pci_epf_test_print_rate(const char *ops, u64 size,
++/* Notes on PM callbacks and locking context:
++ *
++ * - asix_suspend()/asix_resume() are invoked for both runtime PM and
++ *   system-wide suspend/resume. For struct usb_driver the ->resume()
++ *   callback does not receive pm_message_t, so the resume type cannot
++ *   be distinguished here.
++ *
++ * - The MAC driver must hold RTNL when calling phylink interfaces such as
++ *   phylink_suspend()/resume(). Those calls will also perform MDIO I/O.
++ *
++ * - Taking RTNL and doing MDIO from a runtime-PM resume callback (while
++ *   the USB PM lock is held) is fragile. Since autosuspend brings no
++ *   measurable power saving here, we block it by holding a PM usage
++ *   reference in ax88772_bind().
++ */
+ static int asix_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct usbnet *dev = usb_get_intfdata(intf);
+@@ -809,7 +824,18 @@ static int ax88772_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	if (ret)
+ 		return ret;
+ 
+-	return ax88772_init_phy(dev);
++	ret = ax88772_init_phy(dev);
++	if (ret)
++		return ret;
++
++	/* Keep this interface runtime-PM active by taking a usage ref.
++	 * Prevents runtime suspend while bound and avoids resume paths
++	 * that could deadlock (autoresume under RTNL while USB PM lock
++	 * is held, phylink/MDIO wants RTNL).
++	 */
++	pm_runtime_get_noresume(&intf->dev);
++
++	return 0;
+ }
+ 
+ static int ax88772_stop(struct usbnet *dev)
+@@ -827,6 +853,8 @@ static void ax88772_unbind(struct usbnet *dev, struct usb_interface *intf)
+ 
+ 	phy_disconnect(priv->phydev);
+ 	asix_rx_fixup_common_free(dev->driver_priv);
++	/* Drop the PM usage ref taken in bind() */
++	pm_runtime_put(&intf->dev);
+ }
+ 
+ static void ax88178_unbind(struct usbnet *dev, struct usb_interface *intf)
+@@ -1452,6 +1480,11 @@ static struct usb_driver asix_driver = {
+ 	.resume =	asix_resume,
+ 	.reset_resume =	asix_resume,
+ 	.disconnect =	usbnet_disconnect,
++	/* usbnet enables autosuspend by default (supports_autosuspend=1).
++	 * We keep runtime-PM active for AX88772* by taking a PM usage
++	 * reference in ax88772_bind() (pm_runtime_get_noresume()) and
++	 * dropping it in unbind(), which effectively blocks autosuspend.
++	 */
+ 	.supports_autosuspend = 1,
+ 	.disable_hub_initiated_lpm = 1,
+ };
 -- 
 2.51.0
 
