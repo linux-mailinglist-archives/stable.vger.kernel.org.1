@@ -1,130 +1,117 @@
-Return-Path: <stable+bounces-185670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6608BD9D01
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:52:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63DE8BD9D31
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EC8E18A79E3
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:52:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20B8E3B30CE
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32C221E0BB;
-	Tue, 14 Oct 2025 13:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073613101CE;
+	Tue, 14 Oct 2025 13:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="hCLfVjke"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="jO2zU59t"
 X-Original-To: stable@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37743749C
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 13:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F9626A1B6
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 13:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760449923; cv=none; b=l8rZUyEQjTpAe4hQXOsGJWfolmOJDXR8FgkgQcjVFGOF/M6UvyJ8Iy2vhmUA/8V55pQjANxCkH3ZcLFjhhCc6wVqjhyR1yiwiQ8HKV1XFRrm4nH47CqIDEazNijqJZA7AwOlPRjaymO5HLwtU/gg0lB8rfst+D8/UozlXR6uJkw=
+	t=1760450199; cv=none; b=AWt17k3G96exIvJNl8zwgkj5am2jZWRJ8/jYW5ax11MorpODzlMDSn8ydU5tA21gSSmJx6MCZUtsGgzElkx/oN6a12DlZhb97XeCr/YTv6D1STqqdEpGFmRPXCmE+ArFAWLr4eSZrza/nTQSfPE+BmJ7MZcsZm5NCcrwqcu2les=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760449923; c=relaxed/simple;
-	bh=nskP0eqzPM3FOd7xn+E9e/Vv+U70RRfZHhzrNk11I/E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ta1e6tq7INAwIaeqH2XWlMksYuBCerdSgjP3xqpoEVK/rbxbFmPDLLBNvp6p6VclYGRo+t+3i0/bbz7O7uwtuZqUInr8fQ5UuCMsqjxYig5K9VxoOR7ygTWCKNCFK8YV9o+eA2dagjzF8FLUheuDBMy1x2VGHyikcqjWJI/Lcus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=hCLfVjke; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
-	by cmsmtp with ESMTPS
-	id 8eVlvWra5KXDJ8fRYvNNly; Tue, 14 Oct 2025 13:52:00 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id 8fRWvPN8Op0Hq8fRWvcOCf; Tue, 14 Oct 2025 13:51:58 +0000
-X-Authority-Analysis: v=2.4 cv=H/nbw/Yi c=1 sm=1 tr=0 ts=68ee557f
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=7mImUwZGDDb17UAjreoA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=cD7Tb49ErmVJbMd2cXxUa/ewmY8h9WSczri/nvNIydo=; b=hCLfVjkeC/B51l4uVyTcIb1rId
-	pvtVzkAhKmLb2+tPliNn0oELZgWncrw7dPgqoICWOYDjB85vq8ngqb9kQ4Mev4Uu02MFR2SPQS4m4
-	ZzlJ8D4QcJxspyccBc5cUWqRMHzmokJzUI48fscZfcM3Y8rYlJR/loFCTJZH9PL0r/BSN1R6C/5r5
-	pIXilyHfKfrIFFQ5oLbCJv91+5vvum+x4TDp4G8JVUrzFRpfORapxVdOduoF5HRSJJVceomIrbxgb
-	e0cJxB1HZqTpIMgi3FNolJxlbLZmj5NFjGC9UMTnDJzLlddZLAN5ZJmKhCmgRQ9Qnklo91SpuyhHy
-	IAMBLy5g==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:36628 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1v8fRV-00000001iHZ-43sO;
-	Tue, 14 Oct 2025 07:51:57 -0600
-Message-ID: <8ca3a16b-2eef-4e9c-9ff2-f13819829cf6@w6rz.net>
-Date: Tue, 14 Oct 2025 06:51:55 -0700
+	s=arc-20240116; t=1760450199; c=relaxed/simple;
+	bh=Q4/GoNBIxcfJU4OvgQlSaRNFKEqeX55zgRostC9LIc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k/4hzvGh0zElPy9Q9GT1U1Xch90oSI8Lm45SeSt5H9QGgDKR9NfOFlVZH98EMEla+vnxLqRmynH33ggtX/fHOUmStzmo1a1IIvGCDw2m0GGoG+L+EBkXOk+DXzplk1Rg3QyyhcQIDYxri2BX1Iq8BX8ZdOw8lYuuJUSsmEdZDrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=jO2zU59t; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2681660d604so59328595ad.0
+        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 06:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1760450198; x=1761054998; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=L2JBdlCNVHbh6ekaYzoo4Q2V4kVXYeSiuY6W4L0bPjk=;
+        b=jO2zU59tqfHuc+A02ATtPo8yjwx7p1qrnbVxxxT6uo0AZRJrbVxudNjIZFZPqoU3nD
+         cARo0HNOrY/YSSuitp+Zua8/28PZ8QS/xfVJoxBd/SdGc/dN1LX/uTTln2S3TZELMZJd
+         H3Vi2J2fbFt7gi3Z4t+jYpY+/AiTLL+RVPecM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760450198; x=1761054998;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L2JBdlCNVHbh6ekaYzoo4Q2V4kVXYeSiuY6W4L0bPjk=;
+        b=TRvKf5FMKDtQtKIZaApYdOLxz77R14DZ1U+/8jf78eoK5dsncgvns8FN5DH5A2ZAUd
+         lLubJWgwIeTKgBsC6OvyJsQ8BBNkHGt/Dd7rQ6mCzv667j7H0iooxVNKhQY0GSDjpCgg
+         PtN98w1mA58QSzjMJ3UIPNIfkD7MhnIhk1PrUevZrxZyITkxVV9FsMZVVOFrmwCNTnIA
+         UKDTpE/1lCW/YBITkEP+Y45+ixEa+zSJAUelPcYeYAEgD5Kf41I6hdhwyE4Zlo4b3Ag4
+         4AzQaignwCWXBe4WVkSLgL6Lirtp8eMk2Szkwlv+7c5jYd+YWuHz8cjRlgKOJpMEManq
+         2CNw==
+X-Forwarded-Encrypted: i=1; AJvYcCVIyHFHbmvUWJ2VtHTxQGWtpBgO+WSQAizHq/Ec0ifDiKRVeE+LYJigmgASeGIZQOAk0Qw1+9c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCjkHKVnrDKoX0PNHs5GFpkFksJ38KMTr92KxgFGS/91LBrujA
+	pd9ipssMg3y4li4jb16j7zR1lhRXNLdg35LOk07r8a4G/0IzzQRbcRP9K7Np7GIesA==
+X-Gm-Gg: ASbGncutYyRqyXT0sy6C9ARLYb1J3ZRXKuSoTDpfSrWoZx5JSaMNRtRXH+UlCi8kdDo
+	LFKTc3d1NW8mcHSD5ATcLk4frmCFq99fbez0wzsavBOjBbTzPAcK+HV5Wx9hJTb+4TcvzQt5T0/
+	ZHjJizyp3y85/2KkIAwrwGoaBFHlMrb58gg5ycC4SeiZ0dZdf5wUsIZmwYOEj88LeHdjLuf0P9e
+	3ihcIiGlpk+P5ZhIK67WUIpkOGUiA2DSUcJdJxGfoQGhV8TsOVmkT/0LJ6GAsCBPY+iMb+sXg66
+	ZB4iYfI2Kkprmk3qgk7SmnLcKe4NFuA54QvEzP0ZUDuyr/0Aj+Cm3qKUuhLG2sEeHYjcacckyI3
+	s0uXyxYVfsflboFOXCc7rFsHM21Wc4WkAuId2bb1PLd1Njwj2axkOBw==
+X-Google-Smtp-Source: AGHT+IFom6gnN5okXgH4ljiWIYO99mKWEOVLNkApX62i3COUI3Ge2cjYBTcSk6VjeaaXYz+cDhldKg==
+X-Received: by 2002:a17:903:1b4b:b0:271:479d:3dcb with SMTP id d9443c01a7336-29027213537mr324664955ad.6.1760450197603;
+        Tue, 14 Oct 2025 06:56:37 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:f7c9:39b0:1a9:7d97])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034de658bsm166127145ad.22.2025.10.14.06.56.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 06:56:37 -0700 (PDT)
+Date: Tue, 14 Oct 2025 22:56:32 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Christian Loehle <christian.loehle@arm.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Artem Bityutskiy <artem.bityutskiy@linux.intel.com>, 
+	Sasha Levin <sashal@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, Tomasz Figa <tfiga@chromium.org>, 
+	stable@vger.kernel.org
+Subject: Re: stable: commit "cpuidle: menu: Avoid discarding useful
+ information" causes regressions
+Message-ID: <ns2dglxkdqiidj445xal2w4onk56njkzllgoads377oaix7wuh@afvq7yinhpl7>
+References: <36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7>
+ <08529809-5ca1-4495-8160-15d8e85ad640@arm.com>
+ <2zreguw4djctgcmvgticnm4dctcuja7yfnp3r6bxaqon3i2pxf@thee3p3qduoq>
+ <CAJZ5v0h-=MU2uwC0+TZy0WpyyMpFibW58=t68+NPqE0W9WxWtQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/262] 6.12.53-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20251013144326.116493600@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1v8fRV-00000001iHZ-43sO
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:36628
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 18
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHhtVp2WqaPtJpsKtkMsQsepS570VthG0FM2fY2ex6MCCbS/J3AUsugmPkH6AZN4fj01c8Yl0p/oVnQ+zrl3M5SssJjcMnwkxM67d827Pbw2pLIDNdOR
- rRKmP+BXELeXpLZsDTnFnkhvsNxNs5tsOfK8GEEsFtp/b/R8WmomtV1MtgPWv07gq0FfSGsiqYZMFw==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0h-=MU2uwC0+TZy0WpyyMpFibW58=t68+NPqE0W9WxWtQ@mail.gmail.com>
 
-On 10/13/25 07:42, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.53 release.
-> There are 262 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 15 Oct 2025 14:42:41 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.53-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On (25/10/14 15:47), Rafael J. Wysocki wrote:
+> On Tue, Oct 14, 2025 at 12:23 PM Sergey Senozhatsky
+> <senozhatsky@chromium.org> wrote:
+> >
+> > > Any details would be much appreciated.
+> > > How do the idle state usages differ with and without
+> > > "cpuidle: menu: Avoid discarding useful information"?
+> > > What do the idle states look like in your platform?
+> >
+> > Sure, I can run tests.
+> 
+> Would it be possible to check if the mainline has this issue?  That
+> is, compare the benchmark results on unmodified 6.17 (say) and on 6.17
+> with commit 85975daeaa4 reverted?
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
-
-Tested-by: Ron Economos <re@w6rz.net>
-
+I don't think mainline kernel can run on those devices (due to
+a bunch of downstream patches).  Best bet is 6.12, I guess.
 
