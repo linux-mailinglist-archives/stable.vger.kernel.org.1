@@ -1,161 +1,151 @@
-Return-Path: <stable+bounces-185645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5CFBD9291
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:58:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF51BD9385
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 14:06:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C08A74222BA
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:57:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DDF71882F58
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 12:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24A13101D7;
-	Tue, 14 Oct 2025 11:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD4C311C2E;
+	Tue, 14 Oct 2025 12:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rKGG2qN/"
+	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b="nT8zfuOg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com [185.132.180.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BBD13D539;
-	Tue, 14 Oct 2025 11:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AD73126D1;
+	Tue, 14 Oct 2025 12:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.180.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760443077; cv=none; b=GcKyMnp7WbJk0lg6vPorex0EPfX6j0j1yCDTBayVRuK4re/0xLJ9GCJ2xIzVNngA6YwdDuNtx8T0IgPzI4Y+YWh2N+LDldwVF2rTrrn2r+9YanMfntUi242CKhj5xDHJOPDsPzDcZAetKkgWKDZnq/nv47d5IjVmiqN7uxjQafE=
+	t=1760443613; cv=none; b=qsmOiRn2v+L1CrcF1ZBGT1NDLNxkVR3NzKzPHHlm1z2KRqoML9BCTq4Ywa744b/0W9m5MoQYZ5ibAVEkngA/tWM3dq5ITv44kLF4UAPBHSZH7NPkus/Rj+wtolSJhMrfH0/q1cNkRO4eZXHsDe8oqI8SNE2Ckhiy/+c4uzaG8ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760443077; c=relaxed/simple;
-	bh=MwFsTXJugioHv41ijTZirhY8i4xRXoi7Y4vCJ56SHUY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=t5A7gQ+pHrgXqbOoDNul3f7P73x2OLUcPRaCDg+jMNCfg5OmVylJxLFzCqyV3oPf7TJRLyvIikTYAELVIKCQYnOSwFnhDsdLKM77hhg2s9fCgtmP2Vt+e3mJKduS4b07OC90w5hgXvgHXKx+RTCX+1eao2gHNle9BfD4/Meyres=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rKGG2qN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6C3C4CEE7;
-	Tue, 14 Oct 2025 11:57:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760443076;
-	bh=MwFsTXJugioHv41ijTZirhY8i4xRXoi7Y4vCJ56SHUY=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=rKGG2qN/DFIWc+QTzf8G73nx++OTjbQi7n/3Qb45wM2YdJxAiGXnjkeUWgOH7Bdse
-	 f9UynPWYm/RHkQbJdyl6I09Si1ScilHmRZ5KV+geOmmM34yL1QQHsYj8qiAvMVVzS2
-	 w9D1YTIjOX6xW4LIA7w72cnh9IMPp3OaYkpXvFbTGicWcFpuyYzOiUk4wjaMwJwt6/
-	 7WKUGdwq6YE1qjiPOxzw6uHsuJFd7bnbg68vG1eoRdnAGwgk2kowUyy/9Dt2p+oiqa
-	 TC2XZHmvz9vyeukT4VaNcE1AKVyW+UNe1NPuVyvp86hiFyKwhLV9A7Jj9mgo5h/gWI
-	 qpRCvNpvsdWAg==
-Message-ID: <1efc306d-a786-4863-82c5-517f1d4f7899@kernel.org>
-Date: Tue, 14 Oct 2025 13:57:53 +0200
+	s=arc-20240116; t=1760443613; c=relaxed/simple;
+	bh=g4J9HQuskix95nGVq29iELEGA0lIY+LzY+yk2Odn53I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=h3JhI8jwQCvEn3m8amUbMvslHghZMQXXNZ5yEsDJaijOPf58Ya4Gr6R4X5P0PZqt5yuKny9Wj7upHO/RoCG7F9Lb67OMWnf5SF9Vbr1pfoWbDXa0z2EfXD9e67vHAmRolT9RVHEO6ScUx2RS3ImPlK6BPr4qDjTTAaOtHr2WnOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=nT8zfuOg; arc=none smtp.client-ip=185.132.180.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imgtec.com
+Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
+	by mx07-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59E5rhto3790310;
+	Tue, 14 Oct 2025 12:57:44 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=dk201812; bh=e+gRf74dlOTVykywKohC4yB
+	asJPVNgvt6uf0YxnMDu4=; b=nT8zfuOgiRwJyG6n4K7imt1yI9F3J1mlnxt4RE3
+	6lSaNEyp9jnFiCMhlF62Nf3/+qDvkr0uxi2pjvq1FoobRU2AFSmYUc0ltv/Two/p
+	LNRIQf4dGuYp+Y+g5cd8yLLvZE9w1MFYyU5U3Ol3nsDCfCqplJ4JYglwc2LgNxff
+	AUr4c2SlvL4XfzQMBMoCGteIyE3WxIQXbw47zlH4AMx9Ee2v/gd+xUSshIVo8GaR
+	/rBjI9koSdGys9BphtYzg+1hA569BX1Mfadr3SaOqG22TcYcZEwfWfdBgsWvccXd
+	Smb7+OK7YzehVgBkMLJ5XR8LwogQ3/MTRqklsrFX/iazWxw==
+Received: from hhmail01.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
+	by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 49qfaru4ny-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Oct 2025 12:57:43 +0100 (BST)
+Received: from HHMAIL05.hh.imgtec.org (10.100.10.120) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1748.36; Tue, 14 Oct 2025 12:57:43 +0100
+Received: from
+ 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
+ (172.25.6.89) by HHMAIL05.hh.imgtec.org (10.100.10.120) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.57; Tue, 14 Oct 2025 12:57:42 +0100
+From: Matt Coster <matt.coster@imgtec.com>
+Date: Tue, 14 Oct 2025 12:57:31 +0100
+Subject: [PATCH] drm/imagination: Optionally depend on POWER_SEQUENCING
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: Re: [PATCH v4 0/2] media: pci: Fix invalid access to file *
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: Andy Walls <awalls@md.metrocast.net>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250819-cx18-v4l2-fh-v4-0-9db1635d6787@ideasonboard.com>
- <0627cfba-798a-482b-b335-cc78a609c150@kernel.org>
- <3cqjf6pts5fzs5gziog3g3jay6txcvxshm554uqpzgb6ymnukh@dsbo27d47rol>
-Content-Language: en-US, nl
-In-Reply-To: <3cqjf6pts5fzs5gziog3g3jay6txcvxshm554uqpzgb6ymnukh@dsbo27d47rol>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-ID: <20251014-pwrseq-dep-v1-1-49aabd9d8fa1@imgtec.com>
+X-B4-Tracking: v=1; b=H4sIAKs67mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA0Nj3YLyouLUQt2U1AJdg2RDU4vEFAsDI8tkJaCGgqLUtMwKsGHRsbW
+ 1ANjYEjdcAAAA
+X-Change-ID: 20251013-pwrseq-dep-0c158ad8029c
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard
+	<mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Michal Wilczynski
+	<m.wilczynski@samsung.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+CC: Frank Binns <frank.binns@imgtec.com>,
+        Alessio Belle
+	<alessio.belle@imgtec.com>,
+        Alexandru Dadu <alexandru.dadu@imgtec.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, kernel test robot <lkp@intel.com>,
+        Matt Coster
+	<matt.coster@imgtec.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1265;
+ i=matt.coster@imgtec.com; h=from:subject:message-id;
+ bh=g4J9HQuskix95nGVq29iELEGA0lIY+LzY+yk2Odn53I=;
+ b=owGbwMvMwCFWuUfy8817WRsYT6slMWS8s9r2lb8g/5L3yy19FUx+FWz7a+wbbnR+vmXCt//Kq
+ q8LtroYdJSyMIhxMMiKKbLsWGG5Qu2PmpbEjV/FMHNYmUCGMHBxCsBEvnkxMrw6dOpqvo2nwJqq
+ 3l8CIsYpV1kzNm4zOXS0YaXtnoTOH32MDKdUfng+PrTZ95ta27W4jU/7oi51LOs9tvFjkFqJat6
+ 8aH4A
+X-Developer-Key: i=matt.coster@imgtec.com; a=openpgp;
+ fpr=05A40CFCE7269D61D97100A1747F0A9036F90DFA
+X-EXCLAIMER-MD-CONFIG: 15a78312-3e47-46eb-9010-2e54d84a9631
+X-Authority-Analysis: v=2.4 cv=O+A0fR9W c=1 sm=1 tr=0 ts=68ee3ab7 cx=c_pps
+ a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
+ a=PZZNL22YEvsA:10 a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=r_1tXGB3AAAA:8 a=QyXUC8HyAAAA:8
+ a=dkdM1tVOqM7zQlyInTkA:9 a=QEXdDO2ut3YA:10 a=t8nPyN_e6usw4ciXM-Pk:22
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: gUdNoCzFQDpPDzLkiSAfk7M3XJANJxa1
+X-Proofpoint-GUID: gUdNoCzFQDpPDzLkiSAfk7M3XJANJxa1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE0MDA5MyBTYWx0ZWRfXwEFmTnlHBIdm
+ +E7OUQBIR0MLnYbQYDdVzTDjB/x2P2l1KyLfCrSjk2D9F5b1ADLwVEL9uhu9Q4v5GVM1HAvE8W8
+ Z2OyViRF+F0kUMKzTZxDcLAT55RmR4K8JyxW9B/r93DajYYFV6iEmYvnThUXRxc2MguSrYt/3Tf
+ mcQK6vWBZrkn2XTKu4kvMnXgTnsKeVdijk3LY1WVwqMUAYzHvVurUvA2HdtdJL7Xe131Ks7rpO1
+ o2fD4XARDMUGCXnF4JdfAm1MCBhiENbAO3yOwv5VhhqKs8VDaftHTxRo+1VD2DAmGXljqKstMoF
+ Fs53NoX841XrE41mij1tGavVVijcD0q+vP4uMJjzRweid0ab4a5eQxgNcwpKGdBZolsVgCxnP+P
+ BjuhrI7f9/3hViWkfXzhNBn97nDceA==
 
-On 14/10/2025 13:52, Jacopo Mondi wrote:
-> Hi Hans
-> 
-> On Tue, Oct 14, 2025 at 09:05:20AM +0200, Hans Verkuil wrote:
->> Hi Jacopo,
->>
->> On 19/08/2025 09:07, Jacopo Mondi wrote:
->>> Since commits
->>> 7b9eb53e8591 ("media: cx18: Access v4l2_fh from file")
->>> 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
->>>
->>> All the ioctl handlers access their private data structures
->>> from file *
->>>
->>> The ivtv and cx18 drivers call the ioctl handlers from their
->>> DVB layer without a valid file *, causing invalid memory access.
->>>
->>> The issue has been reported by smatch in
->>> "[bug report] media: cx18: Access v4l2_fh from file"
->>>
->>> Fix this by providing wrappers for the ioctl handlers to be
->>> used by the DVB layer that do not require a valid file *.
->>
->> This series should go to the fixes branch for v6.18, right?
->> This looks like a pure regression, so I think that makes sense.
->>
-> 
-> I think so, yes
-> 
->> BTW, why is there a Link: tag in the cx18 patch? It just links to
->> the v1 of the patch and that doesn't add meaningful information.
->> Linus likes Link:, but only if it really adds useful information.
-> 
-> Good question. I presume it's probably a copy&paste error, as it has no
-> place in the patch.
-> 
-> Would you like me to resend or will you remove it ?
+When the change using pwrseq was added, I nixed the dependency on
+POWER_SEQUENCING since we didn't want it pulled in on platforms where
+it's not needed [1]. I hadn't, however, considered the link-time
+implications of this for configs with POWER_SEQUENCING=m.
 
-I would prefer a resend for these two patches, clearly marked as [PATCH for v6.18 v5 n/2]
-in the subject.
+[1]: https://lore.kernel.org/r/a265a20e-8908-40d8-b4e0-2c8b8f773742@imgtec.com/
 
-Normally I'd just drop the Link: tag, but it's good to have this clearly marked
-as a fix for v6.18.
+Fixes: e38e8391f30b ("drm/imagination: Use pwrseq for TH1520 GPU power management")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202510111806.CMulNMKW-lkp@intel.com/
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+---
+ drivers/gpu/drm/imagination/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-I'll also see if I can do a quick test of these two patches with my ivtv and cx18
-boards. Just to make sure there are no other corner cases lurking in these drivers.
+diff --git a/drivers/gpu/drm/imagination/Kconfig b/drivers/gpu/drm/imagination/Kconfig
+index 3bfa2ac212dc..7e7ffb9c2257 100644
+--- a/drivers/gpu/drm/imagination/Kconfig
++++ b/drivers/gpu/drm/imagination/Kconfig
+@@ -6,6 +6,7 @@ config DRM_POWERVR
+ 	depends on ARM64
+ 	depends on DRM
+ 	depends on PM
++	depends on POWER_SEQUENCING || !POWER_SEQUENCING
+ 	select DRM_EXEC
+ 	select DRM_GEM_SHMEM_HELPER
+ 	select DRM_SCHED
 
-Regards,
-
-	Hans
-
-> 
-> 
->>
->> Regards,
->>
->> 	Hans
->>
->>>
->>> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
->>> ---
->>> Changes in v4:
->>> - Slightly adjust commit messages
->>> - Link to v3: https://lore.kernel.org/r/20250818-cx18-v4l2-fh-v3-0-5e2f08f3cadc@ideasonboard.com
->>>
->>> Changes in v3:
->>> - Change helpers to accept the type they're going to operate on instead
->>>   of using the open_id wrapper type as suggested by Laurent
->>> - Link to v2: https://lore.kernel.org/r/20250818-cx18-v4l2-fh-v2-0-3f53ce423663@ideasonboard.com
->>>
->>> Changes in v2:
->>> - Add Cc: stable@vger.kernel.org per-patch
->>>
->>> ---
->>> Jacopo Mondi (2):
->>>       media: cx18: Fix invalid access to file *
->>>       media: ivtv: Fix invalid access to file *
->>>
->>>  drivers/media/pci/cx18/cx18-driver.c |  9 +++------
->>>  drivers/media/pci/cx18/cx18-ioctl.c  | 30 +++++++++++++++++++-----------
->>>  drivers/media/pci/cx18/cx18-ioctl.h  |  8 +++++---
->>>  drivers/media/pci/ivtv/ivtv-driver.c | 11 ++++-------
->>>  drivers/media/pci/ivtv/ivtv-ioctl.c  | 22 +++++++++++++++++-----
->>>  drivers/media/pci/ivtv/ivtv-ioctl.h  |  6 ++++--
->>>  6 files changed, 52 insertions(+), 34 deletions(-)
->>> ---
->>> base-commit: a75b8d198c55e9eb5feb6f6e155496305caba2dc
->>> change-id: 20250818-cx18-v4l2-fh-7eaa6199fdde
->>>
->>> Best regards,
->>
+---
+base-commit: db74b04edce1bc86b9a5acc724c7ca06f427ab60
+change-id: 20251013-pwrseq-dep-0c158ad8029c
 
 
