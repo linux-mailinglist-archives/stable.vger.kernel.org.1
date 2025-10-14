@@ -1,182 +1,210 @@
-Return-Path: <stable+bounces-185603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F22BD83BF
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 10:42:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C54DBD846E
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 10:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FA23424C8E
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 08:42:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B81F4E237B
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 08:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777C52D94AA;
-	Tue, 14 Oct 2025 08:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87F823F412;
+	Tue, 14 Oct 2025 08:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aproOJg5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ajoRuPr1"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Q271Jckx";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/qXGzpYN";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="YTTtmQll";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="yeItfiMN"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E8D189F43;
-	Tue, 14 Oct 2025 08:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D429F26D4DF
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 08:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760431344; cv=none; b=brybYGXLbmbXw/qkReRWml1Q4kBGbT7ecu1nfjQDvA+aKt3Boeday/E3wPNMzT/SXLK9Reflu3oHiVcIgcCS0Z3ZUFdhkhb3jAqFE2xXLmJon+pPo6rbp5ua/3jAx2Gp67bDR4M0PccYc/PUiZL4hbP9A9xFo43bhDjjgzuokE0=
+	t=1760431834; cv=none; b=ApzECy8DULpJxDOD1ivS/x/4kpS/e5q5xMKCx3OOLyF3IFAgPcFsr2l7hC3ciK9HvfrOZiUkGyJRbNBmtfkFddrD1iQ48VFnlS932s2ZLzWfJ8sSyHJpj0Q+cyQ8YlfkN4CG9zKAVSf2OlJlkTCgeRL3W0KcdJNZ/q9TIIEnqB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760431344; c=relaxed/simple;
-	bh=YS5XJeSWQqc+vm3Wm1SQnwAWP7yFFRbq6T6QGqvmAok=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=iAWvLmtFx1xJBwbWoSDjBeoQ436nm95l+jMqrPOV7bxSdIHLeQlglHJLOY9TWVDc0ON2gIxbZljwqvJm7LGIexeuCX8dxmrlcaakxG51Ez5QiGqTT9t+bCV0/MojOmzx3cLP9rsEp3Xx0xdGV2RUuEXuglLxmkeLBP6uTKoP158=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aproOJg5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ajoRuPr1; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 14 Oct 2025 08:42:19 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760431341;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MhPOfcGRAKbkRlEHJSBfosIxcIIlidJsPE2T2uStmNA=;
-	b=aproOJg5BeDJBz7De5O5Yo+Q53hhSxSndj3KNMTieB9cKwVhiUHpSUfvwl0L4cvvEuXz2y
-	i5Ajd67atbSLrRpCJf4iXDxXI9lqcIYpQm3b4iEmwuccF5cRgd8H93SI0sixpJCI75B0VG
-	AYMhy1/rm9WLO7bPv9sJ1sup+Yv3nlFppbtXIjhLjp2OW28sFxfgz7TXLB704k1zhJyima
-	mSnKxe/RCxyS375waqJN62C/iGop+Qnacm7iJLA4SMYcGj4qOZOGlANxBpejcTZpeWaUwt
-	+Ma/PcEvM1k6n59YlEofvYf8iIALGl0iVe8ec+jbIZ2aRKs0am+8+zXF2P4+sw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760431341;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MhPOfcGRAKbkRlEHJSBfosIxcIIlidJsPE2T2uStmNA=;
-	b=ajoRuPr1bzTCndXlp0lr3sJtdXDW3RKx7GS4Q9zYKqc/ifSmzrau+/DzYUjdRDuiLkXBc6
-	Hnj83tscmC0EmVCg==
-From: "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/urgent] perf/core: Fix address filter match with backing files
-Cc: Edd Barrett <edd@theunixzoo.co.uk>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Amir Goldstein <amir73il@gmail.com>, stable@vger.kernel.org,
-	#@tip-bot2.tec.linutronix.de, 6.8@tip-bot2.tec.linutronix.de,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251013072244.82591-2-adrian.hunter@intel.com>
-References: <20251013072244.82591-2-adrian.hunter@intel.com>
+	s=arc-20240116; t=1760431834; c=relaxed/simple;
+	bh=ltgH4JPxYjHP5bVl5BVifpVhEDMjnReHz/f9kDMYVUk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LJTgoXtBZ/JFEtPh8RX1qP+wJyQQzKyTQre/1Kv6ZRaokTt5aUr+T6du2HG7rWzJxiMvbHVu5PxveUbQukeroFqO07foYdrRQhvC9GtlqWAWye9cumMEBsjP2tIm3wJwZhB/KAe348q7gXYwQWsNEkKcNmvcGqtMgzakXUhmg1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Q271Jckx; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/qXGzpYN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=YTTtmQll; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=yeItfiMN; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 047711FE2D;
+	Tue, 14 Oct 2025 08:50:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760431831; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=i11LJ7nncHg086f03omHJ+llRQCdxubUY4D+8oL8+Kg=;
+	b=Q271JckxZr7AMSvaO2T42S725khNg69//SwE9hnPRHihuNPL8Q0evXSZ8fceSU5x/abMXb
+	W76xawUo6QTJuIuw5SYm/KqSODyJnUx47ZXb3KCoX/yk2BbBD5qg98anWobMYoCMBZRrKZ
+	UrOoHWACMeKNJf9tapeW4um/AjmwmBA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760431831;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=i11LJ7nncHg086f03omHJ+llRQCdxubUY4D+8oL8+Kg=;
+	b=/qXGzpYNSzVrrDPcbtyDlka5mryRfkXloijaQQ1e6l4GT+Im+RXS+aZsBe3N0GRMHZG5Sn
+	v3B5IhurOCqjbdDA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760431830; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=i11LJ7nncHg086f03omHJ+llRQCdxubUY4D+8oL8+Kg=;
+	b=YTTtmQll7EGubaepMsi6kmSiO4bL4zVLiP+9eth+hTD/5M2iYbDogDLcOZfZHOs9NvuxYF
+	wZKJaxibJNnktMVpeiuaoRFHciUkox7T08FWYwdUP18GPS7aig/KDHE4WOlaCIYySRZHCj
+	XO4MKgUhf+gK6Ib0QJ0caKgo58+gRlY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760431830;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=i11LJ7nncHg086f03omHJ+llRQCdxubUY4D+8oL8+Kg=;
+	b=yeItfiMNBV7nfVUgANy2+pU2NQVHQkQ8XBbj/u6o/cB15uhE0ixPFWtl2U27hRTamhbdv4
+	l5D54QOylsk9xaAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BF53B13A44;
+	Tue, 14 Oct 2025 08:50:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qc9FLdUO7mhUKQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 14 Oct 2025 08:50:29 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: jfalempe@redhat.com,
+	airlied@redhat.com,
+	dianders@chromium.org,
+	nbowler@draconx.ca
+Cc: dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] drm/ast: Blank with VGACR17 sync enable, always clear VGACRB6 sync off
+Date: Tue, 14 Oct 2025 10:46:34 +0200
+Message-ID: <20251014084743.18242-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176043133968.709179.15062959887826741046.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
 
-The following commit has been merged into the perf/urgent branch of tip:
+Blank the display by disabling sync pulses with VGACR17<7>. Unblank
+by reenabling them. This VGA setting should be supported by all Aspeed
+hardware.
 
-Commit-ID:     ebfc8542ad62d066771e46c8aa30f5624b89cad8
-Gitweb:        https://git.kernel.org/tip/ebfc8542ad62d066771e46c8aa30f5624b8=
-9cad8
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Mon, 13 Oct 2025 10:22:42 +03:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 14 Oct 2025 10:38:09 +02:00
+Ast currently blanks via sync-off bits in VGACRB6. Not all BMCs handle
+VGACRB6 correctly. After disabling sync during a reboot, some BMCs do
+not reenable it after the soft reset. The display output remains dark.
+When the display is off during boot, some BMCs set the sync-off bits in
+VGACRB6, so the display remains dark. Observed with  Blackbird AST2500
+BMCs. Clearing the sync-off bits unconditionally fixes these issues.
 
-perf/core: Fix address filter match with backing files
+Also do not modify VGASR1's SD bit for blanking, as it only disables GPU
+access to video memory.
 
-It was reported that Intel PT address filters do not work in Docker
-containers.  That relates to the use of overlayfs.
+v2:
+- init vgacrb6 correctly (Jocelyn)
 
-overlayfs records the backing file in struct vm_area_struct vm_file,
-instead of the user file that the user mmapped.  In order for an address
-filter to match, it must compare to the user file inode.  There is an
-existing helper file_user_inode() for that situation.
-
-Use file_user_inode() instead of file_inode() to get the inode for address
-filter matching.
-
-Example:
-
-  Setup:
-
-    # cd /root
-    # mkdir test ; cd test ; mkdir lower upper work merged
-    # cp `which cat` lower
-    # mount -t overlay overlay -olowerdir=3Dlower,upperdir=3Dupper,workdir=3D=
-work merged
-    # perf record --buildid-mmap -e intel_pt//u --filter 'filter * @ /root/te=
-st/merged/cat' -- /root/test/merged/cat /proc/self/maps
-    ...
-    55d61d246000-55d61d2e1000 r-xp 00018000 00:1a 3418                       =
-/root/test/merged/cat
-    ...
-    [ perf record: Woken up 1 times to write data ]
-    [ perf record: Captured and wrote 0.015 MB perf.data ]
-    # perf buildid-cache --add /root/test/merged/cat
-
-  Before:
-
-    Address filter does not match so there are no control flow packets
-
-    # perf script --itrace=3De
-    # perf script --itrace=3Db | wc -l
-    0
-    # perf script -D | grep 'TIP.PGE' | wc -l
-    0
-    #
-
-  After:
-
-    Address filter does match so there are control flow packets
-
-    # perf script --itrace=3De
-    # perf script --itrace=3Db | wc -l
-    235
-    # perf script -D | grep 'TIP.PGE' | wc -l
-    57
-    #
-
-With respect to stable kernels, overlayfs mmap function ovl_mmap() was
-added in v4.19 but file_user_inode() was not added until v6.8 and never
-back-ported to stable kernels.  FMODE_BACKING that it depends on was added
-in v6.5.  This issue has gone largely unnoticed, so back-porting before
-v6.8 is probably not worth it, so put 6.8 as the stable kernel prerequisite
-version, although in practice the next long term kernel is 6.12.
-
-Closes: https://lore.kernel.org/linux-perf-users/aBCwoq7w8ohBRQCh@fremen.lan
-Reported-by: Edd Barrett <edd@theunixzoo.co.uk>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Cc: stable@vger.kernel.org # 6.8
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: ce3d99c83495 ("drm: Call drm_atomic_helper_shutdown() at shutdown time for misc drivers")
+Tested-by: Nick Bowler <nbowler@draconx.ca>
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Closes: https://lore.kernel.org/dri-devel/wpwd7rit6t4mnu6kdqbtsnk5bhftgslio6e2jgkz6kgw6cuvvr@xbfswsczfqsi/
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.7+
 ---
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/ast/ast_mode.c | 18 ++++++++++--------
+ drivers/gpu/drm/ast/ast_reg.h  |  1 +
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 7541f6f..cd63ec8 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9492,7 +9492,7 @@ static bool perf_addr_filter_match(struct perf_addr_fil=
-ter *filter,
- 	if (!filter->path.dentry)
- 		return false;
-=20
--	if (d_inode(filter->path.dentry) !=3D file_inode(file))
-+	if (d_inode(filter->path.dentry) !=3D file_user_inode(file))
- 		return false;
-=20
- 	if (filter->offset > offset + size)
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index 6b9d510c509d..9b6a7c54fbb5 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -836,22 +836,24 @@ ast_crtc_helper_atomic_flush(struct drm_crtc *crtc,
+ static void ast_crtc_helper_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_state *state)
+ {
+ 	struct ast_device *ast = to_ast_device(crtc->dev);
++	u8 vgacr17 = 0x00;
++	u8 vgacrb6 = 0xff;
+ 
+-	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, 0x00);
+-	ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, 0x00);
++	vgacr17 |= AST_IO_VGACR17_SYNC_ENABLE;
++	vgacrb6 &= ~(AST_IO_VGACRB6_VSYNC_OFF | AST_IO_VGACRB6_HSYNC_OFF);
++
++	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
++	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
+ }
+ 
+ static void ast_crtc_helper_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_state *state)
+ {
+ 	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(state, crtc);
+ 	struct ast_device *ast = to_ast_device(crtc->dev);
+-	u8 vgacrb6;
++	u8 vgacr17 = 0xff;
+ 
+-	ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, AST_IO_VGASR1_SD);
+-
+-	vgacrb6 = AST_IO_VGACRB6_VSYNC_OFF |
+-		  AST_IO_VGACRB6_HSYNC_OFF;
+-	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
++	vgacr17 &= ~AST_IO_VGACR17_SYNC_ENABLE;
++	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
+ 
+ 	/*
+ 	 * HW cursors require the underlying primary plane and CRTC to
+diff --git a/drivers/gpu/drm/ast/ast_reg.h b/drivers/gpu/drm/ast/ast_reg.h
+index e15adaf3a80e..30578e3b07e4 100644
+--- a/drivers/gpu/drm/ast/ast_reg.h
++++ b/drivers/gpu/drm/ast/ast_reg.h
+@@ -29,6 +29,7 @@
+ #define AST_IO_VGAGRI			(0x4E)
+ 
+ #define AST_IO_VGACRI			(0x54)
++#define AST_IO_VGACR17_SYNC_ENABLE	BIT(7) /* called "Hardware reset" in docs */
+ #define AST_IO_VGACR80_PASSWORD		(0xa8)
+ #define AST_IO_VGACR99_VGAMEM_RSRV_MASK	GENMASK(1, 0)
+ #define AST_IO_VGACRA1_VGAIO_DISABLED	BIT(1)
+-- 
+2.51.0
+
 
