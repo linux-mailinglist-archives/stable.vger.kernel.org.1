@@ -1,299 +1,242 @@
-Return-Path: <stable+bounces-185652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030D3BD970C
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 14:47:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB0EBD9742
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 14:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D44B188D571
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 12:46:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D63E3BAB50
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 12:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611BC1A314B;
-	Tue, 14 Oct 2025 12:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B9E30DEB7;
+	Tue, 14 Oct 2025 12:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JynGXggD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhVslwbw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2049615530C
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 12:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09F719F135;
+	Tue, 14 Oct 2025 12:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760445985; cv=none; b=eeuobUT2SXrI0Zw4aEhOIrdBmYo9mf8xUxketxtC/RWQaxOWm21WFt7vrW//8x9SAfeyIfJxZN0vgvzL2FlAi8HEkRSlUWzpZi8SZK3QoTcbFLTqyk4TgEB1JK3EZ9IkWJ4+Lb+9TeaEJ0J83YC8L90PO1ZykmvsVE1suNNtXOY=
+	t=1760446384; cv=none; b=TVnDAcXOTmhQPZqzcz9ctNsQONX5+yveTUn94w5n1pTL7xQyDOVrJfpAkC7PwpTlNQOiFr/K7AJGztBirNfdQzzFnoA8EM25QJOj11NPDiQpfyelLm/Qv6ouRL9Hc8q+lC5QR8N9hvC7fwbepIRoAJ5jYtFtUTtUOQCuTarux2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760445985; c=relaxed/simple;
-	bh=ZSH9lFOChPX4zffrgkcQrAV4d5+ZWVGq9A0MwAQxpI4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q6lgQV4GuXOb3KZsPaiNIdZiv6CSO28+TPVG/hvDuUmIraWv06fMF74DEvkDsn6M9WCVr5OnlPhQZwLXgnNB1pmEiuGV206za54rZ0mLtTfhpbIcwnJIv272+jfCxvNIuzZB++tT7G/uokjruYVpkEGCC8lV1vsxK1MOWdcsn4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JynGXggD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0052EC4CEE7;
-	Tue, 14 Oct 2025 12:46:23 +0000 (UTC)
+	s=arc-20240116; t=1760446384; c=relaxed/simple;
+	bh=3GR/5lTiZpzFVFt2Z1xJkc1y4Tls8IQavDcFRWUvTRc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=byg8ZJNcKWbthBLII1PFc/886M3lH5WbNaqhwqFMP4zDSIE2DPHcJLjJ10hOYYcSbq3iYRCWRzLWgi4jltY3MhU/TrGiWjjTjLvZ0eA9dd2mKWKpAjnYwkfjL2Tmr7xwbZ/ZG9QPmaUU/uqW1XhaRD9lFcGQV5CVuutRcC7e9ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PhVslwbw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA73DC4CEE7;
+	Tue, 14 Oct 2025 12:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760445984;
-	bh=ZSH9lFOChPX4zffrgkcQrAV4d5+ZWVGq9A0MwAQxpI4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JynGXggDrkVckO9f4FdYiOFt8sFVQbd9AecoP9L13SutV5AOs+ipMtUQqfFh6VYN7
-	 SaRcaDhgTB7B9uDVfuMLp/wtjplBx8i4mbSnt6JgpFgMoMGeZL97YSSe7HMvDQXSTv
-	 Qw6bnHmmWw3+xm5Ha/QjwYTOwN/Zeq8JL/B6Wgsi94FH/1h6WaAS5+j7zCczWblCux
-	 3w5rvMwNpyOIy3PsfX2QodOu3KMVItOoVDOsFbBPKsbUUSMaTy7iD2t8kr+K7utK6a
-	 ZKTr0AJ83doVPIQFsImqzdSSWQaoEvKnD2SNp6nW/T9yGAXn/HRKh2lRyQeAVxEkPy
-	 Nzj9CKfpAOorA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Yuan Chen <chenyuan@kylinos.cn>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] tracing: Fix race condition in kprobe initialization causing NULL pointer dereference
-Date: Tue, 14 Oct 2025 08:46:22 -0400
-Message-ID: <20251014124622.3222-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101328-fever-giggly-7991@gregkh>
-References: <2025101328-fever-giggly-7991@gregkh>
+	s=k20201202; t=1760446384;
+	bh=3GR/5lTiZpzFVFt2Z1xJkc1y4Tls8IQavDcFRWUvTRc=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=PhVslwbwgYifj4TIVXipJqxqzCyBnRxQoMTQEtIrZNOMTYC5cYVPAp09chqJHy8Hw
+	 bWPh7v/B0uN9wjnh5pbl97WEpIiuDOfEU/dZJivv6Im3lUEHYygQIdShsu1H8jQSz5
+	 hxpvviXxGu2hP/YOuJwMTsaIZQimcBjeXJeu+2MepaJwWMuqi61xt8ID0eN/qrYvan
+	 SPpVWHBNbITy0pwyzLHRIjhTeNvtM+TGa8bkUVd/OCVeHT5426N4DRJTITqWWvt4aX
+	 vCb9GTfxcW1oDcRGI6PSeGbFF5CgrbTWGWU7iXXh/VYJjhiHvJm7mQRu3nFPepM1Lm
+	 ZTLCaE97Vd1SQ==
+Message-ID: <54a970ec-6c06-4544-babb-7ad30a011ad9@kernel.org>
+Date: Tue, 14 Oct 2025 14:53:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH v4 1/2] media: cx18: Fix invalid access to file *
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Andy Walls <awalls@md.metrocast.net>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250819-cx18-v4l2-fh-v4-0-9db1635d6787@ideasonboard.com>
+ <20250819-cx18-v4l2-fh-v4-1-9db1635d6787@ideasonboard.com>
+Content-Language: en-US, nl
+In-Reply-To: <20250819-cx18-v4l2-fh-v4-1-9db1635d6787@ideasonboard.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+On 19/08/2025 09:07, Jacopo Mondi wrote:
+> Sice commit 7b9eb53e8591 ("media: cx18: Access v4l2_fh from file")
+> all ioctl handlers have been ported to operate on the file * first
+> function argument.
+> 
+> The cx18 DVB layer calls cx18_init_on_first_open() when the driver needs
+> to start streaming. This function calls the s_input(), s_std() and
+> s_frequency() ioctl handlers directly, but being called from the driver
+> context, it doesn't have a valid file * to pass them. This causes
+> the ioctl handlers to deference an invalid pointer.
+> 
+> Fix this by moving the implementation of those ioctls to functions that
+> take a cx18 pointer instead of a file pointer, and turn the V4L2 ioctl
+> handlers into wrappers that get the cx18 from the file. When calling
+> from cx18_init_on_first_open(), pass the cx18 pointer directly. This
+> allows removing the fake fh in cx18_init_on_first_open().
+> 
+> The bug has been reported by Smatch:
+> 
+> --> 1223         cx18_s_input(NULL, &fh, video_input);
+> The patch adds a new dereference of "file" but some of the callers pass a
+> NULL pointer.
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/all/aKL4OMWsESUdX8KQ@stanley.mountain/
+> Fixes: 7b9eb53e8591 ("media: cx18: Access v4l2_fh from file")
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/stable/20250818-cx18-v4l2-fh-v1-1-6fe153760bce%40ideasonboard.com
+> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-[ Upstream commit 9cf9aa7b0acfde7545c1a1d912576e9bab28dc6f ]
+Tested-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 
-There is a critical race condition in kprobe initialization that can lead to
-NULL pointer dereference and kernel crash.
+Regards,
 
-[1135630.084782] Unable to handle kernel paging request at virtual address 0000710a04630000
-...
-[1135630.260314] pstate: 404003c9 (nZcv DAIF +PAN -UAO)
-[1135630.269239] pc : kprobe_perf_func+0x30/0x260
-[1135630.277643] lr : kprobe_dispatcher+0x44/0x60
-[1135630.286041] sp : ffffaeff4977fa40
-[1135630.293441] x29: ffffaeff4977fa40 x28: ffffaf015340e400
-[1135630.302837] x27: 0000000000000000 x26: 0000000000000000
-[1135630.312257] x25: ffffaf029ed108a8 x24: ffffaf015340e528
-[1135630.321705] x23: ffffaeff4977fc50 x22: ffffaeff4977fc50
-[1135630.331154] x21: 0000000000000000 x20: ffffaeff4977fc50
-[1135630.340586] x19: ffffaf015340e400 x18: 0000000000000000
-[1135630.349985] x17: 0000000000000000 x16: 0000000000000000
-[1135630.359285] x15: 0000000000000000 x14: 0000000000000000
-[1135630.368445] x13: 0000000000000000 x12: 0000000000000000
-[1135630.377473] x11: 0000000000000000 x10: 0000000000000000
-[1135630.386411] x9 : 0000000000000000 x8 : 0000000000000000
-[1135630.395252] x7 : 0000000000000000 x6 : 0000000000000000
-[1135630.403963] x5 : 0000000000000000 x4 : 0000000000000000
-[1135630.412545] x3 : 0000710a04630000 x2 : 0000000000000006
-[1135630.421021] x1 : ffffaeff4977fc50 x0 : 0000710a04630000
-[1135630.429410] Call trace:
-[1135630.434828]  kprobe_perf_func+0x30/0x260
-[1135630.441661]  kprobe_dispatcher+0x44/0x60
-[1135630.448396]  aggr_pre_handler+0x70/0xc8
-[1135630.454959]  kprobe_breakpoint_handler+0x140/0x1e0
-[1135630.462435]  brk_handler+0xbc/0xd8
-[1135630.468437]  do_debug_exception+0x84/0x138
-[1135630.475074]  el1_dbg+0x18/0x8c
-[1135630.480582]  security_file_permission+0x0/0xd0
-[1135630.487426]  vfs_write+0x70/0x1c0
-[1135630.493059]  ksys_write+0x5c/0xc8
-[1135630.498638]  __arm64_sys_write+0x24/0x30
-[1135630.504821]  el0_svc_common+0x78/0x130
-[1135630.510838]  el0_svc_handler+0x38/0x78
-[1135630.516834]  el0_svc+0x8/0x1b0
+	Hans
 
-kernel/trace/trace_kprobe.c: 1308
-0xffff3df8995039ec <kprobe_perf_func+0x2c>:     ldr     x21, [x24,#120]
-include/linux/compiler.h: 294
-0xffff3df8995039f0 <kprobe_perf_func+0x30>:     ldr     x1, [x21,x0]
-
-kernel/trace/trace_kprobe.c
-1308: head = this_cpu_ptr(call->perf_events);
-1309: if (hlist_empty(head))
-1310: 	return 0;
-
-crash> struct trace_event_call -o
-struct trace_event_call {
-  ...
-  [120] struct hlist_head *perf_events;  //(call->perf_event)
-  ...
-}
-
-crash> struct trace_event_call ffffaf015340e528
-struct trace_event_call {
-  ...
-  perf_events = 0xffff0ad5fa89f088, //this value is correct, but x21 = 0
-  ...
-}
-
-Race Condition Analysis:
-
-The race occurs between kprobe activation and perf_events initialization:
-
-  CPU0                                    CPU1
-  ====                                    ====
-  perf_kprobe_init
-    perf_trace_event_init
-      tp_event->perf_events = list;(1)
-      tp_event->class->reg (2)← KPROBE ACTIVE
-                                          Debug exception triggers
-                                          ...
-                                          kprobe_dispatcher
-                                            kprobe_perf_func (tk->tp.flags & TP_FLAG_PROFILE)
-                                              head = this_cpu_ptr(call->perf_events)(3)
-                                              (perf_events is still NULL)
-
-Problem:
-1. CPU0 executes (1) assigning tp_event->perf_events = list
-2. CPU0 executes (2) enabling kprobe functionality via class->reg()
-3. CPU1 triggers and reaches kprobe_dispatcher
-4. CPU1 checks TP_FLAG_PROFILE - condition passes (step 2 completed)
-5. CPU1 calls kprobe_perf_func() and crashes at (3) because
-   call->perf_events is still NULL
-
-CPU1 sees that kprobe functionality is enabled but does not see that
-perf_events has been assigned.
-
-Add pairing read and write memory barriers to guarantee that if CPU1
-sees that kprobe functionality is enabled, it must also see that
-perf_events has been assigned.
-
-Link: https://lore.kernel.org/all/20251001022025.44626-1-chenyuan_fl@163.com/
-
-Fixes: 50d780560785 ("tracing/kprobes: Add probe handler dispatcher to support perf and ftrace concurrent use")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-[ Dropped ftrace changes + context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/trace/trace_kprobe.c | 11 +++++++----
- kernel/trace/trace_probe.h  |  9 +++++++--
- kernel/trace/trace_uprobe.c | 12 ++++++++----
- 3 files changed, 22 insertions(+), 10 deletions(-)
-
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 646109d389e92..044df6073211e 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1782,14 +1782,15 @@ static int kprobe_register(struct trace_event_call *event,
- static int kprobe_dispatcher(struct kprobe *kp, struct pt_regs *regs)
- {
- 	struct trace_kprobe *tk = container_of(kp, struct trace_kprobe, rp.kp);
-+	unsigned int flags = trace_probe_load_flag(&tk->tp);
- 	int ret = 0;
- 
- 	raw_cpu_inc(*tk->nhit);
- 
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		kprobe_trace_func(tk, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret = kprobe_perf_func(tk, regs);
- #endif
- 	return ret;
-@@ -1800,13 +1801,15 @@ static int
- kretprobe_dispatcher(struct kretprobe_instance *ri, struct pt_regs *regs)
- {
- 	struct trace_kprobe *tk = container_of(ri->rp, struct trace_kprobe, rp);
-+	unsigned int flags;
- 
- 	raw_cpu_inc(*tk->nhit);
- 
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tk->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		kretprobe_trace_func(tk, ri, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		kretprobe_perf_func(tk, ri, regs);
- #endif
- 	return 0;	/* We don't tweek kernel, so just return 0 */
-diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index 22c05ca977587..9be69ba07cd28 100644
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -251,16 +251,21 @@ struct event_file_link {
- 	struct list_head		list;
- };
- 
-+static inline unsigned int trace_probe_load_flag(struct trace_probe *tp)
-+{
-+	return smp_load_acquire(&tp->event->flags);
-+}
-+
- static inline bool trace_probe_test_flag(struct trace_probe *tp,
- 					 unsigned int flag)
- {
--	return !!(tp->event->flags & flag);
-+	return !!(trace_probe_load_flag(tp) & flag);
- }
- 
- static inline void trace_probe_set_flag(struct trace_probe *tp,
- 					unsigned int flag)
- {
--	tp->event->flags |= flag;
-+	smp_store_release(&tp->event->flags, tp->event->flags | flag);
- }
- 
- static inline void trace_probe_clear_flag(struct trace_probe *tp,
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 60ff36f5d7f9e..fd40018813557 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1484,6 +1484,7 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb;
- 	int dsize, esize;
-+	unsigned int flags;
- 	int ret = 0;
- 
- 
-@@ -1504,11 +1505,12 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
- 	ucb = uprobe_buffer_get();
- 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		ret |= uprobe_trace_func(tu, regs, ucb, dsize);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret |= uprobe_perf_func(tu, regs, ucb, dsize);
- #endif
- 	uprobe_buffer_put(ucb);
-@@ -1522,6 +1524,7 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb;
- 	int dsize, esize;
-+	unsigned int flags;
- 
- 	tu = container_of(con, struct trace_uprobe, consumer);
- 
-@@ -1539,11 +1542,12 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
- 	ucb = uprobe_buffer_get();
- 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		uretprobe_trace_func(tu, func, regs, ucb, dsize);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		uretprobe_perf_func(tu, func, regs, ucb, dsize);
- #endif
- 	uprobe_buffer_put(ucb);
--- 
-2.51.0
+> ---
+>  drivers/media/pci/cx18/cx18-driver.c |  9 +++------
+>  drivers/media/pci/cx18/cx18-ioctl.c  | 30 +++++++++++++++++++-----------
+>  drivers/media/pci/cx18/cx18-ioctl.h  |  8 +++++---
+>  3 files changed, 27 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/media/pci/cx18/cx18-driver.c b/drivers/media/pci/cx18/cx18-driver.c
+> index 743fcc9613744bfc1edeffc51e908fe88520405a..cd84dfcefcf971a7adb9aac2bafb9089dbe0f33f 100644
+> --- a/drivers/media/pci/cx18/cx18-driver.c
+> +++ b/drivers/media/pci/cx18/cx18-driver.c
+> @@ -1136,11 +1136,8 @@ int cx18_init_on_first_open(struct cx18 *cx)
+>  	int video_input;
+>  	int fw_retry_count = 3;
+>  	struct v4l2_frequency vf;
+> -	struct cx18_open_id fh;
+>  	v4l2_std_id std;
+>  
+> -	fh.cx = cx;
+> -
+>  	if (test_bit(CX18_F_I_FAILED, &cx->i_flags))
+>  		return -ENXIO;
+>  
+> @@ -1220,14 +1217,14 @@ int cx18_init_on_first_open(struct cx18 *cx)
+>  
+>  	video_input = cx->active_input;
+>  	cx->active_input++;	/* Force update of input */
+> -	cx18_s_input(NULL, &fh, video_input);
+> +	cx18_do_s_input(cx, video_input);
+>  
+>  	/* Let the VIDIOC_S_STD ioctl do all the work, keeps the code
+>  	   in one place. */
+>  	cx->std++;		/* Force full standard initialization */
+>  	std = (cx->tuner_std == V4L2_STD_ALL) ? V4L2_STD_NTSC_M : cx->tuner_std;
+> -	cx18_s_std(NULL, &fh, std);
+> -	cx18_s_frequency(NULL, &fh, &vf);
+> +	cx18_do_s_std(cx, std);
+> +	cx18_do_s_frequency(cx, &vf);
+>  	return 0;
+>  }
+>  
+> diff --git a/drivers/media/pci/cx18/cx18-ioctl.c b/drivers/media/pci/cx18/cx18-ioctl.c
+> index bf16d36448f888d9326b5f4a8f9c8f0e13d0c3a1..6e869c43cbd520feb720a71d8eb2dd60c05b0ae9 100644
+> --- a/drivers/media/pci/cx18/cx18-ioctl.c
+> +++ b/drivers/media/pci/cx18/cx18-ioctl.c
+> @@ -521,10 +521,8 @@ static int cx18_g_input(struct file *file, void *fh, unsigned int *i)
+>  	return 0;
+>  }
+>  
+> -int cx18_s_input(struct file *file, void *fh, unsigned int inp)
+> +int cx18_do_s_input(struct cx18 *cx, unsigned int inp)
+>  {
+> -	struct cx18_open_id *id = file2id(file);
+> -	struct cx18 *cx = id->cx;
+>  	v4l2_std_id std = V4L2_STD_ALL;
+>  	const struct cx18_card_video_input *card_input =
+>  				cx->card->video_inputs + inp;
+> @@ -558,6 +556,11 @@ int cx18_s_input(struct file *file, void *fh, unsigned int inp)
+>  	return 0;
+>  }
+>  
+> +static int cx18_s_input(struct file *file, void *fh, unsigned int inp)
+> +{
+> +	return cx18_do_s_input(file2id(file)->cx, inp);
+> +}
+> +
+>  static int cx18_g_frequency(struct file *file, void *fh,
+>  				struct v4l2_frequency *vf)
+>  {
+> @@ -570,11 +573,8 @@ static int cx18_g_frequency(struct file *file, void *fh,
+>  	return 0;
+>  }
+>  
+> -int cx18_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf)
+> +int cx18_do_s_frequency(struct cx18 *cx, const struct v4l2_frequency *vf)
+>  {
+> -	struct cx18_open_id *id = file2id(file);
+> -	struct cx18 *cx = id->cx;
+> -
+>  	if (vf->tuner != 0)
+>  		return -EINVAL;
+>  
+> @@ -585,6 +585,12 @@ int cx18_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *v
+>  	return 0;
+>  }
+>  
+> +static int cx18_s_frequency(struct file *file, void *fh,
+> +			    const struct v4l2_frequency *vf)
+> +{
+> +	return cx18_do_s_frequency(file2id(file)->cx, vf);
+> +}
+> +
+>  static int cx18_g_std(struct file *file, void *fh, v4l2_std_id *std)
+>  {
+>  	struct cx18 *cx = file2id(file)->cx;
+> @@ -593,11 +599,8 @@ static int cx18_g_std(struct file *file, void *fh, v4l2_std_id *std)
+>  	return 0;
+>  }
+>  
+> -int cx18_s_std(struct file *file, void *fh, v4l2_std_id std)
+> +int cx18_do_s_std(struct cx18 *cx, v4l2_std_id std)
+>  {
+> -	struct cx18_open_id *id = file2id(file);
+> -	struct cx18 *cx = id->cx;
+> -
+>  	if ((std & V4L2_STD_ALL) == 0)
+>  		return -EINVAL;
+>  
+> @@ -642,6 +645,11 @@ int cx18_s_std(struct file *file, void *fh, v4l2_std_id std)
+>  	return 0;
+>  }
+>  
+> +static int cx18_s_std(struct file *file, void *fh, v4l2_std_id std)
+> +{
+> +	return cx18_do_s_std(file2id(file)->cx, std);
+> +}
+> +
+>  static int cx18_s_tuner(struct file *file, void *fh, const struct v4l2_tuner *vt)
+>  {
+>  	struct cx18_open_id *id = file2id(file);
+> diff --git a/drivers/media/pci/cx18/cx18-ioctl.h b/drivers/media/pci/cx18/cx18-ioctl.h
+> index 221e2400fb3e2d817eaff7515fa89eb94f2d7f8a..7a42ac99312ab6502e1abe4f3d5c88c9c7f144f3 100644
+> --- a/drivers/media/pci/cx18/cx18-ioctl.h
+> +++ b/drivers/media/pci/cx18/cx18-ioctl.h
+> @@ -12,6 +12,8 @@ u16 cx18_service2vbi(int type);
+>  void cx18_expand_service_set(struct v4l2_sliced_vbi_format *fmt, int is_pal);
+>  u16 cx18_get_service_set(struct v4l2_sliced_vbi_format *fmt);
+>  void cx18_set_funcs(struct video_device *vdev);
+> -int cx18_s_std(struct file *file, void *fh, v4l2_std_id std);
+> -int cx18_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf);
+> -int cx18_s_input(struct file *file, void *fh, unsigned int inp);
+> +
+> +struct cx18;
+> +int cx18_do_s_std(struct cx18 *cx, v4l2_std_id std);
+> +int cx18_do_s_frequency(struct cx18 *cx, const struct v4l2_frequency *vf);
+> +int cx18_do_s_input(struct cx18 *cx, unsigned int inp);
+> 
 
 
