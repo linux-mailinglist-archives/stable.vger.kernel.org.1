@@ -1,93 +1,156 @@
-Return-Path: <stable+bounces-185621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D20BD8913
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:51:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AAEBD892E
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC259188CC44
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:51:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17BC04F5BAA
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E854D2ECD1B;
-	Tue, 14 Oct 2025 09:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399382EBB83;
+	Tue, 14 Oct 2025 09:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WzlsX3EB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0172D9492;
-	Tue, 14 Oct 2025 09:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98552EA464;
+	Tue, 14 Oct 2025 09:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760435462; cv=none; b=peH7ttZi+ll8Zr3v0cgNe0C/eD5kQ/oBech37qxUNR9tJDPCwNSTNDQfwifPTdqODh73l+KECiJtde0tqBjujLbMaCngNfZuMOxCXuNUUtLIpBBzlm4o/moMkgLK6Pk3xRM9ZFr8jdQatliKZEqUBu/9/6Y7yXtMQLpwHx4Y0eE=
+	t=1760435510; cv=none; b=Y6TFZ4nir22F9CwgaZLM/f/Rx6tuGrjOgdtg0fpkyslc6sq+SASf5jQWCjaSpbiUa1/xXvBjE2/Wn6g3h+x/p7pIq/XXBu3SUJEn13Ikh4IfFttu5o0VldcuE4teWexMvWfiGHshzRGUY6+x1AH6shFjQQW1sQ51YJ1/JGpb3jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760435462; c=relaxed/simple;
-	bh=KHz1B1HQJgmAT3g5P4keVtakO0U0qrIOmzuBpaoJnlQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jT3GbjwiFVB2iLQ+zHUXw2JKY0ZVfJ7Q8UBl+nyTY+mRcuQNRon3sjSeQgQmceP9d/UVxui+Mi8K4jDmvgdAp8Ccn/hdQ0JgMqW9sDL0iidzfnmMN0s2i70pOe0cgXpFHEy0HhufjfYIkYZ42/L+fjBm/Z6iPwV4HXTmqAUXcRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8Cxbb8BHe5oyfYVAA--.46014S3;
-	Tue, 14 Oct 2025 17:50:57 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBxTMEBHe5o+V3hAA--.48048S2;
-	Tue, 14 Oct 2025 17:50:57 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Xianglai Li <lixianglai@loongson.cn>
-Cc: kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] LoongArch: KVM: Fix max supported vCPUs set with eiointc
-Date: Tue, 14 Oct 2025 17:50:55 +0800
-Message-Id: <20251014095055.1159534-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1760435510; c=relaxed/simple;
+	bh=WqW5ZbUmABmzx1qaIZI77c81KCOJrnUC11x+N+bX780=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=lqupn1KoPdLforn6mjI4V4YdJ6IXohIKrH751DK9pWnoufFp04MsCK4ZA8ZdUEpGdMOflitI2k0dU2e5mgTeLiNAkgHG40UW3jssCRxVgtaRxlcKGRxoSf7V5wB6aRxQgahNpVzkrksqyRtEjCRawpLndyyqr4189jZ9kKG7yk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WzlsX3EB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAFEC4CEE7;
+	Tue, 14 Oct 2025 09:51:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760435509;
+	bh=WqW5ZbUmABmzx1qaIZI77c81KCOJrnUC11x+N+bX780=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=WzlsX3EB+aY7QkdPLCjs0OjWUaQ9Xzbb/RCHrJ6usJdqe8nxX4j2dnJNhQmIogf8J
+	 SEEZXbhiZP/ECyE8ZKvaJkUdoyEVkkAg+r8h6tsVje5jKlzRhvO9f0x7uJGGgBXOVS
+	 F5CW7/+shHPOV/7YjyXIQheKeU8nmauAm1Q0clD0TEv8hrdxGVv80eFKNqFsPekGf9
+	 uWv8f6xC0O4LlOBhjVA90USRuArWlmVa7MnXUXqMKJz168dGuX7UMOBUHUtC05AE4u
+	 VxT1z8YRmYXgcCUOG0HsAOade3xRu+GiKFIjYud4dVZIbic0GOnUxtsIttReo8FtGG
+	 xComsdIi+Fz3g==
+Message-ID: <aa78a288-0a1e-4851-a2a5-4378e96da305@kernel.org>
+Date: Tue, 14 Oct 2025 11:51:45 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxTMEBHe5o+V3hAA--.48048S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+User-Agent: Mozilla Thunderbird
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH v2 RESEND] media: hackrf: fix to not free memory after the
+ device is registered in hackrf_probe()
+To: Jeongjun Park <aha310510@gmail.com>, mchehab@kernel.org,
+ hverkuil@kernel.org
+Cc: laurent.pinchart+renesas@ideasonboard.com, crope@iki.fi,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com,
+ syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com
+References: <20250904054232.3848637-1-aha310510@gmail.com>
+Content-Language: en-US, nl
+In-Reply-To: <20250904054232.3848637-1-aha310510@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-VM fails to boot with 256 vCPUs, the detailed command is
-qemu-system-loongarch64 -smp 256 and there is error reported as follows:
-  KVM_LOONGARCH_EXTIOI_INIT_NUM_CPU failed: Invalid argument
+Hi Jeongjun Park,
 
-There is typo issue in function kvm_eiointc_ctrl_access() when set
-max supported vCPUs.
+On 04/09/2025 07:42, Jeongjun Park wrote:
+> In hackrf driver, the following race condition occurs:
+> ```
+> 		CPU0						CPU1
+> hackrf_probe()
+>   kzalloc(); // alloc hackrf_dev
+>   ....
+>   v4l2_device_register();
+>   ....
+> 						open("/path/to/dev"); // open hackrf dev
+> 						....
+>   v4l2_device_unregister();
+>   ....
+>   kfree(); // free hackrf_dev
+>   ....
+> 						ioctl(fd, ...);
+> 						  v4l2_ioctl();
+> 						    video_is_registered() // UAF!!
+> 						....
+> 						close(fd);
+> 						  v4l2_release() // UAF!!
+> 						    hackrf_video_release()
+> 						      kfree(); // DFB!!
+> ```
+> 
+> When a V4L2 or video device is unregistered, the device node is removed so
+> new open() calls are blocked.
+> 
+> However, file descriptors that are already open-and any in-flight I/O-do
+> not terminate immediately; they remain valid until the last reference is
+> dropped and the driver's release() is invoked.
+> 
+> Therefore, freeing device memory on the error path after hackrf_probe()
+> has registered dev it will lead to a race to use-after-free vuln, since
+> those already-open handles haven't been released yet.
+> 
+> And since release() free memory too, race to use-after-free and 
+> double-free vuln occur.
+> 
+> To prevent this, if device is registered from probe(), it should be
+> modified to free memory only through release() rather than calling
+> kfree() directly.
+> 
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=6ffd76b5405c006a46b7
+> Reported-by: syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=f1b20958f93d2d250727
+> Fixes: 8bc4a9ed8504 ("[media] hackrf: add support for transmitter")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> ---
+> v2: Fix incorrect patch description style and CC stable mailing list
+> - Link to v1: https://lore.kernel.org/all/20250822142729.1156816-1-aha310510@gmail.com/
+> ---
+>  drivers/media/usb/hackrf/hackrf.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/media/usb/hackrf/hackrf.c b/drivers/media/usb/hackrf/hackrf.c
+> index 0b50de8775a3..d7a84422193d 100644
+> --- a/drivers/media/usb/hackrf/hackrf.c
+> +++ b/drivers/media/usb/hackrf/hackrf.c
+> @@ -1515,6 +1515,8 @@ static int hackrf_probe(struct usb_interface *intf,
+>  	video_unregister_device(&dev->rx_vdev);
+>  err_v4l2_device_unregister:
+>  	v4l2_device_unregister(&dev->v4l2_dev);
 
-Cc: stable@vger.kernel.org
-Fixes: 47256c4c8b1b ("LoongArch: KVM: Avoid copy_*_user() with lock hold in kvm_eiointc_ctrl_access()")
+Instead of v4l2_device_unregister() this should call v4l2_device_put().
+Otherwise the memory will never be freed since the v4l2_device refcount
+will never reach 0.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- arch/loongarch/kvm/intc/eiointc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> +	dev_dbg(&intf->dev, "failed=%d\n", ret);
 
-diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
-index c32333695381..a1cc116b4dac 100644
---- a/arch/loongarch/kvm/intc/eiointc.c
-+++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -439,7 +439,7 @@ static int kvm_eiointc_ctrl_access(struct kvm_device *dev,
- 	spin_lock_irqsave(&s->lock, flags);
- 	switch (type) {
- 	case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_NUM_CPU:
--		if (val >= EIOINTC_ROUTE_MAX_VCPUS)
-+		if (val > EIOINTC_ROUTE_MAX_VCPUS)
- 			ret = -EINVAL;
- 		else
- 			s->num_cpu = val;
+Drop this line, it doesn't add anything.
 
-base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
--- 
-2.39.3
+Regards,
+
+	Hans
+
+> +	return ret;
+>  err_v4l2_ctrl_handler_free_tx:
+>  	v4l2_ctrl_handler_free(&dev->tx_ctrl_handler);
+>  err_v4l2_ctrl_handler_free_rx:
+> --
+> 
 
 
