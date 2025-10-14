@@ -1,198 +1,146 @@
-Return-Path: <stable+bounces-185693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3605BDA6F1
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 17:39:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96EC8BDA7B2
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 17:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A84F93AC05B
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:36:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F307E19A0CE0
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 15:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313AE2FFFBB;
-	Tue, 14 Oct 2025 15:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A333002DB;
+	Tue, 14 Oct 2025 15:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W6rLL/w7"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="GX+yctSw"
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010039.outbound.protection.outlook.com [52.101.69.39])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F3E2FFDCC;
-	Tue, 14 Oct 2025 15:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.39
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760456201; cv=fail; b=JXa5Plw2y0pjV39UfQE+vVq/sZDXDZQ/RI/S55AsTgEk//DhQhxsAUlWP4CDSAjqpkxD3rF3w3qxoM0egqBEekxAhtrQu0rGCOkXebRAofL99gy0aSs2sPyhVzB/6TO7DhnkH1S780CPeykIrxSXfh2s9INqg2yf3chIbB4hRPk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760456201; c=relaxed/simple;
-	bh=tPaEYcHt/8lfA6Z1CVeUSs5lcee77CVit4AX0u3t6V0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IutwG4nMT0ksLz9YoIpJZMm4MOXSy8cLQeRXthxjVhlyWvkl1mF1AuCqpzmnACIEyp9J3t1PtLl75Hs6PK8CNnlGKc+o93KBa65QhcYsJwgYrv5+AobLjfncS80Y1rtjkQOCxaIO2IjmVxoIOPHAwln95MqoAzkmUm7WseklPEo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W6rLL/w7; arc=fail smtp.client-ip=52.101.69.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xub/qexTsWHFKq3G3QIVotUyPZzZTEaMZE2keJY4aV1u2hrd5vneKXbIaropUZX8/kF7ETQnJkWxHRDpqxkAObZR3a5iRbUxjnVmg62+BIVYS1xVGiR/A6yLGvej3i0Y68O34a1FQIUQ2myPCpfSxFKzTNhSwkoZ4Rml+vl3Z+z5saAkZ5gkckHmXFBbqwmAUTmcyqJ+FNP0g/tWr18f4JHfCQgcO9mmZBK0p6p67PoW3rgqG/Y6oRfMYXqF6jFjqbfR5n5EJQwas6/DftxjtzlRvp/OHdOGaOikolhIVd+IfHMGhyeQrjpnc3T/HHn8Mre0ITEnvOGPRAmBeKr8JA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BpcRW1UnGiBWoXFw3AUZO1xaoKlQKzG6gdgmeVVp5VA=;
- b=AYmkSyQbgJ3h0pJpdi/CvwvKqS9K5nM7P97jNfm3MgAV61Qu6rHJ3JUyhfD9QAabFoWxSrmYsw+8mtTvFUTX0ub2JpkIVJjaKh+Atab7s5fYn+Ps5EyabSjD0zXM9L+j5notF4ltk1HHvAXCS5LRvtxEQSOt3NvW+El1iztKP8eVoIUHNz6TGrLtJA17w7XGYJTPsVWTjCktb38t+Wth5PEmcA6lhFoAy2ZCIYNyDVVFwB1AokFZa32/gAWOJ9mQaSKCSdfc6E1zrTX9b/VpssUbLdk0IeXzt00RyYETvDlP/lIthnK6J43MthEbIVOtpYH21MbI9ofH8fd5MM2ozw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BpcRW1UnGiBWoXFw3AUZO1xaoKlQKzG6gdgmeVVp5VA=;
- b=W6rLL/w7CHsRXuS8UIiPPl280xEJo7aVGc1neROsnvtLPNgD/xic2488D0K4qBUcyxs9n8cH+w72eoNRWD1G8jAPx+AIGl8EbC2pzrU5GZla6T2uXuj3Qp2Oxw9alotSQhIohGB1DVtkV8pG6AhDb/2MvrvkKK2tgQpafyIS8HicLMWmMMk4h+39aiEOHTe1dyv+enylVp7zQVnBBywKVc2IoBrGQTZ7vsSE9b0nyIMm4iHqBMe4ZtD92RvEZNtVet/BtHBJRWSU5GEZLiWPoVs9od7VPAtNEIIULtmuDQq1KM++kmaE8zSF7BAHOS7CDLCr0QUQOmad/h3duWEp1Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by AS8PR04MB7720.eurprd04.prod.outlook.com (2603:10a6:20b:299::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.13; Tue, 14 Oct
- 2025 15:36:35 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
- 15:36:35 +0000
-Date: Tue, 14 Oct 2025 11:36:29 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Zhen Ni <zhen.ni@easystack.cn>
-Cc: vkoul@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] dmaengine: fsl-edma: Fix clk leak on
- alloc_chan_resources failure
-Message-ID: <aO5t/dHjLsfkaFar@lizhi-Precision-Tower-5810>
-References: <20251014090522.827726-1-zhen.ni@easystack.cn>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014090522.827726-1-zhen.ni@easystack.cn>
-X-ClientProxiedBy: BY1P220CA0002.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::6) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068321C3C08;
+	Tue, 14 Oct 2025 15:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760456990; cv=none; b=ieQsLjihXVMxFLRChIXwHTUjibGLpfVgD/3Z6g7r1+nu7HlO1YL5U1ZDE1TXSpHBuMRzSurde0HF3IzfSM2v7cWmqfuW2mbyI69YR6joh1j0OYOuAHqqC1kRRQuZXQP7bhaVX8Mvy0VOYAje2S8yeSryAtrlbSzf3WBzaVgEyzI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760456990; c=relaxed/simple;
+	bh=O2OnOz5scUDSd+QFrf/tvNMYuICl3jWPJOhwXXYif2c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Z9ma/fttP2P6PX0y7131a12YVq3QFx4ts0ZdlOKv5yxmGbz7msv3HGgcaGzx3qW0QInJ8P5bWUMyPJpkJUaNKBxQpWT3+gUYDmQG9D1D46i3HB/e0yCrkJjAA2mZ9GQuPRKBbrREqNSnvt6dj8uKWRxRfZWQQ8uHE0dKkI25Ias=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=GX+yctSw; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1760456987;
+	bh=O2OnOz5scUDSd+QFrf/tvNMYuICl3jWPJOhwXXYif2c=;
+	h=From:Date:Subject:To:Cc:From;
+	b=GX+yctSwy6m7W9I4+JzKb3R4HW7aDUAyt/mwtGFQlJEWqFbA3pyAC/lsNAcMdaJEg
+	 ytEZeHKXOE8nVkaeMSpoym697Y3LMcOJq48f52J/rDwtVCh4K31E3d9lvzb52FX+Fq
+	 baqnVCBJzPLwoFV/QYHl2+p1DtAD4RDbocqA3mvmE0xGEq6YIHlajUSsESS46DyoTs
+	 DITm5FqB2WbwuTvcSZgETgzwECjyeYZKjMNX4K0HbymnvM6uOU5iRGuSh3+GFXP4ls
+	 NapHKToYf+lwlI4MRl65y/v4h10GefoDlhelFcJi0H5jYUZAOwjkCdu9Q/eKoFmjNo
+	 ra45orkWevLkg==
+Received: from jupiter.universe (dyndsl-091-248-212-042.ewe-ip-backbone.de [91.248.212.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: sre)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 10E6F17E0FC2;
+	Tue, 14 Oct 2025 17:49:47 +0200 (CEST)
+Received: by jupiter.universe (Postfix, from userid 1000)
+	id C7D4B480044; Tue, 14 Oct 2025 17:49:46 +0200 (CEST)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+Date: Tue, 14 Oct 2025 17:49:34 +0200
+Subject: [PATCH net] net: stmmac: dwmac-rk: Fix disabling
+ set_clock_selection
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB7720:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b627801-016c-4040-7ede-08de0b377588
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|366016|52116014|1800799024|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IXzKyNc9jZJcDjwqUEl3jzUUL+1HfngvkYM9WSaj4VCoHHHL4DBA3iyfofX1?=
- =?us-ascii?Q?/CrY6Rxl0+yt8b+I6WJ3c2f6e12x7Uk2//ePHCofoAvkz4YUfrS4r4yjhb3T?=
- =?us-ascii?Q?uKd8yMOOR0MIiVjbqcvDF3cXYldxuiGZruztTJqhq/aZlLB7/2EmOEJhNpt1?=
- =?us-ascii?Q?dfIzSo+JYsmbar3OVEFcgb1ObZHFNKIuHFG0W0s7LSBZzwkewPjfXP2FQKcv?=
- =?us-ascii?Q?leIU0Z1rLPAHTNMa6MUBKNKV9wf0Q9f/BsjiY7HLtwXG80xpTVMCzv1rra8e?=
- =?us-ascii?Q?iI+DEOpay/zIWKN8Eo0YN14OchyMYBI5wDSVG8/4D9Y03aGvJOaIMBiO3kM/?=
- =?us-ascii?Q?NksePCH+eaKbKMAIPGodUiL4isjdjIs7ngkxDb4XkeSNXLCFpYLZfHfhjI+7?=
- =?us-ascii?Q?qPSrz3o3OOnRcB/HicSOHT9C7g0kQJv0GdXWqiCwDEoHmXhAVZi46WmEAfwp?=
- =?us-ascii?Q?pqG7KaJ+i3oO9uBn3hx8tgTWNaPYTTCbJtshvegoVQxkqrkSRvw60dXwNiOg?=
- =?us-ascii?Q?lFlfO3mhaTSm8f9eRvW8qpTkbpaGWu34McuDMwXJPBBSCsB82H4Wcwlmh85Y?=
- =?us-ascii?Q?w2/fUnn0D0qLbWtSqam8X8C/cJgtB0gb6cYitv2XUT+ev6iYhA0vBjwEr25g?=
- =?us-ascii?Q?xM9JStpVygiHcQjJ2weuSdokm7SJDB8eD0tRDS5F6bK6nHPO9A1rLlCvbfoY?=
- =?us-ascii?Q?O9yn5S2mY5XwPrswRXc9Y9Og5ZROWgy/pmMWL59FxZvUZ1j6tLxfamIMP5uX?=
- =?us-ascii?Q?XfxqLcpdWCOaEjgHyNGTbQhyunwoKBr9mIMcCHuzS9fj3/8xdVbWOauQpIc+?=
- =?us-ascii?Q?+DT9J09eIuUfpjWk4b2c7VfZLQnEN55SA68jL5aoSwMfGxFDf6bjJH3DKJMK?=
- =?us-ascii?Q?oaY9J1HC7wjNrovzRx85s43CDB0xEFx+nRBaMytjb2T8IgwZdkFocVLP13Ae?=
- =?us-ascii?Q?brF3r3DGVyAlp9SkYlo1KFpb6O/3Mo9Rg7RVgGGMObdM8XhIbcwUGuGz8s3j?=
- =?us-ascii?Q?+bSwbMMqufX6NAbxCSh1V7mcXron+fEDUyMkeSq7GYmZSyG722VaZLyoCuH7?=
- =?us-ascii?Q?GHfZsgoIhvlN3PrO/iLv9cekopK+m7dcSIAuUzUn8898Qr+DKC922St6uP9C?=
- =?us-ascii?Q?kLM74VlooOGW+S1cbTwkeTKNwC7mQyaNcVcgWtoj20ZhkOD7TrJlLtgJqYeZ?=
- =?us-ascii?Q?U2I3T3DUbd7Pg3QFg7wWjSBtiB85rPxAzcTnA0NL/EwtWNa2hPuI+PBKOc2w?=
- =?us-ascii?Q?AQonYeyX6LClxrX6Kyi23+b37Bu/EomsqyLXxUVq2BDx5KL/JWN4cE7aFytW?=
- =?us-ascii?Q?jC+h4g2Kfcw+j9msMdKhR0q/rdlSYgs0da3STzgse6dkFXp7x4dm/cMxUF+w?=
- =?us-ascii?Q?whYNxTSoix51SijhXoapTNxuzguUBgk3o/OidcT5v5Jjbir9SusmdDKlsXX4?=
- =?us-ascii?Q?S6QeY8FyUwV7xFiWEnrmncyUp8DZXBsvo/wsuY4064o0bobrecBjzdd/S0mt?=
- =?us-ascii?Q?qNUpq6gKD7NLJ4xMXrSjfGBp1sx/ZV088Sms?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(52116014)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EvDglpQLUNs4IJHJQWXVKkIFxpWaAK3jmsuOGSuBO7biIpDpx/MBYFYI5Ee0?=
- =?us-ascii?Q?DF7oMb8OIW0kVAQaQJT3QP0Wqr4OLtTmuiza+bq3KoN1dkdmYhL37jDi5z7z?=
- =?us-ascii?Q?WZYrtDtmqIRsBZ2MnStfDRlBTV0UGTuzZqIEyaDE7K1dEKufPUcbjhXNLEE5?=
- =?us-ascii?Q?Am/d35vctJQxclqVdjHK0yFyxuRlbn4bd82cRujA1uCHtWFnNYjVAIPeYtSK?=
- =?us-ascii?Q?RAU/KE0hlRtFfPDsBs1DX1bFmczrec88sNwMuv42n6a0WNAWJVusqSFew0sf?=
- =?us-ascii?Q?zATJhiyoGBF7pIKEI47fGTGEGtKNk6WuzJqad2EScF4j7lOKP+z7NhyRLtWL?=
- =?us-ascii?Q?VKUzdxXZNvz9S5+oWvX+L1D/GRFdeR7hsQzY+pyUzttaE5sqwKDJAbg2gpSF?=
- =?us-ascii?Q?9UQprbKnT8crR2pj9lcpO2UPB6cWXa+Jzdm5jese2grtMywqsQ1Pu6O3wlnS?=
- =?us-ascii?Q?v6J3+A94kR2UpLkT3uVjOUSyPnoRE+fdciGl/TY8HEmzF31h3/xopGyU5CPd?=
- =?us-ascii?Q?X0vTHkSaKBjF1uTM68xinZX5ErN8Vevbbg1QQhiYUUDk9s3CAUBP5aiiW3Fp?=
- =?us-ascii?Q?9HSgIiDeGV5X3lUJ6/Kf5uEDQfP6KdCYSXCbA5vpRl+nif9w77xWWkOSZBRU?=
- =?us-ascii?Q?Z8DzNzDhZmeOltkXsq4K2ruxi4Bk/XF7EivcGPhvNEWGSDfDJymVjaiFdeKe?=
- =?us-ascii?Q?o2mKdR3/VxJYi5OYZ4cS2I7hp5n20Olq/dDLORY5uCE7TZHMdTYF7ZkJLZNg?=
- =?us-ascii?Q?CocPbSEPwN+e3zVbMbMlpdKIZYlRHM69PLddwlCWBqWPocgCgHFmJRe9ogDO?=
- =?us-ascii?Q?+nQM6o3RktNevjDi1di64KfTmLRVTY5Z/jUwDOqjkwvP0776Pf9PGd6NhbDk?=
- =?us-ascii?Q?ZdkZ2fGidF1ykUJM8VZ6UO/lGPFMGGfMVRod7ATTrXoK8jIuDiCqOoZOPIbo?=
- =?us-ascii?Q?xepuse4b3xxvAmDOyvmURVsTAU1wafbTbYeoBrCYP55kVr3Q/lgJiyIvmQxw?=
- =?us-ascii?Q?PE9NNTBYD8GTB0Gi480bmyuuQ8kyQ8VB2QsB9hgRE4fNXJGScugfA72PCvdO?=
- =?us-ascii?Q?i66gq10DqtVSUFmoN9vLNzmXxAExOWCg0euOp9Wn+7B1/4RQPSm2myDR8nMP?=
- =?us-ascii?Q?U1RUTze5J5SuZN8uWPGRvGGQCCzPvYt/+J2gP0LT+Q5bQZOTDnpqsKEhDteW?=
- =?us-ascii?Q?6LONRmVrBFWe7KEVRQfuowY9ns+VJjZ41pnMRpbFweKgcbdsnOWJyAAkRiwa?=
- =?us-ascii?Q?sXUqR4Q4Y3AmfO6k+hl8yzCRbkw8LbcsTc+cKiK7KdrvlXND6wY3bBvpdn3I?=
- =?us-ascii?Q?lIdlMAO/YH7RG07LlaXFXKHPCkTkCHsT5Q5dWL2RiFwxE+rmRHnGzKYgcN6G?=
- =?us-ascii?Q?cYrXAAQg8M+mjChhdNmxU/L3EZJZ6xgJw8/sMKJzKUVfvmOErJvbkMbSPX/b?=
- =?us-ascii?Q?y5Cra+5JtEFrpF6XQ0Xt545CE7gVSU9a6/mW+nT5mjpErRhFzJxSgYAimlwX?=
- =?us-ascii?Q?N3hxcfCjs9z37Zx3abrcvQVFxSS5Vqgan+zm7Ep0UfM/cegsvBx8FSzVHATm?=
- =?us-ascii?Q?1QMTs9ybmug27d9I9eLix/IOSD0OciS0RAt4sqyJ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b627801-016c-4040-7ede-08de0b377588
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 15:36:35.7401
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uObp0nhLkgYpK3TXshjX0dcz4PUt76FddpqCni6G4/1dEOExwbTPQ3k8fnNDIivkvtpVEwM+04hgGK50x3ApJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7720
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251014-rockchip-network-clock-fix-v1-1-c257b4afdf75@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAA1x7mgC/x2M0QqDMAwAf0XybKAt2jF/RXzQmM3gaCWVTRD/3
+ bDHO447obAKF+iqE5S/UiQnA19XQMuY3owyG0NwofXON6iZVlpkw8T7L+uK9DGDLzkw0MPF5xi
+ nyAQ22JRN/+c9WA7Ddd10TxPpcQAAAA==
+X-Change-ID: 20251014-rockchip-network-clock-fix-2c7069a6b6ec
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ David Wu <david.wu@rock-chips.com>
+Cc: netdev@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, kernel@collabora.com, stable@vger.kernel.org, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1840;
+ i=sebastian.reichel@collabora.com; h=from:subject:message-id;
+ bh=O2OnOz5scUDSd+QFrf/tvNMYuICl3jWPJOhwXXYif2c=;
+ b=owJ4nAFtApL9kA0DAAoB2O7X88g7+poByyZiAGjucRo2uFWL3tpG3umZXtieNofXO4nAVctBy
+ 5GLiCh0M1e+rYkCMwQAAQoAHRYhBO9mDQdGP4tyanlUE9ju1/PIO/qaBQJo7nEaAAoJENju1/PI
+ O/qaMRgP/iHJbV5a//GQfdq66WDDNHayu81bXQstYRXDdc/7YdmVEcv0rb8N0XNFrKluxH9R0bR
+ sQ4PWok9aNKOApOWZ08lrrbr4IgNP0oMfR4CRiIEn6p28TI+jjKkq9/639UPolu+/iPapqnkSF6
+ rE2ooV/kOppR6SQrB9+wLisBqnT3QShTnaq7HWhn6jJPWT9u+el0CbscGum+IYuJ/K3iUw2QTJM
+ KgpF4PnJyNCb6V3Et6gOhT67VIU7CFWi/8sAMy0Q3nQrl5wJl1UxFjeHf6KmVxq6Mgs5Q6vpRJf
+ MSvEtO86J9cBNFmgcrcVOasDrgnvvX9ZRbJbfbg4yzOG8C2MBUZ3ZmzOazQTAVqMoIybmZlPvoR
+ nj0khD6HikFTzc9vWa536n1ZuuJH0IIzbX9qZtSvp202bu5nJ7I6k5dvaAfDlHHwPQTMIbKdx4J
+ rzBYGfRYUNusTavH45VWs+4pJed1PIvGJAJ2cm5iVTh0kup4eUS7iPTzDO6uyKVXDrGmLJQmRFC
+ mSY3nIlCJpvo02UCAncaD3OLR7165ubeG+pD1p3pLDQhyQO91xgydGwpXYj1aq6xT04jdgJH5V/
+ B8aO3l2FIdl2KMrX8GYf0ji7K5J9qoiJ0l+R05gQ4rt1GK+BfBsZitLWjW47/3KpUAAQ58gCARc
+ t70WWOTk/R/hbaOtx56g2KQ==
+X-Developer-Key: i=sebastian.reichel@collabora.com; a=openpgp;
+ fpr=EF660D07463F8B726A795413D8EED7F3C83BFA9A
 
-On Tue, Oct 14, 2025 at 05:05:22PM +0800, Zhen Ni wrote:
-> When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
-> the error paths only free IRQs and destroy the TCD pool, but forget to
-> call clk_disable_unprepare(). This causes the channel clock to remain
-> enabled, leaking power and resources.
->
-> Fix it by disabling the channel clock in the error unwind path.
->
-> Fixes: d8d4355861d8 ("dmaengine: fsl-edma: add i.MX8ULP edma support")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+On all platforms set_clock_selection() writes to a GRF register. This
+requires certain clocks running and thus should happen before the
+clocks are disabled.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+This has been noticed on RK3576 Sige5, which hangs during system suspend
+when trying to suspend the second network interface. Note, that
+suspending the first interface works, because the second device ensures
+that the necessary clocks for the GRF are enabled.
 
-> ---
-> Changes in v2:
-> - Remove FSL_EDMA_DRV_HAS_CHCLK check
-> Changes in v3:
-> - Remove cleanup
-> Changes in v4:
-> - Re-send as a new thread
-> ---
->  drivers/dma/fsl-edma-common.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index 4976d7dde080..11655dcc4d6c 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-> @@ -852,6 +852,7 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
->  		free_irq(fsl_chan->txirq, fsl_chan);
->  err_txirq:
->  	dma_pool_destroy(fsl_chan->tcd_pool);
-> +	clk_disable_unprepare(fsl_chan->clk);
->
->  	return ret;
->  }
-> --
-> 2.20.1
->
+Cc: stable@vger.kernel.org
+Fixes: 2f2b60a0ec28 ("net: ethernet: stmmac: dwmac-rk: Add gmac support for rk3588")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+index 51ea0caf16c1..0786816e05f0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -1446,14 +1446,15 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
+ 		}
+ 	} else {
+ 		if (bsp_priv->clk_enabled) {
++			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection) {
++				bsp_priv->ops->set_clock_selection(bsp_priv,
++					      bsp_priv->clock_input, false);
++			}
++
+ 			clk_bulk_disable_unprepare(bsp_priv->num_clks,
+ 						   bsp_priv->clks);
+ 			clk_disable_unprepare(bsp_priv->clk_phy);
+ 
+-			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection)
+-				bsp_priv->ops->set_clock_selection(bsp_priv,
+-					      bsp_priv->clock_input, false);
+-
+ 			bsp_priv->clk_enabled = false;
+ 		}
+ 	}
+
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251014-rockchip-network-clock-fix-2c7069a6b6ec
+
+Best regards,
+-- 
+Sebastian Reichel <sebastian.reichel@collabora.com>
+
 
