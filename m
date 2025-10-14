@@ -1,122 +1,132 @@
-Return-Path: <stable+bounces-185587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BECBD7F74
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA069BD7F98
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6759E4E19A8
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 07:38:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C337A4E5B3B
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 07:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A9730DECA;
-	Tue, 14 Oct 2025 07:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h4aTsl2F"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8E42C15BF;
+	Tue, 14 Oct 2025 07:39:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371BD2D8DAF
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 07:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43C429BD81;
+	Tue, 14 Oct 2025 07:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760427484; cv=none; b=aPi/HOnsNYtw7ZDWYf9VuycUxoRRPGbyTJAL1b2zZD2LvKWAoQyktBmoDRgWuhH/NA7q3J1EBP4v1ZKlXu1HXT2aDrargXkkG1MF5S+DsUWZ6Jwgc8MnFScw2cEf5iGmyAAt06snZxZLHOcTM6BcekNZtBKHIy0kJUwsC1RKSwY=
+	t=1760427588; cv=none; b=CMGJcEVxAxb/L8Y76nbY22mLhcu9uW5RpYfiEtWjT7apOuKj88YBvj6V/njrZCNIy+cUnZGVOq8z4hvA4mI2wCNbK0LNcY7+NAdM1qz23dJZCkoKeYiGhe/esxCAvZo8kYOQ1gclLaFobbJ6Q9mNDd2A+0inMN0ZrH47hlkD1To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760427484; c=relaxed/simple;
-	bh=9hS2W03OaaDBRq488L5ZeXOwSJoUvpd0BYVLf4iTHzA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PLgwBKt3gxLrcGEnj6lBhraJqKpmCUjnrWuheY4O8i9r1bQCwLwUVZIub6kQA3y526N+bpM7NZWPGg8yqoDQZI81UnjhahLZhdYeF4Kw1E45MRye2NWen9KqLgaMuYb32D4jhHbNc/WHzdr34BR/Q8owX2McGyIm8OR4f0oZfwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h4aTsl2F; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760427479;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ajVLHYVNTc11NQnF9+qMXQzNmIez+Zi5q8MUvX7v/NA=;
-	b=h4aTsl2FABHsAPBWYRnnaTdFmytzq79IkTfCi9WP2R2ayHSLcYoZBkd82Gg1MLHKe54bvK
-	HAxmn7pd8UNg7ka5hRawDJB5Y7ZjJuxdlEDc7cCiRE5Gm34iJeGxeNrI/KgRjDl0XGbOtF
-	ljvXBvoicPafNkADlundXZNFcfyrIRY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-2-gJ2SRTOaCk8vQsrmC2lA-1; Tue, 14 Oct 2025 03:37:57 -0400
-X-MC-Unique: 2-gJ2SRTOaCk8vQsrmC2lA-1
-X-Mimecast-MFC-AGG-ID: 2-gJ2SRTOaCk8vQsrmC2lA_1760427476
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ee12ab7f33so3192578f8f.2
-        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:37:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760427476; x=1761032276;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ajVLHYVNTc11NQnF9+qMXQzNmIez+Zi5q8MUvX7v/NA=;
-        b=kZRzIDC+vEnmiAmxKHmVWR82ewp0wjP4AnhxdBK/NFbme09jA+aBXOwmNPW66lhS6N
-         eBJXyiUnm2D6ciLm5o3nKaqLv4t6GA32+a9GRcYh6HZRJzEO8oeXCMJl1QAFNpYdoKGl
-         cYz3Z0dal6hBvXxi0k3McjswXlLkWW0TgSYqFvu3tu6Bt0BS0dQwLAmJcazVLv5zxJre
-         0X5BgvnivPIXInhg7w74mi900tYT5TPnDui4gwG3XCpE6eRSvwfPk4hNxpCbYxFYtdeg
-         JZVrTuktYR+CPdXIunWz4lYSH6nISaD3WzUIHOGp5Iwe/653SNiTvWAUEURpjQdlp/RT
-         pqlg==
-X-Gm-Message-State: AOJu0Yxf2ds0Rk5kPJCk073cbCwsAoBTMr63iUCUu1RFpPEbz/vaBK+q
-	bJeCM+5BjSFvO2qVaf2bjB10INYZJ4mIKyZeAPBg/yUYWUHFCWdHqqjPDF6KsKQBYbnnnSwBjT2
-	MKPOJ94KZhCeruXQ58S4NvMSNY2q4ap2jPmfiLhWH77f+kjh0DWsvsS7LLg==
-X-Gm-Gg: ASbGncsqkQqPez5p88kabfrXZXiY7ML+wDuNG9zfFOxEmWz7h6G4meXH+tvGHhgWPJa
-	H8q/ZJx7YlTJsDUowQnasfuD2mwVNHM0rQ02YlFrBSbUob17ZVW1k0noZrXpxu5jikPguY3DWVf
-	0aVqbQ/Hynj3/bi8qRcmH93xlYJwUszAkhN5p/VgfLkTFkZz09yA+ZmWhCp3GZT+Pk/qabN9W4A
-	2P9r+h8VMGCdjRQB4BcXj+NbJTlYrHHeEjLXg+hkKHiaoKtSkXa3bsXUL17IDLmmjpIKYzVb1GN
-	Cgw4AeFqCsVrMUAX/gE8aq8jfoeFjhdEhnSIlGdDoIhJKh+XYy0+StsaXcbvAC2KGc8w7L1eH1W
-	BqaHEZvX3tqRCzbtjCj8rc9M=
-X-Received: by 2002:a05:6000:603:b0:425:8bff:69fe with SMTP id ffacd0b85a97d-4266e8e6c55mr14958364f8f.57.1760427476423;
-        Tue, 14 Oct 2025 00:37:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFakWFpLVIjohFo3FxWGxf+m3faCZnqyMx0D0r3L4Uyua5kzQh9UCZhYel6YlToPfvo+XXFPw==
-X-Received: by 2002:a05:6000:603:b0:425:8bff:69fe with SMTP id ffacd0b85a97d-4266e8e6c55mr14958352f8f.57.1760427476002;
-        Tue, 14 Oct 2025 00:37:56 -0700 (PDT)
-Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce589a21sm22711021f8f.23.2025.10.14.00.37.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 00:37:55 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Jocelyn Falempe <jfalempe@redhat.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Jocelyn Falempe <jfalempe@redhat.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 6/6] drm/panic: Fix 24bit pixel crossing page boundaries
-In-Reply-To: <20251009122955.562888-7-jfalempe@redhat.com>
-References: <20251009122955.562888-1-jfalempe@redhat.com>
- <20251009122955.562888-7-jfalempe@redhat.com>
-Date: Tue, 14 Oct 2025 09:37:54 +0200
-Message-ID: <874is2q6gd.fsf@ocarina.mail-host-address-is-not-set>
+	s=arc-20240116; t=1760427588; c=relaxed/simple;
+	bh=BQ9jer1zGLwz8HVUVnXNwihqaOBybFGc85+G5DL43uQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sstp+Z3vwLncn3DdWZx/RYUo6Yk164+QKV4YsPZeVgZOeXAOCyMlZ3D8neKH9BT6YYEcpfGscvKbwypzb9P2uxvprJ/x3yL3TP4lKnJZ4nm63bOV2QVMm16VOETJGtyi+xnkjTLr60p9LDbW6fxYyIE40wJn3HQqpqvyqSVZ8os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.198])
+	by gateway (Coremail) with SMTP id _____8CxK9I+_u1opesVAA--.45392S3;
+	Tue, 14 Oct 2025 15:39:42 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.198])
+	by front1 (Coremail) with SMTP id qMiowJDxscI5_u1oWivhAA--.63490S2;
+	Tue, 14 Oct 2025 15:39:41 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>
+Cc: linux-pci@vger.kernel.org,
+	Jianmin Lv <lvjianmin@loongson.cn>,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Huacai Chen <chenhuacai@gmail.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH 03/15] PCI: Limit islolated function probing on bus 0 for LoongArch
+Date: Tue, 14 Oct 2025 15:39:29 +0800
+Message-ID: <20251014073929.2143907-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxscI5_u1oWivhAA--.63490S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxJry8Cr43tF1DZFyxAFyxWFX_yoW8Ww18pF
+	Z5u3y8Ary8KFy3ArZxA3y0kr15K397A34UCFWUG345XanxJ3Wxtws8tF1aqrnrGrWIvFyF
+	qa1DZrW5u3WxA3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y
+	6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
+	AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE
+	2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
+	C2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73
+	UjIFyTuYvjxUc0eHDUUUU
 
-Jocelyn Falempe <jfalempe@redhat.com> writes:
+We found some discrete AMD graphics devices hide funtion 0 and the whole
+is not supposed to be probed.
 
-> When using page list framebuffer, and using RGB888 format, some
-> pixels can cross the page boundaries, and this case was not handled,
-> leading to writing 1 or 2 bytes on the next virtual address.
->
-> Add a check and a specific function to handle this case.
->
-> Fixes: c9ff2808790f0 ("drm/panic: Add support to scanout buffer as array of pages")
-> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-> ---
+Since our original purpose is to allow integrated devices (on bus 0) to
+be probed without function 0, we can limit the islolated function probing
+only on bus 0.
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: a02fd05661d73a8 ("PCI: Extend isolated function probing to LoongArch")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ drivers/pci/probe.c        | 2 +-
+ include/linux/hypervisor.h | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index c83e75a0ec12..da6a2aef823a 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2883,7 +2883,7 @@ int pci_scan_slot(struct pci_bus *bus, int devfn)
+ 			 * a hypervisor that passes through individual PCI
+ 			 * functions.
+ 			 */
+-			if (!hypervisor_isolated_pci_functions())
++			if (!hypervisor_isolated_pci_functions(bus->number))
+ 				break;
+ 		}
+ 		fn = next_fn(bus, dev, fn);
+diff --git a/include/linux/hypervisor.h b/include/linux/hypervisor.h
+index be5417303ecf..30ece04a16d9 100644
+--- a/include/linux/hypervisor.h
++++ b/include/linux/hypervisor.h
+@@ -32,13 +32,15 @@ static inline bool jailhouse_paravirt(void)
+ 
+ #endif /* !CONFIG_X86 */
+ 
+-static inline bool hypervisor_isolated_pci_functions(void)
++static inline bool hypervisor_isolated_pci_functions(int bus)
+ {
+ 	if (IS_ENABLED(CONFIG_S390))
+ 		return true;
+ 
+-	if (IS_ENABLED(CONFIG_LOONGARCH))
+-		return true;
++	if (IS_ENABLED(CONFIG_LOONGARCH)) {
++		if (bus == 0)
++			return true;
++	}
+ 
+ 	return jailhouse_paravirt();
+ }
 -- 
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+2.47.3
 
 
