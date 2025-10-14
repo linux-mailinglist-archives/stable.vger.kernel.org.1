@@ -1,78 +1,40 @@
-Return-Path: <stable+bounces-185703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A90BDAB8E
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 18:58:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56D5BDAC28
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 19:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2DD7402D2E
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 16:58:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8DD84083D7
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 17:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B1A304BB2;
-	Tue, 14 Oct 2025 16:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pz016Vad"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3635304BD5;
+	Tue, 14 Oct 2025 17:19:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33022877E3
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 16:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06B02FC86C;
+	Tue, 14 Oct 2025 17:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760461111; cv=none; b=vFIZ/mWhJ39FDMcgn/b3r9R0ml0zWb4rjl5OJGVJnm2Kio0FsYtY3xz09ZHHjlIqPDG0dvmxt/dFOPzR12GDV2Wy80sWv946IZ/Db2YHMK5LGR9MQDjFMKxzqk/CVcmtF3y/DSFm2Rwcgqakq069wBSFfg87ZatETsDABYwUMlc=
+	t=1760462399; cv=none; b=gj5Jy47rjKZPGEkxVX70g1L4HPKVm5VowlVxbVdvoA11ZhQzwjMZou6Mczp7+vsKYnLWsElHxbj3xYvRnjKKjT7irnC2GzZDLe0lqNjTXX2GN/V6GmNGhKSIapHo/nwW2UmKmS4H6WEhpWeyzzS9P5/FARHBZ3adRlS7wgtR/co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760461111; c=relaxed/simple;
-	bh=YsyUZHgi1wpE/vvikQRglq+UzixFkapYZ/q1X/Cvgvw=;
+	s=arc-20240116; t=1760462399; c=relaxed/simple;
+	bh=+Rok64GjH6bMzjCNLJns+E/72zeS8NKwoze0SUab/P0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hrDoKMuj674RJL5GWsV9lWVFVZRqNMzeWLbce8Uh8Wm7kxCy4YB+0rHntCdFjPrTULov21nK2aUFAizU9Z9XvCtxTxuxD3HipASi2jScn5Ht+ArdzI9pB3n7MHO5cbhsVustRE36VtYudwIyPCX4IsIgxbly4PwjlGupftWKdsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pz016Vad; arc=none smtp.client-ip=209.85.166.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-90a0b3ddebeso228357039f.0
-        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 09:58:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1760461109; x=1761065909; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Uv1jmh2eVmOSopdUqtY+w8Wv8v5i6enZZ9ZLD535XmM=;
-        b=Pz016VadKeqX6h0q61li9LvHotGJ5c8iwMK0L7/J7LkMBtb5OgWmJBNDaOiRJDhJz9
-         BVFaJ5euH7T1cEWcASANOmCLQamYIOgZSAHVxBWmuw/x3gzdh8nktjdjOb2DiOqTYkNg
-         puoCRzlTrMsc0TWaZThOQwHdFIMiUWb3KGqvM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760461109; x=1761065909;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Uv1jmh2eVmOSopdUqtY+w8Wv8v5i6enZZ9ZLD535XmM=;
-        b=Cf2W+jfqxg3yP+PC9pSu4Zd6FE4H3+4aw9oOm/8aZ2YMqBZMDK17/QVuseziiRZBQJ
-         FNdYLCvtBurCTo+plfVCq4R+X7RHToovnf+iKun9BxN7uf20XaZO0uyFavMlnNHEQUqn
-         y+i+YQVlT9a3N2YmRCuaYKRq+6N2uJMce7qHsWzjwVn9kXpf2v7MyyMi1v8wrRpXUzjH
-         VBE7DYzdvBKirnSTTpFUcaqQmNAUl7Rvl8OcwRX1njTgePTGpRg7+MIupJ4Wb7LggGCt
-         jWNzUfdyF4ER6UmAz+GzmYEwctfOHTN3r4XLeJm0uzOTaZp/Ct6mM1RwYmQKcMkIAuDj
-         8Mig==
-X-Forwarded-Encrypted: i=1; AJvYcCVmy4mOp0sXqIRGAYBxZScC/dIrmebA+d6Uue86JL/Cl65Pbr7z5YiXqbQxUGvnuIEbtnA7n5c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJrvkFyOhf3fpUN6UisRwFvwbS9ztsa5bCySav0FzbPUyhjNeJ
-	tFHy6/1t7i4eusU28BzIr/AsRnOHYGk5i2/TiiXtpLFvtCs/yarZqtfaGLVSNazQ+4Q=
-X-Gm-Gg: ASbGncsP7DmRj3lP+sSGhjIUufFuOpjsn60r75Yz2J9JzHPAfHV4H1lFGwzUAxu6cBu
-	JZqzELNqwNONE1jmLcLJ/STcZtG8l7DScKvzQbQ1/9k3ATE5HC5pOod7PBenXWiTPggE/BdoWR7
-	K7ovf63jaX7lxE2xVKzLm+661r8EHTp2UtneCz5QGq1ZXCKameKXUMJKqQ4D792WUyiHMFImPL7
-	pb/UoJ+Ys/9v5j2gjSLQMxY7bPrnn2SUE15QDvfeK2WP9/EHFzo7FwmUi3pUvbrfkzd/Bh9m1gT
-	LLowOGGCm386zCG5D6kNEx2z+y9yQbPvWhDc/UHzLNMEo9Aje7JEQb+y7UZfjURUNf0GmJCKVwJ
-	w8ssGbGIph4gVjieCfF7ciFqHxlSbHqMBaZb1Gl5yEjbHdBjDp7/ypEfzrdTVdyt9Ob8swyRRvj
-	k=
-X-Google-Smtp-Source: AGHT+IEpt/iipPZMrqhw1wAspnajPgF214RYw1OdoUghqLh/7sXAtLGEGZrEJbe94Pt4al96RJkdQg==
-X-Received: by 2002:a05:6602:29d2:b0:8a6:e722:a9e8 with SMTP id ca18e2360f4ac-93bd189ad24mr3241436639f.6.1760461108974;
-        Tue, 14 Oct 2025 09:58:28 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-93e25a63c81sm487119339f.18.2025.10.14.09.58.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Oct 2025 09:58:28 -0700 (PDT)
-Message-ID: <1263d6cd-f9a8-4558-9c59-57f9b5503473@linuxfoundation.org>
-Date: Tue, 14 Oct 2025 10:58:26 -0600
+	 In-Reply-To:Content-Type; b=WpmDhUWNdQhJ5OUgkAwVpOi8Xhja11OkDd98UfTvjco/4amlj0sD46xiSSBJslHZX38MYr2q8JXcdvpOvR/EJNYKDs3KSPhOsflWtiDFOdB4KMD1SQH6B0928X9xktEQmmdgG4ri+4s6ul04+amTU5DEdq2XZnAP++HlLY4oJ5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D193B1A9A;
+	Tue, 14 Oct 2025 10:19:47 -0700 (PDT)
+Received: from [10.1.36.66] (unknown [10.1.36.66])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 847AB3F66E;
+	Tue, 14 Oct 2025 10:19:53 -0700 (PDT)
+Message-ID: <e9eb077b-3253-49be-b997-a07dcde86cdc@arm.com>
+Date: Tue, 14 Oct 2025 18:19:51 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,46 +42,220 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.17 000/563] 6.17.3-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20251013144411.274874080@linuxfoundation.org>
+Subject: Re: stable: commit "cpuidle: menu: Avoid discarding useful
+ information" causes regressions
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+ Sasha Levin <sashal@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org
+References: <36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7>
+ <08529809-5ca1-4495-8160-15d8e85ad640@arm.com>
+ <2zreguw4djctgcmvgticnm4dctcuja7yfnp3r6bxaqon3i2pxf@thee3p3qduoq>
+ <8da42386-282e-4f97-af93-4715ae206361@arm.com>
+ <nd64xabhbb53bbqoxsjkfvkmlpn5tkdlu3nb5ofwdhyauko35b@qv6in7biupgi>
+ <49cf14a1-b96f-4413-a17e-599bc1c104cd@arm.com>
+ <CAJZ5v0hGu-JdwR57cwKfB+a98Pv7e3y36X6xCo=PyGdD2hwkhQ@mail.gmail.com>
 Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Christian Loehle <christian.loehle@arm.com>
+In-Reply-To: <CAJZ5v0hGu-JdwR57cwKfB+a98Pv7e3y36X6xCo=PyGdD2hwkhQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 10/13/25 08:37, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.17.3 release.
-> There are 563 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 10/14/25 16:54, Rafael J. Wysocki wrote:
+> On Tue, Oct 14, 2025 at 5:11 PM Christian Loehle
+> <christian.loehle@arm.com> wrote:
+>>
+>> On 10/14/25 12:55, Sergey Senozhatsky wrote:
+>>> On (25/10/14 11:25), Christian Loehle wrote:
+>>>> On 10/14/25 11:23, Sergey Senozhatsky wrote:
+>>>>> On (25/10/14 10:50), Christian Loehle wrote:
+>>>>>>> Upstream fixup fa3fa55de0d ("cpuidle: governors: menu: Avoid using
+>>>>>>> invalid recent intervals data") doesn't address the problems we are
+>>>>>>> observing.  Revert seems to be bringing performance metrics back to
+>>>>>>> pre-regression levels.
+>>>>>>
+>>>>>> Any details would be much appreciated.
+>>>>>> How do the idle state usages differ with and without
+>>>>>> "cpuidle: menu: Avoid discarding useful information"?
+>>>>>> What do the idle states look like in your platform?
+>>>>>
+>>>>> Sure, I can run tests.  How do I get the numbers/stats
+>>>>> that you are asking for?
+>>>>
+>>>> Ideally just dump
+>>>> cat /sys/devices/system/cpu/cpu*/cpuidle/state*/*
+>>>> before and after the test.
+>>>
+>>> OK, got some data for you.  The terminology being used here is as follows:
+>>>
+>>> - 6.1-base
+>>>   is 6.1 stable with a9edb700846 "cpuidle: menu: Avoid discarding useful information"
+>>>
+>>> - 6.1-base-fixup
+>>>   is 6.1 stable with a9edb700846 and fa3fa55de0d6 "cpuidle: governors:
+>>>   menu: Avoid using invalid recent intervals data" cherry-pick
+>>>
+>>> - 6.1-revert
+>>>   is 6.1 stable with a9edb700846 reverted (and no fixup commit, obviously)
+>>>
+>>> Just to show the scale of regression, results of some of the benchmarks:
+>>>
+>>>   6.1-base:           84.5
+>>>   6.1-base-fixup:     76.5
+>>>   6.1-revert:         59.5
+>>>
+>>>   (lower is better, 6.1-revert has the same results as previous stable
+>>>   kernels).
+>> This immediately threw me off.
+>> The fixup was written for a specific system which had completely broken
+>> cpuidle. It shouldn't affect any sane system significantly.
+>> I double checked the numbers and your system looks fine, in fact none of
+>> the tests had any rejected cpuidle occurrences. So functionally base and
+>> base-fixup are identical for you. The cpuidle numbers are also reasonably
+>> 'in the noise', so just for the future some stats would be helpful on those
+>> scores.
+>>
+>> I can see a huge difference between base and revert in terms of cpuidle,
+>> so that's enough for me to take a look, I'll do that now.
+>> (6.1-revert has more C3_ACPI in favor of C1_ACPI.)
+>>
+>> (Also I can't send this email without at least recommending teo instead of menu
+>> for your platform / use-cases, if you deemed it unfit I'd love to know what
+>> didn't work for you!)
 > 
-> Responses should be made by Wed, 15 Oct 2025 14:42:41 +0000.
-> Anything received after that time might be too late.
+> Well, yeah.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.3-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
-> and the diffstat can be found below.
+> So I've already done some analysis.
 > 
-> thanks,
+> There are 4 C-states, POLL, C1, C6 and C10 (at least that's what the
+> MWAIT hints tell me).
 > 
-> greg k-h
+> This is how many times each of them was requested during the workload
+> run on base 6.1.y:
 > 
+> POLL: 21445
+> C1: 2993722
+> C6: 767029
+> C10: 736854
+> 
+> and in percentage of the total idle state requests:
+> 
+> POLL: 0,47%
+> C1: 66,25%
+> C6: 16,97%
+> C10: 16,31%
+> 
+> With the problematic commit reverted, this became
+> 
+> POLL: 16092
+> C1: 2452591
+> C6: 750933
+> C10: 1150259
+> 
+> and (again) in percentage of the total:
+> 
+> POLL: 0,37%
+> C1: 56,12%
+> C6: 17,18%
+> C10: 26,32%
+> 
+> Overall, POLL is negligible and the revet had no effect on the number
+> of times C6 was requested.  The difference is for C1 and C10 and it's
+> 10% in both cases, but going in opposite directions so to speak: C1
+> was requested 10% less and C10 was requested 10% more after the
+> revert.
+> 
+> Let's see how this corresponds to the residency numbers.
+> 
+> For base 6.1.y there was
+> 
+> POLL: 599883
+> C1: 732303748
+> C6: 576785253
+> C10: 2020491489
+> 
+> and in percentage of the total
+> 
+> POLL: 0,02%
+> C1: 21,99%
+> C6: 17,32%
+> C10: 60,67%
+> 
+> After the revert it became
+> 
+> POLL: 469451
+> C1: 517623465
+> C6: 508945687
+> C10: 2567701673
+> 
+> and in percentage of the total
+> 
+> POLL: 0,01%
+> C1: 14,40%
+> C6: 14,16%
+> C10: 71,43%
+> 
+> so with the revert the CPUs spend around 7% more time in deep idle
+> states (C6 and C10 combined).
+> 
+> I have to say that this is consistent with the intent of the
+> problematic commit, which is to reduce the number of times the deepest
+> idle state is requested although it is likely to be too deep.
+> 
+> However, on the system in question this somehow causes performance to
+> drop significantly (even though shallow idle states are used more
+> often which should result in lower average idle state exit latency and
+> better performance).
+> 
+> One possible explanation is that this somehow affects turbo
+> frequencies.  That is, requesting shallower idle states on idle CPUs
+> prevents the other CPUs from getting sufficiently high turbo.
+> 
+> Sergey, can you please run the workload under turbostat on the base
+> 6.1.y and on 6.1.y with the problematic commit reverted and send the
+> turbostat output from both runs (note: turbostat needs to be run as
+> root)?
 
-Compiled and booted on my test system. No dmesg regressions.
+That's the most plausible explanation and would also be my guess.
+FWIW most of the C3_ACPI (== C10) with revert are objectively wrong
+with 78% idle misses (they were already pretty high with base around 72.5%).
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+I'll leave this here for easier following:
 
-thanks,
--- Shuah
+===== 6.1-base: after minus before deltas (aggregated across CPUs) =====
++---------+-------------+------------+--------------+---------------+------------+------------+---------+
+|   state | time_diff_s | usage_diff | avg_resid_us | rejected_diff | above_diff | below_diff | share_% |
++---------+-------------+------------+--------------+---------------+------------+------------+---------+
+|    POLL |       0.600 |     21,445 |         28.0 |             0 |          0 |     19,846 |    0.02 |
+| C1_ACPI |     732.304 |  2,993,722 |        244.6 |             0 |      3,816 |    280,613 |   21.99 |
+| C2_ACPI |     576.785 |    767,029 |        752.0 |             0 |    272,105 |        453 |   17.32 |
+| C3_ACPI |   2,020.491 |    736,854 |      2,742.1 |             0 |    534,424 |          0 |   60.67 |
+|   TOTAL |   3,330.180 |  4,519,050 |              |             0 |    810,345 |    300,912 |  100.00 |
++---------+-------------+------------+--------------+---------------+------------+------------+---------+
+
+===== 6.1-revert: after minus before deltas (aggregated across CPUs) =====
++---------+-------------+------------+--------------+---------------+------------+------------+---------+
+|   state | time_diff_s | usage_diff | avg_resid_us | rejected_diff | above_diff | below_diff | share_% |
++---------+-------------+------------+--------------+---------------+------------+------------+---------+
+|    POLL |       0.469 |     16,092 |         29.2 |             0 |          0 |     14,855 |    0.01 |
+| C1_ACPI |     517.623 |  2,452,591 |        211.1 |             0 |      4,109 |    150,500 |   14.40 |
+| C2_ACPI |     508.946 |    750,933 |        677.8 |             0 |    327,457 |        427 |   14.16 |
+| C3_ACPI |   2,567.702 |  1,150,259 |      2,232.3 |             0 |    895,311 |          0 |   71.43 |
+|   TOTAL |   3,594.740 |  4,369,875 |              |             0 |  1,226,877 |    165,782 |  100.00 |
++---------+-------------+------------+--------------+---------------+------------+------------+---------+
+
+===== 6.1-revert minus 6.1-base (state-by-state deltas of the deltas) =====
++---------+-----------+----------+----------+---------------+----------+----------+
+|   state | Δshare_pp |   Δusage |  Δtime_s | Δavg_resid_us |   Δabove |   Δbelow |
++---------+-----------+----------+----------+---------------+----------+----------+
+|    POLL |     -0.00 |   -5,353 |   -0.130 |           1.2 |       +0 |   -4,991 |
+| C1_ACPI |     -7.59 | -541,131 | -214.680 |         -33.6 |     +293 | -130,113 |
+| C2_ACPI |     -3.16 |  -16,096 |  -67.840 |         -74.2 |  +55,352 |      -26 |
+| C3_ACPI |    +10.76 | +413,405 |  547.210 |        -509.8 | +360,887 |       +0 |
+|   TOTAL |     +0.00 | -149,175 |  264.560 |               | +416,532 | -135,130 |
++---------+-----------+----------+----------+---------------+----------+----------+
 
