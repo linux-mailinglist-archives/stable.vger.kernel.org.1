@@ -1,193 +1,193 @@
-Return-Path: <stable+bounces-185608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B37BD848F
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 10:52:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E479BD84B9
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 10:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E7E07350622
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 08:52:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C65A44E51D1
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 08:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567082E0939;
-	Tue, 14 Oct 2025 08:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21472D248E;
+	Tue, 14 Oct 2025 08:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HWEAtvBK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SOSdCEFN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2A62DC79B
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 08:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26522D73BE
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 08:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760431923; cv=none; b=Rvcaxvl3K3G9Hwx6F6UatP6XMmt5XDqiB7L0BubqQ27UMaswWBrZAu50tkvo7ZFisiw5XuPsH3W8b6SHRpJkCY2l8KheVPMrdDpQza0uBse8Oj9/QSa13Z4vYll0XlgtOadwc2uzh2v5Ogc9McdPlALE9fQy19yyadv4YndNwFw=
+	t=1760432072; cv=none; b=rkAXhfqPnnmxfGFQ3IcmdFilVxFL1cVFzxt4ffxjxpT4k1afMCF3O/3GwrS00QpeAoPmmSMDCq+sAZygnsJRFGmFE7FnHOx18sVzcXDFGG9a8sjVK2naGhpoG1Le9OSZ5dtqKYjB7BSxgH7ZdHbQgDnRw+6q3TF6fY+XF+xAoCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760431923; c=relaxed/simple;
-	bh=PxY9YI4CSmdKhC6uoizpHkfwmH3aq/ev/ew2lUtOZuE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=h7EhDKxI4dLopmm3oL9HOB6tWSu/ra9RUEJIwgDiW+tCUSHeRT3LDNc8JBQ3T1weI4tqrP5ut7fQ+OkwPjAhvUeftWaTnL+444H5iD7u/TckSz38TMDdRmEXlxHnn4frxywlzt4iOYVsw1kWoomRGVmFEBcTQarnsLLRJGbmgOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hhhuuu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HWEAtvBK; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hhhuuu.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2699ed6d43dso92406715ad.1
-        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 01:52:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760431921; x=1761036721; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bX12dqdVlICTMSRoW5hHUvlBwoKcGr52PuS1MGrj6wY=;
-        b=HWEAtvBKRJzCwsZpxc8cEQk4D5VsMXPcLM6KNQ74Er9O9GSI9uCAPLdY0IFN32YzFr
-         4ghCsTFcxdncomvoRBPcGxPgrpAxhcYmthssDlwVRkRhuGGl0pOB/PjpV5+059WmgM0l
-         XnygJbTwelO3cFA2qZm31JaY1xtQZ4AE+raeDVDePw+3tmatL5XZ3Wnd7BbfeuIxkziY
-         hD8PfvnZhspoD5uN9OOGj800lNtSVkOuu0LBnlWJJQKuhpRt4AUVO8d7R8V1cCHClspH
-         dg2Jj6clC5R2wOtWwAUFTw7Z/MycARw6arxWyl+1palnv4xpGUMmuwvFBYjn90fuz+KR
-         EmQg==
+	s=arc-20240116; t=1760432072; c=relaxed/simple;
+	bh=cUl1QO68HpA4Pphs0fDbNPwsf587wWviVRMSWG0EdBY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=giwPdJnI0kfty2otCu7qMxFEURw1Mp9dBV/vBgHhggWeMB4wjuLSHtOEbMOuHOdgBRKNOktCY4xVfLso7Qgb7a6oWzG78JBSzxCTJWW+BIqhPn8dawjoXuzbRxtxpE2tAHanXX4DKYqVtSDDTV6wbvzLwJK+PRWtynr/SQkkLkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SOSdCEFN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760432069;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NAy88YMnGtIP/uqwpz5GQHTqHQIlvLAglo0Pv+LXXqc=;
+	b=SOSdCEFN3QajJOqwlvggNPfUIlnd8j9fknf8OMRbDdIQpUrQBXEXwL0ZE4Ad0AhaBHkdYO
+	RRbaOcf8xfSaA9XPbBSWIAY39OLIbr7XmqVrunqQi+CslHz7fqf6ss2rCQleQRX/x43wOV
+	W02+D2cVtdwqrfWHqVz2YAUa2AmaLyE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-322-UKqINstkPnSJUqjlZPjckg-1; Tue, 14 Oct 2025 04:54:28 -0400
+X-MC-Unique: UKqINstkPnSJUqjlZPjckg-1
+X-Mimecast-MFC-AGG-ID: UKqINstkPnSJUqjlZPjckg_1760432067
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-426d2cd59e4so2955508f8f.1
+        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 01:54:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760431921; x=1761036721;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bX12dqdVlICTMSRoW5hHUvlBwoKcGr52PuS1MGrj6wY=;
-        b=VNn9O082Xa9VMfLyyu/2vryB+go6dHsCtAhtBCEjz4DdSuEIR1RKABQcIsXpd8K+ji
-         al+dYFaIQy5loXZg0x0Zmzvyh7yWLqD4B/L08PTR3xKW8XfNKo4IRqiXQeeTec4sP5pS
-         sMaLwisqhs0YGzhVsFkAD1DvfmyD4//vz/oesw8Ep/dI6gGYGst2/Zb3c7Q7o6epv0Sj
-         cPHTcsv1fVpc1ItrS+/O30nrd+rXpcXmnP84SnizZqEdwQa9raKLV+gKmMWVBJ5LLg0c
-         X39Zsl/2F1Wzp6bSdjpLHGS9tXfg0FLZcHocCjT2gSCYeXljM4PDfkhwDs3D0/k0Nbfd
-         w18w==
-X-Forwarded-Encrypted: i=1; AJvYcCUuPBNpTO5RkpA/cmXeGDhZZpbL97RSGN8rdaipWTDa2UCTgmnxMt+1eS2LBauIs2aH1wsrow4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNL7cSGg2qjJ3yK6E7iEXowwpTENcgL77l1fySs0ueB5y/CiV5
-	tVf3wktH/n/N8GH62GdYZSWltCk2tnshRHkw6lGvUATXjF8PuC7DfPmGM7q3f77CdSIKlPw9CsY
-	fef5Mmw==
-X-Google-Smtp-Source: AGHT+IG+Fi46f+lO8zssLsTmLd69T+nbCbw1cECTScqiKJBBv7O5leY+nhhN6mss+yBFIX4Zx7GK1+Ok9KU=
-X-Received: from plbka8.prod.google.com ([2002:a17:903:3348:b0:290:28e2:ce54])
- (user=hhhuuu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f0e:b0:248:a642:eec6
- with SMTP id d9443c01a7336-29027402f2dmr259664015ad.50.1760431920649; Tue, 14
- Oct 2025 01:52:00 -0700 (PDT)
-Date: Tue, 14 Oct 2025 08:51:56 +0000
+        d=1e100.net; s=20230601; t=1760432067; x=1761036867;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NAy88YMnGtIP/uqwpz5GQHTqHQIlvLAglo0Pv+LXXqc=;
+        b=fsRRUTWNhGx+6YJ9w2Zh/tYxUOnU/1THhxi3DSS3h/i/g45Ff0aDcUY2dY92XqDWEv
+         TurULFty+7R9B1aVAGJ5uxRvmizzquxooyTiJBJCUz4X2KKOKKQ7sCzgOgcs6bCeBdNe
+         +FuuIdaUvhi6PnHTaOSnaVASVbKr2w+/tirk5rrN5IwTpHL8MtD3aUUhA6w/nY37qp2/
+         R31Gn5G4YkWsX6BSVmF0sUiOnLU4/X3XpLglRPdbNtgzi+Uy9JrWhUBBQG26d1FG+JDN
+         dwZU0ReXMg7busWBj1tu0ArRAVtmUzIIrAOH2vWY+Udflu4+X3Cs7Va5lq5CBpe1oHyC
+         5WMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWe/zpeG2qlQmkF8JlAUHvR1ldSIbEJ1rg46pdtcRb3/bwDHo4P+JqcZbO9X5Wdnbxyq/qdEiY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzId8GKezAEiE6eqj0EzPL8n7n+fYc53G2RxKh3IKeZxfn+IO74
+	rTU9k+5oYNf7upDqpp/400P5LDyO0vA41C3o3X+AkRL+pQx2L48abXkrO8QsW2HILPE9mto2f8m
+	Aqbi7V2wk24zWapLNDVRtdx+AoBn4MG3InwiXhtjMiXYfaKI6G/4+0LDCVQ==
+X-Gm-Gg: ASbGncvQzfEabYjbC2VcRil0lU/bUDtAKQot7kdk0vL7reQzV9vKVNo2Fnh3qnob5U5
+	NX62P3N4LNr7ZgY0vj7/SWst/RfiZQkZDuGOuUWsAQm3y2EJ5mEMP2u7q+jvOVH/VisMCODpexX
+	pZJsZtBZBcvw6vG3y/fcItlKGBPmJAwPUE+EWlzg+eMBlxx9WRTsWw/IUZg0HG0Rip4yZDiSIsX
+	uTAkJDI7B6XNGlZDbsJ6FGGJ+XA+U51rfDq5pi54zOUtGAv9SP0pkwjVqgjpTrI0noN+Xz1jHgr
+	qAfrELOnJUzPChI3SVGORtBxNCC8XNcCVW0TkSQCJtc3QPdBoC8guCrmTz8Z5vK0v7K6Z2ix/54
+	pSDMZ
+X-Received: by 2002:a05:6000:240d:b0:425:7c3c:82cf with SMTP id ffacd0b85a97d-4266e7cdc8fmr17010194f8f.11.1760432066929;
+        Tue, 14 Oct 2025 01:54:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEsn0T1UJGNN+DMCPRU7lJk5Itt5x7z0YHqju+V9yATaC5KHWal8J0l4vDY6qI1Yqyz0I9Uyg==
+X-Received: by 2002:a05:6000:240d:b0:425:7c3c:82cf with SMTP id ffacd0b85a97d-4266e7cdc8fmr17010170f8f.11.1760432066481;
+        Tue, 14 Oct 2025 01:54:26 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:c:37e0:8998:e0cf:68cc:1b62? ([2a01:e0a:c:37e0:8998:e0cf:68cc:1b62])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5e833dsm22538021f8f.53.2025.10.14.01.54.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Oct 2025 01:54:26 -0700 (PDT)
+Message-ID: <34466c59-cea5-4a09-9dfa-83e25dbc49eb@redhat.com>
+Date: Tue, 14 Oct 2025 10:54:23 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.760.g7b8bcc2412-goog
-Message-ID: <20251014085156.2651449-1-hhhuuu@google.com>
-Subject: [PATCH v2] usb: gadget: udc: fix race condition in usb_del_gadget
-From: Jimmy Hu <hhhuuu@google.com>
-To: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
-Cc: badhri@google.com, hhhuuu@google.com, stern@rowland.harvard.edu, 
-	royluo@google.com, Thinh.Nguyen@synopsys.com, balbi@ti.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/ast: Blank with VGACR17 sync enable, always clear
+ VGACRB6 sync off
+To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@redhat.com,
+ dianders@chromium.org, nbowler@draconx.ca
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+References: <20251014084743.18242-1-tzimmermann@suse.de>
+Content-Language: en-US, fr
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <20251014084743.18242-1-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-A race condition during gadget teardown can lead to a use-after-free
-in usb_gadget_state_work(), as reported by KASAN:
+On 14/10/2025 10:46, Thomas Zimmermann wrote:
+> Blank the display by disabling sync pulses with VGACR17<7>. Unblank
+> by reenabling them. This VGA setting should be supported by all Aspeed
+> hardware.
+> 
+> Ast currently blanks via sync-off bits in VGACRB6. Not all BMCs handle
+> VGACRB6 correctly. After disabling sync during a reboot, some BMCs do
+> not reenable it after the soft reset. The display output remains dark.
+> When the display is off during boot, some BMCs set the sync-off bits in
+> VGACRB6, so the display remains dark. Observed with  Blackbird AST2500
+> BMCs. Clearing the sync-off bits unconditionally fixes these issues.
+> 
+> Also do not modify VGASR1's SD bit for blanking, as it only disables GPU
+> access to video memory.
 
-  BUG: KASAN: invalid-access in sysfs_notify+0_x_2c/0_x_d0
-  Workqueue: events usb_gadget_state_work
+Thanks, it looks good to me.
 
-The fundamental race occurs because a concurrent event (e.g., an
-interrupt) can call usb_gadget_set_state() and schedule gadget->work
-at any time during the cleanup process in usb_del_gadget().
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
 
-Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
-device removal") attempted to fix this by moving flush_work() to after
-device_del(). However, this does not fully solve the race, as a new
-work item can still be scheduled *after* flush_work() completes but
-before the gadget's memory is freed, leading to the same use-after-free.
-
-This patch fixes the race condition robustly by introducing a 'teardown'
-flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
-set during cleanup in usb_del_gadget() *before* calling flush_work() to
-prevent any new work from being scheduled once cleanup has commenced.
-The scheduling site, usb_gadget_set_state(), now checks this flag under
-the lock before queueing the work, thus safely closing the race window.
-
-Changes in v2:
-  - Removed redundant inline comments as suggested by Alan Stern.
-
-Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
-Signed-off-by: Jimmy Hu <hhhuuu@google.com>
-Cc: stable@vger.kernel.org
----
- drivers/usb/gadget/udc/core.c | 17 ++++++++++++++++-
- include/linux/usb/gadget.h    |  5 +++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index d709e24c1fd4..66d2428835da 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1123,8 +1123,13 @@ static void usb_gadget_state_work(struct work_struct *work)
- void usb_gadget_set_state(struct usb_gadget *gadget,
- 		enum usb_device_state state)
- {
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&gadget->state_lock, flags);
- 	gadget->state = state;
--	schedule_work(&gadget->work);
-+	if (!gadget->teardown)
-+		schedule_work(&gadget->work);
-+	spin_unlock_irqrestore(&gadget->state_lock, flags);
- }
- EXPORT_SYMBOL_GPL(usb_gadget_set_state);
- 
-@@ -1357,6 +1362,8 @@ static void usb_udc_nop_release(struct device *dev)
- void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
- 		void (*release)(struct device *dev))
- {
-+	spin_lock_init(&gadget->state_lock);
-+	gadget->teardown = false;
- 	INIT_WORK(&gadget->work, usb_gadget_state_work);
- 	gadget->dev.parent = parent;
- 
-@@ -1531,6 +1538,7 @@ EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
- void usb_del_gadget(struct usb_gadget *gadget)
- {
- 	struct usb_udc *udc = gadget->udc;
-+	unsigned long flags;
- 
- 	if (!udc)
- 		return;
-@@ -1544,6 +1552,13 @@ void usb_del_gadget(struct usb_gadget *gadget)
- 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
- 	sysfs_remove_link(&udc->dev.kobj, "gadget");
- 	device_del(&gadget->dev);
-+	/*
-+	 * Set the teardown flag before flushing the work to prevent new work
-+	 * from being scheduled while we are cleaning up.
-+	 */
-+	spin_lock_irqsave(&gadget->state_lock, flags);
-+	gadget->teardown = true;
-+	spin_unlock_irqrestore(&gadget->state_lock, flags);
- 	flush_work(&gadget->work);
- 	ida_free(&gadget_id_numbers, gadget->id_number);
- 	cancel_work_sync(&udc->vbus_work);
-diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
-index 0f28c5512fcb..8b5e593f7966 100644
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -351,6 +351,9 @@ struct usb_gadget_ops {
-  *	can handle. The UDC must support this and all slower speeds and lower
-  *	number of lanes.
-  * @state: the state we are now (attached, suspended, configured, etc)
-+ * @state_lock: Spinlock protecting the `state` and `teardown` members.
-+ * @teardown: True if the device is undergoing teardown, used to prevent
-+ *	new work from being scheduled during cleanup.
-  * @name: Identifies the controller hardware type.  Used in diagnostics
-  *	and sometimes configuration.
-  * @dev: Driver model state for this abstract device.
-@@ -426,6 +429,8 @@ struct usb_gadget {
- 	enum usb_ssp_rate		max_ssp_rate;
- 
- 	enum usb_device_state		state;
-+	spinlock_t			state_lock;
-+	bool				teardown;
- 	const char			*name;
- 	struct device			dev;
- 	unsigned			isoch_delay;
--- 
-2.51.0.760.g7b8bcc2412-goog
+> 
+> v2:
+> - init vgacrb6 correctly (Jocelyn)
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: ce3d99c83495 ("drm: Call drm_atomic_helper_shutdown() at shutdown time for misc drivers")
+> Tested-by: Nick Bowler <nbowler@draconx.ca>
+> Reported-by: Nick Bowler <nbowler@draconx.ca>
+> Closes: https://lore.kernel.org/dri-devel/wpwd7rit6t4mnu6kdqbtsnk5bhftgslio6e2jgkz6kgw6cuvvr@xbfswsczfqsi/
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Dave Airlie <airlied@redhat.com>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Jocelyn Falempe <jfalempe@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.7+
+> ---
+>   drivers/gpu/drm/ast/ast_mode.c | 18 ++++++++++--------
+>   drivers/gpu/drm/ast/ast_reg.h  |  1 +
+>   2 files changed, 11 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+> index 6b9d510c509d..9b6a7c54fbb5 100644
+> --- a/drivers/gpu/drm/ast/ast_mode.c
+> +++ b/drivers/gpu/drm/ast/ast_mode.c
+> @@ -836,22 +836,24 @@ ast_crtc_helper_atomic_flush(struct drm_crtc *crtc,
+>   static void ast_crtc_helper_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_state *state)
+>   {
+>   	struct ast_device *ast = to_ast_device(crtc->dev);
+> +	u8 vgacr17 = 0x00;
+> +	u8 vgacrb6 = 0xff;
+>   
+> -	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, 0x00);
+> -	ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, 0x00);
+> +	vgacr17 |= AST_IO_VGACR17_SYNC_ENABLE;
+> +	vgacrb6 &= ~(AST_IO_VGACRB6_VSYNC_OFF | AST_IO_VGACRB6_HSYNC_OFF);
+> +
+> +	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
+> +	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
+>   }
+>   
+>   static void ast_crtc_helper_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_state *state)
+>   {
+>   	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(state, crtc);
+>   	struct ast_device *ast = to_ast_device(crtc->dev);
+> -	u8 vgacrb6;
+> +	u8 vgacr17 = 0xff;
+>   
+> -	ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, AST_IO_VGASR1_SD);
+> -
+> -	vgacrb6 = AST_IO_VGACRB6_VSYNC_OFF |
+> -		  AST_IO_VGACRB6_HSYNC_OFF;
+> -	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
+> +	vgacr17 &= ~AST_IO_VGACR17_SYNC_ENABLE;
+> +	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
+>   
+>   	/*
+>   	 * HW cursors require the underlying primary plane and CRTC to
+> diff --git a/drivers/gpu/drm/ast/ast_reg.h b/drivers/gpu/drm/ast/ast_reg.h
+> index e15adaf3a80e..30578e3b07e4 100644
+> --- a/drivers/gpu/drm/ast/ast_reg.h
+> +++ b/drivers/gpu/drm/ast/ast_reg.h
+> @@ -29,6 +29,7 @@
+>   #define AST_IO_VGAGRI			(0x4E)
+>   
+>   #define AST_IO_VGACRI			(0x54)
+> +#define AST_IO_VGACR17_SYNC_ENABLE	BIT(7) /* called "Hardware reset" in docs */
+>   #define AST_IO_VGACR80_PASSWORD		(0xa8)
+>   #define AST_IO_VGACR99_VGAMEM_RSRV_MASK	GENMASK(1, 0)
+>   #define AST_IO_VGACRA1_VGAIO_DISABLED	BIT(1)
 
 
