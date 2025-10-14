@@ -1,190 +1,124 @@
-Return-Path: <stable+bounces-185582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B31BD7CD9
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:05:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF73BD7EF3
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 09:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E1B1134FB6E
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 07:05:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D89E18A32A1
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 07:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00CE2D3733;
-	Tue, 14 Oct 2025 07:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E62D30E848;
+	Tue, 14 Oct 2025 07:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="K481wy2S"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LAhSY8m2"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA32DF76
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 07:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B1530E835
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 07:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760425551; cv=none; b=U9KaULSeEjObHi4SAXlxik3uufw1Oend3jRzj5FAU7el1CivTbfKtFxXV4dwn3JUQLFDjlDnZuOWN65WErcYTbbTJHPHMtwx3Q2DIdQZX8xUOVDT1tfHx562/BxkGiJAiK28nzELbKvhM1nvdI9wh7ga9C0oqhItKudOuvHiR/4=
+	t=1760427140; cv=none; b=gt2ovQ9bMp+8Xuu6cjCWmtdgstaRilnzCk+dyUKHmb8mxeO8Yik4vsBxT1EwzKjPBjptrqvzLm8sDosjqVc3FDzi6V8CUUMdfVkJ1P+fndHUU8I3/rPFIyKGFX8zdURas49r9IHTosfK7h/KgNr0+cOwdafDQTzN8qjVE9gzfsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760425551; c=relaxed/simple;
-	bh=+WVTecEMaY8Q0Np0tMQandzAD2rqbIXnSuqvz9MoBUc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U04ZzinxmSFcEFEadcGw1PyC4aKX7SatniA0ojxD9E3SnEfI5mMaUGfssN+lYRPfnIiKqb9DHasHx4pwkgJDzUVl70mT5uiGpXE0MsO0cmrHhnbzjgc6nZTjMfgAYPrqROm/onbM2qLpf2QBZ5UsArDYmsRHT02UESOyxANUU2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=K481wy2S; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=PPDnBG0c+TZT9/EGnZ0kIFF609Bix/YmOdHndhFsGRc=; b=K481wy2S5FAOZN1020/owxde2P
-	/xp5htDR8o5KsdvwWZYqoNtP9/0gIyQ1EQTPvxTQewmYBzlsg9n7GnJuIkAQD1Ayv96sdcxvG+ywj
-	QUFf3X+dJcwkbFcnBDQZIY2+kMtHycmRovA4xhso2/5vE0GLH8GBo18rgu+HtSdr4W1O4YaRfue/Q
-	5c1CvFDjEaoVp2dD1HZ+le1JazeJilGkbljUIR29aEAAh9w5lXyAqdfBkhtRtjfSm4+GP0tVQe+EK
-	nrtDDV22SJv6eQuBsxQCo/13JTlBR7FW2cT6t+bOOACcPdb2P6BkWwv6J5oEQ+404ip8YTiB3ZaNH
-	YOAyLApA==;
-Received: from [90.242.12.242] (helo=[192.168.0.101])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1v8Z6C-009I4u-12; Tue, 14 Oct 2025 09:05:32 +0200
-Message-ID: <7ef8ae87-1162-4a4e-9f79-3089bd0a4409@igalia.com>
-Date: Tue, 14 Oct 2025 08:05:31 +0100
+	s=arc-20240116; t=1760427140; c=relaxed/simple;
+	bh=tIefyQwY7kzYvRvjxqhE/Rg+bXOUCtYqGqMTPTNbhIs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lxJzOG2cObLS3zkQX6dmYHt9axotRR+i35qhDQ/Gn8cpgaBdvuPSs8uyKtWbSKNPyPbHHV7epIUoxEuQBor5aj/RGlqgyHED8z7PbfjMpv7s6qzelxXA6+IWpa59fF0yOJSKCaLS6japbjQdVQwSRp8NExSZ9fjakL5+NT/vvbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LAhSY8m2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760427137;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gTEvqfVMwIkz4DW8+ZLEnZjvY2H6k8QKs9GKfPXMt8s=;
+	b=LAhSY8m2ukMvZO5uqLG7eYhIB3xaFp5b5yv8Z0ihyV0YwDloSQid2VPWsJZOvOvL4udeac
+	9xfbPz5PEjh1sjOOG5+1nOKTC5D8rMk8kS9Vp7ZDhYim690XGODrWdxD7vV76m0jSIQZBr
+	NAyKGPU8S7ROtTSpZQiCAIfN9zybd9c=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-316-1lAzB4TLNPC7cSU486-lhg-1; Tue, 14 Oct 2025 03:32:16 -0400
+X-MC-Unique: 1lAzB4TLNPC7cSU486-lhg-1
+X-Mimecast-MFC-AGG-ID: 1lAzB4TLNPC7cSU486-lhg_1760427135
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ed9557f976so5251282f8f.3
+        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:32:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760427135; x=1761031935;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gTEvqfVMwIkz4DW8+ZLEnZjvY2H6k8QKs9GKfPXMt8s=;
+        b=OFHGVj10+oFR1w1IIrQ4K1SeF9l6F21C0WHuBBqHyAj2Sq0B+muRZyFOClmNHlxskt
+         MhqmwWYL2r3+QbST49cFzioCm/upKHVfbhDeo9Ce1W2wvS6flIHyHvdrENO6NSNNjfC9
+         be4gbGRv4pgTgCxEZ+i9SAvmdlwjKW0l4vS6vssf0diUxYjKu0R39eQn3GWLeEdqi3c5
+         /J3fsKi5co6t1DX/I3YKdQyndCwAbVaYwTc3hKDNczNYGDMOC5/05ZNCedyXHsD2SPqV
+         VlXH4oofdQgX9piLd89FMNRGv2SKWu4GaqdaOb3/CoNgirvqCP0RY3+cJPj+kMAyeKxC
+         RyNQ==
+X-Gm-Message-State: AOJu0YzPZzUxckx25YSqZJD5FxLS+IfekUH5Dtp6/hwWnkRZRWgG+WcN
+	IrG7OSwhdezmS7UzfX4jA13GUhdWKjzVn+FXmbBKLcldy6DCQixo7JhgzDcVVkOaD577xCmv2hs
+	S9lHgWTz1940O06suHRjO77FScRUNu8nwkMDVPSFLRh5FvhNYhikIXDj6qw==
+X-Gm-Gg: ASbGncvIsZKmGfQgakjvnajHU2uD5obGkXCYwIbobOEpdN2f2Quvrf7utyYHrn8OlxK
+	pVEfVvTg+CevhwyrpEc0o7jTvdya0b3C6KVCBzvpBrk0lG2vzFqPSWBHUa4j23aDiSwUPC2X6fT
+	cCjZ5pabymEOErvjfiUCoYGPECaVxYnY8nvn5lJXoinvFrOjf9WETP8XnCWt6c7JxjLw9nkcoJj
+	NxeUCj524Fi5cSgqryPQwXFXTvMPTrN2Xkn66bb6vEWc2ur8mlTJaJ2RQ8RFauKWBjByQT62uw0
+	hYx55I/f0ruYBe9TS6O1MSA/SdP/JlNDkX3KVmX0d0uQ0kxqf2ZKW6QSD9SvsihgxhoUvPkxgS7
+	aJ1cDAD3C9RJLGK0LK4egW8c=
+X-Received: by 2002:a05:6000:1a87:b0:425:742e:7823 with SMTP id ffacd0b85a97d-42666ac432bmr14939919f8f.12.1760427134870;
+        Tue, 14 Oct 2025 00:32:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEi0EuQ//2MOCgb87kcf43mwyCqeAgLwogfvvpgOqhiAT4wu5KaE/+LX7onRuci9KVtSJ0glQ==
+X-Received: by 2002:a05:6000:1a87:b0:425:742e:7823 with SMTP id ffacd0b85a97d-42666ac432bmr14939897f8f.12.1760427134470;
+        Tue, 14 Oct 2025 00:32:14 -0700 (PDT)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426f2f72e18sm717892f8f.0.2025.10.14.00.32.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 00:32:13 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Jocelyn Falempe <jfalempe@redhat.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Jocelyn Falempe <jfalempe@redhat.com>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 1/6] drm/panic: Fix drawing the logo on a small narrow
+ screen
+In-Reply-To: <20251009122955.562888-2-jfalempe@redhat.com>
+References: <20251009122955.562888-1-jfalempe@redhat.com>
+ <20251009122955.562888-2-jfalempe@redhat.com>
+Date: Tue, 14 Oct 2025 09:32:12 +0200
+Message-ID: <87ikgiq6pv.fsf@ocarina.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/sched: Fix potential double free in
- drm_sched_job_add_resv_dependencies
-To: phasta@kernel.org, dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Dan Carpenter <dan.carpenter@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Rob Clark <robdclark@chromium.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- Matthew Brost <matthew.brost@intel.com>, Danilo Krummrich <dakr@kernel.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
- stable@vger.kernel.org
-References: <20251013190731.63235-1-tvrtko.ursulin@igalia.com>
- <03cccc85bb18bfd806435a679c5327ec5d33a169.camel@mailbox.org>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <03cccc85bb18bfd806435a679c5327ec5d33a169.camel@mailbox.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
+Jocelyn Falempe <jfalempe@redhat.com> writes:
 
-On 14/10/2025 07:31, Philipp Stanner wrote:
-> On Mon, 2025-10-13 at 20:07 +0100, Tvrtko Ursulin wrote:
->> When adding dependencies with drm_sched_job_add_dependency(), that
-> 
-> I'm sorry if there was confusion about upper case style. I'm quite sure
-> I'd think I'd never ask for a function name to be written uppercase,
-> but maybe that was a -ENOCOFFEE version of me last year or sth :O
-> 
->> function consumes the fence reference both on success and failure, so in
->> the latter case the dma_fence_put() on the error path (xarray failed to
->> expand) is a double free.
->>
->> Interestingly this bug appears to have been present ever since
->> ebd5f74255b9 ("drm/sched: Add dependency tracking"), since the code back
->> then looked like this:
->>
->> drm_sched_job_add_implicit_dependencies():
->> ...
->>         for (i = 0; i < fence_count; i++) {
->>                 ret = drm_sched_job_add_dependency(job, fences[i]);
->>                 if (ret)
->>                         break;
->>         }
->>
->>         for (; i < fence_count; i++)
->>                 dma_fence_put(fences[i]);
->>
->> Which means for the failing 'i' the dma_fence_put was already a double
->> free. Possibly there were no users at that time, or the test cases were
->> insufficient to hit it.
->>
->> The bug was then only noticed and fixed after
->> 9c2ba265352a ("drm/scheduler: use new iterator in drm_sched_job_add_implicit_dependencies v2")
->> landed, with its fixup of
->> 4eaf02d6076c ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies").
->>
->> At that point it was a slightly different flavour of a double free, which
->> 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
->> noticed and attempted to fix.
->>
->> But it only moved the double free from happening inside the
->> drm_sched_job_add_dependency(), when releasing the reference not yet
->> obtained, to the caller, when releasing the reference already released by
->> the former in the failure case.
->>
->> As such it is not easy to identify the right target for the fixes tag so
->> lets keep it simple and just continue the chain.
->>
->> While fixing we also improve the comment and explain the reason for taking
->> the reference and not dropping it.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->> Fixes: 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
->> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
->> Reference: https://lore.kernel.org/dri-devel/aNFbXq8OeYl3QSdm@stanley.mountain/
-> 
-> Any objection with me changing that to Closes: when applying?
-> 
-> As I read it that's a real bug report by Dan and this patches closes
-> that report.
+Hello Jocelyn,
 
-No objections, thanks!
+> If the logo width is bigger than the framebuffer width, and the
+> height is big enough to hold the logo and the message, it will draw
+> at x coordinate that are higher than the width, and ends up in a
+> corrupted image.
+>
+> Fixes: 4b570ac2eb54 ("drm/rect: Add drm_rect_overlap()")
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+> ---
 
-Regards,
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-Tvrtko
+-- 
+Best regards,
 
->> Cc: Christian König <christian.koenig@amd.com>
->> Cc: Rob Clark <robdclark@chromium.org>
->> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
->> Cc: Matthew Brost <matthew.brost@intel.com>
->> Cc: Danilo Krummrich <dakr@kernel.org>
->> Cc: Philipp Stanner <phasta@kernel.org>
->> Cc: "Christian König" <ckoenig.leichtzumerken@gmail.com>
->> Cc: dri-devel@lists.freedesktop.org
->> Cc: <stable@vger.kernel.org> # v5.16+
->> ---
->> v2:
->>   * Re-arrange commit text so discussion around sentences starting with
->>     capital letters in all cases can be avoided.
->>   * Keep double return for now.
->>   * Improved comment instead of dropping it.
->> ---
->>   drivers/gpu/drm/scheduler/sched_main.c | 13 +++++++------
->>   1 file changed, 7 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
->> index 46119aacb809..c39f0245e3a9 100644
->> --- a/drivers/gpu/drm/scheduler/sched_main.c
->> +++ b/drivers/gpu/drm/scheduler/sched_main.c
->> @@ -965,13 +965,14 @@ int drm_sched_job_add_resv_dependencies(struct drm_sched_job *job,
->>   	dma_resv_assert_held(resv);
->>   
->>   	dma_resv_for_each_fence(&cursor, resv, usage, fence) {
->> -		/* Make sure to grab an additional ref on the added fence */
->> -		dma_fence_get(fence);
->> -		ret = drm_sched_job_add_dependency(job, fence);
->> -		if (ret) {
->> -			dma_fence_put(fence);
->> +		/*
->> +		 * As drm_sched_job_add_dependency always consumes the fence
->> +		 * reference (even when it fails), and dma_resv_for_each_fence
->> +		 * is not obtaining one, we need to grab one before calling.
->> +		 */
->> +		ret = drm_sched_job_add_dependency(job, dma_fence_get(fence));
->> +		if (ret)
->>   			return ret;
->> -		}
->>   	}
->>   	return 0;
->>   }
-> 
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
 
