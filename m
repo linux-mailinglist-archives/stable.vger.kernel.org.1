@@ -1,121 +1,144 @@
-Return-Path: <stable+bounces-185731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE18BDB5D3
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 23:10:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86FC6BDB66A
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 23:21:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9D8D1927D28
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 21:10:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29FD53BAE87
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 21:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DB330C34D;
-	Tue, 14 Oct 2025 21:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018332DE6F5;
+	Tue, 14 Oct 2025 21:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GW8wcMO5"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hhhP5yYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FEB3002AF;
-	Tue, 14 Oct 2025 21:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988292DC785;
+	Tue, 14 Oct 2025 21:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760476214; cv=none; b=Xbx3HuiQLv1KLBdM7ttCNEPg/yGyrQvjVAOLSSYonqmaabIQhlowDLHBkfTdTGEo4WyM+vEbQoVPHfcEnmz9sN9EjEC/WdTuCzUH1pwJSpO/lRuyeH7FBURg19Ef7Eoha8o76gcgvNt36I16d982Yz6DKfSsux0RCfHzxpzqmz8=
+	t=1760476878; cv=none; b=o3reTsPKbP9QC+YW24DDpK2HW+m4mneop3B+rT33QZ8wU6x+8bfCzNf0eb+OHcjPpkaMUPb6omcGQd0C4FtTrC71yHzgDQUDeIGtigjsqvHdhH1SI1xusHNyt5NL1YLIKC3PcQiN36ZEnZweJ0wHXHoYaVpdqICVid2Q348/TvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760476214; c=relaxed/simple;
-	bh=Ro01wh06YC/uZxh8Xf1i50wfyiFHP8EhydOBit2DCIA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=be/flFp+iRsb8eigu8xI97ESMxkjewkmSCy4HWvMJ9OMRpNiHcLcu65OUiH0Ml6nrrQ4JFfuGO4ePqRqFFztk3Z8U5g2CJiWrYo9dOQnQ/pqbJPTlxo44SUKhhml3w7sTaxm6D19+oR9r7r5whAO9Bjcf3sjyJTBD50n5Ld01n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GW8wcMO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC86C4CEE7;
-	Tue, 14 Oct 2025 21:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760476212;
-	bh=Ro01wh06YC/uZxh8Xf1i50wfyiFHP8EhydOBit2DCIA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=GW8wcMO5W09zp1zy1d9huR1auo0p1Vy9a7N/T7y1/wJ1g0pMn9VwIMZ8ZFCtInzBl
-	 MWmgLiCGX33oeoDlRQMoUXtopr2TKUpMUcir9sPyxyESh9JLGHALMYykMcX+s49sr6
-	 UaqbGcuq5TA5EIHVUwS32PDz6PoZsfhfs4nfdpkMSwtEd/UkoE2mjhQJM3boJ3BgmR
-	 dqi2PnaPi0Shr2zo28PO9TK8hWCGc0CQI7qWTmrwk2cMt6jN+N4L+ND7L2Cc+KMhBz
-	 P9Scq6Zuztb0NhfvQQ5dipbHILYe3Cg286c9SQG0zh3J5wepM+WoKWqbCh5vSyAjjh
-	 fhU5ISJrj45vg==
-Date: Tue, 14 Oct 2025 16:10:11 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
-	Jianmin Lv <lvjianmin@loongson.cn>,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Huacai Chen <chenhuacai@gmail.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH Resend] PCI: Limit islolated function probing on bus 0
- for LoongArch
-Message-ID: <20251014211011.GA907236@bhelgaas>
+	s=arc-20240116; t=1760476878; c=relaxed/simple;
+	bh=bQYAxj7VPIAiqqMQ+2d7ob/wNAnPZK6uH4SCreGn/Yo=;
+	h=Date:To:From:Subject:Message-Id; b=P5/qh+7y3reU7uFagpIbWSkrDq5nowNmL/4Lqz99wBKVAVAwPSmolpHIVl+0Hdi2+giQCsn1Ee5yb0bOUHiV1ttQqnV6Le2TXHk0oMfFNnxkoaWBkrTzcSe/n5SwmKYt1Mf4/KGGDMhllR2+kx0+j/VtDnZYP8rzPA6cahV0+2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hhhP5yYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426E7C4CEE7;
+	Tue, 14 Oct 2025 21:21:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1760476878;
+	bh=bQYAxj7VPIAiqqMQ+2d7ob/wNAnPZK6uH4SCreGn/Yo=;
+	h=Date:To:From:Subject:From;
+	b=hhhP5yYOFtStVFZ+pQ9qko7659zz1tMKWuV8dLaENnT/5778oxldj+FX1Pb40FEiu
+	 h1FY7BCnVGZbSdaL8ZSCyAERoeG3keY9aTPBO6mntVwcD1Sl8wVhX3Hc0cY4oYMgWs
+	 IbJyGQdPBggFpWOevM17ktHAWkCCfBNnSsuAYVXQ=
+Date: Tue, 14 Oct 2025 14:21:17 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-core-fix-list_add_tail-call-on-damon_call.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251014212118.426E7C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014074100.2149737-1-chenhuacai@loongson.cn>
 
-On Tue, Oct 14, 2025 at 03:41:00PM +0800, Huacai Chen wrote:
-> We found some discrete AMD graphics devices hide funtion 0 and the whole
-> is not supposed to be probed.
-> 
-> Since our original purpose is to allow integrated devices (on bus 0) to
-> be probed without function 0, we can limit the islolated function probing
-> only on bus 0.
 
-s/islolated/isolated/ (multiple)
-s/funtion/function/
+The patch titled
+     Subject: mm/damon/core: fix list_add_tail() call on damon_call()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-core-fix-list_add_tail-call-on-damon_call.patch
 
-I suppose this fixes some problem where:
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-fix-list_add_tail-call-on-damon_call.patch
 
-  - An AMD GPU is on some bus other than 00
-  - The GPU has no function 0
-  - Without function 0, we normally don't probe other functions
-  - a02fd05661d7 means we *do* probe other functions on LoongArch
-  - Therefore we find some non-0 function we're not supposed to find
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-If that's the case, what bad thing happens?  Is there some dmesg hint
-we can include in the commit log?
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-I suppose this means such devices are potentially broken for s390 and
-jailhouse as well?
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-> Cc: stable@vger.kernel.org
-> Fixes: a02fd05661d73a8 ("PCI: Extend isolated function probing to LoongArch")
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-a02fd05661d7 (12-char SHA1 is conventional)
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/core: fix list_add_tail() call on damon_call()
+Date: Tue, 14 Oct 2025 13:59:36 -0700
 
-> -static inline bool hypervisor_isolated_pci_functions(void)
-> +static inline bool hypervisor_isolated_pci_functions(int bus)
->  {
->  	if (IS_ENABLED(CONFIG_S390))
->  		return true;
->  
-> -	if (IS_ENABLED(CONFIG_LOONGARCH))
-> -		return true;
-> +	if (IS_ENABLED(CONFIG_LOONGARCH)) {
-> +		if (bus == 0)
+Each damon_ctx maintains callback requests using a linked list
+(damon_ctx->call_controls).  When a new callback request is received via
+damon_call(), the new request should be added to the list.  However, the
+function is making a mistake at list_add_tail() invocation: putting the
+new item to add and the list head to add it before, in the opposite order.
+Because of the linked list manipulation implementation, the new request
+can still be reached from the context's list head.  But the list items
+that were added before the new request are dropped from the list.
 
-I don't really like this embedded assumption that the root bus is bus
-00.  That's not necessarily the case; we have many host bridges that
-lead to a bus other than 00.
+As a result, the callbacks are unexpectedly not invocated.  Worse yet, if
+the dropped callback requests were dynamically allocated, the memory is
+leaked.  Actually DAMON sysfs interface is using a dynamically allocated
+repeat-mode callback request for automatic essential stats update.  And
+because the online DAMON parameters commit is using a non-repeat-mode
+callback request, the issue can easily be reproduced, like below.
 
-> +			return true;
-> +	}
->  
->  	return jailhouse_paravirt();
->  }
-> -- 
-> 2.47.3
-> 
+    # damo start --damos_action stat --refresh_stat 1s
+    # damo tune --damos_action stat --refresh_stat 1s
+
+The first command dynamically allocates the repeat-mode callback request
+for automatic essential stat update.  Users can see the essential stats
+are automatically updated for every second, using the sysfs interface.
+
+The second command calls damon_commit() with a new callback request that
+was made for the commit.  As a result, the previously added repeat-mode
+callback request is dropped from the list.  The automatic stats refresh
+stops working, and the memory for the repeat-mode callback request is
+leaked.  It can be confirmed using kmemleak.
+
+Fix the mistake on the list_add_tail() call.
+
+Link: https://lkml.kernel.org/r/20251014205939.1206-1-sj@kernel.org
+Fixes: 004ded6bee11 ("mm/damon: accept parallel damon_call() requests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.17+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/damon/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/damon/core.c~mm-damon-core-fix-list_add_tail-call-on-damon_call
++++ a/mm/damon/core.c
+@@ -1450,7 +1450,7 @@ int damon_call(struct damon_ctx *ctx, st
+ 	INIT_LIST_HEAD(&control->list);
+ 
+ 	mutex_lock(&ctx->call_controls_lock);
+-	list_add_tail(&ctx->call_controls, &control->list);
++	list_add_tail(&control->list, &ctx->call_controls);
+ 	mutex_unlock(&ctx->call_controls_lock);
+ 	if (!damon_is_running(ctx))
+ 		return -EINVAL;
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-sysfs-catch-commit-test-ctx-alloc-failure.patch
+mm-damon-sysfs-dealloc-commit-test-ctx-always.patch
+mm-damon-core-fix-list_add_tail-call-on-damon_call.patch
+mm-zswap-remove-unnecessary-dlen-writes-for-incompressible-pages.patch
+mm-zswap-fix-typos-s-zwap-zswap.patch
+mm-zswap-s-red-black-tree-xarray.patch
+docs-admin-guide-mm-zswap-s-red-black-tree-xarray.patch
+
 
