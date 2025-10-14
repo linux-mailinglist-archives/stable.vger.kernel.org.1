@@ -1,137 +1,91 @@
-Return-Path: <stable+bounces-185571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566A0BD7337
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 05:40:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5522DBD7352
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 05:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BA6964F2AD3
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 03:40:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D88A54E5DB6
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 03:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C05E30748E;
-	Tue, 14 Oct 2025 03:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20AF224468D;
+	Tue, 14 Oct 2025 03:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="eGEVymN4"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="SO7R+w7Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEBC271446
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 03:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912FB17A30A
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 03:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760413229; cv=none; b=IC8gWSowmi73KoUgUP/jdDT4K8Z+YJinO/ZTCoE8K2yw5BRY8s7TmobwpVFZX6fMuOgc/SHe7jybhdcVhxG3gtNHTVekdU7R+ObTTHibSu/78VuYAd7ErPH4se9MX+dD3tNPuakTN2PZbASjVSTSn6vXPHvaa9yShI/0hjNh0AA=
+	t=1760413757; cv=none; b=GlyF0cb8xYJIHtzjmB6oShc8tacl1nTAUWVs52/pEhDr75KjaRfYzeCgziKvDU6yQTl4N5+c5GKKev3E03SuIH9RRm/wlzmsD2H3/qV0shZaKhFgXvdRsHihreHbe8+2tLabBEVzd9OVg9iIgpGPZ+gdztC3GJT/q/1U/rKaTbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760413229; c=relaxed/simple;
-	bh=VKGntvZN3GtJcSSMa1nguMCR6YJ0j+Sv/UrDmr5viNg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kzr3OSUXyyA1hcf3+NsDX4eQxRdKz6ZGzPBqkGqz3Gv12kuaSSpBfKD01fN5HlenkInnGp8Qe4MWyE8fM+xICHaAsfQKuZ+OSnWHXnCGaWAGp593Bu82L560FAa7IlFloGXOZQt1CRi/GjJ39YOX6A/BmctwJzFZIFlT2jBNOFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=eGEVymN4; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-27ee41e074dso56206905ad.1
-        for <stable@vger.kernel.org>; Mon, 13 Oct 2025 20:40:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1760413224; x=1761018024; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8vQD13QPg4OYqU4LJRXtRf+THjzsxA+16HameJIJG8Y=;
-        b=eGEVymN4DFYhGUygzqIgp5CRsQe6XCySVC3/wblEh2PXDlmtSvkZJF2QLPC2RiLrue
-         dcp5y7C+FJuH5wbvlFE4YWWE/Do0LFGV+Crj/j+rrWrACNxp6cR3ZQtuZWHAX4fy1Wno
-         n2xrTafR65jMy4A4jtEH18myICaDYindxvMwwMwy29BN8Z03sKLtlUw/7Xt9D/izrpQV
-         aNKb+YzLtG+2FydlVCKjpHqdPAimCJ+Fd1uVu+/2vGAwILF43OV0EJoEY0Zn7MLbJaI6
-         7nIdsiokH7r0sncORSPb3tTKNsm1sTRGgCDhkOvgnfhDf5jyNonxfSdsnXCRmQmq8wYI
-         XP2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760413224; x=1761018024;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8vQD13QPg4OYqU4LJRXtRf+THjzsxA+16HameJIJG8Y=;
-        b=rILvE5DZ9BR0uXGPdpEsRE5XGF5ZB2puPHow98Ae11+q9vyqOu/FhX+wq9SyXt2NT5
-         6D9kO1AALopwMC3JwCoPgkoVfG2cjVpNZTxvVKHJpv+gKo4k2iR8yPHjcXlhtnTk0Cve
-         oT60ubYRuCTJZvYn1c+y3yuiX+yuAHtt31RZYYudi7IHatZntRAlXLm1cAtPlVk6Lrrz
-         MASWUBDjuwCRsn/1v70Q7l+k6XqCx0T5+knKyv6eHwtm/JF2GUYd1ot8L9+mY/m/hebr
-         RsjbdKH6RflT9WQfzjG7VNpIV1iZVF/sxSS3DiGglYRlwMdO8daB8aTYbJiAk2yIoJvn
-         Rg3A==
-X-Gm-Message-State: AOJu0YwTGtsZwLs3UPxQndbI0xL8/kHcBnUYY8sxsBIDVpy7DcBIYM/g
-	/W1b8bwtbpZYgHEbCdD9rjwFfnk8JzqqYJA5Nkb9h1YaSti48lecbuCUu1axL8pvmhcV+bs0BKw
-	hUqrRxuWQ728RsP/Uc27mSQurUL6lABornI+lyUKUcg==
-X-Gm-Gg: ASbGnct/kMCiAhffN4SZfaGhvUojKNmjL5GXeXeiaz2N4Fifxdfzl3tJPLvVXtqX6Xi
-	tQzCX67gTTzoRrBZPf2matw4bBhmroAM93oTjCXnced7vQRZXkmje482aLRkT9T3s07hqbmda2w
-	mf6NPh2QaeHHnfmCYLT+m0ZUS7QM92zl3RGCG1hT7hs/74BgE4h6ECr8KBpjo7A4c4ZnYj9OdLc
-	aJGrdZZZB1URqyRQQ5ItzM=
-X-Google-Smtp-Source: AGHT+IGsxs2zB/o2HDMRrXG0CDlIO/I666LTqgKADPiE2fPpkCQ25Qw5JRCeUi5m+2HIo6aoKW6CFhEClCT8ijRr2z0=
-X-Received: by 2002:a17:902:ef07:b0:288:5d07:8a8f with SMTP id
- d9443c01a7336-2902724dc52mr282297695ad.24.1760413224085; Mon, 13 Oct 2025
- 20:40:24 -0700 (PDT)
+	s=arc-20240116; t=1760413757; c=relaxed/simple;
+	bh=YAcyXEgI+hXldoYFlpGXIvC109KWm3hpmHpiPV7nrs4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hiQq9mYI0ORxhtKxcnW/pwWwPNuRS2tTe3UQTzuQc1iA0H318HTrS9OZHqun7VNGVfM4XiNwl0sAzxNUzu/4JGPgWa0nKSldJJIg1QRcbUX2obzO8AM89WnJ5kKC6eVqfCR5ZuSAkaeGdGsB4eBa/+znHj0jLawkgu3UZZZhZFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=SO7R+w7Q; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1760413746; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=WVB1k0iyALQBn8mrDij0TlFOM8IGUTNYDz3MNRZQY6A=;
+	b=SO7R+w7Q1VT2676pryDMpMswxjN4ChJbOtfzynMvczpZsnjU6G9CFQTa9uvDCCjIw9NgbdyTNcLSYz5Tpk2vAevMJ/khRaarkiPUAEFz+DbaWYcbPh5Ffdf6EW4nB1fDM/YdEV3vhsYd7F17T4WYUsc7+AAvguNcMNbYJmNZzy8=
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WqAD6FT_1760413744 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 14 Oct 2025 11:49:04 +0800
+Message-ID: <51b210a5-3967-45d1-a081-465b2c5f0fd1@linux.alibaba.com>
+Date: Tue, 14 Oct 2025 11:49:04 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251013144411.274874080@linuxfoundation.org>
-In-Reply-To: <20251013144411.274874080@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Tue, 14 Oct 2025 12:40:08 +0900
-X-Gm-Features: AS18NWC2Fr-gWwcy9LStVOnnGEG1wp1A2vfCsJcVgNKnq4cVcnZwA7crRcv7UoQ
-Message-ID: <CAKL4bV47oB56+6KG5btFQOqMtZUgzEhMibFScCSyduqiqaVQ-A@mail.gmail.com>
-Subject: Re: [PATCH 6.17 000/563] 6.17.3-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2] mm/huge_memory: add pmd folio to ds_queue in
+ do_huge_zero_wp_pmd()
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ wangkefeng.wang@huawei.com
+Cc: linux-mm@kvack.org, stable@vger.kernel.org
+References: <20251002013825.20448-1-richard.weiyang@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20251002013825.20448-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Greg
 
-On Tue, Oct 14, 2025 at 12:33=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.17.3 release.
-> There are 563 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 15 Oct 2025 14:42:41 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.17.3-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-6.17.3-rc1 tested.
+On 2025/10/2 09:38, Wei Yang wrote:
+> We add pmd folio into ds_queue on the first page fault in
+> __do_huge_pmd_anonymous_page(), so that we can split it in case of
+> memory pressure. This should be the same for a pmd folio during wp
+> page fault.
+> 
+> Commit 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault") miss
+> to add it to ds_queue, which means system may not reclaim enough memory
+> in case of memory pressure even the pmd folio is under used.
+> 
+> Move deferred_split_folio() into map_anon_folio_pmd() to make the pmd
+> folio installation consistent.
+> 
+> Fixes: 1ced09e0331f ("mm: allocate THP on hugezeropage wp-fault")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: <stable@vger.kernel.org>
+> 
+> ---
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-[    0.000000] Linux version 6.17.3-rc1rv-g99cf54e7bd2f
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20250813, GNU ld (GNU
-Binutils) 2.45.0) #1 SMP PREEMPT_DYNAMIC Tue Oct 14 12:16:46 JST 2025
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Nice catch. LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
