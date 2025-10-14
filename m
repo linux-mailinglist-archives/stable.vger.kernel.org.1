@@ -1,287 +1,126 @@
-Return-Path: <stable+bounces-185599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81A7BD8308
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 10:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD51EBD836E
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 10:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CA1514ED1FA
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 08:33:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4CA244FA108
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 08:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D9F29ACD1;
-	Tue, 14 Oct 2025 08:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CA430FF13;
+	Tue, 14 Oct 2025 08:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="abchEqRI";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="EAXB2LYk";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="abchEqRI";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="EAXB2LYk"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="M3rH3JTA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974902C15BA
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 08:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF75630FC3E;
+	Tue, 14 Oct 2025 08:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760430790; cv=none; b=NiQjsGhNEy7Shgf1hIi5klKSPsICfw55ZUL0voamWUWPnAslyi0MZ2uSoNC+V7tcranakesPFNKkwEJ+uycvylXWl2dKZ6FCY2U5K/Jz6GYQRBSAAhc1bLuFXa5Osq3Rb7i0ntI5q9Jtth3ug80MDWszwZ1NXjYSbMfR9P5coIo=
+	t=1760431091; cv=none; b=HUtnbetgoOF0TH43L2bO6dwMs0yWeJr2N7CBElti/lsmwQXrSoONAbCMnDCYy9K/G3hxuXZXFOvyXao7ZcjZfLBrhaWwfprDTMdLpVfxcDYbLTR0yS4PVVkXb5DEee3U1hiSyuwLXZcRFQi5vyYwTwpyLdLORCgWE10Ub+gKfoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760430790; c=relaxed/simple;
-	bh=/WJNpu+xN3EV8b6l1tPPmU4I6w1IRlz56n2WBQCumAE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qMxX6Q+X94q7qRlTtNk95ggqguzyc78pww5TIK9qYIS5BWuebmjFKFZmGjzGTztCoXcBTZbXIN0KKezNBP0UMZ9XU/AEzagNcOdfCn3mm30RY3V/kgXC7V0amVLZ490LXChdfAMX6nShKQBZ4lynbvQpKe+qkNxu5nSBv3QbNgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=abchEqRI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EAXB2LYk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=abchEqRI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EAXB2LYk; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 96BC821D8C;
-	Tue, 14 Oct 2025 08:33:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760430786; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aJbGhNs7yXqCu2TM4PLIzCVg37upHDVrwG0JVA1aymg=;
-	b=abchEqRIqQt96fuRv+5tL106tzwSHXgPV2kjdFP1NoExc8i01hpwoqbDdLdzy/fs9ZvgYx
-	gHgwva3UWw1i8O7dxZAuplbSntk+KM7+uKvPAueZfZYBnUbdBAxpAZJhQ4mzOhgzsN6+7P
-	D1+fVNgobcSMnCmErqAZH4HWy+FWMAM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760430786;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aJbGhNs7yXqCu2TM4PLIzCVg37upHDVrwG0JVA1aymg=;
-	b=EAXB2LYk8dqTO4RysRaTLZjJl+tZT4XTnhR4QjSda/AsqTteXCdM4Toi/QDajDebLrarWb
-	qE46o/+/Dp1NLQBg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=abchEqRI;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EAXB2LYk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760430786; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aJbGhNs7yXqCu2TM4PLIzCVg37upHDVrwG0JVA1aymg=;
-	b=abchEqRIqQt96fuRv+5tL106tzwSHXgPV2kjdFP1NoExc8i01hpwoqbDdLdzy/fs9ZvgYx
-	gHgwva3UWw1i8O7dxZAuplbSntk+KM7+uKvPAueZfZYBnUbdBAxpAZJhQ4mzOhgzsN6+7P
-	D1+fVNgobcSMnCmErqAZH4HWy+FWMAM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760430786;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aJbGhNs7yXqCu2TM4PLIzCVg37upHDVrwG0JVA1aymg=;
-	b=EAXB2LYk8dqTO4RysRaTLZjJl+tZT4XTnhR4QjSda/AsqTteXCdM4Toi/QDajDebLrarWb
-	qE46o/+/Dp1NLQBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 612AC13A44;
-	Tue, 14 Oct 2025 08:33:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PE9NFsIK7mhFGAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 14 Oct 2025 08:33:06 +0000
-Message-ID: <404d4ac2-6227-400d-8031-f15b7274258f@suse.de>
-Date: Tue, 14 Oct 2025 10:33:05 +0200
+	s=arc-20240116; t=1760431091; c=relaxed/simple;
+	bh=xFxTZk9k8z1ceBZfTEHBte/M5l6HENgtLC2nPfTfCBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a49Y9pIysn9ClIk/PGzjOfCXID5/xeropoYp7dVWUri+7uflx9yeVnLLsuJi0zcuPbzQm0/TOYonglsAitqXqfLqYkCTH8xcFe4cwIOmoZw55Sr76zB5cU3zUnwVp/+4+V8xzG33AFRZayCUs6bI2vP6tNTboLj+Ya6hZ+PlJjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=M3rH3JTA; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=teelVvdHnPXhmeC0lPG5a8S5FoS735QXhS6EymF1m+s=; b=M3rH3JTAn+2Q8+raj9gahfIn1l
+	3hnHsRuGMSmqmi2R7nBl1IuhQItDEyWXRsSlymaygn5upUYJ3sT63/GF9CYS0ZkZ2XUlMyqSTripQ
+	L/ZQ/5LbOOPJMTPPB7r+rAOuu9YcYAPgEKHOzXKoqa4HKgcYuCcJ4+uilkNvfjEfEsfJBMs89cs3P
+	w39TknT3PBmvlZGRf8MGUWsWklPP5jgL24UZ4ayH+M7RZg1cFixqdExuOlN3T7Spr9x88zZzUI7Za
+	X50CnPRdUDd2QKK/M+45LfCIeXdRnlNMn/5oGERxdZyOTZft3a16hDB6uEO9yNg1kDqBP4LMv29ZM
+	lQ/M4AGw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v8aXV-000000052l3-1yVI;
+	Tue, 14 Oct 2025 08:37:49 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E42FE300212; Tue, 14 Oct 2025 10:37:48 +0200 (CEST)
+Date: Tue, 14 Oct 2025 10:37:48 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: George Kennedy <george.kennedy@oracle.com>
+Cc: ravi.bangoria@amd.com, harshit.m.mogalapalli@oracle.com,
+	mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
+	mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
+	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
+	kan.liang@linux.intel.com, tglx@linutronix.de, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dongli.zhang@oracle.com, stable@vger.kernel.org
+Subject: Re: [PATCH] [PATCH v3] perf/x86/amd: check event before enable to
+ avoid GPF
+Message-ID: <20251014083748.GP3245006@noisy.programming.kicks-ass.net>
+References: <1728392453-18658-1-git-send-email-george.kennedy@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/ast: Blank with VGACR17 sync enable, always clear
- VGACRB6 sync off
-To: Jocelyn Falempe <jfalempe@redhat.com>, airlied@redhat.com,
- dianders@chromium.org, nbowler@draconx.ca
-Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-References: <20251010080233.21771-1-tzimmermann@suse.de>
- <9ad17cb1-3e09-4082-b52b-0b218812f114@redhat.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <9ad17cb1-3e09-4082-b52b-0b218812f114@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 96BC821D8C
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1728392453-18658-1-git-send-email-george.kennedy@oracle.com>
 
-Hi
+On Tue, Oct 08, 2024 at 08:00:53AM -0500, George Kennedy wrote:
+> On AMD machines cpuc->events[idx] can become NULL in a subtle race
+> condition with NMI->throttle->x86_pmu_stop().
+> 
+> Check event for NULL in amd_pmu_enable_all() before enable to avoid a GPF.
+> This appears to be an AMD only issue.
+> 
+> Syzkaller reported a GPF in amd_pmu_enable_all.
+> 
+> INFO: NMI handler (perf_event_nmi_handler) took too long to run: 13.143
+>     msecs
+> Oops: general protection fault, probably for non-canonical address
+>     0xdffffc0000000034: 0000  PREEMPT SMP KASAN NOPTI
+> KASAN: null-ptr-deref in range [0x00000000000001a0-0x00000000000001a7]
+> CPU: 0 UID: 0 PID: 328415 Comm: repro_36674776 Not tainted 6.12.0-rc1-syzk
+> RIP: 0010:x86_pmu_enable_event (arch/x86/events/perf_event.h:1195
+>     arch/x86/events/core.c:1430)
+> RSP: 0018:ffff888118009d60 EFLAGS: 00010012
+> RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+> RDX: 0000000000000034 RSI: 0000000000000000 RDI: 00000000000001a0
+> RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+> R13: ffff88811802a440 R14: ffff88811802a240 R15: ffff8881132d8601
+> FS:  00007f097dfaa700(0000) GS:ffff888118000000(0000) GS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00000000200001c0 CR3: 0000000103d56000 CR4: 00000000000006f0
+> Call Trace:
+>  <IRQ>
+> amd_pmu_enable_all (arch/x86/events/amd/core.c:760 (discriminator 2))
+> x86_pmu_enable (arch/x86/events/core.c:1360)
+> event_sched_out (kernel/events/core.c:1191 kernel/events/core.c:1186
+>     kernel/events/core.c:2346)
+> __perf_remove_from_context (kernel/events/core.c:2435)
+> event_function (kernel/events/core.c:259)
+> remote_function (kernel/events/core.c:92 (discriminator 1)
+>     kernel/events/core.c:72 (discriminator 1))
+> __flush_smp_call_function_queue (./arch/x86/include/asm/jump_label.h:27
+>     ./include/linux/jump_label.h:207 ./include/trace/events/csd.h:64
+>     kernel/smp.c:135 kernel/smp.c:540)
+> __sysvec_call_function_single (./arch/x86/include/asm/jump_label.h:27
+>     ./include/linux/jump_label.h:207
+>     ./arch/x86/include/asm/trace/irq_vectors.h:99 arch/x86/kernel/smp.c:272)
+> sysvec_call_function_single (arch/x86/kernel/smp.c:266 (discriminator 47)
+>     arch/x86/kernel/smp.c:266 (discriminator 47))
+>  </IRQ>
+> 
+> Reported-by: syzkaller <syzkaller@googlegroups.com>
+> Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+> ---
 
-Am 14.10.25 um 09:45 schrieb Jocelyn Falempe:
-> On 10/10/2025 10:02, Thomas Zimmermann wrote:
->> Blank the display by disabling sync pulses with VGACR17<7>. Unblank
->> by reenabling them. This VGA setting should be supported by all Aspeed
->> hardware.
->>
->> Ast currently blanks via sync-off bits in VGACRB6. Not all BMCs handle
->> VGACRB6 correctly. After disabling sync during a reboot, some BMCs do
->> not reenable it after the soft reset. The display output remains dark.
->> When the display is off during boot, some BMCs set the sync-off bits in
->> VGACRB6, so the display remains dark. Observed with Blackbird AST2500
->> BMC. Clearing the sync-off bits unconditionally fixes these issues.
->>
->> Also do not modify VGASR1's SD bit for blanking, as it only disables GPU
->> access to video memory.
->
-> One comment below:>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Fixes: ce3d99c83495 ("drm: Call drm_atomic_helper_shutdown() at 
->> shutdown time for misc drivers")
->> Tested-by: Nick Bowler <nbowler@draconx.ca>
->> Reported-by: Nick Bowler <nbowler@draconx.ca>
->> Closes: 
->> https://lore.kernel.org/dri-devel/wpwd7rit6t4mnu6kdqbtsnk5bhftgslio6e2jgkz6kgw6cuvvr@xbfswsczfqsi/
->> Cc: Douglas Anderson <dianders@chromium.org>
->> Cc: Dave Airlie <airlied@redhat.com>
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Jocelyn Falempe <jfalempe@redhat.com>
->> Cc: dri-devel@lists.freedesktop.org
->> Cc: <stable@vger.kernel.org> # v6.7+
->> ---
->>   drivers/gpu/drm/ast/ast_mode.c | 18 ++++++++++--------
->>   drivers/gpu/drm/ast/ast_reg.h  |  1 +
->>   2 files changed, 11 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/ast/ast_mode.c 
->> b/drivers/gpu/drm/ast/ast_mode.c
->> index 6b9d510c509d..fe8089266db5 100644
->> --- a/drivers/gpu/drm/ast/ast_mode.c
->> +++ b/drivers/gpu/drm/ast/ast_mode.c
->> @@ -836,22 +836,24 @@ ast_crtc_helper_atomic_flush(struct drm_crtc 
->> *crtc,
->>   static void ast_crtc_helper_atomic_enable(struct drm_crtc *crtc, 
->> struct drm_atomic_state *state)
->>   {
->>       struct ast_device *ast = to_ast_device(crtc->dev);
->> +    u8 vgacr17 = 0x00;
->> +    u8 vgacrb6 = 0x00;
->>   -    ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, 0x00);
->> -    ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, 0x00);
->> +    vgacr17 |= AST_IO_VGACR17_SYNC_ENABLE;
-
->> +    vgacrb6 &= ~(AST_IO_VGACRB6_VSYNC_OFF | AST_IO_VGACRB6_HSYNC_OFF);
-> As vgacrb6 is 0, then this "&=" shouldn't do anything?
-
-Indeed! I'll fix that in the next rev. But the result is luckily the 
-same, :) because clearing these bits to 0 enables sync.
-
-To give you some context on this code: Just writing plain 0x00 into the 
-HW registers obscures what this code does. But assigning these AST_IO_ 
-constants directly to the variables gives a compiler warning about size 
-mismatches for storing long in u8. Hence these &= and |= constructs. So 
-vgacrb6 should be 0xff and the &= statement clears the bits. It's a 
-masked write below, so the remaining bits will be ignored.
-
-Best regards
-Thomas
-
->
->> +
->> +    ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
->> +    ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
->>   }
->>     static void ast_crtc_helper_atomic_disable(struct drm_crtc *crtc, 
->> struct drm_atomic_state *state)
->>   {
->>       struct drm_crtc_state *old_crtc_state = 
->> drm_atomic_get_old_crtc_state(state, crtc);
->>       struct ast_device *ast = to_ast_device(crtc->dev);
->> -    u8 vgacrb6;
->> +    u8 vgacr17 = 0xff;
->>   -    ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, 
->> AST_IO_VGASR1_SD);
->> -
->> -    vgacrb6 = AST_IO_VGACRB6_VSYNC_OFF |
->> -          AST_IO_VGACRB6_HSYNC_OFF;
->> -    ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
->> +    vgacr17 &= ~AST_IO_VGACR17_SYNC_ENABLE;
->> +    ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
->>         /*
->>        * HW cursors require the underlying primary plane and CRTC to
->> diff --git a/drivers/gpu/drm/ast/ast_reg.h 
->> b/drivers/gpu/drm/ast/ast_reg.h
->> index e15adaf3a80e..30578e3b07e4 100644
->> --- a/drivers/gpu/drm/ast/ast_reg.h
->> +++ b/drivers/gpu/drm/ast/ast_reg.h
->> @@ -29,6 +29,7 @@
->>   #define AST_IO_VGAGRI            (0x4E)
->>     #define AST_IO_VGACRI            (0x54)
->> +#define AST_IO_VGACR17_SYNC_ENABLE    BIT(7) /* called "Hardware 
->> reset" in docs */
->>   #define AST_IO_VGACR80_PASSWORD        (0xa8)
->>   #define AST_IO_VGACR99_VGAMEM_RSRV_MASK    GENMASK(1, 0)
->>   #define AST_IO_VGACRA1_VGAIO_DISABLED    BIT(1)
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
-
+Without a Fixes tag it goes into perf/core.
 
