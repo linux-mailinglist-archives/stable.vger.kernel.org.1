@@ -1,286 +1,106 @@
-Return-Path: <stable+bounces-185633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834B4BD8E04
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:03:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E58BD8EF4
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38405424D86
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:03:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F7794256C5
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE5D2FF16E;
-	Tue, 14 Oct 2025 11:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89D7308F34;
+	Tue, 14 Oct 2025 11:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSxnVfVQ"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="H/02+A+J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55A52FE566;
-	Tue, 14 Oct 2025 11:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B1A308F0D
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 11:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760439792; cv=none; b=Gjses00qXpqkCnji95NAhcF+XCEyiuYE6MqI+sfcC7LUiQo0c1GHMNDi+jeCztA2kaCCC5PcVdsI4X5VteWJs6i1CXi6L0mzIrSsJlczp/OzCm812odp8WGkA31Nrobpr1b60db014GB3n/9s1CB0SIYI0bPBDU33mHgyJqVGos=
+	t=1760440127; cv=none; b=Rp7g6P2sevec5cIXU04w3Ftj01nUIy9VPPzOCwH9BbyGQYy6bi0sf7KnCKETU+TwUzdthuQ/VshK5ri30SXu9bhIerfDn9LkfJmArtaFHRXf74icny7jdL/KlofZ3PsB1rNLuThXNGLK+4VXX5O9Pj1dTq8+QQ4aDOwHARZOm+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760439792; c=relaxed/simple;
-	bh=Ft+QUhp4GEql2Vv7pwZhfod9Y5RmF9GxI4x25ijGMbU=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ermN62bvg+IANBSARor+j3iEW7/DyKv5JB3+hyjTge3Vk1pTsgswY8+nOCe0S+VsDEkKQ5jfJucbWhlUmyyo9Ue7zTlGtnOwkHGtPeIuzCMT/xn9FUZUxNW26R2yd3gGeC4rrMWWSJI/gj8wyco5b3zr9cZ9VJjZProyD5TJWWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSxnVfVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE63C4CEE7;
-	Tue, 14 Oct 2025 11:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760439792;
-	bh=Ft+QUhp4GEql2Vv7pwZhfod9Y5RmF9GxI4x25ijGMbU=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=ZSxnVfVQP5WNnXg45rAaeaBZsEcvcgYyO3ThVyjv+e5LRWJc+h7wrKZs7GbXURvxU
-	 6qkmUNB8EWNA11k6x4n2sAspdgPNk9JgMBQPN3haU8UiCCia5s19ueZouSxg2nssTl
-	 iIhx0JWR0J5yzlYVACgopFAR105i/gbNLZxR9TH72cY3oy5hF8wZ6p+FXVrJwuwIwp
-	 s1W6S4uxc+tMTHVZZyzz3jyUFPcaxWKicm6TaNUjO/htds/2yEAp8KR6cXwN/MM4zA
-	 ztfuOVyD/eSZ5l8AJSCgF5qMpDxK+Juz/eL8pR2QYXZo31vUu+8kyfDNxOBzg1Fffk
-	 ODfe021fNkWFg==
-Message-ID: <73945f29-7b1e-4738-ae50-1ae2a9c5c1df@kernel.org>
-Date: Tue, 14 Oct 2025 13:03:08 +0200
+	s=arc-20240116; t=1760440127; c=relaxed/simple;
+	bh=P+5GauTt6GT2A5ICewQhAYJjsy2WOR/Fp4RhjgMbv+U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hpRu9k+TNIfMtNyO3RnMy6AoommwySscGC9LoJOF1fjCPuIIXGPQjtvBeSH4aoe6WnD9JtogtubrV7dMyolmY8Huw6rHU9TStv41C8Jk6tYrRBUSm5qXJ60KaMBXA7YwMBD0yNlRw6mqxMC6nvRPQkgjvJqBp2hqdccz+Z3g/4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=H/02+A+J; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3381f041d7fso6655031a91.0
+        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 04:08:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1760440125; x=1761044925; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kIl7+t2byU2rLxGt9Fvez6I/u2Ic/lM71HIRdn+BxNU=;
+        b=H/02+A+Jy1afx8MazniDdIkPUcfD3mozlAvQd3k00bvcAnKT9uWCcdBtRjpainlonI
+         nyAN92GepjCoe20RpotEEe6h3gac/V13RTXHleFFcU3pMqUJsAbm9vygupmOdlWwS2FE
+         JcdBE7DQ0/jjuceG3b6B7zWIaUIecCrDSG6gI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760440125; x=1761044925;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kIl7+t2byU2rLxGt9Fvez6I/u2Ic/lM71HIRdn+BxNU=;
+        b=buN/p1xf9qv6wOqARlD8zqI57PN+fEMopc9mS9878yvOoxmd7ezneYvEvwAX04J/EP
+         F1wy4P+r5eeEMxPLKMj5MsVGsiOLkVfnRZMjIhP13qQwAIJfGaSAm2vDCMd2mNj6jJYg
+         diLNOwudUezhp/dCDapeWCaqnPZhEPKJza6kdYgmFp1gS4/ng1Cg6BVyiKBSQ+lrHmph
+         ZIQ0Hwf5tfRJYQ7RN3+P0J0Jb8yW3JFs/oSgLo7Znm9Pmugx4Hmx6yPjklzb6DztXMX3
+         l6ZpJUVySXX0HNDSsA03zkB9TFa7aEpPRb/LZNP1letxtgdVJaEblaYNdTXmy/6TQGrx
+         Wupw==
+X-Forwarded-Encrypted: i=1; AJvYcCXjTkPHDVMDlh5r/3PJttWMOUj4IpjKKp6Wip6x1bdyhfSV8bUxFwCVf4im0aGO7rQ33jOTJpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygOYXWdgaQanCaMSYbJveofpwLUOTxoeHOLvEt6u5NI6DpHRa0
+	pVDsu4z/HDglztk4IdHjsYm7kfu2pKlYAf+jUgio8WgNh36fXDTQAygtqewgTh9hWg==
+X-Gm-Gg: ASbGncsCw4Pqgy5kVJb51KoLVmNWFKs6SDc7n3f18FOaloj0nBFmCvOW0tPyBPYZcs4
+	WJppIfcra2A1t3WKR7yojECqaKFfO+P9v/XAVvjejqaE8BBvR1pTh4lYXLdJQprRh5cyrsvOXNF
+	ugmeQ0sp077I+WHn3darGB126O1SEFS0YgiHbhL4OhHScyiXsydYWaxAJzmN4YkfdP9ff7qgema
+	C0C72s4zt2ZXkNA3qwgogc4kbThydWr2h6lV7f5nSj7WrxOHucZ2zixOq1RBUQqSH6jPT1MGqlt
+	s2quwts8oT3qn9O7JXa9v3jhtuzbg6C2R7O0mf9ZT0UnKI9WkSipjjr3b9mvo3BdyOCG/U68P4B
+	BdnagTgrEtjjkkkz3pgeHGCL2KTWE1nvOZa0y+T70P8X0EqQwyPmu7A==
+X-Google-Smtp-Source: AGHT+IHZp5MLtuj8aEbRYmVAG30fR1mkEeXUfh1F7/djMcG98/l7AMsS3SPYvh8TdHqkm61PdymDQA==
+X-Received: by 2002:a17:90b:4acf:b0:32e:6111:40ab with SMTP id 98e67ed59e1d1-339eda4744dmr37545449a91.3.1760440124929;
+        Tue, 14 Oct 2025 04:08:44 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:f7c9:39b0:1a9:7d97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b61a1d386sm15642214a91.5.2025.10.14.04.08.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 04:08:44 -0700 (PDT)
+Date: Tue, 14 Oct 2025 20:08:39 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Artem Bityutskiy <artem.bityutskiy@linux.intel.com>, 
+	Christian Loehle <christian.loehle@arm.com>, Sasha Levin <sashal@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org
+Subject: Re: stable: commit "cpuidle: menu: Avoid discarding useful
+ information" causes regressions
+Message-ID: <gl4gcdqg4d7kqvnbmo3vuymdzcxjoi3qubgaiuu4pzlashxzjr@z7fqi3lek3e7>
+References: <36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7>
+ <2025101451-unlinked-strongly-2fb3@gregkh>
+ <zfmoe4i3tpz3w4wrduhyxtyxtsdvgydtff3a235owqpzuzjug7@ulxspaydpvgi>
+ <2025101421-citrus-barley-9061@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: hverkuil+cisco@kernel.org
-Subject: Re: [PATCH v2 1/2] media: az6007: fix out-of-bounds in
- az6007_i2c_xfer()
-To: Jeongjun Park <aha310510@gmail.com>, mchehab@kernel.org,
- hverkuil@xs4all.nl
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, syzbot+0192952caa411a3be209@syzkaller.appspotmail.com
-References: <20250908150730.24560-1-aha310510@gmail.com>
- <20250908150730.24560-2-aha310510@gmail.com>
-Content-Language: en-US, nl
-In-Reply-To: <20250908150730.24560-2-aha310510@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025101421-citrus-barley-9061@gregkh>
 
-On 08/09/2025 17:07, Jeongjun Park wrote:
-> Because the blen is not properly bounds-checked in __az6007_read/write,
-> it is easy to get out-of-bounds errors in az6007_i2c_xfer later.
-> 
-> Therefore, we need to add bounds-checking to __az6007_read/write to
-> resolve this.
-> 
-> Cc: <stable@vger.kernel.org>
-> Reported-by: syzbot+0192952caa411a3be209@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=0192952caa411a3be209
-> Fixes: 786baecfe78f ("[media] dvb-usb: move it to drivers/media/usb/dvb-usb")
-> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> ---
-> v2: Change to fix the root cause of oob
-> - Link to v1: https://lore.kernel.org/all/20250421105555.34984-1-aha310510@gmail.com/
-> ---
->  drivers/media/usb/dvb-usb-v2/az6007.c | 62 +++++++++++++++------------
->  1 file changed, 34 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/media/usb/dvb-usb-v2/az6007.c b/drivers/media/usb/dvb-usb-v2/az6007.c
-> index 65ef045b74ca..4202042bdb55 100644
-> --- a/drivers/media/usb/dvb-usb-v2/az6007.c
-> +++ b/drivers/media/usb/dvb-usb-v2/az6007.c
-> @@ -97,11 +97,17 @@ static struct mt2063_config az6007_mt2063_config = {
->  	.refclock = 36125000,
->  };
->  
-> -static int __az6007_read(struct usb_device *udev, u8 req, u16 value,
-> -			    u16 index, u8 *b, int blen)
-> +static int __az6007_read(struct usb_device *udev, struct az6007_device_state *st,
-> +			    u8 req, u16 value, u16 index, u8 *b, int blen)
->  {
->  	int ret;
->  
-> +	if (blen > sizeof(st->data)) {
-> +		pr_err("az6007: tried to read %d bytes, but I2C max size is %lu bytes\n",
-> +		       blen, sizeof(st->data));
-> +		return -EOPNOTSUPP;
-> +	}
-> +
+On (25/10/14 10:02), Greg Kroah-Hartman wrote:
+> The point is still the same, commit fa3fa55de0d6 ("cpuidle: governors:
+> menu: Avoid using invalid recent intervals data"), is not backported to
+> 6.1.y, it is however in the following released kernels:
+> 	5.10.241 5.15.190 6.6.103 6.12.43 6.15.11 6.16.2 6.17
+> so something got lost in our trees and it needs to be backported.
 
-Hmm, but the pointer 'b' doesn't always point to st->data, so it makes no sense to
-check against it.
-
->  	ret = usb_control_msg(udev,
->  			      usb_rcvctrlpipe(udev, 0),
->  			      req,
-> @@ -125,24 +131,30 @@ static int __az6007_read(struct usb_device *udev, u8 req, u16 value,
->  static int az6007_read(struct dvb_usb_device *d, u8 req, u16 value,
->  			    u16 index, u8 *b, int blen)
->  {
-> -	struct az6007_device_state *st = d->priv;
-> +	struct az6007_device_state *st = d_to_priv(d);
->  	int ret;
->  
->  	if (mutex_lock_interruptible(&st->mutex) < 0)
->  		return -EAGAIN;
->  
-> -	ret = __az6007_read(d->udev, req, value, index, b, blen);
-> +	ret = __az6007_read(d->udev, st, req, value, index, b, blen);
->  
->  	mutex_unlock(&st->mutex);
->  
->  	return ret;
->  }
->  
-> -static int __az6007_write(struct usb_device *udev, u8 req, u16 value,
-> -			     u16 index, u8 *b, int blen)
-> +static int __az6007_write(struct usb_device *udev, struct az6007_device_state *st,
-> +			    u8 req, u16 value, u16 index, u8 *b, int blen)
->  {
->  	int ret;
->  
-> +	if (blen > sizeof(st->data)) {
-> +		pr_err("az6007: tried to write %d bytes, but I2C max size is %lu bytes\n",
-> +		       blen, sizeof(st->data));
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-
-This makes no sense...
-
->  	if (az6007_xfer_debug) {
->  		printk(KERN_DEBUG "az6007: OUT req: %02x, value: %04x, index: %04x\n",
->  		       req, value, index);
-> @@ -150,12 +162,6 @@ static int __az6007_write(struct usb_device *udev, u8 req, u16 value,
->  				     DUMP_PREFIX_NONE, b, blen);
->  	}
->  
-> -	if (blen > 64) {
-> -		pr_err("az6007: tried to write %d bytes, but I2C max size is 64 bytes\n",
-> -		       blen);
-> -		return -EOPNOTSUPP;
-> -	}
-> -
-
-...since it is capped at 64 bytes anyway. So just keep this check since it is more stringent
-than sizeof(st->data).
-
-Also, 'b' doesn't always point to st->data, so it makes no sense.
-
-I think this is all overkill.
-
-There are only a few places in this driver where you are reading or writing to/from a
-buffer. In most cases the length is hardcoded and clearly fits inside the buffer.
-
-Only is a few places do you need to check that the length <= sizeof(st->data), and
-that should just be added as an extra check.
-
-Note that the msg buffers (msg[i].buf) passed to az6007_i2c_xfer are guaranteed to
-have the right size for the length (msg[i].len). So you only need to check when
-using st->data as the buffer.
-
-Sorry for basically going back to the first patch (almost).
-
-Regards,
-
-	Hans
-
->  	ret = usb_control_msg(udev,
->  			      usb_sndctrlpipe(udev, 0),
->  			      req,
-> @@ -172,13 +178,13 @@ static int __az6007_write(struct usb_device *udev, u8 req, u16 value,
->  static int az6007_write(struct dvb_usb_device *d, u8 req, u16 value,
->  			    u16 index, u8 *b, int blen)
->  {
-> -	struct az6007_device_state *st = d->priv;
-> +	struct az6007_device_state *st = d_to_priv(d);
->  	int ret;
->  
->  	if (mutex_lock_interruptible(&st->mutex) < 0)
->  		return -EAGAIN;
->  
-> -	ret = __az6007_write(d->udev, req, value, index, b, blen);
-> +	ret = __az6007_write(d->udev, st, req, value, index, b, blen);
->  
->  	mutex_unlock(&st->mutex);
->  
-> @@ -775,7 +781,7 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
->  			value = addr | (1 << 8);
->  			length = 6 + msgs[i + 1].len;
->  			len = msgs[i + 1].len;
-> -			ret = __az6007_read(d->udev, req, value, index,
-> +			ret = __az6007_read(d->udev, st, req, value, index,
->  					    st->data, length);
->  			if (ret >= len) {
->  				for (j = 0; j < len; j++)
-> @@ -788,7 +794,7 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
->  			if (az6007_xfer_debug)
->  				printk(KERN_DEBUG "az6007: I2C W addr=0x%x len=%d\n",
->  				       addr, msgs[i].len);
-> -			if (msgs[i].len < 1) {
-> +			if (msgs[i].len < 1 && msgs[i].len > 64) {
->  				ret = -EIO;
->  				goto err;
->  			}
-> @@ -796,11 +802,8 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
->  			index = msgs[i].buf[0];
->  			value = addr | (1 << 8);
->  			length = msgs[i].len - 1;
-> -			len = msgs[i].len - 1;
-> -			for (j = 0; j < len; j++)
-> -				st->data[j] = msgs[i].buf[j + 1];
-> -			ret =  __az6007_write(d->udev, req, value, index,
-> -					      st->data, length);
-> +			ret =  __az6007_write(d->udev, st, req, value, index,
-> +					      &msgs[i].buf[1], length);
->  		} else {
->  			/* read bytes */
->  			if (az6007_xfer_debug)
-> @@ -815,10 +818,12 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
->  			value = addr;
->  			length = msgs[i].len + 6;
->  			len = msgs[i].len;
-> -			ret = __az6007_read(d->udev, req, value, index,
-> +			ret = __az6007_read(d->udev, st, req, value, index,
->  					    st->data, length);
-> -			for (j = 0; j < len; j++)
-> -				msgs[i].buf[j] = st->data[j + 5];
-> +			if (ret >= len) {
-> +				for (j = 0; j < len; j++)
-> +					msgs[i].buf[j] = st->data[j + 5];
-> +			}
->  		}
->  		if (ret < 0)
->  			goto err;
-> @@ -845,6 +850,7 @@ static const struct i2c_algorithm az6007_i2c_algo = {
->  
->  static int az6007_identify_state(struct dvb_usb_device *d, const char **name)
->  {
-> +	struct az6007_device_state *state = d_to_priv(d);
->  	int ret;
->  	u8 *mac;
->  
-> @@ -855,7 +861,7 @@ static int az6007_identify_state(struct dvb_usb_device *d, const char **name)
->  		return -ENOMEM;
->  
->  	/* Try to read the mac address */
-> -	ret = __az6007_read(d->udev, AZ6007_READ_DATA, 6, 0, mac, 6);
-> +	ret = __az6007_read(d->udev, state, AZ6007_READ_DATA, 6, 0, mac, 6);
->  	if (ret == 6)
->  		ret = WARM;
->  	else
-> @@ -864,9 +870,9 @@ static int az6007_identify_state(struct dvb_usb_device *d, const char **name)
->  	kfree(mac);
->  
->  	if (ret == COLD) {
-> -		__az6007_write(d->udev, 0x09, 1, 0, NULL, 0);
-> -		__az6007_write(d->udev, 0x00, 0, 0, NULL, 0);
-> -		__az6007_write(d->udev, 0x00, 0, 0, NULL, 0);
-> +		__az6007_write(d->udev, state, 0x09, 1, 0, NULL, 0);
-> +		__az6007_write(d->udev, state, 0x00, 0, 0, NULL, 0);
-> +		__az6007_write(d->udev, state, 0x00, 0, 0, NULL, 0);
->  	}
->  
->  	pr_debug("Device is on %s state\n",
-> --
-> 
-
+I can send a backport for 6.1, unless someone else wants to do it
+(or is already on it).
 
