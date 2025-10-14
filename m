@@ -1,335 +1,157 @@
-Return-Path: <stable+bounces-185636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17BEBD901E
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:27:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A905DBD90FF
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 13:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECA6A3B20C8
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:27:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C7AE3BDCCF
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 11:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C9D30FF02;
-	Tue, 14 Oct 2025 11:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DB530C361;
+	Tue, 14 Oct 2025 11:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kqHqBvz2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/3Rfam4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B455C30DEB6
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 11:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9597330BF6B
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 11:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760441187; cv=none; b=doHdOGkrYYKxIIN2O9Tj9ZFqPYrALgn/9uWOjK0+rF3Eq2cWqKBo+uMNgdpU2yIPdgUsHERQahKEdzDVql3eBWpd/12cruuxTvoUbjSBJBhV0Nv+PXL4hkY4YfIYe6t11qN7fbLz3OKHW027fiRGhFVPRGjZg/O71xn628n5O3E=
+	t=1760441759; cv=none; b=KwikchsPhowj+VE/sxNYYKvmRDATUiCgSdQaksWgcwSyk8pPdqMlNU/Olr31PFMoYgPAb5zjGJ7wq/RJPZoBH1krkejVlF1jHY8c+uhF1pAbhnPDtR82Lq5dIc9AexHzWIwgSR+XyDlityQqwFZbwr6x25Oq+himI2vQmkxyXCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760441187; c=relaxed/simple;
-	bh=lhmKYp1HEXdi8uvGeIez6CnOvw0aDg5m/CFlXJlE44A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NEq5BfbhTeXYByCatFnyHWY6s/xcGuPlPcvtMacEcrE43KuD/91pvHfsj0JToxzQ+Y8Q22k+0OcrU5bjPi8xZth5xPoSGJtMZVZEezvllYKVVgStfJ4zU769vfDxT3STBuUuOib26OAw+vsF+jU1qLlRkDdR9mk2YSs9g3JrAZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kqHqBvz2; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-267f0fe72a1so38062845ad.2
-        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 04:26:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760441183; x=1761045983; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MrvNzgtUD4jIWNAqMAqvVvyYhJjdrVewiw+zojqIvG0=;
-        b=kqHqBvz2G1YbRyJ5qjPZbaJi/r0n9nkpVLVu9b8SqWzUcJzUkHrHdlS+7YjZaq0PvA
-         oEh3BIathze5TM21i4AsKaqd0NUs2jPI9rYJcAjyDPbudhfTTT3wyQpi2qKmMy1A6020
-         V/xUK3cJyRsQdomG0pY2+d0fgXC1wIiP+Xy4T+o2Y+Voba+QTCxW+XG3Pju18Jwpc3y9
-         +sfDt2rTd3kB4tZRdHpACcdY3o0CQ4lqel+8Hn0GZoqmHSAmthj+5MBuc+opX+EEDMTo
-         K5bFg5L4SWWykgHQhOaNX8NskibdKktU5z04ZRZZvkFa5+Ml2JqJ2vseuGIVkY49Cr3I
-         cCKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760441183; x=1761045983;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MrvNzgtUD4jIWNAqMAqvVvyYhJjdrVewiw+zojqIvG0=;
-        b=PE9TIjfFja5f1u0K4VlvVsT8tUKhV2YReGvi6113uIx1aYS4KozCQn689PgTbS0Wsh
-         1N427sSTfdSMImB4Jdje5/3Ic5Vhtl4+ZnC9LWtCNgCDZ1m5qU/EfFQDRI34D2UpcLt/
-         OgYKCN5tgLaYXkkzK4jKx7nmZsKGxSI/aXAGXB8Xne/reR9fWi2soYCN2RG1NfFiBz/b
-         M2jyvIVYaSrBav5CwLm7Fz/vxuQX406NdU33vqCQVUWzVOs9L5ib1puCkHs49a7udh2q
-         6Yvh54N8FUcyK29MvWcgEZJnUJXbKj/C37usoy94DxkVBAPfq6Fbges38gJKPiCCwwEG
-         ePwQ==
-X-Gm-Message-State: AOJu0YyDIPTOa3RogFLszdy5FSLnVsVIpZ2yToApljkzKNvLJehxwNYH
-	nSawMkEbu+7a0kh8D+ZJpKLtXqSi8f0lmvtHkstke4BVQntTx0hTyRXkCCFSzF3WmhEtNmB1N9+
-	YSr0hp753LI0uSxFH304dwdM9IMKbG3t20EzqmB+j0A==
-X-Gm-Gg: ASbGncsaGw/oH6pU0rI1gnJkd72sqU4uAuHRD4VW5/fKEQg8eT+Dx5WflUqRscvcKpe
-	MPm5wkQVOwuaZ1N5bypnxEF6Bdn6SN8gxBFHhmwoZyKBNCiW9eNa9vIrRdXDVTcnw/WDObGDZIx
-	I+pbDj6fYCbxBI2+imhySmYX4JYrP19X7/7pbBzLbTKL47sQI1vDRB+l1dFMFDMcldkgZFj14BT
-	ggUb3n1kponuaZ/D1/8xnzdCKbwXJ2JGq/HzLBiY10MHdGosGemVMlyA9wGXN8Wr/uO95k1JeQX
-	HE8mxxWD0w2wY0KMwzI=
-X-Google-Smtp-Source: AGHT+IHwg7xmTszUL/SFBHh33H8YJlErW0QdvxmOvcZasjPvJRMAkydcriG/Tv/ojvIGN9D0JGRguiWK500rgDVCCC0=
-X-Received: by 2002:a17:903:286:b0:276:842a:f9a7 with SMTP id
- d9443c01a7336-290273a1725mr289912375ad.57.1760441182743; Tue, 14 Oct 2025
- 04:26:22 -0700 (PDT)
+	s=arc-20240116; t=1760441759; c=relaxed/simple;
+	bh=IzwSRK05agVnf7WULlraPY0sAZEHqquQf3TW6XzfySI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ma1ZdyL1eaLBvoS+F2SQMDWA9lRS/tGd5uFccz7eYlXnqR3T7pZXxfpgVLLc7h+bJ29XRy1KF1Pdns6KxzjHLvwZgMPnHnsQAh5gsXDh9ey2A63sA19D5aUFtZroIWKU4Pn53CMVfPLUh2rpdHCI9dAmLVserlyYx5jnZhalf5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/3Rfam4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEE9C4CEE7;
+	Tue, 14 Oct 2025 11:35:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760441759;
+	bh=IzwSRK05agVnf7WULlraPY0sAZEHqquQf3TW6XzfySI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=P/3Rfam4ykCxRdzvRlITaSDFbqVCT+94xiLUTxlEHq2hybW0VPdseqLWG0eVauqa/
+	 p+hRkk1eddM5ZbptzxcmrJoDmT4HcseTsRNTypWie7EPWQ4vCBH1W3emKT423EhgVs
+	 Wt1yD5oS3uCpzsmLsuebU0Ru4L9LbcU2+RQWq5eNijoahuJD5eLw+YPN50/Nr8sfTf
+	 Y6DBu6Vpp62PlPdA08tKIPCYH8ZmpmAqbL5WfSyQwjJQiznRMr69trrnvoED9CC0I0
+	 /7MG8QFKUmJTEM42gkh/q4hbra7ircjjeHlA7Km+m4sRQRc7Jb+LPUPx0K1xWNkzhO
+	 pe2qB9dYOPL0w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Zheng Qixing <zhengqixing@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y] dm: fix NULL pointer dereference in __dm_suspend()
+Date: Tue, 14 Oct 2025 07:35:55 -0400
+Message-ID: <20251014113556.4151972-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101316-handmade-imaginary-edf0@gregkh>
+References: <2025101316-handmade-imaginary-edf0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251013144326.116493600@linuxfoundation.org>
-In-Reply-To: <20251013144326.116493600@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 14 Oct 2025 16:56:11 +0530
-X-Gm-Features: AS18NWCaA-1Kru16tgB66u-9S9WWZNi7-YltYKxwj_4Zn3wDV_IwhfPwMLShZB4
-Message-ID: <CA+G9fYsdErtgqKuyPfFhMS9haGKavBVCHQnipv2EeXM3OK0-UQ@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/262] 6.12.53-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, Ilya Leoshkevich <iii@linux.ibm.com>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Anders Roxell <anders.roxell@linaro.org>, 
-	Ben Copeland <benjamin.copeland@linaro.org>, linux-s390@vger.kernel.org, 
-	Netdev <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 13 Oct 2025 at 20:38, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.53 release.
-> There are 262 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 15 Oct 2025 14:42:41 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.53-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-The S390 defconfig builds failed on the Linux stable-rc 6.12.53-rc1
-and 6.6.112-rc1 tag build due to following build warnings / errors
-with gcc and clang toolchains.
+[ Upstream commit 8d33a030c566e1f105cd5bf27f37940b6367f3be ]
 
-Also seen on 6.6.112-rc1.
+There is a race condition between dm device suspend and table load that
+can lead to null pointer dereference. The issue occurs when suspend is
+invoked before table load completes:
 
-* s390, build
-  - clang-21-defconfig
-  - clang-nightly-defconfig
-  - clang-nightly-lkftconfig-hardening
-  - clang-nightly-lkftconfig-lto-full
-  - clang-nightly-lkftconfig-lto-thing
-  - gcc-14-allmodconfig
-  - gcc-14-defconfig
-  - gcc-14-lkftconfig-hardening
-  - gcc-8-defconfig-fe40093d
-  - gcc-8-lkftconfig-hardening
-  - korg-clang-21-lkftconfig-hardening
-  - korg-clang-21-lkftconfig-lto-full
-  - korg-clang-21-lkftconfig-lto-thing
+BUG: kernel NULL pointer dereference, address: 0000000000000054
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
+RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
+Call Trace:
+  <TASK>
+  blk_mq_quiesce_queue+0x2c/0x50
+  dm_stop_queue+0xd/0x20
+  __dm_suspend+0x130/0x330
+  dm_suspend+0x11a/0x180
+  dev_suspend+0x27e/0x560
+  ctl_ioctl+0x4cf/0x850
+  dm_ctl_ioctl+0xd/0x20
+  vfs_ioctl+0x1d/0x50
+  __se_sys_ioctl+0x9b/0xc0
+  __x64_sys_ioctl+0x19/0x30
+  x64_sys_call+0x2c4a/0x4620
+  do_syscall_64+0x9e/0x1b0
 
-First seen on 6.12.53-rc1
-Good: v6.12.52
-Bad: 6.12.53-rc1 also seen on 6.6.112-rc1
+The issue can be triggered as below:
 
-Regression Analysis:
-- New regression? yes
-- Reproducibility? yes
+T1 						T2
+dm_suspend					table_load
+__dm_suspend					dm_setup_md_queue
+						dm_mq_init_request_queue
+						blk_mq_init_allocated_queue
+						=> q->mq_ops = set->ops; (1)
+dm_stop_queue / dm_wait_for_completion
+=> q->tag_set NULL pointer!	(2)
+						=> q->tag_set = set; (3)
 
-Build regressions: arch/s390/net/bpf_jit_comp.c:1813:49: error:
-'struct bpf_jit' has no member named 'frame_off'
+Fix this by checking if a valid table (map) exists before performing
+request-based suspend and waiting for target I/O. When map is NULL,
+skip these table-dependent suspend steps.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Even when map is NULL, no I/O can reach any target because there is
+no table loaded; I/O submitted in this state will fail early in the
+DM layer. Skipping the table-dependent suspend logic in this case
+is safe and avoids NULL pointer dereferences.
 
-# Build error
-arch/s390/net/bpf_jit_comp.c: In function 'bpf_jit_insn':
-arch/s390/net/bpf_jit_comp.c:1813:49: error: 'struct bpf_jit' has no
-member named 'frame_off'
- 1813 |                         _EMIT6(0xd203f000 | (jit->frame_off +
-      |                                                 ^~
-arch/s390/net/bpf_jit_comp.c:211:55: note: in definition of macro '_EMIT6'
-  211 |                 *(u32 *) (jit->prg_buf + jit->prg) = (op1);     \
-      |                                                       ^~~
-include/linux/stddef.h:16:33: error: invalid use of undefined type
-'struct prog_frame'
-   16 | #define offsetof(TYPE, MEMBER)  __builtin_offsetof(TYPE, MEMBER)
-      |                                 ^~~~~~~~~~~~~~~~~~
-arch/s390/net/bpf_jit_comp.c:211:55: note: in definition of macro '_EMIT6'
-  211 |                 *(u32 *) (jit->prg_buf + jit->prg) = (op1);     \
-      |                                                       ^~~
-arch/s390/net/bpf_jit_comp.c:1814:46: note: in expansion of macro 'offsetof'
- 1814 |                                              offsetof(struct prog_frame,
-      |                                              ^~~~~~~~
-include/linux/stddef.h:16:33: error: invalid use of undefined type
-'struct prog_frame'
-   16 | #define offsetof(TYPE, MEMBER)  __builtin_offsetof(TYPE, MEMBER)
-      |                                 ^~~~~~~~~~~~~~~~~~
-arch/s390/net/bpf_jit_comp.c:212:59: note: in definition of macro '_EMIT6'
-  212 |                 *(u16 *) (jit->prg_buf + jit->prg + 4) = (op2); \
-      |                                                           ^~~
-arch/s390/net/bpf_jit_comp.c:1816:41: note: in expansion of macro 'offsetof'
- 1816 |                                0xf000 | offsetof(struct prog_frame,
-      |                                         ^~~~~~~~
-arch/s390/net/bpf_jit_comp.c: In function '__arch_prepare_bpf_trampoline':
-include/linux/stddef.h:16:33: error: invalid use of undefined type
-'struct prog_frame'
-   16 | #define offsetof(TYPE, MEMBER)  __builtin_offsetof(TYPE, MEMBER)
-      |                                 ^~~~~~~~~~~~~~~~~~
-arch/s390/net/bpf_jit_comp.c:212:59: note: in definition of macro '_EMIT6'
-  212 |                 *(u16 *) (jit->prg_buf + jit->prg + 4) = (op2); \
-      |                                                           ^~~
-arch/s390/net/bpf_jit_comp.c:2813:33: note: in expansion of macro 'offsetof'
- 2813 |                        0xf000 | offsetof(struct prog_frame,
-tail_call_cnt));
-      |                                 ^~~~~~~~
-make[5]: *** [scripts/Makefile.build:229: arch/s390/net/bpf_jit_comp.o] Error 1
+Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+[ omitted DMF_QUEUE_STOPPED flag setting and braces absent in 5.15 ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/md/dm.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-The git blame is pointing to,
- $ git blame -L 1813  arch/s390/net/bpf_jit_comp.c
-   162513d7d81487 (Ilya Leoshkevich)    _EMIT6(0xd203f000 | (jit->frame_off +
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 3d00bb98d702b..be7182adcdd5b 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2595,7 +2595,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
+ {
+ 	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
+ 	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
+-	int r;
++	int r = 0;
+ 
+ 	lockdep_assert_held(&md->suspend_lock);
+ 
+@@ -2648,7 +2648,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
+ 	 * Stop md->queue before flushing md->wq in case request-based
+ 	 * dm defers requests to md->wq from md->queue.
+ 	 */
+-	if (dm_request_based(md))
++	if (map && dm_request_based(md))
+ 		dm_stop_queue(md->queue);
+ 
+ 	flush_workqueue(md->wq);
+@@ -2658,7 +2658,8 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
+ 	 * We call dm_wait_for_completion to wait for all existing requests
+ 	 * to finish.
+ 	 */
+-	r = dm_wait_for_completion(md, task_state);
++	if (map)
++		r = dm_wait_for_completion(md, task_state);
+ 	if (!r)
+ 		set_bit(dmf_suspended_flag, &md->flags);
+ 
+-- 
+2.51.0
 
-Commit pointing to,
-   s390/bpf: Write back tail call counter for BPF_PSEUDO_CALL
-   [ Upstream commit c861a6b147137d10b5ff88a2c492ba376cd1b8b0 ]
-
-## Build
-* kernel: 6.12.53-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* git commit: 7e50c0945b4ab1d4019f9905f6cf5350082c6a84
-* git describe: v6.12.52-263-g7e50c0945b4a
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.52-263-g7e50c0945b4a
-
-## Test Regressions (compared to v6.12.50-47-gf7ad21173a19)
-* s390, build
-  - clang-21-defconfig
-  - clang-nightly-defconfig
-  - clang-nightly-lkftconfig-hardening
-  - clang-nightly-lkftconfig-lto-full
-  - clang-nightly-lkftconfig-lto-thing
-  - gcc-14-allmodconfig
-  - gcc-14-defconfig
-  - gcc-14-lkftconfig-hardening
-  - gcc-8-defconfig-fe40093d
-  - gcc-8-lkftconfig-hardening
-  - korg-clang-21-lkftconfig-hardening
-  - korg-clang-21-lkftconfig-lto-full
-  - korg-clang-21-lkftconfig-lto-thing
-
-## Metric Regressions (compared to v6.12.50-47-gf7ad21173a19)
-
-## Test Fixes (compared to v6.12.50-47-gf7ad21173a19)
-
-## Metric Fixes (compared to v6.12.50-47-gf7ad21173a19)
-
-## Test result summary
-total: 152513, pass: 126770, fail: 5572, skip: 19634, xfail: 537
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 137 passed, 2 failed
-* arm64: 57 total, 51 passed, 6 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 39 passed, 1 failed
-* riscv: 25 total, 24 passed, 1 failed
-* s390: 22 total, 8 passed, 14 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 46 passed, 3 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
