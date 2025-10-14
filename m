@@ -1,104 +1,119 @@
-Return-Path: <stable+bounces-185626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD44BD8B39
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 12:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E36BD8B4C
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 12:17:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2175E3A8515
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 10:14:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D05043ADE79
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 10:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0922C2F90CE;
-	Tue, 14 Oct 2025 10:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D092E719C;
+	Tue, 14 Oct 2025 10:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=readmodwrite-com.20230601.gappssmtp.com header.i=@readmodwrite-com.20230601.gappssmtp.com header.b="KhRbTcCK"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D282F5479
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 10:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680532D193C
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 10:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760436837; cv=none; b=hiPbODw0UV560GAZs07mqtJ90c0kgo/HF81IKMC4ZbZi0+7FIeunf9P2L4O6NOAxDo8cW0q4nWep9a2FukDETQp0Y9OUcwf7gJ+/wJkcLSi0PPCijReXDCumJn3lwRAkfhnoLMm5MhTLr6mBNS3EDxZ4dtXNsqvMOO6YemDMCGM=
+	t=1760436917; cv=none; b=B79NynQm4fhmHpk2AfRT4ZIs0Qxafvk7xXv55fFfdTouP5F6rBYDtDpSLPvxYvr2HiVyJwMEopiMldmjKcM8Xyo1jhtcxoTpLdW6Eq9yYjJiVlwSoiVaWp3PvvuIe8FgFYA9qEku681/nQnZFRPusORNCVuKe2+CTbiKIosT6vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760436837; c=relaxed/simple;
-	bh=VLSfMsG7TllDtJsX1MCMDfY8R5vkv1+hAlWzgwYJMGc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u9SGtgM1RQGOcNTMvT2fKZYU7EbKIqxdxTX8r+teWyS/BVqFqp+f30HGufNUnaQVvupfMsDEhotvPg4K8ZfneacWQjSt4hOQVxYKhrl05ikQaPM9oXk1XHroBqw5+DnJTSLPCerHmh7r574OmyLYZkmTyEmXpafJY2ovClZA2Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A3C41A9A;
-	Tue, 14 Oct 2025 03:13:47 -0700 (PDT)
-Received: from [10.1.25.198] (e137867.arm.com [10.1.25.198])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E56D3F6A8;
-	Tue, 14 Oct 2025 03:13:54 -0700 (PDT)
-Message-ID: <37b8fe61-318e-4bb2-9935-93014c74368c@arm.com>
-Date: Tue, 14 Oct 2025 11:13:49 +0100
+	s=arc-20240116; t=1760436917; c=relaxed/simple;
+	bh=14Etygw7WtPpgXOE948mx5h6cWwRuoAVhGXgkcIcs1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H/LsaJsE3TaCaG17IdA/frnUYbbH06uazA1k/ZqpcBhx8lBAzzB29dEimRydDkuO6WBppDwv7kvkZIm9AvXqyraWTj7E9D7ekv5rOJ8QicbtLQ3NLbGzRG3pYLDFBqJmGv60yikBAhtyhUPGvaWNuYqldrRqTrbhh2JpzCr+Du0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20230601.gappssmtp.com header.i=@readmodwrite-com.20230601.gappssmtp.com header.b=KhRbTcCK; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=readmodwrite.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-46e4f2696bdso51955815e9.0
+        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 03:15:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20230601.gappssmtp.com; s=20230601; t=1760436914; x=1761041714; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MrIIKq5VDN62JRdWP+77b/CdflRUKD6ACbZlPSNFmBY=;
+        b=KhRbTcCKOwt1nRUPjHPgrgjWoNjUxrnLiaeRJZm0ZuV2a73OSOejhjfLNKD1uMtxUW
+         DI+iVNXi/aWLlebDO1GPgAD8SfnTa/iwi7kvoRbZWMcvmXeyKoys/8g89iQekP8SZ91s
+         95BV40bcxCDhToufb2Rbqlw8rZi7gvvzcYHvazHVr9wed7LSZs1DpJQSPDAmqtkxjjAN
+         uvUx5vbf95EssSr6zUgWUMXOi8am9PgXRQO/JKimbZvVu/f6dP+k/zbl3aHUzJ6SmAKp
+         2uFz3EzDE2pb9jx4UMarKi56ty8nlFneab4oQUNJlD9zj3Y9M1KM9Nakaoj0zNPJLhaz
+         QSRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760436914; x=1761041714;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MrIIKq5VDN62JRdWP+77b/CdflRUKD6ACbZlPSNFmBY=;
+        b=A4OSjPb3P1Vxg8cgChALnR7S23GOIz00iOXeSM4CPPhnH9cM2Ax0w+SYIMQUAtbYRD
+         b5Rf0q10dwtwta2EnIL+PGcUFyIDCulv2uZ0W/8i8OvJAXkV/wgnfeSZpIXagGPjW1+f
+         Ib2f5yGq2t1d7MW4N6ANaMWjJ5SI6opfxSVnC9XLypc4ZXLXXTqzlKPPRc6hrmZakQ6b
+         /tK/YR8JfBMhLe/tyaQJbLjtrQmWwfWBahJFxb4IzlWqbULy3OhC0FKyoBMMB8chRCZ8
+         cp+oYyhlxvNxWFBx+ePXNAuCM7qbaCy0L6DFoKl4+9W9joGCGALjsnf4Ng60PrEi+Jv8
+         K4Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCULySs7cSIX3mFmpPuOLzrw80fczz46GxROGKryHe5oTFOk6wzj671OYoJ88LP7cW7ZLjWQI8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuOmz/BDtxsfN5CcMpF28mEfxuLhD4MjmEwzfaJK/uq8OZI8TZ
+	30PjEFuHifASCNzM/QCeZbiXLQdNy8qAUtphS+3MW6knhEYLmUbWJiE6y3j43LsYS8s=
+X-Gm-Gg: ASbGnctbEdDDC8HUU6dreAOJELSgSG9QP01tA01vMpXGd7/HnbmaqiyfYHyndaWS6p0
+	Aa1JZ95Iiqy8HHmKUVZgP4r6ktZhmM/XE0g5n0hhjAyECLZtnzXBuaDaSysa5U3lww+W6QMeP7z
+	Eet/jJCzFcRv56gYhoKOUIE9oO+kHXJB2MA3Hcwnid94igA8AhDt04RtuIDbDrTE1onbY+2v6ue
+	AGN1KuWoB+3S+b4zOPqCsgsPwKOjt873RrfKF1lIhd5prbHKSa4KmcL7LOvCSmITNlFhQo3g6Ix
+	ZJezEbur9PzvaepTjSrKbpcImOpkgJsO1/5ZeqCWeFqG7VH//8WOP1jSJ+xrFAHSbQor7VXb379
+	MXivCke/Zy/kweEGavT21P4Tzcg==
+X-Google-Smtp-Source: AGHT+IELPWvY5XW8S/2q2NqbM1z7T3e4Zv2tUvs3NJqtyA6KBFgk27XBQjSIlKd9c18cAaAbYkez7A==
+X-Received: by 2002:a05:600c:548d:b0:46e:49fd:5e30 with SMTP id 5b1f17b1804b1-46fa9a8f4e3mr177906435e9.6.1760436913213;
+        Tue, 14 Oct 2025 03:15:13 -0700 (PDT)
+Received: from localhost ([2a09:bac1:2880:f0::3df:19])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fab3cc939sm152574265e9.1.2025.10.14.03.15.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 03:15:12 -0700 (PDT)
+Date: Tue, 14 Oct 2025 11:15:11 +0100
+From: Matt Fleming <matt@readmodwrite.com>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: John Stultz <jstultz@google.com>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com,
+	Matt Fleming <mfleming@cloudflare.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Chris Arges <carges@cloudflare.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "sched/core: Tweak wait_task_inactive() to force
+ dequeue sched_delayed tasks"
+Message-ID: <20251014101511.uzeemvmm334mfopy@matt-Precision-5490>
+References: <20250925133310.1843863-1-matt@readmodwrite.com>
+ <CANDhNCr+Q=mitFLQ0Xr8ZkZrJPVtgtu8BFaUSAVTZcAFf+VgsA@mail.gmail.com>
+ <105ae6f1-f629-4fe7-9644-4242c3bed035@amd.com>
+ <CAENh_SRj9pMyMLZAM0WVr3tuD5ogMQySzkPoiHu4SRoGFkmnZw@mail.gmail.com>
+ <0fc0943c-8ec1-47dd-9b3a-82c68c6bde34@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: debug: always unmask interrupts in
- el0_softstp()
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- stable@vger.kernel.org, Ada Couprie Diaz <ada.coupriediaz@arm.com>
-References: <20251013174317.74791-1-ada.coupriediaz@arm.com>
- <20251014092536.18831-1-ada.coupriediaz@arm.com>
- <aO4b_Ubig2FXowLa@J2N7QTR9R3.cambridge.arm.com>
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Content-Language: en-US
-Organization: Arm Ltd.
-In-Reply-To: <aO4b_Ubig2FXowLa@J2N7QTR9R3.cambridge.arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0fc0943c-8ec1-47dd-9b3a-82c68c6bde34@amd.com>
 
-On 14/10/2025 10:46, Mark Rutland wrote:
+On Mon, Sep 29, 2025 at 09:23:06AM +0530, K Prateek Nayak wrote:
+> 
+> Thank you for testing the diff. I see Ingo has already posted the
+> scheduler pull for v6.18 which indirectly solves this by removing those
+> early returns.
+> 
+> Once that lands, I'll attach a formal commit log and send out a patch
+> targeting the stable kernels >= 6.12.
 
-> On Tue, Oct 14, 2025 at 10:25:36AM +0100, Ada Couprie Diaz wrote:
->> EL0 exception handlers should always call `exit_to_user_mode()` with
->> interrupts unmasked.
->> When handling a completed single-step, we skip the if block and
->> `local_daif_restore(DAIF_PROCCTX)` never gets called,
->> which ends up calling `exit_to_user_mode()` with interrupts masked.
->>
->> This is broken if pNMI is in use, as `do_notify_resume()` will try
->> to enable interrupts, but `local_irq_enable()` will only change the PMR,
->> leaving interrupts masked via DAIF.
-> I think we might want to spell thius out a bit more, e.g.
-That's fair, your version lays it out better and is probably more 
-accessible !
-> | We intend that EL0 exception handlers unmask all DAIF exceptions
-> | before calling exit_to_user_mode().
-> |
-> | When completing single-step of a suspended breakpoint, we do not call
-> | local_daif_restore(DAIF_PROCCTX) before calling exit_to_user_mode(),
-> | leaving all DAIF exceptions masked.
-> |
-> | When pseudo-NMIs are not in use this is benign.
-> |
-> | When pseudo-NMIs are in use, this is unsound. At this point interrupts
-> | are masked by both DAIF.IF and PMR_EL1, and subsequent irq flag
-> | manipulation may not work correctly. For example, a subsequent
-> | local_irq_enable() within exit_to_user_mode_loop() will only unmask
-> | interrupts via PMR_EL1 (leaving those masked via DAIF.IF), and
-> | anything depending on interrupts being unmasked (e.g. delivery of
-> | signals) will not work correctly.
-> |
-> | This can by detected by CONFIG_ARM64_DEBUG_PRIORITY_MASKING.
-This could be "This was detected [...]", as that's what I did to detect 
-the error,
-but happy with either : we don't need to bikeshed this !
-> With or without that, this looks good to me, so:
->
-> Acked-by: Mark Rutland <mark.rutland@arm.com>
->
-> Mark.
-Thanks for the quick review,
-Ada
+Hey Prateek, I see the merge window is closed. Do you have plans to
+submit a patch for stable now?
 
