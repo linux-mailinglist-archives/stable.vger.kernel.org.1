@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-185555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0537BD6DFC
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 02:26:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD980BD6DFF
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 02:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 84A1F4E195C
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 00:26:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89E074E4A4A
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 00:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87522C0F79;
-	Tue, 14 Oct 2025 00:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDB92C158A;
+	Tue, 14 Oct 2025 00:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jlZe7dza"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bdV7l9OV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A702BF3CF
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3742BF3CF
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 00:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760401058; cv=none; b=pXJAQCnFfICUroOtZw/i3A05L8PWte3XBMzSk3kzL9yDitbuLZcXUBOa9Q5pzA13+jyzw5xvHeoVpin71H10EL64cJkpYmrUaG1R1dp/IdpDQELoKH7aWMXAgy/M4RZxiP5J2GuvTD2mi7+TtzjctXouDT/VGTl2O0A9zzlVkwk=
+	t=1760401059; cv=none; b=uafXuBHeqlJjAEGTgxwVX8lvg9pnLGSRLVaxh0tyVjS6hqPPiqK2boyQI6wJ84Dcw3bWJJo7uBm0GvR7CyPnaJxXHnzFUybEee6+8b/YLk4O9FOBNLgvYr/6gmbZ3apK+V/KeOXDwWptVkPGb8Uhn/ZzkZ7/NjV6Y7L+zZD/E1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760401058; c=relaxed/simple;
-	bh=ixWSgdv0V8B1x5iuEtwIBYT1UuRENhdJ1SbbYJc8Onw=;
+	s=arc-20240116; t=1760401059; c=relaxed/simple;
+	bh=RCgVmzfCtn8oLkMrVC1ZpjfNbKz/4uqOuALe3a4Oxt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ikYpAhGodgZ4Nj5oyGCyaHLnJWGI9snM1RDS8wgPEL+R5acrzQPCQCCRHqEgHWnAUqyIqlGjYCpzNnVbTj5nbUOktLGThnmFiJanHMMIKl8+rGoLCCYTolDQmg0uo0nsyMNC1I7rRiYbl6Ah76CJEt12Zuk0gM/A0FW+Mpynm2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jlZe7dza; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C391C116D0;
-	Tue, 14 Oct 2025 00:17:37 +0000 (UTC)
+	 MIME-Version; b=Q3IX3fP+98cm7XbLpBjRyodUIR/YbJfzpOpv4Purf+Gra0MU1PAuz0fheLDwAyx7tp1Vf++M2pdsCbs/sYh4iHMBqPo4zp+WkzOHtH94LxmviTjE1oAtVqK7B2MHxcQSPr03XbsB8ci2aZxUBJnto0+SIo0pGcyf96GNb3sXI1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bdV7l9OV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F86C4CEE7;
+	Tue, 14 Oct 2025 00:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760401058;
-	bh=ixWSgdv0V8B1x5iuEtwIBYT1UuRENhdJ1SbbYJc8Onw=;
+	s=k20201202; t=1760401059;
+	bh=RCgVmzfCtn8oLkMrVC1ZpjfNbKz/4uqOuALe3a4Oxt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlZe7dza3Acj1gpCcFtuV5ffcatgIqYS2c+DjGEqJ+DdXLSAqeDfRJX1MHCTdFdWr
-	 RL42QTUXoK21dxYijgK4SYtNuVQxTZKx/Baxpn3fc0pQkSXsKbAgt+T1KgPtvTJJMU
-	 w69QWdcEQbcc4woXWYCw7pxr2vmR1Nve0A4nvKDQTZmMbGp9xnCws4jgwXP81ShpsA
-	 5Fn6a3ZaAaCkhWtWc5ygswd7UTJ2+DHib8g93QmowZ6h1F3moaX1bVdBMyM87i8j+P
-	 kFsUOkJEXaNoRM2h3st6ppcxhOwoOAnGvzmhZnrXguJWyyk5V9uBRMxvB2ApWPjp+m
-	 qiWECnVVS48Sw==
+	b=bdV7l9OV6BJDI01Ya59hereYXBsE8nT2hxo5fqNPUO3vqMOH26ehYxxISgozGJK2A
+	 c+Uvemj5hUW0//WHxLo5ODlQP/oXYrZHanhWn7QjpcbmWeopY8fDLGKVNio7XrPqah
+	 J6mDqKYp41MHMdhSOHWMNxx9ULgXpMTUVYGAX4r1E6XrOHu9A7cbsCPMKgxzXeiTT5
+	 jnkPfhXqA8N+eN2Qc4RrUq4aDQffkyJCDqrJnqNMKSM/jFl6QpLeBd9GQXfPFdYV/e
+	 cMXtTGXBZPlJ25yE2rqdzLihlD+bwYBdi+n5pOvrV0YeemcxI2uq66hOIvXRlvu5y5
+	 C/kh/2oIJvcGw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+Cc: Hans de Goede <hansg@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/3] mfd: intel_soc_pmic_chtdc_ti: Drop unneeded assignment for cache_type
-Date: Mon, 13 Oct 2025 20:17:33 -0400
-Message-ID: <20251014001734.3748199-2-sashal@kernel.org>
+Subject: [PATCH 5.4.y 3/3] mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag
+Date: Mon, 13 Oct 2025 20:17:34 -0400
+Message-ID: <20251014001734.3748199-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014001734.3748199-1-sashal@kernel.org>
 References: <2025101316-disarm-pried-7a1f@gregkh>
@@ -62,35 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 9eb99c08508714906db078b5efbe075329a3fb06 ]
+[ Upstream commit 64e0d839c589f4f2ecd2e3e5bdb5cee6ba6bade9 ]
 
-REGCACHE_NONE is the default type of the cache when not provided.
-Drop unneeded explicit assignment to it.
+Testing has shown that reading multiple registers at once (for 10-bit
+ADC values) does not work. Set the use_single_read regmap_config flag
+to make regmap split these for us.
 
-Note, it's defined to 0, and if ever be redefined, it will break
-literally a lot of the drivers, so it very unlikely to happen.
+This should fix temperature opregion accesses done by
+drivers/acpi/pmic/intel_pmic_chtdc_ti.c and is also necessary for
+the upcoming drivers for the ADC and battery MFD cells.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20250129152823.1802273-1-andriy.shevchenko@linux.intel.com
+Fixes: 6bac0606fdba ("mfd: Add support for Cherry Trail Dollar Cove TI PMIC")
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250804133240.312383-1-hansg@kernel.org
 Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_chtdc_ti.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mfd/intel_soc_pmic_chtdc_ti.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/mfd/intel_soc_pmic_chtdc_ti.c b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-index e787d5655a315..31b30a919348c 100644
+index 31b30a919348c..c629624fd4a59 100644
 --- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
 +++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-@@ -82,7 +82,6 @@ static const struct regmap_config chtdc_ti_regmap_config = {
+@@ -82,6 +82,8 @@ static const struct regmap_config chtdc_ti_regmap_config = {
  	.reg_bits = 8,
  	.val_bits = 8,
  	.max_register = 0xff,
--	.cache_type = REGCACHE_NONE,
++	/* The hardware does not support reading multiple registers at once */
++	.use_single_read = true,
  };
  
  static const struct regmap_irq chtdc_ti_irqs[] = {
