@@ -1,118 +1,121 @@
-Return-Path: <stable+bounces-185730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D3ABDB58E
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 22:59:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE18BDB5D3
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 23:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C9894EAF49
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 20:59:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9D8D1927D28
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 21:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319F33093DF;
-	Tue, 14 Oct 2025 20:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DB330C34D;
+	Tue, 14 Oct 2025 21:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l20NnhA7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GW8wcMO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB50308F19;
-	Tue, 14 Oct 2025 20:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FEB3002AF;
+	Tue, 14 Oct 2025 21:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760475591; cv=none; b=uBd4YJIKKgktyfzLGe44fxqqOgdCORB5XloC/lFMw9Ph6xodsVvXtPEyhaajH0ooxOCckTRxbdWn1mAn31fHPSM/+Mmx/oDNGN+twGviDU9MwqZb7IZoXhmUk0TgRXJEAK2KU4MxiVK9D2xqmrO/x8ghjamh9P5QcU/giCyif/w=
+	t=1760476214; cv=none; b=Xbx3HuiQLv1KLBdM7ttCNEPg/yGyrQvjVAOLSSYonqmaabIQhlowDLHBkfTdTGEo4WyM+vEbQoVPHfcEnmz9sN9EjEC/WdTuCzUH1pwJSpO/lRuyeH7FBURg19Ef7Eoha8o76gcgvNt36I16d982Yz6DKfSsux0RCfHzxpzqmz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760475591; c=relaxed/simple;
-	bh=CwCpWIEbjznOcuvaN31S0BbRxv1BAYgTlvJi+4awgk0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AWS4aKUK1qlhQlQwiSgosoLnsoFegcsCjkBTOuGDdCVdhi0p3wwKqCkSVNYIqb0wwnMRoCYsZWBB+aCq7Qxb2d4utsJTATnU+/do91sKV10q1Q4guJ8u/k8aQ+u5u5R4tcw+L+VIaAjz+n5XyWBMlEkKvZSdGQw74IJy2hewYbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l20NnhA7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F46BC4CEE7;
-	Tue, 14 Oct 2025 20:59:50 +0000 (UTC)
+	s=arc-20240116; t=1760476214; c=relaxed/simple;
+	bh=Ro01wh06YC/uZxh8Xf1i50wfyiFHP8EhydOBit2DCIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=be/flFp+iRsb8eigu8xI97ESMxkjewkmSCy4HWvMJ9OMRpNiHcLcu65OUiH0Ml6nrrQ4JFfuGO4ePqRqFFztk3Z8U5g2CJiWrYo9dOQnQ/pqbJPTlxo44SUKhhml3w7sTaxm6D19+oR9r7r5whAO9Bjcf3sjyJTBD50n5Ld01n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GW8wcMO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC86C4CEE7;
+	Tue, 14 Oct 2025 21:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760475590;
-	bh=CwCpWIEbjznOcuvaN31S0BbRxv1BAYgTlvJi+4awgk0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=l20NnhA76N7s1JSZeE4HhkKM+jYSydazTLNhwgoJedy5N4CCAltIeitOYzgB97nb4
-	 yJSSA9ISOIGcN2F9dO+VCT1VLFrvp54XNbUrWUdkDP2FiTUs/ZDkDeRWtmzY/FhZ7+
-	 Ag9wxqiH2XLDqbC9Ggh/zHwDP6RlKazJnmRgHiV2FJAyV/4/EQIRApzSRJoDFpR/D2
-	 G0WEYRuObwpMkxOXM9nuIjaVqQyPF++e+Nhf/APPitSe86Ru9BXWjh/pmchadrsuWT
-	 3t5rjmLa779clCBhePxGVHmeqGxEMLEm3mMkhZ7cPhhZloWcJIWfjfJzO+QjzwkjjY
-	 tRLtLdypBkohw==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: fix list_add_tail() call on damon_call()
-Date: Tue, 14 Oct 2025 13:59:36 -0700
-Message-ID: <20251014205939.1206-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=k20201202; t=1760476212;
+	bh=Ro01wh06YC/uZxh8Xf1i50wfyiFHP8EhydOBit2DCIA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=GW8wcMO5W09zp1zy1d9huR1auo0p1Vy9a7N/T7y1/wJ1g0pMn9VwIMZ8ZFCtInzBl
+	 MWmgLiCGX33oeoDlRQMoUXtopr2TKUpMUcir9sPyxyESh9JLGHALMYykMcX+s49sr6
+	 UaqbGcuq5TA5EIHVUwS32PDz6PoZsfhfs4nfdpkMSwtEd/UkoE2mjhQJM3boJ3BgmR
+	 dqi2PnaPi0Shr2zo28PO9TK8hWCGc0CQI7qWTmrwk2cMt6jN+N4L+ND7L2Cc+KMhBz
+	 P9Scq6Zuztb0NhfvQQ5dipbHILYe3Cg286c9SQG0zh3J5wepM+WoKWqbCh5vSyAjjh
+	 fhU5ISJrj45vg==
+Date: Tue, 14 Oct 2025 16:10:11 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
+	Jianmin Lv <lvjianmin@loongson.cn>,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Huacai Chen <chenhuacai@gmail.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH Resend] PCI: Limit islolated function probing on bus 0
+ for LoongArch
+Message-ID: <20251014211011.GA907236@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251014074100.2149737-1-chenhuacai@loongson.cn>
 
-Each damon_ctx maintains callback requests using a linked list
-(damon_ctx->call_controls).  When a new callback request is received via
-damon_call(), the new request should be added to the list.  However, the
-function is making a mistake at list_add_tail() invocation: putting the
-new item to add and the list head to add it before, in the opposite
-order.  Because of the linked list manipulation implementation, the new
-request can still be reached from the context's list head.  But the list
-items that were added before the new request are dropped from the list.
+On Tue, Oct 14, 2025 at 03:41:00PM +0800, Huacai Chen wrote:
+> We found some discrete AMD graphics devices hide funtion 0 and the whole
+> is not supposed to be probed.
+> 
+> Since our original purpose is to allow integrated devices (on bus 0) to
+> be probed without function 0, we can limit the islolated function probing
+> only on bus 0.
 
-As a result, the callbacks are unexpectedly not invocated.  Worse yet,
-if the dropped callback requests were dynamically allocated, the memory
-is leaked.  Actually DAMON sysfs interface is using a dynamically
-allocated repeat-mode callback request for automatic essential stats
-update.  And because the online DAMON parameters commit is using
-a non-repeat-mode callback request, the issue can easily be reproduced,
-like below.
+s/islolated/isolated/ (multiple)
+s/funtion/function/
 
-    # damo start --damos_action stat --refresh_stat 1s
-    # damo tune --damos_action stat --refresh_stat 1s
+I suppose this fixes some problem where:
 
-The first command dynamically allocates the repeat-mode callback request
-for automatic essential stat update.  Users can see the essential stats
-are automatically updated for every second, using the sysfs interface.
+  - An AMD GPU is on some bus other than 00
+  - The GPU has no function 0
+  - Without function 0, we normally don't probe other functions
+  - a02fd05661d7 means we *do* probe other functions on LoongArch
+  - Therefore we find some non-0 function we're not supposed to find
 
-The second command calls damon_commit() with a new callback request that
-was made for the commit.  As a result, the previously added repeat-mode
-callback request is dropped from the list.  The automatic stats refresh
-stops working, and the memory for the repeat-mode callback request is
-leaked.  It can be confirmed using kmemleak.
+If that's the case, what bad thing happens?  Is there some dmesg hint
+we can include in the commit log?
 
-Fix the mistake on the list_add_tail() call.
+I suppose this means such devices are potentially broken for s390 and
+jailhouse as well?
 
-Fixes: 004ded6bee11 ("mm/damon: accept parallel damon_call() requests")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Cc: stable@vger.kernel.org
+> Fixes: a02fd05661d73a8 ("PCI: Extend isolated function probing to LoongArch")
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 417f33a7868e..109b050c795a 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1453,7 +1453,7 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
- 	INIT_LIST_HEAD(&control->list);
- 
- 	mutex_lock(&ctx->call_controls_lock);
--	list_add_tail(&ctx->call_controls, &control->list);
-+	list_add_tail(&control->list, &ctx->call_controls);
- 	mutex_unlock(&ctx->call_controls_lock);
- 	if (!damon_is_running(ctx))
- 		return -EINVAL;
+a02fd05661d7 (12-char SHA1 is conventional)
 
-base-commit: 49926cfb24ad064c8c26f8652e8a61bbcde37701
--- 
-2.47.3
+> -static inline bool hypervisor_isolated_pci_functions(void)
+> +static inline bool hypervisor_isolated_pci_functions(int bus)
+>  {
+>  	if (IS_ENABLED(CONFIG_S390))
+>  		return true;
+>  
+> -	if (IS_ENABLED(CONFIG_LOONGARCH))
+> -		return true;
+> +	if (IS_ENABLED(CONFIG_LOONGARCH)) {
+> +		if (bus == 0)
+
+I don't really like this embedded assumption that the root bus is bus
+00.  That's not necessarily the case; we have many host bridges that
+lead to a bus other than 00.
+
+> +			return true;
+> +	}
+>  
+>  	return jailhouse_paravirt();
+>  }
+> -- 
+> 2.47.3
+> 
 
