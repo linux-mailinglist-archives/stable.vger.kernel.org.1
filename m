@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-185699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1604EBDA8EB
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 18:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACFFBDA95A
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 18:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4CAB3B1939
-	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 16:06:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 357603AC7E6
+	for <lists+stable@lfdr.de>; Tue, 14 Oct 2025 16:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BEE3009FA;
-	Tue, 14 Oct 2025 16:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D8F2FF650;
+	Tue, 14 Oct 2025 16:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g8icaYPx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qeKrA7Ob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F8C3002C8
-	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 16:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7F82C1786
+	for <stable@vger.kernel.org>; Tue, 14 Oct 2025 16:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760457989; cv=none; b=hAZ34o5QjeZGVHszuOZz5ebBGLSTutHWDUMvQU144JJ/uEeGXuuJzRdQSCTbGGyycBaXvTqasIv10kb2X80mVm0akQHl1v/Oo+qLrRZ0UrEyDKswHBksJblZdJ0YBTfzWW3PjAmD35aQFF6vkVAkypQ6RvZyoDLZGQTy+osRLS0=
+	t=1760458449; cv=none; b=e4SnFjzRWt5Eg4I6/YlhRUl1GjKRLzKyb2sYMU/ZD1FGY65hEqTjMuTLOe4v00Vbs9QXH4RIx9K0/cPitakiNwQHP7Lg2WnHeD9cFSomr7FW1WJaYnrmdKOtKa/Xy8ktgX4vsxoOulnZT4Ph8tBSlEKRzs2cRFTv2hvJ28b9ECE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760457989; c=relaxed/simple;
-	bh=9tc4qlNTzRhbMSM8TPIEF2fZZ2R73vXPhd7B1Dg7PkE=;
+	s=arc-20240116; t=1760458449; c=relaxed/simple;
+	bh=CkhDHhNaiENPitM0Db0e0S9ZviAGmSP4EwmO+HgvXB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TRQytNoB5lWY1Q0alR6PfSS3TaEc38hAAzt/mK48TfJkP3bu9ljApekMZ9foceQbDlCkUR2bnQuLgdJQ3TgejvUVXDWQI2Kx0ytYH/I9h3Tni2FEJ7Gzmakcs7539x0SgI4orzO/rQHz2yEoJVcS5DrfSS4Qs1zDdYLorVsIBCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g8icaYPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12A3C113D0;
-	Tue, 14 Oct 2025 16:06:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cjHZNtmHL1PK3ognBCQi0pU4j0CSnr9RQDwzC668JujiLzh5IZXB82mOGc9fxMJ8Y1hKtWROrbgeYPgdY94orKlkbqqTk5LeLVezTP3Hf0UXmKuUh6fSllV/WRx9tEiYkZ0lOP8+GRMeyaHwe/aBFFLKb0IXnBaibp3Wtj9hjm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qeKrA7Ob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0740C4CEE7;
+	Tue, 14 Oct 2025 16:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760457987;
-	bh=9tc4qlNTzRhbMSM8TPIEF2fZZ2R73vXPhd7B1Dg7PkE=;
+	s=k20201202; t=1760458448;
+	bh=CkhDHhNaiENPitM0Db0e0S9ZviAGmSP4EwmO+HgvXB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8icaYPxYz++t5v1lbUp51ApTh7tflz8AbkTbFCv3YVhNuR9hViZfJJHPxGCQ85OT
-	 U4Ni1OgkCM8fuwYYIYoBdpE7cuagh+XOqLUSrld6J7DplkP9fuVpNQQIcVkW2PhCME
-	 4aWJPtnq6ouJK396Du+0OATzniow6rWA7ht9LXwk+oVRrATff9BjDFcBFCvLrt9llw
-	 9/utjsLDo4SEqhwcBKcPkMCOA8ifGiLYNct3r3Asg3OAOZ0R0fsscJEmi3G6MeFLbF
-	 l0jUjg9THdGNUql0kgSrpMIWAJo1DMMqYgHZK89BL8gND4hBzlPSTUOscGp5ctisk0
-	 b6Tj2l1ncZrSQ==
+	b=qeKrA7Obo6DeX2d9gc7okcU6X81n7E2r8VPHD+EK4krlW90SVGBPpTRB5szQUs9Td
+	 UndPn+Xh8FiazFACLedz8bYnMnoseq15eEJWUCBBfywSNnXOQ7cVpLO+zplmv0iQBf
+	 hGy4wyqjOQ73wBZphay5zS3dEFUEM2pQce4g5YbCsoCAetWDXoAaN9ijhPtSQGvbwl
+	 gJkIxAM79+qmYwraQLS/WwEEpafHSUaNGR0Ke0m0ri99/QMwW+CDvjcCitvjyXNnyZ
+	 D6Gtf/oFiaRAuZzcUINFR0+CP9OyFut/nPP8BnzMtty/4Ur8ag2XttTCjCh2kPyE2O
+	 tu+2bcbzizluw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
+Cc: Wang Jiang <jiangwang@kylinos.cn>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release
-Date: Tue, 14 Oct 2025 12:06:18 -0400
-Message-ID: <20251014160618.158328-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] PCI: endpoint: Remove surplus return statement from pci_epf_test_clean_dma_chan()
+Date: Tue, 14 Oct 2025 12:14:05 -0400
+Message-ID: <20251014161406.164458-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251014160618.158328-1-sashal@kernel.org>
-References: <2025101340-passably-rounding-59df@gregkh>
- <20251014160618.158328-1-sashal@kernel.org>
+In-Reply-To: <2025101341-gallon-ungloved-bc19@gregkh>
+References: <2025101341-gallon-ungloved-bc19@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,74 +61,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Wang Jiang <jiangwang@kylinos.cn>
 
-[ Upstream commit 85afa9ea122dd9d4a2ead104a951d318975dcd25 ]
+[ Upstream commit 9b80bdb10aee04ce7289896e6bdad13e33972636 ]
 
-The fields dma_chan_tx and dma_chan_rx of the struct pci_epf_test can be
-NULL even after EPF initialization. Then it is prudent to check that
-they have non-NULL values before releasing the channels. Add the checks
-in pci_epf_test_clean_dma_chan().
+Remove a surplus return statement from the void function that has been
+added in the commit commit 8353813c88ef ("PCI: endpoint: Enable DMA
+tests for endpoints with DMA capabilities").
 
-Without the checks, NULL pointer dereferences happen and they can lead
-to a kernel panic in some cases:
+Especially, as an empty return statements at the end of a void functions
+serve little purpose.
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000050
-  Call trace:
-   dma_release_channel+0x2c/0x120 (P)
-   pci_epf_test_epc_deinit+0x94/0xc0 [pci_epf_test]
-   pci_epc_deinit_notify+0x74/0xc0
-   tegra_pcie_ep_pex_rst_irq+0x250/0x5d8
-   irq_thread_fn+0x34/0xb8
-   irq_thread+0x18c/0x2e8
-   kthread+0x14c/0x210
-   ret_from_fork+0x10/0x20
+This fixes the following checkpatch.pl script warning:
 
-Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
-Fixes: 5ebf3fc59bd2 ("PCI: endpoint: functions/pci-epf-test: Add DMA support to transfer data")
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-[mani: trimmed the stack trace]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250916025756.34807-1-shinichiro.kawasaki@wdc.com
+  WARNING: void function return statements are not generally useful
+  #296: FILE: drivers/pci/endpoint/functions/pci-epf-test.c:296:
+  +     return;
+  +}
+
+Link: https://lore.kernel.org/r/tencent_F250BEE2A65745A524E2EFE70CF615CA8F06@qq.com
+Signed-off-by: Wang Jiang <jiangwang@kylinos.cn>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Stable-dep-of: 85afa9ea122d ("PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index ff4ca6ea5cb8e..4cf20ca25ea74 100644
+index bcf4f2ca82b3f..4ebc49f1a467c 100644
 --- a/drivers/pci/endpoint/functions/pci-epf-test.c
 +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -282,15 +282,20 @@ static void pci_epf_test_clean_dma_chan(struct pci_epf_test *epf_test)
- 	if (!epf_test->dma_supported)
- 		return;
+@@ -291,8 +291,6 @@ static void pci_epf_test_clean_dma_chan(struct pci_epf_test *epf_test)
  
--	dma_release_channel(epf_test->dma_chan_tx);
--	if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
-+	if (epf_test->dma_chan_tx) {
-+		dma_release_channel(epf_test->dma_chan_tx);
-+		if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
-+			epf_test->dma_chan_tx = NULL;
-+			epf_test->dma_chan_rx = NULL;
-+			return;
-+		}
- 		epf_test->dma_chan_tx = NULL;
--		epf_test->dma_chan_rx = NULL;
--		return;
- 	}
- 
--	dma_release_channel(epf_test->dma_chan_rx);
--	epf_test->dma_chan_rx = NULL;
-+	if (epf_test->dma_chan_rx) {
-+		dma_release_channel(epf_test->dma_chan_rx);
-+		epf_test->dma_chan_rx = NULL;
-+	}
+ 	dma_release_channel(epf_test->dma_chan_rx);
+ 	epf_test->dma_chan_rx = NULL;
+-
+-	return;
  }
  
- static void pci_epf_test_print_rate(struct pci_epf_test *epf_test,
+ static void pci_epf_test_print_rate(const char *ops, u64 size,
 -- 
 2.51.0
 
