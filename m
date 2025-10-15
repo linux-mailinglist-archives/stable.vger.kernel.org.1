@@ -1,532 +1,715 @@
-Return-Path: <stable+bounces-185830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EA0BDF43D
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 17:06:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88393BDF479
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 17:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50D54878CA
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:03:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B35B23A2061
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2432D8398;
-	Wed, 15 Oct 2025 15:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8214D17B50F;
+	Wed, 15 Oct 2025 15:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YiB12Cxg"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07B7254B18;
-	Wed, 15 Oct 2025 15:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4091721254B
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 15:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760540573; cv=none; b=AN3zNYvYjETz/GcM6r7V64XdAAwPseysSUkF4cxXy3V7Z8kLfs3+r6UneZOPCgvXTRxvr/2ELoLc3CbDK8aCAOjfp/zZMj+QDHieGxnvMRJ9zqKCmxi3HHkeh4TnwhlW8EDPlDey59hC8DaLQb26r4cfNtov9+Gz1T3KpsAk6ko=
+	t=1760540759; cv=none; b=bo8wSAAzyMbKmaBmwZaQ20L0z5MG8+Ak9Y6I7tu83799BlewgW+T7v0QXj11ikW5HlUlDnczAAluDzjIgJf8acG7LlRH+IVpYOhCAmlyvQ/D2kx59DXM3Hng2gx5+HVmgM5w6S44BB2bOX6yt/ZHJ8E5bEu5kgymj82rWFYoc4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760540573; c=relaxed/simple;
-	bh=02rpJ5AQAI1jNvcnqJlCOiGYXOnV1rR9beYRVt635GI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Skordj6wm2B/vBZbXO5bM3VYFO/YNFgtzUH9Qf9MImbjTlXJ+8+Wq4QY802PZKfSygjJwg6qKwbbLDDBDU856M+Hdw9NOvOAhu9wqmQmybEZEebn5+ZgfpudACITHeoRrdgUpYR4RcWQWT30fmKjpNMPY1+A/jMXbHEtGCDBwC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A8F671655;
-	Wed, 15 Oct 2025 08:02:39 -0700 (PDT)
-Received: from [10.1.38.178] (XHFQ2J9959.cambridge.arm.com [10.1.38.178])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F01B3F738;
-	Wed, 15 Oct 2025 08:02:44 -0700 (PDT)
-Message-ID: <f40f285b-9828-41fd-a004-3422915b8024@arm.com>
-Date: Wed, 15 Oct 2025 16:02:43 +0100
+	s=arc-20240116; t=1760540759; c=relaxed/simple;
+	bh=1+WLIe3jwxFnlQT6XjfwebsLVeMrZaqwKGqfxBbC3vk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ck3Fv2DXESRatfiQenbODWEUKH3/qyMdFmhBwEJTiuv01I+/Pehw6SqV9pNgNK9ONXzXIT64qntM3MTf7YDyp5nn8ef2RDSQ1Z9657gXObmzEX5dI+4ydmtlHBwiqpQl0bNertRw9LHtp57x01paz2veqnkJxJ3eYjs1UPammZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YiB12Cxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE64C4CEF8;
+	Wed, 15 Oct 2025 15:05:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760540759;
+	bh=1+WLIe3jwxFnlQT6XjfwebsLVeMrZaqwKGqfxBbC3vk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YiB12Cxgw9KBy3dtTsUg5DOBmLQYAsKZhIFPbgCvDQixhiWROXJUJA6SiUCzclEdB
+	 tJ+1EtDMQ5X0ZKZDiDLEq5xzI3ApBWJIAGaX8Eqig+tBOzR4Gqo51EmHJG481dFe8t
+	 e0z9P0QNqb9ALLC33L2nJo4EKotKAS6vmp0Aok9mqZIM1ccOYARNRV94LiCCA939Z4
+	 YPgTJ9iL8yKZecWhgkvbwzuaZAwT4waP7OGhRQmQ0Sd725CLrKNJoybJzAf5nTSPB2
+	 xQQr+gOJJ2BdfJGIduZi9cxq2N7Nl2NOj0Umo6r1HoIuHclREgnT0HFyOOzPpR1Xs4
+	 R7L//eEAlOrjw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/2] locking: Introduce __cleanup() based infrastructure
+Date: Wed, 15 Oct 2025 11:05:54 -0400
+Message-ID: <20251015150555.1437678-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101543-quake-judicial-9e2e@gregkh>
+References: <2025101543-quake-judicial-9e2e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] arm64/mm: Allow __create_pgd_mapping() to
- propagate pgtable_alloc() errors
-Content-Language: en-GB
-To: Linu Cherian <linu.cherian@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Zhenhua Huang <quic_zhenhuah@quicinc.com>, Dev Jain <dev.jain@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Yang Shi <yang@os.amperecomputing.com>,
- Chaitanya S Prakash <chaitanyas.prakash@arm.com>, stable@vger.kernel.org
-References: <20251015112758.2701604-1-linu.cherian@arm.com>
- <20251015112758.2701604-2-linu.cherian@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20251015112758.2701604-2-linu.cherian@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 15/10/2025 12:27, Linu Cherian wrote:
-> From: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
-> 
-> arch_add_memory() is used to hotplug memory into a system but as a part
-> of its implementation it calls __create_pgd_mapping(), which uses
-> pgtable_alloc() in order to build intermediate page tables. As this path
-> was initally only used during early boot pgtable_alloc() is designed to
-> BUG_ON() on failure. However, in the event that memory hotplug is
-> attempted when the system's memory is extremely tight and the allocation
-> were to fail, it would lead to panicking the system, which is not
-> desirable. Hence update __create_pgd_mapping and all it's callers to be
-> non void and propagate -ENOMEM on allocation failure to allow system to
-> fail gracefully.
-> 
-> But during early boot if there is an allocation failure, we want the
-> system to panic, hence create a wrapper around __create_pgd_mapping()
-> called early_create_pgd_mapping() which is designed to panic, if ret
-> is non zero value. All the init calls are updated to use this wrapper
-> rather than the modified __create_pgd_mapping() to restore
-> functionality.
-> 
-> Fixes: 4ab215061554 ("arm64: Add memory hotplug support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
-> Signed-off-by: Linu Cherian <linu.cherian@arm.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-LGTM:
+[ Upstream commit 54da6a0924311c7cf5015533991e44fb8eb12773 ]
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Use __attribute__((__cleanup__(func))) to build:
 
-> ---
-> Changelog:
-> 
-> v3:
-> * Fixed a maybe-uninitialized case in alloc_init_pud
-> * Added Fixes tag and CCed stable
-> * Few other trivial cleanups
-> 
->  arch/arm64/mm/mmu.c | 210 ++++++++++++++++++++++++++++----------------
->  1 file changed, 132 insertions(+), 78 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index b8d37eb037fc..638cb4df31a9 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -49,6 +49,8 @@
->  #define NO_CONT_MAPPINGS	BIT(1)
->  #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
->  
-> +#define INVALID_PHYS_ADDR	(-1ULL)
-> +
->  DEFINE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
->  
->  u64 kimage_voffset __ro_after_init;
-> @@ -194,11 +196,11 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
->  	} while (ptep++, addr += PAGE_SIZE, addr != end);
->  }
->  
-> -static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
-> -				unsigned long end, phys_addr_t phys,
-> -				pgprot_t prot,
-> -				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> -				int flags)
-> +static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
-> +			       unsigned long end, phys_addr_t phys,
-> +			       pgprot_t prot,
-> +			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> +			       int flags)
->  {
->  	unsigned long next;
->  	pmd_t pmd = READ_ONCE(*pmdp);
-> @@ -213,6 +215,8 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
->  			pmdval |= PMD_TABLE_PXN;
->  		BUG_ON(!pgtable_alloc);
->  		pte_phys = pgtable_alloc(TABLE_PTE);
-> +		if (pte_phys == INVALID_PHYS_ADDR)
-> +			return -ENOMEM;
->  		ptep = pte_set_fixmap(pte_phys);
->  		init_clear_pgtable(ptep);
->  		ptep += pte_index(addr);
-> @@ -244,12 +248,15 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
->  	 * walker.
->  	 */
->  	pte_clear_fixmap();
-> +
-> +	return 0;
->  }
->  
-> -static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
-> -		     phys_addr_t phys, pgprot_t prot,
-> -		     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
-> +static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
-> +		    phys_addr_t phys, pgprot_t prot,
-> +		    phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
->  {
-> +	int ret;
->  	unsigned long next;
->  
->  	do {
-> @@ -269,22 +276,27 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
->  			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
->  						      READ_ONCE(pmd_val(*pmdp))));
->  		} else {
-> -			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
-> -					    pgtable_alloc, flags);
-> +			ret = alloc_init_cont_pte(pmdp, addr, next, phys, prot,
-> +						  pgtable_alloc, flags);
-> +			if (ret)
-> +				return ret;
->  
->  			BUG_ON(pmd_val(old_pmd) != 0 &&
->  			       pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
->  		}
->  		phys += next - addr;
->  	} while (pmdp++, addr = next, addr != end);
-> +
-> +	return 0;
->  }
->  
-> -static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
-> -				unsigned long end, phys_addr_t phys,
-> -				pgprot_t prot,
-> -				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> -				int flags)
-> +static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
-> +			       unsigned long end, phys_addr_t phys,
-> +			       pgprot_t prot,
-> +			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> +			       int flags)
->  {
-> +	int ret;
->  	unsigned long next;
->  	pud_t pud = READ_ONCE(*pudp);
->  	pmd_t *pmdp;
-> @@ -301,6 +313,8 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
->  			pudval |= PUD_TABLE_PXN;
->  		BUG_ON(!pgtable_alloc);
->  		pmd_phys = pgtable_alloc(TABLE_PMD);
-> +		if (pmd_phys == INVALID_PHYS_ADDR)
-> +			return -ENOMEM;
->  		pmdp = pmd_set_fixmap(pmd_phys);
->  		init_clear_pgtable(pmdp);
->  		pmdp += pmd_index(addr);
-> @@ -320,20 +334,26 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
->  		    (flags & NO_CONT_MAPPINGS) == 0)
->  			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
->  
-> -		init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
-> +		ret = init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
-> +		if (ret)
-> +			goto out;
->  
->  		pmdp += pmd_index(next) - pmd_index(addr);
->  		phys += next - addr;
->  	} while (addr = next, addr != end);
->  
-> +out:
->  	pmd_clear_fixmap();
-> +
-> +	return ret;
->  }
->  
-> -static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
-> -			   phys_addr_t phys, pgprot_t prot,
-> -			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> -			   int flags)
-> +static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
-> +			  phys_addr_t phys, pgprot_t prot,
-> +			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> +			  int flags)
->  {
-> +	int ret = 0;
->  	unsigned long next;
->  	p4d_t p4d = READ_ONCE(*p4dp);
->  	pud_t *pudp;
-> @@ -346,6 +366,8 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
->  			p4dval |= P4D_TABLE_PXN;
->  		BUG_ON(!pgtable_alloc);
->  		pud_phys = pgtable_alloc(TABLE_PUD);
-> +		if (pud_phys == INVALID_PHYS_ADDR)
-> +			return -ENOMEM;
->  		pudp = pud_set_fixmap(pud_phys);
->  		init_clear_pgtable(pudp);
->  		pudp += pud_index(addr);
-> @@ -375,8 +397,10 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
->  			BUG_ON(!pgattr_change_is_safe(pud_val(old_pud),
->  						      READ_ONCE(pud_val(*pudp))));
->  		} else {
-> -			alloc_init_cont_pmd(pudp, addr, next, phys, prot,
-> -					    pgtable_alloc, flags);
-> +			ret = alloc_init_cont_pmd(pudp, addr, next, phys, prot,
-> +						  pgtable_alloc, flags);
-> +			if (ret)
-> +				goto out;
->  
->  			BUG_ON(pud_val(old_pud) != 0 &&
->  			       pud_val(old_pud) != READ_ONCE(pud_val(*pudp)));
-> @@ -384,14 +408,18 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
->  		phys += next - addr;
->  	} while (pudp++, addr = next, addr != end);
->  
-> +out:
->  	pud_clear_fixmap();
-> +
-> +	return ret;
->  }
->  
-> -static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
-> -			   phys_addr_t phys, pgprot_t prot,
-> -			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> -			   int flags)
-> +static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
-> +			  phys_addr_t phys, pgprot_t prot,
-> +			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> +			  int flags)
->  {
-> +	int ret;
->  	unsigned long next;
->  	pgd_t pgd = READ_ONCE(*pgdp);
->  	p4d_t *p4dp;
-> @@ -404,6 +432,8 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
->  			pgdval |= PGD_TABLE_PXN;
->  		BUG_ON(!pgtable_alloc);
->  		p4d_phys = pgtable_alloc(TABLE_P4D);
-> +		if (p4d_phys == INVALID_PHYS_ADDR)
-> +			return -ENOMEM;
->  		p4dp = p4d_set_fixmap(p4d_phys);
->  		init_clear_pgtable(p4dp);
->  		p4dp += p4d_index(addr);
-> @@ -418,8 +448,10 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
->  
->  		next = p4d_addr_end(addr, end);
->  
-> -		alloc_init_pud(p4dp, addr, next, phys, prot,
-> -			       pgtable_alloc, flags);
-> +		ret = alloc_init_pud(p4dp, addr, next, phys, prot,
-> +				     pgtable_alloc, flags);
-> +		if (ret)
-> +			goto out;
->  
->  		BUG_ON(p4d_val(old_p4d) != 0 &&
->  		       p4d_val(old_p4d) != READ_ONCE(p4d_val(*p4dp)));
-> @@ -427,15 +459,19 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
->  		phys += next - addr;
->  	} while (p4dp++, addr = next, addr != end);
->  
-> +out:
->  	p4d_clear_fixmap();
-> +
-> +	return ret;
->  }
->  
-> -static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
-> -					unsigned long virt, phys_addr_t size,
-> -					pgprot_t prot,
-> -					phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> -					int flags)
-> +static int __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
-> +				       unsigned long virt, phys_addr_t size,
-> +				       pgprot_t prot,
-> +				       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> +				       int flags)
->  {
-> +	int ret;
->  	unsigned long addr, end, next;
->  	pgd_t *pgdp = pgd_offset_pgd(pgdir, virt);
->  
-> @@ -444,7 +480,7 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
->  	 * within a page, we cannot map the region as the caller expects.
->  	 */
->  	if (WARN_ON((phys ^ virt) & ~PAGE_MASK))
-> -		return;
-> +		return -EINVAL;
->  
->  	phys &= PAGE_MASK;
->  	addr = virt & PAGE_MASK;
-> @@ -452,25 +488,45 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
->  
->  	do {
->  		next = pgd_addr_end(addr, end);
-> -		alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
-> -			       flags);
-> +		ret = alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
-> +				     flags);
-> +		if (ret)
-> +			return ret;
->  		phys += next - addr;
->  	} while (pgdp++, addr = next, addr != end);
-> +
-> +	return 0;
->  }
->  
-> -static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
-> -				 unsigned long virt, phys_addr_t size,
-> -				 pgprot_t prot,
-> -				 phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> -				 int flags)
-> +static int __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
-> +				unsigned long virt, phys_addr_t size,
-> +				pgprot_t prot,
-> +				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> +				int flags)
->  {
-> +	int ret;
-> +
->  	mutex_lock(&fixmap_lock);
-> -	__create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
-> -				    pgtable_alloc, flags);
-> +	ret = __create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
-> +					  pgtable_alloc, flags);
->  	mutex_unlock(&fixmap_lock);
-> +
-> +	return ret;
->  }
->  
-> -#define INVALID_PHYS_ADDR	(-1ULL)
-> +static void early_create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
-> +				     unsigned long virt, phys_addr_t size,
-> +				     pgprot_t prot,
-> +				     phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> +				     int flags)
-> +{
-> +	int ret;
-> +
-> +	ret = __create_pgd_mapping(pgdir, phys, virt, size, prot, pgtable_alloc,
-> +				   flags);
-> +	if (ret)
-> +		panic("Failed to create page tables\n");
-> +}
->  
->  static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
->  				       enum pgtable_type pgtable_type)
-> @@ -511,21 +567,13 @@ try_pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type, gfp_t gfp)
->  static phys_addr_t __maybe_unused
->  pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type)
->  {
-> -	phys_addr_t pa;
-> -
-> -	pa = __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
-> -	BUG_ON(pa == INVALID_PHYS_ADDR);
-> -	return pa;
-> +	return __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
->  }
->  
->  static phys_addr_t
->  pgd_pgtable_alloc_special_mm(enum pgtable_type pgtable_type)
->  {
-> -	phys_addr_t pa;
-> -
-> -	pa = __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
-> -	BUG_ON(pa == INVALID_PHYS_ADDR);
-> -	return pa;
-> +	return  __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
->  }
->  
->  static void split_contpte(pte_t *ptep)
-> @@ -903,8 +951,8 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
->  			&phys, virt);
->  		return;
->  	}
-> -	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-> -			     NO_CONT_MAPPINGS);
-> +	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-> +				 NO_CONT_MAPPINGS);
->  }
->  
->  void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
-> @@ -918,8 +966,8 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
->  	if (page_mappings_only)
->  		flags = NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
->  
-> -	__create_pgd_mapping(mm->pgd, phys, virt, size, prot,
-> -			     pgd_pgtable_alloc_special_mm, flags);
-> +	early_create_pgd_mapping(mm->pgd, phys, virt, size, prot,
-> +				 pgd_pgtable_alloc_special_mm, flags);
->  }
->  
->  static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
-> @@ -931,8 +979,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
->  		return;
->  	}
->  
-> -	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-> -			     NO_CONT_MAPPINGS);
-> +	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-> +				 NO_CONT_MAPPINGS);
->  
->  	/* flush the TLBs after updating live kernel mappings */
->  	flush_tlb_kernel_range(virt, virt + size);
-> @@ -941,8 +989,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
->  static void __init __map_memblock(pgd_t *pgdp, phys_addr_t start,
->  				  phys_addr_t end, pgprot_t prot, int flags)
->  {
-> -	__create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
-> -			     prot, early_pgtable_alloc, flags);
-> +	early_create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
-> +				 prot, early_pgtable_alloc, flags);
->  }
->  
->  void __init mark_linear_text_alias_ro(void)
-> @@ -1178,9 +1226,10 @@ static int __init __kpti_install_ng_mappings(void *__unused)
->  		// covers the PTE[] page itself, the remaining entries are free
->  		// to be used as a ad-hoc fixmap.
->  		//
-> -		__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
-> -					    KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
-> -					    kpti_ng_pgd_alloc, 0);
-> +		if (__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
-> +						KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
-> +						kpti_ng_pgd_alloc, 0))
-> +			panic("Failed to create page tables\n");
->  	}
->  
->  	cpu_install_idmap();
-> @@ -1233,9 +1282,9 @@ static int __init map_entry_trampoline(void)
->  
->  	/* Map only the text into the trampoline page table */
->  	memset(tramp_pg_dir, 0, PGD_SIZE);
-> -	__create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
-> -			     entry_tramp_text_size(), prot,
-> -			     pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
-> +	early_create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
-> +				 entry_tramp_text_size(), prot,
-> +				 pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
->  
->  	/* Map both the text and data into the kernel page table */
->  	for (i = 0; i < DIV_ROUND_UP(entry_tramp_text_size(), PAGE_SIZE); i++)
-> @@ -1877,23 +1926,28 @@ int arch_add_memory(int nid, u64 start, u64 size,
->  	if (force_pte_mapping())
->  		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
->  
-> -	__create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
-> -			     size, params->pgprot, pgd_pgtable_alloc_init_mm,
-> -			     flags);
-> +	ret = __create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
-> +				   size, params->pgprot, pgd_pgtable_alloc_init_mm,
-> +				   flags);
-> +	if (ret)
-> +		goto err;
->  
->  	memblock_clear_nomap(start, size);
->  
->  	ret = __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
->  			   params);
->  	if (ret)
-> -		__remove_pgd_mapping(swapper_pg_dir,
-> -				     __phys_to_virt(start), size);
-> -	else {
-> -		/* Address of hotplugged memory can be smaller */
-> -		max_pfn = max(max_pfn, PFN_UP(start + size));
-> -		max_low_pfn = max_pfn;
-> -	}
-> +		goto err;
-> +
-> +	/* Address of hotplugged memory can be smaller */
-> +	max_pfn = max(max_pfn, PFN_UP(start + size));
-> +	max_low_pfn = max_pfn;
-> +
-> +	return 0;
->  
-> +err:
-> +	__remove_pgd_mapping(swapper_pg_dir,
-> +			     __phys_to_virt(start), size);
->  	return ret;
->  }
->  
+ - simple auto-release pointers using __free()
+
+ - 'classes' with constructor and destructor semantics for
+   scope-based resource management.
+
+ - lock guards based on the above classes.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230612093537.614161713%40infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/dma/ioat/dma.c              |  12 +-
+ include/linux/cleanup.h             | 171 ++++++++++++++++++++++++++++
+ include/linux/compiler-clang.h      |   9 ++
+ include/linux/compiler_attributes.h |   6 +
+ include/linux/device.h              |   7 ++
+ include/linux/file.h                |   6 +
+ include/linux/irqflags.h            |   7 ++
+ include/linux/mutex.h               |   4 +
+ include/linux/percpu.h              |   4 +
+ include/linux/preempt.h             |  47 ++++++++
+ include/linux/rcupdate.h            |   3 +
+ include/linux/rwsem.h               |   8 ++
+ include/linux/sched/task.h          |   2 +
+ include/linux/slab.h                |   3 +
+ include/linux/spinlock.h            |  32 ++++++
+ include/linux/srcu.h                |   5 +
+ scripts/checkpatch.pl               |   2 +-
+ 17 files changed, 321 insertions(+), 7 deletions(-)
+ create mode 100644 include/linux/cleanup.h
+
+diff --git a/drivers/dma/ioat/dma.c b/drivers/dma/ioat/dma.c
+index e2070df6cad28..0b846c605d4bd 100644
+--- a/drivers/dma/ioat/dma.c
++++ b/drivers/dma/ioat/dma.c
+@@ -584,11 +584,11 @@ desc_get_errstat(struct ioatdma_chan *ioat_chan, struct ioat_ring_ent *desc)
+ }
+ 
+ /**
+- * __cleanup - reclaim used descriptors
++ * __ioat_cleanup - reclaim used descriptors
+  * @ioat_chan: channel (ring) to clean
+  * @phys_complete: zeroed (or not) completion address (from status)
+  */
+-static void __cleanup(struct ioatdma_chan *ioat_chan, dma_addr_t phys_complete)
++static void __ioat_cleanup(struct ioatdma_chan *ioat_chan, dma_addr_t phys_complete)
+ {
+ 	struct ioatdma_device *ioat_dma = ioat_chan->ioat_dma;
+ 	struct ioat_ring_ent *desc;
+@@ -675,7 +675,7 @@ static void ioat_cleanup(struct ioatdma_chan *ioat_chan)
+ 	spin_lock_bh(&ioat_chan->cleanup_lock);
+ 
+ 	if (ioat_cleanup_preamble(ioat_chan, &phys_complete))
+-		__cleanup(ioat_chan, phys_complete);
++		__ioat_cleanup(ioat_chan, phys_complete);
+ 
+ 	if (is_ioat_halted(*ioat_chan->completion)) {
+ 		u32 chanerr = readl(ioat_chan->reg_base + IOAT_CHANERR_OFFSET);
+@@ -712,7 +712,7 @@ static void ioat_restart_channel(struct ioatdma_chan *ioat_chan)
+ 
+ 	ioat_quiesce(ioat_chan, 0);
+ 	if (ioat_cleanup_preamble(ioat_chan, &phys_complete))
+-		__cleanup(ioat_chan, phys_complete);
++		__ioat_cleanup(ioat_chan, phys_complete);
+ 
+ 	__ioat_restart_chan(ioat_chan);
+ }
+@@ -786,7 +786,7 @@ static void ioat_eh(struct ioatdma_chan *ioat_chan)
+ 
+ 	/* cleanup so tail points to descriptor that caused the error */
+ 	if (ioat_cleanup_preamble(ioat_chan, &phys_complete))
+-		__cleanup(ioat_chan, phys_complete);
++		__ioat_cleanup(ioat_chan, phys_complete);
+ 
+ 	chanerr = readl(ioat_chan->reg_base + IOAT_CHANERR_OFFSET);
+ 	pci_read_config_dword(pdev, IOAT_PCI_CHANERR_INT_OFFSET, &chanerr_int);
+@@ -943,7 +943,7 @@ void ioat_timer_event(struct timer_list *t)
+ 		/* timer restarted in ioat_cleanup_preamble
+ 		 * and IOAT_COMPLETION_ACK cleared
+ 		 */
+-		__cleanup(ioat_chan, phys_complete);
++		__ioat_cleanup(ioat_chan, phys_complete);
+ 		goto unlock_out;
+ 	}
+ 
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+new file mode 100644
+index 0000000000000..53f1a7a932b08
+--- /dev/null
++++ b/include/linux/cleanup.h
+@@ -0,0 +1,171 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __LINUX_GUARDS_H
++#define __LINUX_GUARDS_H
++
++#include <linux/compiler.h>
++
++/*
++ * DEFINE_FREE(name, type, free):
++ *	simple helper macro that defines the required wrapper for a __free()
++ *	based cleanup function. @free is an expression using '_T' to access
++ *	the variable.
++ *
++ * __free(name):
++ *	variable attribute to add a scoped based cleanup to the variable.
++ *
++ * no_free_ptr(var):
++ *	like a non-atomic xchg(var, NULL), such that the cleanup function will
++ *	be inhibited -- provided it sanely deals with a NULL value.
++ *
++ * return_ptr(p):
++ *	returns p while inhibiting the __free().
++ *
++ * Ex.
++ *
++ * DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
++ *
++ *	struct obj *p __free(kfree) = kmalloc(...);
++ *	if (!p)
++ *		return NULL;
++ *
++ *	if (!init_obj(p))
++ *		return NULL;
++ *
++ *	return_ptr(p);
++ */
++
++#define DEFINE_FREE(_name, _type, _free) \
++	static inline void __free_##_name(void *p) { _type _T = *(_type *)p; _free; }
++
++#define __free(_name)	__cleanup(__free_##_name)
++
++#define no_free_ptr(p) \
++	({ __auto_type __ptr = (p); (p) = NULL; __ptr; })
++
++#define return_ptr(p)	return no_free_ptr(p)
++
++
++/*
++ * DEFINE_CLASS(name, type, exit, init, init_args...):
++ *	helper to define the destructor and constructor for a type.
++ *	@exit is an expression using '_T' -- similar to FREE above.
++ *	@init is an expression in @init_args resulting in @type
++ *
++ * EXTEND_CLASS(name, ext, init, init_args...):
++ *	extends class @name to @name@ext with the new constructor
++ *
++ * CLASS(name, var)(args...):
++ *	declare the variable @var as an instance of the named class
++ *
++ * Ex.
++ *
++ * DEFINE_CLASS(fdget, struct fd, fdput(_T), fdget(fd), int fd)
++ *
++ *	CLASS(fdget, f)(fd);
++ *	if (!f.file)
++ *		return -EBADF;
++ *
++ *	// use 'f' without concern
++ */
++
++#define DEFINE_CLASS(_name, _type, _exit, _init, _init_args...)		\
++typedef _type class_##_name##_t;					\
++static inline void class_##_name##_destructor(_type *p)			\
++{ _type _T = *p; _exit; }						\
++static inline _type class_##_name##_constructor(_init_args)		\
++{ _type t = _init; return t; }
++
++#define EXTEND_CLASS(_name, ext, _init, _init_args...)			\
++typedef class_##_name##_t class_##_name##ext##_t;			\
++static inline void class_##_name##ext##_destructor(class_##_name##_t *p)\
++{ class_##_name##_destructor(p); }					\
++static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
++{ class_##_name##_t t = _init; return t; }
++
++#define CLASS(_name, var)						\
++	class_##_name##_t var __cleanup(class_##_name##_destructor) =	\
++		class_##_name##_constructor
++
++
++/*
++ * DEFINE_GUARD(name, type, lock, unlock):
++ *	trivial wrapper around DEFINE_CLASS() above specifically
++ *	for locks.
++ *
++ * guard(name):
++ *	an anonymous instance of the (guard) class
++ *
++ * scoped_guard (name, args...) { }:
++ *	similar to CLASS(name, scope)(args), except the variable (with the
++ *	explicit name 'scope') is declard in a for-loop such that its scope is
++ *	bound to the next (compound) statement.
++ *
++ */
++
++#define DEFINE_GUARD(_name, _type, _lock, _unlock) \
++	DEFINE_CLASS(_name, _type, _unlock, ({ _lock; _T; }), _type _T)
++
++#define guard(_name) \
++	CLASS(_name, __UNIQUE_ID(guard))
++
++#define scoped_guard(_name, args...)					\
++	for (CLASS(_name, scope)(args),					\
++	     *done = NULL; !done; done = (void *)1)
++
++/*
++ * Additional helper macros for generating lock guards with types, either for
++ * locks that don't have a native type (eg. RCU, preempt) or those that need a
++ * 'fat' pointer (eg. spin_lock_irqsave).
++ *
++ * DEFINE_LOCK_GUARD_0(name, lock, unlock, ...)
++ * DEFINE_LOCK_GUARD_1(name, type, lock, unlock, ...)
++ *
++ * will result in the following type:
++ *
++ *   typedef struct {
++ *	type *lock;		// 'type := void' for the _0 variant
++ *	__VA_ARGS__;
++ *   } class_##name##_t;
++ *
++ * As above, both _lock and _unlock are statements, except this time '_T' will
++ * be a pointer to the above struct.
++ */
++
++#define __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, ...)		\
++typedef struct {							\
++	_type *lock;							\
++	__VA_ARGS__;							\
++} class_##_name##_t;							\
++									\
++static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
++{									\
++	if (_T->lock) { _unlock; }					\
++}
++
++
++#define __DEFINE_LOCK_GUARD_1(_name, _type, _lock)			\
++static inline class_##_name##_t class_##_name##_constructor(_type *l)	\
++{									\
++	class_##_name##_t _t = { .lock = l }, *_T = &_t;		\
++	_lock;								\
++	return _t;							\
++}
++
++#define __DEFINE_LOCK_GUARD_0(_name, _lock)				\
++static inline class_##_name##_t class_##_name##_constructor(void)	\
++{									\
++	class_##_name##_t _t = { .lock = (void*)1 },			\
++			 *_T __maybe_unused = &_t;			\
++	_lock;								\
++	return _t;							\
++}
++
++#define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
++__DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)		\
++__DEFINE_LOCK_GUARD_1(_name, _type, _lock)
++
++#define DEFINE_LOCK_GUARD_0(_name, _lock, _unlock, ...)			\
++__DEFINE_UNLOCK_GUARD(_name, void, _unlock, __VA_ARGS__)		\
++__DEFINE_LOCK_GUARD_0(_name, _lock)
++
++#endif /* __LINUX_GUARDS_H */
+diff --git a/include/linux/compiler-clang.h b/include/linux/compiler-clang.h
+index cc3b972f8a270..29be8ad715498 100644
+--- a/include/linux/compiler-clang.h
++++ b/include/linux/compiler-clang.h
+@@ -5,6 +5,15 @@
+ 
+ /* Compiler specific definitions for Clang compiler */
+ 
++/*
++ * Clang prior to 17 is being silly and considers many __cleanup() variables
++ * as unused (because they are, their sole purpose is to go out of scope).
++ *
++ * https://reviews.llvm.org/D152180
++ */
++#undef __cleanup
++#define __cleanup(func) __maybe_unused __attribute__((__cleanup__(func)))
++
+ /* same as gcc, this was present in clang-2.6 so we can assume it works
+  * with any version that can compile the kernel
+  */
+diff --git a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
+index 932b8fd6f36f0..5ee9e2aeab63f 100644
+--- a/include/linux/compiler_attributes.h
++++ b/include/linux/compiler_attributes.h
+@@ -80,6 +80,12 @@
+  */
+ #define __cold                          __attribute__((__cold__))
+ 
++/*
++ *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-cleanup-variable-attribute
++ * clang: https://clang.llvm.org/docs/AttributeReference.html#cleanup
++ */
++#define __cleanup(func)			__attribute__((__cleanup__(func)))
++
+ /*
+  * Note the long name.
+  *
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 440c9f1a3f350..a77390035a8a0 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -30,6 +30,7 @@
+ #include <linux/device/bus.h>
+ #include <linux/device/class.h>
+ #include <linux/device/driver.h>
++#include <linux/cleanup.h>
+ #include <asm/device.h>
+ 
+ struct device;
+@@ -822,6 +823,9 @@ void device_unregister(struct device *dev);
+ void device_initialize(struct device *dev);
+ int __must_check device_add(struct device *dev);
+ void device_del(struct device *dev);
++
++DEFINE_FREE(device_del, struct device *, if (_T) device_del(_T))
++
+ int device_for_each_child(struct device *dev, void *data,
+ 			  int (*fn)(struct device *dev, void *data));
+ int device_for_each_child_reverse(struct device *dev, void *data,
+@@ -952,6 +956,9 @@ extern int (*platform_notify_remove)(struct device *dev);
+  */
+ struct device *get_device(struct device *dev);
+ void put_device(struct device *dev);
++
++DEFINE_FREE(put_device, struct device *, if (_T) put_device(_T))
++
+ bool kill_device(struct device *dev);
+ 
+ #ifdef CONFIG_DEVTMPFS
+diff --git a/include/linux/file.h b/include/linux/file.h
+index 51e830b4fe3ab..6726240b9279a 100644
+--- a/include/linux/file.h
++++ b/include/linux/file.h
+@@ -10,6 +10,7 @@
+ #include <linux/types.h>
+ #include <linux/posix_types.h>
+ #include <linux/errno.h>
++#include <linux/cleanup.h>
+ 
+ struct file;
+ 
+@@ -82,6 +83,8 @@ static inline void fdput_pos(struct fd f)
+ 	fdput(f);
+ }
+ 
++DEFINE_CLASS(fd, struct fd, fdput(_T), fdget(fd), int fd)
++
+ extern int f_dupfd(unsigned int from, struct file *file, unsigned flags);
+ extern int replace_fd(unsigned fd, struct file *file, unsigned flags);
+ extern void set_close_on_exec(unsigned int fd, int flag);
+@@ -90,6 +93,9 @@ extern int __get_unused_fd_flags(unsigned flags, unsigned long nofile);
+ extern int get_unused_fd_flags(unsigned flags);
+ extern void put_unused_fd(unsigned int fd);
+ 
++DEFINE_CLASS(get_unused_fd, int, if (_T >= 0) put_unused_fd(_T),
++	     get_unused_fd_flags(flags), unsigned flags)
++
+ extern void fd_install(unsigned int fd, struct file *file);
+ 
+ extern int __receive_fd(struct file *file, int __user *ufd,
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index 37738ec87de31..c4288c7ae613f 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -13,6 +13,7 @@
+ #define _LINUX_TRACE_IRQFLAGS_H
+ 
+ #include <linux/typecheck.h>
++#include <linux/cleanup.h>
+ #include <asm/irqflags.h>
+ #include <asm/percpu.h>
+ 
+@@ -260,4 +261,10 @@ extern void warn_bogus_irq_restore(void);
+ 
+ #define irqs_disabled_flags(flags) raw_irqs_disabled_flags(flags)
+ 
++DEFINE_LOCK_GUARD_0(irq, local_irq_disable(), local_irq_enable())
++DEFINE_LOCK_GUARD_0(irqsave,
++		    local_irq_save(_T->flags),
++		    local_irq_restore(_T->flags),
++		    unsigned long flags)
++
+ #endif
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index 9ef01b9d24563..5b5630e58407a 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -19,6 +19,7 @@
+ #include <asm/processor.h>
+ #include <linux/osq_lock.h>
+ #include <linux/debug_locks.h>
++#include <linux/cleanup.h>
+ 
+ struct device;
+ 
+@@ -246,4 +247,7 @@ extern void mutex_unlock(struct mutex *lock);
+ 
+ extern int atomic_dec_and_mutex_lock(atomic_t *cnt, struct mutex *lock);
+ 
++DEFINE_GUARD(mutex, struct mutex *, mutex_lock(_T), mutex_unlock(_T))
++DEFINE_FREE(mutex, struct mutex *, if (_T) mutex_unlock(_T))
++
+ #endif /* __LINUX_MUTEX_H */
+diff --git a/include/linux/percpu.h b/include/linux/percpu.h
+index 5e76af742c807..c9a84532bb793 100644
+--- a/include/linux/percpu.h
++++ b/include/linux/percpu.h
+@@ -9,6 +9,7 @@
+ #include <linux/printk.h>
+ #include <linux/pfn.h>
+ #include <linux/init.h>
++#include <linux/cleanup.h>
+ 
+ #include <asm/percpu.h>
+ 
+@@ -134,6 +135,9 @@ extern void __init setup_per_cpu_areas(void);
+ extern void __percpu *__alloc_percpu_gfp(size_t size, size_t align, gfp_t gfp);
+ extern void __percpu *__alloc_percpu(size_t size, size_t align);
+ extern void free_percpu(void __percpu *__pdata);
++
++DEFINE_FREE(free_percpu, void __percpu *, free_percpu(_T))
++
+ extern phys_addr_t per_cpu_ptr_to_phys(void *addr);
+ 
+ #define alloc_percpu_gfp(type, gfp)					\
+diff --git a/include/linux/preempt.h b/include/linux/preempt.h
+index 9c4534a69a8f7..436f030a93f37 100644
+--- a/include/linux/preempt.h
++++ b/include/linux/preempt.h
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/linkage.h>
++#include <linux/cleanup.h>
+ #include <linux/list.h>
+ 
+ /*
+@@ -431,4 +432,50 @@ static inline void migrate_enable(void) { }
+ 
+ #endif /* CONFIG_SMP */
+ 
++/**
++ * preempt_disable_nested - Disable preemption inside a normally preempt disabled section
++ *
++ * Use for code which requires preemption protection inside a critical
++ * section which has preemption disabled implicitly on non-PREEMPT_RT
++ * enabled kernels, by e.g.:
++ *  - holding a spinlock/rwlock
++ *  - soft interrupt context
++ *  - regular interrupt handlers
++ *
++ * On PREEMPT_RT enabled kernels spinlock/rwlock held sections, soft
++ * interrupt context and regular interrupt handlers are preemptible and
++ * only prevent migration. preempt_disable_nested() ensures that preemption
++ * is disabled for cases which require CPU local serialization even on
++ * PREEMPT_RT. For non-PREEMPT_RT kernels this is a NOP.
++ *
++ * The use cases are code sequences which are not serialized by a
++ * particular lock instance, e.g.:
++ *  - seqcount write side critical sections where the seqcount is not
++ *    associated to a particular lock and therefore the automatic
++ *    protection mechanism does not work. This prevents a live lock
++ *    against a preempting high priority reader.
++ *  - RMW per CPU variable updates like vmstat.
++ */
++/* Macro to avoid header recursion hell vs. lockdep */
++#define preempt_disable_nested()				\
++do {								\
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))			\
++		preempt_disable();				\
++	else							\
++		lockdep_assert_preemption_disabled();		\
++} while (0)
++
++/**
++ * preempt_enable_nested - Undo the effect of preempt_disable_nested()
++ */
++static __always_inline void preempt_enable_nested(void)
++{
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_enable();
++}
++
++DEFINE_LOCK_GUARD_0(preempt, preempt_disable(), preempt_enable())
++DEFINE_LOCK_GUARD_0(preempt_notrace, preempt_disable_notrace(), preempt_enable_notrace())
++DEFINE_LOCK_GUARD_0(migrate, migrate_disable(), migrate_enable())
++
+ #endif /* __LINUX_PREEMPT_H */
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 978769e545b5f..552216218d734 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -27,6 +27,7 @@
+ #include <linux/preempt.h>
+ #include <linux/bottom_half.h>
+ #include <linux/lockdep.h>
++#include <linux/cleanup.h>
+ #include <asm/processor.h>
+ #include <linux/cpumask.h>
+ 
+@@ -1060,4 +1061,6 @@ rcu_head_after_call_rcu(struct rcu_head *rhp, rcu_callback_t f)
+ extern int rcu_expedited;
+ extern int rcu_normal;
+ 
++DEFINE_LOCK_GUARD_0(rcu, rcu_read_lock(), rcu_read_unlock())
++
+ #endif /* __LINUX_RCUPDATE_H */
+diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+index 352c6127cb90f..458a0c92cc689 100644
+--- a/include/linux/rwsem.h
++++ b/include/linux/rwsem.h
+@@ -16,6 +16,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/atomic.h>
+ #include <linux/err.h>
++#include <linux/cleanup.h>
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ # define __RWSEM_DEP_MAP_INIT(lockname)			\
+@@ -202,6 +203,13 @@ extern void up_read(struct rw_semaphore *sem);
+  */
+ extern void up_write(struct rw_semaphore *sem);
+ 
++DEFINE_GUARD(rwsem_read, struct rw_semaphore *, down_read(_T), up_read(_T))
++DEFINE_GUARD(rwsem_write, struct rw_semaphore *, down_write(_T), up_write(_T))
++
++DEFINE_FREE(up_read, struct rw_semaphore *, if (_T) up_read(_T))
++DEFINE_FREE(up_write, struct rw_semaphore *, if (_T) up_write(_T))
++
++
+ /*
+  * downgrade write lock to read lock
+  */
+diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+index f254a7d851fe1..ff5aaed609695 100644
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -142,6 +142,8 @@ static inline void put_task_struct(struct task_struct *t)
+ 		__put_task_struct(t);
+ }
+ 
++DEFINE_FREE(put_task, struct task_struct *, if (_T) put_task_struct(_T))
++
+ static inline void put_task_struct_many(struct task_struct *t, int nr)
+ {
+ 	if (refcount_sub_and_test(nr, &t->usage))
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 3482c2ced139e..58efa0b1b6904 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -17,6 +17,7 @@
+ #include <linux/types.h>
+ #include <linux/workqueue.h>
+ #include <linux/percpu-refcount.h>
++#include <linux/cleanup.h>
+ 
+ 
+ /*
+@@ -186,6 +187,8 @@ void kfree(const void *objp);
+ void kfree_sensitive(const void *objp);
+ size_t __ksize(const void *objp);
+ 
++DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
++
+ /**
+  * ksize - Report actual allocation size of associated object
+  *
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index 45310ea1b1d78..6c02b2c3974fc 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -61,6 +61,7 @@
+ #include <linux/stringify.h>
+ #include <linux/bottom_half.h>
+ #include <linux/lockdep.h>
++#include <linux/cleanup.h>
+ #include <asm/barrier.h>
+ #include <asm/mmiowb.h>
+ 
+@@ -506,4 +507,35 @@ int __alloc_bucket_spinlocks(spinlock_t **locks, unsigned int *lock_mask,
+ 
+ void free_bucket_spinlocks(spinlock_t *locks);
+ 
++DEFINE_LOCK_GUARD_1(raw_spinlock, raw_spinlock_t,
++		    raw_spin_lock(_T->lock),
++		    raw_spin_unlock(_T->lock))
++
++DEFINE_LOCK_GUARD_1(raw_spinlock_nested, raw_spinlock_t,
++		    raw_spin_lock_nested(_T->lock, SINGLE_DEPTH_NESTING),
++		    raw_spin_unlock(_T->lock))
++
++DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
++		    raw_spin_lock_irq(_T->lock),
++		    raw_spin_unlock_irq(_T->lock))
++
++DEFINE_LOCK_GUARD_1(raw_spinlock_irqsave, raw_spinlock_t,
++		    raw_spin_lock_irqsave(_T->lock, _T->flags),
++		    raw_spin_unlock_irqrestore(_T->lock, _T->flags),
++		    unsigned long flags)
++
++DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
++		    spin_lock(_T->lock),
++		    spin_unlock(_T->lock))
++
++DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
++		    spin_lock_irq(_T->lock),
++		    spin_unlock_irq(_T->lock))
++
++DEFINE_LOCK_GUARD_1(spinlock_irqsave, spinlock_t,
++		    spin_lock_irqsave(_T->lock, _T->flags),
++		    spin_unlock_irqrestore(_T->lock, _T->flags),
++		    unsigned long flags)
++
++#undef __LINUX_INSIDE_SPINLOCK_H
+ #endif /* __LINUX_SPINLOCK_H */
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index e6011a9975af2..e94687215fbe1 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -211,4 +211,9 @@ static inline void smp_mb__after_srcu_read_unlock(void)
+ 	/* __srcu_read_unlock has smp_mb() internally so nothing to do here. */
+ }
+ 
++DEFINE_LOCK_GUARD_1(srcu, struct srcu_struct,
++		    _T->idx = srcu_read_lock(_T->lock),
++		    srcu_read_unlock(_T->lock, _T->idx),
++		    int idx)
++
+ #endif
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 88cb294dc4472..b4fe18228805c 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -4895,7 +4895,7 @@ sub process {
+ 				if|for|while|switch|return|case|
+ 				volatile|__volatile__|
+ 				__attribute__|format|__extension__|
+-				asm|__asm__)$/x)
++				asm|__asm__|scoped_guard)$/x)
+ 			{
+ 			# cpp #define statements have non-optional spaces, ie
+ 			# if there is a space between the name and the open
+-- 
+2.51.0
 
 
