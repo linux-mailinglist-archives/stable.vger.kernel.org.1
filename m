@@ -1,167 +1,114 @@
-Return-Path: <stable+bounces-185821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96ECBDEBAC
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:22:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D5DBDEC0A
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1906B19C5558
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:22:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18616407229
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FDE1EB195;
-	Wed, 15 Oct 2025 13:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C9C20E6E1;
+	Wed, 15 Oct 2025 13:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="NsqCYHsQ"
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="tWVdwD3B"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C9F2A1BB
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 13:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C9B1F4CBE;
+	Wed, 15 Oct 2025 13:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760534525; cv=none; b=NryfZywuyioy2/3TuswiBd4ogug78hNrvLfe1ZwlI3hkZxWAVEc9ueVCFdvUtOTqor1QUpAg+46eJlA+wk9NmFnIae9P8wlBKH/PUTBKPJC4dQCxY5/QAHDQ8Ilh9b/f3/iFpcXs5mZatezMRlaBGBg2RIbpUWyXiHPnCXrEJ/M=
+	t=1760534850; cv=none; b=fbSNlotagCKpNUud9uevvMVS24QtoF7jyxJA59diS1BMvn8Ni/dqTgwi2UgKLTHwI7g1hpLbWkgofwzwNToO9HpwToqWJqZ3QDIHeGyglpdiFTTJGPjh7MPfAWcV6rwPvaYV5AvcD3OaWSj5Xys+mtbv44RjGZwMK3JiRlfzGLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760534525; c=relaxed/simple;
-	bh=lx+4ZZbyP07kLsKxPOWmjCSj6/Il2kQYHYrkOKJHHrs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=r/HW4JgzD8gRh2E99nt11dpX7e1CIm+/G4Ap2pyf2OJjOsa0sruES6FVajnOryQljDDf7AxBv1rbpJ7PEtuRPgOfdsw9ighc5/8hL6woBjn71BdG+LoyU03Y/x1VhNO7j7IMZSauB5TY65apBSKvbwsdvnQr8XEV25b6vyZRrJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=NsqCYHsQ; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
+	s=arc-20240116; t=1760534850; c=relaxed/simple;
+	bh=kTXZnSO2pGG9Yfrfg2dDvXGwy2AWU+E8hqGmsSKEt1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T8MXpwZBCth0j42NC0s+Af+eoRtCCHy1ISgGV9YY9YUn0J482yO39tdb0c2Z+/TioDkata//cECiqvDq4ir8F/SLtUQKG5FrCkhPfUiLYms2cKUpN4rVS7TAPL8E/au8KsGaDsfroOxIL1efypbtVT3aiBs708g8Ep/E1SUVC+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=tWVdwD3B; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=EFu78uXLNhhYEH7SVSyRI1WHuG5g54Ao3mQfyxG+tcA=; b=tWVdwD3BvmoVph276K/6AP4+qH
+	FOgl0YNA7jJdbhOWcHJU/rnlh1YeNzgB9WF4tJPvuZKylLCkTWCzzR5K/D0I8cpazCXWYylTCdo7Z
+	CJYaFUS7GccbUgcRUhX4T9cy/WFZ6RiFo6LexaXZpK6XVNPlissl69o1kRlu7mI8qYHBuKZ/5Rdya
+	4BAA8eEnVsoY8kve7J9ddgxVXZbwAWfyUZIiEIvXV/ib2DyzjHnNWKJIvC34fzk0KH4N2bjYtWdvX
+	GCb9B0oBFseQS66XDAw8YFoR+YhZJXBi1kUgasdPvWT17hTspcUsJFwPHgfcXGc/d1NGMro/KJFIu
+	MairWdyQ==;
+Received: from i53875a40.versanet.de ([83.135.90.64] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1v91X6-0007hd-Ux; Wed, 15 Oct 2025 15:27:12 +0200
+From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: mturquette@baylibre.com, sboyd@kernel.org, zhangqing@rock-chips.com,
+ sebastian.reichel@collabora.com, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject:
+ Re: [PATCH] clk: rockchip: rk3588: Don't change PLL rates when setting
+ dclk_vop2_src
+Date: Wed, 15 Oct 2025 15:27:12 +0200
+Message-ID: <2749454.BddDVKsqQX@diego>
+In-Reply-To: <6677ebf9-50bd-4df0-806c-9698f2256a8d@cherry.de>
+References:
+ <20251008133135.3745785-1-heiko@sntech.de>
+ <6677ebf9-50bd-4df0-806c-9698f2256a8d@cherry.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
-	s=key1; t=1760534511;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cB7gx/NIINxbCV7LJysGuJALM4X4X2Ed1pRDevEC0Yc=;
-	b=NsqCYHsQgak3teZHoiIhORNzuPFVKNtbPadFFR6lSUfeMPWsb6jrc7Xnc0HFZfsTGppI/u
-	7akhYOOFH7W3nFHofPVpKT7FnMns6CDmmmyNQFljo93HzwlCpCPTq3kyz8IgdqM4MTMH+k
-	rq7wm9dEwJnivZF1H9RSs+SR0xM3RqY5B4IZyDe+0AJQOCFHRZ2UHiDPRcbrOYAj/x1WL/
-	1uoR9/JKsJ645jYZjodG9mDXpVa1qcf5EHDNU5B3YuY44dmHZPE+KF9vDCSgbk2ZZWJRNb
-	7OQJW0zh+iDl8bXgN81k5zcNeZHh0t6i/aGAVvQDyS3YJim5DbantKb4fnE/yQ==
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 15 Oct 2025 15:21:48 +0200
-Message-Id: <DDIXEBYPYJX8.2BPOQ14F816T2@cknow-tech.com>
-Cc: "Damien Le Moal" <dlemoal@kernel.org>, "Dragan Simic"
- <dsimic@manjaro.org>, "FUKAUMI Naoki" <naoki@radxa.com>,
- <stable@vger.kernel.org>, "Manivannan Sadhasivam"
- <manivannan.sadhasivam@oss.qualcomm.com>, <linux-pci@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-rockchip@lists.infradead.org>
-Subject: Re: [PATCH] PCI: dw-rockchip: Disable L1 substates
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Diederik de Haas" <diederik@cknow-tech.com>
-To: "Niklas Cassel" <cassel@kernel.org>, "Lorenzo Pieralisi"
- <lpieralisi@kernel.org>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Manivannan Sadhasivam" <mani@kernel.org>, "Rob
- Herring" <robh@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>, "Heiko
- Stuebner" <heiko@sntech.de>, "Simon Xue" <xxm@rock-chips.com>, "Kever Yang"
- <kever.yang@rock-chips.com>, "Shawn Lin" <shawn.lin@rock-chips.com>
-References: <20251015123142.392274-2-cassel@kernel.org>
-In-Reply-To: <20251015123142.392274-2-cassel@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
 
-On Wed Oct 15, 2025 at 2:31 PM CEST, Niklas Cassel wrote:
-> The L1 substates support requires additional steps to work, see e.g.
-> section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0.
+Am Mittwoch, 15. Oktober 2025, 14:58:46 Mitteleurop=C3=A4ische Sommerzeit s=
+chrieb Quentin Schulz:
+> Hi Heiko,
+>=20
+> On 10/8/25 3:31 PM, Heiko Stuebner wrote:
+> > dclk_vop2_src currently has CLK_SET_RATE_PARENT | CLK_SET_RATE_NO_REPAR=
+ENT
+> > flags set, which is vastly different than dclk_vop0_src or dclk_vop1_sr=
+c,
+> > which have none of those.
+> >=20
+> > With these flags in dclk_vop2_src, actually setting the clock then resu=
+lts
+> > in a lot of other peripherals breaking, because setting the rate results
+> > in the PLL source getting changed:
+> >=20
+> > [   14.898718] clk_core_set_rate_nolock: setting rate for dclk_vop2 to =
+152840000
+> > [   15.155017] clk_change_rate: setting rate for pll_gpll to 1680000000
+> > [ clk adjusting every gpll user ]
+> >=20
+> > This includes possibly the other vops, i2s, spdif and even the uarts.
+> > Among other possible things, this breaks the uart console on a board
+> > I use. Sometimes it recovers later on, but there will be a big block
+>=20
+> I can reproduce on the same board as yours and this fixes the issue=20
+> indeed (note I can only reproduce for now when display the modetest=20
+> pattern, otherwise after boot the console seems fine to me).
 
-I visually compared '18.6.6 PCIe Power Management' of Part 2 V1.1
-(20210301) of the RK3568 TRM with '11.6.6 PCIe Power Management' of
-Part 2 V1.0 (20220309) of the RK3588 TRM.
-AFAICT they are word for word the same ... until I got to 'Table 18-14
-PCIe Interrupt Table' (RK3568) and 'Table 11-22 ...' (RK3588) where
-there are differences. I don't understand enough of this material so I
-would appreciate if you could take a look to see if that difference is
-or could be relevant.
+I boot into a Debian rootfs with fbcon on my system, and the serial
+console produces garbled output when the vop adjusts the clock
 
-TIA,
-  Diederik
+Sometimes it recovers after a bit, but other times it doesn't
 
-> These steps are currently missing from the driver.
->
-> While this has always been a problem when using e.g.
-> CONFIG_PCIEASPM_POWER_SUPERSAVE=3Dy, the problem became more apparent aft=
-er
-> commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for
-> devicetree platforms"), which enabled ASPM also for
-> CONFIG_PCIEASPM_DEFAULT=3Dy.
->
-> Disable L1 substates until proper support is added.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host control=
-ler driver")
-> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for de=
-vicetree platforms")
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> ---
->  drivers/pci/controller/dwc/pcie-dw-rockchip.c | 22 +++++++++++++++++++
->  1 file changed, 22 insertions(+)
->
-> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/=
-controller/dwc/pcie-dw-rockchip.c
-> index 3e2752c7dd09..28e0fffe2542 100644
-> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> @@ -200,6 +200,26 @@ static bool rockchip_pcie_link_up(struct dw_pcie *pc=
-i)
->  	return FIELD_GET(PCIE_LINKUP_MASK, val) =3D=3D PCIE_LINKUP;
->  }
-> =20
-> +/*
-> + * See e.g. section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0 for th=
-e steps
-> + * needed to support L1 substates. Currently, not a single rockchip plat=
-form
-> + * performs these steps, so disable L1 substates until there is proper s=
-upport.
-> + */
-> +static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
-> +{
-> +	u32 cap, l1subcap;
-> +
-> +	cap =3D dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
-> +	if (cap) {
-> +		l1subcap =3D dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
-> +		l1subcap &=3D ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
-> +			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
-> +			      PCI_L1SS_CAP_PCIPM_L1_2);
-> +		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
-> +		l1subcap =3D dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
-> +	}
-> +}
-> +
->  static void rockchip_pcie_enable_l0s(struct dw_pcie *pci)
->  {
->  	u32 cap, lnkcap;
-> @@ -264,6 +284,7 @@ static int rockchip_pcie_host_init(struct dw_pcie_rp =
-*pp)
->  	irq_set_chained_handler_and_data(irq, rockchip_pcie_intx_handler,
->  					 rockchip);
-> =20
-> +	rockchip_pcie_disable_l1sub(pci);
->  	rockchip_pcie_enable_l0s(pci);
-> =20
->  	return 0;
-> @@ -301,6 +322,7 @@ static void rockchip_pcie_ep_init(struct dw_pcie_ep *=
-ep)
->  	struct dw_pcie *pci =3D to_dw_pcie_from_ep(ep);
->  	enum pci_barno bar;
-> =20
-> +	rockchip_pcie_disable_l1sub(pci);
->  	rockchip_pcie_enable_l0s(pci);
->  	rockchip_pcie_ep_hide_broken_ats_cap_rk3588(ep);
-> =20
+> Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+> Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # RK3588 Tiger w/=20
+> DP carrierboard
+
+Thanks for testing
+Heiko
+
 
 
