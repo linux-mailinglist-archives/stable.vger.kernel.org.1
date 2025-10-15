@@ -1,251 +1,206 @@
-Return-Path: <stable+bounces-185836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079E9BDF693
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 17:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF29BDF6C0
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 17:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619493AB587
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:36:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD0FA484A81
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D872FF651;
-	Wed, 15 Oct 2025 15:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93A53064A2;
+	Wed, 15 Oct 2025 15:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="okey7Jxx";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qPoTrkYt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kADjbsvL"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F8028B3E7;
-	Wed, 15 Oct 2025 15:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A95D306B24
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 15:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760542567; cv=none; b=ZeXLS0anH3aUTXScmKWC/YSx7h/zk7PZJxYqibUAm4WShXDLYl7JhjQHLSFg49M8ZzL3MXoTsSrXtWuEjgMKaM7FKqRl3OupSwn/1X3dsD0whWW4Dkwyl+lqjFi8SGUktFDT6mnjQ4s+BE3fC1jetTUsYmu6YmNDW8XX1NuG30M=
+	t=1760542635; cv=none; b=MDqJ2xkc7wFGfOYT8XCezHf58ga+HYU1BKdZNRLb06DyQ8m2kWMbj87HqBEW8rVXV329xiSucCsDGlPnjWI4iQiFBfJKhq5tSLmiAEjn+8ZyEedjv0rzx0DPrH7kV65MONxrsAJE3UodhnPp/y1ELawhpd+74hXKHV+70TebNhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760542567; c=relaxed/simple;
-	bh=b3XNeJ043/GZIdvxE2tPziVWO1Z1tp3ag7pc0IcuOOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uFyfs7YzUZ62IetYjNbd2V8Uhyb8FhrLGdhcPUXwojk2MfrfO3Ifeb5RwBFNjJkLjQdB7SWK/pTUb4xd8GDtqog60vKlhKfctCtzx38baHv6bPgpsCYIZfM/Xi8D9cPWcg+4W2ovZ5tuRBpl2tQQeguHe9tWkoOoymcAvGTv35k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=okey7Jxx; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qPoTrkYt; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id F063D1D00165;
-	Wed, 15 Oct 2025 11:36:00 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 15 Oct 2025 11:36:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1760542560;
-	 x=1760628960; bh=EgHwv9WjnZoGe6jMQYPkCOJwkRlt61B1V48ek/U9E1s=; b=
-	okey7JxxAJTddB/vqMhWc+PTwrbbgUw7a818VoWE5psHG6Ry1wI14Ferco/alBDE
-	rORG8Gzqhwk3oBSt92ozQGoSkIPJ9d9M8BKEK+o0pz619b+/CJtb7v+9pQndTr+e
-	FCQf7nmQOnrS+CQ1+SJGlV98/hZ1QyxsJB7UBmjVjt/LKzHYUEI17ORZWx8EvWLR
-	V8j8fvbzEyV7Tp4gM5dp3wBzXCKE7a+M6hSCVjbduS/SKJLz1KLB2G1Cp8qyTNnW
-	43smCqP+O82h0SVXW8DTQpu6tCwkmE7bRfjZ8p2DkpJ1UGDypnipjb9AMppCCaaD
-	GK8QCGV5LvdjQeVXAdCf+g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1760542560; x=
-	1760628960; bh=EgHwv9WjnZoGe6jMQYPkCOJwkRlt61B1V48ek/U9E1s=; b=q
-	PoTrkYtbH8W1eanxnfrZr+PDCTEA/CXFgCf2vT7hwBEDRcSp2C4VV8fnCMX8wiz5
-	IgCt8K86XD2CxgVcL5u/5ZQJhBIA0Q6K9SEfZGwVhvxIghwG4bX3gCyzDKY02wFS
-	CKdHpv4Ce12ZDskxYzHUDmmyAI1rY1ICS6gfOSBp0tFkYqX1jFTPDuZ7rABQsCJb
-	VycCaMCAbeNOrdceUE+EuwARA9WToqM853iYzt4nyz+jh5lMNOjmBxSIC3NQLA/l
-	PyZ291lvJjaPrpXtkPwxYuUgRded/ZEMMt8ssdxf9yNWaGWKSxGhm6FNTm63ISsA
-	U9/k0pibirtkX2r22Zw8Q==
-X-ME-Sender: <xms:X7_vaGhYkMXceChRuTalNKHTLcvoc7yxATglkDQvGeHjwhMInPzPfA>
-    <xme:X7_vaMlzdjEogzgzIHuQ9SDTkXgDsMM27tsnHIUtaWIiyEysmyNQZ2th6aaOgyBWg
-    xEBAG0TEAHlsaGZqOPNIErC2q0pjF8kRzeeUF4-tq-RazjTGlIESGU>
-X-ME-Received: <xmr:X7_vaHpqE5uIz99naj-QOtuSpKqUL9y78R4FyPDJHd8ePYdErlPpwYTctBLsQQUg4zJBu0nE49Q1gnROlDCVTA4PmW_ERow>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdefjeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefpihhklhgr
-    shcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrg
-    htvggthhdrshgvqeenucggtffrrghtthgvrhhnpeevteegtddvvdfhtdekgefhfeefheet
-    heekkeegfeejudeiudeuleegtdehkeekteenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhn
-    rghtvggthhdrshgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtohepphhrrggshhgrkhgrrhdrtghsvghnghhgsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepphgruhhlsehpsggrrhhkvghrrdguvghvpdhrtghpthhtoheprghnughrvg
-    ifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghm
-    lhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
-    dprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggv
-    nhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehsvghrghgvihdrshhhthihlhihoh
-    hvsegtohhgvghnthgvmhgsvgguuggvugdrtghomhdprhgtphhtthhopehnvghtuggvvhes
-    vhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:X7_vaAIw7EyMAeJwOqxQ1u-SU8J5ho84E9T8XD03CDQyld_l_DGy7w>
-    <xmx:X7_vaLBYhmdvCQNS9mVcpIF4tgxXqH3O1a8ABBNBsBnnOOx-FTY-3g>
-    <xmx:X7_vaK4uiPug7wzwV5h64KZmfYZ7RVkqi1YUfS46v3NyWILWuXtCEw>
-    <xmx:X7_vaPFxUy-h3P1SxqN_J2jyt6kNLrhczQRFg4VPbmMc0i7t1vYvPQ>
-    <xmx:YL_vaGVBg_TRMXvh4yNUSbfTvjWrjQNYX3t_LC_73UpqMlwW2nExhfg0>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 15 Oct 2025 11:35:58 -0400 (EDT)
-Date: Wed, 15 Oct 2025 17:35:56 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] net: ravb: Make DBAT entry count configurable per-SoC
-Message-ID: <20251015153556.GC439570@ragnatech.se>
-References: <20251015150026.117587-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20251015150026.117587-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+	s=arc-20240116; t=1760542635; c=relaxed/simple;
+	bh=rDkxWRHiWpMheeRnZd/9UwhCsZJsUCxhoH0zs5+goSM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VEn/odqY9W5bj6/6+kClQGuW2qXPEh5d4QSMKpvvd2C8N7WCXVDkSOQyPgA/w2PaMYKt0HcSAiEygMTqMjLyha9AlFSYrniWoiQJ+mHarP1m75UASAWmK8BHXAGC4CLvVn0Uli/ZParVaA5r0+n0nW5iGu837Ie7Qy5mSvzuOoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kADjbsvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679B5C4CEF8;
+	Wed, 15 Oct 2025 15:37:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760542634;
+	bh=rDkxWRHiWpMheeRnZd/9UwhCsZJsUCxhoH0zs5+goSM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kADjbsvLvTeo8jR1IlpUJ8ExXyO4KnyIxt9iD25ytyzPaTpx98oSjoPDhzXcl4Hie
+	 W2oR5IQX23jEYZwHZ3QkM2Bc1Pr2UNqBtk0OHn0gWu983Iwna2ToLM5eEVAM/mV7Bn
+	 SIyGp6N7GYKSjbTO1qscWT4ywTIL2F/PC5BzaquNXX7Ll+/3np1pxbXdHaRUyulqvJ
+	 mhXUqyWmg2b0uJg/9LsTGxwpnmr2hyEKfxeu6KfGfTyGByBFBjxXSVgpWiQAHU+KsA
+	 uM1hInbdQ8d2Pqa+moswypsC3gSsn2yYXxRwf72u+Z+Mzf2OJ/s7xqvpgnkDhtk5v+
+	 Zv4Cr8bN6TCWg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] btrfs: fix the incorrect max_bytes value for find_lock_delalloc_range()
+Date: Wed, 15 Oct 2025 11:37:12 -0400
+Message-ID: <20251015153712.1461199-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101534-attempt-stubbly-cf5f@gregkh>
+References: <2025101534-attempt-stubbly-cf5f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251015150026.117587-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Hi Prabhakar,
+From: Qu Wenruo <wqu@suse.com>
 
-Thanks for your work.
+[ Upstream commit 7b26da407420e5054e3f06c5d13271697add9423 ]
 
-On 2025-10-15 16:00:24 +0100, Prabhakar wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> 
-> The number of CDARq (Current Descriptor Address Register) registers is not
-> fixed to 22 across all SoC variants. For example, the GBETH implementation
-> uses only two entries. Hardcoding the value leads to incorrect resource
-> allocation on such platforms.
-> 
-> Pass the DBAT entry count through the per-SoC hardware info struct and use
-> it during probe instead of relying on a fixed constant. This ensures
-> correct descriptor table sizing and initialization across different SoCs.
-> 
-> Fixes: feab85c7ccea ("ravb: Add support for RZ/G2L SoC")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+[BUG]
+With my local branch to enable bs > ps support for btrfs, sometimes I
+hit the following ASSERT() inside submit_one_sector():
 
-I have not verified with documentation the setting of 2 for 
-gbeth_hw_info. But the change itself is good.
+	ASSERT(block_start != EXTENT_MAP_HOLE);
 
-> ---
->  drivers/net/ethernet/renesas/ravb.h      | 2 +-
->  drivers/net/ethernet/renesas/ravb_main.c | 9 +++++++--
->  2 files changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-> index 7b48060c250b..d65cd83ddd16 100644
-> --- a/drivers/net/ethernet/renesas/ravb.h
-> +++ b/drivers/net/ethernet/renesas/ravb.h
-> @@ -1017,7 +1017,6 @@ enum CSR2_BIT {
->  #define CSR2_CSUM_ENABLE (CSR2_RTCP4 | CSR2_RUDP4 | CSR2_RICMP4 | \
->  			  CSR2_RTCP6 | CSR2_RUDP6 | CSR2_RICMP6)
->  
-> -#define DBAT_ENTRY_NUM	22
->  #define RX_QUEUE_OFFSET	4
->  #define NUM_RX_QUEUE	2
->  #define NUM_TX_QUEUE	2
-> @@ -1062,6 +1061,7 @@ struct ravb_hw_info {
->  	u32 rx_max_frame_size;
->  	u32 rx_buffer_size;
->  	u32 rx_desc_size;
-> +	u32 dbat_entry_num;
+Please note that it's not yet possible to hit this ASSERT() in the wild
+yet, as it requires btrfs bs > ps support, which is not even in the
+development branch.
 
-I have been wondering for some time if we shall not start to document 
-these fields as they always take so much time to get back to what each 
-of them represent. How do you feel about starting a header?
+But on the other hand, there is also a very low chance to hit above
+ASSERT() with bs < ps cases, so this is an existing bug affect not only
+the incoming bs > ps support but also the existing bs < ps support.
 
-/**
- * dbat_entry_num: Describe me here.
- */
+[CAUSE]
+Firstly that ASSERT() means we're trying to submit a dirty block but
+without a real extent map nor ordered extent map backing it.
 
-Without, but preferably with, this added.
+Furthermore with extra debugging, the folio triggering such ASSERT() is
+always larger than the fs block size in my bs > ps case.
+(8K block size, 4K page size)
 
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+After some more debugging, the ASSERT() is trigger by the following
+sequence:
 
->  	unsigned aligned_tx: 1;
->  	unsigned coalesce_irqs:1;	/* Needs software IRQ coalescing */
->  
-> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index 9d3bd65b85ff..69d382e8757d 100644
-> --- a/drivers/net/ethernet/renesas/ravb_main.c
-> +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> @@ -2694,6 +2694,7 @@ static const struct ravb_hw_info ravb_gen2_hw_info = {
->  	.rx_buffer_size = SZ_2K +
->  			  SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
->  	.rx_desc_size = sizeof(struct ravb_ex_rx_desc),
-> +	.dbat_entry_num = 22,
->  	.aligned_tx = 1,
->  	.gptp = 1,
->  	.nc_queues = 1,
-> @@ -2717,6 +2718,7 @@ static const struct ravb_hw_info ravb_gen3_hw_info = {
->  	.rx_buffer_size = SZ_2K +
->  			  SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
->  	.rx_desc_size = sizeof(struct ravb_ex_rx_desc),
-> +	.dbat_entry_num = 22,
->  	.internal_delay = 1,
->  	.tx_counters = 1,
->  	.multi_irqs = 1,
-> @@ -2743,6 +2745,7 @@ static const struct ravb_hw_info ravb_gen4_hw_info = {
->  	.rx_buffer_size = SZ_2K +
->  			  SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
->  	.rx_desc_size = sizeof(struct ravb_ex_rx_desc),
-> +	.dbat_entry_num = 22,
->  	.internal_delay = 1,
->  	.tx_counters = 1,
->  	.multi_irqs = 1,
-> @@ -2769,6 +2772,7 @@ static const struct ravb_hw_info ravb_rzv2m_hw_info = {
->  	.rx_buffer_size = SZ_2K +
->  			  SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
->  	.rx_desc_size = sizeof(struct ravb_ex_rx_desc),
-> +	.dbat_entry_num = 22,
->  	.multi_irqs = 1,
->  	.err_mgmt_irqs = 1,
->  	.gptp = 1,
-> @@ -2794,6 +2798,7 @@ static const struct ravb_hw_info gbeth_hw_info = {
->  	.rx_max_frame_size = SZ_8K,
->  	.rx_buffer_size = SZ_2K,
->  	.rx_desc_size = sizeof(struct ravb_rx_desc),
-> +	.dbat_entry_num = 2,
->  	.aligned_tx = 1,
->  	.coalesce_irqs = 1,
->  	.tx_counters = 1,
-> @@ -3025,7 +3030,7 @@ static int ravb_probe(struct platform_device *pdev)
->  	ravb_parse_delay_mode(np, ndev);
->  
->  	/* Allocate descriptor base address table */
-> -	priv->desc_bat_size = sizeof(struct ravb_desc) * DBAT_ENTRY_NUM;
-> +	priv->desc_bat_size = sizeof(struct ravb_desc) * info->dbat_entry_num;
->  	priv->desc_bat = dma_alloc_coherent(ndev->dev.parent, priv->desc_bat_size,
->  					    &priv->desc_bat_dma, GFP_KERNEL);
->  	if (!priv->desc_bat) {
-> @@ -3035,7 +3040,7 @@ static int ravb_probe(struct platform_device *pdev)
->  		error = -ENOMEM;
->  		goto out_rpm_put;
->  	}
-> -	for (q = RAVB_BE; q < DBAT_ENTRY_NUM; q++)
-> +	for (q = RAVB_BE; q < info->dbat_entry_num; q++)
->  		priv->desc_bat[q].die_dt = DT_EOS;
->  
->  	/* Initialise HW timestamp list */
-> -- 
-> 2.43.0
-> 
+ extent_writepage()
+ |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
+ |  size is 8K, page size is 4K.
+ |  And there is another 8K folio at file offset 32K, which is also
+ |  dirty.
+ |  So the filemap layout looks like the following:
+ |
+ |  "||" is the filio boundary in the filemap.
+ |  "//| is the dirty range.
+ |
+ |  0        8K       16K        24K         32K       40K
+ |  |////////|        |//////////////////////||////////|
+ |
+ |- writepage_delalloc()
+ |  |- find_lock_delalloc_range() for [0, 8K)
+ |  |  Now range [0, 8K) is properly locked.
+ |  |
+ |  |- find_lock_delalloc_range() for [16K, 40K)
+ |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
+ |  |  |- lock_delalloc_folios() locked folio 0 successfully
+ |  |  |
+ |  |  |  The filemap range [32K, 40K) got dropped from filemap.
+ |  |  |
+ |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
+ |  |  |  As the folio at 32K is dropped.
+ |  |  |
+ |  |  |- loops = 1;
+ |  |  |- max_bytes = PAGE_SIZE;
+ |  |  |- goto again;
+ |  |  |  This will re-do the lookup for dirty delalloc ranges.
+ |  |  |
+ |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
+ |  |  |  This is smaller than block size, so
+ |  |  |  btrfs_find_delalloc_range() is unable to return any range.
+ |  |  \- return false;
+ |  |
+ |  \- Now only range [0, 8K) has an OE for it, but for dirty range
+ |     [16K, 32K) it's dirty without an OE.
+ |     This breaks the assumption that writepage_delalloc() will find
+ |     and lock all dirty ranges inside the folio.
+ |
+ |- extent_writepage_io()
+    |- submit_one_sector() for [0, 8K)
+    |  Succeeded
+    |
+    |- submit_one_sector() for [16K, 24K)
+       Triggering the ASSERT(), as there is no OE, and the original
+       extent map is a hole.
 
+Please note that, this also exposed the same problem for bs < ps
+support. E.g. with 64K page size and 4K block size.
+
+If we failed to lock a folio, and falls back into the "loops = 1;"
+branch, we will re-do the search using 64K as max_bytes.
+Which may fail again to lock the next folio, and exit early without
+handling all dirty blocks inside the folio.
+
+[FIX]
+Instead of using the fixed size PAGE_SIZE as @max_bytes, use
+@sectorsize, so that we are ensured to find and lock any remaining
+blocks inside the folio.
+
+And since we're here, add an extra ASSERT() to
+before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
+at least no smaller than a block to avoid false negative.
+
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ adapted folio terminology and API calls to page-based equivalents ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/extent_io.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 39619fd6d6aae..3b671e9bf6848 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2000,6 +2000,13 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 	/* step one, find a bunch of delalloc bytes starting at start */
+ 	delalloc_start = *start;
+ 	delalloc_end = 0;
++
++	/*
++	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
++	 * return early without handling any dirty ranges.
++	 */
++	ASSERT(max_bytes >= fs_info->sectorsize);
++
+ 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
+ 					  max_bytes, &cached_state);
+ 	if (!found || delalloc_end <= *start) {
+@@ -2028,13 +2035,14 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 				  delalloc_start, delalloc_end);
+ 	ASSERT(!ret || ret == -EAGAIN);
+ 	if (ret == -EAGAIN) {
+-		/* some of the pages are gone, lets avoid looping by
+-		 * shortening the size of the delalloc range we're searching
++		/*
++		 * Some of the pages are gone, lets avoid looping by
++		 * shortening the size of the delalloc range we're searching.
+ 		 */
+ 		free_extent_state(cached_state);
+ 		cached_state = NULL;
+ 		if (!loops) {
+-			max_bytes = PAGE_SIZE;
++			max_bytes = fs_info->sectorsize;
+ 			loops = 1;
+ 			goto again;
+ 		} else {
 -- 
-Kind Regards,
-Niklas Söderlund
+2.51.0
+
 
