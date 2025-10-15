@@ -1,210 +1,213 @@
-Return-Path: <stable+bounces-185839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F685BDF7FB
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 17:56:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E2FBDF8AE
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 18:05:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 03A463554A1
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:56:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1EF53A4EDE
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 16:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EB8335BC6;
-	Wed, 15 Oct 2025 15:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="lF8XgbKI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="b9grQocf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C066A2C0F8F;
+	Wed, 15 Oct 2025 16:05:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E14E323406;
-	Wed, 15 Oct 2025 15:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693332BE647;
+	Wed, 15 Oct 2025 16:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760543789; cv=none; b=opRTJ/+7NobW6karHFmuuc4eIaKvikAcYesfToe9356vAmmwWZQY3LN8hYdyFoW+pIv0/2uHlUxFmz4RLmhMuXBOkr6Dl/eGaiv1xXlfEnWjMenxvmoGY5ciPCaZXwjK9ZHO+wDla0sTDs7vb9rzw4moWhmRnq50JVw7HiMYWS8=
+	t=1760544331; cv=none; b=bXkClDiMeqBJa/Hkk8PEvv5KVaGy3VAtRhC0MYafx1N9ItlcDabc7E+0aeMxF07QgS3qtGoodrfGOSKsaduMHWIzkcJkXRDLnHHoE/BjwUHO/AqI3QqK+lmWONLKWT1Qa8m7D/DhgRAJKuk4Il2O6ho4xqR9CdYO9/hFTe5dvfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760543789; c=relaxed/simple;
-	bh=YxaGtzOpXwnSnKbbuzaNul8jxGmuy2Gsw+VaF2D1CHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FvA5GkM5HCGjqNHcsVQ3cpmutWqWPdI8lPT7x5sxsI3s2Zz5xcmmEG6398VLvTaUOhAiXbSlo7+G9aQLbiWssk8494gPv/0KMhCU+Gsv22l5DJS+ti3FVxu0/f23ioWnukCJyUf+waacrCw5/jFNehB3CW6SWrAn26ZtcHKFUFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=lF8XgbKI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=b9grQocf; arc=none smtp.client-ip=202.12.124.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id D8A7F7A00F6;
-	Wed, 15 Oct 2025 11:56:25 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Wed, 15 Oct 2025 11:56:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1760543785;
-	 x=1760630185; bh=DVTLaUwndT/M5IWUsp/7e48/Ees2JbvZRFGUdIkyIEE=; b=
-	lF8XgbKIM/lkHeT0Jwr2p/brgWX0wnlanBlu3jX6F1NmlUoIkCOl35YNSr7uSZpI
-	6SaVmwp1tNtGS+PJapvymhjZZPnZLALNEbS5D1cYyQx+yWtMWRearitCDVB3RQE/
-	104JwP+sIJ5P2sB5ZgEaidVGKc+Xhf3qYTCeqCtAkYmhkIPsT5Hshx9fsPz3OjrI
-	Gi3D7+wsYEzZpNNvC7lljhsKECpdvED9+3h5biSAUmkfQeRpCmq4gDVO6VQb7amo
-	PcLyOOrLP8/exiQpFCMyTfldJPSewg24XOb8rAD8xye/fT4YVhnm4WXpl9xulvJk
-	juiMjwo7gywsuB6H4gb40w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1760543785; x=
-	1760630185; bh=DVTLaUwndT/M5IWUsp/7e48/Ees2JbvZRFGUdIkyIEE=; b=b
-	9grQocfhAllzeGW1MEdjFSOuU874js0hNuDI5hxYKlY2E+jc7YAGtn017oP5p92f
-	jWO2rNCt8q2EQjj/+TOaw8bf9BQ56xMWJrQ/EK+lb8OFytL1hQuOirF1lx9Mv5mQ
-	6aGbfBhpv7O9vYuat3UijsIGbeeR8UiPPltybQ7fwTGeFs/kss8IToDaCdonX37m
-	ecPAxY17klo+NFaGoiNlJBfn0wksAqDRxmi2OC8jmOR/eQ8rqD9QdM9jKmPA9/ES
-	Of3XvJs+OmwaHF4VBrkqVI+OfazzBPBtZZo91ia7oaKeRcfBa46UMff7YSJATC10
-	lNFXDvTGiiI3f/ATByDIA==
-X-ME-Sender: <xms:KMTvaDTeieh9yOOV8ZJ-NNtnoZO2iNPhJwpThmNl3BKppUUKpy34cw>
-    <xme:KMTvaKWz-YOmUgM1PxFSKWULUzDIsMIUYkzX0KxPyYNjEuK87Gsjz87QfZKilnnpG
-    3x-wHQatoC4HGOmws13sL-2b1ulkAuKz3_mO1QAzU6iQxU-V--H2qY>
-X-ME-Received: <xmr:KMTvaCZDJU9A_Jel8UhkD6_bSD5UJ97nsPDGutdij6MCaf3hDvx2zGXXdXV-ewlsrAD4DFuYm69H26COqGJ0Itxbrd6w3KY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdefkeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefpihhklhgr
-    shcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrg
-    htvggthhdrshgvqeenucggtffrrghtthgvrhhnpeevteegtddvvdfhtdekgefhfeefheet
-    heekkeegfeejudeiudeuleegtdehkeekteenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhn
-    rghtvggthhdrshgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtohepphhrrggshhgrkhgrrhdrtghsvghnghhgsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepphgruhhlsehpsggrrhhkvghrrdguvghvpdhrtghpthhtoheprghnughrvg
-    ifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghm
-    lhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
-    dprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggv
-    nhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehsvghrghgvihdrshhhthihlhihoh
-    hvsegtohhgvghnthgvmhgsvgguuggvugdrtghomhdprhgtphhtthhopehnvghtuggvvhes
-    vhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:KMTvaD75v-cdSk0nHnNvl6LJwMUBhuYGEPYCHKKPUjiP4l7WDeVUzw>
-    <xmx:KMTvaDzvziX0qm3Lk7Ikzc2dPcPjpzRJemMqrChUkQESQXaLjB2gug>
-    <xmx:KMTvaEoQwmhaQsAi9wEbmm_VhpkMVqnLD504fAYJ7S5YYYmYijp39Q>
-    <xmx:KMTvaF2pevWgZ4PrPdh04L-aXDhX_OpxI87fIsPpAQc-V8Ke2LwbHw>
-    <xmx:KcTvaOEZvs282OyMgxBV3zSv5iXW9OTJiLLiubEC_Oim_-mqLCqzxBRl>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 15 Oct 2025 11:56:24 -0400 (EDT)
-Date: Wed, 15 Oct 2025 17:56:22 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 3/3] net: ravb: Enforce descriptor type ordering to
- prevent early DMA start
-Message-ID: <20251015155622.GE439570@ragnatech.se>
-References: <20251015150026.117587-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20251015150026.117587-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
+	s=arc-20240116; t=1760544331; c=relaxed/simple;
+	bh=OtZArIgGOVFPBOubdpx8vP6JRc8vzh/BwBc+DxxyLUQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jjf8sHNy4gujLXfY9YWS0JznKbK8fBt7c8cqCSaSK8quIw7+1+vu8w3hHkua5VmlRVJ90VfLcfjU0hPV6aDPguZYdyn3LEmx+GH7nwAPdaN6CNNFXV9meq3zlbFctYPPadYF8SFTdJC2G/dquGIXffRgV46nWDJD3tlupcvQsoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A1D51655;
+	Wed, 15 Oct 2025 09:05:20 -0700 (PDT)
+Received: from [10.57.66.88] (unknown [10.57.66.88])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 79CBA3F66E;
+	Wed, 15 Oct 2025 09:05:25 -0700 (PDT)
+Message-ID: <965b11fd-3e29-4f29-a1bf-b8e98940b322@arm.com>
+Date: Wed, 15 Oct 2025 18:05:23 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251015150026.117587-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] arm64/mm: Allow __create_pgd_mapping() to
+ propagate pgtable_alloc() errors
+To: Linu Cherian <linu.cherian@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+ Zhenhua Huang <quic_zhenhuah@quicinc.com>, Dev Jain <dev.jain@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Yang Shi <yang@os.amperecomputing.com>,
+ Chaitanya S Prakash <chaitanyas.prakash@arm.com>, stable@vger.kernel.org
+References: <20251015112758.2701604-1-linu.cherian@arm.com>
+ <20251015112758.2701604-2-linu.cherian@arm.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <20251015112758.2701604-2-linu.cherian@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Prabhakar,
-
-Thanks for your work.
-
-On 2025-10-15 16:00:26 +0100, Prabhakar wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> 
-> Ensure TX descriptor type fields are written in a safe order so the DMA
-> engine does not begin processing a chain before all descriptors are
-> fully initialised.
-> 
-> For multi-descriptor transmissions the driver writes DT_FEND into the
-> last descriptor and DT_FSTART into the first. The DMA engine starts
-> processing when it sees DT_FSTART. If the compiler or CPU reorders the
-> writes and publishes DT_FSTART before DT_FEND, the DMA can start early
-> and process an incomplete chain, leading to corrupted transmissions or
-> DMA errors.
-> 
-> Fix this by writing DT_FEND before the dma_wmb() barrier, executing
-> dma_wmb() immediately before DT_FSTART (or DT_FSINGLE in the single
-> descriptor case), and then adding a wmb() after the type updates to
-> ensure CPU-side ordering before ringing the hardware doorbell.
-> 
-> On an RZ/G2L platform running an RT kernel, this reordering hazard was
-> observed as TX stalls and timeouts:
-> 
->   [  372.968431] NETDEV WATCHDOG: end0 (ravb): transmit queue 0 timed out
->   [  372.968494] WARNING: CPU: 0 PID: 10 at net/sched/sch_generic.c:467 dev_watchdog+0x4a4/0x4ac
->   [  373.969291] ravb 11c20000.ethernet end0: transmit timed out, status 00000000, resetting...
-> 
-> This change enforces the required ordering and prevents the DMA engine
-> from observing DT_FSTART before the rest of the descriptor chain is
-> valid.
-> 
-> Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
+On 15/10/2025 13:27, Linu Cherian wrote:
+> From: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+>
+> arch_add_memory() is used to hotplug memory into a system but as a part
+> of its implementation it calls __create_pgd_mapping(), which uses
+> pgtable_alloc() in order to build intermediate page tables. As this path
+> was initally only used during early boot pgtable_alloc() is designed to
+> BUG_ON() on failure. However, in the event that memory hotplug is
+> attempted when the system's memory is extremely tight and the allocation
+> were to fail, it would lead to panicking the system, which is not
+> desirable. Hence update __create_pgd_mapping and all it's callers to be
+> non void and propagate -ENOMEM on allocation failure to allow system to
+> fail gracefully.
+>
+> But during early boot if there is an allocation failure, we want the
+> system to panic, hence create a wrapper around __create_pgd_mapping()
+> called early_create_pgd_mapping() which is designed to panic, if ret
+> is non zero value. All the init calls are updated to use this wrapper
+> rather than the modified __create_pgd_mapping() to restore
+> functionality.
+>
+> Fixes: 4ab215061554 ("arm64: Add memory hotplug support")
 > Cc: stable@vger.kernel.org
-> Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-> Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Signed-off-by: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+> Signed-off-by: Linu Cherian <linu.cherian@arm.com>
+
+A couple more nits below (sorry I didn't catch them earlier), but otherwise:
+
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+
 > ---
->  drivers/net/ethernet/renesas/ravb_main.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index a200e205825a..2a995fa9bfff 100644
-> --- a/drivers/net/ethernet/renesas/ravb_main.c
-> +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> @@ -2211,15 +2211,19 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+> Changelog:
+>
+> v3:
+> * Fixed a maybe-uninitialized case in alloc_init_pud
+> * Added Fixes tag and CCed stable
+> * Few other trivial cleanups
+>
+>  arch/arm64/mm/mmu.c | 210 ++++++++++++++++++++++++++++----------------
+>  1 file changed, 132 insertions(+), 78 deletions(-)
+>
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index b8d37eb037fc..638cb4df31a9 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -49,6 +49,8 @@
+>  #define NO_CONT_MAPPINGS	BIT(1)
+>  #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
 >  
->  		skb_tx_timestamp(skb);
->  	}
-> -	/* Descriptor type must be set after all the above writes */
-> -	dma_wmb();
+> +#define INVALID_PHYS_ADDR	(-1ULL)
 > +
-> +	/* For multi-descriptors set DT_FEND before calling dma_wmb() */
->  	if (num_tx_desc > 1) {
->  		desc->die_dt = DT_FEND;
->  		desc--;
-> -		desc->die_dt = DT_FSTART;
-> -	} else {
-> -		desc->die_dt = DT_FSINGLE;
->  	}
-> +
-> +	/* Descriptor type must be set after all the above writes */
-> +	dma_wmb();
-> +	desc->die_dt = (num_tx_desc > 1) ? DT_FSTART : DT_FSINGLE;
-
-IMHO it's ugly to evaluate num_tx_desc twice. I would rather just open 
-code the full steps in each branch of the if above. It would make it 
-easier to read and understand.
-
-> +
-> +	/* Ensure data is written to RAM before initiating DMA transfer */
-> +	wmb();
-
-All of this looks a bit odd, why not just do a single dma_wmb() or wmb() 
-before ringing the doorbell? Maybe I'm missing something obvious?
-
->  	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
+>  DEFINE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
 >  
->  	priv->cur_tx[q] += num_tx_desc;
-> -- 
-> 2.43.0
-> 
+>  u64 kimage_voffset __ro_after_init;
+> @@ -194,11 +196,11 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
+>  	} while (ptep++, addr += PAGE_SIZE, addr != end);
+>  }
+>  
+> -static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+> -				unsigned long end, phys_addr_t phys,
+> -				pgprot_t prot,
+> -				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> -				int flags)
+> +static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+> +			       unsigned long end, phys_addr_t phys,
+> +			       pgprot_t prot,
+> +			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> +			       int flags)
+>  {
+>  	unsigned long next;
+>  	pmd_t pmd = READ_ONCE(*pmdp);
+> @@ -213,6 +215,8 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+>  			pmdval |= PMD_TABLE_PXN;
+>  		BUG_ON(!pgtable_alloc);
+>  		pte_phys = pgtable_alloc(TABLE_PTE);
+> +		if (pte_phys == INVALID_PHYS_ADDR)
+> +			return -ENOMEM;
+>  		ptep = pte_set_fixmap(pte_phys);
+>  		init_clear_pgtable(ptep);
+>  		ptep += pte_index(addr);
+> @@ -244,12 +248,15 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+>  	 * walker.
+>  	 */
+>  	pte_clear_fixmap();
+> +
+> +	return 0;
+>  }
+>  
+> -static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+> -		     phys_addr_t phys, pgprot_t prot,
+> -		     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
+> +static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+> +		    phys_addr_t phys, pgprot_t prot,
+> +		    phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
+>  {
+> +	int ret;
 
--- 
-Kind Regards,
-Niklas Söderlund
+Nit: that could be added to the else block instead (makes it clearer
+it's not used for the final return, that got me confused when re-reading
+this patch).
+
+>  	unsigned long next;
+>  
+>  	do {
+> @@ -269,22 +276,27 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
+>  						      READ_ONCE(pmd_val(*pmdp))));
+>  		} else {
+> -			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
+> -					    pgtable_alloc, flags);
+> +			ret = alloc_init_cont_pte(pmdp, addr, next, phys, prot,
+> +						  pgtable_alloc, flags);
+> +			if (ret)
+> +				return ret;
+>  
+>  			BUG_ON(pmd_val(old_pmd) != 0 &&
+>  			       pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
+>  		}
+>  		phys += next - addr;
+>  	} while (pmdp++, addr = next, addr != end);
+> +
+> +	return 0;
+>  }
+>  
+> [...]
+>
+> @@ -1178,9 +1226,10 @@ static int __init __kpti_install_ng_mappings(void *__unused)
+>  		// covers the PTE[] page itself, the remaining entries are free
+>  		// to be used as a ad-hoc fixmap.
+>  		//
+> -		__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
+> -					    KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
+> -					    kpti_ng_pgd_alloc, 0);
+> +		if (__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
+> +						KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
+> +						kpti_ng_pgd_alloc, 0))
+
+Nit: it would be slightly more readable to have ret =
+__create_pgd_mapping_locked(...); if (ret)
+
+- Kevin
+
+> +			panic("Failed to create page tables\n");
+>  	}
+>  
+>  	cpu_install_idmap();
+>
+> [...]
 
