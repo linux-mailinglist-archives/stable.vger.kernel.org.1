@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-185812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7B3BDE895
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7DFBDE9B8
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E0D04F4DF0
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:48:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88863505563
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA4219CCEC;
-	Wed, 15 Oct 2025 12:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AU7Ed4pd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B455F32E732;
+	Wed, 15 Oct 2025 12:59:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1987317BA6
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 12:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25B332A3D4;
+	Wed, 15 Oct 2025 12:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760532500; cv=none; b=sO77dMx94GVhAG+yKY3o4vnZWzpB9JBUbG4Jgwz/INcYfzEEt4sVWqYQJZF9qXhqDYqOCuThHRzo/1yn2zL9BE3nj3YO5G6ONZ1IHpFokXQO14N9SmCYQIMdvPsp6hFX8FPk57jviq+GSbb+ZKZ+SsLVvP+hJGp+d3W/AvwiNcg=
+	t=1760533145; cv=none; b=chfVrdiVIgjdEQOPsnHUe8uhS6msieCO6/BvTs5C6n2k5kfQFuz3oeB1oJh6QObVqNbF9z95ZwEzJiZemG9E/TqKtH8b9vdCHzU6Y0e4+ekgKsYaJEd9duKMRGsCQ7ZdXw+FVcIZSDDzbuIkPKtD3eBesFVylIrarHvvE/RlW/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760532500; c=relaxed/simple;
-	bh=I1Z/BVK+Nv53GS9eK++faejxcgmjG1qBmq5u9iDqcA4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAIlwrTXDnMigXlDuZFFCmNfCI2W/CKCjc6VlJRr2MsPxxvI6EfVw6G6HcXVS8ZtmNtdGHaCGwBUIX0c3qyQQHeaiKbDqzRZ/v281f/5o33Gc91Io6TTJ1VPvwT+Z4xNNsOk5iZ2kmi3yuTzAqI16uDWXL2Qt/zjcpBM5ycEiTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AU7Ed4pd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1457DC4CEF8;
-	Wed, 15 Oct 2025 12:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760532499;
-	bh=I1Z/BVK+Nv53GS9eK++faejxcgmjG1qBmq5u9iDqcA4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AU7Ed4pdJHjtXG3TzPl4OpKP4/hWffFRy1xUrip3xVcipZcnyRhhs2YUCiUFiB6V9
-	 Ptbw/EWFy+TeHhe6HiMDSSZrhXYEl7I07cKAcY5yQUJE6Mtd9t4gju6Nob0lrZK43m
-	 vZDKCv26hfWZZBjn5jBPc0heTrjkqe2MHJpP+vp/cyco6mru3D+RdGSxwWUdxzzgIG
-	 gFOnowySh861xLYco+7I6EEtRLvvS2N/vgO76MoO4epT53VXK8eFC+Bu9/u+GioVVC
-	 4Xs+UOxVd6h7r4tGr56sw9LEY/CWejrGGxqAdXAD9jbIKe4w46PCkQk7T9oK8RNMsS
-	 QvK0/6VH7Zg+w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] btrfs: fix the incorrect max_bytes value for find_lock_delalloc_range()
-Date: Wed, 15 Oct 2025 08:48:17 -0400
-Message-ID: <20251015124817.1385251-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101522-repugnant-demystify-deee@gregkh>
-References: <2025101522-repugnant-demystify-deee@gregkh>
+	s=arc-20240116; t=1760533145; c=relaxed/simple;
+	bh=LMiYRhgZHOP+mwtrGlv8QTxTj4mdlaijPU+p0jN/mB0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XidkacYi/zRH5BnDhjvyZ+p6lth/dQVwkYmhPyg0zzy0TypGvu+NWTTUmCX7K5/kw7eL47X+PV2nwvJBQo68yiQkA84JuimAH82br9pCLa824t6do/KK+DV3Ns6uWhqWP+/8efBfN6BUaU/FVrHkCLB85ifMf3MHzjx44D80rNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=none smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bamaicloud.com
+X-QQ-mid: zesmtpgz4t1760533112t14fd5e73
+X-QQ-Originating-IP: 6IdzTds0RD0Og7V7u2LMIS9m1q6hyWPEx/VhNS48VgQ=
+Received: from localhost.localdomain ( [111.204.182.100])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 15 Oct 2025 20:58:29 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 206157979263438292
+EX-QQ-RecipientCnt: 14
+From: Tonghao Zhang <tonghao@bamaicloud.com>
+To: netdev@vger.kernel.org
+Cc: Tonghao Zhang <tonghao@bamaicloud.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: bonding: update the slave array for broadcast mode
+Date: Wed, 15 Oct 2025 20:58:08 +0800
+Message-Id: <20251015125808.53728-1-tonghao@bamaicloud.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,147 +63,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz4a-0
+X-QQ-XMAILINFO: MAMW4dxoxFytM1FsTajTbMSEjoW+HzEwyn7pkJrCvel5xJ5ybaQ2I+1T
+	nNKs89HahHP5Iyg5Qh+w/uAoTnX234SUWuC3D1jmpLILsJGnA6YyFbUa81V9poo+Tot8cF3
+	s+6k3Uqdxy8db5I0u9628VxCisWEWGvLZs0m7ctQgtBAq728GG9tGvdZ1GP7kvIYIQEYp3/
+	AXQ8tIfKdV/4XqDzY5umEkBEzlja2x6qQMgidaJQEmr4kLVUXkNJPQtBEFHxrwrF2etiv4v
+	KgzeEdoyCOv29AkpGH2R3hWY3U7eYBtKOeVNHnFjx0lTqlcJYclic1WZtJoo5jU26gICSqp
+	Drj6EkgkcpHIaTxeMhZHqtsc1LNX9fSk5RFy1CQ3SSgVmNPcYLZJReLeTV+O6Tcy7zGbAHZ
+	E0ONlWo9930iTz/PWOH89PA4TKhySi1UzZfN9niEJ3f5gWMIjXOxvgxzdhU4Da9AfolrsuY
+	WCY+0pIR4bTyVD6G/MXEBCfUyKqXy6fA9EtcImdR6E1gDODrGRp3mBtPgdRVIrMLcln4hoj
+	FX56rqdq8YIZuRtqtGBGTQIGa0wJjK0o1l4Fr8iWs4hQMLZ9PojCHAF3ydb7q0YS2WgCOeC
+	ONYT0PHnNQxD/Nr63oG25NEpVAph9geKoUvq28K6CzYAa9Pt9yFRF6NkYJNcOLjiWtNXEJU
+	jn1ZIW7igeOH6y1XgN1nMW9ZgA76ZDY4oL1IjdyVyWHgAHnm18HgZNU1K70Sgly1WxDFfcq
+	uJlffgiLWGGU92uTwqGqriSy+DtTFoQRuJYonKNm+vXWUHv3a924Qg+Sl3ZVWNXKd8PZglX
+	WXh3ku714PXakLLq0DJrqUhmOcU9hfFvlaf8bYxi7P3Hk/alyk2pPyFM3EtX2xU186ya85G
+	82+wfX2PvFOMEKEJxO1k9x6MJD/fUGayxQsreWAGbSb52xDaVWcqffLLaSN1TY8WBFVkYYY
+	0QltrJXLOixwRh9U55X47zsUKC0ZL0SVYO9PEkUFRvxEfig==
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
 
-From: Qu Wenruo <wqu@suse.com>
+This patch fixes ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad").
+Before this commit, on the broadcast mode, all devices were traversed using the
+bond_for_each_slave_rcu. This patch supports traversing devices by using all_slaves.
+Therefore, we need to update the slave array when enslave or release salve.
 
-[ Upstream commit 7b26da407420e5054e3f06c5d13271697add9423 ]
-
-[BUG]
-With my local branch to enable bs > ps support for btrfs, sometimes I
-hit the following ASSERT() inside submit_one_sector():
-
-	ASSERT(block_start != EXTENT_MAP_HOLE);
-
-Please note that it's not yet possible to hit this ASSERT() in the wild
-yet, as it requires btrfs bs > ps support, which is not even in the
-development branch.
-
-But on the other hand, there is also a very low chance to hit above
-ASSERT() with bs < ps cases, so this is an existing bug affect not only
-the incoming bs > ps support but also the existing bs < ps support.
-
-[CAUSE]
-Firstly that ASSERT() means we're trying to submit a dirty block but
-without a real extent map nor ordered extent map backing it.
-
-Furthermore with extra debugging, the folio triggering such ASSERT() is
-always larger than the fs block size in my bs > ps case.
-(8K block size, 4K page size)
-
-After some more debugging, the ASSERT() is trigger by the following
-sequence:
-
- extent_writepage()
- |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
- |  size is 8K, page size is 4K.
- |  And there is another 8K folio at file offset 32K, which is also
- |  dirty.
- |  So the filemap layout looks like the following:
- |
- |  "||" is the filio boundary in the filemap.
- |  "//| is the dirty range.
- |
- |  0        8K       16K        24K         32K       40K
- |  |////////|        |//////////////////////||////////|
- |
- |- writepage_delalloc()
- |  |- find_lock_delalloc_range() for [0, 8K)
- |  |  Now range [0, 8K) is properly locked.
- |  |
- |  |- find_lock_delalloc_range() for [16K, 40K)
- |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
- |  |  |- lock_delalloc_folios() locked folio 0 successfully
- |  |  |
- |  |  |  The filemap range [32K, 40K) got dropped from filemap.
- |  |  |
- |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
- |  |  |  As the folio at 32K is dropped.
- |  |  |
- |  |  |- loops = 1;
- |  |  |- max_bytes = PAGE_SIZE;
- |  |  |- goto again;
- |  |  |  This will re-do the lookup for dirty delalloc ranges.
- |  |  |
- |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
- |  |  |  This is smaller than block size, so
- |  |  |  btrfs_find_delalloc_range() is unable to return any range.
- |  |  \- return false;
- |  |
- |  \- Now only range [0, 8K) has an OE for it, but for dirty range
- |     [16K, 32K) it's dirty without an OE.
- |     This breaks the assumption that writepage_delalloc() will find
- |     and lock all dirty ranges inside the folio.
- |
- |- extent_writepage_io()
-    |- submit_one_sector() for [0, 8K)
-    |  Succeeded
-    |
-    |- submit_one_sector() for [16K, 24K)
-       Triggering the ASSERT(), as there is no OE, and the original
-       extent map is a hole.
-
-Please note that, this also exposed the same problem for bs < ps
-support. E.g. with 64K page size and 4K block size.
-
-If we failed to lock a folio, and falls back into the "loops = 1;"
-branch, we will re-do the search using 64K as max_bytes.
-Which may fail again to lock the next folio, and exit early without
-handling all dirty blocks inside the folio.
-
-[FIX]
-Instead of using the fixed size PAGE_SIZE as @max_bytes, use
-@sectorsize, so that we are ensured to find and lock any remaining
-blocks inside the folio.
-
-And since we're here, add an extra ASSERT() to
-before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
-at least no smaller than a block to avoid false negative.
-
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad")
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
 ---
- fs/btrfs/extent_io.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/net/bonding/bond_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 60fe155b1ce05..b310a07a84adf 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -355,6 +355,13 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
- 	/* step one, find a bunch of delalloc bytes starting at start */
- 	delalloc_start = *start;
- 	delalloc_end = 0;
-+
-+	/*
-+	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
-+	 * return early without handling any dirty ranges.
-+	 */
-+	ASSERT(max_bytes >= fs_info->sectorsize);
-+
- 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
- 					  max_bytes, &cached_state);
- 	if (!found || delalloc_end <= *start || delalloc_start > orig_end) {
-@@ -385,13 +392,14 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
- 				   delalloc_end);
- 	ASSERT(!ret || ret == -EAGAIN);
- 	if (ret == -EAGAIN) {
--		/* some of the folios are gone, lets avoid looping by
--		 * shortening the size of the delalloc range we're searching
-+		/*
-+		 * Some of the folios are gone, lets avoid looping by
-+		 * shortening the size of the delalloc range we're searching.
- 		 */
- 		free_extent_state(cached_state);
- 		cached_state = NULL;
- 		if (!loops) {
--			max_bytes = PAGE_SIZE;
-+			max_bytes = fs_info->sectorsize;
- 			loops = 1;
- 			goto again;
- 		} else {
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 17c7542be6a5..2d6883296e32 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2384,7 +2384,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 		unblock_netpoll_tx();
+ 	}
+ 
+-	if (bond_mode_can_use_xmit_hash(bond))
++	/* broadcast mode uses the all_slaves to loop through slaves. */
++	if (bond_mode_can_use_xmit_hash(bond) ||
++	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
+ 		bond_update_slave_arr(bond, NULL);
+ 
+ 	if (!slave_dev->netdev_ops->ndo_bpf ||
+@@ -2560,7 +2562,8 @@ static int __bond_release_one(struct net_device *bond_dev,
+ 
+ 	bond_upper_dev_unlink(bond, slave);
+ 
+-	if (bond_mode_can_use_xmit_hash(bond))
++	if (bond_mode_can_use_xmit_hash(bond) ||
++	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
+ 		bond_update_slave_arr(bond, slave);
+ 
+ 	slave_info(bond_dev, slave_dev, "Releasing %s interface\n",
 -- 
-2.51.0
+2.34.1
 
 
