@@ -1,179 +1,532 @@
-Return-Path: <stable+bounces-185829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC477BDF44F
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 17:07:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62EA0BDF43D
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 17:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 38A7F4FE9DB
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:02:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50D54878CA
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C965B2F1FC2;
-	Wed, 15 Oct 2025 15:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K2+JimHg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2432D8398;
+	Wed, 15 Oct 2025 15:02:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEC62EC0BD
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 15:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07B7254B18;
+	Wed, 15 Oct 2025 15:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760540459; cv=none; b=LKKB4DTxDeYcaOdVeYg+mIDF7pnF8X1PYzP6DTee8gNzXcZ+qJ3xXYP6k8IRKpdYeEJvTa5/CyiFoHAoZ34+k92BJF8fjyZHRxUDwe98TD+BskszstG3lH+t+38Rjti62tnvFUxm3SK/LrGvYWiXLD2aF6iyxpg5tBrPAkVjbH4=
+	t=1760540573; cv=none; b=AN3zNYvYjETz/GcM6r7V64XdAAwPseysSUkF4cxXy3V7Z8kLfs3+r6UneZOPCgvXTRxvr/2ELoLc3CbDK8aCAOjfp/zZMj+QDHieGxnvMRJ9zqKCmxi3HHkeh4TnwhlW8EDPlDey59hC8DaLQb26r4cfNtov9+Gz1T3KpsAk6ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760540459; c=relaxed/simple;
-	bh=60XT5SO34ddHtpkn/CIdJmvGQY2Mb1sF34YxFyRKDfE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1ykkO9fH77g9dNeDJTktA7L6dz78X946srmXo0kND4vKis7twbfNafGBhdZuOeHTgoxxUFRYICthctLroozSYJRVBffuAJveLkCdr4RorlBP+l7JvAtx5X8j/tNorTmzcmmV4GGXZAOHcjGswAV3Ij2vRyTtWqtkIuMw2vfR7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K2+JimHg; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-27ee41e0798so104828195ad.1
-        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 08:00:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760540457; x=1761145257; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ifGvImgtMbsz18j1645Ok+33OIuHZ/lnBEplV9+70Ps=;
-        b=K2+JimHgj0OETor0U2PUWLzJe0XalgSCzoHcek+QuqM49FaXClZNjlwZef/myuLBfe
-         hX6BQ4BEp+OSEZbtLXkvK/4uITCr9tVcthgkh3sim5kHYWh0ZGL/Q1bglm3rAFkvUHGd
-         hejdzMeGEw2cbKRocB/DFBC2ywbCjJSr8LrcnO3+jLuwFJADWg0AM6JCO9rL0/7buJJE
-         QNgZOvVyLd6+zL3Y5FhQ1CId7uQlges7VPZVmmPaEiXd2wiRvCdzHBjW1wyjBqe34+a9
-         kFCTLo6b9aocn+fdDZrpIUnP4OXxM8qXWH/mKgY1FDdRqd1i6VYTZgfBaA4Fo0Zb3v4y
-         du0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760540457; x=1761145257;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ifGvImgtMbsz18j1645Ok+33OIuHZ/lnBEplV9+70Ps=;
-        b=QU2WJef2oAh1FLBjJeFLyOULCw3qNu3LEXwv6fZC2dqZCqgWB4Z+D9o2F9cbKVYZZP
-         pab+U8KIhQFe5uVWWZ0Khzdk/1kotpE3QSqtvec2cumu4/yfumbosmBJOV230Ltc48fW
-         3tc45E2WnQCsDASTrEOghF1DuT1N0CBkCYIlxyPUHV8sGMxW7w6jbz2wENyWevTeQdeR
-         HHB8pc+/gDfBjmwcDn8eQu8DlrtsUE5iVcNlbUNWW8k+PFMDIbNfbrjiOMjmFP2Whi96
-         cv0ItQx92LjIqsLEw8qhvNLIrzSCcVKMSkWIHcb14DxRicTJENNeLtS59SxmTG3dxFnJ
-         DAYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXsUdUvZPOcUZsrT8NFQyrgoSmvB5HC17ogfDuEUExlpblVYb60B61+ikxNEGPHU0ssYh+jZlo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGk1aSt7wkLnpjkAQbEZl384Xq4kOdOX+BeHlrPZ9JxHXjVkWP
-	kDO3w+e0YHxN8VpYxBCb0+01fYs5TRO4r+A2U67dCUPMXJarR3l4j7U7
-X-Gm-Gg: ASbGncvjCtIPqEc7rOlEqsuHRejtPiLbM2tBqli+JjsXMy99BPWfqnWwXwhtikNk88d
-	3/dVfjJpIjgPGMOpRbgD1SmhZYFzue9ESGLDunPgxrwHmt53J3T/KPzq3IdW4D+3+juOgWKp+mz
-	9zfGAXLYmzSw0eabjFlqMgg3xgFnFVSyYzHiU2UwiDX3LV8mYyN1uOsEgLkx6lLfnE/KSRFsYID
-	9J3UsuAn2YNX1GlACmwTTC1MQ7kUam91E1wG78u9EOOiBU6+iPijmWMhkhc3EqQhDqpfUTSdzQq
-	Xmfr1KhyIGzmkPV2jurC4aUSvbi0Jni0Q5lssPIwlcdx54IyFZdqJnFpuUO7jSgx4YavJOsvlV6
-	1yEBoHpSoHS1UfqEId1bFc3O7chObAPvstAP/HOk9z/g6n936TOUr+ngm5f50z71yoebyYXYCUg
-	==
-X-Google-Smtp-Source: AGHT+IGqxIssqtEE1gKMyZ/xPQWAaQDO4XMp/cQx9E/SYok7KUMOpcA7WPjXYLzfNma9OBCD3O8baQ==
-X-Received: by 2002:a17:903:298c:b0:265:982a:d450 with SMTP id d9443c01a7336-290273ffbf1mr386779325ad.40.1760540456721;
-        Wed, 15 Oct 2025 08:00:56 -0700 (PDT)
-Received: from iku.. ([2401:4900:1c07:c7d3:f449:63fb:7005:808e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f36408sm199642265ad.91.2025.10.15.08.00.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 08:00:56 -0700 (PDT)
-From: Prabhakar <prabhakar.csengg@gmail.com>
-X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-	Paul Barker <paul@pbarker.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc: netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Prabhakar <prabhakar.csengg@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/3] net: ravb: Enforce descriptor type ordering to prevent early DMA start
-Date: Wed, 15 Oct 2025 16:00:26 +0100
-Message-ID: <20251015150026.117587-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251015150026.117587-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20251015150026.117587-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+	s=arc-20240116; t=1760540573; c=relaxed/simple;
+	bh=02rpJ5AQAI1jNvcnqJlCOiGYXOnV1rR9beYRVt635GI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Skordj6wm2B/vBZbXO5bM3VYFO/YNFgtzUH9Qf9MImbjTlXJ+8+Wq4QY802PZKfSygjJwg6qKwbbLDDBDU856M+Hdw9NOvOAhu9wqmQmybEZEebn5+ZgfpudACITHeoRrdgUpYR4RcWQWT30fmKjpNMPY1+A/jMXbHEtGCDBwC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A8F671655;
+	Wed, 15 Oct 2025 08:02:39 -0700 (PDT)
+Received: from [10.1.38.178] (XHFQ2J9959.cambridge.arm.com [10.1.38.178])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F01B3F738;
+	Wed, 15 Oct 2025 08:02:44 -0700 (PDT)
+Message-ID: <f40f285b-9828-41fd-a004-3422915b8024@arm.com>
+Date: Wed, 15 Oct 2025 16:02:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] arm64/mm: Allow __create_pgd_mapping() to
+ propagate pgtable_alloc() errors
+Content-Language: en-GB
+To: Linu Cherian <linu.cherian@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Zhenhua Huang <quic_zhenhuah@quicinc.com>, Dev Jain <dev.jain@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Yang Shi <yang@os.amperecomputing.com>,
+ Chaitanya S Prakash <chaitanyas.prakash@arm.com>, stable@vger.kernel.org
+References: <20251015112758.2701604-1-linu.cherian@arm.com>
+ <20251015112758.2701604-2-linu.cherian@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20251015112758.2701604-2-linu.cherian@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+On 15/10/2025 12:27, Linu Cherian wrote:
+> From: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+> 
+> arch_add_memory() is used to hotplug memory into a system but as a part
+> of its implementation it calls __create_pgd_mapping(), which uses
+> pgtable_alloc() in order to build intermediate page tables. As this path
+> was initally only used during early boot pgtable_alloc() is designed to
+> BUG_ON() on failure. However, in the event that memory hotplug is
+> attempted when the system's memory is extremely tight and the allocation
+> were to fail, it would lead to panicking the system, which is not
+> desirable. Hence update __create_pgd_mapping and all it's callers to be
+> non void and propagate -ENOMEM on allocation failure to allow system to
+> fail gracefully.
+> 
+> But during early boot if there is an allocation failure, we want the
+> system to panic, hence create a wrapper around __create_pgd_mapping()
+> called early_create_pgd_mapping() which is designed to panic, if ret
+> is non zero value. All the init calls are updated to use this wrapper
+> rather than the modified __create_pgd_mapping() to restore
+> functionality.
+> 
+> Fixes: 4ab215061554 ("arm64: Add memory hotplug support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+> Signed-off-by: Linu Cherian <linu.cherian@arm.com>
 
-Ensure TX descriptor type fields are written in a safe order so the DMA
-engine does not begin processing a chain before all descriptors are
-fully initialised.
+LGTM:
 
-For multi-descriptor transmissions the driver writes DT_FEND into the
-last descriptor and DT_FSTART into the first. The DMA engine starts
-processing when it sees DT_FSTART. If the compiler or CPU reorders the
-writes and publishes DT_FSTART before DT_FEND, the DMA can start early
-and process an incomplete chain, leading to corrupted transmissions or
-DMA errors.
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
-Fix this by writing DT_FEND before the dma_wmb() barrier, executing
-dma_wmb() immediately before DT_FSTART (or DT_FSINGLE in the single
-descriptor case), and then adding a wmb() after the type updates to
-ensure CPU-side ordering before ringing the hardware doorbell.
-
-On an RZ/G2L platform running an RT kernel, this reordering hazard was
-observed as TX stalls and timeouts:
-
-  [  372.968431] NETDEV WATCHDOG: end0 (ravb): transmit queue 0 timed out
-  [  372.968494] WARNING: CPU: 0 PID: 10 at net/sched/sch_generic.c:467 dev_watchdog+0x4a4/0x4ac
-  [  373.969291] ravb 11c20000.ethernet end0: transmit timed out, status 00000000, resetting...
-
-This change enforces the required ordering and prevents the DMA engine
-from observing DT_FSTART before the rest of the descriptor chain is
-valid.
-
-Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
-Cc: stable@vger.kernel.org
-Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
----
- drivers/net/ethernet/renesas/ravb_main.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index a200e205825a..2a995fa9bfff 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2211,15 +2211,19 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 
- 		skb_tx_timestamp(skb);
- 	}
--	/* Descriptor type must be set after all the above writes */
--	dma_wmb();
-+
-+	/* For multi-descriptors set DT_FEND before calling dma_wmb() */
- 	if (num_tx_desc > 1) {
- 		desc->die_dt = DT_FEND;
- 		desc--;
--		desc->die_dt = DT_FSTART;
--	} else {
--		desc->die_dt = DT_FSINGLE;
- 	}
-+
-+	/* Descriptor type must be set after all the above writes */
-+	dma_wmb();
-+	desc->die_dt = (num_tx_desc > 1) ? DT_FSTART : DT_FSINGLE;
-+
-+	/* Ensure data is written to RAM before initiating DMA transfer */
-+	wmb();
- 	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
- 
- 	priv->cur_tx[q] += num_tx_desc;
--- 
-2.43.0
+> ---
+> Changelog:
+> 
+> v3:
+> * Fixed a maybe-uninitialized case in alloc_init_pud
+> * Added Fixes tag and CCed stable
+> * Few other trivial cleanups
+> 
+>  arch/arm64/mm/mmu.c | 210 ++++++++++++++++++++++++++++----------------
+>  1 file changed, 132 insertions(+), 78 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index b8d37eb037fc..638cb4df31a9 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -49,6 +49,8 @@
+>  #define NO_CONT_MAPPINGS	BIT(1)
+>  #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+>  
+> +#define INVALID_PHYS_ADDR	(-1ULL)
+> +
+>  DEFINE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
+>  
+>  u64 kimage_voffset __ro_after_init;
+> @@ -194,11 +196,11 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
+>  	} while (ptep++, addr += PAGE_SIZE, addr != end);
+>  }
+>  
+> -static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+> -				unsigned long end, phys_addr_t phys,
+> -				pgprot_t prot,
+> -				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> -				int flags)
+> +static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+> +			       unsigned long end, phys_addr_t phys,
+> +			       pgprot_t prot,
+> +			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> +			       int flags)
+>  {
+>  	unsigned long next;
+>  	pmd_t pmd = READ_ONCE(*pmdp);
+> @@ -213,6 +215,8 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+>  			pmdval |= PMD_TABLE_PXN;
+>  		BUG_ON(!pgtable_alloc);
+>  		pte_phys = pgtable_alloc(TABLE_PTE);
+> +		if (pte_phys == INVALID_PHYS_ADDR)
+> +			return -ENOMEM;
+>  		ptep = pte_set_fixmap(pte_phys);
+>  		init_clear_pgtable(ptep);
+>  		ptep += pte_index(addr);
+> @@ -244,12 +248,15 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+>  	 * walker.
+>  	 */
+>  	pte_clear_fixmap();
+> +
+> +	return 0;
+>  }
+>  
+> -static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+> -		     phys_addr_t phys, pgprot_t prot,
+> -		     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
+> +static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+> +		    phys_addr_t phys, pgprot_t prot,
+> +		    phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
+>  {
+> +	int ret;
+>  	unsigned long next;
+>  
+>  	do {
+> @@ -269,22 +276,27 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
+>  						      READ_ONCE(pmd_val(*pmdp))));
+>  		} else {
+> -			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
+> -					    pgtable_alloc, flags);
+> +			ret = alloc_init_cont_pte(pmdp, addr, next, phys, prot,
+> +						  pgtable_alloc, flags);
+> +			if (ret)
+> +				return ret;
+>  
+>  			BUG_ON(pmd_val(old_pmd) != 0 &&
+>  			       pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
+>  		}
+>  		phys += next - addr;
+>  	} while (pmdp++, addr = next, addr != end);
+> +
+> +	return 0;
+>  }
+>  
+> -static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+> -				unsigned long end, phys_addr_t phys,
+> -				pgprot_t prot,
+> -				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> -				int flags)
+> +static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+> +			       unsigned long end, phys_addr_t phys,
+> +			       pgprot_t prot,
+> +			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> +			       int flags)
+>  {
+> +	int ret;
+>  	unsigned long next;
+>  	pud_t pud = READ_ONCE(*pudp);
+>  	pmd_t *pmdp;
+> @@ -301,6 +313,8 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+>  			pudval |= PUD_TABLE_PXN;
+>  		BUG_ON(!pgtable_alloc);
+>  		pmd_phys = pgtable_alloc(TABLE_PMD);
+> +		if (pmd_phys == INVALID_PHYS_ADDR)
+> +			return -ENOMEM;
+>  		pmdp = pmd_set_fixmap(pmd_phys);
+>  		init_clear_pgtable(pmdp);
+>  		pmdp += pmd_index(addr);
+> @@ -320,20 +334,26 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+>  		    (flags & NO_CONT_MAPPINGS) == 0)
+>  			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
+>  
+> -		init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
+> +		ret = init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
+> +		if (ret)
+> +			goto out;
+>  
+>  		pmdp += pmd_index(next) - pmd_index(addr);
+>  		phys += next - addr;
+>  	} while (addr = next, addr != end);
+>  
+> +out:
+>  	pmd_clear_fixmap();
+> +
+> +	return ret;
+>  }
+>  
+> -static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+> -			   phys_addr_t phys, pgprot_t prot,
+> -			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> -			   int flags)
+> +static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+> +			  phys_addr_t phys, pgprot_t prot,
+> +			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> +			  int flags)
+>  {
+> +	int ret = 0;
+>  	unsigned long next;
+>  	p4d_t p4d = READ_ONCE(*p4dp);
+>  	pud_t *pudp;
+> @@ -346,6 +366,8 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+>  			p4dval |= P4D_TABLE_PXN;
+>  		BUG_ON(!pgtable_alloc);
+>  		pud_phys = pgtable_alloc(TABLE_PUD);
+> +		if (pud_phys == INVALID_PHYS_ADDR)
+> +			return -ENOMEM;
+>  		pudp = pud_set_fixmap(pud_phys);
+>  		init_clear_pgtable(pudp);
+>  		pudp += pud_index(addr);
+> @@ -375,8 +397,10 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+>  			BUG_ON(!pgattr_change_is_safe(pud_val(old_pud),
+>  						      READ_ONCE(pud_val(*pudp))));
+>  		} else {
+> -			alloc_init_cont_pmd(pudp, addr, next, phys, prot,
+> -					    pgtable_alloc, flags);
+> +			ret = alloc_init_cont_pmd(pudp, addr, next, phys, prot,
+> +						  pgtable_alloc, flags);
+> +			if (ret)
+> +				goto out;
+>  
+>  			BUG_ON(pud_val(old_pud) != 0 &&
+>  			       pud_val(old_pud) != READ_ONCE(pud_val(*pudp)));
+> @@ -384,14 +408,18 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+>  		phys += next - addr;
+>  	} while (pudp++, addr = next, addr != end);
+>  
+> +out:
+>  	pud_clear_fixmap();
+> +
+> +	return ret;
+>  }
+>  
+> -static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+> -			   phys_addr_t phys, pgprot_t prot,
+> -			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> -			   int flags)
+> +static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+> +			  phys_addr_t phys, pgprot_t prot,
+> +			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> +			  int flags)
+>  {
+> +	int ret;
+>  	unsigned long next;
+>  	pgd_t pgd = READ_ONCE(*pgdp);
+>  	p4d_t *p4dp;
+> @@ -404,6 +432,8 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+>  			pgdval |= PGD_TABLE_PXN;
+>  		BUG_ON(!pgtable_alloc);
+>  		p4d_phys = pgtable_alloc(TABLE_P4D);
+> +		if (p4d_phys == INVALID_PHYS_ADDR)
+> +			return -ENOMEM;
+>  		p4dp = p4d_set_fixmap(p4d_phys);
+>  		init_clear_pgtable(p4dp);
+>  		p4dp += p4d_index(addr);
+> @@ -418,8 +448,10 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+>  
+>  		next = p4d_addr_end(addr, end);
+>  
+> -		alloc_init_pud(p4dp, addr, next, phys, prot,
+> -			       pgtable_alloc, flags);
+> +		ret = alloc_init_pud(p4dp, addr, next, phys, prot,
+> +				     pgtable_alloc, flags);
+> +		if (ret)
+> +			goto out;
+>  
+>  		BUG_ON(p4d_val(old_p4d) != 0 &&
+>  		       p4d_val(old_p4d) != READ_ONCE(p4d_val(*p4dp)));
+> @@ -427,15 +459,19 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+>  		phys += next - addr;
+>  	} while (p4dp++, addr = next, addr != end);
+>  
+> +out:
+>  	p4d_clear_fixmap();
+> +
+> +	return ret;
+>  }
+>  
+> -static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+> -					unsigned long virt, phys_addr_t size,
+> -					pgprot_t prot,
+> -					phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> -					int flags)
+> +static int __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+> +				       unsigned long virt, phys_addr_t size,
+> +				       pgprot_t prot,
+> +				       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> +				       int flags)
+>  {
+> +	int ret;
+>  	unsigned long addr, end, next;
+>  	pgd_t *pgdp = pgd_offset_pgd(pgdir, virt);
+>  
+> @@ -444,7 +480,7 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+>  	 * within a page, we cannot map the region as the caller expects.
+>  	 */
+>  	if (WARN_ON((phys ^ virt) & ~PAGE_MASK))
+> -		return;
+> +		return -EINVAL;
+>  
+>  	phys &= PAGE_MASK;
+>  	addr = virt & PAGE_MASK;
+> @@ -452,25 +488,45 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+>  
+>  	do {
+>  		next = pgd_addr_end(addr, end);
+> -		alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
+> -			       flags);
+> +		ret = alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
+> +				     flags);
+> +		if (ret)
+> +			return ret;
+>  		phys += next - addr;
+>  	} while (pgdp++, addr = next, addr != end);
+> +
+> +	return 0;
+>  }
+>  
+> -static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+> -				 unsigned long virt, phys_addr_t size,
+> -				 pgprot_t prot,
+> -				 phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> -				 int flags)
+> +static int __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+> +				unsigned long virt, phys_addr_t size,
+> +				pgprot_t prot,
+> +				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> +				int flags)
+>  {
+> +	int ret;
+> +
+>  	mutex_lock(&fixmap_lock);
+> -	__create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
+> -				    pgtable_alloc, flags);
+> +	ret = __create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
+> +					  pgtable_alloc, flags);
+>  	mutex_unlock(&fixmap_lock);
+> +
+> +	return ret;
+>  }
+>  
+> -#define INVALID_PHYS_ADDR	(-1ULL)
+> +static void early_create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+> +				     unsigned long virt, phys_addr_t size,
+> +				     pgprot_t prot,
+> +				     phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> +				     int flags)
+> +{
+> +	int ret;
+> +
+> +	ret = __create_pgd_mapping(pgdir, phys, virt, size, prot, pgtable_alloc,
+> +				   flags);
+> +	if (ret)
+> +		panic("Failed to create page tables\n");
+> +}
+>  
+>  static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
+>  				       enum pgtable_type pgtable_type)
+> @@ -511,21 +567,13 @@ try_pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type, gfp_t gfp)
+>  static phys_addr_t __maybe_unused
+>  pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type)
+>  {
+> -	phys_addr_t pa;
+> -
+> -	pa = __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
+> -	BUG_ON(pa == INVALID_PHYS_ADDR);
+> -	return pa;
+> +	return __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
+>  }
+>  
+>  static phys_addr_t
+>  pgd_pgtable_alloc_special_mm(enum pgtable_type pgtable_type)
+>  {
+> -	phys_addr_t pa;
+> -
+> -	pa = __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
+> -	BUG_ON(pa == INVALID_PHYS_ADDR);
+> -	return pa;
+> +	return  __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
+>  }
+>  
+>  static void split_contpte(pte_t *ptep)
+> @@ -903,8 +951,8 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
+>  			&phys, virt);
+>  		return;
+>  	}
+> -	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+> -			     NO_CONT_MAPPINGS);
+> +	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+> +				 NO_CONT_MAPPINGS);
+>  }
+>  
+>  void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
+> @@ -918,8 +966,8 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
+>  	if (page_mappings_only)
+>  		flags = NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+>  
+> -	__create_pgd_mapping(mm->pgd, phys, virt, size, prot,
+> -			     pgd_pgtable_alloc_special_mm, flags);
+> +	early_create_pgd_mapping(mm->pgd, phys, virt, size, prot,
+> +				 pgd_pgtable_alloc_special_mm, flags);
+>  }
+>  
+>  static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+> @@ -931,8 +979,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+>  		return;
+>  	}
+>  
+> -	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+> -			     NO_CONT_MAPPINGS);
+> +	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+> +				 NO_CONT_MAPPINGS);
+>  
+>  	/* flush the TLBs after updating live kernel mappings */
+>  	flush_tlb_kernel_range(virt, virt + size);
+> @@ -941,8 +989,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+>  static void __init __map_memblock(pgd_t *pgdp, phys_addr_t start,
+>  				  phys_addr_t end, pgprot_t prot, int flags)
+>  {
+> -	__create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
+> -			     prot, early_pgtable_alloc, flags);
+> +	early_create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
+> +				 prot, early_pgtable_alloc, flags);
+>  }
+>  
+>  void __init mark_linear_text_alias_ro(void)
+> @@ -1178,9 +1226,10 @@ static int __init __kpti_install_ng_mappings(void *__unused)
+>  		// covers the PTE[] page itself, the remaining entries are free
+>  		// to be used as a ad-hoc fixmap.
+>  		//
+> -		__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
+> -					    KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
+> -					    kpti_ng_pgd_alloc, 0);
+> +		if (__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
+> +						KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
+> +						kpti_ng_pgd_alloc, 0))
+> +			panic("Failed to create page tables\n");
+>  	}
+>  
+>  	cpu_install_idmap();
+> @@ -1233,9 +1282,9 @@ static int __init map_entry_trampoline(void)
+>  
+>  	/* Map only the text into the trampoline page table */
+>  	memset(tramp_pg_dir, 0, PGD_SIZE);
+> -	__create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
+> -			     entry_tramp_text_size(), prot,
+> -			     pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
+> +	early_create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
+> +				 entry_tramp_text_size(), prot,
+> +				 pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
+>  
+>  	/* Map both the text and data into the kernel page table */
+>  	for (i = 0; i < DIV_ROUND_UP(entry_tramp_text_size(), PAGE_SIZE); i++)
+> @@ -1877,23 +1926,28 @@ int arch_add_memory(int nid, u64 start, u64 size,
+>  	if (force_pte_mapping())
+>  		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+>  
+> -	__create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
+> -			     size, params->pgprot, pgd_pgtable_alloc_init_mm,
+> -			     flags);
+> +	ret = __create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
+> +				   size, params->pgprot, pgd_pgtable_alloc_init_mm,
+> +				   flags);
+> +	if (ret)
+> +		goto err;
+>  
+>  	memblock_clear_nomap(start, size);
+>  
+>  	ret = __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
+>  			   params);
+>  	if (ret)
+> -		__remove_pgd_mapping(swapper_pg_dir,
+> -				     __phys_to_virt(start), size);
+> -	else {
+> -		/* Address of hotplugged memory can be smaller */
+> -		max_pfn = max(max_pfn, PFN_UP(start + size));
+> -		max_low_pfn = max_pfn;
+> -	}
+> +		goto err;
+> +
+> +	/* Address of hotplugged memory can be smaller */
+> +	max_pfn = max(max_pfn, PFN_UP(start + size));
+> +	max_low_pfn = max_pfn;
+> +
+> +	return 0;
+>  
+> +err:
+> +	__remove_pgd_mapping(swapper_pg_dir,
+> +			     __phys_to_virt(start), size);
+>  	return ret;
+>  }
+>  
 
 
