@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-185782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD41BDE0C3
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:38:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A1DBDE0C0
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C94F403739
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 10:38:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A613188BA46
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 10:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB42430CD97;
-	Wed, 15 Oct 2025 10:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD872FBE1C;
+	Wed, 15 Oct 2025 10:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcQfmf+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6+01pgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD7E2EA464
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 10:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F099315D59
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 10:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760524693; cv=none; b=fbTpT+G0diVqDC+42UaZuABpAstK3SxPQuEFk3hrnOiMF8i+Y+SCntkl4un2XHyd4E2Lhz0pJDzBfiLsMLyX7VNVl3dbJvxWW9k528L2wYJZ2iKOYxgoPgrbM2RDOuo+zyJB87tUXWNSGcUaY3iaHbDrWXvuEeAmhYD5ExXro2A=
+	t=1760524706; cv=none; b=hPG9E1HFE4JTJHqKBkJzbvIidTQ9oplL+y9bUeK4fwlGZcF5eLqbioimmc3SbmbtWWDgONfq2WsJwLjQq184KdWQSXsxPQEo3ZrvC7nSJdNHnLEXXKo+L/pMfEdqAkZYUJhhiOgOXZ4hiKrMsTcgXcClV09hocpcrwzGsa1MDdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760524693; c=relaxed/simple;
-	bh=Su+rXhxc7MGxHN+VTR6LMMLSEO9BrKG9MFAjojq5Fb4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tcdKXuXPZABBsknxKRoO7WO6FFr8WQ780YxaBpnADpaixpFV6v18M8d3ZuQfMLISYgCzD6YAbvd2ss4wmzSGZYdxFjO/ljSyNRL/eMPpg+MjtZO7yDBNOPu96erqozH2uJ8yfKcaH984aqcbXD+JybIG2FNvfoZC6dzSeidyQBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcQfmf+G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BACC4CEF8;
-	Wed, 15 Oct 2025 10:38:12 +0000 (UTC)
+	s=arc-20240116; t=1760524706; c=relaxed/simple;
+	bh=zLTssUuN1PhvvhglEQJ4289RgueCYqEEqjeBCkvrIKc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RvO/1yAkv+opxmoqmLmFuReTgjwDY9QK3MFqDlNVZ1cgZianPCfWrbAP00LRd+LxRwxa0v3jygeVGj33AOyl6fOPWVopL7YHMQMAuT9Ys9b312obEKuvM+rPZ6C3BocRo1nB2cQM19aDDEvTkoNgIt950SPi7Ll6saylY47uVwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6+01pgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8186AC4CEF8;
+	Wed, 15 Oct 2025 10:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760524692;
-	bh=Su+rXhxc7MGxHN+VTR6LMMLSEO9BrKG9MFAjojq5Fb4=;
+	s=korg; t=1760524705;
+	bh=zLTssUuN1PhvvhglEQJ4289RgueCYqEEqjeBCkvrIKc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rcQfmf+GFBUN+iy2noYUkpdJN4s2W709tBGok6440TeI5EiJK+eNdVLZchnRAxOa6
-	 CrRK6hGdhY2fMD/X/eYdfXwZP62FQEsYDDW8HYRU8/Cc5S+HVen8qF2lekBvGtVi2S
-	 J4k2GMg9yrc4pF1az5L+4s5h4bvyBlHYY3r0YPKc=
-Subject: FAILED: patch "[PATCH] debugfs: fix mount options not being applied" failed to apply to 6.12-stable tree
-To: charmitro@posteo.net,brauner@kernel.org,sandeen@redhat.com
+	b=w6+01pgkjTzI5Rh68vYTSrBWLvGjFRIMrozDvCy8IhXok0MHxLkKVnxDzXYV/4yJK
+	 KKYlQRTfnOiSscBVvOc3TNi4gnAic5yqltX4qNsYdqnjGSxDkuDxn8zjImc9bZ7JQW
+	 cXnnw+JE38RMAkGEf6apDpl9b49GWDzESPA+04lk=
+Subject: FAILED: patch "[PATCH] btrfs: fix the incorrect max_bytes value for" failed to apply to 6.12-stable tree
+To: wqu@suse.com,dsterba@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 15 Oct 2025 12:38:02 +0200
-Message-ID: <2025101502-elf-bootie-19bf@gregkh>
+Date: Wed, 15 Oct 2025 12:38:23 +0200
+Message-ID: <2025101522-repugnant-demystify-deee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8e7e265d558e0257d6dacc78ec64aff4ba75f61e
+git cherry-pick -x 7b26da407420e5054e3f06c5d13271697add9423
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101502-elf-bootie-19bf@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101522-repugnant-demystify-deee@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,79 +77,142 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8e7e265d558e0257d6dacc78ec64aff4ba75f61e Mon Sep 17 00:00:00 2001
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-Date: Sat, 16 Aug 2025 14:14:37 +0000
-Subject: [PATCH] debugfs: fix mount options not being applied
+From 7b26da407420e5054e3f06c5d13271697add9423 Mon Sep 17 00:00:00 2001
+From: Qu Wenruo <wqu@suse.com>
+Date: Fri, 19 Sep 2025 14:33:23 +0930
+Subject: [PATCH] btrfs: fix the incorrect max_bytes value for
+ find_lock_delalloc_range()
 
-Mount options (uid, gid, mode) are silently ignored when debugfs is
-mounted. This is a regression introduced during the conversion to the
-new mount API.
+[BUG]
+With my local branch to enable bs > ps support for btrfs, sometimes I
+hit the following ASSERT() inside submit_one_sector():
 
-When the mount API conversion was done, the parsed options were never
-applied to the superblock when it was reused. As a result, the mount
-options were ignored when debugfs was mounted.
+	ASSERT(block_start != EXTENT_MAP_HOLE);
 
-Fix this by following the same pattern as the tracefs fix in commit
-e4d32142d1de ("tracing: Fix tracefs mount options"). Call
-debugfs_reconfigure() in debugfs_get_tree() to apply the mount options
-to the superblock after it has been created or reused.
+Please note that it's not yet possible to hit this ASSERT() in the wild
+yet, as it requires btrfs bs > ps support, which is not even in the
+development branch.
 
-As an example, with the bug the "mode" mount option is ignored:
+But on the other hand, there is also a very low chance to hit above
+ASSERT() with bs < ps cases, so this is an existing bug affect not only
+the incoming bs > ps support but also the existing bs < ps support.
 
-  $ mount -o mode=0666 -t debugfs debugfs /tmp/debugfs_test
-  $ mount | grep debugfs_test
-  debugfs on /tmp/debugfs_test type debugfs (rw,relatime)
-  $ ls -ld /tmp/debugfs_test
-  drwx------ 25 root root 0 Aug  4 14:16 /tmp/debugfs_test
+[CAUSE]
+Firstly that ASSERT() means we're trying to submit a dirty block but
+without a real extent map nor ordered extent map backing it.
 
-With the fix applied, it works as expected:
+Furthermore with extra debugging, the folio triggering such ASSERT() is
+always larger than the fs block size in my bs > ps case.
+(8K block size, 4K page size)
 
-  $ mount -o mode=0666 -t debugfs debugfs /tmp/debugfs_test
-  $ mount | grep debugfs_test
-  debugfs on /tmp/debugfs_test type debugfs (rw,relatime,mode=666)
-  $ ls -ld /tmp/debugfs_test
-  drw-rw-rw- 37 root root 0 Aug  2 17:28 /tmp/debugfs_test
+After some more debugging, the ASSERT() is trigger by the following
+sequence:
 
-Fixes: a20971c18752 ("vfs: Convert debugfs to use the new mount API")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220406
-Cc: stable@vger.kernel.org
-Reviewed-by: Eric Sandeen <sandeen@redhat.com>
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://lore.kernel.org/20250816-debugfs-mount-opts-v3-1-d271dad57b5b@posteo.net
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+ extent_writepage()
+ |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
+ |  size is 8K, page size is 4K.
+ |  And there is another 8K folio at file offset 32K, which is also
+ |  dirty.
+ |  So the filemap layout looks like the following:
+ |
+ |  "||" is the filio boundary in the filemap.
+ |  "//| is the dirty range.
+ |
+ |  0        8K       16K        24K         32K       40K
+ |  |////////|        |//////////////////////||////////|
+ |
+ |- writepage_delalloc()
+ |  |- find_lock_delalloc_range() for [0, 8K)
+ |  |  Now range [0, 8K) is properly locked.
+ |  |
+ |  |- find_lock_delalloc_range() for [16K, 40K)
+ |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
+ |  |  |- lock_delalloc_folios() locked folio 0 successfully
+ |  |  |
+ |  |  |  The filemap range [32K, 40K) got dropped from filemap.
+ |  |  |
+ |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
+ |  |  |  As the folio at 32K is dropped.
+ |  |  |
+ |  |  |- loops = 1;
+ |  |  |- max_bytes = PAGE_SIZE;
+ |  |  |- goto again;
+ |  |  |  This will re-do the lookup for dirty delalloc ranges.
+ |  |  |
+ |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
+ |  |  |  This is smaller than block size, so
+ |  |  |  btrfs_find_delalloc_range() is unable to return any range.
+ |  |  \- return false;
+ |  |
+ |  \- Now only range [0, 8K) has an OE for it, but for dirty range
+ |     [16K, 32K) it's dirty without an OE.
+ |     This breaks the assumption that writepage_delalloc() will find
+ |     and lock all dirty ranges inside the folio.
+ |
+ |- extent_writepage_io()
+    |- submit_one_sector() for [0, 8K)
+    |  Succeeded
+    |
+    |- submit_one_sector() for [16K, 24K)
+       Triggering the ASSERT(), as there is no OE, and the original
+       extent map is a hole.
 
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index a0357b0cf362..c12d649df6a5 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -183,6 +183,9 @@ static int debugfs_reconfigure(struct fs_context *fc)
- 	struct debugfs_fs_info *sb_opts = sb->s_fs_info;
- 	struct debugfs_fs_info *new_opts = fc->s_fs_info;
- 
-+	if (!new_opts)
-+		return 0;
+Please note that, this also exposed the same problem for bs < ps
+support. E.g. with 64K page size and 4K block size.
+
+If we failed to lock a folio, and falls back into the "loops = 1;"
+branch, we will re-do the search using 64K as max_bytes.
+Which may fail again to lock the next folio, and exit early without
+handling all dirty blocks inside the folio.
+
+[FIX]
+Instead of using the fixed size PAGE_SIZE as @max_bytes, use
+@sectorsize, so that we are ensured to find and lock any remaining
+blocks inside the folio.
+
+And since we're here, add an extra ASSERT() to
+before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
+at least no smaller than a block to avoid false negative.
+
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 0782533aad51..2b6027ebf265 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -393,6 +393,13 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 	/* step one, find a bunch of delalloc bytes starting at start */
+ 	delalloc_start = *start;
+ 	delalloc_end = 0;
 +
- 	sync_filesystem(sb);
- 
- 	/* structure copy of new mount options to sb */
-@@ -282,10 +285,16 @@ static int debugfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 
- static int debugfs_get_tree(struct fs_context *fc)
- {
-+	int err;
++	/*
++	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
++	 * return early without handling any dirty ranges.
++	 */
++	ASSERT(max_bytes >= fs_info->sectorsize);
 +
- 	if (!(debugfs_allow & DEBUGFS_ALLOW_API))
- 		return -EPERM;
- 
--	return get_tree_single(fc, debugfs_fill_super);
-+	err = get_tree_single(fc, debugfs_fill_super);
-+	if (err)
-+		return err;
-+
-+	return debugfs_reconfigure(fc);
- }
- 
- static void debugfs_free_fc(struct fs_context *fc)
+ 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
+ 					  max_bytes, &cached_state);
+ 	if (!found || delalloc_end <= *start || delalloc_start > orig_end) {
+@@ -423,13 +430,14 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 				   delalloc_end);
+ 	ASSERT(!ret || ret == -EAGAIN);
+ 	if (ret == -EAGAIN) {
+-		/* some of the folios are gone, lets avoid looping by
+-		 * shortening the size of the delalloc range we're searching
++		/*
++		 * Some of the folios are gone, lets avoid looping by
++		 * shortening the size of the delalloc range we're searching.
+ 		 */
+ 		btrfs_free_extent_state(cached_state);
+ 		cached_state = NULL;
+ 		if (!loops) {
+-			max_bytes = PAGE_SIZE;
++			max_bytes = fs_info->sectorsize;
+ 			loops = 1;
+ 			goto again;
+ 		} else {
 
 
