@@ -1,108 +1,128 @@
-Return-Path: <stable+bounces-185809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D9DBDE7B2
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:32:23 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88123BDE7D6
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 766153E4828
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:32:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A7F34F8E2F
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936D8450FE;
-	Wed, 15 Oct 2025 12:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50F815ADB4;
+	Wed, 15 Oct 2025 12:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+ceJgAT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8mWfXGZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528BC39FCE
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 12:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4BAEEDE;
+	Wed, 15 Oct 2025 12:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760531517; cv=none; b=sMFq8ZqI7YkE3E9MOsaeHU/tmURWnRoRWi1vD5ZkGowaW+iut5JJbPvLKEuVLIFbzGa7bJFeyT9OJlcv5OakBrbUryPhmPQ2+MOVsIYCwy7/gagDhNr74usHo9SaRElw+fuCgUGwLeNsyIRo2GRl0/LMzBo7nn0BEfpgNAuUoqU=
+	t=1760531745; cv=none; b=ch8yCNwZ0ytLjbCVRv0duQKXBUE1337QkCSHH+xK0oxEa1OLjO3dbwlcufJhDCKQxg2OUnRebET7cI22XLJRlR8OaPNrF68BPHv9zSSh8jikRFRG8muALFDTsjwyavMHozMSLrq3WG5Yt4eV4/+3XTspy3FFfrVNBOmq6tEpCOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760531517; c=relaxed/simple;
-	bh=Ds5tN1UgYbeLuv+voBo8qmhKTyrE2Us8S1vDEEh3mRc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uRX1KbIpf/spbB6S78u/V0ujcLaDhe/CKd+N0k6OgUrcHpjv0If9qfJ1XRNxwd1jrAmDFWT2sV/LKdeohqONnue9x441xKOxcfxQhtzd48Zp0p5ZtkW/IM3tdZfXpqr5ZXqRqTd5GHX4KcrHyVy7eq7dNr2DUUxo+zCWqkgLKAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+ceJgAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32567C116D0
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 12:31:57 +0000 (UTC)
+	s=arc-20240116; t=1760531745; c=relaxed/simple;
+	bh=JBha8IM0AxTjIHZho/VaVOPs4WZJhD7HiSM3gEnMxw8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t6wz5uyEQFi2vh+WdlM9JtywtE+zVpiM9s+iJ4BmlOfqri1D5K3i/f51MED8+G+ng+LCXuDEsI7alMY8gnu2ylaToPEpGmAc4mxMkryEUTXgR4RH1Ik7jD5blAFXifHkNprKkr1ec8RL6fRNPLQRnNgeldz+nqxPuTwff7ShHls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8mWfXGZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BA7C4CEF8;
+	Wed, 15 Oct 2025 12:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760531517;
-	bh=Ds5tN1UgYbeLuv+voBo8qmhKTyrE2Us8S1vDEEh3mRc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=V+ceJgATycv2dcPg8aukzupgBj6hiyF82xtx/xXHAmQ7OAzNwwhYDFw13BQRqurFn
-	 wt6KphkKf9GdzEuVA+d4Kf1bO9KprD0F8kAO34yuSfJMs7Ign18icenwKIbqIK5tZ8
-	 tvd25w1Kn2vippSsoSbcy3LgHTpW6Wmh6TMQ/6qSBsSfODj3UXLaJux5Q+2TenSOSe
-	 GDsPLheeh1X6FE/JVr2yL3G6A06lu+hWzdetbsW7/VRX+Jh8GTHB07gj0JEdk+S6PV
-	 BpZ+rp9xhwuzYtg+RwEI2BbLrdyt6MF6PzW6fO3vxGYMVjBMjRKDILxf66USTJ0gRl
-	 puQ8egtip6caw==
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-43f5ec025d3so3138489b6e.1
-        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 05:31:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVmZFZEGHYNHOUweLVKRU0aEHvbxaWcT2kBMloWh12yfYbxr29ULDkJhrpfndwmPR3Tj+Rf8Qo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybX+F3kRQ+KnCimgPPfr8Dvmuy68XmPMRbOw9sxvlkOO29xGf0
-	ptadpboEagBwT17kZzTE0lAnaoanmd8Z3oBR9E+Lnm6u+FoKbvcnQ4sHKSN0wLWWLnBkeBJltLc
-	1i4E8jOWlMc2fktTphiiMCji+vz7NcHc=
-X-Google-Smtp-Source: AGHT+IFCWf7w81eYbGsWsAaAixXw9VKGwbQ6gP5dTyi4DiP0nYK4d0/SXD8oIGT6DGjz8WIu8OPi7YnvTwOjD4zro7A=
-X-Received: by 2002:a05:6808:200f:b0:43c:afd4:646d with SMTP id
- 5614622812f47-4417b36ff74mr13883499b6e.14.1760531516486; Wed, 15 Oct 2025
- 05:31:56 -0700 (PDT)
+	s=k20201202; t=1760531744;
+	bh=JBha8IM0AxTjIHZho/VaVOPs4WZJhD7HiSM3gEnMxw8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h8mWfXGZW8dgoUk6CSJzFlBT5ekUzQeHNObU3HJQURWD+RFCS/NdsPZne7YpA0nsK
+	 oac66oDiHi4y+Rthue2fGbNXz2OZQTOpTv8N68Zch+tPSZRrKJOJnYvcmjD/SDG6c6
+	 /e0Ukex6rio4LT1HbHX2/3fYq6FL6e3HdyhaG6Z7bpeiHp5lzAOeylb3CVSyeqpoZX
+	 x4XYBqvveuXh7T/HAFdCQipp0Ecfygr/uBh8sJjfTow1qC4EOufnZBUK/UYierVa6w
+	 JxHGAQSytV+eZ1QaE0mE1lDUe266jJUjvRKHHhVyZyD4lzxH3ZYIiEFVlwkyLB8eXw
+	 9K5WFHt58p0+g==
+Date: Wed, 15 Oct 2025 14:35:38 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Heiko Stuebner <heiko@sntech.de>, Simon Xue <xxm@rock-chips.com>,
+	Kever Yang <kever.yang@rock-chips.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Dragan Simic <dsimic@manjaro.org>,
+	FUKAUMI Naoki <naoki@radxa.com>, stable@vger.kernel.org,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH] PCI: dw-rockchip: Disable L1 substates
+Message-ID: <aO-VGnz67TMzqdiX@ryzen>
+References: <20251015123142.392274-2-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7>
- <08529809-5ca1-4495-8160-15d8e85ad640@arm.com> <2zreguw4djctgcmvgticnm4dctcuja7yfnp3r6bxaqon3i2pxf@thee3p3qduoq>
- <8da42386-282e-4f97-af93-4715ae206361@arm.com> <nd64xabhbb53bbqoxsjkfvkmlpn5tkdlu3nb5ofwdhyauko35b@qv6in7biupgi>
- <49cf14a1-b96f-4413-a17e-599bc1c104cd@arm.com> <CAJZ5v0hGu-JdwR57cwKfB+a98Pv7e3y36X6xCo=PyGdD2hwkhQ@mail.gmail.com>
- <7ctfmyzpcogc5qug6u3jm2o32vy2ldo3ml5gsoxdm3gyr6l3fc@jo7inkr3otua>
-In-Reply-To: <7ctfmyzpcogc5qug6u3jm2o32vy2ldo3ml5gsoxdm3gyr6l3fc@jo7inkr3otua>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 15 Oct 2025 14:31:45 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0ix7zdR0hJqN9OZPGp0oZMD_mzKU48HH1coqHTm7ucTDw@mail.gmail.com>
-X-Gm-Features: AS18NWAYgH7eJ_Z6jWizwskkJNOvoxQftpz0yuYY6luTlZtoDjUyyg1fVOoplv8
-Message-ID: <CAJZ5v0ix7zdR0hJqN9OZPGp0oZMD_mzKU48HH1coqHTm7ucTDw@mail.gmail.com>
-Subject: Re: stable: commit "cpuidle: menu: Avoid discarding useful
- information" causes regressions
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Christian Loehle <christian.loehle@arm.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>, Sasha Levin <sashal@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015123142.392274-2-cassel@kernel.org>
 
-On Wed, Oct 15, 2025 at 3:30=E2=80=AFAM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> On (25/10/14 17:54), Rafael J. Wysocki wrote:
-> > Sergey, can you please run the workload under turbostat on the base
-> > 6.1.y and on 6.1.y with the problematic commit reverted and send the
-> > turbostat output from both runs (note: turbostat needs to be run as
-> > root)?
->
-> Please find attached the turbostat logs for both cases.
+On Wed, Oct 15, 2025 at 02:31:43PM +0200, Niklas Cassel wrote:
+> The L1 substates support requires additional steps to work, see e.g.
+> section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0.
+> 
+> These steps are currently missing from the driver.
+> 
+> While this has always been a problem when using e.g.
+> CONFIG_PCIEASPM_POWER_SUPERSAVE=y, the problem became more apparent after
+> commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for
+> devicetree platforms"), which enabled ASPM also for
+> CONFIG_PCIEASPM_DEFAULT=y.
+> 
+> Disable L1 substates until proper support is added.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> ---
+>  drivers/pci/controller/dwc/pcie-dw-rockchip.c | 22 +++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+> index 3e2752c7dd09..28e0fffe2542 100644
+> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+> @@ -200,6 +200,26 @@ static bool rockchip_pcie_link_up(struct dw_pcie *pci)
+>  	return FIELD_GET(PCIE_LINKUP_MASK, val) == PCIE_LINKUP;
+>  }
+>  
+> +/*
+> + * See e.g. section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0 for the steps
+> + * needed to support L1 substates. Currently, not a single rockchip platform
+> + * performs these steps, so disable L1 substates until there is proper support.
+> + */
+> +static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
+> +{
+> +	u32 cap, l1subcap;
+> +
+> +	cap = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
+> +	if (cap) {
+> +		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
+> +		l1subcap &= ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
+> +			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
+> +			      PCI_L1SS_CAP_PCIPM_L1_2);
+> +		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
+> +		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
 
-Thanks!
+Sorry, this extra dw_pcie_readl_dbi() was left over from debugging.
+Tell me if I should respin or if you can fix up when applying.
 
-First off, the CPUiD information reported by turbostat indicates that
-the system is a Jasper Lake.  Is this correct?
+I've verified that the patch works using an NVMe drive on v6.18-rc1,
+which is working after this patch, but was not working before this patch.
 
-Second, the overall picture I've got from the turbostat data indicates
-that there is a correlation between Bzy_MHz and CPU%c7 (the more time
-spent in C7, the higher the average "busy" frequency) which is
-generally consistent with the hypothesis that using more C1 causes the
-processor to drop the maximum frequency.
 
-Something like this may be induced by RAPL power limits, presumably PL1.
-
-Do you use thermald?
+Kind regards,
+Niklas
 
