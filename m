@@ -1,161 +1,218 @@
-Return-Path: <stable+bounces-185851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD0DBE03B7
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 20:44:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB995BE03BA
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 20:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F6EF400C40
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 18:44:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 165BF1A230AA
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 18:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30682D837E;
-	Wed, 15 Oct 2025 18:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43321DDC07;
+	Wed, 15 Oct 2025 18:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="PL2LUj2G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gg+XN/vR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3081A27E05F
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 18:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9C618D636
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 18:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760553893; cv=none; b=NOgK9JMWWdugOivKvVZ8hZGwnRpk5OGfwZEgCISPkZ1zsD5fWs072WIgxMmgXZK2mWCM3Q+1fBZm3usKbuzU9vYpxzTNSlN6FOw2Xz1bgDbPz234rKVvnH873vdYTlNqYDSfiJoZRkZn2M+EZ1TIjHelRhtA4DFTGri9HKSISC0=
+	t=1760553919; cv=none; b=t52SeeqsbsO6APBAaCj79MhjNEa77SvgDVzaFAcs2A3moNri5p91q+tJv0ZZXOUogB++peQGYbo6yNDpq8ZuviSf7kvSvGeluAtixUkp98FLp2W/WufP4W/KUz0Eq2jMM447ExMJBQ1QIRo7B+szveLd6BsLYP/a0QCgvJ5zdzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760553893; c=relaxed/simple;
-	bh=vJt2samCRmYLdQKY01Hke1/HG/H/GCAFpfcw1LZJqHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ANpFwfdXNqvlXxeu3L4briZo50wSycCFKt/GExV2W9uzZ3MYCHqzQkojcrc/3h9NxVpqZtLIxvR/53YS67YOJ1RAK1gWajSfcU+34PD7gB21OVYP2mvV4rq5HfLOIXxBKv28WhiL116GAyRl2+wMBNLdzAC/oNgvOaT2JIJfp+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=PL2LUj2G; arc=none smtp.client-ip=209.85.167.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-4417d8bb6d3so564529b6e.0
-        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 11:44:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1760553891; x=1761158691; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vkI3CPsEoef6DKq/9XSIUcKhl/lHGn2p9yW3ie99PjU=;
-        b=PL2LUj2Gzzz/bMdpkZd03HiK1SGuu+QROT7PYUfL3GJvgD7xJl0IPyLyDX1XV85rcl
-         wx7WCyAH4J+1kdygRRotkEA3hhMcriPeQDGoDGu5B37ZHFAa8DX4F/V77NgG3vAd10PA
-         shTJ9DvGk4ukkvFb25iiZQb48Gw7bbNMLZA4+sYu9qHBIgdWkAzOWnxmbmU7jeF3qtHL
-         +FiC/DvOowgqEBqqiFBNn2LeLShw9JRB7PRqY2ktYkzt9fOx294UNSs8txXqJSXfUGDg
-         Wa9VIHb+dTpG+G0w6hV5A9YCvmCFWH09L0wCH8npq5EciVY4okbjvK5PSH++NFqWM90C
-         FNvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760553891; x=1761158691;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vkI3CPsEoef6DKq/9XSIUcKhl/lHGn2p9yW3ie99PjU=;
-        b=WYNFO+NP2TW2//8yyvcVGWCe2+SVgHoz6reqGCG1fPjuuMishvVsFNcUGP5uoEvJnp
-         kZ1M1oa3nOkB9Bya5pzpv5M16BIjn5baKY6oPSPaYPjuoruViSe4bI4KK3b6mNLjkqJV
-         /sFV/ycKLcfOvgMw0+akniwVcRtp3SFpq30EhrZU4fKb7DAfw4McuZY1CQ77ADudqFHP
-         lHXLTm/XnnWEczk2lngayWGJd4NGk9GJu1XM/kdQpdNspC+jrvLOJW8e9EfQD0g4FhXU
-         1oV/ANhzgRZ39/aHlgDNhveZvHhwU3DJ6qQ+AwSNWXuZhD4szYC06lKEqxTdD+AzWd5a
-         ea2g==
-X-Gm-Message-State: AOJu0YzNtwlPUIj+RinjFnWwzMk1Q7wRs7q0R07SrNJaU2Nxl2XELxcN
-	+05GT/M1FPIyTxt1qYaNJVz6qcfBx/49xhG4d0UYnn8/qajJKa7oyoRu4DbMMoP8Nu3Lo1/H6sD
-	Hn+vjp60=
-X-Gm-Gg: ASbGncvfhCZcJlfDkDocLBdLCTTKURTvoPardZxlNjlo1f47ltls6hsxbzMSdqoTm/9
-	DBbzU8TqZLyk5NytD3WvB/8nvSu0RZAnvZV7Q8tdfsk9EntL1sh8YxvgQ5QRgHcMGTflpS+QbXx
-	VPmS44oonm/lj87UrXGAG09Gf9OVofFtKK6yPYzi0T8+0h13nELJjmJTV/xkAVczEcNHncgEd2G
-	8Xf19zbgrD6MHrgUAaqHfFnislPt4J7J2FYPXdIr9TqNVgKTSeDVY3qJzAI5MaLUWNC+MPvl3Xl
-	fzK6iflwdkffqG2pBdb0BCY9DpIvHywMaOV3H8HUfatQl9MroV0YRAZUr6p2r8SWsA1jbijCicY
-	G0rHjuWi5VBQnDEJjAeDfdAts5EwbWcAYO2uJcik4y0YphQ==
-X-Google-Smtp-Source: AGHT+IG8tfx8ZhbpF/8aVVaXnahrHLTfmvmyn3nCS8l6Jlt4G3qEjfaephuN623Xa7KcvJYgLLVpTw==
-X-Received: by 2002:a05:6808:1b25:b0:441:8f74:eff with SMTP id 5614622812f47-441fb9761a4mr625518b6e.28.1760553891069;
-        Wed, 15 Oct 2025 11:44:51 -0700 (PDT)
-Received: from 861G6M3 ([2a09:bac1:76a0:540::281:e4])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-441987494ccsm4180825b6e.0.2025.10.15.11.44.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 11:44:50 -0700 (PDT)
-Date: Wed, 15 Oct 2025 13:44:49 -0500
-From: Chris Arges <carges@cloudflare.com>
+	s=arc-20240116; t=1760553919; c=relaxed/simple;
+	bh=TWDxQ/8j9M8b2zOz7bwGoKteRtC1LZvJ/Pa3+xmBLPU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=onHauv3ShivJK6m59sUHHDYmWyCzpd5ElvXiJSJzYvS6tSh/cG36oQhcAD2T/iVbjzG0cXIqHZPiLfBjllfMPCkJ7YmxZPYU3wUFStPV8gAdd28u8XH0Z0ds3f19ZIUExhlGRSdXcP0fsA7DPZMpV+WT9PeugLpe4tLLBBD1BM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gg+XN/vR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AC2C4CEF8;
+	Wed, 15 Oct 2025 18:45:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760553919;
+	bh=TWDxQ/8j9M8b2zOz7bwGoKteRtC1LZvJ/Pa3+xmBLPU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gg+XN/vRpzNOmR0XHK03kW8OwK9mcvvmdIvWEETLbXURn9vX8l+le90rTfiMD49Gj
+	 ICr0GLHjAykwnSz6AwBabm2b9k8cJrf+hS9nm7bzP7zgn2ukdgURef2dabKraBN1Bn
+	 eyzCvK3mJQnUPktMrxIpcbZ8gyjDh+WbDQdWlwN4BZdGBfofIAg3KpKNhnsl5BiVF1
+	 f/cktCQ/BklV7OrQ7befaYCAKVrEHXpN6/I2WmJILiBDHhjROocqpeLM2iRr8OoewW
+	 my/4+gHVu5wGwk7PQzgygqRqQoEExDyGyy6eIub+udNgXZ6fB3IQRRibTr9GUvify/
+	 RfF6gvbF9QxDg==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: kernel-team@cloudflare.com, Peter Zijlstra <peterz@infradead.org>,
-	David Wang <00107082@163.com>, Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: Re: [PATCH] perf: Fix dangling cgroup pointer in cpuctx
-Message-ID: <aO_roag9qzfkRztQ@861G6M3>
-References: <20251007164556.516406-1-carges@cloudflare.com>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Jie Zhan <zhanjie9@hisilicon.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Qais Yousef <qyousef@layalina.io>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] cpufreq: Make drivers using CPUFREQ_ETERNAL specify transition latency
+Date: Wed, 15 Oct 2025 14:45:16 -0400
+Message-ID: <20251015184516.1496577-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101528-barcode-doorstop-420a@gregkh>
+References: <2025101528-barcode-doorstop-420a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251007164556.516406-1-carges@cloudflare.com>
+Content-Transfer-Encoding: 8bit
 
-On 2025-10-07 11:45:52, Chris J Arges wrote:
-> From: Yeoreum Yun <yeoreum.yun@arm.com>
-> 
-> [ Upstream commit 3b7a34aebbdf2a4b7295205bf0c654294283ec82 ]
-> 
-> Commit a3c3c66670ce ("perf/core: Fix child_total_time_enabled accounting
-> bug at task exit") moves the event->state update to before
-> list_del_event(). This makes the event->state test in list_del_event()
-> always false; never calling perf_cgroup_event_disable().
-> 
-> As a result, cpuctx->cgrp won't be cleared properly; causing havoc.
-> 
-> Cc: stable@vger.kernel.org # 6.6.x, 6.12.x
-> Fixes: a3c3c66670ce ("perf/core: Fix child_total_time_enabled accounting bug at task exit")
-> Signed-off-by: Chris J Arges <carges@cloudflare.com>
-> ---
->  kernel/events/core.c | 21 ++++++---------------
->  1 file changed, 6 insertions(+), 15 deletions(-)
-> 
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index 3cc06ffb60c1..6688660845d2 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -2100,18 +2100,6 @@ list_del_event(struct perf_event *event, struct perf_event_context *ctx)
->  	if (event->group_leader == event)
->  		del_event_from_groups(event, ctx);
->  
-> -	/*
-> -	 * If event was in error state, then keep it
-> -	 * that way, otherwise bogus counts will be
-> -	 * returned on read(). The only way to get out
-> -	 * of error state is by explicit re-enabling
-> -	 * of the event
-> -	 */
-> -	if (event->state > PERF_EVENT_STATE_OFF) {
-> -		perf_cgroup_event_disable(event, ctx);
-> -		perf_event_set_state(event, PERF_EVENT_STATE_OFF);
-> -	}
-> -
->  	ctx->generation++;
->  	event->pmu_ctx->nr_events--;
->  }
-> @@ -2456,11 +2444,14 @@ __perf_remove_from_context(struct perf_event *event,
->  	 */
->  	if (flags & DETACH_EXIT)
->  		state = PERF_EVENT_STATE_EXIT;
-> -	if (flags & DETACH_DEAD) {
-> -		event->pending_disable = 1;
-> +	if (flags & DETACH_DEAD)
->  		state = PERF_EVENT_STATE_DEAD;
-> -	}
-> +
->  	event_sched_out(event, ctx);
-> +
-> +	if (event->state > PERF_EVENT_STATE_OFF)
-> +		perf_cgroup_event_disable(event, ctx);
-> +
->  	perf_event_set_state(event, min(event->state, state));
->  	if (flags & DETACH_GROUP)
->  		perf_group_detach(event);
-> -- 
-> 2.43.0
->
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-Hi, can this patch be applied to stable 6.6.x and 6.12.x?
+[ Upstream commit f97aef092e199c10a3da96ae79b571edd5362faa ]
 
-Thanks,
---chris
+Commit a755d0e2d41b ("cpufreq: Honour transition_latency over
+transition_delay_us") caused platforms where cpuinfo.transition_latency
+is CPUFREQ_ETERNAL to get a very large transition latency whereas
+previously it had been capped at 10 ms (and later at 2 ms).
+
+This led to a user-observable regression between 6.6 and 6.12 as
+described by Shawn:
+
+"The dbs sampling_rate was 10000 us on 6.6 and suddently becomes
+ 6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these platforms
+ because the default transition delay was dropped [...].
+
+ It slows down dbs governor's reacting to CPU loading change
+ dramatically.  Also, as transition_delay_us is used by schedutil
+ governor as rate_limit_us, it shows a negative impact on device
+ idle power consumption, because the device gets slightly less time
+ in the lowest OPP."
+
+Evidently, the expectation of the drivers using CPUFREQ_ETERNAL as
+cpuinfo.transition_latency was that it would be capped by the core,
+but they may as well return a default transition latency value instead
+of CPUFREQ_ETERNAL and the core need not do anything with it.
+
+Accordingly, introduce CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS and make
+all of the drivers in question use it instead of CPUFREQ_ETERNAL.  Also
+update the related Rust binding.
+
+Fixes: a755d0e2d41b ("cpufreq: Honour transition_latency over transition_delay_us")
+Closes: https://lore.kernel.org/linux-pm/20250922125929.453444-1-shawnguo2@yeah.net/
+Reported-by: Shawn Guo <shawnguo@kernel.org>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2264949.irdbgypaU6@rafael.j.wysocki
+[ rjw: Fix typo in new symbol name, drop redundant type cast from Rust binding ]
+Tested-by: Shawn Guo <shawnguo@kernel.org> # with cpufreq-dt driver
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ omitted Rust changes ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/cpufreq/cpufreq-dt.c          | 2 +-
+ drivers/cpufreq/imx6q-cpufreq.c       | 2 +-
+ drivers/cpufreq/mediatek-cpufreq-hw.c | 2 +-
+ drivers/cpufreq/scmi-cpufreq.c        | 2 +-
+ drivers/cpufreq/scpi-cpufreq.c        | 2 +-
+ drivers/cpufreq/spear-cpufreq.c       | 2 +-
+ include/linux/cpufreq.h               | 3 +++
+ 7 files changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
+index 983443396f8f2..30e1b64d0558f 100644
+--- a/drivers/cpufreq/cpufreq-dt.c
++++ b/drivers/cpufreq/cpufreq-dt.c
+@@ -110,7 +110,7 @@ static int cpufreq_init(struct cpufreq_policy *policy)
+ 
+ 	transition_latency = dev_pm_opp_get_max_transition_latency(cpu_dev);
+ 	if (!transition_latency)
+-		transition_latency = CPUFREQ_ETERNAL;
++		transition_latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+ 
+ 	cpumask_copy(policy->cpus, priv->cpus);
+ 	policy->driver_data = priv;
+diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
+index c20d3ecc5a81e..33c1df7f683e4 100644
+--- a/drivers/cpufreq/imx6q-cpufreq.c
++++ b/drivers/cpufreq/imx6q-cpufreq.c
+@@ -443,7 +443,7 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	if (of_property_read_u32(np, "clock-latency", &transition_latency))
+-		transition_latency = CPUFREQ_ETERNAL;
++		transition_latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+ 
+ 	/*
+ 	 * Calculate the ramp time for max voltage change in the
+diff --git a/drivers/cpufreq/mediatek-cpufreq-hw.c b/drivers/cpufreq/mediatek-cpufreq-hw.c
+index aeb5e63045421..1f1ec43aad7ca 100644
+--- a/drivers/cpufreq/mediatek-cpufreq-hw.c
++++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
+@@ -238,7 +238,7 @@ static int mtk_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
+ 
+ 	latency = readl_relaxed(data->reg_bases[REG_FREQ_LATENCY]) * 1000;
+ 	if (!latency)
+-		latency = CPUFREQ_ETERNAL;
++		latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+ 
+ 	policy->cpuinfo.transition_latency = latency;
+ 	policy->fast_switch_possible = true;
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index a2ec1addafc93..bb265541671a5 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -280,7 +280,7 @@ static int scmi_cpufreq_init(struct cpufreq_policy *policy)
+ 
+ 	latency = perf_ops->transition_latency_get(ph, domain);
+ 	if (!latency)
+-		latency = CPUFREQ_ETERNAL;
++		latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+ 
+ 	policy->cpuinfo.transition_latency = latency;
+ 
+diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
+index a191d9bdf667a..bdbc3923629e7 100644
+--- a/drivers/cpufreq/scpi-cpufreq.c
++++ b/drivers/cpufreq/scpi-cpufreq.c
+@@ -157,7 +157,7 @@ static int scpi_cpufreq_init(struct cpufreq_policy *policy)
+ 
+ 	latency = scpi_ops->get_transition_latency(cpu_dev);
+ 	if (!latency)
+-		latency = CPUFREQ_ETERNAL;
++		latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+ 
+ 	policy->cpuinfo.transition_latency = latency;
+ 
+diff --git a/drivers/cpufreq/spear-cpufreq.c b/drivers/cpufreq/spear-cpufreq.c
+index d8ab5b01d46d0..c032dd5d12d3c 100644
+--- a/drivers/cpufreq/spear-cpufreq.c
++++ b/drivers/cpufreq/spear-cpufreq.c
+@@ -183,7 +183,7 @@ static int spear_cpufreq_probe(struct platform_device *pdev)
+ 
+ 	if (of_property_read_u32(np, "clock-latency",
+ 				&spear_cpufreq.transition_latency))
+-		spear_cpufreq.transition_latency = CPUFREQ_ETERNAL;
++		spear_cpufreq.transition_latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+ 
+ 	cnt = of_property_count_u32_elems(np, "cpufreq_tbl");
+ 	if (cnt <= 0) {
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index a604c54ae44da..794e38320f568 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -32,6 +32,9 @@
+  */
+ 
+ #define CPUFREQ_ETERNAL			(-1)
++
++#define CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS	NSEC_PER_MSEC
++
+ #define CPUFREQ_NAME_LEN		16
+ /* Print length for names. Extra 1 space for accommodating '\n' in prints */
+ #define CPUFREQ_NAME_PLEN		(CPUFREQ_NAME_LEN + 1)
+-- 
+2.51.0
+
 
