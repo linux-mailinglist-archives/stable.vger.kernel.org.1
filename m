@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-185856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF34BE0A04
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 22:25:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE150BE0A01
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 22:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6D119C5A3F
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 20:25:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56BF93B9086
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 20:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9C52FABF2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7642D3724;
 	Wed, 15 Oct 2025 20:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="F/m2bfL9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BHuSqMx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FE22C15B1;
-	Wed, 15 Oct 2025 20:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F001624D5;
+	Wed, 15 Oct 2025 20:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760559907; cv=none; b=bZ1NlDOrOf2ogPfnQ5luCcKx6yh3cH2pYxCuG+TmZnbxtWKpH87r79Bc6GBiCBm+fWCX2gPbC3M0GAh7KCw1Z4HEWMjqYrthCmE9OMKtpXau+LY/uB0ETo9h5Ozjh3LMreNUhXALFz+tVLfDyB1E4KiwMeov/GflSudfZNEmTQY=
+	t=1760559907; cv=none; b=JxkauMgVWgbGkf5kUxcZDHwmjWRHPZW4DA3BU5Q2bGmurtkeOr2DpKFf5IVQp2rf37U4Ivi5KwOaqz7FqlT3J8r6jq+l9FaeHsYwm96AIKEWhZ4ZV0V5tYxJwlL2c379LbBBZxzflkujGC9jtZa9+UNCn92WkFhXNJjMbJjzxjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760559907; c=relaxed/simple;
-	bh=PKAv49n+WcUUieRNL+L4WibrntjUcKL2ldjZYmqCbGw=;
-	h=Date:To:From:Subject:Message-Id; b=Aq4AZPnepyDvrujk4Kvin95yqBuOv5xb7Ee8ew7dfjlqBXaALfveaalNUMSJn4xN4aYSwvLdwJw/df2uhed/Scs3fv6lj0c22YQpF8FIN2FS/cy8CSoRm1wU8SEPruqZUWsVQ6pXcp682eZmPx0u5sbudDiOdACaFPatqgxEgcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=F/m2bfL9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80ECCC4CEF8;
-	Wed, 15 Oct 2025 20:25:04 +0000 (UTC)
+	bh=PgpDUoepzdC4R30vQ+IqqcIdsiLeMz1UftMTBHP2yq8=;
+	h=Date:To:From:Subject:Message-Id; b=k0RJKKIRsOswXnQdT8JF4R5y8tmbGJqweMpMZpxjTOxWhG1I9k2dje/LfUKeOHnjG2wFxrBBdJrQtlmwIteW700nNBHhI04sYsxw+/jJcMgiEYW/65VIsR8rXnUccpq6lKIMmtm8ntxXQNeIf4tSBVK6EjZaIgfqFdw4D1mIU9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BHuSqMx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B788C113D0;
+	Wed, 15 Oct 2025 20:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760559904;
-	bh=PKAv49n+WcUUieRNL+L4WibrntjUcKL2ldjZYmqCbGw=;
+	s=korg; t=1760559906;
+	bh=PgpDUoepzdC4R30vQ+IqqcIdsiLeMz1UftMTBHP2yq8=;
 	h=Date:To:From:Subject:From;
-	b=F/m2bfL9Kg3SHGZklHCmrWzmoSPbkkYEMS7JY/8+z8ByZumU8ZnqDbeY2RMJT9spn
-	 1fu9MYNN+SGtUbILWfNa89SoiWY+yAPGbX9sK1TWpyFlfoW/hytgozUBUGl4vgnB8R
-	 Jg3MjMWJvyK6PtSKLBt01bhlpUkqztTp/6bgwsjw=
-Date: Wed, 15 Oct 2025 13:25:04 -0700
-To: mm-commits@vger.kernel.org,will@kernel.org,tfiga@chromium.org,stable@vger.kernel.org,senozhatsky@chromium.org,rostedt@goodmis.org,peterz@infradead.org,oak@helsinkinet.fi,mingzhe.yang@ly.com,mingo@redhat.com,mhiramat@kernel.org,longman@redhat.com,leonylgao@tencent.com,kent.overstreet@linux.dev,jstultz@google.com,joel.granados@kernel.org,glaubitz@physik.fu-berlin.de,geert@linux-m68k.org,fthain@linux-m68k.org,boqun.feng@gmail.com,anna.schumaker@oracle.com,lance.yang@linux.dev,akpm@linux-foundation.org
+	b=BHuSqMx0Bw9auY0OtIafJaBJNqhc5HjISgU5mxJ6/1U8NoIU0QDeutEcwAtSsDOra
+	 q+u83x3EZa8l9ecfCMKamuvn3m/rU5uX9p7M72JiFhIN0g5zf6yzXjtsKred8dXm/i
+	 ghD9oBY0ZLAiZYAN3zt9TDjGRv+tfF0EmjujOIBU=
+Date: Wed, 15 Oct 2025 13:25:05 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] hung_task-fix-warnings-caused-by-unaligned-lock-pointers.patch removed from -mm tree
-Message-Id: <20251015202504.80ECCC4CEF8@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-sysfs-dealloc-commit-test-ctx-always.patch removed from -mm tree
+Message-Id: <20251015202506.7B788C113D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,98 +50,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: hung_task: fix warnings caused by unaligned lock pointers
+     Subject: mm/damon/sysfs: dealloc commit test ctx always
 has been removed from the -mm tree.  Its filename was
-     hung_task-fix-warnings-caused-by-unaligned-lock-pointers.patch
+     mm-damon-sysfs-dealloc-commit-test-ctx-always.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Lance Yang <lance.yang@linux.dev>
-Subject: hung_task: fix warnings caused by unaligned lock pointers
-Date: Tue, 9 Sep 2025 22:52:43 +0800
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/sysfs: dealloc commit test ctx always
+Date: Fri, 3 Oct 2025 13:14:55 -0700
 
-From: Lance Yang <lance.yang@linux.dev>
+The damon_ctx for testing online DAMON parameters commit inputs is
+deallocated only when the test fails.  This means memory is leaked for
+every successful online DAMON parameters commit.  Fix the leak by always
+deallocating it.
 
-The blocker tracking mechanism assumes that lock pointers are at least
-4-byte aligned to use their lower bits for type encoding.
-
-However, as reported by Eero Tamminen, some architectures like m68k
-only guarantee 2-byte alignment of 32-bit values. This breaks the
-assumption and causes two related WARN_ON_ONCE checks to trigger.
-
-To fix this, the runtime checks are adjusted to silently ignore any lock
-that is not 4-byte aligned, effectively disabling the feature in such
-cases and avoiding the related warnings.
-
-Thanks to Geert Uytterhoeven for bisecting!
-
-Link: https://lkml.kernel.org/r/20250909145243.17119-1-lance.yang@linux.dev
-Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Reported-by: Eero Tamminen <oak@helsinkinet.fi>
-Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Mingzhe Yang <mingzhe.yang@ly.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Tomasz Figa <tfiga@chromium.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yongliang Gao <leonylgao@tencent.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20251003201455.41448-3-sj@kernel.org
+Fixes: 4c9ea539ad59 ("mm/damon/sysfs: validate user inputs from damon_sysfs_commit_input()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.15+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/hung_task.h |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ mm/damon/sysfs.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/include/linux/hung_task.h~hung_task-fix-warnings-caused-by-unaligned-lock-pointers
-+++ a/include/linux/hung_task.h
-@@ -20,6 +20,10 @@
-  * always zero. So we can use these bits to encode the specific blocking
-  * type.
-  *
-+ * Note that on architectures where this is not guaranteed, or for any
-+ * unaligned lock, this tracking mechanism is silently skipped for that
-+ * lock.
-+ *
-  * Type encoding:
-  * 00 - Blocked on mutex			(BLOCKER_TYPE_MUTEX)
-  * 01 - Blocked on semaphore			(BLOCKER_TYPE_SEM)
-@@ -45,7 +49,7 @@ static inline void hung_task_set_blocker
- 	 * If the lock pointer matches the BLOCKER_TYPE_MASK, return
- 	 * without writing anything.
- 	 */
--	if (WARN_ON_ONCE(lock_ptr & BLOCKER_TYPE_MASK))
-+	if (lock_ptr & BLOCKER_TYPE_MASK)
- 		return;
- 
- 	WRITE_ONCE(current->blocker, lock_ptr | type);
-@@ -53,8 +57,6 @@ static inline void hung_task_set_blocker
- 
- static inline void hung_task_clear_blocker(void)
- {
--	WARN_ON_ONCE(!READ_ONCE(current->blocker));
--
- 	WRITE_ONCE(current->blocker, 0UL);
+--- a/mm/damon/sysfs.c~mm-damon-sysfs-dealloc-commit-test-ctx-always
++++ a/mm/damon/sysfs.c
+@@ -1476,12 +1476,11 @@ static int damon_sysfs_commit_input(void
+ 	if (!test_ctx)
+ 		return -ENOMEM;
+ 	err = damon_commit_ctx(test_ctx, param_ctx);
+-	if (err) {
+-		damon_destroy_ctx(test_ctx);
++	if (err)
+ 		goto out;
+-	}
+ 	err = damon_commit_ctx(kdamond->damon_ctx, param_ctx);
+ out:
++	damon_destroy_ctx(test_ctx);
+ 	damon_destroy_ctx(param_ctx);
+ 	return err;
  }
- 
 _
 
-Patches currently in -mm which might be from lance.yang@linux.dev are
+Patches currently in -mm which might be from sj@kernel.org are
 
+mm-damon-core-fix-list_add_tail-call-on-damon_call.patch
+mm-damon-core-use-damos_commit_quota_goal-for-new-goal-commit.patch
+mm-zswap-remove-unnecessary-dlen-writes-for-incompressible-pages.patch
+mm-zswap-fix-typos-s-zwap-zswap.patch
+mm-zswap-s-red-black-tree-xarray.patch
+docs-admin-guide-mm-zswap-s-red-black-tree-xarray.patch
 
 
