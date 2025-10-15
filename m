@@ -1,100 +1,529 @@
-Return-Path: <stable+bounces-185803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0D4BDE356
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:09:34 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025DABDE433
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B43CD4FE472
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 11:07:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B48AD4F6EB4
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 11:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68201F4191;
-	Wed, 15 Oct 2025 11:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Td+6CVGp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3393203AB;
+	Wed, 15 Oct 2025 11:28:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3691F1CD15
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 11:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E0F749C;
+	Wed, 15 Oct 2025 11:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760526441; cv=none; b=D0CFJyiXvhcZypSCngSVkjRa4bYepZciJf7t39hDm42Z2QuxUSBXiSPEjbZP5r6IfGmR9duZa23PV2Gw2uhRK2I/pgADEI5Wc8CLTYEUET0hfPAaRTZxE6JF3QMv1z6YGTg8x0wU9DcpOM17ZCzqDJsHNooxuoIMXlTQJEwOvaw=
+	t=1760527702; cv=none; b=Sudc1baOelv6Xyw3RUFWDzWbxZQXm77sHdO7lqYmWVSmxEGQA4E6xwAU8Zljmxtt2/UU/vpkSQg63xrHBI4aYyLYV+eDuSzsNIDtV8oQUu5kB3ZZGfSPC+z75+qGDdeXIi0rbC+RagaeMqHIlQp9vGM/zXgSlSsbQLzxCZo/uEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760526441; c=relaxed/simple;
-	bh=Y5nFKTxbbVkj56KLZ71XtvPF6VV9QcTORMl084Qpxc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=mNN7w3yk1yavoge8g3QDKc6OdV/oUx+PqBGuHuFtX20oRT6ekyMdSL3F1HTCaPm4bxFzMX4iW4fTdozj+4va122GJ11C/AYkulXMZqJ7XV5zUiyr1BMUn5y/4YQSQqiC7OnANMArPqUh771Ru5oViWcjOGGyCmMUoGNaOX7WbbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Td+6CVGp; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760526439; x=1792062439;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Y5nFKTxbbVkj56KLZ71XtvPF6VV9QcTORMl084Qpxc8=;
-  b=Td+6CVGpnRO6XzyN9psBP5IzdhbtFEeOaFQ/9YByEwrq8IRFXB5Uyi/3
-   tdwAxyoHU2QhAxiGKxuNFJeel1Rty2B8+N2lgm9cGnsxNomrwCWo6Wwqs
-   1b3PQePx9Fovt4td22p4p2P17kn0xNcaZoIVmo9UQBOG0D/LUPyEOJVIp
-   8MJL9Zge2ZU8IWP012Hec1iBdIilZBmoc8GisXfPTTRKb9/yn1htqe35l
-   WS2JOORnbrxnGBzF/S1TkAuF1xRuI4xmPxUaF84munISArcSnDP1ri3+v
-   oC9isQ9Feo4Se/QlX1E4DUvUfsjErd2RlJI28wRkdq7lT88lklz5kxv7S
-   w==;
-X-CSE-ConnectionGUID: TdvQig4dQ8eHl9TaESqH7A==
-X-CSE-MsgGUID: fj5oiJSWTLuMdM0+3IxgYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="62793415"
-X-IronPort-AV: E=Sophos;i="6.19,231,1754982000"; 
-   d="scan'208";a="62793415"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 04:07:19 -0700
-X-CSE-ConnectionGUID: ULJ+Eco1RMK2yzfFawHZFQ==
-X-CSE-MsgGUID: NssRSdjoQxW9asBI0qr5Lw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,231,1754982000"; 
-   d="scan'208";a="213089120"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 15 Oct 2025 04:07:17 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v8zLf-0003l5-2E;
-	Wed, 15 Oct 2025 11:07:15 +0000
-Date: Wed, 15 Oct 2025 19:06:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/1] firmware: stratix10-svc: fix bug in saving
- controller data
-Message-ID: <aO-AN5Eq_ZqAAXJx@87a0c2f242e8>
+	s=arc-20240116; t=1760527702; c=relaxed/simple;
+	bh=5OPscaN00fNeern97r7G1TdCFUAg71OzAQddB9J8lJU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q5ufFk2waTSjWZhvNGALH4zcukOhpE/JcWTSw8hSJpArvSSGs8tk5XegX9ijNoJ2jvxZS3+kn3UvfD0MmDx+bpEM8ARDSXlE0ensE9YyDCHUcb83gaXPCLQYQ8CmFZoX32aGEfxgm3KpgF2lG8IH1DlsE3Cs5+4ihFBpka73zZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A195F339;
+	Wed, 15 Oct 2025 04:28:11 -0700 (PDT)
+Received: from a079125.blr.arm.com (a079125.arm.com [10.164.21.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id DB0983F66E;
+	Wed, 15 Oct 2025 04:28:14 -0700 (PDT)
+From: Linu Cherian <linu.cherian@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+	stable@vger.kernel.org,
+	Linu Cherian <linu.cherian@arm.com>
+Subject: [PATCH v3 1/2] arm64/mm: Allow __create_pgd_mapping() to propagate pgtable_alloc() errors
+Date: Wed, 15 Oct 2025 16:57:57 +0530
+Message-ID: <20251015112758.2701604-2-linu.cherian@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251015112758.2701604-1-linu.cherian@arm.com>
+References: <20251015112758.2701604-1-linu.cherian@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a4c4906e48979514e0e365b7785988e79db640b9.1760521142.git.khairul.anuar.romli@altera.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
 
-Thanks for your patch.
+arch_add_memory() is used to hotplug memory into a system but as a part
+of its implementation it calls __create_pgd_mapping(), which uses
+pgtable_alloc() in order to build intermediate page tables. As this path
+was initally only used during early boot pgtable_alloc() is designed to
+BUG_ON() on failure. However, in the event that memory hotplug is
+attempted when the system's memory is extremely tight and the allocation
+were to fail, it would lead to panicking the system, which is not
+desirable. Hence update __create_pgd_mapping and all it's callers to be
+non void and propagate -ENOMEM on allocation failure to allow system to
+fail gracefully.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+But during early boot if there is an allocation failure, we want the
+system to panic, hence create a wrapper around __create_pgd_mapping()
+called early_create_pgd_mapping() which is designed to panic, if ret
+is non zero value. All the init calls are updated to use this wrapper
+rather than the modified __create_pgd_mapping() to restore
+functionality.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Fixes: 4ab215061554 ("arm64: Add memory hotplug support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+Signed-off-by: Linu Cherian <linu.cherian@arm.com>
+---
+Changelog:
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/1] firmware: stratix10-svc: fix bug in saving controller data
-Link: https://lore.kernel.org/stable/a4c4906e48979514e0e365b7785988e79db640b9.1760521142.git.khairul.anuar.romli%40altera.com
+v3:
+* Fixed a maybe-uninitialized case in alloc_init_pud
+* Added Fixes tag and CCed stable
+* Few other trivial cleanups
 
+ arch/arm64/mm/mmu.c | 210 ++++++++++++++++++++++++++++----------------
+ 1 file changed, 132 insertions(+), 78 deletions(-)
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index b8d37eb037fc..638cb4df31a9 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -49,6 +49,8 @@
+ #define NO_CONT_MAPPINGS	BIT(1)
+ #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+ 
++#define INVALID_PHYS_ADDR	(-1ULL)
++
+ DEFINE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
+ 
+ u64 kimage_voffset __ro_after_init;
+@@ -194,11 +196,11 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
+ 	} while (ptep++, addr += PAGE_SIZE, addr != end);
+ }
+ 
+-static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+-				unsigned long end, phys_addr_t phys,
+-				pgprot_t prot,
+-				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-				int flags)
++static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
++			       unsigned long end, phys_addr_t phys,
++			       pgprot_t prot,
++			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++			       int flags)
+ {
+ 	unsigned long next;
+ 	pmd_t pmd = READ_ONCE(*pmdp);
+@@ -213,6 +215,8 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+ 			pmdval |= PMD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		pte_phys = pgtable_alloc(TABLE_PTE);
++		if (pte_phys == INVALID_PHYS_ADDR)
++			return -ENOMEM;
+ 		ptep = pte_set_fixmap(pte_phys);
+ 		init_clear_pgtable(ptep);
+ 		ptep += pte_index(addr);
+@@ -244,12 +248,15 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+ 	 * walker.
+ 	 */
+ 	pte_clear_fixmap();
++
++	return 0;
+ }
+ 
+-static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+-		     phys_addr_t phys, pgprot_t prot,
+-		     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
++static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
++		    phys_addr_t phys, pgprot_t prot,
++		    phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
+ {
++	int ret;
+ 	unsigned long next;
+ 
+ 	do {
+@@ -269,22 +276,27 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
+ 						      READ_ONCE(pmd_val(*pmdp))));
+ 		} else {
+-			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
+-					    pgtable_alloc, flags);
++			ret = alloc_init_cont_pte(pmdp, addr, next, phys, prot,
++						  pgtable_alloc, flags);
++			if (ret)
++				return ret;
+ 
+ 			BUG_ON(pmd_val(old_pmd) != 0 &&
+ 			       pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
+ 		}
+ 		phys += next - addr;
+ 	} while (pmdp++, addr = next, addr != end);
++
++	return 0;
+ }
+ 
+-static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+-				unsigned long end, phys_addr_t phys,
+-				pgprot_t prot,
+-				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-				int flags)
++static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
++			       unsigned long end, phys_addr_t phys,
++			       pgprot_t prot,
++			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++			       int flags)
+ {
++	int ret;
+ 	unsigned long next;
+ 	pud_t pud = READ_ONCE(*pudp);
+ 	pmd_t *pmdp;
+@@ -301,6 +313,8 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+ 			pudval |= PUD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		pmd_phys = pgtable_alloc(TABLE_PMD);
++		if (pmd_phys == INVALID_PHYS_ADDR)
++			return -ENOMEM;
+ 		pmdp = pmd_set_fixmap(pmd_phys);
+ 		init_clear_pgtable(pmdp);
+ 		pmdp += pmd_index(addr);
+@@ -320,20 +334,26 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+ 		    (flags & NO_CONT_MAPPINGS) == 0)
+ 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
+ 
+-		init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
++		ret = init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
++		if (ret)
++			goto out;
+ 
+ 		pmdp += pmd_index(next) - pmd_index(addr);
+ 		phys += next - addr;
+ 	} while (addr = next, addr != end);
+ 
++out:
+ 	pmd_clear_fixmap();
++
++	return ret;
+ }
+ 
+-static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+-			   phys_addr_t phys, pgprot_t prot,
+-			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-			   int flags)
++static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
++			  phys_addr_t phys, pgprot_t prot,
++			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++			  int flags)
+ {
++	int ret = 0;
+ 	unsigned long next;
+ 	p4d_t p4d = READ_ONCE(*p4dp);
+ 	pud_t *pudp;
+@@ -346,6 +366,8 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 			p4dval |= P4D_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		pud_phys = pgtable_alloc(TABLE_PUD);
++		if (pud_phys == INVALID_PHYS_ADDR)
++			return -ENOMEM;
+ 		pudp = pud_set_fixmap(pud_phys);
+ 		init_clear_pgtable(pudp);
+ 		pudp += pud_index(addr);
+@@ -375,8 +397,10 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 			BUG_ON(!pgattr_change_is_safe(pud_val(old_pud),
+ 						      READ_ONCE(pud_val(*pudp))));
+ 		} else {
+-			alloc_init_cont_pmd(pudp, addr, next, phys, prot,
+-					    pgtable_alloc, flags);
++			ret = alloc_init_cont_pmd(pudp, addr, next, phys, prot,
++						  pgtable_alloc, flags);
++			if (ret)
++				goto out;
+ 
+ 			BUG_ON(pud_val(old_pud) != 0 &&
+ 			       pud_val(old_pud) != READ_ONCE(pud_val(*pudp)));
+@@ -384,14 +408,18 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 		phys += next - addr;
+ 	} while (pudp++, addr = next, addr != end);
+ 
++out:
+ 	pud_clear_fixmap();
++
++	return ret;
+ }
+ 
+-static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+-			   phys_addr_t phys, pgprot_t prot,
+-			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-			   int flags)
++static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
++			  phys_addr_t phys, pgprot_t prot,
++			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++			  int flags)
+ {
++	int ret;
+ 	unsigned long next;
+ 	pgd_t pgd = READ_ONCE(*pgdp);
+ 	p4d_t *p4dp;
+@@ -404,6 +432,8 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ 			pgdval |= PGD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		p4d_phys = pgtable_alloc(TABLE_P4D);
++		if (p4d_phys == INVALID_PHYS_ADDR)
++			return -ENOMEM;
+ 		p4dp = p4d_set_fixmap(p4d_phys);
+ 		init_clear_pgtable(p4dp);
+ 		p4dp += p4d_index(addr);
+@@ -418,8 +448,10 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ 
+ 		next = p4d_addr_end(addr, end);
+ 
+-		alloc_init_pud(p4dp, addr, next, phys, prot,
+-			       pgtable_alloc, flags);
++		ret = alloc_init_pud(p4dp, addr, next, phys, prot,
++				     pgtable_alloc, flags);
++		if (ret)
++			goto out;
+ 
+ 		BUG_ON(p4d_val(old_p4d) != 0 &&
+ 		       p4d_val(old_p4d) != READ_ONCE(p4d_val(*p4dp)));
+@@ -427,15 +459,19 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ 		phys += next - addr;
+ 	} while (p4dp++, addr = next, addr != end);
+ 
++out:
+ 	p4d_clear_fixmap();
++
++	return ret;
+ }
+ 
+-static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+-					unsigned long virt, phys_addr_t size,
+-					pgprot_t prot,
+-					phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-					int flags)
++static int __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
++				       unsigned long virt, phys_addr_t size,
++				       pgprot_t prot,
++				       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++				       int flags)
+ {
++	int ret;
+ 	unsigned long addr, end, next;
+ 	pgd_t *pgdp = pgd_offset_pgd(pgdir, virt);
+ 
+@@ -444,7 +480,7 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+ 	 * within a page, we cannot map the region as the caller expects.
+ 	 */
+ 	if (WARN_ON((phys ^ virt) & ~PAGE_MASK))
+-		return;
++		return -EINVAL;
+ 
+ 	phys &= PAGE_MASK;
+ 	addr = virt & PAGE_MASK;
+@@ -452,25 +488,45 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+ 
+ 	do {
+ 		next = pgd_addr_end(addr, end);
+-		alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
+-			       flags);
++		ret = alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
++				     flags);
++		if (ret)
++			return ret;
+ 		phys += next - addr;
+ 	} while (pgdp++, addr = next, addr != end);
++
++	return 0;
+ }
+ 
+-static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+-				 unsigned long virt, phys_addr_t size,
+-				 pgprot_t prot,
+-				 phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-				 int flags)
++static int __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
++				unsigned long virt, phys_addr_t size,
++				pgprot_t prot,
++				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++				int flags)
+ {
++	int ret;
++
+ 	mutex_lock(&fixmap_lock);
+-	__create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
+-				    pgtable_alloc, flags);
++	ret = __create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
++					  pgtable_alloc, flags);
+ 	mutex_unlock(&fixmap_lock);
++
++	return ret;
+ }
+ 
+-#define INVALID_PHYS_ADDR	(-1ULL)
++static void early_create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
++				     unsigned long virt, phys_addr_t size,
++				     pgprot_t prot,
++				     phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++				     int flags)
++{
++	int ret;
++
++	ret = __create_pgd_mapping(pgdir, phys, virt, size, prot, pgtable_alloc,
++				   flags);
++	if (ret)
++		panic("Failed to create page tables\n");
++}
+ 
+ static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
+ 				       enum pgtable_type pgtable_type)
+@@ -511,21 +567,13 @@ try_pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type, gfp_t gfp)
+ static phys_addr_t __maybe_unused
+ pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type)
+ {
+-	phys_addr_t pa;
+-
+-	pa = __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
+-	BUG_ON(pa == INVALID_PHYS_ADDR);
+-	return pa;
++	return __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
+ }
+ 
+ static phys_addr_t
+ pgd_pgtable_alloc_special_mm(enum pgtable_type pgtable_type)
+ {
+-	phys_addr_t pa;
+-
+-	pa = __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
+-	BUG_ON(pa == INVALID_PHYS_ADDR);
+-	return pa;
++	return  __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
+ }
+ 
+ static void split_contpte(pte_t *ptep)
+@@ -903,8 +951,8 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
+ 			&phys, virt);
+ 		return;
+ 	}
+-	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+-			     NO_CONT_MAPPINGS);
++	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
++				 NO_CONT_MAPPINGS);
+ }
+ 
+ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
+@@ -918,8 +966,8 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
+ 	if (page_mappings_only)
+ 		flags = NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+ 
+-	__create_pgd_mapping(mm->pgd, phys, virt, size, prot,
+-			     pgd_pgtable_alloc_special_mm, flags);
++	early_create_pgd_mapping(mm->pgd, phys, virt, size, prot,
++				 pgd_pgtable_alloc_special_mm, flags);
+ }
+ 
+ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+@@ -931,8 +979,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+ 		return;
+ 	}
+ 
+-	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+-			     NO_CONT_MAPPINGS);
++	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
++				 NO_CONT_MAPPINGS);
+ 
+ 	/* flush the TLBs after updating live kernel mappings */
+ 	flush_tlb_kernel_range(virt, virt + size);
+@@ -941,8 +989,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+ static void __init __map_memblock(pgd_t *pgdp, phys_addr_t start,
+ 				  phys_addr_t end, pgprot_t prot, int flags)
+ {
+-	__create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
+-			     prot, early_pgtable_alloc, flags);
++	early_create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
++				 prot, early_pgtable_alloc, flags);
+ }
+ 
+ void __init mark_linear_text_alias_ro(void)
+@@ -1178,9 +1226,10 @@ static int __init __kpti_install_ng_mappings(void *__unused)
+ 		// covers the PTE[] page itself, the remaining entries are free
+ 		// to be used as a ad-hoc fixmap.
+ 		//
+-		__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
+-					    KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
+-					    kpti_ng_pgd_alloc, 0);
++		if (__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
++						KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
++						kpti_ng_pgd_alloc, 0))
++			panic("Failed to create page tables\n");
+ 	}
+ 
+ 	cpu_install_idmap();
+@@ -1233,9 +1282,9 @@ static int __init map_entry_trampoline(void)
+ 
+ 	/* Map only the text into the trampoline page table */
+ 	memset(tramp_pg_dir, 0, PGD_SIZE);
+-	__create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
+-			     entry_tramp_text_size(), prot,
+-			     pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
++	early_create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
++				 entry_tramp_text_size(), prot,
++				 pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
+ 
+ 	/* Map both the text and data into the kernel page table */
+ 	for (i = 0; i < DIV_ROUND_UP(entry_tramp_text_size(), PAGE_SIZE); i++)
+@@ -1877,23 +1926,28 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 	if (force_pte_mapping())
+ 		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+ 
+-	__create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
+-			     size, params->pgprot, pgd_pgtable_alloc_init_mm,
+-			     flags);
++	ret = __create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
++				   size, params->pgprot, pgd_pgtable_alloc_init_mm,
++				   flags);
++	if (ret)
++		goto err;
+ 
+ 	memblock_clear_nomap(start, size);
+ 
+ 	ret = __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
+ 			   params);
+ 	if (ret)
+-		__remove_pgd_mapping(swapper_pg_dir,
+-				     __phys_to_virt(start), size);
+-	else {
+-		/* Address of hotplugged memory can be smaller */
+-		max_pfn = max(max_pfn, PFN_UP(start + size));
+-		max_low_pfn = max_pfn;
+-	}
++		goto err;
++
++	/* Address of hotplugged memory can be smaller */
++	max_pfn = max(max_pfn, PFN_UP(start + size));
++	max_low_pfn = max_pfn;
++
++	return 0;
+ 
++err:
++	__remove_pgd_mapping(swapper_pg_dir,
++			     __phys_to_virt(start), size);
+ 	return ret;
+ }
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.43.0
 
 
