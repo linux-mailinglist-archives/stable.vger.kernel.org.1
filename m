@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-185797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39294BDE2D8
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:05:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26FABDE33B
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27B1B503B66
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1D9E48583D
 	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 11:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E8B308F31;
-	Wed, 15 Oct 2025 11:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D64B1A9FB4;
+	Wed, 15 Oct 2025 11:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxJ3vD91"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uE71QG/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5942217F56
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 11:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB13217F56
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 11:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760526032; cv=none; b=oU/HwvKYmU9iNbuIhYNNyn2Y3oayfbJM2vjeTAx4EVbM7PLGg5iXYKw7MQfoZmNthh3myL1o/+ojITQbohjEnQL/1RPjRh7GQC8r8pEWX9kDgWk52BTCp0ot+obdNhLc7hcpLiLw0/F0B3aha5IGfekmxtJau/xoo6OAeRzHUb0=
+	t=1760526051; cv=none; b=JgWlb/2Qr83kRnZjxMc0LOPqVzLt6OBEWEOSQrRTHtpBebaC63q36sq+HwEm/mqBY9JOOlDBHf4SfDh0c5UGoh7pwvR0iJiXDt8ZoOtGCHrYuPEL9SYEy/82HsuHZMKQ49PWMF7bCalKghMqtupp8CRETemMWkVUpKRJiN64i5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760526032; c=relaxed/simple;
-	bh=J5GF899BMrFKbXwcBpNE9FarAZyVyPSh7tGbzm9MJS4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BQwG5sJ9+otHU67UT2ekgWvDq1XgHETCRrI7TU762L+xScH+mYzNJ83f5yFwO7Lo//2Hs0YhcngJt5UslnsAPXumToxDpxGpit/zLf5GmyQetB4u4UgnfpSdUu8mvgbeTsiesx5bqPueV0larvDZ8dpFVg+hcPMtOJzAlm02dMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxJ3vD91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC14C116D0;
-	Wed, 15 Oct 2025 11:00:30 +0000 (UTC)
+	s=arc-20240116; t=1760526051; c=relaxed/simple;
+	bh=NuMAQkdtnjTbeeAkY6oWw7B62SDmQ1SQL1c4fQsObJE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ho6iTZph2hkMRNML45pZSPgI5BkTv4lcAY+LpbnNLzpNnfXNAh+IrrTwU0cZ1udZjj2cEhwI3HoFG9x7/0nZTZXb1MSp1VyCiaM9mwh61lxas7osqIFqzzw3sWdwq3eXFewZ7Ad5z8B8jd2X6u7tmuIue2EJgMAhS5w1fxNhyXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uE71QG/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183D3C116B1;
+	Wed, 15 Oct 2025 11:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760526031;
-	bh=J5GF899BMrFKbXwcBpNE9FarAZyVyPSh7tGbzm9MJS4=;
+	s=korg; t=1760526050;
+	bh=NuMAQkdtnjTbeeAkY6oWw7B62SDmQ1SQL1c4fQsObJE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HxJ3vD910GC/iJg8fYYaHNspoAwPfktqglH6kvbK7w9PDTZjoveb/ywWCTactONjD
-	 qmSBs7HieRMTgVjeWC6yCSpAC4PJBuIKr2DLKPk0XeF/imuToJUPnpUdJmy1firQYf
-	 8OLJa2tSZLfNOPFiRfy2Cw9+yc/D+tm+PY+ahTLM=
-Subject: FAILED: patch "[PATCH] cpufreq: Make drivers using CPUFREQ_ETERNAL specify" failed to apply to 6.12-stable tree
-To: rafael.j.wysocki@intel.com,qyousef@layalina.io,shawnguo@kernel.org,stable@vger.kernel.org,superm1@kernel.org,viresh.kumar@linaro.org,zhanjie9@hisilicon.com
+	b=uE71QG/hRqQik/OwuajFy/fM1qIhU5d66BvsUkxtjkqxp+uHr6qNhuAULjqW0tdY/
+	 hs4Hoe5hBCAxQTjrZtDvSQMl1BQPO3kXYtnXuBrgA/d9WE2siieUb9pStB+dIcaS+6
+	 BC7/mCGI8I7VmVuaBHii5vdeXjjc5vbJhHifxHoU=
+Subject: FAILED: patch "[PATCH] nfsd: unregister with rpcbind when deleting a transport" failed to apply to 6.12-stable tree
+To: okorniev@redhat.com,chuck.lever@oracle.com,jlayton@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 15 Oct 2025 13:00:28 +0200
-Message-ID: <2025101528-barcode-doorstop-420a@gregkh>
+Date: Wed, 15 Oct 2025 13:00:47 +0200
+Message-ID: <2025101547-demeanor-rectify-27be@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x f97aef092e199c10a3da96ae79b571edd5362faa
+git cherry-pick -x 898374fdd7f06fa4c4a66e8be3135efeae6128d5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101528-barcode-doorstop-420a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101547-demeanor-rectify-27be@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,187 +77,85 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f97aef092e199c10a3da96ae79b571edd5362faa Mon Sep 17 00:00:00 2001
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Date: Fri, 26 Sep 2025 12:12:37 +0200
-Subject: [PATCH] cpufreq: Make drivers using CPUFREQ_ETERNAL specify
- transition latency
+From 898374fdd7f06fa4c4a66e8be3135efeae6128d5 Mon Sep 17 00:00:00 2001
+From: Olga Kornievskaia <okorniev@redhat.com>
+Date: Tue, 19 Aug 2025 14:04:02 -0400
+Subject: [PATCH] nfsd: unregister with rpcbind when deleting a transport
 
-Commit a755d0e2d41b ("cpufreq: Honour transition_latency over
-transition_delay_us") caused platforms where cpuinfo.transition_latency
-is CPUFREQ_ETERNAL to get a very large transition latency whereas
-previously it had been capped at 10 ms (and later at 2 ms).
+When a listener is added, a part of creation of transport also registers
+program/port with rpcbind. However, when the listener is removed,
+while transport goes away, rpcbind still has the entry for that
+port/type.
 
-This led to a user-observable regression between 6.6 and 6.12 as
-described by Shawn:
+When deleting the transport, unregister with rpcbind when appropriate.
 
-"The dbs sampling_rate was 10000 us on 6.6 and suddently becomes
- 6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these platforms
- because the default transition delay was dropped [...].
+---v2 created a new xpt_flag XPT_RPCB_UNREG to mark TCP and UDP
+transport and at xprt destroy send rpcbind unregister if flag set.
 
- It slows down dbs governor's reacting to CPU loading change
- dramatically.  Also, as transition_delay_us is used by schedutil
- governor as rate_limit_us, it shows a negative impact on device
- idle power consumption, because the device gets slightly less time
- in the lowest OPP."
+Suggested-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: d093c9089260 ("nfsd: fix management of listener transports")
+Cc: stable@vger.kernel.org
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 
-Evidently, the expectation of the drivers using CPUFREQ_ETERNAL as
-cpuinfo.transition_latency was that it would be capped by the core,
-but they may as well return a default transition latency value instead
-of CPUFREQ_ETERNAL and the core need not do anything with it.
-
-Accordingly, introduce CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS and make
-all of the drivers in question use it instead of CPUFREQ_ETERNAL.  Also
-update the related Rust binding.
-
-Fixes: a755d0e2d41b ("cpufreq: Honour transition_latency over transition_delay_us")
-Closes: https://lore.kernel.org/linux-pm/20250922125929.453444-1-shawnguo2@yeah.net/
-Reported-by: Shawn Guo <shawnguo@kernel.org>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2264949.irdbgypaU6@rafael.j.wysocki
-[ rjw: Fix typo in new symbol name, drop redundant type cast from Rust binding ]
-Tested-by: Shawn Guo <shawnguo@kernel.org> # with cpufreq-dt driver
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
-index 506437489b4d..7d5079fd1688 100644
---- a/drivers/cpufreq/cpufreq-dt.c
-+++ b/drivers/cpufreq/cpufreq-dt.c
-@@ -104,7 +104,7 @@ static int cpufreq_init(struct cpufreq_policy *policy)
+diff --git a/include/linux/sunrpc/svc_xprt.h b/include/linux/sunrpc/svc_xprt.h
+index 369a89aea186..2b886f7eb295 100644
+--- a/include/linux/sunrpc/svc_xprt.h
++++ b/include/linux/sunrpc/svc_xprt.h
+@@ -104,6 +104,9 @@ enum {
+ 				 * it has access to.  It is NOT counted
+ 				 * in ->sv_tmpcnt.
+ 				 */
++	XPT_RPCB_UNREG,		/* transport that needs unregistering
++				 * with rpcbind (TCP, UDP) on destroy
++				 */
+ };
  
- 	transition_latency = dev_pm_opp_get_max_transition_latency(cpu_dev);
- 	if (!transition_latency)
--		transition_latency = CPUFREQ_ETERNAL;
-+		transition_latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+ /*
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index 8b1837228799..b800d704d807 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -1014,6 +1014,19 @@ static void svc_delete_xprt(struct svc_xprt *xprt)
+ 	struct svc_serv	*serv = xprt->xpt_server;
+ 	struct svc_deferred_req *dr;
  
- 	cpumask_copy(policy->cpus, priv->cpus);
- 	policy->driver_data = priv;
-diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
-index db1c88e9d3f9..e93697d3edfd 100644
---- a/drivers/cpufreq/imx6q-cpufreq.c
-+++ b/drivers/cpufreq/imx6q-cpufreq.c
-@@ -442,7 +442,7 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
- 	}
- 
- 	if (of_property_read_u32(np, "clock-latency", &transition_latency))
--		transition_latency = CPUFREQ_ETERNAL;
-+		transition_latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
- 
- 	/*
- 	 * Calculate the ramp time for max voltage change in the
-diff --git a/drivers/cpufreq/mediatek-cpufreq-hw.c b/drivers/cpufreq/mediatek-cpufreq-hw.c
-index fce5aa5ceea0..ae4500ab4891 100644
---- a/drivers/cpufreq/mediatek-cpufreq-hw.c
-+++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
-@@ -309,7 +309,7 @@ static int mtk_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
- 
- 	latency = readl_relaxed(data->reg_bases[REG_FREQ_LATENCY]) * 1000;
- 	if (!latency)
--		latency = CPUFREQ_ETERNAL;
-+		latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
- 
- 	policy->cpuinfo.transition_latency = latency;
- 	policy->fast_switch_possible = true;
-diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-index 7e1fbf9a091f..3909022e1c74 100644
---- a/drivers/cpufreq/rcpufreq_dt.rs
-+++ b/drivers/cpufreq/rcpufreq_dt.rs
-@@ -123,7 +123,7 @@ fn init(policy: &mut cpufreq::Policy) -> Result<Self::PData> {
- 
-         let mut transition_latency = opp_table.max_transition_latency_ns() as u32;
-         if transition_latency == 0 {
--            transition_latency = cpufreq::ETERNAL_LATENCY_NS;
-+            transition_latency = cpufreq::DEFAULT_TRANSITION_LATENCY_NS;
-         }
- 
-         policy
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 38c165d526d1..d2a110079f5f 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -294,7 +294,7 @@ static int scmi_cpufreq_init(struct cpufreq_policy *policy)
- 
- 	latency = perf_ops->transition_latency_get(ph, domain);
- 	if (!latency)
--		latency = CPUFREQ_ETERNAL;
-+		latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
- 
- 	policy->cpuinfo.transition_latency = latency;
- 
-diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
-index dcbb0ae7dd47..e530345baddf 100644
---- a/drivers/cpufreq/scpi-cpufreq.c
-+++ b/drivers/cpufreq/scpi-cpufreq.c
-@@ -157,7 +157,7 @@ static int scpi_cpufreq_init(struct cpufreq_policy *policy)
- 
- 	latency = scpi_ops->get_transition_latency(cpu_dev);
- 	if (!latency)
--		latency = CPUFREQ_ETERNAL;
-+		latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
- 
- 	policy->cpuinfo.transition_latency = latency;
- 
-diff --git a/drivers/cpufreq/spear-cpufreq.c b/drivers/cpufreq/spear-cpufreq.c
-index 707c71090cc3..2a1550e1aa21 100644
---- a/drivers/cpufreq/spear-cpufreq.c
-+++ b/drivers/cpufreq/spear-cpufreq.c
-@@ -182,7 +182,7 @@ static int spear_cpufreq_probe(struct platform_device *pdev)
- 
- 	if (of_property_read_u32(np, "clock-latency",
- 				&spear_cpufreq.transition_latency))
--		spear_cpufreq.transition_latency = CPUFREQ_ETERNAL;
-+		spear_cpufreq.transition_latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
- 
- 	cnt = of_property_count_u32_elems(np, "cpufreq_tbl");
- 	if (cnt <= 0) {
-diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-index 40966512ea18..bc8c083bc16a 100644
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -32,6 +32,9 @@
-  */
- 
- #define CPUFREQ_ETERNAL			(-1)
++	/* unregister with rpcbind for when transport type is TCP or UDP.
++	 */
++	if (test_bit(XPT_RPCB_UNREG, &xprt->xpt_flags)) {
++		struct svc_sock *svsk = container_of(xprt, struct svc_sock,
++						     sk_xprt);
++		struct socket *sock = svsk->sk_sock;
 +
-+#define CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS	NSEC_PER_MSEC
++		if (svc_register(serv, xprt->xpt_net, sock->sk->sk_family,
++				 sock->sk->sk_protocol, 0) < 0)
++			pr_warn("failed to unregister %s with rpcbind\n",
++				xprt->xpt_class->xcl_name);
++	}
 +
- #define CPUFREQ_NAME_LEN		16
- /* Print length for names. Extra 1 space for accommodating '\n' in prints */
- #define CPUFREQ_NAME_PLEN		(CPUFREQ_NAME_LEN + 1)
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index eea57ba95f24..2ea735700ae7 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -39,7 +39,8 @@
- const CPUFREQ_NAME_LEN: usize = bindings::CPUFREQ_NAME_LEN as usize;
+ 	if (test_and_set_bit(XPT_DEAD, &xprt->xpt_flags))
+ 		return;
  
- /// Default transition latency value in nanoseconds.
--pub const ETERNAL_LATENCY_NS: u32 = bindings::CPUFREQ_ETERNAL as u32;
-+pub const DEFAULT_TRANSITION_LATENCY_NS: u32 =
-+        bindings::CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index c0d5a27ba674..7b90abc5cf0e 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -836,6 +836,7 @@ static void svc_udp_init(struct svc_sock *svsk, struct svc_serv *serv)
+ 	/* data might have come in before data_ready set up */
+ 	set_bit(XPT_DATA, &svsk->sk_xprt.xpt_flags);
+ 	set_bit(XPT_CHNGBUF, &svsk->sk_xprt.xpt_flags);
++	set_bit(XPT_RPCB_UNREG, &svsk->sk_xprt.xpt_flags);
  
- /// CPU frequency driver flags.
- pub mod flags {
-@@ -400,13 +401,13 @@ pub fn to_table(mut self) -> Result<TableBox> {
- /// The following example demonstrates how to create a CPU frequency table.
- ///
- /// ```
--/// use kernel::cpufreq::{ETERNAL_LATENCY_NS, Policy};
-+/// use kernel::cpufreq::{DEFAULT_TRANSITION_LATENCY_NS, Policy};
- ///
- /// fn update_policy(policy: &mut Policy) {
- ///     policy
- ///         .set_dvfs_possible_from_any_cpu(true)
- ///         .set_fast_switch_possible(true)
--///         .set_transition_latency_ns(ETERNAL_LATENCY_NS);
-+///         .set_transition_latency_ns(DEFAULT_TRANSITION_LATENCY_NS);
- ///
- ///     pr_info!("The policy details are: {:?}\n", (policy.cpu(), policy.cur()));
- /// }
+ 	/* make sure we get destination address info */
+ 	switch (svsk->sk_sk->sk_family) {
+@@ -1350,6 +1351,7 @@ static void svc_tcp_init(struct svc_sock *svsk, struct svc_serv *serv)
+ 	if (sk->sk_state == TCP_LISTEN) {
+ 		strcpy(svsk->sk_xprt.xpt_remotebuf, "listener");
+ 		set_bit(XPT_LISTENER, &svsk->sk_xprt.xpt_flags);
++		set_bit(XPT_RPCB_UNREG, &svsk->sk_xprt.xpt_flags);
+ 		sk->sk_data_ready = svc_tcp_listen_data_ready;
+ 		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
+ 	} else {
 
 
