@@ -1,71 +1,168 @@
-Return-Path: <stable+bounces-185738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B667BDBECE
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 02:33:14 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FE7BDBF0B
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 02:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB3004ED196
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 00:32:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5F7D135094F
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 00:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53C91E0083;
-	Wed, 15 Oct 2025 00:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE51D1E376C;
+	Wed, 15 Oct 2025 00:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gMl364V4"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Yy+lJDCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C801DE2DC;
-	Wed, 15 Oct 2025 00:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBCE1917FB;
+	Wed, 15 Oct 2025 00:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760488356; cv=none; b=ZWkM7L8Vab3aIrO9T5mIam1nkuTcOpv9e7iUOlR1ipZE3BnuGfioGynVqJP6hVCgYfkfU082JKU7W76ijx8RruX8S4mqYQpm8sv1kOXyiiAHOO+lnL/DhOO91dbpVAhgS2hh9pjXmCESKG3ni4YtgN1qLcXGZOZm2sRMVSFMmNQ=
+	t=1760489692; cv=none; b=V8JW9NmZkpsJcQCUoumxnxDPBK4gXC5I2He8/jxcke/elhzNUln8wgQOEhl0uV32sjuccvw/Yn7OLFszHpNx+OM4rTnmbLkxvsSkuQoqmpdCaqxSstB4blG0uZ5c4Jjh3FzFX415whf/clV0O95j5/BdKRRKcfUHGODnn8MS1nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760488356; c=relaxed/simple;
-	bh=EyQ6n6kLz174hXErkmUFQr35cTgFtYucHIhk2EuvxIM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=pEe+ga/SvkUYL+OIFlcWpnd3kKV0dci69PhIB3UaEKWbY97xc7gZoxrEYAHhfJUmdCDS5R1HJ4MvKvvJvjUJwmA+5Nlt440q6ty/cfXMrdfgljgDmuISaSZUaVKWXHtOzuTrg6ujA4SP7hHG5GPS6AkGYTSL8wExB8H/vKI5Uz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gMl364V4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2950C4CEE7;
-	Wed, 15 Oct 2025 00:32:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760488355;
-	bh=EyQ6n6kLz174hXErkmUFQr35cTgFtYucHIhk2EuvxIM=;
-	h=Date:From:To:Cc:Subject:From;
-	b=gMl364V4yX0VH0WLLJ1sPWTrGOshGWNMfModLU29tOWS7MhqDPgPNc3J9wsqVSm2X
-	 hsNhxR5K1vY7T0sJ0Iw0FGLUQLAkREZPEVxFr8YlKZSAoytGLR61QhOq50bmWi0q65
-	 SD2E3d3y9uO7DtFN9wd9lvsP4cjlcI65LLG9DLS8zJZZIA8xzUXVJ+dsaIc339sTYO
-	 /rIbsgDMTU5BipigVWj84Gibd5ngpuSmrytn0uECb3mT+MzYpE5DrLuvbHulqBCmnt
-	 owLjSmpi4zJJMNyEPJYRefNyNGp92eXY+JxsYyyfd4IcFTYpw+dZM8v6l/nhMMNLMs
-	 6vza+YE3J79LA==
-Date: Tue, 14 Oct 2025 17:32:31 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, llvm@lists.linux.dev
-Subject: Apply 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN
- with clang-17 and older") to 6.12
-Message-ID: <20251015003231.GA2336835@ax162>
+	s=arc-20240116; t=1760489692; c=relaxed/simple;
+	bh=8HqsWkMsX/AwnP8YR/jNjEH4YmO6l8mHpwsKqLJZ5tI=;
+	h=Date:To:From:Subject:Message-Id; b=AbYOGz29pGquCDoJw0YiJg+p45larJTrsDIcZqThnACjGibHChASQ6P6kMCvcOcVSUDQrilMF7WR1M4bp21kvFyBuhj7OWc0ntt0HeQoKqxB+Do3Tu/NtJTGF5mP8ylTImB/sQ/CohDkDXdG0c0JJnnqk89UoVKCpZH++yxp3cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Yy+lJDCd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B92C4CEE7;
+	Wed, 15 Oct 2025 00:54:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1760489691;
+	bh=8HqsWkMsX/AwnP8YR/jNjEH4YmO6l8mHpwsKqLJZ5tI=;
+	h=Date:To:From:Subject:From;
+	b=Yy+lJDCdy4r3iA+cOnAs9rozdpMp3hvG8347R0WHXo2liqGt78mhvi8/r7IBcRNlY
+	 GXCJnTrlcoxFGuWnQP/K18ecmg06rCx0h215OdZe7IWkeeHNZLU33TAf1fCVpqQ3n6
+	 IPeYoxIwcjJlJdKif2ulEunQppNjhb3r9NPlaZLo=
+Date: Tue, 14 Oct 2025 17:54:50 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jerrin.shaji-george@broadcom.com,gregkh@linuxfoundation.org,bcm-kernel-feedback-list@broadcom.com,arnd@arndb.de,david@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + vmw_balloon-indicate-success-when-effectively-deflating-during-migration.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251015005451.17B92C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-Hi stable folks,
 
-Please apply commit 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable
-KASAN with clang-17 and older") to 6.12 (and possibly 6.6), as upstream
-commit 6f110a5e4f99 ("Disable SLUB_TINY for build testing") was
-backported to those trees, introducing the warning for at least 6.12. It
-applies cleanly for me. If there are any issues, please let me know.
+The patch titled
+     Subject: vmw_balloon: indicate success when effectively deflating during migration
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     vmw_balloon-indicate-success-when-effectively-deflating-during-migration.patch
 
-Cheers,
-Nathan
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/vmw_balloon-indicate-success-when-effectively-deflating-during-migration.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: David Hildenbrand <david@redhat.com>
+Subject: vmw_balloon: indicate success when effectively deflating during migration
+Date: Tue, 14 Oct 2025 14:44:55 +0200
+
+When migrating a balloon page, we first deflate the old page to then
+inflate the new page.
+
+However, if inflating the new page succeeded, we effectively deflated the
+old page, reducing the balloon size.
+
+In that case, the migration actually worked: similar to migrating+
+immediately deflating the new page.  The old page will be freed back to
+the buddy.
+
+Right now, the core will leave the page be marked as isolated (as we
+returned an error).  When later trying to putback that page, we will run
+into the WARN_ON_ONCE() in balloon_page_putback().
+
+That handling was changed in commit 3544c4faccb8 ("mm/balloon_compaction:
+stop using __ClearPageMovable()"); before that change, we would have
+tolerated that way of handling it.
+
+To fix it, let's just return 0 in that case, making the core effectively
+just clear the "isolated" flag + freeing it back to the buddy as if the
+migration succeeded.  Note that the new page will also get freed when the
+core puts the last reference.
+
+Note that this also makes it all be more consistent: we will no longer
+unisolate the page in the balloon driver while keeping it marked as being
+isolated in migration core.
+
+This was found by code inspection.
+
+Link: https://lkml.kernel.org/r/20251014124455.478345-1-david@redhat.com
+Fixes: 3544c4faccb8 ("mm/balloon_compaction: stop using __ClearPageMovable()")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ drivers/misc/vmw_balloon.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+--- a/drivers/misc/vmw_balloon.c~vmw_balloon-indicate-success-when-effectively-deflating-during-migration
++++ a/drivers/misc/vmw_balloon.c
+@@ -1737,7 +1737,7 @@ static int vmballoon_migratepage(struct
+ {
+ 	unsigned long status, flags;
+ 	struct vmballoon *b;
+-	int ret;
++	int ret = 0;
+ 
+ 	b = container_of(b_dev_info, struct vmballoon, b_dev_info);
+ 
+@@ -1796,17 +1796,15 @@ static int vmballoon_migratepage(struct
+ 		 * A failure happened. While we can deflate the page we just
+ 		 * inflated, this deflation can also encounter an error. Instead
+ 		 * we will decrease the size of the balloon to reflect the
+-		 * change and report failure.
++		 * change.
+ 		 */
+ 		atomic64_dec(&b->size);
+-		ret = -EBUSY;
+ 	} else {
+ 		/*
+ 		 * Success. Take a reference for the page, and we will add it to
+ 		 * the list after acquiring the lock.
+ 		 */
+ 		get_page(newpage);
+-		ret = 0;
+ 	}
+ 
+ 	/* Update the balloon list under the @pages_lock */
+@@ -1817,7 +1815,7 @@ static int vmballoon_migratepage(struct
+ 	 * If we succeed just insert it to the list and update the statistics
+ 	 * under the lock.
+ 	 */
+-	if (!ret) {
++	if (status == VMW_BALLOON_SUCCESS) {
+ 		balloon_page_insert(&b->b_dev_info, newpage);
+ 		__count_vm_event(BALLOON_MIGRATE);
+ 	}
+_
+
+Patches currently in -mm which might be from david@redhat.com are
+
+vmw_balloon-indicate-success-when-effectively-deflating-during-migration.patch
+
 
