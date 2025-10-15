@@ -1,186 +1,121 @@
-Return-Path: <stable+bounces-185860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C372BE0A13
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 22:25:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A200ABE0BD0
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 23:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE10B542BEA
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 20:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FC4C19C674F
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 21:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D9E2C3244;
-	Wed, 15 Oct 2025 20:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3822E1EE6;
+	Wed, 15 Oct 2025 21:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XInMVMdz"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hafDm8Wm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712F11624D5;
-	Wed, 15 Oct 2025 20:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE011A08CA
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 21:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760559911; cv=none; b=l+sPGx0mNb5hrRF/mBREM+nRylnVbDm+796qZYSgcuqLJPtxxDRF5ViWcTnCKp7fEQRmU21L1JbtiHXNdD4JFes/cLigsUaJJ/fvj43JusLTYGeLzW7ILKwGrjU+3/oW3nl7vhBeWbgpn0Y/GpxOw65PVb2Z4yHaYEpZ1BGQTU0=
+	t=1760562067; cv=none; b=S7EbOpNTAeaeHx94c7+SG/e9Y9F8USwLxGuNxSO2YUYOYQq6o5vfA3zLiFCMeUOuCNDbLm9seeMWzcouIoG2v09veHtpqkTU7GWWPBvSxjUMtwmwdG2f0FGgqPpBy27e7BhflwNuu6awYd0uA4NC6zCiYvF+SKvZVYLe7+vRvWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760559911; c=relaxed/simple;
-	bh=IH/jew1XIGhcfFImpaKLyBtyjCm2P4tkn288/0zi63s=;
-	h=Date:To:From:Subject:Message-Id; b=nCm8d0lBMtJvBCMtLfqmiriNMaSh9O9egeDU3RdKXzoSH20RSIzFSZ7rcp8Q74WzWew8E+uku5HVuwCMUSVoCokqjJeaAkT2nbRysshnkioI3PfJ3DqisDDhoLUBc9nynGXCUZrN4n8bPJg/1VqiWAgAvf/ZzAZolcCrQN2YTBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XInMVMdz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4067CC4CEF8;
-	Wed, 15 Oct 2025 20:25:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760559911;
-	bh=IH/jew1XIGhcfFImpaKLyBtyjCm2P4tkn288/0zi63s=;
-	h=Date:To:From:Subject:From;
-	b=XInMVMdzQi55J6AHerB2VSaHRJO3+bzoMQt9jjJWfI0kgXYU8SjHSiHz7/6dXfabR
-	 odfbOojrUXCBVmHHczdElrgHty5CpiSUjnj9AF2rHtc5QY5IJGI3PxSBNmC6wt/03L
-	 nEz04mlMnuY9YKWkr+MbribNxs7OXv7/ov0rQv7k=
-Date: Wed, 15 Oct 2025 13:25:10 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,tony.luck@intel.com,stable@vger.kernel.org,ryan.roberts@arm.com,richard.weiyang@gmail.com,npache@redhat.com,nao.horiguchi@gmail.com,lorenzo.stoakes@oracle.com,linmiaohe@huawei.com,liam.howlett@oracle.com,lance.yang@linux.dev,jiaqiyan@google.com,farrah.chen@intel.com,dev.jain@arm.com,david@redhat.com,baohua@kernel.org,qiuxu.zhuo@intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-prevent-poison-consumption-when-splitting-thp.patch removed from -mm tree
-Message-Id: <20251015202511.4067CC4CEF8@smtp.kernel.org>
+	s=arc-20240116; t=1760562067; c=relaxed/simple;
+	bh=bNZ5nGNUpC8e2pvYUVL99aPY0d8SHeaESMtukQB/3XU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iYAinznIOzN6bzvavY5nfU8t7y5s2DC8tlIH9Q0vLVN4ZMqPpcISt+xhvQTLRgCWCgW50iIl8VvGLqiAXUpSVhFl8pT5ZymenffegM+OJHIrP5kWojHHbhzJSkQdylBseZt79zwAaxZ2ypXSheX4yDQT7PHwk9ge/8gyEBcJkn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hafDm8Wm; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-426d4f59cbcso639181f8f.1
+        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 14:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760562063; x=1761166863; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ka9acDfWYNVlXTADikeAWQzZKPfls3YVu38LVwS+Ync=;
+        b=hafDm8Wm9R1j2wleWPCIBHHpvUR0ANn9ufO+biLcxPUXEAux2L9IOtrX3Vhp19rFPZ
+         qjQPNVq5bfe3HGSYVSLwwoS829dFnddsNDbDWSd0TPUjLbFmNbUY30DJyFitUpDBYHG0
+         x8APgU618N9ghMX7ffE6Iu+STeMOKFvW2SrT7wwaNTYXWcQhRnaURbFe3hNht/pFtXeb
+         5Q3u/0hMxSjInTuFvHv0Fgoyylx91QgabimnMxrWRZEpStRoRnU0hVAMjv4eC/oz2tJ4
+         VEra1YLB0BzLrCTwK3hhQjL0DiW4cx5DkmqN+POgi7HMNhpFGCZOrmaWu0HDX3kXZpZC
+         z+xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760562063; x=1761166863;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ka9acDfWYNVlXTADikeAWQzZKPfls3YVu38LVwS+Ync=;
+        b=YvHppBN5xDCuCVeAJ7okk/7d6UaL5Byg050ZmQcBZBe4ibTp2UPpNPbLFSgto6mWSj
+         S95mS19hDv/mYfdP+pffwI6IFY6GgmK+OP57Xx18D4BYGW2aDDye4IHdTEToPBzxQyyz
+         6/ex4m1X3qoN/VPUOujhww4k0T3SALX7z/m4/gc2qHSs6azkO0k2ekIcVHxq1b2Y2YPM
+         8JUK8ppr4rOb/5FzoUAneGnP3R5UF1JhGKLT0ulMY9ZJNjbXvu1xt5xsS9qdItNRQsIS
+         x4rWk9vCSo3sCIKVlD4UNRrOF2VeCczSQ95phGNOw3uHhsiRafyf0KFZrzKCx7dQ7jl8
+         r/mQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwRhzs1btERnaikxXMnxsPrQeSoSjDlkh0vGg8ErbRA1tdq0npiyM552+kPkhruiPjimmyfzI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztEyDp/KHur/qZTIQ4/mi+qm17lYM4t4mnAToNYZv4qSGni7iw
+	RTGuCmFmqpdaoX4OjFsQnauYBx6cTOobwK9h+KKM6HBy4Mr4OVG4elQ2mHzgypgVwREOSuZrYg=
+	=
+X-Google-Smtp-Source: AGHT+IFKTW/66VSsBVsAUER/FDq7sYd1YbEd3eoZpeBB4yPvhP9MMDUr1WYotgBpEovQntSXolk5aG9w
+X-Received: from wrbbs13.prod.google.com ([2002:a05:6000:70d:b0:425:f04a:4d86])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:4608:b0:426:fc52:cca6
+ with SMTP id ffacd0b85a97d-426fc52ce1amr745223f8f.7.1760562062643; Wed, 15
+ Oct 2025 14:01:02 -0700 (PDT)
+Date: Wed, 15 Oct 2025 22:56:36 +0200
+In-Reply-To: <20251015205634.3820870-9-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20251015205634.3820870-9-ardb+git@google.com>
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=804; i=ardb@kernel.org;
+ h=from:subject; bh=JyRr6WrjNMazb438tuZ9KzQEKZXISsNH26aHqvF27Qc=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeMDV2tC1n7FDTPeV2T5Cns9OHybTyotoSC/MG9h28E9c
+ 6e9XhzRUcrCIMbFICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACbibs7IcOb7w1WO7Qs+rOkM
+ ELf0rhGcYyJ5Y9+Kya9PRiVKqrEftmf4Zx95zqD/wkvN1ftm2b2fulPT5faOaY7fu9K+9XRNYPV R5QIA
+X-Mailer: git-send-email 2.51.0.869.ge66316f041-goog
+Message-ID: <20251015205634.3820870-10-ardb+git@google.com>
+Subject: [PATCH v4 resend 1/7] efi: Add missing static initializer for efi_mm::cpus_allowed_lock
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>, 
+	Pierre Gondois <Pierre.Gondois@arm.com>, Sami Mujawar <Sami.Mujawar@arm.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+From: Ard Biesheuvel <ardb@kernel.org>
 
-The quilt patch titled
-     Subject: mm: prevent poison consumption when splitting THP
-has been removed from the -mm tree.  Its filename was
-     mm-prevent-poison-consumption-when-splitting-thp.patch
+Initialize the cpus_allowed_lock struct member of efi_mm.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Subject: mm: prevent poison consumption when splitting THP
-Date: Sat, 11 Oct 2025 15:55:19 +0800
-
-When performing memory error injection on a THP (Transparent Huge Page)
-mapped to userspace on an x86 server, the kernel panics with the following
-trace.  The expected behavior is to terminate the affected process instead
-of panicking the kernel, as the x86 Machine Check code can recover from an
-in-userspace #MC.
-
-  mce: [Hardware Error]: CPU 0: Machine Check Exception: f Bank 3: bd80000000070134
-  mce: [Hardware Error]: RIP 10:<ffffffff8372f8bc> {memchr_inv+0x4c/0xf0}
-  mce: [Hardware Error]: TSC afff7bbff88a ADDR 1d301b000 MISC 80 PPIN 1e741e77539027db
-  mce: [Hardware Error]: PROCESSOR 0:d06d0 TIME 1758093249 SOCKET 0 APIC 0 microcode 80000320
-  mce: [Hardware Error]: Run the above through 'mcelog --ascii'
-  mce: [Hardware Error]: Machine check: Data load in unrecoverable area of kernel
-  Kernel panic - not syncing: Fatal local machine check
-
-The root cause of this panic is that handling a memory failure triggered
-by an in-userspace #MC necessitates splitting the THP.  The splitting
-process employs a mechanism, implemented in
-try_to_map_unused_to_zeropage(), which reads the pages in the THP to
-identify zero-filled pages.  However, reading the pages in the THP results
-in a second in-kernel #MC, occurring before the initial memory_failure()
-completes, ultimately leading to a kernel panic.  See the kernel panic
-call trace on the two #MCs.
-
-  First Machine Check occurs // [1]
-    memory_failure()         // [2]
-      try_to_split_thp_page()
-        split_huge_page()
-          split_huge_page_to_list_to_order()
-            __folio_split()  // [3]
-              remap_page()
-                remove_migration_ptes()
-                  remove_migration_pte()
-                    try_to_map_unused_to_zeropage()  // [4]
-                      memchr_inv()                   // [5]
-                        Second Machine Check occurs  // [6]
-                          Kernel panic
-
-[1] Triggered by accessing a hardware-poisoned THP in userspace, which is
-    typically recoverable by terminating the affected process.
-
-[2] Call folio_set_has_hwpoisoned() before try_to_split_thp_page().
-
-[3] Pass the RMP_USE_SHARED_ZEROPAGE remap flag to remap_page().
-
-[4] Try to map the unused THP to zeropage.
-
-[5] Re-access pages in the hw-poisoned THP in the kernel.
-
-[6] Triggered in-kernel, leading to a panic kernel.
-
-In Step[2], memory_failure() sets the poisoned flag on the page in the THP
-by TestSetPageHWPoison() before calling try_to_split_thp_page().
-
-As suggested by David Hildenbrand, fix this panic by not accessing to the
-poisoned page in the THP during zeropage identification, while continuing
-to scan unaffected pages in the THP for possible zeropage mapping.  This
-prevents a second in-kernel #MC that would cause kernel panic in Step[4].
-
-Thanks to Andrew Zaborowski for his initial work on fixing this issue.
-
-Link: https://lkml.kernel.org/r/20251015064926.1887643-1-qiuxu.zhuo@intel.com
-Link: https://lkml.kernel.org/r/20251011075520.320862-1-qiuxu.zhuo@intel.com
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Acked-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Luck, Tony" <tony.luck@intel.com>
-Cc: Mariano Pache <npache@redhat.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
+ drivers/firmware/efi/efi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- mm/huge_memory.c |    3 +++
- mm/migrate.c     |    3 ++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
-
---- a/mm/huge_memory.c~mm-prevent-poison-consumption-when-splitting-thp
-+++ a/mm/huge_memory.c
-@@ -4109,6 +4109,9 @@ static bool thp_underused(struct folio *
- 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
- 		return false;
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 1ce428e2ac8a..fc407d891348 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -74,6 +74,9 @@ struct mm_struct efi_mm = {
+ 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
+ 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
+ 	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
++#ifdef CONFIG_SCHED_MM_CID
++	.cpus_allowed_lock	= __RAW_SPIN_LOCK_UNLOCKED(efi_mm.cpus_allowed_lock),
++#endif
+ };
  
-+	if (folio_contain_hwpoisoned_page(folio))
-+		return false;
-+
- 	for (i = 0; i < folio_nr_pages(folio); i++) {
- 		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
- 			if (++num_zero_pages > khugepaged_max_ptes_none)
---- a/mm/migrate.c~mm-prevent-poison-consumption-when-splitting-thp
-+++ a/mm/migrate.c
-@@ -301,8 +301,9 @@ static bool try_to_map_unused_to_zeropag
- 	struct page *page = folio_page(folio, idx);
- 	pte_t newpte;
- 
--	if (PageCompound(page))
-+	if (PageCompound(page) || PageHWPoison(page))
- 		return false;
-+
- 	VM_BUG_ON_PAGE(!PageAnon(page), page);
- 	VM_BUG_ON_PAGE(!PageLocked(page), page);
- 	VM_BUG_ON_PAGE(pte_present(old_pte), page);
-_
-
-Patches currently in -mm which might be from qiuxu.zhuo@intel.com are
-
+ struct workqueue_struct *efi_rts_wq;
+-- 
+2.51.0.869.ge66316f041-goog
 
 
