@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-185832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB21BDF47C
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 17:08:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0693BDF54F
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 17:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 271E63A2805
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E692319C7672
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D476F06B;
-	Wed, 15 Oct 2025 15:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2015E2FB0B7;
+	Wed, 15 Oct 2025 15:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmjCvqdc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eX43PyfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1372C11C9
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 15:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D347221ABC9
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 15:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760540762; cv=none; b=i1JRpNOTyqsW2bT8OH01Cc/2xO8DGKNjwNrTCvlax0A7nFxaC6ujmQD1zlQsFG1z80mGE451hNRNvtaxrOjgcfBZ8FB4U2P7NfXJXvJlObfJtFXQxnpJeKeRy4nYwgQWdq0vEetNC3eC7hRW8AVaSdCm1EbMePUNBvbmgin3FEk=
+	t=1760541841; cv=none; b=o5bYdmYE14v3187a29paDtrnws/T7874y4dQQSY0xvpUrcdr5ouKIKXiZshRbz2ff1IexKKLHK0lfH5sDPkI9T2ys3dDsCkTZ7wbvRj2sDtoKN6tpbMLwokMMlpw1k8ZSpEIoKF15uZxM2CWHzzsvRTW2BbWuAhR2uGXtU8Nv5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760540762; c=relaxed/simple;
-	bh=k0Y2IvKNmT+hapx7I0XJUN2EvODoE4FPWDZFs4KqQ6I=;
+	s=arc-20240116; t=1760541841; c=relaxed/simple;
+	bh=TuD8Zu5yvKtsQ4kgNx8v7xxNzBc/6o5OL0GBUGd1aUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9I9BWs9n5aZ6QpTavPwQ967o4dj9rA7s025eYKHT7JYvCrqqNKkS8Jl0uGGGrs0snTTzr6j83kiW6Z0QKImakWPXaAkrjJj8nXqJJehCk00ceBptc2WKR6RyCxrF4cone2riVpxzopr1G1NqnBBEOSrPoSda6kswzmxbS6uLfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmjCvqdc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3C3C113D0;
-	Wed, 15 Oct 2025 15:05:59 +0000 (UTC)
+	 MIME-Version; b=dZ7gDY3t1UvhGEL+CANIbJonZCrwGcJgpMkNXj3Pj3nwwQ+8L0xLbqpJaJ860Xxjlm39M61YQc9NbzqQ7q5SMuzeCIRdmk/QfZ5ngdO/8VMdUDO9Qg/5GGi8Qh4cjzRFFo1HsHfgLJbfstjaOJgtoFOqHhyp57OKVBz1nOQtsy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eX43PyfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2325C4CEF8;
+	Wed, 15 Oct 2025 15:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760540760;
-	bh=k0Y2IvKNmT+hapx7I0XJUN2EvODoE4FPWDZFs4KqQ6I=;
+	s=k20201202; t=1760541840;
+	bh=TuD8Zu5yvKtsQ4kgNx8v7xxNzBc/6o5OL0GBUGd1aUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PmjCvqdcfUGGwY6Oen3+Fi4blnN6290QkNklGDfdR1HFnU7cHhi6ZyW0uXRB9Pxlj
-	 Ag5bO2Q9GRM1GHKDQpkSZOL6XIGBtedieK8Yp5/cu/7aWEQhgUpE9ZNGa5EVtCFuOL
-	 +ApDXBUaF/ooJ4LvQUU8qRcTddDwBN2p2i3BO0KEvbvn3Q6da9eK9oiVRS0QqyMM3k
-	 gD4TjljW3kooO5tEeXYfz0ob+fWIkLh5pDWJVBMlQvvnWRY3pcWsILtwlLSHM0UQ8R
-	 ryQVTiqKUtL0xhRPDwZeZIyI8VL+sqle212lDPIZ79y4dE58PumiN2DKmLtuXyheMW
-	 vHBVMS/9ecxAw==
+	b=eX43PyfUuEI8MNhPWT2U4Aesvg31vd6m2wjUkIdP9n73cL7EUc7OksM26o0cnoLIl
+	 rAHug8myDbHuUWZUwSFuXtyRDE21zEgaGHASXQoSUPxywYYXKyaWkLSEm9iSjXpdwb
+	 HbQVeOwf8VPGeFgUkrWUPNpZRR4UMc3hx5fG2M04AjQ6M5iraBqK3aZQFvWGudtkz+
+	 NxW9kVuiMX4BaIpTrYPJqkNl3tIbBlPOzBqPBVyNO850XFP65zfnckaYWnfe9cLh1w
+	 oK0veMXxyb/fTmnqceX+BAMFggrnITeZeRBEH12nPrWdMtDlKMCWDk9H9JRVHqRMKa
+	 o2Eyhq4zTlZdg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Aleksa Sarai <cyphar@cyphar.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] fscontext: do not consume log entries when returning -EMSGSIZE
-Date: Wed, 15 Oct 2025 11:05:55 -0400
-Message-ID: <20251015150555.1437678-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y] btrfs: fix the incorrect max_bytes value for find_lock_delalloc_range()
+Date: Wed, 15 Oct 2025 11:23:57 -0400
+Message-ID: <20251015152357.1457706-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251015150555.1437678-1-sashal@kernel.org>
-References: <2025101543-quake-judicial-9e2e@gregkh>
- <20251015150555.1437678-1-sashal@kernel.org>
+In-Reply-To: <2025101530-composed-concave-1075@gregkh>
+References: <2025101530-composed-concave-1075@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,124 +60,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 72d271a7baa7062cb27e774ac37c5459c6d20e22 ]
+[ Upstream commit 7b26da407420e5054e3f06c5d13271697add9423 ]
 
-Userspace generally expects APIs that return -EMSGSIZE to allow for them
-to adjust their buffer size and retry the operation. However, the
-fscontext log would previously clear the message even in the -EMSGSIZE
-case.
+[BUG]
+With my local branch to enable bs > ps support for btrfs, sometimes I
+hit the following ASSERT() inside submit_one_sector():
 
-Given that it is very cheap for us to check whether the buffer is too
-small before we remove the message from the ring buffer, let's just do
-that instead. While we're at it, refactor some fscontext_read() into a
-separate helper to make the ring buffer logic a bit easier to read.
+	ASSERT(block_start != EXTENT_MAP_HOLE);
 
-Fixes: 007ec26cdc9f ("vfs: Implement logging through fs_context")
-Cc: David Howells <dhowells@redhat.com>
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Link: https://lore.kernel.org/20250807-fscontext-log-cleanups-v3-1-8d91d6242dc3@cyphar.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Please note that it's not yet possible to hit this ASSERT() in the wild
+yet, as it requires btrfs bs > ps support, which is not even in the
+development branch.
+
+But on the other hand, there is also a very low chance to hit above
+ASSERT() with bs < ps cases, so this is an existing bug affect not only
+the incoming bs > ps support but also the existing bs < ps support.
+
+[CAUSE]
+Firstly that ASSERT() means we're trying to submit a dirty block but
+without a real extent map nor ordered extent map backing it.
+
+Furthermore with extra debugging, the folio triggering such ASSERT() is
+always larger than the fs block size in my bs > ps case.
+(8K block size, 4K page size)
+
+After some more debugging, the ASSERT() is trigger by the following
+sequence:
+
+ extent_writepage()
+ |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
+ |  size is 8K, page size is 4K.
+ |  And there is another 8K folio at file offset 32K, which is also
+ |  dirty.
+ |  So the filemap layout looks like the following:
+ |
+ |  "||" is the filio boundary in the filemap.
+ |  "//| is the dirty range.
+ |
+ |  0        8K       16K        24K         32K       40K
+ |  |////////|        |//////////////////////||////////|
+ |
+ |- writepage_delalloc()
+ |  |- find_lock_delalloc_range() for [0, 8K)
+ |  |  Now range [0, 8K) is properly locked.
+ |  |
+ |  |- find_lock_delalloc_range() for [16K, 40K)
+ |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
+ |  |  |- lock_delalloc_folios() locked folio 0 successfully
+ |  |  |
+ |  |  |  The filemap range [32K, 40K) got dropped from filemap.
+ |  |  |
+ |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
+ |  |  |  As the folio at 32K is dropped.
+ |  |  |
+ |  |  |- loops = 1;
+ |  |  |- max_bytes = PAGE_SIZE;
+ |  |  |- goto again;
+ |  |  |  This will re-do the lookup for dirty delalloc ranges.
+ |  |  |
+ |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
+ |  |  |  This is smaller than block size, so
+ |  |  |  btrfs_find_delalloc_range() is unable to return any range.
+ |  |  \- return false;
+ |  |
+ |  \- Now only range [0, 8K) has an OE for it, but for dirty range
+ |     [16K, 32K) it's dirty without an OE.
+ |     This breaks the assumption that writepage_delalloc() will find
+ |     and lock all dirty ranges inside the folio.
+ |
+ |- extent_writepage_io()
+    |- submit_one_sector() for [0, 8K)
+    |  Succeeded
+    |
+    |- submit_one_sector() for [16K, 24K)
+       Triggering the ASSERT(), as there is no OE, and the original
+       extent map is a hole.
+
+Please note that, this also exposed the same problem for bs < ps
+support. E.g. with 64K page size and 4K block size.
+
+If we failed to lock a folio, and falls back into the "loops = 1;"
+branch, we will re-do the search using 64K as max_bytes.
+Which may fail again to lock the next folio, and exit early without
+handling all dirty blocks inside the folio.
+
+[FIX]
+Instead of using the fixed size PAGE_SIZE as @max_bytes, use
+@sectorsize, so that we are ensured to find and lock any remaining
+blocks inside the folio.
+
+And since we're here, add an extra ASSERT() to
+before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
+at least no smaller than a block to avoid false negative.
+
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ adapted folio terminology and API calls to page-based equivalents ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fsopen.c | 70 +++++++++++++++++++++++++++++------------------------
- 1 file changed, 38 insertions(+), 32 deletions(-)
+ fs/btrfs/extent_io.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/fs/fsopen.c b/fs/fsopen.c
-index 27a890aa493ab..056466848979c 100644
---- a/fs/fsopen.c
-+++ b/fs/fsopen.c
-@@ -18,50 +18,56 @@
- #include "internal.h"
- #include "mount.h"
- 
-+static inline const char *fetch_message_locked(struct fc_log *log, size_t len,
-+					       bool *need_free)
-+{
-+	const char *p;
-+	int index;
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 516d40f707a65..8d66a6858cd2d 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -415,6 +415,13 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 	/* step one, find a bunch of delalloc bytes starting at start */
+ 	delalloc_start = *start;
+ 	delalloc_end = 0;
 +
-+	if (unlikely(log->head == log->tail))
-+		return ERR_PTR(-ENODATA);
++	/*
++	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
++	 * return early without handling any dirty ranges.
++	 */
++	ASSERT(max_bytes >= fs_info->sectorsize);
 +
-+	index = log->tail & (ARRAY_SIZE(log->buffer) - 1);
-+	p = log->buffer[index];
-+	if (unlikely(strlen(p) > len))
-+		return ERR_PTR(-EMSGSIZE);
-+
-+	log->buffer[index] = NULL;
-+	*need_free = log->need_free & (1 << index);
-+	log->need_free &= ~(1 << index);
-+	log->tail++;
-+
-+	return p;
-+}
-+
- /*
-  * Allow the user to read back any error, warning or informational messages.
-+ * Only one message is returned for each read(2) call.
-  */
- static ssize_t fscontext_read(struct file *file,
- 			      char __user *_buf, size_t len, loff_t *pos)
- {
- 	struct fs_context *fc = file->private_data;
--	struct fc_log *log = fc->log.log;
--	unsigned int logsize = ARRAY_SIZE(log->buffer);
--	ssize_t ret;
--	char *p;
-+	ssize_t err;
-+	const char *p __free(kfree) = NULL, *message;
- 	bool need_free;
--	int index, n;
-+	int n;
- 
--	ret = mutex_lock_interruptible(&fc->uapi_mutex);
--	if (ret < 0)
--		return ret;
--
--	if (log->head == log->tail) {
--		mutex_unlock(&fc->uapi_mutex);
--		return -ENODATA;
--	}
--
--	index = log->tail & (logsize - 1);
--	p = log->buffer[index];
--	need_free = log->need_free & (1 << index);
--	log->buffer[index] = NULL;
--	log->need_free &= ~(1 << index);
--	log->tail++;
-+	err = mutex_lock_interruptible(&fc->uapi_mutex);
-+	if (err < 0)
-+		return err;
-+	message = fetch_message_locked(fc->log.log, len, &need_free);
- 	mutex_unlock(&fc->uapi_mutex);
-+	if (IS_ERR(message))
-+		return PTR_ERR(message);
- 
--	ret = -EMSGSIZE;
--	n = strlen(p);
--	if (n > len)
--		goto err_free;
--	ret = -EFAULT;
--	if (copy_to_user(_buf, p, n) != 0)
--		goto err_free;
--	ret = n;
--
--err_free:
- 	if (need_free)
--		kfree(p);
--	return ret;
-+		p = message;
-+
-+	n = strlen(message);
-+	if (copy_to_user(_buf, message, n))
-+		return -EFAULT;
-+	return n;
- }
- 
- static int fscontext_release(struct inode *inode, struct file *file)
+ 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
+ 					  max_bytes, &cached_state);
+ 	if (!found || delalloc_end <= *start || delalloc_start > orig_end) {
+@@ -445,13 +452,14 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 				  delalloc_start, delalloc_end);
+ 	ASSERT(!ret || ret == -EAGAIN);
+ 	if (ret == -EAGAIN) {
+-		/* some of the pages are gone, lets avoid looping by
+-		 * shortening the size of the delalloc range we're searching
++		/*
++		 * Some of the pages are gone, lets avoid looping by
++		 * shortening the size of the delalloc range we're searching.
+ 		 */
+ 		free_extent_state(cached_state);
+ 		cached_state = NULL;
+ 		if (!loops) {
+-			max_bytes = PAGE_SIZE;
++			max_bytes = fs_info->sectorsize;
+ 			loops = 1;
+ 			goto again;
+ 		} else {
 -- 
 2.51.0
 
