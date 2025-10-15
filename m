@@ -1,139 +1,206 @@
-Return-Path: <stable+bounces-185823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B28ABDEF32
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 16:12:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D5DBDEF9F
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 16:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C0493E35C9
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:11:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0E6D19C80D9
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FAD2609DC;
-	Wed, 15 Oct 2025 14:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395D2247281;
+	Wed, 15 Oct 2025 14:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=telus.net header.i=@telus.net header.b="XGFCS0uM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SWLD8RS8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C06725CC42
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 14:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86C3224AED
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 14:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760537504; cv=none; b=sTF/X7RiT0QJNvOvEw/RDZsiR1wlYpzqfa2btad5g/7mkK2wyTk2EkT8BCaD2QINnxIKsXaVFt4aJme8nViiX4I2hpNHf9OG7KRLIV1Qy1XKkoW0AjvSccHeU0hhRVsatzkEDFpoqUIYd4wgrkf6ooca4+dXfx/mGtiW0Rm9fxQ=
+	t=1760538025; cv=none; b=ClzhLhnUUvVj5oEOaSiRa+qxzmk8RcMm9Aksvw/gsN5v4e1GbRa1dDBKdzo+PE6B25qlD5Y6ELZbxK+Yrqxn1qDwbq+CnaanoFcSOTWdcUy4gwZossD1xw3n1qz3aZQ9F/Bf2i2LFMkgEgIYeLcjca1MA9os16HCinKEDNwWZyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760537504; c=relaxed/simple;
-	bh=/nBgtZKkxcriqJ0qWdrjRuK78+T/bVuqrcW5ucwSC+0=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=f+CRujyCHPWu9fcBU0W9iS8NhC5dEf+YaO1ej5RTvQbnUfVWI3TMQLb0xOzKLvUaa5iiHbLRkf3nOmbEOg/pu2FmB7wS9HIiQf/cRM5MRiR6DJKuyBt7XkhG8mOdwMHcIzF7dEFX8cGvg8VyDdQyI3J17DajNaYZSHVtMsOdlTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=telus.net; spf=pass smtp.mailfrom=telus.net; dkim=pass (2048-bit key) header.d=telus.net header.i=@telus.net header.b=XGFCS0uM; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=telus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=telus.net
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3327f8ed081so8116275a91.1
-        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 07:11:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=telus.net; s=google; t=1760537502; x=1761142302; darn=vger.kernel.org;
-        h=thread-index:content-language:content-transfer-encoding
-         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pTmsMJarOdhYjpDgJ7BO+PF+hkcjk51iWlHpTcTPLYI=;
-        b=XGFCS0uMBT0erHIsfAXEatPVWImzJbx3YEm9czeTnqKxrIvzlIP7ixCGUN614cfWlb
-         oB045jAlLgKQrIjTZpJuAIxGtNCAPs+BjVx1MvJRv9SC4FsCQ0dVLh3r7suBWZOtRXLJ
-         gcA5NWuWXiH/+aNDPUBxTEJq9n473RD0wuGqHWlgvMzHz75PJzpXkcJrS6YZIdtgZeKf
-         ummKjbN8MVc7BcDOIL3VX3rXhpt0k11DhisKpxU2bWWdRHycY2WEBNgphHl3CaFHM01v
-         wBuU4m/uFtCcvJmYvkQ4KvCAoE8NLb1wrI4GpPfRCkm4Sw8cLbqCGixab60GKHtRitNG
-         TGkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760537502; x=1761142302;
-        h=thread-index:content-language:content-transfer-encoding
-         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pTmsMJarOdhYjpDgJ7BO+PF+hkcjk51iWlHpTcTPLYI=;
-        b=Gvwf3LNhm+dLUP9dih/TphNjLNGNGyAD87+dJQawrFcVvl+1QpBAHZsDmQ5/d1Pjhk
-         Nc1jWT7HhZppcoUGIv3kd2VJaSmnF9UYnGdS8niAl/LX5oKpJzremWbbTRI3x5ewNi3M
-         OiKtUXaD72lQRk1IvrtLSMtfy05cnOvNv+OOXy1QaghIXYTJnJ/nK9gvPh+aLZ4eE+Yk
-         OFLWoi4kYzjT80N4w8Rk33RsISi4vSrtySvLCV7hirjA7P0zJ0FHIfPhV6aZZdDOyJn1
-         rYPvX/FZEeZV5qB9ygLWNoTaO1yzVVsgHmuzl8VM+WuzO+BvZYfLEuzqV+Qr64M6nowJ
-         P7Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCWnkxpMLVqktvCk7xu5bmTqlS8xbnKPORQC3tgoWVt49NBJwx0CKtfah2i3GoIaDNSGomdojVA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwarB+wqMFsfUKw4jYr5SvsBZJnonre0yRZh1nJpcIMiLCUQ3TP
-	dzdq2vjjjrqo8JXlEVKMAuTDfp9l1Uff5f08kspw3kJjiaBD933UvBmVusDSBb6QEv0=
-X-Gm-Gg: ASbGncuqCtvY/tb7dNUgQkFU/DlaRpcMsk6bWtP8ZGIUtpP/Hks64BLSaIfeG90copY
-	wXp3jsRp1dZaFThTI3bsn0ydPKrRWunZOb8Ut12YtXdx7Lk9e38KvcE/eSx+m7NDPoi+e75zzQw
-	IqFwPY+hxJGf00Jj2bz4RVrFI/u/ieVHq+k+xgD0G/b2RgJAKACHpqTz3PliL2LdbYwKr0SGKQH
-	jG9m3liSjz4WDHwlvbfZKIqU2VIvSba5iCiVqSznFTUquiSjx0EFmOIInryICTEDd9V2d5gspyM
-	oP+e5cTch8HMirW18snwJqBHxmYTa4yPZz+mcYlao13eg3JrLWg9jeKmn/nmOjYChttpeoKGh1j
-	ogWyZL7DcvZ9feOOKY2iY1RfB9m6RdFgOGD5mD50AFzl06YJVi8aPNltdkU7Qc73UbQTE+8Vl7B
-	a8SKPQxy5EVcG4CPw3
-X-Google-Smtp-Source: AGHT+IGb9kuRZWUH2yjd/1znZOpJ9uzg/EznGG79TKbBAx/N292/lt4+1DajykIko1N7G0fsQyxCSw==
-X-Received: by 2002:a17:90b:1c8f:b0:32e:32e4:9789 with SMTP id 98e67ed59e1d1-33b51105ddbmr39449664a91.3.1760537502151;
-        Wed, 15 Oct 2025 07:11:42 -0700 (PDT)
-Received: from DougS18 (s66-183-142-209.bc.hsia.telus.net. [66.183.142.209])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b9786084fsm2740093a91.10.2025.10.15.07.11.41
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 15 Oct 2025 07:11:41 -0700 (PDT)
-From: "Doug Smythies" <dsmythies@telus.net>
-To: "'Sergey Senozhatsky'" <senozhatsky@chromium.org>
-Cc: "'Rafael J. Wysocki'" <rafael@kernel.org>,
-	"'Christian Loehle'" <christian.loehle@arm.com>,
-	"'Rafael J. Wysocki'" <rafael.j.wysocki@intel.com>,
-	"'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
-	"'Artem Bityutskiy'" <artem.bityutskiy@linux.intel.com>,
-	"'Sasha Levin'" <sashal@kernel.org>,
-	"'Daniel Lezcano'" <daniel.lezcano@linaro.org>,
-	<linux-pm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	"'Tomasz Figa'" <tfiga@chromium.org>,
-	<stable@vger.kernel.org>,
-	"Doug Smythies" <dsmythies@telus.net>
-References: <36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7> <08529809-5ca1-4495-8160-15d8e85ad640@arm.com> <2zreguw4djctgcmvgticnm4dctcuja7yfnp3r6bxaqon3i2pxf@thee3p3qduoq> <8da42386-282e-4f97-af93-4715ae206361@arm.com> <nd64xabhbb53bbqoxsjkfvkmlpn5tkdlu3nb5ofwdhyauko35b@qv6in7biupgi> <49cf14a1-b96f-4413-a17e-599bc1c104cd@arm.com> <CAJZ5v0hGu-JdwR57cwKfB+a98Pv7e3y36X6xCo=PyGdD2hwkhQ@mail.gmail.com> <7ctfmyzpcogc5qug6u3jm2o32vy2ldo3ml5gsoxdm3gyr6l3fc@jo7inkr3otua> <001601dc3d85$933dd540$b9b97fc0$@telus.net> <sw4p2hk4ofyyz3ncnwi3qs36yc2leailqmal5kksozodkak2ju@wfpqlwep7aid>
-In-Reply-To: <sw4p2hk4ofyyz3ncnwi3qs36yc2leailqmal5kksozodkak2ju@wfpqlwep7aid>
-Subject: RE: stable: commit "cpuidle: menu: Avoid discarding useful information" causes regressions
-Date: Wed, 15 Oct 2025 07:11:41 -0700
-Message-ID: <001601dc3ddd$a19f9850$e4dec8f0$@telus.net>
+	s=arc-20240116; t=1760538025; c=relaxed/simple;
+	bh=n36rqj/XrBj0h6L8pdKB/Dv5xE4b2loCY9sK2EsOQ8I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Jg92EizYRyzS5IHfh4FcFdcQP8kGMv3dLkblJjoxuU8jGfInUTQR2UOCX/Vbv2Oh5HKXzbIfmBHJIXjoHF6SldA6qx6IfEVMepVV2p8+6aUmlzX1Xe2cY7tuwxixM7o/YsIWPxNOXL8dJ6ySjqmKmgzZfgC2TUF+PZmPixS23/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SWLD8RS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E780AC4CEF8;
+	Wed, 15 Oct 2025 14:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760538024;
+	bh=n36rqj/XrBj0h6L8pdKB/Dv5xE4b2loCY9sK2EsOQ8I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SWLD8RS8f6tTXWJsDnNaCK0s4cHXyXdUV+PRtlKb/dXhimD+YNFlLB9Ck85YbakQ3
+	 1TCLGbA9ZiHHW3uVw17x/V7jmtyx6AKHYftio8MShJGqau34RKsDHNO7D5b1otLwAx
+	 C158ZUFfqDZW1rylPs7VbI014cX/GJuh2zbUdeTn9d3eRsFulIS6TreVm4XIax8NUE
+	 NKDCrWJplPFuWEPZAUZvPdBaLZdYJAeNZgrtBK+5KyEMzhJyaV8IIBLA5a9TmjWC6i
+	 z8riheUxM428O9jaKcwdTQiSgTjXUAUzFbzbxE8GF6JLQd2/zw1+lWxVDQyZjFuTuT
+	 SjTD3OkNgw38w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] btrfs: fix the incorrect max_bytes value for find_lock_delalloc_range()
+Date: Wed, 15 Oct 2025 10:20:22 -0400
+Message-ID: <20251015142022.1428901-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101526-rush-bagel-d750@gregkh>
+References: <2025101526-rush-bagel-d750@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-2022-jp"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-ca
-Thread-Index: AQFP8RZJEbA2uDnjQfbsE3QfwpHW3AGSQ1aYA2hH1ScDEHwS7AHjtqkUAUPNRMECUslMCgJdmtwzAg5460ECxaw7RrU2HJdQ
+Content-Transfer-Encoding: 8bit
 
-On 2025.10.14 21:50 Sergey Senozhatsky wrote:
-> On (25/10/14 20:41), Doug Smythies wrote:
->> What thermal limiting methods are being used? Is idle injection being used? Or CPU frequency limiting or both.
->
-> How do I find out?
+From: Qu Wenruo <wqu@suse.com>
 
-From the turbostat data you do not appear to be using the TCC offset method. This line:
+[ Upstream commit 7b26da407420e5054e3f06c5d13271697add9423 ]
 
-cpu0: MSR_IA32_TEMPERATURE_TARGET: 0x0f690080 (105 C)
+[BUG]
+With my local branch to enable bs > ps support for btrfs, sometimes I
+hit the following ASSERT() inside submit_one_sector():
 
-whereas on my test computer, using the TCC offset method, shows:
+	ASSERT(block_start != EXTENT_MAP_HOLE);
 
- cpu0: MSR_IA32_TEMPERATURE_TARGET: 0x14641422 (80 C) (100 default - 20 offset)
+Please note that it's not yet possible to hit this ASSERT() in the wild
+yet, as it requires btrfs bs > ps support, which is not even in the
+development branch.
 
-To check if thermal is being used do:
+But on the other hand, there is also a very low chance to hit above
+ASSERT() with bs < ps cases, so this is an existing bug affect not only
+the incoming bs > ps support but also the existing bs < ps support.
 
-systemctl status thermal
+[CAUSE]
+Firstly that ASSERT() means we're trying to submit a dirty block but
+without a real extent map nor ordered extent map backing it.
 
-Example:
+Furthermore with extra debugging, the folio triggering such ASSERT() is
+always larger than the fs block size in my bs > ps case.
+(8K block size, 4K page size)
 
-doug@s19:~/idle/teo/menu2$ systemctl status thermald
-○ thermald.service - Thermal Daemon Service
-     Loaded: loaded (/usr/lib/systemd/system/thermald.service; disabled; preset: enabled)
-     Active: inactive (dead)
+After some more debugging, the ASSERT() is trigger by the following
+sequence:
 
-If something else is being used, I don't know.
+ extent_writepage()
+ |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
+ |  size is 8K, page size is 4K.
+ |  And there is another 8K folio at file offset 32K, which is also
+ |  dirty.
+ |  So the filemap layout looks like the following:
+ |
+ |  "||" is the filio boundary in the filemap.
+ |  "//| is the dirty range.
+ |
+ |  0        8K       16K        24K         32K       40K
+ |  |////////|        |//////////////////////||////////|
+ |
+ |- writepage_delalloc()
+ |  |- find_lock_delalloc_range() for [0, 8K)
+ |  |  Now range [0, 8K) is properly locked.
+ |  |
+ |  |- find_lock_delalloc_range() for [16K, 40K)
+ |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
+ |  |  |- lock_delalloc_folios() locked folio 0 successfully
+ |  |  |
+ |  |  |  The filemap range [32K, 40K) got dropped from filemap.
+ |  |  |
+ |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
+ |  |  |  As the folio at 32K is dropped.
+ |  |  |
+ |  |  |- loops = 1;
+ |  |  |- max_bytes = PAGE_SIZE;
+ |  |  |- goto again;
+ |  |  |  This will re-do the lookup for dirty delalloc ranges.
+ |  |  |
+ |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
+ |  |  |  This is smaller than block size, so
+ |  |  |  btrfs_find_delalloc_range() is unable to return any range.
+ |  |  \- return false;
+ |  |
+ |  \- Now only range [0, 8K) has an OE for it, but for dirty range
+ |     [16K, 32K) it's dirty without an OE.
+ |     This breaks the assumption that writepage_delalloc() will find
+ |     and lock all dirty ranges inside the folio.
+ |
+ |- extent_writepage_io()
+    |- submit_one_sector() for [0, 8K)
+    |  Succeeded
+    |
+    |- submit_one_sector() for [16K, 24K)
+       Triggering the ASSERT(), as there is no OE, and the original
+       extent map is a hole.
 
-... Doug
+Please note that, this also exposed the same problem for bs < ps
+support. E.g. with 64K page size and 4K block size.
 
+If we failed to lock a folio, and falls back into the "loops = 1;"
+branch, we will re-do the search using 64K as max_bytes.
+Which may fail again to lock the next folio, and exit early without
+handling all dirty blocks inside the folio.
+
+[FIX]
+Instead of using the fixed size PAGE_SIZE as @max_bytes, use
+@sectorsize, so that we are ensured to find and lock any remaining
+blocks inside the folio.
+
+And since we're here, add an extra ASSERT() to
+before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
+at least no smaller than a block to avoid false negative.
+
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ adapted folio terminology and API calls to page-based equivalents ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/extent_io.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index ccf94c5fbfdfd..88ba277bc3a79 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -364,6 +364,13 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 	/* step one, find a bunch of delalloc bytes starting at start */
+ 	delalloc_start = *start;
+ 	delalloc_end = 0;
++
++	/*
++	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
++	 * return early without handling any dirty ranges.
++	 */
++	ASSERT(max_bytes >= fs_info->sectorsize);
++
+ 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
+ 					  max_bytes, &cached_state);
+ 	if (!found || delalloc_end <= *start || delalloc_start > orig_end) {
+@@ -394,13 +401,14 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 				  delalloc_start, delalloc_end);
+ 	ASSERT(!ret || ret == -EAGAIN);
+ 	if (ret == -EAGAIN) {
+-		/* some of the pages are gone, lets avoid looping by
+-		 * shortening the size of the delalloc range we're searching
++		/*
++		 * Some of the pages are gone, lets avoid looping by
++		 * shortening the size of the delalloc range we're searching.
+ 		 */
+ 		free_extent_state(cached_state);
+ 		cached_state = NULL;
+ 		if (!loops) {
+-			max_bytes = PAGE_SIZE;
++			max_bytes = fs_info->sectorsize;
+ 			loops = 1;
+ 			goto again;
+ 		} else {
+-- 
+2.51.0
 
 
