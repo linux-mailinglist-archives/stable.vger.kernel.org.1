@@ -1,158 +1,147 @@
-Return-Path: <stable+bounces-185808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B79CBDE74C
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:24:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44602BDE7B8
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D69193B3F4C
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:24:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5AA475044DB
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943E430BB87;
-	Wed, 15 Oct 2025 12:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28075139579;
+	Wed, 15 Oct 2025 12:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eHq0Y1T0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WTr4QbiR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C88A31BCA9;
-	Wed, 15 Oct 2025 12:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C877839FCE;
+	Wed, 15 Oct 2025 12:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760531048; cv=none; b=Za1joIFNLXROTdRBIWnSbWChkLmLDSKg8nTke30mSiTdSp6MoUbgHZ9d6ILBnl2keonHJiLIGldBl3K6SfDSM+sLC1EHw3I03rHxAivE2/QNA9lqwKwJe7QlQg+HowisbUeGnW3EgfSYC8sZmleQwBDVMq75yFfQ64aa4dCgKkY=
+	t=1760531525; cv=none; b=NP47N9lwK3LJ97u85uGFPhUl2C1rAcTXDzuTKTWdIrj3sjxQcs+qyBoqFWph09QnDAiQtE/4cHcpvoJip62Rv3IOGsU8KrlkVdajW4DPNS1a/LjhYynU1mEeMIhNDoA037D8+4gFwjcKC9PKU+XVU2K/p6wJuEILdME55H5L/bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760531048; c=relaxed/simple;
-	bh=einmqBwIuypeNxpCQimu1e9AUffXSE8F2adt++EgnoY=;
-	h=Date:From:To:Cc:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=QadK4iedXL85tJLoCqcNtxcE1UuJXJkzpeD07PiYkkMQdG70Cl1ZJwnIhGRM7huWvcMetw3tHN+7faPDc4JuC9Wxrfo3eU+YxomiNEAqO0P9qLNMH6Z7ET5Lopi1LJc6mhT6mxEUXMb+Wx7VwYVH1Xng/t6pD36c2K9Cv8tBLXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eHq0Y1T0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B900EC4CEF8;
-	Wed, 15 Oct 2025 12:24:03 +0000 (UTC)
+	s=arc-20240116; t=1760531525; c=relaxed/simple;
+	bh=5N9ifJNPMX7iGbLSPciaEtZ0geP6Y6nlRMPr+SPHcMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=keClJ177wEv8nk77LoYIMLhUcQnd7yB8H5KB/nBCup3zgYgxuGy5Ga6Mzj1Cb57Hr8pn6DIlGXJ1N6tn3hpKSFuHej2G2w83yBxT3WKS7KI9RfnTx/8d37tM/74bm5EeXh+5z3KWK0jxjUfM7tdTfYKuqeuXodVYSidelLizYP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WTr4QbiR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8DCC4CEFE;
+	Wed, 15 Oct 2025 12:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760531045;
-	bh=einmqBwIuypeNxpCQimu1e9AUffXSE8F2adt++EgnoY=;
-	h=Date:From:To:Cc:From;
-	b=eHq0Y1T0h8wiHoyLD4P6Xeb07YuN8vFoJgyZXblnQh8Bnf4QN0Y1jZwWyWeD6v8Cd
-	 PLldPS/GZp1XaluXE76j86mkooAZ9IdPiofcNXO13arifK49cLaj/hH6Uynt7Tj763
-	 JzVk3vdPr23OfKddYRIUOrr4FwemY5XjeHT5Rs3jNe+S8m6h4Wh4cPEIHfrxyymnhD
-	 W5Pf7wHZSEQN8rJGy7zZU5eIb9dyHqQn/3zVhgdIAKtZ7MEUzrJBkPQcTomLEIJscH
-	 UJqjT+vsH10n5dKgW6zqpFvmhBJyAG0xHNZtsFOarKRdKgxVSvMoDt5ltRNADJyyYj
-	 CJfdbMjtQQbQA==
-Date: Wed, 15 Oct 2025 14:24:00 +0200
-From: Alexey Gladkov <legion@kernel.org>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>
-Message-ID: <aO-SYFfYK4-cns9e@example.org>
+	s=k20201202; t=1760531524;
+	bh=5N9ifJNPMX7iGbLSPciaEtZ0geP6Y6nlRMPr+SPHcMk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WTr4QbiR2+wAU+XA9RLxcQ4d16cjQypyoDxU5uyMdPFCK6WNGpcd+MwYgGBSUkoCb
+	 Vqf9U1nraCPY04gRPKM1Odeu53nIyMM60pIbFE3tmczScsSRF566VFp3k4aT/umnRO
+	 q6D+cjZfWyYHMm7J6BVldqrAHKHAprIPGrHee+A7Z0C+emMQgdnBQgZyypjXrfZfIi
+	 zFy9oTgYfJvpyQFmoVV/5nPsYFs9lKC5sbQRr0pwM1Rv6+Baim/zTs3Ysl8Du1B6c4
+	 eh/rw2kI8rTpkPgAfkMLtMwx4BXUWhcvJWOFibc2wyVYVDUluLYo9tRnI6eu0roudF
+	 rZT7wH5wNbUkA==
+From: Niklas Cassel <cassel@kernel.org>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Simon Xue <xxm@rock-chips.com>,
+	Kever Yang <kever.yang@rock-chips.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	stable@vger.kernel.org,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH] PCI: dw-rockchip: Disable L1 substates
+Date: Wed, 15 Oct 2025 14:31:43 +0200
+Message-ID: <20251015123142.392274-2-cassel@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2706; i=cassel@kernel.org; h=from:subject; bh=5N9ifJNPMX7iGbLSPciaEtZ0geP6Y6nlRMPr+SPHcMk=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDLeT9GzOtnxsDYucorBuZ8fdh/pt2E6/G1T2nKLZ7/Xn PBbpHh1d0cpC4MYF4OsmCKL7w+X/cXd7lOOK96xgZnDygQyhIGLUwAmsi+A4Z92EsPaku4Jt68r zn31bZWOZ5ltv32w86yfjl/+zt/W3fiNkWFf25zmBqmGX4d/16+KChXyn3925fmz9YIlv2uMqlg OWPMAAA==
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 
-Bcc: 
-Subject: Re: Patch "s390: vmlinux.lds.S: Reorder sections" has been added to
- the 6.17-stable tree
-Reply-To: 
-In-Reply-To: <20251015114101.1339594-1-sashal@kernel.org>
+The L1 substates support requires additional steps to work, see e.g.
+section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0.
 
-On Wed, Oct 15, 2025 at 07:41:01AM -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     s390: vmlinux.lds.S: Reorder sections
-> 
-> to the 6.17-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      s390-vmlinux.lds.s-reorder-sections.patch
-> and it can be found in the queue-6.17 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
+These steps are currently missing from the driver.
 
-If you take this commit, then I think this commit is also needed:
+While this has always been a problem when using e.g.
+CONFIG_PCIEASPM_POWER_SUPERSAVE=y, the problem became more apparent after
+commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for
+devicetree platforms"), which enabled ASPM also for
+CONFIG_PCIEASPM_DEFAULT=y.
 
-https://lore.kernel.org/all/20251008-kbuild-fix-modinfo-regressions-v1-3-9fc776c5887c@kernel.org/
+Disable L1 substates until proper support is added.
 
-> 
-> commit 106cf24aac7413e5fb6aa632707ff81451a202c1
-> Author: Alexey Gladkov <legion@kernel.org>
-> Date:   Thu Sep 18 10:05:45 2025 +0200
-> 
->     s390: vmlinux.lds.S: Reorder sections
->     
->     [ Upstream commit 8d18ef04f940a8d336fe7915b5ea419c3eb0c0a6 ]
->     
->     In the upcoming changes, the ELF_DETAILS macro will be extended with
->     the ".modinfo" section, which will cause an error:
->     
->     >> s390x-linux-ld: .tmp_vmlinux1: warning: allocated section `.modinfo' not in segment
->     >> s390x-linux-ld: .tmp_vmlinux2: warning: allocated section `.modinfo' not in segment
->     >> s390x-linux-ld: vmlinux.unstripped: warning: allocated section `.modinfo' not in segment
->     
->     This happens because the .vmlinux.info use :NONE to override the default
->     segment and tell the linker to not put the section in any segment at all.
->     
->     To avoid this, we need to change the sections order that will be placed
->     in the default segment.
->     
->     Cc: Heiko Carstens <hca@linux.ibm.com>
->     Cc: Vasily Gorbik <gor@linux.ibm.com>
->     Cc: Alexander Gordeev <agordeev@linux.ibm.com>
->     Cc: linux-s390@vger.kernel.org
->     Reported-by: kernel test robot <lkp@intel.com>
->     Closes: https://lore.kernel.org/oe-kbuild-all/202506062053.zbkFBEnJ-lkp@intel.com/
->     Signed-off-by: Alexey Gladkov <legion@kernel.org>
->     Acked-by: Heiko Carstens <hca@linux.ibm.com>
->     Link: https://patch.msgid.link/20d40a7a3a053ba06a54155e777dcde7fdada1db.1758182101.git.legion@kernel.org
->     Signed-off-by: Nathan Chancellor <nathan@kernel.org>
->     Stable-dep-of: 9338d660b79a ("s390/vmlinux.lds.S: Move .vmlinux.info to end of allocatable sections")
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
-> index 1c606dfa595d8..feecf1a6ddb44 100644
-> --- a/arch/s390/kernel/vmlinux.lds.S
-> +++ b/arch/s390/kernel/vmlinux.lds.S
-> @@ -209,6 +209,11 @@ SECTIONS
->  	. = ALIGN(PAGE_SIZE);
->  	_end = . ;
->  
-> +	/* Debugging sections.	*/
-> +	STABS_DEBUG
-> +	DWARF_DEBUG
-> +	ELF_DETAILS
-> +
->  	/*
->  	 * uncompressed image info used by the decompressor
->  	 * it should match struct vmlinux_info
-> @@ -239,11 +244,6 @@ SECTIONS
->  #endif
->  	} :NONE
->  
-> -	/* Debugging sections.	*/
-> -	STABS_DEBUG
-> -	DWARF_DEBUG
-> -	ELF_DETAILS
-> -
->  	/*
->  	 * Make sure that the .got.plt is either completely empty or it
->  	 * contains only the three reserved double words.
-> 
+Cc: stable@vger.kernel.org
+Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+---
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
+diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+index 3e2752c7dd09..28e0fffe2542 100644
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -200,6 +200,26 @@ static bool rockchip_pcie_link_up(struct dw_pcie *pci)
+ 	return FIELD_GET(PCIE_LINKUP_MASK, val) == PCIE_LINKUP;
+ }
+ 
++/*
++ * See e.g. section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0 for the steps
++ * needed to support L1 substates. Currently, not a single rockchip platform
++ * performs these steps, so disable L1 substates until there is proper support.
++ */
++static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
++{
++	u32 cap, l1subcap;
++
++	cap = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
++	if (cap) {
++		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
++		l1subcap &= ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
++			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
++			      PCI_L1SS_CAP_PCIPM_L1_2);
++		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
++		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
++	}
++}
++
+ static void rockchip_pcie_enable_l0s(struct dw_pcie *pci)
+ {
+ 	u32 cap, lnkcap;
+@@ -264,6 +284,7 @@ static int rockchip_pcie_host_init(struct dw_pcie_rp *pp)
+ 	irq_set_chained_handler_and_data(irq, rockchip_pcie_intx_handler,
+ 					 rockchip);
+ 
++	rockchip_pcie_disable_l1sub(pci);
+ 	rockchip_pcie_enable_l0s(pci);
+ 
+ 	return 0;
+@@ -301,6 +322,7 @@ static void rockchip_pcie_ep_init(struct dw_pcie_ep *ep)
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	enum pci_barno bar;
+ 
++	rockchip_pcie_disable_l1sub(pci);
+ 	rockchip_pcie_enable_l0s(pci);
+ 	rockchip_pcie_ep_hide_broken_ats_cap_rk3588(ep);
+ 
 -- 
-Rgrds, legion
+2.51.0
 
 
