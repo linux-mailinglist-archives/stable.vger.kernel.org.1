@@ -1,84 +1,84 @@
-Return-Path: <stable+bounces-185819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEC6BDEB8D
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:19:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3B6BDEB60
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 15:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 18EA8505D17
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:18:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B04748181D
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A69221FC7;
-	Wed, 15 Oct 2025 13:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245DA22424E;
+	Wed, 15 Oct 2025 13:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lVA/PdEc"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TfVNaGvx"
 X-Original-To: Stable@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339B91EEA5D
-	for <Stable@vger.kernel.org>; Wed, 15 Oct 2025 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B11320408A
+	for <Stable@vger.kernel.org>; Wed, 15 Oct 2025 13:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760534294; cv=none; b=OSQMbMNk3P+5r3xyIIdMCa7PD4+x9qHhbRXmmJ04Bsi77HdWCzn+6lgPG5n39tDQSZKiTSvM/2HhwMGK3nXBzyPJmLYn8dqMCUjkJBEMndrL4NcemPbo+uSQ4yMinSCqx19OgONfTMSEBijipqeNWsiHXKQL19aSuhr8zRGATxM=
+	t=1760534295; cv=none; b=AwWxnS71N36KRGN8qqwoa2JgW72FZSqRelNncwLFn7jaleDkqKuKcQkGJBghPpnFJb7BA19ue5Bt+KB5IN2ZMMSnoKp4L09Rep+5VLsdaoNBlfo8ETbNE1CVCXTI72RXRho7Ov+YapU3fSJXYBf9S69iA2uxyXTzeaBmMHF0F+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760534294; c=relaxed/simple;
-	bh=L098FDafS8pm9ObOLw9+1ZKs3tCLohX1/Ibu253xq/o=;
+	s=arc-20240116; t=1760534295; c=relaxed/simple;
+	bh=FciMJV9TB+OlUWS0wBBXljHH3OORGyEACeJ2UfDr5yA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDv7vxoaJcDGd4S/ujt3CXouclFILWbF5Z7rKZzO858w27+jc17mzpALRx9/iqbsIEhkw2EaodIb3XC7FVNd8YMVkvgxAdS/aYzjIOU4RdrE7yNx9bYqgXTbX2jO6L53PBWtCz8cLwyetkiuMM6kcyFxA68c/SuXGgpFvU+gejc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lVA/PdEc; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version; b=FWgCKUqWwY09zgClhijvN2pWdaCa5Q/QVnHAEUgmafCT84UlrGJNHRVku/eThlameZJArKY+KPbg4V/rZI2NirvE9Dm4/dyEn9Dlt3GAtHiK1gk2T16aei5wWUKwsCicxoribWDNYczn2dnJ2WDtHq/am8pfH5AMj1UeaiNpQV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TfVNaGvx; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59FAV2G6004288
-	for <Stable@vger.kernel.org>; Wed, 15 Oct 2025 13:18:12 GMT
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59FAqe4K009128
+	for <Stable@vger.kernel.org>; Wed, 15 Oct 2025 13:18:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=nnMgSGQvZWa
-	892OSdBf3qcySVN9QLFS9/sViBiMJgyA=; b=lVA/PdEcyNkWadMnx9OhqO4b34k
-	jBIKkQ0EmtxqrF02yhgh0lchJncIrev97kamcBArfQlzTTSTa7DyglY4McI+hL9r
-	AHRBKdOTnIrGEdMB9q3vznQtJsH/NJmlx3bBfvyrsFu8RV3Wv/6dGZBnN2QbI6ql
-	Fsmd6ZNaA3Rt2IRrJn3eqam5CZ/vaad/vQDlurKHBU7KzgYwl+M36qaq04Ek9ZQM
-	742QX6cBjfAdtAmAYCDC2dTAr4zwH/Tl7bAk2/Q9ibmlBnTFNWO3GoRHIoIkdkmJ
-	JUyCIt0VLDmvHkAkZzZmLogQyrJFt951G0r2KyvmmPtc+lYOvMcZt4vbMqA==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49qgdg4c6d-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=qHkE+bKT/J8
+	nbQ5S5gGHutvtvukdRZt0lHpKcZkg+54=; b=TfVNaGvxxRSKVcbpPC/Wp1JJJec
+	YlsdhhhsEh5aeuH/7/kzZN0kVr9ULIK3W0b3ZuqtLUY+wazTc3YN6YtUTFITAP55
+	c5Bl9XBUJ3Mb2xX+E0tj2YKVMAypXQ6+6J6Gaj0Hnzy3I2sFRDJns1D+nWa/h7XQ
+	qRUKvF8YMkI3j/eKwidoNIc2ZkhCDdBvuCREBIzUxR3wLafIMmCyuOEOGQEhP/bt
+	F+4uxX/hpKRld93fh4EfiNd8coNXHUZci/HtUzLhrGKip02u16sJqrkP5o/yOAxT
+	1AN2wy1nfOCFLR6avE8THRn23OvklOjPMwq4T77rzG0Xr1DqTNirboY/2MQ==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49qg0c4ebq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
 	for <Stable@vger.kernel.org>; Wed, 15 Oct 2025 13:18:12 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-887c8b564ffso298105085a.0
-        for <Stable@vger.kernel.org>; Wed, 15 Oct 2025 06:18:11 -0700 (PDT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-876ee102b44so32372116d6.1
+        for <Stable@vger.kernel.org>; Wed, 15 Oct 2025 06:18:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1760534291; x=1761139091;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nnMgSGQvZWa892OSdBf3qcySVN9QLFS9/sViBiMJgyA=;
-        b=XfVHiI57NmLtPkzbVkRJdob5rJLGOAXuUS6y0XN4afrC7Xfh7xvmPpHCPlZ+A0/uhg
-         VyllepkQWxEgWmxqEUUvLA3jtqW+guSWY2dRWGrJw4+KCb0wsRqEGnE1EYIuSxa3/7UJ
-         k+w1GCFkFwSTsLMHd4aHuRqYPMz3YlpAt/HFZ+VHhA5AhAkQr/Hbql6pwdnNw0yFxoI3
-         Ktqa2tRsxukMTAjDLNBuMbwr/2kKy6Ra30Iq0hKjqzBNBQ8xCM5xf5uZJoNNUMdwssqD
-         HLumLmDDfApcbvvKxMedYSarinx6sIYbq5rDjeE8K5v/6obumad7T2uDpPOzwstW5UN4
-         Z2ew==
-X-Forwarded-Encrypted: i=1; AJvYcCWs2XCdrmiqXQMY6Qq6thLvySh70uRpOBn/oJseE7kaIrnWPj0zIXkbtDvxYBcbhFaPf15RDy4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+ymbb8cvVlAjkUG5Trw7wwUYmPoVNmWIxq9QANmpW3bvmP7CN
-	YWQZqWCfkUDOoeHtkzLGUR9LvhOzMVDzjHsYFuxL+yEZRYOP4GePO7rJVyJzUVmq9aQ2CgtIsoY
-	AE4PVVOEtQ/Com2KjuXF0o18Xj7I1qosYUJVE8reXfV21Ml/55UZS1T/mK/o=
-X-Gm-Gg: ASbGncvPGDLlSZ5f8woS/cr91d/8gh7i3E1G6YD6F9SD1/IiXECpBfnrKp056yoIi+P
-	8wJCCO8D8rzoFEEyfmH8kFx6we2XTerMBPBWwYykz3DdtYqXtUy8x1ppXNJ4Ykg1hO5ToSJQcMD
-	Vr5OIZyjSRLEDFapmTgK7DqXipgSoSXhEss1+XKDfCBLjCcA6O9NOoQLGhukyJA+8i//s4NlmrT
-	mXYjX0Vyepn5iD6fk1S55PtuNC+mSDMqKDLoUyKZ0fTQk3ceUVAHjySIg5DKKleBRmzocDOZA1F
-	ZpdrjrwsRGn1IXLYmCIzVET9H6aNkbKdUGLyiGvhPdcDuxN+lsIyPA==
-X-Received: by 2002:ac8:7e89:0:b0:4d0:fbd5:4cd7 with SMTP id d75a77b69052e-4e890df9b42mr974741cf.16.1760534290517;
+        bh=qHkE+bKT/J8nbQ5S5gGHutvtvukdRZt0lHpKcZkg+54=;
+        b=HQmCrikvYs3Zx8ObftXP89NilVOx0pm7J9j7rfRLo/rR4ZigEQKR0mOfS+d2gL2eVK
+         QbIOSrwMD/tXKWkVweXS5Yjtk4Wo0pdzRnRpuuxBDf//M/RKBOlSpe6BorA0BMAhCsrk
+         k7P8fEF711L4Ts2t/btY1WTD4O7DbN8Yn9C4GrjYaFkcK8SSQY6O1ZB2YNhV6ZZxNmVM
+         s9BE2++tCPsuFi2jPnP8JxfWTBMnAadP3K+9Ig2ogwxELttWhSmx5EX+65CN9rbJbygL
+         VGY9W0627zAPHDp+kEbxSz9m0YjYDz85xdhgELLQ6TWmqk+NFnOJJWxyuILA4q1lfqk+
+         Qbrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUn8JeIXFQ69Cum5OxwzPwDwESmbeUP/PEtG0SL31096s0hHWYM0gr+Kjta+IYWfvBw+gY8jF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJHFTw68mLrX9Dn4C6E1YB3sDjl67zOuajC9YBOMWmpljZAw+6
+	lHRIH4aM64xS92eDx36Q8Vn+KqluaHfzS4zhKT0qMYJgSsJHawRLXVBWglcLKeySgrCI4mYQO/g
+	5ite6mIzriyWUX/OP/i+6jTxESAfLGjCE2QKKya81duJYhEQ822CQR4ZIKLA=
+X-Gm-Gg: ASbGncsKv3SN3r7Xrhs77gS57/W/LWNggUxl2vqCOLeb7rraFf1sodMUIGcXSxDqeXV
+	sNQ/LfQYirbghs0tYH+aJylrtSulsnw/fvzCER5icyExo4asoqHxpEA4XWUf1yTmb7J8jrEO+bj
+	xqfP8DLxi/siX0ovMJe6JAICacD6xLWUIlQMlyjk9MCxBGpmtUQCaDwHkruhiwrNsADWSBHLS/t
+	H5raU1uxuWkuRhDi2xRdoXFK85Lk57srUx5I/mz/jYXMh7A9I8WpzzP+MZtzVtaeQo79bV6ybck
+	YXgie9rzzNNJDm9g6NYIrEVBmr+st93a/WDuoC8W98NPOS9vSMYmEA==
+X-Received: by 2002:ac8:5a45:0:b0:4e6:eaa9:8a2a with SMTP id d75a77b69052e-4e890defe64mr794891cf.15.1760534291279;
+        Wed, 15 Oct 2025 06:18:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGYMWisWH0+ZGB14jA4jsreCXonf5bTEm2tvxmjYdPJwPg9hoSqnxhGbMTLY6h3qG2Avbm8MQ==
+X-Received: by 2002:ac8:5a45:0:b0:4e6:eaa9:8a2a with SMTP id d75a77b69052e-4e890defe64mr794491cf.15.1760534290799;
         Wed, 15 Oct 2025 06:18:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQPK/8F9/L9WtmiMGFpf77cZuz+9kWatOyQjFPz0hd1jWTnhTVvG4UfIIpB1jflL+E3HXJNw==
-X-Received: by 2002:ac8:7e89:0:b0:4d0:fbd5:4cd7 with SMTP id d75a77b69052e-4e890df9b42mr974021cf.16.1760534289820;
-        Wed, 15 Oct 2025 06:18:09 -0700 (PDT)
 Received: from debian ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fc155143fsm262081245e9.11.2025.10.15.06.18.09
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fc155143fsm262081245e9.11.2025.10.15.06.18.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 06:18:09 -0700 (PDT)
+        Wed, 15 Oct 2025 06:18:10 -0700 (PDT)
 From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 To: broonie@kernel.org
 Cc: perex@perex.cz, tiwai@suse.com, srini@kernel.org, alexey.klimov@linaro.org,
@@ -86,9 +86,9 @@ Cc: perex@perex.cz, tiwai@suse.com, srini@kernel.org, alexey.klimov@linaro.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
         Stable@vger.kernel.org
-Subject: [PATCH 3/9] ASoC: qcom: qdsp6: q6asm-dai: set 10 ms period and buffer alignment.
-Date: Wed, 15 Oct 2025 14:17:33 +0100
-Message-ID: <20251015131740.340258-4-srinivas.kandagatla@oss.qualcomm.com>
+Subject: [PATCH 4/9] ASoC: qcom: q6asm-dai: perform correct state check before closing
+Date: Wed, 15 Oct 2025 14:17:34 +0100
+Message-ID: <20251015131740.340258-5-srinivas.kandagatla@oss.qualcomm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251015131740.340258-1-srinivas.kandagatla@oss.qualcomm.com>
 References: <20251015131740.340258-1-srinivas.kandagatla@oss.qualcomm.com>
@@ -99,64 +99,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAyNSBTYWx0ZWRfX6CLC1r7RSGIA
- SoNOWqxoXa1B+gxYQDg6h30STYWJRjB5iST4lvylKPASvO9iFq3sqkhIxf2opQXsAmdyZlO1AMx
- /8LSxd7YltxKMwthZcHqY4eW5yAUeeys7XX8PcXsIRxkd3Hm+bOEEFfvkXYfxFBPtuflWZh/9Bx
- tBOZUcZ7SpKs3xVzJvEUuUsYbIuINEpTaLYrwWe6eOyEH290xN+UU84sZXMarcESjORq6Cs3BCV
- h8/aJaQUZBj4wgfNqrTkKLcIIg0le7hIWTejZqY/CuSjBI4fIBCWWHia3D/jboIDthNW9UkDrAL
- bFqakeZf57XK5/NSM6760WXyzrcPSwcWAMfHTYfrc/Uy8RlK10kFDYi4LwtVA6jjEa355Nm+C27
- bG5If0tElh3JbLxqyOxHqN35boJwEw==
-X-Proofpoint-GUID: Vo4RvnPJYPCXyRTH4AjDFb4S2yvgmip-
-X-Proofpoint-ORIG-GUID: Vo4RvnPJYPCXyRTH4AjDFb4S2yvgmip-
-X-Authority-Analysis: v=2.4 cv=J4ynLQnS c=1 sm=1 tr=0 ts=68ef9f14 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+X-Proofpoint-GUID: dQnALfwPsjclG44NUgBYKS2bLPfh4Fg1
+X-Proofpoint-ORIG-GUID: dQnALfwPsjclG44NUgBYKS2bLPfh4Fg1
+X-Authority-Analysis: v=2.4 cv=eaIwvrEH c=1 sm=1 tr=0 ts=68ef9f14 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
  a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=Ubk33e6zxpvlPXQfVdEA:9 a=IoWCM6iH3mJn3m4BftBB:22
+ a=MOmvoJmQv4oe-d1MVI8A:9 a=iYH6xdkBrDN1Jqds4HTS:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAyMiBTYWx0ZWRfX++ityj8ZKqmq
+ Tbs11tPcmeB2hqFUmhmTZIrUY7rsLmQ9OEZb0o2cEUosnJeNNnF2BB3+Hl8NZfjqcrAswpeRbhq
+ mzDZlbEiy3pYLdR2XLedi63eX+KIGrERD+ra+V4Ei1vfL26JqR+zzyrywY+NbTgoAcO9gpHr3tf
+ /jLmFs5hfj+W86R+rx+CTiguijwxwvOm9aJ0RT294398cnmp7c5n1DrwSwDLaUyHMzc5nf9+IgM
+ XyRq2UBZShZo+umo+wI+23aTtD0zSm0DZPdHNBLPBTaPAVgLNS9FGqyP9UFS8VJRJe2FpCdMA15
+ uf8CtQiY94uixISoW9ANbNxObQ5HdcVnYTkyJvpgSqzyYdmymFRUXF8Zky6gOxbXh2ydp3TX0Op
+ RpqcPhwTGVbPVhv4z7dCsdmbaZYgGA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-15_05,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0
- bulkscore=0 suspectscore=0 clxscore=1015 phishscore=0 spamscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
- definitions=main-2510110025
+ bulkscore=0 priorityscore=1501 spamscore=0 impostorscore=0 phishscore=0
+ adultscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110022
 
-DSP expects the periods to be aligned to fragment sizes, currently
-setting up to hw constriants on periods bytes is not going to work
-correctly as we can endup with periods sizes aligned to 32 bytes however
-not aligned to fragment size.
+Do not stop a q6asm stream if its not started, this can result in
+unnecessary dsp command which will timeout anyway something like below:
 
-Update the constriants to use fragment size, and also set at step of
-10ms for period size to accommodate DSP requirements of 10ms latency.
+q6asm-dai ab00000.remoteproc:glink-edge:apr:service@7:dais: CMD 10bcd timeout
+
+Fix this by correctly checking the state.
 
 Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/qcom/qdsp6/q6asm-dai.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/sound/soc/qcom/qdsp6/q6asm-dai.c b/sound/soc/qcom/qdsp6/q6asm-dai.c
-index b616ce316d2f..e8129510a734 100644
+index e8129510a734..0eae8c6e42b8 100644
 --- a/sound/soc/qcom/qdsp6/q6asm-dai.c
 +++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -403,13 +403,13 @@ static int q6asm_dai_open(struct snd_soc_component *component,
+@@ -233,13 +233,14 @@ static int q6asm_dai_prepare(struct snd_soc_component *component,
+ 	prtd->pcm_count = snd_pcm_lib_period_bytes(substream);
+ 	prtd->pcm_irq_pos = 0;
+ 	/* rate and channels are sent to audio driver */
+-	if (prtd->state) {
++	if (prtd->state == Q6ASM_STREAM_RUNNING) {
+ 		/* clear the previous setup if any  */
+ 		q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
+ 		q6asm_unmap_memory_regions(substream->stream,
+ 					   prtd->audio_client);
+ 		q6routing_stream_close(soc_prtd->dai_link->id,
+ 					 substream->stream);
++		prtd->state = Q6ASM_STREAM_STOPPED;
  	}
  
- 	ret = snd_pcm_hw_constraint_step(runtime, 0,
--		SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 32);
-+		SNDRV_PCM_HW_PARAM_PERIOD_SIZE, 480);
- 	if (ret < 0) {
- 		dev_err(dev, "constraint for period bytes step ret = %d\n",
- 								ret);
- 	}
- 	ret = snd_pcm_hw_constraint_step(runtime, 0,
--		SNDRV_PCM_HW_PARAM_BUFFER_BYTES, 32);
-+		SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 480);
- 	if (ret < 0) {
- 		dev_err(dev, "constraint for buffer bytes step ret = %d\n",
- 								ret);
+ 	ret = q6asm_map_memory_regions(substream->stream, prtd->audio_client,
 -- 
 2.51.0
 
