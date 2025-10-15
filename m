@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-185855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70585BE0A07
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 22:25:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E74BE0A0D
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 22:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBAC13B978E
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 20:25:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF50D19C61DE
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 20:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA342FAC15;
-	Wed, 15 Oct 2025 20:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86064308F1E;
+	Wed, 15 Oct 2025 20:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GhadSrxt"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="H229lSdx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F7A2C15A8;
-	Wed, 15 Oct 2025 20:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C832C15A8;
+	Wed, 15 Oct 2025 20:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760559907; cv=none; b=hmMhecFXDYGxz+9GesgxMCcrMdkd+/kbJ/rLprU4P3HhCTGL7Saf63n5NYPm2cGGY5cPcIxzmYL4qXhLq8G0VNExW5fvqYVhu4uwp6axIo7IPCIHtxRSTYXNAznj7Us6GwChhcB5EPzYIO+RBERCfb/I5WHMzCle5lgF5BlSrG0=
+	t=1760559910; cv=none; b=qsmJOtyXDgRHySN92y8RM/k9MwYrHgiTgG/tV1OE0fOFop3NMS+MlJncdryitU3CUbMnaF9TotZynxEP3vcvaSsMHiZtFLmBOWCNBI5kRyy8azZRy+IudQ7CBOYEuRdV/Jfpxr+vI36mkMpFGxFFOC05EgJ7RbbJplO3iRhgikU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760559907; c=relaxed/simple;
-	bh=0SAQvtwWaIwgSEfNAKkLIC4TJ8TQw3EtOv47sBDXvtc=;
-	h=Date:To:From:Subject:Message-Id; b=UudlwX8luZKf7UKe0WTBxbeMYYRJ0ICVzEBgB5hu2TH0qyiUq+0nexa/W0ocIOrklY9+fXRpG91R0kef3k/L4fvplcH8SZ8nstgpP8AyI5k7vgwBXjQoWMEIMifsELQVDHmsjCZQygOuvhCBmoySqhxB9XQrLF2twHbWTC4RwSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GhadSrxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC08C4CEFB;
-	Wed, 15 Oct 2025 20:25:05 +0000 (UTC)
+	s=arc-20240116; t=1760559910; c=relaxed/simple;
+	bh=ZZlGCvmSUvujse2XK/XgXxJ6PXjh0QnK5Fwt8+R5HC8=;
+	h=Date:To:From:Subject:Message-Id; b=X+i0q10I2v1v/N39GLN8feQ2+692Bop7uuvCh+3bnCteNNEFKB56w4OHFEX1Za/kxlsZhqszc59A+PA1BlJtI7GxTvTNcJXoFzu6HyIMQ8+zcUORDSE7rZvuRtsJ9BR8FYE+eF3Pcf9Aq59/+oby72B/06F0LTCOQtnAo85JhN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=H229lSdx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8815BC4CEF8;
+	Wed, 15 Oct 2025 20:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760559905;
-	bh=0SAQvtwWaIwgSEfNAKkLIC4TJ8TQw3EtOv47sBDXvtc=;
+	s=korg; t=1760559907;
+	bh=ZZlGCvmSUvujse2XK/XgXxJ6PXjh0QnK5Fwt8+R5HC8=;
 	h=Date:To:From:Subject:From;
-	b=GhadSrxtgNfRLLs6JA8P0m39GdrsQ+8vFv9AxUIDyGC8dByHf1bhyznV1wVfR6+4m
-	 I5iRVtOgMRdmQFDnXKLXJ6a3DbWB0VELojJqBZII2vhpX3IYl347+0w0HGCR+s96UX
-	 p9huuy7WqiYYuRD7WPx6cmRscCInppUkGbwYGaKE=
-Date: Wed, 15 Oct 2025 13:25:05 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+	b=H229lSdxpfKR1SO37P+acsOO2d+/44bd8y1Qc88uuz482yUaDZid9e0zFmRH3eUy2
+	 ECWxxogSDjxRcHjXxtWly3yz3aJZzswzacIR3x2nB8DI4u/846AftOrtNUY2qPLcbc
+	 2L0QyfpAgP182d8Nqi1roUrHIaWdS7rne2XbUwqQ=
+Date: Wed, 15 Oct 2025 13:25:06 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,robin.murphy@arm.com,isaacmanjarres@google.com,hch@lst.de,catalin.marinas@arm.com,m.szyprowski@samsung.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-damon-sysfs-catch-commit-test-ctx-alloc-failure.patch removed from -mm tree
-Message-Id: <20251015202505.8DC08C4CEFB@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] dma-debug-dont-report-false-positives-with-dma_bounce_unaligned_kmalloc.patch removed from -mm tree
+Message-Id: <20251015202507.8815BC4CEF8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,64 +50,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/damon/sysfs: catch commit test ctx alloc failure
+     Subject: dma-debug: don't report false positives with DMA_BOUNCE_UNALIGNED_KMALLOC
 has been removed from the -mm tree.  Its filename was
-     mm-damon-sysfs-catch-commit-test-ctx-alloc-failure.patch
+     dma-debug-dont-report-false-positives-with-dma_bounce_unaligned_kmalloc.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs: catch commit test ctx alloc failure
-Date: Fri, 3 Oct 2025 13:14:54 -0700
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: dma-debug: don't report false positives with DMA_BOUNCE_UNALIGNED_KMALLOC
+Date: Thu, 9 Oct 2025 16:15:08 +0200
 
-Patch series "mm/damon/sysfs: fix commit test damon_ctx [de]allocation".
+Commit 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is
+not cache-line-aligned") introduced DMA_BOUNCE_UNALIGNED_KMALLOC feature
+and permitted architecture specific code configure kmalloc slabs with
+sizes smaller than the value of dma_get_cache_alignment().
 
-DAMON sysfs interface dynamically allocates and uses a damon_ctx object
-for testing if given inputs for online DAMON parameters update is valid.
-The object is being used without an allocation failure check, and leaked
-when the test succeeds.  Fix the two bugs.
+When that feature is enabled, the physical address of some small
+kmalloc()-ed buffers might be not aligned to the CPU cachelines, thus not
+really suitable for typical DMA.  To properly handle that case a SWIOTLB
+buffer bouncing is used, so no CPU cache corruption occurs.  When that
+happens, there is no point reporting a false-positive DMA-API warning that
+the buffer is not properly aligned, as this is not a client driver fault.
 
-
-This patch (of 2):
-
-The damon_ctx for testing online DAMON parameters commit inputs is used
-without its allocation failure check.  This could result in an invalid
-memory access.  Fix it by directly returning an error when the allocation
-failed.
-
-Link: https://lkml.kernel.org/r/20251003201455.41448-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20251003201455.41448-2-sj@kernel.org
-Fixes: 4c9ea539ad59 ("mm/damon/sysfs: validate user inputs from damon_sysfs_commit_input()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.15+]
+[m.szyprowski@samsung.com: replace is_swiotlb_allocated() with is_swiotlb_active(), per Catalin]
+  Link: https://lkml.kernel.org/r/20251010173009.3916215-1-m.szyprowski@samsung.com
+Link: https://lkml.kernel.org/r/20251009141508.2342138-1-m.szyprowski@samsung.com
+Fixes: 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is not cache-line-aligned")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Inki Dae <m.szyprowski@samsung.com>
+Cc: Robin Murohy <robin.murphy@arm.com>
+Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/sysfs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/dma/debug.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/mm/damon/sysfs.c~mm-damon-sysfs-catch-commit-test-ctx-alloc-failure
-+++ a/mm/damon/sysfs.c
-@@ -1473,6 +1473,8 @@ static int damon_sysfs_commit_input(void
- 	if (IS_ERR(param_ctx))
- 		return PTR_ERR(param_ctx);
- 	test_ctx = damon_new_ctx();
-+	if (!test_ctx)
-+		return -ENOMEM;
- 	err = damon_commit_ctx(test_ctx, param_ctx);
- 	if (err) {
- 		damon_destroy_ctx(test_ctx);
+--- a/kernel/dma/debug.c~dma-debug-dont-report-false-positives-with-dma_bounce_unaligned_kmalloc
++++ a/kernel/dma/debug.c
+@@ -23,6 +23,7 @@
+ #include <linux/ctype.h>
+ #include <linux/list.h>
+ #include <linux/slab.h>
++#include <linux/swiotlb.h>
+ #include <asm/sections.h>
+ #include "debug.h"
+ 
+@@ -594,7 +595,9 @@ static void add_dma_entry(struct dma_deb
+ 	if (rc == -ENOMEM) {
+ 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
+ 		global_disable = true;
+-	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC)) {
++	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
++		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
++		     is_swiotlb_active(entry->dev))) {
+ 		err_printk(entry->dev, entry,
+ 			"cacheline tracking EEXIST, overlapping mappings aren't supported\n");
+ 	}
 _
 
-Patches currently in -mm which might be from sj@kernel.org are
+Patches currently in -mm which might be from m.szyprowski@samsung.com are
 
-mm-damon-core-fix-list_add_tail-call-on-damon_call.patch
-mm-damon-core-use-damos_commit_quota_goal-for-new-goal-commit.patch
-mm-zswap-remove-unnecessary-dlen-writes-for-incompressible-pages.patch
-mm-zswap-fix-typos-s-zwap-zswap.patch
-mm-zswap-s-red-black-tree-xarray.patch
-docs-admin-guide-mm-zswap-s-red-black-tree-xarray.patch
 
 
