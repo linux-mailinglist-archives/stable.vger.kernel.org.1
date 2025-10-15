@@ -1,97 +1,57 @@
-Return-Path: <stable+bounces-185807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B514CBDE56D
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:52:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B79CBDE74C
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1968E3579F7
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 11:52:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D69193B3F4C
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13823233EF;
-	Wed, 15 Oct 2025 11:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943E430BB87;
+	Wed, 15 Oct 2025 12:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QcP0LiJT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eHq0Y1T0"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F7B2C028E
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 11:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C88A31BCA9;
+	Wed, 15 Oct 2025 12:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760529129; cv=none; b=swPkyAio5facryZAR682IOxLZhTZiOS8nVB8M1s/CSa2GrQFvtnpp4nN+4StjK1xliBrFO2Buf1Q2pR7uRPiinR5jqKoUNHz02xyTXuKZE4K+GJ6xika2Ra3eVVMHHLhChVBh9o8sp5WiWv4RrO3+Qq+W9LrFq+di/qjSzfhbeE=
+	t=1760531048; cv=none; b=Za1joIFNLXROTdRBIWnSbWChkLmLDSKg8nTke30mSiTdSp6MoUbgHZ9d6ILBnl2keonHJiLIGldBl3K6SfDSM+sLC1EHw3I03rHxAivE2/QNA9lqwKwJe7QlQg+HowisbUeGnW3EgfSYC8sZmleQwBDVMq75yFfQ64aa4dCgKkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760529129; c=relaxed/simple;
-	bh=C+fUmygZgWDPVlTd9fhtHxLEbc0UkGPOIkWRbGE3PCI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CkzAhFp2BnHwd6CaU2AqFG7cm5aGNkIg72jI6JVojKRVyVboQ0ZoegD2xdkDa+2BDny2AENP9Ha4BW0FgVbyDVyYo6j7uPZfPwvsjOMvdTSBxdAIG+ZV+X/kbHtCdeo4EqH/973PpsYrQ3udWC+sZGeJhjTwzicrJ/s2LnG0CAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QcP0LiJT; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760529125;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ODJk05V7SoMlUuxQdA+kawSNJMOd5HI5bDkXGyTXt0c=;
-	b=QcP0LiJTOyW0bbW8acQR72TEcblBv2QTf1H10U+P9qs9GLjlPYyng6Yzkz4vBZsCXgu0tj
-	czWWuWzIZkzJZ5EiaqaELTKfa4V1IuzGxOY/0s6pFAP/TZW9AzGT82qBFaZy45MSEHn37k
-	4nbDuVTagitNv5Ztfnr97urPp/AOPLA=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-286-AfwHSx9tMvardKbm26Mm5w-1; Wed, 15 Oct 2025 07:52:04 -0400
-X-MC-Unique: AfwHSx9tMvardKbm26Mm5w-1
-X-Mimecast-MFC-AGG-ID: AfwHSx9tMvardKbm26Mm5w_1760529124
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-78e50889f83so400644396d6.1
-        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 04:52:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760529124; x=1761133924;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ODJk05V7SoMlUuxQdA+kawSNJMOd5HI5bDkXGyTXt0c=;
-        b=gMUzFeDEmhktT+souJ1oUGDeM00ImHajxsiPzmNOrF/w1JeAr1jw6IYnIOTj/oTbqW
-         Bp3BV3LFUQZXX42qGMnIwxjZEEW3XZWNA56pJPAj0WhcPBbf+CNzbX8/8HhWu6RKhGog
-         Gm7vubqyp2w0cdYNDPByYwTdjQyacquvB0RpWkhj/jlIqFdo78lVeFiopQsJ7inupm3f
-         N/7Nyyw14C9BGrlPO+Zk14b1da7KksnkinPQ3ZHFV1TdAlM4RKAaR+oGw9IMEL/aN4eS
-         Jcq4E0eJup0fVYGYsrO4q8g/g56l4ZZ6xnEgj9ydlcBxL7iqrfb1xPfAbyZ18VrutjyW
-         LBcg==
-X-Forwarded-Encrypted: i=1; AJvYcCWkG5kAJIYTsLJShCr1e91npG+NCjMaz0JjyioexuOErjwZycI6mKI9sa2HSK4rd7inVbO/r1w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymtBiZX2QOOIaUEmCic622BHnu9cDn69Sb3xp5HP7BQwcmrj3A
-	u+OVEJ2Pdso52m3cRergn0TayC3+dhE+i7lOiZUMkdJrN67QTDN+6O5vgXWCSeK5m+PLYfCTnXx
-	hWba/e9ClMM2jferEgJTtaPSS9Axoz3QdjU4hc4Ku9D3EAjrJIKjB+681UQ==
-X-Gm-Gg: ASbGncuIEaeOU+99uCssCj++E82LlIHwfZZtsqjIR1YtJrtDk1pZ/WF88eePiaLJHNw
-	jCdPM7uYfbO0OMb0Sj4oUiqM2E+mMyE2KqKHB7VdOk9gM8U/pBSiaK0dvHgy8+gucflYD8fMDT1
-	gvEDNnxgPPEzex1z2mJH2NZrj1eapY4gK4mh3/hm4K2DS4Do4RMqn72XLHEzfa3r2eCSjWBFk6N
-	WKFTdmyQBbGm7XZef9wGEtF9QwhEoQPsZ43i/moSn6YZzXptU1f5xJLbgnaVd/jysTEjEK8eiBD
-	vpa8BQpuHBxwL1CF5b09W+3APQnpJhmGthjGIz4jISc9grvvoRBwZMQjDYMMQaTla7CM9dT6eAv
-	NopQOLLDg0ybO1qDhf7dIZmjo+HDTkQA=
-X-Received: by 2002:ad4:5aa4:0:b0:7a3:b6ab:6f2 with SMTP id 6a1803df08f44-87b2ef6f5f5mr435123786d6.63.1760529123809;
-        Wed, 15 Oct 2025 04:52:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHciI45rIpK/9xRv0T7MZA7oj7dUL8u5UMRTnG+gcBNElSmdluoXorUAhhiBXsuEnWRFIoRSA==
-X-Received: by 2002:ad4:5aa4:0:b0:7a3:b6ab:6f2 with SMTP id 6a1803df08f44-87b2ef6f5f5mr435123326d6.63.1760529123237;
-        Wed, 15 Oct 2025 04:52:03 -0700 (PDT)
-Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87c0121c18dsm16662196d6.22.2025.10.15.04.52.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 04:52:02 -0700 (PDT)
-Date: Wed, 15 Oct 2025 07:52:00 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable-commits@vger.kernel.org,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, stable@vger.kernel.org
-Subject: Re: Patch "clk: at91: peripheral: fix return value" has been added
- to the 6.17-stable tree
-Message-ID: <aO-K4FRm0KFhNLL9@redhat.com>
-References: <20251015113603.1333854-1-sashal@kernel.org>
+	s=arc-20240116; t=1760531048; c=relaxed/simple;
+	bh=einmqBwIuypeNxpCQimu1e9AUffXSE8F2adt++EgnoY=;
+	h=Date:From:To:Cc:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QadK4iedXL85tJLoCqcNtxcE1UuJXJkzpeD07PiYkkMQdG70Cl1ZJwnIhGRM7huWvcMetw3tHN+7faPDc4JuC9Wxrfo3eU+YxomiNEAqO0P9qLNMH6Z7ET5Lopi1LJc6mhT6mxEUXMb+Wx7VwYVH1Xng/t6pD36c2K9Cv8tBLXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eHq0Y1T0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B900EC4CEF8;
+	Wed, 15 Oct 2025 12:24:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760531045;
+	bh=einmqBwIuypeNxpCQimu1e9AUffXSE8F2adt++EgnoY=;
+	h=Date:From:To:Cc:From;
+	b=eHq0Y1T0h8wiHoyLD4P6Xeb07YuN8vFoJgyZXblnQh8Bnf4QN0Y1jZwWyWeD6v8Cd
+	 PLldPS/GZp1XaluXE76j86mkooAZ9IdPiofcNXO13arifK49cLaj/hH6Uynt7Tj763
+	 JzVk3vdPr23OfKddYRIUOrr4FwemY5XjeHT5Rs3jNe+S8m6h4Wh4cPEIHfrxyymnhD
+	 W5Pf7wHZSEQN8rJGy7zZU5eIb9dyHqQn/3zVhgdIAKtZ7MEUzrJBkPQcTomLEIJscH
+	 UJqjT+vsH10n5dKgW6zqpFvmhBJyAG0xHNZtsFOarKRdKgxVSvMoDt5ltRNADJyyYj
+	 CJfdbMjtQQbQA==
+Date: Wed, 15 Oct 2025 14:24:00 +0200
+From: Alexey Gladkov <legion@kernel.org>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Message-ID: <aO-SYFfYK4-cns9e@example.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,59 +60,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251015113603.1333854-1-sashal@kernel.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
 
-Hi Sasha,
+Bcc: 
+Subject: Re: Patch "s390: vmlinux.lds.S: Reorder sections" has been added to
+ the 6.17-stable tree
+Reply-To: 
+In-Reply-To: <20251015114101.1339594-1-sashal@kernel.org>
 
-On Wed, Oct 15, 2025 at 07:36:02AM -0400, Sasha Levin wrote:
+On Wed, Oct 15, 2025 at 07:41:01AM -0400, Sasha Levin wrote:
 > This is a note to let you know that I've just added the patch titled
 > 
->     clk: at91: peripheral: fix return value
+>     s390: vmlinux.lds.S: Reorder sections
 > 
 > to the 6.17-stable tree which can be found at:
 >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 > 
 > The filename of the patch is:
->      clk-at91-peripheral-fix-return-value.patch
+>      s390-vmlinux.lds.s-reorder-sections.patch
 > and it can be found in the queue-6.17 subdirectory.
 > 
 > If you, or anyone else, feels it should not be added to the stable tree,
 > please let <stable@vger.kernel.org> know about it.
 > 
+
+If you take this commit, then I think this commit is also needed:
+
+https://lore.kernel.org/all/20251008-kbuild-fix-modinfo-regressions-v1-3-9fc776c5887c@kernel.org/
+
 > 
+> commit 106cf24aac7413e5fb6aa632707ff81451a202c1
+> Author: Alexey Gladkov <legion@kernel.org>
+> Date:   Thu Sep 18 10:05:45 2025 +0200
 > 
-> commit cbddc84a11e6112835fced8f7266d9810efc52f3
-> Author: Brian Masney <bmasney@redhat.com>
-> Date:   Mon Aug 11 11:17:53 2025 -0400
-> 
->     clk: at91: peripheral: fix return value
+>     s390: vmlinux.lds.S: Reorder sections
 >     
->     [ Upstream commit 47b13635dabc14f1c2fdcaa5468b47ddadbdd1b5 ]
+>     [ Upstream commit 8d18ef04f940a8d336fe7915b5ea419c3eb0c0a6 ]
 >     
->     determine_rate() is expected to return an error code, or 0 on success.
->     clk_sam9x5_peripheral_determine_rate() has a branch that returns the
->     parent rate on a certain case. This is the behavior of round_rate(),
->     so let's go ahead and fix this by setting req->rate.
+>     In the upcoming changes, the ELF_DETAILS macro will be extended with
+>     the ".modinfo" section, which will cause an error:
 >     
->     Fixes: b4c115c76184f ("clk: at91: clk-peripheral: add support for changeable parent rate")
->     Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
->     Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
->     Signed-off-by: Brian Masney <bmasney@redhat.com>
+>     >> s390x-linux-ld: .tmp_vmlinux1: warning: allocated section `.modinfo' not in segment
+>     >> s390x-linux-ld: .tmp_vmlinux2: warning: allocated section `.modinfo' not in segment
+>     >> s390x-linux-ld: vmlinux.unstripped: warning: allocated section `.modinfo' not in segment
+>     
+>     This happens because the .vmlinux.info use :NONE to override the default
+>     segment and tell the linker to not put the section in any segment at all.
+>     
+>     To avoid this, we need to change the sections order that will be placed
+>     in the default segment.
+>     
+>     Cc: Heiko Carstens <hca@linux.ibm.com>
+>     Cc: Vasily Gorbik <gor@linux.ibm.com>
+>     Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+>     Cc: linux-s390@vger.kernel.org
+>     Reported-by: kernel test robot <lkp@intel.com>
+>     Closes: https://lore.kernel.org/oe-kbuild-all/202506062053.zbkFBEnJ-lkp@intel.com/
+>     Signed-off-by: Alexey Gladkov <legion@kernel.org>
+>     Acked-by: Heiko Carstens <hca@linux.ibm.com>
+>     Link: https://patch.msgid.link/20d40a7a3a053ba06a54155e777dcde7fdada1db.1758182101.git.legion@kernel.org
+>     Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+>     Stable-dep-of: 9338d660b79a ("s390/vmlinux.lds.S: Move .vmlinux.info to end of allocatable sections")
 >     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
+> index 1c606dfa595d8..feecf1a6ddb44 100644
+> --- a/arch/s390/kernel/vmlinux.lds.S
+> +++ b/arch/s390/kernel/vmlinux.lds.S
+> @@ -209,6 +209,11 @@ SECTIONS
+>  	. = ALIGN(PAGE_SIZE);
+>  	_end = . ;
+>  
+> +	/* Debugging sections.	*/
+> +	STABS_DEBUG
+> +	DWARF_DEBUG
+> +	ELF_DETAILS
+> +
+>  	/*
+>  	 * uncompressed image info used by the decompressor
+>  	 * it should match struct vmlinux_info
+> @@ -239,11 +244,6 @@ SECTIONS
+>  #endif
+>  	} :NONE
+>  
+> -	/* Debugging sections.	*/
+> -	STABS_DEBUG
+> -	DWARF_DEBUG
+> -	ELF_DETAILS
+> -
+>  	/*
+>  	 * Make sure that the .got.plt is either completely empty or it
+>  	 * contains only the three reserved double words.
+> 
 
-Please don't backport any of my round_rate() to determine_rate()
-migrations to the stable kernels. I have maybe close to 200 of these
-patches for various clk drivers, and stable can stay on round_rate().
-There's no functional change.
-
-Stephen mentioned this work on his pull to Linus about how this is all
-prerequisite work to get to the real task of improving the clk rate
-setting process.
-https://lore.kernel.org/linux-clk/20251007051720.11386-1-sboyd@kernel.org/
-
-Thanks,
-
-Brian
+-- 
+Rgrds, legion
 
 
