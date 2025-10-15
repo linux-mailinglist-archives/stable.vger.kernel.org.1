@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-185795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85E8BDE10E
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:44:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C135BDE241
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 13:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 852C13556A4
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 10:44:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 492D350414F
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 10:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A2631B803;
-	Wed, 15 Oct 2025 10:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F76D320CD8;
+	Wed, 15 Oct 2025 10:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5in4/xl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIZi0Wbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962FF31BCAB
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 10:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A89B321F20
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 10:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760525086; cv=none; b=gUGugc60LIGWmZc+jE1w3NHPQhPQ1SSLrBqR7EIybRZMAXdVz8dmmyzvhRfpNKP6IZfp1xOwhLtxrn5ix95pMAu7sn3Z6nmORZhQTC+QbkGfTuJQQ8bnkUqDGHXNuHILtARmqcoeFibI5y7Kz57NKUGQ11RqvqhT2Dfc/7DZy5Y=
+	t=1760525856; cv=none; b=jJrqt97g0n9zMwxyPmP4eeHtqb3tcidJ9bgQIIRqapK2MKFhuPFV2Am/fXnjmWwqN8iEiD8FMx8/gIjEKVN/L/wnKHs6gIzBs4X6qgcyUahlbgG0RrK1yJXtw9wgQEVOQWhitpUiKju2BqNQpuH6fHkJn0Jx/Bs8MvoxtUKk70A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760525086; c=relaxed/simple;
-	bh=IkdrhjP2TeVAiIBvyYPNhQRcEZbz/IcIoTnOEx+Y2ww=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y17mKus83wfwgQ6Kl8aI+U5kJk4dGkEcxSz9L6W4UOt6glgGnniv6KWvy02sxDxsKOnhjoL8iNr2KjzW1nLIEZnjrTVwMVrVKZ/VhLKmo2NAfF9c4z5rvriY0ARiQJUbbPjydqsV6bNSt84kV+6ecbPvv+MnYDVRmbQnoY6iNQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5in4/xl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65DBC4CEF8;
-	Wed, 15 Oct 2025 10:44:45 +0000 (UTC)
+	s=arc-20240116; t=1760525856; c=relaxed/simple;
+	bh=gAcQiJCKrBgbe0JeLj/3nc4aLPp3b+cLh1pxX6Ydrhs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RzY9jr+wv0X50cd6JpEWBFFCpMbW/Sf9R3vHS1F4gKeOaOabNHtZHmf0n3ZNwy9AmBT5Brolx68SKVrzrkCBPPFhK+jQHZAv2lME0x7x/rKIrfTnic8nVnZojKwTfL2X1RZi8t0JEzqanP0ekhepnIARAwi/J7veDMKwy8VwDns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIZi0Wbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9138BC116B1;
+	Wed, 15 Oct 2025 10:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760525086;
-	bh=IkdrhjP2TeVAiIBvyYPNhQRcEZbz/IcIoTnOEx+Y2ww=;
+	s=korg; t=1760525855;
+	bh=gAcQiJCKrBgbe0JeLj/3nc4aLPp3b+cLh1pxX6Ydrhs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=U5in4/xl2FNA5voiEeqEFkRaSeSl9h+F3F85MYFyQhdyVzY5bkkAHyh363zF3To/Q
-	 woouI0Bg8LD1mcz2k696y/8Sp08uDGEpuJbSos/LlQNg1T0O//N8CGUcbj4vSejklL
-	 rUgc5beHtiZnSE7Gl/67Gl6f6yIIIbsr6tsw6wvE=
-Subject: FAILED: patch "[PATCH] fscontext: do not consume log entries when returning" failed to apply to 5.15-stable tree
-To: cyphar@cyphar.com,brauner@kernel.org,dhowells@redhat.com
+	b=sIZi0Wbv7jzl9CMjERKEVPgFHWR7ded1ojQVNGiqLjZHw1Ijrd0NEEgZ9LA7uAHT2
+	 6GxyxxzH0W33wbDePzrBjSgrYdtCRzWO9s15GHFUsG865C/f1WpW0YfdjT2AHLbucb
+	 HbmAQuF+LPh5POFax0p8YjmQ014ZGoFtBWu7e5qo=
+Subject: FAILED: patch "[PATCH] statmount: don't call path_put() under namespace semaphore" failed to apply to 6.12-stable tree
+To: brauner@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 15 Oct 2025 12:44:43 +0200
-Message-ID: <2025101543-quake-judicial-9e2e@gregkh>
+Date: Wed, 15 Oct 2025 12:57:33 +0200
+Message-ID: <2025101533-mutt-routing-a332@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 72d271a7baa7062cb27e774ac37c5459c6d20e22
+git cherry-pick -x e8c84e2082e69335f66c8ade4895e80ec270d7c4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101543-quake-judicial-9e2e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101533-mutt-routing-a332@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,121 +77,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 72d271a7baa7062cb27e774ac37c5459c6d20e22 Mon Sep 17 00:00:00 2001
-From: Aleksa Sarai <cyphar@cyphar.com>
-Date: Thu, 7 Aug 2025 03:55:23 +1000
-Subject: [PATCH] fscontext: do not consume log entries when returning
- -EMSGSIZE
+From e8c84e2082e69335f66c8ade4895e80ec270d7c4 Mon Sep 17 00:00:00 2001
+From: Christian Brauner <brauner@kernel.org>
+Date: Fri, 19 Sep 2025 17:03:51 +0200
+Subject: [PATCH] statmount: don't call path_put() under namespace semaphore
 
-Userspace generally expects APIs that return -EMSGSIZE to allow for them
-to adjust their buffer size and retry the operation. However, the
-fscontext log would previously clear the message even in the -EMSGSIZE
-case.
+Massage statmount() and make sure we don't call path_put() under the
+namespace semaphore. If we put the last reference we're fscked.
 
-Given that it is very cheap for us to check whether the buffer is too
-small before we remove the message from the ring buffer, let's just do
-that instead. While we're at it, refactor some fscontext_read() into a
-separate helper to make the ring buffer logic a bit easier to read.
-
-Fixes: 007ec26cdc9f ("vfs: Implement logging through fs_context")
-Cc: David Howells <dhowells@redhat.com>
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Link: https://lore.kernel.org/20250807-fscontext-log-cleanups-v3-1-8d91d6242dc3@cyphar.com
+Fixes: 46eae99ef733 ("add statmount(2) syscall")
+Cc: stable@vger.kernel.org # v6.8+
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-diff --git a/fs/fsopen.c b/fs/fsopen.c
-index 1aaf4cb2afb2..f645c99204eb 100644
---- a/fs/fsopen.c
-+++ b/fs/fsopen.c
-@@ -18,50 +18,56 @@
- #include "internal.h"
- #include "mount.h"
- 
-+static inline const char *fetch_message_locked(struct fc_log *log, size_t len,
-+					       bool *need_free)
-+{
-+	const char *p;
-+	int index;
-+
-+	if (unlikely(log->head == log->tail))
-+		return ERR_PTR(-ENODATA);
-+
-+	index = log->tail & (ARRAY_SIZE(log->buffer) - 1);
-+	p = log->buffer[index];
-+	if (unlikely(strlen(p) > len))
-+		return ERR_PTR(-EMSGSIZE);
-+
-+	log->buffer[index] = NULL;
-+	*need_free = log->need_free & (1 << index);
-+	log->need_free &= ~(1 << index);
-+	log->tail++;
-+
-+	return p;
-+}
-+
- /*
-  * Allow the user to read back any error, warning or informational messages.
-+ * Only one message is returned for each read(2) call.
-  */
- static ssize_t fscontext_read(struct file *file,
- 			      char __user *_buf, size_t len, loff_t *pos)
+diff --git a/fs/namespace.c b/fs/namespace.c
+index ba3e5215b636..993983a76853 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -5708,7 +5708,6 @@ static int grab_requested_root(struct mnt_namespace *ns, struct path *root)
+ static int do_statmount(struct kstatmount *s, u64 mnt_id, u64 mnt_ns_id,
+ 			struct mnt_namespace *ns)
  {
- 	struct fs_context *fc = file->private_data;
--	struct fc_log *log = fc->log.log;
--	unsigned int logsize = ARRAY_SIZE(log->buffer);
--	ssize_t ret;
--	char *p;
-+	ssize_t err;
-+	const char *p __free(kfree) = NULL, *message;
- 	bool need_free;
--	int index, n;
-+	int n;
+-	struct path root __free(path_put) = {};
+ 	struct mount *m;
+ 	int err;
  
--	ret = mutex_lock_interruptible(&fc->uapi_mutex);
--	if (ret < 0)
--		return ret;
--
--	if (log->head == log->tail) {
--		mutex_unlock(&fc->uapi_mutex);
--		return -ENODATA;
--	}
--
--	index = log->tail & (logsize - 1);
--	p = log->buffer[index];
--	need_free = log->need_free & (1 << index);
--	log->buffer[index] = NULL;
--	log->need_free &= ~(1 << index);
--	log->tail++;
-+	err = mutex_lock_interruptible(&fc->uapi_mutex);
-+	if (err < 0)
-+		return err;
-+	message = fetch_message_locked(fc->log.log, len, &need_free);
- 	mutex_unlock(&fc->uapi_mutex);
-+	if (IS_ERR(message))
-+		return PTR_ERR(message);
+@@ -5720,7 +5719,7 @@ static int do_statmount(struct kstatmount *s, u64 mnt_id, u64 mnt_ns_id,
+ 	if (!s->mnt)
+ 		return -ENOENT;
  
--	ret = -EMSGSIZE;
--	n = strlen(p);
--	if (n > len)
--		goto err_free;
--	ret = -EFAULT;
--	if (copy_to_user(_buf, p, n) != 0)
--		goto err_free;
--	ret = n;
--
--err_free:
- 	if (need_free)
--		kfree(p);
--	return ret;
-+		p = message;
-+
-+	n = strlen(message);
-+	if (copy_to_user(_buf, message, n))
-+		return -EFAULT;
-+	return n;
- }
+-	err = grab_requested_root(ns, &root);
++	err = grab_requested_root(ns, &s->root);
+ 	if (err)
+ 		return err;
  
- static int fscontext_release(struct inode *inode, struct file *file)
+@@ -5729,7 +5728,7 @@ static int do_statmount(struct kstatmount *s, u64 mnt_id, u64 mnt_ns_id,
+ 	 * mounts to show users.
+ 	 */
+ 	m = real_mount(s->mnt);
+-	if (!is_path_reachable(m, m->mnt.mnt_root, &root) &&
++	if (!is_path_reachable(m, m->mnt.mnt_root, &s->root) &&
+ 	    !ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
+@@ -5737,8 +5736,6 @@ static int do_statmount(struct kstatmount *s, u64 mnt_id, u64 mnt_ns_id,
+ 	if (err)
+ 		return err;
+ 
+-	s->root = root;
+-
+ 	/*
+ 	 * Note that mount properties in mnt->mnt_flags, mnt->mnt_idmap
+ 	 * can change concurrently as we only hold the read-side of the
+@@ -5960,6 +5957,7 @@ SYSCALL_DEFINE4(statmount, const struct mnt_id_req __user *, req,
+ 	if (!ret)
+ 		ret = copy_statmount_to_user(ks);
+ 	kvfree(ks->seq.buf);
++	path_put(&ks->root);
+ 	if (retry_statmount(ret, &seq_size))
+ 		goto retry;
+ 	return ret;
 
 
