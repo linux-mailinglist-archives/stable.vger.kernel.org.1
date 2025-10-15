@@ -1,150 +1,240 @@
-Return-Path: <stable+bounces-185842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFECBDFA55
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 18:26:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 662E1BDFBEA
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 18:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 881DD18877A9
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 16:26:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108723C8CCD
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 16:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719BF337687;
-	Wed, 15 Oct 2025 16:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE314338F28;
+	Wed, 15 Oct 2025 16:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hgOW5xH0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P2ViLkac"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5270B337685;
-	Wed, 15 Oct 2025 16:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728F6347C7
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 16:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760545561; cv=none; b=FcaShC4TXohglyModljemOv8q66kR5vZTSCI+Eg6iR6c5ZC/lcY86E6mwanbAfogPH767DwP8pKtyfKdq8dIp1m88w4kBNVM8R+PUXb+2UVvJWqtmdlf8YI6YAVv94kcMfg1YV7USN595M4+EcK91sGWJKhABX0Z++dqjj5jV5Q=
+	t=1760546793; cv=none; b=iqJdPiBCw8EXCFLBozpKFemEaMJF7k9cNsNFTm9h8EAtwrINVxURwpl6n5jivMM6TljuAQlhFZ5NBOgsvUwngc+fWDOipSniNSRzpaFfUWkDLG/hrhl/aqbAToAxGhSpmIKAuC7fH5IjLOpGATzLSz1xUb6O8zMEReCokZHwRpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760545561; c=relaxed/simple;
-	bh=ZMHqUjjRMecUoMSYtZ3448DhY0XDVwqidZ24uC6AjB0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rm1RACLUFieqvlLxueGRcSE4KfUza2jGQF/Er5Fd9wkQiEnRg114MBhWIg5ApsJqUmmuEDx2VTRuSvOcaEyQ7j8oZEVuCuGfGEomc6nwD9yen9w00QWD53+ByuL9Zab97YYyw247IvitTnC/mA2ybvXOiopZwkVnNVD3VlexRTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hgOW5xH0; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760545559; x=1792081559;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ZMHqUjjRMecUoMSYtZ3448DhY0XDVwqidZ24uC6AjB0=;
-  b=hgOW5xH0chvdMlqFQoqA7Imz4YeHBy37PB3P7RZ5xfGh8bLoWkF/sl6T
-   tuUMNbu+8pDkxMx5/lb1xHhHCvauhEiqMlKWWLKHhJSJJqWo/v1xLekBQ
-   Ah4qmxJfnxtHElPYxHHriQYEkOXEsHNzUm87RPG0AS5ghMn/tUwkXLiIK
-   BtQEkLUFGFuq1R6TJvOjhp8Xd1hGWez3xE0E08wtyAKz7pf05Qs1l2AoO
-   YJLDFOFCMjiyysnXWdRiKRXrnI6vjZKD7TEUjp6rWnbaauZDoP+tEeZYZ
-   SVGWmQXzaj3DGYu4uM/9PEVtCsQiFeZWPcuCgHfbiyQKdX7YS6c4k2i82
-   g==;
-X-CSE-ConnectionGUID: AM5P02trRNmoiihhcFiBbg==
-X-CSE-MsgGUID: OkMuY3j2Q8mksMkfJCaHzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="66378807"
-X-IronPort-AV: E=Sophos;i="6.19,231,1754982000"; 
-   d="scan'208";a="66378807"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 09:25:58 -0700
-X-CSE-ConnectionGUID: 4oqxeFpYQJaQbWtbCxrgeA==
-X-CSE-MsgGUID: J/iikkarTcGc2GuVi06PPw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,231,1754982000"; 
-   d="scan'208";a="205919283"
-Received: from ldmartin-desk2.corp.intel.com (HELO [10.125.111.202]) ([10.125.111.202])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 09:25:56 -0700
-Message-ID: <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
-Date: Wed, 15 Oct 2025 09:25:55 -0700
+	s=arc-20240116; t=1760546793; c=relaxed/simple;
+	bh=Z41LuI9tLYiSntSpeFn49bymYZnJnKjlj9AHYgaf+C0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P657jkYrU4LswQqcVF7A63SEjCV9c2lwDopR4bt8DIETrBY8STvDzIsY99TFZROLOUoS9edDOzjtbfHxMsaF9SAUpa/0b9BCYollgiYKLLPn9dI0pQXEZzpz/Xt8vhckKYnbM5lhT1aRNenoJTEsIuTy1UaUpnWoeoISx2dLzCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P2ViLkac; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b48d8deafaeso1401831166b.1
+        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 09:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760546790; x=1761151590; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=je0F7nfACXJpbmYznXu1sTtkMbdp1GFHRjbs99COgfU=;
+        b=P2ViLkacA/Bpvv49Yd0ia6T+cSn2XJBKjv9ZsoqKhFf+Yrd3Mqyn5JoFCGe4wIZN2O
+         5k439cg0UarDbzX+PLeG49dLhGaHuYTLuJpO3JQhYWC46KCmDrtCcp60FsnMhsTfZedq
+         arxM1R3aE5sMK4kqZCh9xx5ATuXqi38w117u8p6gnl85NuqXsYLdA2ghS+ae453ChO0u
+         pDJz4T8oeEHsddKJi0bJdvJS9Q1LJoexuV2QQ7Pc4RJIDfxNpGSpQOkDEG676pylui2J
+         Dw6D4EvDrikrEGihNvZDNkP+W5LYRWzn8Z28RY/r5hnTv5M4oGcEQ0Z5LuM1fpPHvQdz
+         Jnfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760546790; x=1761151590;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=je0F7nfACXJpbmYznXu1sTtkMbdp1GFHRjbs99COgfU=;
+        b=GTvBlwaXJR2Hc0YoS+eCvYkfAHQWwB3ihRs2QZzDFTPUc+o0KSrMeREsonyx1fTN6c
+         pBAQuUOSYrVEKN4jCj70+/9ru1jghXJ3c7lNMpsZK2KKTe9jCZVG0U6yp/TVp9y92Cqk
+         lUzqUydPaThE7/ThB2kvDKN3watYP5CuT9MAY9rhrxOiWh1RNZlVrv7PEw8+QMTIyuh4
+         uiZh/mfjcrnfBxH+nSp6W1O63saQJbMbJyCa8EoiGavFTtQvvec3ogE1Go6AUYukxkvb
+         ndOD/OhYLxKHMtiyqsuKxaGSzQzlDqkT5JiColUQc2QWrf8OZfnAUe52bHPMUKS7qsIQ
+         kYxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWnQCLyPNn57+582SNn38V3vZlcA4cDTV0r3Rwe9OKq2Z77t2mP7y+12H7iX2hjudw36t+6VE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnujDB15ZuGuZrlHUfzOARnaPvloDWfMVFGqOtJX7HnbmJFFPj
+	TZn8yAXewqPpmQMiK65z5o9yxpOBwLp6fDneGeN4eybWJwwBXI++xGDAW0Vdzy9SowBdj+SbE6I
+	ijRR5//IcVBB0gos207UDtM0cs472mmc=
+X-Gm-Gg: ASbGncvUvfAajyWk6kqo9VM0YtX8c2hlDsX0Xc8VUDeK2xmnwy8THPU5K3JtVqWq95J
+	kjjT7Sk0FkFzIaYXgkBwUjNB1mBz0HAovNMyzYV81iLhA+5LMHKIBcL1iwTHJuFsZsnFz3YNZQj
+	iZCgkjA/+Kp9hhrX8NHe0G+tdHA04WOY3nSUfn4esIQJ5843oGSb/oM/0tUf9wxjAnKD1AUAzZr
+	1/2DeykblmxpKIypR+yWV/D6w==
+X-Google-Smtp-Source: AGHT+IG6mst+qVI0JUb5puzOWQMXSlytfQLY39/u3UCs+EtF1W8BL9hwi0uE2sSR4jvdT6ZVos7cZl+TB59DjLKsk2o=
+X-Received: by 2002:a17:907:980f:b0:b42:9840:eac5 with SMTP id
+ a640c23a62f3a-b50acb0e645mr3174683566b.61.1760546789493; Wed, 15 Oct 2025
+ 09:46:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot ci] Re: Fix stale IOTLB entries for kernel address space
-To: syzbot ci <syzbot+cid009622971eb4566@syzkaller.appspotmail.com>,
- akpm@linux-foundation.org, apopple@nvidia.com, baolu.lu@linux.intel.com,
- bp@alien8.de, dave.hansen@linux.intel.com, david@redhat.com,
- iommu@lists.linux.dev, jannh@google.com, jean-philippe@linaro.org,
- jgg@nvidia.com, joro@8bytes.org, kevin.tian@intel.com,
- liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, luto@kernel.org, mhocko@kernel.org,
- mingo@redhat.com, peterz@infradead.org, robin.murphy@arm.com,
- rppt@kernel.org, security@kernel.org, stable@vger.kernel.org,
- tglx@linutronix.de, urezki@gmail.com, vasant.hegde@amd.com, vbabka@suse.cz,
- will@kernel.org, willy@infradead.org, x86@kernel.org, yi1.lai@intel.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-References: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
+ <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
+ <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
+ <CAMgjq7BD6SOgALj2jv2SVtNjWLJpT=1UhuaL=qxvDCMKUy68Hw@mail.gmail.com>
+ <CACePvbVEGgtTqkMPqsf69C7qUD52yVcC56POed8Pdt674Pn68A@mail.gmail.com>
+ <CACePvbWu0P+8Sv-sS7AnG+ESdnJdnFE_teC9NF9Rkn1HegQ9_Q@mail.gmail.com> <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com>
+In-Reply-To: <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 16 Oct 2025 00:45:52 +0800
+X-Gm-Features: AS18NWBxPhombhPrk2cbIiwnOB7SZCpnaOyVcUMkzwhYwQ_vXmWp_OG4dB0nf-M
+Message-ID: <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
+To: Chris Li <chrisl@kernel.org>, YoungJun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Here's the part that confuses me:
+On Wed, Oct 15, 2025 at 2:24=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Wed, Oct 15, 2025 at 12:00=E2=80=AFPM Chris Li <chrisl@kernel.org> wro=
+te:
+> >
+> > On Tue, Oct 14, 2025 at 2:27=E2=80=AFPM Chris Li <chrisl@kernel.org> wr=
+ote:
+> > >
+> > > On Sun, Oct 12, 2025 at 9:49=E2=80=AFAM Kairui Song <ryncsn@gmail.com=
+> wrote:
+> > > > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > > > > index cb2392ed8e0e..0d1924f6f495 100644
+> > > > > > --- a/mm/swapfile.c
+> > > > > > +++ b/mm/swapfile.c
+> > > > > > @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swap_=
+entry(struct swap_info_struct *si, int o
+> > > > > >                         goto done;
+> > > > > >         }
+> > > > > >
+> > > > > > -       /*
+> > > > > > -        * We don't have free cluster but have some clusters in=
+ discarding,
+> > > > > > -        * do discard now and reclaim them.
+> > > > > > -        */
+> > > > > > -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_scheduled=
+_discard(si))
+> > > > > > -               goto new_cluster;
+> > > > >
+> > > > > Assume you follow my suggestion.
+> > > > > Change this to some function to detect if there is a pending disc=
+ard
+> > > > > on this device. Return to the caller indicating that you need a
+> > > > > discard for this device that has a pending discard.
+> > > > > Add an output argument to indicate the discard device "discard" i=
+f needed.
+> > > >
+> > > > The problem I just realized is that, if we just bail out here, we a=
+re
+> > > > forbidding order 0 to steal if there is any discarding cluster. We
+> > > > just return here to let the caller handle the discard outside
+> > > > the lock.
+> > >
+> > > Oh, yes, there might be a bit of change in behavior. However I can't
+> > > see it is such a bad thing if we wait for the pending discard to
+> > > complete before stealing and fragmenting the existing folio list. We
+> > > will have less fragments compared to the original result. Again, my
+> > > point is not that we always keep 100% the old behavior, then there is
+> > > no room for improvement.
+> > >
+> > > My point is that, are we doing the best we can in that situation,
+> > > regardless how unlikely it is.
+> > >
+> > > >
+> > > > It may just discard the cluster just fine, then retry from free clu=
+sters.
+> > > > Then everything is fine, that's the easy part.
+> > >
+> > > Ack.
+> > >
+> > > > But it might also fail, and interestingly, in the failure case we n=
+eed
+> > >
+> > > Can you spell out the failure case you have in mind? Do you mean the
+> > > discard did happen but another thread stole "the recently discarded
+> > > then became free cluster"?
+> > >
+> > > Anyway, in such a case, the swap allocator should continue and find
+> > > out we don't have things to discard now, it will continue to the
+> > > "steal from other order > 0 list".
+> > >
+> > > > to try again as well. It might fail with a race with another discar=
+d,
+> > > > in that case order 0 steal is still feasible. Or it fail with
+> > > > get_swap_device_info (we have to release the device to return here)=
+,
+> > > > in that case we should go back to the plist and try other devices.
+> > >
+> > > When stealing from the other order >0 list failed, we should try
+> > > another device in the plist.
+> > >
+> > > >
+> > > > This is doable but seems kind of fragile, we'll have something like
+> > > > this in the folio_alloc_swap function:
+> > > >
+> > > > local_lock(&percpu_swap_cluster.lock);
+> > > > if (!swap_alloc_fast(&entry, order))
+> > > >     swap_alloc_slow(&entry, order, &discard_si);
+> > > > local_unlock(&percpu_swap_cluster.lock);
+> > > >
+> > > > +if (discard_si) {
+> > >
+> > > I feel the discard logic should be inside the swap_alloc_slow().
+> > > There is a  plist_for_each_entry_safe(), inside that loop to do the
+> > > discard and retry().
+> > > If I previously suggested it change in here, sorry I have changed my
+> > > mind after reasoning the code a bit more.
+> >
+> > Actually now I have given it a bit more thought, one thing I realized
+> > is that you might need to hold the percpu_swap_cluster lock all the
+> > time during allocation. That might force you to do the release lock
+> > and discard in the current position.
+> >
+> > If that is the case, then just making the small change in your patch
+> > to allow hold waiting to discard before trying the fragmentation list
+> > might be good enough.
+> >
+> > Chris
+> >
+>
+> Thanks, I was composing a reply on this and just saw your new comment.
+> I agree with this.
 
-On 10/14/25 13:59, syzbot ci wrote:
-> page last free pid 5965 tgid 5964 stack trace:
->  reset_page_owner include/linux/page_owner.h:25 [inline]
->  free_pages_prepare mm/page_alloc.c:1394 [inline]
->  __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
->  pmd_free_pte_page+0xa1/0xc0 arch/x86/mm/pgtable.c:783
->  vmap_try_huge_pmd mm/vmalloc.c:158 [inline]
-...
+Hmm, it turns out modifying V1 to handle non-order 0 allocation
+failure also has some minor issues. Every mTHP SWAP allocation failure
+will have a slight higher overhead due to the discard check. V1 is
+fine since it only checks discard for order 0, and order 0 alloc
+failure is uncommon and usually means OOM already.
 
-So, vmap_try_huge_pmd() did a pmd_free_pte_page(). Yet, somehow, the PMD
-stuck around so that it *could* be used after being freed. It _looks_
-like pmd_free_pte_page() freed the page, returned 0, and made
-vmap_try_huge_pmd() return early, skipping the pmd pmd_set_huge().
+I'm not saying V1 is the final solution, but I think maybe we can just
+keep V1 as it is? That's easier for a stable backport too, and this is
+doing far better than what it was like. The sync discard was added in
+2013 and the later added percpu cluster at the same year never treated
+it carefully. And the discard during allocation after recent swap
+allocator rework has been kind of broken for a while.
 
-But I don't know how that could possibly happen.
+To optimize it further in a clean way, we have to reverse the
+allocator's handling order of the plist and fast / slow path. Current
+order is local_lock -> fast -> slow (plist).
+
+We can walk the plist first, then do the fast / slow path: plist (or
+maybe something faster than plist but handles the priority) ->
+local_lock -> fast -> slow (bonus: this is more friendly to RT kernels
+too I think). That way we don't need to rewalk the plist after
+releasing the local_lock and save a lot of trouble. I remember I
+discussed with Youngjun on this sometime ago in the mail list, I know
+things have changed a lot but some ideas seems are still similar. I
+think his series is moving the percpu cluster into each device (si),
+we can also move the local_lock there, which is just what I'm talking
+about here.
 
