@@ -1,128 +1,205 @@
-Return-Path: <stable+bounces-185811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88123BDE7D6
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7B3BDE895
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 14:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A7F34F8E2F
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:35:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E0D04F4DF0
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 12:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50F815ADB4;
-	Wed, 15 Oct 2025 12:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA4219CCEC;
+	Wed, 15 Oct 2025 12:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8mWfXGZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AU7Ed4pd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4BAEEDE;
-	Wed, 15 Oct 2025 12:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1987317BA6
+	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 12:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760531745; cv=none; b=ch8yCNwZ0ytLjbCVRv0duQKXBUE1337QkCSHH+xK0oxEa1OLjO3dbwlcufJhDCKQxg2OUnRebET7cI22XLJRlR8OaPNrF68BPHv9zSSh8jikRFRG8muALFDTsjwyavMHozMSLrq3WG5Yt4eV4/+3XTspy3FFfrVNBOmq6tEpCOg=
+	t=1760532500; cv=none; b=sO77dMx94GVhAG+yKY3o4vnZWzpB9JBUbG4Jgwz/INcYfzEEt4sVWqYQJZF9qXhqDYqOCuThHRzo/1yn2zL9BE3nj3YO5G6ONZ1IHpFokXQO14N9SmCYQIMdvPsp6hFX8FPk57jviq+GSbb+ZKZ+SsLVvP+hJGp+d3W/AvwiNcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760531745; c=relaxed/simple;
-	bh=JBha8IM0AxTjIHZho/VaVOPs4WZJhD7HiSM3gEnMxw8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t6wz5uyEQFi2vh+WdlM9JtywtE+zVpiM9s+iJ4BmlOfqri1D5K3i/f51MED8+G+ng+LCXuDEsI7alMY8gnu2ylaToPEpGmAc4mxMkryEUTXgR4RH1Ik7jD5blAFXifHkNprKkr1ec8RL6fRNPLQRnNgeldz+nqxPuTwff7ShHls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8mWfXGZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BA7C4CEF8;
-	Wed, 15 Oct 2025 12:35:41 +0000 (UTC)
+	s=arc-20240116; t=1760532500; c=relaxed/simple;
+	bh=I1Z/BVK+Nv53GS9eK++faejxcgmjG1qBmq5u9iDqcA4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CAIlwrTXDnMigXlDuZFFCmNfCI2W/CKCjc6VlJRr2MsPxxvI6EfVw6G6HcXVS8ZtmNtdGHaCGwBUIX0c3qyQQHeaiKbDqzRZ/v281f/5o33Gc91Io6TTJ1VPvwT+Z4xNNsOk5iZ2kmi3yuTzAqI16uDWXL2Qt/zjcpBM5ycEiTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AU7Ed4pd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1457DC4CEF8;
+	Wed, 15 Oct 2025 12:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760531744;
-	bh=JBha8IM0AxTjIHZho/VaVOPs4WZJhD7HiSM3gEnMxw8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h8mWfXGZW8dgoUk6CSJzFlBT5ekUzQeHNObU3HJQURWD+RFCS/NdsPZne7YpA0nsK
-	 oac66oDiHi4y+Rthue2fGbNXz2OZQTOpTv8N68Zch+tPSZRrKJOJnYvcmjD/SDG6c6
-	 /e0Ukex6rio4LT1HbHX2/3fYq6FL6e3HdyhaG6Z7bpeiHp5lzAOeylb3CVSyeqpoZX
-	 x4XYBqvveuXh7T/HAFdCQipp0Ecfygr/uBh8sJjfTow1qC4EOufnZBUK/UYierVa6w
-	 JxHGAQSytV+eZ1QaE0mE1lDUe266jJUjvRKHHhVyZyD4lzxH3ZYIiEFVlwkyLB8eXw
-	 9K5WFHt58p0+g==
-Date: Wed, 15 Oct 2025 14:35:38 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>, Simon Xue <xxm@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Dragan Simic <dsimic@manjaro.org>,
-	FUKAUMI Naoki <naoki@radxa.com>, stable@vger.kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH] PCI: dw-rockchip: Disable L1 substates
-Message-ID: <aO-VGnz67TMzqdiX@ryzen>
-References: <20251015123142.392274-2-cassel@kernel.org>
+	s=k20201202; t=1760532499;
+	bh=I1Z/BVK+Nv53GS9eK++faejxcgmjG1qBmq5u9iDqcA4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AU7Ed4pdJHjtXG3TzPl4OpKP4/hWffFRy1xUrip3xVcipZcnyRhhs2YUCiUFiB6V9
+	 Ptbw/EWFy+TeHhe6HiMDSSZrhXYEl7I07cKAcY5yQUJE6Mtd9t4gju6Nob0lrZK43m
+	 vZDKCv26hfWZZBjn5jBPc0heTrjkqe2MHJpP+vp/cyco6mru3D+RdGSxwWUdxzzgIG
+	 gFOnowySh861xLYco+7I6EEtRLvvS2N/vgO76MoO4epT53VXK8eFC+Bu9/u+GioVVC
+	 4Xs+UOxVd6h7r4tGr56sw9LEY/CWejrGGxqAdXAD9jbIKe4w46PCkQk7T9oK8RNMsS
+	 QvK0/6VH7Zg+w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] btrfs: fix the incorrect max_bytes value for find_lock_delalloc_range()
+Date: Wed, 15 Oct 2025 08:48:17 -0400
+Message-ID: <20251015124817.1385251-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101522-repugnant-demystify-deee@gregkh>
+References: <2025101522-repugnant-demystify-deee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251015123142.392274-2-cassel@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 15, 2025 at 02:31:43PM +0200, Niklas Cassel wrote:
-> The L1 substates support requires additional steps to work, see e.g.
-> section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0.
-> 
-> These steps are currently missing from the driver.
-> 
-> While this has always been a problem when using e.g.
-> CONFIG_PCIEASPM_POWER_SUPERSAVE=y, the problem became more apparent after
-> commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for
-> devicetree platforms"), which enabled ASPM also for
-> CONFIG_PCIEASPM_DEFAULT=y.
-> 
-> Disable L1 substates until proper support is added.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
-> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> ---
->  drivers/pci/controller/dwc/pcie-dw-rockchip.c | 22 +++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> index 3e2752c7dd09..28e0fffe2542 100644
-> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> @@ -200,6 +200,26 @@ static bool rockchip_pcie_link_up(struct dw_pcie *pci)
->  	return FIELD_GET(PCIE_LINKUP_MASK, val) == PCIE_LINKUP;
->  }
->  
-> +/*
-> + * See e.g. section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0 for the steps
-> + * needed to support L1 substates. Currently, not a single rockchip platform
-> + * performs these steps, so disable L1 substates until there is proper support.
-> + */
-> +static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
-> +{
-> +	u32 cap, l1subcap;
-> +
-> +	cap = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
-> +	if (cap) {
-> +		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
-> +		l1subcap &= ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
-> +			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
-> +			      PCI_L1SS_CAP_PCIPM_L1_2);
-> +		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
-> +		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
+From: Qu Wenruo <wqu@suse.com>
 
-Sorry, this extra dw_pcie_readl_dbi() was left over from debugging.
-Tell me if I should respin or if you can fix up when applying.
+[ Upstream commit 7b26da407420e5054e3f06c5d13271697add9423 ]
 
-I've verified that the patch works using an NVMe drive on v6.18-rc1,
-which is working after this patch, but was not working before this patch.
+[BUG]
+With my local branch to enable bs > ps support for btrfs, sometimes I
+hit the following ASSERT() inside submit_one_sector():
 
+	ASSERT(block_start != EXTENT_MAP_HOLE);
 
-Kind regards,
-Niklas
+Please note that it's not yet possible to hit this ASSERT() in the wild
+yet, as it requires btrfs bs > ps support, which is not even in the
+development branch.
+
+But on the other hand, there is also a very low chance to hit above
+ASSERT() with bs < ps cases, so this is an existing bug affect not only
+the incoming bs > ps support but also the existing bs < ps support.
+
+[CAUSE]
+Firstly that ASSERT() means we're trying to submit a dirty block but
+without a real extent map nor ordered extent map backing it.
+
+Furthermore with extra debugging, the folio triggering such ASSERT() is
+always larger than the fs block size in my bs > ps case.
+(8K block size, 4K page size)
+
+After some more debugging, the ASSERT() is trigger by the following
+sequence:
+
+ extent_writepage()
+ |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
+ |  size is 8K, page size is 4K.
+ |  And there is another 8K folio at file offset 32K, which is also
+ |  dirty.
+ |  So the filemap layout looks like the following:
+ |
+ |  "||" is the filio boundary in the filemap.
+ |  "//| is the dirty range.
+ |
+ |  0        8K       16K        24K         32K       40K
+ |  |////////|        |//////////////////////||////////|
+ |
+ |- writepage_delalloc()
+ |  |- find_lock_delalloc_range() for [0, 8K)
+ |  |  Now range [0, 8K) is properly locked.
+ |  |
+ |  |- find_lock_delalloc_range() for [16K, 40K)
+ |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
+ |  |  |- lock_delalloc_folios() locked folio 0 successfully
+ |  |  |
+ |  |  |  The filemap range [32K, 40K) got dropped from filemap.
+ |  |  |
+ |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
+ |  |  |  As the folio at 32K is dropped.
+ |  |  |
+ |  |  |- loops = 1;
+ |  |  |- max_bytes = PAGE_SIZE;
+ |  |  |- goto again;
+ |  |  |  This will re-do the lookup for dirty delalloc ranges.
+ |  |  |
+ |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
+ |  |  |  This is smaller than block size, so
+ |  |  |  btrfs_find_delalloc_range() is unable to return any range.
+ |  |  \- return false;
+ |  |
+ |  \- Now only range [0, 8K) has an OE for it, but for dirty range
+ |     [16K, 32K) it's dirty without an OE.
+ |     This breaks the assumption that writepage_delalloc() will find
+ |     and lock all dirty ranges inside the folio.
+ |
+ |- extent_writepage_io()
+    |- submit_one_sector() for [0, 8K)
+    |  Succeeded
+    |
+    |- submit_one_sector() for [16K, 24K)
+       Triggering the ASSERT(), as there is no OE, and the original
+       extent map is a hole.
+
+Please note that, this also exposed the same problem for bs < ps
+support. E.g. with 64K page size and 4K block size.
+
+If we failed to lock a folio, and falls back into the "loops = 1;"
+branch, we will re-do the search using 64K as max_bytes.
+Which may fail again to lock the next folio, and exit early without
+handling all dirty blocks inside the folio.
+
+[FIX]
+Instead of using the fixed size PAGE_SIZE as @max_bytes, use
+@sectorsize, so that we are ensured to find and lock any remaining
+blocks inside the folio.
+
+And since we're here, add an extra ASSERT() to
+before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
+at least no smaller than a block to avoid false negative.
+
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/extent_io.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 60fe155b1ce05..b310a07a84adf 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -355,6 +355,13 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 	/* step one, find a bunch of delalloc bytes starting at start */
+ 	delalloc_start = *start;
+ 	delalloc_end = 0;
++
++	/*
++	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
++	 * return early without handling any dirty ranges.
++	 */
++	ASSERT(max_bytes >= fs_info->sectorsize);
++
+ 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
+ 					  max_bytes, &cached_state);
+ 	if (!found || delalloc_end <= *start || delalloc_start > orig_end) {
+@@ -385,13 +392,14 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 				   delalloc_end);
+ 	ASSERT(!ret || ret == -EAGAIN);
+ 	if (ret == -EAGAIN) {
+-		/* some of the folios are gone, lets avoid looping by
+-		 * shortening the size of the delalloc range we're searching
++		/*
++		 * Some of the folios are gone, lets avoid looping by
++		 * shortening the size of the delalloc range we're searching.
+ 		 */
+ 		free_extent_state(cached_state);
+ 		cached_state = NULL;
+ 		if (!loops) {
+-			max_bytes = PAGE_SIZE;
++			max_bytes = fs_info->sectorsize;
+ 			loops = 1;
+ 			goto again;
+ 		} else {
+-- 
+2.51.0
+
 
