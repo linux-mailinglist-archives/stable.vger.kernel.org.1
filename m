@@ -1,213 +1,95 @@
-Return-Path: <stable+bounces-185840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E2FBDF8AE
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 18:05:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDC7BDF93D
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 18:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1EF53A4EDE
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 16:05:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96DED1A2097D
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 16:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C066A2C0F8F;
-	Wed, 15 Oct 2025 16:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CF3288C81;
+	Wed, 15 Oct 2025 16:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGSCRyC+"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693332BE647;
-	Wed, 15 Oct 2025 16:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F46326D77;
+	Wed, 15 Oct 2025 16:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760544331; cv=none; b=bXkClDiMeqBJa/Hkk8PEvv5KVaGy3VAtRhC0MYafx1N9ItlcDabc7E+0aeMxF07QgS3qtGoodrfGOSKsaduMHWIzkcJkXRDLnHHoE/BjwUHO/AqI3QqK+lmWONLKWT1Qa8m7D/DhgRAJKuk4Il2O6ho4xqR9CdYO9/hFTe5dvfI=
+	t=1760544625; cv=none; b=spks3oYwT5lIJ4V1vZCQgJJtoIeArdXIATZhxDT9CEIF5LsSk7cfOVc8yHsoFzZeQSMpHx/VUFuQhG4G2hE07exGchY447G5DAatMMnu+1Yv21H6VfveN7MiIHtV4ahSEvX1V4yv7Yozpbtjp1x9C6KMixAfvUtxiKITeEh+ElI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760544331; c=relaxed/simple;
-	bh=OtZArIgGOVFPBOubdpx8vP6JRc8vzh/BwBc+DxxyLUQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jjf8sHNy4gujLXfY9YWS0JznKbK8fBt7c8cqCSaSK8quIw7+1+vu8w3hHkua5VmlRVJ90VfLcfjU0hPV6aDPguZYdyn3LEmx+GH7nwAPdaN6CNNFXV9meq3zlbFctYPPadYF8SFTdJC2G/dquGIXffRgV46nWDJD3tlupcvQsoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A1D51655;
-	Wed, 15 Oct 2025 09:05:20 -0700 (PDT)
-Received: from [10.57.66.88] (unknown [10.57.66.88])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 79CBA3F66E;
-	Wed, 15 Oct 2025 09:05:25 -0700 (PDT)
-Message-ID: <965b11fd-3e29-4f29-a1bf-b8e98940b322@arm.com>
-Date: Wed, 15 Oct 2025 18:05:23 +0200
+	s=arc-20240116; t=1760544625; c=relaxed/simple;
+	bh=dcFZNHJd7u8P5PsF+UUqJjsNe+og2T6bb+SyhmTtPE4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hperUdPmOGzhLwFOjtUxWjh8HazUSWK0VTScmVg925WKWr9mQR8oNgFuDWEWJ5Kjl3PnWgzxwvP4PGYFu2fmC774wg181ODRyMcTqTfsFIK5Wkc3JLmnxUZCegd5GETusTBiAo6FOLuBsglhrAyptB+hwj5DYEm0p/IPhFqN9T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGSCRyC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DCCC4CEF8;
+	Wed, 15 Oct 2025 16:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760544625;
+	bh=dcFZNHJd7u8P5PsF+UUqJjsNe+og2T6bb+SyhmTtPE4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=UGSCRyC+Wctl2ezwDbUvTrJw7KCQLsjC1eB5uGn6ETblajcg1p0rQKWqZg7Hgqta9
+	 1P35K+uKmA0KaC3QOpSVfNhQF6jFul1zCWjPNjWuHgLhrByKBGWB60o2SkLY8Hr8SB
+	 9jXq4yCkuOmxONoy0s6jcZ9vilsyPEItUPfKJolkKjNNdHdLGRfbUGFNEVvL61mh3u
+	 Wcy7kmmxJNaHz6QGWrWvDYee4en29vasNTO+UWwZdBp6X5FE1KG4MUVrr67MiYS4V+
+	 akJSChivgxRn2btqVtWWt/tLqwDUpKjwjIvNL4nKug9FGe6kxNHrn6OOFa2etinj8c
+	 k9vg/S+/tVbKw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD1B380CFFF;
+	Wed, 15 Oct 2025 16:10:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] arm64/mm: Allow __create_pgd_mapping() to
- propagate pgtable_alloc() errors
-To: Linu Cherian <linu.cherian@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
- Zhenhua Huang <quic_zhenhuah@quicinc.com>, Dev Jain <dev.jain@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Yang Shi <yang@os.amperecomputing.com>,
- Chaitanya S Prakash <chaitanyas.prakash@arm.com>, stable@vger.kernel.org
-References: <20251015112758.2701604-1-linu.cherian@arm.com>
- <20251015112758.2701604-2-linu.cherian@arm.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <20251015112758.2701604-2-linu.cherian@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] gve: Check valid ts bit on RX descriptor before hw
+ timestamping
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176054461024.940684.9782106410239743246.git-patchwork-notify@kernel.org>
+Date: Wed, 15 Oct 2025 16:10:10 +0000
+References: <20251014004740.2775957-1-hramamurthy@google.com>
+In-Reply-To: <20251014004740.2775957-1-hramamurthy@google.com>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ willemb@google.com, pkaligineedi@google.com, jfraker@google.com,
+ ziweixiao@google.com, thostet@google.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
-On 15/10/2025 13:27, Linu Cherian wrote:
-> From: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
->
-> arch_add_memory() is used to hotplug memory into a system but as a part
-> of its implementation it calls __create_pgd_mapping(), which uses
-> pgtable_alloc() in order to build intermediate page tables. As this path
-> was initally only used during early boot pgtable_alloc() is designed to
-> BUG_ON() on failure. However, in the event that memory hotplug is
-> attempted when the system's memory is extremely tight and the allocation
-> were to fail, it would lead to panicking the system, which is not
-> desirable. Hence update __create_pgd_mapping and all it's callers to be
-> non void and propagate -ENOMEM on allocation failure to allow system to
-> fail gracefully.
->
-> But during early boot if there is an allocation failure, we want the
-> system to panic, hence create a wrapper around __create_pgd_mapping()
-> called early_create_pgd_mapping() which is designed to panic, if ret
-> is non zero value. All the init calls are updated to use this wrapper
-> rather than the modified __create_pgd_mapping() to restore
-> functionality.
->
-> Fixes: 4ab215061554 ("arm64: Add memory hotplug support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
-> Signed-off-by: Linu Cherian <linu.cherian@arm.com>
+Hello:
 
-A couple more nits below (sorry I didn't catch them earlier), but otherwise:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-
-> ---
-> Changelog:
->
-> v3:
-> * Fixed a maybe-uninitialized case in alloc_init_pud
-> * Added Fixes tag and CCed stable
-> * Few other trivial cleanups
->
->  arch/arm64/mm/mmu.c | 210 ++++++++++++++++++++++++++++----------------
->  1 file changed, 132 insertions(+), 78 deletions(-)
->
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index b8d37eb037fc..638cb4df31a9 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -49,6 +49,8 @@
->  #define NO_CONT_MAPPINGS	BIT(1)
->  #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
->  
-> +#define INVALID_PHYS_ADDR	(-1ULL)
-> +
->  DEFINE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
->  
->  u64 kimage_voffset __ro_after_init;
-> @@ -194,11 +196,11 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
->  	} while (ptep++, addr += PAGE_SIZE, addr != end);
->  }
->  
-> -static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
-> -				unsigned long end, phys_addr_t phys,
-> -				pgprot_t prot,
-> -				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> -				int flags)
-> +static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
-> +			       unsigned long end, phys_addr_t phys,
-> +			       pgprot_t prot,
-> +			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-> +			       int flags)
->  {
->  	unsigned long next;
->  	pmd_t pmd = READ_ONCE(*pmdp);
-> @@ -213,6 +215,8 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
->  			pmdval |= PMD_TABLE_PXN;
->  		BUG_ON(!pgtable_alloc);
->  		pte_phys = pgtable_alloc(TABLE_PTE);
-> +		if (pte_phys == INVALID_PHYS_ADDR)
-> +			return -ENOMEM;
->  		ptep = pte_set_fixmap(pte_phys);
->  		init_clear_pgtable(ptep);
->  		ptep += pte_index(addr);
-> @@ -244,12 +248,15 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
->  	 * walker.
->  	 */
->  	pte_clear_fixmap();
-> +
-> +	return 0;
->  }
->  
-> -static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
-> -		     phys_addr_t phys, pgprot_t prot,
-> -		     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
-> +static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
-> +		    phys_addr_t phys, pgprot_t prot,
-> +		    phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
->  {
-> +	int ret;
-
-Nit: that could be added to the else block instead (makes it clearer
-it's not used for the final return, that got me confused when re-reading
-this patch).
-
->  	unsigned long next;
->  
->  	do {
-> @@ -269,22 +276,27 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
->  			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
->  						      READ_ONCE(pmd_val(*pmdp))));
->  		} else {
-> -			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
-> -					    pgtable_alloc, flags);
-> +			ret = alloc_init_cont_pte(pmdp, addr, next, phys, prot,
-> +						  pgtable_alloc, flags);
-> +			if (ret)
-> +				return ret;
->  
->  			BUG_ON(pmd_val(old_pmd) != 0 &&
->  			       pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
->  		}
->  		phys += next - addr;
->  	} while (pmdp++, addr = next, addr != end);
-> +
-> +	return 0;
->  }
->  
+On Tue, 14 Oct 2025 00:47:39 +0000 you wrote:
+> From: Tim Hostetler <thostet@google.com>
+> 
+> The device returns a valid bit in the LSB of the low timestamp byte in
+> the completion descriptor that the driver should check before
+> setting the SKB's hardware timestamp. If the timestamp is not valid, do not
+> hardware timestamp the SKB.
+> 
 > [...]
->
-> @@ -1178,9 +1226,10 @@ static int __init __kpti_install_ng_mappings(void *__unused)
->  		// covers the PTE[] page itself, the remaining entries are free
->  		// to be used as a ad-hoc fixmap.
->  		//
-> -		__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
-> -					    KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
-> -					    kpti_ng_pgd_alloc, 0);
-> +		if (__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
-> +						KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
-> +						kpti_ng_pgd_alloc, 0))
 
-Nit: it would be slightly more readable to have ret =
-__create_pgd_mapping_locked(...); if (ret)
+Here is the summary with links:
+  - [net] gve: Check valid ts bit on RX descriptor before hw timestamping
+    https://git.kernel.org/netdev/net/c/bfdd74166a63
 
-- Kevin
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> +			panic("Failed to create page tables\n");
->  	}
->  
->  	cpu_install_idmap();
->
-> [...]
+
 
