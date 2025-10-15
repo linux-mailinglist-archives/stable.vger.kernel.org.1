@@ -1,294 +1,252 @@
-Return-Path: <stable+bounces-185752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C1BBDCA6B
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 08:03:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F888BDCA71
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 08:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF07042220C
-	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 06:03:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45711422E48
+	for <lists+stable@lfdr.de>; Wed, 15 Oct 2025 06:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726083019DF;
-	Wed, 15 Oct 2025 06:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD24A2FD7BC;
+	Wed, 15 Oct 2025 06:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U1whw52b"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ABT7EKdQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012034.outbound.protection.outlook.com [40.107.200.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC8127A477
-	for <stable@vger.kernel.org>; Wed, 15 Oct 2025 06:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760508211; cv=none; b=Ryzq9YoUuFVR/q8u5irvDA9y3r89Vt9vcWDQYQKStU+hmhlc3kAnJccCXjjc/qbcW3ahisywdtFYuNZvWnrGPMDkzGW4Wfh96jX/v73mUp5VVrB1I26vtRZuCMt+KmdMC8mQ+lXjsiFgpSbLv46tEbsTT2HOhVIiAdnIwjpg1bE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760508211; c=relaxed/simple;
-	bh=jNoDGwfpzpVVSjrYNRU4l9Z3f0423H9BvWzg1OZsMN4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sniyRYGxajrcGb0XhcyUMbA41V7E6sGiH99sMfxtQO9eONyQc5RH4MESOzmA/8ecityTnhLz8o2o2jkvciyLR6Lvoiiu30axAg57wgZU+al4ZgTkaSFsTqjCJ4QhkC7PxoFhr5f0WPNq1WOMK1NcDiJWvJdukLXYrGWSDaovUL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U1whw52b; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-87db3aa478fso665878385a.2
-        for <stable@vger.kernel.org>; Tue, 14 Oct 2025 23:03:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760508208; x=1761113008; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pie7fZGvPev2eUvrmRxtLn5uwIJ2jK2TyEzOvGquVLE=;
-        b=U1whw52bPjCPWEDZwv9dXqgK5sgZZ0oPYtxNdZ2U6uJXGusJmaXCy7Rz9pEPdYv5Wu
-         AnxD89BYWUpTZnA+jNg9BJxs6Ou6/nYxxvumMbqXk719U1UhO+dmln8emMO7PZq1T7pc
-         WhS3YiAWKQxMjl3O6rkn1Pl/QxGFylXI+L1Jl0HxLOyr6wrOr9C9MrnC7LpP3DS24U0Z
-         3r+YtPhUFVvnUl7bydVWL6kXoZu29n8VAYMkfOCLY3Rpk+zFL+0dyiD6l3XzVJMhn7ch
-         Lkr6FzNfCo8BcLWUTWZXME2B2KEG2QcQUXLes1fPs1wAC0DWjtzCBGAdsK6kpMfsZ9VR
-         /Gsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760508208; x=1761113008;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pie7fZGvPev2eUvrmRxtLn5uwIJ2jK2TyEzOvGquVLE=;
-        b=jPB6+HSyjKnPsDn7/rvWGKds9yuP1dNe4XEDY6ngdxmWOtUzjgSJMYF7xRJFzrgcvf
-         NVY/DWNCbwatrpGKy0z+uv82NNEvOWUeEOwwzPVRB5Brf8dRofMVr4QLXkEprX+MFJsk
-         5pSddIE9H43clH7vLIeu8ecTUQWWcznrxtDrnpeT5eskowUWjgdgT+0czkmEn6D+JUjP
-         CUhdaRDuL/F1WLAAzF/T5ZpKmXrbCiK4kWP2MeL3nkcwugUIPqgPB2lwZmp2F8aILxNR
-         Hw9LsUHnfotbKBM+SJEjkL/7pvRk3rO8pVf5MRAvoOb9kFqbQh04z5qut56TEZi35uun
-         6zQA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0mr7mcKhcCP8OceZWzjrfhO36PQt4zG+mjniZeVWq8c0E0VRAzVNf9dlH9sbC1QR21D4sUco=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxuTUhEK04GIXqrSiVNM7A/Znnr/d9DniI2X6KhOzV+dJ9T3bV
-	5MpebSxHRNwwzmb4SxOryEiKOSPe5BOZyQoC7VAzpZPLZ4hHiODdHQHlT1FXcuoniusOB9b30zJ
-	cL6MIbpfuBGTHRnpVtjx/ywkIkz7fff1c2XSt149j
-X-Gm-Gg: ASbGncsjUpgVdmgRLvs6b4nnwqAFYwIUjQ8Q703d5Gol6W5J21uRgHTWqsEhFCShbFx
-	OEXsph4FqiSIL3Hi/f9nqvDpw308GqzbEgclu5M6NLbQS4xNEHiy8zRJu12okaYhVX8NkepwJN/
-	zYvWN7WPDo9+SH/p3zTRa4vZ8KErpgNLE8FpbrFZ7m1p6UY9t7G7DPQ2nI5CBmJwfGbEqeoX0n3
-	427tpxKs3euTKNr+pUzmb89Boo78cgduBzEfpxZ8dHf
-X-Google-Smtp-Source: AGHT+IH/PBuLyrEz5zQBYstCyOs7b50lPePZzd4TRKBU1/agPRdvbwqqn+6fzrnRarP8b13J3kggFAC8KtZoey/NOCU=
-X-Received: by 2002:a05:622a:50a:b0:4e8:8a5e:6dc5 with SMTP id
- d75a77b69052e-4e88a5e70dfmr2436531cf.71.1760508207596; Tue, 14 Oct 2025
- 23:03:27 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19468302CAB;
+	Wed, 15 Oct 2025 06:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760508270; cv=fail; b=a2WOdZ7VNP7s/t0NHCPswnJM3K8lxr49NYYG86dlk9zaNuksGS2nnEHoEbDD+yR4YzkrTvsgjzLX2p7++LQIDuitRWVcIIzZcmvhUfXG80+XQqcXAuagcB7lqawoPkXWyHlyUPnDoDJ1MzNXPyC7WfNZxqGoZzL1vfqtdb8FL9E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760508270; c=relaxed/simple;
+	bh=yF+jrNh8qsYdSD4rwfl2HvmCvL6cY6DMOtITNUnlhYU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aL1a6qKlhoMms1y+aB7y9q8V05iI2bpYOszMl18BBEBIGqQYVFoGkCE1zm/y4nopa2mNaU0iJ0+gh9g0Kzr8bcv2IM5nrnrIe9B9U8FCb7f6GpAJ8FvWzXYTz7QueQ08sOYNjEUybevE4ALsO5NCPzG914MZkGaKSxSGYuSnHmc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ABT7EKdQ; arc=fail smtp.client-ip=40.107.200.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G/H+GYDHVLJ67QVphdGPihKqRfJwoxA5AgUhwML+CvON5P/Ywkbp5KnhpVeagXl1/QWuF+j/FsML/dqHUpqY4G5/bybifkpI5xlJf8CU0mAon51A9TZ7bWZMIcgCoqhrGcM9tzfKR/hea8E8pONvDQdocB8sQlFL/5DMOQt4EzNoffWhR/SO41qRfHEITZ0ZGRdlu6xiJd3FwyhHaX//dmIa34ye/DJ22qh3ZLLw5yMOoEgRj3XFMoJuYZonOyzfXT+RWrRbnKYAq2k+wwWDRVr62lsQrYuIX3Q7ucGDnJ3PbRCUH8wYVCi1nC8ikjCv6k6bk37iUX5VpuiYh6HBjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F0i7Ve+HTWX8x6nrk/4YJpexBSZZh8Q+QP1vFTi1Ooo=;
+ b=RfxTm+x5ymeH7Ht32aiuD5e2bNHu0u954FiW4/krDT5uLCPkIEXTx9176ulrnt1lrvq896H9P/2TG79rdAz9uvLKD/nK2kzEBS1Oeot43zChDq+6UNeZcnLS2ui//qLbhY3dg8Ni/sOr9tKvOLm3rtJ9Lzld27k09fAdZUEpIm+k88hxkTcljaDKCBb2Ig3GfCRp7YWh7f7GOtP/nxNOkUQ/1fP3gvpkOOeNQ4N6m7xg6HgkiTOV1Zzty4s1CfdQYXGCVwrwmypdWee4HyxreSENc1/G1APOXUQE7MLwb93Xxc7ehWLquN1kwe1R/F0kps5zwv2SXpTbtAC52BUx9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linuxfoundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F0i7Ve+HTWX8x6nrk/4YJpexBSZZh8Q+QP1vFTi1Ooo=;
+ b=ABT7EKdQd9GI9KGRPoydKerOKMCFOIRhloYOTQgsnt39prBzgNNfyFT9pIMU0K6u1tjv+ATJCuMXE7QVSpEF4OFr3cyttoBUoqYWtv27WYmPo7qLEoo3PA5PVlJzHn0s0uaYPd4UNQ+VxEYrAqmapAg0YHWoP9QI/clELubCRic=
+Received: from CH0PR03CA0389.namprd03.prod.outlook.com (2603:10b6:610:119::28)
+ by SA1PR12MB9546.namprd12.prod.outlook.com (2603:10b6:806:459::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.11; Wed, 15 Oct
+ 2025 06:04:24 +0000
+Received: from CH2PEPF0000009D.namprd02.prod.outlook.com
+ (2603:10b6:610:119:cafe::91) by CH0PR03CA0389.outlook.office365.com
+ (2603:10b6:610:119::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.11 via Frontend Transport; Wed,
+ 15 Oct 2025 06:04:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH2PEPF0000009D.mail.protection.outlook.com (10.167.244.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9228.7 via Frontend Transport; Wed, 15 Oct 2025 06:04:23 +0000
+Received: from BLRKPRNAYAK.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 14 Oct
+ 2025 23:04:17 -0700
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
+	<sashal@kernel.org>, <stable@vger.kernel.org>, Matt Fleming
+	<matt@readmodwrite.com>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
+	<peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+	<vincent.guittot@linaro.org>, <linux-kernel@vger.kernel.org>
+CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
+	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+	<kernel-team@cloudflare.com>, Matt Fleming <mfleming@cloudflare.com>, "Oleg
+ Nesterov" <oleg@redhat.com>, John Stultz <jstultz@google.com>, Chris Arges
+	<carges@cloudflare.com>, K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: [PATCH v6.12] sched/fair: Block delayed tasks on throttled hierarchy during dequeue
+Date: Wed, 15 Oct 2025 06:03:59 +0000
+Message-ID: <20251015060359.34722-1-kprateek.nayak@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAENh_SRj9pMyMLZAM0WVr3tuD5ogMQySzkPoiHu4SRoGFkmnZw@mail.gmail.com>
+References: <CAENh_SRj9pMyMLZAM0WVr3tuD5ogMQySzkPoiHu4SRoGFkmnZw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251014004740.2775957-1-hramamurthy@google.com>
- <CANn89iKOK9GyjQ_s_eo5XNugHARSRoeeu2c1muhBj8oxYL6UEQ@mail.gmail.com> <willemdebruijn.kernel.37111d2d67443@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.37111d2d67443@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 14 Oct 2025 23:03:15 -0700
-X-Gm-Features: AS18NWDTQW4OvyuIYtm_vhiZuEvGwqArdUo3fhxdKCr-TBZKo8ZaexqzJu8EykU
-Message-ID: <CANn89i+e8w0cA8+uE5QEUFY0fkQuwM7C5=8ULvRNaY2vh0YT4w@mail.gmail.com>
-Subject: Re: [PATCH net] gve: Check valid ts bit on RX descriptor before hw timestamping
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org, joshwash@google.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, willemb@google.com, pkaligineedi@google.com, 
-	jfraker@google.com, ziweixiao@google.com, thostet@google.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009D:EE_|SA1PR12MB9546:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9efce576-e6a9-4d71-813f-08de0bb0b07f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?EUpnTRceCZbc8fCKSq951KqhC7A7S1gglzdespAqC2K0bXCn4Hjcsy36s0ih?=
+ =?us-ascii?Q?YWo1VsJZiinsNwQi1n5wNAIWrFyBL6T+M8FIZFL6FL30cSeqdMZcTXp8goGq?=
+ =?us-ascii?Q?tTliCrByCC43TBVOS7DcyfFycWtTFvebEXjf85tyz+goPC7nMgALYDUHiIvF?=
+ =?us-ascii?Q?CkPi0bJu3GF4fSpfqHyLxNaCqfi8GRZSEAlfGvcS2ck5WV6snyqE0w9gxXeQ?=
+ =?us-ascii?Q?QC+U5eZxhuDJj8xEklxqvrhEvfV7pMBbrY+ph5XBkLFnfpF8M41cxQPbPn6l?=
+ =?us-ascii?Q?/STRzo/WtZI3n7DPzDmV7YeYjAs6SG6J+1bv1OTlrMLyvFixDrc5UMwVbuun?=
+ =?us-ascii?Q?ehm8IPMGExUCfHzVgSjfJ5z5ur4vKMEL5nreooreLh9+JHTUdmyA6TXgvNxD?=
+ =?us-ascii?Q?SNfleKl/5b6uWPxXHsbFbBsmXY/xHGCz0guaCtePDxl49JfePKgHaIJ6Geey?=
+ =?us-ascii?Q?4ei8nTXD5yio5abyVqNG/ok/ZPB1dC6f6K72rquNmQXrcPcwQckO9sJ1Uk44?=
+ =?us-ascii?Q?71AyVrkTF1fBLDe/LRxwVQKqqFKDS8zCx3dgwCD7cdfDXYDH8YSnhjO2BL+M?=
+ =?us-ascii?Q?aw/rY9KwslKoSRMcW9QnUsDoOlVSBhlXTDheBzG3DJKxtl0IZBqfEI3pE+ZX?=
+ =?us-ascii?Q?uifUG37HzV3mYgGCKq8UnTWMzgt4V17cySoW0LJ253m+kMQuSvTND/HHFxOs?=
+ =?us-ascii?Q?nBeyZpUluswu3Cnjg8QJEGfrnHXPmA7bJw3wDE4BDVt6Swe+hBAa5c3R/sXO?=
+ =?us-ascii?Q?4tz3N45CvcCf3c3hjhOgwFiGVxxbStEG8D2ZCL2Gij4DBbrdqsQP01UbKgEr?=
+ =?us-ascii?Q?Itkn3SaZQ0pTQI/WfItpkVTjzyzYNovfLC76TW7MfuQg79DZGw0QBqNapR4S?=
+ =?us-ascii?Q?QDOymTkLXy7iXy1xcpX2mMvL4VSiqntMh1mWmN2QXUUiioFNCBl008wGU7+u?=
+ =?us-ascii?Q?MtvK47gIcvnNCJ6SIpUhwQurCyD97dxmY3KEVkFCymfUBwHPCDXth8B+vm/y?=
+ =?us-ascii?Q?m2/cp1fwt5Y1/RfEJo1o+iFwDUK8t4NvRRnok9lJZ03rZFmLgUssGtV7+Ri2?=
+ =?us-ascii?Q?P5TKLgWiEZ71KX+LAg7RZauX1uV6wa/WBWgdUbpAm/RXirdpxl3oubCc00at?=
+ =?us-ascii?Q?QbTGkAaaEMTGt0uatRbU3vWB3QNikGuVoPyhBR3RfNX7v3+MTMsKOI8Y65Zo?=
+ =?us-ascii?Q?9pD7CExleod6Yt2IcXFxIxR3eR8mTKLpE+z0yVkEZGtddv0aNPWT1jQWSkev?=
+ =?us-ascii?Q?HRvepCgGoEvgrnfYTLDcRtMo542NmuEkq+JUnnG3POq6JGW4c/fr7vq/gwJK?=
+ =?us-ascii?Q?7rwMzV6r+QfBnQX8iErsULPoNlpeG9yejTd8qDp+uwlVHuQj7RHr5myzko8N?=
+ =?us-ascii?Q?OZ8JvRm5KIWvtwUbfjEC+UdYcKVk4TlhRzmkg5Jtme+ojHKAkUXkaCJXMnfI?=
+ =?us-ascii?Q?rb7WPJ0WO5YjRB4/faYTpfzQADFb7fBho3uZaDe1W14pWn9/PFtm3ufrq5xx?=
+ =?us-ascii?Q?2QmtV0xgbXccVgy6FZvj+PglMNCulHO9HlrfEKPtM/s81B5gfuIBrjbNzupM?=
+ =?us-ascii?Q?jicQzfPAH4T+79vZYkA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2025 06:04:23.4623
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9efce576-e6a9-4d71-813f-08de0bb0b07f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000009D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9546
 
-On Tue, Oct 14, 2025 at 1:19=E2=80=AFPM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
->
-> Eric Dumazet wrote:
-> > On Mon, Oct 13, 2025 at 5:47=E2=80=AFPM Harshitha Ramamurthy
-> > <hramamurthy@google.com> wrote:
-> > >
-> > > From: Tim Hostetler <thostet@google.com>
-> > >
-> > > The device returns a valid bit in the LSB of the low timestamp byte i=
-n
-> > > the completion descriptor that the driver should check before
-> > > setting the SKB's hardware timestamp. If the timestamp is not valid, =
-do not
-> > > hardware timestamp the SKB.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: b2c7aeb49056 ("gve: Implement ndo_hwtstamp_get/set for RX time=
-stamping")
-> > > Reviewed-by: Joshua Washington <joshwash@google.com>
-> > > Signed-off-by: Tim Hostetler <thostet@google.com>
-> > > Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-> > > ---
-> > >  drivers/net/ethernet/google/gve/gve.h          |  2 ++
-> > >  drivers/net/ethernet/google/gve/gve_desc_dqo.h |  3 ++-
-> > >  drivers/net/ethernet/google/gve/gve_rx_dqo.c   | 18 ++++++++++++----=
---
-> > >  3 files changed, 16 insertions(+), 7 deletions(-)
-> > >
-> > > diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethe=
-rnet/google/gve/gve.h
-> > > index bceaf9b05cb4..4cc6dcbfd367 100644
-> > > --- a/drivers/net/ethernet/google/gve/gve.h
-> > > +++ b/drivers/net/ethernet/google/gve/gve.h
-> > > @@ -100,6 +100,8 @@
-> > >   */
-> > >  #define GVE_DQO_QPL_ONDEMAND_ALLOC_THRESHOLD 96
-> > >
-> > > +#define GVE_DQO_RX_HWTSTAMP_VALID 0x1
-> > > +
-> > >  /* Each slot in the desc ring has a 1:1 mapping to a slot in the dat=
-a ring */
-> > >  struct gve_rx_desc_queue {
-> > >         struct gve_rx_desc *desc_ring; /* the descriptor ring */
-> > > diff --git a/drivers/net/ethernet/google/gve/gve_desc_dqo.h b/drivers=
-/net/ethernet/google/gve/gve_desc_dqo.h
-> > > index d17da841b5a0..f7786b03c744 100644
-> > > --- a/drivers/net/ethernet/google/gve/gve_desc_dqo.h
-> > > +++ b/drivers/net/ethernet/google/gve/gve_desc_dqo.h
-> > > @@ -236,7 +236,8 @@ struct gve_rx_compl_desc_dqo {
-> > >
-> > >         u8 status_error1;
-> > >
-> > > -       __le16 reserved5;
-> > > +       u8 reserved5;
-> > > +       u8 ts_sub_nsecs_low;
-> > >         __le16 buf_id; /* Buffer ID which was sent on the buffer queu=
-e. */
-> > >
-> > >         union {
-> > > diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/n=
-et/ethernet/google/gve/gve_rx_dqo.c
-> > > index 7380c2b7a2d8..02e25be8a50d 100644
-> > > --- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-> > > +++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-> > > @@ -456,14 +456,20 @@ static void gve_rx_skb_hash(struct sk_buff *skb=
-,
-> > >   * Note that this means if the time delta between packet reception a=
-nd the last
-> > >   * clock read is greater than ~2 seconds, this will provide invalid =
-results.
-> > >   */
-> > > -static void gve_rx_skb_hwtstamp(struct gve_rx_ring *rx, u32 hwts)
-> > > +static void gve_rx_skb_hwtstamp(struct gve_rx_ring *rx,
-> > > +                               const struct gve_rx_compl_desc_dqo *d=
-esc)
-> > >  {
-> > >         u64 last_read =3D READ_ONCE(rx->gve->last_sync_nic_counter);
-> > >         struct sk_buff *skb =3D rx->ctx.skb_head;
-> > > -       u32 low =3D (u32)last_read;
-> > > -       s32 diff =3D hwts - low;
-> > > -
-> > > -       skb_hwtstamps(skb)->hwtstamp =3D ns_to_ktime(last_read + diff=
-);
-> > > +       u32 ts, low;
-> > > +       s32 diff;
-> > > +
-> > > +       if (desc->ts_sub_nsecs_low & GVE_DQO_RX_HWTSTAMP_VALID) {
-> > > +               ts =3D le32_to_cpu(desc->ts);
-> > > +               low =3D (u32)last_read;
-> > > +               diff =3D ts - low;
-> > > +               skb_hwtstamps(skb)->hwtstamp =3D ns_to_ktime(last_rea=
-d + diff);
-> > > +       }
-> >
-> > If (desc->ts_sub_nsecs_low & GVE_DQO_RX_HWTSTAMP_VALID) can vary among
-> > all packets received on this queue,
-> > I will suggest you add an
-> >
-> >         else {
-> >                  skb_hwtstamps(skb)->hwtstamp =3D 0;
-> >         }
-> >
-> > This is because napi_reuse_skb() does not currently clear this field.
-> >
-> > So if a prior skb had hwtstamp set to a timestamp, then merged in GRO,
-> > and recycled, we have the risk of reusing an old timestamp
-> > if GVE_DQO_RX_HWTSTAMP_VALID is unset.
-> >
-> > We could also handle this generically, at the cost of one extra
-> > instruction in the fast path.
->
-> That would be safest. This may not be limited to GVE.
+Dequeuing a fair task on a throttled hierarchy returns early on
+encountering a throttled cfs_rq since the throttle path has already
+dequeued the hierarchy above and has adjusted the h_nr_* accounting till
+the root cfs_rq.
 
-Yes, I started counting the bugs yesterday.
+dequeue_entities() crucially misses calling __block_task() for delayed
+tasks being dequeued on the throttled hierarchies, but this was mostly
+harmless until commit b7ca5743a260 ("sched/core: Tweak
+wait_task_inactive() to force dequeue sched_delayed tasks") since all
+existing cases would re-enqueue the task if task_on_rq_queued() returned
+true and the task would eventually be blocked at pick after the
+hierarchy was unthrottled.
 
-But considering this is going to be a patch that is separate and could
-be missed in various old kernels,
-I think a belt and suspender mode is safer :
+wait_task_inactive() is special as it expects the delayed task on
+throttled hierarchy to reach the blocked state on dequeue but since
+__block_task() is never called, task_on_rq_queued() continues to return
+true. Furthermore, since the task is now off the hierarchy, the pick
+never reaches it to fully block the task even after unthrottle leading
+to wait_task_inactive() looping endlessly.
 
-Make sure each individual driver does not assume the field is zero
-(or add a check about this assertion, which is going to be more
-expensive anyway)
+Remedy this by calling __block_task() if a delayed task is being
+dequeued on a throttled hierarchy.
 
->
-> NICs supporting line rate timestamping is not universal. Older devices
-> predominantly aim to support low rate PTP messages AFAIK.
->
-> On the Tx path there are known rate limits to the number of packets
-> that some can timestamp, e.g., because of using PHY registers.
->
-> On the Rx path packets are selected by filters such as
-> HWTSTAMP_FILTER_PTP_V2_L2_SYNC. But its not guaranteed that these can
-> be matched and timestamped at any rate? Essentially trusting that no
-> more PTP packets arrive than the device can timestamp.
->
-> e1000e_rx_hwtstamp is a good example. It has a descriptor bit whether
-> a packet was timestamped, similar to GVE. And only supports a single
-> outstanding request:
->
->         /* The Rx time stamp registers contain the time stamp.  No other
->          * received packet will be time stamped until the Rx time stamp
->          * registers are read.  Because only one packet can be time stamp=
-ed
->          * at a time, the register values must belong to this packet and
->          * therefore none of the other additional attributes need to be
->          * compared.
->          */
->
-> Perhaps not the best example as it does not use napi_reuse_skb. I
-> thought of too late ;) But there are quite likely more.
->
+This fix is only required for stabled kernels implementing delay dequeue
+(>= v6.12) before v6.18 since upstream commit e1fad12dcb66 ("sched/fair:
+Switch to task based throttle model") indirectly fixes this by removing
+the early return conditions in dequeue_entities() as part of the per-task
+throttle feature.
 
-I took a look at various uses in RX path in drivers/net/ethernet, I
-found many bugs
+Cc: stable@vger.kernel.org
+Reported-by: Matt Fleming <matt@readmodwrite.com>
+Closes: https://lore.kernel.org/all/20250925133310.1843863-1-matt@readmodwrite.com/
+Fixes: b7ca5743a260 ("sched/core: Tweak wait_task_inactive() to force dequeue sched_delayed tasks")
+Tested-by: Matt Fleming <mfleming@cloudflare.com>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+---
+Greg, Sasha,
 
-drivers/net/ethernet/amd/xgbe/xgbe-drv.c:2374
-drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c:1098
-drivers/net/ethernet/broadcom/tg3.c:6898
-drivers/net/ethernet/cavium/liquidio/lio_core.c
-drivers/net/ethernet/freescale/enetc/enetc.c
-drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-drivers/net/ethernet/meta/fbnic/fbnic_txrx.c...
+This fix cleanly applies on top of v6.16.y and v6.17.y stable kernels
+too when cherry-picked from v6.12.y branch (or with 'git am -3'). Let me
+know if you would like me to send a seperate patch for each.
 
-Then I stopped chasing.
+As mentioned above, the upstream fixes this as a part of larger feature
+and we would only like these bits backported. If there are any future
+conflicts in this area during backporting, I would be more than happy to
+help out resolve them.
+---
+ kernel/sched/fair.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-I will send a fix in napi_reuse_skb()
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index af61769b1d50..b3d9826e25b0 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7187,6 +7187,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 	int h_nr_delayed = 0;
+ 	struct cfs_rq *cfs_rq;
+ 	u64 slice = 0;
++	int ret = 0;
+ 
+ 	if (entity_is_task(se)) {
+ 		p = task_of(se);
+@@ -7218,7 +7219,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 
+ 		/* end evaluation on encountering a throttled cfs_rq */
+ 		if (cfs_rq_throttled(cfs_rq))
+-			return 0;
++			goto out;
+ 
+ 		/* Don't dequeue parent if it has other entities besides us */
+ 		if (cfs_rq->load.weight) {
+@@ -7261,7 +7262,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 
+ 		/* end evaluation on encountering a throttled cfs_rq */
+ 		if (cfs_rq_throttled(cfs_rq))
+-			return 0;
++			goto out;
+ 	}
+ 
+ 	sub_nr_running(rq, h_nr_queued);
+@@ -7273,6 +7274,8 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 	if (unlikely(!was_sched_idle && sched_idle_rq(rq)))
+ 		rq->next_balance = jiffies;
+ 
++	ret = 1;
++out:
+ 	if (p && task_delayed) {
+ 		SCHED_WARN_ON(!task_sleep);
+ 		SCHED_WARN_ON(p->on_rq != 1);
+@@ -7288,7 +7291,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 		__block_task(rq, p);
+ 	}
+ 
+-	return 1;
++	return ret;
+ }
+ 
+ /*
+-- 
+2.34.1
 
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 5ba4504cfd28ec26f487bfb96645e25c4845d720..76f9c3712422109ad00f15f6804=
-abf6a8b00db43
-100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -639,6 +639,8 @@ EXPORT_SYMBOL(gro_receive_skb);
-
- static void napi_reuse_skb(struct napi_struct *napi, struct sk_buff *skb)
- {
-+       struct skb_shared_info *shinfo;
-+
-        if (unlikely(skb->pfmemalloc)) {
-                consume_skb(skb);
-                return;
-@@ -655,8 +657,12 @@ static void napi_reuse_skb(struct napi_struct
-*napi, struct sk_buff *skb)
-
-        skb->encapsulation =3D 0;
-        skb->ip_summed =3D CHECKSUM_NONE;
--       skb_shinfo(skb)->gso_type =3D 0;
--       skb_shinfo(skb)->gso_size =3D 0;
-+
-+       shinfo =3D skb_shinfo(skb);
-+       shinfo->gso_type =3D 0;
-+       shinfo->gso_size =3D 0;
-+       shinfo->hwtstamps.hwtstamp =3D 0;
-+
-        if (unlikely(skb->slow_gro)) {
-                skb_orphan(skb);
-                skb_ext_reset(skb);
 
