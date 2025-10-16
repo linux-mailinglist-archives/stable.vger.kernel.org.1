@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC37BE3A32
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:16:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1F5BE3AC6
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:22:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 512DE3B8059
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:16:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB2A319A359E
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6051A9FBE;
-	Thu, 16 Oct 2025 13:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C43F2FFFA8;
+	Thu, 16 Oct 2025 13:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+rd/opS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFkV5LDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E53C433A0
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A662EBBAB
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760620589; cv=none; b=f3jM24BYmhYyVGNl6cYQ+5502250owPVQqBV7VmNM3nWjTu6yKLglMRcdz3JVizwAdiKabO3W2+xD5DBnbUsuNoq6hQ75s2nyU/NM86A1eHnCNxSLvhF9W3GTRdTKKFkZLU1xgNlasYwmKP0w6RGNOhwmCqIe7iBQQSFCjNg+R8=
+	t=1760620971; cv=none; b=RZFXHG2vI/uepMI1xp1qb/j1JeuuRRK1FUZEf/TBTysnTAlbfn/CXsuHUYR8qv3FUHW04xWqHIa1WukRaQeuU7BMZ5IPqnUBGRGIFe6bUaQxh8pLuANk37Fs5kGGYNAZu4ducmodOttdUG1MPEUH7m0gaK6hm2CJERPTBc/Ozsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760620589; c=relaxed/simple;
-	bh=85/czp1CrNvrfLJmJ3GFw4gIrQI4QzjNEA4StXdNrx4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=g3ySZk6GGMo1M1priegnm9strHMvmoq0oz4Ci96daFDLBxZxT4JWWNcYyDxO3Y30gmlleIsFfsfLjtTWa8xhTDY4YbSyFhk01gzNBlQ9MF8I+kHBmteF15wXOtd6alAUE7sLqCJXYTAPLPKmYA8xMFir0wyB8ovYVVjIJHRNmFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+rd/opS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD892C113D0;
-	Thu, 16 Oct 2025 13:16:28 +0000 (UTC)
+	s=arc-20240116; t=1760620971; c=relaxed/simple;
+	bh=TZIeUVdAfg79jAfec8Kvdbi8Vy7a7z7NepBOO3Tc4kk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VKx7B4stKy21fKQxJ9bFClT9Gfs7yxaLibTd6GfYIvygwY4KQ7IhZVEJ1E4MwzJO/0bOrAooks65Bzg1HhnAaX1uS+srK2u87TnOirLZ2eUL9jsU+z/Jv7yPMv47fqnkBE1F267btN/7YWibkNBBMLH/DbOB/ukVI7NrhcrIMeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFkV5LDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA23C4CEF1;
+	Thu, 16 Oct 2025 13:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760620589;
-	bh=85/czp1CrNvrfLJmJ3GFw4gIrQI4QzjNEA4StXdNrx4=;
+	s=korg; t=1760620970;
+	bh=TZIeUVdAfg79jAfec8Kvdbi8Vy7a7z7NepBOO3Tc4kk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=R+rd/opSb1Yu0BIt64WLlcmJ5ERgol73ghgI0xRmdhD0zlEJwowxhqigPPKmcQIFX
-	 7RibHzQRPmpoCGGebbpje0wdL4DusbMzgdk/J+kA+xULA9b02FaHW6WiEEfZwQHRRe
-	 NUZReEfF7E+WBMsg86iP6qbf9l9uBcgtwUaXZwP4=
-Subject: FAILED: patch "[PATCH] PCI: tegra: Convert struct tegra_msi mask_lock into raw" failed to apply to 5.15-stable tree
-To: marek.vasut+renesas@mailbox.org,bhelgaas@google.com,geert+renesas@glider.be,mani@kernel.org
+	b=OFkV5LDhF0KgrVDfg02oBqdILixPpC21j3KxNu5z7LgJ6GQWqzeQjyz4hOxCeh8EX
+	 XU3S5RvUfDpMg0qM0OgtF0PBT09LsH0Vzkvqq6h7eghaq4zOFtWA02zFi4lrTH3bJv
+	 OFUhUinGPpvRGb10c+LW83bN6tMgtsz5mcYaJE4Q=
+Subject: FAILED: patch "[PATCH] mptcp: pm: in-kernel: usable client side with C-flag" failed to apply to 6.12-stable tree
+To: matttbe@kernel.org,geliang@kernel.org,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 15:16:12 +0200
-Message-ID: <2025101612-yahoo-uncurled-d9e5@gregkh>
+Date: Thu, 16 Oct 2025 15:19:50 +0200
+Message-ID: <2025101650-setback-proofs-9687@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 26fda92d3b56bf44a02bcb4001c5a5548e0ae8ee
+git cherry-pick -x 4b1ff850e0c1aacc23e923ed22989b827b9808f9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101612-yahoo-uncurled-d9e5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101650-setback-proofs-9687@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,101 +77,165 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 26fda92d3b56bf44a02bcb4001c5a5548e0ae8ee Mon Sep 17 00:00:00 2001
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Date: Mon, 22 Sep 2025 17:07:48 +0200
-Subject: [PATCH] PCI: tegra: Convert struct tegra_msi mask_lock into raw
- spinlock
+From 4b1ff850e0c1aacc23e923ed22989b827b9808f9 Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Thu, 25 Sep 2025 12:32:36 +0200
+Subject: [PATCH] mptcp: pm: in-kernel: usable client side with C-flag
 
-The tegra_msi_irq_unmask() function may be called from a PCI driver
-request_threaded_irq() function. This triggers kernel/irq/manage.c
-__setup_irq() which locks raw spinlock &desc->lock descriptor lock
-and with that descriptor lock held, calls tegra_msi_irq_unmask().
+When servers set the C-flag in their MP_CAPABLE to tell clients not to
+create subflows to the initial address and port, clients will likely not
+use their other endpoints. That's because the in-kernel path-manager
+uses the 'subflow' endpoints to create subflows only to the initial
+address and port.
 
-Since the &desc->lock descriptor lock is a raw spinlock, and the tegra_msi
-.mask_lock is not a raw spinlock, this setup triggers 'BUG: Invalid wait
-context' with CONFIG_PROVE_RAW_LOCK_NESTING=y.
+If the limits have not been modified to accept ADD_ADDR, the client
+doesn't try to establish new subflows. If the limits accept ADD_ADDR,
+the routing routes will be used to select the source IP.
 
-Use scoped_guard() to simplify the locking.
+The C-flag is typically set when the server is operating behind a legacy
+Layer 4 load balancer, or using anycast IP address. Clients having their
+different 'subflow' endpoints setup, don't end up creating multiple
+subflows as expected, and causing some deployment issues.
 
-Fixes: 2c99e55f7955 ("PCI: tegra: Convert to MSI domains")
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Closes: https://patchwork.kernel.org/project/linux-pci/patch/20250909162707.13927-2-marek.vasut+renesas@mailbox.org/#26574451
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+A special case is then added here: when servers set the C-flag in the
+MPC and directly sends an ADD_ADDR, this single ADD_ADDR is accepted.
+The 'subflows' endpoints will then be used with this new remote IP and
+port. This exception is only allowed when the ADD_ADDR is sent
+immediately after the 3WHS, and makes the client switching to the 'fully
+established' mode. After that, 'select_local_address()' will not be able
+to find any subflows, because 'id_avail_bitmap' will be filled in
+mptcp_pm_create_subflow_or_signal_addr(), when switching to 'fully
+established' mode.
+
+Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250922150811.88450-1-marek.vasut+renesas@mailbox.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/536
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250925-net-next-mptcp-c-flag-laminar-v1-1-ad126cc47c6b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
-index bb88767a3797..942ddfca3bf6 100644
---- a/drivers/pci/controller/pci-tegra.c
-+++ b/drivers/pci/controller/pci-tegra.c
-@@ -14,6 +14,7 @@
-  */
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 204e1f61212e..584cab90aa6e 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -637,9 +637,12 @@ void mptcp_pm_add_addr_received(const struct sock *ssk,
+ 		} else {
+ 			__MPTCP_INC_STATS(sock_net((struct sock *)msk), MPTCP_MIB_ADDADDRDROP);
+ 		}
+-	/* id0 should not have a different address */
++	/* - id0 should not have a different address
++	 * - special case for C-flag: linked to fill_local_addresses_vec()
++	 */
+ 	} else if ((addr->id == 0 && !mptcp_pm_is_init_remote_addr(msk, addr)) ||
+-		   (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
++		   (addr->id > 0 && !READ_ONCE(pm->accept_addr) &&
++		    !mptcp_pm_add_addr_c_flag_case(msk))) {
+ 		mptcp_pm_announce_addr(msk, addr, true);
+ 		mptcp_pm_add_addr_send_ack(msk);
+ 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
+diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
+index 667803d72b64..8c46493a0835 100644
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -389,10 +389,12 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
+ 	struct mptcp_addr_info mpc_addr;
+ 	struct pm_nl_pernet *pernet;
+ 	unsigned int subflows_max;
++	bool c_flag_case;
+ 	int i = 0;
  
- #include <linux/clk.h>
-+#include <linux/cleanup.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/export.h>
-@@ -270,7 +271,7 @@ struct tegra_msi {
- 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
- 	struct irq_domain *domain;
- 	struct mutex map_lock;
--	spinlock_t mask_lock;
-+	raw_spinlock_t mask_lock;
- 	void *virt;
- 	dma_addr_t phys;
- 	int irq;
-@@ -1581,14 +1582,13 @@ static void tegra_msi_irq_mask(struct irq_data *d)
- 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct tegra_pcie *pcie = msi_to_pcie(msi);
- 	unsigned int index = d->hwirq / 32;
--	unsigned long flags;
- 	u32 value;
+ 	pernet = pm_nl_get_pernet_from_msk(msk);
+ 	subflows_max = mptcp_pm_get_subflows_max(msk);
++	c_flag_case = remote->id && mptcp_pm_add_addr_c_flag_case(msk);
  
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
--	value &= ~BIT(d->hwirq % 32);
--	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
-+		value &= ~BIT(d->hwirq % 32);
-+		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+ 	mptcp_local_address((struct sock_common *)msk, &mpc_addr);
+ 
+@@ -405,12 +407,27 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
+ 			continue;
+ 
+ 		if (msk->pm.subflows < subflows_max) {
++			bool is_id0;
++
+ 			locals[i].addr = entry->addr;
+ 			locals[i].flags = entry->flags;
+ 			locals[i].ifindex = entry->ifindex;
+ 
++			is_id0 = mptcp_addresses_equal(&locals[i].addr,
++						       &mpc_addr,
++						       locals[i].addr.port);
++
++			if (c_flag_case &&
++			    (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)) {
++				__clear_bit(locals[i].addr.id,
++					    msk->pm.id_avail_bitmap);
++
++				if (!is_id0)
++					msk->pm.local_addr_used++;
++			}
++
+ 			/* Special case for ID0: set the correct ID */
+-			if (mptcp_addresses_equal(&locals[i].addr, &mpc_addr, locals[i].addr.port))
++			if (is_id0)
+ 				locals[i].addr.id = 0;
+ 
+ 			msk->pm.subflows++;
+@@ -419,6 +436,37 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
+ 	}
+ 	rcu_read_unlock();
+ 
++	/* Special case: peer sets the C flag, accept one ADD_ADDR if default
++	 * limits are used -- accepting no ADD_ADDR -- and use subflow endpoints
++	 */
++	if (!i && c_flag_case) {
++		unsigned int local_addr_max = mptcp_pm_get_local_addr_max(msk);
++
++		while (msk->pm.local_addr_used < local_addr_max &&
++		       msk->pm.subflows < subflows_max) {
++			struct mptcp_pm_local *local = &locals[i];
++
++			if (!select_local_address(pernet, msk, local))
++				break;
++
++			__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
++
++			if (!mptcp_pm_addr_families_match(sk, &local->addr,
++							  remote))
++				continue;
++
++			if (mptcp_addresses_equal(&local->addr, &mpc_addr,
++						  local->addr.port))
++				continue;
++
++			msk->pm.local_addr_used++;
++			msk->pm.subflows++;
++			i++;
++		}
++
++		return i;
 +	}
++
+ 	/* If the array is empty, fill in the single
+ 	 * 'IPADDRANY' local address
+ 	 */
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index a1787a1344ac..cbe54331e5c7 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1199,6 +1199,14 @@ static inline void mptcp_pm_close_subflow(struct mptcp_sock *msk)
+ 	spin_unlock_bh(&msk->pm.lock);
  }
  
- static void tegra_msi_irq_unmask(struct irq_data *d)
-@@ -1596,14 +1596,13 @@ static void tegra_msi_irq_unmask(struct irq_data *d)
- 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct tegra_pcie *pcie = msi_to_pcie(msi);
- 	unsigned int index = d->hwirq / 32;
--	unsigned long flags;
- 	u32 value;
++static inline bool mptcp_pm_add_addr_c_flag_case(struct mptcp_sock *msk)
++{
++	return READ_ONCE(msk->pm.remote_deny_join_id0) &&
++	       msk->pm.local_addr_used == 0 &&
++	       mptcp_pm_get_add_addr_accept_max(msk) == 0 &&
++	       msk->pm.subflows < mptcp_pm_get_subflows_max(msk);
++}
++
+ void mptcp_sockopt_sync_locked(struct mptcp_sock *msk, struct sock *ssk);
  
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
--	value |= BIT(d->hwirq % 32);
--	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
-+		value |= BIT(d->hwirq % 32);
-+		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
-+	}
- }
- 
- static void tegra_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
-@@ -1711,7 +1710,7 @@ static int tegra_pcie_msi_setup(struct tegra_pcie *pcie)
- 	int err;
- 
- 	mutex_init(&msi->map_lock);
--	spin_lock_init(&msi->mask_lock);
-+	raw_spin_lock_init(&msi->mask_lock);
- 
- 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
- 		err = tegra_allocate_domains(msi);
+ static inline struct mptcp_ext *mptcp_get_ext(const struct sk_buff *skb)
 
 
