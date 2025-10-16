@@ -1,243 +1,240 @@
-Return-Path: <stable+bounces-186178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4721BE4B4D
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 18:57:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992C4BE4D28
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 19:20:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EE7F19C34F2
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 16:58:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5D3D64F50C7
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 17:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B49534572B;
-	Thu, 16 Oct 2025 16:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1161723EA88;
+	Thu, 16 Oct 2025 17:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPaPVJeM"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TZSpIPKv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2614D345723;
-	Thu, 16 Oct 2025 16:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F281A334693
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 17:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760633832; cv=none; b=nGm0TqWnrq3K3mjy6WtaE5KxlKpar7TrHHyxc3SgKkL2Grx/3mTa1G6SfNXMmCOtaT8WP/T2MoDSIIByize09Z3w7SwRLMib0+IX3OURx7N+d/YPnhVH5JbItJGPX1Cw74vFsZsNUuT8DK36g+GqGzMiJGqu16p/YVzniDZ8kU0=
+	t=1760635203; cv=none; b=fXbm9zs1djU50LlvDOVMIYHRY5uBXbk3cna8w0LUvtNlYQ3mHxE26dqGQp26UhZnFA+vTRaZjK/7+CR7Yu57y9c63QCyPapRy1BE0GV8b4XyQhhPN++eE4PkxHxJ9F0NVPSzDIo20D4yeev8rlvkBkU9D1fqLwjaUzBmU+veYYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760633832; c=relaxed/simple;
-	bh=9nG1qjjFGkF+bWx8cxC5XLBlNxY0JlebflUZ8fkywm8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EgYj0E77gMUkLUZtAHLe2wyJV+kaNloV6ts7TwRICBJS8zx2eUzAJxaTSyEUtsyv/TZo0nbgp22CEWcbnzPGWEyA/JbF9lRHqdkyd8V4p0hbhjqk2NvwURyQ/U3Ot9Ic4bcjkr8OETzyyOER/NP5xPeRIV/H8WS2waZxq2fhfT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPaPVJeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB4BC4CEFE;
-	Thu, 16 Oct 2025 16:57:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760633831;
-	bh=9nG1qjjFGkF+bWx8cxC5XLBlNxY0JlebflUZ8fkywm8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPaPVJeMDDiMn56MKmTwmcPNj3FfxwnTKH4cvu6aPu9GIK19kvYrJKmEafSSvbYOS
-	 LAr+saaxEnl8ilxXCke+YwnAFoWvKDVoPSEhfmPHbpKE+ZExVgKHKx3kkb4XBoPGBn
-	 eeEmQuR61SB6xBMCB31Uo/EHHZSQZ9XjXqeo9gv21jPv8h7JbeNxi7VwrUCz0hjDSl
-	 SrLb1QBe0jro5mIAmEL7xBl6nyv2Yup27dqLuiRdvV2g3rXhHnYhoWvI9jR/08mrMr
-	 39qEQo6Lyk9dU4Mz1nOKfSXP/x6U8/hIdO9Tfxta+oTeNi+CezWqx9kGss4c+9az2d
-	 ISuTDg1l1N26Q==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12.y] mptcp: pm: in-kernel: usable client side with C-flag
-Date: Thu, 16 Oct 2025 18:56:57 +0200
-Message-ID: <20251016165656.940021-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101650-setback-proofs-9687@gregkh>
-References: <2025101650-setback-proofs-9687@gregkh>
+	s=arc-20240116; t=1760635203; c=relaxed/simple;
+	bh=wV2nVp2Z9PJTYtTI61t8QluhPdPzWwIOzCfvg/vaIN0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LyRo9RRLCa0/nAoMBcAxzkQkPW2XwqiLnLaCV/rhaEBFqbyRs7q4aHqlgjo26R4t5kcXUuj5BDQbhe7UJ58nSBM76ZwmctYeE14bukhgo9DBfWP/4pIaWVyp9TiP1AzmQ8diFivvCnm6chz7yqE3+/HpJV+RkEi31tH5esh/v1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TZSpIPKv; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-27eeafd4882so16175ad.0
+        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 10:20:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760635201; x=1761240001; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Oar3IC5PlLSvEtc/2ze2EFC5XBWzyZXV5aWJayEgfz0=;
+        b=TZSpIPKvNpdslBjEAaZl5W97OupDyI51RAShrrXS97pg4qWeap0CwdqU3Jhcpd3YOU
+         gcsVvfCDKILWBgULXDTTX9VhweX6SZpjeIbzrgD4j0txWrX+3ZfseO6mxdON8LxwtUUP
+         6KE0uBkDU84GhqerujnaGBlNaETib59Xx6+kbRkamDgmMgDRfdeZTtYfhA/XZiSSSgrr
+         3x4VPjvd1Y4xafRSMshayDoufRlMALXi4TX4fDrCkD3M/6fvXP58hKk5FqKtdfzh7oUy
+         ZlTPAfCqEZU0ha+hmDD4W9wwPT8GzqKcRviAnNlI07iV6O4O7IKULndcclNnBpCRIkOh
+         pyNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760635201; x=1761240001;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Oar3IC5PlLSvEtc/2ze2EFC5XBWzyZXV5aWJayEgfz0=;
+        b=o3ucVpinoDDbWBpmwPlp4ho3O0F/lvco5sbnxXtEieHPCrlrRo5GFOJc7XtiXr0YrV
+         ko8gmjIQ1RzczIcsQhpQ+xdcMRebjBbtMSn3voTDlqJ0RmARnZLAtS41BPZWdqVpLDNN
+         1lGuYiDkDOuMY9Wr/8DPrqereZoSlIdvnxUGh9aNjOMxp2YbSTpw/VVrgosCWkAJbtE8
+         QHAySmgiCP1BiC09vwwmHyVOtzuF3HUuqedH+r9/bNOYUu138BKL2JHvsGunuxf5CQxY
+         UGioHR32EWDjJ7+20I+b3ZSTegD6beLW/2yboBs3SG6Y89i1mVlRXzsIp0twWqP9cU9A
+         vq0A==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ5JeeYav3BzD8LmSpcnhS9CX0YVspRQfoixiFgjpya8xB1NN0MgzR2KVOQ2nKzW/UW41Ef7s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz2vt64YC2v+GV6/qHhfzdCXVBKPt3BzQ2LQVpM6XDrJb8NjGY
+	fq8kANnRU18OG4oSMTrq0oT0lgIS1WLefOeniicIDFMCnwVX8uw4Eh/3WQg/N34vn0wbVUGCdJ/
+	lCYiIoGC3lh/uTPJ5tJFj/++Ls2wjnMQCGJH93G3s
+X-Gm-Gg: ASbGnctJbghjjhx4i0fWfmOicfp7fwhVJyM2UoDFu/kRxdiGvG8fT2lBeQQ5kRc7HNS
+	nmxP9Q/NsxC5cxzgQ0QvneT5mnUfzJ2m3tekQ3GgBxZt8aaB7zt6EioeY3zL6qA9j4LxYru8pS2
+	Eeikhw3AOtpO75jXuySMbdmIJ38hMCFM2zW5oG6d++75pbag0sv1C9vUlJFuJFbMICR0hYnn4Qo
+	2UKpSMrG3ISZn0O56YT96njcMUCUJVB8Zyf/v3FGuUUnwM0AeWFQRmykA5tLHyCIrYSkKHfgZfb
+	vIZSpe5vPySYFSdjjp4ZK6Br
+X-Google-Smtp-Source: AGHT+IGaLBYMUVA3dp2bngz8sd3zdctlajyDpg4Q5ej9rYFdWUESUT7d4RcwGFB4ciRjNT7T8e6kC8pvy75+YgR2Dh8=
+X-Received: by 2002:a17:902:fc87:b0:290:cd63:e922 with SMTP id
+ d9443c01a7336-290cd63eff9mr828755ad.15.1760635200981; Thu, 16 Oct 2025
+ 10:20:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6900; i=matttbe@kernel.org; h=from:subject; bh=9nG1qjjFGkF+bWx8cxC5XLBlNxY0JlebflUZ8fkywm8=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDI+Kt8U+8NW8sflQffLebXvz20MM44/FF4pd6xpUbztg pKy4OaVHaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABO5o8PwT+2hwPo/56/43DCZ knXyz9sfRoLMh4MiJtxfMEHZKWXysT8M/8xWx73bLceYbLx8j1Jt+tPlf1IbD2w9fW77FpYuGcc fZiwA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+References: <20251013235259.589015-1-kaleshsingh@google.com>
+ <20251013235259.589015-2-kaleshsingh@google.com> <144f3ee6-1a5f-57fc-d5f8-5ce54a3ac139@google.com>
+ <CAC_TJvdLxPRC5r+Ae+h2Zmc68B5+s40+413Xo4SjvXH2x2F6hg@mail.gmail.com> <af0618c0-03c5-9133-bb14-db8ddb72b8de@google.com>
+In-Reply-To: <af0618c0-03c5-9133-bb14-db8ddb72b8de@google.com>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Thu, 16 Oct 2025 10:19:49 -0700
+X-Gm-Features: AS18NWDUcYhiaJ_iuWpblZjVBlLRKBf3hDw80qWBei6Spqkt0F1pWUwG8jn-Ias
+Message-ID: <CAC_TJvdy4qCaLAW09ViC5vPbj4XC7_P+9Jjj_kYSU6d+=r70yw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] mm: fix off-by-one error in VMA count limit checks
+To: Hugh Dickins <hughd@google.com>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
+	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+	kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org, 
+	SeongJae Park <sj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Jann Horn <jannh@google.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
+	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-commit 4b1ff850e0c1aacc23e923ed22989b827b9808f9 upstream.
+On Wed, Oct 15, 2025 at 10:05=E2=80=AFPM Hugh Dickins <hughd@google.com> wr=
+ote:
+>
+> On Tue, 14 Oct 2025, Kalesh Singh wrote:
+> > On Mon, Oct 13, 2025 at 11:28=E2=80=AFPM Hugh Dickins <hughd@google.com=
+> wrote:
+> > >
+> > > Sorry for letting you go so far before speaking up (I had to test wha=
+t
+> > > I believed to be true, and had hoped that meanwhile one of your many
+> > > illustrious reviewers would say so first, but no): it's a NAK from me=
+.
+> > >
+> > > These are not off-by-ones: at the point of these checks, it is not
+> > > known whether an additional map/vma will have to be added, or the
+> > > addition will be merged into an existing map/vma.  So the checks
+> > > err on the lenient side, letting you get perhaps one more than the
+> > > sysctl said, but not allowing any more than that.
+> > >
+> > > Which is all that matters, isn't it? Limiting unrestrained growth.
+> > >
+> > > In this patch you're proposing to change it from erring on the
+> > > lenient side to erring on the strict side - prohibiting merges
+> > > at the limit which have been allowed for many years.
+> > >
+> > > Whatever one thinks about the merits of erring on the lenient versus
+> > > erring on the strict side, I see no reason to make this change now,
+> > > and most certainly not with a Fixes Cc: stable. There is no danger
+> > > in the current behaviour; there is danger in prohibiting what was
+> > > allowed before.
+> > >
+> > > As to the remainder of your series: I have to commend you for doing
+> > > a thorough and well-presented job, but I cannot myself see the point =
+in
+> > > changing 21 files for what almost amounts to a max_map_count subsyste=
+m.
+> > > I call it misdirected effort, not at all to my taste, which prefers t=
+he
+> > > straightforward checks already there; but accept that my taste may be
+> > > out of fashion, so won't stand in the way if others think it worthwhi=
+le.
+> >
+> > Hi Hugh,
+> >
+> > Thanks for the detailed review and for taking the time to test the beha=
+vior.
+> >
+> > You've raised a valid point. I wasn't aware of the history behind the
+> > lenient check for merges. The lack of a comment, like the one that
+> > exists for exceeding the limit in munmap(), led me to misinterpret
+> > this as an off-by-one bug. The convention makes sense if we consider
+> > potential merges.
+>
+> Yes, a comment there would be helpful (and I doubt it's worth more
+> than adding a comment); but I did not understand at all, Liam's
+> suggestion for the comment "to state that the count may not change".
+>
+> >
+> > If it was in-fact the intended behavior, then I agree we should keep
+> > it lenient. It would mean though, that munmap() being able to free a
+> > VMA if a split is required (by permitting exceeding the limit by 1)
+> > would not work in the case where we have already exceeded the limit. I
+> > find this to be inconsistent but this is also the current behavior ...
+>
+> You're saying that once we go one over the limit, say with a new mmap,
+> an munmap check makes it impossible to munmap that or any other vma?
+>
+> If that's so, I do agree with you, that's nasty, and I would hate any
+> new code to behave that way.  In code that's survived as long as this
+> without troubling anyone, I'm not so sure: but if it's easily fixed
+> (a more lenient check at the munmap end?) that would seem worthwhile.
+>
+> Ah, but reading again, you say "if a split is required": I guess
+> munmapping the whole vma has no problem; and it's fine for a middle
+> munmap, splitting into three before munmapping the middle, to fail.
+> I suppose it would be nicer if munmaping start or end succeeeded,
+> but I don't think that matters very much in this case.
+>
 
-When servers set the C-flag in their MP_CAPABLE to tell clients not to
-create subflows to the initial address and port, clients will likely not
-use their other endpoints. That's because the in-kernel path-manager
-uses the 'subflow' endpoints to create subflows only to the initial
-address and port.
+Yes, your understanding is correct. I meant that currently, we allow
+for an munmap() requiring a single split to succeed even if it will
+temporarily exceed the limit by one, as immediately after we will be
+removing one of those VMAs. However, if the process has already
+exceeded the limit, say, due to a non-merging mmap(), then an munmap()
+requiring a split will fail. It's not a big issue, but I found it
+inconsistent that this succeeds in some cases and not in others.
 
-If the limits have not been modified to accept ADD_ADDR, the client
-doesn't try to establish new subflows. If the limits accept ADD_ADDR,
-the routing routes will be used to select the source IP.
+> >
+> > I will drop this patch and the patch that introduces the
+> > vma_count_remaining() helper, as I see your point about it potentially
+> > being unnecessary overhead.
+> >
+> > Regarding your feedback on the rest of the series, I believe the 3
+> > remaining patches are still valuable on their own.
+> >
+> >  - The selftest adds a comprehensive tests for VMA operations at the
+> > sysctl_max_map_count limit. This will self-document the exact behavior
+> > expected, including the leniency for potential merges that you
+> > highlighted, preventing the kind of misunderstanding that led to my
+> > initial patch.
+> >
+> >  - The rename of mm_struct->map_count to vma_count, is a
+> > straightforward cleanup for code clarity that makes the purpose of the
+> > field more explicit.
+> >
+> >  - The tracepoint adds needed observability for telemetry, allowing us
+> > to see when processes are failing in the field due to VMA count limit.
+> >
+> > The  selftest, is what  makes up a large portion of the diff you
+> > sited, and with vma_count_remaining() gone the series will not touch
+> > nearly as many files.
+> >
+> > Would this be an acceptable path forward?
+>
+> Possibly, if others like it: my concern was to end a misunderstanding
+> (I'm generally much too slow to get involved in cleanups).
+>
+> Though given that the sysctl is named "max_map_count", I'm not very
+> keen on renaming everything else from map_count to vma_count
+> (and of course I'm not suggesting to rename the sysctl).
 
-The C-flag is typically set when the server is operating behind a legacy
-Layer 4 load balancer, or using anycast IP address. Clients having their
-different 'subflow' endpoints setup, don't end up creating multiple
-subflows as expected, and causing some deployment issues.
+I still believe vma_count is a clearer name for the field, given some
+existing comments already refer to it as vma count. The inconsistency
+between vma_count and sysctl_max_map_count can be abstracted away; and
+the sysctl made non-global.
+I'll wait for feedback form others on how to proceed.
 
-A special case is then added here: when servers set the C-flag in the
-MPC and directly sends an ADD_ADDR, this single ADD_ADDR is accepted.
-The 'subflows' endpoints will then be used with this new remote IP and
-port. This exception is only allowed when the ADD_ADDR is sent
-immediately after the 3WHS, and makes the client switching to the 'fully
-established' mode. After that, 'select_local_address()' will not be able
-to find any subflows, because 'id_avail_bitmap' will be filled in
-mptcp_pm_create_subflow_or_signal_addr(), when switching to 'fully
-established' mode.
+Thanks for the thorough review and discussion.
 
-Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/536
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250925-net-next-mptcp-c-flag-laminar-v1-1-ad126cc47c6b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict in pm.c, because commit 498d7d8b75f1 ("mptcp: pm: remove
-  '_nl' from mptcp_pm_nl_is_init_remote_addr") renamed an helper in the
-  context, and it is not in this version. The same new code can be
-  applied at the same place.
-  Conflict in pm_kernel.c, because the modified code has been moved from
-  pm_netlink.c to pm_kernel.c in commit 8617e85e04bd ("mptcp: pm: split
-  in-kernel PM specific code"), which is not in this version. The
-  resolution is easy: simply by applying the patch where 'pm_kernel.c'
-  has been replaced 'pm_netlink.c'. 'patch --merge' managed to apply
-  this modified patch without creating any conflicts. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/pm.c         |  7 ++++--
- net/mptcp/pm_netlink.c | 50 +++++++++++++++++++++++++++++++++++++++++-
- net/mptcp/protocol.h   |  8 +++++++
- 3 files changed, 62 insertions(+), 3 deletions(-)
+-- Kalesh
 
-diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
-index 2c8815daf5b0..1b7541206a70 100644
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -226,9 +226,12 @@ void mptcp_pm_add_addr_received(const struct sock *ssk,
- 		} else {
- 			__MPTCP_INC_STATS(sock_net((struct sock *)msk), MPTCP_MIB_ADDADDRDROP);
- 		}
--	/* id0 should not have a different address */
-+	/* - id0 should not have a different address
-+	 * - special case for C-flag: linked to fill_local_addresses_vec()
-+	 */
- 	} else if ((addr->id == 0 && !mptcp_pm_nl_is_init_remote_addr(msk, addr)) ||
--		   (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
-+		   (addr->id > 0 && !READ_ONCE(pm->accept_addr) &&
-+		    !mptcp_pm_add_addr_c_flag_case(msk))) {
- 		mptcp_pm_announce_addr(msk, addr, true);
- 		mptcp_pm_add_addr_send_ack(msk);
- 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 463c2e7956d5..8d5406515c30 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -674,10 +674,12 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
- 	struct mptcp_addr_info mpc_addr;
- 	struct pm_nl_pernet *pernet;
- 	unsigned int subflows_max;
-+	bool c_flag_case;
- 	int i = 0;
- 
- 	pernet = pm_nl_get_pernet_from_msk(msk);
- 	subflows_max = mptcp_pm_get_subflows_max(msk);
-+	c_flag_case = remote->id && mptcp_pm_add_addr_c_flag_case(msk);
- 
- 	mptcp_local_address((struct sock_common *)msk, &mpc_addr);
- 
-@@ -690,12 +692,27 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
- 			continue;
- 
- 		if (msk->pm.subflows < subflows_max) {
-+			bool is_id0;
-+
- 			locals[i].addr = entry->addr;
- 			locals[i].flags = entry->flags;
- 			locals[i].ifindex = entry->ifindex;
- 
-+			is_id0 = mptcp_addresses_equal(&locals[i].addr,
-+						       &mpc_addr,
-+						       locals[i].addr.port);
-+
-+			if (c_flag_case &&
-+			    (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)) {
-+				__clear_bit(locals[i].addr.id,
-+					    msk->pm.id_avail_bitmap);
-+
-+				if (!is_id0)
-+					msk->pm.local_addr_used++;
-+			}
-+
- 			/* Special case for ID0: set the correct ID */
--			if (mptcp_addresses_equal(&locals[i].addr, &mpc_addr, locals[i].addr.port))
-+			if (is_id0)
- 				locals[i].addr.id = 0;
- 
- 			msk->pm.subflows++;
-@@ -704,6 +721,37 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
- 	}
- 	rcu_read_unlock();
- 
-+	/* Special case: peer sets the C flag, accept one ADD_ADDR if default
-+	 * limits are used -- accepting no ADD_ADDR -- and use subflow endpoints
-+	 */
-+	if (!i && c_flag_case) {
-+		unsigned int local_addr_max = mptcp_pm_get_local_addr_max(msk);
-+
-+		while (msk->pm.local_addr_used < local_addr_max &&
-+		       msk->pm.subflows < subflows_max) {
-+			struct mptcp_pm_local *local = &locals[i];
-+
-+			if (!select_local_address(pernet, msk, local))
-+				break;
-+
-+			__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
-+
-+			if (!mptcp_pm_addr_families_match(sk, &local->addr,
-+							  remote))
-+				continue;
-+
-+			if (mptcp_addresses_equal(&local->addr, &mpc_addr,
-+						  local->addr.port))
-+				continue;
-+
-+			msk->pm.local_addr_used++;
-+			msk->pm.subflows++;
-+			i++;
-+		}
-+
-+		return i;
-+	}
-+
- 	/* If the array is empty, fill in the single
- 	 * 'IPADDRANY' local address
- 	 */
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 6f191b125978..9653fee227ab 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1172,6 +1172,14 @@ static inline void mptcp_pm_close_subflow(struct mptcp_sock *msk)
- 	spin_unlock_bh(&msk->pm.lock);
- }
- 
-+static inline bool mptcp_pm_add_addr_c_flag_case(struct mptcp_sock *msk)
-+{
-+	return READ_ONCE(msk->pm.remote_deny_join_id0) &&
-+	       msk->pm.local_addr_used == 0 &&
-+	       mptcp_pm_get_add_addr_accept_max(msk) == 0 &&
-+	       msk->pm.subflows < mptcp_pm_get_subflows_max(msk);
-+}
-+
- void mptcp_sockopt_sync_locked(struct mptcp_sock *msk, struct sock *ssk);
- 
- static inline struct mptcp_ext *mptcp_get_ext(const struct sk_buff *skb)
--- 
-2.51.0
-
+>
+> Hugh
 
