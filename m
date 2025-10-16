@@ -1,222 +1,190 @@
-Return-Path: <stable+bounces-186182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD35BE5150
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 20:40:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86426BE5174
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 20:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 06E764EC21B
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 18:40:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF44419A6D2E
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 18:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D88B23815C;
-	Thu, 16 Oct 2025 18:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861214438B;
+	Thu, 16 Oct 2025 18:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kb4DVjr4"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sGaP0exY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F96235BEE
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 18:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB6D2AD32
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 18:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760640039; cv=none; b=YD32AuT7rpMEZFBYGgjaEMWnGV0MD3fJbR0RMFbpmfSW9GnFcEydFmFSRcmNxmDfRC2zXPhMAFmSkJq/r6tTXgp9XafVzFEWxDC4S53VzCvfmcA4x6ZhXBFZipSce2mc/QLrOE3YBwo9xdcQh8MMqC+eKUJVKAtKLF/tue99HYk=
+	t=1760640338; cv=none; b=NE+X6bMH2eJ47i43UN85VdG7LJkdHJGYGPR3RnLDg+7F4vivL+bgje440aMhT5+QWwKS+VqPTAZl04nS8saQvu0Ymez6u9sMaUtKq1RzE+MQxGvCCQgAO9dG7+00irHkz18r6PNmMftF+PGPQIuOoBTg1/C0X7/M+UUyGsTj2Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760640039; c=relaxed/simple;
-	bh=5QysmaokXLn3WO6Gp92GJ+wwsN+FNCg2fB1fyWLq7Tg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YP3k6Z6RtBowRKvDM4+d3yhPZocs2UZBHWv/ekG0HxayA0nfPq0NxhttUncn3McKj8SYCif8DIFX3SoRMityI9do7kRXB1UDLrFVHwX1Xy3JArjAOSSZ8lZGbXFeOQzjzsAS6ILGUz6oJHng7H0RF0CV8sZjWlagrsQcbgE9kKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kb4DVjr4; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-427060bc0f5so31595f8f.3
-        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 11:40:36 -0700 (PDT)
+	s=arc-20240116; t=1760640338; c=relaxed/simple;
+	bh=tSiAsiXFNrovAlX4G1WpxqgTAT+Xxjv5/WDeLRT3plM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QaOdizgcnwr4BXRdIdr3hYasQ3Kk4UL+84eGAjar6WmpsqWNlHTfHeyqSIvl9bibAHDW/c2aCGdMDRcJhItO5SxEYV/lhEbG8+bipJB/Kzfpcon0lp28B1L8J3E+sfT37iYuKIQYulDeDW8NGeIpaADx9E1otXv9z4XyIspk3RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sGaP0exY; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-63c167b70f9so1873a12.0
+        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 11:45:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760640035; x=1761244835; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gVrVN0cURT8XxOWEND/toDNC6BEXYqhiqrr2ZmhC6Wg=;
-        b=Kb4DVjr4P8bzQkdC6frJlmNGatQhd6iQxGC7D7VWMo1gddZHd8qoiB5WW9eAzT1A4N
-         KjDaMdaWQt2diQJURY3BrxTJSVrIoG0lrlFu0Lg4/nfuIny800GFeOWoe6/0Ys/KxNRW
-         RJTSKJwXMkmTOXBYqnn5BzLWomDqmOPdrwHUQoVS3n1FsScRSHRlxsrgCKjp/NARDV/P
-         ozot9zUmZMMU7SwN5sQdej3O1YkcIKM9XAlC5mOs+22Rb8RZJDQd8NMC1hRxY6eqVsvC
-         jwrwWRRMt1OgJoaHxvFN7sdL7pGPMfJCSwqcpdlAQyRQ6i9mG3ojDllxSUsEaUMJJY1R
-         8MUA==
+        d=google.com; s=20230601; t=1760640335; x=1761245135; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eKAdvV4xTE9n5qoKZxok1YZP3tAtC9BHXBT0bF0XgI4=;
+        b=sGaP0exYOPSC+5Q2Zf+8aI7Zvp0QmXIUiZdirZE4aFJPxYA4VlO/MDpru1/+ZjiICC
+         efhu/BAMm1Tz8enkXrklzLLK4AR5zyQTi5hfyRxsHJ07bizANwDD7t+KG/tgLtsT8Rt5
+         3ZlvUCtrbZfmN1NYfL+bRw8hZlI4OAxoZFgAsixicJRK8rB7NZCREVSiyBPzlweDoFy/
+         AkJTJMOqqnNebpTGrExZTgMHH5gRgRSwOwHVN2b9OowRHMDyDnq2ItpvT0e7aGdosGbl
+         Vu7Ixz8LYlBlDn07jGWJeSLb8rz5slKyBEbx5dzHFdn8RrRtdfhluj+NMKCPapXgauWK
+         hMRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760640035; x=1761244835;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gVrVN0cURT8XxOWEND/toDNC6BEXYqhiqrr2ZmhC6Wg=;
-        b=SLC+oVptBftYYW5Wvtw2cTrcuu2Mb/CG0lXv2/tbnu6hy7Lmv4V3v4y6LmzOQjeBfn
-         L55FVIPDJ/7ZVXy5fgWVrhkQVlcThikJt3PZpplWV7KeQECKvL3mXKT7EKVHW3XnFWx/
-         xYF4UZtOPa8esMyBFZEPlwvi/5horSSFWoD2lmwRQkObO/YXn1pOOwc1w77+1YCMh0Qq
-         I03HrefazwubOK2Ih7QbCMF0B7VsxUlwUJErGQnMFPKYrGOcK3TWxZDY53z9c8m1flMW
-         v67S7+v+OpUxBd2zHK18uvAVkZocvzBD89N+eDOqzVA3lleUbHXfM7eQTZ1KxwaDgEQN
-         wSCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWuqmbObZQWyDA0tJmNAPaMzXo7KcAQWPrxqBC9aoNxrmFaLJ1LhVTGsOd16DfqjPK4lKMG8pE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQEZTiEVJsIxgP4u2cp+N26qMHaoAq+mlAQuwyo/wCvwzm+tC1
-	y5K3Kaq2FdCBoZGuChFrmc2GbwTNH+aJdInzKnsGHzH/lyf8hMm1qGun
-X-Gm-Gg: ASbGnctgvBvvU9gg6ubh036Xt1Pdv9p4TtaAADx1/lVYW8ZM3j9IUSZGNf5uxImTbvC
-	jwEcOgayFUwbihIDccdsvsZ5FZps9qxAFV+CnFGUlZ7pzWu5uAPCOCJ7sUCWqocGs4tG3yQL79t
-	dHhbU+92n1DkDB4TTm6qjG1E/8zIKAY2sVZ/kmtTbIlGbbD9KyAbLazSReusNy7wOPqyCiEYrtW
-	0WwjlYUyPKZx/26aeYRwRUhqF1FL9qvsIPjYackC2hnZ9Hv9ZOTm4MnRrZCa5m1235rV4npiu5/
-	DqyKffFdglN/HxDtiun6szJYh3iRfz+wW2Gol1vZ/u8JeN/oEhtFVkr4XGqQ6tFStdjj1NTl1B+
-	dJ4VdWniJ9867D64u/pYLL0LnWPBK1dRWSBqYbkWiq15U85+3JSaHoeKT4rqEOqi4B7ycwR0aRm
-	9oqdzn8/txB0MAoOVxzRViIknLhyrlgUU5j2IaCix8Gs3YilqYGLRrHLk/
-X-Google-Smtp-Source: AGHT+IFtecOfZqgKKUQdQobTvSoWGjsWAXnz5FwPdqEhfoodXPkAZsFTaly51YsTEiMSfFcc5ooSyw==
-X-Received: by 2002:a05:6000:4301:b0:3e5:47a9:1c7f with SMTP id ffacd0b85a97d-42704e043c1mr799792f8f.47.1760640035343;
-        Thu, 16 Oct 2025 11:40:35 -0700 (PDT)
-Received: from 0.1.2.1.2.0.a.2.dynamic.cust.swisscom.net ([2a02:1210:8642:2b00:82ee:73ff:feb8:99e3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5e0e70sm35643266f8f.40.2025.10.16.11.40.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 11:40:34 -0700 (PDT)
-Message-ID: <60fbaaef249e6f5af602fe4087eab31cd70905de.camel@gmail.com>
-Subject: Re: [PATCH 1/3] ASoC: cs4271: Fix cs4271 I2C and SPI drivers
- automatic module loading
-From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>, David Rhodes	
- <david.rhodes@cirrus.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Rob
- Herring <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela	 <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Nikita Shubin	 <nikita.shubin@maquefel.me>,
- Axel Lin <axel.lin@ingics.com>, Brian Austin	 <brian.austin@cirrus.com>
-Cc: linux-sound@vger.kernel.org, patches@opensource.cirrus.com, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Petazzoni
-	 <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Date: Thu, 16 Oct 2025 20:40:34 +0200
-In-Reply-To: <20251016130340.1442090-2-herve.codina@bootlin.com>
-References: <20251016130340.1442090-1-herve.codina@bootlin.com>
-	 <20251016130340.1442090-2-herve.codina@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.0 
+        d=1e100.net; s=20230601; t=1760640335; x=1761245135;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eKAdvV4xTE9n5qoKZxok1YZP3tAtC9BHXBT0bF0XgI4=;
+        b=qRhSlOwoflR3vXZS7geJ3jb3czKgCEOHSAdC7khVyCHgnQoZaoa/b5Vg+Dk4lQs6Lh
+         x3Pwt5xK7b0Sc87+d7WuZflNtQmCGOhUTmJlcL2SCK5qS1E4tIPBQnfLLLRJU21GMPiY
+         UP5HFaseuPZX2NaWa/AuYh1uaEvMddwy4eAzwHILliv2J+4qngI9eAigfDsaw/VUHVRy
+         nEqEhYkdue234YVfzP3xExIPdI0m7xbIZXatVDH9l9pNkGCYrK1yOvpSPcnsP6enHME4
+         szv2O7HwrTB/5dvrlfhfR50+nZXHT0xDj8cLn9eQX8WdM1wffe+FgKl2Badc15V0VCcM
+         eDOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOQytW9rrcua/LR0gvm9Ldqi6XTyC7aXpDbz6oSLmjBk6duOGOKXtwwTTELTWFgCnBbmw2xxE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyd4IFvAKgW+T/f8naIPWzC3eu1bzdlLABcpWN+SpCjCquHSlDi
+	w/XtNSuo9CM3moogOwqmcnPEeDZH9TeRSGNc0cWzpCs5wlmBZL7/vAtNbDu37Ms7/H+S4OFt3Mg
+	4poSVnDarVb+eA8hSrS45kENaC8vFYjTePdfQPUen
+X-Gm-Gg: ASbGncspwIkcE9ckM27nHtEOFv8ICo7Bxwn+WG4Qbndg94CCavawFT4yiAP3dVSp5WC
+	ZppqNUs6KEodTWQDs6P5I8VOF9uPd1I5UxeA216aUQ1o8VUbxS99KUseDMlsl2bkoJGf4zX19kW
+	riIhXjeB72/XIPKqXB/pHGdr1rTPmyTcHL0uayQ5mmSeHHFxasNQHLu74afsmwn5LnIoLOh9qPH
+	4rAzZrqoYK0r6VayS2txa8Ky2EIfCDhRXXHNfUbKr1UdRQaMMUspwMeJHRx6kOcQSD3qmXjaTGO
+	gbWMWN6NnKNBspcL0IJU6EuCBw==
+X-Google-Smtp-Source: AGHT+IHMU7eVzIIxanU4159bOcDF3YZy3khy4dytu3X9pooQwOC3RvBQR6FnIdRDKA1rp6F4oJCjxXDvC7z56ZeUki0=
+X-Received: by 2002:a50:ed13:0:b0:62f:c78f:d0d4 with SMTP id
+ 4fb4d7f45d1cf-63bebfe1112mr244762a12.6.1760640334407; Thu, 16 Oct 2025
+ 11:45:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de> <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
+ <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
+In-Reply-To: <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
+From: Jann Horn <jannh@google.com>
+Date: Thu, 16 Oct 2025 20:44:57 +0200
+X-Gm-Features: AS18NWAPtIHsIZ0KkjzqmIc9gow3CG1PS8LMsfQSH4RUrDyio7sggwn916JOBbk
+Message-ID: <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
+Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
+ huge_pmd_unshare() vs GUP-fast race
+To: David Hildenbrand <david@redhat.com>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"trix@redhat.com" <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>, 
+	"nathan@kernel.org" <nathan@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"muchun.song@linux.dev" <muchun.song@linux.dev>, "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
+	"liam.howlett@oracle.com" <liam.howlett@oracle.com>, "osalvador@suse.de" <osalvador@suse.de>, 
+	"vbabka@suse.cz" <vbabka@suse.cz>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Herve,
+On Thu, Oct 9, 2025 at 9:40=E2=80=AFAM David Hildenbrand <david@redhat.com>=
+ wrote:
+> On 01.09.25 12:58, Jann Horn wrote:
+> > Hi!
+> >
+> > On Fri, Aug 29, 2025 at 4:30=E2=80=AFPM Uschakow, Stanislav <suschako@a=
+mazon.de> wrote:
+> >> We have observed a huge latency increase using `fork()` after ingestin=
+g the CVE-2025-38085 fix which leads to the commit `1013af4f585f: mm/hugetl=
+b: fix huge_pmd_unshare() vs GUP-fast race`. On large machines with 1.5TB o=
+f memory with 196 cores, we identified mmapping of 1.2TB of shared memory a=
+nd forking itself dozens or hundreds of times we see a increase of executio=
+n times of a factor of 4. The reproducer is at the end of the email.
+> >
+> > Yeah, every 1G virtual address range you unshare on unmap will do an
+> > extra synchronous IPI broadcast to all CPU cores, so it's not very
+> > surprising that doing this would be a bit slow on a machine with 196
+> > cores.
+> >
+> >> My observation/assumption is:
+> >>
+> >> each child touches 100 random pages and despawns
+> >> on each despawn `huge_pmd_unshare()` is called
+> >> each call to `huge_pmd_unshare()` syncrhonizes all threads using `tlb_=
+remove_table_sync_one()` leading to the regression
+> >
+> > Yeah, makes sense that that'd be slow.
+> >
+> > There are probably several ways this could be optimized - like maybe
+> > changing tlb_remove_table_sync_one() to rely on the MM's cpumask
+> > (though that would require thinking about whether this interacts with
+> > remote MM access somehow), or batching the refcount drops for hugetlb
+> > shared page tables through something like struct mmu_gather, or doing
+> > something special for the unmap path, or changing the semantics of
+> > hugetlb page tables such that they can never turn into normal page
+> > tables again. However, I'm not planning to work on optimizing this.
+>
+> I'm currently looking at the fix and what sticks out is "Fix it with an
+> explicit broadcast IPI through tlb_remove_table_sync_one()".
+>
+> (I don't understand how the page table can be used for "normal,
+> non-hugetlb". I could only see how it is used for the remaining user for
+> hugetlb stuff, but that's different question)
 
-On Thu, 2025-10-16 at 15:03 +0200, Herve Codina wrote:
-> In commit c973b8a7dc50 ("ASoC: cs4271: Split SPI and I2C code into
-> different modules") the driver was slit into a core, an SPI and an I2C
-> part.
->=20
-> However, the MODULE_DEVICE_TABLE(of, cs4271_dt_ids) was in the core part
-> and so, module loading based on module.alias (based on DT compatible
-> string matching) loads the core part but not the SPI or I2C parts.
->=20
-> In order to have the I2C or the SPI module loaded automatically, move
-> the MODULE_DEVICE_TABLE(of, ...) the core to I2C and SPI parts.
-> Also move cs4271_dt_ids itself from the core part to I2C and SPI parts
-> as both the call to MODULE_DEVICE_TABLE(of, ...) and the cs4271_dt_ids
-> table itself need to be in the same file.
+If I remember correctly:
+When a hugetlb shared page table drops to refcount 1, it turns into a
+normal page table. If you then afterwards split the hugetlb VMA, unmap
+one half of it, and place a new unrelated VMA in its place, the same
+page table will be reused for PTEs of this new unrelated VMA.
 
-I'm a bit confused by this change.
-What do you have in SYSFS "uevent" entry for the real device?
+So the scenario would be:
 
-If you consider spi_uevent() and i2c_device_uevent(), "MODALIAS=3D" in the
-"uevent" should be prefixed with either "spi:" or "i2c:".
-And this isn't what you adress in your patch.
+1. Initially, we have a hugetlb shared page table covering 1G of
+address space which maps hugetlb 2M pages, which is used by two
+hugetlb VMAs in different processes (processes P1 and P2).
+2. A thread in P2 begins a gup_fast() walk in the hugetlb region, and
+walks down through the PUD entry that points to the shared page table,
+then when it reaches the loop in gup_fast_pmd_range() gets interrupted
+for a while by an NMI or preempted by the hypervisor or something.
+3. P2 removes its VMA, and the hugetlb shared page table effectively
+becomes a normal page table in P1.
+4. Then P1 splits the hugetlb VMA in the middle (at a 2M boundary),
+leaving two VMAs VMA1 and VMA2.
+5. P1 unmaps VMA1, and creates a new VMA (VMA3) in its place, for
+example an anonymous private VMA.
+6. P1 populates VMA3 with page table entries.
+7. The gup_fast() walk in P2 continues, and gup_fast_pmd_range() now
+uses the new PMD/PTE entries created for VMA3.
 
-You provide [identical] "of:" prefixed modalias to two different modules
-(not sure, how this should work), but cs4271 is not an MMIO device,
-so it should not generate an "of:" prefixed uevent.
+> How does the fix work when an architecture does not issue IPIs for TLB
+> shootdown? To handle gup-fast on these architectures, we use RCU.
 
-Could you please show the relevant DT snippet for the affected HW?
+gup-fast disables interrupts, which synchronizes against both RCU and IPI.
 
-> Fixes: c973b8a7dc50 ("ASoC: cs4271: Split SPI and I2C code into different=
- modules")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
-> =C2=A0sound/soc/codecs/cs4271-i2c.c | 6 ++++++
-> =C2=A0sound/soc/codecs/cs4271-spi.c | 6 ++++++
-> =C2=A0sound/soc/codecs/cs4271.c=C2=A0=C2=A0=C2=A0=C2=A0 | 9 ---------
-> =C2=A0sound/soc/codecs/cs4271.h=C2=A0=C2=A0=C2=A0=C2=A0 | 1 -
-> =C2=A04 files changed, 12 insertions(+), 10 deletions(-)
->=20
-> diff --git a/sound/soc/codecs/cs4271-i2c.c b/sound/soc/codecs/cs4271-i2c.=
-c
-> index 1d210b969173..cefb8733fc61 100644
-> --- a/sound/soc/codecs/cs4271-i2c.c
-> +++ b/sound/soc/codecs/cs4271-i2c.c
-> @@ -28,6 +28,12 @@ static const struct i2c_device_id cs4271_i2c_id[] =3D =
-{
-> =C2=A0};
-> =C2=A0MODULE_DEVICE_TABLE(i2c, cs4271_i2c_id);
-> =C2=A0
-> +static const struct of_device_id cs4271_dt_ids[] =3D {
-> +	{ .compatible =3D "cirrus,cs4271", },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, cs4271_dt_ids);
-> +
-> =C2=A0static struct i2c_driver cs4271_i2c_driver =3D {
-> =C2=A0	.driver =3D {
-> =C2=A0		.name =3D "cs4271",
-> diff --git a/sound/soc/codecs/cs4271-spi.c b/sound/soc/codecs/cs4271-spi.=
-c
-> index 4feb80436bd9..82abc654293c 100644
-> --- a/sound/soc/codecs/cs4271-spi.c
-> +++ b/sound/soc/codecs/cs4271-spi.c
-> @@ -23,6 +23,12 @@ static int cs4271_spi_probe(struct spi_device *spi)
-> =C2=A0	return cs4271_probe(&spi->dev, devm_regmap_init_spi(spi, &config))=
-;
-> =C2=A0}
-> =C2=A0
-> +static const struct of_device_id cs4271_dt_ids[] =3D {
-> +	{ .compatible =3D "cirrus,cs4271", },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, cs4271_dt_ids);
-> +
-> =C2=A0static struct spi_driver cs4271_spi_driver =3D {
-> =C2=A0	.driver =3D {
-> =C2=A0		.name	=3D "cs4271",
-> diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
-> index 6a3cca3d26c7..ff9c6628224c 100644
-> --- a/sound/soc/codecs/cs4271.c
-> +++ b/sound/soc/codecs/cs4271.c
-> @@ -543,15 +543,6 @@ static int cs4271_soc_resume(struct snd_soc_componen=
-t *component)
-> =C2=A0#define cs4271_soc_resume	NULL
-> =C2=A0#endif /* CONFIG_PM */
-> =C2=A0
-> -#ifdef CONFIG_OF
-> -const struct of_device_id cs4271_dt_ids[] =3D {
-> -	{ .compatible =3D "cirrus,cs4271", },
-> -	{ }
-> -};
-> -MODULE_DEVICE_TABLE(of, cs4271_dt_ids);
-> -EXPORT_SYMBOL_GPL(cs4271_dt_ids);
-> -#endif
-> -
-> =C2=A0static int cs4271_component_probe(struct snd_soc_component *compone=
-nt)
-> =C2=A0{
-> =C2=A0	struct cs4271_private *cs4271 =3D snd_soc_component_get_drvdata(co=
-mponent);
-> diff --git a/sound/soc/codecs/cs4271.h b/sound/soc/codecs/cs4271.h
-> index 290283a9149e..4965ce085875 100644
-> --- a/sound/soc/codecs/cs4271.h
-> +++ b/sound/soc/codecs/cs4271.h
-> @@ -4,7 +4,6 @@
-> =C2=A0
-> =C2=A0#include <linux/regmap.h>
-> =C2=A0
-> -extern const struct of_device_id cs4271_dt_ids[];
-> =C2=A0extern const struct regmap_config cs4271_regmap_config;
-> =C2=A0
-> =C2=A0int cs4271_probe(struct device *dev, struct regmap *regmap);
+> So I'm wondering whether we use RCU somehow.
+>
+> But note that in gup_fast_pte_range(), we are validating whether the PMD
+> changed:
+>
+> if (unlikely(pmd_val(pmd) !=3D pmd_val(*pmdp)) ||
+>      unlikely(pte_val(pte) !=3D pte_val(ptep_get(ptep)))) {
+>         gup_put_folio(folio, 1, flags);
+>         goto pte_unmap;
+> }
+>
+>
+> So in case the page table got reused in the meantime, we should just
+> back off and be fine, right?
 
---=20
-Alexander Sverdlin.
+The shared page table is mapped with a PUD entry, and we don't check
+whether the PUD entry changed here.
 
