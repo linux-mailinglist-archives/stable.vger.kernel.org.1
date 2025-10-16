@@ -1,56 +1,88 @@
-Return-Path: <stable+bounces-185932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4B7BE249F
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:05:57 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB042BE24B7
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3560F4EADD9
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:05:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8DF1C352896
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09D0301030;
-	Thu, 16 Oct 2025 09:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108712DC760;
+	Thu, 16 Oct 2025 09:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNqpRo9J"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="AI0VuJUr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE4D2DC760
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729FB30FF0D
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760605552; cv=none; b=OMlYiVgUDKy2BASv/I4zrGbk962Sw6wqHg+dZJSRmVPK8hjdGLG1YAxuAVJRPWNCPPaRsxliE6v8CJufTLBzH3sR8pNEV9cKDYhjgSXytj1xY7hRrXk6TxtjoHdIsr2QlK+jhFR57QbF/NzLcdbX9AkuU4z7pjT1aSe80qq6nCA=
+	t=1760605726; cv=none; b=uAKO8n+1FZJrj2I7KvIVyj/BAQfv6Wezm9RGnOonFd90oyMfah+EIIS7nU3jRlvwuPeRlxjBkvmnPJflhKgN+gVAMEYK8Y8qn1RnYnUYxeiANPa9eqdd9lQkGFOKFqtpgRYQ2uI3XFwJCwT463xwOMj4XUSvWkmMG4NOKVVkvx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760605552; c=relaxed/simple;
-	bh=1vEMBQP+7ziKP3/v0bnEER1hDsaxTKNoc9QSvk16M2M=;
+	s=arc-20240116; t=1760605726; c=relaxed/simple;
+	bh=PJhgVxQ6l3F2XC+0qU3KNpBkHkqjfZDXMbafeVOMr6s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GFVnGGp26EHu9BYgyJYCykeN0LBTFKoshwsArM0v1iWCGfDj52UlQjqQB5UKgL/WCLItbJsPYiNTfuVg3isWEHA2GXNYFWrbFFjkv+aa47p3oW9t/am/ddvtEkAjcEO85DojA0Fb1HQgJRzV7QqQgcagiWPiBHVv9TaUXRK7YK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNqpRo9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D5AC4CEF1;
-	Thu, 16 Oct 2025 09:05:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760605552;
-	bh=1vEMBQP+7ziKP3/v0bnEER1hDsaxTKNoc9QSvk16M2M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vNqpRo9JsEEFo6t7ri833D7SlgfqPVUpa0vWReN8x3KZABIE+0ClPxlhsN+SzX2g0
-	 vrFqmM3691397/mR+Gw5XHWvJpwdljHcYjBgjLZ/JRFBfnaQ6xn/5gRd45jmQEYVzF
-	 Y/kZJqWeevqoFNETDc3P7oWckAtAyqDP+C+DrDoI=
-Date: Thu, 16 Oct 2025 11:05:49 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: stable@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=YigVDD2gSQxKdo6WPF4xpmOVNyVS1lQGY96yjLX0fbDazso2SlZoF4CXNrtloMma03hLnRtHsfCnoe7UIuArxI90epZbE908XgHrpVt9bdB0LYdbXtXp/GAjsrVoei9IZLqqyRyUM4EV/xLIiWJlcJ44NUeKCFUlZVZKT18AvBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=AI0VuJUr; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3304dd2f119so446946a91.2
+        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 02:08:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1760605725; x=1761210525; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3p8RmPffIQDnvd5kvL8k++W8iQ6ICiKwTx4fQaUfQy0=;
+        b=AI0VuJUrPWHGimUV1QyOAyhkyTmoBvnDQYTExv6LxTSoS9Z2dat1Cb/9ThIk/fSRIc
+         YjMxrFIO68pxwnNu2vC1+E6AkbHXzjqkhWjVP0jp0kVdvsNHzi3W+I2J9VhWnBgiAOmH
+         kSu/HEPrI73PSDp/34YiDQJO6QCBZiTE26ix4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760605725; x=1761210525;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3p8RmPffIQDnvd5kvL8k++W8iQ6ICiKwTx4fQaUfQy0=;
+        b=vHCbFIKr/cATpYAGmSorBo5OENhYCiLg+p0L87fa8nQnxY4AMns3q0tXOvSNVM0wbI
+         zuMaOyvo+VHsE0cYGaynC3k6OVew37r1vYoBWW0OWpyhw1N7Ic9lzJ7BeBK1TGz42CFC
+         pCjmQYixoOyFZbKG5BtLaeaYq/cNXpUt1MPljqH1fnKBa7QqaNMuXL7bUhKRgeVK1xbv
+         aIh5o81UyNcwA6Vy04cYG4pquaO1eh5bq816w3V5jPGAM8lCnklbdXUb8kA6A1SsR6RC
+         HD/UrZMtNGXqInjik4/s7do+4Iw3pJwzix6JNr4OkPVNp4SuhjIuQlJzRDSTNjQYeI80
+         nOJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV96drlJq3OhS5i2g8PRby3CbGmS1wkbOTbMA0Mh9PJ7cvJQNg2W1Q2+mnL8sDmNGGbGuTeskk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRAEOxGq5abeq+bY2Vkdn0ksA4i0+rmKBbpeUujdJfn7oOBMxz
+	BAbtLFlOvQ54uZ3qJmgQCYeiBoAU2zYzsQDNssE1CopSL8cOAnmGefo77Qjm0ZgqYQ==
+X-Gm-Gg: ASbGncucm4xVc89mO4Us/DWZLStez61o1Y44XeyfigEzpKzqBAEEi24wOadRK8L2NkU
+	yliXEQ8o64TzM7a3VrxpDZwB5GbTm+1yGCVghNk9fnKoxwRVaY7FPNdOO2CrZgzfzZ4bWdPhHCX
+	sh5jvtiWq+ipDkHxhpDwKjob5b8b9x1oNiNEryXb21OOjjk2CP6LOzIDKl0hOQrhrJJHZq35FpI
+	sqC8OTQtrLuuMc2oPdX4/nl/Bo6bcWqDAu7aeQnQSMG9YY7p8kPvdcwIZmUtwrp5g+fGcLM1FgI
+	nCOiLvqKGOeVIkAozobeGjcFcpMbgDQM0c+ycHPG9v5jkGdEJ4Y7oeZ8IQ8A2go3DkD/FRlzxZD
+	VuBuVCpj3t4SmX/RyrV/Guukx62d7M4yQM+dwAGqHI9hmzPQdkTqtmjYIU2cyLi/kyHrIBXOCBC
+	Pqyv8=
+X-Google-Smtp-Source: AGHT+IG33msCiI4gl7fX7LUHpwD1gOVp8mJCjmKIrALkWJD6ztf8tHjsHTRH/cSKPWoLdQIDz3SDow==
+X-Received: by 2002:a17:90b:4f90:b0:32e:7c34:70cf with SMTP id 98e67ed59e1d1-33b513be266mr38568588a91.36.1760605724741;
+        Thu, 16 Oct 2025 02:08:44 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:98b0:109e:180c:f908])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33bae353b1csm694347a91.6.2025.10.16.02.08.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 02:08:44 -0700 (PDT)
+Date: Thu, 16 Oct 2025 18:08:39 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, stable@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Christian Loehle <christian.loehle@arm.com>, 
 	Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
 Subject: Re: [PATCH 6.1.y] cpuidle: governors: menu: Avoid using invalid
  recent intervals data
-Message-ID: <2025101606-galley-panda-297b@gregkh>
+Message-ID: <s7rjg3bxmjqxmqxppivrunk2awl2zwgxz7zb3godj3s2tvktg6@twicqbqsnuqk>
 References: <20251014130300.2365621-1-senozhatsky@chromium.org>
  <2025101614-shown-handbag-58e3@gregkh>
  <p7j4aihzybksyabenydz634x4whuyjxsmvkhwiqxaor5uhpjz7@3l7kud4aobjf>
+ <2025101606-galley-panda-297b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,59 +91,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <p7j4aihzybksyabenydz634x4whuyjxsmvkhwiqxaor5uhpjz7@3l7kud4aobjf>
+In-Reply-To: <2025101606-galley-panda-297b@gregkh>
 
-On Thu, Oct 16, 2025 at 05:57:36PM +0900, Sergey Senozhatsky wrote:
-> On (25/10/16 10:55), Greg KH wrote:
-> > On Tue, Oct 14, 2025 at 10:03:00PM +0900, Sergey Senozhatsky wrote:
-> > > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> > > 
-> > > [ Upstream commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed ]
-> > > 
-> > > Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
-> > > discarding useful information") caused the number of wakeup interrupts
-> > > to increase on an idle system [1], which was not expected to happen
-> > > after merely allowing shallower idle states to be selected by the
-> > > governor in some cases.
-> > > 
-> > > However, on the system in question, all of the idle states deeper than
-> > > WFI are rejected by the driver due to a firmware issue [2].  This causes
-> > > the governor to only consider the recent interval duriation data
-> > > corresponding to attempts to enter WFI that are successful and the
-> > > recent invervals table is filled with values lower than the scheduler
-> > > tick period.  Consequently, the governor predicts an idle duration
-> > > below the scheduler tick period length and avoids stopping the tick
-> > > more often which leads to the observed symptom.
-> > > 
-> > > Address it by modifying the governor to update the recent intervals
-> > > table also when entering the previously selected idle state fails, so
-> > > it knows that the short idle intervals might have been the minority
-> > > had the selected idle states been actually entered every time.
-> > > 
-> > > Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
-> > > Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
-> > > Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
-> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > Tested-by: Christian Loehle <christian.loehle@arm.com>
-> > > Tested-by: Marc Zyngier <maz@kernel.org>
-> > > Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-> > > Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > (cherry picked from commit 7337a6356dffc93194af24ee31023b3578661a5b)
-> > 
-> > You forgot to sign off on this :(
-> 
-> Oh,
-> Greg, do you want me to resend or can you just add SoB?
-> 
+On (25/10/16 11:05), Greg KH wrote:
+> I've queued up a backport I did with a cc: to you on it already, that
+> should be identical to yours, right?
 
-No one can add a signed-off-by for someone else, please go read the
-document for exactly what that is attesting.
+Looks right.  Thanks.
 
-I've queued up a backport I did with a cc: to you on it already, that
-should be identical to yours, right?
-
-thanks,
-
-greg k-h
+// I wonder why doesn't git cherry-pick -x add SoB automatically.
 
