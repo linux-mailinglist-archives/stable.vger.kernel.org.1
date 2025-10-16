@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38193BE3AED
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:23:27 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFACBE3B05
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38D261A65AA6
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:23:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 69A8A3591E4
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7A71E5B73;
-	Thu, 16 Oct 2025 13:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84BD30BBA2;
+	Thu, 16 Oct 2025 13:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgZ5X7DQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8qDkHTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A72A3168F6
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BC61E5718
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760621002; cv=none; b=DFhxRFWHu+CG9PQgOp5XpQeZD0dja+NmV+qZa/uWpN+3aAZv+LcbrCkP7d87ForGtjATQ9BheSmfO39EaZjRUX8PPa8cQ0PxBslSjillUx9DKLJPuVqO4EdZddgk50r6mtwlSnyWGn72FML3Fep56DQx7NvLSYMd/ObFbeekNDQ=
+	t=1760621039; cv=none; b=OhAqNn/AyBxWp0XM14aqSLw8h8OzTqf924boSFpYiR3+UOloVLZzL3mtbbAAQl3IUB7D9icOpsyamCHtW9NXoLslVhKuOPc8VYtcRZwNQ/aRri0w6Ickm0ZKRKgcd7REk4/ITn3bu8v2+6R1Csb1n7EqiAI/SBR8iTpUqWQBufU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760621002; c=relaxed/simple;
-	bh=jsG2vo+4s7jOyOJlTjjtqJO1YQQ9zvqItOOaydF1I/k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mqMgTtV0cPc13GrFfqcD2sS87VZECOKtjVcLVBKh+x0ZrDwVpqLugplBA2YZTH8tMxFCq6GenSXTTQu/pV3CNagk3bGV/W4+YO2iA7zempec71IfIflpumUwYrTkkcKKvwwNHwxDUI8Fh9kwRn1g2mX6/Wk11qEbwZLiE22yw8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgZ5X7DQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F6EC4CEF1;
-	Thu, 16 Oct 2025 13:23:21 +0000 (UTC)
+	s=arc-20240116; t=1760621039; c=relaxed/simple;
+	bh=nr6OuOIBz/QJR3ivRAGL3sqQfq9dmytiVevyqXAAY1M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l4+2JL5DpXjIOS2my0F96qSfsrkHeVU59ImUA7ywzcYI8zykCKUvKshILUDOBLdnk22GRLaRV8gA9Io1+KOCfJ47s9rjvRGZ0+h6VOHzrJar2yyxB0KyP6eQGUcyMGOcyfwhbcClMsrSgsGSR4ZoE4qRfGVULl9YuI4VlJQlfwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8qDkHTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C643C116B1;
+	Thu, 16 Oct 2025 13:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760621002;
-	bh=jsG2vo+4s7jOyOJlTjjtqJO1YQQ9zvqItOOaydF1I/k=;
+	s=korg; t=1760621039;
+	bh=nr6OuOIBz/QJR3ivRAGL3sqQfq9dmytiVevyqXAAY1M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dgZ5X7DQ4RGtbKRGfglgQ/X7p+YJqP1Kf9Y0XSWmPywTumgdsLhH2ml/NVU5MXBmP
-	 B8HMSJJfor0fDk1lxkifhd1axICH0/7EPIoHhdCKmiSpN0YaHl7baDfKk04H8y12hU
-	 LoWfoJPs8EVOOpfzZxkIyMb0cAMF4l1efXQJTHJ4=
-Subject: FAILED: patch "[PATCH] nfsd: decouple the xprtsec policy check from" failed to apply to 6.6-stable tree
-To: smayhew@redhat.com,chuck.lever@oracle.com
+	b=K8qDkHTIUqMYnKyZszmiDMgcpvbfoisMyhg/hxyV2EDr0IpJ9ayYOH9vl8kRN4wXI
+	 JdAMoc3qwgPo6HXhB3x2QG3NsVPhQOdSC3u0Fb7h0SeQ/0rUn478Ru/DanmKf4kXOa
+	 wd8ntJWsYGBSOGKAdChEmPVBXrWVyfZATSj3gFzU=
+Subject: FAILED: patch "[PATCH] NFSD: Fix last write offset handling in layoutcommit" failed to apply to 6.17-stable tree
+To: sergeybashirov@gmail.com,chuck.lever@oracle.com,hch@lst.de,jlayton@kernel.org,koevtushenko@yandex.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 15:23:11 +0200
-Message-ID: <2025101611-revisit-ranging-52d6@gregkh>
+Date: Thu, 16 Oct 2025 15:23:56 +0200
+Message-ID: <2025101656-unfrosted-rasping-f7dc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x e4f574ca9c6dfa66695bb054ff5df43ecea873ec
+git cherry-pick -x d68886bae76a4b9b3484d23e5b7df086f940fa38
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101611-revisit-ranging-52d6@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101656-unfrosted-rasping-f7dc@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,224 +77,109 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e4f574ca9c6dfa66695bb054ff5df43ecea873ec Mon Sep 17 00:00:00 2001
-From: Scott Mayhew <smayhew@redhat.com>
-Date: Wed, 6 Aug 2025 15:15:43 -0400
-Subject: [PATCH] nfsd: decouple the xprtsec policy check from
- check_nfsd_access()
+From d68886bae76a4b9b3484d23e5b7df086f940fa38 Mon Sep 17 00:00:00 2001
+From: Sergey Bashirov <sergeybashirov@gmail.com>
+Date: Mon, 21 Jul 2025 21:40:56 +0300
+Subject: [PATCH] NFSD: Fix last write offset handling in layoutcommit
 
-A while back I had reported that an NFSv3 client could successfully
-mount using '-o xprtsec=none' an export that had been exported with
-'xprtsec=tls:mtls'.  By "successfully" I mean that the mount command
-would succeed and the mount would show up in /proc/mount.  Attempting
-to do anything futher with the mount would be met with NFS3ERR_ACCES.
+The data type of loca_last_write_offset is newoffset4 and is switched
+on a boolean value, no_newoffset, that indicates if a previous write
+occurred or not. If no_newoffset is FALSE, an offset is not given.
+This means that client does not try to update the file size. Thus,
+server should not try to calculate new file size and check if it fits
+into the segment range. See RFC 8881, section 12.5.4.2.
 
-This was fixed (albeit accidentally) by commit bb4f07f2409c ("nfsd:
-Fix NFSD_MAY_BYPASS_GSS and NFSD_MAY_BYPASS_GSS_ON_ROOT") and was
-subsequently re-broken by commit 0813c5f01249 ("nfsd: fix access
-checking for NLM under XPRTSEC policies").
+Sometimes the current incorrect logic may cause clients to hang when
+trying to sync an inode. If layoutcommit fails, the client marks the
+inode as dirty again.
 
-Transport Layer Security isn't an RPC security flavor or pseudo-flavor,
-so we shouldn't be conflating them when determining whether the access
-checks can be bypassed.  Split check_nfsd_access() into two helpers, and
-have __fh_verify() call the helpers directly since __fh_verify() has
-logic that allows one or both of the checks to be skipped.  All other
-sites will continue to call check_nfsd_access().
-
-Link: https://lore.kernel.org/linux-nfs/ZjO3Qwf_G87yNXb2@aion/
-Fixes: 9280c5774314 ("NFSD: Handle new xprtsec= export option")
+Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
 Cc: stable@vger.kernel.org
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
+Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 
-diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
-index cadfc2bae60e..95b5681152c4 100644
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -1082,50 +1082,62 @@ static struct svc_export *exp_find(struct cache_detail *cd,
- }
- 
- /**
-- * check_nfsd_access - check if access to export is allowed.
-+ * check_xprtsec_policy - check if access to export is allowed by the
-+ *			  xprtsec policy
-  * @exp: svc_export that is being accessed.
-- * @rqstp: svc_rqst attempting to access @exp (will be NULL for LOCALIO).
-- * @may_bypass_gss: reduce strictness of authorization check
-+ * @rqstp: svc_rqst attempting to access @exp.
-+ *
-+ * Helper function for check_nfsd_access().  Note that callers should be
-+ * using check_nfsd_access() instead of calling this function directly.  The
-+ * one exception is __fh_verify() since it has logic that may result in one
-+ * or both of the helpers being skipped.
-  *
-  * Return values:
-  *   %nfs_ok if access is granted, or
-  *   %nfserr_wrongsec if access is denied
-  */
--__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
--			 bool may_bypass_gss)
-+__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp)
+diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
+index 4c936132eb44..0822d8a119c6 100644
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -118,7 +118,6 @@ nfsd4_block_commit_blocks(struct inode *inode, struct nfsd4_layoutcommit *lcp,
+ 		struct iomap *iomaps, int nr_iomaps)
  {
--	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
--	struct svc_xprt *xprt;
--
--	/*
--	 * If rqstp is NULL, this is a LOCALIO request which will only
--	 * ever use a filehandle/credential pair for which access has
--	 * been affirmed (by ACCESS or OPEN NFS requests) over the
--	 * wire. So there is no need for further checks here.
--	 */
--	if (!rqstp)
--		return nfs_ok;
--
--	xprt = rqstp->rq_xprt;
-+	struct svc_xprt *xprt = rqstp->rq_xprt;
+ 	struct timespec64 mtime = inode_get_mtime(inode);
+-	loff_t new_size = lcp->lc_last_wr + 1;
+ 	struct iattr iattr = { .ia_valid = 0 };
+ 	int error;
  
- 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_NONE) {
- 		if (!test_bit(XPT_TLS_SESSION, &xprt->xpt_flags))
--			goto ok;
-+			return nfs_ok;
- 	}
- 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_TLS) {
- 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
- 		    !test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
--			goto ok;
-+			return nfs_ok;
- 	}
- 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_MTLS) {
- 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
- 		    test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
--			goto ok;
-+			return nfs_ok;
- 	}
--	if (!may_bypass_gss)
--		goto denied;
-+	return nfserr_wrongsec;
-+}
-+
-+/**
-+ * check_security_flavor - check if access to export is allowed by the
-+ *			   security flavor
-+ * @exp: svc_export that is being accessed.
-+ * @rqstp: svc_rqst attempting to access @exp.
-+ * @may_bypass_gss: reduce strictness of authorization check
-+ *
-+ * Helper function for check_nfsd_access().  Note that callers should be
-+ * using check_nfsd_access() instead of calling this function directly.  The
-+ * one exception is __fh_verify() since it has logic that may result in one
-+ * or both of the helpers being skipped.
-+ *
-+ * Return values:
-+ *   %nfs_ok if access is granted, or
-+ *   %nfserr_wrongsec if access is denied
-+ */
-+__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp,
-+			     bool may_bypass_gss)
-+{
-+	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
+@@ -128,9 +127,9 @@ nfsd4_block_commit_blocks(struct inode *inode, struct nfsd4_layoutcommit *lcp,
+ 	iattr.ia_valid |= ATTR_ATIME | ATTR_CTIME | ATTR_MTIME;
+ 	iattr.ia_atime = iattr.ia_ctime = iattr.ia_mtime = lcp->lc_mtime;
  
--ok:
- 	/* legacy gss-only clients are always OK: */
- 	if (exp->ex_client == rqstp->rq_gssclient)
- 		return nfs_ok;
-@@ -1167,10 +1179,30 @@ __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
- 		}
+-	if (new_size > i_size_read(inode)) {
++	if (lcp->lc_size_chg) {
+ 		iattr.ia_valid |= ATTR_SIZE;
+-		iattr.ia_size = new_size;
++		iattr.ia_size = lcp->lc_newsize;
  	}
  
--denied:
- 	return nfserr_wrongsec;
- }
- 
-+/**
-+ * check_nfsd_access - check if access to export is allowed.
-+ * @exp: svc_export that is being accessed.
-+ * @rqstp: svc_rqst attempting to access @exp.
-+ * @may_bypass_gss: reduce strictness of authorization check
-+ *
-+ * Return values:
-+ *   %nfs_ok if access is granted, or
-+ *   %nfserr_wrongsec if access is denied
-+ */
-+__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
-+			 bool may_bypass_gss)
-+{
-+	__be32 status;
-+
-+	status = check_xprtsec_policy(exp, rqstp);
-+	if (status != nfs_ok)
-+		return status;
-+	return check_security_flavor(exp, rqstp, may_bypass_gss);
-+}
-+
- /*
-  * Uses rq_client and rq_gssclient to find an export; uses rq_client (an
-  * auth_unix client) if it's available and has secinfo information;
-diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
-index b9c0adb3ce09..ef5581911d5b 100644
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -101,6 +101,9 @@ struct svc_expkey {
- 
- struct svc_cred;
- int nfsexp_flags(struct svc_cred *cred, struct svc_export *exp);
-+__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp);
-+__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp,
-+			     bool may_bypass_gss);
- __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
- 			 bool may_bypass_gss);
- 
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index f4c2fb3dd5d0..062cfc18d8c6 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -364,10 +364,30 @@ __fh_verify(struct svc_rqst *rqstp,
- 	if (error)
+ 	error = inode->i_sb->s_export_op->commit_blocks(inode, iomaps,
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 656b2e7d8840..7043fc475458 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2475,7 +2475,6 @@ nfsd4_layoutcommit(struct svc_rqst *rqstp,
+ 	const struct nfsd4_layout_seg *seg = &lcp->lc_seg;
+ 	struct svc_fh *current_fh = &cstate->current_fh;
+ 	const struct nfsd4_layout_ops *ops;
+-	loff_t new_size = lcp->lc_last_wr + 1;
+ 	struct inode *inode;
+ 	struct nfs4_layout_stateid *ls;
+ 	__be32 nfserr;
+@@ -2491,13 +2490,21 @@ nfsd4_layoutcommit(struct svc_rqst *rqstp,
  		goto out;
+ 	inode = d_inode(current_fh->fh_dentry);
  
-+	/*
-+	 * If rqstp is NULL, this is a LOCALIO request which will only
-+	 * ever use a filehandle/credential pair for which access has
-+	 * been affirmed (by ACCESS or OPEN NFS requests) over the
-+	 * wire.  Skip both the xprtsec policy and the security flavor
-+	 * checks.
-+	 */
-+	if (!rqstp)
-+		goto check_permissions;
+-	nfserr = nfserr_inval;
+-	if (new_size <= seg->offset)
+-		goto out;
+-	if (new_size > seg->offset + seg->length)
+-		goto out;
+-	if (!lcp->lc_newoffset && new_size > i_size_read(inode))
+-		goto out;
++	lcp->lc_size_chg = false;
++	if (lcp->lc_newoffset) {
++		loff_t new_size = lcp->lc_last_wr + 1;
 +
- 	if ((access & NFSD_MAY_NLM) && (exp->ex_flags & NFSEXP_NOAUTHNLM))
- 		/* NLM is allowed to fully bypass authentication */
- 		goto out;
- 
-+	/*
-+	 * NLM is allowed to bypass the xprtsec policy check because lockd
-+	 * doesn't support xprtsec.
-+	 */
-+	if (!(access & NFSD_MAY_NLM)) {
-+		error = check_xprtsec_policy(exp, rqstp);
-+		if (error)
++		nfserr = nfserr_inval;
++		if (new_size <= seg->offset)
 +			goto out;
++		if (new_size > seg->offset + seg->length)
++			goto out;
++
++		if (new_size > i_size_read(inode)) {
++			lcp->lc_size_chg = true;
++			lcp->lc_newsize = new_size;
++		}
 +	}
-+
- 	if (access & NFSD_MAY_BYPASS_GSS)
- 		may_bypass_gss = true;
- 	/*
-@@ -379,13 +399,15 @@ __fh_verify(struct svc_rqst *rqstp,
- 			&& exp->ex_path.dentry == dentry)
- 		may_bypass_gss = true;
  
--	error = check_nfsd_access(exp, rqstp, may_bypass_gss);
-+	error = check_security_flavor(exp, rqstp, may_bypass_gss);
- 	if (error)
- 		goto out;
-+
- 	/* During LOCALIO call to fh_verify will be called with a NULL rqstp */
- 	if (rqstp)
- 		svc_xprt_set_valid(rqstp->rq_xprt);
+ 	nfserr = nfsd4_preprocess_layout_stateid(rqstp, cstate, &lcp->lc_sid,
+ 						false, lcp->lc_layout_type,
+@@ -2513,13 +2520,6 @@ nfsd4_layoutcommit(struct svc_rqst *rqstp,
+ 	/* LAYOUTCOMMIT does not require any serialization */
+ 	mutex_unlock(&ls->ls_mutex);
  
-+check_permissions:
- 	/* Finally, check access permissions. */
- 	error = nfsd_permission(cred, exp, dentry, access);
+-	if (new_size > i_size_read(inode)) {
+-		lcp->lc_size_chg = true;
+-		lcp->lc_newsize = new_size;
+-	} else {
+-		lcp->lc_size_chg = false;
+-	}
+-
+ 	nfserr = ops->proc_layoutcommit(inode, rqstp, lcp);
+ 	nfs4_put_stid(&ls->ls_stid);
  out:
 
 
