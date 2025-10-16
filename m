@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-185983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D53FBE2618
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:28:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 110D2BE2623
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC903188DA63
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:28:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58F96188FE3C
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E0E3176E6;
-	Thu, 16 Oct 2025 09:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66592D3A7B;
+	Thu, 16 Oct 2025 09:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtMtyiQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6RJrh2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0604A2D3A7B
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FC6192D97
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760606887; cv=none; b=a+Ma0dQyZfJ+m4PmlYSQLlRnR9H2w/qEzy0Xb65RaRFPjU64wzOMog4xeTHo6yZh4O/Eai+Gzpg10XpMZmLEY1mvXQZTV04Rw4JoWmJLj9kOfbHYqa2NuqE9BDkQkV3GAoUgkBMSLNYbm5bBV5bI2F9G0eJz3IuKiz98wwtpD4U=
+	t=1760606922; cv=none; b=YFjh6EzZ3rnjBrsGbNqvYQnfS7d2ZRgC2uqmsXyqdir9LazO0u4hPfAXMTy/ggTmGUV9XpKOJX6WHc1UmX9DqeHlSormLAWOwcJCextekvazOV8iJFEQaqMgjOxuKXZ+1e+fj1/SVUz4k5ndim27jQ5E0WFz4IK69cLfOen/dME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760606887; c=relaxed/simple;
-	bh=MoYv9NhuG2P+Qml/x/PKBBl4U1Tf28e8J52JpPZTD1Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FRIeFHXiLxAmOeM+vL5NpZfab+STUQNz3WWNDADeHnS15L4C6pbkG6v+uT7pXQQxMuBtuYh7U+Iw8Nf90O2wFKUy6elVSJYA8mAPdD7Cx2iRm+1O6Qpa+dXuTIlY3anwW/UqA0qYeY3YELcloNedNCaYSm2k2SUSyHeoyC0fgyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtMtyiQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD39C116D0;
-	Thu, 16 Oct 2025 09:28:06 +0000 (UTC)
+	s=arc-20240116; t=1760606922; c=relaxed/simple;
+	bh=xHbyXLqgdS2wMiQmhJI3ZzafBFrhWfTY5Rbx//f+Gug=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A9iR/V8YbAI+V4v2KdeM8CvOG+JxeKpmO5/oUtw2XFSsdnDUyWW9/BdLXzQ8JbEPqlbOnyZWTzzUbjvQRDfObnIy80z2tcKNJ1I468uO6DfCv8jp8OTgSgN7g2jxp4qQBPuYGJOaL0W3KpzZr3argXPT/ETxvXB3AFyEar8ht2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6RJrh2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB8FC4CEF9;
+	Thu, 16 Oct 2025 09:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760606886;
-	bh=MoYv9NhuG2P+Qml/x/PKBBl4U1Tf28e8J52JpPZTD1Y=;
+	s=korg; t=1760606922;
+	bh=xHbyXLqgdS2wMiQmhJI3ZzafBFrhWfTY5Rbx//f+Gug=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HtMtyiQzYOj0fWlGGUuJ1dNaBuUBRrX7onvY7Ub2R0Lt7GaPp908B1vzpItLJLptu
-	 JBa7/T64DOnpnEOowSaEDoGAnjajrD5n/Kcy8BSBuJWFp9dSxT5WIxCwS3uXEsb/B7
-	 +hEUM/sdbhpVw9FcA2f+bOLtdE9qP9gZg1/lt1fo=
-Subject: FAILED: patch "[PATCH] drm/xe: Extend Wa_13011645652 to PTL-H, WCL" failed to apply to 6.17-stable tree
-To: julia.filipchuk@intel.com,daniele.ceraolospurio@intel.com,lucas.demarchi@intel.com,rodrigo.vivi@intel.com,stable@vger.kernel.org,stuart.summers@intel.com,thomas.hellstrom@linux.intel.com,vinay.belgaumkar@intel.com
+	b=X6RJrh2vcO+9mshax9/dL//s4ectjWAH2IsTMhY2cCEMqS9F2XJ1vhq7Bk23o4wn4
+	 Qw7QUfY59P3+QGciNUOQ+FovfShdzo37OWUrLgRC2QwRWHCfG9udJQme6cxMOiI22l
+	 T7wkJb7WgMyjrgDGBMoY8etA1KwYNoyIOcFrNLQQ=
+Subject: FAILED: patch "[PATCH] drm/msm/a6xx: Fix PDC sleep sequence" failed to apply to 6.6-stable tree
+To: akhilpo@oss.qualcomm.com,robin.clark@oss.qualcomm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 11:27:56 +0200
-Message-ID: <2025101656-edgy-outbreak-15f9@gregkh>
+Date: Thu, 16 Oct 2025 11:28:31 +0200
+Message-ID: <2025101631-punctual-jaybird-dba5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.17-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6fc957185e1691bb6dfa4193698a229db537c2a2
+git cherry-pick -x f248d5d5159a88ded55329f0b1b463d0f4094228
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101656-edgy-outbreak-15f9@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101631-punctual-jaybird-dba5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,42 +77,128 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6fc957185e1691bb6dfa4193698a229db537c2a2 Mon Sep 17 00:00:00 2001
-From: Julia Filipchuk <julia.filipchuk@intel.com>
-Date: Wed, 3 Sep 2025 12:00:38 -0700
-Subject: [PATCH] drm/xe: Extend Wa_13011645652 to PTL-H, WCL
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From f248d5d5159a88ded55329f0b1b463d0f4094228 Mon Sep 17 00:00:00 2001
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Date: Mon, 8 Sep 2025 13:56:57 +0530
+Subject: [PATCH] drm/msm/a6xx: Fix PDC sleep sequence
 
-Expand workaround to additional graphics architectures.
+Since the PDC resides out of the GPU subsystem and cannot be reset in
+case it enters bad state, utmost care must be taken to trigger the PDC
+wake/sleep routines in the correct order.
 
-Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Cc: Stuart Summers <stuart.summers@intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: intel-xe@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.17+
-Signed-off-by: Julia Filipchuk <julia.filipchuk@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://lore.kernel.org/r/20250903190122.1028373-2-julia.filipchuk@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+The PDC wake sequence can be exercised only after a PDC sleep sequence.
+Additionally, GMU firmware should initialize a few registers before the
+KMD can trigger a PDC sleep sequence. So PDC sleep can't be done if the
+GMU firmware has not initialized. Track these dependencies using a new
+status variable and trigger PDC sleep/wake sequences appropriately.
 
-diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
-index 0cf2b3c03532..338c344dcd7d 100644
---- a/drivers/gpu/drm/xe/xe_wa_oob.rules
-+++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
-@@ -32,7 +32,8 @@
- 16022287689	GRAPHICS_VERSION(2001)
- 		GRAPHICS_VERSION(2004)
- 13011645652	GRAPHICS_VERSION(2004)
--		GRAPHICS_VERSION(3001)
-+		GRAPHICS_VERSION_RANGE(3000, 3001)
-+		GRAPHICS_VERSION(3003)
- 14022293748	GRAPHICS_VERSION_RANGE(2001, 2002)
- 		GRAPHICS_VERSION(2004)
- 		GRAPHICS_VERSION_RANGE(3000, 3001)
+Cc: stable@vger.kernel.org
+Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/673362/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index e74651d5bd7a..5594499ad2d1 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -279,6 +279,8 @@ static int a6xx_gmu_start(struct a6xx_gmu *gmu)
+ 	if (ret)
+ 		DRM_DEV_ERROR(gmu->dev, "GMU firmware initialization timed out\n");
+ 
++	set_bit(GMU_STATUS_FW_START, &gmu->status);
++
+ 	return ret;
+ }
+ 
+@@ -525,6 +527,9 @@ static int a6xx_rpmh_start(struct a6xx_gmu *gmu)
+ 	int ret;
+ 	u32 val;
+ 
++	if (!test_and_clear_bit(GMU_STATUS_PDC_SLEEP, &gmu->status))
++		return 0;
++
+ 	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, BIT(1));
+ 
+ 	ret = gmu_poll_timeout(gmu, REG_A6XX_GMU_RSCC_CONTROL_ACK, val,
+@@ -552,6 +557,9 @@ static void a6xx_rpmh_stop(struct a6xx_gmu *gmu)
+ 	int ret;
+ 	u32 val;
+ 
++	if (test_and_clear_bit(GMU_STATUS_FW_START, &gmu->status))
++		return;
++
+ 	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, 1);
+ 
+ 	ret = gmu_poll_timeout_rscc(gmu, REG_A6XX_GPU_RSCC_RSC_STATUS0_DRV0,
+@@ -560,6 +568,8 @@ static void a6xx_rpmh_stop(struct a6xx_gmu *gmu)
+ 		DRM_DEV_ERROR(gmu->dev, "Unable to power off the GPU RSC\n");
+ 
+ 	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, 0);
++
++	set_bit(GMU_STATUS_PDC_SLEEP, &gmu->status);
+ }
+ 
+ static inline void pdc_write(void __iomem *ptr, u32 offset, u32 value)
+@@ -688,8 +698,6 @@ static void a6xx_gmu_rpmh_init(struct a6xx_gmu *gmu)
+ 	/* ensure no writes happen before the uCode is fully written */
+ 	wmb();
+ 
+-	a6xx_rpmh_stop(gmu);
+-
+ err:
+ 	if (!IS_ERR_OR_NULL(pdcptr))
+ 		iounmap(pdcptr);
+@@ -849,19 +857,15 @@ static int a6xx_gmu_fw_start(struct a6xx_gmu *gmu, unsigned int state)
+ 	else
+ 		gmu_write(gmu, REG_A6XX_GMU_GENERAL_7, 1);
+ 
+-	if (state == GMU_WARM_BOOT) {
+-		ret = a6xx_rpmh_start(gmu);
+-		if (ret)
+-			return ret;
+-	} else {
++	ret = a6xx_rpmh_start(gmu);
++	if (ret)
++		return ret;
++
++	if (state == GMU_COLD_BOOT) {
+ 		if (WARN(!adreno_gpu->fw[ADRENO_FW_GMU],
+ 			"GMU firmware is not loaded\n"))
+ 			return -ENOENT;
+ 
+-		ret = a6xx_rpmh_start(gmu);
+-		if (ret)
+-			return ret;
+-
+ 		ret = a6xx_gmu_fw_load(gmu);
+ 		if (ret)
+ 			return ret;
+@@ -1046,6 +1050,8 @@ static void a6xx_gmu_force_off(struct a6xx_gmu *gmu)
+ 
+ 	/* Reset GPU core blocks */
+ 	a6xx_gpu_sw_reset(gpu, true);
++
++	a6xx_rpmh_stop(gmu);
+ }
+ 
+ static void a6xx_gmu_set_initial_freq(struct msm_gpu *gpu, struct a6xx_gmu *gmu)
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
+index d1ce11131ba6..069a8c9474e8 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
+@@ -117,6 +117,12 @@ struct a6xx_gmu {
+ 
+ 	struct qmp *qmp;
+ 	struct a6xx_hfi_msg_bw_table *bw_table;
++
++/* To check if we can trigger sleep seq at PDC. Cleared in a6xx_rpmh_stop() */
++#define GMU_STATUS_FW_START	0
++/* To track if PDC sleep seq was done */
++#define GMU_STATUS_PDC_SLEEP	1
++	unsigned long status;
+ };
+ 
+ static inline u32 gmu_read(struct a6xx_gmu *gmu, u32 offset)
 
 
