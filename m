@@ -1,134 +1,119 @@
-Return-Path: <stable+bounces-186088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B320BE389F
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 14:58:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6AEBBE3A42
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB97C1881EE8
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 12:58:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A43DC5010D0
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E014D334388;
-	Thu, 16 Oct 2025 12:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7211D7995;
+	Thu, 16 Oct 2025 13:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iO8BieIV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YjXTPgAa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6F7305E19
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADAB1D63E6;
+	Thu, 16 Oct 2025 13:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760619493; cv=none; b=tvjwff/3p1gIJfDr1DIyxsdLeAvt5S7blbC49oDyHpJslI4ihKZpz0RxJNdqBMMra9TRuswcdtZYjl/LRoK7NT7Sgo4KEbXEEcXL3rCQFUcnc5iyk9rSDSF+GRzfa5g30A3hmXm3pTQBGhT5xysyU9mlXEMFC2wHYxUCjGe652w=
+	t=1760620672; cv=none; b=CyKu8fklyvokFyWA5fSduVgyptoTaS/HkiE8tjgrdvBgnS5+rZ8l65/7DF8mYHEcFiLKWxmK/mXDPzr9w0LqA2SqPXl/mAJxb/i5l0AYzijgquuq5O9DDKHTuLItknKqejD+kZjGpFZnfcBgiUxx1Ll8SJtejkOeuPVAop4hNLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760619493; c=relaxed/simple;
-	bh=C2JgDm3+91IjS6Owa9wpJup90f602ymFL/XaBMrIzjw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ji9FYQzfB5UjR0IYiI4BjMQ9Y97K7Xfstl7Ex8ASt56iC4IdknQpufHtcUZ0bpdLWzyQixl77ouzN13AYk+XCFBkXl/ZP+L1EfAGpaHnM5WNVyr9EJ76xfLAtZIxNFk01PVb9ruoS6MaI+e9Vcmh/70EplM1labzT7w6nRFDLHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iO8BieIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9777C4CEF1;
-	Thu, 16 Oct 2025 12:58:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760619493;
-	bh=C2JgDm3+91IjS6Owa9wpJup90f602ymFL/XaBMrIzjw=;
-	h=Subject:To:Cc:From:Date:From;
-	b=iO8BieIVXaX2yx+5Yg2retutALWMrP9fAkVOG3Yalsxm4aOkwi0LBO1tUfc3ox5kF
-	 zYCp0nC94exOYglIUki4q6k9DtL9PpFgjMFPxfVKS1u0FeyyLcJPB0Iab54jnQVR0w
-	 aMe4W6Ho0SaY+wFJ5YL8xORtUc5xyN+RUgJKv41o=
-Subject: FAILED: patch "[PATCH] PCI/ERR: Fix uevent on failure to recover" failed to apply to 5.4-stable tree
-To: lukas@wunner.de,bhelgaas@google.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 14:58:10 +0200
-Message-ID: <2025101610-deserve-skittle-9bde@gregkh>
+	s=arc-20240116; t=1760620672; c=relaxed/simple;
+	bh=wSZgigGVWIWXmsilk3REynnteX2zpEVtIf+T+288B4Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X5M6U75og6i3gk4/FTeBV8c5zF1uNVHCfewW4gSW3gNlh3NuIBV2LSIM98PKKhiv87uF4pNFADZjO+sAGrl1EzLmo+Wbm4IkC7cyR8PCQKSK1CidimYXGlfubXIbsTwLxrjMrig1aOmFcH9nN5VeoShZtlXQELiNizva3jJGtP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YjXTPgAa; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760620670; x=1792156670;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wSZgigGVWIWXmsilk3REynnteX2zpEVtIf+T+288B4Q=;
+  b=YjXTPgAaiwW/MukkDxg/mpOV9qgeWSyGDKKMFWqQEBlIRQbTl/eZ3Crg
+   YbSZcPFKUbDXrTB1h09jNwEvsyEAtM+2m0pkB5XVwHM/qvaWIS9uwrCel
+   PnLKf2TsFYrIpyYq0ZXTW+XsJWQDyzNfOxpgZPN/lmqjO+LLX4jiE4FtK
+   lxFsvdCAIkGX6fNcugzjU5c3uL0605Pjj1E/xraKRa0XdtGAqMn6JAk1I
+   /QMLXesSOQogTUZOYTwWNgcByd3p0cHX7U3lu3d+dYonv7vj6S4ywzXfg
+   F8POMswetxTr+BRK65kxfVBxAuBdChEE84pCWXgKFaNZSP27Hu8zke03L
+   Q==;
+X-CSE-ConnectionGUID: ofWC3S6fRgeqdQosIPh9Hg==
+X-CSE-MsgGUID: fCuHOoX0R62ZQ5GRqR1bIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="73923798"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="73923798"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 06:17:50 -0700
+X-CSE-ConnectionGUID: IEXOvtPxTjuhI4gjMb8vgw==
+X-CSE-MsgGUID: q7c1O4ZDT3aZCyGvKiYhMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="206159232"
+Received: from sannilnx-dsk.jer.intel.com ([10.12.231.107])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 06:17:47 -0700
+From: Alexander Usyskin <alexander.usyskin@intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Reuven Abliyev <reuven.abliyev@intel.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tomas Winkler <tomasw@gmail.com>
+Subject: [char-misc] mei: me: add wildcat lake P DID
+Date: Thu, 16 Oct 2025 15:59:12 +0300
+Message-ID: <20251016125912.2146136-1-alexander.usyskin@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+Add Wildcat Lake P device id.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Cc: stable@vger.kernel.org
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+---
+ drivers/misc/mei/hw-me-regs.h | 2 ++
+ drivers/misc/mei/pci-me.c     | 2 ++
+ 2 files changed, 4 insertions(+)
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1cbc5e25fb70e942a7a735a1f3d6dd391afc9b29
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101610-deserve-skittle-9bde@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1cbc5e25fb70e942a7a735a1f3d6dd391afc9b29 Mon Sep 17 00:00:00 2001
-From: Lukas Wunner <lukas@wunner.de>
-Date: Wed, 13 Aug 2025 07:11:02 +0200
-Subject: [PATCH] PCI/ERR: Fix uevent on failure to recover
-
-Upon failure to recover from a PCIe error through AER, DPC or EDR, a
-uevent is sent to inform user space about disconnection of the bridge
-whose subordinate devices failed to recover.
-
-However the bridge itself is not disconnected.  Instead, a uevent should
-be sent for each of the subordinate devices.
-
-Only if the "bridge" happens to be a Root Complex Event Collector or
-Integrated Endpoint does it make sense to send a uevent for it (because
-there are no subordinate devices).
-
-Right now if there is a mix of subordinate devices with and without
-pci_error_handlers, a BEGIN_RECOVERY event is sent for those with
-pci_error_handlers but no FAILED_RECOVERY event is ever sent for them
-afterwards.  Fix it.
-
-Fixes: 856e1eb9bdd4 ("PCI/AER: Add uevents in AER and EEH error/resume")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org  # v4.16+
-Link: https://patch.msgid.link/68fc527a380821b5d861dd554d2ce42cb739591c.1755008151.git.lukas@wunner.de
-
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index e795e5ae6b03..21d554359fb1 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -108,6 +108,12 @@ static int report_normal_detected(struct pci_dev *dev, void *data)
- 	return report_error_detected(dev, pci_channel_io_normal, data);
- }
+diff --git a/drivers/misc/mei/hw-me-regs.h b/drivers/misc/mei/hw-me-regs.h
+index bc40b940ae21..a4f75dc36929 100644
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -120,6 +120,8 @@
+ #define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
+ #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
  
-+static int report_perm_failure_detected(struct pci_dev *dev, void *data)
-+{
-+	pci_uevent_ers(dev, PCI_ERS_RESULT_DISCONNECT);
-+	return 0;
-+}
++#define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
 +
- static int report_mmio_enabled(struct pci_dev *dev, void *data)
- {
- 	struct pci_driver *pdrv;
-@@ -272,7 +278,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- failed:
- 	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
+ /*
+  * MEI HW Section
+  */
+diff --git a/drivers/misc/mei/pci-me.c b/drivers/misc/mei/pci-me.c
+index b108a7c22388..b017ff29dbd1 100644
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -127,6 +127,8 @@ static const struct pci_device_id mei_me_pci_tbl[] = {
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
  
--	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
-+	pci_walk_bridge(bridge, report_perm_failure_detected, NULL);
- 
- 	pci_info(bridge, "device recovery failed\n");
- 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
+-- 
+2.43.0
 
 
