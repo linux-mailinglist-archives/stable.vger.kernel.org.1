@@ -1,135 +1,157 @@
-Return-Path: <stable+bounces-185908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB0BBE23FA
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 10:57:48 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C432BE23FD
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 10:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9AF63ABE09
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 08:57:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BB00634AFBA
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 08:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB5E2E3AF5;
-	Thu, 16 Oct 2025 08:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DDD30C617;
+	Thu, 16 Oct 2025 08:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZJ7d+M64"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sq0N/eCb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B75214A79
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 08:57:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D859F2E62AD
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 08:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760605063; cv=none; b=FOkTJ9x8KRRHouZDJv4SHsNHNVY5LO19QvAEhRYoQLtJVzRjusVxXQNYoc+AciM44Jgrdr0j0eDP2WwnswqVoiqi+vtuknI/aSmqsACbc+5065quMZt92GbfWa2vag6oVdwZsPF5WmV4s/HrE456kEnTRKhKeFOtIIbSjR6iQ3I=
+	t=1760605081; cv=none; b=AbYu+BtEOgGwb2VxiB0gdw5q8fG4IcCV0a37AfcJkXz//lWz/9HIdYkwR14zf+4w5j0gVuyOO/tet93fXgMBsPW6EgTYikU/8QVairVMJAND/tZErPpGRoUVz4YF8uzLwc0l2ECIjrD/9AqGobYsxu5p+TNiROCzCzBF8I/GBJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760605063; c=relaxed/simple;
-	bh=UZBHg8z1graxYq2jP0wH9Ynql08UCvk+brPCiW2Z7YU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UzjYK9iTvKdM4O4JmCY69sUszY42DeKGiGcBImKCMpKhNAYJ1VJPWdfJ26xtWt74YuvpVY/UToUS37EOFV2pEL2IWmzA4J2ri11VML0/99JOaVHq4y1LYF3FshMQWvHieO8j8JpTox7XinruB33w1wVgwTnt2oUqZaG1ohTU77s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZJ7d+M64; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7811a02316bso375308b3a.3
-        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 01:57:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760605061; x=1761209861; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=z3+9L/n/wF5eWVrlWgh0Rnj/Ofh6DOYI0vHxbYgNhEM=;
-        b=ZJ7d+M64aSJiKcry9xOoM5jX6K9FfQc0fBJlfzL0RFrveOPyKmIbEwNwL8syz+sVpz
-         n9LdWdOySXy719mevxzpnZinh6SR9gF957y4qeg6HLyGPJV1M3/gerGG6YR/WuQNwFAe
-         fhCRdDjbzJBSZqPQSKbz9HgFTnMS3wf7TZ7ak=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760605061; x=1761209861;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z3+9L/n/wF5eWVrlWgh0Rnj/Ofh6DOYI0vHxbYgNhEM=;
-        b=e+vwh73YNcVvY/tUdEMGGJk5t5ieekA0PZFT+cP9c1rPhlRiQIbDns+B5rsdC2Lzut
-         US4Ljve9VwjwU0ZtRQKN1FYFVZOTQkKnHP6X8F7td73ZAKi96g8r1lpbNLbHv8ZtgvXp
-         ljJw5PzwWJAxab/ST21KlaXVIz29z3AMWGfD3efhZUDRayYV+2cj8jld4QHiY+ow1F/V
-         MhlKRa4b5meN3dZKpXgt+Lz5S6F63AQJ5bLHo2m4C/pker0UUaWIg3ZeuA3lXkmh3adg
-         RV9+nugtbQN1i1X+PSkRILK0zAe4aAfbj7efogC/YMOxAixzwh4RcBz7KWV1ikxzaWgn
-         Sktg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWYXsy928D1Ns+V16U/QYXDiTlxUDkcEd8y90o9J6tP41MJGAaRFiX+c4RdIJfYRH+IEj4Qp0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGsn3YmV3Zafe5Awb5K65a41Fuq6Qs7IqGi4REn6m/qjaM8+DZ
-	d/tbQnZtjgfiBSoGUYbO3IXVAgapHwufhPXLNMp5b5yEBJqvDTEnwbqMu4abuFs+jQ==
-X-Gm-Gg: ASbGnctki3GAgpgUWGz/eAjvsgfo8TDkakalO87NcIJReVhK9A38+C516SCjp/Fcx6t
-	VaitvowoRyMOuFs7Kdo7dkKArUWOCWvTzdvsuJiCXk9TfD+PK8/X0H5NBP+NGxSiK8jDXhaC4t4
-	jfrEK45Cs685Zwh4XMseo6YY2WLlsiKoahCZWtoWRZT0PFYTgp1j3USijKngxE6kyJDBM876r9D
-	XUWvnlWM2rh4smBrlvnSpePGVU5RFX00duiA6H6Jimh4Od3Nmtq6i88GoMJ9NU3ylVx+H9TQ12u
-	UaOMBJbFm4DKmwx9EtLaXGhC/rZwhDrGMf85cDfx0342QSsJrS3OhKZDuljhHQJkGGudKiiLFHu
-	OJIiA74B5BFQnyJDDDqmfGQcchW9/c67bztaJU0xwzqHBwVSk+HxSYKEfS2fHek6irH8pP+Sa38
-	HyRnI=
-X-Google-Smtp-Source: AGHT+IG4hmHpB6yqAJU7qJCsXOzla5nYCqrST/iLfELMlqAHCV17Rzruzv/yAVg8QPwwbWdf9aQb9g==
-X-Received: by 2002:a17:902:dac6:b0:290:91d2:9304 with SMTP id d9443c01a7336-29091d29fa6mr38523475ad.4.1760605061481;
-        Thu, 16 Oct 2025 01:57:41 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:98b0:109e:180c:f908])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29099aba062sm22231145ad.98.2025.10.16.01.57.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 01:57:41 -0700 (PDT)
-Date: Thu, 16 Oct 2025 17:57:36 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, stable@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Christian Loehle <christian.loehle@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] cpuidle: governors: menu: Avoid using invalid
- recent intervals data
-Message-ID: <p7j4aihzybksyabenydz634x4whuyjxsmvkhwiqxaor5uhpjz7@3l7kud4aobjf>
-References: <20251014130300.2365621-1-senozhatsky@chromium.org>
- <2025101614-shown-handbag-58e3@gregkh>
+	s=arc-20240116; t=1760605081; c=relaxed/simple;
+	bh=Qbk94x6C8r3PUOr9iq/xKCNYdp613MVQFEyVJ69LPKw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uz0ieEtsKgTXRG0gWJi9RhjnDVq/Wt9ZTcdP6d2ITBg/xLW5O9mtNUcGB2izTq838r1NJTadWj017bChLkavRw5VNNmUewFil8Pgb5ttvvPvYTzgnumCSjAOi20+J27pTRLiMCoXOeCJbn1IS2yLM2jDTh+xXOjGw/dkTz2jBK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sq0N/eCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BDEC4CEF1;
+	Thu, 16 Oct 2025 08:57:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760605080;
+	bh=Qbk94x6C8r3PUOr9iq/xKCNYdp613MVQFEyVJ69LPKw=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Sq0N/eCbWGb4KEoQq7jJxuG2zBwrUnhUfrxAeCCtL5xZ94TmOVFOrCG5UiJmDAalC
+	 H16OLp2HajwcxLzhuqIym3MZD8YEN0/EVSaqc+JVxRmPxBnknSCrObatPy0/jOH6a9
+	 A+ZF+0XEsd/dKzh2WoJl5doQN3rfZYDQkZYs3zpc=
+Subject: FAILED: patch "[PATCH] xen/events: Return -EEXIST for bound VIRQs" failed to apply to 5.4-stable tree
+To: jason.andryuk@amd.com,jgross@suse.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 16 Oct 2025 10:57:57 +0200
+Message-ID: <2025101657-dragonish-scarcity-3be3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025101614-shown-handbag-58e3@gregkh>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On (25/10/16 10:55), Greg KH wrote:
-> On Tue, Oct 14, 2025 at 10:03:00PM +0900, Sergey Senozhatsky wrote:
-> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> > 
-> > [ Upstream commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed ]
-> > 
-> > Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
-> > discarding useful information") caused the number of wakeup interrupts
-> > to increase on an idle system [1], which was not expected to happen
-> > after merely allowing shallower idle states to be selected by the
-> > governor in some cases.
-> > 
-> > However, on the system in question, all of the idle states deeper than
-> > WFI are rejected by the driver due to a firmware issue [2].  This causes
-> > the governor to only consider the recent interval duriation data
-> > corresponding to attempts to enter WFI that are successful and the
-> > recent invervals table is filled with values lower than the scheduler
-> > tick period.  Consequently, the governor predicts an idle duration
-> > below the scheduler tick period length and avoids stopping the tick
-> > more often which leads to the observed symptom.
-> > 
-> > Address it by modifying the governor to update the recent intervals
-> > table also when entering the previously selected idle state fails, so
-> > it knows that the short idle intervals might have been the minority
-> > had the selected idle states been actually entered every time.
-> > 
-> > Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
-> > Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
-> > Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Tested-by: Christian Loehle <christian.loehle@arm.com>
-> > Tested-by: Marc Zyngier <maz@kernel.org>
-> > Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-> > Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > (cherry picked from commit 7337a6356dffc93194af24ee31023b3578661a5b)
-> 
-> You forgot to sign off on this :(
 
-Oh,
-Greg, do you want me to resend or can you just add SoB?
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 07ce121d93a5e5fb2440a24da3dbf408fcee978e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101657-dragonish-scarcity-3be3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 07ce121d93a5e5fb2440a24da3dbf408fcee978e Mon Sep 17 00:00:00 2001
+From: Jason Andryuk <jason.andryuk@amd.com>
+Date: Wed, 27 Aug 2025 20:36:02 -0400
+Subject: [PATCH] xen/events: Return -EEXIST for bound VIRQs
+
+Change find_virq() to return -EEXIST when a VIRQ is bound to a
+different CPU than the one passed in.  With that, remove the BUG_ON()
+from bind_virq_to_irq() to propogate the error upwards.
+
+Some VIRQs are per-cpu, but others are per-domain or global.  Those must
+be bound to CPU0 and can then migrate elsewhere.  The lookup for
+per-domain and global will probably fail when migrated off CPU 0,
+especially when the current CPU is tracked.  This now returns -EEXIST
+instead of BUG_ON().
+
+A second call to bind a per-domain or global VIRQ is not expected, but
+make it non-fatal to avoid trying to look up the irq, since we don't
+know which per_cpu(virq_to_irq) it will be in.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-3-jason.andryuk@amd.com>
+
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index 374231d84e4f..b060b5a95f45 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1314,10 +1314,12 @@ int bind_interdomain_evtchn_to_irq_lateeoi(struct xenbus_device *dev,
+ }
+ EXPORT_SYMBOL_GPL(bind_interdomain_evtchn_to_irq_lateeoi);
+ 
+-static int find_virq(unsigned int virq, unsigned int cpu, evtchn_port_t *evtchn)
++static int find_virq(unsigned int virq, unsigned int cpu, evtchn_port_t *evtchn,
++		     bool percpu)
+ {
+ 	struct evtchn_status status;
+ 	evtchn_port_t port;
++	bool exists = false;
+ 
+ 	memset(&status, 0, sizeof(status));
+ 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
+@@ -1330,12 +1332,16 @@ static int find_virq(unsigned int virq, unsigned int cpu, evtchn_port_t *evtchn)
+ 			continue;
+ 		if (status.status != EVTCHNSTAT_virq)
+ 			continue;
+-		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
++		if (status.u.virq != virq)
++			continue;
++		if (status.vcpu == xen_vcpu_nr(cpu)) {
+ 			*evtchn = port;
+ 			return 0;
++		} else if (!percpu) {
++			exists = true;
+ 		}
+ 	}
+-	return -ENOENT;
++	return exists ? -EEXIST : -ENOENT;
+ }
+ 
+ /**
+@@ -1382,8 +1388,11 @@ int bind_virq_to_irq(unsigned int virq, unsigned int cpu, bool percpu)
+ 			evtchn = bind_virq.port;
+ 		else {
+ 			if (ret == -EEXIST)
+-				ret = find_virq(virq, cpu, &evtchn);
+-			BUG_ON(ret < 0);
++				ret = find_virq(virq, cpu, &evtchn, percpu);
++			if (ret) {
++				__unbind_from_irq(info, info->irq);
++				goto out;
++			}
+ 		}
+ 
+ 		ret = xen_irq_info_virq_setup(info, cpu, evtchn, virq);
+
 
