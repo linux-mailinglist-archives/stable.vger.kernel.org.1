@@ -1,154 +1,179 @@
-Return-Path: <stable+bounces-186094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11088BE3905
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:02:06 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FE0BE392F
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 855DA188292A
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:01:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1163C50148F
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616EF32C319;
-	Thu, 16 Oct 2025 13:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3FD32D431;
+	Thu, 16 Oct 2025 13:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FoAssZv7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7rSOG0J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4A2205E2F
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE2F2475CB
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760619626; cv=none; b=qQjUoaYUsB+v+ujk4JLVWmGLnUNCXaV72uQ20j3chod5GrCR8aae9KkarEFRInt6br861ewHNXIGJLQTwjL5qZ8Udc7B/i8Pv+H9rfy0XD6YzQtHotspNVb5FOffKw63TzzOcBwuLruQiIo7s27SkNV/pXBam/Rsrv+LgTGib2E=
+	t=1760619630; cv=none; b=T694p9Ed262yNMzihJHNvvuqdv9T8x967VazP5h8xzR+VOwPtsJqv+PunKn2pvWEQjE6opmFujKUKt5+VC9A2+hSUHailmmJId2BmKrmarLKy0r9WXLaXEorfIgxgFyS797Zce6u12u9p6oMJ6MQGorWt+ftCW+M13GDZ5b6mFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760619626; c=relaxed/simple;
-	bh=5V5TvVP9FGHTtP34T2C7oWzdkTY3aZmvjw5MQMxicgU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHgQ1CCwc2eY1adrdOjLSr7PVQjrPe7rc80y8Y58+UTSWN5kOOwVvpANMpkNTWQpvu6MigIb3YM7yp6kQ6f5rIEKsIxrR320p+HVpENL/cQ4M03SGHGNo55MwJjSYDB14U3LYO0Yvzx0TCSwftCvNi2hWBHy6UFnzdNQ6cKzS2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FoAssZv7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226C0C4CEF1;
-	Thu, 16 Oct 2025 13:00:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760619623;
-	bh=5V5TvVP9FGHTtP34T2C7oWzdkTY3aZmvjw5MQMxicgU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FoAssZv7/WnpZ9j7qH5n91TTe/I/gnXg+B/3OOyqf+iouIW8ud7bd2zhxh7n8ZlWg
-	 N98Fbhvd7WJH635UE3UH1a/X2TbUcazfkPdrn1Nh1rk34N8XiQUifnVhaspJFMO02Q
-	 ooDY9eF7ejVxmQWw6Ci7WhzoF51vpApEC7YStAPdDB1J+e0eRdgJW7ULD9Fz/alTgI
-	 fU2SAhOrGGH9mt+aIP1SIo6c0E/9RN2IuVNjYzcfadn68UJH8eaz0Zeh7GDaqlqU0u
-	 KqHi9PoRBJ1scPbQC4j7dCvxOWggxLQ8Qcwqcb44tE0sWCxx2NOmL9mvx3mwEamOcI
-	 dkSLqW5TXAU+Q==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Sandipan Das <sandipan.das@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] KVM: SVM: Emulate PERF_CNTR_GLOBAL_STATUS_SET for PerfMonV2
-Date: Thu, 16 Oct 2025 09:00:21 -0400
-Message-ID: <20251016130021.3283271-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101537-entangled-rhyme-6714@gregkh>
-References: <2025101537-entangled-rhyme-6714@gregkh>
+	s=arc-20240116; t=1760619630; c=relaxed/simple;
+	bh=XQUBtA7llI3kj0cBu9Hc1hi+TFZhH6uaniXi4YipqnI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lrevekWIiN7Wo6zngfgaTvT+uIBsZG8C9fUvCO6ovd9drj7t8IY0X8+JE6jnKI/vvkpL6Bp1Af9fUqaznzXyVL+7LOwd1/j3FjCyacfzopkdHN9BpComhXMTELDr+w/3n3/I/1ZrOEZOoECgepTuX2Rq9FcKz1agLwPT3BKilb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7rSOG0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF7CC4CEF1;
+	Thu, 16 Oct 2025 13:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760619629;
+	bh=XQUBtA7llI3kj0cBu9Hc1hi+TFZhH6uaniXi4YipqnI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=C7rSOG0JVoHz8vwx6OkP9pRvi80aDrc5d8fGyVNrHHgkQ/gvhUtWalItzCh/5YzhL
+	 ZjIwOb/7SnwH1apnIrKorwLL1HzsXNzNOVMrB+ZTJD84254tgCMW0MnUyvVzjSGKD1
+	 4yOTUO5bxUWs2fvtUa/2IGDnafhMWgDwhdYwvMqU=
+Subject: FAILED: patch "[PATCH] PCI: tegra194: Handle errors in BPMP response" failed to apply to 5.15-stable tree
+To: vidyas@nvidia.com,bhelgaas@google.com,cassel@kernel.org,jonathanh@nvidia.com,mani@kernel.org,treding@nvidia.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 16 Oct 2025 15:00:27 +0200
+Message-ID: <2025101627-backwash-capably-abbe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 68e61f6fd65610e73b17882f86fedfd784d99229 ]
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Emulate PERF_CNTR_GLOBAL_STATUS_SET when PerfMonV2 is enumerated to the
-guest, as the MSR is supposed to exist in all AMD v2 PMUs.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: 4a2771895ca6 ("KVM: x86/svm/pmu: Add AMD PerfMonV2 support")
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x f8c9ad46b00453a8c075453f3745f8d263f44834
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101627-backwash-capably-abbe@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f8c9ad46b00453a8c075453f3745f8d263f44834 Mon Sep 17 00:00:00 2001
+From: Vidya Sagar <vidyas@nvidia.com>
+Date: Mon, 22 Sep 2025 16:08:26 +0200
+Subject: [PATCH] PCI: tegra194: Handle errors in BPMP response
+
+The return value from tegra_bpmp_transfer() indicates the success or
+failure of the IPC transaction with BPMP. If the transaction succeeded, we
+also need to check the actual command's result code.
+
+If we don't have error handling for tegra_bpmp_transfer(), we will set the
+pcie->ep_state to EP_STATE_ENABLED even when the tegra_bpmp_transfer()
+command fails. Thus, the pcie->ep_state will get out of sync with reality,
+and any further PERST# assert + deassert will be a no-op and will not
+trigger the hardware initialization sequence.
+
+This is because pex_ep_event_pex_rst_deassert() checks the current
+pcie->ep_state, and does nothing if the current state is already
+EP_STATE_ENABLED.
+
+Thus, it is important to have error handling for tegra_bpmp_transfer(),
+such that the pcie->ep_state can not get out of sync with reality, so that
+we will try to initialize the hardware not only during the first PERST#
+assert + deassert, but also during any succeeding PERST# assert + deassert.
+
+One example where this fix is needed is when using a rock5b as host.
+During the initial PERST# assert + deassert (triggered by the bootloader on
+the rock5b) pex_ep_event_pex_rst_deassert() will get called, but for some
+unknown reason, the tegra_bpmp_transfer() call to initialize the PHY fails.
+Once Linux has been loaded on the rock5b, the PCIe driver will once again
+assert + deassert PERST#. However, without tegra_bpmp_transfer() error
+handling, this second PERST# assert + deassert will not trigger the
+hardware initialization sequence.
+
+With tegra_bpmp_transfer() error handling, the second PERST# assert +
+deassert will once again trigger the hardware to be initialized and this
+time the tegra_bpmp_transfer() succeeds.
+
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+[cassel: improve commit log]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
 Cc: stable@vger.kernel.org
-Cc: Sandipan Das <sandipan.das@amd.com>
-Link: https://lore.kernel.org/r/20250711172746.1579423-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ changed global_status_rsvd field to global_status_mask ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/include/asm/msr-index.h | 1 +
- arch/x86/kvm/pmu.c               | 5 +++++
- arch/x86/kvm/svm/pmu.c           | 1 +
- arch/x86/kvm/x86.c               | 2 ++
- 4 files changed, 9 insertions(+)
+Link: https://patch.msgid.link/20250922140822.519796-8-cassel@kernel.org
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 723e48b57bd0f..425980eacaa84 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -661,6 +661,7 @@
- #define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS	0xc0000300
- #define MSR_AMD64_PERF_CNTR_GLOBAL_CTL		0xc0000301
- #define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR	0xc0000302
-+#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET	0xc0000303
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 359d92dca86a..d71053fa4365 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1214,6 +1214,7 @@ static int tegra_pcie_bpmp_set_ctrl_state(struct tegra_pcie_dw *pcie,
+ 	struct mrq_uphy_response resp;
+ 	struct tegra_bpmp_message msg;
+ 	struct mrq_uphy_request req;
++	int err;
  
- /* AMD Last Branch Record MSRs */
- #define MSR_AMD64_LBR_SELECT			0xc000010e
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index da2d82e3a8735..f2cd8cfb0ef55 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -588,6 +588,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		msr_info->data = pmu->global_ctrl;
- 		break;
- 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
-+	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
- 	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
- 		msr_info->data = 0;
- 		break;
-@@ -649,6 +650,10 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (!msr_info->host_initiated)
- 			pmu->global_status &= ~data;
- 		break;
-+	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
-+		if (!msr_info->host_initiated)
-+			pmu->global_status |= data & ~pmu->global_status_mask;
-+		break;
- 	default:
- 		kvm_pmu_mark_pmc_in_use(vcpu, msr_info->index);
- 		return static_call(kvm_x86_pmu_set_msr)(vcpu, msr_info);
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index 3fd47de14b38a..0bad24f763d22 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -117,6 +117,7 @@ static bool amd_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
- 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
- 	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
- 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
-+	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
- 		return pmu->version > 1;
- 	default:
- 		if (msr > MSR_F15H_PERF_CTR5 &&
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 71d60d4e991fd..a589a5781e906 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1495,6 +1495,7 @@ static const u32 msrs_to_save_pmu[] = {
- 	MSR_AMD64_PERF_CNTR_GLOBAL_CTL,
- 	MSR_AMD64_PERF_CNTR_GLOBAL_STATUS,
- 	MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
-+	MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET,
- };
+ 	/*
+ 	 * Controller-5 doesn't need to have its state set by BPMP-FW in
+@@ -1236,7 +1237,13 @@ static int tegra_pcie_bpmp_set_ctrl_state(struct tegra_pcie_dw *pcie,
+ 	msg.rx.data = &resp;
+ 	msg.rx.size = sizeof(resp);
  
- static u32 msrs_to_save[ARRAY_SIZE(msrs_to_save_base) +
-@@ -7194,6 +7195,7 @@ static void kvm_probe_msr_to_save(u32 msr_index)
- 	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
- 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
- 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
-+	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
- 		if (!kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2))
- 			return;
- 		break;
--- 
-2.51.0
+-	return tegra_bpmp_transfer(pcie->bpmp, &msg);
++	err = tegra_bpmp_transfer(pcie->bpmp, &msg);
++	if (err)
++		return err;
++	if (msg.rx.ret)
++		return -EINVAL;
++
++	return 0;
+ }
+ 
+ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
+@@ -1245,6 +1252,7 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
+ 	struct mrq_uphy_response resp;
+ 	struct tegra_bpmp_message msg;
+ 	struct mrq_uphy_request req;
++	int err;
+ 
+ 	memset(&req, 0, sizeof(req));
+ 	memset(&resp, 0, sizeof(resp));
+@@ -1264,7 +1272,13 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
+ 	msg.rx.data = &resp;
+ 	msg.rx.size = sizeof(resp);
+ 
+-	return tegra_bpmp_transfer(pcie->bpmp, &msg);
++	err = tegra_bpmp_transfer(pcie->bpmp, &msg);
++	if (err)
++		return err;
++	if (msg.rx.ret)
++		return -EINVAL;
++
++	return 0;
+ }
+ 
+ static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
 
 
