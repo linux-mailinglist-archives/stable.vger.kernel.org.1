@@ -1,67 +1,49 @@
-Return-Path: <stable+bounces-186001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEB35BE3042
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9114ABE304E
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F54F4F3D67
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:12:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7C0384FFBE1
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA7D30B52B;
-	Thu, 16 Oct 2025 11:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ml/7w8Zf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C573081D5;
+	Thu, 16 Oct 2025 11:12:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D6327B32B
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 11:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A953D261B60;
+	Thu, 16 Oct 2025 11:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760613134; cv=none; b=CC8qQHn+5WByt8lCrRgixrUuDifK8/iBAuYH2QekFDAXdUoq1kVbFjyHBSYakomCx4ZtzOQADy1oRmr8FQ1Jj9UUh9N7RB1vCEOkR4Ptj9Q++lBEhj5hyd5noXyexrdAmbR79gWEBhCB/aSudDdQGMRPqDg4RpvEA1oHcxY2oTA=
+	t=1760613141; cv=none; b=kPz3eW3DsTKfBe/WtkE1oE13oftjMjHNYjUYZFJ9/uedheXdoP0P6IuJd3awbhbxZiut53WBiACbTlbM+flKwOLbbL/LcCCpRpCxELLsHGgbZh0f8fr6cuSWGc9/AVNpvuBp//KvKaCxaHykalgRvevYWY3JN6kMsirh6VFu6RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760613134; c=relaxed/simple;
-	bh=F2NDQd0RB+lDxTS6DTrsGgpz1L9XDygP38aOkc9JCmQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=Jx36+HknlhE0U0H0Lwwk2T8gBSkVKOkITuvNIwslh7eP/FchvCzKAqw3FdmlO2EY4VhB4x0LqhRPv3eJax/vQLfRtivw+oBFj/bGRzjHZbe/KA+8Jy74N6uJ/dNrxHnd1LVzHlptHlE3tlN43xhd0hjK+Xx31PsAUpGfI3+Y2Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ml/7w8Zf; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251016111208euoutp01742e8fdb6e93251cf73460cd69886278~u9E-6OckW2777327773euoutp01j
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 11:12:08 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251016111208euoutp01742e8fdb6e93251cf73460cd69886278~u9E-6OckW2777327773euoutp01j
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1760613128;
-	bh=vz6aHMBDh36l9YV+XjUIIXycn9boKM8dyJnIdlbGieA=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=ml/7w8ZfnrWTdTCW0sjXPykM6Z9Pi3CBIqOprfFmB+gDvj13V4IfWIyPxFgnnBsE/
-	 CxA4dRIgRfqoWv26PNTZnc7ihN1w/lXEImegGrJ/X3RTiGDcS6qCvEg3GfSo/KoHlz
-	 MB/1QLvN+xI+5LOXTqnJm3esHr5LiJ/PGtykp7VQ=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d~u9E-jI15-1702017020eucas1p2G;
-	Thu, 16 Oct 2025 11:12:08 +0000 (GMT)
-Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251016111207eusmtip1a8615a027e8a98878686cbaa67d402a5~u9E-HbUgn1158811588eusmtip1i;
-	Thu, 16 Oct 2025 11:12:07 +0000 (GMT)
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-To: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Tomasz Figa
-	<tfiga@chromium.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Guennadi
-	Liakhovetski <g.liakhovetski@gmx.de>, Benjamin Gaignard
-	<benjamin.gaignard@collabora.com>, Hans Verkuil <hverkuil@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] media: videobuf2: forbid create_bufs/remove_bufs when
- legacy fileio is active
-Date: Thu, 16 Oct 2025 13:11:54 +0200
-Message-Id: <20251016111154.993949-1-m.szyprowski@samsung.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1760613141; c=relaxed/simple;
+	bh=4BeoCGQkStDeuZLfd/henBCuCWg8sFQzH1BA+rp0Cow=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m2dvRXXmRxmPlG7Dzmm3sDdLWsJnHHq8Is4hdU9H5/DmvrG7z3RL4ryGVkFHJcRV1CywGrp248CDjqRF4pahnH59hgXGIeAPCQKUkMkkeWXXbpq73oXb9nGDEhpUNSpvomx5v4XrK8MLxOyVcE31WD4FEe4FKpHjEShKptkQgpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C14631688;
+	Thu, 16 Oct 2025 04:12:09 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D5E33F6A8;
+	Thu, 16 Oct 2025 04:12:16 -0700 (PDT)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: stable@vger.kernel.org
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	mark.rutland@arm.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.4-6.17 0/2] arm64: errata: Apply workarounds for Neoverse-V3AE
+Date: Thu, 16 Oct 2025 12:12:04 +0100
+Message-ID: <20251016111208.3983300-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,56 +51,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d
-X-EPHeader: CA
-X-CMS-RootMailID: 20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d
-References: <CGME20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d@eucas1p2.samsung.com>
 
-create_bufs and remove_bufs ioctl calls manipulate queue internal buffer
-list, potentially overwriting some pointers used by the legacy fileio
-access mode. Simply forbid those calls when fileio is active to protect
-internal queue state between subsequent read/write calls.
+Hi All,
 
-CC: stable@vger.kernel.org
-Fixes: 2d86401c2cbf ("[media] V4L: vb2: add support for buffers of different sizes on a single queue")
-Fixes: a3293a85381e ("media: v4l2: Add REMOVE_BUFS ioctl")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
----
- drivers/media/common/videobuf2/videobuf2-v4l2.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+This series is a backport intended for all supported stable kernels (5.4-6.17)
+of the recent errata workarounds for Neoverse-V3AE, which were originally posted
+at:
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-v4l2.c b/drivers/media/common/videobuf2/videobuf2-v4l2.c
-index d911021c1bb0..f4104d5971dd 100644
---- a/drivers/media/common/videobuf2/videobuf2-v4l2.c
-+++ b/drivers/media/common/videobuf2/videobuf2-v4l2.c
-@@ -751,6 +751,11 @@ int vb2_create_bufs(struct vb2_queue *q, struct v4l2_create_buffers *create)
- 	int ret = vb2_verify_memory_type(q, create->memory, f->type);
- 	unsigned i;
- 
-+	if (vb2_fileio_is_active(q)) {
-+		dprintk(q, 1, "file io in progress\n");
-+		return -EBUSY;
-+	}
-+
- 	create->index = vb2_get_num_buffers(q);
- 	vb2_set_flags_and_caps(q, create->memory, &create->flags,
- 			       &create->capabilities, &create->max_num_buffers);
-@@ -1010,6 +1015,11 @@ int vb2_ioctl_remove_bufs(struct file *file, void *priv,
- 	if (vb2_queue_is_busy(vdev->queue, file))
- 		return -EBUSY;
- 
-+	if (vb2_fileio_is_active(vdev->queue)) {
-+		dprintk(vdev->queue, 1, "file io in progress\n");
-+		return -EBUSY;
-+	}
-+
- 	return vb2_core_remove_bufs(vdev->queue, d->index, d->count);
- }
- EXPORT_SYMBOL_GPL(vb2_ioctl_remove_bufs);
--- 
-2.34.1
+  https://lore.kernel.org/all/20250919145832.4035534-1-ryan.roberts@arm.com/
+
+... and were originally merged upstream in v6.18-rc1.
+
+I've tested that these patches apply to 5.4-6.12 without issue, but there is a
+trivial conflict to resolve in silicon-errata.rst for it to apply to 6.16 and
+6.17. Are you happy to deal with that or should I send a separate series?
+
+Thanks,
+Ryan
+
+Mark Rutland (2):
+  arm64: cputype: Add Neoverse-V3AE definitions
+  arm64: errata: Apply workarounds for Neoverse-V3AE
+
+ Documentation/arch/arm64/silicon-errata.rst | 2 ++
+ arch/arm64/Kconfig                          | 1 +
+ arch/arm64/include/asm/cputype.h            | 2 ++
+ arch/arm64/kernel/cpu_errata.c              | 1 +
+ 4 files changed, 6 insertions(+)
+
+--
+2.43.0
 
 
